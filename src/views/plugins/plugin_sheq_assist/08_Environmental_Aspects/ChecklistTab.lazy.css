@@ -1,0 +1,17 @@
+#ChecklistTab-tab .filter-wrapper > .controls{
+	display: flex;
+}
+#ChecklistTab-tab .filter-wrapper > .controls > .clearable-field-control{
+	flex: 1;
+}
+#ChecklistTab-tab .filter-wrapper > .controls > .type{
+	min-width: 300px;
+}
+
+#ChecklistTab-tab .filter-wrapper + .table{
+    height: calc(100% - (20px + 122px)) !important;
+}
+#ChecklistTab-tab > .table > .thead > .td.td-type,
+#ChecklistTab-tab > .table > .tbody .tr > .td.td-type{
+    min-width: 160px;
+}

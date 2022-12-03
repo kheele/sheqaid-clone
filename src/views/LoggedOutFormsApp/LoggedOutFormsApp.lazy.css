@@ -1,0 +1,108 @@
+
+.LoggedOutAppForms.nice-scrollbars{
+    background: rgba(0, 45, 45, 0.9);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding: 0px;
+    display: grid;
+}
+
+.LoggedOutAppForms .controls-wrapper .row-login button {
+    position: relative;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    font-size: 15px;
+    text-transform: uppercase;
+    color: rgba(2,168,168,0.5);
+    background-color: rgba(2, 80, 80, 0.5) !important;
+    border: none;
+}
+
+.LoggedOutAppForms .controls-wrapper {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 30px 20px;
+    margin: 0 auto 40px;
+    border-radius: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s;
+    grid-column: 1;
+    grid-row: 2;
+    /*width: 500px;*/
+}
+@media (max-width:599px){
+    .LoggedOutAppForms .controls-wrapper {
+        width: calc(100% - 35px) !important;
+        min-width: calc(100% - 35px) !important;
+    }
+}
+@media (max-width:459px){
+    .LoggedOutAppForms .controls-wrapper {
+        padding: 10px 15px 20px;
+    }
+}
+@media (max-width:419px){
+    .LoggedOutAppForms .controls-wrapper {
+        padding: 10px 15px 20px;
+    }
+}
+@media (max-width:389px){
+    .LoggedOutAppForms .controls-wrapper {
+        width: calc(100% - 15px) !important;
+        min-width: calc(100% - 15px) !important;
+        padding: 10px 10px 20px;
+        border-radius: 2%;
+    }
+}
+.LoggedOutAppForms .controls-wrapper > .controls > label{
+    color: #fff;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 20px;
+    margin: 0 auto 15px;
+    display: table;
+    width: 100%;
+}
+.LoggedOutAppForms .controls-wrapper .clearable-field-control{
+    min-height: 36px;
+    margin-bottom: 16px;
+    background-color: rgba(0, 0, 0, .4) !important;
+    border: 0 solid rgb(2, 168, 168) !important;
+    color: rgb(2, 168, 168) !important;
+}
+.LoggedOutAppForms .controls-wrapper .clearable-field-control .text-input--material__label,
+.LoggedOutAppForms .controls-wrapper .clearable-field-control .MuiFormLabel-root {
+    color: rgb(2, 168, 168);
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+.LoggedOutAppForms .controls-wrapper .clearable-field-control > .MuiTextField-root > label.MuiInputLabel-shrink,
+.LoggedOutAppForms .controls-wrapper .clearable-field-control:not(.readonly) .text-input--material__label--active {
+    background: rgba(0, 0, 0, .4) !important;
+    transform: translate(0, 2px) scale(1);
+}
+.LoggedOutAppForms .controls-wrapper .clearable-field-control > .MuiTextField-root > label.MuiInputLabel-shrink{
+    width: calc(100% + 22px)
+}
+.LoggedOutAppForms .controls-wrapper .clearable-field-control input{
+    color: rgb(2, 168, 168) !important; 
+    text-align: center;
+}
+.LoggedOutAppForms .logo{
+    padding: 5px;
+    width: 100px;
+    height: 100px;
+    margin: 40px auto;
+    grid-row: 1;
+}
+.LoggedOutAppForms .logo > img{
+    /*border: 3px dashed #ccc;*/
+    /*border-radius: 50%;*/
+    width: 100%;
+    height: 100%;
+}

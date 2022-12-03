@@ -1,0 +1,209 @@
+plugin_sheq_assist_19_Maintenance_tools	
+	keywords Arrays 
+	client_id Ascending 
+	company_id Ascending 
+	project_id Ascending 
+	written_off Ascending 
+	asset_type Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_17_Incident_Investigation	
+	investigation.status Arrays 
+	company_id Ascending 
+	sec9_data.incident_date Descending	
+	Collection		Enabled	
+
+plugin_sheq_assist_employee_warnings	
+	company_id Ascending 
+	expiry_date Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_08_Environmental_Aspects_emp	
+	client_id Ascending 
+	company_id Ascending 
+	expiry Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_projects	
+	company_id Ascending 
+	name Ascending	
+	Collection		Enabled	
+
+default_audit_trail	
+	company_id Ascending 
+	created_at Descending	
+	Collection		Enabled	
+
+plugin_sheq_assist_COVID_Management_vulnerable	
+	client_id Ascending 
+	company_id Ascending 
+	date_split.year Ascending 
+	date Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_projects	
+	keywords Arrays 
+	company_id Ascending 
+	name Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_employees	
+	keywords Arrays 
+	client_id Ascending 
+	company_id Ascending 
+	lname Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_employees	
+	keywords Arrays 
+	company_id Ascending 
+	id_num Ascending 
+	optional_info.department.id Ascending 
+	optional_info.job_position.id Ascending 
+	removed Ascending 
+	lname Ascending	
+	Collection		Enabled
+	
+plugin_sheq_assist_employees	
+	keywords Arrays 
+	company_id Ascending 
+	lname Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_08_Environmental_Aspects_emp	
+	company_id Ascending 
+	expiry Ascending	
+	Collection		Enabled
+	
+plugin_sheq_assist_COVID_Management_screening	
+	client_id Ascending 
+	company_id Ascending 
+	date_split.week Ascending 
+	date_split.year Ascending 
+	project_id Ascending 
+	date Ascending	
+	Collection		Enabled
+	
+default_users	
+	company_id Ascending 
+	lname Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_calendar	
+	calendar_type Ascending 
+	client_id Ascending 
+	company_id Ascending 
+	end Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_calendar	
+	calendar_type Ascending 
+	company_id Ascending 
+	meeting_type Ascending 
+	end Ascending	
+	Collection		Enabled
+	
+plugin_sheq_assist_COVID_Management_positive	
+	client_id Ascending 
+	company_id Ascending 
+	date_split.week Ascending 
+	date_split.year Ascending 
+	project_id Ascending 
+	site_id Ascending 
+	date Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_COVID_Management_screening	
+	client_id Ascending 
+	company_id Ascending 
+	date_split.week Ascending 
+	date_split.year Ascending 
+	project_id Ascending 
+	site_id Ascending 
+	date Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_clients	
+	keywords Arrays 
+	company_id Ascending 
+	name Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_COVID_Management_screening	
+	company_id Ascending 
+	date_split.year Ascending 
+	date Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_COVID_Management_positive	
+	client_id Ascending 
+	company_id Ascending 
+	project_id Ascending 
+	created_at Ascending	
+	Collection		Enabled
+	
+plugin_sheq_assist_COVID_Management_return-to-work	
+	company_id Ascending 
+	date_split.year Ascending 
+	date Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_COVID_Management_return-to-work	
+	date_split.year Ascending 
+	created_at Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_sites	
+	keywords Arrays 
+	company_id Ascending 
+	name Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_17_Incident_Investigation	
+	company_id Ascending 
+	sec9_data.incident_date Ascending	
+	Collection		Enabled	
+
+sheqassist_shared_docs	
+	email Ascending 
+	doc_expiry_date Ascending	
+	Collection		Enabled	
+
+plugin_sheq_assist_COVID_Management_screening	
+	company_id Ascending 
+	date_split.week Ascending 
+	date_split.year Ascending 
+	date Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_StructureAndResponsibility_appointments	
+	company_id Ascending 
+	expiry_date Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_clients	
+	company_id Ascending 
+	name Ascending	
+	Collection		Enabled	
+	
+plugin_sheq_assist_COVID_Management_screening	company_id Ascending date_split.date Ascending date_split.month Ascending date_split.year Ascending date Ascending	Collection		Enabled	
+plugin_sheq_assist_COVID_Management_return-to-work	client_id Ascending company_id Ascending date_split.year Ascending project_id Ascending date Ascending	Collection		Enabled	
+plugin_sheq_assist_COVID_Management_positive	company_id Ascending created_at Ascending	Collection		Enabled	
+plugin_sheq_assist_employees	keywords Arrays company_id Ascending removed Ascending lname Ascending	Collection		Enabled	
+plugin_sheq_assist_19_Maintenance_tools	keywords Arrays company_id Ascending toolkit Ascending asset_type Ascending	Collection		Enabled	
+plugin_sheq_assist_trainings_matrix	keywords Arrays company_id Ascending hr.id Ascending course_or_module Ascending	Collection		Enabled	
+plugin_sheq_assist_17_Incident_Investigation	sec1_data.category_list Arrays company_id Ascending sec9_data.incident_date Descending	Collection		Enabled	
+plugin_sheq_assist_employees	company_id Ascending removed Ascending employee_competency_list Ascending lname Ascending	Collection		Enabled	
+plugin_sheq_assist_19_Maintenance_tools	keywords Arrays client_id Ascending company_id Ascending project_id Ascending site_id Ascending manufacturer Ascending asset_type Ascending	Collection		Enabled	
+plugin_sheq_assist_job_cards	keywords Arrays company_id Ascending start_date Ascending	Collection		Enabled	
+default_users	keywords Arrays client_id Ascending company_id Ascending project_id Ascending site_id Ascending lname Ascending	Collection		Enabled	
+plugin_sheq_assist_19_Maintenance_tools	keywords Arrays client_id Ascending company_id Ascending written_off Ascending asset_type Ascending	Collection		Enabled	
+plugin_sheq_assist_employees	client_id Ascending company_id Ascending removed Ascending lname Ascending	Collection		Enabled	
+plugin_sheq_assist_COVID_Management_screening	client_id Ascending company_id Ascending date_split.year Ascending project_id Ascending date Ascending	Collection		Enabled	
+default_audit_trail	company_id Ascending user.id Ascending created_at Descending	Collection		Enabled	
+plugin_sheq_assist_17_Incident_Investigation	client_id Ascending company_id Ascending sec9_data.incident_date_split.year Ascending sec9_data.incident_date Descending	Collection		Enabled	
+plugin_sheq_assist_COVID_Management_vulnerable	client_id Ascending company_id Ascending date_split.week Ascending date_split.year Ascending date Ascending	Collection		Enabled	
+plugin_sheq_assist_COVID_Management_screening	company_id Ascending created_at Ascending	Collection		Enabled	
+plugin_sheq_assist_19_Maintenance_tools	keywords Arrays client_id Ascending company_id Ascending project_id Ascending site_id Ascending condition Ascending asset_type Ascending	Collection		Enabled	
+plugin_sheq_assist_19_Maintenance_tools	company_id Ascending written_off Ascending name Ascending	Collection		Enabled	
+plugin_sheq_assist_employees	client_id Ascending company_id Ascending project_id Ascending removed Ascending employee_medical_list Ascending lname Ascending	Collection		Enabled

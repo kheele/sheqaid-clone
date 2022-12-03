@@ -1,0 +1,83 @@
+{
+    "name": "sheqsolve",
+    "description": "Cloud Functions for Firebase",
+    "scripts": {
+        "test": "mocha --reporter spec",
+        "lint": "eslint .",
+
+        "deploy:hosting:main": "cd ../ && firebase deploy --only hosting:main",
+        "deploy:hosting:admin": "cd ../ && firebase deploy --only hosting:admin",
+        "deploy:hosting:forms": "cd ../ && firebase deploy --only hosting:forms",
+        "deploy:hosting:desktop": "cd ../ && firebase deploy --only hosting:desktop",
+        "deploy:hosting:mobile": "cd ../ && firebase deploy --only hosting:mobile",
+        "deploy:hosting:web": "cd ../ && firebase deploy --only hosting:web",
+        "deploy:hosting:admin,forms": "cd ../ && firebase deploy --only hosting:beta-dev",
+        "deploy:hosting:web,desktop,mobile,main": "cd ../ && firebase deploy --only hosting:web && firebase deploy --only hosting:desktop && firebase deploy --only hosting:mobile && firebase deploy --only hosting:main",
+
+        "deploy:functions": "cd ../ && firebase deploy --only functions",
+        "deploy:covidScreeningDailyCheck": "firebase deploy --only functions:covidScreeningDailyCheck",
+
+
+         "deploy:schedulers": "firebase deploy --only functions:schedulers",
+        "deploy:schedulers:notifications:taskRunner": "firebase deploy --only functions:schedulers-notifications-taskRunner",
+        "deploy:execFun": "firebase deploy --only functions:execFun",
+        "deploy:getDoc": "firebase deploy --only functions:getDoc",
+        "deploy:updateDoc": "firebase deploy --only functions:updateDoc",
+        "deploy:callables": "firebase deploy --only functions:callables",
+        "deploy:callables-onLogin": "firebase deploy --only functions:callables-onLogin",
+        "deploy:callables-sendUserOTP": "firebase deploy --only functions:callables-sendUserOTP",
+        "deploy:callables-confirmUserOTP": "firebase deploy --only functions:callables-confirmUserOTP",
+        "deploy:callables-onLoginBiometric": "firebase deploy --only functions:callables-onLoginBiometric",
+        "deploy:callables-onSetupBiometric": "firebase deploy --only functions:callables-onSetupBiometric",
+        "deploy:callables-onResetPassword": "firebase deploy --only functions:callables-onResetPassword",
+        "deploy:callables-sendForgotPass": "firebase deploy --only functions:callables-sendForgotPass",
+        "deploy:callables-updatePhone": "firebase deploy --only functions:callables-updatePhone",
+        "deploy:callables-getUserUidByEmail": "firebase deploy --only functions:callables-getUserUidByEmail",
+        "deploy:callables-getUserUidByPhone": "firebase deploy --only functions:callables-getUserUidByPhone",
+        "deploy:callables-getUserUidByUsername": "firebase deploy --only functions:callables-getUserUidByUsername",
+        "deploy:callables-excel_utils-onCreate": "firebase deploy --only functions:callables-excel_utils-onCreate",
+        "deploy:callables-excel_utils-onRead": "firebase deploy --only functions:callables-excel_utils-onRead",
+        "deploy:callables-covidSubmissionApi": "firebase deploy --only functions:callables-covidSubmissionApi",
+        "deploy:callables-wordToPDF": "firebase deploy --only functions:callables-wordToPDF",
+        "deploy:firestore": "firebase deploy --only functions:firestore",
+        "firebase functions:shell": "firebase functions:shell",
+        "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
+        "install:mod": "npm install firebase --save",
+        "install:all": "npm install"
+    },
+    "engines": {
+        "node": "10"
+    },
+    "main": "index.js",
+    "dependencies": {
+        "@tensorflow/tfjs-core": "^3.13.0",
+        "@tensorflow/tfjs-node": "^3.15.0",
+        "@tensorflow/tfjs-node-gpu": "^3.15.0",
+        "adv-firestore-functions": "^2.0.9",
+        "canvas": "^2.9.0",
+        "docx-pdf": "0.0.1",
+        "ejs": "^3.1.6",
+        "exceljs": "^4.1.1",
+        "face-api.js": "^0.22.2",
+        "firebase": "^9.9.0",
+        "firebase-admin": "^8.10.0",
+        "firebase-functions": "^3.6.1",
+        "formidable": "^1.2.2",
+        "googleapis": "^67.1.0",
+        "html-pdf": "^2.2.0",
+        "moment": "2.24.0",
+        "moment-timezone": "0.5.13",
+        "nodemailer": "^6.4.16"
+    },
+    "devDependencies": {
+        "@types/mocha": "^9.1.0",
+        "chai": "^4.3.6",
+        "chai-as-promised": "^7.1.1",
+        "eslint": "^5.12.0",
+        "eslint-plugin-promise": "^4.0.1",
+        "firebase-functions-test": "^0.2.3",
+        "mocha": "^9.2.2",
+        "sinon": "^13.0.1"
+    },
+    "private": true
+}

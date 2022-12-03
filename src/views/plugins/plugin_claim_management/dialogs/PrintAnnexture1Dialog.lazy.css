@@ -1,0 +1,23 @@
+@import '../../../../css/AProfileDialog.css';
+
+#dialog-overlay.PrintAnnexture1Dialog-profile-dialog .dialog-container{
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 0;
+}
+#dialog-overlay.PrintAnnexture1Dialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.PrintAnnexture1Dialog-profile-dialog .dialog-content .controls-wrapper{
+    height: 100%;
+}
+#dialog-overlay.PrintAnnexture1Dialog-profile-dialog .dialog-content .controls{
+    padding: 0;
+    height: 100%;
+}
+#dialog-overlay.PrintAnnexture1Dialog-profile-dialog .dialog-content .controls #PDFViewer {
+    height: 100%;
+}

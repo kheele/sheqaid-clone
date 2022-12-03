@@ -1,0 +1,76 @@
+* {
+    font-family: "Roboto Medium";
+}
+
+.flex {
+    display: flex;
+}
+.flex > *{
+    flex: 1 1;
+}
+.wrapper {
+    width: 85%;
+    margin: 7.5% 7.5% 0;
+}
+
+.head {
+    background: #fafafa;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+.content {
+    background: #fafafa;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px rgb(2, 168, 168);
+    margin: 10px 0;
+}
+.panel {
+    padding: 10px;
+    border: 1px solid #eee;
+    background: #fff;
+    border-radius: 5px;
+    margin: 10px;
+}
+.panel h4{
+    margin: 0 0 5px;
+}
+.panel span{
+    font-size: 15px;
+}
+
+.bg-white {
+    background: #fff;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.bg-white {
+    background: #fff;
+    border-radius: 5px;
+    margin: 20px 10px 10px;
+}
+.border-0 {
+    border: none;
+}
+ol {
+    margin: 0 5px 0 5px;
+}
+li {
+    text-align: left;
+    line-height: 1.5;
+    background: #fafafa;
+    margin-bottom: 2px;
+    padding: 5px;
+    margin-left: -25px;
+    border-radius: 5px;
+}

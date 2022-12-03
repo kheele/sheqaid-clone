@@ -1,0 +1,118 @@
+.tabs {
+    position: relative;
+    height: 100%;
+}
+
+.tab-list {
+    background: #fff;
+    padding-left: 0;
+    margin: 0;
+    height: 40px;
+}
+.tab-list.top {
+    border-bottom: 1px solid #f0f0f0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+.tab-list.bottom {
+    border-top: 1px solid #f0f0f0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.tab-list-item {
+    position: relative;
+    display: inline-block;
+    list-style: none;
+    padding: 8px 16px;
+    height: calc(100% + 1px);
+    color: #888;
+    cursor: pointer;
+}
+
+.tab-list-active {
+    color: rgb(2, 168, 168);
+    cursor: default;
+    position: relative;
+}
+.tab-list.top .tab-list-active::after {
+    content: " ";
+    position: absolute;
+    left:0 ;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: rgb(2, 168, 168);
+}
+.tab-list.bottom .tab-list-active::before {
+    content: " ";
+    position: absolute;
+    left:0 ;
+    right: 0;
+    top: 0;
+    height: 4px;
+    background: rgb(2, 168, 168);
+}
+
+.tab-content {
+    height: calc(100% - 40px);
+}
+.tab-content.top {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40px;
+}
+.tab-content.bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+}
+
+.tab-content > * {
+    display: none;
+}
+
+.tab-content > .active {
+    display: block;
+    height: 100%;
+    position: relative;
+}
+
+.tab-content > .active > .page-content{
+    height: 100%;
+    padding: 0;
+}
+@media (max-width:767px){
+    .tabs {
+        margin: 0;
+    }
+    .tabs > .tab-list {
+        display: -webkit-box;
+        overflow: auto;
+        align-items: center;
+        justify-items: center;
+        align-content: center;
+        position: relative;
+    }
+    .tabs > .tab-list > .tab-list-item{
+        font-size: 12px;
+        display: flex;
+        padding: 8px 8px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        line-height: 1.1;
+        width: 27%;
+    }
+    .tabs > .tab-content{
+        width: 100%;
+        position: relative;
+        top: 0px;
+    }
+}

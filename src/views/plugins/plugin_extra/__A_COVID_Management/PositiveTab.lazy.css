@@ -1,0 +1,14 @@
+#PositiveTab-page{
+    height: 100%;
+}
+#PositiveTab-page > .tabs {
+/*    margin: 0 10px 0 0px;
+    height: calc(100% - 20px);*/
+}
+#PositiveTab-page.disallow-positive .tab-list {
+    display: none;
+}
+#PositiveTab-page.disallow-positive .tab-content {
+    height: 100%;
+    bottom: 0;
+}

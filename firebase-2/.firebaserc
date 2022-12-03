@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "sheqassist-8e36a"
+  },
+  "targets": {
+    "sheqassist-8e36a": {}
+  }
+}

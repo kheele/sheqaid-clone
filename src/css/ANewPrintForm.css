@@ -1,0 +1,27 @@
+@import './ANewTableFormDialog.css';
+@import './ANewDialog.css';
+
+#dialog-overlay.ANewPrintForm .table {
+    height: calc(100% - -1px);
+    /*overflow: hidden;*/
+    overflow: auto;
+}
+#dialog-overlay.ANewPrintForm .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.ANewPrintForm .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.ANewPrintForm .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.ANewPrintForm .table > .thead > .td{
+	padding: 4px 6px !important;
+}
+#dialog-overlay.ANewPrintForm .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+	padding-right: 8px !important;
+}
+
+#dialog-overlay.ANewPrintForm .table > .tbody .td {
+    border-left: 2px solid #eee !important;
+	height: 32px !important;
+}

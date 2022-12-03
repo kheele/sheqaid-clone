@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href= "./style.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div class="section" style="height: 650px">            
+                <h1 class="page-title" style="margin-bottom: 50px"></h1>
+                <h1 class="page-title" style="margin-bottom: 50px">Incident Investigation</h1>
+                <h3 class="page-title" style="margin-bottom: 50px">Of</h3>
+                <h1 class="page-title" style="margin-bottom: 50px"><%= person_injured %></h1>
+                <h3 class="page-title" style="margin-bottom: 50px">That Occurred On</h3>
+                <h3 class="page-title" style="margin-bottom: 50px"><%= incident_date %> <%= incident_time %></h3>
+                <h3 class="page-title" style="margin-bottom: 50px">At</h3>
+                <h3 class="page-title"><%= exact_location %></h3>
+            </div>
+            <div class="section" style="margin-top: -20px">            
+                <h3>1. Participants / Persons Present</h3>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Name</th>
+                    <th>Position</th>
+                    </thead>
+                    <tbody>
+                        <% if (investigation_team_list.length > 0) { %>
+                            <% investigation_team_list.forEach(val => {%>
+                        <tr><td><%= val.lname + ' ' + val.fname %></td><td><%= val.job_position %></td></tr>
+                            <% });%>
+                        <% }%>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">            
+                <h3>2. Incident Details</h3>
+
+                <h4>2.1 Category & Sub-Category</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Incident Category</th>
+                    <th>Incident Sub-Category</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= category_list.join(', ') %></td>
+                            <td><%= sub_category_list.join(', ') %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>2.2 Type & Sub-Type</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Incident Type</th>
+                    <th>Incident Sub-Type</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= type %></td>
+                            <td><%= secondary_type_list.join(', ') %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>2.3 Location & Time Of Incident</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Date Incident Occurred</th>
+                    <th>Time Incident Occurred</th>
+                    <th>Incident Location</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= incident_date %></td>
+                            <td><%= incident_time %></td>
+                            <td><%= exact_location %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>2.4 Incident Reporting</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Date Reported</th>
+                    <th>Time Reported</th>
+                    <th>Person Reported To</th>
+                    <th>Person Reporting</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= date_reported %></td>
+                            <td><%= time_reported %></td>
+                            <td><%= person_reported_to %></td>
+                            <td><%= person_reporting %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>2.5 Person(s) Involved In The Incident</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Name</th>
+                    </thead>
+                    <tbody>
+                        <% if (person_involved_list.length > 0) { %>
+                            <% person_involved_list.forEach(val => {%>
+                        <tr><td><%= val.lname + ' ' + val.fname %></td></tr>
+                            <%  });%>
+                        <% }%>
+                    </tbody>
+                </table>
+
+                <h4>2.6 Incident Description</h4>                
+                <p><%= desc %></p>
+            </div>
+            <div class="section">            
+                <h3>3. Incident Witness(es)</h3>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Name</th>
+                    </thead>
+                    <tbody>
+                        <% if (witness_list.length > 0) { %>
+                            <% witness_list.forEach(val => {%>
+                        <tr><td><%= val.lname + ' ' + val.fname %></td></tr>
+                            <%  });%>
+                        <% }%>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">            
+                <h3>4. Incident Injury</h3>
+
+                <h4>4.1 Person Injured</h4>
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Name</th>
+                    <th>Date Of Birth</th>
+                    <th>Gender</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= person_injured %></td>
+                            <td><%= injured_person_dob %></td>
+                            <td><%= injured_person_gender %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>4.2 Nature Of Injury</h4>
+                <ul>
+                    <% if (nature_of_injury_list.length > 0) { %>
+                        <% nature_of_injury_list.forEach(val => {%>
+                    <li><%= val %></li>
+                        <%  });%>
+                    <% }%>
+                </ul>
+
+                <h4>4.3 Bodily Injury Location (Part(s) Of Body Injured)</h4>
+                <ul>
+                    <% if (bodily_injury_location_list.length > 0) { %>
+                        <% bodily_injury_location_list.forEach(val => {%>
+                    <li><%= val %></li>
+                        <%  });%>
+                    <% }%>
+                </ul>
+
+                <h4>4.4 Injury Mechanism (Direct Cause Of Injury)</h4>
+                <ul>
+                    <% if (injury_mechanism_list.length > 0) { %>
+                        <% injury_mechanism_list.forEach(val => {%>
+                    <li><%= val %></li>
+                        <%  });%>
+                    <% }%>
+                </ul>
+
+                <h4>4.5 Injury Description</h4>
+                <p><%= injury_desc %></p>
+            </div>
+            <div class="section">            
+                <h3>5. Cause Analysis</h3>
+
+                <% if(cause_analysis && cause_analysis.immediate_analysis) { %>
+                <h4>5.1 Direct/Immediate Cause(s)</h4>
+
+                    <% if(cause_analysis.immediate_analysis.sub_standard_practices_or_unsafe_acts || cause_analysis.immediate_analysis.custom_sub_standard_practices_or_unsafe_acts) { %>
+                <h4>5.1.1 Sub-Standard Practices / Unsafe Acts</h4>
+                <ul>
+                            <% [...(cause_analysis.immediate_analysis.sub_standard_practices_or_unsafe_acts || []), ...(cause_analysis.immediate_analysis.custom_sub_standard_practices_or_unsafe_acts || [])].forEach(({text, corrective_actions}) => { %>
+                    <li><%= text %></li>
+                            <% }) %> 
+                </ul>
+                    <% } %>
+
+                    <% if(cause_analysis.immediate_analysis.sub_standard_practices_or_unsafe_conditions || cause_analysis.immediate_analysis.custom_sub_standard_practices_or_unsafe_conditions) { %>
+                <h4>5.1.2 Sub-Standard Conditions / Unsafe Conditions</h4>
+                <ul>
+                            <% [...(cause_analysis.immediate_analysis.sub_standard_practices_or_unsafe_conditions || []), ...(cause_analysis.immediate_analysis.custom_sub_standard_practices_or_unsafe_conditions || [])].forEach(({text, corrective_actions}) => { %>
+                    <li><%= text %></li>
+                            <% }) %> 
+                </ul>
+                    <% } %>
+                <% } %>       
+
+                <% if(cause_analysis && cause_analysis.root_analysis) { %>
+                <h4>5.2 Indirect/Basic/Root Cause(s)</h4>
+
+                    <% if(cause_analysis.root_analysis.personal_factors || cause_analysis.root_analysis.custom_personal_factors) { %>
+                <h4>5.2.1 Personal Factors</h4>
+                <ul>
+                            <% [...(cause_analysis.root_analysis.personal_factors || []), ...(cause_analysis.root_analysis.custom_personal_factors || [])].forEach(({text, corrective_actions}) => { %>
+                    <li><%= text %></li>
+                            <% }) %> 
+                </ul>
+                    <% } %>
+
+                    <% if(cause_analysis.root_analysis.job_factors || cause_analysis.root_analysis.custom_job_factors) { %>
+                <h4>5.2.2 Job Factors</h4>
+                <ul>
+                            <% [...(cause_analysis.root_analysis.job_factors || []), ...(cause_analysis.root_analysis.custom_job_factors || [])].forEach(({text, corrective_actions}) => { %>
+                    <li><%= text %></li>
+                            <% }) %>
+                </ul> 
+                    <% } %> 
+                <% } %>   
+            </div>
+            <div class="section">            
+                <h3>6. Incident Severity</h3>
+
+                <table class="participants-tbl">
+                    <thead>
+                    <th>Consequence / Severity</th>
+                    <th>Likelihood / Probability</th>
+                    <th>Risk Rating</th>
+                    <th>Risk Rank</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                        </tr>
+                        <tr>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                            <td>Test Name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">            
+                <h3>7. Investigation Details</h3>
+
+                <h4>7.1 Investigation Description</h4>             
+                <p>Sample desc Sample desc Sample desc Sample desc Sample desc 
+                    Sample desc Sample desc Sample desc Sample desc Sample desc 
+                    Sample desc Sample desc Sample desc Sample desc Sample desc
+                </p>
+                <h4>7.2 Investigation Findings</h4>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>
+            </div>
+            <div class="section">            
+                <h3>8. Incident Evidence</h3>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>
+            </div>
+            <div class="section" style="margin-bottom: 0px;">            
+                <h3>9. Preventative/Corrective Actions</h3>
+
+                <h4>9.1 Direct/Immediate Cause(s)</h4>
+                <h4>9.1.1 Sub-Standard Practices / Unsafe Acts</h4>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>
+                <h4>9.1.2 Sub-Standard Conditions / Unsafe Conditions</h4>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>     
+
+                <h4>9.2 Indirect/Basic/Root Cause(s)</h4>
+                <h4>9.2.1 Personal Factors</h4>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>
+                <h4>9.2.2 Job Factors</h4>
+                <ul>
+                    <li>item 1</li>
+                    <li>item 2</li>
+                </ul>
+            </div>
+        </div>
+        <%- include('../header', {title: 'Incident Investigation', companyName: 'Company Name', docNum: '2', revNum: '2', revDate: '22-March-2022'}); %>
+        <%- include('../footer'); %>
+    </body>
+</html>

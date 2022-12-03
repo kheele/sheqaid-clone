@@ -1,0 +1,14 @@
+.footer {
+    margin-top: 0 !important;
+}
+.footer .container {
+    border-top: 1px solid #ddd;
+    padding-top: 60px;
+    margin-top: -20px;
+    max-width: 1000px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.footer .copyright{
+    border-top: 1px solid #ddd;
+}

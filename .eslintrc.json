@@ -1,0 +1,48 @@
+{
+    "extends": "react-app",
+    "overrides": [
+        {
+            "files": ["*.js"],
+            "rules": {
+                "no-restricted-globals": ["warn"],
+                "no-undef": ["warn"],
+                "no-unused-vars": "off",
+                "react/react-in-jsx-scope": "off"
+            }
+        }
+    ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true,
+        "shared-node-browser": true,
+        "es6": true,
+        "worker": true,
+        "jquery": true
+    },
+    "globals": {
+        "self": true,
+        "$": true,
+        "neonBinding": true,
+        "electronPrinter": true,
+        "isFunction": true,
+        "isArray": true,
+        "isNumber": true,
+        "isDate": true,
+        "isObject": true,
+        "isString": true,
+        "confirmDialog": true,
+        "defaultView": true,
+        "pluginManager": true,
+        "storage": true,
+        "QRCode": true,
+        "infoDialog": true,
+        "progressDialog": true,
+        "google": true,
+        "firebase": true,
+        "auth": true,
+        "electronDialog": true,
+        "createPDFPreviewUrl": true,
+        "FileTypes": true
+    }
+}

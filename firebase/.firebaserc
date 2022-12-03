@@ -1,0 +1,38 @@
+{
+  "projects": {
+    "default": "sheqsolve"
+  },
+  "targets": {
+    "sheqsolve": {
+      "hosting": {
+        "app": [
+          "app-sheqaid"
+        ],
+        "mobile": [
+          "mobile-sheqaid"
+        ],
+        "web": [
+          "web-sheqaid"
+        ],
+        "desktop": [
+          "desktop-sheqaid"
+        ],
+        "admin": [
+          "admin-sheqaid"
+        ],
+        "alpha-dev": [
+          "alpha-dev-sheqaid"
+        ],
+        "beta-dev": [
+          "beta-dev-sheqaid"
+        ],
+        "main": [
+          "sheqsolve"
+        ],
+        "forms": [
+          "forms-sheqaid"
+        ]
+      }
+    }
+  }
+}

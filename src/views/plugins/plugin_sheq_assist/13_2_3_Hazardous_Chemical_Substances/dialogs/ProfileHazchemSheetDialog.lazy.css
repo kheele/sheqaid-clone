@@ -1,0 +1,167 @@
+@import '../../../../../css/AProfileDialog.css';
+@import '../../../../../css/ANewTableFormDialog.css';
+
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .sec-group > .controls-sectioned{
+    margin: -5px 0 -10px -10px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField > div {
+    height: calc(100% - 10px);
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField .file {
+    height: calc(100% - 17px);
+    margin: 0 -10px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table > .tbody .tr > .td {
+    font-size: 16px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table > .tbody .tr > .td:last-of-type {
+    padding: 11px 0;
+    justify-content: flex-start !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table > .tbody .tr > .td > span{
+    background: rgb(2, 168, 168);
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    display: table;
+    text-align: center;
+    font-size: 12px;
+    margin-left: -5px;
+    padding: 3px;
+    color: #fff;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table > .tbody .tr:hover > .td > span{
+    background: #eee;
+    color: rgb(2, 168, 168);
+}
+
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > label,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > label{
+    display: block;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > label:after,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > label:after{
+    content: " ";
+    clear: both;
+    height: 20px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > .sec-group,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > .sec-group{
+    width: calc(50% - 10px) !important;
+    display: inline-block;
+    padding: 0 10px 10px;
+    border: 2px solid #ddd;
+    position: relative;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > .sec-group{
+    min-height: 220px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > .sec-group > label,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > .sec-group > label{
+    margin: 5px 0 -10px !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > .sec-group:before,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-precautions > .sec-group:after,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > .sec-group:before,
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row-contact-details > .sec-group:after{
+    content: "";
+    display: none;
+}
+
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField.red > div {
+    background: red;
+    color: #fff !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField.orange > div {
+    background: orange;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField.yellow > div {
+    background: yellow;
+    color: #000 !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .ProfileField.green > div {
+    background: green;
+    color: #fff !important;
+}
+
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .row.photo-grid button{
+    margin: auto;
+    display: table;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view {
+    margin: 0;
+    margin-left: -10px;
+    width: calc(100% + 20px);
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view .col-lg-6{
+    width: 50%;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view:first-of-type {
+    /*margin-right: 10px;*/
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view:last-of-type {
+    /*margin-right: -20px;*/
+    /*margin-left: 10px;*/
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div{
+    height: 160px;
+    position: relative;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div:hover > h3 {
+    background: none;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div:hover > i.fa-times {
+    color: #fff;
+    background: rgb(2, 168, 168);
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div > h3{
+    font-size: 12px;
+    margin: -10px 0 25px;
+    padding: 7px 6px 6px;
+    background: #eee;
+    border-radius: 3px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div > i.fa-times{
+    color: #fff;
+    background: rgb(2, 168, 168);
+    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .grid-view > div > div > img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table{
+    margin-left: -10px !important;
+    width: calc(100% + 10px) !important;
+    height: auto !important;
+    min-height: 100px !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table > .results-none {
+    margin-top: 65px !important;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table.NewActiveIngredientListTable{
+    float: left;
+}
+#dialog-overlay.ProfileHazchemSheetDialog-profile-dialog .dialog-content .table .tr:not(.tr-readonly) .btn{
+    height: 36px;
+    border-radius: 0 20px 20px 0;
+}

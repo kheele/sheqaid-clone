@@ -1,0 +1,1 @@
+firebase auth:import user_1.json --hash-algo=SCRYPT --hash-key=fDw8dISiWta3KqOlkSb6fdt349abSIcdmfa5SrzP1GbjkIxXGAGFWFzOOZyDdL0XNmUoOLYtNHs0Qip5w0KC+w== --salt-separator=Bw== --rounds=8 --mem-cost=14

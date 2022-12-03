@@ -1,0 +1,70 @@
+.Slider{
+    margin: 0;
+    height: 100%;
+    position: relative;
+}
+.Slider  > .carousel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.Slider > .carousel > .carousel-inner-no-results{
+    background: rgba(101, 101, 101, 0.3);
+    color: #888;
+    padding: 20px;
+    margin: 30px 5px 5px;
+    font-size: 18px;
+    text-align: center;
+    height: calc(100% - 35px);
+}
+.Slider > .carousel > .carousel-inner {
+    height: 100%;
+}
+.Slider  > .carousel > .carousel-inner > .item {
+    margin-bottom: 50px;
+}
+.Slider  > .carousel > .carousel-inner > .item,
+.Slider  > .carousel > .carousel-inner > .item > .row,
+.Slider  > .carousel > .carousel-inner > .item > .row > div {
+    margin: 0;
+}
+.Slider  > .carousel > .carousel-inner > .item,
+.Slider  > .carousel > .carousel-inner > .item > .row {
+    height: 100%;
+}
+.Slider  > .carousel > .carousel-inner > .item > .row > div {
+    height: calc(100% - 50px);
+}
+
+.Slider > h1 {
+    margin: 0 3px 0px;
+    padding: 5px;
+    font-size: 20px;
+    font-variant: small-caps;
+}
+.Slider .carousel-indicators {
+    bottom: auto;
+    margin-top: 5px;
+    margin-left: 0;
+    width: 100%;
+    transform: translateX(-50%);
+}
+
+.Slider .carousel-control {
+    background: none;
+    width: 30px;
+}
+
+.Slider .carousel-control .icon-prev, 
+.Slider .carousel-control .glyphicon-chevron-left {
+    left: 0;
+    margin-left: -2px;
+}
+.Slider .carousel-control .icon-next, 
+.Slider .carousel-control .glyphicon-chevron-right {
+    right: 0px;
+    margin-right: 0;
+}
+

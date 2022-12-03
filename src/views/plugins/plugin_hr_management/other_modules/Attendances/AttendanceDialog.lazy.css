@@ -1,0 +1,172 @@
+#dialog-overlay.AttendanceDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1200px;
+    max-width: 100%;
+}
+#dialog-overlay.AttendanceDialog-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+    overflow: visible !important;
+}
+
+#dialog-overlay.AttendanceDialog-dialog .ViewByPanel {
+    position: absolute;
+    top: 0;
+    right: 120px;
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+#dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn {
+    width: 160px;
+    height: 42px;
+}
+#dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn:first-of-type {
+    border-radius: 10px 0 0 0;
+}
+#dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn:last-of-type {
+    border-radius: 0 10px 0 0;
+}
+#dialog-overlay.AttendanceDialog-dialog .page-title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+}
+#dialog-overlay.AttendanceDialog-dialog .page-content {
+    height: 100%;
+    padding: 0;
+}
+
+#dialog-overlay.AttendanceDialog-dialog .table{
+    width: 100%;
+    height: 100% !important;
+    margin: 0;
+    background: none !important;
+}
+#dialog-overlay.AttendanceDialog-dialog .table > .tbody.page__content {
+    height: 100%;
+    background: none !important;
+}
+#dialog-overlay.AttendanceDialog-dialog .filter-wrapper + .table{
+    height: calc(100% - (50px + 122px)) !important;
+}
+
+#dialog-overlay.AttendanceDialog-dialog .table .list {
+    padding: 10px !important;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+    grid-gap: 10px;
+    width: 100%;
+    background: none !important;
+}
+#dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr{
+    width: 100% !important;
+    display: block !important;
+    float: left;
+    background: #fff !important;
+    box-shadow: 0 0 4px #ddd;
+    border-radius: 3px;
+}
+#dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr .td {
+    padding: 11px 0 0 !important;
+    text-align: center !important;
+    display: block !important;
+    border-bottom: 1px dotted #ddd;
+    padding-bottom: 10px !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    float: none !important;
+}
+#dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr .td:last-of-type {
+    border-bottom: none;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+#dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr:hover > .td {
+    color: #888 !important;
+}
+#dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr > .td button {
+    float: none !important;
+}
+
+@media (max-width: 991px) {
+    #dialog-overlay.AttendanceDialog-dialog .table .list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    #dialog-overlay.AttendanceDialog-dialog #ListViewByTeam-page .table .tbody .list .tr .td:not(:last-of-type) {
+        width: 50% !important;
+        min-width: 50% !important;
+        float: left !important;
+    }
+}
+@media (max-width: 767px) {
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel {
+        right: 80px;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn {
+        width: 125px;
+        height: 36px;
+        font-size: 11px;
+        padding: 0;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .page-title {
+        width: auto !important;
+    }
+    #dialog-overlay.AttendanceDialog-dialog #ListViewByTeam-page .table .tbody .list .tr .td:not(:last-of-type) {
+        width: 100% !important;
+        min-width: 100% !important;
+        float: none !important;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .table .tbody .list .tr .td button {
+        margin: 0 !important;
+    }
+}
+@media (max-width: 559px) {
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel {
+        height: 25px;
+        top: 50px;
+        right: unset;
+        left: 50%;
+        float: none;
+        margin: auto;
+        transform: translateX(-50%);
+    }
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn {
+        height: 25px;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn:first-of-type {
+        border-radius: 0 0 0 10px;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .ViewByPanel > .btn:last-of-type {
+        border-radius: 0 0 10px 0;
+    }
+    #dialog-overlay.AttendanceDialog-dialog .page-content {
+        margin-top: 10px;
+        height: calc(100% - 10px);
+    }
+}
+@media (min-width: 660px) and (max-width: 767px) {
+    #AttendanceDialog-page > .page-title > .tabled-top-panel {
+        justify-content: flex-end;
+    }
+    #AttendanceDialog-page > .page-title > .tabled-top-panel > .buttons {
+        width: auto;
+    }
+}
+
+@media (max-width: 599px) {
+    #dialog-overlay.AttendanceDialog-dialog .table .list {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+}
+@media (min-width: 499px) and (max-width: 599px) {
+    #dialog-overlay.AttendanceDialog-dialog #ListViewByTeam-page .table .tbody .list .tr .td:not(:last-of-type) {
+        width: 50% !important;
+        min-width: 50% !important;
+        float: left !important;
+    }
+}

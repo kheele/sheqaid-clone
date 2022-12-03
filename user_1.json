@@ -1,0 +1,12 @@
+{"users": [
+{
+  "localId": "m7VNpq9Pw0dmLnctaW3zXSO3xi82",
+  "email": "rhespo@gmail.com",
+  "emailVerified": false,
+  "passwordHash": "6LHbQ/s7dns/oPiv6LNQC0uL2ZvFYOoPh+PMvCVHI4q+HUH26Uu9PDLmDB0XufcrOrXeF90dcKE+UrU+ENk+UA==",
+  "salt": "UZ9KNZCGEW95ig==",
+  "lastSignedInAt": "1655557586247",
+  "createdAt": "1653293556553",
+  "customAttributes": "{\"access_type\":\"User\",\"company_id\":\"A4yUEbsdAPS755CBEDeT\",\"contractor_id\":\"m7VNpq9Pw0dmLnctaW3zXSO3xi82\",\"access_type_list\":{\"User\":true}}",
+  "providerUserInfo": []
+}]}

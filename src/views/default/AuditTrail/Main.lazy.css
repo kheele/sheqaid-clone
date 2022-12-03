@@ -1,0 +1,9 @@
+
+#AuditTrail-page{
+    height: 100%;
+    overflow: hidden;
+}
+
+#AuditTrail-page .filter-wrapper + .table{
+    height: calc(100% - (20px + 125px)) !important;
+}

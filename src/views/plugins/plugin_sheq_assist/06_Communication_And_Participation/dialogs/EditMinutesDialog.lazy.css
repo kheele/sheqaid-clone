@@ -1,0 +1,21 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditMinutesDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 700px;
+    max-width: 100%;
+}
+#dialog-overlay.EditMinutesDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewMinutesDialog-new-dialog .controls {
+    height: 100%;
+}
+
+#dialog-overlay.EditMinutesDialog-profile-dialog .dialog-content .tox-tinymce {
+    margin: -5px 0px -10px -10px;
+    border: none;
+    float: left;
+    width: calc(100% + 10px);
+}

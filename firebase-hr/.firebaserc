@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "sheqaid-hr"
+  },
+  "targets": {
+    "sheqaid-hr": {}
+  }
+}

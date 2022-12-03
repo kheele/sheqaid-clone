@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "command": "cd ../ && firebase hosting:channel:deploy preview-1",
+            "name": "deploy:hosting:preview",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "cd ../ && firebase deploy --only hosting",
+            "name": "deploy:hosting",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "cd ../ && firebase deploy --only functions",
+            "name": "deploy:functions",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "firebase deploy --only functions:execFun",
+            "name": "deploy:execFun",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js"
+        }
+    ]
+}

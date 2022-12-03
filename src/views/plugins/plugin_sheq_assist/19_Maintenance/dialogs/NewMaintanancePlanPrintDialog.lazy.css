@@ -1,0 +1,21 @@
+@import '../../../../../css/ANewPrintForm.css';
+
+#dialog-overlay.NewMaintanancePlanPrintDialog-new-dialog .table > .thead > .td-maintenance_term {
+    padding: 0 !important;
+}
+#dialog-overlay.NewMaintanancePlanPrintDialog-new-dialog .table > .thead > .td-maintenance_term > .tr > .td{
+	padding: 4px 0 !important;
+}
+#dialog-overlay.NewMaintanancePlanPrintDialog-new-dialog .table > .thead > .td-maintenance_term > .tr > .td:not(:first-of-type){
+	border-left: 2px solid #fff !important;
+}
+#dialog-overlay.NewMaintanancePlanPrintDialog-new-dialog .table > .thead > .td-maintenance_term > .tr:first-of-type {
+	border-bottom: 2px solid #fff !important;
+	padding: 4px 0 !important;
+}
+#dialog-overlay.NewMaintanancePlanPrintDialog-new-dialog .table > .tbody > * .tr > .td:last-of-type{
+	border-left: none !important;
+    border-right: 2px solid #eee !important;
+	padding-right: 0px !important;
+    min-width: 501px !important;
+}

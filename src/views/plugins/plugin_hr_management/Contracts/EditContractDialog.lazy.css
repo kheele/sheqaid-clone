@@ -1,0 +1,29 @@
+@import '../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content .row.row-doc.active {
+    height: calc(100% - 135px);
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content .controls > .row:last-of-type{
+    position: relative;
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content .row.sec-group{
+    height: calc(100% - 87px);
+    margin-bottom: -5px !important;    
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content .ProofUploadButton{
+    height: 100%;
+}
+#dialog-overlay.EditContractDialog-profile-dialog .dialog-content .btn-add-pages {
+    position: absolute;
+    top: 16px;
+    z-index: 1;
+}

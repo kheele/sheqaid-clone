@@ -1,0 +1,17 @@
+@import '../../../../../css/ANewTableFormDialog.css';
+@import '../../../../../css/ANewDialog.css';
+
+#NewCalibrationRecordDialogSec{
+	margin: -5px 0px -10px -10px;
+}
+#dialog-overlay.NewCalibrationRecordDialog-new-dialog .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.NewCalibrationRecordDialog-new-dialog .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.NewCalibrationRecordDialog-new-dialog .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.NewCalibrationRecordDialog-new-dialog .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+	padding-right: 8px !important;
+}

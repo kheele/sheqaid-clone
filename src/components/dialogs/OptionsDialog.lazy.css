@@ -1,0 +1,21 @@
+#dialog-overlay.OptionsDialog > .dialog-container{
+    width: 400px;
+    height: auto;
+}
+#dialog-overlay.OptionsDialog > .dialog-container > .dialog-content {
+    padding: 15px !important;
+}
+#dialog-overlay.OptionsDialog > .dialog-container > .dialog-content > h4{
+    margin: 0 0 16px;
+}
+#dialog-overlay.OptionsDialog > .dialog-container .page-back-btn{
+    display: none;
+}
+#dialog-overlay.OptionsDialog > .dialog-container > .dialog-content > .controls {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+#dialog-overlay.OptionsDialog > .dialog-container > .dialog-content > .controls > .btn:not(:last-of-type){
+    margin-left: 5px;
+}

@@ -1,0 +1,45 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    max-width: calc(100% - 30px);
+    width: 1000px !important;
+}
+
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput {
+    /*    padding: 0px;
+        margin-top: -7px;*/
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput {
+    padding: 10px 0;
+    margin-top: -7px;
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view {
+    display: block !important;
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view > div {
+    margin-bottom: 10px;
+    position: relative;
+    width: 50%;
+    float: left;
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view > div > div {
+    padding: 0;
+    height: 410px;
+    display: block;
+    position: relative;
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view > div > div #PDFViewer {
+    height: 410px;
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view > div > div > .fa{
+    margin-bottom: 10px
+}
+#dialog-overlay.EditNCRDialog-profile-dialog .dialog-content .AddFilesGridViewInput .grid-view > div > div > img{
+    max-width: 400px;
+    height: auto;
+    position: relative;
+    left: 0;
+    top: 0;
+    transform: none;
+}

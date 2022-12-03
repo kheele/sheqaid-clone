@@ -1,0 +1,10 @@
+@import '../../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewToolboxTalkAttendanceRegisterDialog-new-dialog .dialog-container{
+    height: 900px;
+    width: 710px;
+    max-width: 100%;
+}
+#dialog-overlay.NewToolboxTalkAttendanceRegisterDialog-new-dialog .dialog-content{
+    padding: 0;
+}

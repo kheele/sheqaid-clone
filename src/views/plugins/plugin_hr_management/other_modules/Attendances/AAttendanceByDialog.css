@@ -1,0 +1,142 @@
+#dialog-overlay.AAttendanceByDialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1200px;
+    max-width: 100%;
+}
+#dialog-overlay.AAttendanceByDialog .dialog-content{
+    padding: 0;
+    overflow: visible !important;
+}
+#dialog-overlay.AAttendanceByDialog .page-content > .page-title {
+    position: absolute;
+    left: unset;
+    top: 0;
+    right: 0;
+    width: auto;
+    border: none;
+}
+
+#dialog-overlay.AAttendanceByDialog .ViewByPanel {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 0;
+    top: 0px;
+    right: 0;
+}
+
+#dialog-overlay.AAttendanceByDialog .ViewByPanelFilter {
+
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelFilter > h4 {
+    align-items: center;
+    justify-content: center;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelFilter .ViewByPanelMonths > button {
+    border-radius: 0;
+    padding: 0 6px;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelFilter .ViewByPanelMonths > button:first-of-type {
+    border-radius: 5px 0 0 5px;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelFilter .ViewByPanelMonths > button:last-of-type {
+    border-radius: 0 5px 5px 0;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats {
+
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats > div{
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: #fff;
+    box-shadow: 0 0 3px #ddd;
+    border-radius: 5px;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats > div:first-of-type{
+    background: green;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats > div:nth-of-type(2){
+    background: orange;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats > div:nth-of-type(3){
+    background: red;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats > div:last-of-type{
+    background: white;
+    color: red;
+}
+
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats .ViewByPanelStatEmployeeCounter,
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats .ViewByPanelStatHrsCounter {
+    align-items: center;
+    justify-content: center;
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats .ViewByPanelStatHrsCounter {
+    border-left: 1px solid
+}
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats .ViewByPanelStatEmployeeCounter > span,
+#dialog-overlay.AAttendanceByDialog .ViewByPanelStats .ViewByPanelStatHrsCounter > span {
+    border-radius: 50%;
+    border: 1px solid;
+    height: 20px;
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    font-size: 11px;
+}
+
+#dialog-overlay.AAttendanceByDialog .rgc-calendar{
+    position: relative;
+    left: 10px;
+    top: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    background: #fff;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__controls {
+    display: none;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__weekday-day,
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day {
+    border: 1px solid #eee;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day > div{
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day i.LostimeAndOvertimeIcon{
+    position: relative;
+    padding: 0 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day i.LostimeIcon{
+    background: red;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day i.OvertimeIcon{
+    background: orange;
+}
+#dialog-overlay.AAttendanceByDialog .rgc-calendar .rgc-calendar__day i.HasAttendanceIcon{
+    color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(2, 168, 168, 0.35);
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    font-size: 22px;
+}

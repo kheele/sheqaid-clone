@@ -1,0 +1,30 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .row.row-doc.active {
+    height: calc(100% - 46px);
+}
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .controls > .row:last-of-type{
+    position: relative;
+}
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .row.sec-group{
+    height: calc(100% - 87px);
+    margin-bottom: -5px !important;    
+}
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .tox-tinymce {
+    height: auto !important;
+    min-height: 300px;
+    margin-left: -10px;
+}
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .ProofUploadButton{
+    height: 100%;
+}

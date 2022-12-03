@@ -1,0 +1,148 @@
+
+.RiskRating {
+
+}
+.RiskRating .flex {
+    margin: 1px 0 1px 1px;
+}
+.RiskRating .flex > div {
+    margin-right: 1px;
+    text-align: center;
+    min-height: 50px;
+}
+.RiskRating .fixed-flex {
+    background: #e6e6e6;
+    padding: 10px;
+}
+.RiskRating > .RiskRatingInfo > div {
+    background: none;
+}
+.RiskRating .RiskRatingTitles,
+.RiskRating .RiskRatingTypes,
+.RiskRating .RiskRatingNums,
+.RiskRating .RiskRatingInfo .flex > div,
+.RiskRating .RiskRatingInfo .RiskRatingTitleFormula{
+    background: #e6e6e6;
+    text-align: center;
+}
+.RiskRating .RiskRatingInfo .RiskRatingTitleFormula{
+    margin-top: 1px;
+    margin-right: 1px;
+    padding: 10px 10px;
+    font-weight: bold;
+    
+}
+.RiskRating .RiskRatingTypes,
+.RiskRating .RiskRatingInfo .flex > div:not(.RiskRatingTitles) {
+    font-size: 11px;
+    padding: 2px;
+}
+.RiskRating .RiskRatingTitles,
+.RiskRating .RiskRatingNums {
+    padding: 15px 10px;
+    font-weight: bold;
+}
+.RiskRating .RiskRatingInfo .flex > .RiskRatingTitles {
+    padding: 2px;
+} 
+.RiskRating .RiskRatingInfoLeft .flex > div{
+    min-height: 40px;
+    min-height: 40px;
+}
+.RiskRating .RiskRatingInfoRight .flex > div{
+    min-height: 81px;
+    max-height: 81px;
+    padding: 5px 0;
+}
+.RiskRating .RiskRatingInfoRight .Freq > div:nth-of-type(2),
+.RiskRating .RiskRatingTable > .flex:nth-of-type(6) > .RiskRatingTypes,
+.RiskRating .RiskRatingTable > .flex:nth-of-type(6) > .consequence,
+.RiskRating .RiskRatingTable > .flex:first-of-type > .likelihood:nth-of-type(6) {
+    background: rgb(215, 215, 215) !important;
+}
+.RiskRating .RiskRatingInfoRight .Freq > div:nth-of-type(3),
+.RiskRating .RiskRatingTable > .flex:nth-of-type(5) > .RiskRatingTypes,
+.RiskRating .RiskRatingTable > .flex:nth-of-type(5) > .consequence,
+.RiskRating .RiskRatingTable > .flex:first-of-type > .likelihood:nth-of-type(7) {
+    background: rgb(200, 200, 200) !important;
+}
+.RiskRating .RiskRatingInfoRight .Freq > div:nth-of-type(4),
+.RiskRating .RiskRatingTable > .flex:nth-of-type(4) > .RiskRatingTypes,
+.RiskRating .RiskRatingTable > .flex:nth-of-type(4) > .consequence,
+.RiskRating .RiskRatingTable > .flex:first-of-type > .likelihood:nth-of-type(8) {
+    background: rgb(185, 185, 185) !important;
+}
+.RiskRating .RiskRatingInfoRight .Freq > div:nth-of-type(5),
+.RiskRating .RiskRatingTable > .flex:nth-of-type(3) > .RiskRatingTypes,
+.RiskRating .RiskRatingTable > .flex:nth-of-type(3) > .consequence,
+.RiskRating .RiskRatingTable > .flex:first-of-type > .likelihood:nth-of-type(9) {
+    background: rgb(170, 170, 170) !important;
+}
+.RiskRating .RiskRatingInfoRight .Freq > div:nth-of-type(6),
+.RiskRating .RiskRatingTable > .flex:nth-of-type(2) > .RiskRatingTypes,
+.RiskRating .RiskRatingTable > .flex:nth-of-type(2) > .consequence,
+.RiskRating .RiskRatingTable > .flex:first-of-type > .likelihood:nth-of-type(10) {
+    background: rgb(155, 155, 155) !important;
+}
+.RiskRating .RiskRatingNums.active {
+/*    border: 6px solid #000;
+    padding: 9px 10px;*/
+    position: relative;
+}
+.RiskRating .RiskRatingNums.active.consequence::after{
+    content: " ";
+    position: absolute;
+    left: auto;
+    top: 10px;
+    right: -15px;
+    bottom: auto;
+    border-left: 15px solid #000;
+    border-top: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+.RiskRating .RiskRatingNums.active.likelihood::after{
+    content: " ";
+    position: absolute;
+    left: 5px;
+    top: auto;
+    bottom: -15px;
+    border-left: 15px solid transparent;
+    border-top: 15px solid #000;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+.RiskRating .RiskRatingPoint {
+    height: 50px;
+    min-width: 40px;
+    text-align: center;
+    padding: 15px 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+    color: #000;
+    font-weight: bold;
+}
+.RiskRating .RiskRatingPoint.active {
+    border: 6px solid #000;
+    padding: 10px 10px;
+}
+.RiskRating .RiskRatingLow {
+    background: #66BB6A !important;
+    font-weight: bold;
+    color: #000;
+}
+.RiskRating .RiskRatingModerate {
+    background: #FFA726 !important;
+    font-weight: bold;
+    color: #000;
+}
+.RiskRating .RiskRatingHigh {
+    background: #FF0000 !important;
+    font-weight: bold;
+    color: #000;
+}
+.RiskRating .RiskRatingExtreme {
+    background: #AE0000 !important;
+    font-weight: bold;
+    color: #000;
+}

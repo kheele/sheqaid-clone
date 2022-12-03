@@ -1,0 +1,24 @@
+@import './AForms.css';
+
+.AProfileDialog .row-profile-cover{
+    margin: -10px -10px 10px !important;
+    padding: 20px !important;
+    border-radius: 0 !important;
+    text-align: center;
+    background: none !important;
+    box-shadow: 0 0 5px #ccc !important;
+}
+.AProfileDialog .row-profile-cover > h3,
+.AProfileDialog .row-profile-cover > h5{
+    margin-top: 10px;
+}
+.AProfileDialog .row-profile-cover > h5{
+    color: #aaa;
+    font-size: 14px;
+}
+
+.AProfileDialog .controls-wrapper > .controls > .row > .sec-group{
+    margin: 0;
+    width: calc(100% + 0px);
+    position: relative;
+}

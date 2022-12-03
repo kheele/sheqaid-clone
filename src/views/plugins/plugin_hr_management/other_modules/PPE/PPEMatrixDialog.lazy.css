@@ -1,0 +1,18 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.PPEMatrixDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1000px;
+    max-width: 100%;
+}
+#dialog-overlay.PPEMatrixDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.PPEMatrixDialog-new-dialog .AViewBy .results-none {
+    margin-top: 120px;
+    top: 36px;
+}
+#dialog-overlay.PPEMatrixDialog-new-dialog .AViewBy h4 {
+    
+}

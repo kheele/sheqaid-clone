@@ -1,0 +1,154 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .controls-wrapper > .controls > .row .sec-group > hr{
+    border-width: 2px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .text-input--material__selectable,
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .text-input--material__selectable{
+    padding: 6px 7px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .fa-calendar,
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.time_input .fa-clock{
+    right: 10px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .fa-close,
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.time_input .fa-close{
+    right: 33px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.time_input .react-time-picker {
+    width: calc(100% - 20px);
+    margin-left: -7px;
+}
+
+@media (max-width:840px){
+    .xs-shown {
+        display: block !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable {
+        margin: 0;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable,
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .list {
+        background: #fafafa !important;
+        /*padding: 5px 0;*/
+    }  
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .list {
+        padding: 10px !important;
+        grid-template-columns: repeat(1, 1fr);
+        align-items: center;
+        justify-content: center;
+        grid-gap: 10px;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .thead {
+        display: none !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr {
+        width: 100% !important;
+        display: block !important;
+        float: left;
+        background: #fff !important;
+        box-shadow: 0 0 4px #ddd;
+        border-radius: 3px;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr,
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr:nth-of-type(2n+1) {
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr:hover {
+        background: #fff !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr .td:not(.td-counter) {
+        padding: 11px 0 0 !important;
+        text-align: center !important;
+        width: 50% !important;
+        min-width: 50% !important;
+        display: inline-block !important;
+        border-bottom: 1px dotted #ddd;
+        padding-bottom: 10px !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr .td.grid-view-w-full {
+        width: 100% !important;
+        min-width: 100% !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 10px 10px 0px !important;
+        border: 0 !important;
+    }
+    /*    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list .tr .td:nth-of-type(odd) {
+            margin: 0 3px 0 -3px !important;
+        }
+        #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list .tr .td:nth-of-type(even) {
+            margin: 0 -3px 0 3px !important;
+        }*/
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tbody .list > .tr .td:last-of-type {
+        width: 100% !important;
+        border-bottom: 0;
+        padding-bottom: 0px !important;
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr > .td:not(.td-counter) {
+        display: block !important;
+        width: 100% !important;
+        padding: 11px 0 0 !important;
+        text-align: center !important;
+        float: none !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr:hover > .td {
+        color: #888 !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .list > .tr > .td button {
+        float: none !important;
+        margin-bottom: 10px;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable > .tbody .ReactPullToRefresh {
+        padding-top: 30px !important;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .td-counter {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        width: 100% !important;
+        min-width: 100% !important;
+        padding: 0 !important;
+        border: none;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .td-counter span{
+        border-radius: 0;
+        margin: 0;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr:not(.tr-readonly){
+        padding: 0;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr-readonly .td-date-and-time-from,
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr-readonly .td-date-and-time-to {
+        margin-top: 15px;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr:not(.tr-readonly) .td-date-and-time-from,
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .tr:not(.tr-readonly) .td-date-and-time-to {
+        margin-top: 10px;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .td-amount span{
+        font-size: 17px;
+        font-weight: bold;
+        margin: 0 auto;
+        min-width: 30px;
+        display: table;
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .td-amount h6{
+/*        padding-left: 5px;
+        padding-right: 5px;*/
+    }
+    #dialog-overlay.NewWCL6Dialog-new-dialog .OffAndLightDutyPeriodTable .td-amount .clearable-field-control > .MuiTextField-root{
+        top: 0;
+    }
+}

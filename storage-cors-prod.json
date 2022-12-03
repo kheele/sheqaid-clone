@@ -1,0 +1,18 @@
+[
+    {
+        "origin": [
+            "https://sheqsolve.web.app", 
+            "https://sheqsolve.firebaseapp.com", 
+            
+            "https://sheqaid.com",
+            "https://app.sheqaid.com", 
+            "https://mobile.sheqaid.com",
+            "https://web.sheqaid.com",
+            "https://admin.sheqaid.com",
+            "https://www.sheqaid.com"
+        ],
+        "method": ["GET", "HEAD", "DELETE", "PATCH", "PUT", "POST"],
+        "responseHeader": ["Content-Type", "access-control-allow-origin"],
+        "maxAgeSeconds": 3600
+    }
+]

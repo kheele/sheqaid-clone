@@ -1,0 +1,21 @@
+
+#dialog-overlay.DocumentEditorDialog-profile-dialog .dialog-container{
+    height: calc(100% - 15px);
+    max-height: calc(100% - 15px);
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.DocumentEditorDialog-profile-dialog .dialog-content {
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.DocumentEditorDialog-profile-dialog .dialog-content .controls-wrapper > .controls {
+    overflow: hidden;
+}
+#dialog-overlay.DocumentEditorDialog-profile-dialog .dialog-content .controls .row{
+    height: 100%;
+    margin: 0;
+}
+#dialog-overlay.DocumentEditorDialog-profile-dialog .dialog-content .controls-wrapper > .controls #PDFViewer {
+    height: 100%;
+}

@@ -1,0 +1,30 @@
+/*@import '../../../../../css/ANewTableFormDialog.css';*/
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1100px;
+    max-width: 100%;
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .dialog-content {
+    padding: 0;
+    /*height: calc(100% - 50px);*/
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table {
+    margin: 0 !important;
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table.col-lg-6 {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.NewCauseAnalysisDialogs-new-dialog .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+    padding-right: 8px !important;
+}

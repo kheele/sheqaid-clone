@@ -1,0 +1,67 @@
+#ClaimsCOIDProviderTab-tab .page-title{
+    height: 0;
+    margin: -45px 0 0;
+    border: none;
+    float: right;
+}
+#ClaimsCOIDProviderTab-tab .page-title > h3{
+    display: none;
+}
+#ClaimsCOIDProviderTab-tab .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+#ClaimsCOIDProviderTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#ClaimsCOIDProviderTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#ClaimsCOIDProviderTab-tab .table .fa-warning{
+    color: red;
+}
+
+#ClaimsCOIDProviderTab-tab .table .wcl-status-span > b{
+    background: #fff;
+    color: #888;
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    padding: 1px 3px;
+    border-radius: 20px;
+}
+
+#ClaimsCOIDProviderTab-tab .table .rcw-launcher{
+    position: absolute !important;
+    left: -7px;
+    top: -4px;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    z-index: 1;
+}
+#ClaimsCOIDProviderTab-tab .table .rcw-launcher img{
+    width: 20px;
+    position: absolute;
+    left: 5px;
+    top: 6px;
+}
+#ClaimsCOIDProviderTab-tab .table .rcw-launcher .counter + img{
+    left: 8px;
+    top: 11px;
+}
+#ClaimsCOIDProviderTab-tab .table .rcw-launcher .counter{
+    margin: 0;
+    position: absolute;
+    left: 0px;
+    top: -4px;
+}
+#ClaimsCOIDProviderTab-tab .table > .thead > .td {
+  font-size: 13px;
+}
+#ClaimsCOIDProviderTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (10px + 125px)) !important;
+}

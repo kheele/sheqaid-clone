@@ -1,0 +1,85 @@
+#ReportsTab-tab{
+    height: 100%;
+}
+#ReportsTab-tab > .stats-count{
+    display: flex;
+    margin: 10px 0px;
+}
+#ReportsTab-tab > .stats-count > .panel {
+    position: relative;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 3px #ddd;
+    flex: 1;
+    height: 180px;
+    cursor: pointer;
+}
+#ReportsTab-tab > .stats-count > .panel > *{
+    z-index: 1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+#ReportsTab-tab > .stats-count > .panel > h4{
+    width: 160px;
+    margin: 0px auto 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: normal;
+    font-variant: small-caps;
+}
+#ReportsTab-tab > .stats-count > .panel > div{
+    font-weight: 500;
+    width: 190px;
+    text-align: center;
+}
+#ReportsTab-tab > .stats-count > .panel > .count{
+    font-size: 32px;
+    margin: -45px 0 0;
+}
+#ReportsTab-tab > .stats-count > .panel > .currency{
+    font-size: 22px;
+    top: auto;
+    bottom: -10px;
+}
+#ReportsTab-tab > .stats-count > .panel > .currency::before{
+    content: "Cost";
+    font-size: 16px;
+    display: table;
+    margin: 0 auto -7px;
+    font-weight: normal;
+    font-variant: small-caps;
+}
+#ReportsTab-tab > .stats-count > .panel::after {
+    content: " ";
+    width: 190px;
+    height: 160px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50% 50% 20px 20px;
+    box-shadow: 0 0 10px #aaa;
+    z-index: 0;
+}
+
+#ReportsTab-tab > .stats-count > .panel:not(:first-child) {
+    margin-left: 10px;
+}
+#ReportsTab-tab > .stats-count > .panel.orange::after {
+    background: #fc9931;
+}
+#ReportsTab-tab > .stats-count > .panel.green::after {
+    background: #54a958;
+}
+#ReportsTab-tab > .stats-count > .panel.red::after {
+    background: #e94949;
+}
+#ReportsTab-tab > .stats-count > .panel.blue::after {
+    background: #28b9ce;
+}
+#ReportsTab-tab > .stats-count > .panel.purple::after {
+    background: #a07ea0;
+}

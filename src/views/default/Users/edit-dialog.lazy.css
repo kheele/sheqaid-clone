@@ -1,0 +1,15 @@
+#dialog-overlay.edit-dialog .dialog-content{
+    padding: 15px 0
+}
+#dialog-overlay.edit-dialog .btn-controls{
+    margin: 15px 15px 0;
+    display: block;
+    float: right;
+}
+#dialog-overlay.edit-dialog .btn-controls > button:not(:first-of-type) {
+    margin-right: 8px;
+}
+
+#dialog-overlay.edit-dialog .controls-wrapper> .clearable-field-control {
+    margin-bottom: 15px;
+}

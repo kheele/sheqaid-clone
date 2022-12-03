@@ -1,0 +1,6 @@
+@import '../../../css/ANewDialog.css';
+
+#dialog-overlay.ModuleGroup-new-dialog .dialog-container{
+    height: 100%;
+    width: 800px;
+}

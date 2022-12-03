@@ -1,0 +1,80 @@
+@import '../../../../../css/ANewDialog.css';
+@import './AssetComponents.css';
+
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container {
+    height: calc(100% - 35px);
+    width: 1060px;
+    max-width: 100%;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.EditToolDialog-profile-dialog .NewMonitoringPlanTable > label {
+    margin: 10px 0px 0;
+    padding: 0 10px 5px;
+    border-bottom: 2px solid #ddd;
+    width: 100%;
+    color: #888;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .warning-row {
+    color: #d85a5a;
+    text-align: center;
+    margin: 2px 0px;
+    padding: 10px 20px;
+    width: auto;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .warning-row > p{
+    max-width: 750px;
+    margin: 0px auto;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .row.row-photo .PhotoUploadButton,
+#dialog-overlay.EditToolDialog-profile-dialog .PDFUploadButton{
+    height: 260px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .UploadButton {
+    height: 33px;
+    padding: 0;
+    margin: 0 10px 0 0;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .UploadButton > i.fa {
+    height: 100%;
+    font-size: 25px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .UploadButton > i.fa i.fa-trash {
+    font-size: 24px;
+    margin-right: 10px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .UploadButton > i.fa button {
+    padding: 4px 8px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .UploadButton i:not(.fa-file-upload):not(.fa-spinner) > span {
+    display: none;
+}
+.td-CostAndReceipt > .grid-2 > button{
+    margin: 20px 0px 0px 0px;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+}
+.td-CostAndReceipt .active-cost {
+    min-width: 60px;
+    margin-left: -60px;
+    z-index: 1;
+    border-radius: 10px;
+    padding: 1px 5px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .NewMonitoringPlanTable .MuiFormControl-root,
+#dialog-overlay.EditToolDialog-profile-dialog .NewMaintenancePlanTable .MuiFormControl-root {
+    right: 13px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .CurrentDistanceOrTime,
+#dialog-overlay.EditToolDialog-profile-dialog .FutureMaintenanceDistanceOrTime {
+    box-shadow: 0 0 3px #aaa;
+    background: #f3f3f3;
+}
+
+#dialog-overlay.EditToolDialog-profile-dialog .Sign{
+    margin-top: 0 !important;
+}

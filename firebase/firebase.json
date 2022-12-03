@@ -1,0 +1,263 @@
+{
+  "hosting": [
+    {
+      "target": "main",
+      "public": "./public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/accounts/pass-recovery.html",
+          "destination": "https://app.sheqaid.com/accounts/pass-recovery.html",
+          "type": 301
+        },
+        {
+          "source": "/app/v2",
+          "destination": "https://app.sheqaid.com",
+          "type": 301
+        },
+        {
+          "source": "/app/v3",
+          "destination": "https://app.sheqaid.com",
+          "type": 301
+        },
+        {
+          "source": "**",
+          "destination": "https://app.sheqaid.com",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "admin",
+      "public": "./public/admin",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/admin",
+          "type": 301
+        },
+        {
+          "source": "/app/v3",
+          "destination": "/admin",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "forms",
+      "public": "./public/forms",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "appAssociation": "AUTO",
+      "rewrites": [
+        {
+          "source": "/1/**",
+          "dynamicLinks": true
+        }
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/forms",
+          "type": 301
+        },
+        {
+          "source": "/app/v3",
+          "destination": "/forms",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "desktop",
+      "public": "./public/app/v3",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/v3",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "mobile",
+      "public": "./public/app/v3",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/v3",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "web",
+      "public": "./public/app/v3",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/v3",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "alpha-dev",
+      "public": "./public/app/alpha-dev",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/alpha-dev",
+          "type": 301
+        },
+        {
+          "source": "/app/v3",
+          "destination": "/app/alpha-dev",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    },
+    {
+      "target": "beta-dev",
+      "public": "./public/app/beta-dev",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/beta-dev",
+          "type": 301
+        },
+        {
+          "source": "/app/v3",
+          "destination": "/app/beta-dev",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    }
+  ],
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "predeploy": [
+      "node ../firebase_funs/copy-files.js firebase && npm --prefix \"$RESOURCE_DIR\" run lint"
+    ],
+    "source": "functions"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5002
+    },
+    "firestore": {
+      "port": 8081
+    },
+    "database": {
+      "port": 9001
+    },
+    "hosting": {
+      "port": 5001
+    },
+    "pubsub": {
+      "port": 8086
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  }
+}

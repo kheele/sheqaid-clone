@@ -1,0 +1,34 @@
+@import './AAuthDialog.css';
+
+#dialog-overlay.VerifyFaceDialog.MultiFactorView > .dialog-container{
+    width: 400px;
+    height: 236px;
+}
+#dialog-overlay.VerifyFaceDialog.BiometricView > .dialog-container{
+    width: 590px;
+    height: 600px;
+}
+@media (max-width:599px){
+    #dialog-overlay.VerifyFaceDialog .dialog-header > h3 {
+        margin: 0 15px !important;
+    }
+}
+
+#dialog-overlay.VerifyFaceDialog > .dialog-container .page-back-btn {
+    display: none !important;
+}
+#dialog-overlay.VerifyFaceDialog > .dialog-container > .dialog-content {
+    height: calc(100% - 100px) !important;
+}
+#dialog-overlay.VerifyFaceDialog .row-capture > .sec-group{
+    height: calc(100% - 15px);
+}
+#dialog-overlay.VerifyFaceDialog > .dialog-container .dialog-footer .dialog-bottom-buttons {
+    float: none !important;
+}
+#dialog-overlay.VerifyFaceDialog > .dialog-container .dialog-footer .dialog-bottom-buttons button {
+    display: table !important;
+    margin: 0 auto !important;
+    width: 240px !important;
+    border-radius: 20px !important;
+}

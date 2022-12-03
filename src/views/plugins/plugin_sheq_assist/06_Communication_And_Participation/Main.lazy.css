@@ -1,0 +1,8 @@
+
+#_06_Communication_And_Participation-page{
+    height: 100%;
+}
+#_06_Communication_And_Participation-page > .tabs {
+    margin: 0 10px 0 0px;
+    height: calc(100% - 20px);
+}

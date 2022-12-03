@@ -1,0 +1,23 @@
+
+#calendar-page{
+    height: 100%;
+}
+
+#calendar-page  .rbc-calendar{
+    background: #fff;
+    padding: 10px;
+    margin: 0px 15px 0 10px;
+    height: calc(100% - 20px)
+}
+
+#calendar-page  .rbc-calendar .rbc-agenda-view{
+    position: relative;
+}
+
+#calendar-page  .rbc-calendar .rbc-agenda-view .rbc-agenda-empty{
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

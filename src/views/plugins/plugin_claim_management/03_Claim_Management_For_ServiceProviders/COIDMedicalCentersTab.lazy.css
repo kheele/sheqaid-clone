@@ -1,0 +1,28 @@
+#COIDMedicalCentersTab-tab .page-title{
+    height: 0;
+    margin: -45px 0 0;
+    border: none;
+    float: right;
+}
+#COIDMedicalCentersTab-tab .page-title > h3{
+    display: none;
+}
+#COIDMedicalCentersTab-tab .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+#COIDMedicalCentersTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#COIDMedicalCentersTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#COIDMedicalCentersTab-tab .table .fa-warning{
+    color: red;
+}
+#COIDMedicalCentersTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (10px + 125px)) !important;
+}

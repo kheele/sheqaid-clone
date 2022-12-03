@@ -1,0 +1,124 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "sheqassist_shared_docs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "company_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_tbl",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_expiry_date",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "sheqassist_shared_docs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "client_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "company_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_tbl",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_expiry_date",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "sheqassist_shared_docs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "client_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "company_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_tbl",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "project_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_expiry_date",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "sheqassist_shared_docs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "client_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "company_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_tbl",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "project_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "site_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_expiry_date",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        
+        {
+            "collectionGroup": "sheqassist_shared_docs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "company_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "contractor_id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_tbl",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "doc_expiry_date",
+                    "order": "ASCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

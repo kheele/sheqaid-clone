@@ -1,0 +1,254 @@
+@import '../../../../../css/ANewDialog.css';
+
+
+#dialog-overlay.FormAttendanceDialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .controls > .row:last-of-type{
+    position: relative;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .row.sec-group{
+    height: calc(100% - 87px);
+    margin-bottom: -5px !important;    
+}
+
+#dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials{
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-left: -10px;
+    width: calc(100% + 10px);
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div{
+    background: #fafafa;
+    padding: 5px;
+    text-align: center;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div:not(:last-of-type){
+    border-right: 1px solid #ddd;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div > label{
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    display: block;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable{
+    margin-left: -10px !important;
+    width: calc(100% + 10px) !important;
+    float: left;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr {
+    width: 100% !important;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td:not(:last-of-type){
+    border-right: 1px solid #ddd;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td:not(:first-of-type){
+    padding-left: 5px !important;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .tbody .td:not(:first-of-type){
+    padding-right: 5px !important;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr > .td:last-of-type{
+    align-items: center;
+    justify-content: flex-start;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr > .td{
+    font-size: 14px !important;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr > .td .flex{
+    align-items: center;
+    justify-content: center;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr > .td .flex > span{
+    height: 19px !important;
+    background: #eee;
+    padding: 2px 5px 0;
+    border-radius: 20px;
+    margin: 0px 0 0 5px;
+    min-width: 50px;
+    display: block;
+    /*padding: 2px 10px;*/
+    text-align: center;
+    flex-grow: initial;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable > .tbody .tr:hover > .td .flex > span {
+    color: #888;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td-RenderAutomaticTD {
+    display: block;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td-time-in .clearable-field-control.time_input .text-input--material__selectable,
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td-time-out .clearable-field-control.time_input .text-input--material__selectable{
+    font-size: 14px;
+    padding: 4px 5px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td-time-in .clearable-field-control.time_input > .fa,
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td-time-out .clearable-field-control.time_input > .fa{
+    bottom: 5px;
+    right: 5px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.select_checkbox{
+    width: 65px;
+    min-width: auto;
+    height: 30px;
+    padding: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #eee;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.time_input,
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.signature_input .text-input--material__selectable{
+    padding: 4px 5px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.signature_input img{
+    margin-top: -1px;
+    float: left;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.signature_input > .fa{
+    bottom: 5px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control.signature_input .text-input--material__label--active{
+    display: none !important;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .sec-group > .clearable-field-control.signature_input{
+    /*margin-top: 20px !important;*/
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control > .checkbox--input{
+    margin: 0;
+    width: auto;
+    min-width: auto;
+    height: 30px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control > .checkbox--input > label{
+    margin: 0;
+    width: 100%;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control > .checkbox--input > label > .MuiCheckbox-root {
+    height: 28px;
+    margin-top: -3px;
+}
+#dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .clearable-field-control > .checkbox--input > label > span.MuiTypography-root {
+    font-size: 14px;
+    margin-top: -1px;
+}
+
+@media (max-width:767px){
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials{
+        display: table !important;
+        width: calc(100% + 10px);
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div{
+        border-bottom: 2px solid #ddd;
+        float: left;
+        display: inline-block;
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div:not(:last-of-type){
+        width: 50%;
+        border-right: none;
+        border-top: 2px solid #ddd;
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div:last-of-type{
+        width: 100%;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.select_radio{
+        height: auto;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.select_radio > .radio--input{
+        display: block;
+        margin: -6px -13px 0 -12px;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.select_radio > .radio--input > label{
+        display: block;
+        margin: 0;
+        border-radius: 20px 20px 0 0;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.select_radio > .fa-close{
+        top: 8px;
+        bottom: unset;
+    }
+
+    #dialog-overlay.FormAttendanceDialog .table {
+        margin-left: -10px !important;
+        margin-bottom: -10px !important;
+        width: calc(100% + 20px) !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr{
+        padding: 0px;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr > .td{
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 5px !important;
+        border-right: none !important;
+        float: left !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr > .td:not(:first-of-type){
+        width: 50% !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr > .td:nth-of-type(4){
+        border: none !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr > .td .btn{
+        margin-bottom: 0 !important;
+        padding: 4px 12px !important;
+        border-radius: 20px;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .tbody .list .tr > .td h6{
+        font-weight: bold;
+        margin: 0 0 5px;
+        background: #fafafa;
+        padding: 3px;
+        text-transform: uppercase;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .clearable-field-control{
+        margin: 0 auto !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .table .clearable-field-control .react-time-picker{
+        left: 5px;
+        float: left;
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td > .btn,
+    #dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td .clearable-field-control.time_input,
+    #dialog-overlay.FormAttendanceDialog .dialog-content .table.SelectTable .td .clearable-field-control.signature_input{
+        width: 120px !important;
+    }
+}
+@media (max-width:619px){
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials{
+        margin-bottom: 10px;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.col-lg-7.pull-left-2_5,
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.col-lg-6.pull-left-3{
+        width: 300px !important;
+        display: table !important;
+        float: none !important;
+    }
+}
+@media (max-width:599px){
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials{
+        margin-bottom: 5px;
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div:not(:last-of-type){
+        width: 100%;
+    }
+    #dialog-overlay.FormAttendanceDialog .dialog-content .TeamDetials > div:first-of-type{
+        border-bottom: none;
+    }
+    .table.SelectAttendtanceTable {
+        margin-top: 10px !important;
+    }
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.col-lg-7.pull-left-2_5,
+    #dialog-overlay.FormAttendanceDialog .clearable-field-control.col-lg-6.pull-left-3{
+        width: calc(100% - 10px) !important;
+        margin: 5px 10px 0 0 !important;
+        display: inline-block !important;
+    }
+}

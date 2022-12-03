@@ -1,0 +1,20 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileEmergencyProcedureDialog-profile-dialog .dialog-container{
+    height: 100%;
+    width: 900px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileEmergencyProcedureDialog-profile-dialog .dialog-container .row-doc {
+    height: 600px;
+}
+#dialog-overlay.ProfileEmergencyProcedureDialog-profile-dialog .dialog-container .ProfileField{
+    height: calc(100% - 0px);
+}
+#dialog-overlay.ProfileEmergencyProcedureDialog-profile-dialog .dialog-container .ProfileField > div{
+    height: calc(100% - 10px);
+}
+#dialog-overlay.ProfileEmergencyProcedureDialog-profile-dialog .dialog-container .ProfileField .file{
+    height: calc(100% - 30px);
+    border: none;
+}
