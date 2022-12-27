@@ -53,7 +53,12 @@ class StatsDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key={this.pageKey + '-dialog'} ref="dialog" className={this.pageKey + '-dialog'}>
+        return (<Dialog
+            key={this.pageKey + '-dialog'}
+            ref="dialog"
+            className={this.pageKey + '-dialog'}
+            dialog={this}
+        >
             <Stats ref="stats"/>
         </Dialog>);
     }

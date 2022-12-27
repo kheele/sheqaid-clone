@@ -9,6 +9,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "assets/theme";
 
+import 'exceljs';
+
 import './test/test1';
 
 import './utils/app-menu';
@@ -18,12 +20,11 @@ import './utils/file-utils-win-ext';
 import './utils/windowVars';
 import './utils/app-logged-in-fn';
 import './utils/app-logged-out-fn';
+import './utils/workerEvents';
 
 import './App.css';
 
 import {execWhen} from './utils/Utils';
-
-import './firestore/Firestore.js';
 
 import storage from './storage/Storage';
 

@@ -1,8 +1,8 @@
 @import '../../../../../../css/ANewDialog.css';
 
 #dialog-overlay.ToolboxTalkAttendanceRegisterDialog-profile-dialog .dialog-container{
-    height: 320px;
-    width: 740px;
+    height: calc(100% - 35px);
+    width: 900px;
     max-width: 100%;
 }
 #dialog-overlay.ToolboxTalkAttendanceRegisterDialog-profile-dialog .dialog-content{

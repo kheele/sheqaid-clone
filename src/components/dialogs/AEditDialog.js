@@ -112,6 +112,7 @@ class AEditDialog extends AFormDialog {
             topButtons={this.topButtons} 
             onCancel={this.onCancel}
             onClose={this.onClose}
+            dialog={this}
         >
             <Controls 
                 ref="controls" 

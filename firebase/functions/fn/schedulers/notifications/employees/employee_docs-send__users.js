@@ -5,6 +5,7 @@ const {send: send_to_expire} = require("./employee_docs-send_to_expire");
 
 //<editor-fold desc="columns">
 const columns = [
+    {header: 'Ref. #', key: 'Ref. #', width: 20},
     {header: 'Company', key: 'Company', width: 30},
     {header: 'Project', key: 'Project', width: 30},
     {header: 'Site', key: 'Site', width: 30},
@@ -20,12 +21,13 @@ const columns = [
     {header: 'Email Address', key: 'Email Address', width: 25},
 
     {header: 'Expiry Date', key: 'Expiry Date', width: 20},
+    {header: 'Time Left/Past', key: 'Time Left/Past', width: 20},
     {header: 'Document', key: 'Document', width: 35}
 ];
 //</editor-fold>
 
 //<editor-fold desc="send_users">
-exports = async ({company_ids, company_groups, collectionGroup, tbl, _group, name,}) => {
+exports.send = async ({company_ids, company_groups, collectionGroup, tbl, _group, name,}) => {
     // console.log('*********************************************')
     // console.log('send_users', collectionGroup)
     // console.log('*********************************************')
@@ -42,13 +44,13 @@ exports = async ({company_ids, company_groups, collectionGroup, tbl, _group, nam
             //qPFSzXKRmPBUwUztZ379 Me
             //4hKU3CF7tder8OhqoGrf Gobonzela
             //A3RpXSVOhVKnZmmjS0DJ SHEQ Solve
-            return;
+            // return;
         }
 
         let sentList = company_groups[company_id];
         sentList = await get_sentList({sentList});
 
-        console.log('------send_users firstUser', username, company_id, sentList.length, "\n\n");
+        // console.log('------send_users firstUser', username, company_id, sentList.length, "\n\n");
 
         const processes_users_with_sentList = get_processes_users_with_sentList({user_docs, sentList});
 
@@ -76,10 +78,11 @@ const send_final = async (
         sentList
     }
 ) => {
+    console.log('send_final', username)
     if (username === 'edward2@sheqsolve.com') {
         username = 'edward@sheqsolve.com';
     }
-    username = 'kheelet@gmail.com';
+    // username = 'kheelet@gmail.com';
 
     const sheets = [];
 
@@ -102,7 +105,7 @@ const send_final = async (
     await send_no_expiry({sheets, columns, item, _group, name,});
 
     const folder = "Employees-Documents-Expiry";
-    const fileName = (name.plural + "-" + id + "-" + n) + ".xlsx";
+    const fileName = (name.plural + "-" + id) + ".xlsx";
     const dataUri = await createExcelFileSheets({folder, fileName, sheets});
     // console.log("dataUri", !!dataUri)
 };

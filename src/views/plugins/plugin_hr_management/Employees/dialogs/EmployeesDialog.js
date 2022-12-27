@@ -35,7 +35,12 @@ class EmployeesDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key={this.pageKey + '-dialog-' + new Date().getTime()} ref="dialog" className={this.pageKey + '-dialog'}>
+        return (<Dialog
+            key={this.pageKey + '-dialog-' + new Date().getTime()}
+            ref="dialog"
+            className={this.pageKey + '-dialog'}
+            dialog={this}
+        >
             <Employees />
         </Dialog>);
     }

@@ -92,47 +92,49 @@
                     } else {
                         return list;
                     }
-                    // const {year, job_position, employee, course} = search_val;
-                    // const q = [
-                    //     {key: 'year', comp: '=', val: year},
-                    //     {key: 'job_position.id', comp: '=', val: job_position},
-                    //     {key: 'course.id', comp: '=', val: course},
-                    //     [
-                    //         {key: 'employee.data.fname', comp: 'LIKE', val: employee},
-                    //         {key: 'employee.data.lname', comp: 'LIKE', val: employee}
-                    //     ]
-                    // ];
-                    // return this.filter_impl(evt, q);
                 }
 
                 if (target === 'employee' || view === 'Employee') {
                     return Object.keys(groups).map(key => {
                         const list = groups[key];
                         const [item] = list;
-                        const {data: {employee: group}} = item;
+                        const {data: {employee: group, training_matrix}} = item;
                         console.log('group', group)
 
-                        const cost = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const attendanceRate = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
+                        const cost = calcCost(list);
+                        const attendanceRate = calcAttendanceRate(list);
                         const results = list.map(({data: {results}}) => results || 'N/A');
-                        const status = list.map(({data: {status}}) => status);
+                        const status = list.filter(({data: {training_matrix}}) => !!training_matrix).
+                        map(({data: {training_matrix}}) => training_matrix).
+                        map(({data: {status}}) => status);//[Outstanding, Completed]
 
                         const courseList = list.map(({data: {course_or_module}}) => course_or_module).distinct();
                         const yearList = list.map(({data: {year}}) => year).distinct();
 
-                        return {group, list, cost, attendanceRate, results, status, courseList, yearList};
+                        return {
+                            group,
+                            list,
+                            cost,
+                            attendanceRate,
+                            results,
+                            status,
+                            courseList,
+                            yearList
+                        };
                     });
                 } else if (target === 'job_position' || view === 'Job Position') {
                     return Object.keys(groups).map(key => {
                         const list = groups[key];
                         const [item] = list;
-                        const {data: {job_position: group}} = item;
+                        const {data: {job_position: group, training_matrix}} = item;
                         console.log('group', group)
 
-                        const cost = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const attendanceRate = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
+                        const cost = calcCost(list);
+                        const attendanceRate = calcAttendanceRate(list);
                         const results = list.map(({data: {results}}) => results || 'N/A');
-                        const status = list.map(({data: {status}}) => status);
+                        const status = list.filter(({data: {training_matrix}}) => !!training_matrix).
+                        map(({data: {training_matrix}}) => training_matrix).
+                        map(({data: {status}}) => status);//[Outstanding, Completed]
 
                         const employeeList = list.filter(({data: {employee}}) => !!employee).map(({data: {employee}}) => employee).distinct();
                         const courseList = list.map(({data: {course_or_module}}) => course_or_module).distinct();
@@ -154,13 +156,15 @@
                     return Object.keys(groups).map(key => {
                         const list = groups[key];
                         const [item] = list;
-                        const {data: {course_or_module: group}} = item;
+                        const {data: {course_or_module: group, training_matrix}} = item;
                         console.log('group', group)
 
-                        const cost = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const attendanceRate = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
+                        const cost = calcCost(list);
+                        const attendanceRate = calcAttendanceRate(list);
                         const results = list.map(({data: {results}}) => results || 'N/A');
-                        const status = list.map(({data: {status}}) => status);
+                        const status = list.filter(({data: {training_matrix}}) => !!training_matrix).
+                        map(({data: {training_matrix}}) => training_matrix).
+                        map(({data: {status}}) => status);//[Outstanding, Completed]
 
                         const employeeList = list.filter(({data: {employee}}) => !!employee).map(({data: {employee}}) => employee).distinct();
                         const jobPositionList = list.filter(({data: {job_position}}) => !!job_position).map(({data: {job_position}}) => job_position).distinct();
@@ -181,13 +185,17 @@
                 } else if (target === 'year' || view === 'Year') {
                     return Object.keys(groups).map(key => {
                         const list = groups[key];
+                        const [item] = list;
+                        const {data: {training_matrix}} = item;
                         const group = key;
                         console.log('group', group)
 
-                        const cost = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const attendanceRate = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
+                        const cost = calcCost(list);
+                        const attendanceRate = calcAttendanceRate(list);
                         const results = list.map(({data: {results}}) => results || 'N/A');
-                        const status = list.map(({data: {status}}) => status);
+                        const status = list.filter(({data: {training_matrix}}) => !!training_matrix).
+                        map(({data: {training_matrix}}) => training_matrix).
+                        map(({data: {status}}) => status);//[Outstanding, Completed]
 
                         const employeeList = list.filter(({data: {employee}}) => !!employee).map(({data: {employee}}) => employee).distinct();
                         const jobPositionList = list.filter(({data: {job_position}}) => !!job_position).map(({data: {job_position}}) => job_position).distinct();
@@ -210,7 +218,6 @@
                 }
             });
         }
-
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -240,11 +247,12 @@
                     incRegister
                 })));
 
-                const {year, job_position, employee, course} = search_val;
+                const {year, job_position, employee, course, training_matrix} = search_val;
                 const q = [
                     {key: 'year', comp: '=', val: year},
                     {key: 'job_position.id', comp: '=', val: job_position},
                     {key: 'course_or_module.id', comp: '=', val: course},
+                    {key: 'training_matrix.id', comp: '=', val: training_matrix},
                     [
                         {key: 'employee.data.fname', comp: 'LIKE', val: employee},
                         {key: 'employee.data.lname', comp: 'LIKE', val: employee}
@@ -479,5 +487,21 @@
         }
     }
 
-    new Controller(events, db);
+    function calcCost(list) {
+        return list.
+        filter(({data: {training_matrix}}) => !!training_matrix).
+        map(({data: {training_matrix}}) => training_matrix).
+        map(({data: {cost}}) => cost || 0).
+        reduce((a, b) => a + b, 0)
+    }
+
+    function calcAttendanceRate(list) {
+        return list.
+        filter(({data: {training_register_list}}) => !!training_register_list).
+        map(({data: {training_register_list}}) => training_register_list).
+        map(({data: {cost}}) => cost || 0).
+        reduce((a, b) => a + b, 0)
+    }
+
+    self.trainingPlanCntr = new Controller(events, db);
 })();

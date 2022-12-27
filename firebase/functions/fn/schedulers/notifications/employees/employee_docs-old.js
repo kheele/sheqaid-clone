@@ -1,4 +1,4 @@
-const send = require('./employee_docs-send');
+const {send} = require('./employee_docs-send');
 
 //sub_collection_keys.employee_contract_list.latest.expiry_date
 const createList = (key, plural, singular) => {
@@ -34,7 +34,7 @@ const employee_lists = [
 
 exports.sendExpiryEmails = async (ctx) => {
     await authorize();
-    console.log('sendExpiryEmails local')
+    // console.log('sendExpiryEmails local')
     // console.log('sendExpiryEmails local', JSON.stringify(ctx))
 
     const now = admin.firestore.Timestamp.now();

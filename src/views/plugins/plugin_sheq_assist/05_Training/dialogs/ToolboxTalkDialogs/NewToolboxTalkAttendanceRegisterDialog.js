@@ -6,19 +6,17 @@ import Form from 'utils/Form';
 
 import {
     ClearableInput,
-    ProfileField,
     SelectClientInput, SelectProjectInput, SelectSiteInput,
     SelectToolboxTalkCourseInput,
-    UploadButton
 } from 'components/inputs';
 import {ANewDialog} from 'components/dialogs';
 
 import {FormControls, Row} from "components/FormComponents";
 import style from "./NewToolboxTalkAttendanceRegisterDialog.lazy.css";
-import {SelectTable, THead} from "../../../../../../components/tables";
-import {NewEmployeeListTable} from "../../../../../../components/FormTableComponents";
-import Divider from "@mui/material/Divider";
-import {execWhen} from "../../../../../../utils/UtilsFuns";
+import {THead} from "components/tables";
+import {NewEmployeeListTable} from "components/FormTableComponents";
+import {execWhen, isWeb} from "utils/UtilsFuns";
+import {Dates} from "../../../../../../utils/Dates";
 
 @observer
 class NewToolboxTalkAttendanceRegisterDialog extends ANewDialog {
@@ -30,7 +28,7 @@ class NewToolboxTalkAttendanceRegisterDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -38,12 +36,11 @@ class NewToolboxTalkAttendanceRegisterDialog extends ANewDialog {
 class Controls extends React.Component {
     path = 'plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/';
     @observable
-    state = {
-    };
+    state = {};
 
     constructor() {
         super();
-        
+
         this.form = new Form();
         this.form.addChangeOne("employee_list", this.onChangeEmployeeList.bind(this));
     }
@@ -82,12 +79,12 @@ class Controls extends React.Component {
             infoDialog.open('At least 1 Employee is required');
             return;
         }
-        
-        const {client, project, site, course_or_module, date, employee_list, attendance_register_list} = form.data;
+
+        const {client, project, site, course_or_module, date, employee_list} = form.data;
         const data = {};
-        
-        if(client) {
-            if(client.id) {
+
+        if (client) {
+            if (client.id) {
                 const {id, data: _data, name} = client;
                 data.client = {id, name: name || _data.name};
             } else {
@@ -113,20 +110,29 @@ class Controls extends React.Component {
             }
         }
 
-        if(course_or_module) {
-            if(isString(course_or_module)) {
-                data.course_or_module = course_or_module;
-            } else {
-                const {name, data: _data} = course_or_module;
-                data.course_or_module = name || _data.name;
-            }
+        if (course_or_module) {
+            data.course_or_module = course_or_module;
         }
-        if(date) {
+        if (date) {
             data.date = date.getTime();
         }
-        if(attendance_register_list) {
-            data.attendance_register_list = attendance_register_list.
-            map(({employee, employee: {id, data: {fname, lname, email, phone, id_num, passport_num}}}) => ({
+        if (employee_list) {
+            data.employee_list = employee_list.map((
+                {
+                    employee,
+                    employee: {
+                        id,
+                        data: {
+                            fname,
+                            lname,
+                            email,
+                            phone,
+                            id_num,
+                            passport_num
+                        }
+                    }
+                }
+            ) => ({
                 id, fname, lname, email, phone, id_num, passport_num
             }));
         }
@@ -136,24 +142,45 @@ class Controls extends React.Component {
         btn.text("Saving...").disabled();
         neonBinding.events.emit(this.path + "create", data).then(res => {
             console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully saved.");
-            infoDialog.close(2000);
-            this.props.close();
+            if(res) {
+                const {path: file, item} = res;
+                if(isWeb()) {
+                    //TODO: rename toolbox talk to training meeting / toolbox talk
+                    saveFileAs(file, `Training-Toolbox-Talks-Attendance-Register_${Dates.formatDate(new Date())}.xlsx`);
+
+                    infoDialog.open(<>
+                        <p>Toolbox Talk Attendance Register successfully saved & exported.</p>
+                        <p><small>The file will be automatically downloaded</small></p>
+                    </>);
+                } else {
+                    infoDialog.open(<React.Fragment>
+                        <p>Toolbox Talk Attendance Register successfully saved & exported.</p>
+                        <p>Saved in the following folder:</p>
+                        <p><small>{file.path}</small></p>
+                        <p><small>The file will open after 3 seconds</small></p>
+                    </React.Fragment>);
+                }
+                onSaved && onSaved(item);
+
+                this.props.close();
+            } else {
+                infoDialog.open("An error occurred. Please try again.");
+                infoDialog.close(2000);
+            }
         }).finally(() => {
             btn.text("Save").enabled();
         });
     }
 
     render() {
-        const {isConsultant} = storage.is;
+        const {isConsultant, isNoProjects} = storage.is;
 
         return <FormControls>
-            {isConsultant && <Row
+            {!isNoProjects && <Row
                 activeAlways
                 rendered
                 idx={0}
-                title="Company"
+                title="Company / Project / Site"
             >
                 {isConsultant && <SelectClientInput name="client" placeholder="Company..." required
                                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>}
@@ -166,40 +193,20 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={1}
-                title="Toolbox Talk Attendance Register Details"
+                title="1. Register Details"
             >
                 <SelectToolboxTalkCourseInput name="course_or_module" placeholder="Course..."
-                                              className="col-lg-12 form-control" onChange={this.form.onChange}
-                                              add={false} returnValue/>
+                                              className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-
-                <Divider />
-
-                <FormControls>
-                    <Row
-                        rendered
-                        activeAlways
-                        idx={1.1}
-                        title="1.1 Add Employee Attendance List"
-                    >
-                        <NewEmployeeListTable ref="employee_list" name="employee_list" onChange={this.form.onChange}/>
-                    </Row>
-                    <Row
-                        rendered
-                        activeAlways
-                        idx={1.2}
-                        title="1.2 Attendance Register List"
-                    >
-                        <SelectTable ref="selectEmployeeTable"
-                                     replaceCols name="attendance_register_list"
-                                     desc="Employees" title="Selected Employee(s)"
-                                     className="col-lg-12 no-padding min-h-400 SelectEmployeeTable"
-                                     renderTHead={renderTHeadEmployees}
-                                     renderItem={renderItemEmployees}
-                                     isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
-                    </Row>
-                </FormControls>
+            </Row>
+            <Row
+                activeAlways
+                rendered
+                idx={2}
+                title="2. Employee List"
+            >
+                <NewEmployeeListTable ref="employee_list" name="employee_list" onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }
@@ -223,7 +230,16 @@ function renderTHeadEmployees() {
 // <editor-fold defaultstate="collapsed" desc="renderItemEmployees">
 function renderItemEmployees(item, n) {
     const {id, data, employee} = item;
-    const {fname, lname, id_num, passport_num, job_position, client, project, site} = (employee ? employee.data : employee) || data || item;
+    const {
+        fname,
+        lname,
+        id_num,
+        passport_num,
+        job_position,
+        client,
+        project,
+        site
+    } = (employee ? employee.data : employee) || data || item;
     console.log('renderItemEmployees: item', item)
     return <React.Fragment key={id_num || passport_num} className="tr-readonly">
         <div className="td fixed-flex min-w-30">{n + 1}</div>

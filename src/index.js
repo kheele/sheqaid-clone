@@ -1,15 +1,16 @@
 import 'react-hot-loader/patch';
 import {AppContainer} from 'react-hot-loader';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from "react-dom/client";
 import {MaterialUIControllerProvider} from "context";
 import './utils/objects.util.js';
+import "./constants";
 import './utils/app-fn';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 
 const render = Component => {
     root.render(

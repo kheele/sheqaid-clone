@@ -17,11 +17,18 @@ class Form {
     }
 
     onChange(val, name, el) {
+        const {type} = el.props;
         const eventOne = this.oneEvents[name];
         const eventMany = this.manyEvents[name];
         const {anyEvents} = this;
+        // if(type === 'checkbox') {
+        //     if(isNullable(val)) {
+        //         val = [];
+        //     }
+        // }
+        // console.log('Form onChange', val, name, el)
         if (Form.hasVal(val)) {
-            if (el.props.type === 'number') {
+            if (type === 'number') {
                 val = parseInt(val);
             }
             this.data[name] = val;
@@ -29,7 +36,7 @@ class Form {
             eventOne && eventOne(el, val);
             eventMany && eventMany(el, name, val);
             anyEvents && anyEvents(el, name, val);
-        } else if (isNullable(val) || (val.isEmpty && val.isEmpty())) {
+        } else if (isNullable(val)) {
             delete this.data[name];
             delete this.fields[name];
             eventOne && eventOne(el);
@@ -224,7 +231,15 @@ class Form {
     }
 
     static hasVal(val) {
-        return isNumber(val) || isBoolean(val) || (!isNullable(val) && (val.isEmpty && !val.isEmpty())) || !!val;
+        if(isNullable(val)) {
+            return false;
+        }
+        if(isNumber(val) || isBoolean(val) || isString(val) || isDate(val) ||
+            isArray(val) || isObject(val) || isObservable(val)
+        ) {
+            return true;
+        }
+        return !!val;
     }
 }
 

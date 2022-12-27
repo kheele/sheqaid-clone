@@ -721,19 +721,19 @@ class IncidentTableRow extends React.Component {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Category</h6>
-                {sec1_data && sec1_data.category_list ? sec1_data.category_list.map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
+                {sec1_data && sec1_data.category_list ? sec1_data.category_list.filter(v => !!v).map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Sub-Category</h6>
-                {sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
+                {sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Sector(s)</h6>
-                {sec1_data && sec1_data.sector_list ? sec1_data.sector_list.map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
+                {sec1_data && sec1_data.sector_list ? sec1_data.sector_list.filter(v => !!v).map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Activities</h6>
-                {sec2_data && sec2_data.activity_list ? sec2_data.activity_list.map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
+                {sec2_data && sec2_data.activity_list ? sec2_data.activity_list.filter(v => !!v).map(v => <span>{isString(v) ? v : v.value}</span>) : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Description</h6>

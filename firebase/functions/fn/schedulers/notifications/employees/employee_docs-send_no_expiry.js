@@ -19,7 +19,7 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
 
     const no_expiry_list = sentList.filter(({ref, id, data: {expiry_date}}) => !expiry_date);
     if (!no_expiry_list.isEmpty()) {
-        const employeeList = to_expire_list.map(({ref, id, data: {employee}}) => ({
+        const employeeList = no_expiry_list.map(({ref, id, data: {employee}}) => ({
             ref,
             id,
             employee
@@ -32,7 +32,7 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
                 text-transform: uppercase;
                 max-width: 900px;
                 overflow: hidden;
-                height: 20px;
+                height: 35px;
             ">
                 <b style="
                     background: green;
@@ -47,7 +47,11 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
                 ">
                     ${employeeList.length}
                 </b>
-                <b>${name.plural}</b> of the following employees do not have expiry date. <br />Please add the expiry dates of their <b>${name.plural}</b>
+                <b>${name.plural}</b> of the following employees do not have expiry date. 
+                <br />
+                <b style="color: red">
+                    RECOMMENDATION: Please add the expiry dates of their ${name.plural}
+                </b> 
             </div><br />\n`;
 
         const client_groups = employeeList.groupBy((
@@ -98,7 +102,6 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
                  <thead style="font-size: 13px;background: #ddd;">
                     <th>#</th>
                     <th>Ref #</th>
-                    <th>Company</th>
                     <th>Project</th>
                     <th>Site</th>
                     <th>Employee Name</th>
@@ -117,7 +120,6 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
                 notifMsg += `<tr style="background: ${n % 2 === 0 ? '#fff' : '#eee'}">
                     <td style="border-left: 2px solid #ddd">${n + 1}</td>
                     <td style="border-left: 2px solid #ddd">${id}</td>
-                    <td style="border-left: 2px solid #ddd">${client ? client.name : "N/A"}</td>
                     <td style="border-left: 2px solid #ddd">${project ? project.name : "N/A"}</td>
                     <td style="border-left: 2px solid #ddd">${site ? site.name : "N/A"}</td>
                     <td style="border-left: 2px solid #ddd">${lname} ${fname}</td>
@@ -138,9 +140,9 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
 
             const res = {
                 "Ref. #": id,
-                Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-                Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-                Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
+                "Company": isString(client) ? client : (client ? (client.name || client.data.name) : ""),
+                "Project": isString(project) ? project : (project ? (project.name || project.data.name) : ""),
+                "Site": isString(site) ? site : (site ? (site.name || site.data.name) : ""),
 
                 "Department": department ? (department.name || department.data.name) : "N/A",
                 "Job Position": job_position ? (job_position.name || job_position.data.name) : "N/A",
@@ -148,7 +150,7 @@ exports.send = async ({sheets, columns, item, _group, name,}) => {
                 "First Name": fname,
                 "Last Name": lname,
                 "ID/Passport No.": id_num || passport_num || '',
-                Gender: sex || sex,
+                "Gender": sex || sex,
                 "Phone No.": phone ? String(phone) : "",
                 "Email Address": email || "",
                 "Expiry Date": "N/A"

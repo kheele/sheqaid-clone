@@ -202,17 +202,17 @@ class IncidentDetailsPanel extends React.Component {
         
         let {category_list, sector_list, group, short_desc} = sec1_data;
         if(category_list) {
-            category_list = category_list.map(v => isString(v) ? v : v.value).join(', ');
+            category_list = category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
         if(sector_list) {
-            sector_list = sector_list.map(v => isString(v) ? v : v.value).join(', ');
+            sector_list = sector_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
         let {sub_category_list, activity_list} = sec2_data;
         if(sub_category_list) {
-            sub_category_list = sub_category_list.map(v => isString(v) ? v : v.value).join(', ');
+            sub_category_list = sub_category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
         if(activity_list) {
-            activity_list = activity_list.map(v => isString(v) ? v : v.value).join(', ');
+            activity_list = activity_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
 
         return <View style={[styles.contentPanel, {textAlign: "left"}]}>

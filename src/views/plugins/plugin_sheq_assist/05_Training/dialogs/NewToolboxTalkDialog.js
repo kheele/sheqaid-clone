@@ -67,7 +67,7 @@ class Controls extends React.Component {
 
         this.form = new Form();
         this.form.addChangeOne("hr", this.onChangeHR.bind(this));
-        this.form.addChangeOne("employee_list", this.onChangeEmployeeList.bind(this));
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
     }
 
     // </editor-fold>
@@ -94,12 +94,15 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="onChangeEmployeeList">
-    onChangeEmployeeList(el, val) {
-        execWhen(() => this.refs.selectEmployeeTable).then(selectEmployeeTable => {
+    // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
+    onChangeCourse(el, val) {
+        execWhen(() => this.refs.attendance_register_list).then(attendance_register_list => {
             if (val) {
-                console.log('onChangeEmployeeList', val)
-                selectEmployeeTable.list = val;
+                console.log('onChangeCourse', val)
+                workers.emit('plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/list/search_by_name', val).then(list => {
+                    // attendance_register_list.list = list[0].data;
+                });
+
             }
         });
     }
@@ -133,7 +136,7 @@ class Controls extends React.Component {
             }
         }
         if (idx === 1) {
-            if (!form.isValid('course_or_module')) {
+            if (!form.isValid('course')) {
                 infoDialog.open('Course is required');
                 return;
             }
@@ -155,55 +158,27 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
+        if (!form.isValid('course')) {
             infoDialog.open('Course is required');
             return;
         }
-        //3
-//        if (!form.isValid('job_title')) {
-//            infoDialog.open('Job Position For Training is required');
-//            return;
-//        }
-        //4
-//        if (!form.isValid('status')) {
-//            infoDialog.open('Training Status is required');
-//            return;
-//        }
-        //5
-//        if (!form.isValid('hr')) {
-//            infoDialog.open('Training Conductor is required');
-//            return;
-//        }
-        //6
-//        if (!form.isValid('requirement_legal')) {
-//            infoDialog.open('Legal Requirement option is required');
-//            return;
-//        }
-//        if (!form.isValid('requirement')) {
-//            infoDialog.open('Requirement is required');
-//            return;
-//        }
-//        if (!form.isValid('training_provider_requirement')) {
-//            infoDialog.open('Training Provider Requirement is required');
-//            return;
-//        }
 
         const {
             //0
             client, project, site,
             //1
-            course_or_module,
-            training_frequency, subject_category, date, time_from, time_to,
+            course,
+            training_frequency, subject_category,
+            date, time_from, time_to,//list
             //2
-            institution_conducting_training,
-            hr,
+            institution_conducting_training,//list
+            hr,//list
             job_desc,
             //3
-            doc,
+            doc,//list
             //4
-            attendance_register_doc,
-            employee_list,
-            attendance_register_list,
+            attendance_register_doc,//list
+            attendance_register_list,//list
         } = form.data;
         const data = {};
 
@@ -237,9 +212,9 @@ class Controls extends React.Component {
         }
 
         //1
-        if (course_or_module) {
-            const {id, data: _data, name} = course_or_module;
-            data.course_or_module = {id, name: name || _data.name};
+        if (course) {
+            const {id, data: _data, name} = course;
+            data.course = {id, name: name || _data.name};
         }
         if (training_frequency) {
             data.training_frequency = training_frequency;
@@ -289,9 +264,23 @@ class Controls extends React.Component {
         if (attendance_register_doc) {
             data.attendance_register_doc = attendance_register_doc.path;
         }
-        if(attendance_register_list) {
-            data.attendance_register_list = attendance_register_list.
-            map(({employee, employee: {id, data: {fname, lname, email, phone, id_num, passport_num}}}) => ({
+        if (attendance_register_list) {
+            data.attendance_register_list = attendance_register_list.map((
+                {
+                    employee,
+                    employee: {
+                        id,
+                        data: {
+                            fname,
+                            lname,
+                            email,
+                            phone,
+                            id_num,
+                            passport_num
+                        }
+                    }
+                }
+            ) => ({
                 id, fname, lname, email, phone, id_num, passport_num
             }));
         }
@@ -339,81 +328,77 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Course Details"
                 onFormOpen={onFormOpen}
-                onFormBack={!isNoProjects && onFormBack}
                 onFormNext={onFormNext}
+                onFormBack={!isNoProjects && onFormBack}
             >
-                <SelectToolboxTalkCourseInput name="course_or_module" placeholder="Course..."
-                                              className="col-lg-12 form-control" onChange={this.form.onChange}
-                                              add={false} returnValue/>
+                <SelectToolboxTalkCourseInput name="course" placeholder="Course..."
+                                              className="col-lg-12 form-control"
+                                              onChange={this.form.onChange}/>
                 <SelectWrapper state={this.state} name="training_frequency" placeholder="Training Frequency..."
-                               className="col-lg-8 pull-left-2 form-control" onChange={this.form.onChange}
+                               className="col-lg-6 form-control" onChange={this.form.onChange}
                                values="training_frequency"/>
                 <SelectToolboxTalkSubjectCategoryInput name="subject_category" placeholder="Subject Category..."
-                                                       className="col-lg-12 form-control"
+                                                       className="col-lg-6 form-control"
                                                        onChange={this.form.onChange}/>
-                <ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
-                <div
-                    className="flex col-lg-12 bg-eee margin-t-10 margin-b-5 border-radius-20 padding-t-20 padding-b-10 padding-l-10 padding-r-10">
-                    <ClearableInput name="time_from" type="time" placeholder="Time From..."
-                                    className="border-radius-0 border-radius-l-20 form-control"
-                                    onChange={this.form.onChange}/>
-                    <ClearableInput name="time_to" type="time" placeholder="Time To..."
-                                    className="border-radius-0 border-radius-r-20 form-control"
-                                    onChange={this.form.onChange}/>
-                </div>
             </Row>
             <Row
                 rendered
+                activeAlways
                 idx={2}
-                title="2. Person / Institution Conducting Training"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}
-            >
-                <ClearableInput name="institution_conducting_training" type="text"
-                                placeholder="Institution Conducting Training" defaultValue={loggedClientName}
-                                className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
-                <SelectUserInput name="hr" placeholder="Training Conductor..." defaultUser showOtherPerson
-                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectJobPositionInput name="job_desc" placeholder="Job Position..."
-                                        desc="Job Position For Training Conductor" className="col-lg-12 form-control"
-                                        onChange={this.form.onChange} add/>
-            </Row>
-            <Row
-                rendered
-                idx={3}
-                title="3. Attach Toolbox Talk / Training Meeting Document"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}
-            >
-                <UploadButton
-                    name="doc"
-                    buttonTitle="Document (PDF, Word)"
-                    type={['Word', 'PDF', 'Image']}
-                    showOnlyIcon
-                    className="col-lg-6 hor-center"
-                    onChange={this.form.onChange}
-                />
-            </Row>
-            <Row
-                rendered
-                idx={4}
-                title="4. Attendance Register"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
+                title="2. Toolbox Talk / Training Meeting"
             >
                 <FormControls>
                     <Row
                         rendered
-                        activeAlways
-                        idx={4.1}
-                        title="4.1 Attach Attendance Register File"
+                        idx={2.1}
+                        title="2.1. Date & Time"
+                        onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
+                    >
+                        <ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                        <div
+                            className="
+                            flex col-lg-12 bg-eee margin-t-10 margin-b-5 border-radius-20
+                            padding-t-20 padding-b-10 padding-l-10 padding-r-10
+                            ">
+                            <ClearableInput name="time_from" type="time" placeholder="Time From..."
+                                            className="border-radius-0 border-radius-l-20 form-control"
+                                            onChange={this.form.onChange}/>
+                            <ClearableInput name="time_to" type="time" placeholder="Time To..."
+                                            className="border-radius-0 border-radius-r-20 form-control"
+                                            onChange={this.form.onChange}/>
+                        </div>
+                    </Row>
+                    <Row
+                        rendered
+                        idx={2.2}
+                        title="2.2. Person / Institution Conducting Training"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                        onFormNext={onFormNext}
+                    >
+                        <ClearableInput name="institution_conducting_training" type="text"
+                                        placeholder="Institution Conducting Training" defaultValue={loggedClientName}
+                                        className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                        <SelectUserInput name="hr" placeholder="Training Conductor..." defaultUser showOtherPerson
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <SelectJobPositionInput name="job_desc" placeholder="Job Position..."
+                                                desc="Job Position For Training Conductor"
+                                                className="col-lg-12 form-control"
+                                                onChange={this.form.onChange} add/>
+                    </Row>
+                    <Row
+                        rendered
+                        idx={2.3}
+                        title="2.3. Attach Toolbox Talk / Training Meeting Document"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                        onFormNext={onFormNext}
                     >
                         <UploadButton
-                            name="attendance_register_doc"
+                            name="doc"
                             buttonTitle="Document (PDF, Word)"
                             type={['Word', 'PDF', 'Image']}
                             showOnlyIcon
@@ -423,25 +408,37 @@ class Controls extends React.Component {
                     </Row>
                     <Row
                         rendered
-                        activeAlways
-                        idx={4.2}
-                        title="4.2 Add Employee Attendance List"
+                        idx={2.4}
+                        title="2.4. Attendance Register"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
                     >
-                        <NewEmployeeListTable ref="employee_list" name="employee_list" onChange={this.form.onChange}/>
-                    </Row>
-                    <Row
-                        rendered
-                        activeAlways
-                        idx={4.3}
-                        title="4.3 Attendance Register List"
-                    >
-                        <SelectTable ref="selectEmployeeTable"
-                                     replaceCols name="attendance_register_list"
-                                     desc="Employees" title="Selected Employee(s)"
-                                     className="col-lg-12 no-padding min-h-400 SelectEmployeeTable"
-                                     renderTHead={renderTHeadEmployees}
-                                     renderItem={renderItemEmployees}
-                                     isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
+                        <FormControls>
+                            <Row
+                                rendered
+                                activeAlways
+                                idx={2.41}
+                                title="2.4.1 Attach Attendance Register File"
+                            >
+                                <UploadButton
+                                    name="attendance_register_doc"
+                                    buttonTitle="Document (PDF, Word)"
+                                    type={['Word', 'PDF', 'Image']}
+                                    showOnlyIcon
+                                    className="col-lg-6 hor-center"
+                                    onChange={this.form.onChange}
+                                />
+                            </Row>
+                            <Row
+                                rendered
+                                activeAlways
+                                idx={2.42}
+                                title="2.4.2 Add Employee Attendance List"
+                            >
+                                <NewEmployeeListTable ref="attendance_register_list" name="attendance_register_list"
+                                                      onChange={this.form.onChange}/>
+                            </Row>
+                        </FormControls>
                     </Row>
                 </FormControls>
             </Row>
@@ -461,47 +458,6 @@ class SelectWrapper extends React.Component {
         return <ClearableInput name={name} type="select" placeholder={placeholder} className={className}
                                onChange={onChange} values={state.lists[values]} returnValue add/>;
     }
-}
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="renderTHeadEmployees">
-function renderTHeadEmployees() {
-    return <THead>
-        <div className="td fixed-flex min-w-30">#</div>
-        <div className="td">Name</div>
-        <div className="td fixed-flex min-w-150">ID/Passport No.</div>
-        <div className="td">Job Position</div>
-        <div className="td">Site</div>
-        <div className="td fixed-flex min-w-90">Signature</div>
-        <div className="td fixed-flex no-padding min-w-70"></div>
-    </THead>;
-}
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="renderItemEmployees">
-function renderItemEmployees(item, n) {
-    const {id, data, employee} = item;
-    const {
-        fname,
-        lname,
-        id_num,
-        passport_num,
-        job_position,
-        client,
-        project,
-        site
-    } = (employee ? employee.data : employee) || data || item;
-    console.log('renderItemEmployees: item', item)
-    return <React.Fragment key={id_num || passport_num} className="tr-readonly">
-        <div className="td fixed-flex min-w-30">{n + 1}</div>
-        <div className="td">{fname + ' ' + lname}</div>
-        <div className="td fixed-flex min-w-150">{id_num || passport_num}</div>
-        <div className="td">{job_position ? job_position.name : 'N/A'}</div>
-        <div className="td"></div>
-        <div className="td fixed-flex min-w-90"></div>
-    </React.Fragment>;
 }
 
 // </editor-fold>

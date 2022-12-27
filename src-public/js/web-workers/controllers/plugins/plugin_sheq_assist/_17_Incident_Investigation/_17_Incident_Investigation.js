@@ -1,5 +1,19 @@
-
 (() => {
+
+    const RISK_RATING_CONSTANTS = {
+        LOW: "Low",
+        MEDIUM: "Medium",
+        HIGH: "High",
+        VERY_HIGH: "Very High",
+    };
+
+    const RISK_RATING_FUNS = {
+        [RISK_RATING_CONSTANTS.LOW]: val => val >= 0 && val <= 4,
+        [RISK_RATING_CONSTANTS.MEDIUM]: val => val >= 5 && val <= 8,
+        [RISK_RATING_CONSTANTS.HIGH]: val => val >= 9 && val <= 15,
+        [RISK_RATING_CONSTANTS.VERY_HIGH]: val => val >= 16 && val <= 25,
+    };
+
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         /*incident, incident_type, incident_whats_involved,
@@ -12,7 +26,10 @@
          affected_person_name, form_completed_by, reported_to, 
          supervior_or_manager*/
         constructor(events, db) {
-            super(events, db, {singular: "Incident Investigation", plural: "Incident Investigations"}, "plugin_sheq_assist/17_Incident_Investigation/", "plugin_sheq_assist_17_Incident_Investigation");
+            super(events, db, {
+                singular: "Incident Investigation",
+                plural: "Incident Investigations"
+            }, "plugin_sheq_assist/17_Incident_Investigation/", "plugin_sheq_assist_17_Incident_Investigation");
 
             const {addAction} = this;
 
@@ -26,6 +43,15 @@
             addAction("stats", this.stats.bind(this));
 
             addAction("select/filter", this.filter_select.bind(this));
+
+            addAction("dashboard/total/low-risk", this.dashboard_total_low_risk.bind(this));
+            addAction("dashboard/total/medium-risk", this.dashboard_total_medium_risk.bind(this));
+            addAction("dashboard/total/high-risk", this.dashboard_total_high_risk.bind(this));
+            addAction("dashboard/total/very-high-risk", this.dashboard_total_very_high_risk.bind(this));
+
+            addAction("dashboard/total/count", this.dashboard_total_count.bind(this));
+            addAction("dashboard/total/vehicles-involved", this.dashboard_total_vehicles_involved.bind(this));
+            addAction("dashboard/total/persons-injured", this.dashboard_total_persons_injured.bind(this));
 
             const fn = async () => {
                 const doc_ref = await this.getDB().collection(this.tbl);//Promise < DocumentReference < T > >
@@ -98,6 +124,7 @@
 //                console.error('incidents error', err)
 //            });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="create">
@@ -181,8 +208,15 @@
                         let {
                             data: {
                                 classification = {},
-                                sec1_data = {}, sec2_data = {}, sec3_data = {}, sec6_data = {}, sec9_data = {}, sec14_data = {},
-                                client, project, site
+                                sec1_data = {},
+                                sec2_data = {},
+                                sec3_data = {},
+                                sec6_data = {},
+                                sec9_data = {},
+                                sec14_data = {},
+                                client,
+                                project,
+                                site
                             }
                         } = savedItem;
                         sec1_data = classification.sec1_data || sec1_data;
@@ -234,7 +268,7 @@
                             <p>ID: <b>' + savedItem.id + '</b></p>\n\
                             <p>Incident Exact Location: <b>' + exact_location + '</b></p>\n\
                             <p>Incident Category: <b>' + (!category_list.isEmpty() ? category_list.map(v => isString(v) ? v : v.value) : 'N/A') + '</b></p>\n\
-                            <p>Incident Sub-Category: <b>' + (!sub_category_list.isEmpty() ? sub_category_list.map(v => isString(v) ? v : v.value) : 'N/A') + '</b></p>\n\
+                            <p>Incident Sub-Category: <b>' + (!sub_category_list.isEmpty() ? sub_category_list.filter(v => !!v).map(v => isString(v) ? v : v.value) : 'N/A') + '</b></p>\n\
                             <p>Sector(s): <b>' + (!sector_list.isEmpty() ? sector_list.map(v => isString(v) ? v : v.value) : 'N/A') + '</b></p>\n\
                             <p>Activities: <b>' + (!activity_list.isEmpty() ? activity_list.map(v => isString(v) ? v : v.value) : 'N/A') + '</b></p>\n\
                             <p>Date Of Incident: <b>' + (Dates.formatDate(incident_date) || 'N/A') + '</b></p>\n\
@@ -282,6 +316,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -371,24 +406,28 @@
             return savedData;
 //            return this.updateAndUploadIfManyFiles(evt, id, data, ["document_list", "third_party_document_list"]);
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="classification">
         async classification(evt, id, data) {
             return this.update(evt, id, data);
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="investigation">
         async investigation(evt, id, data) {
             return this.update(evt, id, data);
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="corrective_actions">
         async corrective_actions(evt, id, data) {
             return this.update(evt, id, data);
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="updateStatus">
@@ -425,18 +464,21 @@
                 return auditData.data;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="addStatus">
         async addStatus(evt, id, status) {
             return this.updateStatus(evt, id, status, "Union");
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="removeStatus">
         async removeStatus(evt, id, status) {
             return this.updateStatus(evt, id, status, "Remove");
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="remove">
@@ -451,9 +493,10 @@
                     await Promise.all(sec13_data.third_party_document_list.map(async v => {
                         return v && await files.remove(v);
                     }));
-            }
+                }
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
@@ -534,11 +577,23 @@
                     {header: 'Third Party Email Address', key: 'Third Party Email Address', width: 35},
                     {header: 'Third Party Phone No.', key: 'Third Party Phone No.', width: 35},
 
-                    {header: 'Did A Driver Admit Liability To Any Person(s)?', key: 'Did A Driver Admit Liability To Any Person(s)?', width: 35},
+                    {
+                        header: 'Did A Driver Admit Liability To Any Person(s)?',
+                        key: 'Did A Driver Admit Liability To Any Person(s)?',
+                        width: 35
+                    },
                     {header: 'Did Someone Else Admit Liability?', key: 'Did Someone Else Admit Liability?', width: 35},
-                    {header: 'Someone Else Who Admitted Liability Name', key: 'Someone Else Who Admitted Liability Name', width: 35},
+                    {
+                        header: 'Someone Else Who Admitted Liability Name',
+                        key: 'Someone Else Who Admitted Liability Name',
+                        width: 35
+                    },
                     {header: 'Who Was Liability Admitted To?', key: 'Who Was Liability Admitted To?', width: 35},
-                    {header: 'In The 3rd Party Opinion, Who Was Responsible For The Collision And Why?', key: 'In The 3rd Party Opinion, Who Was Responsible For The Collision And Why?', width: 35},
+                    {
+                        header: 'In The 3rd Party Opinion, Who Was Responsible For The Collision And Why?',
+                        key: 'In The 3rd Party Opinion, Who Was Responsible For The Collision And Why?',
+                        width: 35
+                    },
                     {header: '3rd Party Documents/Files', key: '3rd Party Documents/Files', width: 35},
 
                     {header: 'Has Infringement Been Issued?', key: 'Has Infringement Been Issued?', width: 35},
@@ -554,10 +609,22 @@
 
                     {header: 'Did Police Attend Scene?', key: 'Did Police Attend Scene?', width: 35},
                     {header: 'Ref/Report No.', key: 'Ref/Report No.', width: 35},
-                    {header: 'Police Officer Taking Collision Details', key: 'Police Officer Taking Collision Details', width: 35},
-                    {header: 'Police Officer Station Taking Collision Details', key: 'Police Officer Station Taking Collision Details', width: 35},
+                    {
+                        header: 'Police Officer Taking Collision Details',
+                        key: 'Police Officer Taking Collision Details',
+                        width: 35
+                    },
+                    {
+                        header: 'Police Officer Station Taking Collision Details',
+                        key: 'Police Officer Station Taking Collision Details',
+                        width: 35
+                    },
 
-                    {header: 'Collision Reported To Police Station?', key: 'Collision Reported To Police Station?', width: 35},
+                    {
+                        header: 'Collision Reported To Police Station?',
+                        key: 'Collision Reported To Police Station?',
+                        width: 35
+                    },
                     {header: 'Have Charges Been Laid?', key: 'Have Charges Been Laid?', width: 35},
                     {header: 'Nature Of Charges', key: 'Nature Of Charges', width: 35},
                     {header: 'Who Laid Charges?', key: 'Who Laid Charges?', width: 35},
@@ -576,7 +643,11 @@
 
                     {header: 'Estimated Costs (Damages)', key: 'Estimated Costs (Damages)', width: 35},
                     {header: 'Estimated Costs (Medical)', key: 'Estimated Costs (Medical)', width: 35},
-                    {header: 'Estimated Costs (Salaries / Wages)', key: 'Estimated Costs (Salaries / Wages)', width: 35},
+                    {
+                        header: 'Estimated Costs (Salaries / Wages)',
+                        key: 'Estimated Costs (Salaries / Wages)',
+                        width: 35
+                    },
                     {header: 'Estimated Costs (Investigations)', key: 'Estimated Costs (Investigations)', width: 35},
                     {header: 'Estimated Costs (Others)', key: 'Estimated Costs (Others)', width: 35},
                     {header: 'Estimated Costs (Total)', key: 'Estimated Costs (Total)', width: 35}
@@ -584,14 +655,16 @@
 
                 console.log('print', list)
 
-                const rows = list.map(({id, data: {
-                created_at, status,
+                const rows = list.map(({
+                                           id, data: {
+                        created_at, status,
                         client, project, site,
                         classification,
                         investigation,
                         sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data,
                         sec9_data, sec10_data, sec11_data, sec12_data, sec13_data, sec14_data, sec15_data
-                }}) => {
+                    }
+                                       }) => {
                     if (classification) {
                         sec1_data = classification.sec1_data || sec1_data;
                         sec2_data = classification.sec2_data || sec2_data;
@@ -614,10 +687,10 @@
 
                     const investigation_details = (investigation && investigation.sec2_data) ? investigation.sec2_data.investigation_details : null;
                     const investigation_findings_list = (investigation && investigation.sec2_data && investigation.sec2_data.investigation_findings_list) ?
-                            [...investigation.sec2_data.investigation_findings_list, null] : [null];
+                        [...investigation.sec2_data.investigation_findings_list, null] : [null];
                     const investigation_findings_further_desc = (investigation && investigation.sec2_data) ? investigation.sec2_data.investigation_findings_further_desc : null;
                     const document_list = (investigation && investigation.sec2_data && investigation.sec2_data.document_list) ?
-                            investigation.sec2_data.document_list : null;
+                        investigation.sec2_data.document_list : null;
 
                     let risk_rating = null;
                     let consequence = null;
@@ -716,7 +789,7 @@
                             sub_category_list, activity_list
                         } = sec2_data;
                         if (sub_category_list && isArray(sub_category_list)) {
-                            res["Incident Sub-Category"] = sub_category_list.map(v => isString(v) ? v : v.value).join(', ');
+                            res["Incident Sub-Category"] = sub_category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
                         }
                         if (activity_list && isArray(activity_list)) {
                             res["Activities"] = activity_list.map(v => isString(v) ? v : v.value).join(', ');
@@ -815,7 +888,13 @@
                     }
 
                     if (sec12_data) {
-                        const {test_undertaken, test_type_list, test_type_drug_undertaken, test_type_alcohol_undertaken, test_type_mobile_device_undertaken} = sec12_data;
+                        const {
+                            test_undertaken,
+                            test_type_list,
+                            test_type_drug_undertaken,
+                            test_type_alcohol_undertaken,
+                            test_type_mobile_device_undertaken
+                        } = sec12_data;
                         if (test_undertaken) {
                             res["Was Testing Undertaken?"] = test_undertaken;
                         }
@@ -834,7 +913,18 @@
                     }
 
                     if (sec13_data) {
-                        const {is_vehicle_incident, driver, driver_dob, driver_gender, address, email, phone, licence_num, licence_expiry, licence_years} = sec13_data;
+                        const {
+                            is_vehicle_incident,
+                            driver,
+                            driver_dob,
+                            driver_gender,
+                            address,
+                            email,
+                            phone,
+                            licence_num,
+                            licence_expiry,
+                            licence_years
+                        } = sec13_data;
                         if (is_vehicle_incident) {
                             res["A Motor Vehicle Incident?"] = is_vehicle_incident;
                         }
@@ -866,7 +956,17 @@
                             res["Driver Licence Years Held"] = licence_years;
                         }
 
-                        const {vehicle_make, vehicle_model, vehicle_year, vehicle_color, vehicle_reg_num, vehicle_fleet_num, vehicle_reg_date, vehicle_trip_type, vehicle_load_type} = sec13_data;
+                        const {
+                            vehicle_make,
+                            vehicle_model,
+                            vehicle_year,
+                            vehicle_color,
+                            vehicle_reg_num,
+                            vehicle_fleet_num,
+                            vehicle_reg_date,
+                            vehicle_trip_type,
+                            vehicle_load_type
+                        } = sec13_data;
                         if (vehicle_make) {
                             res["Vehicle/Trailer Make"] = vehicle_make;
                         }
@@ -895,8 +995,21 @@
                             res["Vehicle/Trailer Load Type"] = vehicle_load_type;
                         }
 
-                        const {was_3rd_party_involved, are_3rd_party_details_available, third_party_fname, third_party_lname, third_party_address, third_party_email, third_party_phone,
-                            did_driver_admit_liability, did_someone_else_admit_liability, someone_else_admit_liability_name, liability_admitted_to_name, third_party_opinion, third_party_document_list} = sec13_data;
+                        const {
+                            was_3rd_party_involved,
+                            are_3rd_party_details_available,
+                            third_party_fname,
+                            third_party_lname,
+                            third_party_address,
+                            third_party_email,
+                            third_party_phone,
+                            did_driver_admit_liability,
+                            did_someone_else_admit_liability,
+                            someone_else_admit_liability_name,
+                            liability_admitted_to_name,
+                            third_party_opinion,
+                            third_party_document_list
+                        } = sec13_data;
                         if (was_3rd_party_involved) {
                             res["Was A Third Party Involved?"] = was_3rd_party_involved;
                         }
@@ -938,8 +1051,10 @@
 //                            res["3rd Party Documents/Files"] = third_party_document_list;
                         }
 
-                        const {is_infringement_issued, penalty_num, issuing_authority, issuing_officer, type_of_breach,
-                            addressee_issued_to_name, addressee_name_or_entity, addressee_amount, addressee_due_date} = sec13_data;
+                        const {
+                            is_infringement_issued, penalty_num, issuing_authority, issuing_officer, type_of_breach,
+                            addressee_issued_to_name, addressee_name_or_entity, addressee_amount, addressee_due_date
+                        } = sec13_data;
                         if (is_infringement_issued) {
                             res["Has Infringement Been Issued?"] = is_infringement_issued;
                         }
@@ -969,8 +1084,17 @@
                             res["Infringement Due Date"] = addressee_due_date;
                         }
 
-                        const {did_police_attend_scene, ref_or_report_num, officer_name, officer_station,
-                            collision_reported_to_police_station, have_charges_been_laid, nature_of_charges, who_laid_charges, who_were_nature_charges_laid_against} = sec13_data;
+                        const {
+                            did_police_attend_scene,
+                            ref_or_report_num,
+                            officer_name,
+                            officer_station,
+                            collision_reported_to_police_station,
+                            have_charges_been_laid,
+                            nature_of_charges,
+                            who_laid_charges,
+                            who_were_nature_charges_laid_against
+                        } = sec13_data;
                         if (did_police_attend_scene) {
                             res["Did Police Attend Scene?"] = did_police_attend_scene;
                         }
@@ -1074,10 +1198,10 @@
 
                     const calcTotalCosts = () => {
                         return estimated_costs_damages +
-                                estimated_costs_medical +
-                                estimated_costs_salaries_wages +
-                                estimated_costs_investigations +
-                                estimated_costs_others;
+                            estimated_costs_medical +
+                            estimated_costs_salaries_wages +
+                            estimated_costs_investigations +
+                            estimated_costs_others;
                     };
                     res["Estimated Costs (Total)"] = calcTotalCosts();
 
@@ -1087,6 +1211,7 @@
                 return await this.export_excel_impl(loggedUser, "Incident-Investigation-Docs", "Incidents-Active", "Incidents Data", cols, rows);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_select">
@@ -1094,7 +1219,11 @@
             return Events.whenLoggedIn(async loggedUser => {
                 const {user: {data: {client: my_client, project: my_project, site: my_site}}} = loggedUser;
                 const {client_id, project_id, site_id, isNew} = filterData;
-                let list = await AControllerRead.prototype.listImpl.call(this, evt, {isNew, limit: -1, direction: 'desc'}, q => {
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, {
+                    isNew,
+                    limit: -1,
+                    direction: 'desc'
+                }, q => {
                     if (my_client) {
                         q = q.where('client_id', '==', my_client.id);
                     } else if (client_id) {
@@ -1116,6 +1245,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="search_by_name">
@@ -1127,6 +1257,7 @@
                 };
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -1138,12 +1269,21 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
         async filter(evt, filterData, extraFilterData) {
             return Events.whenLoggedIn(async loggedUser => {
-                const {incident_date_range, incident_status, investigation_status, category, sub_category, sector, activity} = filterData;
+                const {
+                    incident_date_range,
+                    incident_status,
+                    investigation_status,
+                    category,
+                    sub_category,
+                    sector,
+                    activity
+                } = filterData;
                 let list = await AControllerRead.prototype.listImpl.call(this, evt, {direction: 'desc'}, q => {
                     if (incident_date_range) {
                         if (incident_date_range.start) {
@@ -1208,12 +1348,105 @@
                 return list;
             });
         }
+
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="dashboard_totals">
+        async dashboard_total_risk_rating_impl(evt, data = {}) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const {interval, employee_view, risk_rating} = data;
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
+                    return q;
+                });
+
+                // list = await TrainingsFuns.filterActiveOrInactiveEmployees(list, employee_view);
+
+                return list
+                    .map(({data: {investigation, sec14_data}}) => getRiskRating({sec14_data, investigation}))
+                    .filter(risk_rating => risk_rating !== null)
+                    .filter(RISK_RATING_FUNS[risk_rating]).length;
+            });
+        }
+
+        async dashboard_total_low_risk(evt, data = {}) {
+            return this.dashboard_total_risk_rating_impl(evt, {...data, risk_rating: RISK_RATING_CONSTANTS.LOW});
+        }
+
+        async dashboard_total_medium_risk(evt, data = {}) {
+            return this.dashboard_total_risk_rating_impl(evt, {...data, risk_rating: RISK_RATING_CONSTANTS.MEDIUM});
+        }
+
+        async dashboard_total_high_risk(evt, data = {}) {
+            return this.dashboard_total_risk_rating_impl(evt, {...data, risk_rating: RISK_RATING_CONSTANTS.HIGH});
+        }
+
+        async dashboard_total_very_high_risk(evt, data = {}) {
+            return this.dashboard_total_risk_rating_impl(evt, {...data, risk_rating: RISK_RATING_CONSTANTS.VERY_HIGH});
+        }
+
+        async dashboard_total_count(evt, data = {}) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const {interval, employee_view, risk_rating} = data;
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
+                    return q;
+                });
+
+                // list = await TrainingsFuns.filterActiveOrInactiveEmployees(list, employee_view);
+
+                return list.length;
+            });
+        }
+
+        async dashboard_total_vehicles_involved(evt, data = {}) {
+            const {interval, employee_view, risk_rating} = data;
+            let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
+                return q;
+            });
+
+            // list = await TrainingsFuns.filterActiveOrInactiveEmployees(list, employee_view);
+
+            // vehicle_make,
+            // vehicle_model,
+            // vehicle_year,
+            // vehicle_color,
+            // vehicle_reg_num,
+            // vehicle_fleet_num,
+            // vehicle_reg_date,
+            // vehicle_trip_type,
+            // vehicle_load_type
+
+            return list
+                .filter(({data: {sec13_data}}) => !!sec13_data && !!sec13_data.vehicle_reg_num)
+                .map(({data: {sec13_data}}) => sec13_data.vehicle_reg_num)
+                .distinct()
+                .length;
+        }
+
+        async dashboard_total_persons_injured(evt, data = {}) {
+            const {interval, employee_view, risk_rating} = data;
+            let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
+                return q;
+            });
+
+            // list = await TrainingsFuns.filterActiveOrInactiveEmployees(list, employee_view);
+
+            return list
+                .filter(({data: {sec11_data}}) => !!sec11_data && !!sec11_data.person_injured)
+                .map(({data: {sec11_data}}) => sec11_data.person_injured)
+                .map(({id, fname, lname, id_num, passport_num}) => `${id}${id_num}${passport_num}`)
+                .distinct()
+                .length;
+        }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="stats">
         async stats(evt, yr) {
             return Events.whenLoggedIn(async loggedUser => {
-                let list = await AControllerRead.prototype.listImpl.call(this, evt, {limit: -1, direction: 'desc'}, q => {
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, {
+                    limit: -1,
+                    direction: 'desc'
+                }, q => {
                     q = q.where('sec9_data.incident_date_split.year', '==', yr);
                     return q;
                 });
@@ -1221,11 +1454,64 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         sortBy() {
             return "sec9_data.incident_date";
         }
+    }
+
+    function getRiskRating({sec14_data, investigation}) {
+        let risk_rating = null;
+        let consequence = null;
+        let likelihood = null;
+        if (investigation && investigation.sec3_data && investigation.sec3_data.risk_rating) {
+            risk_rating = investigation.sec3_data.risk_rating;
+        } else if (sec14_data && sec14_data.risk_rating) {
+            risk_rating = sec14_data.risk_rating;
+        }
+        if (investigation && investigation.sec3_data && investigation.sec3_data.consequence) {
+            consequence = investigation.sec3_data.consequence;
+        } else if (sec14_data && sec14_data.consequence) {
+            consequence = sec14_data.consequence;
+        }
+        if (investigation && investigation.sec3_data && investigation.sec3_data.likelihood) {
+            likelihood = investigation.sec3_data.likelihood;
+        } else if (sec14_data && sec14_data.likelihood) {
+            likelihood = sec14_data.likelihood;
+        }
+
+        if (risk_rating || (!!consequence && !!likelihood)) {
+            let _likelihood, _consequence;
+
+            const getLikelihood = (_likelihood) => {
+                if (isString(_likelihood)) {
+                    return ['A', 'B', 'C', 'D', 'E'].indexOf(_likelihood.charAt(0)) + 1;
+                } else if (isObject(_likelihood)) {
+
+                }
+                return _likelihood;
+            };
+            const getConsequence = (_consequence) => {
+                if (isString(_consequence)) {
+                    return parseInt(_consequence.charAt(0));
+                } else if (isObject(_consequence)) {
+
+                }
+                return _consequence;
+            };
+
+            if (risk_rating) {
+                _likelihood = getLikelihood(risk_rating.likelihood);
+                _consequence = getConsequence(risk_rating.consequence);
+            } else {
+                _likelihood = getLikelihood(likelihood);
+                _consequence = getConsequence(consequence);
+            }
+            return _likelihood * _consequence;
+        }
+        return null;
     }
 
     new Controller(events, db);

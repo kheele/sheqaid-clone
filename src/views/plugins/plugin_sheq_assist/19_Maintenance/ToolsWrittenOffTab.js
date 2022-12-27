@@ -114,7 +114,7 @@ class ToolsWrittenOffTab extends React.Component {
         const {id, data: {
                 created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/,
                 name, asset_type, desc,
-                manufacturer, model, serial_num, 
+                manufacturer, model, reg_num, serial_num,
                 location, toolkit, condition, 
                 barcode_or_qr_code_type, barcode_or_qr_code, 
                 notes,

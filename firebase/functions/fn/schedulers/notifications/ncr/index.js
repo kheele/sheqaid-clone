@@ -1,10 +1,5 @@
 
-//{sendExpiryEmails, removeNotificationOfRemoved}
-const {sendExpiryEmails, removeNotificationOfRemoved} = require('./employee_docs-old');
-//{notifyForEmployeesNotLocated}
-const {notifyForEmployeesNotLocated} = require('./employee_profile');
+//{sendExpiryEmails}
+const {sendEmails} = require('./process');
 
-exports.sendExpiryEmails = sendExpiryEmails;
-exports.removeNotificationOfRemoved = removeNotificationOfRemoved;
-
-exports.notifyForEmployeesNotLocated = notifyForEmployeesNotLocated;
+exports.sendEmails = sendEmails;

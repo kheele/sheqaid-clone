@@ -80,7 +80,12 @@ class InputDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="InputDialog" ref="dialog" className="InputDialog">
+        return (<Dialog
+            key="InputDialog"
+            ref="dialog"
+            className="InputDialog"
+            dialog={this}
+        >
             <ClearableInput 
                 ref={ref => {this.refs.text = ref}} 
                 name="text" 

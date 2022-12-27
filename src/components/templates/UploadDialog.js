@@ -82,7 +82,13 @@ class UploadDialog extends React.Component {
     render() {
         const {type} = this.state; 
         if(!type) return null;
-        return (<Dialog key={new Date().getTime()} ref="dialog" className='UploadDialog' topButtons={this.topButtons}>
+        return (<Dialog
+            key={new Date().getTime()}
+            ref="dialog"
+            className='UploadDialog'
+            topButtons={this.topButtons}
+            dialog={this}
+        >
             <UploadButton 
                 buttonTitle={`Upload ${(type || []).join(', ')}`} 
                 type={type}

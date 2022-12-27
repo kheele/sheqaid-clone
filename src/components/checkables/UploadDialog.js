@@ -9,7 +9,7 @@ import style from "./UploadDialog.lazy.css";
 
 @observer
 class UploadDialog extends React.Component {
-    
+
     onResponse;
     @observable state = {
         image: null
@@ -19,7 +19,7 @@ class UploadDialog extends React.Component {
         super(props);
 
         this.onChangeImage = this.onChangeImage.bind(this);
-        
+
         this.onCancel = this.onCancel.bind(this);
         this.onDone = this.onDone.bind(this);
         this.open = this.open.bind(this);
@@ -55,7 +55,7 @@ class UploadDialog extends React.Component {
 
     onDone(e, btn) {
         const {image} = this.state;
-        if(image) {
+        if (image) {
             this.onResponse(image);
             this.close();
         } else {
@@ -73,7 +73,13 @@ class UploadDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key='UploadDialog' ref="dialog" className='UploadDialog' topButtons={this.topButtons}>
+        return (<Dialog
+            key='UploadDialog'
+            ref="dialog"
+            className='UploadDialog'
+            topButtons={this.topButtons}
+            dialog={this}
+        >
             <PhotoUploadButton onChange={this.onChangeImage}/>
         </Dialog>);
     }

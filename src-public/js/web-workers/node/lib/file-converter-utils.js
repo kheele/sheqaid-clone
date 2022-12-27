@@ -177,5 +177,21 @@
     Events.on("excelToPDF", async (db, source, output, options) => {
         return await self.fileConverterUtils.excelToPDF(source, output, options);
     });
+
+    self.FileConverters = {
+        asDataUrl: async (data) => {
+            return await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(data);
+                reader.onload = function () {
+                    resolve(reader.result);//base64encoded string
+                };
+                reader.onerror = function (err) {
+                    console.error(err);
+                    reject(err);
+                };
+            });
+        }
+    };
 }
 })(typeof self === 'object' && self.self === self && self || typeof global === 'object' && global.global === global && global || this);

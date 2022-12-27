@@ -399,14 +399,17 @@
 .clearable-field-control.select_input > .MuiAutocomplete-root .MuiAutocomplete-tag{
     height: 22px;
     margin-left: 0;
+    background: #ddd;
+    border-radius: 10px;
+    border: 2px solid #ddd;
 }
 .clearable-field-control.select_input > .MuiAutocomplete-root .MuiAutocomplete-tag > .MuiChip-label{
     font-size: 14px;
-    color: #777;
-    padding: 5px 10px;
+    color: #444;
+    padding: 5px;
 }
 .clearable-field-control.select_input > .MuiAutocomplete-root .MuiAutocomplete-tag > .MuiChip-deleteIcon{
-    margin-right: -2px;
+    margin: 0 -2px 0 -2px;
 }
 .clearable-field-control .react-time-picker {
     width: calc(100% - 30px);

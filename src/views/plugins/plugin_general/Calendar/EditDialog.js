@@ -43,7 +43,12 @@ class EditDialog extends React.Component {
 	}
 	
 	render() {
-		return (this.state.user && <Dialog key="edit-dialog" ref="dialog" className="edit-dialog">
+		return (this.state.user && <Dialog
+			key="edit-dialog"
+			ref="dialog"
+			className="edit-dialog"
+			dialog={this}
+		>
 			<Controls user={this.state.user}/>
 		</Dialog>);
 	}

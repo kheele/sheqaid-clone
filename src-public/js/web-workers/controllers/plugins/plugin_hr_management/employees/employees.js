@@ -1326,6 +1326,7 @@
 
         // <editor-fold defaultstate="collapsed" desc="find_by_id">
         async find_by_id(evt, id, actions) {
+            // console.log('find_by_id', this, evt, id, actions)
             return Events.whenLoggedIn(async loggedUser => {
                 const doc_ref = await this.getDB().collection(this.tbl).doc(id);
                 let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
@@ -1445,5 +1446,5 @@
         }
     }
 
-    new Controller(events, db);
+    self.employeesCntr = new Controller(events, db);
 })();

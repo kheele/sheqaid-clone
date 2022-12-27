@@ -125,6 +125,7 @@ class AuditItemTable extends React.Component {
                 className={'ANewTableFormDialog AuditItemTable-dialog'} 
                 topButtons={this.topButtons} 
                 onCancel={this.onCancel}
+                dialog={this}
             >
                 <div className="controls-wrapper">
                     <div className="controls padding-0">

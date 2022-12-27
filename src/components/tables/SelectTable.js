@@ -289,7 +289,13 @@ class SelectTable extends React.Component {
             {children}
         </Table>;
         if (isDialog) {
-            return (<Dialog key={this.pageKey + '-profile-dialog'} ref="dialog" className={'SelectTable-dialog'} topButtons={this.topButtons}>
+            return (<Dialog
+                key={this.pageKey + '-profile-dialog'}
+                ref="dialog"
+                className={'SelectTable-dialog'}
+                topButtons={this.topButtons}
+                dialog={this}
+            >
                 {tbl}
             </Dialog>);
         }

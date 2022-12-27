@@ -18,7 +18,7 @@ class Signup extends React.Component {
     state = {
         display: false,
         lists: {
-            company_category: ['Banking', 'Chemicals', 'Construction', 'Education', 'Finacial', 'Forestry', 'Health', 'Law', 'Marketing', 'Mining', 'Technology', 'Transportation', 'Other'],
+            company_category: ['Banking', 'Chemicals', 'Construction', 'Education', 'Financial', 'Forestry', 'Health', 'Law', 'Marketing', 'Mining', 'Technology', 'Transportation', 'Other'],
             consultant: [
                 {text: 'Yes', value: true, checked: false},
                 {text: 'No', value: false, checked: false}

@@ -74,7 +74,7 @@
                     company: {id: company_id}
                 } = loggedUser;
 
-                const {course_or_module, job_desc} = data;
+                const {course_or_module, job_desc, training_plan} = data;
                 if (job_desc && (typeof job_desc === 'string' || !job_desc.id)) {
                     let val = await Events.get('plugin_sheq_assist/employees/job-positions/').then(job_positions => {
                         return job_positions.search_by_name(evt, job_desc.name || job_desc);
@@ -95,8 +95,36 @@
                     }
                 }
 
+                let training_plan_list;
+                if(training_plan) {//year
+                    training_plan_list = await trainingPlanCntr.filter(null, {
+                        year: training_plan,
+                        course: course_or_module.id,
+                        incRegister: false,
+                        incCourse: false,
+                        incMatrix: false,
+                    });
+                }
+
                 data.keywords = this.generateKeywords([course_or_module.name]);
-                return AControllerAid.prototype.create.call(this, evt, data);
+                const item = await AControllerAid.prototype.create.call(this, evt, data);
+                if(item) {
+                    const {id} = item;
+                    const training_matrix = {id, course_or_module};
+                    if (training_plan_list) {
+                        await Promise.all(training_plan_list.map(async ({id}) => {
+                            await trainingPlanCntr.getDB().collection(trainingPlanCntr.tbl).doc(id).set({
+                                training_matrix
+                            }, {merge: true});
+                        }));
+                    }
+                    const incPlan = true;
+                    const incRegister = true;
+                    return TrainingsFuns.mapMatrixResults(item, {
+                        incPlan,
+                        incRegister
+                    })
+                }
             });
         }
 

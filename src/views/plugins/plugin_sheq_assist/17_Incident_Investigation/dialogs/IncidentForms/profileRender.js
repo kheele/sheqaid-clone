@@ -205,7 +205,7 @@ const profileRender = function () {
                 onFormNext={onFormNext}
             >
                 <ProfileField name="sub_category_list" title="Category"
-                              value={sec2_data && sec2_data.sub_category_list && sec2_data.sub_category_list.map(v => isString(v) ? v : v.value).join(', ')}
+                              value={sec2_data && sec2_data.sub_category_list && sec2_data.sub_category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ')}
                               className="col-lg-12"/>
             </Row>
             <Row

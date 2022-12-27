@@ -2,7 +2,10 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         constructor(events, db) {
-            super(events, db, {singular: "Training Toolbox Talk", plural: "Training Toolbox Talks"}, "plugin_sheq_assist/05_Trainings/toolbox-talks/", "plugin_sheq_assist_05_Training_toolbox_talks");
+            super(events, db, {
+                singular: "Training Toolbox Talk",
+                plural: "Training Toolbox Talks"
+            }, "plugin_sheq_assist/05_Trainings/toolbox-talks/", "plugin_sheq_assist_05_Training_toolbox_talks");
 
             const {addAction, search_by} = this;
             addAction("list/search_by_name", this.search_by_name.bind(this));
@@ -19,31 +22,33 @@
         // <editor-fold defaultstate="collapsed" desc="create">
         async create(evt, data) {
             return Events.whenLoggedIn(async loggedUser => {
-                const {course_or_module, date, time_from, time_to,} = data;
+                const {course, date, time_from, time_to,} = data;
                 //calculate total time
 
-                data.keywords = this.generateKeywords([course_or_module]);
+                data.keywords = this.generateKeywords([course]);
                 return AControllerAid.prototype.createAndUploadIfManyFiles().call(this, evt, data, ['doc', 'attendance_register_doc']);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
         async update(evt, id, updateAttrs) {
             return Events.whenLoggedIn(async loggedUser => {
-                const {course_or_module, date, time_from, time_to,} = updateAttrs;
+                const {course, date, time_from, time_to,} = updateAttrs;
                 //calculate total time
 
-                if (course_or_module) {
-                    updateAttrs.keywords = this.generateKeywords([course_or_module]);
+                if (course) {
+                    updateAttrs.keywords = this.generateKeywords([course]);
                 }
                 return AControllerAid.prototype.update.call(this, evt, id, updateAttrs);
             });
         }
+
         // </editor-fold>
 
-        async search_by_name(evt, searchText) {
-            return await this.filter(evt, {searchText});
+        async search_by_name(evt, course) {
+            return await this.filter(evt, {course});
         }
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
@@ -54,55 +59,41 @@
                     {header: 'Project', key: 'Project', width: 25},
                     {header: 'Site', key: 'Site', width: 25},
 
-                    //2
-                    {header: 'Allocation / Job Category', key: 'Allocation / Job Category', width: 28},
-                    {header: 'Job Title', key: 'Job Position', width: 23},
-
                     //1
-                    {header: 'Course / Module', key: 'Course / Module', width: 23},
-
-                    //5
-                    {header: 'Requirement', key: 'Requirement', width: 20},
-                    {header: 'Max. Participants Per Course', key: 'Max. Participants Per Course', width: 30},
-                    {header: 'Training Standard (Minimum Days)', key: 'Training Standard (Minimum Days)', width: 35},
+                    {header: 'Course', key: 'Course', width: 23},
                     {header: 'Training Frequency', key: 'Training Frequency', width: 22},
-                    {header: 'Training Provider Requirement', key: 'Training Provider Requirement', width: 33},
+                    {header: 'Subject Category', key: 'Subject Category', width: 22},
 
-                    //6
-                    {header: 'Competency Evaluation', key: 'Competency Evaluation', width: 27},
-                    {header: 'Unit Standard', key: 'Unit Standard', width: 20},
-                    {header: 'Unit Standard Description', key: 'Unit Standard Description', width: 35},
-                    {header: 'Credits', key: 'Credits', width: 15},
-                    {header: 'NQF Level', key: 'NQF Level', width: 15},
+                    {header: 'Date', key: 'Date', width: 15},
+                    {header: 'Time From', key: 'Time From', width: 18},
+                    {header: 'Time To', key: 'Time To', width: 15},
+
+                    {header: 'Institution Conducting Training', key: 'Institution Conducting Training', width: 33},
+                    {header: 'Training Conductor', key: 'Training Conductor', width: 30},
+                    {header: 'Job Position', key: 'Job Position', width: 25},
+
+                    {header: '# Of Employees Attended', key: '# Of Employees Attended', width: 35},
                 ];
 
                 const rows = list.map((
                     {
                         id, data: {
                             created_at,
-                            //1
+                            //0
                             client, project, site,
+                            //1
+                            course,
+                            training_frequency, subject_category,
+                            date, time_from, time_to,//list
                             //2
-                            course_or_module,
+                            institution_conducting_training,//list
+                            hr,//list
+                            job_desc,
                             //3
-                            allocation, job_title, sector_list,
+                            doc,//list
                             //4
-                            status, date_range, cost,
-                            //5
-                            institution_conducting_training, hr, job_desc,
-                            //6
-                            requirement_legal,
-                            requirement,
-                            max_participants_per_course,
-                            training_standard,
-                            training_frequency,
-                            training_provider_requirement,
-                            //7
-                            competency_evaluation,
-                            unit_standard,
-                            unit_standard_desc,
-                            credits,
-                            nqf_level
+                            attendance_register_doc,//list
+                            attendance_register_list,//list
                         }
                     }
                 ) => {
@@ -112,26 +103,17 @@
                         Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
                         Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
 
-                        //2
-                        "Allocation / Job Category": allocation && allocation.name || '',
-                        "Job Title": job_title && job_title.name || '',
-
                         //1
-                        "Course / Module": course_or_module,
-
-                        //5
-                        "Requirement": requirement || "",
-                        'Max. Participants Per Course': max_participants_per_course || '',
-                        "Training Standard (Minimum Days)": training_standard || "",
+                        "Course": course,
                         "Training Frequency": training_frequency || "",
-                        "Training Provider Requirement": training_provider_requirement || "",
-
-                        //6
-                        "Competency Evaluation": competency_evaluation || "",
-                        "Unit Standard": unit_standard || "",
-                        "Unit Standard Description": unit_standard_desc || "",
-                        "Credits": credits || "",
-                        "NQF Level": nqf_level || "",
+                        "Subject Category": subject_category || "",
+                        'Date': Dates.formatDate(date) || '',
+                        "Time From": time_from || "",
+                        "Time To": time_to || "",
+                        "Institution Conducting Training": institution_conducting_training || "",
+                        "Training Conductor": hr ? ((hr.lname || hr.data.lname) + ' ' + (hr.fname || hr.data.fname)) : "",
+                        "Job Position": job_desc ? (job_desc.name || job_desc.data.name) : "",
+                        "# Of Employees Attended": attendance_register_list ? (attendance_register_list.length) : "",
                     };
 
                     return res;
@@ -167,9 +149,12 @@
             return Events.whenLoggedIn(async loggedUser => {
                 let list = await this.list(evt);
 
-                list = list.filter(v => !!v.data.course_or_module).map(v => v.data.course_or_module).distinct();
+                const cntr = await Events.getByTable("plugin_sheq_assist_05_Training_toolbox_talks_attendance_registers");
+                let list2 = await cntr.list();
+                list2 = list2.map(({data: {course_or_module}}) => course_or_module);
+                list = list.filter(v => !!v.data.course).map(v => v.data.course);
 
-                return list;
+                return [...list, ...list2].distinct();
             });
         }
 
@@ -179,7 +164,10 @@
         async list_frequencies(evt) {
             return Events.whenLoggedIn(async loggedUser => {
                 let list = await this.list(evt);
-                list = list.filter(val => !!val.data.training_frequency).map(val => val.data.training_frequency).distinct();
+                list = list.
+                filter(({data: {training_frequency}}) => !!training_frequency).
+                map(({data: {training_frequency}}) => training_frequency).
+                distinct();
                 return list;
             });
         }
@@ -194,19 +182,19 @@
 
                 } = loggedUser;
                 let {
+                    isNew,
+                    //0
                     client_id,
                     project_id,
                     site_id,
-                    isNew,
-
-                    hr_id,
-                    job_title_id,
-
-                    course_or_module,
-
-                    training_provider_requirement,
-                    requirement,
-                    status,
+                    //1
+                    course,
+                    training_frequency, subject_category_id,
+                    date,//list
+                    //2
+                    institution_conducting_training,//list
+                    hr_id,//list
+                    job_desc_id,
                 } = filterData;
                 let {} = filterData;
 
@@ -215,14 +203,15 @@
                     {key: 'project_id', comp: '=', val: project_id},
                     {key: 'site_id', comp: '=', val: site_id},
 
+                    {key: 'course', comp: 'LIKE', val: course},
+                    {key: 'training_frequency', comp: '=', val: training_frequency},
+                    {key: 'subject_category.id', comp: '=', val: subject_category_id},
+
+                    {key: 'date', comp: '=', val: date},
+
+                    {key: 'institution_conducting_training', comp: 'LIKE', val: institution_conducting_training},
                     {key: 'hr.id', comp: '=', val: hr_id},
-                    {key: 'job_title.id', comp: '=', val: job_title_id},
-
-                    {key: 'course_or_module', comp: 'LIKE', val: course_or_module},
-
-                    {key: 'training_provider_requirement', comp: '=', val: training_provider_requirement},
-                    {key: 'requirement', comp: '=', val: requirement},
-                    {key: 'status', comp: '=', val: status},
+                    {key: 'job_desc.id', comp: '=', val: job_desc_id},
                 ];
                 return this.filter_impl(evt, q);
             });
@@ -234,21 +223,35 @@
         async filter(evt, filterData, extraFilterData) {
             return Events.whenLoggedIn(async loggedUser => {
                 let {
-                    course_or_module = "",
-                    training_provider_requirement,
-                    requirement,
-                    status,
-                    hr,
-                    job_title
+                    isNew,
+                    //0
+                    client_id,
+                    project_id,
+                    site_id,
+                    //1
+                    course,
+                    training_frequency, subject_category_id,
+                    date,//list
+                    //2
+                    institution_conducting_training,//list
+                    hr_id,//list
+                    job_desc_id,
                 } = filterData;
-                course_or_module = course_or_module.toLowerCase();
+                course = course.toLowerCase();
                 const q = [
-                    {key: 'training_provider_requirement', comp: '=', val: training_provider_requirement},
-                    {key: 'requirement', comp: '=', val: requirement},
-                    {key: 'status', comp: '=', val: status},
-                    {key: 'hr.id', comp: '=', val: hr},
-                    {key: 'job_title', comp: '=', val: job_title},
-                    {key: 'course_or_module', comp: 'LIKE', val: course_or_module}
+                    {key: 'client_id', comp: '=', val: client_id},
+                    {key: 'project_id', comp: '=', val: project_id},
+                    {key: 'site_id', comp: '=', val: site_id},
+
+                    {key: 'course', comp: 'LIKE', val: course},
+                    {key: 'training_frequency', comp: '=', val: training_frequency},
+                    {key: 'subject_category.id', comp: '=', val: subject_category_id},
+
+                    {key: 'date', comp: '=', val: date},
+
+                    {key: 'institution_conducting_training', comp: 'LIKE', val: institution_conducting_training},
+                    {key: 'hr.id', comp: '=', val: hr_id},
+                    {key: 'job_desc.id', comp: '=', val: job_desc_id},
                 ];
                 return this.filter_impl(evt, q);
             });
@@ -257,7 +260,7 @@
         // </editor-fold>
 
         sortBy(list) {
-            list.sortBy("data.course_or_module");
+            list.sortBy("data.course");
         }
 
     }

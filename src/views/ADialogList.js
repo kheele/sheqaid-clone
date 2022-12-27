@@ -92,7 +92,12 @@ class ADialogList extends React.Component {
     }
 
     render() {
-        return (<Dialog key={this.pageKey + '-dialog-' + new Date().getTime()} ref="dialog" className={this.pageKey + '-dialog ' + this.classNames}>
+        return (<Dialog
+            key={this.pageKey + '-dialog-' + new Date().getTime()}
+            ref="dialog"
+            className={this.pageKey + '-dialog ' + this.classNames}
+            dialog={this}
+        >
             {this.renderPage()}
         </Dialog>);
     }

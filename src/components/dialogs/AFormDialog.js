@@ -82,12 +82,16 @@ class AFormDialog extends React.Component {
     }
 
     open(item) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             this.state.item = item;
             this.onResponse = resolve;
             
-            const title = isFunction(this.title) ? this.title() : this.title;
-            this.refs.dialog.open(title);
+            // let title = isFunction(this.title) ? this.title() : this.title;
+            // if(title instanceof Promise) {
+            //     title = await title;
+            // }
+            // this.refs.dialog.open(title);
+            this.refs.dialog.open();
         });
     }
 

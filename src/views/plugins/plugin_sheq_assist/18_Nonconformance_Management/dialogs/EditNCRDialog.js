@@ -18,6 +18,7 @@ import {AEditDialog} from '../../../../../components/dialogs';
 import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper} from './NCRComponents';
 
 import style from "./EditNCRDialog.lazy.css";
+import NewNCRProgressListTable from "../../../../../components/FormTableComponents/NewNCRProgressListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EditNCRDialog">
@@ -48,7 +49,10 @@ class Controls extends React.Component {
         lists: {
             type: ['Corrective Action', 'Preventative Action', 'Opportunity For Improver'],
             priority: ['Low', 'Medium', 'High', 'Critical'],
-            status: ['Pending', 'Progress', 'Approved', 'Rejected', 'Completed'].map(text => {
+            status: ['Pending', 'Progressed', 'Completed'].map(text => {
+                return {text, value: text, checked: false}
+            }),
+            status_acceptance: ['Pending', 'Approved', 'Rejected'].map(text => {
                 return {text, value: text, checked: false}
             }),
             result: ['Pass', 'Fail'].map(text => {
@@ -193,6 +197,7 @@ class Controls extends React.Component {
             selectSourceTable.close();
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
@@ -249,7 +254,9 @@ class Controls extends React.Component {
             //5
             comments, remarks,
             //6
-            status, result, progress_date, completed_date, outstanding, additional_notes
+            progress_list,
+            //7
+            status_acceptance, status, result, completed_date, additional_notes
         } = form.data;
         const data = {};
 
@@ -276,11 +283,18 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, comments, 'comments');
         ShouldUpdate.check(data, old_data, remarks, 'remarks');
         //6
+        if (progress_list) {
+            const __progress_list = progress_list.slice().map(({progress_date, ...others}) => ({
+                ...others,
+                progress_date: progress_date.getTime(),
+            }));
+            ShouldUpdate.checkListToJS(data, old_data, __progress_list, 'progress_list');
+        }
+        //7
+        ShouldUpdate.check(data, old_data, status_acceptance, 'status_acceptance');
         ShouldUpdate.check(data, old_data, status, 'status');
         ShouldUpdate.check(data, old_data, result, 'result');
-        ShouldUpdate.checkDate(data, old_data, progress_date, 'progress_date');
         ShouldUpdate.checkDate(data, old_data, completed_date, 'completed_date');
-        ShouldUpdate.check(data, old_data, outstanding, 'outstanding');
         ShouldUpdate.check(data, old_data, additional_notes, 'additional_notes');
 
         console.log(data)
@@ -345,7 +359,9 @@ class Controls extends React.Component {
                     //5
                     comments, remarks,
                     //6
-                    status, result, progress_date, completed_date, outstanding, additional_notes
+                    progress_list,
+                    //7
+                    status_acceptance, status, result, completed_date, additional_notes
                 }
             }
         } = this;
@@ -468,31 +484,40 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={6}
-                title="6. Item Progress / Closed Out"
+                title="6. Progress"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <NewNCRProgressListTable ref="progress_list" name="progress_list"
+                                         defaultValue={[...(progress_list || []), null]} onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={7}
+                title="7. Status / Result / Closed Out"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <ClearableInput ref="status" name="status" type="radio" placeholder="Status" defaultValue={status}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                <ClearableInput ref="status_acceptance" name="status_acceptance" type="radio"
+                                placeholder="Acceptance Status" defaultValue={status_acceptance}
+                                vertical={2}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.status_acceptance} returnValue/>
+                <ClearableInput ref="status" name="status" type="radio"
+                                placeholder="Status" defaultValue={status}
+                                vertical={2}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.status} returnValue/>
                 <ClearableInput ref="result" name="result" type="radio" placeholder="Result" defaultValue={result}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.result} returnValue/>
-
-                <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
-                <ClearableInput name="progress_date" type="date" placeholder="Progress Date..."
-                                defaultValue={progress_date} className="col-lg-6 form-control"
-                                onChange={this.form.onChange}/>
                 <ClearableInput name="completed_date" type="date" placeholder="Completed Date..."
                                 defaultValue={completed_date} className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
 
                 <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-                <ClearableInput ref="outstanding" name="outstanding" type="textarea" placeholder="Outstanding"
-                                defaultValue={outstanding} className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
                 <ClearableInput ref="additional_notes" name="additional_notes" type="textarea"
                                 placeholder="Additional Notes" defaultValue={additional_notes}
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>

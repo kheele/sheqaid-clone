@@ -334,7 +334,7 @@ export default {
     }),
     activity_list: {
         "Forestry": [
-            "Harvesting",
+            "Harvesting",//
             "Loading",
             "off-loading",
             "stacking",
@@ -344,9 +344,36 @@ export default {
             "Cross cutting",
             "Debarking",
             "Deb-ranching",
+
+            "Silviculture",//
+            "Preparation",
+            "Fertilizing",
+            "Mowing",
+            "Blanking",
+            "Planting",
+            "Pruning",
+            "Chemical spraying",
+            "Weeding",
+            "Slashing",
+            "Brush cutting",
+            "Marking and pitting",
+            "Ripping",
+            "Thinning",
+            "Coppice Reduction",
+            "Grading",
+
+            "BURNING (FIRE)",//
+            "Burning slash (Fire)",
+            "Burning fire break",
+            "Burning under canopy",
+            "Fuel reduction",
+
+            "Chemical handling",//
+            "Manual spraying",
+            "Mechanical spraying",
         ].map(map_sub_category_list),
         "Construction": [
-            "Building construction",
+            "Building construction",//
             "Electrical work",
             "Building maintenance",
             "Roof maintenance",
@@ -357,6 +384,24 @@ export default {
             "Infrastructure maintenance",
             "Survey",
             "Sampling",
+            "Working at heights",//
+
+            "Road construction",//
+            "Road maintenance",
+            "Sourcing / extracting quarry",
+            "Offloading material",
+            "Loading material",
+            "Grading/ leveling material",
+            "Maintaining/ building drains",
+            "Building bridges",
+            "Compacting/ rolling",
+            "Digging/ excavations",
+            "Stream crossing",
+            "Transporting material",
+            "Blasting",
+            "Paving",
+            "Scaffolding",
+            "Storm water pipes",
         ].map(map_sub_category_list),
         "Mining": [
             "Prospecting",

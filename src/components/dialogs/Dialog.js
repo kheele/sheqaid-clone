@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {execWhen} from '../../utils/Utils';
 import {ErrorBoundary} from '../';
 
 import style from './Dialog.lazy.css';
+import {fromPromise} from "mobx-utils";
 
 function isDescendant(parent, child) {
     var node = child.parentNode;
@@ -105,10 +106,10 @@ class RenderToLayer extends React.Component {
                 this.layer.focus();
 
                 //setTimeout(function () {
-                    const el = this.props.useLayerForClickAway ? this.layer : window;
-                    //el.addEventListener('touchstart', this.onClickAway);
-                    el.addEventListener('click', this.onClickAway);
-                    el.addEventListener('keyup', this.onKeyUp);
+                const el = this.props.useLayerForClickAway ? this.layer : window;
+                //el.addEventListener('touchstart', this.onClickAway);
+                el.addEventListener('click', this.onClickAway);
+                el.addEventListener('keyup', this.onKeyUp);
                 //}.bind(this), 0);
             }
 
@@ -122,6 +123,94 @@ class RenderToLayer extends React.Component {
     render() {//done
         const isOpen = this.props.state.isOpen;
         return null;
+    }
+}
+
+@observer
+class Header extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    @computed get topButtons() {
+        const {dialog} = this.props;
+        let topButtons = isFunction(dialog.topButtons) ? dialog.topButtons() : dialog.topButtons;
+        if (topButtons instanceof Promise) {
+            return fromPromise(topButtons).case({
+                pending:   () => null,
+                rejected:  error => <div>An error occurred</div>,
+                fulfilled: value => value,
+            });
+        }
+        return topButtons || null;
+    }
+
+    @computed get title() {
+        const {dialog} = this.props;
+        let title = isFunction(dialog.title) ? dialog.title() : dialog.title;
+        if (title instanceof Promise) {
+            return fromPromise(title).case({
+                pending:   () => null,
+                rejected:  error => <div>An error occurred</div>,
+                fulfilled: value => value,
+            });
+        }
+        // alert(title);
+        return title || "";
+    }
+
+    render() {
+        const {onCancel, onClose, noBackAction, preventEsc} = this.props;
+        return (<div className="row dialog-header">
+            {!noBackAction && <i key="backButtonIcon" className="page-back-btn fa fa-arrow-left"
+                                 onClick={onCancel || onClose}/>}
+            {(!noBackAction && !preventEsc) && <i className="close-escape">Esc</i>}
+            <h3>{this.title}</h3>
+            <ErrorBoundary>
+                {!!this.topButtons && <div className="dialog-top-buttons">
+                    <ErrorBoundary>{this.topButtons}</ErrorBoundary>
+                </div>}
+            </ErrorBoundary>
+        </div>);
+    }
+}
+
+@observer
+class Content extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const {children} = this.props;
+        return (<div className="row dialog-content nice-scrollbars">
+            <ErrorBoundary>{children}</ErrorBoundary>
+        </div>);
+    }
+}
+
+@observer
+class Footer extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    @computed get bottomButtons() {
+        const {dialog} = this.props;
+        let bottomButtons = isFunction(dialog.bottomButtons) ? dialog.bottomButtons() : dialog.bottomButtons;
+        return bottomButtons || null;
+    }
+
+    render() {
+        const {bottomButtons} = this;
+        return (!!bottomButtons && <div className="row dialog-footer">
+            <div className="dialog-bottom-buttons">
+                <ErrorBoundary>{bottomButtons}</ErrorBoundary>
+            </div>
+        </div>);
     }
 }
 
@@ -156,43 +245,36 @@ class DialogInline extends React.Component {
     setTitle(title) {
         this.state.title = title;
     }
-    
+
     setTopButtons(topButtons) {
         this.state.topButtons = topButtons;
     }
-    
+
     addClass(c) {
         $(this.getDOMNode()).addClass(c);
     }
-    
+
     removeClass(c) {
         $(this.getDOMNode()).removeClass(c);
     }
-    
+
     getDOMNode() {
         return this.refs.dialogRef;
     }
 
     render() {
-        const {className, onCancel, onClose, noBackAction, preventEsc, bottomButtons, children} = this.props;
+        const {className, onCancel, onClose, noBackAction, preventEsc, dialog, children} = this.props;
         return (<div ref="dialogRef" key="dialog" id="dialog-overlay" className={className}>
             <div className="dialog-container">
-                <div className="row dialog-header">
-                    {!noBackAction && <i key="backButtonIcon" className="page-back-btn fa fa-arrow-left" onClick={onCancel || onClose}/>}
-                    {(!noBackAction && !preventEsc) && <i className="close-escape">Esc</i>}
-                    <h3>{this.state.title || ""}</h3>
-                    {!!this.state.topButtons && <div className="dialog-top-buttons">
-                        <ErrorBoundary>{this.state.topButtons}</ErrorBoundary>
-                    </div>}
-                </div>
-                <div className="row dialog-content nice-scrollbars">
-                    <ErrorBoundary>{children}</ErrorBoundary>
-                </div>
-                {!!bottomButtons && <div className="row dialog-footer">
-                    <div className="dialog-bottom-buttons">
-                        <ErrorBoundary>{bottomButtons}</ErrorBoundary>
-                    </div>
-                </div>}
+                <Header
+                    dialog={dialog}
+                    onCancel={onCancel}
+                    onClose={onClose}
+                    noBackAction={noBackAction}
+                    preventEsc={preventEsc}
+                />
+                <Content>{children}</Content>
+                <Footer dialog={dialog}/>
             </div>
         </div>);
     }
@@ -240,7 +322,7 @@ class Dialog extends React.Component {
         });
     }
 
-    open(title) {        
+    open(title) {
         return new Promise((resolve, reject) => {
             //this.isOpen = false;
             this.layerState.isOpen = true;
@@ -257,10 +339,10 @@ class Dialog extends React.Component {
 
     onKeyUp(evt) {
         const {preventEsc} = this.props;
-        if(preventEsc) {
+        if (preventEsc) {
             return;
         }
-        
+
         let isEscape = false;
         if ("key" in evt) {
             isEscape = (evt.key === "Escape" || evt.key === "Esc");
@@ -271,12 +353,12 @@ class Dialog extends React.Component {
             this.close();
         }
     }
-    
+
     addClass(c) {
         this.dialogInline && this.dialogInline.addClass(c);
         return this;
     }
-    
+
     removeClass(c) {
         this.dialogInline && this.dialogInline.removeClass(c);
         return this;
@@ -289,9 +371,9 @@ class Dialog extends React.Component {
     render() {
         const {preventEsc, noBackAction} = this.props;
         return React.createElement(RenderToLayer, {
-            render: this.renderLayer, 
+            render: this.renderLayer,
             preventEsc: preventEsc || noBackAction,
-            onClickAway: this.close, 
+            onClickAway: this.close,
             onKeyUp: this.onKeyUp,
             state: this.layerState
         });

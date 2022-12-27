@@ -25,6 +25,12 @@
 .bg-f5f5f5, .bg-border-f5f5f5{
     background: #f5f5f5 !important;
 }
+.bg-aaa, .bg-border-aaa{
+    background: #aaa !important;
+}
+.bg-bbb, .bg-border-bbb{
+    background: #bbb !important;
+}
 .bg-ccc, .bg-border-ccc{
     background: #ccc !important;
 }

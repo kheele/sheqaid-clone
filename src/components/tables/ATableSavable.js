@@ -36,11 +36,13 @@ class ATableSavable extends React.Component {
         this.onPostChange && (this.onPostChange = this.onPostChange.bind(this)); 
         this.onClickComplete && (this.onClickComplete = this.onClickComplete.bind(this));  
 
-        const {defaultValue} = this.props;
+        const {defaultValue, preventInitialChange} = this.props;
         if(defaultValue) {
             this.state.list = defaultValue;
-            const {onChange, name} = this.props;
-            onChange && onChange(toJS(defaultValue.filter(v => !!v)), name, this);
+            if(!preventInitialChange) {
+                const {onChange, name} = this.props;
+                onChange && onChange(toJS(defaultValue.filter(v => !!v)), name, this);
+            }
         }
     }
     

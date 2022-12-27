@@ -313,26 +313,26 @@ class AControllerWrite {
             }
 
             if ('site' in updateAttrs) {
-                if (updateAttrs.site === 'All') {
+                if (updateAttrs.site === 'All' || updateAttrs.site === null) {
                     updateAttrs.site = null;
                     updateAttrs.site_id = null;
-                } else {
+                } else if (updateAttrs.site) {
                     updateAttrs.site_id = updateAttrs.site.id;
                 }
             }
             if ('project' in updateAttrs) {
-                if (updateAttrs.project === 'All') {
+                if (updateAttrs.project === 'All' || updateAttrs.project === null) {
                     updateAttrs.project = null;
                     updateAttrs.project_id = null;
-                } else {
+                } else if (updateAttrs.project) {
                     updateAttrs.project_id = updateAttrs.project.id;
                 }
             }
             if ('client' in updateAttrs) {
-                if (updateAttrs.client === 'All') {
+                if (updateAttrs.client === 'All' || updateAttrs.client === null) {
                     updateAttrs.client = null;
                     updateAttrs.client_id = null;
-                } else {
+                } else if (updateAttrs.client) {
                     updateAttrs.client_id = updateAttrs.client.id;
                 }
             }

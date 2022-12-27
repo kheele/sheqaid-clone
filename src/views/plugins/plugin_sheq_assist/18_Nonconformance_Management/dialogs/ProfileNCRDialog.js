@@ -1,12 +1,17 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, observable} from 'mobx';
+import {computed, extendObservable, observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
 import {AProfileDialog} from '../../../../../components/dialogs';
 import {TRow} from '../../../../../components/tables';
-import {ActionsButton, AddFilesGridViewInput, Button, Clickable, ProfileField} from '../../../../../components/inputs';
+import {
+    ActionsButton,
+    AddFilesGridViewInput,
+    Button,
+    ClearableInput,
+    ProfileField
+} from '../../../../../components/inputs';
 import {FormControls, NavButtons, Row} from '../../../../../components/FormComponents';
 
 import {AuditTableRow, InspectionTableRow} from '../../21_Internal_Audit/dialogs/InternalAuditComponents';
@@ -17,113 +22,256 @@ import ProfileAuditDialog from '../../21_Internal_Audit/dialogs/ProfileAuditDial
 import ProfileIncidentDialog from '../../17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
 
 import style from "./ProfileNCRDialog.lazy.css";
+import NewNCRProgressListTable from "../../../../../components/FormTableComponents/NewNCRProgressListTable";
+import {execWhen, ShouldUpdate} from "../../../../../utils/Utils";
+import Form from "../../../../../utils/Form";
+import EditNCRDialog from "./EditNCRDialog";
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="Dialog, DialogTitle, DialogTopButtons">
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
+    path = "plugin_sheq_assist/ncr/";
     pageKey = "ProfileNCRDialog";
     className = 'ANewTableFormDialog';
 
+    //<editor-fold desc="constructor">
     constructor(props) {
         super(props, style);
+
+        this.onApprove = this.onApprove.bind(this);
+        this.onReject = this.onReject.bind(this);
+        this.onProgress = this.onProgress.bind(this);
+        this.onComplete = this.onComplete.bind(this);
     }
 
-    title() {
-        return "NCR Profile";
+    //</editor-fold>
+
+    //<editor-fold desc="title">
+    get title() {
+        const {controls} = this.refs;
+        if (!controls) {
+            return execWhen(() => this.refs.controls).then(controls => {
+                const {state} = controls;
+                return <DialogTitle state={state}/>;
+            });
+        } else {
+            const {state} = controls;
+            return <DialogTitle state={state}/>;
+        }
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="controls">
     get controls() {
         return Controls;
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="onEdit">
+    onEdit(evt, btn) {
+        const {editDialog} = this.refs.controls.refs;
+        editDialog && editDialog.open(this.state.item);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onApprove">
     onApprove(e, el) {
-        const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        confirmDialog.open("Are you sure you want to approve the non-comformance?").then(res => {
+        const {item} = this.state;
+        confirmDialog.open("Are you sure you want to approve the non-conformance?").then(res => {
             if (res === 1) {
-                progressDialog.open("Approving the non-comformance...");
-                neonBinding.events.emit(this.path + "add-status", item.id, "ApprovedIncident").then(res => {
+                progressDialog.open("Approving the non-conformance...");
+                neonBinding.events.emit(this.path + "update/approve", item.id).then(res => {
                     progressDialog.close();
                     console.log("res", res)
-//                    if(!item.data.status) {
-//                        setTimeout(() => {
-//                            extendObservable(item.data, {status: ['ApprovedIncident']});
-//                        });
-//                    }
-                    infoDialog.open("Non-Comformance successfully approved.");
+                    setTimeout(() => {
+                        extendObservable(item.data, {status_acceptance: 'Approved'});
+                    });
+                    infoDialog.open("Non-Conformance successfully approved.");
                     infoDialog.close(2000);
                 });
             }
         })
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="onReject">
     onReject(e, el) {
-
-    }
-
-    onProgress(e, el) {
-
-    }
-
-    onComplete(e, el) {
-
-    }
-
-    @computed get topButtons() {
-        if (!this.state.item) return null;
-        const {
-            id, data: {
-                created_at,
-                source, selected_source_id, selected_source_item,
-                desc,
-                due_date, responsible_person, approving_person,
-                document_list,
-                comments,
-                remarks
+        const {item} = this.state;
+        confirmDialog.open("Are you sure you want to reject the non-conformance?").then(res => {
+            if (res === 1) {
+                progressDialog.open("Rejecting the non-conformance...");
+                neonBinding.events.emit(this.path + "update/reject", item.id).then(res => {
+                    progressDialog.close();
+                    console.log("res", res)
+                    setTimeout(() => {
+                        extendObservable(item.data, {status_acceptance: 'Rejected'});
+                    });
+                    infoDialog.open("Non-Conformance successfully rejected.");
+                    infoDialog.close(2000);
+                });
             }
-        } = this.state.item;
-        const {id: user_uid} = storage.loggedUser.user;
-        const isResponsible = () => {
-            return true;//responsible_person && user_uid === responsible_person.id;
-        };
-        const isApproving = () => {
-            return approving_person && user_uid === approving_person.id;
-        };
-
-        return <React.Fragment>
-            {isResponsible() && <React.Fragment>
-                <Button className="btn btn-primary" onClick={this.onProgress}>
-                    <i className="fa fa-check icon-left"/>Progress
-                </Button>
-                <Button className="btn btn-primary" onClick={this.onComplete}>
-                    <i className="fa fa-check icon-left"/>Complete
-                </Button>
-                <hr/>
-            </React.Fragment>}
-            {isApproving() && <React.Fragment>
-                <Button className="btn btn-primary" onClick={this.onApprove}>
-                    <i className="fa fa-check icon-left"/>Approve
-                </Button>
-                <Button className="btn btn-primary" onClick={this.onReject}>
-                    <i className="fa fa-check icon-left"/>Reject
-                </Button>
-                <hr/>
-            </React.Fragment>}
-            <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-        </React.Fragment>;
+        });
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onProgress">
+    onProgress(e, el) {
+        const {item} = this.state;
+        confirmDialog.open("Are you sure you want to progress the non-conformance?").then(res => {
+            if (res === 1) {
+                this.refs.controls.state.view = "Progress";
+            }
+        });
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onComplete">
+    onComplete(e, el) {
+        const {item} = this.state;
+        confirmDialog.open("Are you sure you want to close the non-conformance?").then(res => {
+            if (res === 1) {
+                this.refs.controls.state.view = "Complete";
+            }
+        });
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="topButtons">
+    get topButtons() {
+        const {controls} = this.refs;
+        const onRender = controls => {
+            return <DialogTopButtons
+                state={controls.state}
+                mainState={this.state}
+                onProgress={this.onProgress}
+                onComplete={this.onComplete}
+                onApprove={this.onApprove}
+                onReject={this.onReject}
+                onEdit={this.onEdit}
+                onCancel={this.onCancel}
+            />;
+        };
+        if (controls) {
+            return onRender(controls);
+        } else {
+            return execWhen(() => this.refs.controls).then(onRender);
+        }
+    }
+
+    //</editor-fold>
 }
 
 // </editor-fold>
 
+//<editor-fold desc="DialogTitle">
+const DialogTitle = observer(({state}) => {
+    const {view} = state;
+    let t = "NCR Profile";
+    if (view !== 'Profile') {
+        t += view ? ` (${view})` : "";
+    }
+    return t;
+});
+//</editor-fold>
+
+//<editor-fold desc="DialogTopButtons">
+const DialogTopButtons = observer(({
+                                       state,
+                                       mainState,
+                                       onProgress,
+                                       onComplete,
+                                       onApprove,
+                                       onReject,
+                                       onEdit,
+                                       onCancel
+                                   }) => {
+    const {item} = mainState;
+    if (!item) return null;
+
+    const {
+        id, data: {
+            created_at,
+            source, selected_source_id, selected_source_item,
+            desc,
+            due_date, responsible_person, approving_person,
+            document_list,
+            comments,
+            remarks,
+            status,
+            status_acceptance
+        }
+    } = item;
+
+    const {view} = state;
+
+    const {id: user_uid} = storage.loggedUser.user;
+    const isResponsible = () => {
+        return true;//responsible_person && user_uid === responsible_person.id;
+    };
+    const isApproving = () => {
+        return approving_person && user_uid === approving_person.id;
+    };
+
+    return <React.Fragment>
+        {isResponsible() && <React.Fragment>
+            {status !== 'Progressed' && status !== 'Completed' && view !== "Progress" &&
+                <Button className="btn btn-primary" onClick={onProgress}>
+                    <i className="fa fa-check icon-left"/>Progress
+                </Button>}
+            {status !== 'Completed' && view !== "Complete" &&
+                <Button className="btn btn-primary" onClick={onComplete}>
+                    <i className="fa fa-check icon-left"/>Complete
+                </Button>}
+            {status !== 'Progressed' && status !== 'Completed' &&
+                view !== "Progress" && view !== "Complete" && <hr/>}
+        </React.Fragment>}
+        {isApproving() && <React.Fragment>
+            {status_acceptance !== 'Approved' && <Button className="btn btn-primary" onClick={onApprove}>
+                <i className="fa fa-check icon-left"/>Approve
+            </Button>}
+            {status_acceptance !== 'Rejected' && <Button className="btn btn-primary" onClick={onReject}>
+                <i className="fa fa-check icon-left"/>Reject
+            </Button>}
+            {status_acceptance !== 'Approved' && status_acceptance !== 'Rejected' && <hr/>}
+        </React.Fragment>}
+        {onEdit && <Button className="btn btn-primary" onClick={onEdit}>
+            <i className="fa fa-pen icon-left"/>Edit
+        </Button>}
+        <hr/>
+        <Button className="btn btn-primary cancel" onClick={onCancel}>Cancel</Button>
+    </React.Fragment>;
+});
+//</editor-fold>
+// </editor-fold>
+
 @observer
 class Controls extends React.Component {
+    path = "plugin_sheq_assist/ncr/";
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
     state = {
-        lists: {}
+        lists: {
+            status: ['Pending', 'Progressed', 'Completed'].map(text => {
+                return {text, value: text, checked: false}
+            }),
+            status_acceptance: ['Pending', 'Approved', 'Rejected'].map(text => {
+                return {text, value: text, checked: false}
+            }),
+            result: ['Pass', 'Fail'].map(text => {
+                return {text, value: text, checked: false}
+            }),
+        },
+        view: 'Profile',
     };
     // </editor-fold>
 
@@ -132,9 +280,21 @@ class Controls extends React.Component {
         super(props);
 
         this.onView = this.onView.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.form = new Form();
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="componentDidMount">
+    componentDidMount() {
+        execWhen(() => this.props.dialog && this.props.dialog.extraProp('view')).then(view => {
+            this.state.view = view || "Profile";
+        });
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onView">
     onView(evt, btn) {
@@ -156,6 +316,107 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onSubmit">
+    onSubmit(val, name, el) {
+        const {form, item: {data: old_data}, viewProfile, viewProgress, viewComplete,} = this;
+
+        if (viewProgress) {
+            const {
+                //6
+                progress_list,
+            } = form.data;
+            const data = {};
+
+            //6
+            if (progress_list) {
+                const __progress_list = progress_list.slice().map(({progress_date, ...others}) => ({
+                    ...others,
+                    progress_date: progress_date.getTime(),
+                }));
+                ShouldUpdate.checkListToJS(data, old_data, __progress_list, 'progress_list');
+            }
+
+            console.log(data)
+
+            progressDialog.open("Progressing the non-conformance...");
+            neonBinding.events.emit(this.path + "update/progress", this.item.id, data).then(res => {
+                console.log("res", res)
+                if (!res) {
+                    infoDialog.open("An error occurred. Please try again.");
+                } else {
+                    const data_updated = {...data, status: 'Progressed'};
+                    // onSaved && onSaved(data_updated);
+
+                    extendObservable(this.item.data, data_updated);
+                    infoDialog.open("Non-Conformance successfully progressed.");
+                    infoDialog.close(2000);
+                    this.props.close();
+                }
+            }).finally(() => {
+                progressDialog.close();
+            });
+        } else if (viewComplete) {
+            const {
+                //7
+                status_acceptance, status, result, completed_date, additional_notes
+            } = form.data;
+            const data = {};
+
+            //7
+            ShouldUpdate.check(data, old_data, status_acceptance, 'status_acceptance');
+            // ShouldUpdate.check(data, old_data, status, 'status');
+            ShouldUpdate.check(data, old_data, result, 'result');
+            ShouldUpdate.checkDate(data, old_data, completed_date, 'completed_date');
+            ShouldUpdate.check(data, old_data, additional_notes, 'additional_notes');
+
+            console.log(data)
+
+            progressDialog.open("Closing the non-conformance...");
+            neonBinding.events.emit(this.path + "update/complete", this.item.id, data).then(res => {
+                console.log("res", res)
+                if (!res) {
+                    infoDialog.open("An error occurred. Please try again.");
+                } else {
+                    const data_updated = {...data, status: 'Completed'};
+                    // onSaved && onSaved(data_updated);
+
+                    extendObservable(this.item.data, data_updated);
+                    infoDialog.open("Non-Conformance successfully closed.");
+                    infoDialog.close(2000);
+                    this.props.close();
+                }
+            }).finally(() => {
+                progressDialog.close();
+            });
+        }
+    }
+
+    // </editor-fold>
+
+    //<editor-fold desc="viewProfile">
+    @computed get viewProfile() {
+        const {view} = this.state;
+        return !view || view === "Profile";
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="viewProgress">
+    @computed get viewProgress() {
+        const {view} = this.state;
+        return view === "Progress";
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="viewComplete">
+    @computed get viewComplete() {
+        const {view} = this.state;
+        return view === "Complete";
+    }
+
+    //</editor-fold>
 
     get item() {
         return this.props.state.item;
@@ -186,9 +447,12 @@ class Controls extends React.Component {
                     //5
                     comments, remarks,
                     //6
-                    status, result, progress_date, completed_date, outstanding, additional_notes
+                    progress_list,
+                    //7
+                    status_acceptance, status, result, completed_date, additional_notes
                 }
-            }
+            },
+            viewProfile, viewProgress, viewComplete,
         } = this;
 
         const {isConsultant} = storage.is;
@@ -196,7 +460,7 @@ class Controls extends React.Component {
         return <FormControls>
             <Row
                 rendered
-                active
+                active={viewProfile || (!viewProgress && !viewComplete)}
                 idx={0}
                 title="Company / Project / Site"
                 onFormOpen={onFormOpen}
@@ -204,7 +468,8 @@ class Controls extends React.Component {
             >
                 {isConsultant && <ProfileField name="client" value={client} renderer={v => v.name || v.data.name}
                                                placeholder="Company" className="col-lg-12"/>}
-                <ProfileField name="project" value={project} renderer={v => v.name || v.data.name} placeholder="Project"
+                <ProfileField name="project" value={project} renderer={v => v.name || v.data.name}
+                              placeholder="Project"
                               className="col-lg-6"/>
                 <ProfileField name="site" value={site} renderer={v => v.name || v.data.name} placeholder="Site"
                               className="col-lg-6"/>
@@ -233,7 +498,8 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <ProfileField name="desc" placeholder="Finding / NCR Description" value={desc} className="col-lg-12"/>
+                <ProfileField name="desc" placeholder="Finding / NCR Description" value={desc}
+                              className="col-lg-12"/>
                 <ProfileField name="process" placeholder="Process" value={process} className="col-lg-12"/>
             </Row>
             <Row
@@ -277,30 +543,81 @@ class Controls extends React.Component {
             </Row>
             <Row
                 rendered
+                active={viewProgress}
                 idx={6}
-                title="6. Item Progress / Closed Out"
+                title="6. Progress"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                {viewProgress && <NewNCRProgressListTable ref="progress_list" name="progress_list"
+                                                          defaultValue={[...(progress_list || []), null]}
+                                                          onChange={this.onSubmit} preventInitialChange/>}
+                {!viewProgress &&
+                    <NewNCRProgressListTable ref="progress_list" name="progress_list" defaultValue={progress_list || []}
+                                             readonly/>}
+            </Row>
+            <Row
+                rendered
+                active={viewComplete}
+                idx={7}
+                title="7. Status / Result / Closed Out"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <ProfileField name="status" type="radio" placeholder="Status" defaultValue={status}
-                              className="col-lg-12"/>
-                <ProfileField name="result" type="radio" placeholder="Result" defaultValue={result}
-                              className="col-lg-12"/>
+                {viewComplete && <>
+                    <ClearableInput ref="status_acceptance" name="status_acceptance" type="radio"
+                                    placeholder="Acceptance Status" defaultValue={status_acceptance}
+                                    vertical={2}
+                                    className="col-lg-6 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.status_acceptance} returnValue/>
+                    <ClearableInput ref="status" name="status" type="radio"
+                                    placeholder="Status" defaultValue={"Completed"}
+                                    vertical={2}
+                                    className="col-lg-6 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.status} returnValue readonly/>
+                    <ClearableInput ref="result" name="result" type="radio" placeholder="Result" defaultValue={result}
+                                    className="col-lg-6 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.result} returnValue/>
+                    <ClearableInput name="completed_date" type="date" placeholder="Completed Date..."
+                                    defaultValue={completed_date || new Date()} className="col-lg-6 form-control"
+                                    onChange={this.form.onChange}/>
 
-                <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+                    <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-                <ProfileField name="progress_date" type="date" placeholder="Progress Date" defaultValue={progress_date}
-                              className="col-lg-12"/>
-                <ProfileField name="completed_date" type="date" placeholder="Completed Date"
-                              defaultValue={completed_date} className="col-lg-12"/>
+                    <ClearableInput ref="additional_notes" name="additional_notes" type="textarea"
+                                    placeholder="Additional Notes" defaultValue={additional_notes}
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
 
-                <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+                    <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-                <ProfileField name="outstanding" placeholder="Outstanding" defaultValue={outstanding}
-                              className="col-lg-12"/>
-                <ProfileField name="additional_notes" placeholder="Additional Notes" defaultValue={additional_notes}
-                              className="col-lg-12"/>
+                    <Button className="btn btn-primary hor-center w-120 border-radius-20 margin-0"
+                            onClick={this.onSubmit}>
+                        <i className="fa fa-check"/> Submit
+                    </Button>
+                </>}
+                {!viewComplete && <>
+                    <ProfileField name="status_acceptance" type="radio" placeholder="Acceptance Status"
+                                  defaultValue={status_acceptance}
+                                  className="col-lg-12"/>
+                    <ProfileField name="status" type="radio" placeholder="Status" defaultValue={status}
+                                  className="col-lg-12"/>
+                    <ProfileField name="result" type="radio" placeholder="Result" defaultValue={result}
+                                  className="col-lg-12"/>
+
+                    <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+                    <ProfileField name="completed_date" type="date" placeholder="Completed Date"
+                                  defaultValue={completed_date} className="col-lg-12"/>
+
+                    <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+                    <ProfileField name="additional_notes" placeholder="Additional Notes" defaultValue={additional_notes}
+                                  className="col-lg-12"/>
+                </>}
             </Row>
+
+            <EditNCRDialog ref="editDialog"/>
 
             <ProfileSiteDialog ref="profileSiteDialog"/>
             <ProfileAuditDialog ref="profileAuditDialog"/>

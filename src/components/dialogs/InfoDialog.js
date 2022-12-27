@@ -68,7 +68,12 @@ class InfoDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="InfoDialog" ref="dialog" className="InfoDialog">
+        return (<Dialog
+            key="InfoDialog"
+            ref="dialog"
+            className="InfoDialog"
+            dialog={this}
+        >
             <Msg state={this.state}/>
             <div className="controls">
                 {this.state.actions.map(v => {

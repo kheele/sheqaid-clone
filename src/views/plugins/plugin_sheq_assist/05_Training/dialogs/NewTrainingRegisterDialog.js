@@ -103,6 +103,7 @@ class Controls extends React.Component {
 
                 console.log('training_plan', training_plan)
                 console.log('institution_conducting_training', institution_conducting_training)
+                console.log('hr', trainer)
 
                 if (training_plan) {
                     const {
@@ -120,16 +121,17 @@ class Controls extends React.Component {
                 }
                 if (institution_conducting_training) {
                     institution_conducting_training_ref.value = institution_conducting_training;
+                } else {
+                    const {selectedClient} = storage.selected;
+                    if(selectedClient) {
+                        const {name, company_name} = selectedClient.data;
+                        institution_conducting_training_ref.value = name || company_name;
+                    }
                 }
                 if (trainer) {
-                    trainer_ref.value = trainer;
+                    const {id, fname, lname, data} = trainer;
+                    trainer_ref.value = {label: `${lname || data.lname} ${fname || data.fname}`, value: trainer};
                 }
-                // trainer && trainer_ref.refs.input.onChange({
-                //     label: trainer.lname + ' ' + trainer.fname,
-                //     value: trainer
-                // });
-
-
             }
         });
     }
@@ -253,20 +255,24 @@ class Controls extends React.Component {
             infoDialog.open('Trainer is required');
             return;
         }
-
-        if (!employees) {
-            infoDialog.open('Please Add At Least 1 Employee On The Training Register');
+        if (!form.isValid('list_table')) {
+            infoDialog.open('At Least 1 Employee On The Training Register is required');
             return;
-        } else {
-//                for(var n = 0; n < employees.length; n++){
-//                    const item = employees[n];
-//                    if(!item.signature) {
-//                        const {fname, lname} = item.employee.data;
-//                        infoDialog.open((fname + ' ' + lname) + ' does not have a signature provided');
-//                        return;
-//                    }
-//                }
         }
+
+//         if (!employees) {
+//             infoDialog.open('Please Add At Least 1 Employee On The Training Register');
+//             return;
+//         } else {
+// //                for(var n = 0; n < employees.length; n++){
+// //                    const item = employees[n];
+// //                    if(!item.signature) {
+// //                        const {fname, lname} = item.employee.data;
+// //                        infoDialog.open((fname + ' ' + lname) + ' does not have a signature provided');
+// //                        return;
+// //                    }
+// //                }
+//         }
 
         const {
             //0
@@ -275,12 +281,15 @@ class Controls extends React.Component {
             training_matrix,
             //2
             time_or_duration,
+            time_from,
+            time_to,
             date,
             //3
             institution_conducting_training,
             trainer,
             //4
             list_proof,
+            list_table,
         } = form.data;
         const data = {};
 
@@ -321,6 +330,12 @@ class Controls extends React.Component {
         if (time_or_duration) {
             data.time_or_duration = time_or_duration;
         }
+        if(time_from) {
+            data.time_from = time_from;
+        }
+        if(time_to) {
+            data.time_to = time_to;
+        }
         if (date) {
             data.date = date.getTime();
         }
@@ -333,7 +348,11 @@ class Controls extends React.Component {
             data.trainer = {id, fname: fname || _data.fname, lname: lname || _data.lname};
         }
         //4
-        data.list_table = employees.map(({signature, employee: {id, data: {fname, lname}}}) => {
+        console.log('list_table', list_table.slice())
+        data.list_table = list_table.map(item => {
+            const {employee, signature} = item;
+
+            const {id, data: {fname, lname}} = employee || item;
             const v = {employee: {id, fname, lname}};
             if (signature) {
                 v.signature = JSON.stringify(signature);
@@ -357,7 +376,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -472,13 +490,17 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
                 <Divider/>
-                <SelectTable ref="selectEmployeeTable"
-                             replaceCols name="list_table"
-                             desc="Employees" title="Select Employees"
-                             className="col-lg-12 no-padding min-h-500 SelectEmployeeTable"
-                             renderTHead={renderTHeadEmployees}
-                             renderItem={renderItemEmployees}
-                             isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
+                <SelectTable
+                    ref="selectEmployeeTable"
+                    replaceCols
+                    name="list_table"
+                    desc="Employees" title="Select Employees"
+                    className="col-lg-12 no-padding min-h-500 SelectEmployeeTable"
+                    renderTHead={renderTHeadEmployees}
+                    renderItem={renderItemEmployees}
+                    isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}
+                    onChange={this.form.onChange}
+                />
             </Row>
         </FormControls>);
     }
@@ -512,9 +534,9 @@ function calcTimeDiff({time_from, time_to}) {
 
     const num = time_from_now.durationNextHours(time_to_now);
     const parts = String(num).split('.');
-    return parts[0] + 'hrs, ' + (parseInt(parts[1], 10) * 60) +'min';
+    const min = parseInt(parts[1], 10) * 60;
+    return `${parts[0]}hrs${isNaN(min) ? '' : (', ' + min + 'min')}`;
 }
-
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="renderTHeadEmployees">
@@ -529,7 +551,6 @@ function renderTHeadEmployees() {
         <div className="td fixed-flex no-padding min-w-70"></div>
     </THead>;
 }
-
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="renderItemEmployees">
@@ -544,7 +565,6 @@ function renderItemEmployees(item, n) {
         <div className="td fixed-flex min-w-90"></div>
     </React.Fragment>;
 }
-
 // </editor-fold>
 
 export default NewTrainingRegisterDialog;

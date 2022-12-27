@@ -89,7 +89,12 @@ class OptionsDialog extends React.Component {
         if(options.isEmpty()) {
             return null;
         }
-        return (<Dialog key="OptionsDialog" ref="dialog" className="OptionsDialog">
+        return (<Dialog
+            key="OptionsDialog"
+            ref="dialog"
+            className="OptionsDialog"
+            dialog={this}
+        >
             <ClearableInput 
                 ref={ref => {this.refs.input = ref}} 
                 name="text" 

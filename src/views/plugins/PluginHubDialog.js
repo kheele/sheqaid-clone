@@ -42,7 +42,12 @@ class PluginHubDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key={this.pageKey + '-dialog'} ref="dialog" className={this.pageKey}>
+        return (<Dialog
+            key={this.pageKey + '-dialog'}
+            ref="dialog"
+            className={this.pageKey}
+            dialog={this}
+        >
             <Tabs key="tabs" index={this.state.index}>
                 <PluginsInstalledTab title="Installed"/>
                 <PluginsNotInstalledTab title="Not Installed"/>

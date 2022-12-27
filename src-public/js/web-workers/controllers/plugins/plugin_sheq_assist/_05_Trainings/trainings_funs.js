@@ -27,7 +27,7 @@ class TrainingsFuns {
                 return cntr.filter.call(cntr, null, {course: id, incCourse: false, incRegister: false});
             }).then(val => {
                 if (val) {
-                    item.data.training_plan_list = val;
+                    item.data.training_plan_list = val.distinct();
                 }
             }));
         }
@@ -36,7 +36,7 @@ class TrainingsFuns {
                 return cntr.filter.call(cntr, null, {course: id, incMatrix: false, incPlan: false});
             }).then(val => {
                 if (val) {
-                    item.data.training_register_list = val;
+                    item.data.training_register_list = val.distinct();
                 }
             }));
         }
@@ -48,7 +48,7 @@ class TrainingsFuns {
                 }));
             }).then(val => {
                 if (val) {
-                    item.data.job_position_list = val;
+                    item.data.job_position_list = val.distinct();
                 }
             }));
         }
@@ -121,15 +121,15 @@ class TrainingsFuns {
                     }
                 }));
             }
-        }
-        if (incRegister) {
-            promise.push(Events.get('plugin_sheq_assist/05_Trainings/training-register/').then(cntr => {
-                return cntr.filter.call(cntr, null, {course: course_or_module.id, incMatrix: false, incPlan: false});
-            }).then(val => {
-                if (val) {
-                    item.data.training_register_list = val;
-                }
-            }));
+            if (incRegister) {
+                promise.push(Events.get('plugin_sheq_assist/05_Trainings/training-register/').then(cntr => {
+                    return cntr.filter.call(cntr, null, {training_matrix: training_matrix.id, incMatrix: false, incPlan: false});
+                }).then(val => {
+                    if (val) {
+                        item.data.training_register_list = val.distinct();
+                    }
+                }));
+            }
         }
         if (job_position) {
             promise.push(Events.get('plugin_sheq_assist/employees/job-positions/').then(cntr => {
@@ -215,6 +215,13 @@ class TrainingsFuns {
 
         const promise = [];
 
+        if(hr && hr.id) {//this is for only people for company
+            promise.push(employeesCntr.find_by_id(null, hr.id).then(val => {
+                if (val) {
+                    item.data.hr = val;
+                }
+            }));
+        }
         if (course_or_module) {
             if (training_plan) {
                 if (incPlan) {
@@ -258,7 +265,7 @@ class TrainingsFuns {
                     });
                 }).then(val => {
                     if (val) {
-                        item.data.all_training_plan_list = val;
+                        item.data.all_training_plan_list = val.distinct();
                     }
                 }));
             }
@@ -268,7 +275,7 @@ class TrainingsFuns {
                 return cntr.filter.call(cntr, null, {course: course_or_module.id, incMatrix: false, incPlan: false});
             }).then(val => {
                 if (val) {
-                    item.data.training_register_list = val;
+                    item.data.training_register_list = val.distinct();
                 }
             }));
         }
@@ -311,6 +318,7 @@ class TrainingsFuns {
             data: {
                 client, project, site, client_id, project_id, site_id,
                 training_matrix,
+                list_table,
                 list_table_keys,
                 time_or_duration,
                 date,
@@ -333,27 +341,34 @@ class TrainingsFuns {
             if (incPlan) {
                 promise.push(Events.get('plugin_sheq_assist/05_Trainings/training-plan/').then(cntr => {
                     return cntr.filter.call(cntr, null, {
-                        course: training_matrix.course_or_module.id,
+                        year: Dates.parse(date).getFullYear(),
+                        course: (training_matrix.course_or_module || training_matrix.data.course_or_module).id,
                         incRegister: false,
-                        incCourse: false
+                        incCourse: false,
+                        incMatrix: true,
                     });
                 }).then(val => {
                     if (val) {
-                        item.data.training_plan_list = val;
+                        item.data.training_plan_list = val.distinct();
                     }
                 }));
             }
         }
-        if (list_table_keys) {
+        if (list_table) {
             promise.push(Events.get('plugin_sheq_assist/employees/').then(cntr => {
-                return Promise.all(list_table_keys.map(async id => {
-                    return cntr.find_by_id.call(cntr, null, id);
+                return Promise.all(list_table.map(async ({employee, signature}) => {
+                    employee = await cntr.find_by_id.call(cntr, null, employee.id);
+                    return {employee, signature};
                 }));
             }).then(val => {
                 if (val) {
-                    item.data.list_table = val;
+                    item.data.list_table = val.distinct();
                 }
             }));
+        }
+
+        if(time_or_duration && time_or_duration.contains(', NaNmin')) {
+            item.data.time_or_duration = time_or_duration.replace(', NaNmin', '');
         }
 
         //<editor-fold desc="orgs">

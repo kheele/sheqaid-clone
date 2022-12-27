@@ -1,6 +1,5 @@
 import moment from 'moment';
 import {autorun, computed, observable, toJS} from 'mobx';
-import firestore from '../firestore/Firestore';
 
 import indexedStorage from '../utils/StorageCreator';
 
@@ -20,14 +19,7 @@ class Storage {
             this[key] = obj;
         });
 
-        firestore.start().then(res => {
-            return Promise.all([
-                load.loadCountries(),
-            ]);
-        }).catch(e => {
-            console.log(e)
-//            infoDialog.open("An error occurred. Please restart the application and ensure that you are connected to the internet.");
-        });
+        load.loadCountries();
 
         autorun(() => {
             if (is.isLoggedIn) {

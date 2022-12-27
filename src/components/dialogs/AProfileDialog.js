@@ -119,7 +119,8 @@ class AProfileDialog extends AFormDialog {
             topButtons={this.topButtons}
             onCancel={this.onCancel}
             onClose={this.onClose}
-            >
+            dialog={this}
+        >
             <Controls 
                 ref="controls" 
                 dialog={this} 

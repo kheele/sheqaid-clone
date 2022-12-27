@@ -36,9 +36,9 @@ const Comp = forwardRef(({interval, employee_view}, ref) => {
     return (
         <>
             <GridCounter ref={gridCounterRef} interval={interval} employee_view={employee_view}/>
-            <GridDoughnutChart ref={gridDoughnutChartRef} interval={interval} employee_view={employee_view}/>
+            {/*<GridDoughnutChart ref={gridDoughnutChartRef} interval={interval} employee_view={employee_view}/>*/}
             <GridFrequencyVerticalBarChart interval={interval} employee_view={employee_view}/>
-            <GridReportsLineChart ref={gridReportsLineChartRef} interval={interval} employee_view={employee_view}/>
+            {/*<GridReportsLineChart ref={gridReportsLineChartRef} interval={interval} employee_view={employee_view}/>*/}
         </>
     );
 });

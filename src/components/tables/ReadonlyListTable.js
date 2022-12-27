@@ -148,7 +148,13 @@ class ReadonlyListTable extends React.Component {
             <TBody ref="body" title={desc} renderItem={this.renderItem} onClick={this.onClick} state={this.state} loadOnScrolled={loadOnScrolled} onLoadList={this.onLoadList} disablePullToRefresh={true}/>
         </Table>;
         if(isDialog) {
-            return (<Dialog key={this.pageKey + '-profile-dialog'} ref="dialog" className={'ReadonlyListTable-dialog'} topButtons={this.topButtons}>
+            return (<Dialog
+                key={this.pageKey + '-profile-dialog'}
+                ref="dialog"
+                className={'ReadonlyListTable-dialog'}
+                topButtons={this.topButtons}
+                dialog={this}
+            >
                 {tbl}
             </Dialog>);
         }

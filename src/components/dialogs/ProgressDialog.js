@@ -75,7 +75,12 @@ class ProgressDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="ProgressDialog" ref="dialog" className="ProgressDialog">
+        return (<Dialog
+            key="ProgressDialog"
+            ref="dialog"
+            className="ProgressDialog"
+            dialog={this}
+        >
             <CircularProgress/>
             <Msg state={this.state}/>
             <div className="controls">

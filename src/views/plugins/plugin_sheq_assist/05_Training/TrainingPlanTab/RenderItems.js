@@ -2,20 +2,26 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import {TRow} from "../../../../../components/tables";
+import {TRow} from "components/tables";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@mui/material/Avatar";
 import {Grid} from "@material-ui/core";
-import {ActionsButton, Clickable} from "../../../../../components/inputs";
+import {ActionsButton, Clickable} from "components/inputs";
 import {CostBtn, HasWarnings, ResultsTD, StatusTD, YearsTD} from "./Components";
-import {Button} from "@mui/material";
+import {computed} from "mobx";
 // </editor-fold>
 
 //<editor-fold desc="RenderEmployee">
 @observer
 class RenderEmployee extends React.Component {
+    @computed get isViewTargetEmployee() {
+        const {props: {target_view}} = this;
+        const {id, target} = target_view || {};
+        return target === 'employee';
+    }
+
     render() {
-        const {item, view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
+        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
 
         const {
             group,
@@ -28,8 +34,8 @@ class RenderEmployee extends React.Component {
             courseList,
             yearList
         } = item;
-        return <TRow key={group.id}>
-            <div className="td">
+        return <TRow key={group.id} className="w-full">
+            {!this.isViewTargetEmployee && <div className="td">
                 <Clickable id={group.id} item={group} target="employee" onClick={onViewTarget}>
                     <Chip
                         avatar={<Avatar
@@ -39,7 +45,7 @@ class RenderEmployee extends React.Component {
                         label={lname + ' ' + fname}
                     />
                 </Clickable>
-            </div>
+            </div>}
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
                     {courseList.map((item) => <Grid item>
@@ -62,14 +68,19 @@ class RenderEmployee extends React.Component {
         </TRow>;
     }
 }
-
 //</editor-fold>
 
 //<editor-fold desc="RenderJobPosition">
 @observer
 class RenderJobPosition extends React.Component {
+    @computed get isViewTargetJobPosition() {
+        const {props: {target_view}} = this;
+        const {id, target} = target_view || {};
+        return target === 'job_position';
+    }
+
     render() {
-        const {item, view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
+        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
 
         const {
             group,
@@ -83,12 +94,12 @@ class RenderJobPosition extends React.Component {
             courseList,
             yearList
         } = item;
-        return <TRow key={group.id}>
-            <div className="td">
+        return <TRow key={group.id} className="w-full">
+            {!this.isViewTargetJobPosition && <div className="td">
                 <Clickable id={group.id} item={group} target="job_position" onClick={onViewTarget}>
                     <Chip label={name} size="small"/>
                 </Clickable>
-            </div>
+            </div>}
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
                     {courseList.map((item) => <Grid item>
@@ -112,14 +123,19 @@ class RenderJobPosition extends React.Component {
         </TRow>;
     }
 }
-
 //</editor-fold>
 
 //<editor-fold desc="RenderCourse">
 @observer
 class RenderCourse extends React.Component {
+    @computed get isViewTargetCourse() {
+        const {props: {target_view}} = this;
+        const {id, target} = target_view || {};
+        return target === 'course';
+    }
+
     render() {
-        const {item, view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
+        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
 
         const {
             group,
@@ -133,12 +149,12 @@ class RenderCourse extends React.Component {
             jobPositionList,
             yearList
         } = item;
-        return <TRow key={group.id}>
-            <div className="td">
+        return <TRow key={group.id} className="w-full">
+            {!this.isViewTargetCourse && <div className="td">
                 <Clickable id={group.id} item={group} target="course" onClick={onViewTarget}>
                     <Chip label={name} size="small"/>
                 </Clickable>
-            </div>
+            </div>}
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
                     {jobPositionList.map((item) => <Grid item>
@@ -162,14 +178,19 @@ class RenderCourse extends React.Component {
         </TRow>;
     }
 }
-
 //</editor-fold>
 
 //<editor-fold desc="RenderYear">
 @observer
 class RenderYear extends React.Component {
+    @computed get isViewTargetYear() {
+        const {props: {target_view}} = this;
+        const {id, target} = target_view || {};
+        return target === 'year';
+    }
+
     render() {
-        const {item, view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
+        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget} = this.props;
 
         const {
             group,
@@ -182,12 +203,12 @@ class RenderYear extends React.Component {
             jobPositionList,
             courseList
         } = item;
-        return <TRow key={group}>
-            <div className="td">
+        return <TRow key={group} className="w-full">
+            {!this.isViewTargetYear && <div className="td">
                 <Clickable id={group} item={group} target="year" onClick={onViewTarget}>
                     <Chip label={group} size="small"/>
                 </Clickable>
-            </div>
+            </div>}
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
                     {courseList.map((item) => <Grid item>
@@ -219,7 +240,6 @@ class RenderYear extends React.Component {
         </TRow>;
     }
 }
-
 //</editor-fold>
 
 export {RenderEmployee, RenderJobPosition, RenderCourse, RenderYear};

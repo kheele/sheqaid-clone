@@ -4,16 +4,28 @@ const ncr = require('./ncr/index.js');
 
 exports.sendExpiryEmailsTest = functions.https.onCall((data, ctx) => {
     employees.sendExpiryEmails(ctx);
+    // ncr.sendEmails(ctx);
     // console.log("sendExpiryEmailsTest");
     return 1;
+});
+
+//every monday 07:20
+exports.employees_task_sendExpiryEmails = functions.pubsub.schedule('every 5 minutes').timeZone('Africa/Johannesburg').onRun(async ctx => {
+    employees.sendExpiryEmails(ctx);
+});
+
+//every monday 07:00
+exports.ncr_task_sendEmails = functions.pubsub.schedule('every 5 minutes').timeZone('Africa/Johannesburg').onRun(async ctx => {
+    ncr.sendEmails(ctx);
 });
 
 // exports.sendEmail = functions.pubsub.schedule('0 7 * * 1-6').timeZone('Africa/Johannesburg').onRun(async ctx => {
 // exports.taskRunner = functions.pubsub.schedule('* 8 * * *').timeZone('Africa/Johannesburg').onRun(async ctx => {
 exports.taskRunner = functions.pubsub.schedule('every 3 minutes').timeZone('Africa/Johannesburg').onRun(async ctx => {
     // employees.sendExpiryEmails(ctx);
+    // ncr.sendExpiryEmails(ctx);
     // return;
-    
+
     const now = admin.firestore.Timestamp.now();
 
     let q = db2.collection('default_tasks');//{id, data: {_group, name:{singular,plural}, tbl, id, status}}
@@ -58,38 +70,32 @@ exports.taskRunnerRetry = functions.pubsub.schedule('every 5 minutes').timeZone(
     });
 
     if (tasks.length > 0)
-    return await Promise.all(tasks.map(async doc => {
-        const {group_key, status} = doc.data();
-        const group = workers[group_key];
-        if (group) {
-            const worker = group[doc.id];
-            if (worker) {
-                return await worker(ctx).then(() => {
-                    const later = admin.firestore.Timestamp.fromMillis(now.toMillis() + 5000);
-                    return doc.ref.update({status: "Schedule", performedAt: later});
-                }).catch(e => {
-                    console.log(e)
-                    return doc.ref.update({status: "Error"});
-                });
+        return await Promise.all(tasks.map(async doc => {
+            const {group_key, status} = doc.data();
+            const group = workers[group_key];
+            if (group) {
+                const worker = group[doc.id];
+                if (worker) {
+                    return await worker(ctx).then(() => {
+                        const later = admin.firestore.Timestamp.fromMillis(now.toMillis() + 5000);
+                        return doc.ref.update({status: "Schedule", performedAt: later});
+                    }).catch(e => {
+                        console.log(e)
+                        return doc.ref.update({status: "Error"});
+                    });
+                } else {
+                    return await doc.ref.update({status: "UndefinedWorker"});
+                }
             } else {
-                return await doc.ref.update({status: "UndefinedWorker"});
+                return await doc.ref.update({status: "UndefinedGroup"});
             }
-        } else {
-            return await doc.ref.update({status: "UndefinedGroup"});
-        }
-    }));
+        }));
 });
 
 const workers = {
     employees,
     ncr,
-    COVID_Management: {
-
-    },
-    _01_Project_Plan: {
-
-    },
-    _02_IMS_Policies: {
-
-    }
+    COVID_Management: {},
+    _01_Project_Plan: {},
+    _02_IMS_Policies: {}
 };

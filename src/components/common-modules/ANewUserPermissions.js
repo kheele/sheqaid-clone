@@ -268,13 +268,16 @@ class NewUserOtherPermissions extends ANewUserPermissions {
     constructor(props) {
         super(props);
 
-        let {selectedList} = this.props;
+        let {selectedList, readonly} = this.props;
 
         let defaultList = [...defaultOtherPermissions];
 
         if (selectedList) {
+            // console.log('NewUserOtherPermissions selectedList', selectedList.slice())
+
+            const defaultOtherPermissionsKeys = defaultOtherPermissions.map(({key}) => key);
             selectedList = selectedList.filter(v => {
-                return defaultOtherPermissions.contains(v.key);
+                return defaultOtherPermissionsKeys.contains(v.key);
             }).map(v => {
                 if (!('create' in v.actions)) {
                     extendObservable(v.actions, {create: false});
@@ -293,10 +296,8 @@ class NewUserOtherPermissions extends ANewUserPermissions {
                 }
                 return v;
             });
-            const newList = defaultList.filter(key => {
-                return selectedList.noneMatch(v => {
-                    return key === v.key;
-                });
+            const newList = defaultList.filter(v1 => {
+                return selectedList.noneMatch(v2 => v1.key === v2.key);
             });
             selectedList.sortBy('status');
             selectedList.sortBy('desc');
@@ -305,6 +306,11 @@ class NewUserOtherPermissions extends ANewUserPermissions {
             defaultList.sortBy('status');
             defaultList.sortBy('desc');
             this.state.list = defaultList;
+        }
+
+        if (!readonly) {
+            const {onChange, name} = props;
+            onChange && onChange(toJS(this.state.list.filter(v => !!v)), name, this);
         }
 //        console.log('NewUserOtherPermissions', this.state.list.slice())
     }

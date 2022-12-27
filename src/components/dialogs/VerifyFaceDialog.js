@@ -33,7 +33,7 @@ class VerifyFaceDialog extends React.Component {
         modelsLoaded: false
     };
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
@@ -41,17 +41,18 @@ class VerifyFaceDialog extends React.Component {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.onCancel = this.onCancel.bind(this);
-        
+
         this.onUnmount = onUnmount.bind(this);
         this.startVideo = startVideo.bind(this);
         this.onVideoPlay = onVideoPlay.bind(this);
         this.detect = detect.bind(this);
-        
+
         this.onCaptureFace = onCaptureFace.bind(this);
         this.onLoginProceed = this.onLoginProceed.bind(this);
 
         this.form = new Form();
     }
+
     // </editor-fold>
 
     componentWillMount() {
@@ -67,25 +68,25 @@ class VerifyFaceDialog extends React.Component {
     onLoginProceed() {
         const {form} = this;
         progressDialog.open();
-        
+
         const onProceed = (idTokenResult) => {
             const {isEmployee, isUser, isContractor} = storage.is;
             const {claims: {user_id}} = idTokenResult;
 
             const {user} = storage.loggedUser;
             let {username, email} = user.data;
-            
+
             const {imgSrc, faceDescriptor, displaySize} = this.refs.biometricView.refs.capturedImgView;
             const faceMatcher = new faceapi.FaceMatcher(faceDescriptor, 0.5);
             const match = faceMatcher.toJSON();
 
             let path;
-            if(isContractor) {
+            if (isContractor) {
                 path = "plugin_sheq_assist/contractors/users/";
-            } else if(isEmployee) {
+            } else if (isEmployee) {
                 path = "plugin_sheq_assist/employees/accounts/";
                 username = email;
-            } else if(isUser) {
+            } else if (isUser) {
                 path = "users/accounts/";
             }
 
@@ -138,7 +139,7 @@ class VerifyFaceDialog extends React.Component {
                             </div>);
                             break;
                     }
-                } else if(isObject(res)) {
+                } else if (isObject(res)) {
                     const {loggedUserAuth: currentUser} = storage;
                     if (currentUser) {
                         this.onResponse && this.onResponse();
@@ -157,11 +158,11 @@ class VerifyFaceDialog extends React.Component {
                 </div>);
             });
         };
-        
+
         const {loggedUserAuth: currentUser} = storage;
         if (currentUser) {
             const {idTokenResult} = storage;
-            if(idTokenResult) {
+            if (idTokenResult) {
                 onProceed(idTokenResult);
             } else {
                 currentUser.getIdTokenResult(true).then(idTokenResult => {
@@ -183,8 +184,9 @@ class VerifyFaceDialog extends React.Component {
             });
         }
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="open">
     open(title = "Verify Yourself") {
         this.state.modelsLoaded = false;
@@ -197,6 +199,7 @@ class VerifyFaceDialog extends React.Component {
             this.onResponse = resolve;
         });
     }
+
     // </editor-fold>
 
     close() {
@@ -215,18 +218,21 @@ class VerifyFaceDialog extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return (<Dialog 
-            key="VerifyFaceDialog" 
-            ref="dialog" 
+        return (<Dialog
+            key="VerifyFaceDialog"
+            ref="dialog"
             className="VerifyFaceDialog AAuthDialog BiometricView"
             bottomButtons={this.bottomButtons}
             onCancel={this.onCancel}
-            >
+            dialog={this}
+        >
             <div className="controls-wrapper">
-                <BiometricView ref="biometricView" state={this.state} onVideoPlay={this.onVideoPlay} onLoginProceed={this.onLoginProceed}/>
+                <BiometricView ref="biometricView" state={this.state} onVideoPlay={this.onVideoPlay}
+                               onLoginProceed={this.onLoginProceed}/>
             </div>
         </Dialog>);
     }
+
     // </editor-fold>
 }
 
@@ -246,13 +252,15 @@ class BiometricView extends React.Component {
                     <div ref="videoContainer" id="video-container" className="flex">
                         <video ref="video" width="570" height="394" muted onPlay={onVideoPlay}/>
                         <CapturedImgView ref="capturedImgView" onSubmit={onLoginProceed}/>
-                        <p className="flex margin-0">Please make sure you are facing the camera and your environment has good light.</p>
+                        <p className="flex margin-0">Please make sure you are facing the camera and your environment has
+                            good light.</p>
                     </div>
                 </div>
             </div>}
         </div>;
     }
 }
+
 // </editor-fold>
 
 export default VerifyFaceDialog;

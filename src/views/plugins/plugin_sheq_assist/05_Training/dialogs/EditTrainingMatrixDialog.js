@@ -50,11 +50,10 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            status: [{text: "Outstanding", value: "Outstanding", checked: false}, {
-                text: "Completed",
-                value: "Completed",
-                checked: false
-            }],
+            status: [
+                {text: "Outstanding", value: "Outstanding", checked: false},
+                {text: "Completed", value: "Completed", checked: false}
+            ],
             sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
                 return {value, text: value, checked: false};
             }),
@@ -95,7 +94,7 @@ class Controls extends React.Component {
         execWhen(() => this.refs.sector_list).then(async ref => {
             if (val) {
                 const {id, data: {sector_list}} = val;
-                if(sector_list) {
+                if (sector_list) {
                     this.state.lists.sector_list = sector_list.map(value => {
                         return {value, text: value.data.name, checked: false};
                     });
@@ -106,6 +105,7 @@ class Controls extends React.Component {
             }
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
@@ -120,10 +120,7 @@ class Controls extends React.Component {
         execWhen(() => this.refs.job_title).then(async ref => {
             if (val) {
                 const {id, data: {training_plan_list}} = val;
-                const jobPositionList = training_plan_list.
-                filter(({data: {job_position}}) => !!job_position).
-                map(({data: {job_position}}) => job_position).
-                distinct();
+                const jobPositionList = training_plan_list.filter(({data: {job_position}}) => !!job_position).map(({data: {job_position}}) => job_position).distinct();
                 ref.value = jobPositionList;
 
             } else {
@@ -403,8 +400,9 @@ class Controls extends React.Component {
                 <SelectTrainingCourseInput name="course_or_module" placeholder="Course..."
                                            defaultValue={course_or_module} className="col-lg-12 form-control"
                                            onChange={this.form.onChange} add={false} returnValue/>
-                <br />
-                <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan" defaultValue={training_plan} onChange={this.form.onChange}/>
+                <br/>
+                <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan"
+                                          defaultValue={training_plan} onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

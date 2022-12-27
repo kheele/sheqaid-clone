@@ -36,7 +36,7 @@ class AccountPaymentDueDialog extends React.Component {
             const {isLoggedIn, isConsultant, isTrial} = storage.is;
             if (isLoggedIn) {
                 const {trialDaysLeft} = storage;
-                if(!isTrial) {
+                if (!isTrial) {
 //                    execWhen(() => this.refs.dialog).then(dialog => {
 //                        if (trialDaysLeft <= 0) {
 //                            this.open().then(() => {
@@ -131,7 +131,8 @@ class AccountPaymentDueDialog extends React.Component {
             </React.Fragment>;
         } else {
             return <React.Fragment>
-                <Button className="btn btn-primary _888" text="Upgrade Account Later" onClick={this.onUpgradeAccountLater}/>
+                <Button className="btn btn-primary _888" text="Upgrade Account Later"
+                        onClick={this.onUpgradeAccountLater}/>
                 <Button className="btn btn-primary" text="Upgrade Account Now" onClick={this.onUpgradeAccount}/>
             </React.Fragment>;
         }
@@ -151,36 +152,43 @@ class AccountPaymentDueDialog extends React.Component {
         }
         const {trialDaysLeft} = storage;
 
-        return (<Dialog 
-            key="AccountPaymentDueDialog" 
-            ref="dialog" 
+        return (<Dialog
+            key="AccountPaymentDueDialog"
+            ref="dialog"
             className="AccountPaymentDueDialog"
             preventEsc
             bottomButtons={this.bottomButtons}
-            >
+            dialog={this}
+        >
             <div className="controls-wrapper">
                 <div className="controls">
                     <div className="row">
                         <div className="row sec-group text-center">
-                            {this.isPreClosed && <h4>Your trial period will end in the next <b>{trialDaysLeft} day(s)</b></h4>}
+                            {this.isPreClosed &&
+                                <h4>Your trial period will end in the next <b>{trialDaysLeft} day(s)</b></h4>}
                             {this.isClosedToday && <h4>Your trial period ends <b>today</b></h4>}
-                            {this.isClosed && <h4>Your trial period ended in the last <b>{-trialDaysLeft} day(s)</b></h4>}
+                            {this.isClosed &&
+                                <h4>Your trial period ended in the last <b>{-trialDaysLeft} day(s)</b></h4>}
                         </div>
                     </div>
                     <div className="row">
                         {this.isClosedToday && <div className="row sec-group text-center">
-                            <h5 className="font-size-15">Your account will been suspended <b>today midnight</b> until you upgrade to the <b>premium package</b></h5>
-                            <hr />
-                            <h5 className="font-size-15">Please click on <b>Upgrade Account</b> button below to upgrade your account</h5>
+                            <h5 className="font-size-15">Your account will been suspended <b>today midnight</b> until
+                                you upgrade to the <b>premium package</b></h5>
+                            <hr/>
+                            <h5 className="font-size-15">Please click on <b>Upgrade Account</b> button below to upgrade
+                                your account</h5>
                         </div>}
                         {this.isClosed && <div className="row sec-group text-center">
-                            <h5 className="font-size-15">Your account has been suspended until you upgrade to the <b>premium package</b></h5>
-                            <hr />
-                            <h5 className="font-size-15">Please click on <b>Upgrade Account</b> button below to upgrade your account</h5>
+                            <h5 className="font-size-15">Your account has been suspended until you upgrade to the <b>premium
+                                package</b></h5>
+                            <hr/>
+                            <h5 className="font-size-15">Please click on <b>Upgrade Account</b> button below to upgrade
+                                your account</h5>
                         </div>}
                     </div>
                     <div className="row">
-                        <PaymentForm />
+                        <PaymentForm/>
                     </div>
                 </div>
             </div>

@@ -262,7 +262,7 @@ class Controls extends React.Component {
             </div>
             <div className="td">
                 {
-                    sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.map(v =>
+                    sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v =>
                         <span>{isString(v) ? v : v.value}</span>
                     ) : 'N/A'
                 }

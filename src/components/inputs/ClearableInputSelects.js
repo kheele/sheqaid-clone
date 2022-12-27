@@ -330,8 +330,17 @@ class AutocompleteWrapper extends React.Component {
     }
 
     render() {
-        let {props, options, state: {loading}, valueState: {value}} = this.props;
+        let {props, props: {multiple}, options, state: {loading}, valueState: {value}} = this.props;
         // console.log('AutocompleteWrapper', options)
+        if(multiple) {
+            if(!isArray(value) && !isObservableArray(value)) {
+                if(isNullable(value) || value.isEmpty()) {
+                    value = [];
+                } else {
+                    value = [value];
+                }
+            }
+        }
         return <Autocomplete
             {...props}
             value={value}
@@ -345,7 +354,7 @@ class AutocompleteWrapper extends React.Component {
 
 }
 const PopperWrapper = function (props) {
-   return <Popper {...props} style={{width: 'fit-content', maxWidth: 320}} placement="bottom-start" />;
+   return <Popper {...props} style={{width: 'fit-content', maxWidth: 480}} placement="bottom-start" />;
 };
 
 export default ClearableInputSelects;

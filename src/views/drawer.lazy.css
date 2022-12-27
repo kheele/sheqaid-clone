@@ -9,7 +9,7 @@
     z-index: 1;
 }
 .drawer-container.open {
-    width: 240px !important;
+    width: 300px !important;
     position: fixed;
     z-index: 99999;
 }
@@ -86,11 +86,12 @@
     border-bottom: 1px solid rgba(75, 84, 92, 0.4) !important;
     margin: 0 0px 0 0px;
     padding: 7px 0 7px 5px;
-    height: 42px;
+    height: 52px;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    gap: 5px;
 }
 .drawer-container .nav-item:hover {
     background: none;
@@ -101,11 +102,11 @@
 .drawer-container .nav-item > i.fa{
     margin: -2px 5px 0 0;
     text-align: center;
-    font-size: 18px;
+    font-size: 24px;
     height: auto;
 }
 .drawer-container .nav-item > .nav-item-title{
-    font-size: 14px;
+    font-size: 14.5px;
     display: table-cell;
     text-align: left;
     line-height: 1.2;
@@ -122,7 +123,7 @@
     top: 0px;
 }
 .MainView-wide .drawer-container .nav-item{
-    height: 49px;
+    height: 52px;
 }
 .MainView-wide .drawer-container .nav-item > i.fa {
     font-size: 28px;
@@ -135,10 +136,10 @@
 }
 @media (max-width:1199px){
     .drawer-container {
-        /*width: 240px;*/
+        /*width: 300px;*/
     }
     .MainView-wide .drawer-container .nav-item {
-        height: auto;
+        height: 52px;
     }
     .MainView-wide .drawer-container .nav-item > .nav-item-title {
         display: block !important;
@@ -146,14 +147,14 @@
     .MainView-wide .drawer-container .nav-item > i.fa {
         margin: 5px 5px 0 0;
         text-align: center;
-        font-size: 18px;
+        font-size: 24px;
         float: left;
         display: inline-block;
     }
 }
 @media (max-width:767px){
     .drawer-container.open {
-        width: 280px;
+        width: 300px;
     }
     .drawer-container.open .nav {
         height: 100%;

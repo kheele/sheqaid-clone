@@ -598,7 +598,7 @@ class NewCalibrationRecordTable extends ATableSavable {
                 {readonly ? <div className="td fixed-flex min-w-0 padding-0"/> : null}
             </TRow>;
         } else {
-            alert(this.list.length)
+            // alert(this.list.length)
             return <TRow key="item-new" className="w-full padding-t-10 padding-b-10">
                 <div className="td">
                     <ClearableInput ref={this.onSetRef} name="calibrating_company" type="text" placeholder="Type"

@@ -21,7 +21,6 @@ import style from "./TrainingPlanTab.lazy.css";
 import TrainingPlanEmployeesButtons from "components/Omni/TrainingPlanEmployeesButtons";
 import Popover from "components/popovers/Popover";
 import {RenderCourse, RenderEmployee, RenderJobPosition, RenderYear} from "./RenderItems";
-import {onNewItemCourse, onNewItemEmployee, onNewItemJobPosition, onNewItemYear} from "./Funs";
 import TrainingPlanTargetViewButtons from "components/Omni/TrainingPlanTargetViewButtons";
 
 // </editor-fold>
@@ -284,18 +283,7 @@ class Index extends React.Component {
 
     //<editor-fold desc="onNewItem">
     onNewItem(res) {
-        const {list} = this.refs.root;
-        const {state: {view}} = this;
-
-        if (view === 'Employee') {
-            onNewItemEmployee.call(this, res);
-        } else if (view === 'Job Position') {
-            onNewItemJobPosition.call(this, res);
-        } else if (view === 'Course') {
-            onNewItemCourse.call(this, res);
-        } else if (view === 'Year') {
-            onNewItemYear.call(this, res);
-        }
+        this.refs.root.load();
     }
 
     //</editor-fold>
@@ -412,7 +400,7 @@ class Index extends React.Component {
         console.log(view, target, id, item);
         const {group,} = item;
 
-        const props = {key: group.id || group, item, view, idx, onViewTarget, onShowWarningMsg, onClick};
+        const props = {key: group.id || group, item, view, target_view, idx, onViewTarget, onShowWarningMsg, onClick};
         if (isViewEmployee) {
             return <RenderEmployee {...props}/>
         } else if (isViewJobPosition) {

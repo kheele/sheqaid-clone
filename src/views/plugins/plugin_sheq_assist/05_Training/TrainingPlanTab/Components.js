@@ -6,7 +6,6 @@ import MKBox from "components/MK/MKBox";
 import {ButtonGroup,} from "@mui/material";
 import {Button} from "components/inputs";
 import AliceCarousel from "react-alice-carousel";
-import {Clickable} from "components/inputs";
 // </editor-fold>
 
 //<editor-fold desc="HasWarnings">
@@ -65,9 +64,7 @@ class CostBtn extends React.Component {
     render() {
         const {cost} = this.props;
         return <Button
-            className="btn btn-primary pull-right min-w-80"
-            circular
-            sx={{height: '28px', fontSize: '12px', color: 'rgb(2,168,168)', border: "2px solid rgb(2,168,168)"}}
+            className="btn btn-primary pull-right circled bg-white no-text-shadow min-w-80 h-30 font-size-12 color-primary border-w-2 bg-border-primary"
         >
             {isNumber(cost) ? cost.toCurrency('R') : 'N/A'}
         </Button>;
@@ -85,23 +82,19 @@ class YearDot extends React.Component {
         if (year === currY) {
             bg = 'green';
         } else if (year < currY) {
-            bg = '#888';
+            bg = 'aaa';
         } else {
             bg = 'orange';
         }
-        const sxValue = {
-            background: `${bg} !important`,
-            color: "#fff !important",
-            minWidth: '35px !important',
-            width: '35px !important',
-            height: '35px !important',
-            p: '9px !important',
-            fontSize: '11px !important',
-            borderRadius: '50% !important',
-        };
-        return <Clickable id={year} item={year} target="year" onClick={onViewTarget}>
-            <Button sx={sxValue}>{year}</Button>
-        </Clickable>;
+
+        return <Button
+            id={year}
+            item={year}
+            target="year"
+            text={year}
+            onClick={onViewTarget}
+            className={`padding-0 font-size-11 min-w-35 w-35 h-35 no-text-shadow no-border circled color-white bg-${bg}`}
+        />;
     }
 }
 
@@ -151,11 +144,11 @@ class StatusTD extends React.Component {
         const completed = value.filter(v => v === 'Completed').length;
         return <div className="td fixed-flex min-w-240">
             <ButtonGroup variant="contained" color="white" ariaLabel="elevation buttons" sx={{height: '52px'}}>
-                <Button sx={{fontSize: "11px", p: '9px', background: "red"}} className="grid-1">
+                <Button className="padding-10 font-size-11 no-text-shadow bg-red no-border grid-1">
                     <MKBox sx={{color: '#fff'}}>Outstanding</MKBox>
                     <MKBox sx={{color: 'red', ...sxValue}}>{outstanding + (outstanding > 99 ? '+' : '')}</MKBox>
                 </Button>
-                <Button sx={{fontSize: "11px", p: '9px', background: "green"}} className="grid-1">
+                <Button className="padding-10 font-size-11 no-text-shadow bg-green no-border grid-1">
                     <MKBox sx={{color: '#fff'}}>Completed</MKBox>
                     <MKBox sx={{color: 'green', ...sxValue}}>{completed + (completed > 99 ? '+' : '')}</MKBox>
                 </Button>
@@ -187,19 +180,15 @@ class ResultsTD extends React.Component {
         const average = __value.isEmpty() ? 'N/A' : (__value.reduce((a, b) => a + b, 0) / (__value.length * 100) * 100).toFixed(1) + '%';
         return <div className="td fixed-flex min-w-250">
             <ButtonGroup variant="contained" color="white" ariaLabel="elevation buttons" sx={{height: '52px'}}>
-                <Button className="padding-10 font-size-11 bg-red grid-1">
+                <Button className="padding-10 font-size-11 no-text-shadow bg-red no-border grid-1">
                     <MKBox sx={{color: '#fff'}}>Failed</MKBox>
                     <MKBox sx={{color: 'red', ...sxValue}}>{failed + (failed > 99 ? '+' : '')}</MKBox>
                 </Button>
-                <Button className="padding-10 font-size-11 bg-green grid-1" sx={{fontSize: "11px", p: '9px', background: "green"}} className="grid-1">
+                <Button className="padding-10 font-size-11 no-text-shadow bg-green no-border grid-1">
                     <MKBox sx={{color: '#fff'}}>Passed</MKBox>
                     <MKBox sx={{color: 'green', ...sxValue}}>{passed + (passed > 99 ? '+' : '')}</MKBox>
                 </Button>
-                <Button sx={{
-                    fontSize: "11px",
-                    p: '10px',
-                    background: (average === 'N/A' ? "orange" : average >= 50 ? "green" : "red")
-                }} className="grid-1">
+                <Button className={`padding-10 font-size-11 no-text-shadow bg-${average === 'N/A' ? "orange" : average >= 50 ? "green" : "red"} no-border grid-1`}>
                     <MKBox sx={{color: '#fff'}}>Average</MKBox>
                     <MKBox sx={{color: 'orange', ...sxValue}}>{average}</MKBox>
                 </Button>

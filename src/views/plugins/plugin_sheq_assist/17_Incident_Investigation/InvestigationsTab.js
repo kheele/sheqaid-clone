@@ -370,10 +370,10 @@ class InvestigationsTab extends React.Component {
             <div className="td fixed-flex min-w-120">{sec9_data && sec9_data.incident_date ? Dates.formatDate(sec9_data.incident_date) : 'N/A'}</div>
             <div className="td fixed-flex min-w-140">{investigation_due_date ? Dates.formatDate(investigation_due_date) : 'N/A'}</div>
             <div className="td">{sec1_data && sec1_data.group || 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.category_list ? sec1_data.category_list.map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.sector_list ? sec1_data.sector_list.map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec2_data && sec2_data.activity_list ? sec2_data.activity_list.map(v => <span>{v}</span>) : 'N/A'}</div>
+            <div className="td">{sec1_data && sec1_data.category_list ? sec1_data.category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
+            <div className="td">{sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
+            <div className="td">{sec1_data && sec1_data.sector_list ? sec1_data.sector_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
+            <div className="td">{sec2_data && sec2_data.activity_list ? sec2_data.activity_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
             <div className="td">{sec1_data && sec1_data.short_desc ? sec1_data.short_desc : 'N/A'}</div>
             <div className="td">{sec9_data && sec9_data.exact_location ? sec9_data.exact_location : 'N/A'}</div>
             <Status key={new Date().getTime()} status={item.data.status}/>

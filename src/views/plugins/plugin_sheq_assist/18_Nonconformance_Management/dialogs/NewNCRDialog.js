@@ -18,6 +18,7 @@ import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper} from './NCRCo
 
 import style from "./NewNCRDialog.lazy.css";
 import {execWhen} from "../../../../../utils/UtilsFuns";
+import NewNCRProgressListTable from "../../../../../components/FormTableComponents/NewNCRProgressListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="NewNCRDialog">
@@ -48,7 +49,10 @@ class Controls extends React.Component {
         lists: {
             type: ['Corrective Action', 'Preventative Action', 'Opportunity For Improver'],
             priority: ['Low', 'Medium', 'High', 'Critical'],
-            status: ['Pending', 'Progress', 'Approved', 'Rejected', 'Completed'].map(text => {
+            status: ['Pending', 'Progressed', 'Completed'].map(text => {
+                return {text, value: text, checked: false}
+            }),
+            status_acceptance: ['Pending', 'Approved', 'Rejected'].map(text => {
                 return {text, value: text, checked: false}
             }),
             result: ['Pass', 'Fail'].map(text => {
@@ -86,6 +90,7 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    //<editor-fold desc="componentDidMount">
     componentDidMount() {
         const {dialog} = this.props;
         const selected_source = dialog.extraProp('selected_source');
@@ -93,6 +98,7 @@ class Controls extends React.Component {
             this.onChangeSelectedSource(null, selected_source);
         }
     }
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSelectSite, onSelectSource, onChangeSource, onChangeSelectedSource, onChangeSelectedSourceItem">
     onSelectSite(val, el) {
@@ -247,7 +253,9 @@ class Controls extends React.Component {
             //5
             comments, remarks,
             //6
-            status, result, progress_date, completed_date, outstanding, additional_notes
+            progress_list,
+            //7
+            status_acceptance, status, result, completed_date, additional_notes
         } = form.data;
         const data = {
             source: this.source.label,
@@ -338,21 +346,25 @@ class Controls extends React.Component {
         if (remarks) {
             data.remarks = remarks;
         }
-        //6 
+        //6
+        if(progress_list) {
+            data.progress_list = progress_list.slice().map(({progress_date, ...others}) => ({
+                ...others,
+                progress_date: progress_date.getTime(),
+            }));
+        }
+        //7
+        if(status_acceptance) {
+            data.status_acceptance = status_acceptance;
+        }
         if (status) {
             data.status = status;
         }
         if (result) {
             data.result = result;
         }
-        if (progress_date) {
-            data.progress_date = progress_date.getTime();
-        }
         if (completed_date) {
             data.completed_date = completed_date.getTime();
-        }
-        if (outstanding) {
-            data.outstanding = outstanding;
         }
         if (additional_notes) {
             data.additional_notes = additional_notes;
@@ -393,6 +405,7 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    //<editor-fold desc="defaultSource">
     get defaultSource() {
         const {dialog} = this.props;
         const source = dialog.extraProp('source');
@@ -405,8 +418,9 @@ class Controls extends React.Component {
         }
         return defaultSource;
     }
+    //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="render">
+    /// <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
 
@@ -512,28 +526,36 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={6}
-                title="6. Item Progress / Closed Out"
+                title="6. Progress"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <NewNCRProgressListTable ref="progress_list" name="progress_list" onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={7}
+                title="7. Status / Result / Closed Out"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
+                <ClearableInput ref="status_acceptance" name="status_acceptance" type="radio" placeholder="Acceptance Status"
+                                vertical={2}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.status_acceptance} returnValue/>
                 <ClearableInput ref="status" name="status" type="radio" placeholder="Status"
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                vertical={2}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.status} returnValue/>
                 <ClearableInput ref="result" name="result" type="radio" placeholder="Result"
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.result} returnValue/>
-
-                <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
-                <ClearableInput name="progress_date" type="date" placeholder="Progress Date..."
-                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="completed_date" type="date" placeholder="Completed Date..."
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
 
                 <hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-                <ClearableInput ref="outstanding" name="outstanding" type="textarea" placeholder="Outstanding"
-                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput ref="additional_notes" name="additional_notes" type="textarea"
                                 placeholder="Additional Notes" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>

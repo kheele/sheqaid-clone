@@ -74,7 +74,12 @@ class DateDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="DateDialog" ref="dialog" className="DateDialog">
+        return (<Dialog
+            key="DateDialog"
+            ref="dialog"
+            className="DateDialog"
+            dialog={this}
+        >
             <DatePickerImpl 
                 ref="datePicker" 
                 onChange={this.onChange} 

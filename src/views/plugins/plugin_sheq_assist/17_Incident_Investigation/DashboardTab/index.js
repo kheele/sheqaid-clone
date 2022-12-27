@@ -44,9 +44,9 @@ class DashboardTab extends React.Component {
     update() {
         const {dashboardIncidents, dashboardInvestigations, dashboardCorrectiveActions, dashboardManHours} = this.refs;
         dashboardIncidents.update();
-        dashboardInvestigations.update();
-        dashboardCorrectiveActions.update();
-        dashboardManHours.update();
+        // dashboardInvestigations.update();
+        // dashboardCorrectiveActions.update();
+        // dashboardManHours.update();
     }
 
     render() {
@@ -58,9 +58,9 @@ class DashboardTab extends React.Component {
                     <ButtonList state={state} onClick={this.toggleFilter}/>
                 </div>
                 <DashboardIncidents ref="dashboardIncidents" state={state} path={path + "stats"}/>
-                <DashboardInvestigations ref="dashboardInvestigations" state={state} path={path + "investigations/stats"}/>
-                <DashboardCorrectiveActions ref="dashboardCorrectiveActions" state={state} path={path + "corrective-actions/stats"}/>
-                <DashboardManHours ref="dashboardManHours" state={state} path={path + "man-hours/stats"}/>
+                {/*<DashboardInvestigations ref="dashboardInvestigations" state={state} path={path + "investigations/stats"}/>*/}
+                {/*<DashboardCorrectiveActions ref="dashboardCorrectiveActions" state={state} path={path + "corrective-actions/stats"}/>*/}
+                {/*<DashboardManHours ref="dashboardManHours" state={state} path={path + "man-hours/stats"}/>*/}
             </div>
         </div>;
     }

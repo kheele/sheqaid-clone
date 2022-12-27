@@ -19,6 +19,11 @@ class EventManager {
     get(root) {
         return this.cntrs[root];
     }
+    static async get(root) {
+        if (!controllers[root])
+            throw new Error('controllers [' + root + '] not found');
+        return controllers[root];
+    }
 
     on(path, fn) {
         this.events[path] = fn;
@@ -44,6 +49,7 @@ class EventManager {
 
 const eventManager = new EventManager();
 controllers.run(eventManager);
+global.eventManager = eventManager;
 
 exports.execFun = functions.runWith({timeoutSeconds: 300, memory: '1GB'}).https.onCall(async (req, ctx) => {
 //    console.log('execFun', req);

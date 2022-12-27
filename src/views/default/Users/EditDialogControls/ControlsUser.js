@@ -756,8 +756,10 @@ class Controls extends React.Component {
                         <Button className="btn btn-primary pull-right padding-5" text="Clear All"
                                 onClick={this.onClearAllOtherPermissions}/>
                         <hr className="pull-left"/>
-                        <NewUserOtherPermissions ref="otherPermissionsRef" name="permissions_other"
-                                                 selectedList={permissions_other} onChange={this.form.onChange}/>
+                        <NewUserOtherPermissions ref="otherPermissionsRef"
+                                                 name="permissions_other"
+                                                 selectedList={permissions_other}
+                                                 onChange={this.form.onChange}/>
                     </Row>
                 </FormControls>
             </Row>

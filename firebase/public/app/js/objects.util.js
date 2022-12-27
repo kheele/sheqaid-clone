@@ -1,6 +1,6 @@
 // <editor-fold defaultstate="collapsed" desc="Default Functions. Click on the + sign on the left to edit the code."> 
 Object.values = Object.values || function (o) {
-    var values = [];
+    let values = [];
     Object.keys(o).forEach(function (k) {
         values.push(o[k]);
     });
@@ -60,14 +60,14 @@ Object.values = Object.values || function (o) {
             callback = param;
             param = null;
         }
-        var lastInx, len = 0;
-        for (var n in self) {
-            var val = self[n];
+        let lastInx, len = 0;
+        for (let n in self) {
+            let val = self[n];
 
             if (val !== undefined && val !== null && ((param && param.includeFunction && isFunction(val)) || !isFunction(val))) {
                 lastInx = n;
                 len++;
-                var value = callback.call(val, n, val);
+                let value = callback.call(val, n, val);
                 if (value !== undefined && value !== null && isBoolean(value) && !value) {
                     break;
                 }
@@ -87,11 +87,11 @@ Object.values = Object.values || function (o) {
                 return name + ':';
             }
         }
-        var source = '{';
+        let source = '{';
         if (self.nodeName) {
             if (self.nodeName() === 'form') {
                 self.find('textarea, select, input:not(button)').each(function (n) {
-                    var $this = $(this);
+                    let $this = $(this);
                     if (($this.attr('name') !== undefined && $.trim($this.attr('name')).length > 0) ||
                             ($this.attr('id') !== undefined && $.trim($this.attr('id')).length > 0)) {
                         if ($this.attr('type') === 'radio') {
@@ -114,7 +114,7 @@ Object.values = Object.values || function (o) {
                             }
                         } else {
                             if (($this.val() !== undefined || $this.val() !== null) && $.trim($this.val()).length > 0) {
-                                var val = $this.val();
+                                let val = $this.val();
                                 if (val.contains('\\')) {
                                     val = val.replace('\\', '/');
                                 }
@@ -170,13 +170,13 @@ Object.values = Object.values || function (o) {
 
     // <editor-fold defaultstate="collapsed" desc="String Functions. Click on the + sign on the left to edit the code."> 
     String.prototype.foreach = function (callback, doneCallback) {
-        var self = this;
-        var lastInx, len = 0;
-        for (var n = 0; n < self.length; n++) {
-            var val = self[n];
+        let self = this;
+        let lastInx, len = 0;
+        for (let n = 0; n < self.length; n++) {
+            let val = self[n];
             lastInx = n;
             len++;
-            var value = callback.call(val, parseInt(n), val);
+            let value = callback.call(val, parseInt(n), val);
             if (value !== undefined && value !== null && value instanceof Boolean && !value) {
                 break;
             }
@@ -188,7 +188,7 @@ Object.values = Object.values || function (o) {
     };
 
     String.prototype.toCapitalCase = function () {
-        var self = this;
+        let self = this;
         return self.split(' ').map(w => w.toTitleCase()).join(' ');
     };
     
@@ -197,8 +197,8 @@ Object.values = Object.values || function (o) {
     };
 
     String.prototype.toSentenceCase = function () {
-        var self = this;
-        var c = self.charAt(0).toUpperCase();
+        let self = this;
+        let c = self.charAt(0).toUpperCase();
         self = c + self.substring(1, self.length).toLowerCase();
         return self;
     };
@@ -211,12 +211,12 @@ Object.values = Object.values || function (o) {
         if (str === undefined || str === null) {
             return false;
         }
-        var self = this;
+        let self = this;
         if (!self.contains(str)) {
             return false;
         }
 
-        var len = str.length;
+        let len = str.length;
         return (str === self.substring(0, len));
     };
 
@@ -224,12 +224,12 @@ Object.values = Object.values || function (o) {
         if (str === undefined || str === null) {
             return false;
         }
-        var self = this;
+        let self = this;
         if (!self.contains(str)) {
             return false;
         }
 
-        var len = str.length;
+        let len = str.length;
         return (str === self.substring(self.length - len, self.length));
     };
 
@@ -237,13 +237,13 @@ Object.values = Object.values || function (o) {
         if (str === undefined || str === null) {
             return false;
         }
-        var self = this;
+        let self = this;
         return (self.indexOf(str) > -1);
     };
 
     String.prototype.trimLeft = function () {
-        var self = this;
-        var head = 0;
+        let self = this;
+        let head = 0;
 
         while (/[\s\uFEFF\u00A0]/.test(self[head])) {
             head++;
@@ -253,8 +253,8 @@ Object.values = Object.values || function (o) {
     };
 
     String.prototype.trimRight = function () {
-        var self = this;
-        var tail = self.length;
+        let self = this;
+        let tail = self.length;
 
         while (/[\s\uFEFF\u00A0]/.test(self[tail - 1])) {
             tail--;
@@ -268,9 +268,9 @@ Object.values = Object.values || function (o) {
             return this;
         }
 
-        var self = this.trimLeft().trimRight();
+        let self = this.trimLeft().trimRight();
 
-        for (var n = 0; n < self.length; n++) {
+        for (let n = 0; n < self.length; n++) {
             if (self.charAt(n) === searchValue) {
                 self = self.replace(searchValue, value);
             }
@@ -284,8 +284,8 @@ Object.values = Object.values || function (o) {
     };
 
     String.prototype.filterToEnglishCharactors = function () {
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (!((self.charCodeAt(n) >= 97 && self.charCodeAt(n) <= 122) || (self.charCodeAt(n) >= 65 && self.charCodeAt(n) <= 90))) {
                 self = self.replace(self.charAt(n), '_');
             }
@@ -294,8 +294,8 @@ Object.values = Object.values || function (o) {
     };
 
     String.prototype.reverse = function () {
-        var self = '';
-        for (var n = this.length - 1; n >= 0; n--) {
+        let self = '';
+        for (let n = this.length - 1; n >= 0; n--) {
             self += this[n];
         }
         return self;
@@ -305,19 +305,19 @@ Object.values = Object.values || function (o) {
         if (this.isEmpty()) {
             return false;
         }
-        var self = this.replaceAll(' ', '');
+        let self = this.replaceAll(' ', '');
 
-        for (var n = 0; n < self.length; n++) {
+        for (let n = 0; n < self.length; n++) {
             if ((self.substring(n, n + 1) < "0") || (self.substring(n, n + 1) > "9")) {
                 return false;
             }
         }
 
-        var no_digit = self.length;
-        var oddoeven = no_digit & 1;
-        var sum = 0;
-        for (var count = 0; count < no_digit; count++) {
-            var digit = parseInt(self.charAt(count));
+        let no_digit = self.length;
+        let oddoeven = no_digit & 1;
+        let sum = 0;
+        for (let count = 0; count < no_digit; count++) {
+            let digit = parseInt(self.charAt(count));
             if (!((count & 1) ^ oddoeven)) {
                 digit *= 2;
                 if (digit > 9)
@@ -340,26 +340,26 @@ Object.values = Object.values || function (o) {
         if (this.isEmpty()) {
             return false;
         }
-        var self = this.replaceAll(' ', '');
+        let self = this.replaceAll(' ', '');
 
         // TLD checking turned off by default
-        var checkTLD = 0;
-        var knownDomsPat = /^(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum)$/;
-        var emailPat = /^(.+)@(.+)$/;
-        var specialChars = "\\(\\)><@,;:\\\\\\\"\\.\\[\\]";
-        var validChars = "[^\\s" + specialChars + "]";
-        var quotedUser = "(\"[^\"]*\")";
-        var ipDomainPat = /^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
-        var atom = validChars + '+';
-        var word = "(" + atom + "|" + quotedUser + ")";
-        var userPat = new RegExp("^" + word + "(\\." + word + ")*$");
-        var domainPat = new RegExp("^" + atom + "(\\." + atom + ")*$");
-        var matchArray = self.match(emailPat);
+        let checkTLD = 0;
+        let knownDomsPat = /^(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum)$/;
+        let emailPat = /^(.+)@(.+)$/;
+        let specialChars = "\\(\\)><@,;:\\\\\\\"\\.\\[\\]";
+        let validChars = "[^\\s" + specialChars + "]";
+        let quotedUser = "(\"[^\"]*\")";
+        let ipDomainPat = /^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
+        let atom = validChars + '+';
+        let word = "(" + atom + "|" + quotedUser + ")";
+        let userPat = new RegExp("^" + word + "(\\." + word + ")*$");
+        let domainPat = new RegExp("^" + atom + "(\\." + atom + ")*$");
+        let matchArray = self.match(emailPat);
         if (matchArray === null) {
             return false;
         }
-        var user = matchArray[1];
-        var domain = matchArray[2];
+        let user = matchArray[1];
+        let domain = matchArray[2];
         for (i = 0; i < user.length; i++) {
             if (user.charCodeAt(i) > 127) {
                 return false;
@@ -373,18 +373,18 @@ Object.values = Object.values || function (o) {
         if (user.match(userPat) === null) {
             return false;
         }
-        var IPArray = domain.match(ipDomainPat);
+        let IPArray = domain.match(ipDomainPat);
         if (IPArray !== null) {
-            for (var i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 4; i++) {
                 if (IPArray[i] > 255) {
                     return false;
                 }
             }
             return true;
         }
-        var atomPat = new RegExp("^" + atom + "$");
-        var domArr = domain.split(".");
-        var len = domArr.length;
+        let atomPat = new RegExp("^" + atom + "$");
+        let domArr = domain.split(".");
+        let len = domArr.length;
         for (i = 0; i < len; i++) {
             if (domArr[i].search(atomPat) === -1) {
                 return false;
@@ -404,9 +404,9 @@ Object.values = Object.values || function (o) {
         if (this.isEmpty()) {
             return false;
         }
-        var self = this.replaceAll(' ', '');
+        let self = this.replaceAll(' ', '');
 
-        var reg = /^([()0-9+-\s])+$/;
+        let reg = /^([()0-9+-\s])+$/;
         if (!reg.test(self)) {
             return false;
         }
@@ -420,7 +420,7 @@ Object.values = Object.values || function (o) {
 
         function checkCharCount(c) {
             if (self.contains(c)) {
-                var count = 0;
+                let count = 0;
                 self.foreach(function (n, $this) {
                     if (c === $this) {
                         count++;
@@ -460,12 +460,12 @@ Object.values = Object.values || function (o) {
         if (this.isEmpty()) {
             return false;
         }
-        var self = this.replaceAll(' ', '');
+        let self = this.replaceAll(' ', '');
 
-        var validChars = "1234567890.";
-        var pos = (self.trim().charAt(0) === '+' || self.trim().charAt(0) === '-') ? 1 : 0;
-        var found = true;
-        var dots = 0;
+        let validChars = "1234567890.";
+        let pos = (self.trim().charAt(0) === '+' || self.trim().charAt(0) === '-') ? 1 : 0;
+        let found = true;
+        let dots = 0;
         self.foreach(function (n, $this) {
             if ($this === '.') {
                 dots++;
@@ -482,10 +482,10 @@ Object.values = Object.values || function (o) {
         if (this.isEmpty()) {
             return false;
         }
-        var self = this.replaceAll(' ', '');
+        let self = this.replaceAll(' ', '');
 
-        var validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", validNums = "1234567890";
-        var charFound = false, numFound = false;
+        let validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", validNums = "1234567890";
+        let charFound = false, numFound = false;
         self.foreach(function (n, $this) {
             if (validChars.contains($this)) {
                 charFound = true;
@@ -506,10 +506,10 @@ Object.values = Object.values || function (o) {
 
     // <editor-fold defaultstate="collapsed" desc="Number Functions. Click on the + sign on the left to edit the code."> 
     Number.prototype.foreach = function (callback, doneCallback) {
-        var self = this;
-        var str = self.toString();
+        let self = this;
+        let str = self.toString();
         str.foreach(function (n, $this) {
-            var value = callback.call(new Number($this), parseInt(n), new Number($this));
+            let value = callback.call(new Number($this), parseInt(n), new Number($this));
             if (value !== undefined && value !== null && isBoolean(value) && !value) {
                 return false;
             }
@@ -522,9 +522,9 @@ Object.values = Object.values || function (o) {
             callback = start;
             start = undefined;
         }
-        var self = this;
-        for (var n = start || 0; n <= self; n++) {
-            var value = callback.call(n, n);
+        let self = this;
+        for (let n = start || 0; n <= self; n++) {
+            let value = callback.call(n, n);
             if (value !== undefined && value !== null && isBoolean(value) && !value) {
                 return false;
             }
@@ -533,10 +533,10 @@ Object.values = Object.values || function (o) {
     };
 
     Number.prototype.toSplittedNumber = function () {
-        var str = this.toString().split('.');
-        var val = '';
-        var i = 1;
-        for (var n = str[0].length; n > 0; n--) {
+        let str = this.toString().split('.');
+        let val = '';
+        let i = 1;
+        for (let n = str[0].length; n > 0; n--) {
             val += i % 3 === 0 ? str[0][n - 1] + ',' : str[0][n - 1];
             i++;
         }
@@ -552,8 +552,8 @@ Object.values = Object.values || function (o) {
     };
 
     Number.prototype.toCurrency = function () {
-        var val = this.toSplittedNumber();
-        var str = val.split('.');
+        let val = this.toSplittedNumber();
+        let str = val.split('.');
         if (str.length === 2 && (str[1].length === 1)) {
             val = val + '0';
         } else if (str.length === 1) {
@@ -564,8 +564,8 @@ Object.values = Object.values || function (o) {
     };
 
     Number.prototype.toCurrencyNoCents = function () {
-        var val = this.toSplittedNumber();
-        var str = val.split('.');
+        let val = this.toSplittedNumber();
+        let str = val.split('.');
         if (str.length === 2) {
             val = str[0];
         }
@@ -580,8 +580,8 @@ Object.values = Object.values || function (o) {
 
     // <editor-fold defaultstate="collapsed" desc="Array Functions. Click on the + sign on the left to edit the code."> 
     Array.prototype.getValue = function (key) {
-        var self = this;
-        var val = null;
+        let self = this;
+        let val = null;
         self.forEach(function ($this, n, array) {
             if ($this[key]) {
                 val = $this[key];
@@ -592,8 +592,8 @@ Object.values = Object.values || function (o) {
     };
 
     Array.prototype.getEntry = function (key) {
-        var self = this;
-        var obj = null;
+        let self = this;
+        let obj = null;
         self.forEach(function ($this, n, array) {
             if ($this[key]) {
                 obj = $this;
@@ -615,8 +615,8 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             return null;
         }
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (test(self[n], n)) {
                 return self[n];
             }
@@ -628,13 +628,13 @@ Object.values = Object.values || function (o) {
         if (chunkLen === undefined || chunkLen === null) {
             return this;
         }
-        var self = this;
-        var newList = [];
+        let self = this;
+        let newList = [];
 
-        var idx = 0;
-        var list = [];
-        for (var n = 1; n <= self.length; n++) {
-            var item = self[n - 1];
+        let idx = 0;
+        let list = [];
+        for (let n = 1; n <= self.length; n++) {
+            let item = self[n - 1];
             if (item) {
                 if (n % chunkLen !== 0) {
                     list.push(item);
@@ -658,10 +658,10 @@ Object.values = Object.values || function (o) {
         if (elt === undefined || elt === null) {
             return -1;
         }
-        var self = this;
-        var len = self.length;
+        let self = this;
+        let len = self.length;
 
-        var from = Number(arguments[1]) || 0;
+        let from = Number(arguments[1]) || 0;
         from = (from < 0) ? Math.ceil(from) : Math.floor(from);
         if (from < 0)
             from += len;
@@ -677,8 +677,8 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             return -1;
         }
-        var self = this;
-        var n = self.length - 1;
+        let self = this;
+        let n = self.length - 1;
 
         do {
             if (test(self[n], n))
@@ -693,8 +693,8 @@ Object.values = Object.values || function (o) {
         if (val === undefined || val === null) {
             return false;
         }
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (self[n] === val) {
                 return true;
             }
@@ -773,8 +773,8 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             return false;
         }
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (test(self[n], n)) {
                 return self.splice(n, 1);
             }
@@ -800,8 +800,8 @@ Object.values = Object.values || function (o) {
         if (supplier === undefined || supplier === null) {
             return null;
         }
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (self[n] === val) {
                 self[n] = supplier(self[n]);
                 return self[n];
@@ -814,8 +814,8 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             return null;
         }
-        var self = this;
-        for (var n = 0; n < self.length; n++) {
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
             if (test(self[n])) {
                 self[n] = val;
                 return self[n];
@@ -825,7 +825,7 @@ Object.values = Object.values || function (o) {
     };
 
     Array.prototype.clear = function () {
-        var self = this;
+        let self = this;
         self.splice(0, self.length);
     };
 
@@ -834,7 +834,7 @@ Object.values = Object.values || function (o) {
     };
 
     Array.prototype.pushAllFirst = function (val) {
-        var n = val.length - 1;
+        let n = val.length - 1;
 
         do {
             this.insertAt(0, val[n]);
@@ -847,7 +847,7 @@ Object.values = Object.values || function (o) {
         if (val === undefined || val === null) {
             return this;
         }
-        var self = this;
+        let self = this;
         if (self.isEmpty()) {
             self.push(val);
         } else {
@@ -859,11 +859,11 @@ Object.values = Object.values || function (o) {
         if (val === undefined || val === null) {
             return this;
         }
-        var self = this;
+        let self = this;
         if (isArray(val)) {
             if (!val.isEmpty()) {
-                for (var n = 0; n < val.length; n++) {
-                    var $this;
+                for (let n = 0; n < val.length; n++) {
+                    let $this;
                     if (!self.contains($this = val[n])) {
                         self.push($this);
                     }
@@ -886,11 +886,11 @@ Object.values = Object.values || function (o) {
         if (val === undefined || val === null) {
             return this;
         }
-        var self = this;
+        let self = this;
         if (isArray(val)) {
             if (!val.isEmpty()) {
-                for (var n = 0; n < self.length; n++) {
-                    var $this;
+                for (let n = 0; n < self.length; n++) {
+                    let $this;
                     if (test !== undefined && test !== null) {
                         if (test($this = self[n])) {
                             self.remove($this);
@@ -909,15 +909,30 @@ Object.values = Object.values || function (o) {
         return self;
     };
 
-    Array.prototype.anyMatch = function (test) {
+    Array.prototype.every = Array.prototype.every || function (test) {
         if (test === undefined || test === null) {
-            throw new Error('argument is required in anyMatch function');
+            throw new Error('argument is required in every function');
         }
-        var self = this;
+        let self = this;
         if (self.isEmpty()) {
             return false;
         }
-        for (var n = 0; n < self.length; n++) {
+        for (let n = 0; n < self.length; n++) {
+            if (!test(self[n], n)) {
+                return false;
+            }
+        }
+        return true;
+    };
+    Array.prototype.anyMatch = Array.prototype.some = Array.prototype.some || function (test) {
+        if (test === undefined || test === null) {
+            throw new Error('argument is required in anyMatch function');
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            return false;
+        }
+        for (let n = 0; n < self.length; n++) {
             if (test(self[n], n)) {
                 return true;
             }
@@ -928,11 +943,11 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             throw new Error('argument is required in noneMatch function');
         }
-        var self = this;
+        let self = this;
         if (self.isEmpty()) {
             return true;
         }
-        for (var n = 0; n < self.length; n++) {
+        for (let n = 0; n < self.length; n++) {
             if (test(self[n], n)) {
                 return false;
             }
@@ -943,11 +958,11 @@ Object.values = Object.values || function (o) {
         if (test === undefined || test === null) {
             throw new Error('argument is required in allMatch function');
         }
-        var self = this;
+        let self = this;
         if (self.isEmpty()) {
             return false;
         }
-        for (var n = 0; n < self.length; n++) {
+        for (let n = 0; n < self.length; n++) {
             if (!test(self[n], n)) {
                 return false;
             }
@@ -1054,8 +1069,8 @@ Object.values = Object.values || function (o) {
     };
 
     Array.prototype.jsonArrayString = function (param) {
-        var self = this;
-        var source = '[';
+        let self = this;
+        let source = '[';
         self.forEach(function (self, n, array) {
             if (isString(self)) {
                 source += '"' + self + '",';

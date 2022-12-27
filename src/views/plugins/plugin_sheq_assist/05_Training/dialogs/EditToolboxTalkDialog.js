@@ -15,13 +15,15 @@ import {
     SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput,
-    SelectToolboxTalkCourseInput,
-    SelectUserInput
+    SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
+    SelectUserInput, UploadButton
 } from '../../../../../components/inputs';
 import {FormControls, Row} from '../../../../../components/FormComponents';
 import {AEditDialog} from '../../../../../components/dialogs';
 
 import style from "./EditToolboxTalkDialog.lazy.css";
+import {NewEmployeeListTable} from "../../../../../components/FormTableComponents";
+import {SelectTable} from "../../../../../components/tables";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -81,6 +83,7 @@ class Controls extends React.Component {
 
         this.form = new Form();
         this.form.addChangeOne("hr", this.onChangeHR.bind(this));
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
     }
 
     // </editor-fold>
@@ -96,6 +99,21 @@ class Controls extends React.Component {
                 }
             } else {
                 job_desc_ref.reset();
+            }
+        });
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
+    onChangeCourse(el, val) {
+        execWhen(() => this.refs.attendance_register_list).then(attendance_register_list => {
+            if (val) {
+                console.log('onChangeCourse', val)
+                workers.emit('plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/list/search_by_name', val).then(list => {
+                    // attendance_register_list.list = list[0].data;
+                });
+
             }
         });
     }
@@ -151,111 +169,54 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
+        if (!form.isValid('course')) {
             infoDialog.open('Course is required');
             return;
         }
-        //3
-//        if (!form.isValid('job_title')) {
-//            infoDialog.open('Job Position For Training is required');
-//            return;
-//        }
-        //4
-//        if (!form.isValid('status')) {
-//            infoDialog.open('Training Status is required');
-//            return;
-//        }
-        //5
-//        if (!form.isValid('hr')) {
-//            infoDialog.open('Training Conductor is required');
-//            return;
-//        }
-        //6
-//        if (!form.isValid('requirement_legal')) {
-//            infoDialog.open('Legal Requirement option is required');
-//            return;
-//        }
-//        if (!form.isValid('requirement')) {
-//            infoDialog.open('Requirement is required');
-//            return;
-//        }
-//        if (!form.isValid('training_provider_requirement')) {
-//            infoDialog.open('Training Provider Requirement is required');
-//            return;
-//        }
 
         const {
-            //1
+            //0
             client, project, site,
+            //1
+            course,
+            training_frequency, subject_category,
+            date, time_from, time_to,//list
             //2
-            course_or_module,
+            institution_conducting_training,//list
+            hr,//list
+            job_desc,
             //3
-            allocation, job_title, sector_list,
+            doc,//list
             //4
-            status, date_range, cost,
-            //5
-            institution_conducting_training, hr, job_desc,
-            //6
-            requirement_legal,
-            requirement,
-            max_participants_per_course,
-            training_standard,
-            training_frequency,
-            training_provider_requirement,
-            //7
-            competency_evaluation,
-            unit_standard,
-            unit_standard_desc,
-            credits,
-            nqf_level
+            attendance_register_doc,//list
+            attendance_register_list,//list
         } = form.data;
         const data = {};
 
-        //1
+        //0
         ShouldUpdate.checkClient(data, old_data, client, 'client');
         ShouldUpdate.checkProject(data, old_data, project, 'project');
         ShouldUpdate.checkSite(data, old_data, site, 'site');
 
+        //1
+        ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course');
+        ShouldUpdate.check(data, old_data, training_frequency, 'training_frequency');
+        ShouldUpdate.check(data, old_data, subject_category, 'subject_category');
+        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.check(data, old_data, time_from, 'time_from');
+        ShouldUpdate.check(data, old_data, time_to, 'time_to');
+
         //2
-        ShouldUpdate.checkCourseOrModule(data, old_data, course_or_module, 'course_or_module');
-
-        //3
-        ShouldUpdate.check(data, old_data, allocation, 'allocation');
-        ShouldUpdate.checkJobPosition(data, old_data, job_title, 'job_title');
-        ShouldUpdate.checkBox(data, old_data, sector_list, 'sector_list');
-
-        //4
-        ShouldUpdate.check(data, old_data, status, 'status');
-        if (date_range) {
-            const {start, end} = date_range;
-            const new_date_range = {};
-            ShouldUpdate.checkDate(new_date_range, old_data.date_range, start, 'start');
-            ShouldUpdate.checkDate(new_date_range, old_data.date_range, end, 'end');
-            if (!Object.keys(new_date_range).isEmpty()) {
-                data.date_range = new_date_range;
-            }
-        }
-        ShouldUpdate.check(data, old_data, cost, 'cost');
-
-        //5
         ShouldUpdate.check(data, old_data, institution_conducting_training, 'institution_conducting_training');
         ShouldUpdate.checkEmployee(data, old_data, hr, 'hr');
         ShouldUpdate.checkJobPosition(data, old_data, job_desc, 'job_desc');
 
-        //6
-        ShouldUpdate.check(data, old_data, requirement_legal, 'requirement_legal');
-        ShouldUpdate.check(data, old_data, requirement, 'requirement');
-        ShouldUpdate.check(data, old_data, max_participants_per_course, 'max_participants_per_course');
-        ShouldUpdate.check(data, old_data, training_standard, 'training_standard');
-        ShouldUpdate.check(data, old_data, training_frequency, 'training_frequency');
-        ShouldUpdate.check(data, old_data, training_provider_requirement, 'training_provider_requirement');
+        //3
+        ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
-        //7
-        ShouldUpdate.check(data, old_data, competency_evaluation, 'competency_evaluation');
-        ShouldUpdate.check(data, old_data, unit_standard, 'unit_standard');
-        ShouldUpdate.check(data, old_data, unit_standard_desc, 'unit_standard_desc');
-        ShouldUpdate.check(data, old_data, credits, 'credits');
-        ShouldUpdate.check(data, old_data, nqf_level, 'nqf_level');
+        //4
+        ShouldUpdate.checkFile(data, old_data, attendance_register_doc, 'attendance_register_doc');
+        ShouldUpdate.checkListToJS(data, old_data, attendance_register_list, 'attendance_register_list');
 
         if (Object.keys(data).isEmpty()) {
             infoDialog.open("Nothing changed!");
@@ -294,29 +255,21 @@ class Controls extends React.Component {
             item: {
                 id, data: {
                     created_at,
-                    //1
+                    //0
                     client, project, site,
+                    //1
+                    course,
+                    training_frequency, subject_category,
+                    date, time_from, time_to,//list
                     //2
-                    course_or_module,
+                    institution_conducting_training,//list
+                    hr,//list
+                    job_desc,
                     //3
-                    allocation, job_title, sector_list,
+                    doc,//list
                     //4
-                    status, date_range, cost,
-                    //5
-                    institution_conducting_training, hr, job_desc,
-                    //6
-                    requirement_legal,
-                    requirement,
-                    max_participants_per_course,
-                    training_standard,
-                    training_frequency,
-                    training_provider_requirement,
-                    //7
-                    competency_evaluation,
-                    unit_standard,
-                    unit_standard_desc,
-                    credits,
-                    nqf_level
+                    attendance_register_doc,//list
+                    attendance_register_list,//list
                 }
             }
         } = this;
@@ -332,14 +285,12 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {isConsultant && <SelectClientInput name="client" placeholder="Company..."
-                                                    defaultValue={RenderUtils.selectedClient.call(this)} showAll
+                {isConsultant && <SelectClientInput name="client" placeholder="Company..." required
                                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <SelectProjectInput name="project" placeholder="Project..."
-                                    defaultValue={RenderUtils.selectedProject.call(this)} showAll
-                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)}
-                                 showAll className={"col-lg-12 form-control"} onChange={this.form.onChange}/>
+                <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
+                <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
+                                 onChange={this.form.onChange}/>
             </Row>}
             <Row
                 rendered
@@ -347,78 +298,129 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Course Details"
                 onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
                 onFormBack={!isNoProjects && onFormBack}
-                onFormNext={onFormNext}
             >
-                <SelectToolboxTalkCourseInput name="course_or_module" placeholder="Course..."
-                                              defaultValue={course_or_module} className="col-lg-12 form-control"
-                                              onChange={this.form.onChange} add={false} returnValue/>
+                <SelectToolboxTalkCourseInput name="course" placeholder="Course..."
+                                              defaultValue={course}
+                                              className="col-lg-12 form-control"
+                                              onChange={this.form.onChange}/>
+                <SelectWrapper state={this.state} name="training_frequency" placeholder="Training Frequency..."
+                               defaultValue={training_frequency}
+                               className="col-lg-6 form-control" onChange={this.form.onChange}
+                               values="training_frequency"/>
+                <SelectToolboxTalkSubjectCategoryInput name="subject_category" placeholder="Subject Category..."
+                                                       defaultValue={subject_category}
+                                                       className="col-lg-6 form-control"
+                                                       onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
+                activeAlways
                 idx={2}
-                title="2. Sector & Job Details"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}
+                title="2. Toolbox Talk / Training Meeting"
             >
-                <SelectJobCategoryInput name="allocation" placeholder="Allocation / Job Category..."
-                                        defaultValue={allocation} className="col-lg-12 form-control"
-                                        onChange={this.form.onChange} add={false}/>
-                <SelectJobPositionInput name="job_title" placeholder="Job Position For Training..."
-                                        defaultValue={job_title} className="col-lg-12 form-control"
+                <FormControls>
+                    <Row
+                        rendered
+                        idx={2.1}
+                        title="2.1. Date & Time"
+                        onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
+                    >
+                        <ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
+                                        defaultValue={date} onChange={this.form.onChange}/>
+                        <div
+                            className="
+                            flex col-lg-12 bg-eee margin-t-10 margin-b-5 border-radius-20
+                            padding-t-20 padding-b-10 padding-l-10 padding-r-10
+                            ">
+                            <ClearableInput name="time_from" type="time" placeholder="Time From..."
+                                            defaultValue={time_from} className="border-radius-0 border-radius-l-20 form-control"
+                                            onChange={this.form.onChange}/>
+                            <ClearableInput name="time_to" type="time" placeholder="Time To..."
+                                            defaultValue={time_to} className="border-radius-0 border-radius-r-20 form-control"
+                                            onChange={this.form.onChange}/>
+                        </div>
+                    </Row>
+                    <Row
+                        rendered
+                        idx={2.2}
+                        title="2.2. Person / Institution Conducting Training"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                        onFormNext={onFormNext}
+                    >
+                        <ClearableInput name="institution_conducting_training" type="text"
+                                        placeholder="Institution Conducting Training"
+                                        defaultValue={institution_conducting_training}
+                                        className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
-                <ClearableInput name="sector_list" type="checkbox" placeholder="Sector(s)" defaultValue={sector_list}
-                                vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.sector_list} returnValue/>
-            </Row>
-            <Row
-                rendered
-                idx={3}
-                title="3. Training Start & End Date"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}
-            >
-                <ClearableInput name="status" type="radio" placeholder="Training Status" defaultValue={status} vertical
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.status}/>
-                <DateRangeInput name="date_range" className="col-lg-12 form-control" defaultValue={date_range}
-                                placeholder="" onChange={this.form.onChange}>
-                    <label className="min-w-100">Start Date</label>
-                    <label className="min-w-100">End Date</label>
-                </DateRangeInput>
-                <ClearableInput name="cost" type="number" placeholder="Cost" defaultValue={cost}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            </Row>
-            <Row
-                rendered
-                idx={4}
-                title="4. Person / Institution Conducting Training"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}
-            >
-                <ClearableInput name="institution_conducting_training" type="text"
-                                placeholder="Institution Conducting Training"
-                                defaultValue={institution_conducting_training} className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
-                <SelectUserInput name="hr" placeholder="Training Conductor..." defaultValue={hr} defaultUser
-                                 showOtherPerson className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectJobPositionInput name="job_desc" placeholder="Job Position..." defaultValue={job_desc}
-                                        desc="Job Position For Training Conductor" className="col-lg-12 form-control"
-                                        onChange={this.form.onChange} add/>
-            </Row>
-            <Row
-                rendered
-                idx={5}
-                title="5. Categorization"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-            >
-                <SelectWrapper state={this.state} name="training_frequency" defaultValue={training_frequency}
-                               placeholder="Training Frequency..." className="col-lg-8 pull-left-2 form-control"
-                               onChange={this.form.onChange} values="training_frequency"/>
+                        <SelectUserInput name="hr" placeholder="Training Conductor..."
+                                         defaultUser showOtherPerson
+                                         defaultValue={hr}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <SelectJobPositionInput name="job_desc" placeholder="Job Position..."
+                                                desc="Job Position For Training Conductor"
+                                                defaultValue={job_desc}
+                                                className="col-lg-12 form-control"
+                                                onChange={this.form.onChange} add/>
+                    </Row>
+                    <Row
+                        rendered
+                        idx={2.3}
+                        title="2.3. Attach Toolbox Talk / Training Meeting Document"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                        onFormNext={onFormNext}
+                    >
+                        <UploadButton
+                            name="doc"
+                            buttonTitle="Document (PDF, Word)"
+                            type={['Word', 'PDF', 'Image']}
+                            showOnlyIcon
+                            defaultValue={doc}
+                            className="col-lg-6 hor-center"
+                            onChange={this.form.onChange}
+                        />
+                    </Row>
+                    <Row
+                        rendered
+                        idx={2.4}
+                        title="2.4. Attendance Register"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                    >
+                        <FormControls>
+                            <Row
+                                rendered
+                                activeAlways
+                                idx={2.41}
+                                title="2.4.1 Attach Attendance Register File"
+                            >
+                                <UploadButton
+                                    name="attendance_register_doc"
+                                    buttonTitle="Document (PDF, Word)"
+                                    type={['Word', 'PDF', 'Image']}
+                                    showOnlyIcon
+                                    defaultValue={attendance_register_doc}
+                                    className="col-lg-6 hor-center"
+                                    onChange={this.form.onChange}
+                                />
+                            </Row>
+                            <Row
+                                rendered
+                                activeAlways
+                                idx={2.42}
+                                title="2.4.2 Add Employee Attendance List"
+                            >
+                                <NewEmployeeListTable ref="attendance_register_list" name="attendance_register_list"
+                                                      defaultValue={[...(attendance_register_list || []), null]}
+                                                      onChange={this.form.onChange}/>
+                            </Row>
+                        </FormControls>
+                    </Row>
+                </FormControls>
             </Row>
         </FormControls>);
     }

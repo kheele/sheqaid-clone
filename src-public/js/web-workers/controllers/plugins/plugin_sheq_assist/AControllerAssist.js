@@ -99,7 +99,7 @@ class AControllerAid extends AControllerRead {
 //            this.injectSavable(evt, loggedUser, updateAttrs, true);
 
             if ('site' in updateAttrs) {
-                if (updateAttrs.site === 'All') {
+                if (updateAttrs.site === 'All' || updateAttrs.site === null) {
                     updateAttrs.site = null;
                     updateAttrs.site_id = null;
                 } else if(updateAttrs.site) {
@@ -107,7 +107,7 @@ class AControllerAid extends AControllerRead {
                 }
             }
             if ('project' in updateAttrs) {
-                if (updateAttrs.project === 'All') {
+                if (updateAttrs.project === 'All' || updateAttrs.project === null) {
                     updateAttrs.project = null;
                     updateAttrs.project_id = null;
                 } else if(updateAttrs.project) {
@@ -115,7 +115,7 @@ class AControllerAid extends AControllerRead {
                 }
             }
             if ('client' in updateAttrs) {
-                if (updateAttrs.client === 'All') {
+                if (updateAttrs.client === 'All' || updateAttrs.client === null) {
                     updateAttrs.client = null;
                     updateAttrs.client_id = null;
                 } else if(updateAttrs.client) {

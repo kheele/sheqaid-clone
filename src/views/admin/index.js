@@ -1,18 +1,16 @@
-import {lazy} from "react";
+import  AdminUsers from './AdminUsers/Main';
 
-const AdminUsers = lazy(() => import('./AdminUsers/Main'/* webpackChunkName:"AdminUsers" */));
+import  Billing from './Billing/Main';
+import  Support from './Support/Main';
 
-const Billing = lazy(() => import('./Billing/Main'/* webpackChunkName:"Billing" */));
-const Support = lazy(() => import('./Support/Main'/* webpackChunkName:"Support" */));
+import  Companies from './Companies/Main';
+import  Clients from './Clients/Main';
+import  Projects from './Projects/Main';
+import  Sites from './Sites/Main';
+import  Users from './Users/Main';
+import  Modules from './Modules/Main';
 
-const Companies = lazy(() => import('./Companies/Main'/* webpackChunkName:"Companies" */));
-const Clients = lazy(() => import('./Clients/Main'/* webpackChunkName:"Clients" */));
-const Projects = lazy(() => import('./Projects/Main'/* webpackChunkName:"Projects" */));
-const Sites = lazy(() => import('./Sites/Main'/* webpackChunkName:"Sites" */));
-const Users = lazy(() => import('./Users/Main'/* webpackChunkName:"Users" */));
-const Modules = lazy(() => import('./Modules/Main'/* webpackChunkName:"Modules" */));
-
-const ScheduledTasks = lazy(() => import('./ScheduledTasks/Main'/* webpackChunkName:"ScheduledTasks" */));
+import  ScheduledTasks from './ScheduledTasks/Main';
 
 const modules = {
     AdminUsers,

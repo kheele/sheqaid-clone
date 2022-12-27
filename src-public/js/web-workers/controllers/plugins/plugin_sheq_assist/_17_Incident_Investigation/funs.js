@@ -56,12 +56,16 @@ class IncidentFuns {
                 }));
             }
             if (sec6_data && sec6_data.person_reporting) {
-                const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec6_data.person_reporting.id);
-                await updateEmployeeImpl(employee, 'person_reporting');
+                if(sec6_data.person_reporting.id) {
+                    const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec6_data.person_reporting.id);
+                    await updateEmployeeImpl(employee, 'person_reporting');
+                }
             }
             if (sec7_data && sec7_data.person_reported_to) {
-                const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec7_data.person_reported_to.id);
-                await updateEmployeeImpl(employee, 'person_reported_to');
+                if(sec7_data.person_reported_to.id) {
+                    const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec7_data.person_reported_to.id);
+                    await updateEmployeeImpl(employee, 'person_reported_to');
+                }
             }
             if (sec8_data && sec8_data.witness_list) {
                 await Promise.all(sec8_data.witness_list.filter(v => !!v.id).map(async v => {
@@ -70,12 +74,16 @@ class IncidentFuns {
                 }));
             }
             if (sec11_data && sec11_data.person_injured) {
-                const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec11_data.person_injured.id);
-                await updateEmployeeImpl(employee, 'person_injured');
+                if(sec11_data.person_injured.id) {
+                    const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec11_data.person_injured.id);
+                    await updateEmployeeImpl(employee, 'person_injured');
+                }
             }
             if (sec13_data && sec13_data.driver) {
-                const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec13_data && sec13_data.driver.id);
-                await updateEmployeeImpl(employee, 'driver');
+                if(sec13_data.driver.id) {
+                    const employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, sec13_data && sec13_data.driver.id);
+                    await updateEmployeeImpl(employee, 'driver');
+                }
             }
             const distribution_list = (investigation && investigation.sec6_data && investigation.sec6_data.distribution_list) ||
                     (sec15_data && sec15_data.distribution_list);

@@ -85,7 +85,12 @@ class AutoUpdateDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="AutoUpdateDialog" ref="dialog" className="AutoUpdateDialog">
+        return (<Dialog
+            key="AutoUpdateDialog"
+            ref="dialog"
+            className="AutoUpdateDialog"
+            dialog={this}
+        >
             <Msg state={this.state}/>
             <CircularProgressWrapper state={this.state}/>
         </Dialog>);

@@ -12,20 +12,33 @@ class ShouldUpdate {
     }
 
     static checkBoxList(data, old_data, newVal, key) {
-        if (newVal) {
-            console.log('checkBoxList', key, toJS(newVal))
-            const list = toJS(newVal);
-            list.sort();
-            let old_list = toJS(old_data[key] || []);
-            old_list.sort();
-
-            if (!old_data) {
-                data[key] = list;
-            } else if ((!old_list.isEmpty() && !list.isEmpty()) && JSON.stringify(old_list) !== JSON.stringify(list)) {
-                data[key] = list;
-            }
+        // if (newVal) {
+        if(isNullable(newVal)) {
+            newVal = [];
         }
+
+        console.log('checkBoxList', key, toJS(newVal))
+
+        const list = toJS(newVal);
+        list.sort();
+        if (!old_data) {
+            data[key] = list;
+            return;
+        }
+
+        let old_list = toJS(old_data[key] || []);
+        old_list.sort();
+        if (old_list.length !== list.length) {
+            data[key] = list;
+            return;
+        }
+
+        if (JSON.stringify(old_list) !== JSON.stringify(list)) {
+            data[key] = list;
+        }
+        // }
     }
+
     static checkBox(data, old_data, newVal, key) {
         if (newVal) {
             console.log('checkBox', key, toJS(newVal))
@@ -49,6 +62,7 @@ class ShouldUpdate {
 //        }
         }
     }
+
     static checkDate(data, old_data, newVal, key) {
         if (newVal && isDate(newVal)) {
             newVal = isNumber(newVal) ? newVal : newVal.getTime();
@@ -59,6 +73,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkSignature(data, old_data, newVal, key) {
         if (newVal && (isArray(newVal) || isObservableArray(newVal))) {
             if (!old_data) {
@@ -78,13 +93,29 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkFileList(data, old_data, newVal, key) {
-        if (newVal && !newVal.filter(({path}) => path).isEmpty()) {
-            const newList = newVal.map(({path}) => path);
-            if (!old_data) {
-                data[key] = newList;
-            } else if (!old_data[key] || old_data[key] !== newList) {
-                data[key] = [...newVal, ...newList];
+        if (newVal) {
+            const mapper = ({path}) => path;
+            if (!newVal.filter(mapper).isEmpty()) {
+                const newList = newVal.map(mapper);
+                const list = toJS(newList);
+                list.sort();
+                if (!old_data) {
+                    data[key] = list;
+                    return;
+                }
+
+                let old_list = toJS(old_data[key] || []);
+                old_list.sort();
+                if (old_list.length !== list.length) {
+                    data[key] = [...newVal, ...newList];
+                    return;
+                }
+
+                if (JSON.stringify(old_list) !== JSON.stringify(list)) {
+                    data[key] = [...newVal, ...newList];
+                }
             }
         }
     }
@@ -100,6 +131,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkEmployee(data, old_data, employee, key) {
         if (employee) {
             let email;
@@ -135,7 +167,7 @@ class ShouldUpdate {
             let old_list = toJS(old_data[key] || []);
             old_list = old_list.map(mapper);
             old_list.sort();
-            if(old_list.length !== list.length) {
+            if (old_list.length !== list.length) {
                 data[key] = list;
                 return;
             }
@@ -145,6 +177,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkListPermissionsOther(data, old_data, newVal, key) {
         if (newVal && (isArray(newVal) || isObservableArray(newVal))) {
             key = key || "permissions_other";
@@ -162,7 +195,7 @@ class ShouldUpdate {
             let old_list = toJS(old_data[key] || []);
             old_list = old_list.map(mapper);
             old_list.sort();
-            if(old_list.length !== list.length) {
+            if (old_list.length !== list.length) {
                 data[key] = list;
                 return;
             }
@@ -172,6 +205,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkListToJS(data, old_data, newVal, key, mapper) {
         if (mapper) {
             newVal = newVal && mapper && newVal.map(mapper);
@@ -189,7 +223,7 @@ class ShouldUpdate {
                 old_list = old_list.map(mapper);
             }
             old_list.sort();
-            if(old_list.length !== list.length) {
+            if (old_list.length !== list.length) {
                 data[key] = list;
                 return;
             }
@@ -199,6 +233,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkObjectToJS(data, old_data, newVal, key, mapper) {
         if (mapper) {
             newVal = newVal && newVal.map(mapper);
@@ -216,7 +251,7 @@ class ShouldUpdate {
                 old_list = old_list.map(mapper);
             }
             old_list.sort();
-            if(old_list.length !== list.length) {
+            if (old_list.length !== list.length) {
                 data[key] = list;
                 return;
             }
@@ -226,6 +261,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkListToJSElseEmpty(data, old_data, newVal, key, mapper) {
         if (mapper) {
             newVal = newVal && newVal.map(mapper);
@@ -243,7 +279,7 @@ class ShouldUpdate {
                 old_list = old_list.map(mapper);
             }
             old_list.sort();
-            if(old_list.length !== list.length) {
+            if (old_list.length !== list.length) {
                 data[key] = list;
                 return;
             }
@@ -259,10 +295,10 @@ class ShouldUpdate {
     static checkClient(data, old_data, client, key) {
         key = key || "client";
         if (client && (!old_data || (!old_data[key] || old_data[key].id !== client.id))) {
-            if(client === "All") client = null;
+            if (client === "All") client = null;
 
             let old_val = old_data[key];
-            if(old_val === "All") old_val = null;
+            if (old_val === "All") old_val = null;
 
             console.log(key, client, old_val)
             if (client && client.id) {
@@ -273,13 +309,14 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkProject(data, old_data, project, key) {
         key = key || "project";
         if (project && (!old_data || (!old_data[key] || old_data[key].id !== project.id))) {
-            if(project === "All") project = null;
+            if (project === "All") project = null;
 
             let old_val = old_data[key];
-            if(old_val === "All") old_val = null;
+            if (old_val === "All") old_val = null;
 
             if (project && project.id) {
                 const {id, data: _data, name} = project;
@@ -289,13 +326,14 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkSite(data, old_data, site, key) {
         key = key || "site";
         if (site && (!old_data || (!old_data[key] || old_data[key].id !== site.id))) {
-            if(site === "All") site = null;
+            if (site === "All") site = null;
 
             let old_val = old_data[key];
-            if(old_val === "All") old_val = null;
+            if (old_val === "All") old_val = null;
 
             if (site && site.id) {
                 const {id, data: _data, name} = site;
@@ -318,6 +356,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkHazchemSheet(data, old_data, hazchem_sheet, key) {
         key = key || 'hazchem_sheet';
         if (hazchem_sheet) {
@@ -351,6 +390,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkTrainingMatrix(data, old_data, training_matrix, key) {
         key = key || 'training_matrix';
         if (training_matrix) {
@@ -379,6 +419,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkTrainingPlanYear(data, old_data, training_plan, key) {
         key = key || 'training_plan';
         if (training_plan) {
@@ -422,6 +463,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkJobPosition(data, old_data, job_position, key) {
         key = key || 'job_position';
         if (job_position) {
@@ -477,6 +519,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkDepartmentList(data, old_data, department_list, key) {
         key = key || 'department_list';
         if (department_list && (isArray(department_list) || isObservableArray(department_list))) {
@@ -546,6 +589,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkTeamList(data, old_data, team_list, key) {
         key = key || 'team_list';
         if (team_list && (isArray(team_list) || isObservableArray(team_list))) {
@@ -646,7 +690,7 @@ class ShouldUpdate {
             }
         }
     }
-    
+
     static checkSiteList(data, old_data, site_list, key) {
         key = key || 'site_list';
         if (site_list && (isArray(site_list) || isObservableArray(site_list))) {
@@ -699,6 +743,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkProjectBlacklist(data, old_data, project_blacklist, key) {
         key = key || 'project_blacklist';
         if (project_blacklist && (isArray(project_blacklist) || isObservableArray(project_blacklist))) {
@@ -725,6 +770,7 @@ class ShouldUpdate {
             }
         }
     }
+
     static checkSiteBlacklist(data, old_data, site_blacklist, key) {
         key = key || 'site_blacklist';
         if (site_blacklist && (isArray(site_blacklist) || isObservableArray(site_blacklist))) {

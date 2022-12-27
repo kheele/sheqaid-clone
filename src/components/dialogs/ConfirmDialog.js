@@ -68,7 +68,12 @@ class ConfirmDialog extends React.Component {
     }
 
     render() {
-        return (<Dialog key="ConfirmDialog" ref="dialog" className="ConfirmDialog">
+        return (<Dialog
+            key="ConfirmDialog"
+            ref="dialog"
+            className="ConfirmDialog"
+            dialog={this}
+        >
             <Msg state={this.state}/>
             <div className="controls">
                 <Button className="btn btn-primary pull-right" onClick={this.onYes}>Yes</Button>

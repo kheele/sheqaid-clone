@@ -12,5 +12,7 @@ module.exports = path => [
         'users/index.js',
         'audit-trail/index.js',
 
-        'docs/index.js'
+        'docs/index.js',
+
+        "relay/index.js"
     ].map(v => path + '/default/' + v);

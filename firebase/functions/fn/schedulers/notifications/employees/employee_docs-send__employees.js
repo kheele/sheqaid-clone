@@ -25,7 +25,7 @@ const columns = [
 //</editor-fold>
 
 //<editor-fold desc="send_employees">
-exports = async ({company_ids, company_groups, collectionGroup, tbl, _group, name,}) => {
+exports.send = async ({company_ids, company_groups, collectionGroup, tbl, _group, name,}) => {
     // console.log('*********************************************')
     // console.log('send_employees', collectionGroup)
     // console.log('*********************************************')
@@ -40,10 +40,12 @@ exports = async ({company_ids, company_groups, collectionGroup, tbl, _group, nam
 
         docs.map(doc => {
             return {id: doc.id, data: doc.data()};
-        }).filter(({data: {email}}) => !!email).map(({
-                                                         id,
-                                                         data: {email: username, client, project, site, company_id}
-                                                     }) => {
+        }).filter(({data: {email}}) => !!email).map((
+            {
+                id,
+                data: {email: username, client, project, site, company_id}
+            }
+        ) => {
             if (!client) {
                 return {id, username, sentList};
             }
@@ -62,7 +64,9 @@ exports = async ({company_ids, company_groups, collectionGroup, tbl, _group, nam
                 };
             }
             return {
-                id, username, sentList: sentList.filter(({data: {site: _site}}) => _site && _site.id === site.id)
+                id,
+                username,
+                sentList: sentList.filter(({data: {site: _site}}) => _site && _site.id === site.id)
             };
         });
     });
