@@ -41,6 +41,8 @@ import {
 import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onChangeSDS} from '../dialogs/Utils';
 
 import style from "./NewHazchemSheetDialog.lazy.css";
+import insertChemicalHazchemsheet
+    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/insertChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -441,7 +443,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertChemicalHazchemsheet(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -449,6 +452,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
 

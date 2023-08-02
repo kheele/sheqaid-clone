@@ -28,6 +28,7 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewInventoryProductDialog.lazy.css";
+import insertChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/insertChemicalProduct";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -433,7 +434,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertChemicalProduct(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -441,6 +443,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
 
