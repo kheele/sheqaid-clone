@@ -1,0 +1,18 @@
+@import '../../css/ANewDialog.css';
+
+#dialog-overlay.UploadDialog .dialog-container{
+    height: 140px;
+    width: 420px;
+    max-width: calc(100% - 30px);
+    max-height: calc(100% - 30px);
+}
+#dialog-overlay.UploadDialog .dialog-content{
+    padding: 30px 20px 25px;
+    height: calc(100% - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#dialog-overlay.UploadDialog .dialog-content .UploadButton {
+    margin: 10px !important;
+}

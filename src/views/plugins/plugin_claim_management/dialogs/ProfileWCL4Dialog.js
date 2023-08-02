@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {PDFUploadButton, ProfileField} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../components/dialogs';
+import {PDFUploadButton, ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileWCL4Dialog.lazy.css";
 // </editor-fold>

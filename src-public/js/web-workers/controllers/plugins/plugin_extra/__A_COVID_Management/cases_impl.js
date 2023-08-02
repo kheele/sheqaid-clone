@@ -161,7 +161,7 @@ class ACasesController extends AControllerAid {
 
                         await Promise.all(emails.map(async email => {
                             const opts = {
-                                from: '"SHEQ Aid" <support@sheqsolve.com>',
+                                from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                                 to: email,
                                 subject: 'New COVID ' + titles[notification_key] + ' (Ref#: ' + id + ') Recorded',
                                 html: '<p>This is an automated email from SHEQ Aid.<br />Please do not reply to this email.</p>\n\
@@ -172,10 +172,7 @@ class ACasesController extends AControllerAid {
                                 <p>Kind Regards<br/>SHEQ Aid</p>'
                             };
 
-                            console.log('callables-sendEmail', opts)
-                            const sendEmail = functions.httpsCallable('callables-sendEmail');
-                            const mailRes = await sendEmail(opts);
-                            console.log('mailRes', mailRes)
+                            await Utils.sendEmail(opts);
                         }));
                     }
                 }
@@ -237,7 +234,7 @@ class ACasesController extends AControllerAid {
 
                         await Promise.all(emails.map(async email => {
                             const opts = {
-                                from: '"SHEQ Aid" <support@sheqsolve.com>',
+                                from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                                 to: email,
                                 subject: 'COVID ' + titles[notification_key] + ' (Ref#: ' + id + ') Updated',
                                 html: '<p>This is an automated email from SHEQ Aid.<br />Please do not reply to this email.</p>\n\
@@ -248,10 +245,7 @@ class ACasesController extends AControllerAid {
                                 <p>Kind Regards<br/>SHEQ Aid</p>'
                             };
 
-                            console.log('callables-sendEmail', opts)
-                            const sendEmail = functions.httpsCallable('callables-sendEmail');
-                            const mailRes = await sendEmail(opts);
-                            console.log('mailRes', mailRes)
+                            await Utils.sendEmail(opts);
                         }));
                     }
                 }

@@ -155,7 +155,7 @@ class ATableSavable extends React.Component {
                 list.removeAt(idx);
                 list.insertAt(idx, item);
                 
-                this.onClickComplete && this.onClickComplete(e, el);
+                onClickComplete && onClickComplete(e, el);
             });
             return;
         } else if(action === "cancelEdit") {
@@ -167,7 +167,7 @@ class ATableSavable extends React.Component {
 //                list.removeAt(idx);
 //                list.insertAt(idx, item);
                 
-                this.onClickComplete && this.onClickComplete(e, el);
+                onClickComplete && onClickComplete(e, el);
             });
             return;
         }else if (action === "delete") {

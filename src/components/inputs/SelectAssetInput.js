@@ -5,69 +5,82 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import {onAsyncSelectLoadImpl} from "../../utils/AsyncSelect";
+import byLogged from "views/plugins/plugin_sheq_assist/19_Maintenance/ToolsTab/Query/List/listAllToolsByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
 
-    @observable
-    state = {
-        lists: {
-            list: []
-        },
-        props: null
-    };
+	@observable
+	state = {
+		lists: {
+			list: []
+		},
+		props: null
+	};
 
-    constructor(props) {
-        super(props);
-    }
+	constructor(props) {
+		super(props);
+	}
 
-    componentDidMount() {
-        let {className = ''} = this.props;
-        className += ` SelectAssetInput`;
+	async componentDidMount() {
+		let {className = '', onLoadFilter} = this.props;
+		className += ` SelectAssetInput`;
 
-        this.state.props = {
-            ref: "input",
-            key: new Date().getTime(),
-            name: "asset",
-            type: "select",
-            placeholder: "Asset...",
-            returnValue: true,
-            add: false,
-            onAsyncSelectLoad,
-            ...this.props,
-            defaultValue: this.selectedItem,
-            className
-        };
-    }
+		const res = await onSelectLoad(onLoadFilter);
+		this.state.lists.list = res.distinct();
 
-    @computed
-    get selectedItem() {
-        const {defaultValue} = this.props;
-        if (defaultValue) {
-            if (defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            let {name, asset_type, data} = defaultValue;
-            const label = data ? (data.name + ' (' + data.asset_type + ')') : (name + ' (' + asset_type + ')');
+		this.state.props = {
+			ref: "input",
+			key: new Date().getTime(),
+			name: "asset",
+			type: "select",
+			placeholder: "Asset...",
+			values: this.list,
+			returnValue: true,
+			add: false,
+			...this.props,
+			defaultValue: this.selectedItem,
+			className
+		};
+	}
+
+	@computed
+	get selectedItem() {
+		const {defaultValue} = this.props;
+		if (defaultValue) {
+			if (defaultValue.label && defaultValue.value) {
+				return defaultValue;
+			}
+			const {data: {asset_detail: {name, asset_type}}} = defaultValue;
+			const label = name + ' (' + asset_type + ')';
 //            console.log('selectedVal', label)
-            return {value: defaultValue, label};
-        }
-        return null;
-    }
+			return {value: defaultValue, label};
+		}
+		return null;
+	}
 
-    render() {
-        const {props} = this.state;
-        if (!props) return null;
+	render() {
+		const {props} = this.state;
+		if (!props) return null;
 
-        return <ClearableInput {...props}/>;
-    }
+		return <ClearableInput {...props}/>;
+	}
 }
 
-function onAsyncSelectLoad(value) {
-    return onAsyncSelectLoadImpl("plugin_sheq_assist/19_Maintenance/tools/list/search_by_name", value, value => {
-        return {label: value.data.name, value};
-    });
+function onSelectLoad(onLoadFilter) {
+	const filter = isFunction(onLoadFilter) && onLoadFilter();
+	const args = {
+		limit: 0,
+		...(filter || {}),
+		//
+		exact_orgs: true,
+	};
+	return byLogged(args).then(res => {
+		return res.map(value => {
+			const {data: {asset_detail: {name, asset_type}}} = value;
+			return {label: name + ' (' + asset_type + ')', value};
+		});
+	});
 }
 
 export default SelectInput;

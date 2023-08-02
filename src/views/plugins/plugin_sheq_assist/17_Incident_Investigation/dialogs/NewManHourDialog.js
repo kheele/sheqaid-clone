@@ -2,18 +2,15 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {monthArray, yearArray} from '../../../../../utils/Utils';
+import {monthArray, yearArray} from 'utils/Utils';
 
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
-import {FormControls, Row} from "../../../../../components/FormComponents";
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
+import {FormControls, Row} from "components/FormComponents";
 import {AControls, RowPanel1, RowPanel2, RowPanel3, Sign} from "./ManHourComponents";
 
 import style from "./NewManHourDialog.lazy.css";
-import {NewCalibrationRecordTable} from "../../19_Maintenance/dialogs/AssetTables";
-import NewIncidentListTable from "../../../../../components/FormTableComponents/NewIncidentListTable";
-import {observable} from "mobx";
-import StateLists from "./IncidentForms/StateLists";
+import NewIncidentListTable from "components/FormTableComponents/NewIncidentListTable";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">

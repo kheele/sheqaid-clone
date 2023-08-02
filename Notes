@@ -1,0 +1,142 @@
+
+docker:
+    a. docker ps
+    b. docker stop container_name
+    c. docker rm container_name
+    d. docker pull rhespo/sheqaid-server
+    e. docker run -d -p 5000:5000 rhespo/sheqaid-server
+    f. docker ps
+    g. docker logs container_name
+
+1. List of enum types:
+    enum_range(enum_first(null::weekday),null::weekday)
+    SELECT unnest(enum_range(NULL::weekday)) as weekday;
+2. Truncate table
+    TRUNCATE tbl_name RESTART IDENTITY CASCADE;
+
+3. Reset Table identity
+    SELECT column_name, column_default
+    FROM information_schema.columns
+    WHERE table_name = 'default_job_categories' AND column_default LIKE '%nextval%';
+
+    ALTER SEQUENCE default_job_categories_id_seq RESTART WITH 1;
+4. Create ENUM TYPE
+    ALTER TYPE hr_employees_doc_type RENAME TO hr_employees_doc_type_old;
+    CREATE TYPE status AS ENUM (
+        'active',
+        'inactive',
+        'deleted'
+    );
+    ALTER TABLE hr_employees_docs ALTER COLUMN _type TYPE hr_employees_doc_type USING _type::text::hr_employees_doc_type;
+    DROP TYPE hr_employees_doc_type_old;
+
+5.
+    a. companies
+    - module_list:
+    - sector_list:
+
+    b. clients
+    - module_list:
+    - sector_list:
+    - user_id: done
+
+    c. projects
+    - user_id: done
+
+    d. sites
+    - user_id: done
+
+    e. contractors
+    - sector_list:
+    - user_id: done
+
+    f. users
+    - user_id: done
+
+    g. contractor_users
+
+
+--1. sheq_training_plans_per_course
+-- sheq_training_plans_per_employee
+-- sheq_training_plans_per_job_position
+-- sheq_training_plans_per_training
+
+--.1
+CREATE OR REPLACE VIEW "public"."sheq_training_plans_per_course" AS
+ SELECT DISTINCT o.course_id AS "group",
+    o.company_id,
+    o.client_id,
+    o.project_id,
+    o.site_id,
+    json_employee_list_by_plan(o) AS employee_list,
+    json_job_position_list_by_plan(o.*) AS job_position_list,
+    json_year_list_by_plan(o.*) AS year_list,
+    json_training_list_by_plan(o.*) AS training_list,
+    json_attendance_list_by_plan(o.*) AS attendance_list,
+    json_training_plan_list_by_course_id(o.course_id) AS list,//
+    sheq_training_matrices_cost_by_plan(o.*) AS cost,//
+    count_plan_status_by_course_id(o.course_id, 'Outstanding'::text) AS status_outstanding,
+    count_status_by_plan(o.*, 'Completed'::text) AS status_completed,
+    calc_course_results_failed_by_plan(o.course_id) AS results_failed,
+    calc_course_results_passed_by_plan(o.course_id) AS results_passed,
+    calc_course_results_avg_by_plan(o.course_id) AS results_average,
+    count_status_by_plan(o.*, 'Not Started'::text) AS status_not_started
+   FROM sheq_training_plans o
+  GROUP BY "group", o.id;
+
+--.2
+CREATE OR REPLACE VIEW "public"."sheq_training_plans_per_employee" AS
+ SELECT o.employee_id AS "group",
+    o.company_id,
+    o.client_id,
+    o.project_id,
+    o.site_id,
+    cp_json_year_list_by_plan_employee(o.employee_id) AS year_list,
+    //json_year_list_by_plan(o.*) AS year_list,
+
+    cp_json_course_list_by_plan_employee(o.employee_id) AS course_list,
+    //json_course_list_by_plan(o.*) AS course_list,
+
+    cp_json_training_list_by_plan_employee(o.employee_id) AS training_list,
+    //json_training_list_by_plan(o.*) AS training_list,
+
+	cp_json_attendance_list_by_plan_employee(o.employee_id) AS attendance_list,
+    //json_attendance_list_by_plan(o.*) AS attendance_list,
+
+    json_training_plan_list_by_employee_id(o.employee_id) AS list,//
+    sheq_training_matrices_cost_by_plan(o.*) AS cost,//
+    count_status_by_plan(o.*, 'Outstanding'::text) AS status_outstanding,//
+    count_status_by_plan(o.*, 'Completed'::text) AS status_completed,//
+    calc_employee_results_failed_by_plan(o.employee_id) AS results_failed,//
+    calc_employee_results_passed_by_plan(o.employee_id) AS results_passed,//
+    calc_employee_results_avg_by_plan(o.employee_id) AS results_average,//
+    count_status_by_plan(o.*, 'Not Started'::text) AS status_not_started//
+   FROM sheq_training_plans o
+  GROUP BY o.employee_id, o.id;
+
+  //
+  CRUDUtils uncomment line 5
+  insertClient uncomment line 145, 155
+  insertUser uncomment line 131, 134, 147
+  insertDepartment uncomment line 61
+  insertJobCategory uncomment line 51
+  insertJobPosition uncomment line 85, 92
+  insertPPE uncomment line 81, 84, 91
+  insertEmployee uncomment line 152, 156, 160, 164, 177
+  insertEmployeeDocImpl uncomment line 20, 25, 31
+  insertTrainingManual uncomment line 58, 61, 68
+  insertTrainingMatrix uncomment line 227, 234
+  insertContractorsQuestionnaireTemplate uncomment line 64-66, 72
+
+/etc/letsencrypt/live/cloud.sheqaid.com/fullchain.pem
+/etc/letsencrypt/live/cloud.sheqaid.com/privkey.pem
+
+    /*
+    * job_observed: [] add
+    * reason: ['', '', '', '']
+    * competency: ['', '', '']
+    * expiry
+    * questionnaire/doc
+    * comments/remarks
+    * signatures
+    * */

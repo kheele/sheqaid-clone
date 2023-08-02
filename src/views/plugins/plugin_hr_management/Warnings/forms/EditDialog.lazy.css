@@ -1,0 +1,24 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-content .row.row-doc.active {
+    height: calc(100% - 90px);
+}
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-content .controls > .row:last-of-type{
+    position: relative;
+}
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-content .row.sec-group{
+    height: calc(100% - 87px);
+    margin-bottom: -5px !important;    
+}
+#dialog-overlay.EditWarningDialog-profile-dialog .dialog-content .ProofUploadButton{
+    height: 100%;
+}

@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, setDefaultVal} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, setDefaultVal} from 'utils/Utils';
 
-import {ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import {OperationOrProcedureOrTestCarriedOutAndDatesTable} from '../../dialogs/ClaimForms';
 

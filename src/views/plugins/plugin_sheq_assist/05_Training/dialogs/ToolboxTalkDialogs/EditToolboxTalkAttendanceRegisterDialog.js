@@ -16,7 +16,7 @@ import {
 import {AEditDialog} from 'components/dialogs';
 import {FormControls, Row} from "components/FormComponents";
 import style from "./EditToolboxTalkAttendanceRegisterDialog.lazy.css";
-import {NewEmployeeListTable} from "../../../../../../components/FormTableComponents";
+import {NewEmployeeListTable} from "components/FormTableComponents";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -80,8 +80,8 @@ class Controls extends React.Component {
         ShouldUpdate.checkSite(data, old_data, site);
 
         ShouldUpdate.check(data, old_data, course_or_module, 'course_or_module');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
-        ShouldUpdate.checkEmployeeList(data, old_data, employee_list, 'employee_list');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+        ShouldUpdate.checkEmployeeList_deprecated(data, old_data, employee_list, 'employee_list');
         
         console.log(data)
         

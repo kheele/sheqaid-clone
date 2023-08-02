@@ -45,6 +45,7 @@ MDBox.propTypes = {
     "error",
     "light",
     "dark",
+    "black",
     "none",
   ]),
 };

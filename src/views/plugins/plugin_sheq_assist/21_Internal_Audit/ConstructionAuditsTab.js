@@ -1,12 +1,12 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewContractorsAuditDialog from './dialogs/NewContractorsAuditDialog.js';
 //import ProfileNCRDialog from './dialogs/ProfileNCRDialog';

@@ -1,0 +1,42 @@
+/* eslint-disable camelcase */
+
+// 1
+import {graphql} from "react-relay";
+// @ts-ignore
+import findOneMutationImpl from "mutations/findOneMutationImpl";
+import {EntityCompany} from "mutations/types.d.ts";
+import {Dates} from "../../../utils/Dates";
+
+// 2
+const query = graphql`
+    query findByIdEmployeeHRCounselingsDateRangeDashboardStatsQuery($id: bigint, $dateStart: date, $dateEnd: date) {
+        hr_employees_connection(where: {id: {_eq: $id}}) {
+            edges {
+                node {
+                    id
+                    #                   counselling_list
+                    list_aggregate:counselling_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gte: $dateStart, _lte: $dateEnd}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
+// 3
+export default async ({input, dates}) => await Promise.all(
+    dates.map(async date => {
+        const {start: dateStart, end: dateEnd} = date;
+        const stats = await findOneMutationImpl({query, variables: {id: input, dateStart, dateEnd}});
+        if (!stats) return {id: input, month_year: Dates.parse(dateStart).formatMonthYear(), count: 0};
+
+        const {id, data: {list_aggregate: {aggregate: {count}}}} = stats;
+        return {id, month_year: Dates.parse(dateStart).formatMonthYear(), count};
+    })
+);
+

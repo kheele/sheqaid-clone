@@ -4,8 +4,8 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
-import APage from "../../../APage";
-import Tabs from '../../../../components/tabs/Tabs';
+import APage from "views/APage";
+import Tabs from 'components/tabs/Tabs';
 
 import DashboardTab from './DashboardTab';
 

@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {Button, Clickable, ProfileField} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
-import {AProfileDialog, ViewReportPDFDialog} from '../../../../../components/dialogs';
+import {Button, Clickable, ProfileField} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
+import {AProfileDialog, ViewReportPDFDialog} from 'components/dialogs';
 
 import RiskAssessmentItemBaselineTable from './RiskAssessmentItemBaselineTable';
 

@@ -4,12 +4,12 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
-import APage from "../../../APage";
+import APage from "views/APage";
 
 import DashboardTab from './DashboardTab';
-import NCRTab from './NCRTab.js';
+import NCRTab from './NCRTab';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

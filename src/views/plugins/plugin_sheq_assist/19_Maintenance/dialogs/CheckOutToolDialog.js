@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
-import {SelectTable} from '../../../../../components/tables';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
+import {SelectTable} from 'components/tables';
+import {FormControls, Row} from 'components/FormComponents';
 import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 
 import style from "./CheckOutToolDialog.lazy.css";

@@ -3,11 +3,11 @@ import {observer} from 'mobx-react';
 
 import style from "./EmergencyNumbersTab.lazy.css";
 
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewEmergencyNumberInternalDialog from './dialogs/NewEmergencyNumberInternalDialog.js';
 import NewEmergencyNumberExternalDialog from './dialogs/NewEmergencyNumberExternalDialog.js';

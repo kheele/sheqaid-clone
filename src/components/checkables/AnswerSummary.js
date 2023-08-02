@@ -40,37 +40,44 @@ class AnswerSummary extends React.Component {
     onClickChat(btn) {
         const {status, quesPath, ques, parentId, onChange} = this.props;
         chatBox.readonly(status === "CompleteAccepted").setActiveQuestion({parentId, quesPath, ques, btn}, newMsg => {
+            newMsg.question_id = ques.id;
             onChange({parentId, quesPath, ques, newMsg}).then(res => {
+                console.log('onClickChat res', res)
                 if(res) {            
-                    extendObservable(ques, res.ques);
+                    extendObservable(newMsg, res.data);
                 }
             });
         });
     }
     // </editor-fold>
-    
+
     @computed
     get isQuestion() {
         const {ques} = this.props;
-        return !('sectionText' in ques);
+        if(!('question_list' in ques)) return true;
+        const {question_list} = ques;
+        if(question_list.isEmpty()) return true;
+        return false;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if(!this.isQuestion) {
             return null;
         }
         
-        const {type, status, mainQuestions, quesPath, ques, idx, sectionIdx, readonly, onViewTemplateDocDialog, parentId, notifyChange, onChange} = this.props;
+        const {defaultType, status, mainQuestions, quesPath, ques, idx, sectionIdx, readonly, onViewTemplateDocDialog, parentId, notifyChange, onChange} = this.props;
         const className = "AnswerSummary" + (storage.is.isContractor ? " contractor" : "");
         
         const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
         
 //        console.log('AnswerSummary quesPath', index, quesPath.slice())
+
+        // console.log('questionImage', ques);
         return /*ques.open && */<AccordionSummary key={'AccordionSummary' + index} aria-controls="panel1a-content" id="panel1a-header" elevation={1} className={className}>
             <div className="w-full">
                 <Typography variant="subtitle1">
-                    {type !== 'Title Page' && <span className="counter">{index}</span>} 
+                    {defaultType !== 'Title Page' && <span className="counter">{index}</span>}
                     {ques.isMandatory && <small className="isMandatory">*</small>}
                     {ques.questionText || 'Type Question'}
                 </Typography>
@@ -97,7 +104,7 @@ class AnswerSummary extends React.Component {
                 
                 <QuestionScore status={status} parentId={parentId} ques={ques} idx={idx} sectionIdx={sectionIdx} onChange={onChange}/>
                 
-                <div className="question-status"><QuestionStatus ques={ques}/></div>
+                <QuestionStatus ques={ques}/>
                 
                 {ques.linkDoc && <Button className="btn btn-primary margin-b-5" onClick={this.onViewTemplateDocDialog}>
                     <i className="fa fa-eye"/> View Template
@@ -184,9 +191,10 @@ class QuestionScore extends React.Component {
         }
         
         ques.score = val;
-        onChange && onChange(parentId, ques, idx, sectionIdx).then(res => {
+        onChange && onChange({parentId, ques, idx, sectionIdx}).then(res => {
+            console.log('onMarkScore res', res)
             if(res) {            
-                extendObservable(ques, res.ques);
+                extendObservable(ques, res.data);
             }
        });
     }

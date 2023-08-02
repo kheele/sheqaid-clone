@@ -21,6 +21,8 @@ import {
 } from './FaceComponents';
 
 import style from './SetupFaceDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -119,6 +121,15 @@ class Controls extends React.Component {
         const {imgSrc} = this.refs.capturedImgView;
         
         neonBinding.events.emit(this.path + "setup/biometric", {uid, imgSrc}).then(res => {
+            this.auth.onAuthStateChanged(currentUser => {
+                storage.onLogin(currentUser);
+            });
+
+            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                storage.idTokenResult = idTokenResult;
+                return res;
+            }));
+        }).then(res => {
             progressDialog.close();
             
             console.log(this.path + "setup/biometric", res)
@@ -176,7 +187,18 @@ class Controls extends React.Component {
         });
     }
     // </editor-fold>
-    
+
+    get auth() {
+        const {access_type} = this.loggedUser;
+        if (access_type === "ContractorUser") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";

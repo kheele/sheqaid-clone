@@ -1,5 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 const uuidv4 = require("uuid/v4");
+const {query: getByAuthIdOTPQuery} = require('./graphql/getByAuthIdOTPQuery');
+const {mutation: insertOTPMutation} = require('./graphql/insertOTPMutation');
+const {mutation: updateOTPMutation} = require('./graphql/updateOTPMutation');
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendUserOTP">
@@ -19,12 +22,15 @@ exports.sendUserOTP = async (username, ctx) => {
 
         const otp = uuidv4().substring(0, 5);
 
-        const now = admin.firestore.Timestamp.now();
-        await db.collection('users_otp').doc(uid).set({otp, date: now});
+        await insertRelay({
+            query: insertOTPMutation,
+            operationName: 'insertOTPMutation',
+            input: {auth_id: uid, otp}
+        });
 
         //send otp with email
         await EmailUtils.send({
-            from: '"SHEQ Aid" <support@sheqsolve.com>',
+            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
             to: email,
             subject: 'SHEQ Aid Notifications',
             html: `<h3><b>Hello,</b></h3>\n
@@ -54,13 +60,17 @@ exports.confirmUserOTP = ({access_type}) => {
 
             const {uid, email, phoneNumber, customClaims} = userRecord;
 
-            const doc_ref = await db.collection('users_otp').doc(uid);
-            const snapshot = await doc_ref.get();
-            if (!snapshot.exists) {
-                return "NO_USER_DB";
+            //users_otp
+            const item = await getRelayOne({
+                query: getByAuthIdOTPQuery,
+                operationName: 'getByAuthIdOTPQuery',
+                variables: {auth_id: uid},
+            });
+            if (!item) {
+                return "NO_OTP_DB";
             }
 
-            const {otp, date} = snapshot.data();
+            const {otp, date} = item.data;
 
             if (otp !== code) {
                 return "NO_OTP_MATCH";
@@ -68,13 +78,18 @@ exports.confirmUserOTP = ({access_type}) => {
 
             const now = admin.firestore.Timestamp.now().toMillis();
             const addTime = 1800000;//miliseconds = 30 minutes
-            const comparedTime = date.toMillis() + addTime;
+            const comparedTime = Dates.parse(date).getTime() + addTime;
             if (comparedTime < now) {
                 return "CODE_EXPIRED";
             }
 
             try {
-                await doc_ref.set({otp: null});
+                await updateRelay({
+                    mutation: updateOTPMutation,
+                    operationName: 'updateOTPMutation',
+                    id: node.id,
+                    attrs: {otp: null},
+                });
             } catch (err) {
                 return "ERR_UPDATE_USER";
             }
@@ -113,7 +128,7 @@ exports.sendForgotPass = ({type, tbl}) => {
 
             const url = `https://web.sheqaid.com/accounts/pass-recovery.html?id=${reset_password_id}&type=${type}`;// -H "Content-Type:application/json" --data '{"name":"Keyboard Cat"}';
             await EmailUtils.send({
-                from: '"SHEQ Aid" <support@sheqsolve.com>',
+                from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                 to: username,
                 subject: 'SHEQ Aid - Recover Password',
                 html: '<h3><b>Recover Password</b></h3>\n\

@@ -3,10 +3,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {autorun, computed, observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {Button, ClearableInput, ProfileField} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Button, ClearableInput, ProfileField} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 import {changeColors} from './Utils';
 // </editor-fold>

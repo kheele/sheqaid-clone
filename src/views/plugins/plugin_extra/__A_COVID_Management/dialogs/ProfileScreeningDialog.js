@@ -4,10 +4,10 @@ import {observer} from 'mobx-react';
 import {CircularProgress} from '@material-ui/core';
 import {computed, observable,} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import Form from 'utils/Form';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import {EmployeeDetailsPanel, NewScreeningQuestionsTable} from './ComponentsScreening';
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import {onAsyncSelectLoadImpl} from '../../../utils/AsyncSelect';
+import {onAsyncSelectLoadImpl} from 'utils/AsyncSelect';
 
 // <editor-fold defaultstate="collapsed" desc="AsyncSelectLoad. Click on the + sign on the left to edit the code.">
 function onAsyncSelectLoadFlashReportEmployersOrContractors(value) {

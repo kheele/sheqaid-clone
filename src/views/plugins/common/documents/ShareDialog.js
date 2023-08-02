@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {AProfileDialog} from '../../../../components/dialogs';
-import {Button, ClearableInput, Clickable} from '../../../../components/inputs';
-import {NavButtons, ViewDocumentDetailsPanel} from '../../../../components/FormComponents';
+import Form from 'utils/Form';
+import {AProfileDialog} from 'components/dialogs';
+import {Button, ClearableInput, Clickable} from 'components/inputs';
+import {NavButtons, ViewDocumentDetailsPanel} from 'components/FormComponents';
 
 import style from "./ShareDialog.lazy.css";
 

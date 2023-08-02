@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput} from '../../../../../components/inputs';
-import {AEditDialog} from '../../../../../components/dialogs';
+import {ClearableInput} from 'components/inputs';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditEmergencyNumberExternalDialog.lazy.css";
 

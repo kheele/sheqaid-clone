@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingPlanDialog.lazy.css";
 // </editor-fold>

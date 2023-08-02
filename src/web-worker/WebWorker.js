@@ -1,3 +1,34 @@
+const createLocationRoot = () => {
+    let loc;
+    const {location, location: {hostname}} = document;
+    if (hostname.contains('sheqaid.com')) {
+        loc = `https://${hostname}/`;
+    } else {
+        loc = location.toString().replace("index.html", "");
+        if (loc.contains('#')) {
+            loc = loc.replace(location.hash, "").replace("#", "");
+        }
+
+        if (loc.contains('~admin/')) {
+            loc = loc.replace('~admin/', '/');
+//            console.log('loc', loc)
+        } else if (loc.contains('~admin')) {
+            loc = loc.replace('~admin', '');
+//            console.log('loc', loc)
+        }
+        if (loc.contains('~forms/')) {
+            loc = loc.replace('~forms/', '/');
+//            console.log('loc', loc)
+        } else if (loc.contains('~forms')) {
+            loc = loc.replace('~forms', '');
+//            console.log('loc', loc)
+        }
+    }
+
+    return loc;
+};
+
+window.locationRoot = createLocationRoot();
 
 const event_types = {EVENT: 1, ACK: 2, ERROR: 3};
 
@@ -6,30 +37,7 @@ export default class WebWorker {
     events = {};
 
     constructor(inlineFn) {
-        let loc;
-        if (document.location.hostname.contains('sheqaid.com')) {
-            loc = `https://${document.location.hostname}/`;
-        } else {
-            loc = document.location.toString().replace("index.html", "");
-            if (loc.contains('#')) {
-                loc = loc.replace(document.location.hash, "").replace("#", "");
-            }
-
-            if (loc.contains('~admin/')) {
-                loc = loc.replace('~admin/', '/');
-//            console.log('loc', loc)
-            } else if (loc.contains('~admin')) {
-                loc = loc.replace('~admin', '');
-//            console.log('loc', loc)
-            }
-            if (loc.contains('~forms/')) {
-                loc = loc.replace('~forms/', '/');
-//            console.log('loc', loc)
-            } else if (loc.contains('~forms')) {
-                loc = loc.replace('~forms', '');
-//            console.log('loc', loc)
-            }
-        }
+        let loc = locationRoot;
 
         let code = "function() {\n";
         code += "\tself.locationRoot = '" + loc + "';\n";
@@ -90,13 +98,14 @@ export default class WebWorker {
             }
             let packet = {opcode: event_types.EVENT, evt};
 
-            if (this.acks[evt]) {
-                this.acks[evt].ack_id++;
+            let ack_evt = this.acks[evt];
+            if (ack_evt) {
+                ack_evt.ack_id++;
             } else {
-                this.acks[evt] = {ack_id: 0};
+                ack_evt = this.acks[evt] = {ack_id: 0};
             }
-            let ack_id = this.acks[evt].ack_id;
-            this.acks[evt][ack_id] = {resolve, reject};//ack;
+            let ack_id = ack_evt.ack_id;
+            ack_evt[ack_id] = {resolve, reject};//ack;
 
             packet.ack_id = ack_id;
             if (args.length > 0) {

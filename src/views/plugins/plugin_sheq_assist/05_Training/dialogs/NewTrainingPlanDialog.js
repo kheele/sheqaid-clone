@@ -20,6 +20,7 @@ import ValidateAndCollect1Employee from "./NewTrainingPlanFuns/ValidateAndCollec
 import ValidateAndCollectCourses from "./NewTrainingPlanFuns/ValidateAndCollectCourses";
 import ValidateAndCollectJobPositions from "./NewTrainingPlanFuns/ValidateAndCollectJobPositions";
 import ValidateAndCollectYears from "./NewTrainingPlanFuns/ValidateAndCollectYears";
+import insertTrainingPlan from "mutations/all/TrainingPlan/insertTrainingPlan";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -100,13 +101,14 @@ class Controls extends React.Component {
             refs: {
                 selectOrTableWrapper,
                 selectOrTableWrapper: {
-                    selectEmployeeWrapper, selectEmployeeWrapper: {form: selectEmployeeForm},
-                    newTrainingYearListTableWrapper, newTrainingYearListTableWrapper: {form: newTrainingYearListTableForm},
-                    newTrainingCourseListTableWrapper, newTrainingCourseListTableWrapper: {form: newTrainingCourseListTableForm},
-                    newJobPositionListTableWrapper, newJobPositionListTableWrapper: {form: newJobPositionListTableForm}
+                    selectEmployeeWrapper,
+                    newTrainingYearListTableWrapper,
+                    newTrainingCourseListTableWrapper,
+                    newJobPositionListTableWrapper,
                 }
             }
         } = this;
+
         const {isConsultant, isNoProjects} = storage.is;
 
         //0
@@ -132,71 +134,46 @@ class Controls extends React.Component {
             //0
             client, project, site,
         } = form.data;
-        const data = {};
-
-        //0
-        if (client) {
-            if (client.id) {
-                const {id, data: _data, name} = client;
-                data.client = {id, name: name || _data.name};
-                data.client_id = id;
-            } else {
-                data.client = client;
-            }
-        }
-        if (project) {
-            if (project.id) {
-                const {id, data: _data, name} = project;
-                data.project = {id, name: name || _data.name};
-                data.project_id = id;
-            } else {
-                data.project = project;
-            }
-        }
-        if (site) {
-            if (site.id) {
-                const {id, data: _data, name} = site;
-                data.site = {id, name: name || _data.name};
-                data.site_id = id;
-            } else {
-                data.site = site;
-            }
-        }
+        const data = {
+            // employee_plan_list, this value is set below. It's built from ONLY 1Employee option below
+            // job_position_plan_list, this value is set below. It's built from ONLY JobPositions option below
+            // course_plan_list, this value is set below. It's built from ONLY Courses option below
+            // year_plan_list, this value is set below. It's built from ONLY Years option below
+            //employee_blacklist, this value is set below. It's built from ONLY JobPositions, Courses & Years options below
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
+        };
 
         if (select_employees === '1Employee') {
-            console.log('selectEmployeeWrapper', selectEmployeeWrapper)
-            if(!ValidateAndCollect1Employee.valid(selectEmployeeWrapper)) {
+            // console.log('selectEmployeeWrapper', selectEmployeeWrapper)
+            if (!ValidateAndCollect1Employee.collect(data, selectEmployeeWrapper)) {
                 return;
             }
-
-            await ValidateAndCollect1Employee.collect(data, selectEmployeeWrapper);
-        } else if (select_employees === 'JobPositions') {
-            console.log('newJobPositionListTableWrapper', newJobPositionListTableWrapper)
-            if(!ValidateAndCollectJobPositions.valid(newJobPositionListTableForm)) {
-                return;
+        } else {
+            if (select_employees === 'JobPositions') {
+                // console.log('newJobPositionListTableWrapper', newJobPositionListTableWrapper)
+                if (!ValidateAndCollectJobPositions.collect(data, newJobPositionListTableWrapper)) {
+                    return;
+                }
+            } else if (select_employees === 'Courses') {
+                // console.log('newTrainingCourseListTableWrapper', newTrainingCourseListTableWrapper)
+                if (!ValidateAndCollectCourses.collect(data, newTrainingCourseListTableWrapper)) {
+                    return;
+                }
+            } else if (select_employees === 'Years') {
+                // console.log('newTrainingYearListTableWrapper', newTrainingYearListTableWrapper)
+                if (!ValidateAndCollectYears.collect(data, newTrainingYearListTableWrapper)) {
+                    return;
+                }
             }
-
-            await ValidateAndCollectJobPositions.collect(data, newJobPositionListTableForm);
-        } else if (select_employees === 'Courses') {
-            console.log('newTrainingCourseListTableWrapper', newTrainingCourseListTableWrapper)
-            if(!ValidateAndCollectCourses.valid(newTrainingCourseListTableForm)) {
-                return;
-            }
-
-            await ValidateAndCollectCourses.collect(data, newTrainingCourseListTableForm);
-        } else if (select_employees === 'Years') {
-            console.log('newTrainingYearListTableWrapper', newTrainingYearListTableWrapper)
-            if(!ValidateAndCollectYears.valid(newTrainingYearListTableForm)) {
-                return;
-            }
-
-            await ValidateAndCollectYears.collect(data, newTrainingYearListTableForm);
         }
 
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertTrainingPlan(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -204,6 +181,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
 

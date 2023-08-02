@@ -19,7 +19,7 @@
             });
         } else {
             if (isString(uploadFile)) {
-                uploadFile = fileUtils.toFile(uploadFile);
+                uploadFile = await fileUtils.toFile(uploadFile);
             }
             new_name = await getOpts(uploadFile);
             const fileRef = storageBucket.child(new_name);

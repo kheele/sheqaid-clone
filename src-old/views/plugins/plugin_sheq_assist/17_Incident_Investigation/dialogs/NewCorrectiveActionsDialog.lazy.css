@@ -1,0 +1,48 @@
+/*@import '../../../../../css/ANewTableFormDialog.css';*/
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 860px;
+    max-width: 100%;
+}
+#dialog-overlay.NewCorrectiveActionsItemDialog-new-dialog .dialog-container{
+    height: 360px;
+    width: 600px;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-content,
+#dialog-overlay.NewCorrectiveActionsItemDialog-new-dialog .dialog-content {
+    padding: 0;
+    /*height: calc(100% - 50px);*/
+}
+
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-content .row-title .title{
+    margin: 0;
+    font-size: 16px;
+    padding: 0 0;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-content .row-title .title > label{
+    background: rgb(2, 168, 168);
+    color: #fff;
+    margin: -5px 10px -10px -10px;
+    padding: 10px;
+}
+
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table {
+    margin: 0 !important;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table.col-lg-6 {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+    padding-right: 8px !important;
+}

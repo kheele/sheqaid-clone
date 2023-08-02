@@ -4,7 +4,7 @@ import {PDFDocument} from 'pdf-lib'
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 
-import {APDFReader} from '../../../../../components/PrintComponents';
+import {APDFReader} from 'components/PrintComponents';
 
 import {PageFirst, PageLast} from './ProfilePDFReaderPages';
 // </editor-fold>

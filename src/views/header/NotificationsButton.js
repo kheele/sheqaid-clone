@@ -3,17 +3,17 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 
-import {Button} from '../../components/inputs';
-import NavItem from '../../components/navs/NavItem';
-import Popover from '../../components/popovers/Popover';
+import {Button} from 'components/inputs';
+import NavItem from 'components/navs/NavItem';
+import Popover from 'components/popovers/Popover';
 
 import notificationStore from './NotificationsStore';
 
-import {ProfileCompetencyCertificateDialog} from "../plugins/plugin_hr_management/Competencies";
-import {ProfileContractDialog} from "../plugins/plugin_hr_management/Contracts";
-import {CounselingsDialog} from "../plugins/plugin_hr_management/Counselings";
-import {ProfileMedicalFitnessCertificateDialog} from "../plugins/plugin_hr_management/Medicals";
-import {ProfileWarningDialog} from "../plugins/plugin_hr_management/Warnings";
+import ProfileCompetencyCertificateDialog from "views/plugins/plugin_hr_management/Competencies/forms/ProfileDialog";
+import ProfileContractDialog from "views/plugins/plugin_hr_management/Contracts/forms/ProfileDialog";
+import CounselingsDialog from "views/plugins/plugin_hr_management/Counselings/forms/ProfileDialog";
+import ProfileMedicalFitnessCertificateDialog from "views/plugins/plugin_hr_management/Medicals/forms/ProfileDialog";
+import ProfileWarningDialog from "views/plugins/plugin_hr_management/Warnings/forms/ProfileDialog";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="NotificationsButton">
@@ -72,8 +72,11 @@ class NotificationsButton extends React.Component {
     }
 
     render() {
-        const {isContractorView, isEmployee} = storage.is;
+        const {isConsultant, isContractorView, isEmployee} = storage.is;
+        const {clients} = storage.list;
         if(isContractorView || isEmployee) return null;
+        if (isConsultant && clients.isEmpty()) return null;
+
         return <Button ref="notifications" className="fa fa-bell btn" title="Notifications" hoverText="Notifications" onClick={this.onPopoverNotifications}>
             <Count ref="count"/>
             <Popover ref="popover"/>

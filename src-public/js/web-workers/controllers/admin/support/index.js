@@ -15,7 +15,7 @@
             let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
             const {fname, lname, email, message} = data;
             const opts = {
-                from: '"SHEQ Aid - Support" <support@sheqsolve.com>',
+                from: '"SHEQ Aid - Support" <no-reply@sheqsolve.com>',
                 to: "support@sheqsolve.com",
                 subject: 'Support',
                 html: '<h3><b>Message Details</b></h3>\n\
@@ -23,9 +23,7 @@
                 <p>Email: ' + email + '</p>\n\
                 <p>' + message + '</p>'
             };
-            const sendEmail = functions.httpsCallable('callables-sendEmail');
-            const mailRes = await sendEmail(opts);
-            console.log('mailRes', mailRes)
+            await Utils.sendEmail(opts);
             return true;
         }
     }

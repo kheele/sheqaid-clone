@@ -16,10 +16,22 @@
     justify-content: center;
 }
 
+#ADocuments-page .page-title {
+    margin-top: -90px !important;
+}
+
 #ADocuments-page .page-title > .tabled-top-panel{
     min-width: 955px !important;
 }
 
+#ADocuments-page .page-title > h3{
+    display: none !important;
+}
+
 #ADocuments-page .filter-wrapper + .table{
     height: calc(100% - (20px + 125px)) !important;
+}
+
+#ADocuments-page .table{
+    margin-top: 45px;
 }

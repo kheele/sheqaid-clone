@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Dates} from 'utils/Utils';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 import style from "./ProfileSWPDialog.lazy.css";
 

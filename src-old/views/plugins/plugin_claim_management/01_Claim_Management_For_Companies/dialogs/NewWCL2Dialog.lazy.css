@@ -1,0 +1,92 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewWCL2Dialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.NewWCL2Dialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewWCL2Dialog-new-dialog .dialog-content .controls-wrapper > .controls > .row .sec-group > hr{
+    border-width: 2px;
+}
+#dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .tr:hover .td h6{
+    color: #eee;
+} 
+#dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .td.td-question h6{
+    font-weight: normal !important;
+    font-size: 14px !important;
+} 
+#dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .td.question-title h6 {
+    padding: 5px !important;
+    background: #fafafa !important;
+    font-weight: bold !important;
+} 
+#dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody ons-list > .tr:first-of-type h6,
+#dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody ons-list > .tr:last-of-type h6 {
+    font-weight: bold !important;
+}
+@media (max-width:767px){
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr{
+        padding-bottom: 10px;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr:last-of-type{
+        margin-bottom: 10px !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr > .td{
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .tr:hover .td h6 {
+        color: #888;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr > .td-question .margin-r-10{
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr:first-of-type > .td .clearable-field-control{
+        margin-bottom: 5px !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list .tr .clearable-field-control{
+        width: 50% !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list > .tr.tr-question-title,
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list > .tr:first-of-type,
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list > .tr:last-of-type {
+        width: 100% !important;
+        grid-column: 1 / 3;
+    }
+}
+@media (max-width:599px){
+    #dialog-overlay.NewWCL2Dialog-new-dialog .table .tbody .list > .tr {
+        width: 100% !important;
+        grid-column: 1 / 3;
+    }
+}
+@media (max-width:549px){
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput > hr {
+        display: none;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput > label:not(.placeholder-label) {
+        padding: 6px 5px;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput > label:not(.placeholder-label):first-of-type {
+        min-width: 42px !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput > label:not(.placeholder-label):last-of-type {
+        min-width: 27px !important;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput > label:last-of-type:not(:first-of-type){
+        margin-left: 0;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput .text-input--material__selectable {
+        padding: 6px 5px;
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput .fa-close {
+        right: 24px
+    }
+    #dialog-overlay.NewWCL2Dialog-new-dialog .form-control.DateRangeInput .fa-calendar {
+        right: 5px
+    }
+}

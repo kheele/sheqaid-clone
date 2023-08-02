@@ -17,6 +17,8 @@ import {
     createValueSetter,
     creatQRCodeLink,
     debounce,
+    toDataURI,
+    convertMobx,
     execWhen,
     findReactComponent,
     getRandomRolor,
@@ -36,6 +38,8 @@ export {
     monthShortArray,
     //
     findReactComponent,
+    toDataURI,
+    convertMobx,
     debounce,
     isInView,
     ExpiryCodes,

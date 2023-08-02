@@ -3,10 +3,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {Clickable} from '../../../../components/inputs';
-import {AProfileDialog} from '../../../../components/dialogs';
+import {Clickable} from 'components/inputs';
+import {AProfileDialog} from 'components/dialogs';
 
 import {PDFWCl6Form} from '../pdf_forms';
 

@@ -54,7 +54,7 @@ class SelectEmployeeWrapper extends ASelectWrapper {
             <SelectEmployeeInput name="employee" placeholder="Select Employee..." required className="form-control margin-t-10 margin-b-10" onChange={this.form.onChange}/>
             <ClearableInput name="select_employees" type="radio" placeholder="Select Per" required className="margin-t-10 margin-b-10 form-control" onChange={this.form.onChange} values={this.state.lists.select_employees}/>
             <NewTrainingCourseListTableWrapper
-                ref={ref => this.innerRefs.newTrainingCourseListTableWrapper = ref}
+                ref={ref => {this.innerRefs.newTrainingCourseListTableWrapper = ref}}
                 name="course_or_module_list"
                 values={values}
                 root={root}
@@ -66,7 +66,7 @@ class SelectEmployeeWrapper extends ASelectWrapper {
                 onChange={this.form.onChange}
             />
             <NewTrainingYearListTableWrapper
-                ref={ref => this.innerRefs.newTrainingYearListTableWrapper = ref}
+                ref={ref => {this.innerRefs.newTrainingYearListTableWrapper = ref}}
                 name="training_year_list"
                 values={values}
                 root={root}

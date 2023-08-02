@@ -53,6 +53,7 @@ class PluginsView extends React.Component {
     @computed
     get show() {
         const {dataState: {dataLoaded, dataError, list}} = pluginManager;
+        // console.log('show', dataLoaded, !list.isEmpty(), !dataError, "=", dataLoaded && !list.isEmpty() && !dataError)
         return dataLoaded && !list.isEmpty() && !dataError;
     }
 

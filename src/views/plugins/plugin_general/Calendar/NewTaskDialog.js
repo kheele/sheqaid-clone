@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {GDocEditor} from '../../../../components/documents';
-import {ClearableInput, SelectEmployeeInput, SelectUserInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {ANewDialog} from '../../../../components/dialogs';
+import {GDocEditor} from 'components/documents';
+import {ClearableInput, SelectEmployeeInput, SelectUserInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewTaskDialog.lazy.css";
 

@@ -12,7 +12,7 @@ import ClaimsCOIDProviderTab from './ClaimsCOIDProviderTab.js';
 import COIDCompaniesTab from './COIDCompaniesTab.js';
 import COIDMedicalCentersTab from './COIDMedicalCentersTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

@@ -6,24 +6,24 @@ import {observable} from 'mobx';
 import {
     renderExpiryDateGreyOrGreenSpan,
     renderLeftButtonsForTasksExpiryOnly
-} from '../../../../../utils/ComponentUtils';
-import {Dates} from '../../../../../utils/Utils';
+} from 'utils/ComponentUtils';
+import {Dates} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../../components/dialogs/ConfirmDialog';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     ClearableInput,
     DateRangeInput,
     SelectEmployeeInput,
     SelectUserInput
-} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import NewTaskDialog from '../../../plugin_general/Calendar/NewTaskDialog';
-import ProfileTaskDialog from '../../../plugin_general/Calendar/ProfileTaskDialog';
-import EditTaskDialog from '../../../plugin_general/Calendar/EditTaskDialog';
+import NewTaskDialog from 'views/plugins/plugin_general/Calendar/NewTaskDialog';
+import ProfileTaskDialog from 'views/plugins/plugin_general/Calendar/ProfileTaskDialog';
+import EditTaskDialog from 'views/plugins/plugin_general/Calendar/EditTaskDialog';
 
 import style from "./TasksDialog.lazy.css";
 

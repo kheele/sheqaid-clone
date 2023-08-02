@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Button, ProfileField, UploadButton} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
-import NewWarningDialog from './NewWarningDialog';
+import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 @observer
 class WarningsTab extends React.Component {
@@ -85,7 +85,7 @@ class WarningsTab extends React.Component {
                         onClick={this.onClick}/>}
                 </div>
             </div>
-            <NewWarningDialog ref="newWarningDialog"/>
+            <NewDialog ref="newWarningDialog"/>
         </div>;
     }
 }

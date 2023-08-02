@@ -1,5 +1,5 @@
 import WorkPermitsDialog from './WorkPermitsDialog';
-import ProfileWorkPermitDialog from './ProfileWorkPermitDialog';
+import ProfileWorkPermitDialog from './forms/ProfileDialog';
 import ViewWorkPermitsTab from './ViewWorkPermitsTab';
 
 export {

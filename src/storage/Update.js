@@ -6,13 +6,13 @@ class Update {
     
     async updateDBUser(loggedUser) {
         if (loggedUser) {
-            const {access_type, company: _company, user: _user} = {...toJS(loggedUser)};
-            const company = {
-                id: _company.id, 
-                data: {profile_pic: _company.data.profile_pic}
-            };
-            const user = {id: _user.id};
-            await indexedStorage.loggedUser.createOrUpdate({access_type, company, user, id: 1});
+            // const {access_type, company: _company, user: _user} = {...toJS(loggedUser)};
+            // const company = {
+            //     id: _company.id,
+            //     data: {profile_pic: _company.data.profile_pic}
+            // };
+            // const user = {id: _user.id};
+            // await indexedStorage.loggedUser.createOrUpdate({access_type, company, user, id: 1});
         }
     }
 

@@ -4,13 +4,13 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {Page, Text, View} from '@react-pdf/renderer';
 
-import styles from '../../../../plugin_hr_management/printers/ProfilePDFReader.style';
+import styles from 'views/plugins/plugin_hr_management/printers/ProfilePDFReader.style';
 
-import {Dates, execWhen} from '../../../../../../utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 
-import {Panel} from '../../../../../../pdf-components';
+import {Panel} from 'pdfpdf-components';
 
-import APageDocuments from '../../../../plugin_hr_management/printers/APageDocuments';
+import APageDocuments from 'views/plugins/plugin_hr_management/printers/APageDocuments';
 
 const PageWrapper2 = ({size, orientation, style, children}) => (
   <Page wrap size={size} orientation={orientation} style={style}>

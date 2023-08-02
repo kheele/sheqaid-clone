@@ -107,7 +107,7 @@ class AccordionWrappper extends React.Component {
     @computed
     get isQuestion() {
         const {ques} = this.props;
-        return !('sectionText' in ques);
+        return !('question_list' in ques);
     }
     
     render() {
@@ -198,14 +198,14 @@ class Section extends React.Component {
    
     render() {
         const {formData, questions, indexes = [], ques, idx, sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
-        if(!('sectionText' in ques)) return null;
+        if(!('question_list' in ques)) return null;
 //        console.log('Section indexes', indexes)
         return <React.Fragment>
             <OpenCloseBtn questions={questions} ques={ques} top showOnOpen/>
             <OpenCloseBtn questions={questions} ques={ques}/>
             <h3 className="section-title margin-t-0">
                 <span className="counter">{isNumber(sectionIdx) ? ((sectionIdx+1) + ".") : null}{idx+1}</span> 
-                <TextField disabled={readonly} variant="filled" placeholder="Add section title" value={ques.sectionText} onChange={evt => ques.sectionText = evt.target.value}/>
+                <TextField disabled={readonly} variant="filled" placeholder="Add section title" value={ques.questionText} onChange={evt => ques.questionText = evt.target.value}/>
                 {!readonly && <Button className="btn btn-primary pull-right" onClick={this.onRemoveSection}>
                     <i className="fa fa-times icon-left"/>Remove Section
                 </Button>}
@@ -242,7 +242,7 @@ class ListDraggable extends React.Component {
         const {ques, idx, innerRef, children, readonly} = this.props;
         const ref = innerRef;
         let className = (readonly ? "ListDraggable-readonly " : "");
-        if('sectionText' in ques) {
+        if('question_list' in ques) {
             className += "ListDraggable-section";
         } else {
             className += "ListDraggable-question";

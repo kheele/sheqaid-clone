@@ -4,7 +4,7 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityCompany} from "../../types.d.ts";
+import {EntityCompany} from "mutations/types.d.ts";
 
 // 2
 const query = graphql`
@@ -21,5 +21,5 @@ const query = graphql`
 `;
 //firestore_id
 // 3
-export default (input: string) =>
-    findOneMutationImpl({ query, variables: {firestore_id: input} });
+export default async (input: string) =>
+  input && findOneMutationImpl({ query, variables: {firestore_id: input} });

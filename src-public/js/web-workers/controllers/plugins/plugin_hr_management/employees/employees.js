@@ -1,10 +1,13 @@
-
 (() => {
     self.TBL_EMPLOYEES = "employees";
+
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         constructor(events, db) {
-            super(events, db, {singular: "Employee", plural: "Employees"}, "plugin_sheq_assist/employees/", TBL_EMPLOYEES);
+            super(events, db, {
+                singular: "Employee",
+                plural: "Employees"
+            }, "plugin_sheq_assist/employees/", TBL_EMPLOYEES);
 
             this.filter_by_notification_key = this.filter_by_notification_key.bind(this);
 
@@ -31,6 +34,7 @@
 
 //            EmployeeTransferFuns.run.call(this);
         }
+
         // </editor-fold>
 
         getDB() {
@@ -122,6 +126,7 @@
                 }));
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="create">
@@ -250,7 +255,10 @@
                             const _data = {name: department, user_id, company_id, created_at};
                             const department_doc_ref = await this.getDB().collection('plugin_sheq_assist_departments').add(_data);//Promise < DocumentReference < T > >
                             const department_doc_snapshot = await department_doc_ref.get();//Promise < DocumentSnapshot < T > >
-                            optional_info.department = {id: department_doc_snapshot.id, name: department_doc_snapshot.data().name};
+                            optional_info.department = {
+                                id: department_doc_snapshot.id,
+                                name: department_doc_snapshot.data().name
+                            };
                         }
                     }
                     if (job_position && (typeof job_position === 'string' || !job_position.id)) {
@@ -267,7 +275,10 @@
                             }
                             const job_position_doc_ref = await this.getDB().collection('plugin_sheq_assist_job_positions').add(_data);//Promise < DocumentReference < T > >
                             const job_position_doc_snapshot = await job_position_doc_ref.get();//Promise < DocumentSnapshot < T > >
-                            optional_info.job_position = {id: job_position_doc_snapshot.id, name: job_position_doc_snapshot.data().name};
+                            optional_info.job_position = {
+                                id: job_position_doc_snapshot.id,
+                                name: job_position_doc_snapshot.data().name
+                            };
                         }
                     }
                 }
@@ -375,7 +386,7 @@
 
                 if (email) {
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: email,
                         subject: 'Welcome to SHEQ Aid',
                         html: '<h3><b>Dear ' + data.fname + ' ' + data.lname + '</b></h3>\n\
@@ -383,9 +394,7 @@
                                 <p>Your SHEQ Aid Username is <b>' + email + '</b>, Please login the App to setup your Password</p>\n\
                                 ' + Utils.getAppDownloadOptionMsg(true)
                     };
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    const mailRes = await sendEmail(opts);
-                    console.log('mailRes', mailRes)
+                    await Utils.sendEmail(opts);
                 }
 
                 let auditData = {id: doc_snapshot.id, data};
@@ -396,6 +405,7 @@
                 return auditData;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -510,7 +520,10 @@
                             const _data = {name: department.name || department, user_id, company_id, created_at};
                             const department_doc_ref = await this.getDB().collection('plugin_sheq_assist_departments').add(_data);//Promise < DocumentReference < T > >
                             const department_doc_snapshot = await department_doc_ref.get();//Promise < DocumentSnapshot < T > >
-                            optional_info.department = {id: department_doc_snapshot.id, name: department_doc_snapshot.data().name};
+                            optional_info.department = {
+                                id: department_doc_snapshot.id,
+                                name: department_doc_snapshot.data().name
+                            };
                         }
                     }
                     if (job_position && (typeof job_position === 'string' || !job_position.id)) {
@@ -528,7 +541,10 @@
                             }
                             const job_position_doc_ref = await this.getDB().collection('plugin_sheq_assist_job_positions').add(_data);//Promise < DocumentReference < T > >
                             const job_position_doc_snapshot = await job_position_doc_ref.get();//Promise < DocumentSnapshot < T > >
-                            optional_info.job_position = {id: job_position_doc_snapshot.id, name: job_position_doc_snapshot.data().name};
+                            optional_info.job_position = {
+                                id: job_position_doc_snapshot.id,
+                                name: job_position_doc_snapshot.data().name
+                            };
                         }
                     }
                 }
@@ -642,6 +658,7 @@
                 return updatedItem.data;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="bulk_remove">
@@ -672,6 +689,7 @@
                 return resList;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="remove">
@@ -699,6 +717,7 @@
                 return true;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="re_instead">
@@ -724,427 +743,628 @@
                 return true;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
-        async export_excel(evt, list) {
+        async export_excel(evt, {client, project, site, department, job_position, supervisor, list}) {
             return Events.whenLoggedIn(async loggedUser => {
-                const cols = [
-                    {header: 'Company', key: 'Company', width: 30},
-                    {header: 'Project', key: 'Project', width: 30},
-                    {header: 'Site', key: 'Site', width: 30},
+                if (isArray(list)) {
+                    const rows = list.map((
+                        {
+                            id,
+                            data: {
+                                created_at,
+                                client, project, site,
 
-                    {header: 'First Name', key: 'First Name', width: 25},
-                    {header: 'Last Name', key: 'Last Name', width: 25},
-                    {header: 'Identity No.', key: 'Identity No.', width: 25},
-                    {header: 'Passport No.', key: 'Passport No.', width: 20},
-                    {header: 'Gender', key: 'Gender', width: 15},
-                    {header: 'Date Of Birth', key: 'Date Of Birth', width: 15},
-                    {header: 'Phone No.', key: 'Phone No.', width: 15},
-                    {header: 'Email Address', key: 'Email Address', width: 25},
+                                profile_pic,
+                                fname,
+                                lname,
+                                id_num,
+                                passport_num,
+                                dob,
+                                sex,
+                                phone,
+                                email,
 
-                    {header: 'Date of Employment', key: 'Date of Employment', width: 20},
-                    {header: 'Company/Employee No.', key: 'Company/Employee No.', width: 25},
-                    {header: 'Department', key: 'Department', width: 30},
-                    {header: 'Job Position', key: 'Job Position', width: 30},
-                    {header: 'Job Category', key: 'Job Category', width: 30},
+                                job_position,
+                                department,
+                                supervisor,
 
-                    {header: 'Supervisor Name', key: 'Supervisor Name', width: 25},
-                    {header: 'Supervisor Phone No.', key: 'Supervisor Phone No.', width: 22},
-                    {header: 'Supervisor Email Address', key: 'Supervisor Email Address', width: 25},
+                                employee_num,
+                                employment_date,
 
-                    {header: 'Street Address', key: 'Street Address', width: 35},
-                    {header: 'Local Area', key: 'Local Area', width: 35},
-                    {header: 'City', key: 'City', width: 35},
-                    {header: 'Province', key: 'Province', width: 20},
-                    {header: 'Address (PDF/Image)', key: 'Address (PDF/Image)', width: 35},
+                                removed,
+                            }
+                        },
+                        idx
+                    ) => {
+                        const res = {
+                            idx: idx + 1,
 
-                    {header: 'Bank Name', key: 'Bank Name', width: 20},
-                    {header: 'Branch', key: 'Branch', width: 25},
-                    {header: 'Branch Code', key: 'Branch Code', width: 25},
-                    {header: 'Account No.', key: 'Account No.', width: 30},
-                    {header: 'Banking Details (PDF/Image)', key: 'Banking Details (PDF/Image)', width: 35},
+                            project_name: project && project.name,
+                            site_name: site && site.name,
 
-                    {header: 'ID/Passport Copy (PDF/Image)', key: 'ID/Passport Copy (PDF/Image)', width: 35},
-                    {header: 'ID/Passport Expiry Date', key: 'ID/Passport Expiry Date', width: 20},
-                    {header: 'Driver/Operator License Copy (PDF/Image)', key: 'Driver/Operator License Copy (PDF/Image)', width: 40},
-                    {header: 'Driver/Operator License Expiry Date', key: 'Driver/Operator License Expiry Date', width: 45},
-                    {header: 'PDrP Copy (PDF/Image)', key: 'PDrP Copy (PDF/Image)', width: 35},
-                    {header: 'PDrP Expiry Date', key: 'PDrP Expiry Date', width: 20},
-                    {header: 'Work Permit Copy (PDF/Image)', key: 'Work Permit Copy (PDF/Image)', width: 35},
-                    {header: 'Work Permit Expiry Date', key: 'Work Permit Expiry Date', width: 20},
+                            id,
+                            fname,
+                            lname,
+                            id_or_passport: id_num || passport_num,
+                            dob: Dates.formatDate(dob),
+                            sex,
+                            phone,
+                            email,
 
-                    {header: 'Next Of Kin #1', key: 'Next Of Kin #1', width: 40},
-                    {header: 'Next Of Kin #2', key: 'Next Of Kin #2', width: 40},
-                    {header: 'Dependants', key: 'Dependants', width: 20},
+                            employee_num,
+                            employment_date: Dates.formatDate(employment_date),
 
-                    //
-                    {header: 'Contract Expiry Date', key: 'Contract Expiry Date', width: 20},
-                    {header: 'Contract End Of Trial Period', key: 'Contract End Of Trial Period', width: 25},
-                    {header: 'Contract Start Date', key: 'Contract Start Date', width: 25},
-                    {header: 'Contract Type', key: 'Contract Type', width: 25},
-                    {header: 'Contract Working Schedule Start Time', key: 'Contract Working Schedule Start Time', width: 25},
-                    {header: 'Contract Working Schedule End Time', key: 'Contract Working Schedule End Time', width: 25},
-                    {header: 'Contract Working Schedule Daily Working Hours', key: 'Contract Working Schedule Daily Working Hours', width: 25},
-                    {header: 'Contract Notes', key: 'Contract Notes', width: 25},
-                    {header: 'Contract Salary Payment Type', key: 'Contract Salary Payment Type', width: 25},
-                    {header: 'Contract Salary Interval', key: 'Contract Salary Interval', width: 25},
-                    {header: 'Contract Salary', key: 'Contract Salary', width: 25},
-                    {header: 'Contract Wage', key: 'Contract Wage', width: 25},
-                    //
-                    {header: 'Competency Certificate Expiry Date', key: 'Competency Certificate Expiry Date', width: 25},
-                    {header: 'Competency Certificate Type', key: 'Competency Certificate Type', width: 25},
-                    //
-                    {header: 'Medical Fitness Certificate Expiry Date', key: 'Medical Fitness Certificate Expiry Date', width: 25},
-                    {header: 'Medical Fitness Certificate Annexture 3?', key: 'Medical Fitness Certificate Annexture 3?', width: 25},
-                    {header: 'Medical Fitness Certificate Restrictions', key: 'Medical Fitness Certificate Restrictions', width: 25},
-                    //
-                    {header: 'Warning Expiry Date', key: 'Warning Expiry Date', width: 20},
-                    {header: 'Warning Date', key: 'Warning Date', width: 20},
-                    {header: 'Warning Issued By', key: 'Warning Issued By', width: 20},
-                    {header: 'Warning Type', key: 'Warning Type', width: 20},
-                    {header: 'Warning Details Of Misconduct', key: 'Warning Details Of Misconduct', width: 20},
-                    {header: "Warning Employee's Comments", key: "Warning Employee's Comments", width: 20},
-                    {header: 'Warning Notes', key: 'Warning Notes', width: 20},
-                    //
-                    {header: 'Sick Leave Due To', key: 'Sick Leave Due To', width: 20},
-                    {header: 'Sick Leave Type', key: 'Sick Leave Type', width: 20},
-                    {header: 'Sick Leave Start Date', key: 'Sick Leave Start Date', width: 20},
-                    {header: 'Sick Leave Expiry Date', key: 'Sick Leave Expiry Date', width: 20},
-                    {header: 'No. Of Days Booked', key: 'No. Of Days Booked', width: 20},
-                    {header: "Reason Of Sick Leave", key: "Reason Of Sick Leave", width: 20},
-                    {header: "Employee's Comments", key: "Employee's Comments", width: 20},
-                    {header: 'Notes', key: 'Notes', width: 20},
-                    {header: 'Proof Of Sick Note', key: 'Proof Of Sick Note', width: 20},
+                            status: removed ? "Active" : "Inactive",
+                        };
 
-                    {header: 'Trainings', key: 'Trainings', width: 20},
-                    {header: 'PPE Issue', key: 'PPE Issue', width: 20},
-                    {header: 'Compliance', key: 'Compliance', width: 20},
-                ];
-
-//                console.log('employeeList', list)
-
-                const rows = await Promise.all(list.map(async employee => {
-                    const {id, data: {
-                            created_at,
-                            profile_pic,
-                            fname, lname, id_num, passport_num, dob, sex,
-                            client, project, site, phone, email,
-                            //
-                            optional_info,
-                            documents,
-                            next_of_kin_1, next_of_kin_2, dependants,
-                            //
-                            employee_contract_list = {},
-                            employee_competency_list = {},
-                            employee_medical_list = {},
-                            employee_warning_list = {},
-                            employee_leave_list = {},
-                            //
-                            training_certificate_list = []
-                        }} = employee;
-
-                    const res = {
-                        Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-                        Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-                        Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
-
-                        "Last Name": lname,
-                        "First Name": fname,
-                        "Identity No.": id_num ? String(id_num) : "",
-                        "Passport No.": passport_num || "",
-                        Gender: sex || sex,
-                        "Date Of Birth": Dates.formatDate(dob) || "",
-                        "Phone No.": phone ? String(phone) : "",
-                        "Email Address": email || ""
-                    };
-
-                    if (optional_info) {
-                        const {
-                            employment_date, employee_num,
-                            department, job_position,
-                            supervisor_name, supervisor_phone, supervisor_email,
-                            living_addr_street, living_addr_local_area, living_addr_city, living_addr_province, living_addr_doc,
-                            banking_name, banking_branch, banking_branch_code, banking_account_num, banking_doc
-                        } = optional_info;
-                        if (employment_date) {
-                            res["Date of Employment"] = Dates.formatDate(employment_date) || "";
-                        }
-                        res["Company/Employee No."] = employee_num;
-                        if (department) {
-                            const {name, data: _data} = department;
-                            res["Department"] = name || (_data ? _data.name : 'N/A');
-                        }
                         if (job_position) {
-                            const {name, category, data: _data} = job_position;
-                            res["Job Position"] = name || (_data ? _data.name : 'N/A');
-                            res["Job Category"] = category || (_data ? _data.category : 'N/A');
+                            const {name} = job_position;
+                            res.job_position_name = name;
+                        }
+                        if (department) {
+                            const {name} = department;
+                            res.department_name = name;
+                        }
+                        if(supervisor) {
+                            const {lname, fname, email, phone} = supervisor;
+                            res.supervisor_name = lname + " " + fname;
+                            // res.supervisor_email = email;
+                            // res.supervisor_phone = phone;
                         }
 
-                        if (supervisor_name) {
-                            if (isString(supervisor_name)) {
-                                res["Supervisor Name"] = supervisor_name;
-                            } else {
-                                let {lname, fname, data: _data} = supervisor_name;
-                                if (_data) {
-                                    lname = _data.lname;
-                                    fname = _data.fname;
-                                }
-                                res["Supervisor Name"] = lname + " " + fname;
-                            }
-                        }
-                        res["Supervisor Phone No."] = supervisor_phone;
-                        res["Supervisor Email Address"] = supervisor_email;
+                        return res;
+                    });
 
-                        res["Street Address"] = living_addr_street;
-                        res["Local Area"] = living_addr_local_area;
-                        res["City"] = living_addr_city;
-                        res["Province"] = living_addr_province;
-//                        if (living_addr_doc) {
-//                            const {dlUrls} = living_addr_doc;
-//                            const key = "Address (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
+                    let type = '';
 
-                        res["Bank Name"] = banking_name;
-                        res["Branch"] = banking_branch;
-                        res["Branch Code"] = banking_branch_code;
-                        res["Account No."] = banking_account_num;
-//                        if (banking_doc) {
-//                            const {dlUrls} = banking_doc;
-//                            const key = "Banking Details (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
+                    if((project && project.name) && (site && site.name)) {
+                        type += '-NoProjectAndSite';
+                    } else if(project && project.name) {
+                        type += '-NoProject';
                     }
 
-                    if (documents) {
-                        const {
-                            doc_id_or_passport, doc_id_or_passport_expiry,
-                            doc_driver_or_operator_licence, doc_driver_or_operator_licence_expiry,
-                            doc_pdrp, doc_pdrp_expiry,
-                            doc_work_permit, doc_work_permit_expiry
-                        } = documents;
-//                        if (doc_id_or_passport) {
-//                            const {dlUrls} = doc_id_or_passport;
-//                            const key = "ID/Passport Copy (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
-                        if (doc_id_or_passport_expiry) {
-                            res["ID/Passport Expiry Date"] = Dates.formatDate(doc_id_or_passport_expiry) || "";
-                        }
-
-//                        if (doc_driver_or_operator_licence) {
-//                            const {dlUrls} = doc_driver_or_operator_licence;
-//                            const key = "Driver/Operator License Copy (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
-                        if (doc_driver_or_operator_licence_expiry) {
-                            res["Driver/Operator License Expiry Date"] = Dates.formatDate(doc_driver_or_operator_licence_expiry) || "";
-                        }
-
-//                        if (doc_pdrp) {
-//                            const {dlUrls} = doc_pdrp;
-//                            const key = "PDrP Copy (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
-                        if (doc_pdrp_expiry) {
-                            res["PDrP Expiry Date"] = Dates.formatDate(doc_pdrp_expiry) || "";
-                        }
-
-//                        if (doc_work_permit) {
-//                            const {dlUrls} = doc_work_permit;
-//                            const key = "Work Permit Copy (PDF/Image)";
-//                            res[key] = {
-//                                addImage: () => {
-//                                    return {file: dlUrls[0], col: key};
-//                                }
-//                            };
-//                        }
-                        if (doc_work_permit_expiry) {
-                            res["Work Permit Expiry Date"] = Dates.formatDate(doc_work_permit_expiry) || "";
-                        }
+                    if(department && department.name) {
+                        type += '-NoDepartment';
+                    }
+                    if(job_position && job_position.name) {
+                        type += '-NoJobPosition';
                     }
 
-                    if (next_of_kin_1) {
-                        const {lname, fname, phone1, phone2, relationship} = next_of_kin_1;
-                        res["Next Of Kin #1"] = lname + " " + fname + " (" + relationship + ")";
-                    }
-                    if (next_of_kin_2) {
-                        const {lname, fname, phone1, phone2, relationship} = next_of_kin_2;
-                        res["Next Of Kin #2"] = lname + " " + fname + " (" + relationship + ")";
-                    }
-                    if (dependants) {
+                    const response = await fetch(
+                        `${self.locationRoot}/templates/xlsx/Template-List-Employee${type}.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
 
-                    }
+                    data.set('company_name', client && client.name || "ANY");
+                    data.set('project_name', project && project.name || "ANY");
+                    data.set('site_name', site && site.name || "ANY");
 
-                    {
-//                        const employee_contracts_path = await Events.get('plugin_sheq_assist/employees/contracts/').then(tbl => {
-//                            return tbl.export_excel_by_employee.call(tbl, null, employee);
-//                        });
-//                        res["Contracts"] = employee_contracts_path;
-                        let list = Object.keys(employee_contract_list).map(id => {
-                            return {id, expiry_date: employee_contract_list[id].expiry_date || null};
-                        });
-                        list.sortBy('expiry_date', 'desc');
-                        list = list.map(({id, expiry_date}) => {
-                            return {id, data: employee_contract_list[id]};
-                        });
+                    data.set('department_name', department && department.name || "ANY");
+                    data.set('job_position_name', job_position && job_position.name || "ANY");
+                    data.set('supervisor_name', supervisor ? `${supervisor.lname} ${supervisor.fname}` : "ANY");
 
-                        const item = list[0];
-                        if (item) {
-                            const {data: {created_at, salary_info = {}, contract_details = {}, doc, job_profile_doc}} = item;
-                            let {contract_type, start_date, expiry_date, end_of_trial_period, start_time, end_time, daily_working_hours, notes} = contract_details;
-                            let {payment_type, salary_interval, salary = "N/A", wage, deductible = {}} = salary_info;
-                            if (salary !== "N/A") {
-                                salary = salary.toCurrency('R');
-                            }
-                            res["Contract Expiry Date"] = Dates.formatDate(expiry_date) || "";
-                            res["Contract End Of Trial Period"] = Dates.formatDate(end_of_trial_period) || "";
-                            res["Contract Start Date"] = Dates.formatDate(start_date) || "";
-                            res["Contract Type"] = contract_type;
-                            res["Contract Working Schedule Start Time"] = start_time;
-                            res["Contract Working Schedule End Time"] = end_time;
-                            res["Contract Working Schedule Daily Working Hours"] = daily_working_hours;
-                            res["Contract Notes"] = notes;
-
-                            res["Contract Salary Payment Type"] = payment_type;
-                            if (payment_type === "Salary") {
-                                res["Contract Salary Interval"] = salary_interval;
-                                res["Contract Salary"] = salary;
-                            }
-                            if (payment_type === "Wage") {
-                                res["Contract Wage"] = wage;
-                            }
-                        }
-                    }
-
-                    {
-//                        const employee_competencies_path = Events.get('plugin_sheq_assist/employees/competencies/').then(tbl => {
-//                            return tbl.export_excel_by_employee.call(tbl, null, employee);
-//                        });
-//                        res["Competency Certificates"] = employee_competencies_path;
-
-                        let list = Object.keys(employee_competency_list).map(id => {
-                            return {id, expiry_date: employee_competency_list[id].expiry_date || null};
-                        });
-                        list.sortBy('expiry_date', 'desc');
-                        list = list.map(({id, expiry_date}) => {
-                            return {id, data: employee_competency_list[id]};
-                        });
-
-                        const item = list[0];
-                        if (item) {
-                            const {data: {competency_type, expiry_date, doc}} = item;
-                            res["Competency Certificate Expiry Date"] = Dates.formatDate(expiry_date) || "";
-                            res["Competency Certificate Type"] = competency_type;
-                        }
-                    }
-
-                    {
-//                        const employee_medicals_path = await Events.get('plugin_sheq_assist/employees/medicals/').then(tbl => {
-//                            return tbl.export_excel_by_employee.call(tbl, null, employee);
-//                        });
-//                        res["Medicals Fitness Certificates"] = employee_medicals_path;
-
-                        let list = Object.keys(employee_medical_list).map(id => {
-                            return {id, expiry_date: employee_medical_list[id].expiry_date || null};
-                        });
-                        list.sortBy('expiry_date', 'desc');
-                        list = list.map(({id, expiry_date}) => {
-                            return {id, data: employee_medical_list[id]};
-                        });
-
-                        const item = list[0];
-
-                        if (item) {
-                            const {data: {annexture_3, restrictions, expiry_date, doc}} = item;
-                            res["Medical Fitness Certificate Expiry Date"] = Dates.formatDate(expiry_date) || "";
-                            res["Medical Fitness Certificate Annexture 3?"] = annexture_3;
-                            res["Medical Fitness Certificate Restrictions"] = restrictions;
-                        }
-                    }
-
-                    {
-//                        const employee_warnings_path = await Events.get('plugin_sheq_assist/employees/warnings/').then(tbl => {
-//                            return tbl.export_excel_by_employee.call(tbl, null, employee);
-//                        });
-//                        res["Warnings"] = employee_warnings_path;
-
-                        let list = Object.keys(employee_warning_list).map(id => {
-                            return {id, expiry_date: employee_warning_list[id].expiry_date || null};
-                        });
-                        list.sortBy('expiry_date', 'desc');
-                        list = list.map(({id, expiry_date}) => {
-                            return {id, data: employee_warning_list[id]};
-                        });
-
-                        const item = list[0];
-                        if (item) {
-                            const {data: {issued_by, type, date, expiry_date, details, employee_comments, notes, doc}} = item;
-                            res["Warning Expiry Date"] = Dates.formatDate(expiry_date) || "";
-                            res["Warning Date"] = Dates.formatDate(date) || "";
-                            res["Warning Issued By"] = issued_by ? (issued_by.lname + ' ' + issued_by.fname) : "";
-                            res["Warning Type"] = type;
-                            res["Warning Details Of Misconduct"] = details;
-                            res["Warning Employee's Comments"] = employee_comments;
-                            res["Warning Notes"] = notes;
-                        }
-                    }
-
-                    {
-//                        const employee_leaves_path = await Events.get('plugin_sheq_assist/employees/leaves/').then(tbl => {
-//                            return tbl.export_excel_by_employee.call(tbl, null, employee);
-//                        });
-//                        res["Leaves"] = employee_leaves_path;
-
-                        let list = Object.keys(employee_leave_list).map(id => {
-                            return {id, expiry_date: employee_leave_list[id].expiry_date || null};
-                        });
-                        list.sortBy('expiry_date', 'desc');
-                        list = list.map(({id, expiry_date}) => {
-                            return {id, data: employee_leave_list[id]};
-                        });
-
-                        const item = list[0];
-                        if (item) {
-                            const {data: {doc, employee, type, due_to, date, expiry_date, days_booked, reason, employee_comments, notes}} = item;
-                            res["Sick Leave Due To"] = due_to || "";
-                            res["Sick Leave Type"] = type;
-                            res["Sick Leave Start Date"] = Dates.formatDate(date) || "";
-                            res["Sick Leave Expiry Date"] = Dates.formatDate(expiry_date) || "";
-                            res["Sick Leave No. Of Days Booked"] = days_booked;
-                            res["Sick Leave Reason"] = reason;
-                            res["Sick Leave Employee's Comments"] = employee_comments;
-                            res["Sick Leave Notes"] = notes;
-                        }
-                    }
-
-                    return res;
-                }));
-
-                return await this.export_excel_impl(loggedUser, "Employee-Docs", "Employees-Active", "Employees Data", cols, rows);
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+                }
+                return list;
             });
         }
+//
+//         async export_excel(evt, list) {
+//             return Events.whenLoggedIn(async loggedUser => {
+//                 const cols = [
+//                     {header: 'Company', key: 'Company', width: 30},
+//                     {header: 'Project', key: 'Project', width: 30},
+//                     {header: 'Site', key: 'Site', width: 30},
+//
+//                     {header: 'First Name', key: 'First Name', width: 25},
+//                     {header: 'Last Name', key: 'Last Name', width: 25},
+//                     {header: 'Identity No.', key: 'Identity No.', width: 25},
+//                     {header: 'Passport No.', key: 'Passport No.', width: 20},
+//                     {header: 'Gender', key: 'Gender', width: 15},
+//                     {header: 'Date Of Birth', key: 'Date Of Birth', width: 15},
+//                     {header: 'Phone No.', key: 'Phone No.', width: 15},
+//                     {header: 'Email Address', key: 'Email Address', width: 25},
+//
+//                     {header: 'Date of Employment', key: 'Date of Employment', width: 20},
+//                     {header: 'Company/Employee No.', key: 'Company/Employee No.', width: 25},
+//                     {header: 'Department', key: 'Department', width: 30},
+//                     {header: 'Job Position', key: 'Job Position', width: 30},
+//                     {header: 'Job Category', key: 'Job Category', width: 30},
+//
+//                     {header: 'Supervisor Name', key: 'Supervisor Name', width: 25},
+//                     {header: 'Supervisor Phone No.', key: 'Supervisor Phone No.', width: 22},
+//                     {header: 'Supervisor Email Address', key: 'Supervisor Email Address', width: 25},
+//
+//                     {header: 'Street Address', key: 'Street Address', width: 35},
+//                     {header: 'Local Area', key: 'Local Area', width: 35},
+//                     {header: 'City', key: 'City', width: 35},
+//                     {header: 'Province', key: 'Province', width: 20},
+//                     {header: 'Address (PDF/Image)', key: 'Address (PDF/Image)', width: 35},
+//
+//                     {header: 'Bank Name', key: 'Bank Name', width: 20},
+//                     {header: 'Branch', key: 'Branch', width: 25},
+//                     {header: 'Branch Code', key: 'Branch Code', width: 25},
+//                     {header: 'Account No.', key: 'Account No.', width: 30},
+//                     {header: 'Banking Details (PDF/Image)', key: 'Banking Details (PDF/Image)', width: 35},
+//
+//                     {header: 'ID/Passport Copy (PDF/Image)', key: 'ID/Passport Copy (PDF/Image)', width: 35},
+//                     {header: 'ID/Passport Expiry Date', key: 'ID/Passport Expiry Date', width: 20},
+//                     {
+//                         header: 'Driver/Operator License Copy (PDF/Image)',
+//                         key: 'Driver/Operator License Copy (PDF/Image)',
+//                         width: 40
+//                     },
+//                     {
+//                         header: 'Driver/Operator License Expiry Date',
+//                         key: 'Driver/Operator License Expiry Date',
+//                         width: 45
+//                     },
+//                     {header: 'PDrP Copy (PDF/Image)', key: 'PDrP Copy (PDF/Image)', width: 35},
+//                     {header: 'PDrP Expiry Date', key: 'PDrP Expiry Date', width: 20},
+//                     {header: 'Work Permit Copy (PDF/Image)', key: 'Work Permit Copy (PDF/Image)', width: 35},
+//                     {header: 'Work Permit Expiry Date', key: 'Work Permit Expiry Date', width: 20},
+//
+//                     {header: 'Next Of Kin #1', key: 'Next Of Kin #1', width: 40},
+//                     {header: 'Next Of Kin #2', key: 'Next Of Kin #2', width: 40},
+//                     {header: 'Dependants', key: 'Dependants', width: 20},
+//
+//                     //
+//                     {header: 'Contract Expiry Date', key: 'Contract Expiry Date', width: 20},
+//                     {header: 'Contract End Of Trial Period', key: 'Contract End Of Trial Period', width: 25},
+//                     {header: 'Contract Start Date', key: 'Contract Start Date', width: 25},
+//                     {header: 'Contract Type', key: 'Contract Type', width: 25},
+//                     {
+//                         header: 'Contract Working Schedule Start Time',
+//                         key: 'Contract Working Schedule Start Time',
+//                         width: 25
+//                     },
+//                     {
+//                         header: 'Contract Working Schedule End Time',
+//                         key: 'Contract Working Schedule End Time',
+//                         width: 25
+//                     },
+//                     {
+//                         header: 'Contract Working Schedule Daily Working Hours',
+//                         key: 'Contract Working Schedule Daily Working Hours',
+//                         width: 25
+//                     },
+//                     {header: 'Contract Notes', key: 'Contract Notes', width: 25},
+//                     {header: 'Contract Salary Payment Type', key: 'Contract Salary Payment Type', width: 25},
+//                     {header: 'Contract Salary Interval', key: 'Contract Salary Interval', width: 25},
+//                     {header: 'Contract Salary', key: 'Contract Salary', width: 25},
+//                     {header: 'Contract Wage', key: 'Contract Wage', width: 25},
+//                     //
+//                     {
+//                         header: 'Competency Certificate Expiry Date',
+//                         key: 'Competency Certificate Expiry Date',
+//                         width: 25
+//                     },
+//                     {header: 'Competency Certificate Type', key: 'Competency Certificate Type', width: 25},
+//                     //
+//                     {
+//                         header: 'Medical Fitness Certificate Expiry Date',
+//                         key: 'Medical Fitness Certificate Expiry Date',
+//                         width: 25
+//                     },
+//                     {
+//                         header: 'Medical Fitness Certificate Annexture 3?',
+//                         key: 'Medical Fitness Certificate Annexture 3?',
+//                         width: 25
+//                     },
+//                     {
+//                         header: 'Medical Fitness Certificate Restrictions',
+//                         key: 'Medical Fitness Certificate Restrictions',
+//                         width: 25
+//                     },
+//                     //
+//                     {header: 'Warning Expiry Date', key: 'Warning Expiry Date', width: 20},
+//                     {header: 'Warning Date', key: 'Warning Date', width: 20},
+//                     {header: 'Warning Issued By', key: 'Warning Issued By', width: 20},
+//                     {header: 'Warning Type', key: 'Warning Type', width: 20},
+//                     {header: 'Warning Details Of Misconduct', key: 'Warning Details Of Misconduct', width: 20},
+//                     {header: "Warning Employee's Comments", key: "Warning Employee's Comments", width: 20},
+//                     {header: 'Warning Notes', key: 'Warning Notes', width: 20},
+//                     //
+//                     {header: 'Sick Leave Due To', key: 'Sick Leave Due To', width: 20},
+//                     {header: 'Sick Leave Type', key: 'Sick Leave Type', width: 20},
+//                     {header: 'Sick Leave Start Date', key: 'Sick Leave Start Date', width: 20},
+//                     {header: 'Sick Leave Expiry Date', key: 'Sick Leave Expiry Date', width: 20},
+//                     {header: 'No. Of Days Booked', key: 'No. Of Days Booked', width: 20},
+//                     {header: "Reason Of Sick Leave", key: "Reason Of Sick Leave", width: 20},
+//                     {header: "Employee's Comments", key: "Employee's Comments", width: 20},
+//                     {header: 'Notes', key: 'Notes', width: 20},
+//                     {header: 'Proof Of Sick Note', key: 'Proof Of Sick Note', width: 20},
+//
+//                     {header: 'Trainings', key: 'Trainings', width: 20},
+//                     {header: 'PPE Issue', key: 'PPE Issue', width: 20},
+//                     {header: 'Compliance', key: 'Compliance', width: 20},
+//                 ];
+//
+// //                console.log('employeeList', list)
+//
+//                 const rows = await Promise.all(list.map(async employee => {
+//                     const {
+//                         id, data: {
+//                             created_at,
+//                             profile_pic,
+//                             fname, lname, id_num, passport_num, dob, sex,
+//                             client, project, site, phone, email,
+//                             //
+//                             optional_info,
+//                             documents,
+//                             next_of_kin_1, next_of_kin_2, dependants,
+//                             //
+//                             employee_contract_list = {},
+//                             employee_competency_list = {},
+//                             employee_medical_list = {},
+//                             employee_warning_list = {},
+//                             employee_leave_list = {},
+//                             //
+//                             training_certificate_list = []
+//                         }
+//                     } = employee;
+//
+//                     const res = {
+//                         Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
+//                         Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
+//                         Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
+//
+//                         "Last Name": lname,
+//                         "First Name": fname,
+//                         "Identity No.": id_num ? String(id_num) : "",
+//                         "Passport No.": passport_num || "",
+//                         Gender: sex || sex,
+//                         "Date Of Birth": Dates.formatDate(dob) || "",
+//                         "Phone No.": phone ? String(phone) : "",
+//                         "Email Address": email || ""
+//                     };
+//
+//                     if (optional_info) {
+//                         const {
+//                             employment_date,
+//                             employee_num,
+//                             department,
+//                             job_position,
+//                             supervisor_name,
+//                             supervisor_phone,
+//                             supervisor_email,
+//                             living_addr_street,
+//                             living_addr_local_area,
+//                             living_addr_city,
+//                             living_addr_province,
+//                             living_addr_doc,
+//                             banking_name,
+//                             banking_branch,
+//                             banking_branch_code,
+//                             banking_account_num,
+//                             banking_doc
+//                         } = optional_info;
+//                         if (employment_date) {
+//                             res["Date of Employment"] = Dates.formatDate(employment_date) || "";
+//                         }
+//                         res["Company/Employee No."] = employee_num;
+//                         if (department) {
+//                             const {name, data: _data} = department;
+//                             res["Department"] = name || (_data ? _data.name : 'N/A');
+//                         }
+//                         if (job_position) {
+//                             const {name, category, data: _data} = job_position;
+//                             res["Job Position"] = name || (_data ? _data.name : 'N/A');
+//                             res["Job Category"] = category || (_data ? _data.category : 'N/A');
+//                         }
+//
+//                         if (supervisor_name) {
+//                             if (isString(supervisor_name)) {
+//                                 res["Supervisor Name"] = supervisor_name;
+//                             } else {
+//                                 let {lname, fname, data: _data} = supervisor_name;
+//                                 if (_data) {
+//                                     lname = _data.lname;
+//                                     fname = _data.fname;
+//                                 }
+//                                 res["Supervisor Name"] = lname + " " + fname;
+//                             }
+//                         }
+//                         res["Supervisor Phone No."] = supervisor_phone;
+//                         res["Supervisor Email Address"] = supervisor_email;
+//
+//                         res["Street Address"] = living_addr_street;
+//                         res["Local Area"] = living_addr_local_area;
+//                         res["City"] = living_addr_city;
+//                         res["Province"] = living_addr_province;
+// //                        if (living_addr_doc) {
+// //                            const {dlUrls} = living_addr_doc;
+// //                            const key = "Address (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//
+//                         res["Bank Name"] = banking_name;
+//                         res["Branch"] = banking_branch;
+//                         res["Branch Code"] = banking_branch_code;
+//                         res["Account No."] = banking_account_num;
+// //                        if (banking_doc) {
+// //                            const {dlUrls} = banking_doc;
+// //                            const key = "Banking Details (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//                     }
+//
+//                     if (documents) {
+//                         const {
+//                             doc_id_or_passport, doc_id_or_passport_expiry,
+//                             doc_driver_or_operator_licence, doc_driver_or_operator_licence_expiry,
+//                             doc_pdrp, doc_pdrp_expiry,
+//                             doc_work_permit, doc_work_permit_expiry
+//                         } = documents;
+// //                        if (doc_id_or_passport) {
+// //                            const {dlUrls} = doc_id_or_passport;
+// //                            const key = "ID/Passport Copy (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//                         if (doc_id_or_passport_expiry) {
+//                             res["ID/Passport Expiry Date"] = Dates.formatDate(doc_id_or_passport_expiry) || "";
+//                         }
+//
+// //                        if (doc_driver_or_operator_licence) {
+// //                            const {dlUrls} = doc_driver_or_operator_licence;
+// //                            const key = "Driver/Operator License Copy (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//                         if (doc_driver_or_operator_licence_expiry) {
+//                             res["Driver/Operator License Expiry Date"] = Dates.formatDate(doc_driver_or_operator_licence_expiry) || "";
+//                         }
+//
+// //                        if (doc_pdrp) {
+// //                            const {dlUrls} = doc_pdrp;
+// //                            const key = "PDrP Copy (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//                         if (doc_pdrp_expiry) {
+//                             res["PDrP Expiry Date"] = Dates.formatDate(doc_pdrp_expiry) || "";
+//                         }
+//
+// //                        if (doc_work_permit) {
+// //                            const {dlUrls} = doc_work_permit;
+// //                            const key = "Work Permit Copy (PDF/Image)";
+// //                            res[key] = {
+// //                                addImage: () => {
+// //                                    return {file: dlUrls[0], col: key};
+// //                                }
+// //                            };
+// //                        }
+//                         if (doc_work_permit_expiry) {
+//                             res["Work Permit Expiry Date"] = Dates.formatDate(doc_work_permit_expiry) || "";
+//                         }
+//                     }
+//
+//                     if (next_of_kin_1) {
+//                         const {lname, fname, phone1, phone2, relationship} = next_of_kin_1;
+//                         res["Next Of Kin #1"] = lname + " " + fname + " (" + relationship + ")";
+//                     }
+//                     if (next_of_kin_2) {
+//                         const {lname, fname, phone1, phone2, relationship} = next_of_kin_2;
+//                         res["Next Of Kin #2"] = lname + " " + fname + " (" + relationship + ")";
+//                     }
+//                     if (dependants) {
+//
+//                     }
+//
+//                     {
+// //                        const employee_contracts_path = await Events.get('plugin_sheq_assist/employees/contracts/').then(tbl => {
+// //                            return tbl.export_excel_by_employee.call(tbl, null, employee);
+// //                        });
+// //                        res["Contracts"] = employee_contracts_path;
+//                         let list = Object.keys(employee_contract_list).map(id => {
+//                             return {id, expiry_date: employee_contract_list[id].expiry_date || null};
+//                         });
+//                         list.sortBy('expiry_date', 'desc');
+//                         list = list.map(({id, expiry_date}) => {
+//                             return {id, data: employee_contract_list[id]};
+//                         });
+//
+//                         const item = list[0];
+//                         if (item) {
+//                             const {
+//                                 data: {
+//                                     created_at,
+//                                     salary_info = {},
+//                                     contract_details = {},
+//                                     doc,
+//                                     job_profile_doc
+//                                 }
+//                             } = item;
+//                             let {
+//                                 contract_type,
+//                                 start_date,
+//                                 expiry_date,
+//                                 end_of_trial_period,
+//                                 start_time,
+//                                 end_time,
+//                                 daily_working_hours,
+//                                 notes
+//                             } = contract_details;
+//                             let {payment_type, salary_interval, salary = "N/A", wage, deductible = {}} = salary_info;
+//                             if (salary !== "N/A") {
+//                                 salary = salary.toCurrency('R');
+//                             }
+//                             res["Contract Expiry Date"] = Dates.formatDate(expiry_date) || "";
+//                             res["Contract End Of Trial Period"] = Dates.formatDate(end_of_trial_period) || "";
+//                             res["Contract Start Date"] = Dates.formatDate(start_date) || "";
+//                             res["Contract Type"] = contract_type;
+//                             res["Contract Working Schedule Start Time"] = start_time;
+//                             res["Contract Working Schedule End Time"] = end_time;
+//                             res["Contract Working Schedule Daily Working Hours"] = daily_working_hours;
+//                             res["Contract Notes"] = notes;
+//
+//                             res["Contract Salary Payment Type"] = payment_type;
+//                             if (payment_type === "Salary") {
+//                                 res["Contract Salary Interval"] = salary_interval;
+//                                 res["Contract Salary"] = salary;
+//                             }
+//                             if (payment_type === "Wage") {
+//                                 res["Contract Wage"] = wage;
+//                             }
+//                         }
+//                     }
+//
+//                     {
+// //                        const employee_competencies_path = Events.get('plugin_sheq_assist/employees/competencies/').then(tbl => {
+// //                            return tbl.export_excel_by_employee.call(tbl, null, employee);
+// //                        });
+// //                        res["Competency Certificates"] = employee_competencies_path;
+//
+//                         let list = Object.keys(employee_competency_list).map(id => {
+//                             return {id, expiry_date: employee_competency_list[id].expiry_date || null};
+//                         });
+//                         list.sortBy('expiry_date', 'desc');
+//                         list = list.map(({id, expiry_date}) => {
+//                             return {id, data: employee_competency_list[id]};
+//                         });
+//
+//                         const item = list[0];
+//                         if (item) {
+//                             const {data: {competency_type, expiry_date, doc}} = item;
+//                             res["Competency Certificate Expiry Date"] = Dates.formatDate(expiry_date) || "";
+//                             res["Competency Certificate Type"] = competency_type;
+//                         }
+//                     }
+//
+//                     {
+// //                        const employee_medicals_path = await Events.get('plugin_sheq_assist/employees/medicals/').then(tbl => {
+// //                            return tbl.export_excel_by_employee.call(tbl, null, employee);
+// //                        });
+// //                        res["Medicals Fitness Certificates"] = employee_medicals_path;
+//
+//                         let list = Object.keys(employee_medical_list).map(id => {
+//                             return {id, expiry_date: employee_medical_list[id].expiry_date || null};
+//                         });
+//                         list.sortBy('expiry_date', 'desc');
+//                         list = list.map(({id, expiry_date}) => {
+//                             return {id, data: employee_medical_list[id]};
+//                         });
+//
+//                         const item = list[0];
+//
+//                         if (item) {
+//                             const {data: {annexture_3, restrictions, expiry_date, doc}} = item;
+//                             res["Medical Fitness Certificate Expiry Date"] = Dates.formatDate(expiry_date) || "";
+//                             res["Medical Fitness Certificate Annexture 3?"] = annexture_3;
+//                             res["Medical Fitness Certificate Restrictions"] = restrictions;
+//                         }
+//                     }
+//
+//                     {
+// //                        const employee_warnings_path = await Events.get('plugin_sheq_assist/employees/warnings/').then(tbl => {
+// //                            return tbl.export_excel_by_employee.call(tbl, null, employee);
+// //                        });
+// //                        res["Warnings"] = employee_warnings_path;
+//
+//                         let list = Object.keys(employee_warning_list).map(id => {
+//                             return {id, expiry_date: employee_warning_list[id].expiry_date || null};
+//                         });
+//                         list.sortBy('expiry_date', 'desc');
+//                         list = list.map(({id, expiry_date}) => {
+//                             return {id, data: employee_warning_list[id]};
+//                         });
+//
+//                         const item = list[0];
+//                         if (item) {
+//                             const {
+//                                 data: {
+//                                     issued_by,
+//                                     type,
+//                                     date,
+//                                     expiry_date,
+//                                     details,
+//                                     employee_comments,
+//                                     notes,
+//                                     doc
+//                                 }
+//                             } = item;
+//                             res["Warning Expiry Date"] = Dates.formatDate(expiry_date) || "";
+//                             res["Warning Date"] = Dates.formatDate(date) || "";
+//                             res["Warning Issued By"] = issued_by ? (issued_by.lname + ' ' + issued_by.fname) : "";
+//                             res["Warning Type"] = type;
+//                             res["Warning Details Of Misconduct"] = details;
+//                             res["Warning Employee's Comments"] = employee_comments;
+//                             res["Warning Notes"] = notes;
+//                         }
+//                     }
+//
+//                     {
+// //                        const employee_leaves_path = await Events.get('plugin_sheq_assist/employees/leaves/').then(tbl => {
+// //                            return tbl.export_excel_by_employee.call(tbl, null, employee);
+// //                        });
+// //                        res["Leaves"] = employee_leaves_path;
+//
+//                         let list = Object.keys(employee_leave_list).map(id => {
+//                             return {id, expiry_date: employee_leave_list[id].expiry_date || null};
+//                         });
+//                         list.sortBy('expiry_date', 'desc');
+//                         list = list.map(({id, expiry_date}) => {
+//                             return {id, data: employee_leave_list[id]};
+//                         });
+//
+//                         const item = list[0];
+//                         if (item) {
+//                             const {
+//                                 data: {
+//                                     doc,
+//                                     employee,
+//                                     type,
+//                                     due_to,
+//                                     date,
+//                                     expiry_date,
+//                                     days_booked,
+//                                     reason,
+//                                     employee_comments,
+//                                     notes
+//                                 }
+//                             } = item;
+//                             res["Sick Leave Due To"] = due_to || "";
+//                             res["Sick Leave Type"] = type;
+//                             res["Sick Leave Start Date"] = Dates.formatDate(date) || "";
+//                             res["Sick Leave Expiry Date"] = Dates.formatDate(expiry_date) || "";
+//                             res["Sick Leave No. Of Days Booked"] = days_booked;
+//                             res["Sick Leave Reason"] = reason;
+//                             res["Sick Leave Employee's Comments"] = employee_comments;
+//                             res["Sick Leave Notes"] = notes;
+//                         }
+//                     }
+//
+//                     return res;
+//                 }));
+//
+//                 return await this.export_excel_impl(loggedUser, "Employee-Docs", "Employees-Active", "Employees Data", cols, rows);
+//             });
+//         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_app_link">
@@ -1167,7 +1387,7 @@
 //                            const updated = await doc_ref.update({password});//Promise < void >
 //                        }
 //                        const opts = {
-//                            from: '"SHEQ Aid" <support@sheqsolve.com>',
+//                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //                            to: email,
 //                            subject: 'SHEQ Aid Application Link',
 //                            html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -1175,9 +1395,7 @@
 //                                <p>Your SHEQ Aid Username is <b>' + email + '</b>, Password is <b>' + password + '</b></p>\n\
 //                                ' + Utils.getAppDownloadOptionMsg()
 //                        };
-//                        const sendEmail = functions.httpsCallable('callables-sendEmail');
-//                        const mailRes = await sendEmail(opts);
-//                        console.log('mailRes', mailRes)
+//                        await Utils.sendEmail(opts);
 
                         return true;
                     }
@@ -1187,6 +1405,7 @@
                 return "NOT_FOUND";
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="dashboard_count">
@@ -1269,6 +1488,7 @@
                 return 'N/A';
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="transfer">
@@ -1285,6 +1505,7 @@
                 return true;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_select">
@@ -1322,6 +1543,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="find_by_id">
@@ -1339,6 +1561,7 @@
                 return item;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="search_by_name, list, list_removed, filter, list_removed_filter">
@@ -1418,6 +1641,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_by_notification_key">
@@ -1436,6 +1660,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
 //        sortBy(list) {

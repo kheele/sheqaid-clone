@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {PluginsView} from '../../components/page-lists';
-import {Permissions} from '../../utils/Utils';
-import {ModuleRenderer} from '../../components/FormComponents';
+import {PluginsView} from 'components/page-lists';
+import {Permissions} from 'utils/Utils';
+import {ModuleRenderer} from 'components/FormComponents';
 
 @observer
 class APluginsTab extends React.Component {

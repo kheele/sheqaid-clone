@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
 
-import {Dates, RisksCodes} from "../../../../../utils/Utils";
-import {Button} from '../../../../../components/inputs';
-import {ATableSavable, TBody, TRow} from '../../../../../components/tables';
+import {Dates, RisksCodes} from "utils/Utils";
+import {Button} from 'components/inputs';
+import {ATableSavable, TBody, TRow} from 'components/tables';
 
 @observer
 class RiskAssessmentItemTBody extends ATableSavable {

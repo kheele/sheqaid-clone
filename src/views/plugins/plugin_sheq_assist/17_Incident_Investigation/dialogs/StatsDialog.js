@@ -3,12 +3,12 @@ import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput} from '../../../../../components/inputs';
-import {Chart} from '../../../../../components/FormComponents';
-import Dialog from '../../../../../components/dialogs/Dialog';
-import WebWorker from "../../../../../web-worker/WebWorker";
+import {ClearableInput} from 'components/inputs';
+import {Chart} from 'components/FormComponents';
+import Dialog from 'components/dialogs/Dialog';
+import WebWorker from "web-worker/WebWorker";
 
 import style from "./StatsDialog.lazy.css";
 

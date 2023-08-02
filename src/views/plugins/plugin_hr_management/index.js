@@ -1,5 +1,6 @@
-///////////////////////////////////////////////////////////
-import Employees from './Employees/Main';
+import {lazy} from "react";
+
+const Employees = lazy(() => import('./Employees/Main'/* webpackChunkName:"HR" */));
 
 const modules = {
     Employees

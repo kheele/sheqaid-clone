@@ -13,7 +13,7 @@ import VulnerableTab from './VulnerableTab.js';
 import ReturnToWorkTab from './ReturnToWorkTab.js';
 import DocumentsTab from './DocumentsTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

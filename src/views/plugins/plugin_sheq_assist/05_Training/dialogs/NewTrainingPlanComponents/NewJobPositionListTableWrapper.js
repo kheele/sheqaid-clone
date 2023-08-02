@@ -15,8 +15,8 @@ import {
 import NewTrainingCourseListTableWrapper from "./NewTrainingCourseListTableWrapper";
 import NewTrainingYearListTableWrapper from "./NewTrainingYearListTableWrapper";
 import ASelectWrapper from "./ASelectWrapper";
-import ANewListTable from "../../../../../../components/FormTableComponents/ANewListTable";
-import {THead, TRow} from "../../../../../../components/tables";
+import ANewListTable from "components/FormTableComponents/ANewListTable";
+import {THead, TRow} from "components/tables";
 import style from "components/FormTableComponents/ANewListTable.lazy.css";
 // </editor-fold>
 
@@ -44,12 +44,17 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
     }
 
     componentDidMount() {
-        const {excludeCourseList, excludeTrainingYearList} = this.props;
+        const {item, excludeCourseList, excludeTrainingYearList} = this.props;
         if (excludeTrainingYearList && !excludeCourseList) {
             this.state.select_employees = "Courses";
         } else if (!excludeTrainingYearList && excludeCourseList) {
             this.state.select_employees = "Years";
         }
+
+        // if(item) {
+        //     item.ctrl_refs.newJobPositionListTableWrapper = this.$self;
+        //     alert(`componentDidMount: ${item.ctrl_refs.newJobPositionListTableWrapper}, item.ctrl_refs.newJobPositionListTableWrapper`)
+        // }
     }
 
     @computed get showSelectEmployees() {
@@ -77,7 +82,7 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
                                onClick={this.onOpenEmployeeListTable}/>
             </label>}
             {!excludeEmployeeList && <NewEmployeeListTable
-                ref={ref => item.ctrl_refs.employee_list_exception = ref}
+                ref={ref => {item.ctrl_refs.employee_list_exception = ref}}
                 name={"employee_list_exception-" + n}
                 disableOtherPerson
                 closeable
@@ -86,7 +91,7 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
             />}
 
             {showSelectEmployees && <ClearableInput
-                ref={ref => item.ctrl_refs.select_employees = ref}
+                ref={ref => {item.ctrl_refs.select_employees = ref}}
                 name={'select_employees'}
                 type="radio"
                 placeholder="Select Per"
@@ -97,7 +102,8 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
                 id={id}
             />}
             <NewTrainingCourseListTableWrapper
-                ref={ref => item.ctrl_refs.newTrainingCourseListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newTrainingCourseListTableWrapper = ref;
+                    console.log(`NewTrainingCourseListTableWrapper:`, ref)}}
                 root={root}
                 parentName="JobPositions"
                 item={item}
@@ -111,7 +117,8 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
                 onChange={this.form.onChange}
             />
             <NewTrainingYearListTableWrapper
-                ref={ref => item.ctrl_refs.newTrainingYearListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newTrainingYearListTableWrapper = ref;
+                    console.log(`NewTrainingYearListTableWrapper:`, ref)}}
                 root={root}
                 parentName="JobPositions"
                 item={item}
@@ -189,7 +196,7 @@ class ListTable extends ANewListTable {
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
                 <div className="td">{name || 'N/A'}</div>
-                <div className="td">{job_category || 'N/A'}</div>
+                <div className="td">{job_category ? job_category.name : 'N/A'}</div>
                 {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>

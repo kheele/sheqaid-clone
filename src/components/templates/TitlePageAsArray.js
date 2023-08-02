@@ -14,10 +14,12 @@ class TitlePage extends AQuestions {
     @observable state = {
         formData: { 
             type: 'Title Page', 
-            questions: []
+            question_list: []
         },
         loadingFormData: true
     };
+
+    is_page_title = true;
     
     constructor(props) {
         super(props, style);
@@ -41,8 +43,8 @@ class TitlePage extends AQuestions {
     }
         
     async getForm() {
-        let {state: {formData: {questions: questionsArray}}, props: {isEditting}} = this;
-        return await getQuestionnaireTemplateForm(questionsArray, isEditting);
+        let {state: {formData: {question_list}}, props: {isEditting}} = this;
+        return await getQuestionnaireTemplateForm(question_list, isEditting);
     }
 
 }

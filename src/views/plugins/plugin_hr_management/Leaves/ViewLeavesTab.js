@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Button, ProfileField, UploadButton} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
-import NewLeaveDialog from './NewLeaveDialog';
+import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 @observer
 class LeavesTab extends React.Component {
@@ -91,7 +91,7 @@ class LeavesTab extends React.Component {
                         onClick={this.onClick}/>}
                 </div>
             </div>
-            <NewLeaveDialog ref="newLeaveDialog"/>
+            <NewDialog ref="newLeaveDialog"/>
         </div>;
     }
 }

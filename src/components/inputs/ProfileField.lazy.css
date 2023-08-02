@@ -9,6 +9,7 @@
     color: #f0f0f0; 
     padding: 5px;
     border-radius: 3px;
+    box-shadow: 0 0 4px #e5e5e5;
 }
 .ProfileField.error > div {
     background: antiquewhite !important;
@@ -36,6 +37,9 @@
     font-size: 14px;
     color: #777;
     margin: 0;
+    background: #efefef;
+    padding: 2px 8px;
+    display: block;
 }
 .ProfileField > div > div.value,
 .ProfileField > div > div.no-value{
@@ -48,7 +52,7 @@
     margin: 3px 0 0;
 }
 .ProfileField > div > div.value{
-    padding: 4px;
+    padding: 3px 8px;
     color: #888;
     font-size: 14px;
 }
@@ -66,10 +70,10 @@
     height: 100%;
 }
 .ProfileField > div > div.no-value{
-    padding: 5px;
+    padding: 3px 8px;
     color: #aaa;
     font-style: italic;
-    font-size: 16px;
+    font-size: 14px;
 }
 .ProfileField.pdf{
     height: 1485px;
@@ -100,4 +104,26 @@
 }
 .ProfileField .PDFUploadButton .preview{
     top: 0;
+}
+
+.ProfileField.UploadButton {
+    padding: 0;
+    margin: 10px 10px 0 0;
+    box-shadow: none;
+}
+.ProfileField.UploadButton > label {
+    height: 26.75px !important;
+    background: #efefef !important;
+    padding: 2px 8px !important;
+    margin: 5px 5px 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 14px !important;
+    color: rgb(119, 119, 119) !important;
+}
+.ProfileField.UploadButton > div{
+    padding: 0;
+    margin: 0 5px;
+    box-shadow: none;
+    /* border-radius: 0; */
 }

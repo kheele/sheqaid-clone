@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Button} from '../../../../components/inputs';
-import {Table, TBody, THead} from '../../../../components/tables';
-import NewCompetencyCertificateDialog from './NewCompetencyCertificateDialog';
+import {Button} from 'components/inputs';
+import {Table, TBody, THead} from 'components/tables';
+import NewCompetencyCertificateDialog from './forms/NewDialog';
 import NewMedicalFitnessCertificateDialog from '../Medicals/NewMedicalFitnessCertificateDialog';
 
 import AListTab from './AListTab';

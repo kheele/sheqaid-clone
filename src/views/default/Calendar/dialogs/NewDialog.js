@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {ClearableInput} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {ClearableInput} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
 

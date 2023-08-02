@@ -3,18 +3,18 @@ import {observer} from 'mobx-react';
 
 import style from "./AMeetingTab.lazy.css";
 
-import {Dates} from '../../../../utils/Utils';
-import {MeetingList} from '../../../../components/page-lists';
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../components/dialogs';
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import {Dates} from 'utils/Utils';
+import {MeetingList} from 'components/page-lists';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewMinutesDialog from './dialogs/NewMinutesDialog';
 import ProfileMinutesDialog from './dialogs/ProfileMinutesDialog';
-import NewMeetingDialog from '../../plugin_general/Calendar/NewMeetingDialog';
-import ProfileMeetingDialog from '../../plugin_general/Calendar/ProfileMeetingDialog.js';
+import NewMeetingDialog from 'views/plugins/plugin_general/Calendar/NewMeetingDialog';
+import ProfileMeetingDialog from 'views/plugins/plugin_general/Calendar/ProfileMeetingDialog.js';
 
 @observer
 class AMeetingTab extends React.Component {

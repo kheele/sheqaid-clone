@@ -72,40 +72,43 @@ const Comp = forwardRef((props , ref) => {
 
             console.log('TrainingPlanListByCourse: value', value)
 
-            const {id, data: {all_training_plan_list, training_plan_list,}} = value;
+            // const {id, data: {all_training_plan_list, training_plan_list}} = value;
+            const {id, data: {training_plan_list}} = value;
             const worker = new WebWorker(() => {
                 Events.on("process", async (db, list) => {
-                    const groups = list.groupBy(({data: {year}}) => year);
+                    const groups = list.groupBy(({year}) => year);
                     return Object.keys(groups).map(key => {
                         const list = groups[key];
                         const group = key;
 
-                        const cost = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const attendanceRate = list.map(({data: {cost}}) => cost || 0).reduce((a, b) => a + b, 0);
-                        const results = list.map(({data: {results}}) => results || 'N/A');
-                        const status = list.map(({data: {status}}) => status);
-
-                        const employeeList = list.filter(({data: {employee}}) => !!employee).map(({data: {employee}}) => employee).distinct(({id}) => id);
-                        const jobPositionList = list.filter(({data: {job_position}}) => !!job_position).map(({data: {job_position}}) => job_position).distinct(({id}) => id);
-                        const courseList = list.map(({data: {course_or_module}}) => course_or_module).distinct(({id}) => id);
+                        // const cost = list.map(({cost}) => cost || 0).reduce((a, b) => a + b, 0);
+                        // const attendanceRate = list.map(({cost}) => cost || 0).reduce((a, b) => a + b, 0);
+                        // const results = list.map(({results}) => results || 'N/A');
+                        // const status = list.map(({status}) => status);
+                        //
+                        // const employeeList = list.filter(({employee}) => !!employee).map(({employee}) => employee).distinct(({id}) => id);
+                        // const jobPositionList = list.filter(({job_position}) => !!job_position).map(({job_position}) => job_position).distinct(({id}) => id);
+                        // const courseList = list.map(({course}) => course).distinct(({id}) => id);
 
                         return {
                             group,
                             list,
-                            cost,
-                            attendanceRate,
-                            results,
-                            status,
-                            employeeList,
-                            jobPositionList,
-                            courseList
+                            // cost,
+                            // attendanceRate,
+                            // results,
+                            // status,
+                            // employeeList,
+                            // jobPositionList,
+                            // courseList
                         };
                     });
                 });
             });
-            const list = await worker.emit("process", toJS(all_training_plan_list || training_plan_list));
+            // const list = await worker.emit("process", toJS(all_training_plan_list || training_plan_list));
+            const list = await worker.emit("process", toJS(training_plan_list));
             worker.terminate();
 
+            console.log('TrainingPlanListByCourse: list', list.slice())
             setItems(list);
 
             const __defaultValue = list.find(({group}) => {

@@ -490,6 +490,7 @@ class TrainingsFuns {
         } else if (employee_view === 'inactive') {
             list = await Promise.all(list.filter(({data: {employee}}) => !!employee).map(async (
                 {
+                    id,
                     data: {
                         employee,
                         ...others

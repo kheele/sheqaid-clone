@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import APage from "../../../APage";
+import APage from "views/APage";
 
 import SafetyMeetingTab from './SafetyMeetingTab.js';
 import KPITab from './KPITab.js';
 import ManagementMeetingTab from './ManagementMeetingTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 import style from "./Main.lazy.css";
 

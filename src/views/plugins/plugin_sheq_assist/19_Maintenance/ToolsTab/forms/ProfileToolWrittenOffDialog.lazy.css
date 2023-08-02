@@ -1,0 +1,33 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .dialog-container{
+    height: 100%;
+    width: 1000px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .row.row-photo .ProfileField,
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .row.row-photo .ProfileField > div{
+    height: 100%;
+}
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .row.row-photo .ProfileField > div .value.file{
+    height: calc(100% - 22px);
+    border: none;
+    border-radius: 0;
+    margin: 0 -10px -10px;
+}
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .row-tabs {
+    padding: 5px 10px 0;
+    width: 100% !important;
+}
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .row-tabs::before {
+    content: " ";
+    display: block;
+    clear: both;
+}
+#dialog-overlay.ProfileToolWrittenOffDialog-profile-dialog .dialog-content p.not-available{
+    padding: 25px;
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    font-size: 22px;
+}

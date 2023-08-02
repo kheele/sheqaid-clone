@@ -1,0 +1,12 @@
+@import '../../../../../css/AProfileDialog.css';
+@import './IncidentComponents.css';
+
+#dialog-overlay.ViewIncidentReportDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ViewIncidentReportDialog-profile-dialog .dialog-content {
+    padding: 0;
+    height: calc(100% - 50px);
+}

@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
-import {Button} from '../../../../../components/inputs';
-import {Table} from '../../../../../components/tables';
+import {Button} from 'components/inputs';
+import {Table} from 'components/tables';
 
 import NewRiskAssessmentItemTaskBasedDialog from './NewRiskAssessmentItemTaskBasedDialog';
 import RiskAssessmentItemTHead from './RiskAssessmentItemTHead';

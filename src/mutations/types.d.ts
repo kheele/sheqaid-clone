@@ -1,20 +1,4 @@
 
-//<editor-fold desc="EntityClient">
-export type EntityClient = {
-    id: bigint;
-    name: string;
-    created_at: object;
-};
-//</editor-fold>
-
-//<editor-fold desc="EntityCompanyCategory">
-export type EntityCompanyCategory = {
-    id: bigint;
-    name: string;
-    created_at: object;
-};
-//</editor-fold>
-
 //<editor-fold desc="EntityCity">
 export type EntityCity = {
     id: bigint;
@@ -28,6 +12,14 @@ export type EntityCity = {
     zone_id: bigint;
     zone_code: string;
     company_list: [EntityCompany];//default_companies_arr_rel_insert_input
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityClient">
+export type EntityClient = {
+    id: bigint;
+    name: string;
+    created_at: object;
 };
 //</editor-fold>
 
@@ -52,6 +44,46 @@ export type EntityCompany = {
     profile_pic: string;
     zone: EntityZone;
     zone_id: bigint;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityCompanyCategory">
+export type EntityCompanyCategory = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityContractor">
+export type EntityContractor = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityContractorSite">
+export type EntityContractorSite = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityContractorsQuestionnaireTemplate">
+export type EntityContractorsQuestionnaireTemplate = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityContractorUser">
+export type EntityContractorUser = {
+    id: bigint;
+    name: string;
+    created_at: object;
 };
 //</editor-fold>
 
@@ -83,6 +115,104 @@ export type EntityCountry = {
     tld: string;
     translations: object;
     zone_list: [EntityZone];//default_zones_arr_rel_insert_input
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityDepartment">
+export type EntityDepartment = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityDocument">
+export type EntityDocument = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployee">
+export type EntityEmployee = {
+    id: bigint;
+    created_at: object;
+    fname: string;
+    lname: string;
+    email: string;
+    phone: string;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeCompetency">
+export type EntityEmployeeCompetency = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeContract">
+export type EntityEmployeeContract = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeCounselling">
+export type EntityEmployeeCounselling = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeLeave">
+export type EntityEmployeeLeave = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeLicense">
+export type EntityEmployeeLicense = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeMedical">
+export type EntityEmployeeMedical = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeWarning">
+export type EntityEmployeeWarning = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityEmployeeWorkPermit">
+export type EntityEmployeeWorkPermit = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityJobCategory">
+export type EntityJobCategory = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityJobPosition">
+export type EntityJobPosition = {
+    id: bigint;
+    name: string;
+    created_at: object;
 };
 //</editor-fold>
 
@@ -137,6 +267,14 @@ export type EntityPlugin = {
 };
 //</editor-fold>
 
+//<editor-fold desc="EntityPPE">
+export type EntityPPE = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
 //<editor-fold desc="EntityProject">
 export type EntityProject = {
     id: bigint;
@@ -145,8 +283,31 @@ export type EntityProject = {
 };
 //</editor-fold>
 
+//<editor-fold desc="EntitySector">
+export type EntitySector = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntitySector">
+export type EntitySignatureSetting = {
+    id: bigint;
+    created_at: object;
+};
+//</editor-fold>
+
 //<editor-fold desc="EntitySite">
 export type EntitySite = {
+    id: bigint;
+    name: string;
+    created_at: object;
+};
+//</editor-fold>
+
+//<editor-fold desc="EntityTeam">
+export type EntityTeam = {
     id: bigint;
     name: string;
     created_at: object;

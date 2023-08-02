@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {RisksCodes} from "../../../../../utils/Utils";
-import {Button, ClearableInput, ProfileField} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {RisksCodes} from "utils/Utils";
+import {Button, ClearableInput, ProfileField} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="SelectedProduct">

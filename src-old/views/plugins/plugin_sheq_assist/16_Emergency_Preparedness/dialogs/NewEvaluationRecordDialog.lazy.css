@@ -1,0 +1,30 @@
+@import '../../../../../css/ANewTableFormDialog.css';
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .dialog-container {
+    width: 1000px;
+}
+#NewEvaluationRecordSec{
+	margin: -5px 0px -10px -10px;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .controls-wrapper > .controls > .row > .sec-group.first-row {
+    display: flex;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .controls-wrapper > .controls > .row > .sec-group.first-row > .clearable-field-control {
+    flex: 1;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .controls-wrapper > .controls > .row > .sec-group.first-row > .date_input,
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .controls-wrapper > .controls > .row > .sec-group.first-row > .time_input {
+    min-width: 160px;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.NewEvaluationRecordDialog-new-dialog .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+    padding: 4px 0 0 !important;
+}

@@ -6,117 +6,305 @@ import Card from "@mui/material/Card";
 import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {CircularProgress} from "@mui/material";
+import VerticalBarChart from "../../../../../../containers/Charts/BarCharts/VerticalBarChart";
+//</editor-fold>
+
+//<editor-fold desc="VerticalBarChartWrapper">
+function VerticalBarChartWrapper({background, color, tickColor, title, chart: _chart, displayLegend}) {
+	const [chart, setChart] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (_chart instanceof Promise) {
+				_chart = await _chart;
+			}
+			setChart(_chart);
+		})();
+	}, [_chart]);
+
+	if (chart === null) {
+		return <CircularProgress size='1em'/>;
+	}
+
+	const {labels, datasets} = chart;
+
+	return <VerticalBarChart
+		title={title}
+		height="250px"
+		color={color}
+		tickColor={tickColor}
+		background={background}
+		chart={{
+			displayLegend,
+			labels,
+			datasets
+		}}
+	/>;
+}
+
 //</editor-fold>
 
 //<editor-fold desc="DoughnutChart">
-function DoughnutChart({backgroundColors, title, labels, data: dataPromise}) {
-    const [data, setData] = useState(null);
-    useEffect(() => {
-        (async () => {
-            if (dataPromise instanceof Promise) {
-                dataPromise = await dataPromise;
-            }
-            setData(dataPromise);
-        })();
-    }, [dataPromise]);
+function DoughnutChart({sx, backgroundColors, title, labels, data: dataPromise}) {
+	const [data, setData] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (dataPromise instanceof Promise) {
+				dataPromise = await dataPromise;
+			}
+			setData(dataPromise);
+		})();
+	}, [dataPromise]);
 
-    if (data === null) {
-        return <Card sx={{height: '245px'}}><CircularProgress/></Card>;
-    }
+	if (data === null) {
+		return <Card sx={{height: '245px'}}><CircularProgress/></Card>;
+	}
 
-    return <DefaultDoughnutChart
-        title={title}
-        height="220px"
-        chart={{
-            labels,
-            datasets: {
-                label: title,
-                backgroundColors,
-                data
-            },
-            cutout: 60
-        }}
-    />;
+	return <DefaultDoughnutChart
+		title={title}
+		width="calc(100% - 10px)"
+		height="220px"
+		sx={sx}
+		chart={{
+			labels,
+			datasets: {
+				label: title,
+				backgroundColors,
+				data
+			},
+			cutout: 60
+		}}
+	/>;
 }
 
 //</editor-fold>
 
 //<editor-fold desc="Comp">
-const Comp = forwardRef(({interval: __interval, employee_view: __employee_view}, ref) => {
-    const [interval, setInterval] = useState(__interval);
-    const [employee_view, setEmployeeView] = useState(__employee_view);
+const Comp = forwardRef(({data: __data}, ref) => {
+	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
 
-    // <editor-fold desc="useImperativeHandle funs">
-    useImperativeHandle(ref, () => ({
-        setInterval: (value) => {
-            setInterval(value);
-        },
-        setEmployeeView: (value) => {
-            setEmployeeView(value);
-        },
-    }));
-    // </editor-fold>
+	// <editor-fold desc="useImperativeHandle funs">
+	useImperativeHandle(ref, () => ({
+		setData: (value) => {
+			setData(value);
+		},
+	}));
+	// </editor-fold>
 
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = "plugin_sheq_assist/05_Trainings/training-plan/";
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
+	if(data === DATA_LOAD_STATUS.LOADING) {
+		return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+			<CircularProgress />
+		</div>;
+	}
 
-    const totals = {
-        training_status: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/status", {interval, employee_view}),
-        training_result: neonBinding.events.emit(path_training_plan + "dashboard/doughnut/result", {interval, employee_view}),
-        training_provider_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/provider_requirement", {interval, employee_view}),//
-        training_gender: neonBinding.events.emit(path_training_plan + "dashboard/doughnut/gender", {interval, employee_view}),
+	if(data === DATA_LOAD_STATUS.ERROR) {
+		return null;
+	}
 
-        training_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/requirement", {interval, employee_view}),
-        training_legal_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/legal_requirement", {interval, employee_view}),//
-        training_provider: neonBinding.events.emit(path_training_course + "dashboard/doughnut/provider", {interval, employee_view}),//
-        training_competency_evaluation: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/competency_evaluation", {interval, employee_view}),//
-    };
+	const [{
+		fatality_incident_list_aggregate,
+		non_fatality_incident_list_aggregate,
+		//
+		group_lti_incident_list_aggregate,
+		group_nlti_incident_list_aggregate,
+		group_non_incident_list_aggregate,
+		firstaid_incident_list_aggregate,
+		nearmiss_incident_list_aggregate,
+		//
+		incident_time_afternoon_incident_list_aggregate,
+		incident_time_morning_incident_list_aggregate,
+		incident_time_non_incident_list_aggregate,
+		//
+		person_injured_incident_list_aggregate,
+		non_person_injured_incident_list_aggregate,
+		//
+		vehicle_incident_list_aggregate,
+		non_vehicle_incident_list_aggregate,
+		//
+		status_closed_incident_list_aggregate,
+		status_open_incident_list_aggregate,
+		//
+		time_shift_day_incident_list_aggregate,
+		time_shift_night_incident_list_aggregate,
+		time_shift_non_incident_list_aggregate,
+	}] = data;
 
-    return <Grid
-        container
-        columns={1}
-        spacing={6}
-        className="grid-1 w-full grid-gap-10"
-        sx={{m: 0, mt: '30px',}}
-    >
-        <Card sx={{background: "#f1f1f1",}}>
-            <Grid
-                container
-                columns={1}
-                spacing={6}
-                className="grid-3 w-full grid-gap-10"
-                sx={{
-                    m: 0, p: '30px',
-                }}
-            >
-                <DoughnutChart
-                    title="Drug Test Result"
-                    labels={['Non-negative', 'Negative', 'Unknown at notification', 'Refusal', 'N/A']}
-                    backgroundColors={['primary', 'secondary', 'warning', 'info']}
-                    data={totals.training_status}
-                />
-                <DoughnutChart
-                    title="Alcohol Test Result"
-                    labels={['Non-negative', 'Negative', 'Unknown at notification', 'Refusal', 'N/A']}
-                    backgroundColors={['primary', 'secondary', 'warning', 'info']}
-                    data={totals.training_result}
-                />
-                <DoughnutChart
-                    title="Mobile Device Test Result"
-                    labels={['Non-negative', 'Negative', 'Unknown at notification', 'Refusal', 'N/A']}
-                    backgroundColors={['primary', 'secondary', 'warning', 'info']}
-                    data={totals.training_provider_requirement}
-                />
-            </Grid>
-        </Card>
-    </Grid>;
+	return <Grid
+		container
+		columns={1}
+		spacing={6}
+		className="grid-1 w-full grid-gap-10"
+		sx={{m: 0, mt: '30px',}}
+	>
+		<Card sx={{background: "#fff", padding: "5px",}}>
+			<>
+				<Grid
+					container
+					columns={1}
+					spacing={6}
+					className="grid-4 w-full grid-gap-10"
+					sx={{
+						m: 0, p: '8px',
+					}}
+				>
+					<DoughnutChart
+						title="Non-Fatalities VS Fatalities"
+						labels={['Non-Fatalities', 'Fatalities']}
+						backgroundColors={['primary', 'warning']}
+						sx={{
+							backgroundColor: "#f5f5f5",
+						}}
+						data={[
+							non_fatality_incident_list_aggregate.aggregate.count,
+							fatality_incident_list_aggregate.aggregate.count,
+						]}
+					/>
+					<DoughnutChart
+						title="Non-Injuries VS Injured Persons"
+						labels={['Non-Injuries', 'Injured Persons']}
+						backgroundColors={['primary', 'warning']}
+						sx={{
+							backgroundColor: "#f5f5f5",
+						}}
+						data={[
+							non_person_injured_incident_list_aggregate.aggregate.count,
+							person_injured_incident_list_aggregate.aggregate.count
+						]}
+					/>
+					<DoughnutChart
+						title="No Vehicles VS Vehicles Involved"
+						labels={['No Vehicles', 'Vehicles Involved']}
+						backgroundColors={['primary', 'warning']}
+						sx={{
+							backgroundColor: "#f5f5f5",
+						}}
+						data={[
+							non_vehicle_incident_list_aggregate.aggregate.count,
+							vehicle_incident_list_aggregate.aggregate.count
+						]}
+					/>
+					<DoughnutChart
+						title="Open VS Closed Incidents"
+						labels={['Open Incidents', 'Closed Incidents']}
+						backgroundColors={['primary', 'warning']}
+						sx={{
+							backgroundColor: "#f5f5f5",
+						}}
+						data={[
+							status_open_incident_list_aggregate.aggregate.count,
+							status_closed_incident_list_aggregate.aggregate.count
+						]}
+					/>
+				</Grid>
+				<Grid
+					container
+					columns={1}
+					spacing={6}
+					className="grid-3 w-full grid-gap-10"
+					sx={{
+						m: 0, p: '8px',
+					}}
+				>
+					<VerticalBarChartWrapper
+						title=" "
+						color="#fff"
+						tickColor="#fff"
+						background="#f5f5f5"
+						displayLegend={false}
+						chart={{
+							labels: ['Incident Group'],
+							datasets: [
+								{
+									label: 'LTI',
+									color: 'secondary',
+									data: [group_lti_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'NLTI',
+									color: 'primary',
+									data: [group_nlti_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'First Aid',
+									color: 'success',
+									data: [firstaid_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Near Miss',
+									color: 'warning',
+									data: [nearmiss_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Other',
+									color: 'info',
+									data: [group_non_incident_list_aggregate.aggregate.count]
+								},
+							],
+						}}
+					/>
+					<VerticalBarChartWrapper
+						title=" "
+						color="#fff"
+						tickColor="#fff"
+						background="#f5f5f5"
+						displayLegend={false}
+						chart={{
+							labels: ['Incident Time'],
+							datasets: [
+								{
+									label: 'Morning',
+									color: 'secondary',
+									data: [incident_time_morning_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Afternoon',
+									color: 'primary',
+									data: [incident_time_afternoon_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Unclassified',
+									color: 'info',
+									data: [incident_time_non_incident_list_aggregate.aggregate.count]
+								},
+							],
+						}}
+					/>
+					<VerticalBarChartWrapper
+						title=" "
+						color="#fff"
+						tickColor="#fff"
+						background="#f5f5f5"
+						displayLegend={false}
+						chart={{
+							labels: ['Time Shift'],
+							datasets: [
+								{
+									label: 'Day Shift',
+									color: 'secondary',
+									data: [time_shift_day_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Night Shift',
+									color: 'primary',
+									data: [time_shift_night_incident_list_aggregate.aggregate.count]
+								},
+								{
+									label: 'Unclassified',
+									color: 'info',
+									data: [time_shift_non_incident_list_aggregate.aggregate.count]
+								},
+							],
+						}}
+					/>
+				</Grid>
+			</>
+		</Card>
+	</Grid>;
 });
 //</editor-fold>
 
 Comp.propTypes = {
-    interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
-    employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
+	interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
+	view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
 };
 
 export default Comp;

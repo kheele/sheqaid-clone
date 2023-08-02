@@ -1,0 +1,14 @@
+@import '../../../plugin_hr_management/Employees/dialogs/AProfileEmployeeDocDialog.css';
+
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 700px;
+    max-width: 100%;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-content .row.item-wrapper > label{
+    background: #f5f5f5;
+}

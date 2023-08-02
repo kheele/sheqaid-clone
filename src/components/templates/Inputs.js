@@ -186,8 +186,8 @@ class Option extends AOptionsInput {
     
     render() {
         const {isSummary, handleOptionValue, removeOptionImage, readonly, iconNode, option, idx} = this.props;
+        const {optionType, optionImage} = option;
         if(isSummary) {
-            const {optionType, optionImage} = option;
             const {previewPath, dlUrls} = optionImage || {};
             const path = previewPath ? previewPath : (dlUrls ? dlUrls[0] : null);
             return <div className="questionOption" key={idx}>
@@ -232,6 +232,9 @@ class Option extends AOptionsInput {
                     <CloseIcon />
                 </IconButton>
             </div>
+            {optionType && <div className="questionOptionType w-160">
+                {optionType}
+            </div>}
             <OptionImage option={option} removeOptionImage={removeOptionImage} readonly={readonly}/>
             <Popover key="popover" ref="popover"/>
         </div>;

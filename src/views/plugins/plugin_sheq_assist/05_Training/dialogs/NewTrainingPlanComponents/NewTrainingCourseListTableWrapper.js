@@ -15,8 +15,8 @@ import {
 import NewJobPositionListTableWrapper from "./NewJobPositionListTableWrapper";
 import NewTrainingYearListTableWrapper from "./NewTrainingYearListTableWrapper";
 import ASelectWrapper from "./ASelectWrapper";
-import ANewListTable from "../../../../../../components/FormTableComponents/ANewListTable";
-import {THead, TRow} from "../../../../../../components/tables";
+import ANewListTable from "components/FormTableComponents/ANewListTable";
+import {THead, TRow} from "components/tables";
 import style from "components/FormTableComponents/ANewListTable.lazy.css";
 // </editor-fold>
 
@@ -44,12 +44,16 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
     }
 
     componentDidMount() {
-        const {excludeJobPositionList, excludeTrainingYearList} = this.props;
+        const {item, excludeJobPositionList, excludeTrainingYearList} = this.props;
         if (excludeTrainingYearList && !excludeJobPositionList) {
             this.state.select_employees = "JobPositions";
         } else if (!excludeTrainingYearList && excludeJobPositionList) {
             this.state.select_employees = "Years";
         }
+
+        // if(item) {
+        //     item.ctrl_refs.newTrainingCourseListTableWrapper = this.$self;
+        // }
     }
 
     @computed get showSelectEmployees() {
@@ -70,6 +74,8 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
             id = (item.course_or_module || item).id;
         }
 
+        console.log('renderTable', item)
+
         return <React.Fragment>
             {!excludeEmployeeList && <label className="margin-0 margin-t-10 pull-left font-size-13">
                 Employee(s) To Exclude
@@ -77,7 +83,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
                                onClick={this.onOpenEmployeeListTable}/>
             </label>}
             {!excludeEmployeeList && <NewEmployeeListTable
-                ref={ref => item.ctrl_refs.employee_list_exception = ref}
+                ref={ref => {item.ctrl_refs.employee_list_exception = ref}}
                 name={"employee_list_exception-" + n}
                 disableOtherPerson
                 closeable
@@ -86,7 +92,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
             />}
 
             {showSelectEmployees && <ClearableInput
-                ref={ref => item.ctrl_refs.select_employees = ref}
+                ref={ref => {item.ctrl_refs.select_employees = ref}}
                 name={'select_employees'}
                 type="radio"
                 placeholder="Select Per"
@@ -97,7 +103,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
                 id={id}
             />}
             <NewJobPositionListTableWrapper
-                ref={ref => item.ctrl_refs.newJobPositionListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newJobPositionListTableWrapper = ref}}
                 root={root}
                 parentName="Courses"
                 item={item}
@@ -110,7 +116,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
                 onChange={this.form.onChange}
             />
             <NewTrainingYearListTableWrapper
-                ref={ref => item.ctrl_refs.newTrainingYearListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newTrainingYearListTableWrapper = ref}}
                 root={root}
                 parentName="Courses"
                 item={item}
@@ -187,7 +193,7 @@ class ListTable extends ANewListTable {
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
                 <div className="td">{name}</div>
-                <div className="td">{job_position_list.map(({id, name}) => <span
+                <div className="td">{job_position_list.map(({id, job_position: {name}}) => <span
                     className="block-inline">{name}</span>)}</div>
                 <div className="td fixed-flex min-w-90">{frequency}</div>
                 <div className="td fixed-flex min-w-90">{provider}</div>

@@ -3,37 +3,42 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
-import {onSelectLoadTrainingFrequencies} from '../../../utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
+import {onSelectLoadTrainingFrequencies} from 'views/plugins/utils';
 
 import {
     ClearableInput,
     SelectClientInput,
     SelectJobPositionInput,
-    SelectProjectInput,
+    SelectProjectInput, SelectSectorInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingRegistryDialog.lazy.css";
+import TrainingCourseGridCounter from "./ProfileStats/TrainingCourseGridCounter";
+import TrainingCourseGridReportsLineChart from "./ProfileStats/TrainingCourseGridReportsLineChart";
+import findByIdClient from "mutations/all/Client/findByIdClient";
+import updateTrainingCourse from "mutations/all/TrainingCourse/updateTrainingCourse";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditTrainingRegistryDialog extends AEditDialog {
     pageKey = "EditTrainingRegistryDialog";
-    title = "Edit Training Registry";
+    title = "Edit Training Course";
 
     constructor(props) {
         super(props, style);
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -44,9 +49,6 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, text: value, checked: false};
-            }),
             frequency: ['Non-Expiry', '5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
             provider: [{text: "Internal", value: "Internal"}, {text: "External", value: "External"}],
         },
@@ -59,9 +61,11 @@ class Controls extends React.Component {
         super(props);
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
+        this.form.addChangeOne("client", this.onChangeClient.bind(this));
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
@@ -76,45 +80,80 @@ class Controls extends React.Component {
             this.state.loadedSelectLists = true;
         });
     }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onChangeClient">
+    onChangeClient(el, val) {
+        execWhen(() => this.refs.sector_list).then(async ref => {
+            if (val) {
+                const {id, data} = val;
+
+                const set = (data) => {
+                    const {sector_list} = data;
+                    if (sector_list) {
+                        ref.list = sector_list.map(({sector: value}) => {//{id, sector}
+                            return {value, label: value.name};
+                        });
+                    }
+                };
+
+                if(data) {
+                    set(data);
+                } else {
+                    findByIdClient(id).then(val => {
+                        if(val) {
+                            const {id, data} = val;
+                            set(data);
+                        }
+                    });
+                }
+            } else {
+                ref.reset();
+            }
+        });
+    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 0) {
+        if (idx === 0) {
             const {isConsultant} = storage.is;
             if (isConsultant && !form.isValid('client')) {
-                infoDialog.open('Company is required');
+                infoDialog.open('Company is');
                 return;
             }
         }
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('name')) {
-                infoDialog.open('Course is required');
+                infoDialog.open('Course is');
                 return;
             }
         }
-        
+
         return true;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, item: {data: old_data}} = this;
         const {isConsultant} = storage.is;
 
         if (isConsultant && !form.isValid('client')) {
-            infoDialog.open('Company is required');
+            infoDialog.open('Company is');
             return;
         }
-        
+
         if (!form.isValid('name')) {
-            infoDialog.open('Course is required');
+            infoDialog.open('Course is');
             return;
         }
-        
+
         const {
             client, project, site,
             name,
@@ -125,43 +164,50 @@ class Controls extends React.Component {
             unit_standard, unit_standard_desc
         } = form.data;
         const data = {};
-        
+
         ShouldUpdate.checkClient(data, old_data, client);
         ShouldUpdate.checkProject(data, old_data, project);
         ShouldUpdate.checkSite(data, old_data, site);
-        
+
         ShouldUpdate.check(data, old_data, name, 'name');
         ShouldUpdate.check(data, old_data, frequency, 'frequency');
-        ShouldUpdate.checkBox(data, old_data, sector_list, 'sector_list');
+        ShouldUpdate.checkSectorList(data, old_data, sector_list, 'sector_list');
         ShouldUpdate.check(data, old_data, provider, 'provider');
-        ShouldUpdate.checkJobPositionList(data, old_data, job_position_list, 'job_position_list');        
+        ShouldUpdate.checkJobPositionList(data, old_data, job_position_list, 'job_position_list');
         ShouldUpdate.check(data, old_data, unit_standard, 'unit_standard');
         ShouldUpdate.check(data, old_data, unit_standard_desc, 'unit_standard_desc');
-        
-        if(Object.keys(data).isEmpty()){
+
+        if (Object.keys(data).isEmpty()) {
             infoDialog.open("Nothing changed!");
             return;
         }
-        
+
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
-            console.log("res", res)            
-            onSaved && onSaved(data);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
+        progressDialog.open();
+        updateTrainingCourse({id: this.item.id, ...data}).then(res => {
+            console.log("res", res)
+            if(res) {
+                onSaved && onSaved(res.data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                this.props.close();
+            } else {
+                infoDialog.open("Record unable to update. Please try again.");
+            }
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
+
     // </editor-fold>
 
     get item() {
         return this.props.state.item;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -171,7 +217,7 @@ class Controls extends React.Component {
                 onFormNext, onFormBack, onFormOpen,
                 dialog: {renderProfileCover}
             },
-            item: {
+            item, item: {
                 id, data: {
                     created_at,
                     client, project, site,
@@ -184,69 +230,105 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         const {isConsultant, isNoProjects} = storage.is;
-        
-        const job_position_listDefault = job_position_list ? job_position_list.map(value => {
-            const {id, data, name} = value;
-            return {label: name || data.name, value};
+
+        const sector_listDefault = sector_list ? sector_list.map(v => {
+            const {sector: value, sector: {id, name}} = v;
+            return {label: name, value};
+        }) : null;
+        const job_position_listDefault = job_position_list ? job_position_list.map(v => {
+            const {job_position: value, job_position: {id, name}} = v;
+            return {label: name, value};
         }) : null;
         const frequencyDefault = frequency ? {label: frequency, value: frequency} : null;
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                {!isNoProjects && <Row 
-                    rendered  
+                {!isNoProjects && <Row
+                    rendered
                     active
                     idx={0}
-                    title="Company / Project / Site" 
-                    onFormOpen={onFormOpen} 
+                    title="Company / Project / Site"
+                    onFormOpen={onFormOpen}
                     onFormNext={onFormNext}
                 >
-                    {isConsultant && <SelectClientInput name="client" placeholder="Company..." defaultValue={RenderUtils.selectedClient.call(this)} showAll required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                    <SelectProjectInput name="project" placeholder="Project..." defaultValue={RenderUtils.selectedProject.call(this)} showAll required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)} required showAll className={"col-lg-12 form-control"} onChange={this.form.onChange}/>
+                    {isConsultant && <SelectClientInput name="client" placeholder="Company..."
+                                                        defaultValue={RenderUtils.selectedClient.call(this)} showAll
+                                                        className="col-lg-12 form-control"
+                                                        onChange={this.form.onChange}/>}
+                    <SelectProjectInput name="project" placeholder="Project..."
+                                        defaultValue={RenderUtils.selectedProject.call(this)} showAll
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <SelectSiteInput name="site" placeholder="Site..."
+                                     defaultValue={RenderUtils.selectedSite.call(this)} showAll
+                                     className={"col-lg-12 form-control"} onChange={this.form.onChange}/>
                 </Row>}
-                <Row 
-                    rendered 
+                <Row
+                    rendered
                     active={isNoProjects}
                     idx={1}
-                    title="1. Details" 
-                    onFormOpen={onFormOpen} 
-                    onFormBack={!isNoProjects && onFormBack} 
+                    title="1. Details"
+                    onFormOpen={onFormOpen}
+                    onFormBack={!isNoProjects && onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <ClearableInput name="name" type="text" placeholder="Course" defaultValue={name} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." defaultValue={job_position_listDefault} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectWrapper state={this.state} name="frequency" placeholder="Training Frequency..." defaultValue={frequencyDefault} className="col-lg-12 form-control" onChange={this.form.onChange} values="frequency"/>
-                    <ClearableInput name="sector_list" type="checkbox" placeholder="Sector(s)" defaultValue={sector_list} required vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.sector_list} returnValue/>
-                    <ClearableInput name="provider" type="radio" placeholder="Provider" defaultValue={provider} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.provider}/>
+                    <ClearableInput name="name" type="text" placeholder="Course" defaultValue={name}
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <SelectJobPositionInput name="job_position_list" type="select_multi"
+                                            placeholder="Job Position(s)..." defaultValue={job_position_listDefault}
+                                            className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <SelectWrapper state={this.state} name="frequency" placeholder="Training Frequency..."
+                                   defaultValue={frequencyDefault} className="col-lg-12 form-control"
+                                   onChange={this.form.onChange} values="frequency"/>
+                    <SelectSectorInput ref="sector_list" name="sector_list" type="select_multi"
+                                       placeholder="Sector(s)..." defaultValue={sector_listDefault}
+                                       className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="provider" type="radio" placeholder="Provider" defaultValue={provider}
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.provider}/>
                 </Row>
-                <Row 
-                    rendered 
+                <Row
+                    rendered
                     idx={2}
-                    title="2. Guideline To Available Unit Standards That May Be Used" 
-                    onFormOpen={onFormOpen} 
+                    title="2. Guideline To Available Unit Standards That May Be Used"
+                    onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                 >
-                    <ClearableInput name="unit_standard" type="text" placeholder="Unit Standard" defaultValue={unit_standard} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="unit_standard_desc" type="textarea" placeholder="Unit Standard Description" defaultValue={unit_standard_desc} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="unit_standard" type="text" placeholder="Unit Standard"
+                                    defaultValue={unit_standard} className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
+                    <ClearableInput name="unit_standard_desc" type="textarea" placeholder="Unit Standard Description"
+                                    defaultValue={unit_standard_desc} className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
+                </Row>
+                <Row
+                    rendered
+                    activeAlways
+                    idx={3}
+                    title="3. Dashboard"
+                >
+                    <TrainingCourseGridCounter item={item}/>
+                    <TrainingCourseGridReportsLineChart item={item}/>
                 </Row>
             </div>
         </div>);
     }
+
     // </editor-fold>
 }
 
 // <editor-fold defaultstate="collapsed" desc="SelectWrapper">
 @observer
 class SelectWrapper extends React.Component {
-    
+
     render() {
         const {state, name, placeholder, defaultValue, className, onChange, values} = this.props;
-        if(!state.loadedSelectLists) return null;
-        return <ClearableInput name={name} type="select" placeholder={placeholder} defaultValue={defaultValue} required className={className} onChange={onChange} values={state.lists[values]} returnValue add/>;
+        if (!state.loadedSelectLists) return null;
+        return <ClearableInput name={name} type="select" placeholder={placeholder} defaultValue={defaultValue}
+                               className={className} onChange={onChange} values={state.lists[values]} returnValue add/>;
     }
 }
+
 // </editor-fold>
 
 export default EditTrainingRegistryDialog;

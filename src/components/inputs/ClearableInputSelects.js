@@ -50,7 +50,8 @@ class ClearableInputSelects extends React.Component {
     }
             
     renderSelectItem(value, n) {
-        if(this.props.renderItem) return this.props.renderItem(value, n);
+        const {renderItem} = this.props;
+        if(renderItem) return renderItem(value, n);
         if(!isObject(value)) return {label: isString(value) ? value : String(value), value};
         return value;
     }

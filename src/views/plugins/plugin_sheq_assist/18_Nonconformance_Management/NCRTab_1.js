@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {ATableSavable, TBody, TRow} from '../../../../components/tables';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {Button, ClearableInput} from 'components/inputs';
+import {ATableSavable, TBody, TRow} from 'components/tables';
 
 import NCRItemTHead from './dialogs/NCRItemTHead';
 
@@ -165,7 +165,7 @@ class NCRTab extends React.Component {
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
             {isResponsible() && <React.Fragment>
                 <hr action="writable"/>
-                <NavItem action="writable" idx={idx} onClick={this.onProgress} faIconLeft="copy" title="Progress"/>
+                <NavItem action="writable" idx={idx} onClick={this.onProgress} faIconLeft="copy" title="Progressed"/>
                 <NavItem action="writable" idx={idx} onClick={this.onComplete} faIconLeft="copy" title="Complete"/>
             </React.Fragment>}
             {isApproving() && <React.Fragment>

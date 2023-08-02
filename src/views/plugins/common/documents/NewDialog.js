@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {GDocEditor} from '../../../../components/documents';
+import Form from 'utils/Form';
+import {GDocEditor} from 'components/documents';
 
 import {
     ClearableInput,
@@ -13,9 +13,9 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {ANewDialog} from '../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 // </editor-fold>
@@ -153,8 +153,8 @@ class Controls extends React.Component {
         if (isConsultant) {
             data.company = {id: company.id, name: company.data.name};
         } else {
-            const {company_name} = storage.loggedUser.company.data;
-            data.company = {name: company_name};
+            const {name} = storage.loggedUser.company.data;
+            data.company = {name: name};
         }
 
         if (responsible_department) {
@@ -177,7 +177,7 @@ class Controls extends React.Component {
 
         console.log(data)
 
-        doc && indexedStorage.orphanedUploadedDocs.remove(doc);
+        // doc && indexedStorage.orphanedUploadedDocs.remove(doc);
 
         btn.text("Saving...").disabled();
         neonBinding.events.emit(this.props.path + "create", data).then(res => {
@@ -197,7 +197,7 @@ class Controls extends React.Component {
     render() {
         const {onFormNext, onFormBack, onFormOpen, dialog: {props: {showCategory}}} = this.props;
         const {isConsultant, isNoProjects} = storage.is;
-        const {company_name} = storage.loggedUser.company.data;
+        const {name} = storage.loggedUser.company.data;
 
         return <FormControls onChange={this.form.onChange}>
             {!isNoProjects && <Row

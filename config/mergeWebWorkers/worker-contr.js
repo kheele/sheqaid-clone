@@ -7,7 +7,11 @@ module.exports = path => [
 
         'controllers/AControllerWrite.js',
         'controllers/AControllerRead.js',
+
+        'controllers//AAccountsFunsCntr.js',
+        'controllers//AAccountsServerCntr.js',
         'controllers//AAccountsCntr.js',
+
         'controllers/plugins/plugin_sheq_assist/AControllerAssist.js',
         'controllers/plugins/plugin_sheq_assist/ADocumentCntr.js'
     ].map(v => path + '/' + v);

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {SelectTable, THead} from '../../../../../components/tables';
+import {SelectTable, THead} from 'components/tables';
 
 @observer
 class ViewAttendanceTab extends React.Component {

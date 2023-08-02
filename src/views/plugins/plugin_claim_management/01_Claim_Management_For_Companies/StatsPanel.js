@@ -3,10 +3,10 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import Form from '../../../../utils/Form';
-import {getRandomRolor} from '../../../../utils/Utils';
-import {ClearableInput} from '../../../../components/inputs';
-import {Chart} from '../../../../components/FormComponents';
+import Form from 'utils/Form';
+import {getRandomRolor} from 'utils/Utils';
+import {ClearableInput} from 'components/inputs';
+import {Chart} from 'components/FormComponents';
 
 import style from "./StatsPanel.lazy.css";
 

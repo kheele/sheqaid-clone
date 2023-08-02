@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import NavItem from '../../../../components/navs/NavItem';
+import NavItem from 'components/navs/NavItem';
 
 import NewPositiveApprovalDialog from './dialogs/NewPositiveApprovalDialog';
 //import ProfilePositiveDialog from './dialogs/ProfilePositiveDialog';

@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
 
 import {
     ChatButton,
@@ -14,9 +14,9 @@ import {
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import NewWCL2Dialog from './NewWCL2Dialog.js';
 import NewWCL4Dialog from './NewWCL4Dialog.js';
@@ -329,7 +329,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, employee.id, 'employee_id');
         ShouldUpdate.check(data, old_data, claim_number, 'claim_number');
         ShouldUpdate.check(data, old_data, provincial_office, 'provincial_office');
-        ShouldUpdate.checkDate(data, old_data, accident_date, 'accident_date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, accident_date, 'accident_date');
         
         ShouldUpdate.check(data, old_data, doctor_email_1, 'doctor_email');
         
@@ -440,7 +440,7 @@ class Controls extends React.Component {
             //1. Employer Details
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, company_name, 'company_name');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, company_reg_num, 'company_reg_num');
-            ShouldUpdate.checkEmployee(new_wcl_2, old_data.wcl_2, company_contact_person, 'company_contact_person');
+            ShouldUpdate.checkEmployee_deprecated(new_wcl_2, old_data.wcl_2, company_contact_person, 'company_contact_person');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, company_str_addr, 'company_str_addr');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, company_str_addr_code, 'company_str_addr_code');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, company_postal_addr, 'company_postal_addr');
@@ -458,12 +458,12 @@ class Controls extends React.Component {
 //            ShouldUpdate.check(new_wcl_2, old_data.wcl_2, employee, 'employee');
             ShouldUpdate.checkFile(new_wcl_2, old_data.wcl_2, doc_certified_id, 'doc_certified_id');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, id_num, 'id_num');
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, dob, 'dob');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, dob, 'dob');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, gender, 'gender');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, marital_status, 'marital_status');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, citizen_of, 'citizen_of');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, personnel_num, 'personnel_num');
-            ShouldUpdate.checkJobPosition(new_wcl_2, old_data.wcl_2, occupation, 'occupation');
+            ShouldUpdate.checkJobPosition_deprecated(new_wcl_2, old_data.wcl_2, occupation, 'occupation');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, employee_str_addr, 'employee_str_addr');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, employee_str_addr_code, 'employee_str_addr_code');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, employee_postal_addr, 'employee_postal_addr');
@@ -477,12 +477,12 @@ class Controls extends React.Component {
             //3. Accident Details
     //            incident_source,
     //            incident,
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, accident_date, 'accident_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, accident_date, 'accident_date');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, accident_time, 'accident_time');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, incident_place, 'incident_place');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, incident_place_province, 'incident_place_province');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, incident_place_district, 'incident_place_district');
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, accident_date_reported, 'accident_date_reported');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, accident_date_reported, 'accident_date_reported');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, accident_time_reported, 'accident_time_reported');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, task_employee_performing_during_accident, 'task_employee_performing_during_accident');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, period_experience_task_performed_years, 'period_experience_task_performed_years');
@@ -504,17 +504,17 @@ class Controls extends React.Component {
                 const {start, end} = period_payments_made_range;
                 const new_period_payments_made_range = {};
                 const {period_payments_made_range: old_period_payments_made_range} = old_data.wcl_2 || {};
-                ShouldUpdate.checkDate(new_period_payments_made_range, old_period_payments_made_range, start, 'date_from');
-                ShouldUpdate.checkDate(new_period_payments_made_range, old_period_payments_made_range, end, 'date_to');
+                ShouldUpdate.checkDate_deprecated(new_period_payments_made_range, old_period_payments_made_range, start, 'date_from');
+                ShouldUpdate.checkDate_deprecated(new_period_payments_made_range, old_period_payments_made_range, end, 'date_to');
                 if(!Object.keys(new_period_payments_made_range).isEmpty()){
                     new_wcl_2.period_payments_made_range = new_period_payments_made_range;
                 }  
             }
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, num_of_week_days_worked_by_employee, 'num_of_week_days_worked_by_employee');
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, date_ceased_work, 'date_ceased_work');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, date_ceased_work, 'date_ceased_work');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, time_ceased_work, 'time_ceased_work');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, did_employee_complete_shift_on_date_work_ceased, 'did_employee_complete_shift_on_date_work_ceased');
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, date_resumed_work, 'date_resumed_work');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, date_resumed_work, 'date_resumed_work');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, time_resumed_work, 'time_resumed_work');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, dependant_name, 'dependant_name');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, dependant_address, 'dependant_address');
@@ -542,7 +542,7 @@ class Controls extends React.Component {
             //6. Employer's Declaration
             ShouldUpdate.checkSignature(new_wcl_2, old_data.wcl_2, employer_signature, 'employer_signature');
             ShouldUpdate.check(new_wcl_2, old_data.wcl_2, employer_signature_name, 'employer_signature_name');
-            ShouldUpdate.checkDate(new_wcl_2, old_data.wcl_2, employer_signature_date, 'employer_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_2, old_data.wcl_2, employer_signature_date, 'employer_signature_date');
             
             if(!Object.keys(new_wcl_2).isEmpty()){
                 data.wcl_2 = new_wcl_2;
@@ -604,7 +604,7 @@ class Controls extends React.Component {
             
             //1. General Details
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, claim_number, 'claim_number');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, accident_date, 'accident_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, accident_date, 'accident_date');
 
             //2. Employer Details
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, company_name, 'company_name');
@@ -618,31 +618,31 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, employee_str_addr_code, 'employee_str_addr_code');
                 
             //4. Medical Practioner/Chiropractor Consultation Details
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, first_consultation_date, 'first_consultation_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, first_consultation_date, 'first_consultation_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, how_accident_happen, 'how_accident_happen');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, injury_clinical_desc, 'injury_clinical_desc');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, pre_existing_defect_disease, 'pre_existing_defect_disease');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, x_rays_date, 'x_rays_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, x_rays_date, 'x_rays_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, x_rays_conducting_person, 'x_rays_conducting_person');
             ShouldUpdate.checkFile(new_wcl_4, old_data.wcl_4, x_rays_report, 'x_rays_report');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, surgical_procedure_date, 'surgical_procedure_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, surgical_procedure_date, 'surgical_procedure_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, surgical_procedure_conducting_person, 'surgical_procedure_conducting_person');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, surgical_procedure_desc, 'surgical_procedure_desc');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, anaesthetics_general_or_local, 'anaesthetics_general_or_local');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, anaesthetics_dur, 'anaesthetics_dur');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, consultation_yes_or_no, 'consultation_yes_or_no');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, consultation_date, 'consultation_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, consultation_date, 'consultation_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, consultation_conducting_person, 'consultation_conducting_person');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, physiotherapy_employee_referred_yes_or_no, 'physiotherapy_employee_referred_yes_or_no');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, physiotherapy_conducting_person, 'physiotherapy_conducting_person');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, employee_fitness_yes_or_no, 'employee_fitness_yes_or_no');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, employee_fitness_light_duty_date, 'employee_fitness_light_duty_date');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, employee_fitness_normal_duty_date, 'employee_fitness_normal_duty_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, employee_fitness_light_duty_date, 'employee_fitness_light_duty_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, employee_fitness_normal_duty_date, 'employee_fitness_normal_duty_date');
 
             //5. Medical Practioner/Chiropractor Declaration
             ShouldUpdate.checkSignature(new_wcl_4, old_data.wcl_4, practioner_signature, 'practioner_signature');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, practioner_signature_name, 'practioner_signature_name');
-            ShouldUpdate.checkDate(new_wcl_4, old_data.wcl_4, practioner_signature_date, 'practioner_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, practioner_signature_date, 'practioner_signature_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, practioner_addr, 'practioner_addr');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, practioner_practice_num, 'practioner_practice_num');
             
@@ -777,7 +777,7 @@ class Controls extends React.Component {
             
             //1. General Details
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, claim_number, 'claim_number');
-            ShouldUpdate.checkDate(new_wcl_6, old_data.wcl_6, accident_date, 'accident_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_6, old_data.wcl_6, accident_date, 'accident_date');
             
             //2. Employer Details
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, company_name, 'company_name');
@@ -798,14 +798,14 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, employee_perform_recommended_light_duty_not_performed_reason, 'employee_perform_recommended_light_duty_not_performed_reason');
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, employee_perform_recommended_light_duty_performed_percentage, 'employee_perform_recommended_light_duty_performed_percentage');
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, employee_still_in_your_employment, 'employee_still_in_your_employment');
-            ShouldUpdate.checkDate(new_wcl_6, old_data.wcl_6, employee_left_my_service_date, 'employee_left_my_service_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_6, old_data.wcl_6, employee_left_my_service_date, 'employee_left_my_service_date');
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, employee_present_address, 'employee_present_address');
             if(employee_receive_free_food_range) {
                 const {start, end} = employee_receive_free_food_range;
                 const new_employee_receive_free_food_range = {};
                 const {employee_receive_free_food_range: old_employee_receive_free_food_range} = old_data.wcl_6 || {};
-                ShouldUpdate.checkDate(new_employee_receive_free_food_range, old_employee_receive_free_food_range, start, 'date_from');
-                ShouldUpdate.checkDate(new_employee_receive_free_food_range, old_employee_receive_free_food_range, end, 'date_to');
+                ShouldUpdate.checkDate_deprecated(new_employee_receive_free_food_range, old_employee_receive_free_food_range, start, 'date_from');
+                ShouldUpdate.checkDate_deprecated(new_employee_receive_free_food_range, old_employee_receive_free_food_range, end, 'date_to');
                 if(!Object.keys(new_employee_receive_free_food_range).isEmpty()){
                     new_wcl_6.employee_receive_free_food_range = new_employee_receive_free_food_range;
                 }  
@@ -814,8 +814,8 @@ class Controls extends React.Component {
                 const {start, end} = employee_receive_free_quarters_range;
                 const new_employee_receive_free_quarters_range = {};
                 const {employee_receive_free_quarters_range: old_employee_receive_free_quarters_range} = old_data.wcl_6 || {};
-                ShouldUpdate.checkDate(new_employee_receive_free_quarters_range, old_employee_receive_free_quarters_range, start, 'date_from');
-                ShouldUpdate.checkDate(new_employee_receive_free_quarters_range, old_employee_receive_free_quarters_range, end, 'date_to');
+                ShouldUpdate.checkDate_deprecated(new_employee_receive_free_quarters_range, old_employee_receive_free_quarters_range, start, 'date_from');
+                ShouldUpdate.checkDate_deprecated(new_employee_receive_free_quarters_range, old_employee_receive_free_quarters_range, end, 'date_to');
                 if(!Object.keys(new_employee_receive_free_quarters_range).isEmpty()){
                     new_wcl_6.employee_receive_free_quarters_range = new_employee_receive_free_quarters_range;
                 }  
@@ -824,8 +824,8 @@ class Controls extends React.Component {
                 const {start, end} = period_detained_in_hospital_range;
                 const new_period_detained_in_hospital_range = {};
                 const {period_detained_in_hospital_range: old_period_detained_in_hospital_range} = old_data.wcl_6 || {};
-                ShouldUpdate.checkDate(new_period_detained_in_hospital_range, old_period_detained_in_hospital_range, start, 'date_from');
-                ShouldUpdate.checkDate(new_period_detained_in_hospital_range, old_period_detained_in_hospital_range, end, 'date_to');
+                ShouldUpdate.checkDate_deprecated(new_period_detained_in_hospital_range, old_period_detained_in_hospital_range, start, 'date_from');
+                ShouldUpdate.checkDate_deprecated(new_period_detained_in_hospital_range, old_period_detained_in_hospital_range, end, 'date_to');
                 if(!Object.keys(new_period_detained_in_hospital_range).isEmpty()){
                     new_wcl_6.period_detained_in_hospital_range = new_period_detained_in_hospital_range;
                 }  
@@ -834,7 +834,7 @@ class Controls extends React.Component {
             //5. Employer's Declaration
             ShouldUpdate.checkSignature(new_wcl_6, old_data.wcl_6, employer_signature, 'employer_signature');
             ShouldUpdate.check(new_wcl_6, old_data.wcl_6, employer_signature_name, 'employer_signature_name');
-            ShouldUpdate.checkDate(new_wcl_6, old_data.wcl_6, employer_signature_date, 'employer_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_wcl_6, old_data.wcl_6, employer_signature_date, 'employer_signature_date');
             
             if(!Object.keys(new_wcl_6).isEmpty()){
                 data.wcl_6 = new_wcl_6;
@@ -891,7 +891,7 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, company_name, 'company_name');
 //            ShouldUpdate.checkEmployee(new_annexture_1, old_data.annexture_1, affected_person, 'affected_person');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, id_num, 'id_num');
-            ShouldUpdate.checkDate(new_annexture_1, old_data.annexture_1, accident_date, 'accident_date');
+            ShouldUpdate.checkDate_deprecated(new_annexture_1, old_data.annexture_1, accident_date, 'accident_date');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, accident_time, 'accident_time');
             ShouldUpdate.checkBox(new_annexture_1, old_data.annexture_1, part_of_body_affected, 'part_of_body_affected');
             ShouldUpdate.checkBox(new_annexture_1, old_data.annexture_1, effect_on_person, 'effect_on_person'); 
@@ -905,24 +905,24 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, substance_exposed_to, 'substance_exposed_to');
                 
             //B. Incident Investigation
-            ShouldUpdate.checkEmployee(new_annexture_1, old_data.annexture_1, investigator, 'investigator');
-            ShouldUpdate.checkDate(new_annexture_1, old_data.annexture_1, investigation_date, 'investigation_date');
+            ShouldUpdate.checkEmployee_deprecated(new_annexture_1, old_data.annexture_1, investigator, 'investigator');
+            ShouldUpdate.checkDate_deprecated(new_annexture_1, old_data.annexture_1, investigation_date, 'investigation_date');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, investigator_designation, 'investigator_designation');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, incident_desc, 'incident_desc');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, incident_cause, 'incident_cause');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, steps_to_prevent_recurrence, 'steps_to_prevent_recurrence');
             ShouldUpdate.checkSignature(new_annexture_1, old_data.annexture_1, investigator_signature, 'investigator_signature');
-            ShouldUpdate.checkDate(new_annexture_1, old_data.annexture_1, investigator_signature_date, 'investigator_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_annexture_1, old_data.annexture_1, investigator_signature_date, 'investigator_signature_date');
                 
             //C. Action Taken By Employer To Prevent The Recurrence Of Similar Incident
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, employer_preventative_action_for_recurrence_of_similar_incident, 'employer_preventative_action_for_recurrence_of_similar_incident');
             ShouldUpdate.checkSignature(new_annexture_1, old_data.annexture_1, employer_signature, 'employer_signature');
-            ShouldUpdate.checkDate(new_annexture_1, old_data.annexture_1, employer_signature_date, 'employer_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_annexture_1, old_data.annexture_1, employer_signature_date, 'employer_signature_date');
                 
             //D. Remarks By Health & Safety Committee
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, health_and_safety_committee_remarks, 'health_and_safety_committee_remarks');
             ShouldUpdate.checkSignature(new_annexture_1, old_data.annexture_1, chairperson_of_health_and_safety_committee_signature, 'chairperson_of_health_and_safety_committee_signature');
-            ShouldUpdate.checkDate(new_annexture_1, old_data.annexture_1, chairperson_of_health_and_safety_committee_signature_date, 'chairperson_of_health_and_safety_committee_signature_date');
+            ShouldUpdate.checkDate_deprecated(new_annexture_1, old_data.annexture_1, chairperson_of_health_and_safety_committee_signature_date, 'chairperson_of_health_and_safety_committee_signature_date');
             
             if(!Object.keys(new_annexture_1).isEmpty()){
                 data.annexture_1 = new_annexture_1;

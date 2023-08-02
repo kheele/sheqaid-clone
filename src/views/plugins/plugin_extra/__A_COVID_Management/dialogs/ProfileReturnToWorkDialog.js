@@ -3,9 +3,9 @@ import {observer} from 'mobx-react';
 import {CircularProgress} from '@material-ui/core';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField, ProfilePic} from '../../../../../components/inputs';
+import Form from 'utils/Form';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, ProfilePic} from 'components/inputs';
 
 import style from "./ProfileReturnToWorkDialog.lazy.css";
 

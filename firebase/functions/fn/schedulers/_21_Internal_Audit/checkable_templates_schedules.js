@@ -93,7 +93,7 @@ exports.scheduleNextTemplateChecklist = functions.pubsub.schedule('every 30 minu
     const {email, fname, lname} = employee.data;
     if (email) {
 //        const opts = {
-//            from: '"SHEQ Aid" <support@sheqsolve.com>',
+//            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //            bcc: email,
 //            subject: 'SHEQ Aid Application Link',
 //            html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\

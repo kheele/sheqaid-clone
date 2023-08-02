@@ -3,12 +3,11 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates} from '../../../../../utils/Utils';
-import {createColumnChart2, createScatterChartMulti} from '../../../../../utils/ChartUtils';
-import {ClearableInput} from '../../../../../components/inputs';
-import StatsGroup from './StatsGroup';
+import {Dates} from 'utils/Utils';
+import {createColumnChart2, createScatterChartMulti} from 'utils/ChartUtils';
+import {ClearableInput} from 'components/inputs';
 
 //<editor-fold desc="CorrectiveActions">
 @observer
@@ -293,11 +292,11 @@ class StatsGroupList extends React.Component {
         }
         const key = new Date().getTime();
         return <React.Fragment>
-            <StatsGroup key={"1-" + key} title="Incident Type" charts={charts_type}/>
-            <StatsGroup key={"2-" + key} title="Incident Category" charts={charts_category_list}/>
-            <StatsGroup key={"3-" + key} title="Incident Nature Of Injury" charts={charts_nature_of_injury_list}/>
-            <StatsGroup key={"4-" + key} title="Incident Bodily Injury Location (Part(s) Of Body Injured)" charts={charts_bodily_injury_location_list}/>
-            <StatsGroup key={"5-" + key} title="Incident Injury Mechanism (Direct Cause Of Injury)" charts={charts_injury_mechanism_list}/>
+            {/*<StatsGroup key={"1-" + key} title="Incident Type" charts={charts_type}/>*/}
+            {/*<StatsGroup key={"2-" + key} title="Incident Category" charts={charts_category_list}/>*/}
+            {/*<StatsGroup key={"3-" + key} title="Incident Nature Of Injury" charts={charts_nature_of_injury_list}/>*/}
+            {/*<StatsGroup key={"4-" + key} title="Incident Bodily Injury Location (Part(s) Of Body Injured)" charts={charts_bodily_injury_location_list}/>*/}
+            {/*<StatsGroup key={"5-" + key} title="Incident Injury Mechanism (Direct Cause Of Injury)" charts={charts_injury_mechanism_list}/>*/}
         </React.Fragment>;
     }
 }

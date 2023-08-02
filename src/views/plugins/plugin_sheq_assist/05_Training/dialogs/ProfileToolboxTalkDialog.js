@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 import {
     ClearableInput,
     ProfileField,
@@ -10,13 +10,13 @@ import {
     SelectProjectInput,
     SelectSiteInput,
     SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput, SelectUserInput, UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileToolboxTalkDialog.lazy.css";
-import {NewEmployeeListTable} from "../../../../../components/FormTableComponents";
-import {SelectTable} from "../../../../../components/tables";
+import {NewEmployeeListTable} from "components/FormTableComponents";
+import {SelectTable} from "components/tables";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

@@ -3,24 +3,25 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ANewDialog} from 'components/dialogs';
 import {
     ClearableInput,
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
+} from 'components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from '../../../../../components/FormTableComponents';
-import {Row} from '../../../../../components/FormComponents';
+} from 'components/FormTableComponents';
+import {Row} from 'components/FormComponents';
 
 import style from "./NewPPEDialog.lazy.css";
+import insertPPE from "mutations/all/PPE/insertPPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -110,14 +111,14 @@ class Controls extends React.Component {
                 infoDialog.open('Company is required');
                 return;
             }
-            if (!form.isValid('project')) {
-                infoDialog.open('Project is required');
-                return;
-            }
-            if (!form.isValid('site')) {
-                infoDialog.open('Site is required');
-                return;
-            }
+            // if (!form.isValid('project')) {
+            //     infoDialog.open('Project is required');
+            //     return;
+            // }
+            // if (!form.isValid('site')) {
+            //     infoDialog.open('Site is required');
+            //     return;
+            // }
         }
         if(idx === 1) {
             if (!form.isValid('name')) {
@@ -147,14 +148,14 @@ class Controls extends React.Component {
             infoDialog.open('Company is required');
             return;
         }
-        if (!form.isValid('project')) {
-            infoDialog.open('Project is required');
-            return;
-        }
-        if (!form.isValid('site')) {
-            infoDialog.open('Site is required');
-            return;
-        }
+        // if (!form.isValid('project')) {
+        //     infoDialog.open('Project is required');
+        //     return;
+        // }
+        // if (!form.isValid('site')) {
+        //     infoDialog.open('Site is required');
+        //     return;
+        // }
         
         //2
         if (!form.isValid('name')) {
@@ -171,66 +172,73 @@ class Controls extends React.Component {
         }
         
         const {
-            site, project, client, 
+            site,
+            project,
+            client,
             //
-            name, unit, qty_received, qty_issued, qty_in_stock, duration_type, duration_value, notes, profile_pic,
+            name,
+            unit,
+            qty_received,
+            qty_issued,
+            qty_in_stock,
+            duration_type,
+            duration_value,
+            notes,
+            profile_pic,
             //
             team_list,
             department_list,
             job_position_list
         } = form.data;
-        const data = { 
-            client: {id: client.id, name: client.data.name},
-            project: {id: project.id, name: project.data.name},
-            site: {id: site.id, name: site.data.name}, 
-            name, unit, qty_received, qty_issued, qty_in_stock, notes
+        const data = {
+            name,
+            unit,
+            qty_received,
+            qty_issued,
+            qty_in_stock,
+            duration_type,
+            duration_value: isNumber(duration_value) && duration_value,
+            notes,
+            profile_pic: profile_pic && profile_pic.path,
+
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
+
+            team_list: {
+                data: (team_list || []).map(v => {
+                    if(v.team) {
+                        return {team_id: v.team.id};
+                    } else {
+                        return {team_id: v.id};
+                    }
+                }),
+            },
+            department_list: {
+                data: (department_list || []).map(v => {
+                    if(v.department) {
+                        return {department_id: v.department.id};
+                    } else {
+                        return {department_id: v.id};
+                    }
+                }),
+            },
+            job_position_list: {
+                data: (job_position_list || []).map(v => {
+                    if(v.job_position) {
+                        return {job_position_id: v.job_position.id};
+                    } else {
+                        return {job_position_id: v.id};
+                    }
+                }),
+            },
         };
-        
-        if(duration_type) {
-            data.duration_type = duration_type;
-        }
-        if(isNumber(duration_value)) {
-            data.duration_value = duration_value;
-        }
-        
-        if(profile_pic) {
-            data.profile_pic = profile_pic.path;
-        }
-        
-        if(team_list) {
-            data.team_list = team_list.map(v => {
-                if(v.team) {
-                    return v.team.id;
-                } else {
-                    return v.id;
-                }
-            });
-        }
-        
-        if(department_list) {
-            data.department_list = department_list.map(v => {
-                if(v.department) {
-                    return v.department.id;
-                } else {
-                    return v.id;
-                }
-            });
-        }
-        
-        if(job_position_list) {
-            data.job_position_list = job_position_list.map(v => {
-                if(v.job_position) {
-                    return v.job_position.id;
-                } else {
-                    return v.id;
-                }
-            });
-        }
         
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertPPE(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -238,7 +246,17 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
+        // neonBinding.events.emit(this.path + "create", data).then(res => {
+        //     console.log("res", res)
+        //     onSaved && onSaved(res);
+        //     infoDialog.open("Record successfully saved.");
+        //     infoDialog.close(2000);
+        //     this.props.close();
+        // }).finally(() => {
+        //     btn.text("Save").enabled();
+        // });
     }
     // </editor-fold>
 

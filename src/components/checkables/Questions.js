@@ -1,14 +1,14 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {Grid} from '@material-ui/core';
 
-import {scrollTo} from '../../utils/Utils';
-import {getQuestionnaireAnswerForm} from '../../utils/ArrayMapperUtils';
+import {scrollTo} from 'utils/Utils';
+import {getQuestionnaireAnswerForm} from 'utils/ArrayMapperUtils';
 
 import ProfileDocTemplateDialog
-    from '../../views/plugins/plugin_extra/__B_Contractors/dialogs/ProfileDocTemplateDialog';
+    from 'views/plugins/plugin_extra/__B_Contractors/forms/ProfileDocTemplateDialog';
 
 import TitlePage from './TitlePage';
 import FormBodyQuestionList from './FormBodyQuestionList';
@@ -74,27 +74,36 @@ class Questions extends React.Component {
         }
     }
 
+    @computed
+    get itemData() {
+        const {item} = this.props;
+        return (item ? item.data : item) || {};
+    }
+
+    @computed
+    get question_list() {
+        return this.itemData.question_list;
+    }
+
     render() {
         if(!this.props.item) return null;
-        const {item: {data: {status, form: {type, questions, title_page_list}}}, readonly, onChange} = this.props;
+        const {item, item: {data: {status}}, defaultType, readonly, onChange} = this.props;
         return <div className="Questions hor-center">
             <Grid container direction="column" justify="center" alignItems="center">
                 <Grid item>
                     <TitlePage 
                         ref="titlePage" 
-                        status={status} 
-                        mainQuestions={title_page_list} 
-                        questions={title_page_list} 
+                        status={status}
+                        item={item}
                         readonly={readonly} 
                         onChange={onChange}
                         onFormOpen={this.onFormOpen}
                         onViewTemplateDocDialog={this.onViewTemplateDocDialog} />
                     <FormBodyQuestionList 
-                        ref="formBody" 
-                        type={type}
+                        ref="formBody"
                         status={status}
-                        mainQuestions={questions} 
-                        questions={questions} 
+                        defaultType={defaultType}
+                        question_list={this.question_list}
                         readonly={readonly}
                         onChange={onChange}
                         onFormOpen={this.onFormOpen}

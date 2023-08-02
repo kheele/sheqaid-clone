@@ -35,9 +35,9 @@ class FormBody extends React.Component {
     
     componentWillMount(){
         style.use();
-        const {formData: {questions}, readonly} = this.props;
+        const {formData: {question_list}, readonly} = this.props;
         if(readonly) {
-            questions.forEach(q => q.open = false);
+            question_list.forEach(q => q.open = false);
         }
     }
     
@@ -57,10 +57,10 @@ class FormBody extends React.Component {
     }
     
     reorder(startIndex, endIndex) {
-        const {formData: {questions}, readonly} = this.props;
+        const {formData: {question_list}, readonly} = this.props;
         if(!readonly) {
-            const [removed] = questions.splice(startIndex, 1);
-            questions.splice(endIndex, 0, removed);
+            const [removed] = question_list.splice(startIndex, 1);
+            question_list.splice(endIndex, 0, removed);
         }
     }
     
@@ -180,8 +180,8 @@ class ListWrapper extends React.Component {
     }
     
     render() {
-        const {indexes = [], idx, sectionIdx, isLibrary, isPrivate, visibilityState, formData: {questions}, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
-        if(!questions || questions.isEmpty()) {
+        const {indexes = [], idx, sectionIdx, isLibrary, isPrivate, visibilityState, formData: {question_list}, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        if(!question_list || question_list.isEmpty()) {
             return <p className="text-center padding-50">No questions added</p>;
         }
         return <List 
@@ -190,7 +190,7 @@ class ListWrapper extends React.Component {
             indexes={[...indexes, sectionIdx, idx]}
             idx={idx} 
             sectionIdx={sectionIdx}
-            questions={questions} 
+            question_list={question_list}
             isLibrary={isLibrary}
             isPrivate={isPrivate}
             visibilityState={visibilityState}

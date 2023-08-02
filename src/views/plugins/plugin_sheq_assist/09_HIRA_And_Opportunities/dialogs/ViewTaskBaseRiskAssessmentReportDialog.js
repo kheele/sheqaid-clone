@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {Button} from '../../../../../components/inputs';
-import {Table} from '../../../../../components/tables';
-import {AProfileDialog, ViewReportPDFDialog} from '../../../../../components/dialogs';
+import {Button} from 'components/inputs';
+import {Table} from 'components/tables';
+import {AProfileDialog, ViewReportPDFDialog} from 'components/dialogs';
 
 import RiskAssessmentItemTHead from './RiskAssessmentItemTHead';
 import RiskAssessmentItemTBody from './RiskAssessmentItemTBody';

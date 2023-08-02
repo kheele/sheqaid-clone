@@ -5,13 +5,13 @@ import {observable} from 'mobx';
 
 import style from "./AppointmentsTab.lazy.css";
 
-import {renderLeftButtonsForExpiryOnly} from '../../../../utils/ComponentUtils';
-import {calculateRightPos, Dates} from '../../../../utils/Utils';
+import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
+import {calculateRightPos, Dates} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, SelectEmployeeInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewAppointmentDialog from './dialogs/NewAppointmentDialog';
 import ProfileAppointmentDialog from './dialogs/ProfileAppointmentDialog';
@@ -177,7 +177,7 @@ class AppointmentsTab extends React.Component {
         const item = this.refs.root.list[n];
         let {id, data: {
                 fname, lname, 
-                optional_info, client, project, site, client_id, project_id, site_id,
+                client, project, site, client_id, project_id, site_id,
                 
                 employee_job_appointment_list, sub_collection_keys: {
                     employee_job_appointment_list: {latest, id: ids}
@@ -207,7 +207,7 @@ class AppointmentsTab extends React.Component {
             pageTitleSingular="job appointment"
             path={this.path}
             noAnimation={true}
-            renderLeftButtons={renderLeftButtonsForExpiryOnly.bind(this)}
+            renderLeftButtons={renderLeftButtonsForExpiryOnly_firebase.bind(this)}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}

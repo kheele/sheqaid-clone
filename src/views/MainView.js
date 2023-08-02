@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import {autorun, observable} from 'mobx';
 import {Drawer as MUIDrawer} from "@material-ui/core";
 
-import {execWhen, Permissions} from '../utils/Utils';
-import {Button} from '../components/inputs';
-import {Nav, NavItem} from '../components/navs';
-import Popover from '../components/popovers/Popover';
-import {NavigateTop} from '../components';
+import {execWhen, Permissions} from 'utils/Utils';
+import {Button} from 'components/inputs';
+import {Nav, NavItem} from 'components/navs';
+import Popover from 'components/popovers/Popover';
+import {NavigateTop} from 'components';
 import Body from './Body';
 
 import drawerStyle from "./drawer.lazy.css"; //
@@ -186,56 +186,57 @@ class DrawerNav extends React.Component {
     onFilterAll(modules) {
         const {is: {isContractorViewIncContractorPack, isEmployee}} = storage;
         if(isAdminApp) {
-            return onFilterImpl(modules).filter(item => {
-                const {permissions_modules} = storage.loggedUser.user.data;
-                const permissions_mod = (permissions_modules || []).find(v => v.key === item.key);
+            return onFilterImpl(modules).filter(({module: {key}}) => {
+                const {permissions_module_list} = storage.loggedUser.user.data;
+                const permissions_mod = (permissions_module_list || []).find(({module: {key: __key}}) => __key === key);
                 const allow = Permissions.allow(permissions_mod);
                 return allow;
             });
         }
         if(isContractorViewIncContractorPack) {
             const {contractorAllowedModules} = moduleManager;
-            return onFilterImpl(modules).filter(item => {
+            return onFilterImpl(modules).filter(({module: {key}}) => {
                 if(item.key === "__B_Contractors") return false;
 
-                const allow = contractorAllowedModules.contains(item.key);
+                const allow = contractorAllowedModules.contains(key);
                 return allow;
             });
         }
         if(isEmployee) {
             const {employeeDisallowedModules} = moduleManager;
-            return onFilterImpl(modules).filter(item => {
-                const allow = !employeeDisallowedModules.contains(item.key);
+            return onFilterImpl(modules).filter(({module: {key}}) => {
+                const allow = !employeeDisallowedModules.contains(key);
                 return allow;
             });
         }
         
-        return onFilterImpl(modules).filter(item => {
-            const {permissions_modules} = storage.loggedUser.user.data;
-            const permissions_mod = (permissions_modules || []).find(v => v.key === item.key);
+        return onFilterImpl(modules).filter(({module: {key}}) => {
+            const {permissions_module_list} = storage.loggedUser.user.data;
+            const permissions_mod = (permissions_module_list || []).find(({module: {key: __key}}) => __key === key);
             const allow = Permissions.allow(permissions_mod);
             return allow;
         });
     }
     
     renderNavItem(item) {
+        const {module: {key, color}} = item;
         let disallow;
         if(storage.is.isEmployee) {
             const {employeeDisallowedModules} = moduleManager;
-            disallow = employeeDisallowedModules.contains(item.key);
+            disallow = employeeDisallowedModules.contains(key);
         } else {
             const {isContractorView} = storage.is;
             const {contractorAllowedModules} = moduleManager;
-            if((storage.is.isContractor || isContractorView) && item.key === "__B_Contractors") return null;
+            if((storage.is.isContractor || isContractorView) && key === "__B_Contractors") return null;
 
-            const {permissions_modules} = storage.loggedUser.user.data;
-            const permissions_mod = (permissions_modules || []).find(v => v.key === item.key);
-            disallow = Permissions.disallow(permissions_mod) || (isContractorView && !contractorAllowedModules.contains(item.key));
+            const {permissions_module_list} = storage.loggedUser.user.data;
+            const permissions_mod = (permissions_module_list || []).find(v => v.module.key === key);
+            disallow = Permissions.disallow(permissions_mod) || (isContractorView && !contractorAllowedModules.contains(key));
         }
         
         if(disallow) return null;
         
-        return <NavItem onClick={this.props.onOpenPage} {...item} color={item.color && (`${item.color} !important`)}/>;
+        return <NavItem onClick={this.props.onOpenPage} {...item} color={color && (`${color} !important`)}/>;
     }
 
     render() {
@@ -246,14 +247,15 @@ class DrawerNav extends React.Component {
     }
 }
 
-function onFilterImpl(__modules) {
+function onFilterImpl(modulesDashboard) {
+    return modulesDashboard;
 //    if(plugin.data.key === 'plugin_hr_management') return [];
-        
-    const {selectedClientModules: {list: modules}} = storage.selected;
-//    console.log('permissions_modules', __modules.map(v => v.key), modules.map(v => v.key))
-    return modules.filter(item => item.key !== 'Dashboard')
-        .filter(item => __modules.anyMatch(v2 => v2.key === item.key))
-        .map(item => __modules.find(v2 => v2.key === item.key));
+//
+//     const {selectedClientModules: {list: modules}} = storage.selected;
+// //    console.log('permissions_module_list', __modules.map(v => v.key), modules.map(v => v.key))
+//     return modules.filter(item => item.key !== 'Dashboard')
+//         .filter(item => modulesDashboard.anyMatch(v2 => v2.key === item.key))
+//         .map(item => modulesDashboard.find(v2 => v2.key === item.key));
 }
 
 export default MainView;

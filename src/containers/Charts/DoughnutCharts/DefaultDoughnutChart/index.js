@@ -21,7 +21,7 @@ import configs from "containers/Charts/DoughnutCharts/DefaultDoughnutChart/confi
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function DefaultDoughnutChart({ icon, title, description, height, chart }) {
+function DefaultDoughnutChart({ sx, icon, title, description, width, height, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {}, chart.cutout);
 
   const renderChart = (
@@ -67,7 +67,7 @@ function DefaultDoughnutChart({ icon, title, description, height, chart }) {
     </MDBox>
   );
 
-  return title || description ? <Card>{renderChart}</Card> : renderChart;
+  return title || description ? <Card sx={{...(sx||{}), width}}>{renderChart}</Card> : renderChart;
 }
 
 // Setting default values for the props of DefaultDoughnutChart

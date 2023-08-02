@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from "../../../../../utils/Utils";
+import Form from 'utils/Form';
+import {ShouldUpdate} from "utils/Utils";
 
 import {
     ClearableInput,
@@ -12,9 +12,9 @@ import {
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import TypedWrapper from "./TypedWrapper";
 

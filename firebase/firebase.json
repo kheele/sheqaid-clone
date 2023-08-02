@@ -159,6 +159,32 @@
       ]
     },
     {
+      "target": "contractors-2023",
+      "public": "./public/app/v3",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/app/v2",
+          "destination": "/app/v3",
+          "type": 301
+        },
+        {
+          "source": "/shared-docs",
+          "destination": "/remote/#shared-docs",
+          "type": 301
+        },
+        {
+          "source": "/contractors",
+          "destination": "/remote/#contractors",
+          "type": 301
+        }
+      ]
+    },
+    {
       "target": "alpha-dev",
       "public": "./public/app/alpha-dev",
       "ignore": [

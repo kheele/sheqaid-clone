@@ -7,10 +7,10 @@ export default styled(Box)(({ theme, ownerState }) => {
   const { palette, functions, borders, boxShadows } = theme;
   const { variant, bgColor, color, opacity, borderRadius, shadow, coloredShadow } = ownerState;
 
-  const { gradients, grey, white } = palette;
-  const { linearGradient } = functions;
-  const { borderRadius: radius } = borders;
-  const { colored } = boxShadows;
+  const { gradients = {}, grey = {}, white = {} } = palette || {};
+  const { linearGradient } = functions || {};
+  const { borderRadius: radius = {} } = borders || {};
+  const { colored = {} } = boxShadows || {};
 
   const greyColors = {
     "grey-100": grey[100],
@@ -65,14 +65,16 @@ export default styled(Box)(({ theme, ownerState }) => {
   // background value
   let backgroundValue = bgColor;
 
-  if (variant === "gradient") {
-    backgroundValue = validGradients.find((el) => el === bgColor)
-      ? linearGradient(gradients[bgColor].main, gradients[bgColor].state)
-      : white.main;
-  } else if (validColors.find((el) => el === bgColor)) {
-    backgroundValue = palette[bgColor] ? palette[bgColor].main : greyColors[bgColor];
-  } else {
-    backgroundValue = bgColor;
+  if(bgColor !== 'black') {
+    if (variant === "gradient") {
+      backgroundValue = validGradients.find((el) => el === bgColor)
+        ? isFunction(linearGradient) ? linearGradient(gradients[bgColor].main, gradients[bgColor].state) : white.main
+        : white.main;
+    } else if (validColors.find((el) => el === bgColor)) {
+      backgroundValue = palette[bgColor] ? palette[bgColor].main : greyColors[bgColor];
+    } else {
+      backgroundValue = bgColor;
+    }
   }
 
   // color value

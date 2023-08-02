@@ -6,9 +6,9 @@ import {Calendar as BigCalendar, momentLocalizer} from 'react-big-calendar'
 import moment from 'moment'
 
 import APage from "../../APage";
-import {Button} from '../../../components/inputs';
-import {TabledTopPanel} from '../../../components/tables';
-import {ListLoaderState} from '../../../components/lists';
+import {Button} from 'components/inputs';
+import {TabledTopPanel} from 'components/tables';
+import {ListLoaderState} from 'components/lists';
 
 import NewMeetingDialog from './dialogs/NewMeetingDialog';
 

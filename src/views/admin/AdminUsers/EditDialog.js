@@ -3,14 +3,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Permissions, ShouldUpdate} from '../../../utils/Utils';
-import {Button, ClearableInput, ProfilePic} from '../../../components/inputs';
-import {Row} from '../../../components/FormComponents';
-import {AEditDialog} from '../../../components/dialogs';
+import {Permissions, ShouldUpdate} from 'utils/Utils';
+import {Button, ClearableInput, ProfilePic} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
-import {NewUserModulePermissions} from '../../../components/common-modules/ANewUserPermissions';
+import {NewUserModulePermissions} from 'components/common-modules/ANewUserPermissions';
 
 import EditPasswordDialog from "./EditPasswordDialog.js";
 

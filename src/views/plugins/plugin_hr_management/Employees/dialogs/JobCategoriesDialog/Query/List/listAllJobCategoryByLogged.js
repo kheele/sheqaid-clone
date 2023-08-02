@@ -1,0 +1,51 @@
+import GQLClient from "graphql/GQLClient";
+import {orgs_fragment} from "graphql/Fragments";
+import {getVariablesAndQueryConfig} from "../Utils";
+
+export default (
+	{
+		offset = 0,
+		limit = 50,
+		//
+		name,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
+) => {
+	const {filter} = getVariablesAndQueryConfig({
+		name,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs
+	});
+
+	return GQLClient
+	.query({
+		query: `
+			query listAllJobCategoryByLoggedClientQuery {
+		    default_job_categories(
+		      where: {
+            ${filter}
+          }, 
+		      order_by: {name: asc},
+          offset: ${offset}
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+		    ) {
+		          id
+		          created_at
+		          name
+		          job_category_owner
+		          job_position_list_aggregate{
+		            aggregate{
+		              count
+		            }
+		          }
+		          ${orgs_fragment}
+		    }
+		  }
+    `,
+	});
+};

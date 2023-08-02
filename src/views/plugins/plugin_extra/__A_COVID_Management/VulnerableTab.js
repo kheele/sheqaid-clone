@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Popover from '../../../../components/popovers/Popover';
-import NavItem from '../../../../components/navs/NavItem';
+import Popover from 'components/popovers/Popover';
+import NavItem from 'components/navs/NavItem';
 
 import NewVulnerableDialog from './dialogs/NewVulnerableDialog';
 //import ProfileVulnerableDialog from './dialogs/ProfileVulnerableDialog';

@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
-import {ClearableInput, Clickable, ProfileField} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
+import {ClearableInput, Clickable, ProfileField} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
-import {NavButtons} from '../../../../../components/FormComponents';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
+import {NavButtons} from 'components/FormComponents';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 import style from "./NewIncidentAssignInvestigatorsDialog.lazy.css";
 

@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import NavItem from '../../../../components/navs/NavItem';
-import {ClearableInput, DateRangeInput} from '../../../../components/inputs';
-import {THead} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ClearableInput, DateRangeInput} from 'components/inputs';
+import {THead} from 'components/tables';
 
 @observer
 class AClaimsTab extends React.Component {

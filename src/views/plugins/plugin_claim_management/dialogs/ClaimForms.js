@@ -2,10 +2,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {Dates} from '../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../components/tables';
+import {Button, ClearableInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EarningsTable">

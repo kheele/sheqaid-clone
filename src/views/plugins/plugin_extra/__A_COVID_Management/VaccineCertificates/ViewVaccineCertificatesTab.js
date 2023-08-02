@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Button, ProfileField, UploadButton} from '../../../../../components/inputs';
-import {Slider} from '../../../../../components/lists';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
 import NewVaccineCertificateDialog from './NewVaccineCertificateDialog';
 

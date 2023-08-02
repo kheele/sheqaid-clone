@@ -3,20 +3,20 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
-import {renderExpiryDateSpan} from '../../../../utils/ComponentUtils';
+import {Dates} from 'utils/Utils';
+import {renderExpiryDateSpan} from 'utils/ComponentUtils';
 import {
     ClearableInput,
     DateRangeInput,
     SelectDepartmentInput,
     SelectEmployeeInput,
     SelectJobPositionInput
-} from '../../../../components/inputs';
-import {THead} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
 import ListPDFReader from './printers/ListPDFReader';
 
-import {AControls, AExportDialog} from '../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

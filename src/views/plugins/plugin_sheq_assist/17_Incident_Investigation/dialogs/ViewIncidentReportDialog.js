@@ -1,11 +1,11 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {Button, Clickable, ProfileField} from '../../../../../components/inputs';
-import {AProfileDialog, ViewReportPDFDialog} from '../../../../../components/dialogs';
+import {Button, Clickable, ProfileField} from 'components/inputs';
+import {AProfileDialog, ViewReportPDFDialog} from 'components/dialogs';
 
 import {CauseAnalysisPanel, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
-import {NavButtons} from '../../../../../components/FormComponents';
+import {NavButtons} from 'components/FormComponents';
 
 import style from "./ViewIncidentReportDialog.lazy.css";
 

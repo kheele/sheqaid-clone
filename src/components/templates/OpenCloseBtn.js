@@ -13,10 +13,10 @@ class OpenCloseBtn extends React.Component {
     }
     
     onClick() {
-        const {ques, questions} = this.props;
+        const {ques, question_list} = this.props;
         setTimeout(() => {
             if(!ques.open) {
-                questions.forEach(q => q.open = false);
+                question_list.forEach(q => q.open = false);
             }
             ques.open = !ques.open;
             

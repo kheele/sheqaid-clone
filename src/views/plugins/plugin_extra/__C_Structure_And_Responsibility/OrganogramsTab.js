@@ -4,12 +4,12 @@ import {observable} from 'mobx';
 
 import style from "./OrganogramsTab.lazy.css";
 
-import {calculateRightPos, Dates} from "../../../../utils/Utils";
+import {calculateRightPos, Dates} from "utils/Utils";
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, Clickable} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewOrganogramDialog from './dialogs/NewOrganogramDialog';
 import ProfileOrganogramDialog from './dialogs/ProfileOrganogramDialog';

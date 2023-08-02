@@ -2,9 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from '../../../utils';
+import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {AProfileDialog} from 'components/dialogs';
 import {profileRender} from './IncidentForms';
 // </editor-fold>
 import style from "./ProfileIncidentDialog.lazy.css";

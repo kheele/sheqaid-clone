@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {execWhen} from 'utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
 
 import {
@@ -13,17 +13,20 @@ import {
     SelectClientInput,
     SelectJobCategoryInput,
     SelectJobPositionInput,
+    SelectSectorInput,
     SelectProjectInput,
     SelectSiteInput,
     SelectTrainingCourseInput,
-    SelectUserInput
+    SelectEmployeeInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
-import {onSelectLoadTrainingFrequencies} from '../../../utils';
+import {onSelectLoadTrainingFrequencies} from 'views/plugins/utils';
 
 import style from "./NewTrainingMatrixDialog.lazy.css";
+import insertTrainingMatrix from "mutations/all/TrainingMatrix/insertTrainingMatrix";
+import findByIdClient from "mutations/all/Client/findByIdClient";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -51,18 +54,14 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            status: [{text: "Outstanding", value: "Outstanding", checked: false}, {
-                text: "Completed",
-                value: "Completed",
-                checked: false
-            }],
-            sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, text: value, checked: false};
-            }),
+            status: [
+                {text: "Outstanding", value: "Outstanding", checked: false},
+                {text: "Completed", value: "Completed", checked: false}
+            ],
             requirement: [{text: "Compulsory", value: "Compulsory"}, {text: "Optional", value: "Optional"}],
             requirement_legal: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
             training_frequency: ['Non-Expiry', '5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
-            training_provider_requirement: [{text: "Accredited", value: "Accredited"}, {
+            provider_requirement: [{text: "Accredited", value: "Accredited"}, {
                 text: "Non-Accredited",
                 value: "Non-Accredited"
             }],
@@ -85,8 +84,8 @@ class Controls extends React.Component {
 
         this.form = new Form();
         this.form.addChangeOne("client", this.onChangeClient.bind(this));
-        this.form.addChangeOne("course_or_module", this.onChangeCourse.bind(this));
-        this.form.addChangeOne("hr", this.onChangeHR.bind(this));
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
+        this.form.addChangeOne("trainer", this.onChangeHR.bind(this));
     }
 
     // </editor-fold>
@@ -95,18 +94,33 @@ class Controls extends React.Component {
     onChangeClient(el, val) {
         execWhen(() => this.refs.sector_list).then(async ref => {
             if (val) {
-                const {id, data: {sector_list}} = val;
-                if(sector_list) {
-                    this.state.lists.sector_list = sector_list.map(value => {
-                        return {value, text: value.data.name, checked: false};
+                const {id, data} = val;
+
+                const set = (data) => {
+                    const {sector_list} = data;
+                    if (sector_list) {
+                        ref.list = sector_list.map(({sector: value}) => {//{id, sector}
+                            return {value, label: value.name};
+                        });
+                    }
+                };
+
+                if(data) {
+                    set(data);
+                } else {
+                    findByIdClient(id).then(val => {
+                        if(val) {
+                            const {id, data} = val;
+                            set(data);
+                        }
                     });
                 }
-
             } else {
                 ref.reset();
             }
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
@@ -118,15 +132,28 @@ class Controls extends React.Component {
                 ref.setValue(null);
             }
         });
-        execWhen(() => this.refs.job_title).then(async ref => {
+        execWhen(() => this.refs.job_category_list).then(async ref => {
             if (val) {
                 const {id, data: {training_plan_list}} = val;
-                const jobPositionList = training_plan_list.
-                filter(({data: {job_position}}) => !!job_position).
-                map(({data: {job_position}}) => job_position).
-                distinct();
-                ref.value = jobPositionList;
-
+                const list = training_plan_list.filter(({job_position}) => !!job_position && job_position.job_category).map(({job_position}) => job_position.job_category).map(({job_category}) => ({
+                    ...job_category,
+                    id: convertIdToBigint(job_category.id)
+                })).distinct();
+                console.log('job_category_list', list.slice())
+                ref.value = list;
+            } else {
+                ref.reset();
+            }
+        });
+        execWhen(() => this.refs.job_position_list).then(async ref => {
+            if (val) {
+                const {id, data: {training_plan_list}} = val;
+                const list = training_plan_list.filter(({job_position}) => !!job_position).map(({job_position}) => ({
+                    ...job_position,
+                    id: convertIdToBigint(job_position.id)
+                })).distinct();
+                console.log('job_position_list', list.slice())
+                ref.value = list;
             } else {
                 ref.reset();
             }
@@ -137,15 +164,12 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onChangeHR">
     onChangeHR(el, val) {
-        execWhen(() => this.refs.job_desc).then(job_desc_ref => {
+        execWhen(() => this.refs.trainer_job_position).then(trainer_job_position_ref => {
             if (val) {
-                let {optional_info} = val.data;
-                if (optional_info) {
-                    const {job_position} = optional_info;
-                    job_position && job_desc_ref.onChange({label: job_position.name, value: job_position});
-                }
+                let {job_position} = val.data;
+                job_position && trainer_job_position_ref.onChange({label: job_position.name, value: job_position});
             } else {
-                job_desc_ref.reset();
+                trainer_job_position_ref.reset();
             }
         });
     }
@@ -179,7 +203,7 @@ class Controls extends React.Component {
             }
         }
         if (idx === 1) {
-            if (!form.isValid('course_or_module')) {
+            if (!form.isValid('course')) {
                 infoDialog.open('Course is required');
                 return;
             }
@@ -201,12 +225,12 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
+        if (!form.isValid('course')) {
             infoDialog.open('Course is required');
             return;
         }
         //3
-//        if (!form.isValid('job_title')) {
+//        if (!form.isValid('job_position_list')) {
 //            infoDialog.open('Job Position For Training is required');
 //            return;
 //        }
@@ -216,7 +240,7 @@ class Controls extends React.Component {
 //            return;
 //        }
         //5
-//        if (!form.isValid('hr')) {
+//        if (!form.isValid('trainer')) {
 //            infoDialog.open('Training Conductor is required');
 //            return;
 //        }
@@ -229,7 +253,7 @@ class Controls extends React.Component {
 //            infoDialog.open('Requirement is required');
 //            return;
 //        }
-//        if (!form.isValid('training_provider_requirement')) {
+//        if (!form.isValid('provider_requirement')) {
 //            infoDialog.open('Training Provider Requirement is required');
 //            return;
 //        }
@@ -238,22 +262,26 @@ class Controls extends React.Component {
             //1
             client, project, site,
             //2
-            course_or_module, training_plan,
+            course, training_plan,
             //3
-            allocation, job_title, sector_list,
+            job_category_list,
+            job_position_list,
+            sector_list,
             //4
             status,
             date_range,
             cost,
             //5
-            institution_conducting_training, hr, job_desc,
+            institution_conducting_training,
+            trainer,
+            trainer_job_position,
             //6
             requirement_legal,
             requirement,
             max_participants_per_course,
             training_standard,
             training_frequency,
-            training_provider_requirement,
+            provider_requirement,
             //7
             competency_evaluation,
             unit_standard,
@@ -261,136 +289,56 @@ class Controls extends React.Component {
             credits,
             nqf_level
         } = form.data;
-        const data = {};
-
-        console.log('training_plan', training_plan)
-
-        //0
-        if (client) {
-            if (client.id) {
-                const {id, data: _data, name} = client;
-                data.client = {id, name: name || _data.name};
-                data.client_id = id;
-            } else {
-                data.client = client;
-            }
-        }
-        if (project) {
-            if (project.id) {
-                const {id, data: _data, name} = project;
-                data.project = {id, name: name || _data.name};
-                data.project_id = id;
-            } else {
-                data.project = project;
-            }
-        }
-        if (site) {
-            if (site.id) {
-                const {id, data: _data, name} = site;
-                data.site = {id, name: name || _data.name};
-                data.site_id = id;
-            } else {
-                data.site = site;
-            }
-        }
-
-        //1
-        if (course_or_module) {
-            const {id, data: _data, name} = course_or_module;
-            data.course_or_module = {id, name: name || _data.name};
-        }
-        if (training_plan) {
-            data.training_plan = parseInt(training_plan.group, 10);
-        }
-
-        //2
-        if (allocation) {
-            data.allocation = allocation.map(({id, data: {name}}) => ({id, name}));
-        }
-        if (job_title) {
-            data.job_title = job_title.map(({id, data: {name}}) => ({id, name}));
-        }
-        if (sector_list) {
-            data.sector_list = sector_list.slice();
-        }
-
-        //3
-        if (status) {
-            data.status = status;
-        }
-        if (date_range) {
-            const {start, end} = date_range;
-            data.date_range = {};
-            if (start) {
-                data.date_range.start = start.getTime();
-            }
-            if (end) {
-                data.date_range.end = end.getTime();
-            }
-        }
-        if (cost) {
-            data.cost = cost;
-        }
-
-        //4
-        if (institution_conducting_training) {
-            data.institution_conducting_training = institution_conducting_training;
-        }
-        if (hr) {
-            const {id = null, data: _data, fname, lname} = hr;
-            data.hr = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-        }
-        if (job_desc) {
-            if (isString(job_desc)) {
-                data.job_desc = job_desc;
-            } else {
-                const {id, data: {name}} = job_desc;
-                data.job_desc = {id, name};
-            }
-        }
-
-        //5
-        if (requirement_legal) {
-            data.requirement_legal = requirement_legal;
-        }
-        if (requirement) {
-            data.requirement = requirement;
-        }
-        if (!!max_participants_per_course) {
-            data.max_participants_per_course = max_participants_per_course;
-        }
-        if (training_standard) {
-            data.training_standard = training_standard;
-        }
-        if (training_frequency) {
-            data.training_frequency = training_frequency;
-        }
-        if (training_provider_requirement) {
-            /*["Accredited", "Non-Accredited"]*/
-            data.training_provider_requirement = training_provider_requirement;
-        }
-
-        //6
-        if (competency_evaluation) {
-            data.competency_evaluation = competency_evaluation;
-        }
-        if (unit_standard) {
-            data.unit_standard = unit_standard;
-        }
-        if (unit_standard_desc) {
-            data.unit_standard_desc = unit_standard_desc;
-        }
-        if (credits) {
-            data.credits = credits;
-        }
-        if (nqf_level) {
-            data.nqf_level = nqf_level;
-        }
+        const data = {
+            //1
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
+            //2
+            course_id: course && course.id,
+            // training_plan_list: {
+            //     data: ((training_plan && training_plan.list) || []).map(({id}) => ({training_id: id}))
+            // },
+            //3
+            job_category_list: {
+                data: (job_category_list || []).map(({id}) => ({job_category_id: id}))
+            },
+            job_position_list: {
+                data: (job_position_list || []).map(({id}) => ({job_position_id: id}))
+            },
+            sector_list: {
+                data: (sector_list || []).map(({id}) => ({sector_id: id}))
+            },
+            //4
+            status,
+            date_range_start: date_range && Dates.formatDateSQL(date_range.start),
+            date_range_end: date_range && Dates.formatDateSQL(date_range.end),
+            cost,
+            //5
+            institution_conducting_training,
+            trainer_id: trainer && trainer.id,
+            trainer_external: (trainer && !trainer.id) ? {data: trainer} : null,
+            trainer_job_position_id: trainer_job_position && trainer_job_position.id,
+            //6
+            requirement_legal,
+            requirement,
+            max_participants_per_course,
+            training_standard,
+            training_frequency,
+            provider_requirement,
+            //7
+            competency_evaluation,
+            unit_standard,
+            unit_standard_desc,
+            credits,
+            nqf_level
+        };
 
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertTrainingMatrix(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -398,7 +346,17 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
+        // neonBinding.events.emit(this.path + "create", data).then(res => {
+        //     console.log("res", res)
+        //     onSaved && onSaved(res);
+        //     infoDialog.open("Record successfully saved.");
+        //     infoDialog.close(2000);
+        //     this.props.close();
+        // }).finally(() => {
+        //     btn.text("Save").enabled();
+        // });
     }
 
     // </editor-fold>
@@ -432,11 +390,12 @@ class Controls extends React.Component {
                 onFormBack={!isNoProjects && onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingCourseInput name="course_or_module" placeholder="Course..."
+                <SelectTrainingCourseInput name="course" placeholder="Course..."
                                            className="col-lg-12 form-control" onChange={this.form.onChange} add={false}
                                            returnValue/>
-                <br />
-                <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan" onChange={this.form.onChange}/>
+                <br/>
+                <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan"
+                                          onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -446,13 +405,15 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectJobCategoryInput name="allocation" type="select_multi" placeholder="Allocation / Job Category..."
+                <SelectJobCategoryInput ref="job_category_list" name="job_category_list" type="select_multi"
+                                        placeholder="Allocation / Job Category..."
                                         className="col-lg-12 form-control" onChange={this.form.onChange} add={false}/>
-                <SelectJobPositionInput name="job_title" type="select_multi" placeholder="Job Position For Training..." required
+                <SelectJobPositionInput ref="job_position_list" name="job_position_list" type="select_multi"
+                                        placeholder="Job Position(s) For Training..." required
                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="sector_list" type="checkbox" placeholder="Sector(s)" required vertical={3}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.sector_list} returnValue/>
+                <SelectSectorInput ref="sector_list" name="sector_list" type="select_multi" placeholder="Sector(s)..."
+                                   required
+                                   className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -484,9 +445,9 @@ class Controls extends React.Component {
                 <ClearableInput name="institution_conducting_training" type="text"
                                 placeholder="Institution Conducting Training" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <SelectUserInput name="hr" placeholder="Training Conductor..." defaultUser showOtherPerson
+                <SelectEmployeeInput name="trainer" placeholder="Training Conductor..." showOtherPerson
                                  className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectJobPositionInput name="job_desc" placeholder="Job Position..."
+                <SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..."
                                         desc="Job Position For Training Conductor" className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add/>
             </Row>
@@ -512,10 +473,10 @@ class Controls extends React.Component {
                 <SelectWrapper state={this.state} name="training_frequency" placeholder="Training Frequency..."
                                className="col-lg-8 pull-left-2 form-control" onChange={this.form.onChange}
                                values="training_frequency"/>
-                <ClearableInput name="training_provider_requirement" type="radio"
+                <ClearableInput name="provider_requirement" type="radio"
                                 placeholder="Training Provider Requirement" vertical
                                 className="col-lg-11 pull-left-0_5 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.training_provider_requirement}/>
+                                values={this.state.lists.provider_requirement}/>
             </Row>
             <Row
                 rendered

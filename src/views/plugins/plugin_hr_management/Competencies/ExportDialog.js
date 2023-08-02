@@ -9,13 +9,13 @@ import {
     SelectEmployeeInput,
     SelectJobPositionInput,
     SelectTrainingCourseInput
-} from '../../../../components/inputs';
-import {THead} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import CompetenciesRenderRow from "./CompetenciesRenderRow";
+import CompetenciesRenderRow from "./CompetenciesDialog/CompetenciesRenderRow";
 import ListPDFReader from './printers/ListPDFReader';
 
-import {AControls, AExportDialog} from '../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

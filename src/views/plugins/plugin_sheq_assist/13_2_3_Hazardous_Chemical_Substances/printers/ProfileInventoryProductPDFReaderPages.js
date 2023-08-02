@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {Image, Page, Text, View} from '@react-pdf/renderer';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import {HTMLContentCanvas, Panel, styles, Table} from '../../../../../pdf-components';
+import {HTMLContentCanvas, Panel, styles, Table} from 'pdf-components';
 
-import riskLevelImg from '../../../../../img/risk-assessment.png';
+import riskLevelImg from 'img/risk-assessment.png';
 
 const PageWrapper = ({wrap = true, size, orientation, style, children}) => (
   <Page wrap={wrap} size={size} orientation={orientation} style={style}>

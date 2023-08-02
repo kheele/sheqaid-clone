@@ -2,8 +2,6 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {convertQuestionnaireObjectToArray} from "../../utils/ArrayMapperUtils";
-
 import PageLoadingProgress from '../PageLoadingProgress';
 
 @observer
@@ -12,7 +10,7 @@ class Stats extends React.Component {
     @observable state = {
         loaded: false,
         update: false,
-        questions: null
+        question_list: null
     };
     
     constructor(props) {
@@ -37,18 +35,24 @@ class Stats extends React.Component {
         }
         
         this.state.loaded = false;
-        this.state.questions = await this.questions;
+        this.state.question_list = await this.question_list;
         this.state.loaded = true;
 //        alert(`Stats.update ${quesPath}`)
     }
-    
-    @computed get questions() {
-        let {ques, questions} = this.props;
+
+    isSection(ques) {
+        if(!('question_list' in ques)) return false;
+        const {question_list} = ques;
+        if(question_list.isEmpty()) return false;
+        return true;
+    }
+
+    @computed get question_list() {
+        let {ques, question_list} = this.props;
         return new Promise(async (resolve, reject) => {
-            questions = questions || ques.questions;
-            questions = await convertQuestionnaireObjectToArray(questions);
-            resolve(questions.
-                    map(v => v.questions || [v]).
+            question_list = question_list || ques.question_list;
+            resolve(question_list.
+                    map(v => this.isSection(v) ? v.question_list : [v]).
                     reduce((a1, a2) => [...a1, ...a2], []).
                     filter(v => v.questionType !== 'NoAnswer'));
         });
@@ -58,17 +62,17 @@ class Stats extends React.Component {
         if(!this.state.loaded && !this.state.update) {
             return <PageLoadingProgress />;
         }
-        let {questions} = this.state;
+        let {question_list} = this.state;
         return <div className="row Stats margin-0 margin-b-10 flex">
             <div className="row margin-0 margin-r-5 flex">
-                <Stat value={questions.filter(v => !v.isMandatory).length} title='Optional'/>
-                <Stat value={questions.filter(v => !!v.isMandatory).length} title='Required'/>
+                <Stat value={question_list.filter(v => !v.isMandatory).length} title='Optional'/>
+                <Stat value={question_list.filter(v => !!v.isMandatory).length} title='Required'/>
             </div>
             <div className="row margin-0 margin-r-5 flex">
-                <Stat value={questions.filter(v => !v.answer).length} title='Unanswered'/>
-                <Stat value={questions.filter(v => !!v.answer).length} title='Answered'/>
+                <Stat value={question_list.filter(v => !v.answer).length} title='Unanswered'/>
+                <Stat value={question_list.filter(v => !!v.answer).length} title='Answered'/>
             </div>
-            <Stat value={questions.length} title='Total'/>
+            <Stat value={question_list.length} title='Total'/>
         </div>;
     }
 }

@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../utils/Form';
-import {ShouldUpdate} from '../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput} from '../../../components/inputs';
-import {FormControls, Row} from '../../../components/FormComponents';
-import {AEditDialog} from '../../../components/dialogs';
+import {ClearableInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 // </editor-fold>
 
@@ -82,7 +82,7 @@ class Controls extends React.Component {
         const data = {};
         ShouldUpdate.check(data, old_data, group_name, 'group_name');
         ShouldUpdate.check(data, old_data, group_key, 'group_key');  
-        ShouldUpdate.checkDate(data, old_data, performedAt, 'performedAt');
+        ShouldUpdate.checkDate_deprecated(data, old_data, performedAt, 'performedAt');
         ShouldUpdate.check(data, old_data, status, 'status');
         
         if(Object.keys(data).isEmpty()){

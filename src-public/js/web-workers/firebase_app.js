@@ -43,7 +43,12 @@
             }
 
             self[db] = app.firestore();
-            self[db].settings({ignoreUndefinedProperties: true, cacheSizeBytes: self[db].CACHE_SIZE_UNLIMITED});
+            self[db].settings({
+                ignoreUndefinedProperties: true,
+                cacheSizeBytes: self[db].CACHE_SIZE_UNLIMITED,
+                // cacheSizeBytes: firebase.indexedDB.UNLIMITED_CACHE_SIZE,
+                persistence: 'indexeddb',
+            });
             self[db].enablePersistence({experimentalForce: true});
 
             if (isWorker) {
@@ -120,6 +125,6 @@
         const {FieldPath, FieldValue, Timestamp} = firebase.firestore;
         self.FBSettings = {
             FieldPath, FieldValue, Timestamp
-        };
+        }
     }
 })(self || window);

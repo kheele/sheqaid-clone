@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {onSelectLoadSWPCategories, onSelectLoadSWPLocations} from '../../../utils';
+import Form from 'utils/Form';
+import {onSelectLoadSWPCategories, onSelectLoadSWPLocations} from 'views/plugins/utils';
 
 import {
     Button,
@@ -12,9 +12,9 @@ import {
     SelectDepartmentInput,
     SelectEmployeeInput,
     SelectUserInput
-} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewSWPDialog.lazy.css";
 

@@ -1,0 +1,14 @@
+
+.td-result{
+    color: #fff !important;
+    justify-content: center !important;
+}
+.td-result.green {
+    background: green;
+}
+.td-result.red {
+    background: red;
+}
+.td-result.none {
+    background: #888;
+}

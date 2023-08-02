@@ -4,7 +4,7 @@ import {observable, toJS} from 'mobx';
 
 import {Calendar as BigCalendar, momentLocalizer} from 'react-big-calendar'
 import moment from 'moment'
-import {ListLoaderState} from '../../../../components/lists';
+import {ListLoaderState} from 'components/lists';
 
 import CalendarYearView from './CalendarYearView';
 

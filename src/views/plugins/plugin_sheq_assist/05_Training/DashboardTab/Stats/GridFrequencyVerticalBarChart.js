@@ -4,8 +4,8 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MD/MDBox";
 import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
 import PropTypes from "prop-types";
-import DefaultCounterCard from "../../../../../../containers/Cards/CounterCards/DefaultCounterCard";
-import {useEffect, useState} from "react";
+import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import {CircularProgress} from "@mui/material";
 //</editor-fold>
 
@@ -44,145 +44,164 @@ function VerticalBarChartWrapper({background, color, tickColor, title, chart: _c
 //</editor-fold>
 
 //<editor-fold desc="Comp">
-function Comp() {
+const Comp = forwardRef(({data: __data}, ref) => {
+    const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
 
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = 'plugin_sheq_assist/05_Trainings/training-plan/';
+    // <editor-fold desc="useImperativeHandle funs">
+    useImperativeHandle(ref, () => ({
+        setData: (value) => {
+            setData(value);
+        },
+    }));
+    // </editor-fold>
 
-    const totals = {
-        overallCost: Promise.resolve({
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Cost',
-                color: 'light',
-                data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-            }],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost", {interval, employee_view}),//
-        costPerCourse: Promise.resolve({
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
-                    label: 'Course #1',
-                    color: 'dark',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-                {
-                    label: 'Course #2',
-                    color: 'primary',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Course #3',
-                    color: 'secondary',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Course #4',
-                    color: 'info',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Course #5',
-                    color: 'warning',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-                {
-                    label: 'Course #6',
-                    color: 'success',
-                    data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
-                },
-                {
-                    label: 'Course #7',
-                    color: 'text',
-                    data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
-                }
-            ],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost/course", {interval, employee_view}),
-        costPerJobPosition: Promise.resolve({
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-                {
-                    label: 'Job Position #1',
-                    color: 'dark',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-                {
-                    label: 'Job Position #2',
-                    color: 'primary',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Job Position #3',
-                    color: 'secondary',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Job Position #4',
-                    color: 'info',
-                    data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
-                },
-                {
-                    label: 'Job Position #5',
-                    color: 'warning',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-                {
-                    label: 'Job Position #6',
-                    color: 'success',
-                    data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
-                },
-                {
-                    label: 'Job Position #7',
-                    color: 'text',
-                    data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
-                }
-            ],
-        }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+    if(data === DATA_LOAD_STATUS.LOADING) {
+        return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+            <CircularProgress />
+        </div>;
+    }
 
-        resultsPerCourse: Promise.resolve({
-            labels: Array.range(1, 10).map(n => `Course #${n + 1}`),
-            datasets: [
-                {
-                    label: 'Pass',
-                    color: 'success',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-                {
-                    label: 'Fail',
-                    color: 'error',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-                {
-                    label: 'Average',
-                    color: 'warning',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-            ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
-        resultsPerJobPosition: Promise.resolve({
-            labels: Array.range(1, 10).map(n => `Job Position #${n + 1}`),
-            datasets: [
-                {
-                    label: 'Pass',
-                    color: 'success',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-                {
-                    label: 'Fail',
-                    color: 'error',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-                {
-                    label: 'Average',
-                    color: 'warning',
-                    data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
-                },
-            ],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, employee_view}),//
-    };
+    if(data === DATA_LOAD_STATUS.ERROR) {
+        return null;
+    }
 
-    const {overallCost, costPerCourse, costPerJobPosition, resultsPerCourse, resultsPerJobPosition} = totals;
+    const {
+
+    } = data;
+
+    // const totals = {
+    //     overallCost: Promise.resolve({
+    //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    //         datasets: [{
+    //             label: 'Cost',
+    //             color: 'light',
+    //             data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
+    //         }],
+    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost", {interval, employee_view}),//
+    //     costPerCourse: Promise.resolve({
+    //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    //         datasets: [
+    //             {
+    //                 label: 'Course #1',
+    //                 color: 'dark',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #2',
+    //                 color: 'primary',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #3',
+    //                 color: 'secondary',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #4',
+    //                 color: 'info',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #5',
+    //                 color: 'warning',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #6',
+    //                 color: 'success',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Course #7',
+    //                 color: 'text',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
+    //             }
+    //         ],
+    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost/course", {interval, employee_view}),
+    //     costPerJobPosition: Promise.resolve({
+    //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    //         datasets: [
+    //             {
+    //                 label: 'Job Position #1',
+    //                 color: 'dark',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #2',
+    //                 color: 'primary',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #3',
+    //                 color: 'secondary',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #4',
+    //                 color: 'info',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #5',
+    //                 color: 'warning',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #6',
+    //                 color: 'success',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Job Position #7',
+    //                 color: 'text',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
+    //             }
+    //         ],
+    //     }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+    //
+    //     resultsPerCourse: Promise.resolve({
+    //         labels: Array.range(1, 10).map(n => `Course #${n + 1}`),
+    //         datasets: [
+    //             {
+    //                 label: 'Pass',
+    //                 color: 'success',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Fail',
+    //                 color: 'error',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Average',
+    //                 color: 'warning',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //         ],
+    //     }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+    //     resultsPerJobPosition: Promise.resolve({
+    //         labels: Array.range(1, 10).map(n => `Job Position #${n + 1}`),
+    //         datasets: [
+    //             {
+    //                 label: 'Pass',
+    //                 color: 'success',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Fail',
+    //                 color: 'error',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //             {
+    //                 label: 'Average',
+    //                 color: 'warning',
+    //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
+    //             },
+    //         ],
+    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, employee_view}),//
+    // };
+    //
+    // const {overallCost, costPerCourse, costPerJobPosition, resultsPerCourse, resultsPerJobPosition} = totals;
 
     return <Grid
         container
@@ -244,12 +263,12 @@ function Comp() {
             </MDBox>
         </Grid>
     </Grid>;
-}
+});
 
 //</editor-fold>
 
 Comp.propTypes = {
-    interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
+    interval: PropTypes.oneOf([/*"Day", "Week", */"Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
     employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
 };
 

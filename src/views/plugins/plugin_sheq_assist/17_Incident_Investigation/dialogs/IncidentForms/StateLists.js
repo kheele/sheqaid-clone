@@ -1,4 +1,4 @@
-import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from "../../../../utils";
+import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from "views/plugins/utils";
 
 function map_sub_category_list(value) {
     return {value, label: value};

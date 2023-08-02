@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed} from 'mobx';
+import {computed, isObservableArray} from 'mobx';
 
 import Form from '../../utils/Form';
 import {Dates} from '../../utils/Utils';
@@ -26,7 +26,7 @@ class ExportFilteredData extends React.Component {
         console.log('ExportFilteredData', filterData)
         return Object.keys(filterData).
                 filter(key => key !== 'onGetRef').
-                filter(key => filterData[key] !== null).
+                filter(key => filterData[key] !== null && filterData[key] !== undefined).
                 map(key => { 
                     return {key, ref: onGetRef(key)};
                 }).
@@ -36,6 +36,8 @@ class ExportFilteredData extends React.Component {
                     const title = props.placeholder.replace('...', '');
                     if(isDate(value)) {
                         value = Dates.formatDate(value);
+                    } else if(isObservableArray(value)) {
+                        value = value.join(', ');
                     } else if(isObject(value)) {
                         if(value.name || (value.data && value.data.name)) {
                             value = value.name || value.data.name;

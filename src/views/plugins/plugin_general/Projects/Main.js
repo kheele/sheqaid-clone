@@ -1,18 +1,22 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen} from '../../../../utils/Utils';
+import {Dates, execWhen, getRandomRolor} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../components/dialogs';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewDialog from './NewDialog';
 import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
+import listAllClientByLoggedCompany from "mutations/all/Client/listAllClientByLoggedCompany";
+import listAllProjectByLoggedCompany from "mutations/all/Project/listAllProjectByLoggedCompany";
+import projectStore from "mutations/all/Project";
+import AggregateStat from "components/AggregateStat";
 
 @observer
 class Main extends React.Component {
@@ -37,6 +41,10 @@ class Main extends React.Component {
 
     componentWillUnmount() {
         style.unuse();
+    }
+
+    onLoadList(page, isNew) {
+        return projectStore.listAllByLogged();
     }
     
     onRemoved(item) {
@@ -88,22 +96,34 @@ class Main extends React.Component {
 
     renderTHead() {
         return <THead>
-            <div className="td">Date Created</div>
+            <div className="td fixed-flex min-w-30">ID</div>
+            <div className="td fixed-flex min-w-140">Date Created</div>
             <div className="td">Project Name</div>
             <div className="td">Company Name</div>
-            <div className="td">Sites</div>
+            <div className="td fixed-flex min-w-700">Stats</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, name, client, sites}} = item;
+        const {
+            id,
+            data: {
+                created_at, name, client,
+                site_list_aggregate, contractor_list_aggregate,
+                user_list_aggregate, employee_list_aggregate, team_list_aggregate,
+                incident_list_aggregate, training_matrix_list_aggregate, asset_list_aggregate,
+            }
+        } = item;
         return <TRow key={id}>
-            <div className="td">{Dates.formatDate(created_at)}</div>
+            <div className="td fixed-flex min-w-30">{id}</div>
+            <div className="td fixed-flex min-w-140">{Dates.formatDate(created_at)}</div>
             <div className="td">{name}</div>
             <div className="td">{client ? client.name : 'N/A'}</div>
-            <div className="td">{sites.length}</div>
+            <div className="td fixed-flex min-w-700 flex td-stats">
+                <StatsPanel item={item}/>
+            </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
             	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
@@ -118,7 +138,7 @@ class Main extends React.Component {
             pageId={this.pageKey + "-page"}
             pageTitle="Projects"
             pageTitleSingular="project"
-            path={this.path}
+            onLoadList={this.onLoadList}
             onRemoved={this.onRemoved}
             hasCreateBtn={this.hasCreateBtn}
             renderLeftButtons={this.renderLeftButtons}
@@ -135,5 +155,33 @@ class Main extends React.Component {
         </APageListReadWrite>;
     }
 }
+
+// <editor-fold defaultstate="collapsed" desc="StatsPanel">
+@observer
+class StatsPanel extends React.Component {
+
+    render() {
+        const {
+            data: {
+                site_list_aggregate, contractor_list_aggregate,
+                user_list_aggregate, employee_list_aggregate, team_list_aggregate,
+                incident_list_aggregate, training_matrix_list_aggregate, asset_list_aggregate,
+            }
+        } = this.props.item;
+
+        return <>
+            <AggregateStat title="Sites" value={site_list_aggregate}/>
+            <AggregateStat title="Contractors" value={contractor_list_aggregate}/>
+            <AggregateStat title="Users" value={user_list_aggregate}/>
+            <AggregateStat title="Employees" value={employee_list_aggregate}/>
+            <AggregateStat title="Teams" value={team_list_aggregate}/>
+            <AggregateStat title="Incidents" value={incident_list_aggregate}/>
+            <AggregateStat title="Trainings" value={training_matrix_list_aggregate}/>
+            <AggregateStat title="Assets" value={asset_list_aggregate}/>
+        </>;
+    }
+}
+
+// </editor-fold>
 
 export default Main;//313, 237

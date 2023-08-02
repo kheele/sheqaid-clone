@@ -1,12 +1,3 @@
-// <editor-fold defaultstate="collapsed" desc="Default Functions. Click on the + sign on the left to edit the code."> 
-Object.values = Object.values || function (o) {
-    let values = [];
-    Object.keys(o).forEach(function (k) {
-        values.push(o[k]);
-    });
-    return values;
-};
-//</editor-fold>
 
 ((self) => {
     // <editor-fold defaultstate="collapsed" desc="Default Functions. Click on the + sign on the left to edit the code."> 
@@ -193,6 +184,220 @@ Object.values = Object.values || function (o) {
     };
 //</editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Object Functions. Click on the + sign on the left to edit the code.">
+    Object.values = Object.values || function (o) {
+        return Object.keys(o).map(function (k) {
+            return o[k];
+        });
+    };
+
+    const stringToPath = function (path) {
+        // If the path isn't a string, return it
+        if (isArray(path))
+            return [...path];
+
+        // Create new array
+        const output = [];
+
+        // Split to an array with dot notation
+        path.split('.').forEach(function (item) {
+            // Split to an array with bracket notation
+            item.split(/\[([^}]+)\]/g).forEach(function (key) {
+                // Push to the new array
+                if (key.length > 0) {
+                    output.push(key);
+                }
+            });
+        });
+
+        return output;
+    };
+
+    Object.setValueByPath = function (obj, __path, value) {
+        // Get the path as an array
+        let path = stringToPath(__path);
+        let current = obj;
+        while (path.length - 1) {
+            let n = path.shift();
+            if (!(n in current)) {
+                current[n] = {};
+            }
+            current = current[n];
+        }
+        current[path[0]] = value;
+    };
+
+    Object.getPathByValue = function (obj, value) {
+        const path = [];
+        let found = false;
+
+        function search(haystack) {
+            for (let key in haystack) {
+                path.push(key);
+                if (JSON.stringify(haystack[key]) === JSON.stringify(value)) {
+                    found = true;
+                    break;
+                }
+                if ((!isFile(obj[key]) && !isBlob(obj[key]) && !isDate(obj[key])) && isObject(haystack[key])) {
+                    search(haystack[key]);
+                    if (found)
+                        break;
+                }
+                path.pop();
+            }
+        }
+
+        search(obj);
+        return path;
+        /*
+         Or alternately if you want to keep mixed return
+         return found ? path : false;
+         */
+    };
+
+    Object.getPathsByKey = function (obj, pathKey) {
+        const pathsImpl = function (obj, root = [], result = {}) {
+            const ok = Object.keys(obj);
+            return ok.reduce((res, key) => {
+                const path = root.concat(key);
+                if (isFile(obj[key]) || isBlob(obj[key]) || isDate(obj[key])) {
+                    res[obj[key]] = [path];
+                } else if (isObject(obj[key]) && obj[key] !== null) {
+                    pathsImpl(obj[key], path, res);
+                } else if (res[obj[key]] === 0 || res[obj[key]]) {
+                    res[obj[key]].push(path);
+                } else {
+                    res[obj[key]] = [path];
+                }
+//                typeof obj[key] === "object" && obj[key] !== null
+//                        ? pathsImpl(obj[key], path, res)
+//                        : res[obj[key]] === 0 || res[obj[key]]
+//                        ? res[obj[key]].push(path)
+//                        : (res[obj[key]] = [path]);
+                return res;
+            }, result);
+        };
+        const res = pathsImpl(obj);
+        if (res !== null) {
+            let paths = Object.values(res)
+                .reduce((a1, a2) => [...a1, ...a2], [])
+                .filter((v) => v.contains(pathKey));
+
+            const paths_res = [];
+            paths.forEach((path_array) => {
+                let last;
+                let path_array_copy = [...path_array];
+                while ((last = path_array_copy.pop()) !== pathKey) {
+                    if (path_array_copy.isEmpty()) {
+                        break;
+                    }
+                }
+                if (last === pathKey) {
+                    path_array_copy = [...path_array_copy, pathKey];
+                } else {
+                    path_array_copy = path_array_copy.isEmpty() ? [] : [...path_array_copy, pathKey];
+                }
+                paths_res.push(path_array_copy);
+            });
+
+            const paths_res_copy = [];
+            paths_res.forEach((v) => {
+                if (!paths_res_copy.map((n) => JSON.stringify(n)).contains(JSON.stringify(v))) {
+                    paths_res_copy.push(v);
+                }
+            });
+            return paths_res_copy;
+        } else {
+            return [];
+        }
+    };
+
+    Object.getValueByPath = function (obj, __path, def) {
+        if(isNullable(obj)) return null;
+        // Get the path as an array
+        let path = stringToPath(__path);
+        let current = obj;
+        while (path.length - 1) {
+            let n = path.shift();
+
+            if (!(n in current)) {
+                return def;
+            }
+            current = current[n];
+        }
+
+        const key = path[0];
+        if (key in current) {
+            return current[key];
+        }
+        return def;
+
+//    // For each item in the path, dig into the object
+//    for (let i = 0; i < path.length; i++) {
+//        let n = path[i];
+//        // If the item isn't found, return the default (or null)
+//        if (!(n in current)) {
+//            return def;
+//        }
+//        // Otherwise, update the current  value
+//        current = current[n];
+//    }
+//
+//    return current;
+    };
+
+    Object.diff = function (o1, o2) {
+        const mut = (o, [k, v]) => ((o[k] = v), o);
+
+        const diff1 = (left = {}, right = {}, rel = "left") => {
+            let noLeft = left === null || left === undefined;
+            let noRight = right === null || right === undefined;
+            if (noLeft && noRight) {
+                return {};
+            } else if (noLeft && !noRight) {
+                return {[rel]: null, right};
+            }
+
+            return Object.keys(left)
+                .map((k) => {
+                    const v = left[k];
+                    if ((!isFile(v) && !isBlob(v) && !isDate(v)) &&
+                        right !== null &&
+                        (!isFile(right[k]) && !isBlob(right[k]) && !isDate(right[k])) &&
+                        (isObject(v) && isObject(right[k]))) {
+                        return [k, diff1(v, right[k], rel)];
+                    }
+
+                    if (right !== null && right[k] !== v) {
+                        return [k, {[rel]: v}];
+                    }
+                    return [k, {}];
+                })
+                .filter(([k, v]) => !Object.keys(v).isEmpty())
+                .reduce(mut, isArray(left) && isArray(right) ? [] : {});
+        };
+
+        const merge = (left = {}, right = {}) => {
+            return Object.keys(right)
+                .map((k) => {
+                    const v = right[k];
+                    if (((!isFile(v) && !isBlob(v) && !isDate(v))) &&
+                        ((!isFile(left[k]) && !isBlob(left[k]) && !isDate(left[k]))) &&
+                        (isObject(v) && isObject(left[k]))) {
+                        return [k, merge(left[k], v)];
+                    }
+                    return [k, v];
+                })
+                .reduce(mut, left);
+        };
+
+        const diff = (x = {}, y = {}) =>
+            merge(diff1(x, y, "left"), diff1(y, x, "right"));
+
+        return diff(o1, o2);
+    };
+    //</editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="String Functions. Click on the + sign on the left to edit the code."> 
     String.prototype.foreach = function (callback, doneCallback) {
         let self = this;
@@ -233,6 +438,10 @@ Object.values = Object.values || function (o) {
 
     String.prototype.isEmpty = function () {
         return this.trimLeft().trimRight().replaceAll(' ', '').length === 0;
+    };
+
+    String.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
     };
 
     String.prototype.startsWith = function (str) {
@@ -674,6 +883,10 @@ Object.values = Object.values || function (o) {
         return this.length === 0;
     };
 
+    Array.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
+    };
+
     Array.prototype.indexOf = Array.prototype.indexOf || function (elt) {
         if (elt === undefined || elt === null) {
             return -1;
@@ -1035,31 +1248,18 @@ Object.values = Object.values || function (o) {
     };
 
     Array.prototype.sortBy = function (prop, dir) {
-        const props = prop.split('.');
         this.sort((a, b) => {
-            if (props.length === 1) {
-                if (a[prop] > b[prop])
-                    return dir === 'desc' ? -1 : 1;
-                if (a[prop] < b[prop])
-                    return dir === 'desc' ? 1 : -1;
-                return 0;
-            } else {
-                const prop1 = props[0];
-                if (prop1 in a && prop1 in b) {
-                    const prop2 = props[1];
-                    const a1 = a[prop1];
-                    const b1 = b[prop1];
-                    if (prop2 in a1 && prop2 in b1) {
-                        const aa = a1[prop2];
-                        const bb = b1[prop2];
-                        if (aa > bb)
-                            return dir === 'desc' ? -1 : 1;
-                        if (aa < bb)
-                            return dir === 'desc' ? 1 : -1;
-                    }
-                }
+            const v1 = Object.getValueByPath(a, prop);
+            const v2 = Object.getValueByPath(b, prop);
+            if (v1 === v2 || (isNullable(v1) && isNullable(v2))) {
                 return 0;
             }
+
+            if (v1 > v2)
+                return dir === 'desc' ? -1 : 1;
+            if (v1 < v2)
+                return dir === 'desc' ? 1 : -1;
+            return 0;
         });
     };
 

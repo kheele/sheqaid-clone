@@ -2,9 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileClaimsEmployerDetailsDialog.lazy.css";
 // </editor-fold>

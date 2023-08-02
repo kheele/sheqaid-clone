@@ -3,16 +3,16 @@ import {observer} from 'mobx-react';
 
 import style from "./ClaimsMedicalPractitionerTab.lazy.css";
 
-import {Dates} from "../../../../utils/Utils";
+import {Dates} from "utils/Utils";
 import APageListReadWrite from "../../../APageListReadWrite";
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     ClearableInput,
     SelectEmployeeInput,
     SelectJobPositionInput
-} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 //import NewClaimsMedicalPractitionerDialog from './dialogs/NewClaimsMedicalPractitionerDialog';
 //import ProfileClaimsMedicalPractitionerDialog from './dialogs/ProfileClaimsMedicalPractitionerDialog';

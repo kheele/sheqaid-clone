@@ -3,8 +3,8 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import style from "./NewEvaluationRecordSec.lazy.css";
-import {ClearableInput} from '../../../../../components/inputs';
-import {Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {ClearableInput} from 'components/inputs';
+import {Table, TBody, THead, TRow} from 'components/tables';
 
 @observer
 class NewEvaluationRecordSec extends React.Component {

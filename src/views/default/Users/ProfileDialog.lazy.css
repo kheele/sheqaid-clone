@@ -9,6 +9,9 @@
 #dialog-overlay.User-profile-dialog .row.col-lg-12{
     width: 100%;
 }
+#dialog-overlay.User-profile-dialog .dialog-content .NotificationsSettings-row {
+
+}
 #dialog-overlay.User-profile-dialog .dialog-content .table{
     width: calc(100% + 10px);
     height: auto;

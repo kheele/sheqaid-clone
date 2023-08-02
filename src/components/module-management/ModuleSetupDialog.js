@@ -121,7 +121,7 @@ class Controls extends React.Component {
             });
             if (!modules_updated.isEmpty()) {
                 const modules_not_updated = modules.filter(v1 => module_list.noneMatch(v2 => v2.key === v1.key)).map(v1 => toJS(v1));
-                console.log("module_list updat", key, [...modules_updated, ...modules_not_updated].slice())
+                console.log("module_list update", key, [...modules_updated, ...modules_not_updated].slice())
                 return {
                     ...toJS(plugin),
                     data: {...toJS(data), modules: [...modules_updated, ...modules_not_updated].slice()}

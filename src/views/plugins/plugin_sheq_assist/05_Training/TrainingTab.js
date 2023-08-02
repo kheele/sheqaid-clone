@@ -6,9 +6,9 @@ import {CircularProgress} from '@material-ui/core';
 
 import style from "./TrainingTab.lazy.css";
 
-import {Button} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
-import {PDFPreviewer} from '../../../../components/documents';
+import {Button} from 'components/inputs';
+import {Slider} from 'components/lists';
+import {PDFPreviewer} from 'components/documents';
 
 import NewManualDialog from './dialogs/NewManualDialog';
 import ProfileManualDocDialog from './dialogs/ProfileManualDocDialog';

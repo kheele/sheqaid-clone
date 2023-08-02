@@ -254,12 +254,32 @@ class Dates {
         if (!isDate(date)) {
             return null;
         }
+
+        return Dates.formatDateSQL(date) + " " + Dates.formatTime(date);//+date;
+    }
+
+    static formatDateSQL(date) {
+        if (!date)
+            return null;
+
+        if (isNumber(date)) {
+            date = new Date(date);
+        }
+        if (isString(date)) {
+            date = Dates.parse(date);
+        }
+        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+            date = Dates.parse(date);
+        }
+        if (!isDate(date)) {
+            return null;
+        }
         const d = date.getDate();
         const dd = (d < 10) ? ("0" + d) : d;
         const mon = monthsDoubleNumStr.get(date.getMonth());
         const yr = date.getFullYear();
 
-        return yr + "-" + mon + "-" + dd + " " + Dates.formatTime(date);//+date;
+        return yr + "-" + mon + "-" + dd;
     }
 
     static formatDateTime(date) {
@@ -322,6 +342,52 @@ class Dates {
         return dd + "-" + mon + " " + hrs + ":" + min;
     }
 
+    static formatYearMonth(date) {
+        if (!date)
+            return null;
+
+        if (isNumber(date)) {
+            date = new Date(date);
+        }
+        if (isString(date)) {
+            date = Dates.parse(date);
+        }
+        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+            date = Dates.parse(date);
+        }
+        if (!isDate(date)) {
+            return null;
+        }
+
+        const mon = monthsStr.get(date.getMonth());
+        const yr = date.getFullYear();
+
+        return yr + "-" + mon;
+    }
+
+    static formatMonthYear(date) {
+        if (!date)
+            return null;
+
+        if (isNumber(date)) {
+            date = new Date(date);
+        }
+        if (isString(date)) {
+            date = Dates.parse(date);
+        }
+        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+            date = Dates.parse(date);
+        }
+        if (!isDate(date)) {
+            return null;
+        }
+
+        const mon = monthsStr.get(date.getMonth());
+        const yr = date.getFullYear();
+
+        return mon + "-" + yr;
+    }
+
     static formatDateRange(startD, endD) {
         let dateS;
         if (startD.getFullYear() === endD.getFullYear()) {
@@ -336,10 +402,167 @@ class Dates {
         return dateS;
     }
 
-    static getMonthsStr(date) {
-        if (date === undefined || date === null) {
-            return null;
+    static getMonthsStartAndEndDateRange(startDate, endDate) {
+        const dates = [];
+        let currentDate = startDate;
+        if(!endDate) {
+            endDate = startDate;
         }
+        while (currentDate <= endDate) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonthsStr();
+            const start = currentDate.toMonthStartDate();
+            const end = currentDate.toMonthEndDate();
+            dates.push({
+                year,
+                month,
+                start,
+                end
+            });
+
+            currentDate = currentDate.addMonths(1);
+        }
+        return dates;
+    }
+
+    static getMonthsStartAndEndDateRangeSQL(startDate, endDate) {
+        return Dates.getMonthsStartAndEndDateRange(startDate, endDate).map(({year, month, start, end}) => ({
+            year,
+            month,
+            start: Dates.formatDateSQL(start),
+            end: Dates.formatDateSQL(end),
+        }));
+    }
+
+    static getQuartersStartAndEndDateRange(args) {
+        let {startYear, endYear, includeAllQuartersInCurrYear = false} = args || {};
+        const currentYear = startYear || new Date().getFullYear();
+        endYear = endYear || 2000;
+
+        const quarters = [];
+
+        if(includeAllQuartersInCurrYear) {
+            for (let year = currentYear; year >= endYear; year--) {
+                for (let quarter = 4; quarter >= 1; quarter--) {
+                    const startMonth = (quarter - 1) * 3;
+                    const endMonth = quarter * 3 - 1;
+
+                    const start = new Date(year, startMonth, 1);
+                    const end = new Date(year, endMonth, 1).toMonthEndDate();
+
+                    quarters.push({
+                        year,
+                        quarter,
+                        start,
+                        end,
+                    });
+                }
+            }
+            return quarters;
+        }
+
+        const currentMonth = new Date().getMonth();
+        let currentQuarter = Math.floor(currentMonth / 3) + 1;
+
+        for (let year = currentYear; year >= endYear; year--) {
+            for (let quarter = currentQuarter; quarter >= 1; quarter--) {
+                if (year === currentYear && quarter < currentQuarter) {
+                    break;
+                }
+                const startMonth = (quarter - 1) * 3;
+                const endMonth = quarter * 3 - 1;
+
+                const start = new Date(year, startMonth, 1);
+                const end = new Date(year, endMonth, 1).toMonthEndDate();
+
+                quarters.push({
+                    year,
+                    quarter,
+                    start,
+                    end,
+                });
+            }
+            currentQuarter = 4;
+        }
+        return quarters;
+    }
+
+    static getQuartersStartAndEndDateRangeSQL(args) {
+        let {startYear, endYear, includeAllQuartersInCurrYear = false} = args || {};
+        return Dates.getQuartersStartAndEndDateRange({startYear, endYear, includeAllQuartersInCurrYear}).map(({year, quarter, start, end}) => ({
+            year,
+            quarter,
+            start: Dates.formatDateSQL(start),
+            end: Dates.formatDateSQL(end),
+        }));
+    }
+
+    static getHalvesStartAndEndDateRange(args) {
+        let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
+        const currentYear = startYear || new Date().getFullYear();
+        endYear = endYear || 2000;
+
+        const halves = [];
+
+        if(includeAllHalvesInCurrYear) {
+            for (let year = currentYear; year >= endYear; year--) {
+                for (let half = 2; half >= 1; half--) {
+                    const startMonth = (half - 1) * 6;
+                    const endMonth = half * 6 - 1;
+
+                    const start = new Date(year, startMonth, 1);
+                    const end = new Date(year, endMonth, 1).toMonthEndDate();
+
+                    halves.push({
+                        year,
+                        half,
+                        start,
+                        end,
+                    });
+                }
+            }
+            return halves;
+        }
+
+        const currentMonth = new Date().getMonth();
+        let currentHalf = Math.floor(currentMonth / 6) + 1;
+
+        for (let year = currentYear; year >= endYear; year--) {
+            for (let half = currentHalf; half >= 1; half--) {
+                if (year === currentYear && half < currentHalf) {
+                    break;
+                }
+                const startMonth = (half - 1) * 6;
+                const endMonth = half * 6 - 1;
+
+                const start = new Date(year, startMonth, 1);
+                const end = new Date(year, endMonth, 1).toMonthEndDate();
+
+                halves.push({
+                    year,
+                    half,
+                    start,
+                    end,
+                });
+            }
+            currentHalf = 2;
+        }
+        return halves;
+    }
+
+    static getHalvesStartAndEndDateRangeSQL(args) {
+        let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
+        return Dates.getHalvesStartAndEndDateRange({startYear, endYear, includeAllHalvesInCurrYear}).map(({year, half, start, end}) => ({
+            year,
+            half,
+            start: Dates.formatDateSQL(start),
+            end: Dates.formatDateSQL(end),
+        }));
+    }
+
+    static getMonthsStr(date) {
+        if (!date)
+            return null;
 
         if (isNumber(date) && date > 11) {
             date = new Date(date);
@@ -401,7 +624,10 @@ class Dates {
 //
 //        }
 
-        const time = dateStr.split(" ");
+        let time = dateStr.split(" ");
+        if(time.isEmpty()) {
+            time = dateStr.split("T");
+        }
 
         let dates;
         if (time[0].contains('-')) {
@@ -488,6 +714,12 @@ Date.prototype.formatTimestamp = function () {
 };
 Date.prototype.formatDateTime = function () {
     return Dates.formatDateTime(this);
+};
+Date.prototype.formatYearMonth = function () {
+    return Dates.formatYearMonth(this);
+};
+Date.prototype.formatMonthYear = function () {
+    return Dates.formatMonthYear(this);
 };
 Date.prototype.getMonthsStr = function () {
     return Dates.getMonthsStr(this);
@@ -660,6 +892,7 @@ Date.prototype.setMidnight = function () {
     this.setSeconds(0);
     return this;
 };
+
 
 const monthShortArray = monthArray.map(m => m.substring(0, 2));
 

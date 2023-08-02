@@ -1,0 +1,28 @@
+
+.tr.MSDSRenderRow .td-risk-level {
+    /*padding-left: 10px;*/
+}
+.tr.MSDSRenderRow .td-risk-level.color-light button {
+    color: #fff;
+}
+.tr.MSDSRenderRow .td-risk-level.red button {
+    background: red;
+}
+.tr.MSDSRenderRow .td-risk-level.orange button {
+    background: orange;
+}
+.tr.MSDSRenderRow .td-risk-level.yellow button {
+    background: yellow;
+    color: #555;
+}
+.tr.MSDSRenderRow .td-risk-level.green button {
+    background: green;
+}
+.tr.MSDSRenderRow .td-risk-level button {
+    /*color: #000;*/
+    border: none;
+    cursor: default;
+    text-shadow: none;
+    width: 100%;
+    padding: 4px;
+}

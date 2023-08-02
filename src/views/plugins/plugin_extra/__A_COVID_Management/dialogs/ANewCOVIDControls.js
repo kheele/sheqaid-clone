@@ -2,9 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, SAIdUtils} from '../../../../../utils/Utils';
-import {getGeocode} from '../../../../../utils/Maps';
+import Form from 'utils/Form';
+import {execWhen, SAIdUtils} from 'utils/Utils';
+import {getGeocode} from 'utils/Maps';
 
 // </editor-fold>
 

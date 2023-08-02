@@ -1,0 +1,14 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfilePartDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfilePartDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.ProfilePartDialog-profile-dialog .dialog-content .controls-wrapper > .controls > .row .sec-group > hr{
+    border-width: 2px;
+}

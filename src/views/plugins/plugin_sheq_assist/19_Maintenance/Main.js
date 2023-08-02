@@ -4,16 +4,16 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
-import APage from "../../../APage";
+import APage from "views/APage";
 
-import DashboardTab from './DashboardTab.js';
-import ToolsTab from './ToolsTab.js';
-import ToolsWrittenOffTab from './ToolsWrittenOffTab.js';
-import MonitoringPlanTab from './MonitoringPlanTab.js';
-import MaintanancePlanTab from './MaintanancePlanTab.js';
-import CalibrationRecordTab from './CalibrationRecordTab.js';
+import DashboardTab from './DashboardTab';
+import ToolsTab from './ToolsTab';
+import ToolsWrittenOffTab from './ToolsTab/ToolsWrittenOffTab';
+import MonitoringPlanTab from './MonitoringPlanTab';
+import MaintanancePlanTab from './MaintanancePlanTab';
+import CalibrationRecordTab from './CalibrationRecordTab';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 import PartsTab from "./PartsTab";
 import JobCardsTab from "./JobCardsTab";
 

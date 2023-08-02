@@ -11,6 +11,8 @@ import {NavButtons} from '../FormComponents';
 import AEditDialog from './AEditDialog';
 
 import style from './SetupPhoneNumDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -74,7 +76,7 @@ class Controls extends React.Component {
                 return false;
             }
 
-            const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').isoCode);
+            const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').data.iso2);
             if (!isValid) {
                 infoDialog.open('Phone Number is not valid');
                 return;
@@ -112,6 +114,15 @@ class Controls extends React.Component {
         
         const data = {user_id, phone: this.phoneNumber, verificationId: this.verificationId, code};
         neonBinding.events.emit(this.path + "update-phone", data).then(res => {
+            this.auth.onAuthStateChanged(currentUser => {
+                storage.onLogin(currentUser);
+            });
+
+            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                storage.idTokenResult = idTokenResult;
+                return res;
+            }));
+        }).then(res => {
             if(res && isString(res)) {
                 switch(res) {
                     case 'UDATE_ERROR':
@@ -173,7 +184,7 @@ class Controls extends React.Component {
             return "";
 
         phone = String(phone).replaceAll(' ', '').replaceAll('+', '').replaceAll('(', '').replaceAll(')', '');
-        const code = country.dialCode;
+        const code = country.phone_code;
         if (phone.trim().replaceAll(" ", "").startsWith("0")) {
             return code + phone.substring(1);
         } else {
@@ -202,7 +213,18 @@ class Controls extends React.Component {
         onVerify();
     }
     // </editor-fold>
-    
+
+    get auth() {
+        const {access_type} = this.loggedUser;
+        if (access_type === "ContractorUser") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";

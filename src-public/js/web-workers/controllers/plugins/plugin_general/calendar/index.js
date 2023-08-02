@@ -91,7 +91,7 @@
                 if (data.participants) {//send emails
                     const emails = data.participants.filter(({id, fname, lname, email}) => !!email).map(({email}) => email);
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: emails.join(","),
                         subject: 'SHEQ Aid, Meeting Invitation',
                         html: '<b>You have been invited to a meeting</b>'
@@ -102,8 +102,7 @@
                             path: attachment
                         }
                     ]);
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    await sendEmail(opts);
+                    await Utils.sendEmail(opts);
                 }
 
                 doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >

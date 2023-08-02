@@ -1,11 +1,11 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
-import CountryList from '../../utils/CountryList.json';
 
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import listAllCountry from "../../mutations/all/Country/listAllCountry";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -54,25 +54,29 @@ class SelectInput extends ASelectInput {
     onFilter(option) {
         if(!option) return false;
         const {label, value} = option;
-        let {name, dialCode, isoCode, flag} = value;
-        return `${name} ${isoCode} ${dialCode}`;
+        let {data: {name, phone_code, iso2, flag}} = value;
+        return `${name} ${iso2} ${phone_code}`;
     }
     
-    renderItem(value, n) {
-        let {name, dialCode, isoCode, flag} = value;
-        const label = <div className="SelectCountryCodeInput-label flex flex-left max-w-300">
-            <img src={flag} className="fixed-flex min-w-30 margin-r-10"/>
-            <span className="flex flex-left font-size-16">{name.trim()} ({dialCode})</span>
-        </div>;
-        return {label, value};
+    renderItem(option, n) {
+        if(!option) return null;
+        const {label, value} = option;
+        let {data: {name, phone_code, iso2}} = value;
+        return {
+            label: <div className="SelectCountryCodeInput-label flex flex-left max-w-300">
+                <img src={getFlag(iso2)} className="fixed-flex min-w-30 margin-r-10"/>
+                <span className="flex flex-left font-size-16">{name.trim()} ({phone_code})</span>
+            </div>,
+            value
+        };
     }
     
     renderer(option) {
         const {label, value} = option;
-        const {name, dialCode, isoCode, flag} = value;
+        const {data: {name, phone_code, iso2}} = value;
         return <div className="SelectCountryCodeInput-label flex flex-left max-w-300">
-            <img src={flag} className="fixed-flex min-w-30"/>
-            <span className="flex flex-left font-size-16">{dialCode}</span>
+            <img src={getFlag(iso2)} className="fixed-flex min-w-30"/>
+            <span className="flex flex-left font-size-16">({phone_code})</span>
         </div>;
     }
 
@@ -83,16 +87,16 @@ class SelectInput extends ASelectInput {
             if(defaultValue.label && defaultValue.value) {
                 return {...defaultValue};
             }
-            const defCountry = CountryList.find(v => {
-                return (defaultValue === v.isoCode || defaultValue === v.name || defaultValue === v.dialCode || defaultValue === `+${v.dialCode}`);
+            const defCountry = this.list.find(({value: {data: {iso2, name, phone_code}}}) => {
+                return (defaultValue === iso2 || defaultValue === name || defaultValue === phone_code || defaultValue === `+${phone_code}`);
             });
             if(defCountry) {
-                defaultValue = defCountry;
+                defaultValue = defCountry.value;
             }
-            let {name, dialCode, isoCode, flag} = defaultValue;
+            let {name, phone_code, iso2} = defaultValue.data || defaultValue;
             const label = <div className="SelectCountryCodeInput-label flex flex-left">
-                <img src={flag} className="fixed-flex min-w-30"/>
-                <span className="flex flex-left font-size-16">{dialCode}</span>
+                <img src={getFlag(iso2)} className="fixed-flex min-w-30"/>
+                <span className="flex flex-left font-size-16">{phone_code}</span>
             </div>;
             return {value: {...defaultValue}, label};
         }
@@ -107,8 +111,17 @@ class SelectInput extends ASelectInput {
     }
 }
 
+function getFlag(iso2) {
+    return `https://cdn.kcak11.com/CountryFlags/countries/${iso2.toLowerCase()}.svg`;
+}
+
 async function onSelectLoad() {
-    return CountryList;
+    return listAllCountry().then(res => {
+        console.log('listAllCountry', res)
+        return res.map(value => {
+            return {label: value.data.name, value};
+        });
+    });
 }
 
 export default SelectInput;

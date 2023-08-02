@@ -3,7 +3,7 @@ import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
 import {extendObservable} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
 import style from "./CompanyBilling.lazy.css";
 
@@ -47,15 +47,15 @@ class CompanyBilling extends React.Component {
     onSubmit(e, btn) {
         const {form} = this;
 
-        if (!form.isValid('company_name')) {
+        if (!form.isValid('name')) {
             infoDialog.open('Company Name is required');
             return;
         }
-        if (!form.isValid('company_email')) {
+        if (!form.isValid('email')) {
             infoDialog.open('Company Email Address is required');
             return;
         }
-        if (!form.isValid('company_phone')) {
+        if (!form.isValid('phone')) {
             infoDialog.open('Company Phone Number is required');
             return;
         }
@@ -68,16 +68,16 @@ class CompanyBilling extends React.Component {
             return;
         }
 
-        const {company_name, company_owner, company_owner_email, company_address, company_phone, company_email, country, city} = form.data;
+        const {name, company_owner, company_owner_email, address, phone, email, country, city} = form.data;
         const data = {};
-        if (company_name) {
-            data.company_name = company_name;
+        if (name) {
+            data.name = name;
         }
-        if (company_phone) {
-            data.company_phone = company_phone;
+        if (phone) {
+            data.phone = phone;
         }
-        if (company_email) {
-            data.company_email = company_email;
+        if (email) {
+            data.email = email;
         }
         if (country) {
             data.country = country;
@@ -92,8 +92,8 @@ class CompanyBilling extends React.Component {
         if (company_owner_email) {
             data.company.company_owner_email = company_owner_email;
         }
-        if (company_address) {
-            data.company.company_address = company_address;
+        if (address) {
+            data.company.address = address;
         }
         console.log(data)
 
@@ -121,7 +121,7 @@ class CompanyBilling extends React.Component {
     }
 
     render() {
-        const {id, data: {company_name, company_owner, company_owner_email, company_address, company_phone, company_email, country, city}} = storage.loggedUser.company;
+        const {id, data: {name, company_owner, company_owner_email, address, phone, email, country, city}} = storage.loggedUser.company;
         console.log(storage.loggedUser.company)
         return null;/*
         return <div className="CompanyBilling col-lg-6 pull-right">
@@ -133,14 +133,14 @@ class CompanyBilling extends React.Component {
                 <div className="controls-wrapper">
                     <div className="controls">
                         <div className="row sec-group">   
-                            <ProfileField ref="company_name" name="company_name" type="text" placeholder="Company Name" value={company_name} required className="col-lg-12" onChange={this.form.onChange}/>
+                            <ProfileField ref="name" name="name" type="text" placeholder="Company Name" value={name} required className="col-lg-12" onChange={this.form.onChange}/>
                             <ProfileField ref="company_owner" name="company_owner" type="text" placeholder="Company Owner" value={company_owner} required onChange={this.form.onChange}/>
                             <ProfileField ref="company_owner_email" name="company_owner_email" type="email" placeholder="Company Owner Email Address" value={company_owner_email} required className="pull-right" onChange={this.form.onChange}/>
                         </div>
                         <div className="row sec-group">   
-                            <ProfileField ref="company_address" name="company_address" type="text" placeholder="Company Address" value={company_address} required className="col-lg-12" onChange={this.form.onChange}/>
-                            <ProfileField ref="company_email" name="company_email" type="email" placeholder="Company Email Address" value={company_email} required onChange={this.form.onChange}/>
-                            <ProfileField ref="company_phone" name="company_phone" type="text" placeholder="Company Phone Number" value={company_phone} required className="pull-right" onChange={this.form.onChange}/>
+                            <ProfileField ref="address" name="address" type="text" placeholder="Company Address" value={address} required className="col-lg-12" onChange={this.form.onChange}/>
+                            <ProfileField ref="email" name="email" type="email" placeholder="Company Email Address" value={email} required onChange={this.form.onChange}/>
+                            <ProfileField ref="phone" name="phone" type="text" placeholder="Company Phone Number" value={phone} required className="pull-right" onChange={this.form.onChange}/>
                         </div>
                         <div className="row sec-group">   
                             <ProfileField ref="country" name="country" type="select" placeholder="Country" value={country} required onChange={this.form.onChange} returnValue values={storage.list.countryNames}/>

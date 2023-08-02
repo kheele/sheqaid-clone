@@ -101,7 +101,7 @@ class Controls extends React.Component {
                     <div className="row sec-group padding-l-10 padding-r-10 padding-b-10">
                         <ClearableInput name="fname" type="text" placeholder="First Name" required defaultValue={fname} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="lname" type="text" placeholder="Last Name" required defaultValue={lname} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="id_num" type="text" placeholder="Ientification No" required defaultValue={id_num} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="id_num" type="text" placeholder="Identification No" required defaultValue={id_num} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="passport_num" type="text" placeholder="Passport No" required defaultValue={passport_num} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="email" type="email" placeholder="Email Address" required defaultValue={email} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="col-lg-12 form-control" onChange={this.form.onChange}/>

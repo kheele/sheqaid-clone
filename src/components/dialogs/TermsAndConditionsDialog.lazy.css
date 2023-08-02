@@ -17,3 +17,9 @@
     font-size: 15px;
     text-align: justify;
 }
+#dialog-overlay.TermsAndConditionsDialog-profile-dialog .dialog-content li{
+    line-height: 1.7;
+    font-size: 15px;
+    text-align: justify;
+    margin-left: 30px;
+}

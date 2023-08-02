@@ -3,23 +3,23 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {onSelectLoadAssetConditions, onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from '../../utils';
+import {onSelectLoadAssetConditions, onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from 'views/plugins/utils';
 
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     ClearableInput,
     SelectAssetInput,
     SelectAssetTypeInput,
     SelectPartInput
-} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import NewJobCardDialog from "./dialogs/NewJobCardDialog";
-import ProfileJobCardDialog from './dialogs/ProfilePartDialog.js';
-import EditJobCardDialog from './dialogs/EditPartDialog.js';
+import NewJobCardDialog from "./forms/NewJobCardDialog";
+import ProfileJobCardDialog from './PartsTab/forms/ProfilePartDialog.js';
+import EditJobCardDialog from './PartsTab/forms/EditPartDialog.js';
 
 import style from "./JobCardsTab.lazy.css";
 // </editor-fold>

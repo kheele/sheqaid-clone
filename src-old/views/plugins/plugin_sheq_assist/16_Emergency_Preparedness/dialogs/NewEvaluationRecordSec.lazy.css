@@ -1,0 +1,20 @@
+#NewEvaluationRecordSec .table > .thead {
+    background: rgb(234, 234, 234);
+}
+#NewEvaluationRecordSec .table > .thead > .td{
+    color: #888;
+}
+#NewEvaluationRecordSec .table > .thead > .td:last-of-type {
+    padding: 0 23px !important;
+}
+#NewEvaluationRecordSec .table > .thead > .td.td-answers {
+    min-width: 63px;
+}
+#NewEvaluationRecordSec .table > .tbody > * > .tr > .td.td-answers {
+	min-width: 175px;
+    padding: 5px 0;
+}
+#NewEvaluationRecordSec .table > .tbody > * > .tr.tr-readonly > .td > span {
+	font-size: 15px;
+    color: rgb(2, 168, 168);
+}

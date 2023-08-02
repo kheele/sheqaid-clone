@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewVaccineCertificateDialog.lazy.css";
 

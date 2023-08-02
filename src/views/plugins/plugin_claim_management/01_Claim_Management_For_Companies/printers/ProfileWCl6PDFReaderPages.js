@@ -6,9 +6,9 @@ import {Page, Text, View} from '@react-pdf/renderer';
 
 import styles from './ProfilePDFReader.style';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import {Panel} from '../../../../../pdf-components';
+import {Panel} from 'pdf-components';
 
 const PageWrapper = ({size, orientation, style, children}) => (
   <Page wrap size={size} orientation={orientation} style={style}>
@@ -50,8 +50,8 @@ class PageDocuments2 extends React.Component {
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
                     <View style={[styles.flexRow]}>
                         <View style={[styles.flexColumn, {width: '50%'}]}>
-                            <Panel title="PDrP Expiry Date" value={doc_pdrp_expiry} type="date" colStyle={{width: '100%', borderBottom: '1px dotted #eee'}}/>
-                            <Panel title="PDrP Copy" value={doc_pdrp} type="file" rotateImage titleStyle={{marginBottom: '10px'}} imageStyle={{border: '3px solid #000', height: '425px'}} colStyle={{width: '100%', height: '425px'}}/>
+                            <Panel title="PrDP Expiry Date" value={doc_pdrp_expiry} type="date" colStyle={{width: '100%', borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="PrDP Copy" value={doc_pdrp} type="file" rotateImage titleStyle={{marginBottom: '10px'}} imageStyle={{border: '3px solid #000', height: '425px'}} colStyle={{width: '100%', height: '425px'}}/>
                         </View>
                         <View style={[styles.flexColumn, {width: '50%'}]}>
                             <Panel title="Work Permit Expiry Date" value={doc_work_permit_expiry} type="date" colStyle={{width: '100%', borderBottom: '1px dotted #eee'}}/>

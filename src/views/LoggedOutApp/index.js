@@ -4,7 +4,7 @@ import {autorun} from 'mobx';
 import InitViewOut from '../InitViewOut';
 import Footer from '../Footer';
 
-import {execWhen} from '../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import Login from './Login';
 import Signup from './Signup';
@@ -38,13 +38,14 @@ class LoggedOutApp extends React.Component {
             }
         });
         
-        const loggedUser = await indexedStorage.loggedUser.find(1);
-        if(!loggedUser) return;
-        
-        let {profile_pic} = loggedUser.company.data;
-        if (!profile_pic) {
-            profile_pic = {dlUrls: ['./logo.svg']};
-        }
+        // const loggedUser = await indexedStorage.loggedUser.find(1);
+        // if(!loggedUser) return;
+        //
+        // let {profile_pic} = loggedUser.company.data;
+        // if (!profile_pic) {
+        //     profile_pic = {dlUrls: ['./logo.svg']};
+        // }
+        const profile_pic = {dlUrls: ['./logo.svg']};
         
         execWhen(() => this.refs.logoImg).then(logoImg => {
             logoImg.src = profile_pic.dlUrls[0]; 

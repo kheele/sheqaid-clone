@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {View} from '@react-pdf/renderer';
 
-import {APDFReader} from '../../../../../../components/PrintComponents';
-import {Panel, styles} from '../../../../../../pdf-components';
+import {APDFReader} from 'components/PrintComponents';
+import {Panel, styles} from 'pdfpdf-components';
 
 import {getValue, Page2, PageFirst, PageLast} from '../../../printers/ListPDFReaderPages';
 

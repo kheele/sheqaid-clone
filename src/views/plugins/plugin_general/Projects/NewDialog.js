@@ -1,13 +1,14 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, SelectClientInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {ANewDialog} from '../../../../components/dialogs';
+import {ClearableInput, SelectClientInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
+import insertProject from "mutations/all/Project/insertProject";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -41,23 +42,22 @@ class Controls extends React.Component {
             return;
         }
 
-        const {name, address, client} = form.data;
-        const data = {name};
-        if(address) {
-            data.address = address;
-        }
-        if(client) {
-            if(isObject(client)) {
-                const {id, name} = client;
-                data.client = {id, name: name || client.data.name};
-            } else {
-                data.client = client;
-            }
-        }
+        const {
+            name,
+            address,
+            client
+        } = form.data;
+        const data = {
+            name,
+            address,
+            client_id: client && client.id,
+        };
+
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertProject(data).then(res => {
             console.log("res", res)
             storage.load.loadClients(true);
             onSaved && onSaved(res);
@@ -66,6 +66,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
 

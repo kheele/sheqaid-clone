@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, Clickable} from '../../../../../components/inputs';
-import {NavButtons, RowSecGroup} from '../../../../../components/FormComponents';
-import {ATableSavable, Table, TBody, THead} from '../../../../../components/tables';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, Clickable} from 'components/inputs';
+import {NavButtons, RowSecGroup} from 'components/FormComponents';
+import {ATableSavable, Table, TBody, THead} from 'components/tables';
+import {ANewDialog} from 'components/dialogs';
 
 import {
     NewAdminTableData,

@@ -26,32 +26,42 @@ class Logout {
         });
     }
 
-    logoutContractor() {
+    async logoutContractor() {
+        await this.logoutContractorClient();
+        this.storage.attrs.delete("contractor");
+
         return neonBinding.events.emit("plugin_sheq_assist/contractors/active/logout").then(async res => {
-            await this.logoutContractorSite();
 //            console.log("sites/logout", res)
-            res && this.storage.attrs.delete("contractor");
-            ;
         }).catch(e => {
             console.log(e)
         });
     }
 
-    logoutContractorSite() {
+    async logoutContractorClient() {
+        await this.logoutContractorSite();
+        this.storage.attrs.delete("loggedContractorClient");
+    }
+
+    async logoutContractorSite() {
+        this.storage.attrs.delete("loggedContractorSite");
+
         return neonBinding.events.emit("plugin_sheq_assist/sites/contractor/logout").then(res => {
 //            console.log("sites/logout", res)
-            res && this.storage.attrs.delete("loggedContractorSite");
         }).catch(e => {
             console.log(e)
         });
     }
 
     async logoutUser() {
-        await indexedStorage.loggedUser.clear();
+        // await indexedStorage.loggedUser.clear();
 
         const countries = list.countries;
+        const permissionOtherKeys = list.permissionOtherKeys;
+
         this.storage.attrs.clear();
+
         this.storage.attrs.set("countries", countries);
+        this.storage.attrs.set("permissionOtherKeys", permissionOtherKeys);
     }
 
     async signOutAndConfirm() {

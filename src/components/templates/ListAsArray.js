@@ -39,14 +39,14 @@ class List extends React.Component {
     expandCloseAll() {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                this.props.questions.forEach(q => q.open = false);
+                this.props.question_list.forEach(q => q.open = false);
                 resolve();
             });
         });
     }
         
     renderDraggables(ques, idx) {
-        const {questions, indexes = [], idx: sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {question_list, indexes = [], idx: sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
         return (provided, snapshot) => <ListDraggable 
             innerRef={provided.innerRef} 
             {...provided.draggableProps} 
@@ -56,7 +56,7 @@ class List extends React.Component {
             readonly={readonly}
         >
             <AccordionWrappper 
-                questions={questions} 
+                question_list={question_list}
                 ques={ques} 
                 sectionIdx={sectionIdx} 
                 idx={idx} 
@@ -81,8 +81,8 @@ class List extends React.Component {
     }
     
     render() {
-        const {questions} = this.props;
-        return <React.Fragment>{questions.map(this.renderQuestion)}</React.Fragment>;
+        const {question_list} = this.props;
+        return <React.Fragment>{question_list.map(this.renderQuestion)}</React.Fragment>;
     }
 }
 
@@ -105,11 +105,14 @@ class AccordionWrappper extends React.Component {
     @computed
     get isQuestion() {
         const {ques} = this.props;
-        return !('sectionText' in ques);
+        if(!('question_list' in ques)) return true;
+        const {question_list} = ques;
+        if(question_list.isEmpty()) return true;
+        return false;
     }
     
     render() {
-        const {questions, ques, indexes = [], idx, isLibrary, isPrivate, visibilityState, sectionIdx, expandCloseAll, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {question_list, ques, indexes = [], idx, isLibrary, isPrivate, visibilityState, sectionIdx, expandCloseAll, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
         console.log('ques', ques)
 //        console.log('AccordionWrappper indexes', indexes)
         return <Accordion onChange={this.handleExpand} expanded={ques.open}>
@@ -134,7 +137,7 @@ class AccordionWrappper extends React.Component {
                     isPrivate={isPrivate}
                     visibilityState={visibilityState}
                     readonly={readonly} 
-                    questions={questions} 
+                    question_list={question_list}
                     onSelectNotified={onSelectNotified} 
                     onSelectTemplateDocDialog={onSelectTemplateDocDialog} 
                     onViewTemplateDocDialog={onViewTemplateDocDialog}
@@ -142,7 +145,7 @@ class AccordionWrappper extends React.Component {
                 />
             </React.Fragment>}
             <Section 
-                questions={questions} 
+                question_list={question_list}
                 ques={ques}
                 idx={idx} 
                 sectionIdx={sectionIdx} 
@@ -173,29 +176,41 @@ class Section extends React.Component {
     }
     
     onCopySection() {
-        const {ques, questions, expandCloseAll} = this.props;
+        const {ques, question_list, expandCloseAll} = this.props;
         expandCloseAll().then(() => {
             const newQ = toJS(ques);
             newQ.open = true;
-            questions.push(newQ);
+            question_list.push(newQ);
         });
     } 
 
     onRemoveSection() {
-        const {idx, questions} = this.props;
-        questions.removeIf((q, n) => n === idx);
-    } 
+        const {idx, question_list} = this.props;
+        question_list.removeIf((q, n) => n === idx);
+    }
+
+    @computed get isSection() {
+        const {ques} = this.props;
+        if(!('question_list' in ques)) return false;
+        const {question_list} = ques;
+        if(question_list.isEmpty()) return false;
+        return true;
+    }
    
     render() {
-        const {questions, indexes = [], ques, idx, sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
-        if(!('sectionText' in ques)) return null;
+        if(!this.isSection) {
+            return null;
+        }
+
+        const {question_list, indexes = [], ques, idx, sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+
 //        console.log('Section indexes', indexes)
         return <React.Fragment>
-            <OpenCloseBtn questions={questions} ques={ques} top showOnOpen/>
-            <OpenCloseBtn questions={questions} ques={ques}/>
+            <OpenCloseBtn question_list={question_list} ques={ques} top showOnOpen/>
+            <OpenCloseBtn question_list={question_list} ques={ques}/>
             <h3 className="section-title margin-t-0">
                 <span className="counter">{isNumber(sectionIdx) ? ((sectionIdx+1) + ".") : null}{idx+1}</span> 
-                <TextField disabled={readonly} variant="filled" placeholder="Add section title" value={ques.sectionText} onChange={evt => ques.sectionText = evt.target.value}/>
+                <TextField disabled={readonly} variant="filled" placeholder="Add section title" value={ques.questionText} onChange={evt => ques.questionText = evt.target.value}/>
                 {!readonly && <Button className="btn btn-primary pull-right" onClick={this.onRemoveSection}>
                     <i className="fa fa-times icon-left"/>Remove Section
                 </Button>}
@@ -231,7 +246,7 @@ class ListDraggable extends React.Component {
         const {ques, idx, innerRef, children, readonly} = this.props;
         const ref = innerRef;
         let className = (readonly ? "ListDraggable-readonly " : "");
-        if('sectionText' in ques) {
+        if('question_list' in ques) {
             className += "ListDraggable-section";
         } else {
             className += "ListDraggable-question";

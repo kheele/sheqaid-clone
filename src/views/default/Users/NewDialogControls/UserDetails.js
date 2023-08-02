@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {Permissions} from '../../../../utils/Utils';
-import {execWhen} from "../../../../utils/UtilsFuns";
+import {Permissions} from 'utils/Utils';
+import {execWhen} from "utils/UtilsFuns";
 
-import {ClearableInput, ProfilePic, SelectEmployeeInput} from '../../../../components/inputs';
+import {ClearableInput, ProfilePic, SelectEmployeeInput} from 'components/inputs';
 // </editor-fold>
 
 //<editor-fold desc="UserDetails">

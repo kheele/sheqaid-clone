@@ -4,11 +4,11 @@ import {observable} from 'mobx';
 import Chip from "@material-ui/core/Chip";
 import {Grid} from "@material-ui/core";
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {AProfileDialog} from '../../../../components/dialogs';
-import {ProfileField, ProfilePic} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, ProfilePic} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 
@@ -62,7 +62,7 @@ class Controls extends React.Component {
             item, item: {
                 id, data: {
                     created_at,
-                    name, business_id, profile_pic, projects, sites, phone, email, address, sector_list
+                    name, business_id, profile_pic, projects, sites, phone, email, contractor_email, address, sector_list
                 }
             }
         } = this;
@@ -95,7 +95,8 @@ class Controls extends React.Component {
                 idx={2}
                 title="Sector(s)"
                 onFormOpen={onFormOpen}
-                onFormBack={onFormBack}>
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}>
                 <ProfileField
                     name="sector_list"
                     title="Sector(s)"
@@ -110,6 +111,19 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={3}
+                title="Register As Contractor"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}>
+                <ProfileField
+                    name="contractor_email"
+                    title="Contractor Email Address"
+                    value={contractor_email}
+                    className="col-lg-12"/>
+            </Row>
+            <Row
+                activeAlways
+                rendered
+                idx={4}
                 rowClassName="flex row-more"
                 title="Projects">
                 <p>Projects<h4 className="hor-center">{projects ? projects.length : 0}</h4></p>
@@ -117,7 +131,7 @@ class Controls extends React.Component {
             <Row
                 activeAlways
                 rendered
-                idx={4}
+                idx={5}
                 rowClassName="flex row-more"
                 title="Sites">
                 <p>Sites<h4 className="hor-center">{sites ? sites.length : 0}</h4></p>

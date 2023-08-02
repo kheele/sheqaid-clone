@@ -4,13 +4,13 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import {Image, Page, Text, View} from '@react-pdf/renderer';
 
-import {CanvasJS} from '../../../../../components/stats/canvasjs.react';
+import {CanvasJS} from 'components/stats/canvasjs.react';
 
 import {createMonitoringPlanStats} from '../../19_Maintenance/utils/AssetCharts';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {Panel} from '../../../../../pdf-components';
+import {Panel} from 'pdf-components';
 
 import styles from './ProfilePDFReader.style';
 

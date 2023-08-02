@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../utils/Form';
-import {Dates} from '../../../utils/Utils';
-import {ClearableInput, ProfilePic} from '../../../components/inputs';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
+import {ClearableInput, ProfilePic} from 'components/inputs';
 
-import {AEditDialog} from '../../../components/dialogs';
+import {AEditDialog} from 'components/dialogs';
 import style from "./EditPasswordDialog.lazy.css";
 
 @observer

@@ -1,0 +1,41 @@
+
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog {
+    z-index: 1500;
+}
+
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog > .dialog-container{
+    width: 600px;
+    height: 240px;
+}
+
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls-wrapper,
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls,
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls .row{
+    height: 100%;
+}
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls .sec-group {
+    margin-top: -30px !important;
+}
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls .next-and-save-buttons {
+    margin-left: -30px;
+}
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog .controls label{
+    display: none;
+}
+
+@media (max-width:599px){
+    #dialog-overlay.CookieNoticePanelDialog-profile-dialog .dialog-header > h3 {
+        margin: 0 15px !important;
+    }
+}
+
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog > .dialog-container .page-back-btn {
+    display: none !important;
+}
+
+#dialog-overlay.CookieNoticePanelDialog-profile-dialog > .dialog-container p {
+    padding: 0 10px;
+    margin: 10px 10px 0 0;
+    font-size: 16px;
+    text-align: justify;
+}

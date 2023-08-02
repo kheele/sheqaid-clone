@@ -1,9 +1,10 @@
-import React from "react";
+import React, {Suspense} from "react";
 import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {ErrorBoundary} from '../components';
+import {ErrorBoundary} from 'components';
+import PageLoadingProgress from "components/PageLoadingProgress";
 
 @observer
 class Body extends React.Component {
@@ -126,7 +127,9 @@ class Body extends React.Component {
         props.permissionKey = Comp.permissionKey;
         props.promise = Comp.promise;
         return <ErrorBoundary key={Math.random()}>
-            <Comp {...props}/>
+            <Suspense fallback={<PageLoadingProgress />}>
+                <Comp {...props}/>
+            </Suspense>
         </ErrorBoundary>;
     }
 

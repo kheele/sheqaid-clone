@@ -1,19 +1,19 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {execWhen} from '../../../../utils/Utils';
-import {renderLeftButtonsForExpiryOnly} from '../../../../utils/ComponentUtils';
-import {TabledTopPanel} from '../../../../components/tables';
-import Popover from '../../../../components/popovers/Popover';
+import {execWhen} from 'utils/Utils';
+import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
+import {TabledTopPanel} from 'components/tables';
+import Popover from 'components/popovers/Popover';
 
 import ATab from './ATab';
 import BigCalendarWrapper from './BigCalendarWrapper';
 import DataSource from './data';
 
-import {ProfileMedicalFitnessCertificateDialog} from "../../plugin_hr_management/Medicals";
-import {ProfileCompetencyCertificateDialog} from "../../plugin_hr_management/Competencies";
-import {ProfileContractDialog} from "../../plugin_hr_management/Contracts";
-import {ProfileWarningDialog} from "../../plugin_hr_management/Warnings";
+import ProfileCompetencyCertificateDialog from "views/plugins/plugin_hr_management/Competencies/forms/ProfileDialog";
+import ProfileContractDialog from "views/plugins/plugin_hr_management/Contracts/forms/ProfileDialog";
+import ProfileMedicalFitnessCertificateDialog from "views/plugins/plugin_hr_management/Medicals/forms/ProfileDialog";
+import ProfileWarningDialog from "views/plugins/plugin_hr_management/Warnings/forms/ProfileDialog";
 
 import style from "./TabExpiredEmployeeDocs.lazy.css";
 
@@ -61,7 +61,7 @@ class Main extends ATab {
             <div className="page-title">
                 <h3>Calendar</h3>
                 <TabledTopPanel ref="tabledTopPanel" titleSinglar="Event" titlePlural="events">
-                    {renderLeftButtonsForExpiryOnly.call(this)}
+                    {renderLeftButtonsForExpiryOnly_firebase.call(this)}
                 </TabledTopPanel>	
                 <div className="clearfix"/>
             </div>

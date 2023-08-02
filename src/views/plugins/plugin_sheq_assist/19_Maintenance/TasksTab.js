@@ -4,12 +4,12 @@ import {observable} from 'mobx';
 
 import style from "./TasksTab.lazy.css";
 
-import APageListReadWrite from "../../../APageListReadWrite";
-import {Dates} from "../../../../utils/Utils";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {Button, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import {Dates} from "utils/Utils";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewTaskDialog from './dialogs/NewTaskDialog.js';
 import ProfileTaskDialog from './dialogs/ProfileTaskDialog.js';

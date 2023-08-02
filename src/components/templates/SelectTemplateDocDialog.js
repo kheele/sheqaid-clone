@@ -17,7 +17,7 @@ import ANewDialog from '../dialogs/ANewDialog';
 
 import {
     TemplatesTabTableRow
-} from '../../views/plugins/plugin_extra/__B_Contractors/dialogs/QuestionnaireAnswersComponents';
+} from 'views/plugins/plugin_extra/__B_Contractors/forms/QuestionnaireAnswersComponents';
 // </editor-fold>
 import style from "./SelectTemplateDocDialog.lazy.css";
 

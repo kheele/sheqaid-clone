@@ -1,0 +1,10 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewDepartmentDialog-new-dialog .dialog-container{
+    height: 340px;
+    width: 600px;
+    max-width: 100%;
+}
+#dialog-overlay.NewDepartmentDialog-new-dialog .dialog-content{
+    padding: 0;
+}

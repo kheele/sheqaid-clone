@@ -64,12 +64,12 @@
 //            console.log('wordToPDFOnline2', command);
 //            console.log('wordToPDFOnline3', args);
             return new Promise((resolve, reject) => {
-                exec(command, args, (error, stdout, stderr) => {
+                exec(command, args, async (error, stdout, stderr) => {
 //                    console.log('wordToPDFOnline4', error, stdout, stderr);
                     if (error) {
                         reject({error, stderr});
                     } else {
-                        const res = fileUtils.toDataURI(output);
+                        const res = await fileUtils.toDataURI(output);
                         fs.remove(source, err => {
 //                        fs.remove(output, err => {
 //                            console.log('err', err)

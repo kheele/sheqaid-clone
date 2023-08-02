@@ -7,8 +7,8 @@ class SAIdUtils {
         if (!!val && val.length === 13 && val.isNumeric()) {
             const tempDate = new Date(val.substring(0, 2), val.substring(2, 4) - 1, val.substring(4, 6));
 
-            var id_date = tempDate.getDate();
-            var id_month = tempDate.getMonth();
+            const id_date = tempDate.getDate();
+            const id_month = tempDate.getMonth();
 
             if (!((tempDate.getYear() === parseInt(val.substring(0, 2))) && (id_month === parseInt(val.substring(2, 4) - 1)) && (id_date === parseInt(val.substring(4, 6))))) {
                 return false;
@@ -22,7 +22,11 @@ class SAIdUtils {
         if (isNumber(val))
             val = String(val);
         if (SAIdUtils.isValid(val)) {
-            return new Date(val.substring(0, 2), val.substring(2, 4) - 1, val.substring(4, 6));
+            let y = val.substring(0, 2);
+            if(y === "00") {
+                y = "2000";
+            }
+            return new Date(y, val.substring(2, 4) - 1, val.substring(4, 6));
         }
     }
 
@@ -40,8 +44,8 @@ class SAIdUtils {
                 birthDate = new Date(val.substring(0, 2), val.substring(2, 4) - 1, val.substring(4, 6));
             }
 
-            var age = today.getFullYear() - birthDate.getFullYear();
-            var m = today.getMonth() - birthDate.getMonth();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
                 age--;
             }
@@ -58,8 +62,8 @@ class SAIdUtils {
         const birthDate = val;
         const today = new Date();
 
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }

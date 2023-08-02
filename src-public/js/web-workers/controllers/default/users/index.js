@@ -31,7 +31,7 @@
                     const {id, data: {password, username, fname, lname}} = item;
                     if (username) {
                         const opts = {
-                            from: '"SHEQ Aid" <support@sheqsolve.com>',
+                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                             to: username,
                             subject: 'SHEQ Aid Application Link',
                             html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -39,9 +39,7 @@
                                 <p>Your SHEQ Aid Username is <b>' + username + '</b>, Password is <b>' + password + '</b></p>\n\
                                 ' + Utils.getAppDownloadOptionMsg()
                         };
-                        const sendEmail = functions.httpsCallable('callables-sendEmail');
-                        const mailRes = await sendEmail(opts);
-                        console.log('mailRes', mailRes)
+                        await Utils.sendEmail(opts);
 
                         return true;
                     }

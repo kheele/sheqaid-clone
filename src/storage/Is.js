@@ -18,6 +18,11 @@ class Is {
     }
 
     @computed
+    get isLoggedUserAuthChecked() {
+        return this.storage.attrs.has("loggedUserAuthChecked");
+    }
+
+    @computed
     get isLoggedInAuth() {
         return this.storage.attrs.has("loggedUserAuth");
     }
@@ -34,8 +39,22 @@ class Is {
     }
 
     @computed
+    get isLoadedPermissionOtherKeys() {
+        const {attrs} = this.storage;
+        return attrs.has("permissionOtherKeys");
+    }
+
+    @computed
     get isTrial() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                const {account_type} = selectedContractorSite.site.company;
+                return !account_type || account_type === 'Trial';
+            }
+            return false;
+        }
         const {account_type} = storage.loggedUser.company.data;
 //        return false;
         return !account_type || account_type === 'Trial';
@@ -50,6 +69,14 @@ class Is {
     @computed
     get isConsultant() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                const {consultant} = selectedContractorSite.site.company;
+                return consultant;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         return loggedUser.company.data.consultant;
     }
@@ -57,6 +84,14 @@ class Is {
     @computed
     get isNoProjectsUndefined() {
         if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                const {no_projects} = selectedContractorSite.site.company;
+                return no_projects === null || no_projects === undefined;
+            }
+            return false;
+        }
         const {loggedUser: {company: {data: {no_projects}}}} = this.storage;
         return no_projects === null || no_projects === undefined;
     }
@@ -64,6 +99,14 @@ class Is {
     @computed
     get isNoProjects() {
         if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                const {no_projects} = selectedContractorSite.site.company;
+                return no_projects;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         return loggedUser.company.data.no_projects;
     }
@@ -71,6 +114,14 @@ class Is {
     @computed
     get isHasProjects() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                const {no_projects} = selectedContractorSite.site.company;
+                return this.isConsultant || !no_projects;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         return this.isConsultant || !loggedUser.company.data.no_projects;
     }
@@ -84,12 +135,13 @@ class Is {
         }
 
         const {loggedUser} = this.storage;
-        const {permissions_modules, permissions_other} = loggedUser.user.data;
+        // const {permissions_modules, permissions_other} = loggedUser.user.data;
+        const {permissions_module_list, permissions_other_list} = loggedUser.user.data;
 
-        if (!permissions_modules && !permissions_other) {
+        if (!permissions_module_list && !permissions_other_list) {
             return true;
         }
-        if (permissions_modules.isEmpty() && permissions_other.isEmpty()) {
+        if (permissions_module_list.isEmpty() && permissions_other_list.isEmpty()) {
             return true;
         }
 
@@ -99,6 +151,13 @@ class Is {
     @computed
     get isLoggedClient() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                return !!selectedContractorSite.client;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         const {client: my_client} = loggedUser.user.data;
         return !!my_client;
@@ -107,6 +166,13 @@ class Is {
     @computed
     get isLoggedProject() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                return !!selectedContractorSite.project;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         const {project: my_project} = loggedUser.user.data;
         return !!my_project;
@@ -115,9 +181,26 @@ class Is {
     @computed
     get isLoggedSite() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            const {selectedContractorSite} = selected;
+            if(selectedContractorSite) {
+                return !!selectedContractorSite.site;
+            }
+            return false;
+        }
         const {loggedUser} = this.storage;
         const {site: my_site} = loggedUser.user.data;
         return !!my_site;
+    }
+
+    @computed
+    get isLoggedContractorClient() {
+        return this.storage.attrs.has("loggedContractorClient");
+    }
+
+    @computed
+    get isLoggedContractorSite() {
+        return this.storage.attrs.has("loggedContractorSite");
     }
 
     @computed
@@ -144,6 +227,7 @@ class Is {
     @computed
     get isContractorViewIncContractorPack() {
         if (!this.isContractorView) return false;
+        console.log('isContractorViewIncContractorPack', this.storage.attrs.get("contractor"))
         return this.storage.attrs.get("contractor").data.inc_contractor_pack === 'Yes';
     }
 
@@ -178,6 +262,9 @@ class Is {
     @computed
     get hasPaymentInterval() {
         if (isAdminApp || !this.isLoggedIn) return false;
+        if(this.isContractor) {
+            return false;
+        }
         if (this.isConsultant) {
             const {selectedClient} = selected;
             if (selectedClient) {

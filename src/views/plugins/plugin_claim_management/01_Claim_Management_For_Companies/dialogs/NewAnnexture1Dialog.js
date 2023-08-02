@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, setDefaultVal} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, setDefaultVal} from 'utils/Utils';
 
-import {ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewAnnexture1Dialog.lazy.css";
 // </editor-fold>
@@ -83,7 +83,7 @@ class Controls extends React.Component {
         
         //A. Recording Of Incident
         if(employer_details) {
-            const {data: {company_name}} = employer_details;
+            const {data: {name}} = employer_details;
             setDefaultValue('company_name', (v) => v || company_name);
         } else {
             setDefaultValue('company_name');

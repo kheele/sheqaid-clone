@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
 import {
     ClearableInput,
@@ -12,9 +12,9 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 // </editor-fold>
 import style from "./NewIncidentQuickDialog.lazy.css";
 
@@ -415,10 +415,10 @@ class Controls extends React.Component {
                     onFormNext={onFormNext}
                     onFormBack={onFormBack} 
                 >
-                    <ClearableInput name="date_reported" type="date" placeholder="Date Reported..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="time_reported" type="time" placeholder="Time Reported..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
                     <ClearableInput name="incident_date" type="date" placeholder="Date Incident Occurred..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
                     <ClearableInput name="incident_time" type="time" placeholder="Time Incident Occurred..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="date_reported" type="date" placeholder="Date Reported..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="time_reported" type="time" placeholder="Time Reported..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
                     <ClearableInput name="exact_location" type="textarea" placeholder="Exact Location" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <ClearableInput name="short_desc" type="textarea" placeholder="Short Description" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 </Row>

@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Button} from '../../../../../components/inputs';
+import {Button} from 'components/inputs';
 
 import style from "./DashboardTab.lazy.css";
 import DashboardIncidents from "./DashboardIncidents";
@@ -22,8 +22,6 @@ class DashboardTab extends React.Component {
 
     constructor(props) {
         super(props);
-
-//        this.path = props.path + 'reports/';
 
         this.toggleFilter = this.toggleFilter.bind(this);
     }

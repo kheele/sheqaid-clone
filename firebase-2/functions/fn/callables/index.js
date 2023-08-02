@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 const {sendContractorOTP, confirmContractorOTP, onReAuthContractorUser} = require('./contractor');
 
-const {onLogin, onResetPassword} = require('./accounts');
+const {onSetCustomUserClaims, onLogin, onResetPassword} = require('./accounts');
 const {onLoginBiometric, onSetupBiometric} = require('./biometric');
 
 const {sendUserOTP, confirmUserOTP, sendForgotPass, sendForgotPassAdmin} = require('./send');
@@ -12,6 +12,7 @@ exports.sendContractorOTP = sendContractorOTP;
 exports.confirmContractorOTP = confirmContractorOTP;
 exports.onReAuthContractorUser = onReAuthContractorUser;
 
+exports.onSetCustomUserClaims = onSetCustomUserClaims;
 exports.onLogin = onLogin;
 exports.onResetPassword = onResetPassword;
 

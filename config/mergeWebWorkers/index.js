@@ -4,6 +4,7 @@ const path = require('path');
 //const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 const MergeIntoSingle = require('webpack-merge-and-include-globally');
 const uglifyJS = require('uglify-js');
+const CopyPlugin = require('copy-webpack-plugin');
 
 function WatchExternalFilesPlugin(workersPath) {
     WatchExternalFilesPlugin.prototype.apply = (compiler) => {
@@ -18,13 +19,20 @@ function WatchExternalFilesPlugin(workersPath) {
     };
 }
 
-module.exports = function () {
+module.exports = function (webpackEnv) {
+    const isEnvDevelopment = webpackEnv === 'development';
+
 //    const mainPath = path.resolve('public/js/web-workers/controllers/');
     const workersPath = 'src-public/js/web-workers';
     const controllersPath = workersPath + '/controllers';
     //console.log(workersPath, controllersPath)
     //return new MergeIntoSingleFilePlugin({
     return [
+        isEnvDevelopment && new CopyPlugin({
+            patterns: [
+                { from: "./node_modules/@pdftron/webviewer/public", to: "./public/webviewer/lib" },
+            ],
+        }),,
 //        new WatchExternalFilesPlugin({
 //            files: [
 //                './worker-contr/**/*.js',

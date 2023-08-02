@@ -15,8 +15,8 @@ import {
 import NewJobPositionListTableWrapper from "./NewJobPositionListTableWrapper";
 import NewTrainingCourseListTableWrapper from "./NewTrainingCourseListTableWrapper";
 import ASelectWrapper from "./ASelectWrapper";
-import ANewListTable from "../../../../../../components/FormTableComponents/ANewListTable";
-import {THead, TRow} from "../../../../../../components/tables";
+import ANewListTable from "components/FormTableComponents/ANewListTable";
+import {THead, TRow} from "components/tables";
 import style from "components/FormTableComponents/ANewListTable.lazy.css";
 // </editor-fold>
 
@@ -44,12 +44,16 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
     }
 
     componentDidMount() {
-        const {excludeJobPositionList, excludeCourseList} = this.props;
+        const {item, excludeJobPositionList, excludeCourseList} = this.props;
         if (excludeCourseList && !excludeJobPositionList) {
             this.state.select_employees = "JobPositions";
         } else if (!excludeCourseList && excludeJobPositionList) {
             this.state.select_employees = "Courses";
         }
+
+        // if(item) {
+        //     item.ctrl_refs.newTrainingYearListTableWrapper = this.$self;
+        // }
     }
 
     @computed get showSelectEmployees() {
@@ -77,7 +81,7 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
                                onClick={this.onOpenEmployeeListTable}/>
             </label>}
             {!excludeEmployeeList && <NewEmployeeListTable
-                ref={ref => item.ctrl_refs.employee_list_exception = ref}
+                ref={ref => {item.ctrl_refs.employee_list_exception = ref}}
                 name={"employee_list_exception-" + n}
                 disableOtherPerson
                 closeable
@@ -86,7 +90,7 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
             />}
 
             {showSelectEmployees && <ClearableInput
-                ref={ref => item.ctrl_refs.select_employees = ref}
+                ref={ref => {item.ctrl_refs.select_employees = ref}}
                 name={'select_employees'}
                 type="radio"
                 placeholder="Select Per"
@@ -97,7 +101,7 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
                 id={id}
             />}
             <NewJobPositionListTableWrapper
-                ref={ref => item.ctrl_refs.newJobPositionListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newJobPositionListTableWrapper = ref}}
                 root={root}
                 parentName="Years"
                 item={item}
@@ -110,7 +114,7 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
                 onChange={this.form.onChange}
             />
             <NewTrainingCourseListTableWrapper
-                ref={ref => item.ctrl_refs.newTrainingCourseListTableWrapper = ref}
+                ref={ref => {item.ctrl_refs.newTrainingCourseListTableWrapper = ref}}
                 root={root}
                 parentName="Years"
                 item={item}

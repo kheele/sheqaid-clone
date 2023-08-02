@@ -1,34 +1,34 @@
-import {mapIncidentPersonDetails} from "../../../../../../utils/ArrayMapperUtils";
+import {mapIncidentPersonDetails} from "utils/ArrayMapperUtils";
 import {toJS} from "mobx";
 
 export default function onNext(e, btn) {
-    const {form} = this;
-    const {idx} = btn.props;
-    if (idx === 3) {
-        if (!form.isValid('category_list') || form.get('category_list').isEmpty()) {
-            infoDialog.open('Incident Category is required');
-            return;
-        }
-    }
-    // if (idx === 6.1) {
-    //     if (!form.isValid('person_involved_list') || form.get('person_involved_list').isEmpty()) {
-    //         infoDialog.open('Person(s) Involved in the Incident are/is required');
-    //         return;
-    //     }
-    // }
-    if (idx === 6.2) {
-        if (!form.isValid('person_reporting')) {
-            infoDialog.open('Person Reporting the Incident is required');
-            return;
-        }
-    }
-    if (idx === 6.3) {
-        if (!form.isValid('person_reported_to')) {
-            infoDialog.open('Person Reported To is required');
-            return;
-        }
-    }
-    if (idx === 7.1) {
+	const {form} = this;
+	const {idx} = btn.props;
+	if (idx === 3) {
+		if (!form.isValid('category_list') || form.get('category_list').isEmpty()) {
+			infoDialog.open('Incident Category is required');
+			return;
+		}
+	}
+	// if (idx === 6.1) {
+	//     if (!form.isValid('person_involved_list') || form.get('person_involved_list').isEmpty()) {
+	//         infoDialog.open('Person(s) Involved in the Incident are/is required');
+	//         return;
+	//     }
+	// }
+	if (idx === 6.2) {
+		if (!form.isValid('person_reporting')) {
+			infoDialog.open('Person Reporting the Incident is required');
+			return;
+		}
+	}
+	if (idx === 6.3) {
+		if (!form.isValid('person_reported_to')) {
+			infoDialog.open('Person Reported To is required');
+			return;
+		}
+	}
+	if (idx === 7.1) {
 //            if (!form.isValid('person_injured')) {
 //                infoDialog.open('Person Injured is required');
 //                return;
@@ -45,12 +45,12 @@ export default function onNext(e, btn) {
 //                infoDialog.open('Injury Mechanism (Direct Cause Of Injury) is required');
 //                return;
 //            }
-    }
-    if (idx === 7.2) {
-        if (form.get('test_undertaken') === 'Yes') {
-            //TODO: further validation is necessory
-        }
-    }
+	}
+	if (idx === 7.2) {
+		if (form.get('test_undertaken') === 'Yes') {
+			//TODO: further validation is necessory
+		}
+	}
 
-    return true;
+	return true;
 };

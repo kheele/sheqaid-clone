@@ -4,12 +4,12 @@ import {observable} from 'mobx';
 
 import style from "./SOPTab.lazy.css";
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewSOPDialog from './dialogs/NewSOPDialog';
 import ProfileSOPDialog from './dialogs/ProfileSOPDialog';

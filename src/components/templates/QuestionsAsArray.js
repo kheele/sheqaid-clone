@@ -16,10 +16,13 @@ class Questions extends AQuestions {
             name: 'Untitled Template', 
             desc: '', 
             type: 'Inspection', 
-            questions: []
+            question_list: []
         },
+        item: null,
         loadingFormData: true
     };
+
+    is_page_title = false;
     
     constructor(props) {
         super(props, style);
@@ -32,12 +35,12 @@ class Questions extends AQuestions {
     
     isValidForm() {
         const {state: {formData}, refs: {titlePage}} = this;
-        const {name, desc, type, questions: questionsArray} = formData;
+        const {name, desc, type, question_list} = formData;
         if (!name) {
             infoDialog.open('Form name is required');
             return;
         }
-        if (questionsArray.isEmpty()) {
+        if (question_list.isEmpty()) {
             infoDialog.open('At least one question is required');
             return;
         }
@@ -46,7 +49,7 @@ class Questions extends AQuestions {
     
     async getForm() {
         const {state: {formData}, refs: {titlePage}, props: {isEditting}} = this;
-        const {name, desc, type, questions: questionsArray} = formData;
+        const {name, desc, type, question_list} = formData;
         
         const data = {name, desc};
         if(type) {
@@ -54,10 +57,14 @@ class Questions extends AQuestions {
         }
         
         data.title_page_list = await titlePage.getForm();
-        data.questions = await getQuestionnaireTemplateForm(questionsArray, isEditting);
+        data.question_list = await getQuestionnaireTemplateForm(question_list, isEditting);
         return data;
     }
 
+    set item(item) {
+        this.state.item = item;
+        this.defaultQuestionList();
+    }
 }
 
 export default Questions;//223

@@ -141,7 +141,7 @@
                     map(async ({approving_manager, approving_finance}) => {
                         const send = async ({fname, lname, email}) => {
                             const opts = {
-                                from: '"SHEQ Aid" <support@sheqsolve.com>',
+                                from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                                 to: email,
                                 subject: 'Asset Parts Approval Request',
                                 html: '<p>This is an automated email from SHEQ Aid.<br />Please do not reply to this email.</p>\n\
@@ -155,10 +155,7 @@
                             <p>Part Photo: <b>' + (part_photo) + '</b></p>\n' + order_requests_list.map(renderOrderRequest) + '<p>Kind Regards<br/>SHEQ Aid</p>'
                             };
 
-                            console.log('callables-sendEmail', opts)
-                            const sendEmail = functions.httpsCallable('callables-sendEmail');
-                            const mailRes = await sendEmail(opts);
-                            console.log('mailRes', mailRes)
+                            await Utils.sendEmail(opts);
                         };
 
                         const promises = [];

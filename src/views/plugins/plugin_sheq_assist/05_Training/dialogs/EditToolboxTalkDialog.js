@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../utils/Utils';
-import {onSelectLoadTrainingFrequencies} from '../../../utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
+import {onSelectLoadTrainingFrequencies} from 'views/plugins/utils';
 
 import {
     ClearableInput,
@@ -17,13 +17,13 @@ import {
     SelectSiteInput,
     SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
     SelectUserInput, UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditToolboxTalkDialog.lazy.css";
-import {NewEmployeeListTable} from "../../../../../components/FormTableComponents";
-import {SelectTable} from "../../../../../components/tables";
+import {NewEmployeeListTable} from "components/FormTableComponents";
+import {SelectTable} from "components/tables";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -202,14 +202,14 @@ class Controls extends React.Component {
         ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course');
         ShouldUpdate.check(data, old_data, training_frequency, 'training_frequency');
         ShouldUpdate.check(data, old_data, subject_category, 'subject_category');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, time_from, 'time_from');
         ShouldUpdate.check(data, old_data, time_to, 'time_to');
 
         //2
         ShouldUpdate.check(data, old_data, institution_conducting_training, 'institution_conducting_training');
-        ShouldUpdate.checkEmployee(data, old_data, hr, 'hr');
-        ShouldUpdate.checkJobPosition(data, old_data, job_desc, 'job_desc');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, hr, 'hr');
+        ShouldUpdate.checkJobPosition_deprecated(data, old_data, job_desc, 'job_desc');
 
         //3
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');

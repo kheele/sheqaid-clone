@@ -1,13 +1,13 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from "../../../../../utils/Utils";
-import ADialogList from "../../../../ADialogList";
-import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../../components/dialogs';
-import {ActionsButton, ClearableInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import {Dates} from "utils/Utils";
+import ADialogList from "views/ADialogList";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewRemedialActionPlanDialog from "./NewRemedialActionPlanDialog";
 import ProfileRemedialActionPlanDialog from "./ProfileRemedialActionPlanDialog";

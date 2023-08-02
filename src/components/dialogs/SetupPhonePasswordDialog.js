@@ -10,6 +10,8 @@ import {Row} from '../FormComponents';
 import AEditDialog from './AEditDialog';
 
 import style from './SetupPhonePasswordDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -122,7 +124,16 @@ class Controls extends React.Component {
         const credential = firebase.auth.PhoneAuthProvider.credential(this.verificationId, code);
         currentUser.updatePhoneNumber(credential).then(() => {
             const data = {id, phone: username, password};
-            neonBinding.events.emit(this.path + "setup/password", data).then(loggedUser => {
+            neonBinding.events.emit(this.path + "setup/password", data).then(res => {
+                this.auth.onAuthStateChanged(currentUser => {
+                    storage.onLogin(currentUser);
+                });
+
+                return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                    storage.idTokenResult = idTokenResult;
+                    return res;
+                }));
+            }).then(loggedUser => {
                 infoDialog.open("Password successfully set up.");
                 infoDialog.close(2000);
 
@@ -158,7 +169,18 @@ class Controls extends React.Component {
         });
     }
     // </editor-fold>
-    
+
+    get auth() {
+        const {type: access_type} = this.item;
+        if (access_type === "Contractor") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";

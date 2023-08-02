@@ -4,10 +4,10 @@ import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 import {Document, PDFViewer} from '@react-pdf/renderer';
 
-import {Clickable} from '../../../../../components/inputs';
+import {Clickable} from 'components/inputs';
 
-import {Dates} from '../../../../../utils/Utils';
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {Dates} from 'utils/Utils';
+import {AProfileDialog} from 'components/dialogs';
 
 import {
     Page2,

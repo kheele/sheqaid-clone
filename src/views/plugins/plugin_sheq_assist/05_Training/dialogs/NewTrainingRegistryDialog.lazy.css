@@ -2,7 +2,7 @@
 
 #dialog-overlay.TrainingRegistry-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 730px;
+    width: 900px;
     max-width: 100%;
 }
 #dialog-overlay.TrainingRegistry-new-dialog .dialog-content{

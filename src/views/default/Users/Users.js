@@ -2,20 +2,23 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {calculateRightPos, execWhen, Permissions} from '../../../utils/Utils';
+import {calculateRightPos, execWhen, Permissions} from 'utils/Utils';
 
-import APageListReadWrite from "../../APageListReadWrite";
-import NavItem from '../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../components/dialogs';
-import {ActionsButton, ClearableInput, Clickable} from '../../../components/inputs';
-import {THead, TRow} from '../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import NewEmployeeDialog from '../../plugins/plugin_hr_management/Employees/NewDialog.js';
+import NewEmployeeDialog from 'views/plugins/plugin_hr_management/Employees/forms/NewDialog.js';
 import NewDialog from './NewDialog';
 import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Users.lazy.css";
+
+import byLogged from "./Query/List/listAllUserByLogged";
+import MKBox from "components/MK/MKBox";
 
 @observer
 class Users extends React.Component {
@@ -23,23 +26,25 @@ class Users extends React.Component {
 
     pageKey = "Users";
     @observable
-    state = {
-    };
+    state = {};
 
+    //<editor-fold desc="constructor">
     constructor(props) {
         super(props);
 
         this.path = storage.is.isContractor ? 'plugin_sheq_assist/contractors/users/' : 'users/';
-        
-	this.onSendApplicationLink = this.onSendApplicationLink.bind(this);
+
+        this.onSendApplicationLink = this.onSendApplicationLink.bind(this);
         this.onCompleteEmploymentDetailsShowWarningMsg = this.onCompleteEmploymentDetailsShowWarningMsg.bind(this);
-        
+        this.onCreateCompleteUser = this.onCreateCompleteUser.bind(this);
+
         this.hasCreateBtn = this.hasCreateBtn.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+    //</editor-fold>
 
     componentWillMount() {
         style.use();
@@ -48,38 +53,96 @@ class Users extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
-    
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        // const {list} = this.props;
+        // if(list) {
+        //     return this.findByIdsEmployees(list.map(({id}) => id));
+        // }
+
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            // removed: this.removed,
+            removed: false,
+            //
+            name,
+            //
+            limit,
+            //
+            exact_orgs: false,
+        };
+
+        if(!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="onCompleteEmploymentDetailsShowWarningMsg">
     onCompleteEmploymentDetailsShowWarningMsg({target}, elem) {
         let {idx} = elem.props;
-        if(this.openIdx === idx) return;
-        
+        if (this.openIdx === idx) return;
+
         const item = this.refs.root.list[idx];
-        const {id, data: {fname, lname, linked_employee_id}} = item;
+        const {id, data: {fname, lname, linked_employee}} = item;
         const offset = $(target).offset();
         const style = {left: "auto", right: calculateRightPos(target, false) + 10, top: offset.top, width: 340};
         this.refs.root.refs.popover.settings({
-            style, 
+            style,
             isDialog: false,
             contentNode: <div>
-                <p className="nav-item padding-0">
-                    <b>{fname + " " + lname}</b> details are incomplete.<br/>
-                    <small className="hor-center text-center">
-                        .......................................<br/>
-                        Please do the following actions for this user.<br/>
-                        Note: These actions are required.
-                    </small>
-                </p>
+                <MKBox
+                  className="nav-item font-size-12 padding-10 margin-b-10 margin-h-0 text-center"
+                  sx={{
+                      borderRadius: '3px',
+                      boxShadow: '0 0 3px #ddd',
+                      background: '#f5f5f5',
+                      textTransform: 'uppercase',
+                  }}
+                >
+                    Please complete the following actions:
+                </MKBox>
                 <hr/>
-                {!linked_employee_id && <NavItem idx={idx} onClick={this.refs.root.onView} title="Link To Employee Details"/>}
+                {!linked_employee &&
+                    <NavItem idx={idx} onClick={this.onCreateCompleteUser} title="Link To Employee Details"/>}
             </div>
         }).open();
     }
 
+    //</editor-fold>
+
+    onCreateCompleteUser(evt, el) {
+        const {idx} = el.props;
+        const item = this.refs.root.list[idx];
+        if(!item) return;
+
+        const {root} = this.refs;
+        const dialog = root.getDialogByRef("profileDialog");
+        dialog && dialog.extraProp('linked_employee', true).open(item).then(() => {
+
+        });
+    }
+
+    //<editor-fold desc="onSendApplicationLink">
     onSendApplicationLink(evt, btn) {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         const {id, data: {username}} = item;
-        if(username) {
+        if (username) {
             progressDialog.open("Please wait...");
             neonBinding.events.emit(this.path + "send-app-link", id).then(res => {
                 infoDialog.open("Link successfully sent.");
@@ -94,10 +157,13 @@ class Users extends React.Component {
             </React.Fragment>);
         }
     }
-    
+
+    //</editor-fold>
+
+    //<editor-fold desc="hasCreateBtn">
     hasCreateBtn() {
         const {isTrial} = storage.is;
-        if(isTrial) {
+        if (isTrial) {
             return execWhen(() => this.refs.root).then(root => {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -109,82 +175,93 @@ class Users extends React.Component {
             return true;
         }
     }
-	
+    //</editor-fold>
+
+    //<editor-fold desc="renderLeftButtons">
     renderLeftButtons() {
         const {isTrial, isConsultant} = storage.is;
-	return <div className="left-buttons pull-left">
+        return <div className="left-buttons pull-left">
             {isConsultant && isTrial && <label className="max-warning min-w-130">
                 Max. Of 3 Users Allowed
             </label>}
-	</div>;
+        </div>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const permissionKey = "Users";
         const {user} = storage.loggedUser;
-        const {permissions_other} = user.data;
-        const permissions_other_Users = (permissions_other || []).find(v => v.key === permissionKey);
-        
+
         const item = this.refs.root.list[idx];
         const isLoggedUser = item.id === user.id;
-        
+
         const allowView = () => {
-            return isLoggedUser || Permissions.allowView(permissions_other_Users);
+            return isLoggedUser || Permissions.allowViewOther(permissionKey);
         };
         const allowEdit = () => {
-            return isLoggedUser || Permissions.allowEdit(permissions_other_Users);
+            return isLoggedUser || Permissions.allowEditOther(permissionKey);
         };
         const allowRemove = () => {
-            return !isLoggedUser && Permissions.allowRemove(permissions_other_Users);
+            return !isLoggedUser && Permissions.allowRemoveOther(permissionKey);
         };
-        
+
         return <Options idx={idx} permissionOtherKey={permissionKey}>
             {allowView() && <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>}
             {allowEdit() && <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>}
             {allowRemove() && <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>}
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSendApplicationLink} faIconLeft="paper-plane" title="Send Application Link"/>
+            <NavItem action="writable" idx={idx} onClick={this.onSendApplicationLink} faIconLeft="paper-plane"
+                     title="Send Application Link"/>
         </Options>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
         </div>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderTHead">
     renderTHead() {
         const {isConsultant, isHasProjects, isContractor} = storage.is;
         return <THead>
+            <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Name</div>
             {isHasProjects && <React.Fragment>
-                {isConsultant&& <div className="td">Company Name</div>}
+                {isConsultant && <div className="td">Company Name</div>}
                 <div className="td">Project Name</div>
                 <div className="td">{isContractor ? "Sites" : "Site Name"}</div>
             </React.Fragment>}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderItem">
     renderItem(n, onClick) {
         const {isConsultant, isHasProjects, isContractor} = storage.is;
         const item = this.refs.root.list[n];
-        const {id, data: {
-                old_id, new_id, 
-                fname, lname, username, phone, linked_employee_id, user_type, 
-                contractor, client, project, site, 
-                client_id, project_id, site_id
+        const {
+            id,
+            data: {
+                fname, lname, username, phone, linked_employee, user_type,
+                contractor, client, project, site,
             }
         } = item;
-//        console.log('user', lname, client, project, site, client_id, project_id, site_id)
-        
+//        console.log('user', lname, client, project, site)
+
         const getSitesLength = (contractor = {}) => {
-            const {data = {}} = contractor || {};
-            if(!data || !data.site_list) return 'N/A';
-            return data.site_list.length;
+            const {site_list} = contractor || {};
+            if (!site_list) return 'N/A';
+            return site_list.length;
         };
-        
+
         return <TRow key={id}>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Name</h6>
                 {lname + ' ' + fname}
@@ -198,16 +275,20 @@ class Users extends React.Component {
                     {getSitesLength(contractor)}
                 </div>}
             </React.Fragment>}
-            
+
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                {!linked_employee_id && !isContractor && <Clickable idx={n} onClick={this.onCompleteEmploymentDetailsShowWarningMsg}><i className="fa fa-warning"/></Clickable>}
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                {!linked_employee && !isContractor &&
+                    <Clickable idx={n} onClick={this.onCompleteEmploymentDetailsShowWarningMsg}><i
+                        className="fa fa-warning"/></Clickable>}
             </div>
         </TRow>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             ref="root"
             page={this}
             hasCreateBtn={this.hasCreateBtn}
@@ -215,19 +296,20 @@ class Users extends React.Component {
             pageId={this.pageKey + "-page"}
             pageTitle="Users"
             pageTitleSingular="user"
-            path={this.path}
+            onLoadList={this.onLoadList}
             renderLeftButtons={this.renderLeftButtons}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
-            
+
             <NewDialog ref="newDialog"/>
             <ProfileDialog ref="profileDialog" EditDialog={EditDialog} NewEmployeeDialog={NewEmployeeDialog}/>
-            <EditDialog ref="editDialog"/>            
+            <EditDialog ref="editDialog"/>
         </APageListReadWrite>;
     }
+    //</editor-fold>
 }
 
 export default Users;//313, 237

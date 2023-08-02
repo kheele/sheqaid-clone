@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Button, ClearableInput, SelectDepartmentInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {Button, ClearableInput, SelectDepartmentInput, SelectEmployeeInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewEmergencyRollCallRegisterDialog.lazy.css";
 

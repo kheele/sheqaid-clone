@@ -1,7 +1,10 @@
-///////////////////////////////////////////////////////////
-import __A_COVID_Management from './__A_COVID_Management/Main';
-import __B_Contractors from './__B_Contractors/Main';
-import __C_Structure_And_Responsibility from './__C_Structure_And_Responsibility/Main';
+import {lazy} from "react";
+
+const __A_COVID_Management = lazy(() => import('./__A_COVID_Management/Main'/* webpackChunkName:"__A_COVID_Management" */));
+
+const __B_Contractors = lazy(() => import('./__B_Contractors/Main'/* webpackChunkName:"__B_Contractors" */));
+
+const __C_Structure_And_Responsibility = lazy(() => import('./__C_Structure_And_Responsibility/Main'/* webpackChunkName:"__C_Structure_And_Responsibility" */));
 
 const modules = {
     __A_COVID_Management,

@@ -1,8 +1,8 @@
 import React, {Suspense} from "react";
 import {observer} from 'mobx-react';
 
-import {NearbyPlaces} from '../../../../components/maps';
-import PageLoadingProgress from '../../../../components/PageLoadingProgress';
+import {NearbyPlaces} from 'components/maps';
+import PageLoadingProgress from 'components/PageLoadingProgress';
 
 import style from "./NearbyServicesTab.lazy.css";
 

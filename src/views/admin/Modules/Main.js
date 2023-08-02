@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import APageListReadWrite from "../../APageListReadWrite";
-import NavItem from '../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../components/dialogs';
-import {ActionsButton, ClearableInput} from '../../../components/inputs';
-import {THead, TRow} from '../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewDialog from './NewDialog';
 import ProfileDialog from './ProfileDialog';

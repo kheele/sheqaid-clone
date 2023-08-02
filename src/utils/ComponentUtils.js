@@ -85,7 +85,7 @@ class RenderLeftButtonsForExpiryOnly extends React.Component {
     }
     
     onChangeExpiryOptions(evt, btn) {
-        const {root} = this.page.refs;
+        const {page, page: {refs: {root}}} = this;
         if(!root) {
             return;
         }
@@ -94,12 +94,65 @@ class RenderLeftButtonsForExpiryOnly extends React.Component {
         const {expiry_date} = btn.props;
         
         this.state.selected = expiry_date;
-        
+
+        page.setView({view: this.view, expiry_date, load: true});
+    }
+    
+    get view() {
+        const {selfState, state} = this.page;
+        const {view} = selfState || state;
+        return view;
+    }
+
+    get page() {
+        return this.props.page;
+    }
+
+    render() {
+        const {state, onChangeExpiryOptions} = this;
+        return <div className="left-buttons pull-left expiry-btns">
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={null} className="bg-border-white color_black" text="No Expiry" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={-1} className="bg-border-grey" text="Expired" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={1} className="bg-border-red" text="1 Month Expiry" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={2} className="bg-border-orange color_black" text="2 Month Expiry" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={3} className="bg-border-yellow color_black" text="3 Month Expiry" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date={4} className="bg-border-green" text="+4 Month Expiry" onClick={onChangeExpiryOptions}/>
+            <RenderLeftButtonsForExpiryOnlyButton state={state} expiry_date='ALL' className="padding-l-10 padding-r-10" text="All" onClick={onChangeExpiryOptions}/>
+        </div>;
+    }
+}
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="RenderLeftButtonsForExpiryOnly_firebase">
+@observer
+class RenderLeftButtonsForExpiryOnly_firebase extends React.Component {
+
+    @observable state = {
+        selected: 'ALL'
+    };
+
+    constructor() {
+        super();
+
+        this.onChangeExpiryOptions = this.onChangeExpiryOptions.bind(this);
+    }
+
+    onChangeExpiryOptions(evt, btn) {
+        const {root} = this.page.refs;
+        if(!root) {
+            return;
+        }
+        const {body} = root.refs;
+        body.state.dataLoaded = false;
+        const {expiry_date} = btn.props;
+
+        this.state.selected = expiry_date;
+
         if(expiry_date === 'ALL') {
             body.onLoadList();
             return;
         }
-        
+
         let {path, path: {data}} = this.page;
         if (isObject(path)) {
             path = path.path;
@@ -131,11 +184,11 @@ class RenderLeftButtonsForExpiryOnly extends React.Component {
             body.state.dataLoaded = true;
         });
     }
-    
+
     get page() {
         return this.props.page;
     }
-    
+
     render() {
         const {state, onChangeExpiryOptions} = this;
         return <div className="left-buttons pull-left expiry-btns">
@@ -177,6 +230,12 @@ function renderLeftButtonsForTeamAttendanceOnly() {
 // <editor-fold defaultstate="collapsed" desc="renderLeftButtonsForExpiryOnly">
 function renderLeftButtonsForExpiryOnly() {
     return <RenderLeftButtonsForExpiryOnly page={this}/>;
+}
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="renderLeftButtonsForExpiryOnly_firebase">
+function renderLeftButtonsForExpiryOnly_firebase() {
+    return <RenderLeftButtonsForExpiryOnly_firebase page={this}/>;
 }
 // </editor-fold>
 
@@ -259,15 +318,39 @@ class ExpiryButtons extends React.Component {
     }
     
     render() {
-        const {ids, ids_by_expiry} = this.props;
+        const {list, item, listName} = this.props;
+        if(item) {
+            const {
+                id,
+                data: {
+                    [listName]: list,
+                    [`${listName}_no_expiry_aggregate`]: list_no_expiry_aggregate,
+                    [`${listName}_expired_aggregate`]: list_expired_aggregate,
+                    [`${listName}_mon_expiry_aggregate`]: list_mon_expiry_aggregate,
+                    [`${listName}_2mon_expiry_aggregate`]: list_2mon_expiry_aggregate,
+                    [`${listName}_3mon_expiry_aggregate`]: list_3mon_expiry_aggregate,
+                    [`${listName}_4mon_expiry_aggregate`]: list_4mon_expiry_aggregate,
+                }
+            } = item;
+
+            return <>
+                <ExpiryBtn count={list.length} title='Total' expiry_date='ALL'/>
+                <ExpiryBtn count={list_4mon_expiry_aggregate.aggregate.count} title='+4 Month Expiry' expiry_date={4} className="bg-green"/>
+                <ExpiryBtn count={list_3mon_expiry_aggregate.aggregate.count} title='3 Month Expiry' expiry_date={3} className="bg-yellow color_black"/>
+                <ExpiryBtn count={list_2mon_expiry_aggregate.aggregate.count} title='2 Month Expiry' expiry_date={2} className="bg-orange color_black"/>
+                <ExpiryBtn count={list_mon_expiry_aggregate.aggregate.count} title='1 Month Expiry' expiry_date={1} className="bg-red"/>
+                <ExpiryBtn count={list_expired_aggregate.aggregate.count} title='Expired' expiry_date={-1} className="bg-grey"/>
+                <ExpiryBtn count={list_no_expiry_aggregate.aggregate.count} title='No Expiry' expiry_date={null} className="bg-white color_black"/>
+            </>;
+        }
         return <React.Fragment>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='Total' expiry_date='ALL'/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='+4 Month Expiry' expiry_date={4} className="bg-green"/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='3 Month Expiry' expiry_date={3} className="bg-yellow color_black"/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='2 Month Expiry' expiry_date={2} className="bg-orange color_black"/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='1 Month Expiry' expiry_date={1} className="bg-red"/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='Expired' expiry_date={-1} className="bg-grey"/>
-            <ExpiryBtn ids={ids} ids_by_expiry={ids_by_expiry} title='No Expiry' expiry_date={null} className="bg-white color_black"/>
+            <ExpiryBtn list={list} title='Total' expiry_date='ALL'/>
+            <ExpiryBtn list={list} title='+4 Month Expiry' expiry_date={4} className="bg-green"/>
+            <ExpiryBtn list={list} title='3 Month Expiry' expiry_date={3} className="bg-yellow color_black"/>
+            <ExpiryBtn list={list} title='2 Month Expiry' expiry_date={2} className="bg-orange color_black"/>
+            <ExpiryBtn list={list} title='1 Month Expiry' expiry_date={1} className="bg-red"/>
+            <ExpiryBtn list={list} title='Expired' expiry_date={-1} className="bg-grey"/>
+            <ExpiryBtn list={list} title='No Expiry' expiry_date={null} className="bg-white color_black"/>
         </React.Fragment>;
     }
 }
@@ -285,16 +368,30 @@ class ExpiryBtn extends React.Component {
     }
     
     @computed get count() {
-        const {d, props: {ids, ids_by_expiry, expiry_date: __expiry_date}} = this;
+        const {d, props: {count, list, expiry_date: __expiry_date}} = this;
+        if(isNumber(count)) {
+            return count;
+        }
+
         if(__expiry_date === 'ALL') {
-            return ids.length;
+            return list.length;
         } else if(__expiry_date === null) {
-            const {no_expiry: exp_ids = []} = ids_by_expiry;
-            return exp_ids.length;
+            return list.filter(v => !v.expiry_date).length;
         } else {
-            const {mon = {}} = ids_by_expiry;
-            const {[__expiry_date]: exp_ids = []} = mon;
-            return exp_ids.length;
+            return list.filter(({expiry_date}) => {
+                if (__expiry_date === -1) {
+                    return expiry_date <= d.getTime();
+                } else if (__expiry_date === 1) {
+                    return expiry_date > d.getTime() && expiry_date <= d.addMonths(1).addDays(-1).getTime();
+                } else if (__expiry_date === 2) {
+                    return expiry_date > d.addMonths(1).addDays(-1).getTime() && expiry_date <= d.addMonths(2).getTime();
+                } else if (__expiry_date === 3) {
+                    return expiry_date > d.addMonths(2).getTime() && expiry_date <= d.addMonths(3).getTime();
+                } else if (__expiry_date === 4) {
+                    return expiry_date > d.addMonths(3).getTime();
+                }
+                return false;
+            }).length;
         }
     }
     
@@ -347,6 +444,7 @@ class GroupByBtn extends React.Component {
 export {
     RenderDashboardButtonsForExpiryOnly,
     renderLeftButtonsForTeamAttendanceOnly,
+    renderLeftButtonsForExpiryOnly_firebase,
     renderLeftButtonsForExpiryOnly,
     renderLeftButtonsForTasksExpiryOnly,
     renderExpiryDateSpan,

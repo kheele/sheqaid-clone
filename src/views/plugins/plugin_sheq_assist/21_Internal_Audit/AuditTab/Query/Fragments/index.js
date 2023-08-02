@@ -1,0 +1,57 @@
+
+//<editor-fold desc="compliance_audit_details_fragment">
+export const compliance_audit_details_fragment = `
+      id
+      created_at
+      scope
+      date
+      type
+      auditor_list{
+        id
+        employee{
+            id
+            lname
+            fname
+            email
+            phone
+        }
+        other_person{
+            id
+            lname
+            fname
+            email
+            phone
+        }
+      }
+      representative_list{
+        id
+        employee{
+            id
+            lname
+            fname
+            email
+            phone
+        }
+        other_person{
+            id
+            lname
+            fname
+            email
+            phone
+        }
+      }
+      definition_list{
+        title
+        desc
+      }
+      list{
+        element 
+        sub_element 
+        audit_findings 
+        audit_summary 
+        possible_score 
+        achieved_score 
+        comments
+      }
+`;
+//</editor-fold>

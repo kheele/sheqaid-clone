@@ -1,0 +1,24 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfilePositiveDialog-profile-dialog .dialog-container{
+    height: 100%;
+    max-height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfilePositiveDialog-profile-dialog .dialog-content .controls-wrapper > .controls > .row {
+    padding: 5px 10px 10px !important;
+}
+#dialog-overlay.ProfilePositiveDialog-profile-dialog #page-list{
+    margin: -10px;
+    padding: 0 0 10px;
+}
+#dialog-overlay.ProfilePositiveDialog-profile-dialog #page-list .page-title{
+    margin: 0 10px
+}
+#dialog-overlay.ProfilePositiveDialog-profile-dialog .table{
+    width: calc(100% - 20px);
+}
+#dialog-overlay.ProfilePositiveDialog-profile-dialog .filter-wrapper + .table{
+    height: calc(100% - (20px + 122px)) !important;
+}

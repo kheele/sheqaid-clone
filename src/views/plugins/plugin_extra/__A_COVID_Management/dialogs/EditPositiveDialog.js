@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {CircularProgress} from '@material-ui/core';
 import {computed, extendObservable, observable, toJS} from 'mobx';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import {ShouldUpdate} from 'utils/Utils';
 
 import {
     ClearableInput,
@@ -11,9 +11,9 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import AControls from "./ANewCOVIDControls";
 import {EmployeeDetailsPanel, NewHighRiskContactsTable} from './ComponentsScreening';
@@ -281,10 +281,10 @@ class Controls extends AControls {
             ShouldUpdate.checkSite(data, old_data, site);
         }
         
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, employee, 'employee');
         ShouldUpdate.check(data, old_data, employee_id, 'employee_id');
         ShouldUpdate.check(data, old_data, business_id, 'business_id');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, sex, 'sex');
         ShouldUpdate.check(data, old_data, age, 'age');
         ShouldUpdate.check(data, old_data, province, 'province');
@@ -292,7 +292,7 @@ class Controls extends AControls {
         ShouldUpdate.check(data, old_data, industry, 'industry');
         ShouldUpdate.check(data, old_data, job_category, 'job_category');
         ShouldUpdate.check(data, old_data, test_type, 'test_type');
-        ShouldUpdate.checkDate(data, old_data, test_date, 'test_date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, test_date, 'test_date');
         ShouldUpdate.check(data, old_data, symptom_positive, 'symptom_positive');
         ShouldUpdate.check(data, old_data, high_risk_contacts_num, 'high_risk_contacts_num');
         

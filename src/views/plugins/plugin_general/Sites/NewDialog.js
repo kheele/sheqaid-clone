@@ -2,13 +2,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, SelectClientInput, SelectProjectInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {ANewDialog} from '../../../../components/dialogs';
+import {ClearableInput, SelectClientInput, SelectProjectInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
+import insertSite from "mutations/all/Site/insertSite";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -61,40 +62,34 @@ class Controls extends React.Component {
             return;
         }
 
-        const {name, address, project, client} = form.data;
-        const data = {name};
-        if(address) {
-            data.address = address;
-        }
-        if(client) {
-            if(isObject(client)) {
-                const {id, name} = client;
-                data.client = {id, name: name || client.data.name};
-            } else {
-                data.client = client;
-            }
-        }
-        if(project) {
-            if(isObject(project)) {
-                const {id, name} = project;
-                data.project = {id, name: name || project.data.name};
-            } else {
-                data.project = project;
-            }
-        }
+        const {
+            name,
+            address,
+            project,
+            client
+        } = form.data;
+        const data = {
+            name,
+            address,
+            project_id: project && project.id,
+            client_id: client && client.id,
+        };
+
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertSite(data).then(res => {
             console.log("res", res)
             storage.load.loadClients(true);
-            
+
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
             infoDialog.close(2000);
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
     

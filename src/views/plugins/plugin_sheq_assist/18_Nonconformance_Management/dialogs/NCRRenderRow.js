@@ -2,12 +2,14 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {renderExpiryDateSpan} from '../../../../../utils/ComponentUtils';
-import {Dates} from '../../../../../utils/Utils';
-import {ActionsButton, Button} from '../../../../../components/inputs';
-import {TRow} from '../../../../../components/tables';
+import {renderExpiryDateSpan} from 'utils/ComponentUtils';
+import {Dates} from 'utils/Utils';
+import {ActionsButton, Button} from 'components/inputs';
+import {TRow} from 'components/tables';
 
 import style from "./NCRRenderRow.lazy.css";
+import {Grid} from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -31,36 +33,39 @@ class RenderRow extends React.Component {
             let {
                 id,
                 data: {
+                    //6
+                    //progress_date, outstanding,
+
+                    created_at,
+                    client, project, site,
                     //1
-                    type, priority,
+                    type, priority, allocation,
                     selected_source_item,
                     //2
                     desc, process,
                     //3
-                    due_date, responsible_person, approving_person,
+                    due_date,
+                    // responsible_person,
+                    responsible_party_list,
+                    assigned_job_position_list,
+                    assigned_person_list,
+                    // assigned_to_list,
+                    approving_person,
                     //4
-                    document_list,
+                    document_list, document_proof_list,
                     //5
                     comments, remarks,
                     //6
-                    status, result, progress_date, completed_date, outstanding, additional_notes
+                    progress_list,
+                    //7
+                    status_acceptance, status_progress, result, completed_date, additional_notes
                 }
             } = item;
 
-            let responsible_personName = null;
-            let approving_personName = null;
-            if(responsible_person) {
-                const {fname, lname, data} = responsible_person;
-                responsible_personName = (fname || data.fname).charAt(0).toUpperCase() + '. ' + (lname || data.lname);
-            } else {
-                responsible_personName = "";
-            }
-            if(approving_person) {
-                const {fname, lname, data} = approving_person;
-                approving_personName = (fname || data.fname).charAt(0).toUpperCase() + '. ' + (lname || data.lname);
-            } else {
-                approving_personName = "";
-            }
+            const assigned_to_list = [
+                ...(assigned_job_position_list ? assigned_job_position_list.map(({job_position: {name}}) => name) : []),
+                ...(assigned_person_list ? assigned_person_list.map(({employee: {full_name}}) => full_name) : []),
+            ];
 
             const resultClass = result === 'Pass' ? 'green' : result === 'Fail' ? 'red' : 'none';
             return <TRow key={id} className="NCRRenderRow w-full">
@@ -69,9 +74,20 @@ class RenderRow extends React.Component {
                 <div className="td fixed-flex min-w-130">{Dates.formatDate(completed_date) || 'N/A'}</div>
                 <div className="td fixed-flex min-w-70">{priority || 'N/A'}</div>
                 <div className="td fixed-flex min-w-180">{type || 'N/A'}</div>
+                <div className="td fixed-flex min-w-120">{allocation || 'N/A'}</div>
                 <div className="td">{desc}</div>
-                <div className="td fixed-flex min-w-180">{responsible_personName}</div>
-                <div className="td fixed-flex min-w-90">{status || 'N/A'}</div>
+                <div className="td fixed-flex min-w-180">{
+                    responsible_party_list && <Grid container spacing={1} columns={4}>
+                      {responsible_party_list.map(({value}) => <Grid item><Chip label={value} size="small"/></Grid>)}
+                  </Grid> || 'N/A'
+                }</div>
+                <div className="td fixed-flex min-w-180">{
+                    assigned_to_list.isNotEmpty() ? <Grid container spacing={1} columns={4}>
+                        {assigned_to_list.map((name) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                    </Grid>: 'N/A'
+                }
+                </div>
+                <div className="td fixed-flex min-w-140">{status_progress || 'N/A'}</div>
                 <div className={`td fixed-flex min-w-60 td-result ${resultClass}`}>{result || 'N/A'}</div>
                 {renderActionsCol && renderActionsCol(item, idx, onClick)}
                 {!renderActionsCol && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

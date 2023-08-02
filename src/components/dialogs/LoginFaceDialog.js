@@ -27,6 +27,8 @@ import {
 import SetupFaceDialog from './SetupFaceDialog';
 
 import style from './LoginFaceDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -155,7 +157,7 @@ class Controls extends ALoginControls {
                 }
                 console.log(res)
                 if(this.isFailure(res)) {
-                    this.onComplete(res);
+                    this.onFailed(res);
                     return false;
                 }
                 const {uid, id} = res;
@@ -196,15 +198,24 @@ class Controls extends ALoginControls {
         const {form} = this;
         progressDialog.open();
         
-        const {username} = form.data;
+        const {username, type} = form.data;
         
         const {imgSrc, faceDescriptor, displaySize} = this.refs.capturedImgView;
         const faceMatcher = new faceapi.FaceMatcher(faceDescriptor, 0.5);
         const match = faceMatcher.toJSON();
         
         neonBinding.events.emit(this.path + "login/biometric", {username, match, displaySize}).then(res => {
+            this.auth.onAuthStateChanged(currentUser => {
+                storage.onLogin(currentUser);
+            });
+
+            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                storage.idTokenResult = idTokenResult;
+                return res;
+            }));
+        }).then(res => {
             progressDialog.close();
-            this.onComplete(res);
+            this.onComplete(res, false, type);
         }).catch(err => {
             console.error(err);
             progressDialog.close();
@@ -216,7 +227,18 @@ class Controls extends ALoginControls {
         });
     }
     // </editor-fold>
-    
+
+    get auth() {
+        const {type: access_type} = this.form.data;
+        if (access_type === "Contractor") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";

@@ -3,23 +3,23 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, toJS} from 'mobx';
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import Popover from '../../../../components/popovers/Popover';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import Popover from 'components/popovers/Popover';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     Button,
     ClearableInput,
     SelectEmployeeInput,
     SelectJobPositionInput
-} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import {getDocsStatus, getWClStatus} from '../ClaimFuns';
 
-import {AsyncTD} from '../../components';
+import {AsyncTD} from 'views/plugins/components';
 
 import ChatBtn from '../dialogs/ChatBtn';
 import AClaimsTab from './AClaimsTab';

@@ -1,0 +1,163 @@
+
+.InitView {
+    background: rgba(0, 45, 45, 0.9);
+}
+
+.InitViewNotSelected,
+.InitViewSetupClients {
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    position: relative;
+    top: 60px;
+    width: calc(100% - 40px);
+    display: block;
+}
+
+.InitViewNotSelected {
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    height: 200px;
+    margin-bottom: 120px;
+    background: rgba(0, 0, 0, .25);
+    border-radius: 40%;
+}
+
+.InitViewSetupClients {
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    position: relative;
+    top: 60px;
+    bottom: 60px;
+    left: 50%;
+    width: calc(100% - 40px);
+    max-width: 800px;
+    height: 340px;
+    margin-bottom: 120px;
+    background: rgb(2, 55, 55);
+    border-radius: 20px;
+    display: block;
+    padding: 40px;
+    transform: translate(-50%, 0px);
+    box-shadow: 0 0 4px rgba(34, 34, 34, 0.3);
+}
+
+.InitView .view-content {
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    height: calc(100% - 60px);
+}
+
+.InitView .PluginsView {
+    height: auto !important;
+    margin: 0;
+}
+
+.InitView .Plugins {
+    width: 1200px;
+    max-width: calc(100% - 40px);
+    margin: 60px auto;
+}
+
+.InitView .Plugins > .Plugin {
+    background: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none;
+    border-radius: 10% !important;
+    /*overflow: hidden;*/
+    overflow: auto;
+}
+
+.InitView .Plugins > .Plugin > h3 {
+    display: table !important;
+    margin: -5px auto -12px !important;
+}
+
+.InitView .Plugins > h2 {
+    color: #fff !important;
+}
+
+.InitView .grid-view > div > div {
+    border-radius: 50%;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.InitView .grid-view > div > div > h3 {
+    color: #429a95 !important;
+    font-size: 13px;
+}
+
+.InitView .grid-view > div > div > .fa {
+    border: 2px solid #429a95;
+    color: #429a95 !important;
+    margin: -8px 0 16px;
+}
+
+.InitView .grid-view > div > div > button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 2px 8px;
+}
+
+.InitView .grid-view > div > div > .buttons > button {
+    background-color: rgba(2, 168, 168, 0.3);
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 1199px) {
+    .InitView .view-content {
+        left: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .InitView,
+    .InitView .view-content {
+        position: relative;
+        height: auto;
+    }
+
+    .InitView .view-content {
+        top: 110px;
+    }
+
+    .InitView .Plugins {
+        margin: 20px auto;
+        max-width: calc(100% - 20px);
+    }
+}
+
+@media (max-width: 539px) {
+    .InitView .grid-view > div > div {
+        width: 135px;
+        height: 135px;
+        margin: 5px auto;
+    }
+
+    .InitView .Plugins > .Plugin > .grid-view > div {
+        width: 50% !important;
+    }
+
+    .InitView .grid-view > div > div > h3 {
+        font-size: 12px;
+    }
+
+    .InitView .grid-view > div > div > .buttons > button {
+        padding: 0px 3px;
+        min-width: 40px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 399px) {
+    .InitView .PluginsView {
+        padding: 0;
+    }
+
+    .InitView .Plugins > .Plugin {
+        padding: 5px !important;
+    }
+}

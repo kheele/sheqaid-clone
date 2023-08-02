@@ -101,6 +101,10 @@ class AControllerRead extends AControllerWrite {
     // <editor-fold defaultstate="collapsed" desc="find_by_id">
     async find_by_id(evt, id) {
         return Events.whenLoggedIn(async loggedUser => {
+            if(!id){
+                return null;
+            }
+
             let {tbl, collectionGroup, queryWhereList} = this;
 
             if (!tbl && collectionGroup) {
@@ -327,16 +331,17 @@ class AControllerRead extends AControllerWrite {
                 user: {
                     data: {client: my_client, project: my_project, site: my_site}
                 },
-                company: {
-                    data: {no_projects}
-                },
+                // company: {
+                //     data: {no_projects}
+                // },
                 client_id, project_id, site_id,
                 contractor_site_id
             } = loggedUser;
 
             if (contractor_site_id) {
                 q = q.where('site_id', '==', contractor_site_id);
-            } else if (!no_projects) {
+            // } else if (!no_projects) {
+            } else {
 //                let inUsed;
 //                if (my_site) {
 //                    q = q.where('site_id', '==', my_site.id);
@@ -385,8 +390,8 @@ class AControllerRead extends AControllerWrite {
 function buildQuery(tblTmp, includeOnlyCompanyId = false, filter) {
     const loggedUser = self.session.getLoggedUser();
     let {user: {data: {contractor_id}}, company = {}, contractor_id: logged_contractor_id} = loggedUser;
-    const {id: company_id, data: {no_projects}} = company;
     contractor_id = logged_contractor_id || contractor_id;
+    const {id: company_id} = company;
     let {tbl, collectionGroup, queryWhereList} = this;
 
     let colRef;

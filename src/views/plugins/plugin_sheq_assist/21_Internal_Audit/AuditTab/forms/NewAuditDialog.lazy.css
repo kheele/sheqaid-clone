@@ -1,0 +1,24 @@
+@import '../../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewAuditDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    max-width: calc(100% - 30px);
+    width: 1100px !important;
+}
+
+#dialog-overlay.NewAuditDialog-new-dialog .findings{
+    margin: 0 0 0 !important;
+}
+#dialog-overlay.NewAuditDialog-new-dialog .table .list{
+    overflow: visible;
+}
+
+#dialog-overlay.NewAuditDialog-new-dialog .table.DefinitionsTable {
+    width: calc(100% + 0px);
+}
+#dialog-overlay.NewAuditDialog-new-dialog .table.DefinitionsTable .list > .tr.tr-readonly > .td {
+    padding: 10px 6px 0 !important;
+}
+#dialog-overlay.NewAuditDialog-new-dialog .table.DefinitionsTable .list > .tr > .td {
+    border: none !important;
+}

@@ -65,7 +65,7 @@ class AccountPaymentDueDialog extends React.Component {
     }
 
     onUpgradeAccount() {
-//        alert(this)
+//
     }
 
     open() {

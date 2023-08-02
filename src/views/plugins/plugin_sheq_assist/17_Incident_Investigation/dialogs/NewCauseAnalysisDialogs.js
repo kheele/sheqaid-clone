@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Button, ClearableInput} from '../../../../../components/inputs';
-import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {Button, ClearableInput} from 'components/inputs';
+import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewCauseAnalysisDialogs.lazy.css";
 //</editor-fold>

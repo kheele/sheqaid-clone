@@ -15,67 +15,67 @@ class ListTable extends ANewListTable {
     className = "NewSiteListTable";
     title = "Sites";
     style = style;
-    
+
     renderItem(n, onClick) {
         const {is: {isConsultant}} = storage;
-        const {readonly, renderTable} = this.props;
+        const {readonly, renderTable, isContractor, renderActions} = this.props;
         const item = this.state.list[n];
-	if(item && (item.site || item.id)) {
-            const {
-                id, data = {}
+        if (item && (item.site || item.id)) {
+            let {
+                id, name, client, project, data = {}
             } = item.site || item;
-            const {
-                name,
-                client = {}, 
-                project = {}
-            } = data;
-            const {name: c_name, data: c_data = {}} = client;
-            const {name: p_name, data: p_data = {}} = project;
-            const clientName = c_name || c_data.name;
-            const projectName = p_name || p_data.name;
-                
+
+            client = client || data.client;
+            project = project || data.project;
+            const clientName = client && (client.name || client.data.name);
+            const projectName = project && (project.name || project.data.name);
+
             const tr = <React.Fragment>
-		<div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
-		{isConsultant && <div className="td">{clientName}</div>}
-		<div className="td">{projectName}</div>
-		<div className="td">{name}</div>
-		{!readonly && <div className="td fixed-flex min-w-50">
+                <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
+                {(isConsultant || isContractor) && <div className="td">{clientName}</div>}
+                <div className="td">{projectName}</div>
+                <div className="td">{name || data.name}</div>
+                {isFunction(renderActions) && renderActions(item, n)}
+                {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
-			<i className="fa fa-times-circle"/>
+                        <i className="fa fa-times-circle"/>
                     </Button>
-		</div>}
+                </div>}
                 {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
             </React.Fragment>;
-                
-            return <TRow key={id} className={"tr-readonly w-full margin-r-0" + (renderTable? " tr-table" : "")}>
+
+            return <TRow key={id} className={"tr-readonly w-full margin-r-0" + (renderTable ? " tr-table" : "")}>
                 {renderTable ? <TRow>{tr}</TRow> : tr}
                 {renderTable && renderTable(item, n)}
             </TRow>;
-	} else {
+        } else {
             return <TRow key="item-new" className="padding-10 w-full">
-		<div className="td flex padding-0 margin-0">
-                    <SelectSiteInput ref={this.onSetRef} name="site" placeholder="Add Site..." required className="no-border-radius-r form-control" onChange={this.onChange}/>
-                    <Button idx={n} action="save" className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
-			<i className="fa fa-check"/>
+                <div className="td flex padding-0 margin-0">
+                    <SelectSiteInput ref={this.onSetRef} name="site" placeholder="Add Site..." required
+                                     className="no-border-radius-r form-control" onChange={this.onChange}/>
+                    <Button idx={n} action="save"
+                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
+                        <i className="fa fa-check"/>
                     </Button>
                 </div>
             </TRow>;
-	}
+        }
     }
 
     renderTHead() {
         const {is: {isConsultant}} = storage;
-        const {readonly} = this.props;
+        const {readonly, isContractor} = this.props;
         return <THead className="align-left">
-                <div className="td fixed-flex min-w-30">#</div>
-                {isConsultant && <div className="td">Company</div>}
-                <div className="td">Project</div>
-                <div className="td">Site</div>
-                {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
-                {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
-            </THead>;
+            <div className="td fixed-flex min-w-30">#</div>
+            {(isConsultant || isContractor) && <div className="td">Company</div>}
+            <div className="td">Project</div>
+            <div className="td">Site</div>
+            {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
+            {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
+        </THead>;
     }
 }
+
 // </editor-fold>
 
 export default ListTable;

@@ -1,0 +1,34 @@
+
+#COVID_Management-page{
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+#COVID_Management-page > .tabs {
+    margin: 0 10px 0 0px;
+    height: calc(100% - 50px);
+}
+#COVID_Management-page > .tabs .tab-content.top{
+    height: calc(100% - 40px);
+}
+
+#COVID_Management-page .tab-content #ADocuments-page .page-title{
+    height: 0;
+    margin: -45px 0px 0 0;
+    border: none;
+    float: right;
+}
+#COVID_Management-page .tab-content #ADocuments-page .page-title > .page-back-btn,
+#COVID_Management-page .tab-content #ADocuments-page .page-title > h3{
+    display: none;
+}
+#COVID_Management-page .tab-content #ADocuments-page .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 806px;
+}
+#COVID_Management-page .tab-content #ADocuments-page .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}

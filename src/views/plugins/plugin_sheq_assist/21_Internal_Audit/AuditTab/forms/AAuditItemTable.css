@@ -1,0 +1,212 @@
+@import '../../../../../../css/ANewTableFormDialog.css';
+
+.table.AAuditItemTable {
+    min-width: 100%;
+    height: auto;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr > .td:last-of-type,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr > .td:last-of-type {
+    padding: 11px 5px !important;
+}
+/*remove*/
+.table.AAuditItemTable > .thead > .td:last-of-type {
+    padding: 4px 5px !important;
+}
+.table.AAuditItemTable > .thead {
+    background: #f5f5f5;
+}
+/*end remove*/
+.table.AAuditItemTable .td{
+    border-color: #eee !important;
+}
+/*remove*/
+/*end remove*/
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr > .td:first-of-type,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr > .td:first-of-type{
+    border-left-width: 0 !important;
+}
+/*remove*/
+.table.AAuditItemTable > .thead > .td-tr > .td:not(:last-of-type){
+    margin: 0 -6px;
+    padding: 5px;
+}
+.table.AAuditItemTable > .thead > .td-tr > .td:first-of-type{
+    margin-top: -6px;
+}
+.table.AAuditItemTable > .thead > .td-tr > .td-tr{
+    display: flex;
+    margin: 0px -6px -5px;
+}
+/*end remove*/
+.table.AAuditItemTable .results-none{
+    margin-top: 160px !important;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr {
+    padding: 0 !important;
+    border-left: none;
+    border-right: none;
+    position: relative;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr > .td > span,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr > .td > span{
+    height: auto;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr > .td:not(.td-tr),
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr > .td:not(.td-tr) {
+    padding: 11px 5px !important;
+    min-height: 42px;
+    height: auto !important;
+    border: 2px solid #fff;
+    border-right-width: 0px;
+    border-top-width: 0;
+    border-bottom-width: 2px;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr > .td.td-tr,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr > .td.td-tr {
+    min-height: 42px;
+    height: auto !important;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr .td.td-calc,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr .td.td-calc {
+    height: 100%;
+    text-align: center;
+    padding: 11px 0;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr .td.td-calc,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr .td.td-calc {
+    border-right: 2px solid;
+    border-left: 0px !important;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr .td.td-calc:last-of-type,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr .td.td-calc:last-of-type{
+    border-right: 0px !important;
+    border-left: 0px !important;
+}
+
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr .td.td-rotate-single,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr .td.td-rotate-single {
+    /*border-right: 2px solid !important;*/
+    min-width: 33.3333% !important;
+    position: relative;
+}
+.table.AAuditItemTable .tbody.AuditItemTBody > * > .tr .td.td-rotate-single span,
+.table.AAuditItemTable .tbody.NCRItemTBody > * > .tr .td.td-rotate-single span {
+    transform: rotate(-90deg);
+    min-width: 90px;
+    height: 28px;
+    max-height: 28px;
+    left: -31px;
+    top: 41px;
+    overflow: hidden;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    padding: 9px 0px;
+    background: none;
+
+}
+
+.AAuditItemTable > .tbody > .list > .td-RenderItem{
+    height: auto !important;
+    display: block;
+    position: relative;
+    /*border: 2px solid #eee;*/
+}
+.AAuditItemTable > .tbody > .list > .td-RenderItem > label.title{
+    background: #eee !important;
+    border-top: 2px dotted !important;
+}
+.AAuditItemTBodyElement.tbody > .list > .td-RenderItem,
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem{
+    height: auto !important;
+    position: relative;
+
+}
+.AAuditItemTBodyElement.tbody > .list > .td-RenderItem > label.title,
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem > label.title{
+    font-size: 18px;
+    color: #888;
+    display: block;
+    padding: 5px 10px;
+    margin: 0;
+    font-variant: all-petite-caps;
+    font-weight: normal;
+}
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem > label.title{
+    border-bottom: 1px solid #eee;
+}
+.AAuditItemTBodyElement.tbody > .list > .td-RenderItem > label.title .btn,
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem > label.title .btn {
+    position: relative;
+    padding: 0px 10px;
+    margin-left: 10px;
+    float: right;
+}
+.AAuditItemTBodyElement.tbody > .list > .td-RenderItem > .tbody,
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem > .tbody{
+    position: relative;
+    margin-left: 10px;
+    border-left: 4px solid rgb(2, 168, 168);
+}
+.AAuditItemTBodyElement.tbody > .list > .td-RenderItem > .tbody{
+    margin-left: 0px;
+}
+.AAuditItemTBodySubElement.tbody > .list > .td-RenderItem > .tbody .tr > .td:first-of-type {
+    margin-right: -18px;
+}
+
+.table.AAuditItemTable .td.td-actions {
+    position: absolute !important;
+    right: 0;
+    top: -8px;
+    border: none !important;
+    width: 100px;
+    height: 40px !important;
+    padding: 0 !important;
+    margin-top: 0px;
+    display: none;
+    transition: all 1.5s;
+    z-index: 9999;
+}
+.table.AAuditItemTable .td.td-actions button{
+    transition: all 1.5s;
+    flex: 1 1;
+}
+.table.AAuditItemTable .tr:hover .td.td-actions {
+    display: flex;
+    font-size: 20px;
+}
+.table.AAuditItemTable .tr:hover .td.td-actions button {
+    background: #fff;
+    color: rgb(2, 168, 168);
+    padding: 10px;
+    border: none;
+    box-shadow: 0 0 10px #000;
+}
+.table.AAuditItemTable .tr:hover .td.td-actions button:first-of-type {
+    margin-right: 2px;
+}
+.table.AAuditItemTable .tr:hover .td.td-actions button:last-of-type {
+    margin-left: 2px;
+}
+.table.AAuditItemTable .add-item-b {
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 11px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    padding: 0;
+    z-index: 1;
+}
+.table.AAuditItemTable .add-item-b .fa-plus {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}

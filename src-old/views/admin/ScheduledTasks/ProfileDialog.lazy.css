@@ -1,0 +1,6 @@
+@import '../../../css/AProfileDialog.css';
+
+#dialog-overlay.ModuleGroup-profile-dialog .dialog-container{
+    height: 100%;
+    width: 800px;
+}

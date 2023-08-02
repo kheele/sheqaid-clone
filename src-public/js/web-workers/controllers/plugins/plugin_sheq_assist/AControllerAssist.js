@@ -195,7 +195,7 @@ class AControllerAid extends AControllerRead {
 
                 const {fname, lname, doc_expiry_date, allow_doc_editing} = data;
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: email,
                     subject: this.name.singular + ' Document From SHEQ Aid',
                     html: '<h3><b>Dear ' + data.fname + ' ' + data.lname + '</b></h3>\n\
@@ -211,9 +211,7 @@ class AControllerAid extends AControllerRead {
                                     <p>Please click <a href="' + self.locationRoot + 'remote/shared-docs">here</a> to view the document details.</p>\n\
                                     <p>Kind Regards<br/>SHEQ Aid</p>'
                 };
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
 
                 delete data.doc_ref;
                 const auditData = {id: snapshot.id, data};

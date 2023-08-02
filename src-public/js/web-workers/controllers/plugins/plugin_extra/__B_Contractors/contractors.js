@@ -54,25 +54,6 @@
                 }
                 const {name: contractorName, username} = DATA;
 
-                const colRef = this.getDB().collection(this.tbl);
-                let snapshot = await colRef.where('username', '==', username).limit(1).get();
-                if (!snapshot.empty) {
-                    return "EMAIL_DUP";
-                }
-
-                this.injectSavable(evt, loggedUser, DATA);
-                const {user_id, company_id, created_at} = DATA;
-
-                const {site_list, project, client, profile_pic} = DATA;
-
-                DATA.keywords = this.generateKeywords([contractorName, username]);
-
-                const doc_ref = await colRef.add(DATA);//Promise < DocumentReference < T > >;
-                const doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >;
-
-                DATA = doc_snapshot.data();
-                DATA.created_at = DATA.created_at.toDate();
-
                 await AllUserFuns.sendCreationEmail('ContractorCreate', {
                     username,
                     contractorName

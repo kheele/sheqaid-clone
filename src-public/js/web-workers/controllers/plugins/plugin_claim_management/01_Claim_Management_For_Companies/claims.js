@@ -481,7 +481,7 @@
                 const timeStyle = 'width: 100%;display: block;';
                 const timeSpanStyle = 'font-size: 11px; font-weight: bold; float: left;margin: 3px 0 0; padding: 1px 5px 0; background: #eee; border-radius: 10px;';
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: email,
                     subject: `SHEQ Aid Chat (Ref#: ${ref_num}, Claim#: ${claim_number ? claim_number : 'N/A'}, Employee: ${createEmployee(employee)})`,
                     html: `<div style="display: grid;max-width: 300px;">
@@ -537,9 +537,7 @@
                         <p style="line-height:1.2;margin: 10px 0 0;">Powered By:<br/>SHEQ Aid</p>
                     </div>`
                 };
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
                 return true;
             });
         }
@@ -1041,7 +1039,7 @@
         }
         if (wcl_2) {
             const {company_contact_person} = wcl_2;
-            if (company_contact_person) {
+            if (company_contact_person && company_contact_person.id) {
                 promise.push(Events.get('plugin_sheq_assist/employees/').then(employees_ctrl => {
                     return employees_ctrl.find_by_id.call(employees_ctrl, null, company_contact_person.id);
                 }).then(val => {
@@ -1091,7 +1089,7 @@
     async function sendEmail(receipient, subject, msg) {
 
         const opts = {
-            from: '"SHEQ Aid" <support@sheqsolve.com>',
+            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
             subject
         };
 
@@ -1137,10 +1135,7 @@
             }
         }
 
-        console.log('email to send', opts)
-        const sendEmail = functions.httpsCallable('callables-sendEmail');
-        const mailRes = await sendEmail(opts);
-        console.log('mailRes', mailRes)
+        await Utils.sendEmail(opts);
     }
     // </editor-fold>
 

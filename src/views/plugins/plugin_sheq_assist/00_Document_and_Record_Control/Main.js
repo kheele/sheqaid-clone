@@ -2,54 +2,61 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {ClearableInput} from '../../../../components/inputs';
-
-import AMain from '../../common/documents/AMain';
+import Tabs from "components/tabs/Tabs";
+import DashboardTab from "./DashboardTab";
+import ProjectPlanTab from "./ProjectPlanTab";
+import IMSPolicyTab from "./IMSPolicyTab";
+import DocumentsTab from "./DocumentsTab";
+import RecordControlTab from "./RecordControlTab";
+import APage from "views/APage";
+import style from "./Main.lazy.css";
 
 @observer
-class Main extends AMain {
+class Main extends APage {
     static key = 'Documents';
     static title = 'Documents';
     static faIconLeft = 'users';
 
-    path = "plugin_sheq_assist/Documents/";
-    pageKey = "Documents";
-
-    notHasWritePermission = true;
-    pageTitle = "List of Documents";
-    pageTitleSingular = "document";
-    permissionKey = "Documents";
-    noAnimation = false;
-
     @observable
-    state = {
-        lists: {
-            groups: [
-                {label: 'Project Plan', value: '_01_Project_Plan'},
-                {label: 'Project Plan (Documents)', value: '_01_Project_Plan_documents'},
-                {label: 'IMS Policies', value: '_02_IMS_Policies'},
-                {label: 'Training (Toolbox Talks)', value: '_05_Training_toolbox_talks'},
-                {label: 'Environmental Aspects (Checklist)', value: '_08_Environmental_Aspects_checklist'},
-                {label: 'Environmental Aspects (Quality Assurance Plans)', value: '_08_Environmental_Aspects_qap'},
-                {label: 'Environmental Aspects (Environmental Management Plan)', value: '_08_Environmental_Aspects_emp'},
-                {label: 'Emergency Preparedness (Emergency Procedure)', value: '_16_Emergency_Preparedness_emergency_procedure'},
-                {label: 'COVID Management (Documents)', value: 'COVID_Management_documents'}
-            ]
-        }
-    };
+    state = {index: 0, isLoaded: false};
+
+    pageKey = "Documents";
 
     constructor(props) {
         super(props);
     }
 
-    renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls flex">
-            <ClearableInput name="group" type="select" placeholder="Document Group" className="form-control" onChange={onChange} values={this.state.lists.groups}/>
-            <ClearableInput name="title" type="text" placeholder="Name of Document" className="form-control" onChange={onChange}/>
-            <ClearableInput name="owner" type="text" placeholder="Owner" className="form-control" onChange={onChange}/>
-        </div>;
+    componentWillMount() {
+        super.componentWillMount();
+        style.use();
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        //app.onPageComplete();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        style.unuse();
+    }
+
+    render() {
+        const {permissionKey} = this.props;
+        return (<div key="Documents-page" id="Documents-page" className={this.classNames}>
+            <div key="pageTitle" className="page-title">
+                {this.renderBackBtn()}
+                <h3 key="title">Documents</h3>
+            </div>
+            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}>
+                <DashboardTab ref="dashboardTab" title="Dashboard"/>
+                <ProjectPlanTab ref="projectPlanTab" title="Project Plans"/>
+                <IMSPolicyTab ref="imsPolicyTab" title="IMS Policies"/>
+                <DocumentsTab ref="documentsTab" title="Company Documents"/>
+                <RecordControlTab ref="recordControlTab" title="Record & Document Control"/>
+            </Tabs>
+        </div>);
+    }
 }
 
 export default Main;

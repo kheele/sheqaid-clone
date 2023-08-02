@@ -1,6 +1,6 @@
 import {isObservableArray, isObservableObject, toJS} from 'mobx';
 
-import WebWorker from "../web-worker/WebWorker";
+import WebWorker from "web-worker/WebWorker";
 
 const mapIncidentPersonDetails = (v) => {
     const {other_person, employee} = v;
@@ -25,27 +25,7 @@ function mapIncidentCorrectiveActions( {group, sub_group, cause_name, text, cost
     return val;
 }
 
-function mapQuestionnaires(v, n) {
-    if (isObservableObject(v.questions) || isObject(v.questions)) {
-        return Object.values(v.questions).map(mapQuestionnaires);
-    } else if (isObservableArray(v.questions) || isArray(v.questions)) {
-        return v.questions.map(mapQuestionnaires);
-    }
-    return [v];
-}
-
-async function convertQuestionnaireObjectToArray(questionsObject) {
-    if (isArray(questionsObject) || isObservableArray(questionsObject)) {
-        return questionsObject;
-    }
-    const worker = new WebWorker(() => {
-        Events.on("process", Utils.convertQuestionnaireObjectToArray);
-    });
-    const res = await worker.emit("process", toJS(questionsObject));
-    worker.terminate();
-    return res;
-}
-
+//keep this one
 async function getQuestionnaireAnswerForm(questionsObject) {
     const worker = new WebWorker(() => {
         Events.on("process", Utils.getQuestionnaireAnswerForm);
@@ -55,11 +35,12 @@ async function getQuestionnaireAnswerForm(questionsObject) {
     return res;
 }
 
-async function getQuestionnaireTemplateForm(questionsArray) {
+//keep this one
+async function getQuestionnaireTemplateForm(question_list, isEditting) {
     const worker = new WebWorker(() => {
         Events.on("process", Utils.getQuestionnaireTemplateForm);
     });
-    const res = await worker.emit("process", toJS(questionsArray));
+    const res = await worker.emit("process", toJS(question_list), isEditting);
     worker.terminate();
     return res;
 }
@@ -68,7 +49,6 @@ export {
 mapIncidentPersonDetails as mapPersonDetails,
         mapIncidentPersonDetails,
         mapIncidentCorrectiveActions,
-        convertQuestionnaireObjectToArray,
         getQuestionnaireAnswerForm,
         getQuestionnaireTemplateForm
 };

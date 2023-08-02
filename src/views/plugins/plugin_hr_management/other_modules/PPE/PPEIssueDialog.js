@@ -3,10 +3,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ANewDialog} from '../../../../../components/dialogs';
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import Form from 'utils/Form';
+import {ANewDialog} from 'components/dialogs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
 import style from "./PPEIssueDialog.lazy.css";
 // </editor-fold>

@@ -3,7 +3,7 @@ import React from "react";
 import {PDFDocument} from 'pdf-lib'
 import {observer} from 'mobx-react';
 
-import {APDFReader} from '../../../../../components/PrintComponents';
+import {APDFReader} from 'components/PrintComponents';
 
 import {Page2, PageFirst, PageLast} from './ProfilePDFReaderPages';
 

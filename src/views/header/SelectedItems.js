@@ -3,30 +3,28 @@ import {findDOMNode} from "react-dom";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 
-import NavItem from '../../components/navs/NavItem';
-import Popover from '../../components/popovers/Popover';
-import {Button, ProfilePic} from '../../components/inputs';
+import NavItem from 'components/navs/NavItem';
+import Popover from 'components/popovers/Popover';
+import {Button, ProfilePic} from 'components/inputs';
 
-import {execWhen, Permissions} from '../../utils/Utils';
+import {execWhen, Permissions} from 'utils/Utils';
 
 import notificationStore from './NotificationsStore';
+import Divider from "@mui/material/Divider";
 
 @observer
 class SelectedItems extends React.Component {
 
-    componentWillMount() {
+    constructor() {
+        super();
         window.selectedItems = this;//
-    }
-
-    componentWillUnmount() {
-        delete window.selectedItems;
     }
 
     open(key) {
         return new Promise((resolve, reject) => {
-            setTimeout(function () {
-                key && this.refs[key] && this.refs[key].doClick(resolve);
-            }.bind(this), 500);
+            execWhen(() => key && this.refs[key]).then(ref => {
+                ref.doClick(resolve);
+            });
         });
     }
 
@@ -44,9 +42,11 @@ class SelectedItems extends React.Component {
         const {isTrial, isConsultant, isNoProjects} = storage.is;
         const {trialDaysLeft} = storage;
         const {selectedClient} = storage.selected;
+        const {profile_pic, data: data_profile_pic} = selectedClient || {};
+        const client_profile_pic = profile_pic || (data_profile_pic ? data_profile_pic.profile_pic : null);
         return <div className="SelectedItems changeable-title flex">
-            {isConsultant && <React.Fragment>
-                {selectedClient && <ProfilePic key={Math.random()} profilePic="clients" id={selectedClient.id} readonly
+            {isConsultant && <>
+                {selectedClient && <ProfilePic key={Math.random()} profilePic={client_profile_pic} readonly
                                                displayCenter={false} className="x50 pull-left fixed-flex"/>}
                 {!selectedClient && <ProfilePic key={Math.random()} profilePic="clients" readonly displayCenter={false}
                                                 className="x50 pull-left fixed-flex"/>}
@@ -55,15 +55,15 @@ class SelectedItems extends React.Component {
                               onLogout="logoutClient" onLogin="loginClient" module="Clients" args="New"
                               createTitle="Create Client" default="All Clients"/>
                 <i className="fa fa-angle-right fixed-flex"/>
-            </React.Fragment>}
-            {!isConsultant && <React.Fragment>
-                <ProfilePic key={Math.random()} profilePic="clients" id={selectedClient.id} readonly
+            </>}
+            {!isConsultant && <>
+                <ProfilePic key={Math.random()} profilePic={client_profile_pic} readonly
                             displayCenter={false} className="x50 pull-left fixed-flex"/>
-                <SelectedItem key={Math.random()} profilePic="clients" ref="clients" path="clients"
+                <SelectedItem key={Math.random()} ref="clients" path="clients"
                               selectedKey="selectedClient" readonly/>
                 {!isNoProjects && <i className="fa fa-angle-right fixed-flex"/>}
-            </React.Fragment>}
-            {!isNoProjects && <React.Fragment>
+            </>}
+            {!isNoProjects && <>
                 <SelectedItem key={Math.random()} ref="projects" onPopoverNotifications={onPopoverNotifications}
                               getPopover={this.getPopover} path="projects" selectedKey="selectedProject"
                               onLogout="logoutProject" onLogin="loginProject" module="Projects" args="New"
@@ -73,7 +73,7 @@ class SelectedItems extends React.Component {
                               getPopover={this.getPopover} path="sites" selectedKey="selectedSite"
                               onLogout="logoutSite" onLogin="loginSite" module="Sites" args="New"
                               createTitle="Create Site" default="All Sites"/>
-            </React.Fragment>}
+            </>}
             {isTrial && <div className="flex trial-bar">
                 <span className="fixed-flex padding-5">Trial</span>
                 <span className="padding-5">{trialDaysLeft} days left</span>
@@ -98,7 +98,9 @@ class SelectedItem extends React.Component {
     }
 
     doClick(resolve) {
-        $(findDOMNode(this)).data('resolve', resolve).click();
+        execWhen(() => findDOMNode(this)).then(ref => {
+            this.onClick(resolve);
+        });
     }
 
     onCreate(e, elem) {
@@ -185,7 +187,7 @@ class SelectedItem extends React.Component {
         });
     }
 
-    onClick() {
+    onClick(resolve) {
         const {
             is: {isTrial, isConsultant},
             selected: {selectedClient, selectedProject, selectedSite},
@@ -193,26 +195,21 @@ class SelectedItem extends React.Component {
         } = storage;
         const {path, getPopover, module, args, createTitle} = this.props;
 
-        const {permissions_other} = loggedUser.user.data;
-        const permClients = (permissions_other || []).find(v => v.key === "Clients");
-        const permProjects = (permissions_other || []).find(v => v.key === "Projects");
-        const permSites = (permissions_other || []).find(v => v.key === "Sites");
-
         if (path === 'clients') {
-            const {client} = loggedUser.user.data;
-            if (!Permissions.allow(permClients) || (!isConsultant || (client && selectedClient && client.id === selectedClient.id))) {
+            const {client} = loggedUser.user.data
+            if (!Permissions.allowOther("Clients") || (!isConsultant || (client && selectedClient && client.id === selectedClient.id))) {
                 return;
             }
         }
         if (path === 'projects') {
             const {project} = loggedUser.user.data;
-            if (!Permissions.allow(permProjects) || (project && selectedProject && project.id === selectedProject.id)) {
+            if (!Permissions.allowOther("Projects") || (project && selectedProject && project.id === selectedProject.id)) {
                 return;
             }
         }
         if (path === 'sites') {
             const {site} = loggedUser.user.data;
-            if (!Permissions.allow(permSites) || (site && selectedSite && site.id === selectedSite.id)) {
+            if (!Permissions.allowOther("Sites") || (site && selectedSite && site.id === selectedSite.id)) {
                 return;
             }
         }
@@ -226,7 +223,7 @@ class SelectedItem extends React.Component {
         let createNav;
         if ((isTrial && list.length < 3) || !isTrial) {
             createNav =
-                <NavItem key={-1} module={module} args={args} resolve={jqElem.data('resolve')} onClick={this.onCreate}
+                <NavItem key={-1} module={module} args={args} resolve={resolve} onClick={this.onCreate}
                          title={createTitle} className="text-center"/>;
         }
         getPopover().settings({
@@ -237,11 +234,12 @@ class SelectedItem extends React.Component {
             preventClickAwayClose: () => path === 'clients' && (!this.selected || this.selecting),
             contentNode: <div>{
                 list.isEmpty() ?
-                    <React.Fragment>
-                        <p key={Math.random()} className="text-center"><i>No {path} available</i></p>
+                    <>
+                        <p key={Math.random()} className="text-center padding-t-20 padding-b-10"><i>No {path} available</i></p>
+                        <Divider/>
                         {createNav}
-                    </React.Fragment> :
-                    <React.Fragment>
+                    </> :
+                    <>
                         {createNav}
                         {createNav && <hr key={Math.random()}/>}
                         <p key={Math.random()}
@@ -249,7 +247,7 @@ class SelectedItem extends React.Component {
                         <hr key={Math.random()} className="margin-t-0 margin-b-0"/>
                         {path !== 'clients' && <NavItem key={0} idx={-1} onClick={this.onSelect} title="All"/>}
                         {list.map(this.renderItem)}
-                    </React.Fragment>
+                    </>
             }</div>
         }).open();
     }
@@ -319,28 +317,24 @@ class SelectedItem extends React.Component {
     }
 
     @computed get isReadonly() {
-        const {permissions_other} = storage.loggedUser.user.data;
-        const permClients = (permissions_other || []).find(v => v.key === "Clients");
-        const permProjects = (permissions_other || []).find(v => v.key === "Projects");
-        const permSites = (permissions_other || []).find(v => v.key === "Sites");
         const {path} = this.props;
-        return (path === 'clients' && !Permissions.allow(permClients)) ||
-            (path === 'projects' && !Permissions.allow(permProjects)) ||
-            (path === 'sites' && !Permissions.allow(permSites));
+        return (path === 'clients' && !Permissions.allowOther("Clients")) ||
+            (path === 'projects' && !Permissions.allowOther("Projects")) ||
+            (path === 'sites' && !Permissions.allowOther("Sites"));
     }
 
     @computed get selectedList() {
         const {path} = this.props;
         const list = storage.list[path + (path === 'clients' ? '' : 'Filtered')];
-        if(path === 'clients') {
+        if (path === 'clients') {
             const {isClientBlacklisted} = storage.is;
             return list.filter(v => !isClientBlacklisted(v));
         }
-        if(path === 'projects') {
+        if (path === 'projects') {
             const {isProjectBlacklisted} = storage.is;
             return list.filter(v => !isProjectBlacklisted(v));
         }
-        if(path === 'sites') {
+        if (path === 'sites') {
             const {isSiteBlacklisted} = storage.is;
             return list.filter(v => !isSiteBlacklisted(v));
         }
@@ -394,9 +388,11 @@ class SelectedItemRenderer extends React.Component {
             item3 = item;
         }
 
+        const name = item.name || item.data.name;
+
         const count = notificationStore.countBy(item1, item2, item3);
         const node = <div>
-            <span>{item.data.name}</span>
+            <span>{name}</span>
             {count > 0 && <Button idx={idx} className="fa fa-bell btn" title="Notifications" hoverText="Notifications"
                                   onClick={onClickNotifications}>
                 <small>{count}</small>

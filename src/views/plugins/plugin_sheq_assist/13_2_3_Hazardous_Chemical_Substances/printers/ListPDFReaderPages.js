@@ -4,9 +4,9 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {Page, Text, View} from '@react-pdf/renderer';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import {Panel, styles} from '../../../../../pdf-components';
+import {Panel, styles} from 'pdf-components';
 
 const PageWrapper = ({size, orientation, style, children}) => (
   <Page wrap size={size} orientation={orientation} style={style}>

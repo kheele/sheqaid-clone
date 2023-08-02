@@ -1,0 +1,12 @@
+@import '../../../../../css/ANewDialog.css';
+@import '../../../../../css/ANewTableFormDialog.css';
+
+#dialog-overlay.NewSOPDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1000px;
+    max-width: 100%;
+}
+#dialog-overlay.NewSOPDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

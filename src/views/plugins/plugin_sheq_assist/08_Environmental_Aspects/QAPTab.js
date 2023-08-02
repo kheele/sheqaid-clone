@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {ClearableInput} from '../../../../components/inputs';
+import {ClearableInput} from 'components/inputs';
 
 import AMain from '../../common/documents/AMain';
 
@@ -10,6 +10,7 @@ import AMain from '../../common/documents/AMain';
 class QAPTab extends AMain {
     path;
     pageKey = "QAPTab";
+    type = "Quality Assurance Plan";
 
     createBtnTitle="Upload New";
     pageTitle = "Quality Assurance Plans";

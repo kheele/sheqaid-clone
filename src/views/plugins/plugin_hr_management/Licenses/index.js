@@ -1,5 +1,5 @@
 import LicensesDialog from './LicensesDialog';
-import ProfileLicenseDialog from './ProfileLicenseDialog';
+import ProfileLicenseDialog from './forms/ProfileDialog';
 import ViewLicensesTab from './ViewLicensesTab';
 
 export {

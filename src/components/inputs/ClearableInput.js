@@ -19,7 +19,7 @@ import {
 
 import Button from './Button';
 import * as Utils from '../../utils/Utils';
-import {execWhen} from '../../utils/Utils';
+import {execWhen, Dates} from '../../utils/Utils';
 import autosize from '../../utils/autosize';
 
 import ASelectInput from './ASelectInput';
@@ -110,6 +110,9 @@ class ClearableInput extends ASelectInput {
         }
         if ("defaultValue" in this.props) {
             if (type === 'date' || type === 'time') {
+                if(type === "date") {
+                    defaultValue = Dates.parse(defaultValue);
+                }
                 this.onChange(defaultValue, this, true);
             } else if (type === 'radio') {
                 this.props.values.forEach(item => {
@@ -473,7 +476,7 @@ class ClearableInput extends ASelectInput {
         } else if (this.isSelectMultiple && el) {
             if (isDefault) {
                 value = el.props.defaultValue;
-//                alert(value)
+//
             }
         } else if (this.isSelectable && el) {
             if (isDefault) {
@@ -699,7 +702,7 @@ class ClearableInput extends ASelectInput {
         const inputProps = {
             onChange: this.setValue, className: "text-input--underbar2"
         };
-        const {type, desc, footerDesc, renderer, onFilter} = this.props;
+        const {type, desc, footerDesc, renderer, onFilter, onSubmit} = this.props;
 
         const {placeholder} = this.state;
 
@@ -798,6 +801,7 @@ class ClearableInput extends ASelectInput {
                         ref="radioGroup"
                         name={this.props.name}
                         values={this.props.values}
+                        groupBy={this.props.groupBy}
                         className={checkboxClassName}
                         inputProps={inputProps}/>
                 </div>;
@@ -822,6 +826,7 @@ class ClearableInput extends ASelectInput {
                         ref="checkboxGroup"
                         name={this.props.name}
                         values={this.props.values}
+                        groupBy={this.props.groupBy}
                         className={checkboxClassName}
                         inputProps={inputProps}/>
                 </div>;
@@ -829,6 +834,15 @@ class ClearableInput extends ASelectInput {
                 inputProps.type = type || 'text';
                 inputProps.ref = this.refName = this.props.ref || "textField";
                 inputProps.label = inputProps.placeholder;
+
+                let onEnterSubmit;
+                if(isFunction(onSubmit)) {
+                    onEnterSubmit = (e) => {
+                        if(e.keyCode === 13) {
+                            onSubmit(e);
+                        }
+                    };
+                }
 
                 let innerInputProps = {};
 
@@ -851,7 +865,7 @@ class ClearableInput extends ASelectInput {
                                     _value = _value.replace(',', '.');
                                 }
                                 value = parseFloat(_value);//.toFixed(1);
-                                //alert(value)
+                                //
                                 e.target.value = value;
                                 if (value < parseFloat(min)) {
                                     this.state.value = min;
@@ -867,6 +881,9 @@ class ClearableInput extends ASelectInput {
                         autoComplete: 'new-password',
                         form: {autoComplete: 'off'}
                     };
+                    onEnterSubmit && (inputProps.onKeyUp = onEnterSubmit);
+                } else {
+                    onEnterSubmit && (inputProps.onKeyUp = onEnterSubmit);
                 }
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;

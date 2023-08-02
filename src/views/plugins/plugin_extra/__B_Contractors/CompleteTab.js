@@ -3,40 +3,42 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, toJS} from 'mobx';
 
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ClearableInput} from '../../../../components/inputs';
-import {THead} from '../../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ClearableInput} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import NewQuestionnaireDialog from './dialogs/NewQuestionnaireDialog.js';
-import EditQuestionnaireDialog from './dialogs/EditQuestionnaireDialog.js';
-import ProfileQuestionnaireDialog from './dialogs/ProfileQuestionnaireDialog.js';
-import ProfileResponseDialog from './dialogs/ProfileResponseDialog.js';
+import NewQuestionnaireDialog from './forms/NewQuestionnaireDialog.js';
+import EditQuestionnaireDialog from './forms/EditQuestionnaireDialog.js';
+import ProfileQuestionnaireDialog from './forms/ProfileQuestionnaireDialog.js';
+import ProfileResponseDialog from './forms/ProfileResponseDialog.js';
 
-import NewDocTemplateDialog from './dialogs/NewDocTemplateDialog.js';
+import NewDocTemplateDialog from './forms/NewDocTemplateDialog.js';
 
 import ProfileQuestionnairePDFReader from './printers/ProfileQuestionnairePDFReader';
 import ProfileResponsePDFReader from './printers/ProfileResponsePDFReader';
 
-import {questionnairesOnUpdate} from './dialogs/AResponseUtils.js';
+import {questionnairesOnUpdate} from 'components/questionnaires/AResponseUtils.js';
 
-import {CompleteTabTableRow} from './dialogs/QuestionnaireAnswersComponents';
+import {CompleteTabTableRow} from './forms/QuestionnaireAnswersComponents';
+import byLogged from "./AQuestionnaireTab/Subscription/subscriptionAllContractorQuestionnaireByLogged";
 
 import style from "./CompleteTab.lazy.css";
+import AQuestionnaireTab from "./AQuestionnaireTab";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 // </editor-fold>
 
 @observer
-class CompleteTab extends React.Component {
-    path;
+class CompleteTab extends AQuestionnaireTab {
     pageKey = "CompleteTab";
+
+    status = "CompleteAccepted";
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-
-        this.path = props.path + 'questionnaires/complete/';
 
         this.onCopy = this.onCopy.bind(this);
         this.onSaveAsTemplate = this.onSaveAsTemplate.bind(this);
@@ -56,16 +58,36 @@ class CompleteTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="componentWillMount, componentWillUnmount">
     componentWillMount() {
         style.use();
-        this.onPromise = neonBinding.events.on(`${this.props.path}questionnaires/onUpdate`, ({updateVal, data}) => {
-//            console.log(`${this.props.path}questionnaires/onUpdate`, updateVal, data)
-            const {list} = this.refs.root;
-            questionnairesOnUpdate(list, {updateVal, data});
-        });
+    }
+
+    componentDidMount() {
+        const {status} = this;
+
+        const limit = 0;
+
+        const args = {
+            status,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        // byLogged(args)/*.then((res) => {
+        //     console.log(`questionnaires/onUpdate`, res)
+        //     const {list} = this.refs.root;
+            // questionnairesOnUpdate(list, {updateVal, data});
+        // })*/;
+//         this.onPromise = neonBinding.events.on(`${this.props.path}questionnaires/onUpdate`, ({updateVal, data}) => {
+// //            console.log(`${this.props.path}questionnaires/onUpdate`, updateVal, data)
+//             const {list} = this.refs.root;
+//             questionnairesOnUpdate(list, {updateVal, data});
+//         });
     }
 
     componentWillUnmount() {
         style.unuse();
-        neonBinding.events.off(`${this.props.path}questionnaires/onUpdate`, this.onPromise);
+        // neonBinding.events.off(`${this.props.path}questionnaires/onUpdate`, this.onPromise);
     }
     // </editor-fold>
     
@@ -103,7 +125,7 @@ class CompleteTab extends React.Component {
                 const item = this.refs.root.list[idx];
                 
                 progressDialog.open("Please wait...");
-                return neonBinding.events.emit(this.props.path + "questionnaires/update-status", item.id, attrs).then(res => {
+                return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
                     if(res && attrs.status === 'CompleteDeclined') {
                         this.refs.root.list.removeIf((val, n) => n === idx);
                     }
@@ -155,7 +177,16 @@ class CompleteTab extends React.Component {
         const {
             id, 
             data: {
-                created_at, status_answered_by_sender, form: {name, desc, questions, answered_by = 'Receipient'}, visibility
+                created_at,
+                name: formName,
+                desc,
+                status = "New",
+                status_answered_by_sender,
+                answered_by = 'Recipient',
+                is_template,
+                visibility,
+                page_title_list,
+                question_list,
             }
         } = item;
         
@@ -190,7 +221,7 @@ class CompleteTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Questionnare Title" className="form-control" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Questionnaire Title" className="form-control" onChange={onChange}/>
          </div>;
     }
     // </editor-fold>
@@ -230,7 +261,7 @@ class CompleteTab extends React.Component {
             pageId={this.pageKey + "-tab"}
             pageTitle="Questionnaires"
             pageTitleSingular="document"
-            path={this.path}
+            onLoadList={this.onLoadList}
             noAnimation={true}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}

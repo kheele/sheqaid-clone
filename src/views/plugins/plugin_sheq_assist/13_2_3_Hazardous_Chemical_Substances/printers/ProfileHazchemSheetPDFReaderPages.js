@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {Image, Page, Text, View} from '@react-pdf/renderer';
 
-import {Panel} from '../../../../../pdf-components';
+import {Panel} from 'pdf-components';
 
 import styles from './ProfilePDFReader.style';
 

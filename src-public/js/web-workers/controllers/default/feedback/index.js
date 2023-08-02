@@ -10,7 +10,7 @@
             const doc_ref = await db2.collection(this.tbl).add(data);//Promise < DocumentReference < T > >
             let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
             const opts = {
-                from: '"SHEQ Aid - Feedback" <support@sheqsolve.com>',
+                from: '"SHEQ Aid - Feedback" <no-reply@sheqsolve.com>',
                 to: "support@sheqsolve.com",
                 subject: 'Feedback',
                 html: '<h3><b>Message Details</b></h3>\n\
@@ -18,9 +18,7 @@
                 <p>Email: ' + data.email + '</p>\n\
                 <p>' + data.message + '</p>'
             };
-            const sendEmail = functions.httpsCallable('callables-sendEmail');
-            const mailRes = await sendEmail(opts);
-            console.log('mailRes', mailRes)
+            await Utils.sendEmail(opts);
             return true;
         }
     }

@@ -3,19 +3,19 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {AProfileDialog} from 'components/dialogs';
 import {
     ClearableInput,
     ProfileField,
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
+} from 'components/inputs';
 import {RowPanel1, RowPanel2, RowPanel3, Sign} from "./ManHourComponents";
 
 import style from "./ProfileManHourDialog.lazy.css";
-import {FormControls, Row} from "../../../../../components/FormComponents";
-import NewIncidentListTable from "../../../../../components/FormTableComponents/NewIncidentListTable";
+import {FormControls, Row} from "components/FormComponents";
+import NewIncidentListTable from "components/FormTableComponents/NewIncidentListTable";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">

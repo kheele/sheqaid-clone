@@ -5,7 +5,8 @@ import {computed, observable} from 'mobx';
 import {ClearableInput, ProfileField} from './';
 
 import ASelectInput from './ASelectInput';
-import {Dates} from "../../utils/Dates";
+import {Dates} from "utils/Dates";
+import trainingMatrixStore from "mutations/all/TrainingMatrix";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -24,7 +25,7 @@ class SelectInput extends ASelectInput {
 
     async componentDidMount() {
         let {className = '', readonly} = this.props;
-        className += ` SelectTrainingMatixInput`;
+        className += ` SelectTrainingMatrixInput`;
 
         if (readonly) {
             this.state.props = {
@@ -123,17 +124,13 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/05_Trainings/training-matrix/list", {limit: -1}).then(res => {
-        return res.map(value => {
-//            console.log('value', value)
-            const {course_or_module: {data, name}, unit_standard, date_range} = value.data;
-            return {
-                label: (name || data.name) +
-                    (unit_standard ? (' (' + unit_standard + ')') : '') +
-                    (date_range ? (' (' + Dates.formatDate(date_range.start) + '-' + Dates.formatDate(date_range.end) + ')') : ''),
-                value
-            };
-        }).distinct();
+    return trainingMatrixStore.listForSelectionByLogged().then(res => {
+        return res.filter(v => !!v.data.course).map(value => {
+            const {course: {name}, unit_standard, date_range_start, date_range_end} = value.data;
+            return {label: name +
+                    (unit_standard ? ` (${unit_standard})` : '') +
+                    (date_range_start ? (' (' + Dates.formatDate(date_range_start) + '-' + Dates.formatDate(date_range_end) + ')') : ''), value};
+        });
     });
 }
 

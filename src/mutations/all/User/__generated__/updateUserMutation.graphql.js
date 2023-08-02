@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<800ad503050cb955ce2b3db3417227c5>>
+ * @generated SignedSource<<99bfac1da9953a1552f92cdd1c7fc12f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,106 @@ v1 = {
   "kind": "LocalArgument",
   "name": "id"
 },
-v2 = [
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "fname",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "lname",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "phone",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "sheq_permissions_actions",
+  "kind": "LinkedField",
+  "name": "actions",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "create",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "edit",
+      "storageKey": null
+    },
+    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "remove",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "share",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "view",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "key",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v9 = [
+  (v2/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "name",
+    "storageKey": null
+  }
+],
+v10 = [
   {
     "alias": null,
     "args": [
@@ -39,11 +138,281 @@ v2 = [
     "name": "update_default_users_by_pk",
     "plural": false,
     "selections": [
+      (v2/*: any*/),
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "id",
+        "name": "auth_id",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "created_at",
+        "storageKey": null
+      },
+      (v3/*: any*/),
+      (v4/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "full_name",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "username",
+        "storageKey": null
+      },
+      (v5/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "profile_pic",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "auth_type",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "has_biometric",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "sheq_permissions_modules",
+        "kind": "LinkedField",
+        "name": "permissions_module_list",
+        "plural": true,
+        "selections": [
+          (v6/*: any*/),
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "default_manager_module",
+            "kind": "LinkedField",
+            "name": "module",
+            "plural": false,
+            "selections": [
+              (v7/*: any*/),
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "default_manager_plugin",
+                "kind": "LinkedField",
+                "name": "plugin",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/),
+                  (v7/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "desc",
+                    "storageKey": null
+                  },
+                  (v8/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "status",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              (v8/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "sheq_permissions_other",
+        "kind": "LinkedField",
+        "name": "permissions_other_list",
+        "plural": true,
+        "selections": [
+          (v6/*: any*/),
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "sheq_permissions_other_keys",
+            "kind": "LinkedField",
+            "name": "key",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "value",
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "notifications_settings",
+        "kind": "LinkedField",
+        "name": "notifications_settings",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_asset_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_chemicals_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_contractor_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_employees_expired_docs_medicals",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_employees_profile_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_incident_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_non_conformance_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_training_management_notifs",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "receive_expired_docs_notifs",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "hr_employees",
+        "kind": "LinkedField",
+        "name": "linked_employee",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "email",
+            "storageKey": null
+          },
+          (v5/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_companies",
+        "kind": "LinkedField",
+        "name": "company",
+        "plural": false,
+        "selections": (v9/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_clients",
+        "kind": "LinkedField",
+        "name": "client",
+        "plural": false,
+        "selections": (v9/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_projects",
+        "kind": "LinkedField",
+        "name": "project",
+        "plural": false,
+        "selections": (v9/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_sites",
+        "kind": "LinkedField",
+        "name": "site",
+        "plural": false,
+        "selections": (v9/*: any*/),
         "storageKey": null
       }
     ],
@@ -59,7 +428,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "updateUserMutation",
-    "selections": (v2/*: any*/),
+    "selections": (v10/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -71,19 +440,19 @@ return {
     ],
     "kind": "Operation",
     "name": "updateUserMutation",
-    "selections": (v2/*: any*/)
+    "selections": (v10/*: any*/)
   },
   "params": {
-    "cacheID": "7d284a1d4d0606dee83c45ea778ac85e",
+    "cacheID": "1b55b1b4dc8cde1ddbab76ff80c10f4b",
     "id": null,
     "metadata": {},
     "name": "updateUserMutation",
     "operationKind": "mutation",
-    "text": "mutation updateUserMutation(\n  $id: default_users_pk_columns_input!\n  $_set: default_users_set_input!\n) {\n  update_default_users_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateUserMutation(\n  $id: default_users_pk_columns_input!\n  $_set: default_users_set_input!\n) {\n  update_default_users_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    auth_id\n    created_at\n    fname\n    lname\n    full_name\n    username\n    phone\n    profile_pic\n    auth_type\n    has_biometric\n    permissions_module_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      module {\n        key\n        id\n        plugin {\n          id\n          key\n          desc\n          title\n          status\n        }\n        title\n      }\n    }\n    permissions_other_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      key {\n        value\n        id\n      }\n    }\n    notifications_settings {\n      id\n      receive_asset_management_notifs\n      receive_chemicals_management_notifs\n      receive_contractor_management_notifs\n      receive_employees_expired_docs_medicals\n      receive_employees_profile_notifs\n      receive_incident_management_notifs\n      receive_non_conformance_management_notifs\n      receive_training_management_notifs\n      receive_expired_docs_notifs\n    }\n    linked_employee {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "dfe22163430194305b6ed7c5e11811f5";
+node.hash = "0d253ed0f08a748533197ca650ea0427";
 
 module.exports = node;

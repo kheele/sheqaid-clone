@@ -7,13 +7,13 @@ import {
     DateRangeInput,
     SelectChemicalCategoryInput,
     SelectChemicalManufacturerInput
-} from '../../../../../components/inputs';
-import {THead} from '../../../../../components/tables';
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
 import InventoryContainerRenderRow from "../InventoryContainerRenderRow";
 import ListPDFReader from '../printers/ListInventoryContainerPDFReader';
 
-import {AControls, AExportDialog} from '../../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

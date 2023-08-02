@@ -1,0 +1,36 @@
+@import '../../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 700px;
+    max-width: 100%;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content ons-radio{
+    font-size: 15px;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance{
+    border: 15px solid red;
+    border-radius: 50%;
+    padding: 15px 0;
+    margin: 10px 0;
+    text-align: center;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance.red {
+    border-color: red;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance.orange {
+    border-color: orange;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance.yellow {
+    border-color: yellow;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance.green {
+    border-color: green;
+}
+#dialog-overlay.NewAuditItemDialog-new-dialog .dialog-content .Compliance.grey {
+    border-color: grey;
+}

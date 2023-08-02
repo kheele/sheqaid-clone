@@ -29,15 +29,15 @@ class ListTable extends ANewListTable {
         if (item) {
             const {
                 outstanding,
-                additional_notes,
-                progress_date
+                notes,
+                date,
             } = item;
 
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
                 <div className="td">{outstanding || 'N/A'}</div>
-                <div className="td">{additional_notes || 'N/A'}</div>
-                <div className="td fixed-flex min-w-110">{Dates.formatDate(progress_date)}</div>
+                <div className="td">{notes || 'N/A'}</div>
+                <div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
                 {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
@@ -56,10 +56,10 @@ class ListTable extends ANewListTable {
                     <ClearableInput ref={this.onSetRef} name="outstanding" type="textarea"
                                     placeholder="Outstanding"
                                     className="col-lg-12 form-control" onChange={this.onChange}/>
-                    <ClearableInput ref={this.onSetRef} name="additional_notes" type="textarea"
-                                    placeholder="Additional Notes"
+                    <ClearableInput ref={this.onSetRef} name="notes" type="textarea"
+                                    placeholder="Notes"
                                     className="col-lg-12 form-control" onChange={this.onChange}/>
-                    <ClearableInput ref={this.onSetRef} name="progress_date" type="date" defaultValue={new Date()}
+                    <ClearableInput ref={this.onSetRef} name="date" type="date" defaultValue={new Date()}
                                     placeholder="Progress Date..."
                                     required className="col-lg-12 form-control" onChange={this.onChange}/>
                 </div>
@@ -76,7 +76,7 @@ class ListTable extends ANewListTable {
         return <THead className="align-left">
             <div className="td font-size-13 fixed-flex min-w-30">#</div>
             <div className="td font-size-13">Outstanding</div>
-            <div className="td font-size-13">Additional Notes</div>
+            <div className="td font-size-13">Notes</div>
             <div className="td font-size-13 fixed-flex min-w-110">Progress Date</div>
             {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
             {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}

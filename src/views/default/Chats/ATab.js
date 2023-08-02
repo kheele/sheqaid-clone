@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {execWhen} from '../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import style from "./GeneralTab.lazy.css";
 

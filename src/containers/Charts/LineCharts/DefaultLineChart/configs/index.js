@@ -10,7 +10,7 @@ function configs(labels, datasets) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
+          display: true,
         },
       },
       interaction: {
@@ -38,6 +38,7 @@ function configs(labels, datasets) {
               style: "normal",
               lineHeight: 2,
             },
+            min: 0,
           },
         },
         x: {

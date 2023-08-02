@@ -11,6 +11,10 @@ footer{
 .InitView footer{
 
 }
+.InitViewSetupClients + footer{
+    position: absolute;
+    bottom: 0;
+}
 footer > #footer-links {
     padding-top: 25px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);

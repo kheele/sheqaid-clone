@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, SelectClientInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+import {ClearableInput, SelectClientInput, SelectEmployeeInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditClaimsEmployerDetailsDialog.lazy.css";
 // </editor-fold>
@@ -118,7 +118,7 @@ class Controls extends React.Component {
         
         ShouldUpdate.check(data, old_data, company_name, 'company_name');
         ShouldUpdate.check(data, old_data, company_reg_num, 'company_reg_num');
-        ShouldUpdate.checkEmployee(data, old_data, company_contact_person, 'company_contact_person');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, company_contact_person, 'company_contact_person');
         ShouldUpdate.check(data, old_data, company_str_addr, 'company_str_addr');
         ShouldUpdate.check(data, old_data, company_str_addr_code, 'company_str_addr_code');
         ShouldUpdate.check(data, old_data, company_postal_addr, 'company_postal_addr');

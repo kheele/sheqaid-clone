@@ -1,0 +1,169 @@
+#dialog-overlay.ANewTableFormDialog .dialog-container{
+    height: calc(100% - 35px);
+    width: calc(100% - 30px);
+    max-width: 100%;
+}
+#dialog-overlay.ANewTableFormDialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 48px);
+}
+
+#dialog-overlay.ANewTableFormDialog .table:not(.col-lg-6) {
+    width: 100%;
+    margin: 0;
+}
+#dialog-overlay.ANewTableFormDialog .table > .tbody{
+    padding-right: 0;
+    overflow: visible !important;
+}
+#dialog-overlay.ANewTableFormDialog .table > .tbody > * > .tr {
+    /*margin-right: -2px;*/
+    padding-left: 0;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type){
+    display: block;
+    padding: 0;
+    border: 8px solid rgb(2, 168, 168);
+    border-right-color: #fff;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tr{
+    display: flex;
+    background: rgb(2, 168, 168);
+    border: none;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tables {
+    margin: 0px -10px 0 0;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tr,
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tables {
+    min-width: 100%;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:first-of-type > .td > .clearable-field-control{
+    width: 400px;
+    border-radius: 20px 0 0 20px;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:first-of-type > .td > button{
+    margin: 0px;
+    width: 75px;
+    padding: 7px 0;
+    border-radius: 0 20px 20px 0;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tr > .td > button{
+    margin: -5px 3px 3px;
+    width: 98px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:first-of-type > .td-title{
+    padding-top: 5px;
+    padding-left: 0;
+    margin: 0 auto;
+    min-width: 516px;
+}
+#dialog-overlay.ANewTableFormDialog .table.title-table > .tbody > * > .tr:not(:first-of-type) > .tr > .td-title{
+    font-size: 22px;
+    padding: 0;
+    color: #fff;
+    margin-left: -10px;
+}
+
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) .list {
+	overflow: visible;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .thead-title {
+    border-top-width: 2px;
+    border-top-style: solid;
+    font-size: 14px;
+    padding: 5px;
+    text-align: center;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .thead {
+    padding: 0;
+    border: none;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .thead > .td {
+    font-size: 14px;
+    font-weight: normal;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .thead > .td:not(.td-calc) {
+    padding: 4px 6px;
+    margin: 0;
+    text-align: center;
+    border: 2px solid #fff;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td:not(.td-calc):last-of-type {
+
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr.tr-readonly:hover{
+    background: #fff;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td {
+    padding-top: 4px;
+    padding-bottom: 5px;
+    height: 42px;
+    border: 2px solid #fff;
+    border-right-width: 0px;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td:first-of-type {
+    border-left-width: 0px;
+}
+
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr.tr-readonly > .td{
+    position: relative;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr.tr-readonly > .td > span{
+    position: absolute;
+    left: 2px;
+    top: 3px;
+    right: 2px;
+    bottom: 3px;
+    padding: 3px;
+    padding: 8px 3px;
+    border-radius: 2px;
+    box-shadow: 0 0 3px #ddd;
+    background: #fafafa;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td-calc {
+    min-width: 37px;
+    border: 2px solid #fff;
+    border-left-width: 2px !important;
+    border-top-width: 0;
+    border-right-width: 0;
+    padding: 3px 0;
+    text-align: center;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr:not(:first-of-type) > .td-calc {
+    padding: 12px 0;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td-calc ons-input {
+    padding: 0;
+    left: 0;
+    top: 4px;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td-calc input {
+    padding: 0;
+    text-align: center;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td-calc > span {
+    margin-top: 8px;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .thead > .td:last-of-type {
+    padding: 0 28px;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td:last-of-type > button {
+    width: 40px;
+    margin-top: 1px;
+}
+#dialog-overlay.ANewTableFormDialog .table:not(.title-table) > .tbody > * > .tr > .td:last-of-type {
+    padding: 5px 0 5px 8px;
+    border-left: 2px solid #fff;
+}

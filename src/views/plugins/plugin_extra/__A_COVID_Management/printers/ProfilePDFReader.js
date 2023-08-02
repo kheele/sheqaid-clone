@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {APDFReader} from '../../../../../components/PrintComponents';
+import {APDFReader} from 'components/PrintComponents';
 
 import {PageFirst, PageLast} from './ProfilePDFReaderPages';
 import {Page2 as Page2Screening} from './ProfileListScreeningPDFReaderPages';

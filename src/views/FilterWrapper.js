@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../utils/Form';
+import Form from 'utils/Form';
 
-import {Button} from '../components/inputs';
+import {Button} from 'components/inputs';
 
 import style from "./FilterWrapper.lazy.css";
 
@@ -38,7 +38,8 @@ class FilterWrapper extends React.Component {
     }
 
     onSearch() {
-        let {page, page: {refs: {body}, props: {path, onLoadList, onLoadListFilter}}} = this;
+        // let {page: {refs: {body}, props: {onLoadList}}} = this;
+        let {page: {refs: {body}, onLoadList}} = this;
         body.state.dataLoaded = false;
 
         const classList = this.state.open ? ReactDOM.findDOMNode(this).classList : null;
@@ -46,44 +47,14 @@ class FilterWrapper extends React.Component {
             const {formData: filterData} = this.form;
             classList && classList.add('filter-wrapper-large');
 
-            let promise;
-            let data;
-            if(path) {
-                data = path.data;
-                if (isObject(path)) {
-                    path = path.path;
-                } else {
-                    path += "list";
-                }
-                
-                console.log(path + "/filter", filterData, data)
-                promise = window.neonBinding.events.emit(path + "/filter", filterData, data);
-            } else if(onLoadList) {
-                console.log("onLoadList/filter", filterData, data)
-                promise = onLoadList(page).then(res => onLoadListFilter(res, filterData, data));
-            }
-            promise.then(res => {
-                console.log("dataStale", body.dataStale)
-                if (body.dataStale)
-                    return;
-
-                if (res) {
-                    if (res.isEmpty()) {
-                        body.resultsEmpty();
-                    }
-                    this.page.state.list = res;
-                    body.state.dataLoaded = true;
-                    return res.isEmpty();
-                } else {
+            if(onLoadList) {
+                onLoadList({filterData, isNew: true});
+            } else {
+                if(this.page.state.list.isEmpty()) {
                     body.resultsEmpty();
-                    body.state.dataLoaded = true;
-                    return true;
                 }
-            }).catch(e => {
-                console.log(e)
-                body.state.dataError = true;
                 body.state.dataLoaded = true;
-            });
+            }
         } else {
             body.onLoadList();
             classList && classList.remove('filter-wrapper-large');

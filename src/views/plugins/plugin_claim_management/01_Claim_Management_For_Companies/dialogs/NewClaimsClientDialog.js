@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen} from 'utils/Utils';
 import {
     ClearableInput,
     SelectClientInput,
@@ -12,9 +12,9 @@ import {
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import NewWCL2Dialog from './NewWCL2Dialog.js';
 import NewWCL4Dialog from './NewWCL4Dialog.js';

@@ -2,19 +2,19 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {onSelectLoadSWPCategories, onSelectLoadSWPLocations} from '../../../utils';
+import Form from 'utils/Form';
+import {onSelectLoadSWPCategories, onSelectLoadSWPLocations} from 'views/plugins/utils';
 
-import {Dates} from "../../../../../utils/Utils";
+import {Dates} from "utils/Utils";
 import {
     Button,
     ClearableInput,
     PhotoUploadButton,
     SelectDepartmentInput,
     SelectEmployeeInput
-} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditSWPDialog.lazy.css";
 

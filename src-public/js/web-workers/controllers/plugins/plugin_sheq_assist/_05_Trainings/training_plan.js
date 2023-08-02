@@ -174,8 +174,11 @@
                             group,
                             list,
                             cost,
-                            attendanceRate,
-                            results,
+                            attendanceRate,//
+                            // const failed = __value.filter(v => v < 50).length;
+                            // const passed = __value.filter(v => v >= 50).length;
+                            // const average = __value.isEmpty() ? 'N/A' : (__value.reduce((a, b) => a + b, 0) / (__value.length * 100) * 100).toFixed(1) + '%';
+                            results,//
                             status,
                             employeeList,
                             jobPositionList,

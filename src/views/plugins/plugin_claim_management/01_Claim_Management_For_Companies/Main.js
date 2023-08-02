@@ -13,7 +13,7 @@ import ClaimsContractorTab from './ClaimsContractorTab.js';
 import COIDServiceProvidersTab from './COIDServiceProvidersTab.js';
 import COIDMedicalCentersTab from './COIDMedicalCentersTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

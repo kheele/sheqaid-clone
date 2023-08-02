@@ -1,20 +1,22 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {extendObservable, observable, toJS} from 'mobx';
+import {computed, extendObservable, observable, toJS} from 'mobx';
 import {isValidPhoneNumber, parsePhoneNumber} from 'libphonenumber-js';
 
-import Form from '../../../../utils/Form';
-import {onChangeUsername} from '../../../../utils/UsersFuns';
+import Form from 'utils/Form';
+import {onChangeUsername} from 'utils/UsersFuns';
 
-import {debounce, execWhen, ShouldUpdate} from '../../../../utils/Utils';
-import {Button, ClearableInput, ProfileField, ProfilePic, SelectCountryCodeInput} from '../../../../components/inputs';
-import {Row} from '../../../../components/FormComponents';
+import {debounce, execWhen, ShouldUpdate} from 'utils/Utils';
+import {Button, ClearableInput, ProfileField, ProfilePic, SelectCountryCodeInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
-import SetupPhoneNumDialog from '../../../../components/dialogs/SetupPhoneNumDialog';
+import SetupPhoneNumDialog from 'components/dialogs/SetupPhoneNumDialog';
 
 import EditPasswordDialog from "../EditPasswordDialog.js";
 import updateUser from "./updateUser";
+import {getPhoneNumberNew} from "../../../../utils/UtilsFuns";
+import {CircularProgress} from "@mui/material";
 
 // </editor-fold>
 
@@ -74,7 +76,8 @@ class Controls extends React.Component {
             token: null,
             loading: false,
             username: null
-        }
+        },
+        item: null,
     };
     // </editor-fold>
 
@@ -99,7 +102,7 @@ class Controls extends React.Component {
         this.updateUser = updateUser.bind(this);
 
         this.form = new Form();
-        this.form.addChangeOne("username", debounce(onChangeUsername.call(this, this.path)).bind(this));
+        this.form.addChangeOne("username", debounce(onChangeUsername.call(this, "ContractorUser")).bind(this));
     }
     // </editor-fold>
 
@@ -120,7 +123,7 @@ class Controls extends React.Component {
             const {signup, usernameStatus, userDetails} = this.refs;
             if (status.status === 'CONFIRMED' || usernameStatus.isAvailable) {
                 signup.show();
-                // alert(usernameStatus.isAvailable)
+                // 
                 if (usernameStatus.isAvailable) {
                     userDetails.showPasswords();
                 }
@@ -204,12 +207,12 @@ class Controls extends React.Component {
                         return;
                     }
                     if (form.isValid('country') && form.isValid('phone')) {
-                        const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').isoCode);
+                        const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').data.iso2);
                         if (!isValid) {
                             infoDialog.open('Phone Number is not valid');
                             return;
                         } else {
-                            const res = await this.refs.setupPhoneNumDialog.extraProp('isoCode', form.get('country').isoCode).extraProp('phoneNumber', form.get('phone')).open(storage.loggedUser).then(res => {
+                            const res = await this.refs.setupPhoneNumDialog.extraProp('isoCode', form.get('country').data.iso2).extraProp('phoneNumber', form.get('phone')).open(storage.loggedUser).then(res => {
                                 console.log('setupPhoneNumDialog res', res);
                                 return res;
                             });
@@ -269,7 +272,7 @@ class Controls extends React.Component {
                     return;
                 }
                 if (form.isValid('country') && form.isValid('phone')) {
-                    const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').isoCode);
+                    const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').data.iso2);
                     if (!isValid) {
                         infoDialog.open('Phone Number is not valid');
                         return;
@@ -284,7 +287,7 @@ class Controls extends React.Component {
                         passwordVerified = true;
 
                         const res = await this.refs.setupPhoneNumDialog.
-                        extraProp('isoCode', form.get('country').isoCode).
+                        extraProp('isoCode', form.get('country').data.iso2).
                         extraProp('phoneNumber', form.get('phone')).
                         open(storage.loggedUser).then(res => {
                             console.log('setupPhoneNumDialog res', res);
@@ -375,17 +378,7 @@ class Controls extends React.Component {
     get phoneNumberNew() {
         const {form} = this;
         let {country, phone} = form.data;
-        if (phone) {
-            phone = String(phone).replaceAll(' ', '').replaceAll('+', '').replaceAll('(', '').replaceAll(')', '');
-        } else {
-            phone = "";
-        }
-        const code = country ? country.dialCode : "";
-        if (phone.trim().replaceAll(" ", "").startsWith("0")) {
-            return code + (phone.length > 0 ? phone.substring(1) : "");
-        } else {
-            return code + phone;
-        }
+        return getPhoneNumberNew({country, phone});
     }
 
     // </editor-fold>
@@ -412,8 +405,8 @@ class Controls extends React.Component {
         return null;
     }
 
-    get item() {
-        return this.props.state.item;
+    @computed get item() {
+        return this.state.item;
     }
 
     get isLoggedUser() {
@@ -423,8 +416,10 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+
         let {
             props: {
                 onFormNext, onFormBack, onFormOpen,
@@ -540,6 +535,7 @@ class Controls extends React.Component {
                     rendered
                     idx={idx += 1}
                     title={idx + ". Notifications Settings"}
+                    className="NotificationsSettings-row"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                 >

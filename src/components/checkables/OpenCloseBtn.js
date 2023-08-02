@@ -14,10 +14,10 @@ class OpenCloseBtn extends React.Component {
     }
     
     onClick() {
-        const {ques} = this.props;
+        const {ques, question_list} = this.props;
         setTimeout(() => {
             if(!ques.open) {
-                this.questions.forEach(q => q.open = false);
+                question_list.forEach(q => q.open = false);
             }
             ques.open = !ques.open;
             
@@ -34,17 +34,7 @@ class OpenCloseBtn extends React.Component {
             }, 500);
         });
     }
-    
-    @computed
-    get questions() {
-        const {questions} = this.props;
-        if(isArray(questions) || isObservableArray(questions)) {
-            return questions;
-        } else {
-            return Object.values(questions);
-        }
-    }
-    
+
     render() {
         const {ques, top} = this.props;
         return <Button key={new Date().getTime()} className={"btn btn-primary pull-left fa open-close-btn font-size-24 " + (top ? "open-close-btn-top " : "") + (ques.open ? "fa-angle-up" : "fa-angle-down")} onClick={this.onClick}/>;

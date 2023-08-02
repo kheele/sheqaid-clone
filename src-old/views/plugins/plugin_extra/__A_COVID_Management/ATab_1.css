@@ -1,0 +1,202 @@
+.tab-content .page-content[id$="-tab"]{
+    height: 100%;   
+    padding: 0;
+}
+.tab-content .page-content[id$="-tab"] .page-title{
+    margin: -90px 0 40px;
+    /*width: 530px;*/
+    border: none;
+    float: right;
+}
+.tab-content #ReturnToWorkTab-tab.page-content[id$="-tab"] .page-title{
+    /*width: 440px;*/
+}
+.tab-content .page-content[id$="-tab"] .page-title > h3{
+    /*    font-size: 16px;
+        margin: 8px 0;
+        background: #fff;
+        padding: 8px 10px;
+        border-radius: 3px;
+        flex: 1;*/
+    display: none;
+}
+.tab-content .page-content[id$="-tab"] .page-title > .tabled-top-panel {
+    flex: 1;
+    min-width: 335px;
+}
+.tab-content .page-content[id$="-tab"] .page-title > .tabled-top-panel > .buttons {
+    width: 100%;
+}
+.tab-content .page-content[id$="-tab"] .page-title > .tabled-top-panel > .buttons > .right-buttons {
+    /*width: calc(100% - 186px);*/
+    margin: 8px 0 5px;
+    height: 18px;
+    border-right: 1px solid #aaa;
+}
+.tab-content .page-content[id$="-tab"] .page-title > .tabled-top-panel .reports-date-range {
+    position: fixed;
+    top: 0;
+    right: 10px;
+    background: rgba(68, 68, 68, 0.7);
+    padding: 7px;
+}
+.tab-content .page-content[id$="-tab"] .filter-wrapper{
+    margin: 0;
+}
+
+.tab-content .page-content[id$="-tab"] .ViewByPanel {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 0px;
+    top: 5px;
+    right: 0px;
+    background: #fff;
+    padding: 5px;
+}
+.tab-content .page-content[id$="-tab"] .ViewByPanel .ViewByPanelMonths > .btn{
+    position: relative;
+}
+.tab-content .page-content[id$="-tab"] .ViewByPanel .ViewByPanelMonths > .btn > div{
+    background: #fff;
+    color: rgb(2,168,168);
+    border-radius: 50%;
+    border: 2px solid;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    padding: 0;
+    position: absolute;
+    right: 3px;
+    top: -6px;
+    font-style: normal;
+}
+.tab-content .page-content[id$="-tab"] .ViewByPanel .ViewByPanelMonths > .btn:not(:first-of-type):not(:last-of-type){
+    border-radius: 0;
+}
+.tab-content .page-content[id$="-tab"] .ViewByPanel .ViewByPanelMonths > .btn:first-of-type{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.tab-content .page-content[id$="-tab"] .ViewByPanel .ViewByPanelMonths > .btn:last-of-type{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar {
+    position: relative;
+    left: 0px;
+    top: 10px;
+    right: 0px;
+    width: calc(100% - 0px);
+    height: calc(100% - 60px);
+    background: #fff;
+    padding: 5px;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__controls {
+    display: none;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__weekday-day, 
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day {
+    border: 2px solid #e9e9e9;
+    background-image: radial-gradient(circle farthest-corner, #ededed, #eeeeee, #f1f1f1, #f8f8f8);
+    border-right: none;
+    border-bottom: none;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day {
+    height: auto;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day .RenderDay{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 1s;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day .RenderDay.selected{
+    background: rgba(140, 140, 140, 0.5);
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day .RenderDayIcon{
+    background: rgb(2,168,168);
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding: 0;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 11px;
+    transform: translate(-50%, -50%);
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__day .RenderDayIconAPISubmitted{
+    background: rgb(2,168,168);
+    color: #fff;
+    width: 64px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    margin: 0 0 0 0;
+    transform: translate(-50%, 0%);
+    flex-direction: column;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__weekday-titles {
+    border-right: 2px solid #e9e9e9;
+    border-bottom: 2px solid #e9e9e9;
+    height: 30px;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__weekday-titles .rgc-calendar__weekday-day {
+    height: 30px;
+}
+.tab-content .page-content[id$="-tab"] .rgc-calendar .rgc-calendar__month{
+    border-right: 2px solid #e9e9e9;
+    border-bottom: 2px solid #e9e9e9;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    height: calc(100% - 30px);
+}
+
+.ATabPopoveContent .nav-item{
+    border-top: 1px solid #eaeaea;
+    border-bottom: none;
+}
+.ATabPopoveContent .nav-item.active{
+    background: rgb(2, 168, 168);
+    color: #fff;
+    margin: 0 -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.ATabPopoveContent .nav-item.active,
+.ATabPopoveContent .nav-item:first-of-type,
+.ATabPopoveContent .nav-item.active + .nav-item{
+    border: 0px;
+}
+.ATabPopoveContent hr + .nav-item.active{
+    margin-top: -1px;
+}
+#popover-overlay.SelectMonthPopover .popover-container {
+    width: auto !important;
+    top: 50% !important;
+    min-width: 100px !important;
+    max-height: 528px !important;
+    height: calc(100% - 10px) !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+#popover-overlay.SelectMonthPopover .popover-container .nice-scrollbars{
+    height: 100% !important;
+}

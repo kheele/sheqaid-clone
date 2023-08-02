@@ -2,14 +2,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {calculateRightPos, execWhen, Permissions} from '../../../utils/Utils';
+import {calculateRightPos, execWhen, Permissions} from 'utils/Utils';
 import APageListReadWrite from "../../APageListReadWrite";
-import NavItem from '../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../components/dialogs';
-import {ActionsButton, ClearableInput, Clickable} from '../../../components/inputs';
-import {THead, TRow} from '../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import NewEmployeeDialog from '../../plugins/plugin_hr_management/Employees/NewDialog.js';
+import NewEmployeeDialog from 'views/plugins/plugin_hr_management/Employees/forms/NewDialog.js';
 import NewDialog from './NewDialog';
 import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';

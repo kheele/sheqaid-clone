@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../../utils/Form';
-import {TRow} from '../../../../components/tables';
-import {ActionsButton} from '../../../../components/inputs';
+import Form from 'utils/Form';
+import {TRow} from 'components/tables';
+import {ActionsButton} from 'components/inputs';
 
 @observer
 class AListTab extends React.Component {

@@ -21,7 +21,8 @@ class UserFuns {
                     consultant, no_projects, company_name
                 }
             },
-            client_id, project_id, site_id
+            client_id, project_id, site_id,
+            contractor_id
         } = loggedUser;
 
         const isHasProjects = consultant || !no_projects;
@@ -31,9 +32,20 @@ class UserFuns {
             if (my_client) {
                 companyName = my_client.name || my_client.data.name;
             } else {
-                const clients = await Events.get('plugin_sheq_assist/clients/');
-                const val = await clients.find_by_id.call(clients, null, client_id);
-                companyName = val && val.data.name;
+                if(client_id) {
+                    const clients = await Events.get('plugin_sheq_assist/clients/');
+                    const val = await clients.find_by_id.call(clients, null, client_id);
+                    companyName = val && val.data.name;
+                } else if(contractor_id) {
+                    const contractors = await Events.get('plugin_sheq_assist/contractors/');
+                    const contractor_val = await contractors.find_by_id.call(contractors, null, contractor_id);
+                    if(contractor_val) {
+                        const {data: {client_id}} = contractor_val;
+                        const clients = await Events.get('plugin_sheq_assist/clients/');
+                        const val = await clients.find_by_id.call(clients, null, client_id);
+                        companyName = val && val.data.name;
+                    }
+                }
             }
         } else {
             companyName = company_name;

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {ANewDialog} from '../../../components/dialogs';
+import {ANewDialog} from 'components/dialogs';
 
 import {ControlsContractor, ControlsUser} from './NewDialogControls';
 

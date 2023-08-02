@@ -39,10 +39,11 @@
 #Employees-page > .page-title > .tabled-top-panel > .buttons > .right-buttons > button {
     font-size: 13px;
 }
-#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(2),
-#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(3),
-#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(4),
-#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(5) {
+#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(2)
+/*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(3)*/
+/*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(4)*/
+/*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(5) */
+{
     display: none;
 }
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(2).allowed,
@@ -52,31 +53,33 @@
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(6).allowed,
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(7).allowed,
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(8).allowed,
-.EmployeeDialogActionsPopover .main-actions > *:nth-child(9).allowed {
+.EmployeeDialogActionsPopover .main-actions > *:nth-child(9).allowed,
+.EmployeeDialogActionsPopover .main-actions > *:nth-child(10).allowed
+{
     display: none;
 }
 
 @media (max-width:1269px){
-    #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(5) {
+    #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(6) {
         display: none;
     }
-    .EmployeeDialogActionsPopover .main-actions > *:nth-child(9).allowed {
+    .EmployeeDialogActionsPopover .main-actions > *:nth-child(10).allowed {
         display: block;
     }
 }
 @media (max-width:1199px){
-    #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(7) {
-        display: none;
-    }
-    .EmployeeDialogActionsPopover .main-actions > *:nth-child(7).allowed {
-        display: block;
-    }
-}
-@media (max-width:1099px){
     #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(8) {
         display: none;
     }
     .EmployeeDialogActionsPopover .main-actions > *:nth-child(8).allowed {
+        display: block;
+    }
+}
+@media (max-width:1099px){
+    #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(9) {
+        display: none;
+    }
+    .EmployeeDialogActionsPopover .main-actions > *:nth-child(9).allowed {
         display: block;
     }
 }

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
 import {autorun, observable} from 'mobx';
 
-import {execWhen} from '../utils/Utils';
-import Popover from '../components/popovers/Popover';
-import {NavigateTop} from '../components';
+import {execWhen} from 'utils/Utils';
+import Popover from 'components/popovers/Popover';
+import {NavigateTop} from 'components';
 import Body from './Body';
 
 @observer

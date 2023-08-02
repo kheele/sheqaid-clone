@@ -1,0 +1,28 @@
+#TemplatesTab-tab{
+    height: 100%;
+}
+#TemplatesTab-tab .page-title{
+    height: 0;
+    margin-top: 0px;
+    border: none;
+    float: right;
+}
+#TemplatesTab-tab .page-title > h3{
+    display: none;
+}
+#TemplatesTab-tab .page-title > .tabled-top-panel {
+    margin-top: -82px;
+    flex-grow: initial;
+    min-width: 340px;
+}
+#TemplatesTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#TemplatesTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#TemplatesTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (20px + 115px)) !important;
+}

@@ -1,0 +1,20 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewManualDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 700px;
+    max-width: 100%;
+}
+#dialog-overlay.NewManualDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+/*#dialog-overlay.NewManualDialog-new-dialog .dialog-content .row-doc{
+    height: 1470px;
+}*/
+#dialog-overlay.NewManualDialog-new-dialog .dialog-content .row-doc .sec-group{
+    height: calc(100% - 32px);
+}
+#dialog-overlay.NewManualDialog-new-dialog .dialog-content .row-doc .sec-group .UploadButton{
+    height: 100%;
+}

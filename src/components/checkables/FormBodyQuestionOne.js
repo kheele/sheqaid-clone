@@ -37,7 +37,7 @@ class FormBody extends React.Component {
         const {ques, readonly} = this.props;
         if(readonly) {
             setTimeout(() => {
-                Object.values(ques.questions).forEach(q => q.open = false);
+                Object.values(ques.question_list).forEach(q => q.open = false);
                 this.state.loaded = true;
             });
         } else {
@@ -114,12 +114,8 @@ class ListWrapper extends React.Component {
     
     @computed
     get hasQuestions() {
-        const {idx, sectionIdx, parentId, type, status, quesPath, isSection, mainQuestions, ques, onViewTemplateDocDialog, readonly, onChange} = this.props;
-        if(isArray(ques.questions) || isObservableArray(ques.questions)) {
-            return !ques.questions.isEmpty();
-        } else {
-            return !Object.values(ques.questions).isEmpty();
-        }
+        const {ques,} = this.props;
+        return (isArray(ques.question_list) || isObservableArray(ques.question_list)) && !ques.question_list.isEmpty();
     }
     
     render() {
@@ -135,7 +131,7 @@ class ListWrapper extends React.Component {
             idx={idx} 
             sectionIdx={sectionIdx}
             mainQuestions={mainQuestions}
-            questions={ques.questions}
+            question_list={ques.question_list}
             isSection={isSection}
             quesPath={quesPath}
             type={type} 

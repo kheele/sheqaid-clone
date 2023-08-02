@@ -77,7 +77,7 @@ class InfoDialog extends React.Component {
             <Msg state={this.state}/>
             <div className="controls">
                 {this.state.actions.map(v => {
-                    return <Button className="btn btn-primary pull-right" text={v.action} onClick={v.fn}/>;
+                    return <Button key={v.action} className="btn btn-primary pull-right" text={v.action} onClick={v.fn}/>;
                 })}
                 <Button className="btn btn-primary pull-right" text="Close" onClick={this.onCancel}/>
             </div>

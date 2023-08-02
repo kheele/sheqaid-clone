@@ -131,7 +131,7 @@
                         filter(v => v.questionType !== 'NoAnswer');
 
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: employee_doc_snapshot.get('email'),
                     cc: ccList,
                     subject: 'Scheduled Inspection From SHEQ Aid',
@@ -152,9 +152,7 @@
                         <p>Kind Regards<br/>SHEQ Aid</p>'
                 };
 
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
 
                 const auditData = {id: doc_snapshot.id, data};
 

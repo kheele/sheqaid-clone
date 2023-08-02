@@ -56,7 +56,7 @@ class FormHeader extends React.Component {
     }
     
     render() {
-        const {formData, formData: {questions}, readonly, mainTitle} = this.props;
+        const {formData, formData: {question_list}, readonly, mainTitle} = this.props;
         console.log('FormHeader');
         return <Grid className="FormHeader" onClick={this.onToggle}>
            <div>
@@ -83,7 +83,7 @@ class FormHeader extends React.Component {
 
 @observer
 class FormEditing extends React.Component {
-    
+
     render() {
         const {state: {editing}, formData} = this.props;
         if(!editing) return null;
@@ -97,7 +97,7 @@ class FormEditing extends React.Component {
 
 @observer
 class FormReadonly extends React.Component {
-    
+
     render() {
         const {state: {editing}, formData, readonly} = this.props;
         if(editing) return null;

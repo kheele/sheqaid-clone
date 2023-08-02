@@ -3,6 +3,7 @@ import {computed} from 'mobx';
 import {is, list} from './';
 
 class Selected {
+    //<editor-fold desc="loggedClientName">
     @computed
     get loggedClientName() {
         let name;
@@ -11,23 +12,23 @@ class Selected {
             name = selectedClient && selectedClient.data.name;
         } else {
             const {loggedUser} = this.storage;
-            name = loggedUser.company.data.company_name;
+            name = loggedUser.company.data.name;
         }
         return name;
     }
+    //</editor-fold>
 
     //<editor-fold desc="selectedClient">
     @computed
     get selectedClient() {
+        const {sess_my_client_id} = storage.sessionIds;
         const {loggedUser} = this.storage;
-        if (!is.isConsultant) {
-            return loggedUser.company;
-        }
-        //nicolene@kwikbulk.co.za, Nicolene, Erasmus
-        //Rainy Mmotong, 0659703417
-
         if (!loggedUser) {
             return null;
+        }
+
+        if (!is.isConsultant) {
+            return loggedUser.company;
         }
 
         const {user} = loggedUser;
@@ -37,45 +38,65 @@ class Selected {
         }
         if (list.clients.isEmpty() || !this.storage.attrs.has("loggedClient"))
             return null;
-        const id = this.storage.attrs.get("loggedClient");
+        const id = sess_my_client_id || this.storage.attrs.get("loggedClient");
         return list.clients.find(val => val.id === id);
     }
 
     //</editor-fold>
 
+    //<editor-fold desc="selectedProject">
     @computed
     get selectedProject() {
+        const {sess_my_project_id} = storage.sessionIds;
         const {client, project, site} = this.storage.loggedUser.user.data;
         if (project) {
             return project;
         }
         if (list.projectsFiltered.isEmpty() || !this.storage.attrs.has("loggedProject"))
             return null;
-        const id = this.storage.attrs.get("loggedProject");
+        const id = sess_my_project_id || this.storage.attrs.get("loggedProject");
         return list.projectsFiltered.find(val => val.id === id);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="selectedSite">
     @computed
     get selectedSite() {
+        const {sess_my_site_id} = storage.sessionIds;
         const {client, project, site} = this.storage.loggedUser.user.data;
         if (site) {
             return site;
         }
         if (list.sitesFiltered.isEmpty() || !this.storage.attrs.has("loggedSite"))
             return null;
-        const id = this.storage.attrs.get("loggedSite");
+        const id = sess_my_site_id || this.storage.attrs.get("loggedSite");
         return list.sitesFiltered.find(val => val.id === id);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="selectedContractorClient">
+    @computed
+    get selectedContractorClient() {
+        const {loggedContractor} = this.storage;
+        if (!loggedContractor)
+            return null;
+        if (!is.isLoggedContractorClient)
+            return null;
+        return this.storage.loggedContractorClient;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="selectedContractorSite">
     @computed
     get selectedContractorSite() {
         const {loggedContractor} = this.storage;
         if (!loggedContractor)
             return null;
-        const {id, data: {name, username, site_list = []}} = loggedContractor;
-        const site_id = this.storage.attrs.get("loggedContractorSite");
-        return site_list.find(val => val.id === site_id);
+        if (!is.isLoggedContractorSite)
+            return null;
+        return this.storage.loggedContractorSite;
     }
+    //</editor-fold>
 
     @computed
     get selectedClientInput() {
@@ -155,6 +176,26 @@ class ModuleList {
         return moduleListInstalledAll;
     }
 
+    //<editor-fold desc="listOther">
+    @computed
+    get listOther() {
+        const {moduleListInstalledAll} = moduleManager;
+        if (isAdminApp) {
+            return moduleListInstalledAll;
+        }
+        if (is.isContractorView) {
+            return moduleListInstalledAll;
+        }
+        const {selectedClient} = this.selected;
+        const id = selectedClient && selectedClient.id;
+        if (!id)
+            return [];
+        return selectedClient.module_list || selectedClient.data.module_list;
+        // return moduleListInstalledAll.filter(({company_list = []}) => company_list.anyMatch(v => v.id === id));
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="list">
     @computed
     get list() {
@@ -169,7 +210,10 @@ class ModuleList {
         const id = selectedClient && selectedClient.id;
         if (!id)
             return [];
-        return moduleListInstalledAll.filter(({company_list_keys = []}) => company_list_keys.contains(id));
+
+        // console.log('selectedClient.data.module_list:', selectedClient.data.module_list.slice())
+        return selectedClient.module_list || selectedClient.data.module_list;
+        // return moduleListInstalledAll.filter(({company_list = []}) => company_list.anyMatch(v => v.id === id));
     }
 
     //</editor-fold>
@@ -188,79 +232,83 @@ class ModuleList {
         const id = selectedClient && selectedClient.id;
         if (!id)
             return [];
-        return moduleListInstalledDashboard.filter(({company_list_keys = []}) => company_list_keys.contains(id));
+        const module_list = selectedClient.module_list || selectedClient.data.module_list;
+        return module_list.
+        filter(({module}) => module.status === 'Installed').
+        filter(({module}) => module.plugin.key !== 'plugin_hr_management');
+        // return moduleListInstalledDashboard.filter(({company_list = []}) => company_list.anyMatch(v => v.id === id));
     }
 
     //</editor-fold>
 
     @computed
     get listSHEQ() {
-        return this.list.filter(v => v.group === "plugin_sheq_assist");
+        return this.list.filter(v => v.module.plugin.key === "plugin_sheq_assist");
     }
 
     @computed
     get listHR() {
-        return this.list.filter(v => v.group === "plugin_hr_management");
+        return this.list.filter(v => v.module.plugin.key === "plugin_hr_management");
     }
 
     @computed
     get listClaim() {
-        return this.list.filter(v => v.group === "plugin_claim_management");
+        return this.list.filter(v => v.module.plugin.key === "plugin_claim_management");
     }
 
     @computed
     get listExtra() {
-        return this.list.filter(v => v.group === "plugin_extra");
+        return this.list.filter(v => v.module.plugin.key === "plugin_extra");
     }
 
     @computed
     get navs() {
-        return this.listDashboard.filter(({key}) => key !== 'Dashboard')/*.sort((mod1, mod2) => {
+        return this.listDashboard.filter(({module: {key}}) => key !== 'Dashboard')/*.sort((mod1, mod2) => {
          return mod1.title < mod2.title;
-         })*/.map(mod => {
-            return {key: mod.key, faIconLeft: mod.faIconLeft, faIconRight: mod.faIconRight, title: mod.title};
+         })*/.map(({module, module:{key, faIconLeft, faIconRight, title}}) => {
+            return {key, module, faIconLeft, faIconRight, title};
         });
     }
 
     @computed
     get permissions() {
-        return this.list.map(({key, title}) => {
-            return {key, desc: title, actions: {create: false, edit: false, view: false, remove: false, share: false}};
+        return this.list.map(({module}) => {
+            return {module, actions: {create: false, edit: false, view: false, remove: false, share: false}};
         });
     }
 
     @computed
     get permissionsSHEQ() {
-        return this.listSHEQ.map(({key, title}) => {
-            return {key, desc: title, actions: {create: false, edit: false, view: false, remove: false, share: false}};
+        return this.listSHEQ.map(({module}) => {
+            return {module, actions: {create: false, edit: false, view: false, remove: false, share: false}};
         });
     }
 
     @computed
     get permissionsHR() {
-        return this.listHR.map(({key, title}) => {
-            return {key, desc: title, actions: {create: false, edit: false, view: false, remove: false, share: false}};
+        return this.listHR.map(({module}) => {
+            return {module, actions: {create: false, edit: false, view: false, remove: false, share: false}};
         });
     }
 
     @computed
     get permissionsClaim() {
-        return this.listClaim.map(({key, title}) => {
-            return {key, desc: title, actions: {create: false, edit: false, view: false, remove: false, share: false}};
+        return this.listClaim.map(({module}) => {
+            return {module, actions: {create: false, edit: false, view: false, remove: false, share: false}};
         });
     }
 
     @computed
     get permissionsExtra() {
-        return this.listExtra.map(({key, title}) => {
-            return {key, desc: title, actions: {create: false, edit: false, view: false, remove: false, share: false}};
+        return this.listExtra.map(({module}) => {
+            return {module, actions: {create: false, edit: false, view: false, remove: false, share: false}};
         });
     }
 
     @computed
     get permissionsSelected() {
-        return this.list.map(({key, title}) => {
-            return {key, desc: title, actions: {create: true, view: true, edit: true, remove: true, share: true}};
+        return this.list.map(({module}) => {
+            return {module, actions: {create: true, view: true, edit: true, remove: true, share: true}};
         });
     }
 }

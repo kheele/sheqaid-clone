@@ -141,7 +141,8 @@ class Button extends React.Component {
     }
 
     render() {
-        return this.shouldRender && <button className={this.props.className} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onClick}>
+        const {style} = this.props;
+        return this.shouldRender && <button className={this.props.className} style={style} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onClick}>
             {this.val || this.props.children}
         </button>;
     }

@@ -10,9 +10,9 @@ import {
     SelectEmployeeInput, SelectIncidentSubCategoryList,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../../components/inputs';
-import {FormControls, Fragment, RiskRating, Row} from '../../../../../../components/FormComponents';
-import {NewEmployeeListTable} from '../../../../../../components/FormTableComponents';
+} from 'components/inputs';
+import {FormControls, Fragment, RiskRating, Row} from 'components/FormComponents';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
 import ProfilePDFReader from '../../printers/ProfilePDFReader';
 // </editor-fold>
 

@@ -13,7 +13,7 @@ import Tab from './Tab';
 @observer
 class Tabs extends React.Component {
     static propTypes = {
-	children: PropTypes.instanceOf(Array).isRequired,
+        children: PropTypes.instanceOf(Array).isRequired,
         onChange: PropTypes.func,
         index: PropTypes.number
     }
@@ -54,19 +54,24 @@ class Tabs extends React.Component {
     }
 
     render() {
-        const {onChange, props: {permissionKey, position, keepState, children}, state} = this;
+        const {onChange, props: {className, tabsHeight, permissionKey, position, keepState, children}, state} = this;
         const pos = position || 'top';
-	return (<div className="tabs">
+        const style = {};
+        if(tabsHeight) {
+            style.height = tabsHeight;
+        }
+        return (<div className={`tabs${className ? ` ${className}` : ''}`} style={style}>
             {pos === 'top' && <ol className={"tab-list " + pos}>
                 <TabList ref="tabList" onChange={onChange} state={state}>{children}</TabList>
             </ol>}
             <div className={"tab-content " + pos}>
-                <TabContent ref="tabContent" permissionKey={permissionKey} keepState={keepState} state={state}>{children}</TabContent>
+                <TabContent ref="tabContent" permissionKey={permissionKey} keepState={keepState}
+                            state={state}>{children}</TabContent>
             </div>
             {pos === 'bottom' && <ol className={"tab-list " + pos}>
                 <TabList ref="tabList" onChange={onChange} state={state}>{children}</TabList>
             </ol>}
-	</div>);
+        </div>);
     }
 }
 
@@ -77,18 +82,18 @@ class TabList extends React.Component {
         super(props);
         this.renderItem = this.renderItem.bind(this);
     }
-    
+
     renderItem(child, index) {
         const {props: {children, onChange, state: {activeIndex}}} = this;
-        if(!child) return undefined;
+        if (!child) return undefined;
         const {title} = child.props;
         return <Tab index={index} activeIndex={activeIndex} key={title} title={title} onClick={onChange}/>;
     }
 
     render() {
-	return (<React.Fragment>
+        return (<React.Fragment>
             {React.Children.map(this.props.children, this.renderItem)}
-	</React.Fragment>);
+        </React.Fragment>);
     }
 }
 
@@ -97,21 +102,22 @@ class TabContent extends React.Component {
 
     activeTab;
     tabs = {};
-    
+
     constructor(props) {
         super(props);
-        
+
         this.renderItem = this.renderItem.bind(this);
     }
-    
+
     renderItem(child, index) {
         const {props: {permissionKey, keepState, state}} = this;
-        if(!child) return undefined;
-        return <ActiveTab permissionKey={permissionKey} state={state} keepState={keepState} index={index} child={child} tabContent={this} tabs={this.tabs}/>;
+        if (!child) return undefined;
+        return <ActiveTab permissionKey={permissionKey} state={state} keepState={keepState} index={index} child={child}
+                          tabContent={this} tabs={this.tabs}/>;
     }
 
     render() {
-	return (<React.Fragment>
+        return (<React.Fragment>
             {React.Children.map(this.props.children, this.renderItem)}
         </React.Fragment>);
     }
@@ -124,11 +130,11 @@ class ActiveTab extends React.Component {
         super(props);
         this.setRef = this.setRef.bind(this);
     }
-    
+
     componentDidMount() {
         this.showScrollbars();
     }
-    
+
     componentWillUpdate() {
         this.showScrollbars();
     }
@@ -140,11 +146,11 @@ class ActiveTab extends React.Component {
 
     showScrollbars() {
         const {child} = this.props;
-        if(child && child.props.scrollable) {
+        if (child && child.props.scrollable) {
             const {props: {child, index, keepState, state: {activeIndex}}} = this;
             if (!child || (!keepState && index !== activeIndex)) return;
             const active = index === activeIndex;
-            if(!active) {
+            if (!active) {
                 setTimeout(() => {
                     $(findDOMNode(this)).removeScrollbars();
                 }, 500);
@@ -155,9 +161,9 @@ class ActiveTab extends React.Component {
             }
         }
     }
-    
+
     setRef(ref, refName, active) {
-        this.props.tabs[refName] = ref; 
+        this.props.tabs[refName] = ref;
         active && (this.props.tabContent.activeTab = ref);
     }
 
@@ -166,13 +172,13 @@ class ActiveTab extends React.Component {
         if (!child || (!keepState && index !== activeIndex)) return null;
         const active = index === activeIndex;
         let className = child.props.scrollable ? 'nice-scrollbars' : '';
-        if(active) {
+        if (active) {
             className += ' active';
         }
         const refName = child.ref;
-	return <div className={className}>
+        return <div className={className}>
             <ErrorBoundary>
-               {React.cloneElement(child, {permissionKey, active, ref: ref => this.setRef(ref, refName, active)})}
+                {React.cloneElement(child, {permissionKey, active, ref: ref => this.setRef(ref, refName, active)})}
             </ErrorBoundary>
         </div>;
     }

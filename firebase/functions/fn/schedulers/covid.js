@@ -51,7 +51,7 @@ exports.covidScreeningDailyCheck = functions.pubsub.schedule('every 30 minutes')
 //        ];
 //
 //        const opts = {
-//            from: '"SHEQ Aid" <support@sheqsolve.com>',
+//            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //            bcc: emails.join(','),
 //            subject: 'SHEQ Aid Daily COVID Screening Notifications',
 //            html: '<h3><b>Dear SHEQ Aid User</b></h3>\n\

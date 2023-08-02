@@ -3,16 +3,16 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
 import {
     ClearableInput,
     SelectEmployeeInput,
     SelectJobPositionInput,
     SelectTrainingCourseInput
-} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewTrainingPlanForEmployeeDialog.lazy.css";
 // </editor-fold>

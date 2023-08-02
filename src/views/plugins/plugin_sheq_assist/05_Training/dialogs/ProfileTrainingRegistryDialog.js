@@ -2,12 +2,14 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from '../../../../../utils/Utils';
-import {ProfileField} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {Dates} from 'utils/Utils';
+import {ProfileField} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingRegistryDialog.lazy.css";
+import TrainingCourseGridCounter from "./ProfileStats/TrainingCourseGridCounter";
+import TrainingCourseGridReportsLineChart from "./ProfileStats/TrainingCourseGridReportsLineChart";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -20,7 +22,7 @@ class ProfileTrainingRegistryDialog extends AProfileDialog {
     }
 
     title() {
-        return "Training Registry";
+        return "Training Course";
     }
 
     get controls() {
@@ -51,7 +53,7 @@ class Controls extends React.Component {
                 onFormNext, onFormBack, onFormOpen,
                 dialog: {renderProfileCover}
             },
-            item: {
+            item, item: {
                 id, data: {
                     created_at,
                     client, project, site,
@@ -70,12 +72,8 @@ class Controls extends React.Component {
         
         return <div className="controls-wrapper controls-sectioned">
             <div className="controls col-lg-12">
-                {renderProfileCover(<React.Fragment>
-                    <h5>{'Created On ' + Dates.formatDate(created_at)}</h5>
-                </React.Fragment>)}   
                 {!isNoProjects && <Row 
-                    rendered  
-                    active
+                    rendered
                     idx={0}
                     title="Company / Project / Site" 
                     onFormOpen={onFormOpen} 
@@ -86,8 +84,7 @@ class Controls extends React.Component {
                     <ProfileField name="site" title="Site" value={site} renderer={val => val.name || val.data.name} className="col-lg-12"/>
                 </Row>}
                 <Row 
-                    rendered 
-                    active={isNoProjects}
+                    rendered
                     idx={1}
                     title="1. Details" 
                     onFormOpen={onFormOpen} 
@@ -95,8 +92,8 @@ class Controls extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <ProfileField name="name" title="Course" value={name} className="col-lg-12"/>
-                    <ProfileField name="job_position_list" title="Job Position(s)" value={job_position_list} renderer={v => v.map(val => val.name || val.data.name).join(', ')} className="col-lg-12"/>
-                    <ProfileField name="sector_list" title="Sector(s)" value={sector_list} renderer={v => v.join(', ')} className="col-lg-12"/>
+                    <ProfileField name="job_position_list" title="Job Position(s)" value={job_position_list} renderer={v => v.map(({job_position: {name}}) => name).join(', ')} className="col-lg-12"/>
+                    <ProfileField name="sector_list" title="Sector(s)" value={sector_list} renderer={v => v.map(({sector: {name}}) => name).join(', ')} className="col-lg-12"/>
                     <ProfileField name="frequency" title="Training Frequency" value={frequency} className="col-lg-6"/>
                     <ProfileField name="provider" title="Training Provider" value={provider} className="col-lg-6"/>
                 </Row>
@@ -109,6 +106,15 @@ class Controls extends React.Component {
                 >
                     <ProfileField name="unit_standard" title="Unit Standard" value={unit_standard} className="col-lg-12"/>
                     <ProfileField name="unit_standard_desc" title="Unit Standard Description" value={unit_standard_desc} className="col-lg-12" />
+                </Row>
+                <Row
+                    rendered
+                    activeAlways
+                    idx={3}
+                    title="3. Dashboard"
+                >
+                    <TrainingCourseGridCounter item={item}/>
+                    <TrainingCourseGridReportsLineChart item={item}/>
                 </Row>
             </div>
         </div>;

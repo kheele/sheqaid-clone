@@ -1,3 +1,10 @@
+.no-text-fill-color-white {
+    text-fill-color: white !important;
+    -webkit-text-fill-color: white !important;
+}
+.no-shadow {
+    box-shadow: none !important;
+}
 .bg-primary {
     background: rgb(2,168,168) !important;
 }

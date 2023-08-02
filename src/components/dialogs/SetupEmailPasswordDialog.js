@@ -12,6 +12,7 @@ import AEditDialog from './AEditDialog';
 import ALoginControls from './ALoginControls';
 
 import style from './SetupEmailPasswordDialog.lazy.css';
+import storage from "../../storage/Storage";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -116,13 +117,18 @@ class Controls extends ALoginControls {
                             
                             const data = {username, password};
                             neonBinding.events.emit(this.path + "login", data).then(res => {
+                                return storage.loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                                    storage.idTokenResult = idTokenResult;
+                                    return res;
+                                });
+                            }).then(res => {
                                 console.log("res", res)
 
                                 const {dialog} = this.props;
                                 dialog.onResponse();
                                 dialog.close();
                                 
-                                this.onComplete(res, true);
+                                this.onComplete(res, true, type);
                             }).catch(err => {
                                 console.error(err);
                                 infoDialog.open(<div>
@@ -155,7 +161,7 @@ class Controls extends ALoginControls {
         });
     }
     // </editor-fold>
-    
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";

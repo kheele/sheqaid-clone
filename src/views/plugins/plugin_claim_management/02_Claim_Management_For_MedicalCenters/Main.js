@@ -10,7 +10,7 @@ import DashboardMedicalPractitionerTab from './DashboardMedicalPractitionerTab.j
 
 import ClaimsMedicalPractitionerTab from './ClaimsMedicalPractitionerTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

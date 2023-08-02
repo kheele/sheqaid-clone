@@ -4,8 +4,8 @@ import {extendObservable, observable, toJS} from 'mobx';
 
 import style from "./EditDialog.lazy.css";
 
-import {Dialog} from '../../../../components/dialogs';
-import {ClearableInput} from '../../../../components/inputs';
+import {Dialog} from 'components/dialogs';
+import {ClearableInput} from 'components/inputs';
 
 @observer
 class EditDialog extends React.Component {

@@ -4,7 +4,7 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityPermissionModule} from "../../types.d.ts";
+import {EntityPermissionModule} from "mutations/types.d.ts";
 
 // 2
 const query = graphql`
@@ -20,5 +20,5 @@ const query = graphql`
 `;
 //firestore_id
 // 3
-export default (input: number) =>
+export default async (input: number) =>
     findOneMutationImpl({ query, variables: {id: input} });

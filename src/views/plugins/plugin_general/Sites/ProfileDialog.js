@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {AProfileDialog} from '../../../../components/dialogs';
-import {ProfileField} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 

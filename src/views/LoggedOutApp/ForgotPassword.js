@@ -2,8 +2,8 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../utils/Form';
-import {Button, ClearableInput} from '../../components/inputs';
+import Form from 'utils/Form';
+import {Button, ClearableInput} from 'components/inputs';
 
 @observer
 class ForgotPassword extends React.Component {
@@ -77,10 +77,12 @@ class ForgotPassword extends React.Component {
         btn.text("Wait...").disabled();
         neonBinding.events.emit(path + "forgot-pass", data).then(res => {
             console.log("res", res)
-            if(res) {
-                infoDialog.open(<p>Email has been sent to you to recover your password.<br /><br />Please login to your email account to reset your password.</p>);
-            } else {
+            if(!res) {
                 infoDialog.open('An error occurred. Please try again.');
+            } else if(res === "NO_DB_USER") {
+                infoDialog.open("The user no longer exists");
+            } else if(res) {
+                infoDialog.open(<p>Email has been sent to you to recover your password.<br /><br />Please login to your email account to reset your password.</p>);
             }
         }).finally(() => {
             btn.text("Email me recovery details").enabled();

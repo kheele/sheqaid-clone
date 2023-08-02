@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {TextAlignment} from 'pdf-lib';
 
-import {ClaimDocument, createTextField, createTimesSVG} from '../../../../components/documents/ClaimDocument';
+import {ClaimDocument, createTextField, createTimesSVG} from 'components/documents/ClaimDocument';
 
 // </editor-fold>
 

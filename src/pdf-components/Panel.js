@@ -108,7 +108,7 @@ class Panel extends React.Component {
                 }).catch(err => {
                     console.error(err)
                 });
-//                alert(this)
+//
             }, 500);
         }
     }

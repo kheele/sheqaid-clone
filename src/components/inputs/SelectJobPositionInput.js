@@ -9,6 +9,7 @@ import {ClearableInput} from './';
 import ASelectInput from './ASelectInput';
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import byLogged from "views/plugins/plugin_hr_management/Employees/dialogs/JobPositionsDialog/Query/List/listAllJobPositionByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -30,13 +31,11 @@ class SelectInput extends ASelectInput {
     }
     
     async componentDidMount() {
-        let {className = ''} = this.props;
+        let {type, className = ''} = this.props;
         className += ` SelectJobPositionInput`;
         
         const res = await onSelectLoad();
         this.state.lists.list = res.distinct();
-
-        const {type} = this.props;
 
         this.state.props = {
             ref: "input",
@@ -148,7 +147,12 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/employees/job-positions/list").then(res => {
+    const args = {
+        //
+        limit: 0,
+        offset: 0,
+    };
+    return byLogged(args).then(res => {
         return res.map(value => {
             return {label: value.data.name, value};
         });

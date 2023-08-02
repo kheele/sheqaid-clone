@@ -2,7 +2,7 @@
 // Material Dashboard 2 React base styles
 import typography from "assets/theme/base/typography";
 
-function configs(labels, datasets) {
+function configs(labels, datasets, displayLegend, tickColor) {
   return {
     data: {
       labels,
@@ -13,7 +13,7 @@ function configs(labels, datasets) {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: true,
+          display: displayLegend || true,
         },
       },
       scales: {
@@ -28,13 +28,14 @@ function configs(labels, datasets) {
           ticks: {
             display: true,
             padding: 10,
-            color: "#9ca2b7",
+            color: tickColor || "#9ca2b7",
             font: {
               size: 11,
               family: typography.fontFamily,
               style: "normal",
               lineHeight: 2,
             },
+            min: 0,
           },
         },
         x: {
@@ -46,7 +47,7 @@ function configs(labels, datasets) {
           },
           ticks: {
             display: true,
-            color: "#9ca2b7",
+            color: tickColor || "#9ca2b7",
             padding: 10,
             font: {
               size: 11,

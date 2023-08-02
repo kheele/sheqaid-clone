@@ -1,0 +1,65 @@
+@import './AAuthDialog.css';
+
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container{
+    width: 550px;
+    height: 554px;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container .page-back-btn {
+    /*display: none !important;*/
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container > .dialog-content {
+    height: calc(100% - 50px) !important;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container .dialog-footer .dialog-bottom-buttons {
+    float: none !important;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container .dialog-footer .dialog-bottom-buttons button {
+    display: table !important;
+    margin: 0 auto !important;
+    width: 240px !important;
+    border-radius: 20px !important;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog .row-input {
+    margin: 10px 10px 0 0;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog .row-input .form-control {
+    box-shadow: none;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog .row-input .clearable-field-control {
+    border-left: 0;
+    border-radius: 0 20px 20px 0;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog .row-input .clearable-field-control > ons-input {
+    left: 0;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog .row-input .fixed-flex.form-control {
+    min-width: 52px;
+    height: 36px;
+    padding: 6px 15px !important;
+    display: flex;
+    border-radius: 20px 0 0 20px !important;
+    font-size: 18px;
+    color: #888;
+    border-right: 0;
+    box-shadow: none;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container > .dialog-content #recaptcha-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    padding: 0;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container > .dialog-content #recaptcha-container .grecaptcha-badge{
+    bottom: unset !important;
+    right: unset !important;
+    position: relative !important;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container .controls > .row:last-of-type > .btn:first-of-type {
+    width: 170px !important;
+}
+#dialog-overlay.VerifyPhoneNumDialog-profile-dialog > .dialog-container .controls > .row:last-of-type > .btn:last-of-type {
+    width: 100px !important;
+    margin-left: -48px !important;
+}

@@ -1,0 +1,25 @@
+#DocumentsTab-tab .page-title{
+    height: 0;
+    margin-top: 0px;
+	border: none;
+    float: right;
+}
+#DocumentsTab-tab .page-title > h3{
+    display: none;
+}
+#DocumentsTab-tab .page-title > .tabled-top-panel {
+    margin-top: -37px;
+	flex-grow: initial;
+    min-width: 270px;
+}
+#DocumentsTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#DocumentsTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#DocumentsTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (10px + 125px)) !important;
+}

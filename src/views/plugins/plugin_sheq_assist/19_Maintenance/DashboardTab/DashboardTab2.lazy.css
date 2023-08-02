@@ -1,0 +1,152 @@
+
+#DashboardTab{
+    height: 100%;
+}
+#DashboardTab .page-content{
+    height: 100%;
+    width: calc(100% + 10px);
+    padding: 10px 0 0;
+    top: 0;
+    position: relative;
+    align-content: flex-start;
+}
+
+#DashboardTab .page-title{
+    top: -90px;
+    position: relative;
+}
+#DashboardTab .page-title > h3{
+    flex: 1
+}
+
+#DashboardTab .page-content > div > div{
+    overflow: auto;
+    /*border-top: 4px solid rgb(2, 168, 168);*/
+}
+#DashboardTab .panel-left {
+    /*    position: absolute;
+        left: 0;
+        top: 10px;*/
+    /*min-width: 300px;*/
+    /*    max-height: 495px;
+        min-height: 495px;*/
+    background: #fff;
+    padding: 15px 50px 30px !important;
+    border-radius: 40%;
+}
+#DashboardTab .top-stats .panel-left,
+#DashboardTab .ContentAssetType .panel-left {
+    border-radius: 0%;
+}
+#DashboardTab .panel-right {
+    position: absolute;
+    left: 310px;
+    top: 10px;
+    min-width: calc(100% - 320px);
+    max-height: 495px;
+    min-height: 495px;
+}
+#DashboardTab .panel-left:hover,
+#DashboardTab .top-stats .panel-left .Statistics:hover,
+#DashboardTab .ContentAssetType .panel-left .Statistics:hover {
+    background: rgb(2, 168, 168) !important;
+}
+#DashboardTab .top-stats .panel-left:hover,
+#DashboardTab .ContentAssetType .panel-left:hover {
+    background: none !important;
+    /*border-radius: 0;*/
+}
+#DashboardTab .panel-left:hover > h4,
+#DashboardTab .top-stats .panel-left .Statistics:hover label,
+#DashboardTab .top-stats .panel-left .Statistics:hover content,
+#DashboardTab .ContentAssetType .panel-left .Statistics:hover .label,
+#DashboardTab .ContentAssetType .panel-left .Statistics:hover .content {
+    color: #fff !important;
+}
+#DashboardTab .top-stats .panel-left:hover > h4,
+#DashboardTab .ContentAssetType .panel-left:hover > h4 {
+    color: unset;
+}
+#DashboardTab .top-stats .panel-left,
+#DashboardTab .ContentAssetType .panel-left{
+    background: none;
+    padding: 0 !important;
+}
+#DashboardTab .AContent{
+    margin-bottom: 20px !important;
+}
+#DashboardTab .top-stats .AContent,
+#DashboardTab .ContentAssetType {
+    margin-bottom: 0px !important;
+}
+#DashboardTab .AContent .AContent-main-title{
+    background: #fff;
+    padding: 10px;
+    border-radius: 3px;
+}
+#DashboardTab .Statistics{
+    position: relative;
+    gap: 10px;
+    border-radius: 10%;
+    box-shadow: 0 0 5px #aaa;
+    padding: 0px !important;
+    z-index: 0;
+    cursor: pointer;
+}
+#DashboardTab .panel-left .Statistics{
+    height: 60px;
+}
+#DashboardTab .panel-left .Statistics:last-of-type{
+    margin-bottom: 5px;
+}
+#DashboardTab .panel-left .Statistics .content{
+    font-size: 22px;
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    height: 30px;
+    border-radius: 0 0 10% 10%;
+}
+#DashboardTab .Statistics label{
+    color: #fff;
+    margin-top: 4px;
+    font-size: 11px;
+}
+#DashboardTab .Statistics .fa-info{
+    text-align: center;
+    background: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    align-content: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    left: 3px;
+    bottom: 3px;
+    z-index: 1;
+    font-size: 10px;
+}
+#DashboardTab .Statistics .content{
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    height: 30px;
+    border-radius: 0 0 10% 10%;
+}
+#DashboardTab .MuiCircularProgress-root{
+    color: #fff !important;
+    width: 25px !important;
+    height: 25px !important;
+}

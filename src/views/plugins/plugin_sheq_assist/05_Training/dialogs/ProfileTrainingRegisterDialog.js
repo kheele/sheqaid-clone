@@ -2,15 +2,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {SelectTable, THead} from '../../../../../components/tables';
+import {AProfileDialog} from 'components/dialogs';
+import {SelectTable, THead} from 'components/tables';
 import {
     ProfileField, SelectTrainingMatixInput, UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileTrainingRegisterDialog.lazy.css";
-import TrainingPlanListByCourse from "../../../../../components/FormListComponents/TrainingPlanListByCourse";
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
 import Divider from "@mui/material/Divider";
 
 @observer

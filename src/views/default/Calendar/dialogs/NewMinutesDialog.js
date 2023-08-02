@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {Dates} from '../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
 
-import {Document, TinyMCE} from '../../../../components/documents';
+import {Document, TinyMCE} from 'components/documents';
 
-import {ClearableInput, SelectMeetingInput,} from '../../../../components/inputs';
-import ANewDialog from '../../../../components/dialogs/ANewDialog';
+import {ClearableInput, SelectMeetingInput,} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewMinutesDialog.lazy.css";
 

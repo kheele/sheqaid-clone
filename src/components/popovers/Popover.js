@@ -3,8 +3,13 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import theme from "assets/theme";
 
 import style from './Popover.lazy.css';
+import {MaterialUIControllerProvider} from "../../context";
+import CssBaseline from "@mui/material/CssBaseline";
+import {ThemeProvider} from "@mui/material/styles";
 
 @observer
 class RenderToLayer extends React.Component {
@@ -22,18 +27,18 @@ class RenderToLayer extends React.Component {
         if (e.defaultPrevented || !this.props.state.isOpen) {
             return;
         }
-        
+
         let {preventClickAwayClose, onClickAway} = this.props.config;
         const clickedOut = $(e.target).closest('.popover-container').length === 0;
-        
+
 //        alert(isFunction(preventClickAwayClose))
-        if(isFunction(preventClickAwayClose) && preventClickAwayClose()) {
+        if (isFunction(preventClickAwayClose) && preventClickAwayClose()) {
             return;
         }
-        if(clickedOut && preventClickAwayClose) {
+        if (clickedOut && preventClickAwayClose) {
             return;
         }
-        
+
         if (clickedOut) {
             onClickAway && onClickAway(e);
             this.props.onClickAway(e);
@@ -64,7 +69,7 @@ class RenderToLayer extends React.Component {
         let {className} = this.props.config;
         if (className) {
             const overlay = this.layer.querySelector('#popover-overlay');
-            if(overlay) {
+            if (overlay) {
                 const {classList} = overlay;
                 classList.remove(...className.split(' '));
                 classList.remove('dialog');
@@ -129,9 +134,9 @@ class PopoverInline extends React.Component {
                 const container = contentElemJq.parent();
 
                 container.css({visibility: 'visible'});
-                
+
                 const {strictPos, fixedCenter} = this.props.config;
-                if(fixedCenter) {
+                if (fixedCenter) {
                     container.addClass('fixed-center');
                 } else if (!strictPos) {
                     const {top} = container.offset();
@@ -157,23 +162,28 @@ class PopoverInline extends React.Component {
         const contentElemJq = window.$(this.contentElem);
         const container = contentElemJq.parent();
         container.removeClass('fixed-center');
-        
+
         this.contentElem = null;
-        
+
         style.unuse();
     }
 
     render() {
         const style = {width: 240, height: "auto", visibility: 'hidden', ...this.props.config.style};
-        let {isDialog, contentNode, className} = this.props.config;
+        let {isDialog, contentNode, className, scrollbarsClassName} = this.props.config;
         isDialog && (className += " dialog");
-        return (<div key={contentNode ? contentNode.key : new Date().getTime()} id="popover-overlay" className={className}>
-            <div className="popover-container" style={style}>
-                <div className="nice-scrollbars">
-                    {contentNode}
+        return (<MaterialUIControllerProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <div key={contentNode ? contentNode.key : new Date().getTime()} id="popover-overlay" className={className}>
+                    <div className="popover-container" style={style}>
+                        <div className={"nice-scrollbars" + (scrollbarsClassName ? ` ${scrollbarsClassName}` : '')}>
+                            {contentNode}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>);
+            </ThemeProvider>
+        </MaterialUIControllerProvider>);
     }
 }
 
@@ -226,11 +236,11 @@ class Popover extends React.Component {
     }
 
     onCreateConfig() {
-        if(this.config) {
+        if (this.config) {
             const {onClosed} = this.config;
             onClosed && onClosed();
         }
-        
+
         this.config.style = null;
         //this.config.arrow = "center";
         this.config.contentNode = null;
@@ -253,13 +263,21 @@ class Popover extends React.Component {
     }
 
     render() {
-        return React.createElement(RenderToLayer, {
-            render: this.renderLayer,
-            onClickAway: this.close,
-            state: this.layerState,
-            config: this.config,
-            onClose: this.onCreateConfig
-        });
+        // return React.createElement(RenderToLayer, {
+        //     render: this.renderLayer,
+        //     onClickAway: this.close,
+        //     state: this.layerState,
+        //     config: this.config,
+        //     onClose: this.onCreateConfig
+        // });
+
+        return <RenderToLayer
+            render={this.renderLayer}
+            onClickAway={this.close}
+            state={this.layerState}
+            config={this.config}
+            onClose={this.onCreateConfig}
+        />;
     }
 }
 

@@ -3,20 +3,20 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {TinyMCE} from '../../../../../components/documents';
-import {ShouldUpdate} from "../../../../../utils/Utils";
-import {AEditDialog} from '../../../../../components/dialogs';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
+import {TinyMCE} from 'components/documents';
+import {ShouldUpdate} from "utils/Utils";
+import {AEditDialog} from 'components/dialogs';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {
     SelectClientInput,
     SelectMeetingInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditMinutesDialog.lazy.css";
 // </editor-fold>
@@ -121,7 +121,7 @@ class Controls extends React.Component {
         
         ShouldUpdate.check(data, old_data, meeting, 'meeting');
         ShouldUpdate.check(data, old_data, details, 'details');
-        ShouldUpdate.checkEmployeeList(data, old_data, participants, 'participants');
+        ShouldUpdate.checkEmployeeList_deprecated(data, old_data, participants, 'participants');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
         
         if(Object.keys(data).isEmpty()){

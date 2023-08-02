@@ -6,9 +6,9 @@ import {Page, Text, View} from '@react-pdf/renderer';
 
 import styles from './ProfilePDFReader.style';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import {Panel} from '../../../../../pdf-components';
+import {Panel} from 'pdf-components';
 
 import APageDocuments from './APageDocuments';
 

@@ -6,7 +6,7 @@ import {PDFDocument, rgb, StandardFonts} from 'pdf-lib';
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 
-import {APDFReader} from '../../../../../components/PrintComponents';
+import {APDFReader} from 'components/PrintComponents';
 
 import {
     Page2,
@@ -123,7 +123,7 @@ class PDFReader extends APDFReader {
                     }));
                 };
                 
-//                alert(1)
+//
                 await addPics([
                     ...precaution_photo_concentrate_list, 
                     ...precaution_photo_concentrate_list, 
@@ -132,7 +132,7 @@ class PDFReader extends APDFReader {
                     ...precaution_photo_concentrate_list, 
                     ...precaution_photo_concentrate_list
                 ], 0, "Precaution Concentrate Photo(s)");
-//                alert(2)
+//
                 await addPics([
                     ...precaution_photo_application_list, 
                     ...precaution_photo_application_list, 
@@ -141,16 +141,16 @@ class PDFReader extends APDFReader {
                     ...precaution_photo_application_list, 
                     ...precaution_photo_application_list
                 ], 1, "Precaution Application Photo(s)");
-//                alert(3)
+//
                 const picsPdfDocCopiedPages = await mainPdfDoc.copyPages(picsPdfDoc, picsPdfDoc.getPageIndices());
                 picsPdfDocCopiedPages.forEach((picPageCopy, n) => {
                     mainPdfDoc.insertPage(1 + n, picPageCopy);
                 });
-//                alert(4)
+//
                 const newBase64Src = await mainPdfDoc.saveAsBase64({dataUri: true});
                 const newSrc = src.replace(dataUrl, dataUriToUrl(newBase64Src));
                 controls.state.webview.src = newSrc;
-//                alert(5)
+//
             }).finally(() => {
 //                setTimeout(() => progressDialog.close(), 1000);
             });

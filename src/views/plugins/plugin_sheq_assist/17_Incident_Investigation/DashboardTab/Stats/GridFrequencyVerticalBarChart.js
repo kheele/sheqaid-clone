@@ -4,11 +4,11 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MD/MDBox";
 import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
 import PropTypes from "prop-types";
-import DefaultCounterCard from "../../../../../../containers/Cards/CounterCards/DefaultCounterCard";
-import {useEffect, useState} from "react";
+import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import {CircularProgress} from "@mui/material";
-import ReportsLineChart from "../../../../../../containers/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "../../../../../../containers/Cards/StatisticsCards/ComplexStatisticsCard";
+import ReportsLineChart from "containers/Charts/LineCharts/ReportsLineChart";
+import ComplexStatisticsCard from "containers/Cards/StatisticsCards/ComplexStatisticsCard";
 //</editor-fold>
 
 //<editor-fold desc="labels">
@@ -98,10 +98,37 @@ function ReportsLineChartWrapper({desc, data: _data, color, percColor, title, pe
 //</editor-fold>
 
 //<editor-fold desc="Comp">
-function Comp() {
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = 'plugin_sheq_assist/05_Trainings/training-plan/';
+const Comp = forwardRef(({data: __data}, ref) => {
+    const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
+
+    // <editor-fold desc="useImperativeHandle funs">
+    useImperativeHandle(ref, () => ({
+        setData: (value) => {
+            setData(value);
+        },
+    }));
+    // </editor-fold>
+
+    return null;
+
+    if(data === DATA_LOAD_STATUS.LOADING) {
+        return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+            <CircularProgress />
+        </div>;
+    }
+
+    if(data === DATA_LOAD_STATUS.ERROR) {
+        return null;
+    }
+
+    const [{
+        all_incident_list_aggregate,
+        all_quick_incident_list_aggregate,
+        all_investigation_list_aggregate,
+        all_non_conformance_list_aggregate,
+    }] = data;
+
+    console.log('data', data)
 
     const totals = {
         totalIncidentsPerMonth: Promise.resolve({
@@ -111,7 +138,7 @@ function Comp() {
                 color: 'light',
                 data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
             }],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost", {interval, employee_view}),//
+        }),
         totalIncidentsPerWeeklyDay: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -151,7 +178,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalIncidentsPerTimeDay: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -166,7 +193,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalInjuriesAndVehiclesInvolved: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -181,7 +208,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalNatureOfInjury: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -196,7 +223,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalPartsOfBodyInjured: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -211,7 +238,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalDirectCauseOfInjury: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -226,7 +253,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalDrugTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -251,7 +278,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalAlcoholTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -276,7 +303,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalMobileDeviceTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -301,7 +328,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         // totalIncidentsPerWeeklyDay: Promise.resolve({
         //     labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         //     datasets: [
@@ -311,7 +338,7 @@ function Comp() {
         //             data: Array.range(1, 7).map(n => (Math.random() * 15).toFixed(0))
         //         },
         //     ],
-        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
         // totalIncidentsPerTimeDay: Promise.resolve({
         //     labels: ['Morning', 'After Noon'],
         //     datasets: [
@@ -321,7 +348,7 @@ function Comp() {
         //             data: Array.range(1, 7).map(n => (Math.random() * 15).toFixed(0))
         //         },
         //     ],
-        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
         overallRiskRatingPerWeeklyDay: Promise.resolve({
             labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             datasets: [
@@ -346,7 +373,7 @@ function Comp() {
                     data: Array.range(1, 7).map(n => (Math.random() * 14).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+        }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
 
         resultsPerJobPosition: Promise.resolve({
             labels: Array.range(1, 10).map(n => `Job Position #${n + 1}`),
@@ -367,7 +394,7 @@ function Comp() {
                     data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, employee_view}),//
+        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, view}),//
     };
 
     const {
@@ -408,26 +435,26 @@ function Comp() {
                     chart={totalIncidentsPerWeeklyDay}
                 />
             </MDBox>
-            <MDBox mb={3}>
-                <VerticalBarChartWrapper
-                    title="Total Incidents Per Time Day (2022)"
-                    color="black"
-                    tickColor="black"
-                    background="#ffffff"
-                    displayLegend={true}
-                    chart={totalIncidentsPerTimeDay}
-                />
-            </MDBox>
-            <MDBox mb={3}>
-                <VerticalBarChartWrapper
-                    title="Total Injuries & Vehicles Involved (2022)"
-                    color="black"
-                    tickColor="black"
-                    background="#ffffff"
-                    displayLegend={true}
-                    chart={totalInjuriesAndVehiclesInvolved}
-                />
-            </MDBox>
+            {/*<MDBox mb={3}>*/}
+            {/*    <VerticalBarChartWrapper*/}
+            {/*        title="Total Incidents Per Time Day (2022)"*/}
+            {/*        color="black"*/}
+            {/*        tickColor="black"*/}
+            {/*        background="#ffffff"*/}
+            {/*        displayLegend={true}*/}
+            {/*        chart={totalIncidentsPerTimeDay}*/}
+            {/*    />*/}
+            {/*</MDBox>*/}
+            {/*<MDBox mb={3}>*/}
+            {/*    <VerticalBarChartWrapper*/}
+            {/*        title="Total Injuries & Vehicles Involved (2022)"*/}
+            {/*        color="black"*/}
+            {/*        tickColor="black"*/}
+            {/*        background="#ffffff"*/}
+            {/*        displayLegend={true}*/}
+            {/*        chart={totalInjuriesAndVehiclesInvolved}*/}
+            {/*    />*/}
+            {/*</MDBox>*/}
             <MDBox mb={3}>
                 <VerticalBarChartWrapper
                     title="Total Nature Of Injuries (2022)"
@@ -458,36 +485,36 @@ function Comp() {
                     chart={totalDirectCauseOfInjury}
                 />
             </MDBox>
-            <MDBox mb={3}>
-                <VerticalBarChartWrapper
-                    title="Total Drug Tests Undertaken (2022)"
-                    color="black"
-                    tickColor="black"
-                    background="#ffffff"
-                    displayLegend={true}
-                    chart={totalDrugTestsUndertaken}
-                />
-            </MDBox>
-            <MDBox mb={3}>
-                <VerticalBarChartWrapper
-                    title="Total Alcohol Tests Undertaken (2022)"
-                    color="black"
-                    tickColor="black"
-                    background="#ffffff"
-                    displayLegend={true}
-                    chart={totalAlcoholTestsUndertaken}
-                />
-            </MDBox>
-            <MDBox mb={3}>
-                <VerticalBarChartWrapper
-                    title="Total Mobile Device Tests Undertaken (2022)"
-                    color="black"
-                    tickColor="black"
-                    background="#ffffff"
-                    displayLegend={true}
-                    chart={totalMobileDeviceTestsUndertaken}
-                />
-            </MDBox>
+            {/*<MDBox mb={3}>*/}
+            {/*    <VerticalBarChartWrapper*/}
+            {/*        title="Total Drug Tests Undertaken (2022)"*/}
+            {/*        color="black"*/}
+            {/*        tickColor="black"*/}
+            {/*        background="#ffffff"*/}
+            {/*        displayLegend={true}*/}
+            {/*        chart={totalDrugTestsUndertaken}*/}
+            {/*    />*/}
+            {/*</MDBox>*/}
+            {/*<MDBox mb={3}>*/}
+            {/*    <VerticalBarChartWrapper*/}
+            {/*        title="Total Alcohol Tests Undertaken (2022)"*/}
+            {/*        color="black"*/}
+            {/*        tickColor="black"*/}
+            {/*        background="#ffffff"*/}
+            {/*        displayLegend={true}*/}
+            {/*        chart={totalAlcoholTestsUndertaken}*/}
+            {/*    />*/}
+            {/*</MDBox>*/}
+            {/*<MDBox mb={3}>*/}
+            {/*    <VerticalBarChartWrapper*/}
+            {/*        title="Total Mobile Device Tests Undertaken (2022)"*/}
+            {/*        color="black"*/}
+            {/*        tickColor="black"*/}
+            {/*        background="#ffffff"*/}
+            {/*        displayLegend={true}*/}
+            {/*        chart={totalMobileDeviceTestsUndertaken}*/}
+            {/*    />*/}
+            {/*</MDBox>*/}
             {/*<MDBox mb={3}>*/}
             {/*    <VerticalBarChartWrapper*/}
             {/*        title="Total Incidents Per Weekly Day (2022)"*/}
@@ -529,13 +556,12 @@ function Comp() {
             {/*</MDBox>*/}
         </Grid>
     </Grid>;
-}
-
+});
 //</editor-fold>
 
 Comp.propTypes = {
     interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
-    employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
+    view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
 };
 
 export default Comp;

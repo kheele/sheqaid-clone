@@ -4,7 +4,7 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
-import {EntityPermissionOther} from "../../types.d.ts";
+import {EntityPermissionOther} from "mutations/types.d.ts";
 
 // 2
 const mutation = graphql`
@@ -13,10 +13,22 @@ const mutation = graphql`
       object: $object
     ) {
       id
+      actions{
+        id
+        create
+        edit
+        view
+        remove
+        share
+      }
+      key{
+        id
+        value
+      }
     }
   }
 `;
 
 // 3
-export default (input: EntityPermissionOther) =>
+export default async (input: EntityPermissionOther) =>
   createMutationImpl({ mutation, input });

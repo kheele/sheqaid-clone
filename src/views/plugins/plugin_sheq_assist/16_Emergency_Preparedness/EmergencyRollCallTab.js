@@ -1,13 +1,13 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from "../../../../utils/Utils";
+import {Dates} from "utils/Utils";
 
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewEmergencyRollCallRegisterDialog from './dialogs/NewEmergencyRollCallRegisterDialog.js';
 import ProfileEmergencyRollCallRegisterDialog from './dialogs/ProfileEmergencyRollCallRegisterDialog.js';

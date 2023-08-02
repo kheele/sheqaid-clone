@@ -4,7 +4,7 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
-import APage from "../../../APage";
+import APage from "views/APage";
 import PollutionRegisterTab from './PollutionRegisterTab.js';
 import IncidentsTab from './IncidentsTab.js';
 import EnviroRATab from './EnviroRATab.js';
@@ -13,7 +13,7 @@ import QAPTab from './QAPTab.js';
 import EMPTab from './EMPTab.js';
 import NCRTab from './NCRTab.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 @observer
 class Main extends APage {

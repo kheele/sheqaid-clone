@@ -5,6 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import trainingCourseStore from "mutations/all/TrainingCourse";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -87,11 +88,11 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/05_Trainings/training-registry/list").then(res => {
+    return trainingCourseStore.listForSelectionByLogged().then(res => {
         return res.map(value => {
             const {name, unit_standard} = value.data;
             return {label: name + (unit_standard ? ` (${unit_standard})` : ''), value};
-        }).distinct();
+        });
     });
 }
 

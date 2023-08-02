@@ -10,6 +10,8 @@ import {NavButtons} from '../FormComponents';
 import AEditDialog from './AEditDialog';
 
 import style from './VerifyPhoneNumDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -72,8 +74,9 @@ class Controls extends React.Component {
                 infoDialog.open('Phone Number is required');
                 return false;
             }
-            
-            const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').isoCode);
+
+
+            const isValid = isValidPhoneNumber(String(form.get('phone')), form.get('country').data.iso2);
             if(!isValid) {
                 infoDialog.open('Phone Number is not valid');
                 return;
@@ -110,7 +113,16 @@ class Controls extends React.Component {
         const phoneCredential = firebase.auth.PhoneAuthProvider.credential(this.verificationId, code);
         const {loggedUserAuth: currentUser} = storage;  
         
-        currentUser.reauthenticateWithCredential(phoneCredential).then(userCredential => {
+        currentUser.reauthenticateWithCredential(phoneCredential).then(res => {
+            this.auth.onAuthStateChanged(currentUser => {
+                storage.onLogin(currentUser);
+            });
+
+            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                storage.idTokenResult = idTokenResult;
+                return res;
+            }));
+        }).then(userCredential => {
             console.log('reauthenticateWithCredential', userCredential)
             const {loggedUser, props: {dialog}} = this;
             dialog.onResponse(userCredential);
@@ -153,7 +165,7 @@ class Controls extends React.Component {
             return "";
         
         phone = String(phone).replaceAll(' ', '').replaceAll('+', '').replaceAll('(', '').replaceAll(')', '');
-        const code = country.dialCode;
+        const code = country.phone_code;
         if(phone.trim().replaceAll(" ", "").startsWith("0")) {
             return code + phone.substring(1);
         } else {
@@ -182,6 +194,17 @@ class Controls extends React.Component {
         onVerify();
     }
     // </editor-fold>
+
+    get auth() {
+        const {access_type} = this.loggedUser;
+        if (access_type === "ContractorUser") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
 
     get loggedUser() {
         return this.props.state.item;

@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {ChatButton} from '../../../../components/inputs';
+import {ChatButton} from 'components/inputs';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ChatBtn">

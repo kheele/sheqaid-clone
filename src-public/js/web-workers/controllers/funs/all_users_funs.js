@@ -1,67 +1,90 @@
-
 class AllUserFuns {
 
-    static async createOrGetUserID(authGeneral, username, password, onSave) {
-        try {
-            return await authGeneral.
-                    createUserWithEmailAndPassword(username, password).
-                    then(userCredential => userCredential.user.uid).
-                    then(onSave);
-        } catch (err) {
-            if (err.code === "auth/email-already-in-use") {
-                const getUserUidByUsername = functions.httpsCallable('callables-getUserUidByUsername');
-                const res = await getUserUidByUsername(username);
-                if (res && res.data) {
-                    const {data: uid} = res;
-                    return onSave(uid, false);
-                }
-//                        return await authGeneral.signInWithEmailAndPassword(username, password).then(save);
-            } else {
-                console.error(err);
-                throw err;
-            }
-        }
-    }
+	static async createOrGetUserID(authGeneral, username, password, onComplete) {
+		try {
+			return await authGeneral.createUserWithEmailAndPassword(username, password).then(userCredential => userCredential.user.uid).then(onComplete);
+		} catch (err) {
+			console.error(err);
+			throw err;
+		}
+	}
 
-    static async sendCreationEmail(type, {username, password, fname, lname, contractorName, contractorUsername}) {
-        const html = {
-            UserCreate: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
-                <p>Your account was recently created on SHEQ Aid.</p>\n
-                <p>Your SHEQ Aid Username is <b>${username}</b>, Password is <b>${password}</b> and User Type is <b>System User</b></p>\n
+	static async sendCreationEmail(type, {
+		companyName,
+		username,
+		password,
+		fname,
+		lname,
+		contractorName,
+		contractorUsername
+	}) {
+		const html = {
+			UserCreate: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
+                <p>We are pleased to inform you that your account has been successfully registered on the SHEQ Aid system.</p>\n
+                <p>Your Username is <b>${username}</b></p>\n
+                <p>Password is <b>${password}</b></p>\n
+                <p>
+                    Please keep this email for your records as it contains important information regarding your account on the SHEQ Aid.<br/>
+                    You can now log in and start using the features and tools that the system offers.
+                </p>\n
+                <p>If you have any questions or concerns, please do not hesitate to contact us.</p>\n
                 ${Utils.getAppDownloadOptionMsg()}`,
-            UserSignup: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
-                <p>Your account was recently created on SHEQ Aid.</p>\n
-                <p>Your SHEQ Aid Username is <b>${username}</b> and User Type is <b>Administrator</b></p>\n
-                <p>Kind Regards<br/>SHEQ Aid</p>`,
-            ContractorUserCreate: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
-                <p>Your account was recently created on SHEQ Aid.</p>\n
-                <p>Your SHEQ Aid Username is <b>${username}</b>, Password is <b>${password}</b> and User Type is <b>System User</b></p>\n
+			UserSignup: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
+                <p>We are pleased to inform you that your account has been successfully registered on the SHEQ Aid system.</p>\n
+                <p>Your Username is <b>${username}</b></p>\n
+                <p>The company associated with your account is <b>${companyName}</b></p>\n
+                <p>
+                    Please keep this email for your records as it contains important information regarding your account on the SHEQ Aid.<br/>
+                    You can now log in and start using the features and tools that the system offers.
+                </p>\n
+                <p>If you have any questions or concerns, please do not hesitate to contact us.</p>\n
+                <p>Thank you for choosing the SHEQ Aid system.</p>\n
+                <p>Best Regards<br/>SHEQ Aid</p>`,
+			ContractorUserCreate: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
+                <p>We are pleased to inform you that your account has been successfully registered on the SHEQ Aid system.</p>\n
+                <p>Your Username is <b>${username}</b></p>\n
+                <p>Password is <b>${password}</b></p>\n
                 <p>Contractor Name: ${contractorName}</p>\n
                 <p>Contractor Email Addess: ${contractorUsername}</p>\n
+                <p>
+                    Please keep this email for your records as it contains important information regarding your account on the SHEQ Aid.<br/>
+                    You can now log in and start using the features and tools that the system offers.
+                </p>\n
+                <p>If you have any questions or concerns, please do not hesitate to contact us.</p>\n
                 ${Utils.getAppDownloadOptionMsg()}`,
-            ContractorUserSignup: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
-                <p>Your account was recently created on SHEQ Aid.</p>\n
-                <p>Your SHEQ Aid Username is <b>${username}</b> and User Type is <b>Administrator</b></p>\n
+			ContractorUserSignup: () => `<h3><b>Dear ${fname + ' ' + lname}</b></h3>\n
+                <p>We are pleased to inform you that your account has been successfully registered on the SHEQ Aid system.</p>\n
+                <p>Your Username is <b>${username}</b></p>\n
                 <p>Contractor Name: ${contractorName}</p>\n
                 <p>Contractor Email Addess: ${contractorUsername}</p>\n
-                <p>Kind Regards<br/>SHEQ Aid</p>`,
-            ContractorCreate: () => `<h3><b>Dear ${contractorName}</b></h3>\n
-                <p>Your account was recently created on SHEQ Aid.</p>\n
+                <p>
+                    Please keep this email for your records as it contains important information regarding your account on the SHEQ Aid.<br/>
+                    You can now log in and start using the features and tools that the system offers.
+                </p>\n
+                <p>If you have any questions or concerns, please do not hesitate to contact us.</p>\n
+                <p>Thank you for choosing the SHEQ Aid system.</p>\n
+                <p>Best Regards<br/>SHEQ Aid</p>`,
+			ContractorCreate: () => `<h3><b>Dear ${contractorName}</b></h3>\n
+                <p>We are pleased to inform you that your account has been successfully registered on the SHEQ Aid system.</p>\n
+                <p>Your Username is <b>${username}</b></p>\n
                 <p>Please use <b>${username}</b> as your Username in order to set up your account.</p>\n
+                <p>
+                    Please keep this email for your records as it contains important information regarding your account on the SHEQ Aid.<br/>
+                    You can now log in and start using the features and tools that the system offers.
+                </p>
+                <p>If you have any questions or concerns, please do not hesitate to contact us.</p>\n
+                <p>Thank you for choosing the SHEQ Aid system.</p>\n
                 ${Utils.getAppDownloadOptionMsg({isContractor: true})}`
-        }[type];
-        
-        const opts = {
-            from: '"SHEQ Aid" <support@sheqsolve.com>',
-            to: username,
-            subject: 'Welcome to SHEQ Aid',
-            html: html()
-        };
+		}[type];
 
-        console.log('callables-sendEmail', opts)
-        const sendEmail = functions.httpsCallable('callables-sendEmail');
-        const mailRes = await sendEmail(opts);
-        console.log('mailRes', mailRes)
-    }
+		const opts = {
+			from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
+			to: username,
+			subject: 'Welcome to SHEQ Aid',
+			html: html()
+		};
+
+		await Utils.sendEmail(opts);
+	}
 
 }

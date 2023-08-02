@@ -76,6 +76,7 @@ function assign(ta) {
             ta.style.width = '0px';
             // Force reflow:
             /* jshint ignore:start */
+            //no-unused-expressions
             ta.offsetWidth;
             /* jshint ignore:end */
             ta.style.width = width;

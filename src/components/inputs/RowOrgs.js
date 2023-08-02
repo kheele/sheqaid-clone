@@ -11,13 +11,14 @@ class RowOrgs extends React.Component {
         const {children} = this.props;
         if(!children) return null;
 
-        const {onFormOpen, onFormBack, onFormNext, onChange} = this.props;
+        const {onFormOpen, onFormBack, onFormNext, onFormSave, onChange} = this.props;
 
         const {isContractor, isHasProjects} = storage.is;
 
         const props = {
             onFormOpen,
-            onFormNext
+            onFormNext,
+            onFormSave,
         };
 
         if(onChange) {
@@ -35,7 +36,7 @@ class RowOrgs extends React.Component {
 
     render() {
         const {
-            onFormOpen, onFormNext, onChange,
+            onFormOpen, onFormNext, onFormSave, onChange,
             readonly, title, idx = 0, active = true,
             client, project, site, showAll
         } = this.props;
@@ -53,6 +54,7 @@ class RowOrgs extends React.Component {
                 title={`${title || (isConsultant ? 'Company / ' : '')}Project / Site`}
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
+                onFormSave={onFormSave}
             >
                 {readonly && <React.Fragment>
                     {isConsultant && <ProfileField name="client" value={client} renderer={v => v.name || v.data.name}

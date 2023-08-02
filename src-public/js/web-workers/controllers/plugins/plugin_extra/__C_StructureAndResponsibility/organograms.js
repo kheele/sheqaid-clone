@@ -67,7 +67,7 @@
                     return false;
                 }
             }).then(() => {
-                console.log('Organogram 1');
+                // console.log('Organogram 1');
                 setTimeout(() => {
                     //fn();
                 }, 4000);

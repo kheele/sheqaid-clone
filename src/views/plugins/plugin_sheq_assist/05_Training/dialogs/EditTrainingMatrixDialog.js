@@ -3,9 +3,9 @@ import React, {createRef} from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../utils/Utils';
-import {onSelectLoadTrainingFrequencies} from '../../../utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
+import {onSelectLoadTrainingFrequencies} from 'views/plugins/utils';
 
 import {
     ClearableInput,
@@ -13,16 +13,18 @@ import {
     SelectClientInput,
     SelectJobCategoryInput,
     SelectJobPositionInput,
-    SelectProjectInput,
+    SelectProjectInput, SelectSectorInput,
     SelectSiteInput,
     SelectTrainingCourseInput,
     SelectUserInput
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingMatrixDialog.lazy.css";
-import TrainingPlanListByCourse from "../../../../../components/FormListComponents/TrainingPlanListByCourse";
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
+import findByIdClient from "mutations/all/Client/findByIdClient";
+import updateTrainingMatrix from "mutations/all/TrainingMatrix/updateTrainingMatrix";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -60,7 +62,7 @@ class Controls extends React.Component {
             requirement: [{text: "Compulsory", value: "Compulsory"}, {text: "Optional", value: "Optional"}],
             requirement_legal: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
             training_frequency: ['Non-Expiry', '5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
-            training_provider_requirement: [{text: "Accredited", value: "Accredited"}, {
+            provider_requirement: [{text: "Accredited", value: "Accredited"}, {
                 text: "Non-Accredited",
                 value: "Non-Accredited"
             }],
@@ -83,8 +85,8 @@ class Controls extends React.Component {
 
         this.form = new Form();
         this.form.addChangeOne("client", this.onChangeClient.bind(this));
-        this.form.addChangeOne("course_or_module", this.onChangeCourse.bind(this));
-        this.form.addChangeOne("hr", this.onChangeHR.bind(this));
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
+        this.form.addChangeOne("trainer", this.onChangeHR.bind(this));
     }
 
     // </editor-fold>
@@ -93,13 +95,27 @@ class Controls extends React.Component {
     onChangeClient(el, val) {
         execWhen(() => this.refs.sector_list).then(async ref => {
             if (val) {
-                const {id, data: {sector_list}} = val;
-                if (sector_list) {
-                    this.state.lists.sector_list = sector_list.map(value => {
-                        return {value, text: value.data.name, checked: false};
+                const {id, data} = val;
+
+                const set = (data) => {
+                    const {sector_list} = data;
+                    if (sector_list) {
+                        ref.list = sector_list.map(({sector: value}) => {//{id, sector}
+                            return {value, label: value.name};
+                        });
+                    }
+                };
+
+                if(data) {
+                    set(data);
+                } else {
+                    findByIdClient(id).then(val => {
+                        if(val) {
+                            const {id, data} = val;
+                            set(data);
+                        }
                     });
                 }
-
             } else {
                 ref.reset();
             }
@@ -117,12 +133,28 @@ class Controls extends React.Component {
                 ref.setValue(null);
             }
         });
-        execWhen(() => this.refs.job_title).then(async ref => {
+        execWhen(() => this.refs.job_category_list).then(async ref => {
             if (val) {
                 const {id, data: {training_plan_list}} = val;
-                const jobPositionList = training_plan_list.filter(({data: {job_position}}) => !!job_position).map(({data: {job_position}}) => job_position).distinct();
-                ref.value = jobPositionList;
-
+                const list = training_plan_list.filter(({job_position}) => !!job_position && job_position.job_category).map(({job_position}) => job_position.job_category).map(({job_category}) => ({
+                    ...job_category,
+                    id: convertIdToBigint(job_category.id)
+                })).distinct();
+                console.log('job_category_list', list.slice())
+                ref.value = list;
+            } else {
+                ref.reset();
+            }
+        });
+        execWhen(() => this.refs.job_position_list).then(async ref => {
+            if (val) {
+                const {id, data: {training_plan_list}} = val;
+                const list = training_plan_list.filter(({job_position}) => !!job_position).map(({job_position}) => ({
+                    ...job_position,
+                    id: convertIdToBigint(job_position.id)
+                })).distinct();
+                console.log('job_position_list', list.slice())
+                ref.value = list;
             } else {
                 ref.reset();
             }
@@ -133,15 +165,12 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onChangeHR">
     onChangeHR(el, val) {
-        execWhen(() => this.refs.job_desc).then(job_desc_ref => {
+        execWhen(() => this.refs.trainer_job_position).then(trainer_job_position_ref => {
             if (val) {
-                let {optional_info} = val.data;
-                if (optional_info) {
-                    const {job_position} = optional_info;
-                    job_position && job_desc_ref.onChange({label: job_position.name, value: job_position});
-                }
+                let {job_position} = val.data;
+                job_position && trainer_job_position_ref.onChange({label: job_position.name, value: job_position});
             } else {
-                job_desc_ref.reset();
+                trainer_job_position_ref.reset();
             }
         });
     }
@@ -175,7 +204,7 @@ class Controls extends React.Component {
             }
         }
         if (idx === 1) {
-            if (!form.isValid('course_or_module')) {
+            if (!form.isValid('course')) {
                 infoDialog.open('Course is');
                 return;
             }
@@ -197,57 +226,29 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
+        if (!form.isValid('course')) {
             infoDialog.open('Course is required');
             return;
         }
-        //3
-//        if (!form.isValid('job_title')) {
-//            infoDialog.open('Job Position For Training is required');
-//            return;
-//        }
-        //4
-//        if (!form.isValid('status')) {
-//            infoDialog.open('Training Status is required');
-//            return;
-//        }
-        //5
-//        if (!form.isValid('hr')) {
-//            infoDialog.open('Training Conductor is required');
-//            return;
-//        }
-        //6
-//        if (!form.isValid('requirement_legal')) {
-//            infoDialog.open('Legal Requirement option is required');
-//            return;
-//        }
-//        if (!form.isValid('requirement')) {
-//            infoDialog.open('Requirement is required');
-//            return;
-//        }
-//        if (!form.isValid('training_provider_requirement')) {
-//            infoDialog.open('Training Provider Requirement is required');
-//            return;
-//        }
 
         const {
             //1
             client, project, site,
             //2
-            course_or_module, training_plan,
+            course, training_plan,
             //3
-            allocation, job_title, sector_list,
+            job_category_list, job_position_list, sector_list,
             //4
             status, date_range, cost,
             //5
-            institution_conducting_training, hr, job_desc,
+            institution_conducting_training, trainer, trainer_job_position,
             //6
             requirement_legal,
             requirement,
             max_participants_per_course,
             training_standard,
             training_frequency,
-            training_provider_requirement,
+            provider_requirement,
             //7
             competency_evaluation,
             unit_standard,
@@ -263,13 +264,13 @@ class Controls extends React.Component {
         ShouldUpdate.checkSite(data, old_data, site, 'site');
 
         //2
-        ShouldUpdate.checkCourseOrModule(data, old_data, course_or_module, 'course_or_module');
+        ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course');
         ShouldUpdate.checkTrainingPlanYear(data, old_data, training_plan, 'training_plan');
 
         //3
-        ShouldUpdate.checkJobPositionList(data, old_data, allocation, 'allocation');
-        ShouldUpdate.checkJobPositionList(data, old_data, job_title, 'job_title');
-        ShouldUpdate.checkBox(data, old_data, sector_list, 'sector_list');
+        ShouldUpdate.checkJobCategoryList(data, old_data, job_category_list, 'job_category_list');
+        ShouldUpdate.checkJobPositionList(data, old_data, job_position_list, 'job_position_list');
+        ShouldUpdate.checkSectorList(data, old_data, sector_list, 'sector_list');
 
         //4
         ShouldUpdate.check(data, old_data, status, 'status');
@@ -286,8 +287,8 @@ class Controls extends React.Component {
 
         //5
         ShouldUpdate.check(data, old_data, institution_conducting_training, 'institution_conducting_training');
-        ShouldUpdate.checkEmployee(data, old_data, hr, 'hr');
-        ShouldUpdate.checkJobPosition(data, old_data, job_desc, 'job_desc');
+        ShouldUpdate.checkEmployee(data, old_data, trainer, 'trainer');
+        ShouldUpdate.checkJobPosition(data, old_data, trainer_job_position, 'trainer_job_position');
 
         //6
         ShouldUpdate.check(data, old_data, requirement_legal, 'requirement_legal');
@@ -295,7 +296,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, max_participants_per_course, 'max_participants_per_course');
         ShouldUpdate.check(data, old_data, training_standard, 'training_standard');
         ShouldUpdate.check(data, old_data, training_frequency, 'training_frequency');
-        ShouldUpdate.check(data, old_data, training_provider_requirement, 'training_provider_requirement');
+        ShouldUpdate.check(data, old_data, provider_requirement, 'provider_requirement');
 
         //7
         ShouldUpdate.check(data, old_data, competency_evaluation, 'competency_evaluation');
@@ -312,12 +313,16 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        updateTrainingMatrix({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            onSaved && onSaved(data);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
+            if(res) {
+                onSaved && onSaved(res.data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                this.props.close();
+            } else {
+                infoDialog.open("Record unable to update. Please try again.");
+            }
         }).finally(() => {
             btn.text("Save").enabled();
         });
@@ -344,20 +349,20 @@ class Controls extends React.Component {
                     //1
                     client, project, site,
                     //2
-                    course_or_module, training_plan,
+                    course, training_plan,
                     //3
-                    allocation, job_title, sector_list,
+                    job_category_list, job_position_list, sector_list,
                     //4
                     status, date_range, cost,
                     //5
-                    institution_conducting_training, hr, job_desc,
+                    institution_conducting_training, trainer, trainer_job_position,
                     //6
                     requirement_legal,
                     requirement,
                     max_participants_per_course,
                     training_standard,
                     training_frequency,
-                    training_provider_requirement,
+                    provider_requirement,
                     //7
                     competency_evaluation,
                     unit_standard,
@@ -369,6 +374,19 @@ class Controls extends React.Component {
         } = this;
 
         const {isConsultant, isNoProjects} = storage.is;
+
+        const sector_listDefault = sector_list ? sector_list.map(v => {
+            const {sector: value, sector: {id, name}} = v;
+            return {label: name, value};
+        }) : null;
+        const job_position_listDefault = job_position_list ? job_position_list.map(v => {
+            const {job_position: value, job_position: {id, name}} = v;
+            return {label: name, value};
+        }) : null;
+        const job_category_listDefault = job_category_list ? job_category_list.map(v => {
+            const {job_category: value, job_category: {id, name}} = v;
+            return {label: name, value};
+        }) : null;
 
         return (<FormControls>
             {!isNoProjects && <Row
@@ -397,8 +415,8 @@ class Controls extends React.Component {
                 onFormBack={!isNoProjects && onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingCourseInput name="course_or_module" placeholder="Course..."
-                                           defaultValue={course_or_module} className="col-lg-12 form-control"
+                <SelectTrainingCourseInput name="course" placeholder="Course..."
+                                           defaultValue={course} className="col-lg-12 form-control"
                                            onChange={this.form.onChange} add={false} returnValue/>
                 <br/>
                 <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan"
@@ -412,15 +430,15 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectJobCategoryInput name="allocation" type="select_multi" placeholder="Allocation / Job Category..."
-                                        defaultValue={allocation} className="col-lg-12 form-control"
+                <SelectJobCategoryInput name="job_category_list" type="select_multi" placeholder="Allocation / Job Category..."
+                                        defaultValue={job_category_listDefault} className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add={false}/>
-                <SelectJobPositionInput name="job_title" type="select_multi" placeholder="Job Position For Training..."
-                                        defaultValue={job_title} className="col-lg-12 form-control"
+                <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position For Training..."
+                                        defaultValue={job_position_listDefault} className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
-                <ClearableInput name="sector_list" type="checkbox" placeholder="Sector(s)" defaultValue={sector_list}
-                                vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.sector_list} returnValue/>
+                <SelectSectorInput ref="sector_list" name="sector_list" type="select_multi" placeholder="Sector(s)..."
+                                   defaultValue={sector_listDefault} className="col-lg-12 form-control"
+                                   onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -453,9 +471,9 @@ class Controls extends React.Component {
                                 placeholder="Institution Conducting Training"
                                 defaultValue={institution_conducting_training} className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <SelectUserInput name="hr" placeholder="Training Conductor..." defaultValue={hr} defaultUser
+                <SelectUserInput name="trainer" placeholder="Training Conductor..." defaultValue={trainer} defaultUser
                                  showOtherPerson className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectJobPositionInput name="job_desc" placeholder="Job Position..." defaultValue={job_desc}
+                <SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..." defaultValue={trainer_job_position}
                                         desc="Job Position For Training Conductor" className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add/>
             </Row>
@@ -482,10 +500,10 @@ class Controls extends React.Component {
                 <SelectWrapper state={this.state} name="training_frequency" defaultValue={training_frequency}
                                placeholder="Training Frequency..." className="col-lg-8 pull-left-2 form-control"
                                onChange={this.form.onChange} values="training_frequency"/>
-                <ClearableInput name="training_provider_requirement" type="radio"
-                                defaultValue={training_provider_requirement} placeholder="Training Provider Requirement"
+                <ClearableInput name="provider_requirement" type="radio"
+                                defaultValue={provider_requirement} placeholder="Training Provider Requirement"
                                 vertical className="col-lg-11 pull-left-0_5 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.training_provider_requirement}/>
+                                values={this.state.lists.provider_requirement}/>
             </Row>
             <Row
                 rendered

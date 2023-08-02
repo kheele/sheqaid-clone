@@ -2,8 +2,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from '../../../../../utils/Utils';
-import {ClaimDocument, createTimesSVG} from '../../../../../components/documents/ClaimDocument';
+import {Dates} from 'utils/Utils';
+import {ClaimDocument, createTimesSVG} from 'components/documents/ClaimDocument';
 
 // </editor-fold>
 

@@ -1,0 +1,44 @@
+@import '../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewTaskDialog-new-dialog .dialog-container{
+    height: calc(100% - 0px);
+    max-height: 100%;
+    width: 890px;
+    max-width: calc(100% - 30px);
+    border-radius: 0;
+}
+#dialog-overlay.NewTaskDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-dec .row.sec-group,
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-doc .row.sec-group{
+    margin-left: -10px;
+    margin-bottom: -10px;
+    width: calc(100% + 20px);
+}
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-dec .row.sec-group{
+    
+}
+
+#dialog-overlay.NewTaskDialog-new-dialog .controls hr {
+    width: calc(100% - 10px);
+}
+#dialog-overlay.NewTaskDialog-new-dialog .controls .GDocEditor {
+    height: 900px;
+}
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-dec .row.sec-group > .form-control{
+    margin-left: 10px;
+}
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-dec .row.sec-group > .form-control.col-lg-6{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+#dialog-overlay.NewTaskDialog-new-dialog .controls > .row-doc .row.sec-group > .form-control.col-lg-6 {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    display: table;
+}

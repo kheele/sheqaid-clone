@@ -1,16 +1,17 @@
 //<editor-fold desc="imports">
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
+import {forwardRef, useImperativeHandle, useState} from "react";
+import {CircularProgress} from "@mui/material";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
-function Counter({background, title, count, label, color, sx}) {
+function Counter({background, title, value, count, label, color, sx}) {
     return <DefaultCounterCard
         color={color || "light"}
         background={background}
+        value={value}
         count={count}
         label={label}
         radius="50%"
@@ -32,45 +33,36 @@ function Counter({background, title, count, label, color, sx}) {
 //</editor-fold>
 
 //<editor-fold desc="GridCounter">
-const Comp = forwardRef(({interval: __interval, employee_view: __employee_view}, ref) => {
-    const [interval, setInterval] = useState(__interval);
-    const [employee_view, setEmployeeView] = useState(__employee_view);
+const Comp = forwardRef(({data: __data}, ref) => {
+    const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
 
     // <editor-fold desc="useImperativeHandle funs">
     useImperativeHandle(ref, () => ({
-        setInterval: (value) => {
-            setInterval(value);
-        },
-        setEmployeeView: (value) => {
-            setEmployeeView(value);
+        setData: (value) => {
+            setData(value);
         },
     }));
     // </editor-fold>
 
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = 'plugin_sheq_assist/05_Trainings/training-plan/';
+    if(data === DATA_LOAD_STATUS.LOADING) {
+        return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+            <CircularProgress />
+        </div>;
+    }
 
-    const totals = {
-        cost: neonBinding.events.emit(path_training_matrix + "dashboard/total/cost", {interval, employee_view}),//
-        trainings: neonBinding.events.emit(path_training_matrix + "dashboard/total/trainings", {
-            interval,
-            employee_view
-        }),
-        participants: neonBinding.events.emit(path_training_plan + "dashboard/total/participants", {
-            interval,
-            employee_view
-        }),
-        courses: neonBinding.events.emit(path_training_course + "dashboard/count", {interval, employee_view}),//
-        institutions: neonBinding.events.emit(path_training_matrix + "dashboard/total/institutions", {
-            interval,
-            employee_view
-        }),//
-        conductors: neonBinding.events.emit(path_training_matrix + "dashboard/total/conductors", {
-            interval,
-            employee_view
-        }),//
-    };
+    if(data === DATA_LOAD_STATUS.ERROR) {
+        return null;
+    }
+
+    const {
+        cost_list_aggregate,
+        training_list_aggregate,
+        participant_list_aggregate,
+        training_course_list_aggregate,
+        institution_list_aggregate,
+        trainer_internal_list_aggregate,
+        trainer_external_list_aggregate,
+    } = data; //stats_top_counter;
 
     return <Grid
         container
@@ -79,25 +71,38 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
         className="grid-6 w-full grid-gap-10"
         sx={{m: 0, mt: '10px', justifyItems: 'center',}}
     >
-        <Counter background="#fb8c00" title={<b className="color-white font-size-14">Total Cost</b>} count={totals.cost}
-                 label="K"/>
-        <Counter background="#e91e63" title={<b className="color-white font-size-14">Total Trainings</b>}
-                 count={totals.trainings}/>
-        <Counter background="#7b809a" title={<b className="color-white font-size-14">Total Participants</b>}
-                 count={totals.participants}/>
-        <Counter background="#F44335" title={<b className="color-white font-size-14">Total Courses</b>}
-                 count={totals.courses}/>
-        <Counter background="#4CAF50" title={<b className="color-white font-size-14">Total Institutions</b>}
-                 count={totals.institutions}/>
-        <Counter background="#344767" title={<b className="color-white font-size-14">Total Conductors</b>}
-                 count={totals.conductors}/>
+        <Counter
+            background="#fb8c00"
+            title={<b className="color-white font-size-14">Total Cost</b>}
+            value={parseFloat((cost_list_aggregate.aggregate.sum.cost || '0').replace('$', '').replace(',', ''), 2).toCurrencyNoCents('R')}
+        />
+        <Counter
+            background="#e91e63"
+            title={<b className="color-white font-size-14">Total Trainings</b>}
+            count={training_list_aggregate.aggregate.count}
+        />
+        <Counter
+            background="#7b809a"
+            title={<b className="color-white font-size-14">Total Participants</b>}
+            count={participant_list_aggregate.aggregate.count}
+        />
+        <Counter
+            background="#F44335"
+            title={<b className="color-white font-size-14">Total Courses</b>}
+            count={training_course_list_aggregate.aggregate.count}
+        />
+        <Counter
+            background="#4CAF50"
+            title={<b className="color-white font-size-14">Total Institutions</b>}
+            count={institution_list_aggregate.aggregate.count}
+        />
+        <Counter
+            background="#344767"
+            title={<b className="color-white font-size-14">Total Conductors</b>}
+            count={trainer_internal_list_aggregate.aggregate.count + trainer_external_list_aggregate.aggregate.count}
+        />
     </Grid>;
 });
 //</editor-fold>
-
-Comp.propTypes = {
-    interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
-    employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
-};
 
 export default Comp;

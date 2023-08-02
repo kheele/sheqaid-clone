@@ -2,10 +2,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from '../../../../../utils/Utils';
-import {ProfileField} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {Dates} from 'utils/Utils';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingMatrixDialog.lazy.css";
 // </editor-fold>
@@ -59,20 +59,20 @@ class Controls extends React.Component {
                     //1
                     client, project, site,
                     //2
-                    course_or_module,
+                    course,
                     //3
-                    allocation, job_title, sector_list,
+                    job_category_list, job_position_list, sector_list,
                     //4
                     status, date_range, cost,
                     //5
-                    institution_conducting_training, hr, job_desc,
+                    institution_conducting_training, trainer, trainer_job_position,
                     //6
                     requirement_legal,
                     requirement,
                     max_participants_per_course,
                     training_standard,
                     training_frequency,
-                    training_provider_requirement,
+                    provider_requirement,
                     //7
                     competency_evaluation,
                     unit_standard,
@@ -118,8 +118,8 @@ class Controls extends React.Component {
                 onFormBack={!isNoProjects && onFormBack}
                 onFormNext={onFormNext}
             >
-                <ProfileField name="course_or_module" title="Course" value={course_or_module}
-                              renderer={val => isObject(val) ? (val.name || val.data.name) : val}
+                <ProfileField name="course" title="Course" value={course}
+                              renderer={val => val.name}
                               className="col-lg-12"/>
             </Row>
             <Row
@@ -130,11 +130,11 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <ProfileField name="allocation" title="Allocation / Job Category" value={allocation}
-                              renderer={v => v.map(({name}) => name).join(', ')} className="col-lg-12"/>
-                <ProfileField name="job_title" title="Job Position For Training" value={job_title}
-                              renderer={v => v.map(({name}) => name).join(', ')} className="col-lg-12"/>
-                <ProfileField name="sector_list" title="Sector(s)" value={sector_list} renderer={v => v.join(', ')}
+                <ProfileField name="job_category_list" title="Allocation / Job Category" value={job_category_list}
+                              renderer={v => v.map(({job_category: {name}}) => name).join(', ')} className="col-lg-12"/>
+                <ProfileField name="job_position_list" title="Job Position For Training" value={job_position_list}
+                              renderer={v => v.map(({job_position: {name}}) => name).join(', ')} className="col-lg-12"/>
+                <ProfileField name="sector_list" title="Sector(s)" value={sector_list} renderer={v => v.map(({sector: {name}}) => name).join(', ')}
                               className="col-lg-12"/>
             </Row>
             <Row
@@ -163,9 +163,9 @@ class Controls extends React.Component {
             >
                 <ProfileField name="institution_conducting_training" title="Institution Conducting Training"
                               value={institution_conducting_training} className="col-lg-12"/>
-                <ProfileField name="hr" title="Training Conductor" value={hr} renderer={v => (v.fname + ' ' + v.lname)}
+                <ProfileField name="trainer" title="Training Conductor" value={trainer} renderer={v => (v.lname + ' ' + v.fname)}
                               className="col-lg-12"/>
-                <ProfileField name="job_desc" title="Job Position" value={job_desc} renderer={v => v.name}
+                <ProfileField name="trainer_job_position" title="Job Position" value={trainer_job_position} renderer={v => v.name}
                               desc="Job Position For Training Conductor" className="col-lg-12"/>
             </Row>
             <Row
@@ -185,8 +185,8 @@ class Controls extends React.Component {
                               value={training_standard} className="col-lg-12"/>
                 <ProfileField name="training_frequency" title="Training Frequency" value={training_frequency}
                               className="col-lg-12"/>
-                <ProfileField name="training_provider_requirement" title="Training Provider Requirement"
-                              value={training_provider_requirement} className="col-lg-12"/>
+                <ProfileField name="provider_requirement" title="Training Provider Requirement"
+                              value={provider_requirement} className="col-lg-12"/>
             </Row>
             <Row
                 rendered

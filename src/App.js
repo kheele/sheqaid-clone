@@ -22,6 +22,8 @@ import './utils/app-logged-in-fn';
 import './utils/app-logged-out-fn';
 import './utils/workerEvents';
 
+import './utils/firebase-posgresql-transfer';//todo: remove after all transfers from firebase to posgresql
+
 import './App.css';
 
 import {execWhen} from './utils/Utils';
@@ -46,10 +48,10 @@ import {
     InputDialog,
     NoProjectsDialog,
     ProgressDialog,
-    TrailExiredDialog
+    TrailExiredDialog,
+    CookieNoticePanelDialog,
 } from './components/dialogs';
 import {ErrorBoundary, PageLoadingProgress} from './components';
-
 
 const LoggedInFormsApp = lazy(() => import('./views/LoggedInFormsApp'/* webpackChunkName:"LoggedInFormsApp" */));
 const LoggedInApp = lazy(() => import('./views/LoggedInApp'/* webpackChunkName:"LoggedInApp" */));
@@ -90,8 +92,14 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        window.pluginManager.start();
+        // console.log(Dates.formatDate(1677758520136), );
 
+        window.pluginManager.start();
+        storage.load.loadPermissionOtherKeys();
+
+        execWhen(() => this.refs.cookieNoticePanelDialog).then(ref => {
+            ref.open();
+        });
         execWhen(() => this.refs.popover).then(popover => {
             window.popover = popover;
         });
@@ -160,28 +168,14 @@ class App extends React.Component {
 //                j.src = 'https://rhespo.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
 //		h.parentNode.insertBefore(j, h);
 //	})(window, document, 'script', 'https://rhespo.rocket.chat/livechat');
-
-        neonBinding.events.on('users/accounts/create', res => {
-            if (res) {
-                const {company_name, consultant} = res.company.data;
-                infoDialog.open(<React.Fragment>
-                    <p>Account successfully created!</p>
-                    <p>Welcome to {company_name}, partner with SHEQ Aid.</p>
-                    <hr/>
-                    <p>You can start creating {consultant ? 'clients, ' : ''}projects and sites.</p>
-                </React.Fragment>);
-                storage.login.loginUser(res);
-            }
-        });
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="restart">
     restart() {
         if (window.electronRemote) {
             electronRemote.getCurrentWindow().webContents.session.clearCache(async () => {
-                //            alert(this)
+                //
                 storage.update.updateDBUser(storage.loggedUser);
                 localStorage.setItem("loggedUserRestarting", true);
 
@@ -203,6 +197,9 @@ class App extends React.Component {
     onConnected() {
         this._isConnected = navigator.onLine;
         neonBinding.events.emit('connected', navigator.onLine);
+        // if (navigator.onLine) {
+        //     pluginManager.start();
+        // }
         if (navigator.onLine && storage.list.countries.isEmpty()) {
             storage.load.loadCountries();
             pluginManager.start();
@@ -256,6 +253,7 @@ class App extends React.Component {
                 <InputDialog ref="inputDialog"/>
                 <AutoUpdateDialog ref="autoUpdateDialog"/>
                 <NoProjectsDialog ref="noProjectsDialog"/>
+                <CookieNoticePanelDialog ref="cookieNoticePanelDialog"/>
 
                 <ChatBox ref="chatBox"/>
                 <ChatBoxClaims ref="chatBoxClaims"/>
@@ -267,7 +265,6 @@ class App extends React.Component {
             </div>
         </ThemeProvider>);
     }
-
     // </editor-fold>
 }
 
@@ -307,8 +304,9 @@ class AppAdmin extends React.Component {
 @observer
 class AppMainContent extends React.Component {
     render() {
-        const {isLoadedCountries} = storage.is;
-        if (isLoadedCountries) {
+        const {isLoggedUserAuthChecked, isLoadedCountries, isLoadedPermissionOtherKeys} = storage.is;
+        // alert(isLoggedUserAuthChecked)
+        if (isLoggedUserAuthChecked && isLoadedCountries && isLoadedPermissionOtherKeys && pluginManager.isLoaded) {
             return <Suspense fallback={<PageLoadingProgress/>}>
                 <React.Fragment>
                     <LoggedInFormsApp/>
@@ -328,8 +326,8 @@ class AppMainContent extends React.Component {
 @observer
 class AppAdminContent extends React.Component {
     render() {
-        const {isLoadedCountries} = storage.is;
-        if (isLoadedCountries) {
+        const {isLoggedUserAuthChecked, isLoadedCountries} = storage.is;
+        if (isLoggedUserAuthChecked && isLoadedCountries) {
             return <Suspense fallback={<PageLoadingProgress/>}>
                 <React.Fragment>
                     <LoggedInAdminApp/>

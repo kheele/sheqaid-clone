@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, ProfileField, SelectClientInput} from '../../../../../components/inputs';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, ProfileField, SelectClientInput} from 'components/inputs';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDocumentCategoryDialog.lazy.css";
-import {FormControls, Row} from "../../../../../components/FormComponents";
+import {FormControls, Row} from "components/FormComponents";
 
 @observer
 class NewDocumentCategoryDialog extends ANewDialog {

@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {GDocEditor} from '../../../../components/documents';
-import {AProfileDialog} from '../../../../components/dialogs';
-import {ProfileField} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
+import {GDocEditor} from 'components/documents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileTaskDialog.lazy.css";
 

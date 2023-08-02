@@ -8,8 +8,8 @@ const smtpConfig = {
     secureConnection: false,
 //        secure: true, // use SSL 
     auth: {
-        user: 'Support@sheqsolve.com',
-        pass: 'Hus39898'
+        user: 'no-reply@sheqsolve.com',
+        pass: 'Gac03614'
     },
     tls: {
         ciphers: 'SSLv3'

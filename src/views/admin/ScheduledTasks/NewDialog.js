@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput} from '../../../components/inputs';
-import {FormControls, Row} from '../../../components/FormComponents';
-import {ANewDialog} from '../../../components/dialogs';
+import {ClearableInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 // </editor-fold>

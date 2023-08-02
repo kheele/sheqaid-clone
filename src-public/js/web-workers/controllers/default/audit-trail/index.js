@@ -1,4 +1,3 @@
-
 (function () {
     class Controller extends AControllerRead {
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
@@ -20,11 +19,11 @@
                     company: {id},
                     contractor_id: logged_contractor_id
                 } = self.session.getLoggedUser();
-                
+
                 contractor_id = logged_contractor_id || contractor_id;
-                
+
                 const list = [['company_id', '==', company_id]];
-                if(contractor_id) {
+                if (contractor_id) {
                     list.push(['record.data.contractor_id', '==', contractor_id]);
                 }
                 if (my_client) {
@@ -70,6 +69,25 @@
                 await transfer();
             };
 //            fn();
+
+
+            // const v = async () => {
+            //     const col_ref = await db2.collection(this.tbl).where("user.lname", "=", "Shaw");//Promise < DocumentReference < T > >
+            //     const querySnapshot = await col_ref.get();
+            //     const list = querySnapshot.docs.map((doc) => {
+            //         const {id} = doc;
+            //         const data = doc.data();
+            //         return {id, data};
+            //     });
+            //
+            //     const actions = list.groupBy(({id, data}) => data.action);
+            //     const tbls = list.groupBy(({id, data}) => data.tbl);
+            //     const tbls = list.groupBy(({id, data}) => data.tbl);
+            //
+            //     console.log(this.tbl, 'final');
+            // };
+            //
+            // v();
         }
 
         getDB() {

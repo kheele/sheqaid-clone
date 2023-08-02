@@ -334,9 +334,15 @@ class AEmployeeDocsController extends AControllerAid {
 
     // <editor-fold defaultstate="collapsed" desc="remove">
     async remove(evt, id) {
-        return this.removeWithFile(evt, id, async ({data: {doc}}) => {
-            doc && await files.remove(doc);
-        });
+        const doc_ref = this.getDB().collectionGroup(this.collectionGroup).doc(id);
+        let snapshot = await doc_ref.get();
+        if (!snapshot.exists) {
+            return null;
+        }
+
+        const updated = await doc_ref.set({removed: true}, {merge: true});//Promise < void >
+
+        return true;
     }
     // </editor-fold>
 
@@ -400,7 +406,7 @@ class AEmployeeDocsController extends AControllerAid {
     // <editor-fold defaultstate="collapsed" desc="list">
     async list(evt) {
         return Events.whenLoggedIn(async loggedUser => {
-            let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
+            let list = await AControllerRead.prototype.listImpl.call(this, evt, {limit: 200}, q => {
                 q = q.where('removed', '==', false);
                 return q;
             });

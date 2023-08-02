@@ -19,6 +19,7 @@ function Comp({ getTableBodyProps, page, prepareRow, noEndBorder, rows }) {
               <DataTableBodyCell
                 noBorder={noEndBorder && rows.length - 1 === key}
                 align={cell.column.align ? cell.column.align : "left"}
+                sx={{fontSize: "13px"}}
                 {...cell.getCellProps()}
               >
                 {cell.render("Cell")}

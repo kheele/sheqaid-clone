@@ -26,6 +26,7 @@ function DoughnutChart({backgroundColors, title, labels, data: dataPromise}) {
 
     return <DefaultDoughnutChart
         title={title}
+        width="calc(100% - 10px)"
         height="220px"
         chart={{
             labels,
@@ -42,36 +43,55 @@ function DoughnutChart({backgroundColors, title, labels, data: dataPromise}) {
 //</editor-fold>
 
 //<editor-fold desc="Comp">
-const Comp = forwardRef(({interval: __interval, employee_view: __employee_view}, ref) => {
-    const [interval, setInterval] = useState(__interval);
-    const [employee_view, setEmployeeView] = useState(__employee_view);
+const Comp = forwardRef(({data: __data}, ref) => {
+    const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
 
     // <editor-fold desc="useImperativeHandle funs">
     useImperativeHandle(ref, () => ({
-        setInterval: (value) => {
-            setInterval(value);
-        },
-        setEmployeeView: (value) => {
-            setEmployeeView(value);
+        setData: (value) => {
+            setData(value);
         },
     }));
     // </editor-fold>
 
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = "plugin_sheq_assist/05_Trainings/training-plan/";
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
+    if(data === DATA_LOAD_STATUS.LOADING) {
+        return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+            <CircularProgress />
+        </div>;
+    }
 
-    const totals = {
-        training_status: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/status", {interval, employee_view}),
-        training_result: neonBinding.events.emit(path_training_plan + "dashboard/doughnut/result", {interval, employee_view}),
-        training_provider_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/provider_requirement", {interval, employee_view}),//
-        training_gender: neonBinding.events.emit(path_training_plan + "dashboard/doughnut/gender", {interval, employee_view}),
+    if(data === DATA_LOAD_STATUS.ERROR) {
+        return null;
+    }
 
-        training_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/requirement", {interval, employee_view}),
-        training_legal_requirement: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/legal_requirement", {interval, employee_view}),//
-        training_provider: neonBinding.events.emit(path_training_course + "dashboard/doughnut/provider", {interval, employee_view}),//
-        training_competency_evaluation: neonBinding.events.emit(path_training_matrix + "dashboard/doughnut/competency_evaluation", {interval, employee_view}),//
-    };
+    const {
+        status_not_started_aggregate,
+        status_outstanding_aggregate,
+        status_in_progress_aggregate,
+        status_completed_aggregate,
+
+        results_passed_aggregate,
+        results_failed_aggregate,
+        results_average_aggregate,//avg:{result}
+
+        training_provider_requirement_accredited_aggregate,
+        training_provider_requirement_non_accredited_aggregate,
+
+        employee_gender_male_aggregate,
+        employee_gender_female_aggregate,
+
+        training_requirement_compulsory_aggregate,
+        training_requirement_optional_aggregate,
+
+        legal_requirement_yes_aggregate,
+        legal_requirement_no_aggregate,
+
+        training_provider_external_aggregate,
+        training_provider_internal_aggregate,
+
+        competency_evaluation_on_day_of_evaluation_aggregate,
+        competency_evaluation_last_day_of_evaluation_aggregate,
+    } = data; //stats_top_doughnut_chart;
 
     return <Grid
         container
@@ -92,62 +112,83 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
             >
                 <DoughnutChart
                     title="Training Status"
-                    labels={['Outstanding', 'Completed']}
-                    backgroundColors={['primary', 'secondary']}
-                    data={totals.training_status}
+                    labels={['Not Started', 'Outstanding', 'In Progress', 'Completed']}
+                    backgroundColors={['primary', 'secondary', 'success', 'info']}
+                    data={[
+                        status_not_started_aggregate.aggregate.count,
+                        status_outstanding_aggregate.aggregate.count,
+                        status_in_progress_aggregate.aggregate.count,
+                        status_completed_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Training Results"
                     labels={['Pass', 'Fail']}
                     backgroundColors={['secondary', 'warning']}
-                    data={totals.training_result}
+                    data={[
+                        results_passed_aggregate.aggregate.count,
+                        results_failed_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Provider Requirement"
                     labels={['Accredited', 'Non-Accredited']}
                     backgroundColors={['warning', 'info']}
-                    data={totals.training_provider_requirement}
+                    data={[
+                        training_provider_requirement_accredited_aggregate.aggregate.count,
+                        training_provider_requirement_non_accredited_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Employee Gender"
                     labels={['Male', 'Female']}
                     backgroundColors={['text', 'success']}
-                    data={totals.training_gender}
+                    data={[
+                        employee_gender_male_aggregate.aggregate.count,
+                        employee_gender_female_aggregate.aggregate.count,
+                    ]}
                 />
 
                 <DoughnutChart
                     title="Training Requirement"
                     labels={['Compulsory', 'Optional']}
                     backgroundColors={['warning', 'error']}
-                    data={totals.training_requirement}
+                    data={[
+                        training_requirement_compulsory_aggregate.aggregate.count,
+                        training_requirement_optional_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Legal Requirement"
                     labels={['Yes', 'No']}
                     backgroundColors={['error', 'info']}
-                    data={totals.training_legal_requirement}
+                    data={[
+                        legal_requirement_yes_aggregate.aggregate.count,
+                        legal_requirement_no_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Training Provider"
                     labels={['External', 'Internal']}
                     backgroundColors={['success', 'dark']}
-                    data={totals.training_provider}
+                    data={[
+                        training_provider_external_aggregate.aggregate.count,
+                        training_provider_internal_aggregate.aggregate.count,
+                    ]}
                 />
                 <DoughnutChart
                     title="Competency Evaluation"
                     labels={['On Day of Evaluation', 'Last Day of Evaluation']}
                     backgroundColors={['dark', 'primary']}
-                    data={totals.training_competency_evaluation}
+                    data={[
+                        competency_evaluation_on_day_of_evaluation_aggregate.aggregate.count,
+                        competency_evaluation_last_day_of_evaluation_aggregate.aggregate.count,
+                    ]}
                 />
             </Grid>
         </Card>
     </Grid>;
 });
 //</editor-fold>
-
-Comp.propTypes = {
-    interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
-    employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
-};
 
 export default Comp;

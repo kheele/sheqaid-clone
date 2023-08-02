@@ -1,0 +1,11 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileOrganogramDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileOrganogramDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

@@ -2,9 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {APDFReader} from '../../../../../../components/PrintComponents';
+import {APDFReader} from 'components/PrintComponents';
 
-import {Page2, PageFirst, PageLast} from '../../../../plugin_hr_management/printers/ProfilePDFReaderPages';
+import {Page2, PageFirst, PageLast} from 'views/plugins/plugin_hr_management/printers/ProfilePDFReaderPages';
 
 import PageVaccineCertificates from './PageVaccineCertificates';
 // </editor-fold>

@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 import Footer from '../Footer';
 
-import {execWhen} from '../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import Login from './Login';
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen} from '../../../../../utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 
 @observer
 class CertificateAccredited extends React.Component {

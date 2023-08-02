@@ -34,7 +34,7 @@
              //                            answer: null,
              //                            isMandatory: false,
              //                            maxScore: null,
-             //                            notifiedList: [{id, fname, lname, email}],//people
+             //                            notified_list: [{id, fname, lname, email}],//people
              //                            notify: false,
              //                            notifyAction: null,//answer
              //                            open: false,
@@ -48,7 +48,7 @@
              //                            answer: null,
              //                            isMandatory: false,
              //                            maxScore: null,
-             //                            notifiedList: [{id, fname, lname, email}],//people
+             //                            notified_list: [{id, fname, lname, email}],//people
              //                            notify: false,
              //                            notifyAction: null,//answer
              //                            open: false,

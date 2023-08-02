@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 // </editor-fold>
-import Form from '../../../utils/Form';
-import {Dates} from '../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
 
 import style from "./ExportFilteredData.lazy.css";
 

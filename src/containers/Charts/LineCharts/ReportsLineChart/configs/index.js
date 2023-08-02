@@ -51,6 +51,7 @@ function configs(labels, datasets) {
               style: "normal",
               lineHeight: 2,
             },
+            min: 0,
           },
         },
         x: {

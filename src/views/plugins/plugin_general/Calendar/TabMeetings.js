@@ -1,13 +1,13 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {calculateRightPos, execWhen} from '../../../../utils/Utils';
-import {renderLeftButtonsForExpiryOnly} from '../../../../utils/ComponentUtils';
+import {calculateRightPos, execWhen} from 'utils/Utils';
+import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
 
-import {Button} from '../../../../components/inputs';
-import {TabledTopPanel} from '../../../../components/tables';
-import Popover from '../../../../components/popovers/Popover';
-import NavItem from '../../../../components/navs/NavItem';
+import {Button} from 'components/inputs';
+import {TabledTopPanel} from 'components/tables';
+import Popover from 'components/popovers/Popover';
+import NavItem from 'components/navs/NavItem';
 
 import ATab from './ATab';
 import BigCalendarWrapper from './BigCalendarWrapper';
@@ -127,7 +127,7 @@ class Main extends ATab {
             <div className="page-title">
                 <h3>Calendar</h3>
                 <TabledTopPanel ref="tabledTopPanel" titleSinglar="Event" titlePlural="events">
-                    {renderLeftButtonsForExpiryOnly.call(this)}
+                    {renderLeftButtonsForExpiryOnly_firebase.call(this)}
                     <Button className="btn btn-primary pull-right" type="Safety" onClick={this.onSelectMeetingType}>
                         <i className="fa fa-plus"/> Safety Meeting
                     </Button>

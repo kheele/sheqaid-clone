@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from "../../../../../utils/Utils";
+import Form from 'utils/Form';
+import {Dates} from "utils/Utils";
 
-import {Button, ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {Button, ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewPollutionRegisterDialog.lazy.css";
 

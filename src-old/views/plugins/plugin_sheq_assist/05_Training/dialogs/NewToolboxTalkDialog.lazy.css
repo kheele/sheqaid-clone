@@ -1,0 +1,11 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.ToolboxTalk-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 900px;
+    max-width: 100%;
+}
+#dialog-overlay.ToolboxTalk-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

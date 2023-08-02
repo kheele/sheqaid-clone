@@ -1,0 +1,48 @@
+
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .dialog-container{
+    width: 100% !important;
+    max-width: calc(100% - 90px) !important;
+    left: 15px !important;
+    transform: translate(0, -50%);
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .controls > .row:first-of-type .flex label {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    margin-right: 15px;
+    padding-bottom: 5px;
+    display: block;
+    text-align: center;
+    color: #aaa;
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table {
+    position: relative;
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table.active {
+    height: calc(100% - 45px);
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table > .row.sec-group{
+    overflow: auto;
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    right: 20px;
+    bottom: 55px;
+    width: 100% !important;
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table > hr,
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table > .btn {
+    position: absolute;
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table > hr{
+    bottom: 43px;
+    width: auto !important;
+    left: 10px;
+    right: 10px;
+}
+#dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .row-table > .btn {
+    bottom: 10px;
+}

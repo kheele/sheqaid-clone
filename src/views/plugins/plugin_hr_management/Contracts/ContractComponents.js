@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
-import {ProfileField} from '../../../../components/inputs';
+import {ProfileField} from 'components/inputs';
 
 @observer
 class ContractDetails extends React.Component {

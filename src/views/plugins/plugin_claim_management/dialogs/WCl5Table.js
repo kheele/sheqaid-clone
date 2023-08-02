@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, extendObservable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import ANewListTable from '../../../../components/FormTableComponents/ANewListTable';
-import {THead, TRow} from '../../../../components/tables';
-import {Button, ClearableInput, PDFUploadButton} from '../../../../components/inputs';
+import ANewListTable from 'components/FormTableComponents/ANewListTable';
+import {THead, TRow} from 'components/tables';
+import {Button, ClearableInput, PDFUploadButton} from 'components/inputs';
 import ButtonGeneratePDF from './ButtonGeneratePDF';
 import ButtonWCl from './ButtonWCl';
 

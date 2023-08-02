@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen} from '../../../../../utils/Utils';
-import {onSelectLoadTrainingFrequencies} from '../../../utils';
+import Form from 'utils/Form';
+import {execWhen} from 'utils/Utils';
+import {onSelectLoadTrainingFrequencies} from 'views/plugins/utils';
 
 import {
     Button,
@@ -18,14 +18,14 @@ import {
     SelectSiteInput,
     SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
     SelectUserInput, UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewToolboxTalkDialog.lazy.css";
 import Divider from "@mui/material/Divider";
-import {SelectTable, THead} from "../../../../../components/tables";
-import {NewEmployeeListTable} from "../../../../../components/FormTableComponents";
+import {SelectTable, THead} from "components/tables";
+import {NewEmployeeListTable} from "components/FormTableComponents";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

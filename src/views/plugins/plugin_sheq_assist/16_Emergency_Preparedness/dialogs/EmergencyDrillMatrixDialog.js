@@ -3,13 +3,13 @@ import {observer} from 'mobx-react';
 
 import style from "./EmergencyDrillMatrixDialog.lazy.css";
 
-import {Dates} from '../../../../../utils/Utils';
-import ADialogList from "../../../../ADialogList";
-import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import {Dates} from 'utils/Utils';
+import ADialogList from "views/ADialogList";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewDialog from "./NewEmergencyDrillMatrixDialog";
 import ProfileDialog from './ProfileEmergencyDrillMatrixDialog';

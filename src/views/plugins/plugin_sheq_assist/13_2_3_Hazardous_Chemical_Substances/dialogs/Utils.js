@@ -1,5 +1,5 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-import {execWhen} from "../../../../../utils/Utils";
+import {execWhen} from "utils/Utils";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="changeColors">

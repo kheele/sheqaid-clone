@@ -1,9 +1,10 @@
 import moment from 'moment';
 import {autorun, computed, observable, toJS} from 'mobx';
 
-import indexedStorage from '../utils/StorageCreator';
+// import indexedStorage from '../utils/StorageCreator';
 
 import * as storageUtils from './';
+import {execWhen} from "../utils/UtilsFuns";
 
 const {is, load} = storageUtils;
 
@@ -19,7 +20,7 @@ class Storage {
             this[key] = obj;
         });
 
-        load.loadCountries();
+        // load.loadCountries();
 
         autorun(() => {
             if (is.isLoggedIn) {
@@ -39,38 +40,37 @@ class Storage {
             }
         });
 
-        const onAuthChanged = (access_type) => {
-            return currentUser => {
-//                alert(`onAuthChanged: ${access_type} - ${currentUser}`)
-                if (currentUser) {
-//                    if(access_type === 'User' && currentUser.email === 'kheelet@gmail.com') {
-//                        currentUser.unlink(firebase.auth.PhoneAuthProvider.PROVIDER_ID);
-//                    }
-                    this.attrs.set("loggedUserAuth", currentUser);
-                    currentUser.getIdTokenResult(true).then(idTokenResult => {
-                        this.idTokenResult = idTokenResult;
-                    }).catch(async err => {
-                        console.error(err)
-                        const loggedUser = await indexedStorage.loggedUser.find(1);
-                        if (loggedUser) {
-                            const {access_type} = loggedUser;
-                            this.idTokenResult = {
-                                claims: {
-                                    access_type,
-                                    user_id: currentUser.uid
-                                }
-                            };
-                        }
-                    });
-                } else {
-                    this.attrs.delete("loggedUserAuth");
-                    this.attrs.delete("idTokenResult");
-//                    alert(access_type)
-                }
-            };
+        const onLogin = async (currentUser) => {
+            if (currentUser) {
+                this.onLogin(currentUser);
+            } else {
+                this.attrs.delete("loggedUserAuth");
+                this.attrs.delete("idTokenResult");
+            }
         };
-        auth.onAuthStateChanged(onAuthChanged('User'));
-        auth2.onAuthStateChanged(onAuthChanged('ContractorUser'));
+
+        const listenAuth = () => {
+            Promise.all([
+                new Promise(function (resolve, reject) {
+                    auth.onAuthStateChanged(currentUser => {
+                        // onLogin(currentUser);
+                        resolve(currentUser);
+                    });
+                }),
+                new Promise(function (resolve, reject) {
+                    auth2.onAuthStateChanged(currentUser => {
+                        // onLogin(currentUser);
+                        resolve(currentUser);
+                    });
+                }),
+            ]).then(list => {
+                const currentUser = list.find(item => !!item);
+                return onLogin(currentUser);
+            }).then(() => {
+                this.attrs.set("loggedUserAuthChecked", true);
+            });
+        };
+        listenAuth();
     }
 
     get toJS() {
@@ -82,11 +82,28 @@ class Storage {
         return _toJS;
     }
 
+    async onLogin(currentUser) {
+//                    if(access_type === 'User' && currentUser.email === 'kheelet@gmail.com') {
+//                        currentUser.unlink(firebase.auth.PhoneAuthProvider.PROVIDER_ID);
+//                    }
+	    if(currentUser) {
+		    this.attrs.set("loggedUserAuth", currentUser);
+		    return currentUser.getIdTokenResult(true).then(idTokenResult => {
+			    this.idTokenResult = idTokenResult;
+		    }).catch(async err => {
+			    console.error(err)
+		    });
+	    }
+    }
+
     @computed
     get loggedUserAuth() {
         return this.attrs.get("loggedUserAuth");
     }
 
+    set loggedUserAuth(val) {
+        this.attrs.set("loggedUserAuth", val);
+    }
 
     @computed
     get loggedUser() {
@@ -103,6 +120,16 @@ class Storage {
     @computed
     get loggedContractor() {
         return this.attrs.get("contractor");
+    }
+
+    @computed
+    get loggedContractorClient() {
+        return this.attrs.get("loggedContractorClient");
+    }
+
+    @computed
+    get loggedContractorSite() {
+        return this.attrs.get("loggedContractorSite");
     }
 
     @computed

@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField, UploadButton} from '../../../../../components/inputs';
-import {Slider} from '../../../../../components/lists';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
 import ProfilePDFReader from './printers/ProfilePDFReader';
 

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {computed, isObservableArray, observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import {getRandomRolor} from '../../../../utils/Utils';
+import {getRandomRolor} from 'utils/Utils';
 
 import style from "./DashboardTab.lazy.css";
 

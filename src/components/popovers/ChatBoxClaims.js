@@ -52,8 +52,8 @@ class ChatBox extends React.Component {
     }
         
     handleSubmit(msg){
-        const {id: uid} = storage.loggedUser.user;
-        msg = {sender: {uid}, msg, read: false, date: new Date()};
+        const {id: sender_id} = storage.loggedUser.user;
+        msg = {sender_id, msg, read: false, date: new Date()};
         this.list.push(msg);
         this.onChange && this.onChange(msg);
     }
@@ -70,7 +70,7 @@ class ChatBox extends React.Component {
         });
         
         inputDialog.onClosing(() => {
-            alert(2);
+            ;
             $(document.querySelector('.InputDialog')).css('z-index', 1400);
             
             this.setActiveItem(item, btn, onChange);
@@ -184,8 +184,8 @@ class ChatBox extends React.Component {
     }
     
     addMessages() {
-        (this.list || []).forEach(({sender, read, msg, date}) => {
-            if(sender.uid === storage.loggedUser.user.id) {
+        (this.list || []).forEach(({sender_id, read, msg, date}) => {
+            if(sender_id === storage.loggedUser.user.id) {
                 addUserMessage(msg);
             } else {
                 addResponseMessage(msg);

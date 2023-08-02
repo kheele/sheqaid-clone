@@ -2,15 +2,15 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from '../../../../../utils/Utils';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField, UploadButton} from '../../../../../components/inputs';
+import {Dates} from 'utils/Utils';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, UploadButton} from 'components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from '../../../../../components/FormTableComponents';
-import {Row} from '../../../../../components/FormComponents';
+} from 'components/FormTableComponents';
+import {Row} from 'components/FormComponents';
 
 import style from "./ProfilePPEDialog.lazy.css";
 // </editor-fold>

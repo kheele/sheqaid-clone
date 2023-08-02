@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {TinyMCE} from '../../../../../components/documents';
-import {ANewDialog} from '../../../../../components/dialogs';
-import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
+import {TinyMCE} from 'components/documents';
+import {ANewDialog} from 'components/dialogs';
+import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
 
 import style from "./NewAppointmentDialog.lazy.css";
 

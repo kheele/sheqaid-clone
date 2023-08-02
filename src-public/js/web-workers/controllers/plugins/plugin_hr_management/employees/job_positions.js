@@ -20,7 +20,7 @@
             });
 
             const transfer = async () => {
-                const col_ref = await db.collection(this.tbl).where('company_id', '==', 'qPFSzXKRmPBUwUztZ379');//Promise < DocumentReference < T > >
+                const col_ref = await db.collection(this.tbl);//.where('company_id', '==', 'qPFSzXKRmPBUwUztZ379');//Promise < DocumentReference < T > >
                 const querySnapshot = await col_ref.get();
                 await Promise.all(querySnapshot.docs.map(async (doc) => {
                     const ref = await db_hr.collection(this.tbl).doc(doc.id);

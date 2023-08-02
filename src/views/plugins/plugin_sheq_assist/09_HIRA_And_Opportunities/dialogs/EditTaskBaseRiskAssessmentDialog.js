@@ -2,18 +2,18 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ShouldUpdate} from "../../../../../utils/Utils";
+import {ShouldUpdate} from "utils/Utils";
 import {
     ClearableInput,
     Clickable,
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import RiskAssessmentItemTaskBasedTable from './RiskAssessmentItemTaskBasedTable';
 
@@ -109,7 +109,7 @@ class Controls extends React.Component {
         ShouldUpdate.checkSite(data, old_data, site);
         
         ShouldUpdate.check(data, old_data, activity, 'activity');
-        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, risk_tolerance, 'risk_tolerance');
         
         if(list) {

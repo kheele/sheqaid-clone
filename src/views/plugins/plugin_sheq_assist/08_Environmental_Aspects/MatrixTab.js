@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import style from "./MatrixTab.lazy.css";
-import NavItem from '../../../../components/navs/NavItem';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 //import ProfileBaselineRiskAssessmentDialog from './dialogs/ProfileBaselineRiskAssessmentDialog';
 //import EditBaselineRiskAssessmentDialog from './dialogs/EditBaselineRiskAssessmentDialog';
 

@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen} from 'utils/Utils';
 
-import {ClearableInput, SelectClientInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, SelectClientInput, SelectEmployeeInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewClaimsEmployerDetailsDialog.lazy.css";
 // </editor-fold>

@@ -3,13 +3,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../utils/Form';
-import {ShouldUpdate} from '../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput} from '../../../components/inputs';
-import {NewModuleListTable} from '../../../components/FormTableComponents';
-import {FormControls, Row} from '../../../components/FormComponents';
-import {AEditDialog} from '../../../components/dialogs';
+import {ClearableInput} from 'components/inputs';
+import {NewModuleListTable} from 'components/FormTableComponents';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 // </editor-fold>
 

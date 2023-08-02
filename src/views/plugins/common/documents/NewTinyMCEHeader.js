@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {TinyMCE} from '../../../../components/documents';
+import {TinyMCE} from 'components/documents';
 
-import {ClearableInput, SelectClientInput} from '../../../../components/inputs';
+import {ClearableInput, SelectClientInput} from 'components/inputs';
 
 import style from "./NewTinyMCEHeader.lazy.css";
 

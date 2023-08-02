@@ -25,9 +25,9 @@
 }
 #_19_Maintenance-page .tab-content .table{
     width: 100%;
-    height: 100%;
+    height: calc(100% - 1px);
     margin: 0;
 }
 #_19_Maintenance-page .tab-content .filter-wrapper + .table{
-    height: calc(100% - (10px + 122px));
+    height: calc(100% - (10px + 137px));
 }

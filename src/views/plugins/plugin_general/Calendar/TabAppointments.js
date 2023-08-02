@@ -1,17 +1,17 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {execWhen} from '../../../../utils/Utils';
-import {renderLeftButtonsForExpiryOnly} from '../../../../utils/ComponentUtils';
-import {TabledTopPanel} from '../../../../components/tables';
-import Popover from '../../../../components/popovers/Popover';
+import {execWhen} from 'utils/Utils';
+import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
+import {TabledTopPanel} from 'components/tables';
+import Popover from 'components/popovers/Popover';
 
 import ATab from './ATab';
 import BigCalendarWrapper from './BigCalendarWrapper';
 import DataSource from './data';
 
 import ProfileAppointmentDialog
-    from '../../plugin_extra/__C_Structure_And_Responsibility/dialogs/ProfileAppointmentDialog';
+    from 'views/plugins/plugin_extra/__C_Structure_And_Responsibility/dialogs/ProfileAppointmentDialog';
 
 import style from "./TabAppointments.lazy.css";
 
@@ -50,7 +50,7 @@ class Main extends ATab {
             <div className="page-title">
                 <h3>Calendar</h3>
                 <TabledTopPanel ref="tabledTopPanel" titleSinglar="Event" titlePlural="events">
-                    {renderLeftButtonsForExpiryOnly.call(this)}
+                    {renderLeftButtonsForExpiryOnly_firebase.call(this)}
                 </TabledTopPanel>	
                 <div className="clearfix"/>
             </div>

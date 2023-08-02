@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
 
-import Dialog from '../components/dialogs/Dialog';
+import Dialog from 'components/dialogs/Dialog';
 
 @observer
 class ADialogList extends React.Component {

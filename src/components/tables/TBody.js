@@ -106,7 +106,7 @@ class TBody extends React.Component {
         this.state.dataError = false;
         
         if (onLoadList) {
-            return onLoadList(true).then(isEmpty => {
+            return onLoadList({isNew: true}).then(isEmpty => {
                 this.state.listState = 'initial';
                 this.state.dataError = false;
                 this.state.dataLoaded = true;
@@ -134,7 +134,8 @@ class TBody extends React.Component {
             if (this.props.onLoadList) {
                 this.state.showBottomLoader = true;
                 setTimeout(() => {
-                    this.props.onLoadList(false).then(isEmpty => {
+                    const lastItem = this.list.getLastElement();
+                    this.props.onLoadList({lastItem, isNew: false}).then(isEmpty => {
                         onLoadComplete();
                         this.state.noOlderResults = isEmpty;
                         this.state.showBottomLoader = false;

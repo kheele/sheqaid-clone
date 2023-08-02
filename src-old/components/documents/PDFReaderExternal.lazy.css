@@ -1,0 +1,38 @@
+.PDFReaderExternal{
+    border: 5px solid #ddd;
+    position: relative;
+}
+.PDFReaderExternal .react-pdf__Document{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: calc(100% - 28px);
+}
+.PDFReaderExternal .react-pdf__Page{
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+.PDFReaderExternal canvas{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.PDFReaderExternal > .actions{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.PDFReaderExternal > .actions > p{
+    margin: 3px auto;
+    background: #eee;
+    display: table;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #777;
+}

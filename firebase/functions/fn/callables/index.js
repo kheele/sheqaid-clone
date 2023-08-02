@@ -2,7 +2,17 @@
 const excel_utils = require('./excel_utils');
 const covidSubmissionApi = require('./covid-submission-api');
 
-const {onLogin, onResetPassword} = require('./accounts');
+const {
+    profile_incomplete: {
+        onEmployeeProfileIncomplete,
+    },
+} = require('./employees');
+
+const {
+    sendWelcomeEmail, sendWelcomeOTP,
+    sendNewContractorSiteEmail, sendUpdateStatusContractorSiteEmail,
+    onSetCustomUserClaims, onLogin, onResetPassword,
+} = require('./accounts');
 const {onLoginBiometric, onSetupBiometric} = require('./biometric');
 
 const {sendUserOTP, confirmUserOTP, sendForgotPass} = require('./send');
@@ -13,6 +23,13 @@ const {getUserUidByUsername, getUserUidByEmail, getUserUidByPhone, getUserUidAnd
 exports.excel_utils = excel_utils;
 exports.covidSubmissionApi = covidSubmissionApi;
 
+exports.onEmployeeProfileIncomplete = onEmployeeProfileIncomplete;
+
+exports.sendWelcomeEmail = sendWelcomeEmail;
+exports.sendWelcomeOTP = sendWelcomeOTP;
+exports.sendNewContractorSiteEmail = sendNewContractorSiteEmail;
+exports.sendUpdateStatusContractorSiteEmail = sendUpdateStatusContractorSiteEmail;
+exports.onSetCustomUserClaims = onSetCustomUserClaims;
 exports.onLogin = onLogin;
 exports.onResetPassword = onResetPassword;
 

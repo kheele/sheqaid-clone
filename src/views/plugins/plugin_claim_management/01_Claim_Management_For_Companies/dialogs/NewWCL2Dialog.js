@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, SAIdUtils, setDefaultVal} from '../../../../../utils/Utils';
-import {getGeocode} from '../../../../../utils/Maps';
+import Form from 'utils/Form';
+import {execWhen, SAIdUtils, setDefaultVal} from 'utils/Utils';
+import {getGeocode} from 'utils/Maps';
 
 import {
     ClearableInput,
@@ -13,9 +13,9 @@ import {
     PDFUploadButton,
     SelectEmployeeInput,
     SelectJobPositionInput
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import {EarningsTable} from '../../dialogs/ClaimForms';
 

@@ -6,11 +6,11 @@ import {computed, observable} from 'mobx';
 import {Document, Image, Page, Path, PDFViewer, Svg, Text, View} from '@react-pdf/renderer';
 import {CircularProgress} from '@material-ui/core';
 
-import {calculateRightPos, creatQRCodeLink, Dates, execWhen} from '../../../../../utils/Utils';
-import {Button, Clickable} from '../../../../../components/inputs';
-import NavItem from '../../../../../components/navs/NavItem';
+import {calculateRightPos, creatQRCodeLink, Dates, execWhen} from 'utils/Utils';
+import {Button, Clickable} from 'components/inputs';
+import NavItem from 'components/navs/NavItem';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {AProfileDialog} from 'components/dialogs';
 
 import styles from "./PrintCardsPDFReader.style.js";
 

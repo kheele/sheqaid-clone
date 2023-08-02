@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, ProfileField, SelectEmployeeInput, SelectTeamInput} from '../../../../../components/inputs';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {ClearableInput, ProfileField, SelectEmployeeInput, SelectTeamInput} from 'components/inputs';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewOrganogramPersonDialog.lazy.css";
 // </editor-fold>

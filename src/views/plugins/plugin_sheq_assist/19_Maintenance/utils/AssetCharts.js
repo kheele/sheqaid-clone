@@ -1,6 +1,6 @@
 //<editor-fold desc="imports">
-import {Dates} from '../../../../../utils/Utils';
-import {createColumnChart, createColumnChart2} from '../../../../../utils/ChartUtils';
+import {Dates} from 'utils/Utils';
+import {createColumnChart, createColumnChart2} from 'utils/ChartUtils';
 
 const unitsShort = {
     Time: "hrs", Distance: "km"

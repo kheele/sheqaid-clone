@@ -8,16 +8,18 @@ import ReportsLineChart from "containers/Charts/LineCharts/ReportsLineChart";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {CircularProgress} from "@mui/material";
+import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
+import DefaultLineChart from "containers/Charts/LineCharts/DefaultLineChart";
 //</editor-fold>
 
 //<editor-fold desc="labels">
 const labels = {
-    Day: "yesterday",
-    Week: "last week",
-    Month: "last month",
-    Quarter: "last 3 months",
-    "Bi-Annual": "last 6 months",
-    Annual: "last year",
+	Day: "yesterday",
+	Week: "last week",
+	Month: "last month",
+	Quarter: "last 3 months",
+	"Bi-Annual": "last 6 months",
+	Annual: "last year",
 };
 //</editor-fold>
 
@@ -25,151 +27,314 @@ console.log('style', style);
 
 //<editor-fold desc="ReportsLineChartWrapper">
 function ReportsLineChartWrapper({desc, data: _data, color, percColor, title, percLabel}) {
-    const [data, setData] = useState(null);
-    useEffect(() => {
-        (async () => {
-            if (_data instanceof Promise) {
-                _data = await _data;
-            }
-            setData(_data);
-        })();
-    }, [_data]);
+	const [data, setData] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (_data instanceof Promise) {
+				_data = await _data;
+			}
+			setData(_data);
+		})();
+	}, [_data]);
 
-    if (data === null) {
-        return <CircularProgress size='1em'/>;
-    }
+	if (data === null) {
+		return <CircularProgress size='1em'/>;
+	}
 
-    const {chart, count, percAmount} = data;
+	const {chart, count, percAmount} = data;
 
-    return <MDBox mb={3}>
-        <ReportsLineChart
-            color={color}
-            description={desc}
-            chart={chart}
-        >
-            <ComplexStatisticsCard
-                className="fixed-flex min-w-200"
-                color={color}
-                title={title}
-                count={count}
-                percentage={{
-                    color: percColor,
-                    amount: percAmount,
-                    label: percLabel,
-                }}
-            />
-        </ReportsLineChart>
-    </MDBox>;
+	return <MDBox mb={3}>
+		<ReportsLineChart
+			color={color}
+			description={desc}
+			chart={chart}
+			height={300}
+		>
+			{/*<ComplexStatisticsCard*/}
+			{/*    className="fixed-flex min-w-200"*/}
+			{/*    color={color}*/}
+			{/*    title={title}*/}
+			{/*    count={count}*/}
+			{/*    percentage={{*/}
+			{/*        color: percColor,*/}
+			{/*        amount: percAmount,*/}
+			{/*        label: percLabel,*/}
+			{/*    }}*/}
+			{/*/>*/}
+		</ReportsLineChart>
+	</MDBox>;
+}
+
+//</editor-fold>
+
+//<editor-fold desc="DefaultLineChartWrapper">
+function DefaultLineChartWrapper({desc, data: _data, color, percColor, title, percLabel}) {
+	const [data, setData] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (_data instanceof Promise) {
+				_data = await _data;
+			}
+			setData(_data);
+		})();
+	}, [_data]);
+
+	if (data === null) {
+		return <CircularProgress size='1em'/>;
+	}
+
+	const {chart, count, percAmount} = data;
+
+	return <MDBox mb={3}>
+		<DefaultLineChart
+			color={color}
+			description={desc}
+			chart={chart}
+			height={300}
+		>
+			{/*<ComplexStatisticsCard*/}
+			{/*    className="fixed-flex min-w-200"*/}
+			{/*    color={color}*/}
+			{/*    title={title}*/}
+			{/*    count={count}*/}
+			{/*    percentage={{*/}
+			{/*        color: percColor,*/}
+			{/*        amount: percAmount,*/}
+			{/*        label: percLabel,*/}
+			{/*    }}*/}
+			{/*/>*/}
+		</DefaultLineChart>
+	</MDBox>;
+}
+
+//</editor-fold>
+
+//<editor-fold desc="VerticalBarChartWrapper">
+function VerticalBarChartWrapper({background, color, tickColor, title, chart: _chart, displayLegend}) {
+	const [chart, setChart] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (_chart instanceof Promise) {
+				_chart = await _chart;
+			}
+			setChart(_chart);
+		})();
+	}, [_chart]);
+
+	if (chart === null) {
+		return <CircularProgress size='1em'/>;
+	}
+
+	const {labels, datasets} = chart;
+
+	return <VerticalBarChart
+		title={title}
+		height="300px"
+		color={color}
+		tickColor={tickColor}
+		background={background}
+		chart={{
+			displayLegend,
+			labels,
+			datasets
+		}}
+	/>;
 }
 
 //</editor-fold>
 
 //<editor-fold desc="Comp">
-const Comp = forwardRef(({interval: __interval, employee_view: __employee_view}, ref) => {
-    const [interval, setInterval] = useState(__interval);
-    const [employee_view, setEmployeeView] = useState(__employee_view);
+const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
+	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
+	const [interval, setInterval] = useState(__interval);
 
-    // <editor-fold desc="useImperativeHandle funs">
-    useImperativeHandle(ref, () => ({
-        setInterval: (value) => {
-            setInterval(value);
-        },
-        setEmployeeView: (value) => {
-            setEmployeeView(value);
-        },
-    }));
-    // </editor-fold>
+	// <editor-fold desc="useImperativeHandle funs">
+	useImperativeHandle(ref, () => ({
+		setData: (value) => {
+			setData(value);
+		},
+		setInterval: (value) => {
+			setInterval(value);
+		},
+	}));
+	// </editor-fold>
 
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = 'plugin_sheq_assist/05_Trainings/training-plan/';
+	if (data === DATA_LOAD_STATUS.LOADING) {
+		return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
+			<CircularProgress/>
+		</div>;
+	}
 
-    const totals = {
-        personsInjured: Promise.resolve({
-            count: "+91",
-            percAmount: "+4%",
-            chart: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: {
-                    label: 'Persons Injured',
-                    color: 'light',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-            }
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/line-chart/trainings", {interval, employee_view}),//
-        vehiclesInvolved: Promise.resolve({
-            count: "281",
-            percAmount: "+16%",
-            chart: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: {
-                    label: 'Vehicles Involved',
-                    color: 'light',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-            }
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/line-chart/participants", {interval, employee_view}),
-        attendanceRate: Promise.resolve({
-            count: "95%",
-            percAmount: "+8%",
-            chart: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: {
-                    label: 'Attendance Rate',
-                    color: 'light',
-                    data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
-                },
-            }
-        }),//neonBinding.events.emit(path_training_plan + "dashboard/line-chart/attendance-rate", {interval, employee_view})
-    };
+	if (data === DATA_LOAD_STATUS.ERROR) {
+		return null;
+	}
 
-    const {personsInjured, vehiclesInvolved, attendanceRate} = totals;
+	const [item] = data;
+	// _2022_Aug__all_incident_list_aggregate,
+	// _2022_Aug__fatality_incident_list_aggregate,
+	// _2022_Aug__group_lti_incident_list_aggregate,
+	// _2022_Aug__firstaid_incident_list_aggregate,
+	// _2022_Aug__nearmiss_incident_list_aggregate,
+	// _2022_Aug__person_injured_incident_list_aggregate,
+	// _2022_Aug__vehicle_incident_list_aggregate,
 
-    const percLabel = `than ${labels[interval]}`;
+	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
+		const parts = key.split('__');
+		const year = parts[0].split('_')[1];
+		const month = parts[0].split('_')[2];
+		return {key: parts[1].split('_')[0], year, month, count: item[key].aggregate.count};
+	});
 
-    return <Grid
-        container
-        columns={2}
-        spacing={6}
-        className="grid-1 w-full grid-gap-10"
-        sx={{
-            m: 0, mt: '90px',
-        }}
-    >
-        <Grid item sx={{padding: "0 !important", mb: "110px"}}>
-            <ReportsLineChartWrapper
-                data={personsInjured}
-                color="info"
-                percColor="info"
-                title="Total Persons Injured"
-                percLabel={percLabel}
-            />
-        </Grid>
-        <Grid item sx={{padding: "0 !important", mb: "110px"}}>
-            <ReportsLineChartWrapper
-                data={vehiclesInvolved}
-                color="warning"
-                percColor="warning"
-                title="Total Vehicles Involved"
-                percLabel={percLabel}
-            />
-        </Grid>
-        {/*<Grid item sx={{padding: "0 !important", mb: "50px"}}>*/}
-        {/*    <ReportsLineChartWrapper*/}
-        {/*        data={attendanceRate}*/}
-        {/*        color="secondary"*/}
-        {/*        percColor="secondary"*/}
-        {/*        title="Attendance Rate"*/}
-        {/*        percLabel={percLabel}*/}
-        {/*    />*/}
-        {/*</Grid>*/}
-    </Grid>;
+	const list_all = list.filter(({key}) => key === 'all');
+	const list_fatality = list.filter(({key}) => key === 'fatality');
+	const list_group_lti = list.filter(({key}) => key === 'group');
+	const list_group_firstaid = list.filter(({key}) => key === 'firstaid');
+	const list_group_nearmiss = list.filter(({key}) => key === 'nearmiss');
+	const list_person = list.filter(({key}) => key === 'person');
+	const list_vehicle = list.filter(({key}) => key === 'vehicle');
+
+	console.log('data', data)
+
+	const totals = {
+		totalIncidentsPerMonth: Promise.resolve({
+			labels: list_all.map(({year, month}) => `${year}-${month}`),
+			datasets: [{
+				label: 'Incidents',
+				color: 'light',
+				data: list_all.map(({count}) => count)
+			}],
+		}),
+		fatality: Promise.resolve({
+			count: "+91",
+			percAmount: "+4%",
+			chart: {
+				labels: list_fatality.map(({year, month}) => `${year}-${month}`),
+				datasets: {
+					label: 'Fatalities',
+					color: 'light',
+					data: list_fatality.map(({count}) => count)
+				},
+			}
+		}),
+		group_lti_firstaid_nearmiss: Promise.resolve({
+			count: "+91",
+			percAmount: "+4%",
+			chart: {
+				labels: list_group_lti.map(({year, month}) => `${year}-${month}`),
+				datasets: [
+					{
+						label: 'Lost Time Injuries',
+						color: 'primary',
+						data: list_group_lti.map(({count}) => count)
+					},
+					{
+						label: 'First Aid Injuries',
+						color: 'warning',
+						data: list_group_firstaid.map(({count}) => count)
+					},
+					{
+						label: 'Nearmisses',
+						color: 'success',
+						data: list_group_nearmiss.map(({count}) => count)
+					},
+				],
+			}
+		}),
+		personsInjured: Promise.resolve({
+			count: "+91",
+			percAmount: "+4%",
+			chart: {
+				labels: list_person.map(({year, month}) => `${year}-${month}`),
+				datasets: {
+					label: 'Persons Injured',
+					color: 'light',
+					data: list_person.map(({count}) => count)
+				},
+			}
+		}),
+		vehiclesInvolved: Promise.resolve({
+			count: "281",
+			percAmount: "+16%",
+			chart: {
+				labels: list_vehicle.map(({year, month}) => `${year}-${month}`),
+				datasets: {
+					label: 'Vehicles Involved',
+					color: 'light',
+					data: list_vehicle.map(({count}) => count)
+				},
+			}
+		}),
+	};
+
+	const {totalIncidentsPerMonth, fatality, group_lti_firstaid_nearmiss, personsInjured, vehiclesInvolved} = totals;
+
+	const percLabel = `than ${labels[interval]}`;
+
+	return <Grid
+		container
+		columns={2}
+		spacing={6}
+		className="grid-1 w-full grid-gap-10"
+		sx={{
+			m: 0, mt: '20px',
+		}}
+	>
+		<Grid item sx={{padding: "0 !important", mb: "20px"}}>
+			<VerticalBarChartWrapper
+				title="Total Incidents"
+				color="#fff"
+				tickColor="#fff"
+				background="#344767"
+				displayLegend={false}
+				chart={totalIncidentsPerMonth}
+			/>
+		</Grid>
+		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+			<DefaultLineChartWrapper
+				data={group_lti_firstaid_nearmiss}
+				color="black"
+				percColor="info"
+				desc="Total Lost Time Injuries, First Aid Injuries & Nearmisses"
+				percLabel={percLabel}
+			/>
+		</Grid>
+		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+			<ReportsLineChartWrapper
+				data={fatality}
+				color="dark"
+				percColor="info"
+				title="Total Fatalities"
+				desc="Total Fatalities"
+				percLabel={percLabel}
+			/>
+		</Grid>
+		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+			<ReportsLineChartWrapper
+				data={personsInjured}
+				color="info"
+				percColor="info"
+				title="Total Persons Injured"
+				desc="Total Persons Injured"
+				percLabel={percLabel}
+			/>
+		</Grid>
+		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+			<ReportsLineChartWrapper
+				data={vehiclesInvolved}
+				color="warning"
+				percColor="warning"
+				title="Total Vehicles Involved"
+				desc="Total Vehicles Involved"
+				percLabel={percLabel}
+			/>
+		</Grid>
+	</Grid>;
 });
 //</editor-fold>
 
 Comp.propTypes = {
-    interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
-    employee_view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
+	interval: PropTypes.oneOf(["Day", "Week", "Month", "Quarter", "Bi-Annual", "Annual"]).isRequired,
+	view: PropTypes.oneOf(["all", "active", "inactive"]).isRequired,
 };
 
 export default Comp;

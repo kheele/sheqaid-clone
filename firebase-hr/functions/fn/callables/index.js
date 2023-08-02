@@ -1,11 +1,12 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-const {onLogin, onResetPassword} = require('./accounts');
+const {onSetCustomUserClaims, onLogin, onResetPassword} = require('./accounts');
 const {onLoginBiometric, onSetupBiometric} = require('./biometric');
 
 const {sendUserOTP, confirmUserOTP, sendForgotPass} = require('./send');
 const {getUserUidByUsername, getUserUidByEmail, getUserUidByPhone, getUserUidAndPasswordByEmail} = require('./get');
 // </editor-fold>
 
+exports.onSetCustomUserClaims = onSetCustomUserClaims;
 exports.onLogin = onLogin;
 exports.onResetPassword = onResetPassword;
 

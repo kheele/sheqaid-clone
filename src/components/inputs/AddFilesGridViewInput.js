@@ -156,7 +156,7 @@ class AddFilesGridViewInput extends React.Component {
         const {title, readonly, className} = this.props;
         return <div className={"AddFilesGridViewInput" + (className ? ` ${className}` : "")}>
             <GridView ref="gridView" title={title} renderItem={this.renderItem} onLoadList={this.onLoadPlaceholderList} className="grid-2"/>
-            {!readonly && <Button className="btn btn-primary hor-center" onClick={this.onAddFile}>{title}</Button>}
+            {!readonly && <Button className="btn btn-primary hor-center margin-t-10" onClick={this.onAddFile}>{title}</Button>}
             <ViewPhotoDialog ref="viewPhotoDialog" title={title}/>
         </div>;
     }

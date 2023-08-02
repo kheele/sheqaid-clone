@@ -36,17 +36,17 @@ class AnswerActions extends React.Component {
     }
 
     copyQuestion = () => {
-        const {ques, questions, expandCloseAll} = this.props;
+        const {ques, question_list, expandCloseAll} = this.props;
         expandCloseAll().then(() => {
             const newQ = toJS(ques);
             newQ.open = true;
-            questions.push(newQ);
+            question_list.push(newQ);
         });
     }
 
     deleteQuestion = () => {
-        const {idx, questions} = this.props;
-        questions.removeIf((q, n) => n === idx);
+        const {idx, question_list} = this.props;
+        question_list.removeIf((q, n) => n === idx);
     } 
 
     render() {

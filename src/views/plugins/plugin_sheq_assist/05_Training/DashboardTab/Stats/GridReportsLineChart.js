@@ -21,7 +21,7 @@ const labels = {
 };
 //</editor-fold>
 
-console.log('style', style);
+// console.log('style', style);
 
 //<editor-fold desc="ReportsLineChartWrapper">
 function ReportsLineChartWrapper({desc, data: _data, color, percColor, title, percLabel}) {
@@ -41,8 +41,9 @@ function ReportsLineChartWrapper({desc, data: _data, color, percColor, title, pe
 
     const {chart, count, percAmount} = data;
 
-    return <MDBox mb={3}>
+    return <MDBox mb={3} height="100%">
         <ReportsLineChart
+            height="100%"
             color={color}
             description={desc}
             chart={chart}
@@ -79,10 +80,6 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
         },
     }));
     // </editor-fold>
-
-    const path_training_matrix = "plugin_sheq_assist/05_Trainings/training-matrix/";
-    const path_training_course = "plugin_sheq_assist/05_Trainings/training-registry/";
-    const path_training_plan = 'plugin_sheq_assist/05_Trainings/training-plan/';
 
     const totals = {
         trainings: Promise.resolve({
@@ -136,7 +133,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
             m: 0, mt: '90px',
         }}
     >
-        <Grid item sx={{padding: "0 !important", mb: "110px"}}>
+        <Grid item sx={{padding: "0 !important", mb: "110px", h: "500px"}}>
             <ReportsLineChartWrapper
                 data={trainings}
                 color="info"
@@ -145,7 +142,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
                 percLabel={percLabel}
             />
         </Grid>
-        <Grid item sx={{padding: "0 !important", mb: "110px"}}>
+        <Grid item sx={{padding: "0 !important", mb: "110px", h: "500px"}}>
             <ReportsLineChartWrapper
                 data={participants}
                 color="warning"
@@ -154,7 +151,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
                 percLabel={percLabel}
             />
         </Grid>
-        <Grid item sx={{padding: "0 !important", mb: "50px"}}>
+        <Grid item sx={{padding: "0 !important", mb: "50px", h: "500px"}}>
             <ReportsLineChartWrapper
                 data={attendanceRate}
                 color="secondary"

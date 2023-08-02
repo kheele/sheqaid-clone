@@ -3,22 +3,21 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Permissions} from '../../../../utils/Utils';
+import {Permissions} from 'utils/Utils';
 
-import {Button} from '../../../../components/inputs';
+import {Button} from 'components/inputs';
 
 import {CompetenciesDialog} from "../../plugin_hr_management/Competencies";
-import TrainingTab from './TrainingTab.js';
-import TrainingRegistryTab from './TrainingRegistryTab.js';
+import TrainingRegistryTab from './TrainingRegistryTab';
 import TrainingPlanTab from './TrainingPlanTab';
-import TrainingRegisterTab from './TrainingRegisterTab.js';
-import TrainingMatrixTab from './TrainingMatrixTab.js';
-import ToolboxTalksTab from './ToolboxTalksTab.js';
-import DashboardTab from "./DashboardTab/index.js";
+import TrainingRegisterTab from './TrainingRegisterTab';
+import TrainingMatrixTab from './TrainingMatrixTab';
+import ToolboxTalksTab from './ToolboxTalksTab';
+import DashboardTab from "./DashboardTab";
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
-import APage from "../../../../views/APage";
+import APage from "views/APage";
 
 import style from "./Main.lazy.css";
 // </editor-fold>

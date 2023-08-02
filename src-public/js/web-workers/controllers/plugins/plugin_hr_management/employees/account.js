@@ -46,7 +46,7 @@
         if (staff) {
             if (accountStatus === 'CREATING') {
                 execWhen(() => staffCntr.accountStatus === 'CREATED').then(() => {
-                    staffCntr.onLogin();
+                    staffCntr.onSetCustomUserClaims();
                     Events.emit(staffCntr.root + 'create', accountStatusNewUser);
                     delete staffCntr.accountStatus;
                     delete staffCntr.accountStatusNewUser;

@@ -1,7 +1,10 @@
-///////////////////////////////////////////////////////////
-import _01_Claim_Management_For_Companies from './01_Claim_Management_For_Companies/Main';
-import _02_Claim_Management_For_MedicalCenters from './02_Claim_Management_For_MedicalCenters/Main';
-import _03_Claim_Management_For_ServiceProviders from './03_Claim_Management_For_ServiceProviders/Main';
+import {lazy} from "react";
+
+const _01_Claim_Management_For_Companies = lazy(() => import('./01_Claim_Management_For_Companies/Main'/* webpackChunkName:"01_Claim_Management_For_Companies" */));
+
+const _02_Claim_Management_For_MedicalCenters = lazy(() => import('./02_Claim_Management_For_MedicalCenters/Main'/* webpackChunkName:"02_Claim_Management_For_MedicalCenters" */));
+
+const _03_Claim_Management_For_ServiceProviders = lazy(() => import('./03_Claim_Management_For_ServiceProviders/Main'/* webpackChunkName:"03_Claim_Management_For_ServiceProviders" */));
 
 const modules = {
     _01_Claim_Management_For_Companies,

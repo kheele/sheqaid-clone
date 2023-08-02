@@ -10,7 +10,13 @@ import {calculateRightPos, Dates, execWhen} from 'utils/Utils';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
-import {ClearableInput} from 'components/inputs';
+import {
+    ClearableInput,
+    DateRangeInput,
+    SelectEmployeeInput,
+    SelectJobPositionInput, SelectTrainingCourseInput,
+    SelectTrainingMatixInput, SelectYearInput
+} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import NewTrainingPlanDialog from '../dialogs/NewTrainingPlanDialog';
@@ -22,6 +28,8 @@ import TrainingPlanEmployeesButtons from "components/Omni/TrainingPlanEmployeesB
 import Popover from "components/popovers/Popover";
 import {RenderCourse, RenderEmployee, RenderJobPosition, RenderYear} from "./RenderItems";
 import TrainingPlanTargetViewButtons from "components/Omni/TrainingPlanTargetViewButtons";
+import EmployeesDialog from "views/plugins/plugin_hr_management/Employees/dialogs/EmployeesDialog";
+import byLogged from "./Query/List/listAllTrainingPlanByLogged";
 
 // </editor-fold>
 
@@ -31,7 +39,10 @@ class Index extends React.Component {
     pageKey = "TrainingPlanTab";
     @observable
     state = {
-        lists: {},
+        lists: {
+            completion_status: ['Not Started', 'Outstanding', 'In Progress', 'Completed'],
+            result_status: ['Passed', 'Failed'].map(text => ({text, value: text, checked: false})),
+        },
         view: 'Course',
         employee_view: 'active',
         target_view: null,
@@ -49,6 +60,10 @@ class Index extends React.Component {
         this.setTargetView = this.setTargetView.bind(this);
         this.setView = this.setView.bind(this);
         this.setEmployees = this.setEmployees.bind(this);
+
+        this.onViewEmployeeList = this.onViewEmployeeList.bind(this);
+        this.onViewCourseList = this.onViewCourseList.bind(this);
+        this.onViewJobPositionList = this.onViewJobPositionList.bind(this);
 
         this.onNewItem = this.onNewItem.bind(this);
 
@@ -83,12 +98,55 @@ class Index extends React.Component {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList(page, isNew) {
+    onLoadList(params = {}) {
         const {state: {view, employee_view, target_view}} = this;
-        return window.neonBinding.events.emit(this.props.path + 'training-plan/list', {
+
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            completion_status,
+            result_status,
+            result,
+            date_range,
+            course_id,
+            training_id,
+            trainer_id,
+            job_position_id,
+            employee_id,
+            year,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            completion_status,
+            result_status,
+            result,
+            date_range,
+            course_id,
+            training_id,
+            trainer_id,
+            job_position_id,
+            employee_id,
+            year,
+            //
             view,
             employee_view,
-            target_view
+            target_view,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if (!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+	        args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
         });
     }
 
@@ -107,16 +165,22 @@ class Index extends React.Component {
         let title, node;
         if (view === 'Employee') {
             const {
-                group: {data: {fname, lname, optional_details = {}}},
+                group: {data: {fname, lname, job_position}},
                 list,
                 cost,
-                attendanceRate,
-                results,
-                status,
-                courseList,
-                yearList
+                results_failed,
+                results_passed,
+                results_average,
+                status_outstanding,
+                status_completed,
+                status_not_started,
+                course_list,
+                year_list
             } = item;
-            const {job_position} = optional_details || {};
+
+            const status = status_outstanding || status_completed || status_not_started;
+
+            const results = results_failed || results_passed || results_average;
 
             title = `${lname + " " + fname}`;
             node = <div>
@@ -126,25 +190,61 @@ class Index extends React.Component {
                 {!job_position && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position"/>}
             </div>;
         } else if (view === 'Job Position') {
-            const {group, list, cost, attendanceRate, results, status, employeeList, courseList, yearList} = item;
+            const {
+                group,
+                list,
+                cost,
+                results_failed,
+                results_passed,
+                results_average,
+                status_outstanding,
+                status_completed,
+                status_not_started,
+                employee_list,
+                course_list,
+                year_list,
+            } = item;
             title = `${group.data.name}`;
+
+            const status = status_outstanding || status_completed || status_not_started;
+
+            const results = results_failed || results_passed || results_average;
+
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
                 {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {employeeList.isEmpty() &&
+                {employee_list.isEmpty() &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         } else if (view === 'Course') {
-            const {group, list, cost, attendanceRate, results, status, employeeList, jobPositionList, yearList} = item;
+            const {
+                group,
+                list,
+                cost,
+                results_failed,
+                results_passed,
+                results_average,
+                status_outstanding,
+                status_completed,
+                status_not_started,
+                employee_list,
+                job_position_list,
+                year_list,
+            } = item;
+
+            const status = status_outstanding || status_completed || status_not_started;
+
+            const results = results_failed || results_passed || results_average;
+
             title = `${group.data.name}`;
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
                 {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {jobPositionList.isEmpty() &&
+                {job_position_list.isEmpty() &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position(s)"/>}
-                {employeeList.isEmpty() &&
+                {employee_list.isEmpty() &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         } else if (view === 'Year') {
@@ -152,21 +252,29 @@ class Index extends React.Component {
                 group,
                 list,
                 cost,
-                attendanceRate,
-                results,
-                status,
-                employeeList,
-                jobPositionList,
-                courseList
+                results_failed,
+                results_passed,
+                results_average,
+                status_outstanding,
+                status_completed,
+                status_not_started,
+                employee_list,
+                job_position_list,
+                course_list
             } = item;
+
+            const status = status_outstanding || status_completed || status_not_started;
+
+            const results = results_failed || results_passed || results_average;
+
             title = `${group}`;
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
                 {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {jobPositionList.isEmpty() &&
+                {job_position_list.isEmpty() &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position(s)"/>}
-                {employeeList.isEmpty() &&
+                {employee_list.isEmpty() &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         }
@@ -281,6 +389,33 @@ class Index extends React.Component {
 
     //</editor-fold>
 
+    //<editor-fold desc="onViewEmployeeList">
+    onViewEmployeeList(evt, el) {
+        const {item, target} = el.props;
+        // const {employee_list} = item;
+        // this.refs.employeesDialog.open({list: employee_list, title: 'Employees (' + target + ')'});
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onViewCourseList">
+    onViewCourseList(evt, el) {
+        const {item, target} = el.props;
+        // const {employee_list} = item;
+        // this.refs.employeesDialog.open({list: employee_list, title: 'Employees (' + target + ')'});
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onViewCourseList">
+    onViewJobPositionList(evt, el) {
+        const {item, target} = el.props;
+        // const {employee_list} = item;
+        // this.refs.employeesDialog.open({list: employee_list, title: 'Employees (' + target + ')'});
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="onNewItem">
     onNewItem(res) {
         this.refs.root.load();
@@ -299,7 +434,10 @@ class Index extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-        const {state: {view}} = this;
+        const {
+            state: {view, target_view}
+        } = this;
+
         if (view === 'Year' || view === 'Course' || view === 'Job Position' || view === 'Employee') {
             return <Options idx={idx} permissionModKey={this.props.permissionKey}>
                 <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -316,15 +454,35 @@ class Index extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls flex">
-            <ClearableInput name="type" type="radio" placeholder="Type" className="form-control fixed-flex min-w-315"
-                            onChange={onChange} values={this.state.lists.type}/>
-            <ClearableInput name="training" type="text" placeholder="Course, Job Title" className="form-control"
-                            onChange={onChange}/>
-            <ClearableInput name="trainer" type="text" placeholder="Trainer Name" className="form-control"
-                            onChange={onChange}/>
-            <ClearableInput name="date" type="date" placeholder="Register Date..."
-                            className="form-control fixed-flex min-w-185" onChange={onChange}/>
+        //     completion_status,//
+        //     result_status,//
+        //     result,
+        //     date_range,
+        //     course_id,//
+        //     training_id,//
+        //     trainer_id,//
+        //     job_position_id,//
+        //     employee_id,//
+        //     year,//
+        return <div className="col-lg-12 controls grid-5 grid-gap-5 -margin-b-35">
+            <SelectTrainingCourseInput name="course" placeholder="Course..." className="form-control"
+                                       onChange={onChange}/>
+            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control"
+                                    onChange={onChange}/>
+            <SelectTrainingMatixInput name="training" placeholder="Training Matrix..." className="form-control"
+                                      onChange={onChange}/>
+            <SelectEmployeeInput name="trainer" placeholder="Trainer..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+                                 onChange={onChange}/>
+
+            <ClearableInput name="completion_status" type="select" placeholder="Completion Status"
+                            className="form-control"
+                            onChange={onChange} values={this.state.lists.completion_status} returnValue/>
+            <ClearableInput name="result_status" type="radio" placeholder="Result Status"
+                            className="form-control"
+                            onChange={onChange} values={this.state.lists.result_status} returnValue/>
+            <SelectYearInput name="year" className="form-control" onChange={onChange}/>
+            <DateRangeInput name="date_range" className="form-control" placeholder="Date" onChange={onChange}/>
         </div>;
     }
 
@@ -338,11 +496,12 @@ class Index extends React.Component {
         if (isViewEmployee) {
             return <THead>
                 {target !== 'employee' && <div className="td">Employee</div>}
+                <div className="td">Job Position</div>
                 <div className="td">Courses</div>
                 <div className="td fixed-flex min-w-250">Years</div>
-                <div className="td fixed-flex min-w-240">Status</div>
-                <div className="td fixed-flex min-w-250">Results</div>
-                <div className="td fixed-flex min-w-120">Total Cost</div>
+                <div className="td fixed-flex min-w-320">Status</div>
+                <div className="td fixed-flex min-w-220">Results</div>
+                {/*<div className="td fixed-flex min-w-140">Total Cost</div>*/}
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         } else if (isViewJobPosition) {
@@ -351,9 +510,9 @@ class Index extends React.Component {
                 <div className="td">Courses</div>
                 <div className="td fixed-flex min-w-120">Employees</div>
                 <div className="td fixed-flex min-w-250">Years</div>
-                <div className="td fixed-flex min-w-240">Status</div>
-                <div className="td fixed-flex min-w-250">Results</div>
-                <div className="td fixed-flex min-w-120">Total Cost</div>
+                <div className="td fixed-flex min-w-320">Status</div>
+                <div className="td fixed-flex min-w-220">Results</div>
+                <div className="td fixed-flex min-w-140">Total Cost</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         } else if (isViewCourse) {
@@ -362,20 +521,20 @@ class Index extends React.Component {
                 <div className="td">Job Positions</div>
                 <div className="td fixed-flex min-w-120">Employees</div>
                 <div className="td fixed-flex min-w-250">Years</div>
-                <div className="td fixed-flex min-w-240">Status</div>
-                <div className="td fixed-flex min-w-250">Results</div>
-                <div className="td fixed-flex min-w-120">Total Cost</div>
+                <div className="td fixed-flex min-w-320">Status</div>
+                <div className="td fixed-flex min-w-220">Results</div>
+                <div className="td fixed-flex min-w-140">Total Cost</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         } else if (isViewYear) {
             return <THead>
-                {target !== 'year' && <div className="td">Year</div>}
+                {target !== 'year' && <div className="td fixed-flex min-w-120">Year</div>}
                 <div className="td">Courses</div>
                 <div className="td">Job Positions</div>
                 <div className="td fixed-flex min-w-120">Employees</div>
-                <div className="td fixed-flex min-w-240">Status</div>
-                <div className="td fixed-flex min-w-250">Results</div>
-                <div className="td fixed-flex min-w-120">Total Cost</div>
+                <div className="td fixed-flex min-w-320">Status</div>
+                <div className="td fixed-flex min-w-220">Results</div>
+                <div className="td fixed-flex min-w-140">Total Cost</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         }
@@ -391,24 +550,35 @@ class Index extends React.Component {
             isViewCourse,
             isViewYear,
             onViewTarget,
+            onViewEmployeeList,
+            onViewCourseList,
+            onViewJobPositionList,
             onShowWarningMsg,
             state: {view, target_view}
         } = this;
         const {id, target} = target_view || {};
 
         const item = this.refs.root.list[idx];
-        console.log(view, target, id, item);
-        const {group,} = item;
+        // console.log(view, target, id, item);
 
-        const props = {key: group.id || group, item, view, target_view, idx, onViewTarget, onShowWarningMsg, onClick};
+        const props = {
+            key: item.id,
+            item,
+            view,
+            target_view,
+            idx,
+            onViewTarget,
+            onShowWarningMsg,
+            onClick,
+        };
         if (isViewEmployee) {
-            return <RenderEmployee {...props}/>
+            return <RenderEmployee {...props} onViewCourseList={onViewCourseList}/>
         } else if (isViewJobPosition) {
-            return <RenderJobPosition {...props}/>
+            return <RenderJobPosition {...props} onViewCourseList={onViewCourseList} onViewEmployeeList={onViewEmployeeList}/>
         } else if (isViewCourse) {
-            return <RenderCourse {...props}/>
+            return <RenderCourse {...props} onViewJobPositionList={onViewJobPositionList} onViewEmployeeList={onViewEmployeeList}/>
         } else if (isViewYear) {
-            return <RenderYear {...props}/>
+            return <RenderYear {...props} onViewJobPositionList={onViewJobPositionList} onViewCourseList={onViewCourseList} onViewEmployeeList={onViewEmployeeList}/>
         }
         return null;
     }
@@ -444,7 +614,7 @@ class Index extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {state: {view, employee_view, target_view}} = this;
+        const {state, state: {view, employee_view, target_view}} = this;
         return <>
             <MKBox width="100%" display="flex" alignItems="center" justifyContent="center" margin='10px 0 15px'>
                 <TrainingPlanEmployeesButtons ref={ref => {
@@ -476,7 +646,9 @@ class Index extends React.Component {
 
                 <NewTrainingPlanDialog ref="newDialog"/>
                 <EditTrainingPlanDialog ref="editDialog"/>
-                <ProfileTrainingPlanDialog ref="profileDialog"/>
+                <ProfileTrainingPlanDialog ref="profileDialog" state={state}/>
+
+                <EmployeesDialog ref="employeesDialog"/>
 
                 <Popover ref="popover"/>
             </APageListReadWrite>

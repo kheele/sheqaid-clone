@@ -3,8 +3,8 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import style from "./NewPollutionRegisterSec.lazy.css";
-import {Button, ClearableInput} from '../../../../../components/inputs';
-import {Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Button, ClearableInput} from 'components/inputs';
+import {Table, TBody, THead, TRow} from 'components/tables';
 
 @observer
 class NewPollutionRegisterSec extends React.Component {

@@ -36,22 +36,46 @@ class ListTable extends ANewListTable {
         const {readonly, renderTable, disableOtherPerson} = this.props;
         const item = this.state.list[n];
 //        console.log('item', item)
-        if (item && (item.other_person || item.employee || item.id || (item.id_num || item.passport_num))) {
+        if (item && (
+          item.id ||
+          item.other_person ||
+          item.employee ||
+          item.witness ||
+          (item.id_num || item.passport_num)
+        )) {
+            const {
+                employee, witness, person_involved, investigator,
+                other_person, witness_other, person_involved_other, investigator_other,
+            } = item;
+
             let id, lname, fname, email;
-            if (item.employee) {
-                id = item.employee.id;
-                lname = item.employee.data.lname;
-                fname = item.employee.data.fname;
-                email = item.employee.data.email;
-            } else if (item.other_person) {
-                lname = item.other_person.lname;
-                fname = item.other_person.fname;
-                email = item.other_person.email;
+            if (
+              employee || witness || person_involved || investigator
+            ) {
+                let v = employee || witness || person_involved || investigator;
+                id = v.id;
+                if(v.data) {
+                    v = v.data;
+                }
+                lname = v.lname;
+                fname = v.fname;
+                email = v.email;
+            } else if (
+              other_person || witness_other || person_involved_other || investigator_other
+            ) {
+                let v = other_person || witness_other || person_involved_other || investigator_other;
+                lname = v.lname;
+                fname = v.fname;
+                email = v.email;
             } else {
                 id = item.id;
-                lname = item.lname || item.data.lname;
-                fname = item.fname || item.data.fname;
-                email = item.email || (item.data ? item.data.email : null);
+                let v = item;
+                if(v.data) {
+                    v = v.data;
+                }
+                lname = v.lname;
+                fname = v.fname;
+                email = v.email;
             }
 
             const tr = <React.Fragment>

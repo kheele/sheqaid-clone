@@ -3,9 +3,9 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import style from "./COIDMedicalCentersTab.lazy.css";
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f57ff06af82d6bf7743576acd61f0f8b>>
+ * @generated SignedSource<<395b1d2227a6b05121764ded6f71bab2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,14 @@ v1 = {
   "kind": "LocalArgument",
   "name": "id"
 },
-v2 = [
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = [
   {
     "alias": null,
     "args": [
@@ -39,11 +46,71 @@ v2 = [
     "name": "update_sheq_permissions_other_by_pk",
     "plural": false,
     "selections": [
+      (v2/*: any*/),
       {
         "alias": null,
         "args": null,
-        "kind": "ScalarField",
-        "name": "id",
+        "concreteType": "sheq_permissions_actions",
+        "kind": "LinkedField",
+        "name": "actions",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "create",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "edit",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "view",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "remove",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "share",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "sheq_permissions_other_keys",
+        "kind": "LinkedField",
+        "name": "key",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "value",
+            "storageKey": null
+          }
+        ],
         "storageKey": null
       }
     ],
@@ -59,7 +126,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "updatePermissionOtherMutation",
-    "selections": (v2/*: any*/),
+    "selections": (v3/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -71,19 +138,19 @@ return {
     ],
     "kind": "Operation",
     "name": "updatePermissionOtherMutation",
-    "selections": (v2/*: any*/)
+    "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "d5c35379ecc674cf35201ef9a9aa67ec",
+    "cacheID": "0b9811acdcbd51e8fb67c2a0293cf89d",
     "id": null,
     "metadata": {},
     "name": "updatePermissionOtherMutation",
     "operationKind": "mutation",
-    "text": "mutation updatePermissionOtherMutation(\n  $id: sheq_permissions_other_pk_columns_input!\n  $_set: sheq_permissions_other_set_input!\n) {\n  update_sheq_permissions_other_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updatePermissionOtherMutation(\n  $id: sheq_permissions_other_pk_columns_input!\n  $_set: sheq_permissions_other_set_input!\n) {\n  update_sheq_permissions_other_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    actions {\n      id\n      create\n      edit\n      view\n      remove\n      share\n    }\n    key {\n      id\n      value\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "d4908a4478236fc76c0e527cba50bbab";
+node.hash = "be3a2ed3eb023e2f66f973c4cb50497e";
 
 module.exports = node;

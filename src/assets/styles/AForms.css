@@ -52,6 +52,12 @@
         margin-left: -5px;
         margin-right: -5px;*/
 }
+#dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover {
+    /*background: rgb(2,168,168);*/
+}
+#dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover > label {
+    /*color: #fff;*/
+}
 #dialog-overlay .dialog-content .controls-wrapper > .controls > .row > label,
 #dialog-overlay .dialog-content .controls-wrapper > .controls > .row > .sec-group > label{
     border-bottom: 2px solid #ddd;
@@ -200,13 +206,16 @@
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > hr,
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active-always > hr,
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button,
-#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active-always > button{
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active-always > button,
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > .next-and-save-buttons,
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active-always > .next-and-save-buttons{
     display: block;
 }
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row:not(.active):not(.active-always) > .sec-group,
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row:not(.active):not(.active-always) > hr,
-#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row:not(.active):not(.active-always) > button{
-    display: none;
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row:not(.active):not(.active-always) > button,
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row:not(.active):not(.active-always) > .next-and-save-buttons{
+    display: none !important;
 }
 
 #dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active {
@@ -229,14 +238,16 @@
     grid-column: 1 / 5;
     grid-row: 3;
 }
-#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button {
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button,
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > .next-and-save-buttons {
     grid-row: 4;
 }
-#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button:first-of-type {
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button.btn-back {
     grid-column: 1;
     padding: 0;
 }
-#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button:last-of-type {
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > button.btn-next,
+#dialog-overlay .dialog-content .controls-wrapper.controls-sectioned > .controls > .row.active > .next-and-save-buttons {
     grid-column: 4;
     padding: 0;
     z-index: 1;

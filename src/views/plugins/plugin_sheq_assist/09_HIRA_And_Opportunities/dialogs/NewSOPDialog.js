@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {onSelectLoadSOPLocations} from '../../../utils';
+import Form from 'utils/Form';
+import {onSelectLoadSOPLocations} from 'views/plugins/utils';
 
-import {Button, ClearableInput, PhotoUploadButton, SelectUserInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {Button, ClearableInput, PhotoUploadButton, SelectUserInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewSOPDialog.lazy.css";
 

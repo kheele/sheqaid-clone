@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import {computed, extendObservable, observable, when} from 'mobx';
 
 import APage from "../../../APage";
-import {Clickable} from '../../../../components/inputs';
-import {Chart} from '../../../../components/FormComponents';
+import {Clickable} from 'components/inputs';
+import {Chart} from 'components/FormComponents';
 
-import {execWhen} from '../../../../utils/Utils';
-import {renderLeftButtonsForExpiryOnly} from '../../../../utils/ComponentUtils';
+import {execWhen} from 'utils/Utils';
+import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
 
 import WebWorker from "../../../../web-worker/WebWorker";
 
@@ -49,7 +49,7 @@ class Main extends APage {
         return (<div id="dashboard-page" className={this.classNames + " dashboard-page"}>
             <div className="page-title">
                 {this.renderBackBtn()}<h3>Dashboard</h3>
-                {renderLeftButtonsForExpiryOnly.call(this)}
+                {renderLeftButtonsForExpiryOnly_firebase.call(this)}
             </div>
             <div className="page-content nice-scrollbars">
                 <Stats ref="stats"/>

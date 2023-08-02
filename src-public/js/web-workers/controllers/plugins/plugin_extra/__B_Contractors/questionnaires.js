@@ -74,7 +74,7 @@
              //                            answer: null,
              //                            isMandatory: false,
              //                            maxScore: null,
-             //                            notifiedList: [{id, fname, lname, email}], //people
+             //                            notified_list: [{id, fname, lname, email}], //people
              //                            notify: false,
              //                            notifyAction: null, //answer
              //                            open: false,
@@ -88,7 +88,7 @@
              //                            answer: null,
              //                            isMandatory: false,
              //                            maxScore: null,
-             //                            notifiedList: [{id, fname, lname, email}], //people
+             //                            notified_list: [{id, fname, lname, email}], //people
              //                            notify: false,
              //                            notifyAction: null, //answer
              //                            open: false,
@@ -152,7 +152,7 @@
                 const companyName = await UserFuns.getUserCompanyName();
 
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: username,
                     bcc: ccList,
                     subject: contractorName + ' Questionnaire From ' + companyName
@@ -188,9 +188,7 @@
                                 <p>Kind Regards<br/>SHEQ Aid</p>';
                 }
 
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
 
                 const auditData = {id: doc_snapshot.id, data};
 
@@ -276,7 +274,7 @@
                     const percOfQuesAnswered = (answerCount / total) * 100;
 
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: username,
                         cc: ccList,
                         subject: contractorName + ' Questionnaire From ' + companyName,
@@ -296,9 +294,7 @@
                                 <p>Kind Regards<br/>SHEQ Aid</p>'
                     };
 
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    const mailRes = await sendEmail(opts);
-                    console.log('mailRes', mailRes)
+                    await Utils.sendEmail(opts);
                 }
                 
                 if(status_answered_by_sender) {
@@ -318,7 +314,7 @@
                     const percOfQuesAnswered = (answerCount / total) * 100;
 
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: username,
                         cc: ccList,
                         subject: contractorName + ' Questionnaire From ' + companyName,
@@ -338,9 +334,7 @@
                                 <p>Kind Regards<br/>SHEQ Aid</p>'
                     };
 
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    const mailRes = await sendEmail(opts);
-                    console.log('mailRes', mailRes)
+                    await Utils.sendEmail(opts);
                 }
 
                 const auditData = {id: doc_snapshot.id, data: old_data};
@@ -448,7 +442,7 @@
                         const sentByName = fname + " " + lname + " (" + username + ")";
 
                         const opts = {
-                            from: '"SHEQ Aid" <support@sheqsolve.com>',
+                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                             to: contractorUsername,
                             cc: ccList,
                             subject: companyName + ' Questionnaire Chat Message',
@@ -462,10 +456,7 @@
                             <p>Kind Regards<br/>SHEQ Aid</p>'
                         };
 
-                        console.log('callables-sendEmail', opts)
-                        const sendEmail = functions.httpsCallable('callables-sendEmail');
-                        const mailRes = await sendEmail(opts);
-                        console.log('mailRes', mailRes)
+                        await Utils.sendEmail(opts);
                     }
                 }
 

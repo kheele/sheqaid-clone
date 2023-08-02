@@ -1,6 +1,7 @@
 import React from "react";
 import {computed, observable} from 'mobx';
 import {computedFn} from "mobx-utils";
+import listAllPlugin from "../mutations/all/Plugin/listAllPlugin";
 
 class Manager {
 
@@ -50,14 +51,11 @@ class Manager {
     onLoadList() {
         this.dataState.dataLoaded = false;
         this.dataState.dataError = false;
-        return window.neonBinding.events.emit("plugin_manager/list").then(res => {
+
+        return listAllPlugin().then(res => {
             //Dashboard decide what to enter
-            this.dataState.list = res.map(val => {
-//                console.log('plugin_manager/list', val)
-                const {modules = []} = val.data;
-                modules.sort(onSortModule);
-                return val;
-            });
+            // console.log('listAllPlugin', res)
+            this.dataState.list = res;
 
             this.dataState.listState = 'initial';
             this.dataState.dataError = false;
@@ -117,11 +115,11 @@ class Manager {
         return this._selected ? this._selected : this._selected = new Selected(this);
     }
 
-    getPluginsByModules(module_list) {
+    getPluginsByModules(__module_list) {
         const {list} = this.dataState;
         return list.filter(plugin => {
-            const {data: {modules}} = plugin;
-            return modules.anyMatch(v1 => module_list.anyMatch(v2 => v2.key === v1.key));
+            const {data: {module_list}} = plugin;
+            return module_list.anyMatch(({module: {key}}) => __module_list.anyMatch(({module: {key: __key}}) => __key === key));
         });
     }
 

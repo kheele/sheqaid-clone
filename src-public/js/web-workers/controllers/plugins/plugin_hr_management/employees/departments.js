@@ -28,9 +28,9 @@
 
 //                    await doc.ref.delete();
 //                    console.log('doc deleted', doc.id);                    
-                    console.log('doc moved', doc.id);
+//                     console.log('doc moved', doc.id);
                 }));
-                console.log(this.tbl, 'final');
+                // console.log(this.tbl, 'final');
             };
             // transfer();
         }

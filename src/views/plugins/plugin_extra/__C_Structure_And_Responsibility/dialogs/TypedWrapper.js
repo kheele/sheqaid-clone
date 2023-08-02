@@ -3,15 +3,15 @@ import React, {Suspense} from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import {Hierarchies} from '../../../../../components/hierarchies';
-import PageLoadingProgress from '../../../../../components/PageLoadingProgress';
+import {Hierarchies} from 'components/hierarchies';
+import PageLoadingProgress from 'components/PageLoadingProgress';
 
-import {Button} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import {Button} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
-import EmployeeProfileDialog from '../../../plugin_hr_management/Employees/ProfileDialog';
+import EmployeeProfileDialog from 'views/plugins/plugin_hr_management/Employees/forms/ProfileDialog';
 import NewOrganogramPersonDialog from "./NewOrganogramPersonDialog";
 
 // </editor-fold>

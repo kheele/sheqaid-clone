@@ -4,27 +4,28 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import Divider from "@mui/material/Divider";
 
-import Form from '../../../../../utils/Form';
-import {Dates, execWhen} from "../../../../../utils/Utils";
+import Form from 'utils/Form';
+import {Dates, execWhen} from "utils/Utils";
 
 import {
     Button,
     ClearableInput, DateRangeInput,
     ProofUploadButton,
-    SelectClientInput,
+    SelectClientInput, SelectEmployeeInput,
     SelectJobCategoryInput, SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput,
     SelectToolboxTalkCourseInput,
     SelectTrainingMatixInput,
     SelectUserInput, UploadButton
-} from '../../../../../components/inputs';
-import {SelectTable, THead} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewTrainingRegisterDialog.lazy.css";
-import {FormControls, Row} from "../../../../../components/FormComponents";
-import TrainingPlanListByCourse from "../../../../../components/FormListComponents/TrainingPlanListByCourse";
+import {FormControls, Row} from "components/FormComponents";
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
+import insertTrainingRegister from "mutations/all/TrainingRegister/insertTrainingRegister";
 // </editor-fold>
 
 const CONST_NEGATIVE_TIME = "negativeTime";
@@ -69,7 +70,7 @@ class Controls extends React.Component {
         // this.onChangeEmployees = this.onChangeEmployees.bind(this);
 
         this.form = new Form();
-        this.form.addChangeOne("training_matrix", this.onChangeTrainingMatrix.bind(this));
+        this.form.addChangeOne("training", this.onChangeTrainingMatrix.bind(this));
         this.form.addChangeOne("time_from", this.onChangeTimeFrom.bind(this));
         this.form.addChangeOne("time_to", this.onChangeTimeTo.bind(this));
         this.form.addChangeOne("trainer", this.onChangeTrainer.bind(this));
@@ -123,8 +124,8 @@ class Controls extends React.Component {
                     institution_conducting_training_ref.value = institution_conducting_training;
                 } else {
                     const {selectedClient} = storage.selected;
-                    if(selectedClient) {
-                        const {name, company_name} = selectedClient.data;
+                    if (selectedClient) {
+                        const {name, company_name} = selectedClient.data || selectedClient;
                         institution_conducting_training_ref.value = name || company_name;
                     }
                 }
@@ -243,7 +244,7 @@ class Controls extends React.Component {
             infoDialog.open('Company is required');
             return;
         }
-        if (!form.isValid('training_matrix')) {
+        if (!form.isValid('training')) {
             infoDialog.open('Training Matrix is required');
             return;
         }
@@ -255,7 +256,7 @@ class Controls extends React.Component {
             infoDialog.open('Trainer is required');
             return;
         }
-        if (!form.isValid('list_table')) {
+        if (!form.isValid('employee_list') && !form.isValid('list_proof')) {
             infoDialog.open('At Least 1 Employee On The Training Register is required');
             return;
         }
@@ -278,95 +279,49 @@ class Controls extends React.Component {
             //0
             client, project, site,
             //1
-            training_matrix,
+            training,
             //2
             time_or_duration,
             time_from,
             time_to,
-            date,
+            date,//
             //3
             institution_conducting_training,
-            trainer,
+            trainer,//
             //4
             list_proof,
-            list_table,
+            employee_list,//
         } = form.data;
-        const data = {};
+        const data = {
+            time_or_duration,
+            time_from,
+            time_to,
+            date: Dates.formatDateSQL(date),
+            institution_conducting_training,
 
-        //0
-        if (client) {
-            if (client.id) {
-                const {id, data: _data, name} = client;
-                data.client = {id, name: name || _data.name};
-                data.client_id = id;
-            } else {
-                data.client = client;
-            }
-        }
-        if (project) {
-            if (project.id) {
-                const {id, data: _data, name} = project;
-                data.project = {id, name: name || _data.name};
-                data.project_id = id;
-            } else {
-                data.project = project;
-            }
-        }
-        if (site) {
-            if (site.id) {
-                const {id, data: _data, name} = site;
-                data.site = {id, name: name || _data.name};
-                data.site_id = id;
-            } else {
-                data.site = site;
-            }
-        }
-        //1
-        if (training_matrix) {
-            const {id, data: {course_or_module}} = training_matrix;
-            data.training_matrix = {id, course_or_module};
-        }
-        //2
-        if (time_or_duration) {
-            data.time_or_duration = time_or_duration;
-        }
-        if(time_from) {
-            data.time_from = time_from;
-        }
-        if(time_to) {
-            data.time_to = time_to;
-        }
-        if (date) {
-            data.date = date.getTime();
-        }
-        //3
-        if (institution_conducting_training) {
-            data.institution_conducting_training = institution_conducting_training;
-        }
-        if (trainer) {
-            const {id = null, data: _data, fname, lname} = trainer;
-            data.trainer = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-        }
-        //4
-        console.log('list_table', list_table.slice())
-        data.list_table = list_table.map(item => {
-            const {employee, signature} = item;
+            list_proof: list_proof && list_proof.path,
+            employee_list: {
+                data: [...(employee_list || [])].map(({employee: {id}, signature, date}) => ({
+                    employee_id: id,
+                    signature,
+                    date: Dates.formatDateSQL(date),
+                })),
+            },
 
-            const {id, data: {fname, lname}} = employee || item;
-            const v = {employee: {id, fname, lname}};
-            if (signature) {
-                v.signature = JSON.stringify(signature);
-            }
-            return v;
-        });
-        if (list_proof) {
-            data.list_proof = list_proof.path;
-        }
+            trainer_id: trainer && trainer.id,
+            trainer_external: (trainer && !trainer.id) ? {data: trainer} : null,
+            training_id: training && training.id,
+
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
+        };
 
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertTrainingRegister(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -374,8 +329,10 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -408,7 +365,7 @@ class Controls extends React.Component {
                 onFormBack={!isNoProjects && onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingMatixInput name="training_matrix" placeholder="Training Matrix (Course)..."
+                <SelectTrainingMatixInput name="training" placeholder="Training Matrix (Course)..."
                                           className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <br/>
                 <TrainingPlanListByCourse ref={this.trainingPlanListRef} name="training_plan" readonly/>
@@ -470,7 +427,7 @@ class Controls extends React.Component {
                 <ClearableInput ref="institution_conducting_training" name="institution_conducting_training" type="text"
                                 placeholder="Institution Conducting Training" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <SelectUserInput ref="trainer" name="trainer" placeholder="Trainer..." defaultUser showOtherPerson
+                <SelectEmployeeInput ref="trainer" name="trainer" placeholder="Trainer..." showOtherPerson
                                  required
                                  className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
@@ -493,7 +450,7 @@ class Controls extends React.Component {
                 <SelectTable
                     ref="selectEmployeeTable"
                     replaceCols
-                    name="list_table"
+                    name="employee_list"
                     desc="Employees" title="Select Employees"
                     className="col-lg-12 no-padding min-h-500 SelectEmployeeTable"
                     renderTHead={renderTHeadEmployees}
@@ -537,6 +494,7 @@ function calcTimeDiff({time_from, time_to}) {
     const min = parseInt(parts[1], 10) * 60;
     return `${parts[0]}hrs${isNaN(min) ? '' : (', ' + min + 'min')}`;
 }
+
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="renderTHeadEmployees">
@@ -551,6 +509,7 @@ function renderTHeadEmployees() {
         <div className="td fixed-flex no-padding min-w-70"></div>
     </THead>;
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="renderItemEmployees">
@@ -565,6 +524,7 @@ function renderItemEmployees(item, n) {
         <div className="td fixed-flex min-w-90"></div>
     </React.Fragment>;
 }
+
 // </editor-fold>
 
 export default NewTrainingRegisterDialog;

@@ -2,14 +2,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
 
-import {renderExpiryDateSpan, renderLeftButtonsForExpiryOnly} from '../../../../../utils/ComponentUtils';
-import {calculateRightPos, Dates} from '../../../../../utils/Utils';
+import {renderExpiryDateSpan, renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
+import {calculateRightPos, Dates} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewVaccineCertificateDialog from './NewVaccineCertificateDialog';
 import EditVaccineCertificateDialog from './EditVaccineCertificateDialog';
@@ -199,7 +199,7 @@ class VaccineCertificatesDialog extends ADialogList {
             path={this.path}
             onLoadList={onLoadList}
             noAnimation={true}
-            renderLeftButtons={renderLeftButtonsForExpiryOnly.bind(this)}
+            renderLeftButtons={renderLeftButtonsForExpiryOnly_firebase.bind(this)}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}

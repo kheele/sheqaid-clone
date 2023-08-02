@@ -1,0 +1,116 @@
+#dialog-overlay.NewVulnerableDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 760px;
+    max-width: 100%;
+}
+#dialog-overlay.NewVulnerableDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.NewVulnerableDialog-new-dialog .controls {
+    padding: 10px;
+    background: #f5f5f5;
+}
+#dialog-overlay.NewVulnerableDialog-new-dialog .controls > .row{
+    margin: 0 0 10px !important;
+    padding: 10px;
+    box-shadow: 0 0 3px #ddd;
+    border-radius: 3px;
+    background: #fff;
+}
+#dialog-overlay.NewVulnerableDialog-new-dialog .table{
+    width: calc(100% + 20px);
+    margin: -5px -10px;
+} 
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .tr:hover .td h6{
+    color: #eee;
+} 
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .td.td-question h6{
+    font-weight: normal !important;
+} 
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .risk-factors{
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    padding: 1px 8px;
+    margin-top: 1px;
+    margin-bottom: -1px;
+} 
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .clearable-field-control > .MuiTextField-root > label:not(.MuiInputLabel-shrink),
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .clearable-field-control > .MuiTextField-root > .MuiInput-formControl,
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .radio--input > .MuiFormGroup-root > label > span.MuiTypography-root {
+    font-size: 14px;
+}
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .clearable-field-control > .MuiTextField-root > label:not(.MuiInputLabel-shrink) {
+    top: 2px;
+}
+#dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .clearable-field-control > .MuiTextField-root > label + .MuiInput-formControl {
+    margin-top: 19px;
+}
+
+@media (max-width:767px){
+    #dialog-overlay.NewVulnerableDialog-new-dialog .controls > .row:last-of-type {
+        margin-bottom: 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table {
+        margin-left: -10px !important;
+        margin-bottom: -10px !important;
+        width: calc(100% + 20px) !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr{
+        width: calc(100% - 20px) !important;
+        padding-bottom: 10px;
+        margin: 10px 10px 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr:last-of-type{
+        margin-bottom: 10px !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr > .td{
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .tr:hover .td h6{
+        color: #888;
+    } 
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr > .td-question .margin-r-10{
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr:first-of-type > .td .clearable-field-control{
+        margin-bottom: 5px !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr .td:nth-of-type(2n+1) {
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr .td:last-of-type > .clearable-field-control:not(.select_radio){
+        margin: 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .table .tbody .list .tr .td:last-of-type > .clearable-field-control{
+        width: 240px;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .total-score {
+        margin: -10px 0 0px;
+        padding-bottom: 5px;
+    }
+}
+@media (max-width:639px){
+    #dialog-overlay.NewVulnerableDialog-new-dialog .clearable-field-control.col-lg-6.pull-left-3{
+        width: calc(100% - 10px) !important;
+        margin: 5px 10px 0 0 !important;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .row.sec-group > .clearable-field-control.select_radio{
+        height: auto;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .row.sec-group > .clearable-field-control.select_radio > .radio--input{
+        display: block;
+        margin: -6px -13px 0 -12px;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .row.sec-group > .clearable-field-control.select_radio > .radio--input > label{
+        display: block;
+        margin: 0;
+        border-radius: 20px 20px 0 0;
+    }
+    #dialog-overlay.NewVulnerableDialog-new-dialog .row.sec-group > .clearable-field-control.select_radio > .fa-close{
+        top: 8px;
+        bottom: unset;
+    }
+}

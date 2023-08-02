@@ -2,12 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {ClearableInput, SelectClientInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
+import Form from 'utils/Form';
+import {ClearableInput, SelectClientInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
-import {AEditDialog} from '../../../../components/dialogs';
+import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
+import updateProject from "mutations/all/Project/updateProject";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -72,7 +73,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        progressDialog.open();
+        updateProject({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
             onSaved && onSaved(data);
             storage.update.updateProject(this.item.id, data);
@@ -81,6 +83,7 @@ class Controls extends React.Component {
             this.props.close(); 
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
       

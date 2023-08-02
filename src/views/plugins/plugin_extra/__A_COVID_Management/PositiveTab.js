@@ -2,11 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Permissions} from '../../../../utils/Utils';
+import {Permissions} from 'utils/Utils';
 
 import APage from "../../../APage";
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 import PositiveAllTab from './PositiveAllTab.js';
 import PositiveApprovedTab from './PositiveApprovedTab.js';
 import PositiveUnApprovedTab from './PositiveUnApprovedTab.js';

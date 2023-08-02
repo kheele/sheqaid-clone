@@ -1,15 +1,35 @@
 {
-  "name": "SHEQ Aid GraphQL Schema",
-  "schemaPath": "schema.graphql",
-  "extensions": {
-    "endpoints": {
-      "Default GraphQL Endpoint": {
-        "url": "http://localhost:8080/v1beta1/relay",
-        "headers": {
-          "user-agent": "JS GraphQL",
-          "x-hasura-access-key": "rhespo-g"
-        },
-        "introspect": false
+  "projects": {
+    "relay": {
+      "name": "Relay GraphQL Schema",
+      "schemaPath": "schema.relay.graphql",
+      "extensions": {
+        "endpoints": {
+          "Default GraphQL Endpoint": {
+            "url": "http://cloud.sheqaid.com:8080/v1beta1/relay",
+            "headers": {
+              "user-agent": "JS GraphQL",
+              "x-hasura-access-key": "rhespo-g"
+            },
+            "introspect": false
+          }
+        }
+      }
+    },
+    "default": {
+      "name": "Default GraphQL Schema",
+      "schemaPath": "schema.default.graphql",
+      "extensions": {
+        "endpoints": {
+          "Default GraphQL Endpoint": {
+            "url": "http://cloud.sheqaid.com:8080/v1/graphql",
+            "headers": {
+              "user-agent": "JS GraphQL",
+              "x-hasura-access-key": "rhespo-g"
+            },
+            "introspect": false
+          }
+        }
       }
     }
   }

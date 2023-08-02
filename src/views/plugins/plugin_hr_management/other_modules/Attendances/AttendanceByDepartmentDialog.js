@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {execWhen} from '../../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import AAttendanceByDialog from './AAttendanceByDialog';
 import {CalendarWrapper, LostimeAndOvertimeIcon, ViewByPanel} from './AttendanceStatsComponents';

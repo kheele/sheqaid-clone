@@ -11,7 +11,7 @@ import ManagementTab from './ManagementTab.js';
 import SeniorManagementTab from './SeniorManagementTab.js';
 import ManagementAndSafetyTab from './ManagementAndSafetyTab.js';
 
-import Tabs from '../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 import style from "./Main.lazy.css";
 

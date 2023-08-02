@@ -1,0 +1,46 @@
+
+.PlannedJobObservations-dialog .dialog-container {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    height: calc(100% - 1px) !important;
+}
+
+.PlannedJobObservations-dialog .dialog-content {
+    overflow: visible !important;
+}
+
+.PlannedJobObservations-dialog .tabs {
+    margin: 0 0px 0 0px;
+    height: calc(100% - 0px);
+}
+
+.PlannedJobObservations-dialog .tab-content .page-title {
+    height: 0;
+    margin: -45px 10px 0 0;
+    border: none;
+    float: right;
+}
+
+.PlannedJobObservations-dialog .tab-content .page-title > h3 {
+    display: none;
+}
+
+.PlannedJobObservations-dialog .tab-content .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+
+.PlannedJobObservations-dialog .tab-content .filter-wrapper {
+    margin: 10px 0 0;
+}
+
+.PlannedJobObservations-dialog .tab-content .table {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.PlannedJobObservations-dialog .tab-content .filter-wrapper + .table {
+    height: calc(100% - (10px + 122px)) !important;
+}

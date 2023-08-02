@@ -1,0 +1,137 @@
+import React from "react";
+import {observer} from 'mobx-react';
+import {computed} from 'mobx';
+
+import {Button} from '../inputs';
+import Dialog from './Dialog';
+
+import AFormDialog from './AFormDialog';
+
+@observer
+class AEditDialog extends AFormDialog {
+
+    constructor(props, style) {
+        super(props, style);
+        
+        this.onView && (this.onView = this.onView.bind(this));
+        this.onDelete = this.onDelete.bind(this);
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this.execWhen(() => {
+            if(!this.topButtons) return false;
+            return this.refs.dialog;
+        }).then(dialog => {
+            dialog.setTopButtons(this.topButtons);
+        });
+    }
+
+    open(item) {
+        this.execWhen(() => this.state.item).then(() => {
+            const {submit, deleteB, hr} = this.refs;
+            if(!this.topButtonsHiddenSave) {
+                submit && submit.show();
+            }
+            if(!this.topButtonsHiddenDelete && !storage.is.isEmployee) {
+                deleteB && deleteB.show();
+            }
+            if(!this.topButtonsHiddenCancel) {
+                this.execWhen(() => this.refs.cancel).then(cancel => {
+                    cancel.show();
+                });
+            }
+            
+            const hideHR = () => {
+                return (this.topButtonsHiddenDelete || storage.is.isEmployee) && !this.onView;
+            };
+            if(!hideHR()) {
+                hr && (hr.style.display = 'none');
+            }
+        });
+        return super.open(item);
+    }
+
+    onDelete(e, btn) {
+//        this.refs.controls.onDelete(e, btn);
+        confirmDialog.open("Are you sure you want to remove the record?").then(res => {
+            if (res === 1) {
+                const {item} = this.state;
+                progressDialog.open();
+                window.neonBinding.events.emit((this.refs.controls.path || this.props.path) + "remove", item.id).then(res => {
+                    const {onRemoved} = this.props;
+                    onRemoved && onRemoved(item);
+                    infoDialog.open("Record successfully removed.");
+                    setTimeout(function () {
+                        infoDialog.close();
+                        this.close();
+                    }.bind(this), 2000);
+                }).finally(() => {
+                    progressDialog.close();
+                });
+            }
+        });
+    }
+   
+    @computed get topButtons() {
+        if(this.topButtonsHidden) return null;
+        return <React.Fragment>
+            {!storage.is.isEmployee && <Button ref={ref => this.refs.deleteB = ref} shouldRender={false} className="btn btn-primary" onClick={this.onDelete}>
+                <i className="fa fa-ban icon-left"/>Delete
+            </Button>}
+            {this.onView && <Button className="btn btn-primary" onClick={this.onView}>
+                <i className="fa fa-eye icon-left"/>View
+            </Button>}
+            <hr ref={ref => this.refs.hr = ref} className="h-full"/>
+            <Button ref={ref => this.refs.cancel = ref} shouldRender={false} className="btn btn-primary cancel" onClick={this.onCancel}>
+                <i className="fa fa-times icon-left"/>Cancel
+            </Button>
+            <Button ref={ref => this.refs.submit = ref} shouldRender={false} className="btn btn-primary save" onClick={this.onSubmit}>
+                <i className="fa fa-check icon-left"/>Save
+            </Button>
+        </React.Fragment>;
+    }
+    
+    renderProfileCover(val){
+        return <div className="row row-profile-cover">
+            {isString(val) && <h3>{val}</h3>}
+            {!isString(val) && val}
+        </div>;
+    }
+
+    render() {
+        let className = this.pageKey + '-profile-dialog';
+        !!this.className && (className += ' ' + this.className);
+        const Controls = this.controls;
+        return (<Dialog 
+            key={this.pageKey + '-profile-dialog'} 
+            ref="dialog" 
+            className={className + ' AProfileDialog'} 
+            noBackAction={this.noBackAction || this.props.noBackAction}  
+            preventEsc={this.preventEsc || this.props.preventEsc}
+            topButtons={this.topButtons} 
+            onCancel={this.onCancel}
+            onClose={this.onClose}
+            dialog={this}
+        >
+            <Controls 
+                ref="controls" 
+                dialog={this} 
+                state={this.state} 
+                path={this.props.path} 
+                extraProps={this.extraProps} 
+                close={this.close}
+                onFormGoto={this.onFormGoto} 
+                onFormGotoNext={this.onFormGotoNext} 
+                onFormGotoPrev={this.onFormGotoPrev} 
+                onFormNext={this.onFormNext} 
+                onFormBack={this.onFormBack} 
+                onFormOpen={this.onFormOpen} 
+                execWhen={this.execWhen} 
+            />
+        </Dialog>);
+    }
+}
+
+export default AEditDialog;
+//192

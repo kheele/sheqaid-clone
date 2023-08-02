@@ -1,4 +1,4 @@
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
 class AttendanceUtils {
     // <editor-fold defaultstate="collapsed" desc="filterEmployeeWithNoContractDailyWorkingHrs">

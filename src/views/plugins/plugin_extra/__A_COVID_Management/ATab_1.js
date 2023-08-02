@@ -4,20 +4,20 @@ import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
 import {computed, extendObservable, observable, toJS} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, isWeb, Permissions} from "../../../../utils/Utils";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import Popover from '../../../../components/popovers/Popover';
-import {TabledTopPanel} from '../../../../components/tables';
-import {Button, ClearableInput, Clickable} from '../../../../components/inputs';
-import Calendar from '../../../../components/calendar';
+import {Dates, isWeb, Permissions} from "utils/Utils";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import Popover from 'components/popovers/Popover';
+import {TabledTopPanel} from 'components/tables';
+import {Button, ClearableInput, Clickable} from 'components/inputs';
+import Calendar from 'components/calendar';
 
 import Submissions from './Submissions';
 
-import ProfileDialog from '../../plugin_hr_management/Employees/ProfileDialog';
-import EditClientDialog from '../../plugin_general/Clients/EditDialog';
+import ProfileDialog from 'views/plugins/plugin_hr_management/Employees/forms/ProfileDialog';
+import EditClientDialog from 'views/plugins/plugin_general/Clients/EditDialog';
 
 // </editor-fold>
 

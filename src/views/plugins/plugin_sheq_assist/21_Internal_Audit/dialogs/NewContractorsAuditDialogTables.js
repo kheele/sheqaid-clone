@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import {Button, ClearableInput, Clickable} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Button, ClearableInput, Clickable} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 @observer
 class Administration extends React.Component {

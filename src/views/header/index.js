@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {calculateRightPos, execWhen, isWeb} from '../../utils/Utils';
-import {Button} from '../../components/inputs';
-import {SupportDialog} from '../../components/dialogs'
+import {calculateRightPos, execWhen, isWeb} from 'utils/Utils';
+import {Button} from 'components/inputs';
+import {SupportDialog} from 'components/dialogs'
 
 import SelectedPlugin from './SelectedPlugin';
 import SelectedItems from './SelectedItems';

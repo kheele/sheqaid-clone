@@ -40,7 +40,7 @@ window.isBoolean = function ($this) {
 };
 
 window.isObject = function ($this) {
-    return $this instanceof Object || typeof $this === 'object';
+    return typeof $this === 'object';
 };
 
 window.isFunction = function ($this) {
@@ -84,7 +84,35 @@ window.isSetter = function (obj, prop) {
 //</editor-fold>
 
 (function () {
-    // <editor-fold defaultstate="collapsed" desc="Object Functions. Click on the + sign on the left to edit the code."> 
+    // <editor-fold defaultstate="collapsed" desc="Object Functions. Click on the + sign on the left to edit the code.">
+//     Object.freeze = (obj) => {
+// //
+//     };
+
+    Object.makeWritable = (obj) => {
+        if(isArray(obj)) {
+            return obj.map(Object.makeWritable);
+        }
+        if (typeof obj === 'object' && !isNullable(obj)) {
+            let newObj = {};
+            const keys = Object.keys(obj);
+            for (let n = 0; n < keys.length; n++) {
+                const key = keys[n];
+                const value = obj[key];
+                if (typeof value === 'object' && !isNullable(value)) {
+                    newObj[key] = Object.makeWritable(value);
+                } else {
+                    Object.defineProperty(newObj, key, {
+                        value,
+                        writable: true
+                    });
+                }
+            }
+            return newObj;
+        }
+        return obj;
+    };
+
     Object.values = Object.values || function (o) {
         return Object.keys(o).map(function (k) {
             return o[k];
@@ -180,8 +208,8 @@ window.isSetter = function (obj, prop) {
         const res = pathsImpl(obj);
         if (res !== null) {
             let paths = Object.values(res)
-                    .reduce((a1, a2) => [...a1, ...a2], [])
-                    .filter((v) => v.contains(pathKey));
+                .reduce((a1, a2) => [...a1, ...a2], [])
+                .filter((v) => v.contains(pathKey));
 
             const paths_res = [];
             paths.forEach((path_array) => {
@@ -213,6 +241,7 @@ window.isSetter = function (obj, prop) {
     };
 
     Object.getValueByPath = function (obj, __path, def) {
+        if(isNullable(obj)) return null;
         // Get the path as an array
         let path = stringToPath(__path);
         let current = obj;
@@ -258,36 +287,36 @@ window.isSetter = function (obj, prop) {
             }
 
             return Object.keys(left)
-                    .map((k) => {
-                        const v = left[k];
-                        if ((!isFile(v) && !isBlob(v) && !isDate(v)) &&
-                                right !== null &&
-                                (!isFile(right[k]) && !isBlob(right[k]) && !isDate(right[k])) &&
-                                (isObject(v) && isObject(right[k]))) {
-                            return [k, diff1(v, right[k], rel)];
-                        }
+                .map((k) => {
+                    const v = left[k];
+                    if ((!isFile(v) && !isBlob(v) && !isDate(v)) &&
+                        right !== null &&
+                        (!isFile(right[k]) && !isBlob(right[k]) && !isDate(right[k])) &&
+                        (isObject(v) && isObject(right[k]))) {
+                        return [k, diff1(v, right[k], rel)];
+                    }
 
-                        if (right !== null && right[k] !== v) {
-                            return [k, {[rel]: v}];
-                        }
-                        return [k, {}];
-                    })
-                    .filter(([k, v]) => !Object.keys(v).isEmpty())
-                    .reduce(mut, isArray(left) && isArray(right) ? [] : {});
+                    if (right !== null && right[k] !== v) {
+                        return [k, {[rel]: v}];
+                    }
+                    return [k, {}];
+                })
+                .filter(([k, v]) => !Object.keys(v).isEmpty())
+                .reduce(mut, isArray(left) && isArray(right) ? [] : {});
         };
 
         const merge = (left = {}, right = {}) => {
             return Object.keys(right)
-                    .map((k) => {
-                        const v = right[k];
-                        if (((!isFile(v) && !isBlob(v) && !isDate(v))) &&
-                                ((!isFile(left[k]) && !isBlob(left[k]) && !isDate(left[k]))) &&
-                                (isObject(v) && isObject(left[k]))) {
-                            return [k, merge(left[k], v)];
-                        }
-                        return [k, v];
-                    })
-                    .reduce(mut, left);
+                .map((k) => {
+                    const v = right[k];
+                    if (((!isFile(v) && !isBlob(v) && !isDate(v))) &&
+                        ((!isFile(left[k]) && !isBlob(left[k]) && !isDate(left[k]))) &&
+                        (isObject(v) && isObject(left[k]))) {
+                        return [k, merge(left[k], v)];
+                    }
+                    return [k, v];
+                })
+                .reduce(mut, left);
         };
 
         const diff = (x = {}, y = {}) =>
@@ -332,8 +361,17 @@ window.isSetter = function (obj, prop) {
         return self;
     };
 
+    String.prototype.toCurrency = function () {
+        let val = this.replaceAll('$', 'R');
+        return val;
+    };
+
     String.prototype.isEmpty = function () {
         return this.trimLeft().trimRight().replaceAll(' ', '').length === 0;
+    };
+
+    String.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
     };
 
     String.prototype.startsWith = function (str) {
@@ -520,7 +558,7 @@ window.isSetter = function (obj, prop) {
             }
         }
         if (checkTLD && domArr[domArr.length - 1].length !== 2 &&
-                domArr[domArr.length - 1].search(knownDomsPat) === -1) {
+            domArr[domArr.length - 1].search(knownDomsPat) === -1) {
             return false;
         }
         if (len < 2) {
@@ -786,6 +824,10 @@ window.isSetter = function (obj, prop) {
 
     Array.prototype.isEmpty = function () {
         return this.length === 0;
+    };
+
+    Array.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
     };
 
     Array.prototype.indexOf = Array.prototype.indexOf || function (elt) {
@@ -1149,34 +1191,18 @@ window.isSetter = function (obj, prop) {
     };
 
     Array.prototype.sortBy = function (prop, dir) {
-        const props = prop.split('.');
         this.sort((a, b) => {
-            if (a === null || b === null) {
+            const v1 = Object.getValueByPath(a, prop);
+            const v2 = Object.getValueByPath(b, prop);
+            if (v1 === v2 || (isNullable(v1) && isNullable(v2))) {
                 return 0;
             }
-            if (props.length === 1) {
-                if (a[prop] > b[prop])
-                    return dir === 'desc' ? -1 : 1;
-                if (a[prop] < b[prop])
-                    return dir === 'desc' ? 1 : -1;
-                return 0;
-            } else {
-                const prop1 = props[0];
-                if (prop1 in a && prop1 in b) {
-                    const prop2 = props[1];
-                    const a1 = a[prop1];
-                    const b1 = b[prop1];
-                    if (prop2 in a1 && prop2 in b1) {
-                        const aa = a1[prop2];
-                        const bb = b1[prop2];
-                        if (aa > bb)
-                            return dir === 'desc' ? -1 : 1;
-                        if (aa < bb)
-                            return dir === 'desc' ? 1 : -1;
-                    }
-                }
-                return 0;
-            }
+
+            if (v1 > v2)
+                return dir === 'desc' ? -1 : 1;
+            if (v1 < v2)
+                return dir === 'desc' ? 1 : -1;
+            return 0;
         });
     };
 
@@ -1198,20 +1224,20 @@ window.isSetter = function (obj, prop) {
     };
 
     Array.prototype.min = function (supplier) {
-        if(supplier) {
+        if (supplier) {
             return Math.min(...this.map(supplier));
         }
         return Math.min(...this);
     };
 
     Array.prototype.max = function (supplier) {
-        if(supplier) {
+        if (supplier) {
             return Math.max(...this.map(supplier));
         }
         return Math.max(...this);
     };
 
-    Array.range = function (min, max, step = 1){
+    Array.range = function (min, max, step = 1) {
         return Array.from({length: (max - min) / step + 1}, (_, n) => min + (n * step));
     };
 

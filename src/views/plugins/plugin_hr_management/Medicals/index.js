@@ -1,5 +1,5 @@
 import MedicalsDialog from './MedicalsDialog';
-import ProfileMedicalFitnessCertificateDialog from './ProfileMedicalFitnessCertificateDialog';
+import ProfileMedicalFitnessCertificateDialog from './forms/ProfileDialog';
 import ViewMedicalsTab from './ViewMedicalsTab';
 
 export {

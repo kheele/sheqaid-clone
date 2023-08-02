@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {Page, Text, View} from '@react-pdf/renderer';
 
-import {styles} from '../../../../../pdf-components';
+import {styles} from 'pdf-components';
 
 const PageWrapper = ({size, orientation, style, children}) => (
   <Page wrap size={size} orientation={orientation} style={style}>

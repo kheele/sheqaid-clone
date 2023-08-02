@@ -15,6 +15,7 @@
  */
 
 const uuid = require("uuid");
+const admin = require("firebase-admin");
 
 const SHARD_COLLECTION_ID = "_counter_shards_";
 
@@ -43,14 +44,6 @@ module.exports = class Counter {
         this.shards[shardsRef.doc("\t\t\t\t" + this.shardId.substr(0, 1)).path] = 0;
     }
 
-    get field() {
-        return this._field;
-    }
-    
-    set field(val) {
-        this._field = val;
-    }
-    
     /**
      * Get latency compensated view of the counter.
      *

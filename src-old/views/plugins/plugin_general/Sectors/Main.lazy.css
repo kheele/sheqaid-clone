@@ -1,0 +1,7 @@
+
+#Sectors-page{
+    height: calc(100% - 1px);
+}
+#Sectors-page .filter-wrapper + .table{
+    height: calc(100% - (20px + 122px)) !important;
+}

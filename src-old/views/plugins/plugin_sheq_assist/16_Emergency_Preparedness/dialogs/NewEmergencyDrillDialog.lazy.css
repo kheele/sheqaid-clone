@@ -1,0 +1,28 @@
+@import '../../../../../css/ANewTableFormDialog.css';
+@import '../../../../../css/ANewDialog.css';
+
+#NewEmergencyDrillSec{
+	margin: -5px 0px -10px -10px;
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog .dialog-container {
+    width: 900px;
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog ul {
+    
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog ul > li{
+    line-height: 1.5;
+    font-size: 16px;
+    color: #888;
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog .table > .tbody > * > .tr {
+    padding-right: 0px;
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog .table > .tbody > * > .tr > .td:first-of-type,
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog .table > .thead > .td:first-of-type {
+    border-left-width: 2px !important;
+}
+#dialog-overlay.NewEmergencyDrillDialog-new-dialog .table > .tbody > * > .tr > .td:last-of-type {
+    border-right-width: 2px;
+	padding-right: 8px !important;
+}

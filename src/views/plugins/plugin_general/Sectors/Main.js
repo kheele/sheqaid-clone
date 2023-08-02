@@ -1,18 +1,20 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen} from '../../../../utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../components/dialogs';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewDialog from './NewDialog';
 import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
+import sectorStore from "mutations/all/Sector";
+import AggregateStat from "components/AggregateStat";
 
 @observer
 class Main extends React.Component {
@@ -36,6 +38,10 @@ class Main extends React.Component {
         style.unuse();
     }
 
+    onLoadList(page, isNew) {
+        return sectorStore.listAllByLogged();
+    }
+
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const permissionKey = "Sectors";
         const {key} = pluginManager.selected;
@@ -53,19 +59,41 @@ class Main extends React.Component {
     }
 
     renderTHead() {
+        const {isConsultant} = storage.is;
         return <THead>
+            <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Date Created</div>
             <div className="td">Sector Name</div>
+            {isConsultant && <div className="td">Company</div>}
+            <div className="td fixed-flex min-w-100">Stats</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, name}} = item;
+        const {
+            id,
+            data: {
+                created_at, name,
+                company, client,
+                training_course_list_aggregate,
+                company_list_aggregate, client_list_aggregate,
+            }
+        } = item;
+
+        const {isConsultant} = storage.is;
+
         return <TRow key={id}>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{Dates.formatDate(created_at)}</div>
             <div className="td">{name}</div>
+            {isConsultant && <div className="td">
+                {client ? (client.name || client.data.name) : 'All'}
+            </div>}
+            <div className="td fixed-flex min-w-100 flex td-stats">
+                <StatsPanel item={item}/>
+            </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
             	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
@@ -80,7 +108,7 @@ class Main extends React.Component {
             pageId={this.pageKey + "-page"}
             pageTitle="Sectors"
             pageTitleSingular="sector"
-            path={this.path}
+            onLoadList={this.onLoadList}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
@@ -94,5 +122,25 @@ class Main extends React.Component {
         </APageListReadWrite>;
     }
 }
+
+// <editor-fold defaultstate="collapsed" desc="StatsPanel">
+@observer
+class StatsPanel extends React.Component {
+
+    render() {
+        const {
+            data: {
+                training_course_list_aggregate,
+                company_list_aggregate, client_list_aggregate,
+            }
+        } = this.props.item;
+
+        return <>
+            <AggregateStat title="Training Courses" value={training_course_list_aggregate}/>
+        </>;
+    }
+}
+
+// </editor-fold>
 
 export default Main;//313, 237

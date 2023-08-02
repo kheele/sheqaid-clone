@@ -105,7 +105,7 @@ class Events {
     }
 
     static onevent(packet) {
-//    console.log(packet)
+        // console.log('onevent', packet)
         const events = self.events[packet.evt];
         packet.opcode = self.event_types.ACK;
         if (events) {
@@ -119,12 +119,13 @@ class Events {
                 event.apply(null, args).then(res => {
 //                //console.log(senderType, 'events.forEach:', res)
                     !!res && (packet.data = [res]);//Utils.toArray(arguments);
+                    // console.log('events the:', packet, res)
                     postMessage(packet);
                 }).catch(e => {
-                    //console.log('events err:', e.toString(), e)
+                    console.log('events err:', packet,  e.toString(), e)
 //                    e = e.stack;//toString();
                     packet.error = e;//e.startsWith("Error: ") ? e.replace("Error: ", "") : e;
-                    postMessage(packet);
+                    // postMessage(packet);
                 });
             });
         } else {

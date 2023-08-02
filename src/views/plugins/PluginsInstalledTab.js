@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import APluginsTab from './APluginsTab.js';
-import {ModuleRenderer} from '../../components/FormComponents';
+import {ModuleRenderer} from 'components/FormComponents';
 
 import style from "./PluginsInstalledTab.lazy.css";
 

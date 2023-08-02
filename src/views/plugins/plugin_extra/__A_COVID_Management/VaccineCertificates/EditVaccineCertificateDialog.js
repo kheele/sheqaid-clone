@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditVaccineCertificateDialog.lazy.css";
 
@@ -86,7 +86,7 @@ class Controls extends React.Component {
         
         const data = {};
         
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, employee, 'employee');
         ShouldUpdate.check(data, old_data, vaccinated, 'vaccinated');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 

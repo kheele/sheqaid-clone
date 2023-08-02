@@ -59,6 +59,7 @@ class AControls extends React.Component {
 
         this.onPrepareSearchOrgs = this.onPrepareSearchOrgs.bind(this);
         this.onSearch = this.onSearch.bind(this);
+        this.onLoadListImpl = this.onLoadListImpl.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
         this.onSelectAll = this.onSelectAll.bind(this);
         this.onUnSelectAll = this.onUnSelectAll.bind(this);
@@ -87,7 +88,9 @@ class AControls extends React.Component {
         const refName = parentWrapper ? parentWrapper.refName : ref._stringRef;
 
         if (Form.hasVal(val)) {
-            val = this.form.getFormData(val, true);
+            console.log('onChangeFields1', refName, val)
+            val = this.form.getFormData(refName, val);
+            console.log('onChangeFields2', refName, val)
             if (val) {
                 val = Object.values(val).pop();
                 this.filterData[refName] = val;
@@ -117,7 +120,9 @@ class AControls extends React.Component {
         return this.refs[ref];
     }
 
-    onLoadList(isNew) {
+    onLoadListImpl(isNew) {
+        const {onLoadList} = this;
+
         const data = {};
         Object.keys(this.filterData).
             filter(key => Form.hasVal(this.filterData[key])).
@@ -126,7 +131,7 @@ class AControls extends React.Component {
             });
 
         console.log('filterData', data)
-        return neonBinding.events.emit(this.path + 'select/filter', {isNew, ...data});
+        return onLoadList({isNew, filterData: data});
     }
 
     onPrepareSearchOrgs() {
@@ -312,7 +317,7 @@ class AControls extends React.Component {
                                  className="col-lg-12 no-padding SelectAExportTable"
                                  renderTHead={this.renderTHeadFrom}
                                  renderItem={this.renderItemFrom}
-                                 onLoadList={this.onLoadList}
+                                 onLoadList={this.onLoadListImpl}
                                  onUnSelectAll={this.onUnSelectAll}
                                  onSelectAll={this.onSelectAll}
                                  isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}>

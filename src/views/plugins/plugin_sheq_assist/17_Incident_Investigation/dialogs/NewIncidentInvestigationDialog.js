@@ -3,16 +3,16 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {isObservableArray, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from '../../../utils';
-import {Dates, execWhen} from '../../../../../utils/Utils';
-import {AddFilesGridViewInput, ClearableInput, Clickable, ProfileField} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import Form from 'utils/Form';
+import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
+import {Dates, execWhen} from 'utils/Utils';
+import {AddFilesGridViewInput, ClearableInput, Clickable, ProfileField} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
-import {mapIncidentCorrectiveActions, mapIncidentPersonDetails} from '../../../../../utils/ArrayMapperUtils';
+import {mapIncidentCorrectiveActions, mapIncidentPersonDetails} from 'utils/ArrayMapperUtils';
 import {CauseAnalysisPanel, InvestigationFindingsTable, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
-import {NavButtons, RiskRating} from '../../../../../components/FormComponents';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
+import {NavButtons, RiskRating} from 'components/FormComponents';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
 // </editor-fold>
 import style from "./NewIncidentInvestigationDialog.lazy.css";
 

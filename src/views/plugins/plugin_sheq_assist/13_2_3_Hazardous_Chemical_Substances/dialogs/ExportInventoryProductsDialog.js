@@ -9,13 +9,13 @@ import {
     SelectChemicalManufacturerInput,
     SelectChemicalPhysicalStateInput,
     SelectChemicalTypesInput
-} from '../../../../../components/inputs';
-import {THead} from '../../../../../components/tables';
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import InventoryProductRenderRow from "../InventoryProductRenderRow";
+import InventoryProductRenderRow from "../InventoryProductTab/InventoryProductRenderRow";
 import ListPDFReader from '../printers/ListInventoryProductPDFReader';
 
-import {AControls, AExportDialog} from '../../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

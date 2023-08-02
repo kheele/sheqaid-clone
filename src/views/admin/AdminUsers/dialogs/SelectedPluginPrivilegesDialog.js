@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {AProfileDialog} from '../../../../components/dialogs';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./SelectedPluginPrivilegesDialog.lazy.css";
 

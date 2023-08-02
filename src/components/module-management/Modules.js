@@ -259,7 +259,7 @@ class Header extends React.Component {
         const {listAll} = pluginManager;
         const plugin = listAll.find(({data: {key, status}}) => status === 'Installed' && key === pluginKey);
         if (!plugin) return [];
-        return plugin.data.modules.filter(({status}) => status === 'Installed');
+        return plugin.data.module_list.filter(({status}) => status === 'Installed');
     }
 
     @computed get allInstalled() {
@@ -302,7 +302,7 @@ class Totals extends React.Component {
         const {listAll} = pluginManager;
         const plugin = listAll.find(({data: {key, status}}) => status === 'Installed' && key === pluginKey);
         if (!plugin) return [];
-        return plugin.data.modules.filter(({status}) => status === 'Installed');
+        return plugin.data.module_list.filter(({status}) => status === 'Installed');
     }
 
     render() {
@@ -362,7 +362,7 @@ function onFilterByPluginName(pluginKey, __modules) {
     if (!plugin) return [];
     const {selectedClientModules: {listNew: modules}} = storage.selected;
     return modules.filter(item => item.key !== 'Dashboard' && item.status === 'Installed')
-        .filter(v => plugin.data.modules.anyMatch(m => m.key === v.key))
+        .filter(v => plugin.data.module_list.anyMatch(m => m.key === v.key))
         .filter(item => __modules.anyMatch(v2 => v2.key === item.key))
         .map(item => __modules.find(v2 => v2.key === item.key));
 }

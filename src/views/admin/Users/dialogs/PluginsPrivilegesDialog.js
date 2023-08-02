@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
-import {AProfileDialog} from '../../../../components/dialogs';
-import {Button, ProfileField} from '../../../../components/inputs';
+import {Dates} from 'utils/Utils';
+import {AProfileDialog} from 'components/dialogs';
+import {Button, ProfileField} from 'components/inputs';
 
 import style from "./PluginsPrivilegesDialog.lazy.css";
 

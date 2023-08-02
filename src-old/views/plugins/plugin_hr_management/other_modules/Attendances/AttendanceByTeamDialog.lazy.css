@@ -1,0 +1,7 @@
+@import './AAttendanceByDialog.css';
+
+#dialog-overlay.AttendanceByTeamDialog-dialog #AttendanceByTeamDialog-page {
+    height: calc(100% - 150px);
+    padding: 0;
+    margin-top: 150px;
+}

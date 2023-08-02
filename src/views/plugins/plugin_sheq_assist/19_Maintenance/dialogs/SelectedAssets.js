@@ -1,11 +1,11 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from "../../../../../utils/Utils";
+import Form from 'utils/Form';
+import {Dates} from "utils/Utils";
 
-import {Button, ClearableInput, ProfileField} from '../../../../../components/inputs';
-import {SelectTable, THead} from '../../../../../components/tables';
+import {Button, ClearableInput, ProfileField} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
 
 import style from "./SelectedAssets.lazy.css";
 

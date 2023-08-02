@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, execWhen, isWeb, Permissions} from "../../../../utils/Utils";
+import {Dates, execWhen, isWeb, Permissions} from "utils/Utils";
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import Popover from '../../../../components/popovers/Popover';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import Popover from 'components/popovers/Popover';
 import {
     Button,
     ClearableInput,
@@ -16,13 +16,13 @@ import {
     DateRangeInput,
     ProfilePic,
     SelectEmployeeInput
-} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import Submissions from './Submissions';
 
-import ProfileDialog from '../../plugin_hr_management/Employees/ProfileDialog';
-import EditClientDialog from '../../plugin_general/Clients/EditDialog';
+import ProfileDialog from 'views/plugins/plugin_hr_management/Employees/forms/ProfileDialog';
+import EditClientDialog from 'views/plugins/plugin_general/Clients/EditDialog';
 
 @observer
 class ATab extends React.Component {

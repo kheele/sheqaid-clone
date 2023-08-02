@@ -140,7 +140,7 @@ class ADocumentCntr extends AControllerAid {
             const now = new Date().getTime();
             if (!edited_doc_approved && doc_expiry_date > now) {
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: email,
                     subject: doc_name.singular + ' Document Approved From SHEQ Aid',
                     html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -152,9 +152,7 @@ class ADocumentCntr extends AControllerAid {
                         <p>The link expires on: <b>' + Dates.formatDate(doc_expiry_date) + '</b></p>\n\
                         <p>Kind Regards<br/>SHEQ Aid</p>'
                 };
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
             }
 
             this.editAudit(loggedUser, new Date().getTime(), auditData, {name: {singular: "Document Sharing", plural: "Document Sharings"}, tbl});
@@ -197,7 +195,7 @@ class ADocumentCntr extends AControllerAid {
             const now = new Date().getTime();
             if (!edited_doc_approved && doc_expiry_date > now) {
                 const opts = {
-                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                     to: email,
                     subject: doc_name.singular + ' Document Removed From SHEQ Aid',
                     html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -209,9 +207,7 @@ class ADocumentCntr extends AControllerAid {
                         <p>The link expires on: <b>' + Dates.formatDate(doc_expiry_date) + '</b></p>\n\
                         <p>Kind Regards<br/>SHEQ Aid</p>'
                 };
-                const sendEmail = functions.httpsCallable('callables-sendEmail');
-                const mailRes = await sendEmail(opts);
-                console.log('mailRes', mailRes)
+                await Utils.sendEmail(opts);
             }
 
             this.removeAudit(loggedUser, new Date().getTime(), auditData, {name: {singular: "Document Sharing", plural: "Document Sharings"}, tbl});

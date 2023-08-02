@@ -3,10 +3,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen} from '../../../../../utils/Utils';
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import AEditDialog from '../../../../../components/dialogs/AEditDialog';
+import Form from 'utils/Form';
+import {execWhen} from 'utils/Utils';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import AEditDialog from 'components/dialogs/AEditDialog';
 
 import AControls from "./ANewCOVIDControls";
 

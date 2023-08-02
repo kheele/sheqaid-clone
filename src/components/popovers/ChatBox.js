@@ -64,10 +64,17 @@ class ChatBox extends React.Component {
     }
         
     handleSubmit(msg){
-        const {id: uid} = storage.loggedUser.user;
-        msg = {sender: {uid}, msg, read: false, date: new Date()};
+        const {id: sender_id} = storage.loggedUser.user;
+        msg = {msg, read: false, date: new Date()};
+        if(storage.is.isContractor) {
+            msg.contractor_sender_id = sender_id;
+        } else {
+            msg.sender_id = sender_id;
+        }
         this.willAddInternal = true;
         this.list.push(msg);
+        msg = this.list.getLastElement();
+        console.log('handleSubmit', msg)
         setTimeout(() => {
             this.willAddInternal = false;
         });
@@ -96,7 +103,7 @@ class ChatBox extends React.Component {
         const createSettings = () => {
             return {
                 strictPos: true,    
-                style: {width: 370, height: 450, position: 'fixed'},
+                style: {width: 370, height: 495, position: 'fixed'},
                 className: 'chatbox-popover',
                 contentNode: <div className={"ChatBox" + (this._readonly ? " readonly" : "")}>
                     <ChatWidget 
@@ -145,14 +152,28 @@ class ChatBox extends React.Component {
     }
     
     addMessages() {
+        if(!storage.loggedUser) return;
+
         const listDistinct = (this.list || []);//.distinct('date');
-        listDistinct.forEach(({sender, read, msg, date}) => {
-            if(sender.uid === storage.loggedUser.user.id) {
-                addUserMessage(msg);
-            } else {
-                addResponseMessage(msg);
-            }
-        });
+        const {id} = storage.loggedUser.user;
+        if(storage.is.isContractor) {
+            listDistinct.forEach(({contractor_sender, contractor_sender_id, read, msg, date}) => {
+                if(contractor_sender_id === id || (contractor_sender && contractor_sender.id === id)) {
+                    addUserMessage(msg);
+                } else {
+                    addResponseMessage(msg);
+                }
+            });
+        } else {
+            listDistinct.forEach(({sender, sender_id, read, msg, date}) => {
+                if(sender_id === id || (sender && sender.id === id)) {
+                    addUserMessage(msg);
+                } else {
+                    addResponseMessage(msg);
+                }
+            });
+        }
+
         this.hasLoaded = false;
     }
     

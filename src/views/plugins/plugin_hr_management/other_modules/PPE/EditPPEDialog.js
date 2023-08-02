@@ -3,23 +3,23 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {AEditDialog} from '../../../../../components/dialogs';
+import {AEditDialog} from 'components/dialogs';
 import {
     ClearableInput,
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
+} from 'components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from '../../../../../components/FormTableComponents';
-import {Row} from '../../../../../components/FormComponents';
+} from 'components/FormTableComponents';
+import {Row} from 'components/FormComponents';
 
 import style from "./EditPPEDialog.lazy.css";
 // </editor-fold>

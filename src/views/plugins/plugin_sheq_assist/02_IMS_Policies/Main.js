@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {ClearableInput} from '../../../../components/inputs';
+import {ClearableInput} from 'components/inputs';
 
 import AMain from '../../common/documents/AMain';
 
@@ -14,6 +14,7 @@ class Main extends AMain {
 
     path = "plugin_sheq_assist/02_IMS_Policies/";
     pageKey = "_02_IMS_Policies";
+    type = "IMS Policy";
 
     createBtnTitle="Upload New";
     pageTitle = "IMS Policies";

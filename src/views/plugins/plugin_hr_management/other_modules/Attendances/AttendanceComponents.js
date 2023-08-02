@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
 
-import {Button, ClearableInput, SelectDepartmentInput, SelectTeamInput} from '../../../../../components/inputs';
-import {SelectTable, THead} from '../../../../../components/tables';
+import {Button, ClearableInput, SelectDepartmentInput, SelectTeamInput} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EmployeeFromSelectWrapper">

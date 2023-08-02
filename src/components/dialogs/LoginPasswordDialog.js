@@ -21,6 +21,8 @@ import AEditDialog from './AEditDialog';
 import ALoginControls from './ALoginControls';
 
 import style from './LoginPasswordDialog.lazy.css';
+import storage from "../../storage/Storage";
+import {execWhen} from "../../utils/UtilsFuns";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -129,7 +131,7 @@ class Controls extends ALoginControls {
                 }
                 console.log(res)
                 if(this.isFailure(res)) {
-                    this.onComplete(res, true);
+                    this.onFailed(res);
                     return false;
                 }
                 const {
@@ -224,6 +226,16 @@ class Controls extends ALoginControls {
         progressDialog.open();
         
         neonBinding.events.emit(this.path + "login", data).then(res => {
+            console.log(this.path + "login res", res);
+            this.auth.onAuthStateChanged(currentUser => {
+                storage.onLogin(currentUser);
+            });
+
+            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+                storage.idTokenResult = idTokenResult;
+                return res;
+            }));
+        }).then(res => {
             console.log("res", res)
             
             if (!isAdminApp && isObject(res) && res.contractor) {
@@ -240,7 +252,7 @@ class Controls extends ALoginControls {
                 return;
             }
 
-            return this.onComplete(res, true);
+            return this.onComplete(res, true, type);
         }).finally(() => {
             setTimeout(() => progressDialog.close());
         }).catch(err => {
@@ -253,7 +265,18 @@ class Controls extends ALoginControls {
         });
     }
     // </editor-fold>
-    
+
+    get auth() {
+        const {type: access_type} = this.form.data;
+        if (access_type === "Contractor") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
     get path() {
         if(isAdminApp) {
             return "admin/users/accounts/";
@@ -294,7 +317,7 @@ class Controls extends ALoginControls {
                     onFormNext={this.onSubmit}
                     onFormBack={onFormBack} 
                 >
-                    <ClearableInput name="password" type="password" placeholder="Password" className="form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="password" type="password" placeholder="Password" className="form-control" onChange={this.form.onChange} onSubmit={this.onSubmit}/>
                     <a href="#" className="forgot-pass fixed-flex min-w-120 hor-center" onClick={this.onForgotPassword}>Forgot Password?</a>
                 </Row>
                 {!isAdminApp && <Row 

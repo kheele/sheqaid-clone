@@ -1,0 +1,13 @@
+#NewCalibrationRecordDialogSec .table > .thead {
+    background: rgb(234, 234, 234);
+}
+#NewCalibrationRecordDialogSec .table > .thead > .td{
+    color: #888;
+}
+#NewCalibrationRecordDialogSec .table > .thead > .td-tr > .td:first-of-type{
+    margin-bottom: 5px;
+}
+
+#dialog-overlay.NewCalibrationRecordDialog-new-dialog .td-number > .clearable-field-control.form-control input {
+	text-align: right;
+}

@@ -3,14 +3,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, execWhen} from '../../../../../utils/Utils';
-import {Button, ClearableInput} from '../../../../../components/inputs';
+import {Dates, execWhen} from 'utils/Utils';
+import {Button, ClearableInput} from 'components/inputs';
 
-import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import {THead, TRow} from '../../../../../components/tables';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {THead, TRow} from 'components/tables';
 
 import ProfileScreeningDialog from './ProfileScreeningDialog';
 import EditScreeningDialog from './EditScreeningDialog';

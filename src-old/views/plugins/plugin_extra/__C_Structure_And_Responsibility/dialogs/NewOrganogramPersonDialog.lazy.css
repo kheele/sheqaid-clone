@@ -1,0 +1,10 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewOrganogramPersonDialog-new-dialog .dialog-container{
+    height: 654px;
+    width: 700px;
+}
+#dialog-overlay.NewOrganogramPersonDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

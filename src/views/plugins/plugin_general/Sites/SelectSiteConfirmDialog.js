@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../components/inputs';
+import Form from 'utils/Form';
+import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 
-import {ANewDialog} from '../../../../components/dialogs';
+import {ANewDialog} from 'components/dialogs';
 import style from "./SelectSiteConfirmDialog.lazy.css";
 
 @observer

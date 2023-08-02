@@ -5,15 +5,12 @@ import {observer} from 'mobx-react';
 
 import {execWhen, scrollTo} from '../../utils/Utils';
 
-//import {Dates, ShouldUpdate, execWhen} from '../../../../../utils/Utils';
-
 @observer
 class AFormDialog extends React.Component {
     style;
 
     @observable
-    state = {item: null};
-    onResponse;
+    state = {item: null, onResponse: null,};
     @observable
     extraProps = {};
 
@@ -83,15 +80,27 @@ class AFormDialog extends React.Component {
 
     open(item) {
         return new Promise(async (resolve, reject) => {
-            this.state.item = item;
-            this.onResponse = resolve;
-            
-            // let title = isFunction(this.title) ? this.title() : this.title;
-            // if(title instanceof Promise) {
-            //     title = await title;
-            // }
-            // this.refs.dialog.open(title);
-            this.refs.dialog.open();
+            !!item && (this.state.item = item);
+
+            this.state.onResponse = resolve;
+
+            let title = isFunction(this.title) ? this.title() : this.title;
+            if(title instanceof Promise) {
+                title = await title;
+            }
+            this.refs.dialog.open(title);
+
+            if(!this.topButtonsHiddenCancel) {
+                this.execWhen(() => this.refs.cancel).then(cancel => {
+                    cancel.show();
+                });
+            }
+
+            const {findById} = this;
+            if(findById) {
+                const controls = await execWhen(() => this.refs.controls);
+                controls.state.item = await findById(item.id);
+            }
         });
     }
 
@@ -110,7 +119,7 @@ class AFormDialog extends React.Component {
     }
 
     onSubmit(e, btn) {
-        this.refs.controls.onSubmit(e, btn, this.onResponse);
+        this.refs.controls.onSubmit(e, btn, this.state.onResponse);
     }
 
     onFormGotoImpl(currRow) {
@@ -201,6 +210,18 @@ class AFormDialog extends React.Component {
 
     getDOMNode() {
         return this.refs.dialog.getDOMNode();
+    }
+
+    getHeader() {
+        return this.refs.dialog.getHeader();
+    }
+
+    getHeaderDOMNode() {
+        return this.refs.dialog.getHeaderDOMNode();
+    }
+
+    getTitleDOMNode() {
+        return this.refs.dialog.getTitleDOMNode();
     }
 
     @computed get item() {

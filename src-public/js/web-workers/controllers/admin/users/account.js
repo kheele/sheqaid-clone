@@ -108,7 +108,7 @@
                     DATA.created_at = DATA.created_at.toDate();
 
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: username,
                         subject: 'Welcome to SHEQ Aid',
                         html: '<h3><b>Dear ' + DATA.fname + ' ' + DATA.lname + '</b></h3>\n\
@@ -117,10 +117,7 @@
                                             ' + Utils.getAppDownloadOptionMsg()
                     };
 
-                    console.log('callables-sendEmail', opts)
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    const mailRes = await sendEmail(opts);
-                    console.log('mailRes', mailRes)
+                    await Utils.sendEmail(opts);
 
                     return AdminUserFuns.mapResults({id: doc_snapshot.id, data: DATA});
                 };

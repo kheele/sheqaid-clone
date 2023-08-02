@@ -10,21 +10,26 @@
     "deploy:hosting:desktop": "cd ../ && firebase deploy --only hosting:desktop",
     "deploy:hosting:mobile": "cd ../ && firebase deploy --only hosting:mobile",
     "deploy:hosting:web": "cd ../ && firebase deploy --only hosting:web",
-    "deploy:hosting:admin,forms": "cd ../ && firebase deploy --only hosting:beta-dev",
+    "deploy:hosting:contractors": "cd ../ && firebase deploy --only hosting:contractors-2023",
+    "deploy:hosting:beta-dev": "cd ../ && firebase deploy --only hosting:beta-dev",
     "deploy:hosting:web,desktop,mobile,main": "cd ../ && firebase deploy --only hosting:web && firebase deploy --only hosting:desktop && firebase deploy --only hosting:mobile && firebase deploy --only hosting:main",
-
     "deploy:functions": "cd ../ && firebase deploy --only functions",
     "deploy:covidScreeningDailyCheck": "firebase deploy --only functions:covidScreeningDailyCheck",
-
     "deploy:schedulers": "firebase deploy --only functions:schedulers",
     "deploy:schedulers:notifications:taskRunner": "firebase deploy --only functions:schedulers-notifications-taskRunner",
     "deploy:schedulers:notifications:ncr_task_sendEmails": "firebase deploy --only functions:schedulers-notifications-ncr_task_sendEmails",
-
     "deploy:execFun": "firebase deploy --only functions:execFun",
     "deploy:getDoc": "firebase deploy --only functions:getDoc",
     "deploy:updateDoc": "firebase deploy --only functions:updateDoc",
-
     "deploy:callables": "firebase deploy --only functions:callables",
+
+    "deploy:callables-onEmployeeProfileIncomplete": "firebase deploy --only functions:callables-onEmployeeProfileIncomplete",
+
+    "deploy:callables-sendWelcomeEmail": "firebase deploy --only functions:callables-sendWelcomeEmail",
+    "deploy:callables-sendWelcomeOTP": "firebase deploy --only functions:callables-sendWelcomeOTP",
+    "deploy:callables-sendNewContractorSiteEmail": "firebase deploy --only functions:callables-sendNewContractorSiteEmail",
+    "deploy:callables-sendUpdateStatusContractorSiteEmail": "firebase deploy --only functions:callables-sendUpdateStatusContractorSiteEmail",
+    "deploy:callables-onSetCustomUserClaims": "firebase deploy --only functions:callables-onSetCustomUserClaims",
     "deploy:callables-onLogin": "firebase deploy --only functions:callables-onLogin",
     "deploy:callables-sendUserOTP": "firebase deploy --only functions:callables-sendUserOTP",
     "deploy:callables-confirmUserOTP": "firebase deploy --only functions:callables-confirmUserOTP",
@@ -40,13 +45,10 @@
     "deploy:callables-excel_utils-onRead": "firebase deploy --only functions:callables-excel_utils-onRead",
     "deploy:callables-covidSubmissionApi": "firebase deploy --only functions:callables-covidSubmissionApi",
     "deploy:callables-wordToPDF": "firebase deploy --only functions:callables-wordToPDF",
-
     "deploy:firestore": "firebase deploy --only functions:firestore",
-
     "firebase functions:shell": "firebase functions:shell",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-
-    "install:mod": "npm install firebase --save",
+    "install:mod": "npm i node-blob --save",
     "install:all": "npm install"
   },
   "engines": {
@@ -58,6 +60,7 @@
     "@tensorflow/tfjs-node": "^3.15.0",
     "@tensorflow/tfjs-node-gpu": "^3.15.0",
     "adv-firestore-functions": "^2.0.9",
+    "atob": "^2.1.2",
     "canvas": "^2.9.0",
     "docx-pdf": "0.0.1",
     "ejs": "^3.1.6",
@@ -71,6 +74,7 @@
     "html-pdf": "^2.2.0",
     "moment": "2.24.0",
     "moment-timezone": "0.5.13",
+    "node-blob": "0.0.2",
     "nodemailer": "^6.4.16"
   },
   "devDependencies": {

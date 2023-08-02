@@ -2,12 +2,12 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {renderLeftButtonsForTeamAttendanceOnly} from '../../../../../utils/ComponentUtils';
-import {execWhen} from '../../../../../utils/Utils';
+import {renderLeftButtonsForTeamAttendanceOnly} from 'utils/ComponentUtils';
+import {execWhen} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import {ActionsButton} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import {ActionsButton} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import style from "./AttendanceTeamDialog.lazy.css";
 

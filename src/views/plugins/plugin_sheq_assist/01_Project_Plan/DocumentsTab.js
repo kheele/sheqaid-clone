@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, ProfileField} from '../../../../components/inputs';
+import {ClearableInput, ProfileField} from 'components/inputs';
 
 import AMain from '../../common/documents/AMain';
 
@@ -12,6 +12,7 @@ import AMain from '../../common/documents/AMain';
 class DocumentsTab extends AMain {
     path = "plugin_sheq_assist/01_Project_Plan/documents/";
     pageKey = "DocumentsTab";
+    type = "General Document";
 
     createBtnTitle="Upload New";
     pageTitle = "Company Documents";

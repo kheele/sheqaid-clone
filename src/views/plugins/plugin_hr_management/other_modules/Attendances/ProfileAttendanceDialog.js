@@ -1,9 +1,9 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
 import {NewAttendanceTable} from './AttendanceComponents';
 

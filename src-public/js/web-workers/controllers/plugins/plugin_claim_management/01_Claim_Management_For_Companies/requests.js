@@ -252,7 +252,7 @@
 
         if (!emails.isEmpty()) {
             const opts = {
-                from: '"SHEQ Aid" <support@sheqsolve.com>',
+                from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                 bcc: emails.join(','),
                 subject,
                 html: `<h3><b>Dear SHEQ Aid User</b></h3>\n
@@ -261,10 +261,7 @@
                     <p>Kind Regards<br/>SHEQ Aid</p>`
             };
 
-            console.log('email to send', opts)
-//                            const sendEmail = functions.httpsCallable('callables-sendEmail');
-//                            const mailRes = await sendEmail(opts);
-//                            console.log('mailRes', mailRes)
+            await Utils.sendEmail(opts);
         }
     }
     // </editor-fold>

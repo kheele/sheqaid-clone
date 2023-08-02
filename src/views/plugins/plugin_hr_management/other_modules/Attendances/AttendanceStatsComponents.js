@@ -4,11 +4,11 @@ import {observer} from 'mobx-react';
 import {CircularProgress} from '@material-ui/core';
 import {autorun, computed, observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {Button} from '../../../../../components/inputs';
+import {Button} from 'components/inputs';
 
-import Calendar from '../../../../../components/calendar';
+import Calendar from 'components/calendar';
 
 import {
     getEmployeeListWithLostimeByDate,

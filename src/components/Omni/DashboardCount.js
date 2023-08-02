@@ -4,7 +4,7 @@ import { QueryRenderer } from "react-relay";
 import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import { CircularProgress } from "@mui/material";
-import environment from "Environment";
+import environment from "EnvironmentReadable";
 // </editor-fold>
 
 const labels = {

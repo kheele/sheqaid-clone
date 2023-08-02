@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput, SelectClientInput} from '../../../components/inputs';
-import {ANewDialog} from '../../../components/dialogs';
+import {ClearableInput, SelectClientInput} from 'components/inputs';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 

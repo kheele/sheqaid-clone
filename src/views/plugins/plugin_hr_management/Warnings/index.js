@@ -1,5 +1,5 @@
 import WarningsDialog from './WarningsDialog';
-import ProfileWarningDialog from './ProfileWarningDialog';
+import ProfileWarningDialog from './forms/ProfileDialog';
 import ViewWarningsTab from './ViewWarningsTab';
 
 export {

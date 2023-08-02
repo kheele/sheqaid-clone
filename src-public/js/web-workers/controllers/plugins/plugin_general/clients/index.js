@@ -190,7 +190,7 @@
             if(sector_list && isArray(sector_list)) {
                 const cntr = await Events.get('plugin_sheq_assist/sectors/');
                 v.data.sector_list = (await Promise.all(sector_list.map(async (v) => {
-                    return await cntr.find_by_id.call(cntr, null, v.id);
+                    return v.id && (await cntr.find_by_id.call(cntr, null, v.id));
                 }))).filter(v => !!v);
             }
             const projects = await Events.get('plugin_sheq_assist/projects/');

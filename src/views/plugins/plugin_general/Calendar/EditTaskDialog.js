@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {ShouldUpdate} from '../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {GDocEditor} from '../../../../components/documents';
-import {ClearableInput, SelectEmployeeInput, SelectUserInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {AEditDialog} from '../../../../components/dialogs';
+import {GDocEditor} from 'components/documents';
+import {ClearableInput, SelectEmployeeInput, SelectUserInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTaskDialog.lazy.css";
 
@@ -128,11 +128,11 @@ class Controls extends React.Component {
         const data = {};
         
         ShouldUpdate.checkUser(data, old_data, assigned_by, 'assigned_by');
-        ShouldUpdate.checkEmployee(data, old_data, person_assigned, 'person_assigned');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, person_assigned, 'person_assigned');
         ShouldUpdate.check(data, old_data, category, 'category');
         ShouldUpdate.check(data, old_data, type, 'type');  
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
-        ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, due_date, 'due_date');
         ShouldUpdate.check(data, old_data, desc, 'desc');
         ShouldUpdate.check(data, old_data, doc_desc, 'doc_desc');
         ShouldUpdate.check(data, old_data, doc, 'doc');

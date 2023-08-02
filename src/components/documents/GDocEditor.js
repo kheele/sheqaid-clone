@@ -97,7 +97,7 @@ class GDocEditor extends React.Component {
                     const {id} = res.data;
                     this.state.doc = state.new_doc_id = id;
                     createSrc();
-                    indexedStorage.orphanedUploadedDocs.createOrUpdate({id});
+                    // indexedStorage.orphanedUploadedDocs.createOrUpdate({id});
                 }).catch(err => {
                     this.timeoutErr = setTimeout(() => {
                         this.state.loadStatus = 'ERROR';
@@ -248,7 +248,7 @@ class GDocEditor extends React.Component {
 
         progressDialog.open("Removing unsaved document");
         return neonBinding.events.emit("default/docs/doc/remove", state.new_doc_id).then(res => {
-            indexedStorage.orphanedUploadedDocs.remove(state.new_doc_id);
+            // indexedStorage.orphanedUploadedDocs.remove(state.new_doc_id);
             console.log(this.constructor.name, 'removed doc', state.new_doc_id)
             progressDialog.close();
         });

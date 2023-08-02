@@ -12,7 +12,7 @@ class AInternalAuditCheckablesController extends AControllerAid {
     async create(evt, data) {
         return Events.whenLoggedIn(async loggedUser => {
             this.injectSavable(evt, loggedUser, data);
-            const {
+            let {
                 template, template: {name, desc, type, title_page_list, questions}
             } = data;//template, client, project, site, template{name, desc, type, questions,title_page_list}
             if (!!title_page_list && title_page_list.anyMatch(v => !!v.questionImage || (!!v.answer && v.questionType === 'Photo'))) {

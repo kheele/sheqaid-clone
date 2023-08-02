@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 //import NewClaimsCOIDProviderDialog from './dialogs/NewClaimsCOIDProviderDialog';
 //import ProfileClaimsCOIDProviderDialog from './dialogs/ProfileClaimsCOIDProviderDialog';
@@ -56,7 +56,7 @@ class COIDCompaniesTab extends React.Component {
             } else if(res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
             } else if(res === true) {
-                request.data.status = 'ReceipientRemoved';
+                request.data.status = 'RecipientRemoved';
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
                     list.insertAt(idx, item);

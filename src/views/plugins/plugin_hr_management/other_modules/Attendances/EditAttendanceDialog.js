@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates, ShouldUpdate} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates, ShouldUpdate} from 'utils/Utils';
 
-import {AEditDialog} from '../../../../../components/dialogs';
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
 import {EmployeeFromSelectWrapper, NewAttendanceTable, RadioWrapper} from './AttendanceComponents';
 
@@ -231,7 +231,7 @@ class Controls extends React.Component {
             }
         }
         
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, day, 'day');
         
         ShouldUpdate.checkSignature(data, old_data, supervisor_signature, 'supervisor_signature');

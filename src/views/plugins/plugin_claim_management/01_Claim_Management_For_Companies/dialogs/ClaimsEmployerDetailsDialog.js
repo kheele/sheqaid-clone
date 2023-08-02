@@ -1,15 +1,15 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {AsyncTD} from '../../../components';
+import {AsyncTD} from 'views/plugins/components';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewClaimsEmployerDetailsDialog from './NewClaimsEmployerDetailsDialog';
 import EditClaimsEmployerDetailsDialog from './EditClaimsEmployerDetailsDialog';
@@ -68,7 +68,7 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, client, company_name, company_reg_num, company_contact_person, company_email, company_location, company_nature}} = item;
+        const {id, data: {created_at, client, company_name, company_reg_num, company_contact_person, email, company_location, company_nature}} = item;
         console.log(item)
 	return <TRow key={id}>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
@@ -76,7 +76,7 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
             <div className="td">{company_name}</div>
             <div className="td fixed-flex min-w-120">{company_reg_num}</div>
             <AsyncTD title="Contact Person" defaultValue={company_contact_person} renderer={v => `${v.lname || v.data.lname} ${v.fname || v.data.fname}`}/>
-            <div className="td">{company_email}</div>
+            <div className="td">{email}</div>
             <div className="td">{company_location}</div>
             <div className="td">{company_nature}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

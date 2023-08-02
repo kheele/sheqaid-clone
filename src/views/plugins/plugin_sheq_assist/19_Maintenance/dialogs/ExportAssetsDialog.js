@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, isWeb} from '../../../../../utils/Utils';
-import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import {SelectTable, THead} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import {Dates, isWeb} from 'utils/Utils';
+import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 // </editor-fold>
 import style from "./ExportAssetsDialog.lazy.css";
 

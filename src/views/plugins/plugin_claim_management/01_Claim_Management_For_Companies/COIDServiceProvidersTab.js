@@ -3,9 +3,9 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import style from "./COIDServiceProvidersTab.lazy.css";
 
@@ -148,7 +148,7 @@ class COIDServiceProvidersTab extends React.Component {
         const {status = 'N/A'} = data;
         
         const remove = status === 'Accepted';
-        const sendRequest = status !== 'New' && status !== 'Accepted' && status !== 'Declined' && status !== 'ReceipientRemoved';
+        const sendRequest = status !== 'New' && status !== 'Accepted' && status !== 'Declined' && status !== 'RecipientRemoved';
         const cancelRequest = status === 'New';
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>

@@ -3,12 +3,12 @@ import {observer} from 'mobx-react';
 
 import style from "./EnviroRATab.lazy.css";
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewEnviroRADialog from './dialogs/NewEnviroRADialog.js';
 import ProfileEnviroRADialog from './dialogs/ProfileEnviroRADialog.js';

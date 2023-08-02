@@ -2,6 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {Clickable} from '../inputs';
+import {execWhen} from "../../utils/Utils";
 
 // </editor-fold>
 
@@ -13,11 +14,12 @@ class ALoginControls extends React.Component {
         super(props);
 
 //                firebase.auth().currentUser.unlink(firebase.auth.PhoneAuthProvider.PROVIDER_ID);
-        if(this.onSetupBiometric) {
+        if (this.onSetupBiometric) {
             this.onSetupBiometric = this.onSetupBiometric.bind(this);
         }
         this.onComplete = this.onComplete.bind(this);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSetupBiometric">
@@ -25,8 +27,8 @@ class ALoginControls extends React.Component {
         let {loggedUser} = btn.props;
         const {dialog} = this.props;
         infoDialog.close();
-        
-        if(!loggedUser) {
+
+        if (!loggedUser) {
             progressDialog.open();
             const {form} = this;
             const {username, type} = form.data;
@@ -37,14 +39,14 @@ class ALoginControls extends React.Component {
             }).catch(err => {
                 progressDialog.close();
                 console.error(err);
-                
+
                 infoDialog.open(<div>
                     Sorry, we couldn't verify you at the moment.<br/>
                     Please make sure you have internet connection and try again.<br/>
                     If the issue persists, please contact support.
                 </div>);
             });
-            if(!user) {
+            if (!user) {
                 return;
             }
             loggedUser = {user, access_type: type === 'Contractor' ? 'ContractorUser' : type};
@@ -53,8 +55,9 @@ class ALoginControls extends React.Component {
             dialog.close();
         });
     }
+
     // </editor-fold>
-    
+
     isFailure(res) {
         if (isString(res)) {
             switch (res) {
@@ -70,38 +73,13 @@ class ALoginControls extends React.Component {
                 case "ERR_CREATING_TOKEN":
                     return true;
                 default:
-                    
+
             }
         }
         return false;
     }
-    
-    onComplete(res, isMultiFactor = false) {
-//       console.log('onComplete', res, isMultiFactor)
-        
-        const onSetupBiometric = (loggedUser, alreadySetup = true) => {
-            infoDialog.open(<div>
-                You are required to <b>only login</b> using <b>Biometric Authentication</b>.<br/>
-                {alreadySetup && <p className="margin-t-10">
-                    Please login using <b>
-                        <Clickable loggedUser={loggedUser} onClick={this.onSwitchToBiometric}>
-                            <a href="#">Biometric Authentication</a>
-                        </Clickable>
-                    </b>
-                </p>}
-                {!alreadySetup && <p className="margin-t-10">
-                    You have currently not yet setup the <b>Biometric Authentication</b>
-                </p>}
-                {!alreadySetup && <p className="margin-t-10">
-                    Please setup your <b>
-                        <Clickable loggedUser={loggedUser} onClick={this.onSetupBiometric}>
-                            <a href="#">Biometric Authentication</a>
-                        </Clickable>
-                    </b>
-                </p>}
-            </div>);
-        };
-        
+
+    async onFailed(res) {
         if (!res) {
             infoDialog.open("Authentication failed.");
         } else if (isString(res)) {
@@ -136,9 +114,9 @@ class ALoginControls extends React.Component {
                         The user could have been deleted from the system.
                     </div>);
                     break;
-                case "SETUP_BIOMETRIC":
-                    onSetupBiometric(null, null, false);
-                    break;
+                // case "SETUP_BIOMETRIC":
+                //     onSetupBiometric(null, null, false);
+                //     break;
                 case "NO_BIOMETRIC_PERMISSION":
                     infoDialog.open(<div>
                         Sorry, the user associated with this<br/>
@@ -169,39 +147,90 @@ class ALoginControls extends React.Component {
                     </div>);
                     break;
             }
-        } else if (isObject(res)) {            
-            const {loggedUserAuth: currentUser} = storage;
-            
-            if (currentUser) {
-                const {user: {data: {auth_type = "MultiFactor", has_biometric}}} = res;
-                if (isMultiFactor && auth_type === "Biometric") {
-                    storage.login.currAuth.signOut().then(() => {
-                        onSetupBiometric(res, !!has_biometric);
-                    });
-                } else {
-                    const {dialog} = this.props;
-                    if (isMultiFactor) {
-                        const {phoneNumber} = currentUser;
-                        if (!phoneNumber) {
-                            this.refs.setupPhoneNumDialog.open(res).then(() => {
-                                dialog.close();
-                            });
-                        } else {
-                            this.refs.verifyPhoneNumDialog.open(res).then(() => {
-                                dialog.close();
-                            });
-                        }
-                    } else {
-                        storage.login.loginUser(res);
-                        dialog.close();
-                    }
-                }
-            } else {
-                infoDialog.open("Authentication failed.");
-            }
         }
     }
-    
+
+    async onComplete(res, isMultiFactor = false, type) {
+        console.log('onComplete', res, isMultiFactor)
+
+        const onSetupBiometric = (loggedUser, alreadySetup = true) => {
+            infoDialog.open(<div>
+                You are required to <b>only login</b> using <b>Biometric Authentication</b>.<br/>
+                {alreadySetup && <p className="margin-t-10">
+                    Please login using <b>
+                    <Clickable loggedUser={loggedUser} onClick={this.onSwitchToBiometric}>
+                        <a href="#">Biometric Authentication</a>
+                    </Clickable>
+                </b>
+                </p>}
+                {!alreadySetup && <p className="margin-t-10">
+                    You have currently not yet setup the <b>Biometric Authentication</b>
+                </p>}
+                {!alreadySetup && <p className="margin-t-10">
+                    Please setup your <b>
+                    <Clickable loggedUser={loggedUser} onClick={this.onSetupBiometric}>
+                        <a href="#">Biometric Authentication</a>
+                    </Clickable>
+                </b>
+                </p>}
+            </div>);
+        };
+
+        if (!res) {
+            infoDialog.open("Authentication failed.");
+        } else if (isString(res)) {
+            this.onFailed(res);
+        } else if (isObject(res)) {
+            // setTimeout(async () => {
+                const {loggedUserAuth} = storage;
+                console.log('onComplete loggedUserAuth', loggedUserAuth)
+
+                if (!loggedUserAuth && type) {
+                    const {token} = res;
+                    const __auth = type === "Contractor" ? auth2 : auth;
+                    await __auth.signInWithCustomToken(token).then(async userCredential => {
+                        if (!userCredential)
+                            return false;
+                        const {user} = userCredential;
+
+                        storage.loggedUserAuth = user;
+                    })
+                }
+
+                const currentUser = storage.loggedUserAuth;
+
+                if (currentUser) {
+                    const {loggedUser} = res;
+                    const {user: {data: {auth_type = "MultiFactor", has_biometric}}} = loggedUser;
+                    if (isMultiFactor && auth_type === "Biometric") {
+                        storage.login.currAuth.signOut().then(() => {
+                            onSetupBiometric(loggedUser, !!has_biometric);
+                        });
+                    } else {
+                        const {dialog} = this.props;
+                        if (isMultiFactor) {
+                            const {phoneNumber} = currentUser;
+                            if (!phoneNumber) {
+                                this.refs.setupPhoneNumDialog.open(loggedUser).then(() => {
+                                    dialog.close();
+                                });
+                            } else {
+                                this.refs.verifyPhoneNumDialog.open(loggedUser).then(() => {
+                                    dialog.close();
+                                });
+                            }
+                        } else {
+                            storage.login.loginUser(loggedUser);
+                            dialog.close();
+                        }
+                    }
+                } else {
+                    infoDialog.open("Authentication failed.");
+                }
+            // }, 5000);
+        }
+    }
+
 }
 
 export default ALoginControls;

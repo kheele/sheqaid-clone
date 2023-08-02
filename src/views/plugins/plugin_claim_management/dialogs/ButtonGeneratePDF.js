@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Button} from '../../../../components/inputs';
+import {Button} from 'components/inputs';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ButtonGeneratePDF">

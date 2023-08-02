@@ -11,6 +11,7 @@
         "deploy:firestore:plugins:plugin_extra": "firebase deploy --only functions:firestore:plugins:ex",
         "deploy:firestore:plugins:plugin_sheq_assist": "firebase deploy --only functions:firestore:plugins:sa",
         "deploy:callables": "firebase deploy --only functions:callables",
+        "deploy:callables-onSetCustomUserClaims": "firebase deploy --only functions:callables-onSetCustomUserClaims",
         "deploy:callables-onLogin": "firebase deploy --only functions:callables-onLogin",
         "deploy:callables-onLoginBiometric": "firebase deploy --only functions:callables-onLoginBiometric",
         "deploy:callables-onSetupBiometric": "firebase deploy --only functions:callables-onSetupBiometric",
@@ -21,7 +22,7 @@
         "deploy:callables-sendForgotPass": "firebase deploy --only functions:callables-sendForgotPass",
         "deploy:callables-sendForgotPassAdmin": "firebase deploy --only functions:callables-sendForgotPassAdmin",
         "deploy:callables-updatePhone": "firebase deploy --only functions:callables-updatePhone",
-        "install:mod": "npm install firebase --save"
+        "install:mod": "npm i node-blob --save"
     },
     "engines": {
         "node": "10"
@@ -32,6 +33,7 @@
         "@tensorflow/tfjs-node": "^3.12.0",
         "@tensorflow/tfjs-node-gpu": "^3.13.0",
         "adv-firestore-functions": "^2.0.9",
+        "atob": "^2.1.2",
         "canvas": "^2.9.0",
         "docx-pdf": "0.0.1",
         "ejs": "^3.1.6",

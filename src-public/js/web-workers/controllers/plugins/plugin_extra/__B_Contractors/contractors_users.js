@@ -1,10 +1,12 @@
-
 (function () {
     class Controller extends AAccountsCntr {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events, db) {
-            super(events, db, {singular: "Contractor Administrator/User", plural: "Contractor Administrators/Users"}, "plugin_sheq_assist/contractors/users/", "plugin_sheq_assist_contractors_users");
+            super(events, db, {
+                singular: "Contractor Administrator/User",
+                plural: "Contractor Administrators/Users"
+            }, "plugin_sheq_assist/contractors/users/", "plugin_sheq_assist_contractors_users");
 
             const {addAction} = this;
             addAction("signup", this.signup.bind(this));
@@ -13,7 +15,8 @@
             this.setQueryWhere(company_id => {
                 const loggedUser = self.session.getLoggedUser();
                 let {
-                    user: {data: {
+                    user: {
+                        data: {
                             client: my_client, project: my_project, site: my_site,
                             contractor_id
                         }
@@ -53,6 +56,7 @@
             };
             //fn();
         }
+
         // </editor-fold>
 
         getDB() {
@@ -62,7 +66,7 @@
         get isContractorUser() {
             return true;
         }
-        
+
         get access_type() {
             return 'ContractorUser';
         }
@@ -70,85 +74,34 @@
         get auth() {
             return auth2;
         }
-        
+
         get functions() {
             return functions2;
         }
-        
+
         // <editor-fold defaultstate="collapsed" desc="create">
-        async create(evt, DATA) {
+        async create(evt, {newUser, profile_pic}) {
             return Events.whenLoggedIn(async loggedUser => {
-                if (DATA.username) {
-                    DATA.username = DATA.username.toLowerCase();
-                }
-                const {username} = DATA;
+                console.log('create newUser', newUser)
 
-                const colRef = this.getDB().collection(this.tbl);
-                // <editor-fold defaultstate="collapsed" desc="data collection">
-                let snapshot = await colRef.where('username', '==', username).limit(1).get();
-                if (!snapshot.empty) {
-                    return "EMAIL_DUP";
-                }
+                const {data: {username, fname, lname, contractor}} = newUser;
 
-//                return auth2.getUserByEmail(username).catch(async err => {
-//                    if (err.message === 'auth/user-not-found') {
-                //
-                const {user, user: {data: {client: my_client, project: my_project, contractor: my_contractor}}, company} = loggedUser;
-                DATA.user_id = user.id;
-                DATA.company_id = company.id;
-                DATA.created_at = FBSettings.FieldValue.serverTimestamp();
+                let password = uuidv4();
+                password = password.substring(0, password.indexOf('-'));
 
-                DATA.client = {id: my_client.id, name: my_client.name || my_client.data.name};
-                DATA.client_id = my_client.id;
-
-                DATA.project = {id: my_project.id, name: my_project.name || my_project.data.name};
-                DATA.project_id = my_project.id;
-
-                DATA.contractor_id = my_contractor.id;
-                DATA.contractor = {id: my_contractor.id, name: my_contractor.data.name, username: my_contractor.data.username};
-
-                //
-                const {user_id, company_id, created_at} = DATA;
-
-                const {project, client, profile_pic} = DATA;
-                if (profile_pic) {
-                    delete DATA.profile_pic;
-                }
-
-                let password;
-                if (!DATA.password) {
-                    password = uuidv4();
-                    DATA.password = password.substring(0, password.indexOf('-'));
-                } else {
-                    password = DATA.password;
-                }
-
-                DATA.keywords = this.generateKeywords([DATA.lname, DATA.fname]);
-                // </editor-fold>
-
-                const save = async (uid, isNew = true) => {
+                const onComplete = async (uid, isNew = true) => {
                     if (isNew) {
-                        DATA.password = password;
                         await auth2General.signOut();
-                    }
-                    console.log('users create userCredential', uid, DATA)
-
-                    await colRef.doc(uid).set(DATA);//Promise < DocumentReference < T > >;
-                    const doc_ref = await colRef.doc(uid);//Promise < DocumentReference < T > >;
-                    const doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >;
-                    if (DATA.linked_employee_id) {
-                        const employees = await Events.get('plugin_sheq_assist/employees/');
-                        const res = await employees.update(evt, DATA.linked_employee_id, {linked_user_id: doc_snapshot.id});
                     }
 
                     if (profile_pic) {
                         try {
-                            const gcsUri = await files.upload.call(this, profile_pic, async (bucketFile) => {
-                                const new_name = this.tbl + '/' + doc_snapshot.id + '/profile-pic.' + fileUtils.getExtension(bucketFile.name);
+                            profile_pic = await files.upload.call(this, profile_pic, async (bucketFile) => {
+                                const new_name = this.tbl + '/' + uid + '/profile-pic.' + fileUtils.getExtension(bucketFile.name);
                                 return new_name;
                             });
-                            const updated = await doc_ref.update({profile_pic: gcsUri});//Promise < void >
                         } catch (err) {
+                            profile_pic = null;
                             console.log('users create', err)
 //                            doc_ref.delete();//Promise < void >
 //                            userCredential.delete();
@@ -156,117 +109,78 @@
                         }
                     }
 
-                    DATA = doc_snapshot.data();
-                    DATA.created_at = DATA.created_at.toDate();
+                    newUser = await Events.emit("updateContractorUser", {id: newUser.id, auth_id: uid, profile_pic});
 
                     await AllUserFuns.sendCreationEmail('ContractorUserCreate',
-                            {username, password, fname: DATA.fname, lname: DATA.lname, contractorName: DATA.contractor.name, contractorUsername: DATA.contractor.username});
+                        {
+                            username,
+                            password,
+                            fname,
+                            lname,
+                            contractorName: contractor.name,
+                            contractorUsername: contractor.username
+                        });
 
-                    const item = await ContractorUserFuns.mapResults({id: doc_snapshot.id, data: DATA});
-                    return item;
+                    return newUser;
                 };
 
-                return AllUserFuns.createOrGetUserID(auth2General, username, password, save);
+                try {
+                    return await AllUserFuns.createOrGetUserID(auth2General, username, password, onComplete);
+                } catch (err) {
+                    if (err.code === "auth/email-already-in-use") {
+                        const uid = await this.getUserUID(evt, username);
+                        if (uid) {
+                            return onComplete(uid, false);
+                        }
+//                        return await authGeneral.signInWithEmailAndPassword(username, password).then(save);
+                    } else {
+                        console.error(err);
+                        throw err;
+                    }
+                }
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="signup">
-        async signup(evt, data) {
-            //console.log('signup data', data)
-            if (data.username) {
-                data.username = data.username.toLowerCase();
-            }
+        async signup(evt, {newUser, password}) {
+            console.log('signup newUser', newUser, password)
 
-            const colRef = this.getDB().collection(this.tbl);
-            let snapshot = await colRef.where('username', '==', data.username).limit(1).get();
-            if (!snapshot.empty) {
-                return "EMAIL_DUP";
-            }
+            const {data: {username, fname, lname, contractor}} = newUser;
 
-            let {
-                profile_pic, username, password, company,
-                contractor, contractor: {
-                    data: {
-                        company_id, client: my_client, project: my_project,
-                        name: contractorName,
-                        username: contractorUsername
-                    }
-                }
-            } = data;
-
-            if (profile_pic) {
-                delete data.profile_pic;
-            }
-//                return auth2.getUserByEmail(username).catch(async err => {
-//                    if (err.message === 'auth/user-not-found') {
-            data.created_at = FBSettings.FieldValue.serverTimestamp();
-            data.company_id = company_id;
-            data.contractor_id = contractor.id;
-            data.contractor = {id: contractor.id, name: contractorName, username: contractorUsername};
-
-            if (my_client) {
-                data.client = {id: my_client.id, name: my_client.name || my_client.data.name};
-                data.client_id = my_client.id;
-            } else {
-
-            }
-
-            if (my_project) {
-                data.project = {id: my_project.id, name: my_project.name || my_project.data.name};
-                data.project_id = my_project.id;
-            } else {
-
-            }
-
-            data.keywords = this.generateKeywords([data.lname, data.fname]);
-
-            const save = async (uid, isNew = true) => {
+            const onComplete = async (uid, isNew = true) => {
                 if (isNew) {
-                    data.password = password;
                     await auth2General.signOut();
                 }
 
-                await colRef.doc(uid).set(data);//Promise < DocumentReference < T > >;
-                const doc_ref = await colRef.doc(uid);//Promise < DocumentReference < T > >;
-                const snapshot_user = await doc_ref.get();//Promise < DocumentSnapshot < T > >;
-
-                if (profile_pic) {
-                    try {
-                        const gcsUri = await files.upload.call(this, profile_pic, async (bucketFile) => {
-                            const new_name = this.tbl + '/' + snapshot_user.id + '/profile-pic.' + fileUtils.getExtension(bucketFile.name);
-                            return new_name;
-                        });
-                        const updated = await doc_ref.update({profile_pic: gcsUri});//Promise < void >
-                    } catch (err) {
-                        console.log('contractors create', err)
-                    }
-                }
-
-//                    console.log('company', company)
-
-                const res = {
-                    company,
-                    user: {id: snapshot_user.id, data: snapshot_user.data()},
-                    access_type: 'ContractorUser'
-                };
-
-                const {fname, lname, contractor} = res.user.data;
+                await Events.emit("updateNewContractorUser", {id: newUser.id, auth_id: uid});
 
                 await AllUserFuns.sendCreationEmail('ContractorUserSignup',
-                        {username, fname, lname, contractorName: contractor.name, contractorUsername: contractor.username});
+                  {username, fname, lname, contractorName: contractor.name, contractorUsername: contractor.username});
 
-                const userCredential = await auth2.signInWithEmailAndPassword(username, password);
+                let userCredential = await this.auth.signInWithEmailAndPassword(username, password);
 
-                self.session.loginUser(res);
-
-                res.user = await ContractorUserFuns.mapResults(res.user);
-
-                return res;
+                let loggedUser = await this.onSetCustomUserClaims(userCredential.user);
+                return this.loginImpl(loggedUser);
             };
 
-            return AllUserFuns.createOrGetUserID(auth2General, username, password, save);
+            try {
+                return await AllUserFuns.createOrGetUserID(auth2General, username, password, onComplete);
+            } catch (err) {
+                if (err.code === "auth/email-already-in-use") {
+                    const uid = await this.getUserUID(evt, username);
+                    if (uid) {
+                        return onComplete(uid, false);
+                    }
+//                        return await authGeneral.signInWithEmailAndPassword(username, password).then(save);
+                } else {
+                    console.error(err);
+                    throw err;
+                }
+            }
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -310,10 +224,10 @@
                     console.log('users update new_username new_phone', new_username, new_phone)
 
                     if (loggedUser.user.id === id) {
-                        if(!password_conf) {
+                        if (!password_conf) {
                             return "PASSWORD_CONF_REQUIRED";
                         }
-                        
+
                         const updateUsernameImpl = async (fnName, new_value, credental) => {
                             try {
                                 await this.auth.currentUser.reauthenticateWithCredential(credental);
@@ -331,10 +245,10 @@
                         if (username) {
                             try {
                                 const new_username_res = await updateUsernameImpl(
-                                        'updateEmail',
-                                        new_username,
-                                        firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
-                                        );
+                                    'updateEmail',
+                                    new_username,
+                                    firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
+                                );
                                 loggedUser.user.data.username = new_username_res;
                             } catch (err) {
                                 console.error(err);
@@ -344,10 +258,10 @@
                         if (phone) {
                             try {
                                 const new_phone_res = await updateUsernameImpl(
-                                        'updatePhoneNumber',
-                                        new_phone,
-                                        firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
-                                        );
+                                    'updatePhoneNumber',
+                                    new_phone,
+                                    firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
+                                );
                                 loggedUser.user.data.phone = new_phone_res;
                             } catch (err) {
                                 console.error(err);
@@ -366,31 +280,7 @@
                 return res;
             });
         }
-        // </editor-fold>
-        
-        // <editor-fold defaultstate="collapsed" desc="relogin">
-        async relogin(evt, uid) {
-            const onReAuthContractorUser = functions2.httpsCallable('callables-onReAuthContractorUser');
-            const res = await onReAuthContractorUser(uid);
-            if (!res || !res.data) {
-                return null;
-            }
-            const {data} = res;
-            if (isString(data)) {
-                return data;
-            } else {
-                const {token: customToken} = data;
-                console.log('relogin contractor customToken')
-                const res = await auth2.signInWithCustomToken(customToken).then(async userCredential => {
-                    if (!userCredential)
-                        return null;
-                    const {user} = userCredential;
-                    await this.onLogin();
-                    return this.loginImpl(user.uid);
-                });
-                return res;
-            }
-        }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="@override getByUsername">
@@ -398,24 +288,32 @@
             console.log('getByUsername contractor user')
             username = username.toLowerCase();
 
-            const key = username.isEmailAddress() ? 'username' : 'phone';
-            let snapshot = await this.getDB().collection(this.tbl).where(key, '==', username).limit(1).get();
-            if (!snapshot || snapshot.empty) {
-                const contractors = await Events.get('plugin_sheq_assist/contractors/');
-                const contractor = await contractors.find_by_username(username, false);
-                if (!contractor) {
-                    return "NO_USER_DB";
-                }
-
-                snapshot = await this.getDB().collection(this.tbl).where('contractor_id', '==', contractor.id).limit(1).get();
-                if (!snapshot.empty) {
-                    return {contractor, message: "CONTRACTOR_EMAIL_RESTRICTION"};//setup user account
-                }
-                return {contractor};//setup user account
+            // const key = username.isEmailAddress() ? 'username' : 'phone';
+            // let snapshot = await this.getDB().collection(this.tbl).where(key, '==', username).limit(1).get();
+            let res = await Events.emit('findByUsernameContractorUser', username);
+            console.log('getByUsername, findByUsernameContractorUser res', res);
+            if (res && res.data && res.data.auth_id) {
+                // const doc = snapshot.docs[0];
+                // return {id: doc.id, data: doc.data()};
+                return res.data;//{id, auth_id}
             }
-            const doc = snapshot.docs[0];
-            return {id: doc.id, data: doc.data()};
+
+            // const contractors = await Events.get('plugin_sheq_assist/contractors/');
+            // const contractor = await contractors.find_by_username(username, false);
+            const contractor = await Events.emit('findByUsernameContractor', username);
+            if (!contractor) {
+                return "NO_USER_DB";
+            }
+
+            // snapshot = await this.getDB().collection(this.tbl).where('contractor_id', '==', contractor.id).limit(1).get();
+            res = await Events.emit('findByContractorIdContractorUser', contractor.id);
+            // if (!snapshot.empty) {
+            if (res) {
+                return {contractor, message: "CONTRACTOR_EMAIL_RESTRICTION"};//setup user account
+            }
+            return {contractor};//setup user account
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -435,7 +333,14 @@
 
                 this.sortBy(list);
 
-                const {user, user: {data: {client: my_client, project: my_project, site: my_site}}, company, client_id, project_id, site_id} = loggedUser;
+                const {
+                    user,
+                    user: {data: {client: my_client, project: my_project, site: my_site}},
+                    company,
+                    client_id,
+                    project_id,
+                    site_id
+                } = loggedUser;
 
                 if (my_client) {
                     list = list.filter(val => {
@@ -464,6 +369,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -477,6 +383,7 @@
                 return this.filter_impl(evt, q);
             });
         }
+
         // </editor-fold>
 
         sortBy(list) {

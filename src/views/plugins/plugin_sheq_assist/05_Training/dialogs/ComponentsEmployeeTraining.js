@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
-import {ActionsButton, Clickable} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Dates} from 'utils/Utils';
+import {ActionsButton, Clickable} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EmployeeTrainingMatrixTable">

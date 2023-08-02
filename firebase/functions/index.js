@@ -2,6 +2,8 @@ global.pdf = require('html-pdf');
 global.path = require('path');
 global.os = require('os');
 global.fs = require('fs');
+global.atob = require("atob");
+global.Blob = require('node-blob');
 global.ejs = require("ejs");
 global.fetch = require('node-fetch');
 const {google} = require('googleapis');
@@ -86,7 +88,7 @@ global.onDriver = () => {
 const schedulers = require('./fn/schedulers/index.js');
 
 const {execFun} = require('./fn/controllers.js');
-const {getDoc, updateDoc} = require('./fn/https');
+const https = require('./fn/https');
 
 const callables = require('./fn/callables');
 const firestore = require('./fn/firestore');
@@ -98,8 +100,10 @@ exports.schedulers = schedulers;
 //callbale
 exports.execFun = execFun;
 //http
+const {getDoc, updateDoc} = https;
 exports.getDoc = getDoc;
 exports.updateDoc = updateDoc;
+exports.https = https;
 
 exports.callables = callables;
 exports.firestore = firestore;

@@ -2,15 +2,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
 import {
     ClearableInput,
     PhotoUploadButton,
     SelectEmployeeInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewSafetyObservationReportDialog.lazy.css";
 

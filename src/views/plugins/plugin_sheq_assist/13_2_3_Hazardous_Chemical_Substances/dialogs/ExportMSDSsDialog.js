@@ -7,13 +7,13 @@ import {
     DateRangeInput,
     SelectChemicalCategoryInput,
     SelectChemicalManufacturerInput
-} from '../../../../../components/inputs';
-import {THead} from '../../../../../components/tables';
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import MSDSRenderRow from "../MSDSRenderRow";
+import MSDSRenderRow from "../MSDSTab/MSDSRenderRow";
 import ListPDFReader from '../printers/ListMSDSPDFReader';
 
-import {AControls, AExportDialog} from '../../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, extendObservable, observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
 import {
     Button,
     ClearableInput,
@@ -12,9 +12,9 @@ import {
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import AEditDialog from '../../../../../components/dialogs/AEditDialog';
+} from 'components/inputs';
+import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from 'components/tables';
+import AEditDialog from 'components/dialogs/AEditDialog';
 
 import AControls from "./ANewCOVIDControls";
 

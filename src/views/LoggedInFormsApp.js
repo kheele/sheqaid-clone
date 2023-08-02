@@ -3,15 +3,15 @@ import {observer} from 'mobx-react';
 import {autorun, computed, observable} from 'mobx';
 import EventListener from 'react-event-listener';
 
-import {ErrorBoundary} from '../components';
-import {execWhen, isMobile} from '../utils/Utils';
+import {ErrorBoundary} from 'components';
+import {execWhen, isMobile} from 'utils/Utils';
 
 import Header from './header';
 import InitView from './InitView';
 import DefaultView from './DefaultView';
 import MainView from './MainView';
 
-import TimeActiveSessionExpiredDialog from '../components/dialogs/TimeActiveSessionExpiredDialog';
+import TimeActiveSessionExpiredDialog from 'components/dialogs/TimeActiveSessionExpiredDialog';
 
 import style from './LoggedInFormsApp.lazy.css';
 
@@ -21,7 +21,9 @@ class LoggedInFormsApp extends React.Component {
     @observable
     state = {
         timeActiveSessionExpired: false,
-        defaultView: null
+        defaultView: null,
+        lastTimeActiveTO: null,
+        lastTimeActive: null,
     };
 
     constructor() {
@@ -84,8 +86,8 @@ class LoggedInFormsApp extends React.Component {
     
     openAuth() {
         this.state.timeActiveSessionExpired = true;
-        if(this.lastTimeActiveTO) {
-            clearTimeout(this.lastTimeActiveTO);
+        if(this.state.lastTimeActiveTO) {
+            clearTimeout(this.state.lastTimeActiveTO);
         }
         return execWhen(() => this.refs.timeActiveSessionExpiredDialog).then(timeActiveSessionExpiredDialog => {
             return timeActiveSessionExpiredDialog.open("Access Permission").then(() => {
@@ -133,28 +135,28 @@ class LoggedInFormsApp extends React.Component {
     }
 
     updateLastTimeActive() {
-        if(isMobile()) {
-            return;
-        }
-        if(this.state.timeActiveSessionExpired) {
-            return;
-        }
-        this.lastTimeActive = new Date();
-        if(this.lastTimeActiveTO) {
-            clearTimeout(this.lastTimeActiveTO);
-        }
-        const run = () => {
-            this.lastTimeActiveTO = setTimeout(() => {
-                const currTime = new Date();
-                const secs = this.lastTimeActive.durationNextSeconds(currTime);
-                if(secs >= 600) {
-                    this.openAuth();
-                } else {
-                    run();
-                }
-            }, 1000);
-        };
-        run();
+        // if(isMobile()) {
+        //     return;
+        // }
+        // if(this.state.timeActiveSessionExpired) {
+        //     return;
+        // }
+        // this.state.lastTimeActive = new Date();
+        // if(this.state.lastTimeActiveTO) {
+        //     clearTimeout(this.state.lastTimeActiveTO);
+        // }
+        // const run = () => {
+        //     this.state.lastTimeActiveTO = setTimeout(() => {
+        //         const currTime = new Date();
+        //         const secs = this.state.lastTimeActive.durationNextSeconds(currTime);
+        //         if(secs >= 600) {
+        //             this.openAuth();
+        //         } else {
+        //             run();
+        //         }
+        //     }, 1000);
+        // };
+        // run();
     }
 
     onClick(e) {

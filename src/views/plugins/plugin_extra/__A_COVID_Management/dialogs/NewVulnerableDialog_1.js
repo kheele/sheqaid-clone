@@ -3,18 +3,18 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {execWhen, SAIdUtils} from '../../../../../utils/Utils';
-import {getGeocode} from '../../../../../utils/Maps';
+import Form from 'utils/Form';
+import {execWhen, SAIdUtils} from 'utils/Utils';
+import {getGeocode} from 'utils/Maps';
 import {
     ClearableInput,
     SelectClientInput,
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import AControls from "./ANewCOVIDControls";
 

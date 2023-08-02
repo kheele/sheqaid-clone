@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {AProfileDialog} from '../../../../../components/dialogs';
+import {AProfileDialog} from 'components/dialogs';
 
 import {EmployeeScreeningList, TopButtons} from './EmployeeLists';
 

@@ -34,10 +34,9 @@ class FormBody extends React.Component {
     }
     
     componentDidMount(){
-        const {questions, readonly} = this.props;
+        const {readonly} = this.props;
         if(readonly) {
             setTimeout(() => {
-                Object.values(questions).forEach(q => q.open = false);
                 this.state.loaded = true;
             });
         } else {
@@ -58,7 +57,7 @@ class FormBody extends React.Component {
     }
     
     render() {
-        let {isTitlePage, isSection, type, status, parentId, mainQuestions, questions, idx, sectionIdx, readonly, onViewTemplateDocDialog, onChange, onFormOpen} = this.props;
+        let {isTitlePage, isSection, defaultType, status, question_list, idx, sectionIdx, readonly, onViewTemplateDocDialog, onChange, onFormOpen} = this.props;
 //        if(isSection && ques && !ques.open) return null;
         let className = (readonly ? "FormBody-readonly " : "");
         if(isTitlePage) {
@@ -68,13 +67,14 @@ class FormBody extends React.Component {
         } else {
             className += "FormBody-main";
         }
+        console.log('defaultType', defaultType)
         return <Grid className={"FormBody " + className}>
             {!this.state.loaded && <PageLoadingProgress />}
             {this.state.loaded && <div className="h-full">
                 <h3 className="margin-t-0">
-                    {type && <label>{type}</label>}
-                    {type && <small className="required-notice">questions marked (*) are required</small>}
-                    {type && <Clickable onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>}
+                    {defaultType && <label>{defaultType}</label>}
+                    {defaultType && <small className="required-notice">questions marked (*) are required</small>}
+                    {defaultType && <Clickable onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>}
                 </h3>
                 <UploadDialog ref="uploadDialog"/>
                 <DragDropContext>
@@ -83,14 +83,12 @@ class FormBody extends React.Component {
                             <ListDroppable {...provided.droppableProps} innerRef={provided.innerRef}>
                                 <ListWrapper 
                                     ref={ref => this.listRef = ref}  
-                                    idx={idx} 
-                                    mainQuestions={mainQuestions}
-                                    questions={questions} 
+                                    idx={idx}
+                                    question_list={question_list}
                                     readonly={readonly}
                                     isSection={isSection}
-                                    sectionIdx={sectionIdx} 
-                                    parentId={parentId}
-                                    type={type} 
+                                    sectionIdx={sectionIdx}
+                                    defaultType={defaultType}
                                     status={status} 
                                     onViewTemplateDocDialog={onViewTemplateDocDialog}
                                     notifyChange={this.notifyChange}
@@ -101,7 +99,7 @@ class FormBody extends React.Component {
                         )}
                     </Droppable>
                 </DragDropContext>
-                <Stats ref="stats" questions={questions}/>
+                <Stats ref="stats" question_list={question_list}/>
             </div>}
         </Grid>;
     }
@@ -112,17 +110,13 @@ class ListWrapper extends React.Component {
     
     @computed
     get hasQuestions() {
-        const {idx, sectionIdx, parentId, type, status, isSection, mainQuestions, questions, readonly, onViewTemplateDocDialog, onChange} = this.props;
-        if(isArray(questions) || isObservableArray(questions)) {
-            return !questions.isEmpty();
-        } else {
-            return !Object.values(questions).isEmpty();
-        }
+        const {question_list,} = this.props;
+        return (isArray(question_list) || isObservableArray(question_list)) && !question_list.isEmpty();
     }
     
     render() {
-        const {idx, sectionIdx, parentId, type, status, isSection, mainQuestions, questions, readonly, onViewTemplateDocDialog, notifyChange, onChange} = this.props;
-//        console.log('questions:', questions)
+        const {idx, sectionIdx, parentId, defaultType, status, isSection, mainQuestions, question_list, readonly, onViewTemplateDocDialog, notifyChange, onChange} = this.props;
+//        console.log('question_list:', question_list)
         if(!this.hasQuestions) {
             return <p className="text-center padding-50">No questions added</p>;
         }
@@ -133,9 +127,9 @@ class ListWrapper extends React.Component {
             idx={idx} 
             sectionIdx={sectionIdx}
             mainQuestions={mainQuestions}
-            questions={questions}
+            question_list={question_list}
             isSection={isSection}
-            type={type} 
+            defaultType={defaultType}
             status={status} 
             onViewTemplateDocDialog={onViewTemplateDocDialog}
             notifyChange={notifyChange}

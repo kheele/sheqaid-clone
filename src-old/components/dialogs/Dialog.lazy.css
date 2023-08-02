@@ -1,0 +1,147 @@
+#dialog-overlay {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+    background-color: rgba(0, 0, 0, 0.7); 
+    width: 100%; 
+    top: 0px; 
+    left: 0px; 
+    opacity: 1; 
+    height: 100%; 
+    position: fixed; 
+    will-change: opacity; 
+    transform: translateZ(0px); 
+    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    z-index: 1400;
+}
+#dialog-overlay > .dialog-container{
+    max-width: 900px;
+    max-height: calc(100% - 30px);
+    height: auto;
+    /*    width: calc(100% - 20px);
+        height: calc(100% - 30px);*/
+    padding: 0; 
+    background: rgba(255, 255, 255, 0.9); 
+    overflow: hidden; 
+    /*overflow: auto;*/ 
+    position: absolute; 
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    box-sizing: border-box; 
+    font-family: Roboto, sans-serif; 
+    box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px; 
+    border-radius: 2px;
+}
+#dialog-overlay .dialog-header,
+#dialog-overlay .dialog-footer{
+    background: #f5f5f5;
+    position: relative;
+    height: 50px;
+    margin: 0;
+    padding-right: 10px;
+}
+#dialog-overlay .dialog-header{
+    display: flex;
+    border-bottom: 2px solid #fff;
+}
+#dialog-overlay .dialog-footer{
+    width: 100%;
+    display: block;
+    border-top: 2px solid #fff;
+}
+#dialog-overlay .dialog-header > .page-back-btn.fa {
+    font-size: 22px;
+    color: #777;
+    cursor: pointer;
+    flex-grow: initial;
+    margin: 14px 15px 0 15px;
+}
+#dialog-overlay .dialog-header > i.close-escape{
+    background: rgba(180, 20, 20, 0.75);
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    left: 35px;
+    top: 16px;
+}
+#dialog-overlay .dialog-header > h3{
+    color: #888;
+    position: relative;
+    margin: 0 15px;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+}
+#dialog-overlay .dialog-header > .dialog-top-buttons,
+#dialog-overlay .dialog-footer > .dialog-bottom-buttons{
+    height: 35px;
+    margin: 6px 0 0 10px;
+    flex-grow: initial;
+}
+#dialog-overlay .dialog-footer > .dialog-bottom-buttons{
+    float: right;
+}
+#dialog-overlay .dialog-header > .dialog-top-buttons > button:not(:first-of-type),
+#dialog-overlay .dialog-footer > .dialog-bottom-buttons > button:not(:first-of-type){
+    margin-left: 10px;
+}
+#dialog-overlay .dialog-content{ 
+    background: #f5f5f5;
+    /*overflow: hidden;*/
+    overflow: auto;
+    padding: 15px;
+    margin: 0;
+    height: calc(100% - 48px);
+}
+
+@media (max-width:1199px){
+    #dialog-overlay > .dialog-container .ProfileField,
+    #dialog-overlay > .dialog-container .clearable-field-control{
+        display: inline-block !important;
+        /*margin: 5px 10px 0 0 !important;*/
+    }  
+}
+@media (max-width:767px){
+    #dialog-overlay > .dialog-container{
+        border-radius: 0;
+        padding: 0;
+        width: calc(100% - 10px) !important;
+        max-width: 100% !important;
+        height: calc(100% - 10px) !important;
+        max-height: 100% !important;
+    }
+}
+@media (max-width:599px){ 
+    /*    #dialog-overlay .dialog-header > h3{
+            font-size: 18px;
+            margin: 0 5px;
+        }*/
+    #dialog-overlay > .dialog-container .ProfileField,
+    #dialog-overlay > .dialog-container .clearable-field-control{
+        width: calc(100% - 10px) !important;
+    }  
+}
+@media (max-width:539px){ 
+    #dialog-overlay > .dialog-container{
+        width: 100% !important;
+        height: 100% !important;
+    }   
+    #dialog-overlay .dialog-header > .dialog-top-buttons .cancel{
+        display: none !important;
+    }  
+}
+@media (max-width:439px){
+    #dialog-overlay .dialog-header > h3 {
+        margin: 0px 10px 0 10px !important;
+        font-size: 17px;
+    }
+}

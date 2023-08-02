@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bec557d6bab8d71f45ef5a77c03af70d>>
+ * @generated SignedSource<<86ce34e74e6c00ae81b0d015a809609d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,34 @@ v1 = {
   "kind": "LocalArgument",
   "name": "id"
 },
-v2 = [
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = [
+  (v2/*: any*/),
+  (v3/*: any*/)
+],
+v5 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "count",
+    "storageKey": null
+  }
+],
+v6 = [
   {
     "alias": null,
     "args": [
@@ -39,11 +66,208 @@ v2 = [
     "name": "update_default_sites_by_pk",
     "plural": false,
     "selections": [
+      (v2/*: any*/),
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "id",
+        "name": "created_at",
+        "storageKey": null
+      },
+      (v3/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "address",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_projects",
+        "kind": "LinkedField",
+        "name": "project",
+        "plural": false,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_clients",
+        "kind": "LinkedField",
+        "name": "client",
+        "plural": false,
+        "selections": (v4/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_contractor_users_aggregate",
+        "kind": "LinkedField",
+        "name": "contractor_site_user_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "default_contractor_users_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "proxy_contractors__sites_aggregate",
+        "kind": "LinkedField",
+        "name": "contractor_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "proxy_contractors__sites_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_users_aggregate",
+        "kind": "LinkedField",
+        "name": "user_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "default_users_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "hr_employees_aggregate",
+        "kind": "LinkedField",
+        "name": "employee_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "hr_employees_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_teams_aggregate",
+        "kind": "LinkedField",
+        "name": "team_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "default_teams_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "sheq_incident_investigation_aggregate",
+        "kind": "LinkedField",
+        "name": "incident_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "sheq_incident_investigation_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "sheq_training_matrices_aggregate",
+        "kind": "LinkedField",
+        "name": "training_matrix_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "sheq_training_matrices_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "assets_aggregate",
+        "kind": "LinkedField",
+        "name": "asset_list_aggregate",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "assets_aggregate_fields",
+            "kind": "LinkedField",
+            "name": "aggregate",
+            "plural": false,
+            "selections": (v5/*: any*/),
+            "storageKey": null
+          }
+        ],
         "storageKey": null
       }
     ],
@@ -59,7 +283,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "updateSiteMutation",
-    "selections": (v2/*: any*/),
+    "selections": (v6/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -71,19 +295,19 @@ return {
     ],
     "kind": "Operation",
     "name": "updateSiteMutation",
-    "selections": (v2/*: any*/)
+    "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "c13414cc3c8b74e926e2a0c693e0b188",
+    "cacheID": "3fbb6f4459bf03602566a8578464bddc",
     "id": null,
     "metadata": {},
     "name": "updateSiteMutation",
     "operationKind": "mutation",
-    "text": "mutation updateSiteMutation(\n  $id: default_sites_pk_columns_input!\n  $_set: default_sites_set_input!\n) {\n  update_default_sites_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateSiteMutation(\n  $id: default_sites_pk_columns_input!\n  $_set: default_sites_set_input!\n) {\n  update_default_sites_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    name\n    address\n    project {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    contractor_site_user_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    contractor_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    user_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    incident_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    training_matrix_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    asset_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "4c8e0d102a50d4246c1c8b1e2766946b";
+node.hash = "f062291a1881549c84e03d26ffd7a417";
 
 module.exports = node;

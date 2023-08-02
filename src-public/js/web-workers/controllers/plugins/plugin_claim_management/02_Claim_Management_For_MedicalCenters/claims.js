@@ -447,7 +447,7 @@
                 const res = await mapResults.call(this, {id: doc_snapshot.id, data: doc_snapshot.data()});
 
 //                const opts = {
-//                    from: '"SHEQ Aid" <support@sheqsolve.com>',
+//                    from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //                    to: doctor_email,
 //                    subject: doc_name.singular + ' Document Removed From SHEQ Aid',
 //                    html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -459,9 +459,7 @@
 //                        <p>The link expires on: <b>' + Dates.formatDate(doc_expiry_date) + '</b></p>\n\
 //                        <p>Kind Regards<br/>SHEQ Aid</p>'
 //                };
-//                const sendEmail = functions.httpsCallable('callables-sendEmail');
-//                const mailRes = await sendEmail(opts);
-//                console.log('mailRes', mailRes)
+//                await Utils.sendEmail(opts);
             });
         }
         // </editor-fold>

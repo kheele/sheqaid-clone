@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Button, ProfileField, UploadButton} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
-import NewLicenseDialog from './NewLicenseDialog';
+import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 @observer
 class LicensesTab extends React.Component {
@@ -80,7 +80,7 @@ class LicensesTab extends React.Component {
                         onClick={this.onClick}/>}
                 </div>
             </div>
-            <NewLicenseDialog ref="newLicenseDialog"/>
+            <NewDialog ref="newLicenseDialog"/>
         </div>;
     }
 }

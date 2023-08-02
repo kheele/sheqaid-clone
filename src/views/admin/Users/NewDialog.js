@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
 import {
     Button,
@@ -14,13 +14,13 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../components/inputs';
-import {Row} from '../../../components/FormComponents';
-import {ANewDialog} from '../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 import {
     NewUserModulePermissions,
     NewUserOtherPermissions
-} from '../../../components/common-modules/ANewUserPermissions';
+} from 'components/common-modules/ANewUserPermissions';
 
 import style from "./NewDialog.lazy.css";
 // </editor-fold>

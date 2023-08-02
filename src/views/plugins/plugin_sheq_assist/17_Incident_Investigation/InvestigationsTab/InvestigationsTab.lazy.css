@@ -1,0 +1,41 @@
+#InvestigationsTab-tab{
+    height: 100%;
+}
+#InvestigationsTab-tab .page-title{
+    height: 0;
+    margin-top: 0px;
+    margin-right: 0;
+    border: none;
+    float: right;
+}
+#InvestigationsTab-tab .page-title > h3{
+    display: none;
+}
+#InvestigationsTab-tab .page-title > .tabled-top-panel {
+    margin-top: -82px;
+    flex-grow: initial;
+    min-width: 340px;
+}
+#InvestigationsTab-tab .table .tbody .td > span{
+    background: rgba(239, 239, 239, 1);
+    padding: 1px 4px;
+    margin: 0 2px 2px 0;
+    border-radius: 5px;
+    font-size: 13px;
+    float: left;
+}
+#InvestigationsTab-tab .table .tbody .tr:hover .td > span{
+    background: rgba(239, 239, 239, 0.4);
+    color: #eee;
+}
+#InvestigationsTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#InvestigationsTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#InvestigationsTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (20px + 115px)) !important;
+}

@@ -258,7 +258,7 @@
                             location = "N/A";
                         }
                         const opts = {
-                            from: '"SHEQ Aid" <support@sheqsolve.com>',
+                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //                            to: emails.join(','),
                             bcc: emails.join(','),
                             subject: 'Incident Recorded',
@@ -278,10 +278,7 @@
                             <p>Kind Regards<br/>SHEQ Aid</p>'
                         };
 
-                        console.log('callables-sendEmail', opts)
-                        const sendEmail = functions.httpsCallable('callables-sendEmail');
-                        const mailRes = await sendEmail(opts);
-                        console.log('mailRes', mailRes)
+                        await Utils.sendEmail(opts);
                     };
 
                     let emails = [];

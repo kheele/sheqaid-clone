@@ -61,6 +61,9 @@
 
     class Dates {
         static getWeekday(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -78,6 +81,9 @@
         }
 
         static formatDate(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -159,6 +165,9 @@
         }
 
         static formatTime(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -183,6 +192,9 @@
         }
 
         static formatTimeExcSec(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -205,6 +217,9 @@
         }
 
         static formatTimestamp(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -226,6 +241,9 @@
         }
 
         static formatDateTime(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -253,6 +271,9 @@
         }
 
         static formatDateTimeExcYear(date) {
+            if (!date)
+                return null;
+
             if (isNumber(date)) {
                 date = new Date(date);
             }
@@ -294,9 +315,8 @@
         }
 
         static getMonthsStr(date) {
-            if (date === undefined || date === null) {
+            if (!date)
                 return null;
-            }
 
             if (isNumber(date) && date > 11) {
                 date = new Date(date);
@@ -358,9 +378,12 @@
 //
 //        }
 
-            const time = dateStr.split(" ");
+            let time = dateStr.split(" ");
+            if(time.isEmpty()) {
+                time = dateStr.split("T");
+            }
 
-            var dates;
+            let dates;
             if (time[0].contains('-')) {
                 dates = time[0].split("-");
             } else if (time[0].contains('/')) {
@@ -373,7 +396,7 @@
                 return null;
             }
 
-            var d;
+            let d;
             if (dates[0].length <= 2) {
                 d = parseInt(dates[0]);
             } else if (dates[0].length === 4) {
@@ -382,7 +405,7 @@
             if (d < 1 || d > 31) {
                 return null;
             }
-            var m;
+            let m;
             try {
                 if (monthsNum.has(dates[1])) {
                     m = monthsNum.get(dates[1]);
@@ -395,7 +418,7 @@
             if (m < 0 || m > 11) {
                 return null;
             }
-            var y;
+            let y;
             if (dates[2].length === 4) {
                 y = parseInt(dates[2]);
             } else if (dates[0].length === 4) {

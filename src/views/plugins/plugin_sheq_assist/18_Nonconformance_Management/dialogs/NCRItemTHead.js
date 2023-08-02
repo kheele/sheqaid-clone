@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {THead} from '../../../../../components/tables';
+import {THead} from 'components/tables';
 
 import style from "./NCRItemTHead.lazy.css";
 

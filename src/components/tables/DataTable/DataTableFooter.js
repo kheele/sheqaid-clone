@@ -74,7 +74,7 @@ function Comp({
     >
       {showTotalEntries && (
         <MDBox mb={{ xs: 3, sm: 0 }}>
-          <MDTypography variant="button" color="secondary" fontWeight="regular">
+          <MDTypography variant="button" color="secondary" fontWeight="regular" fontSize="13px">
             Showing {entriesStart} to {entriesEnd} of {rows.length} entries
           </MDTypography>
         </MDBox>

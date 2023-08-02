@@ -3,12 +3,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 
-import {execWhen, Permissions} from '../../../utils/Utils';
-import {AEditDialog} from '../../../components/dialogs';
+import {execWhen, Permissions} from 'utils/Utils';
+import {AEditDialog} from 'components/dialogs';
 
 import {ControlsContractor, ControlsUser} from './EditDialogControls';
 
 import style from "./EditDialog.lazy.css";
+import findByIdEmployee from "../../../mutations/all/Employee/findByIdEmployee";
+import findByIdUser from "../../../mutations/all/User/findByIdUser";
+import findByIdContractorUser from "../../../mutations/all/ContractorUser/findByIdContractorUser";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -43,6 +46,11 @@ class EditDialog extends AEditDialog {
         });
     }
 
+    get findById() {
+        const {isContractor} = storage.is;
+        return isContractor ? findByIdContractorUser : findByIdUser;
+    }
+
     onCancel(e, btn) {
         const {forShouldSetupPermissions} = this.props;
         if (forShouldSetupPermissions) {
@@ -70,13 +78,17 @@ class EditDialog extends AEditDialog {
 
     get topButtonsHiddenDelete() {
         const {user} = storage.loggedUser;
-        const {permissions_other} = user.data;
-        const permissions_other_Users = (permissions_other || []).find(v => v.key === "Users");
+        const {permissions_other_list} = user.data;
+        const permissions_other_Users = (permissions_other_list || []).find(v => v.key.value === "Users");
         //TODO: Give contractors permissions
         if (!Permissions.allowRemove(permissions_other_Users)) {
             return true;
         }
         return this.isLoggedUser;
+    }
+
+    get topButtonsHiddenSave() {
+        return true;
     }
 
     get isLoggedUser() {

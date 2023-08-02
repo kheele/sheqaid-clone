@@ -10,6 +10,7 @@ module.exports = path => [
         'employees/teams.js',
         'employees/departments.js',
         'employees/job_positions.js',
+        'employees/job_categories.js',
         'employees/supervisors.js',
         
         'competencies/competencies.js',

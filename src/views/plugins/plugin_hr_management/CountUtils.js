@@ -7,14 +7,16 @@ const onCountRemovedEmployees = () => {//expiry_date='ALL' for all record count
     return neonBinding.events.emit("plugin_sheq_assist/employees/removed/dashboard/count");
 };
 
-//
-
 const onCountTeams = () => {//expiry_date='ALL' for all record count
     return neonBinding.events.emit("plugin_sheq_assist/employees/teams/dashboard/count");
 };
 
 const onCountDepartments = () => {//expiry_date='ALL' for all record count
     return neonBinding.events.emit("plugin_sheq_assist/employees/departments/dashboard/count");
+};
+
+const onCountJobCategories = () => {//expiry_date='ALL' for all record count
+    return neonBinding.events.emit("plugin_sheq_assist/employees/job-positions/dashboard/count");
 };
 
 const onCountJobPositions = () => {//expiry_date='ALL' for all record count
@@ -92,9 +94,9 @@ const onCountWorkPermits = expiry_date => {//expiry_date='ALL' for all record co
 const CountUtils = {
     onCountActiveEmployees,
     onCountRemovedEmployees,
-    
     onCountTeams,
     onCountDepartments,
+    onCountJobCategories,
     onCountJobPositions,
     onCountSupervisors,
     
@@ -118,9 +120,9 @@ const CountUtils = {
 export {
     onCountActiveEmployees,
     onCountRemovedEmployees,
-    
     onCountTeams,
     onCountDepartments,
+    onCountJobCategories,
     onCountJobPositions,
     onCountSupervisors,
     

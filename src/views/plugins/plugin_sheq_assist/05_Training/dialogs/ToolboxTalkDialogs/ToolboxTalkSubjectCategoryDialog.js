@@ -7,8 +7,8 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {ActionsButton, Button, ClearableInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import ADialogList from "../../../../../ADialogList";
-import APageListReadWrite from "../../../../../APageListReadWrite";
+import ADialogList from "views/ADialogList";
+import APageListReadWrite from "views/APageListReadWrite";
 
 import NewDialog from "./NewToolboxTalkSubjectCategoryDialog";
 import ProfileDialog from "./ProfileToolboxTalkSubjectCategoryDialog";

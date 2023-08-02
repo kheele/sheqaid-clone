@@ -5,6 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import byLogged from "views/plugins/plugin_hr_management/Employees/dialogs/TeamsDialog/Query/List/listAllTeamByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -66,10 +67,19 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/employees/teams/list").then(res => {
+    const args = {
+        //
+        limit: 0,
+        offset: 0,
+    };
+    return byLogged(args).then(res => {
         return res.map(value => {
-            const {name, supervisor: {fname, lname, data}, site, project, client} = value.data;
-            let label = name + '-' + ((lname || data.lname) + ' ' + (fname || data.fname));
+            const {name, supervisor, site, project, client} = value.data;
+            let label = name;
+            if(supervisor) {
+                const {fname, lname, data} = supervisor;
+                label += `-${lname || data.lname} ${fname || data.fname}`;
+            }
             return {label, value};
         });
     });

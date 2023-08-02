@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Button, ProfileField, UploadButton} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
-import NewCompetencyCertificateDialog from './NewCompetencyCertificateDialog';
+import {NewDialog} from './forms';
 
 @observer
 class CertificatesTab extends React.Component {
@@ -18,7 +18,7 @@ class CertificatesTab extends React.Component {
     }
     
     onCreate() {
-        this.refs.newCompetencyCertificateDialog.open(this.props.item);
+        this.refs.newDialog.open(this.props.item);
     }
 
     renderItem(item, n, onClick) {
@@ -91,7 +91,7 @@ class CertificatesTab extends React.Component {
                         onClick={this.onClick}/>}
                 </div>
             </div>
-            <NewCompetencyCertificateDialog ref="newCompetencyCertificateDialog"/>
+            <NewDialog ref="newDialog"/>
         </div>;
     }
 }

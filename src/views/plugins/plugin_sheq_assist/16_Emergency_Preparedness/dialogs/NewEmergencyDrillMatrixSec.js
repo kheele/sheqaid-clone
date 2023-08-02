@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {ClearableInput, SelectEmployeeInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 import style from "./NewEmergencyDrillMatrixSec.lazy.css";
 

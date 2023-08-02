@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
-import {TinyMCE} from '../../../../../components/documents';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField, UploadButton} from '../../../../../components/inputs';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import {Dates} from 'utils/Utils';
+import {TinyMCE} from 'components/documents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, UploadButton} from 'components/inputs';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileMinutesDialog.lazy.css";
 

@@ -2,11 +2,11 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {Button} from '../../components/inputs';
+import {Button} from 'components/inputs';
 
-import LoginFaceDialog from '../../components/dialogs/LoginFaceDialog';
-import LoginPasswordDialog from '../../components/dialogs/LoginPasswordDialog';
-import SetupPhoneNumDialog from '../../components/dialogs/SetupPhoneNumDialog';
+import LoginFaceDialog from 'components/dialogs/LoginFaceDialog';
+import LoginPasswordDialog from 'components/dialogs/LoginPasswordDialog';
+import SetupPhoneNumDialog from 'components/dialogs/SetupPhoneNumDialog';
 
 // </editor-fold>
 

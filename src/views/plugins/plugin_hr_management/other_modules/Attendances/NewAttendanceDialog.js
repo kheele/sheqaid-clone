@@ -3,14 +3,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
 
-import {ANewDialog} from '../../../../../components/dialogs';
-import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
-import NewScreeningDialog from '../../../plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
+import NewScreeningDialog from 'views/plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
 
 import {EmployeeFromSelectWrapper, NewAttendanceTable, RadioWrapper} from './AttendanceComponents';
 

@@ -3,14 +3,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {getRiskRatingConsequenceList, getRiskRatingFrequencyList, getRiskRatingLikelihoodList} from '../../../utils';
+import Form from 'utils/Form';
+import {getRiskRatingConsequenceList, getRiskRatingFrequencyList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
 
-import {Dates, execWhen} from "../../../../../utils/Utils";
-import {Button, ClearableInput, Clickable, SelectEmployeeInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
-import {NavButtons, RiskRating} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {Dates, execWhen} from "utils/Utils";
+import {Button, ClearableInput, Clickable, SelectEmployeeInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import {NavButtons, RiskRating} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewTrainingPlanItemDialog.lazy.css";
 // </editor-fold>

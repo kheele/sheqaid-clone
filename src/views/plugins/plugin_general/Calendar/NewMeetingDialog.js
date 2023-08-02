@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {execWhen} from '../../../../utils/Utils';
+import {execWhen} from 'utils/Utils';
 
-import Form from '../../../../utils/Form';
-import {TinyMCE} from '../../../../components/documents';
+import Form from 'utils/Form';
+import {TinyMCE} from 'components/documents';
 
 import {
     Button,
@@ -16,9 +16,9 @@ import {
     SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../components/inputs';
-import {SelectTable, THead} from '../../../../components/tables';
-import ANewDialog from '../../../../components/dialogs/ANewDialog';
+} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewMeetingDialog.lazy.css";
 

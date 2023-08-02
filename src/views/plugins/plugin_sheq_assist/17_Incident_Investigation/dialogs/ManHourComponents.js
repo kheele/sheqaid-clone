@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 
-import Form from "../../../../../utils/Form";
-import {execWhen} from "../../../../../utils/Utils";
-import {ClearableInput, ProfileField} from "../../../../../components/inputs";
+import Form from "utils/Form";
+import {execWhen} from "utils/Utils";
+import {ClearableInput, ProfileField} from "components/inputs";
 
 // </editor-fold>
 

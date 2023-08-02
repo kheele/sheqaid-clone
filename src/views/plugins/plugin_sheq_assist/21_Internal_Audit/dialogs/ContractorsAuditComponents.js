@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {scrollTo} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {scrollTo} from 'utils/Utils';
 
-import {Button, ClearableInput, Clickable} from '../../../../../components/inputs';
-import {Table, TBody} from '../../../../../components/tables';
+import {Button, ClearableInput, Clickable} from 'components/inputs';
+import {Table, TBody} from 'components/tables';
 
 // </editor-fold>
 

@@ -333,7 +333,7 @@ class DB {
                 }
             };
             req.onerror = function (evt) {
-                console.log(evt);
+                console.error(evt);
                 reject(evt)
 //            if ($this.version > 1) {
 //                $this.version = 1;
@@ -421,7 +421,7 @@ class StorageCreator {
 
 }
 
-const indexedStorage = window.indexedStorage = new StorageCreator({name: "sheqassist_db"}, () => {
+const indexedStorage = window.indexedStorage = new StorageCreator({name: "sheqaid_db"}, () => {
     indexedStorage.orphanedUploadedDocs.findAll().then(list => {
         return execWhen(() => storage.is.isLoggedIn).then(() => {
             return Promise.all(list.map(async id => {

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {Table, TBody, THead} from '../../../../../components/tables';
+import {Table, TBody, THead} from 'components/tables';
 
 @observer
 class PPEIssueHistoryTab extends React.Component {

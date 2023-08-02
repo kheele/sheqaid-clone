@@ -12,9 +12,13 @@ class ASelectWrapper extends React.Component {
     innerRefs = {
     };
 
+    $self;
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+
+        this.$self = this;
 
         this.onOpenEmployeeListTable && (this.onOpenEmployeeListTable = this.onOpenEmployeeListTable.bind(this));
         this.renderTable && (this.renderTable = this.renderTable.bind(this));

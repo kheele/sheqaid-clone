@@ -1,28 +1,49 @@
 import React from "react";
 import {execWhen} from './Utils';
+import checkByUsernameUser from "../mutations/all/User/checkByUsernameUser";
+import checkByUsernameContractorUser from "../mutations/all/ContractorUser/checkByUsernameContractorUser";
+import sendOTPContractor from "../mutations/all/Contractor/sendOTPContractor";
+import confirmOTPContractor from "../mutations/all/Contractor/confirmOTPContractor";
 
-const checkUsernameInDB = (path, val, isContractorUser) => {
-    return neonBinding.events.emit(`${path}find_by/username`, val).then(res => {
+const QUERY = {
+    User: checkByUsernameUser,
+    ContractorUser: checkByUsernameContractorUser,
+};
+const PATH = {
+    User: 'users/accounts/',
+    ContractorUser: 'plugin_sheq_assist/contractors/users/',
+};
+
+//done
+const checkUsernameInDB = (user_type, val, isContractorUser) => {
+    const fn = QUERY[user_type];
+    if(!fn) return Promise.resolve();
+
+    return fn(val).then(res => {
         console.log("checkUsernameInDB res", res)
-        if (res === 'NO_USER_DB')
-            return res;
         if (res) {
             if (isContractorUser && res.contractor) {
                 return res;
             }
             return 'DB_USER_DUP';
         }
+        return 'NO_USER_DB';
     });
 };
 
-const checkUsernameInAuth = async (path, val) => {
+//done
+const checkUsernameInAuth = async (user_type, val) => {
+    const path = PATH[user_type];
+    if(!path) return Promise.resolve();
+
     return neonBinding.events.emit(`${path}check/auth/username`, val).then(uid => {
         console.log("checkUsernameInAuth res", uid)
         return uid;
     });
 };
 
-function onChangeUsername(path, onBtnRef) {
+//done
+function onChangeUsername(user_type, onBtnRef) {
     return function (el, val) {
         const {usernameStatus} = this.state;
         usernameStatus.username = val;
@@ -39,10 +60,10 @@ function onChangeUsername(path, onBtnRef) {
                 if (usernameStatus.valid) {
                     usernameStatus.loading = true;
 
-                    const isContractorUser = path.contains('contractors/users/');
+                    const isContractorUser = user_type === 'ContractorUser';
 
                     const checkUsernameInAuthLocal = () => {
-                        checkUsernameInAuth(path, val).then(uid => {
+                        checkUsernameInAuth(user_type, val).then(uid => {
                             usernameStatus.exist = !!uid;
                             usernameStatus.loading = false;
                             if (usernameStatus.exist) {
@@ -56,9 +77,9 @@ function onChangeUsername(path, onBtnRef) {
                         });
                     };
 
-                    checkUsernameInDB(path, val, isContractorUser).then(res => {
+                    checkUsernameInDB(user_type, val, isContractorUser).then(res => {
                         if (isContractorUser && res && res.contractor) {
-                            const {contractor: {data: {username: contractorUsername}}} = res;
+                            const {contractor: {username: contractorUsername}} = res;
                             if (contractorUsername === val) {
                                 checkUsernameInAuthLocal();
                             } else {
@@ -96,23 +117,7 @@ function onChangeUsername(path, onBtnRef) {
     }.bind(this);
 }
 
-const onConfirmUsername = async (path, username) => {
-    return neonBinding.events.emit(path + "check/username", username).then(res => {
-        console.log("res", res)
-        switch (res) {
-            case 'EMAIL_DUP':
-//                infoDialog.open("User with this email address already exist.");
-                break;
-            case 'EMAIL_DUP':
-                break;
-            default:
-                break;
-        }
-    }).finally(() => {
-
-    });
-};
-
+//working on it
 function onSendUserOTP(username) {
     progressDialog.open();
 
@@ -143,10 +148,11 @@ function onSendUserOTP(username) {
     });
 }
 
-function onSendOTPContractor(uid) {
+//working on it
+function onSendOTPContractor(id) {
     progressDialog.open();
 
-    return neonBinding.events.emit(`plugin_sheq_assist/contractors/email/otp`, uid).then(res => {
+    return sendOTPContractor(id).then(res => {
         console.log("onSendOTPContractor res", res)
         if (!res) {
             infoDialog.open(<div>
@@ -164,6 +170,7 @@ function onSendOTPContractor(uid) {
             return true;
         }
     }).catch(err => {
+        console.error(err)
         infoDialog.open(<div>
             Sorry, we couldn't send you One-Time Password at the moment.<br/>
             Please try again later.<br/>
@@ -172,11 +179,108 @@ function onSendOTPContractor(uid) {
     }).finally(() => {
         setTimeout(() => progressDialog.close());
     });
+
+    // return neonBinding.events.emit(`plugin_sheq_assist/contractors/email/otp`, uid).then(res => {
+    //     console.log("onSendOTPContractor res", res)
+    //     if (!res) {
+    //         infoDialog.open(<div>
+    //             Sorry, we couldn't sending you One-Time Password at the moment.<br/>
+    //             Please try again later.<br/>
+    //             If the issue persists, please contact support.
+    //         </div>);
+    //     } else if (res === 'NO_USER_DB') {
+    //         infoDialog.open(<div>
+    //             Sorry, the contractor associated with this<br/>
+    //             <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>
+    //             The user could have been deleted from the system.
+    //         </div>);
+    //     } else {
+    //         return true;
+    //     }
+    // }).catch(err => {
+    //     infoDialog.open(<div>
+    //         Sorry, we couldn't send you One-Time Password at the moment.<br/>
+    //         Please try again later.<br/>
+    //         If the issue persists, please contact support.
+    //     </div>);
+    // }).finally(() => {
+    //     setTimeout(() => progressDialog.close());
+    // });
 }
 
+//working on it
 function onConfirmUserOTP(data) {
     progressDialog.open();
 
+    // return confirmOTPContractor(data).then(res => {
+    //     console.log("confirmOTPContractor res", res)
+    //     if (isString(res)) {
+    //         switch (res) {
+    //             case 'NO_USER_AUTH':
+    //                 infoDialog.open(<div>
+    //                     Sorry, the user associated with this<br/>
+    //                     <b>Email Address</b> or <b>Phone Number</b> does not exist.
+    //                 </div>);
+    //                 break;
+    //             case 'NO_OTP_DB':
+    //                 infoDialog.open(<div>
+    //                     Sorry, the user associated with this<br/>
+    //                     <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>
+    //                     The user could have been deleted from the system.
+    //                 </div>);
+    //                 break;
+    //             case 'NO_OTP_MATCH':
+    //                 infoDialog.open(<div>
+    //                     Your One-Time Password does not match.<br/>
+    //                     Please try again
+    //                 </div>);
+    //                 break;
+    //             case 'CODE_EXPIRED':
+    //                 infoDialog.open(<div>
+    //                     Your One-Time Password has expired.<br/>
+    //                     Please try again
+    //                 </div>);
+    //                 break;
+    //             case 'ERR_UPDATE_USER':
+    //                 infoDialog.open(<div>
+    //                     Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+    //                     Please try again later.<br/>
+    //                     If the issue persists, please contact support.
+    //                 </div>);
+    //                 break;
+    //             case 'ERR_CREATING_TOKEN':
+    //                 infoDialog.open(<div>
+    //                     Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+    //                     Please try again later.<br/>
+    //                     If the issue persists, please contact support.
+    //                 </div>);
+    //                 break;
+    //             default:
+    //                 infoDialog.open(<div>
+    //                     Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+    //                     Please try again later.<br/>
+    //                     If the issue persists, please contact support.
+    //                 </div>);
+    //                 break;
+    //         }
+    //     } else if (res && res.uid) {
+    //         return res;//{uid, token}
+    //     } else {
+    //         infoDialog.open(<div>
+    //             Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+    //             Please try again later.<br/>
+    //             If the issue persists, please contact support.
+    //         </div>);
+    //     }
+    // }).catch(err => {
+    //     infoDialog.open(<div>
+    //         Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+    //         Please try again later.<br/>
+    //         If the issue persists, please contact support.
+    //     </div>);
+    // }).finally(() => {
+    //     setTimeout(() => progressDialog.close());
+    // });
     return neonBinding.events.emit(`users/accounts/confirm/otp`, data).then(res => {
         console.log("onSendOTPUser res", res)
         if (isString(res)) {
@@ -187,7 +291,7 @@ function onConfirmUserOTP(data) {
                         <b>Email Address</b> or <b>Phone Number</b> does not exist.
                     </div>);
                     break;
-                case 'NO_USER_DB':
+                case 'NO_OTP_DB':
                     infoDialog.open(<div>
                         Sorry, the user associated with this<br/>
                         <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>
@@ -249,7 +353,52 @@ function onConfirmUserOTP(data) {
 }
 
 function onConfirmContractorOTP(data) {
+    progressDialog.open();
 
+    return confirmOTPContractor(data).then(res => {
+        console.log("confirmOTPContractor res", res)
+
+        if (isString(res)) {
+            switch (res) {
+                case 'NO_USER_DB':
+                    infoDialog.open(<div>
+                        Sorry, the user associated with this<br/>
+                        <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>
+                        The user could have been deleted from the system.
+                    </div>);
+                    break;
+                case 'NO_OTP_MATCH':
+                    infoDialog.open(<div>
+                        Your One-Time Password does not match.<br/>
+                        Please try again
+                    </div>);
+                    break;
+                case 'CODE_EXPIRED':
+                    infoDialog.open(<div>
+                        Your One-Time Password has expired.<br/>
+                        Please try again
+                    </div>);
+                    break;
+                default:
+                    infoDialog.open(<div>
+                        Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+                        Please try again later.<br/>
+                        If the issue persists, please contact support.
+                    </div>);
+                    break;
+            }
+        } else if (res && res.data) {
+            return res;
+        }
+    }).catch(err => {
+        infoDialog.open(<div>
+            Sorry, we couldn't verify your One-Time Password at the moment.<br/>
+            Please try again later.<br/>
+            If the issue persists, please contact support.
+        </div>);
+    }).finally(() => {
+        setTimeout(() => progressDialog.close());
+    });
 }
 
-export {onChangeUsername, onConfirmUsername, onSendOTPContractor, onSendUserOTP, onConfirmUserOTP, onConfirmContractorOTP};
+export {onChangeUsername, onSendOTPContractor, onSendUserOTP, onConfirmUserOTP, onConfirmContractorOTP};

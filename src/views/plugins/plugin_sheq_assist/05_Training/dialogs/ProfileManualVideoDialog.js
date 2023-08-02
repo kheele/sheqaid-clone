@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {Clickable, ProfileField, UploadButton} from '../../../../../components/inputs';
-import {NavButtons} from '../../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {Clickable, ProfileField, UploadButton} from 'components/inputs';
+import {NavButtons} from 'components/FormComponents';
 
 import style from "./ProfileManualVideoDialog.lazy.css";
 

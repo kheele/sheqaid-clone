@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {Grid} from '@material-ui/core';
 
@@ -34,18 +34,28 @@ class TitlePage extends React.Component {
         return await getQuestionnaireAnswerForm(questionsObject);
     }
 
+    @computed
+    get itemData() {
+        const {item} = this.props;
+        return (item ? item.data : item) || {};
+    }
+
+    @computed
+    get page_title_list() {
+        return this.itemData.page_title_list;
+    }
+
     render() {
-        const {readonly, status, mainQuestions, questions, onChange, onFormOpen, onViewTemplateDocDialog} = this.props;
+        const {readonly, status, onChange, onFormOpen, onViewTemplateDocDialog} = this.props;
         return <div key="TitlePage" className="TitlePage hor-center margin-t-15 margin-b-15">
             <Grid key="Grid" container direction="column" justify="center" alignItems="center">
                 <Grid key="Grid" item> 
                     <FormBodyQuestionList 
                         key="FormBodyQuestionList"
-                        ref="itemBody" 
-                        type="Title Page"
+                        ref="itemBody"
+                        defaultType="Title Page"
                         status={status}
-                        mainQuestions={mainQuestions}
-                        questions={questions} 
+                        question_list={this.page_title_list}
                         readonly={readonly}
                         onChange={onChange}
                         onFormOpen={onFormOpen}

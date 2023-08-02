@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../utils/Utils';
-import {ClearableInput, ProfileField, SelectClientInput} from '../../../../../components/inputs';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
+import {ClearableInput, ProfileField, SelectClientInput} from 'components/inputs';
 
-import {AEditDialog} from '../../../../../components/dialogs';
+import {AEditDialog} from 'components/dialogs';
 import style from "./EditDocumentCategoryDialog.lazy.css";
-import {FormControls, Row} from "../../../../../components/FormComponents";
+import {FormControls, Row} from "components/FormComponents";
 
 @observer
 class EditDialog extends AEditDialog {

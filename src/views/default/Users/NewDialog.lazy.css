@@ -17,6 +17,9 @@
     padding: 0;
     height: calc(100% - 50px);
 }
+#dialog-overlay.User-new-dialog .dialog-content .NotificationsSettings-row .form-control {
+    height: 36px;
+}
 #dialog-overlay.User-new-dialog .dialog-content .table{
     width: calc(100% + 10px);
     height: auto;

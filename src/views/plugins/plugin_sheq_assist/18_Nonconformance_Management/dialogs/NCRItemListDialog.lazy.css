@@ -1,6 +1,6 @@
 #dialog-overlay.NCRItemListDialog-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 1200px;
+    min-width: 1500px;
     max-width: 100%;
 }
 #dialog-overlay.NCRItemListDialog-dialog .dialog-content,

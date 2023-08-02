@@ -12,6 +12,7 @@ import AnswerSummary from './AnswerSummary';
 import FormBodyQuestionOne from './FormBodyQuestionOne';
 
 import style from './List.lazy.css';
+import {isSection} from "../questionnaires/AResponseUtils";
 
 @observer
 class List extends React.Component {
@@ -29,30 +30,20 @@ class List extends React.Component {
     componentWillUnmount(){
         style.unuse();
     }
-    
-    @computed
-    get questions() {
-        const {questions} = this.props;
-        if(isArray(questions) || isObservableArray(questions)) {
-            return questions;
-        } else {
-            return Object.values(questions);
-        }
-    }
-    
+
     renderQuestion(ques, idx) {
-        const {mainQuestions, questions, readonly, quesPath, onViewTemplateDocDialog, isSection} = this.props;
-        const {type, status, parentId, notifyChange, onChange} = this.props;
+        const {mainQuestions, question_list, readonly, quesPath, onViewTemplateDocDialog, isSection} = this.props;
+        const {defaultType, status, parentId, notifyChange, onChange} = this.props;
         return <Draggable key={'Draggable' + ques.idx} draggableId={idx + 'id'} index={idx}>
             {(provided, snapshot) => <DraggablesWrappper 
                 key={'DraggablesWrappper' + ques.idx} 
                 ques={ques} 
                 idx={idx}
                 mainQuestions={mainQuestions} 
-                questions={questions} 
+                question_list={question_list}
                 readonly={readonly}
                 isSection={isSection}
-                type={type} 
+                defaultType={defaultType}
                 status={status} 
                 quesPath={quesPath}
                 parentId={parentId} 
@@ -65,8 +56,8 @@ class List extends React.Component {
     }
     
     render() {
-        const {questions} = this;
-        return <React.Fragment>{questions.map(this.renderQuestion)}</React.Fragment>;
+        const {question_list} = this.props;
+        return <React.Fragment>{question_list.map(this.renderQuestion)}</React.Fragment>;
     }
 }
 
@@ -80,27 +71,18 @@ class DraggablesWrappper extends React.Component {
     }
 
     expandCloseAll() {
+        const {question_list} = this.props;
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                this.questions.forEach(q => q.open = false);
+                question_list.forEach(q => q.open = false);
                 resolve();
             });
         });
     }
-    
-    @computed
-    get questions() {
-        const {questions} = this.props;
-        if(isArray(questions) || isObservableArray(questions)) {
-            return questions;
-        } else {
-            return Object.values(questions);
-        }
-    }
-    
+
     render() {
-        const {mainQuestions, questions, ques, idx, readonly, onViewTemplateDocDialog, isSection, provided} = this.props;
-        const {type, status, parentId, notifyChange, onChange} = this.props;
+        const {mainQuestions, question_list, ques, idx, readonly, onViewTemplateDocDialog, isSection, provided} = this.props;
+        const {defaultType, status, parentId, notifyChange, onChange} = this.props;
         
         const quesPath = ques.quesPath || Object.getPathByValue(mainQuestions, ques);
         
@@ -116,9 +98,9 @@ class DraggablesWrappper extends React.Component {
             <AccordionWrappper 
                 key={'AccordionWrappper' + ques.idx}
                 parentId={parentId} 
-                type={type} 
+                defaultType={defaultType}
                 mainQuestions={mainQuestions}
-                questions={questions} 
+                question_list={question_list}
                 status={status} 
                 isSection={isSection}
                 ques={ques} 
@@ -136,29 +118,35 @@ class DraggablesWrappper extends React.Component {
 
 @observer
 class AccordionWrappper extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.handleExpand = this.handleExpand.bind(this);
     }
     
     handleExpand() {
-        const {ques, idx, expandCloseAll, readonly} = this.props;
+        const {ques, expandCloseAll, readonly} = this.props;
         if(readonly) return;
         return expandCloseAll().then(() => {
             ques.open = true;
         });
     }
+
+    @computed get open() {
+        const {ques, isSection,} = this.props;
+        if(!isSection) return false;
+        return ques.open;
+    }
     
     render() {
-        const {mainQuestions, questions, ques, quesPath, idx, isSection, onViewTemplateDocDialog, expandCloseAll, readonly} = this.props;
-        const {type, status, parentId, notifyChange, onChange} = this.props;
+        const {mainQuestions, question_list, ques, quesPath, idx, isSection, onViewTemplateDocDialog, expandCloseAll, readonly} = this.props;
+        const {defaultType, status, parentId, notifyChange, onChange} = this.props;
 //        console.log('ques', ques)
-        return <Accordion key={'Accordion' + ques.idx} onChange={this.handleExpand} expanded={ques.open}>
+        return <Accordion key={'Accordion' + ques.id} onChange={this.handleExpand} expanded={this.open}>
             <AnswerSummary 
-                key={'AnswerSummary' + ques.idx}
+                key={'AnswerSummary' + ques.id}
                 parentId={parentId} 
-                type={type} 
+                defaultType={defaultType}
                 status={status} 
                 mainQuestions={mainQuestions} 
                 ques={ques} 
@@ -170,9 +158,9 @@ class AccordionWrappper extends React.Component {
                 onChange={onChange} 
             />
             <Section 
-                key={'Section' + ques.idx}
+                key={'Section' + ques.id}
                 mainQuestions={mainQuestions}
-                questions={questions} 
+                question_list={question_list}
                 ques={ques}
                 quesPath={quesPath}
                 idx={idx} 
@@ -192,30 +180,29 @@ class Section extends React.Component {
     constructor(props) {
         super(props);
     }
-    
-    @computed
-    get isSection() {
+
+    @computed get isSection() {
         const {ques} = this.props;
-        return ('sectionText' in ques);
+        return isSection(ques);
     }
-    
+
     render() {
         if(!this.isSection) {
             return null;
         }
         
-        const {mainQuestions, questions, ques, quesPath, idx, parentId, onViewTemplateDocDialog, readonly, notifyChange, onChange} = this.props;
+        const {mainQuestions, question_list, ques, quesPath, idx, parentId, onViewTemplateDocDialog, readonly, notifyChange, onChange} = this.props;
         
         const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
 //        console.log('Section quesPath', index, quesPath.slice())
         return <React.Fragment>
-            <OpenCloseBtn key={'OpenCloseBtn' + ques.idx} questions={questions} ques={ques} isSection/>
+            <OpenCloseBtn key={'OpenCloseBtn' + ques.id} question_list={question_list} ques={ques} isSection/>
             <h3 className={`section-title margin-t-0 ${ques.open ? 'margin-l-35' : 'margin-l-0'}` }>
                 <span className="counter">{index}</span> 
-                <TextField key={'TextField' + ques.idx} disabled={true} variant="filled" value={ques.sectionText}/>
+                <TextField key={'TextField' + ques.id} disabled={true} variant="filled" value={ques.questionText}/>
             </h3>
             <FormBodyQuestionOne 
-                key={'FormBodyQuestionOne' + ques.idx}
+                key={'FormBodyQuestionOne' + ques.id}
                 ref="formBody" 
                 isSection
                 parentId={parentId}
@@ -232,19 +219,24 @@ class Section extends React.Component {
 
 @observer
 class ListDraggable extends React.Component {
+    @computed get isSection() {
+        const {ques} = this.props;
+        return isSection(ques);
+    }
+
     render() {
-        const {ques, idx, innerRef, children, readonly} = this.props;
+        const {ques, innerRef, children, readonly} = this.props;
         const ref = innerRef;
         let className = (readonly ? "ListDraggable-readonly " : "");
-        if('sectionText' in ques) {
+        if(this.isSection) {
             className += "ListDraggable-section";
         } else {
             className += "ListDraggable-question";
         }
-        return <div key={'ListDraggable' + ques.idx} className={"ListDraggable " + className} {...this.props} ref={ref}>
+        return <div key={'ListDraggable' + ques.id} className={"ListDraggable " + className} {...this.props} ref={ref}>
             {children}
         </div>;
     }
 }
-  
+
 export default List;

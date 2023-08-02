@@ -13,6 +13,7 @@ const optionsPhantomjs = {
 const faceapi = require('face-api.js');
 
 const canvas = require('canvas');
+const {mutation: insertOTPMutation} = require("./graphql/insertOTPMutation");
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement
 const {Canvas, Image, ImageData} = canvas;
@@ -90,6 +91,7 @@ exports.deleteTmpImage = (uid) => {
 };
 // </editor-fold>
 
+//<editor-fold desc="wordToPDF">
 global.wordToPDF = async (dataUrl) => {
     if (!dataUrl)
         throw new Error('No source file supplied.');
@@ -136,3 +138,86 @@ global.wordToPDF = async (dataUrl) => {
         });
     });
 };
+//</editor-fold>
+
+//<editor-fold desc="sendRelay">
+global.sendRelay = async (args) => {
+    if(!args) return null;
+    const {query, variables, operationName} = args;
+
+    const API_URL = "http://cloud.sheqaid.com:8080/v1beta1/relay";
+    const result = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-hasura-access-key": "rhespo-g",
+            "X-Hasura-Role": "admin",
+            // ...headers,
+        },
+        body: JSON.stringify({
+            query,
+            variables,
+            operationName
+        })
+    });
+
+    const {errors, data} = await result.json();
+    if (errors) {
+        // handle those errors like a pro
+        console.error(errors);
+        return null;
+    }
+
+    console.log('sendRelay res', data);
+
+    return data;
+};
+//</editor-fold>
+
+//<editor-fold desc="getRelayOne">
+global.getRelayOne = async ({query, operationName, variables}) => {
+    const query_res = await sendRelay({
+        query,
+        operationName,
+        variables,
+    });
+    if (!query_res) {
+        return;
+    }
+
+    const key = Object.keys(query_res)[0];
+    const connection = query_res[key];
+    const {edges = []} = connection;
+    let [edge] = edges;
+    let {node = null} = edge || {};
+    if (node && node.id) {
+        const id = convertIdToBigint(node.id);
+        const data = {...node, id};
+        node = {data, id};
+    }
+    return node;
+};
+//</editor-fold>
+
+//<editor-fold desc="insertRelay">
+global.insertRelay = async ({query, operationName, input}) => {
+    return await sendRelay({
+        query,
+        operationName,
+        variables: {object: input}
+    });
+};
+//</editor-fold>
+
+//<editor-fold desc="updateRelay">
+global.updateRelay = async ({mutation, operationName, id, attrs}) => {
+    return await sendRelay({
+        query: mutation,
+        operationName,
+        variables: {
+            id: { id },
+            _set: attrs,
+        },
+    });
+};
+//</editor-fold>

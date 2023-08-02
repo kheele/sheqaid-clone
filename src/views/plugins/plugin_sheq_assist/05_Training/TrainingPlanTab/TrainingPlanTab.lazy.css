@@ -41,6 +41,9 @@
 #TrainingPlanTab-tab > .table > .tbody .tr > .td.td-status{
     min-width: 200px;
 }
+#TrainingPlanTab-tab > .table > .tbody .tr:hover *{
+    font-weight: normal !important;
+}
 
 .alice-carousel {
     max-width: 220px;

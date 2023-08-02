@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {TextAlignment} from 'pdf-lib';
 
-import {Dates} from '../../../../../utils/Utils';
-import {ClaimDocument, createTextField, createTimesSVG} from '../../../../../components/documents/ClaimDocument';
+import {Dates} from 'utils/Utils';
+import {ClaimDocument, createTextField, createTimesSVG} from 'components/documents/ClaimDocument';
 
 // </editor-fold>
 

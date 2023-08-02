@@ -3,16 +3,16 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, isWeb} from '../../../../../utils/Utils';
-import {Button, DateRangeInput, SelectClientInput} from '../../../../../components/inputs';
-import {SelectTable, THead} from '../../../../../components/tables';
-import {ANewDialog} from '../../../../../components/dialogs';
+import {Dates, isWeb} from 'utils/Utils';
+import {Button, DateRangeInput, SelectClientInput} from 'components/inputs';
+import {SelectTable, THead} from 'components/tables';
+import {ANewDialog} from 'components/dialogs';
 
 import {getDocsStatus, getWClStatus} from '../../ClaimFuns';
 
-import {AsyncTD} from '../../../components';
+import {AsyncTD} from 'views/plugins/components';
 // </editor-fold>
 import style from "./ExportClaimsDialog.lazy.css";
 

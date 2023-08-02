@@ -3,12 +3,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Button, ClearableInput, ProfilePic} from '../../../components/inputs';
-import {Row} from '../../../components/FormComponents';
-import {ANewDialog} from '../../../components/dialogs';
-import {NewUserModulePermissions} from '../../../components/common-modules/ANewUserPermissions';
+import {Button, ClearableInput, ProfilePic} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
+import {NewUserModulePermissions} from 'components/common-modules/ANewUserPermissions';
 
 import style from "./NewDialog.lazy.css";
 // </editor-fold>

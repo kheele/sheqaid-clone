@@ -1,0 +1,455 @@
+import React from "react";
+import {observer} from 'mobx-react';
+import {computed, observable, toJS} from 'mobx';
+
+import Form from '../../../../utils/Form';
+import {ANewDialog} from '../../../../components/dialogs';
+import {
+    Button,
+    ClearableInput,
+    Clickable,
+    SelectEmployeeInput,
+    SelectTrainingMatixInput,
+    UploadButton
+} from '../../../../components/inputs';
+import {FormControls, NavButtons, Row} from '../../../../components/FormComponents';
+
+import style from "./NewContractDialog.lazy.css";
+
+@observer
+class NewDialog extends ANewDialog {
+    pageKey = "NewContractDialog";
+    title = "Create Contract";
+
+    constructor(props) {
+        super(props, style);
+    }
+
+    get controls() {
+        return  Controls;
+    }
+}
+
+@observer
+class Controls extends React.Component {
+    path = "plugin_sheq_assist/employees/contracts/";
+
+    @observable
+    state = {
+        index: 0
+    };
+
+    constructor() {
+        super();
+
+        this.onNext = this.onNext.bind(this);
+        
+        this.form = new Form();
+    }
+
+    onNext(e, btn) {
+        const {form, refs: {contractDetailsTab, salaryInfoTab}} = this;
+        const {idx} = btn.props;
+        if(idx === 1) {
+            if (!form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+        }
+        if(idx === 2) {
+            const contract_details = toNoneNullObject(contractDetailsTab.form.data);
+            if (contract_details) {
+                if (contractDetailsTab.form.isValid('expiry_date') && !contractDetailsTab.form.isValid('start_date')) {
+                    infoDialog.open('Start Date is required');
+                    return;
+                }
+
+                if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
+                    infoDialog.open('Working End Time is required');
+                    return;
+                }
+                if (contractDetailsTab.form.isValid('end_time') && !contractDetailsTab.form.isValid('start_time')) {
+                    infoDialog.open('Working Start Time is required');
+                    return;
+                }
+            }
+        }
+        if(idx === 3) {
+            const salary_info = toNoneNullObject(salaryInfoTab.form.data);
+            if (salary_info) {//payment_type, 
+                if (!salaryInfoTab.form.isValid('payment_type')) {
+                    infoDialog.open('Payment Type is required');
+                    return;
+                }
+                if (salaryInfoTab.form.get('payment_type') === 'Salary') {
+                    if (!salaryInfoTab.form.isValid('salary_interval')) {
+                        infoDialog.open('Salary Interval is required');
+                        return;
+                    }
+                } else {//Wage
+    //                if (!salaryInfoTab.form.isValid('wage')) {
+    //                    infoDialog.open('Wage Type is required');
+    //                    return;
+    //                }
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    onSubmit(e, btn, onSaved) {
+        const {form, refs: {contractDetailsTab, salaryInfoTab}} = this;
+
+        if (!form.isValid('employee')) {
+            infoDialog.open('Employee is required');
+            return;
+        }
+        
+        const contract_details = toNoneNullObject(contractDetailsTab.form.data);
+        if (contract_details) {
+            if (contractDetailsTab.form.isValid('expiry_date') && !contractDetailsTab.form.isValid('start_date')) {
+                infoDialog.open('Start Date is required');
+                return;
+            }
+            
+            if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
+                infoDialog.open('Working End Time is required');
+                return;
+            }
+            if (contractDetailsTab.form.isValid('end_time') && !contractDetailsTab.form.isValid('start_time')) {
+                infoDialog.open('Working Start Time is required');
+                return;
+            }
+        }
+        const salary_info = toNoneNullObject(salaryInfoTab.form.data);
+        if (salary_info) {//payment_type, 
+            if (!salaryInfoTab.form.isValid('payment_type')) {
+                infoDialog.open('Payment Type is required');
+                return;
+            }
+            if (salaryInfoTab.form.get('payment_type') === 'Salary') {
+                if (!salaryInfoTab.form.isValid('salary_interval')) {
+                    infoDialog.open('Salary Interval is required');
+                    return;
+                }
+            } else {//Wage
+//                if (!salaryInfoTab.form.isValid('wage')) {
+//                    infoDialog.open('Wage Type is required');
+//                    return;
+//                }
+            }
+        }
+
+        console.log(form)
+        const {
+            employee: {id, data: {fname, lname}},//
+            doc,//
+            job_profile_doc//
+        } = form.data;
+        const data = { 
+            employee: {id, fname, lname}
+        };
+        if(doc) {
+            data.doc = doc.path;
+        }  
+        if(job_profile_doc) {
+            data.job_profile_doc = job_profile_doc.path;
+        }
+        if (contract_details) {
+            if (contractDetailsTab.form.isValid('start_date')) {
+                contract_details.start_date = contract_details.start_date.getTime();
+            }
+            if (contractDetailsTab.form.isValid('expiry_date')) {
+                contract_details.expiry_date = contract_details.expiry_date.getTime();
+            }
+            
+            data.contract_details = contract_details;
+        }
+
+        if (salary_info) {
+            data.salary_info = salary_info;
+        }
+
+        console.log(data)
+
+        btn.text("Saving...").disabled();
+        neonBinding.events.emit(this.path + "create", data).then(employee_res => {
+            console.log("res", employee_res)
+            onSaved && onSaved(employee_res);
+            infoDialog.open("Record successfully saved.");
+            infoDialog.close(2000);
+            this.props.close();
+        }).finally(() => {
+            btn.text("Save").enabled();
+        });
+    }
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
+    render() {
+        const {onFormNext, onFormBack, onFormOpen} = this.props;
+
+        return <FormControls>
+            <Row
+                rendered
+                active
+                idx={1}
+                title="1. Employee"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={2}
+                title="2. Contract Details"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <ContractDetails ref="contractDetailsTab"/>
+            </Row>
+            <Row
+                rendered
+                idx={3}
+                title="3. Salary Information"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <SalaryInfo ref="salaryInfoTab"/>
+            </Row>
+            <Row
+                rendered
+                idx={4}
+                title="4. Contract Document Attachment"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <UploadButton
+                    name="doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={5}
+                title="5. Job Profile Document Attachment"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+            >
+                <UploadButton
+                    name="job_profile_doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
+            </Row>
+        </FormControls>;
+    }
+}
+
+@observer
+class ContractDetails extends React.Component {
+
+    @observable
+    state = {
+        lists: {
+            contract_type: ['Fixed Term', 'Permanent'].map(text => {
+                return {text, value: text};
+            })
+        }
+    };
+
+    constructor(props) {
+        super(props);
+        this.form = new Form();
+    }
+
+    render() {
+        return <div className="row sec-group">
+                <hr className="margin-b-10 hor-center w-200"/>
+                <label className="margin-b-0 w-full text-center">Contract Terms</label>
+                <ClearableInput name="contract_type" type="radio" placeholder="Contract Type" vertical className="col-lg-6 pull-left-3 form-control" onChange={this.form.onChange} values={this.state.lists.contract_type} returnValue/>
+                <ClearableInput name="start_date" type="date" placeholder="Start Date..." className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="expiry_date" type="date" placeholder="End Date..." className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="end_of_trial_period" type="date" placeholder="End Of Trial Period..." className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                <hr className="margin-b-10 hor-center w-200"/>
+                <label className="margin-b-0 w-full text-center">Working Schedule</label>
+                <ClearableInput name="start_time" type="time" placeholder="Start Time" className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="end_time" type="time" placeholder="End Time" className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="daily_working_hours" type="number" placeholder="Daily Working Hours" className="col-lg-4 form-control" defaultValue="8" onChange={this.form.onChange}/>
+                <hr className="margin-b-10 hor-center w-200"/>
+                <label className="margin-b-0 w-full text-center">Notes</label>
+                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            </div>;
+    }
+}
+
+@observer
+class SalaryInfo extends React.Component {
+
+    @observable
+    state = {
+        lists: {
+            payment_types: [{text: 'Salary (Fixed Payment)', value: 'Salary', checked: false}, {text: 'Hourly Wage', value: 'Wage', checked: false}]
+        },
+        isSalary: false,
+        isWage: false
+    };
+
+    constructor(props) {
+        super(props);
+        
+        this.onChangePaymentType = this.onChangePaymentType.bind(this);
+
+        this.form = new Form();
+        this.form.addChangeOne("payment_type", this.onChangePaymentType);
+    }
+
+    onChangePaymentType(el, val) {
+        this.state.isSalary = val === "Salary";
+        this.state.isWage = val === "Wage";
+    }
+    
+    render() {
+        return <div className="row sec-group">
+            <ClearableInput name="payment_type" type="radio" placeholder="Payment Type" className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.payment_types}/>
+            <SalaryField state={this.state} onSalaryChange={this.form.onChange} onSalaryIntervalChange={this.form.onChange}/>
+            <WageField state={this.state} onChange={this.form.onChange}/>
+            <Deductibles onChange={this.form.onChange}/>
+        </div>;
+    }
+}
+
+@observer
+class SalaryField extends React.Component {
+
+    @observable
+    state = {
+        lists: {
+            salary_intervals: [
+                {text: 'Weekly', value: 'Weekly', checked: false}, 
+                {text: 'Bi-Weekly', value: 'Bi-Weekly', checked: false}, 
+                {text: 'Monthly', value: 'Monthly', checked: false}
+            ]
+        }
+    };
+    
+    render() {
+        const {onSalaryChange, onSalaryIntervalChange, state: {isSalary}} = this.props;
+        return !!isSalary && <React.Fragment>
+            <ClearableInput name="salary_interval" type="radio" placeholder="Salary Interval" className="col-lg-12 form-control" onChange={onSalaryIntervalChange} values={this.state.lists.salary_intervals}/>
+            <ClearableInput name="salary" type="number" placeholder="Salary" className="col-lg-12 form-control" onChange={onSalaryChange}/>
+        </React.Fragment>;
+    }
+}
+
+@observer
+class WageField extends React.Component {
+
+    render() {
+        const {onChange, state: {isWage}} = this.props;
+        return !!isWage && <ClearableInput name="wage" type="number" placeholder="Wage" className="col-lg-12 form-control" onChange={onChange}/>;
+    }
+}
+
+@observer
+class Deductibles extends React.Component {
+
+    @observable
+    state = {
+        list: []
+    };
+    
+    constructor(props) {
+        super(props);
+        
+        this.onAdd = this.onAdd.bind(this);
+    }
+    
+    onAdd(e, btn) {
+        this.state.list.push({
+            text: null,
+            value: null
+        });
+    }
+    
+    @computed
+    get list() {
+        return this.state.list;
+    }
+    
+    @computed
+    get calculate() {
+        const {onChange} = this.props;
+        const {list} = this;
+        const l = list.filter(({text, value}) => text && value).map(({value}) => value);
+        const total = l.reduce((n1, n2) => n1 + n2, 0);
+        onChange({list: toJS(list), total}, "deductible", this);
+        return total;
+    }
+    
+    render() {
+        return <React.Fragment>
+            <hr className="margin-r-10"/>
+            <label className="hor-center margin-b-0">Deductibles</label>
+            <div className="row margin-l-0 margin-r-10">
+                {this.list.map((item, n) => <Deductible idx={n} item={item} list={this.list}/>)}
+            </div>
+            <hr  className="hor-center w-100"/>
+            <label className="hor-center margin-b-15">Deductibles Total : R {this.calculate}</label>
+            <Button className="btn btn-primary hor-center margin-b-10" text="Add Deductible" onClick={this.onAdd}/>
+        </React.Fragment>;
+    }
+}
+
+@observer
+class Deductible extends React.Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.onRemove = this.onRemove.bind(this);
+        
+        this.form = new Form();
+        this.onChangeText = this.onChangeText.bind(this);
+        this.onChangeValue = this.onChangeValue.bind(this);
+        this.form.addChangeOne("text", this.onChangeText);
+        this.form.addChangeOne("value", this.onChangeValue);
+    }
+    
+    onChangeText(el, val) {
+        this.props.item.text = val;
+    }
+    
+    onChangeValue(el, val) {
+        this.props.item.value = val;
+    }
+    
+    onRemove(e, btn) {
+        const {idx, list} = this.props;
+        list.removeAt(idx);
+    }
+    
+    render() {
+        return <div className="row margin-l-0 margin-r-0 margin-t-15 margin-b-5 flex">
+            <ClearableInput name="text" type="text" placeholder="Deductible Title" className="col-lg-6 no-border-r no-border-radius-r form-control" onChange={this.form.onChange}/>
+            <ClearableInput name="value" type="number" placeholder="Deductible Value" className="col-lg-6 no-border-radius pull-right form-control" onChange={this.form.onChange}/>
+            <Button className="btn btn-primary fa fa-remove fixed-flex min-w-40 no-border-radius-l" onClick={this.onRemove}/>
+        </div>;
+    }
+}
+
+export default NewDialog;

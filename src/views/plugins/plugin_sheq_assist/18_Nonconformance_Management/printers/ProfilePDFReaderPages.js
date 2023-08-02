@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 import {Image, Page, Text, View} from '@react-pdf/renderer';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
 import styles from './ProfilePDFReader.style';
 // </editor-fold>

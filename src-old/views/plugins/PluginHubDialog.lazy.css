@@ -1,0 +1,61 @@
+.PluginHubDialog .dialog-container{
+    width: 100%;
+    height: 100% !important;
+    min-width: calc(100% - 40px);
+    background: #fafafa !important;
+}
+.PluginHubDialog .dialog-content{
+    padding: 0 !important;
+    height: calc(100% - 50px) !important;
+}
+.PluginHubDialog .tabs{
+    margin: 0;
+    height: 100%;
+}
+.PluginHubDialog .tabs .tab-list{
+    padding-left: 20px;
+}
+.PluginHubDialog .tabs .tab-content{
+
+}
+
+.PluginHubDialog .PluginsView{
+    margin: 0;
+}
+.PluginHubDialog .Plugins{
+    max-width: calc(100% - 20px);
+    margin: 10px auto;
+}
+.PluginHubDialog .Plugins > .Plugin {
+    border-radius: 0; 
+    position: relative;
+    min-height: 160px;
+}
+
+.PluginHubDialog .Plugins > .Plugin .results-none{
+    color: #fff;
+}
+.PluginHubDialog .Plugins > h2{
+    color: #fff !important;
+}
+
+.PluginHubDialog .grid-view > div > div {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+}
+.PluginHubDialog .grid-view > div > div > h3 {
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 500;
+}
+.PluginHubDialog .grid-view > div > div > .fa {
+    color: #fff !important;
+    margin: -8px 0 16px;
+}
+.PluginHubDialog .grid-view > div > div > button{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 2px 8px;
+}

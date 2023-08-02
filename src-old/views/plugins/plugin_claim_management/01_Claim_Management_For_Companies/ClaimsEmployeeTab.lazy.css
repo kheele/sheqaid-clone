@@ -1,0 +1,28 @@
+#ClaimsEmployeeTab-tab .page-title{
+    height: 0;
+    margin: -45px 0 0;
+    border: none;
+    float: right;
+}
+#ClaimsEmployeeTab-tab .page-title > h3{
+    display: none;
+}
+#ClaimsEmployeeTab-tab .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+#ClaimsEmployeeTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#ClaimsEmployeeTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#ClaimsEmployeeTab-tab .table .fa-warning{
+    color: red;
+}
+#ClaimsEmployeeTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (10px + 125px)) !important;
+}

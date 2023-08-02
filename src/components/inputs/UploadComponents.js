@@ -275,7 +275,7 @@ class ShowOnlyIcon extends AShowFile {
             </i>;
         } else if(readonly && !defaultValue) {
             return <div>
-                <label>{buttonTitle ? buttonTitle : 'File'}</label>
+                {/*<label>{buttonTitle ? buttonTitle : 'File'}</label>*/}
                 <div class="value">N/A</div>
             </div>;
         }
@@ -285,7 +285,7 @@ class ShowOnlyIcon extends AShowFile {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        let {props: {readonly, showDownload, fileName, className, showOnlyIcon},
+        let {props: {readonly, showDownload, fileName, title, buttonTitle, className, showOnlyIcon},
             state: {previewPath},
             isPDF, isWord, isExcel, isPic, isVideo,
             fileIcon, 
@@ -295,27 +295,33 @@ class ShowOnlyIcon extends AShowFile {
         if (!showOnlyIcon)
             return null;
         
-        className = "UploadButton clearable-field-control form-control" + (className ? (" " + className) : "");
+        className = "UploadButton clearable-field-control grid-1 form-control" + (className ? (" " + className) : "");
         
         if (fileIcon) {
             className += " file-icon";
         }
         
-        let title;
+        let type;
         if(isPDF) {
-            title = 'PDF ';
+            type = 'PDF ';
         } else if(isWord) {
-            title = 'Word ';
+            type = 'Word ';
         } else if(isExcel) {
-            title = 'Spreadsheet ';
+            type = 'Spreadsheet ';
         } else if(isPic) {
-            title = 'Photo ';
+            type = 'Photo ';
         } else if(isVideo) {
-            title = 'Video ';
+            type = 'Video ';
         }
-        return <div className={className}>
+//UploadButton clearable-field-control form-control w-340 pull-left margin-t-0
+        return <div className={className} style={{background: "#fafafa"}}>
+            {readonly && (title || buttonTitle) && <label
+                style={{
+                    height: "32px", background: "#f9f9f9", padding: "0 10px", display: "flex", alignItems: "center", fontSize: "14px", color: "#777",
+                }}
+            >{title || buttonTitle}</label>}
             {fileIcon}
-            <ViewDocumentDialog ref="viewDocumentDialog" title={title + "Document"} showDownload={showDownload} fileName={fileName}/>
+            <ViewDocumentDialog ref="viewDocumentDialog" title={type + "Document"} showDownload={showDownload} fileName={fileName}/>
         </div>;
     }
     // </editor-fold>

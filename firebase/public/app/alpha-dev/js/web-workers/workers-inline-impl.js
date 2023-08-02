@@ -1,140 +1,108 @@
-
-importScripts(self.locationRoot + "/js/objects.util.js");
-importScripts(self.locationRoot + "/js/date-utils.js");
-
-////
-self.event_types = {EVENT: 1, ACK: 2, ERROR: 3};
-
-self.acks = {};
-self.events = {};
-
-self.onclose = evt => {
-    console.log("onclose", evt)
-};
-
-self.onmessageerror = evt => {
-    console.log("onerror", evt)
-};
-
-self.onmessage = evt => {
-    var packet = evt.data;
-    self.onpacket(packet);
-};
-
-self.emit = function () {
-    var args = self.toArray(arguments);
-    if (args.length === 0) {
-        return Promise.reject("No arguments available");
-    }
-    return new Promise((resolve, reject) => {
-        var evt = args.removeFirst();
-        if (typeof evt !== "string") {
-            reject(evt + ": must be a string");
-            return;
+class Utils {
+    static toArray(args) {
+        const array = [];
+        for (let n in args) {
+            array.push(args[n]);
         }
-
-        var packet = {opcode: self.event_types.EVENT, evt};
-
-        if (self.acks[evt]) {
-            self.acks[evt].ack_id++;
-        } else {
-            self.acks[evt] = {ack_id: 0};
-        }
-        var ack_id = self.acks[evt].ack_id;
-        acks[evt][ack_id] = {resolve, reject};//ack;
-
-        packet.ack_id = ack_id;
-        if (args.length > 0) {
-            packet.data = args;
-        }
-
-        self.postMessage(packet);
-    });
-};
-
-self.on = function (evt, callback) {
-    if (self.events[evt]) {
-        self.events[evt].push(callback);
-    } else {
-        self.events[evt] = [callback];
+        return array;
     }
 
-    return self;
-};
-
-function onpacket(packet) {
-    switch (packet.opcode) {
-        case self.event_types.EVENT:
-            self.onevent(packet);
-            break;
-
-        case self.event_types.ACK:
-            self.onack(packet);
-            break;
-
-        case self.event_types.ERROR:
-            self.emit('error', packet.data);
-            break;
-    }
-}
-
-function onevent(packet) {
-//    console.log(packet)
-    var events = self.events[packet.evt];
-    packet.opcode = self.event_types.ACK;
-    if (events) {
-        var args = [];
-
-        if ('data' in packet) {
-            args = [...args, ...packet.data];
-            delete packet.data;
-        }
-
-        events.forEach(event => {
-            event.apply(null, args).then(res => {
-//                //console.log(senderType, 'events.forEach:', res)
-                !!res && (packet.data = [res]);//toArray(arguments);
-                postMessage(packet);
-            }).catch(e => {
-                //console.log('events err:', e.toString(), e)
-                e = e.stack;//toString();
-                packet.error = e;//e.startsWith("Error: ") ? e.replace("Error: ", "") : e;
-                postMessage(packet);
-            });
-        });
-    } else {
-        if ('data' in packet) {
-            delete packet.data;
-        }
-        packet.error = 'Event(' + packet.evt + ') is not found';
-        postMessage(packet);
-    }
-}
-
-function onack(packet) {
-    const ack = self.acks[packet.evt][packet.ack_id];
-    if (!ack) {
-//        throw new Error('Event(' + packet.evt + ') response called many times');
-    } else {
-        //console.log(senderType, 'onack:', packet)
-        var {resolve, reject} = ack;
-        if ('error' in packet) {
-            reject(packet.error);
-        } else {
-            if ('data' in packet) {
-                resolve.apply(null, packet.data);
-            } else {
-                resolve();
+    static convertQuestionnaireObjectToArray = async (db, questionsObject) => {
+        const unmapQuestionnaires = (v, n) => {
+            if (v.questions) {
+                return {...v, questions: Object.values(v.questions).map(q => {
+                        return {...q, linkDoc: q.linkDoc || null};
+                    }).map(unmapQuestionnaires)};
             }
-        }
-        delete self.acks[packet.evt][packet.ack_id];
+            return v;
+        };
+
+        return Object.values(questionsObject).map(unmapQuestionnaires);
+        //Object.values(questions || {}).map(unmapQuestionnaires).reduce((a1, a2) => [...a1, ...a2], []);
+    }
+
+    static getQuestionnaireAnswerForm = async (db, questionsObject) => {
+        const unmapQuestionnaires = (v, n) => {
+            if (v.questions) {
+                return {...v, questions: Object.values(v.questions).map(unmapQuestionnaires)};
+            }
+            return v;
+        };
+
+        const mapQuestionsToObject = (v, n) => {
+//            v.idx = n;
+            v.linkDoc && (v.linkDoc = v.linkDoc.id);
+            if ('sectionText' in v) {
+                (isArray(v.questions)) && (v.questions = v.questions.map(mapQuestionsToObject).toObject());
+            } else {
+                v.questionImage && (v.questionImage = v.questionImage.path);
+                (isArray(v.options)) && (v.options = v.options.map(o => {
+                    o.optionImage && (o.optionImage = o.optionImage.path);
+                    return o;
+                }));
+                (isArray(v.notifiedList)) && (v.notifiedList = v.notifiedList.map(({id, data = {}, fname, lname, email}) => {
+                    return {id, fname: fname || data.fname, lname: lname || data.lname, email: email || data.email};
+                }));
+                v.answer = null;
+            }
+            return v;
+        };
+
+        return Object.values(questionsObject).
+                map(unmapQuestionnaires).
+                map(v => {
+                    const {questionType, answer} = v;
+                    if (questionType === 'Person' && answer) {
+                        const {id, data = {}, fname, lname} = answer;
+                        v.answer = {id, fname: fname || data.fname, lname: lname || data.lname};
+                    }
+                    if (questionType === 'Asset' && answer) {
+                        const {id, data = {}, name} = answer;
+                        v.answer = {id, name: name || data.name};
+                    }
+                    if (questionType === 'Signature' && answer) {
+                        v.answer = JSON.stringify(answer);
+                    }
+
+                    if (answer && answer.path) {
+                        v.answer = answer.path;
+                    }
+                    if (typeof answer === 'undefined') {
+                        v.answer = null;
+                    }
+                    return v;
+                }).
+                map(mapQuestionsToObject).
+                toObject();
+    }
+
+    static getQuestionnaireTemplateForm = async (db, questionsArray, isEditting) => {
+        const mapQuestionsToObject = (v, n) => {
+//            v.idx = n;
+            if (!isEditting) {
+                v.linkDoc && (v.linkDoc = v.linkDoc.id);
+            }
+
+            if ('sectionText' in v) {
+                (isArray(v.questions)) && (v.questions = v.questions.map(mapQuestionsToObject).toObject());
+            } else {
+                if (!isEditting) {
+                    v.questionImage && (v.questionImage = v.questionImage.path);
+                    (isArray(v.options)) && (v.options = v.options.map(o => {
+                        o.optionImage && (o.optionImage = o.optionImage.path);
+                        return o;
+                    }));
+                    (isArray(v.notifiedList)) && (v.notifiedList = v.notifiedList.map(({id, data = {}, fname, lname, email}) => {
+                        return {id, fname: fname || data.fname, lname: lname || data.lname, email: email || data.email};
+                    }));
+                    v.answer = null;
+                }
+            }
+            return v;
+        };
+
+        return questionsArray.map(mapQuestionsToObject).toObject();
     }
 }
 
-function toArray(args) {
-    var array = [];
-    for (var n in args) {
-        array.push(args[n]);
-    }
-    return array;
-}
+importScripts(self.locationRoot + "js/web-workers/worker-inline.js");

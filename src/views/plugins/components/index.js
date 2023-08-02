@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Button} from '../../../components/inputs';
+import {Button} from 'components/inputs';
 
 @observer
 class AsyncTD extends React.Component {

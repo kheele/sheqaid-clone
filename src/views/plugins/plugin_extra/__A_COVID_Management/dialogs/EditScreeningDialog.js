@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {CircularProgress} from '@material-ui/core';
 import {computed, extendObservable, isObservableArray, observable} from 'mobx';
-import {ShouldUpdate} from '../../../../../utils/Utils';
+import {ShouldUpdate} from 'utils/Utils';
 
 import {
     ClearableInput,
@@ -11,9 +11,9 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import AControls from "./ANewCOVIDControls";
 import {EmployeeDetailsPanel, NewScreeningQuestionsTable, ScreeningOutcome} from './ComponentsScreening';
@@ -201,14 +201,14 @@ class Controls extends AControls {
             ShouldUpdate.checkSite(data, old_data, site);
         }
         
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+        ShouldUpdate.checkEmployee_deprecated(data, old_data, employee, 'employee');
         ShouldUpdate.check(data, old_data, employee_id, 'employee_id');
         if(isObservableArray(consent)) {
             ShouldUpdate.check(data, old_data, consent[0].value, 'consent');
         }
         ShouldUpdate.checkSignature(data, old_data, signature, 'signature');
         ShouldUpdate.check(data, old_data, business_id, 'business_id');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, sex, 'sex');
         ShouldUpdate.check(data, old_data, age, 'age');
         ShouldUpdate.check(data, old_data, province, 'province');

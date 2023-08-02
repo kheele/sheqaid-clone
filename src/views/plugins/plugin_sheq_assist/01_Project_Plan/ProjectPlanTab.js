@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {ClearableInput} from '../../../../components/inputs';
+import {ClearableInput} from 'components/inputs';
 
 import AMain from '../../common/documents/AMain';
 
@@ -10,6 +10,7 @@ import AMain from '../../common/documents/AMain';
 class ProjectPlanTab extends AMain {
     path = "plugin_sheq_assist/01_Project_Plan/";
     pageKey = "_01_Project_Plan";
+    type = "Project Plan";
 
     createBtnTitle="Upload New";
     pageTitle = "Project Plans";

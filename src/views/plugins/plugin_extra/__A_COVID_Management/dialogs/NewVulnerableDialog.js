@@ -9,9 +9,9 @@ import {
     SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import AControls from "./ANewCOVIDControls";
 import {EmployeeDetailsPanel, NewVulnerableQuestionsTable} from './ComponentsScreening';

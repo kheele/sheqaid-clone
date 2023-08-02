@@ -2,7 +2,7 @@ exports.sendEmail = async ({snapshot, email, notifMsg}) => {
     // console.log('sendEmail', email);
 
     const opts = {
-        from: '"SHEQ Aid" <support@sheqsolve.com>',
+        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
         to: email,
         subject: 'SHEQ Aid Notifications',
         html: `<h3><b>Dear SHEQ Aid User</b></h3>\n

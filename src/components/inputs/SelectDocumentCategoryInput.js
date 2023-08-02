@@ -5,6 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import departmentStore from "../../mutations/all/Department";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -70,6 +71,7 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
+    // return documentCat.listForSelectionByLogged().then(res => {
     return neonBinding.events.emit("plugin_sheq_assist/document-categories/list").then(res => {
         return res.map(({data: {name}}) => {
             return {label: name, value: name};

@@ -327,6 +327,7 @@
     };
 
     Object.getValueByPath = function (obj, __path, def) {
+        if(isNullable(obj)) return null;
         // Get the path as an array
         let path = stringToPath(__path);
         let current = obj;
@@ -435,6 +436,10 @@
 
     String.prototype.isEmpty = function () {
         return this.trimLeft().trimRight().replaceAll(' ', '').length === 0;
+    };
+
+    String.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
     };
 
     String.prototype.startsWith = function (str) {
@@ -884,6 +889,10 @@
         return this.length === 0;
     };
 
+    Array.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
+    };
+
     Array.prototype.indexOf = Array.prototype.indexOf || function (elt) {
         if (elt === undefined || elt === null) {
             return -1;
@@ -1245,31 +1254,18 @@
     };
 
     Array.prototype.sortBy = function (prop, dir) {
-        const props = prop.split('.');
         this.sort((a, b) => {
-            if (props.length === 1) {
-                if (a[prop] > b[prop])
-                    return dir === 'desc' ? -1 : 1;
-                if (a[prop] < b[prop])
-                    return dir === 'desc' ? 1 : -1;
-                return 0;
-            } else {
-                const prop1 = props[0];
-                if (prop1 in a && prop1 in b) {
-                    const prop2 = props[1];
-                    const a1 = a[prop1];
-                    const b1 = b[prop1];
-                    if (prop2 in a1 && prop2 in b1) {
-                        const aa = a1[prop2];
-                        const bb = b1[prop2];
-                        if (aa > bb)
-                            return dir === 'desc' ? -1 : 1;
-                        if (aa < bb)
-                            return dir === 'desc' ? 1 : -1;
-                    }
-                }
+            const v1 = Object.getValueByPath(a, prop);
+            const v2 = Object.getValueByPath(b, prop);
+            if (v1 === v2 || (isNullable(v1) && isNullable(v2))) {
                 return 0;
             }
+
+            if (v1 > v2)
+                return dir === 'desc' ? -1 : 1;
+            if (v1 < v2)
+                return dir === 'desc' ? 1 : -1;
+            return 0;
         });
     };
 

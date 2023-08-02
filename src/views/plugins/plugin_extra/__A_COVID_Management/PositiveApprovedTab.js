@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Popover from '../../../../components/popovers/Popover';
-import NavItem from '../../../../components/navs/NavItem';
+import Popover from 'components/popovers/Popover';
+import NavItem from 'components/navs/NavItem';
 
 import NewReturnToWorkDialog from './dialogs/NewReturnToWorkDialog';
 //import ProfilePositiveDialog from './dialogs/ProfilePositiveDialog';

@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Button, UploadButton} from '../../../../components/inputs';
-import {Slider} from '../../../../components/lists';
+import {Button, UploadButton} from 'components/inputs';
+import {Slider} from 'components/lists';
 
 import {ContractDetails, SalaryInfo} from './ContractComponents';
 
-import NewContractDialog from './NewContractDialog';
+import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 @observer
 class ContractsTab extends React.Component {
@@ -118,7 +118,7 @@ class ContractsTab extends React.Component {
                         onClick={this.onClick}/>}
                 </div>
             </div>
-            <NewContractDialog ref="newContractDialog"/>
+            <NewDialog ref="newContractDialog"/>
         </div>
     }
 }

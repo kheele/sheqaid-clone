@@ -1,0 +1,25 @@
+#SWPTab-tab .page-title{
+    height: 0;
+    margin: -45px 0 0;
+    border: none;
+    float: right;
+}
+#SWPTab-tab .page-title > h3{
+    display: none;
+}
+#SWPTab-tab .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+#SWPTab-tab .filter-wrapper{
+    margin: 10px 0 0;
+}
+#SWPTab-tab .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#SWPTab-tab > .filter-wrapper + .table{
+    height: calc(100% - (10px + 125px)) !important;
+}

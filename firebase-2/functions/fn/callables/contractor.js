@@ -22,7 +22,7 @@ exports.sendContractorOTP = functions.runWith({timeoutSeconds: 300, memory: '1GB
 
     //send otp with email
     await EmailUtils.send({
-        from: '"SHEQ Aid" <support@sheqsolve.com>',
+        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
         to: email,
         subject: 'SHEQ Aid Notifications',
         html: `<h3><b>Hello,</b></h3>\n

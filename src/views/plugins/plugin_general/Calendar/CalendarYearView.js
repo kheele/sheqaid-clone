@@ -5,7 +5,7 @@ import moment from 'moment';
 import * as dates from 'react-big-calendar/lib/utils/dates';
 import {navigate} from 'react-big-calendar/lib/utils/constants';
 
-import {ExpiryCodes} from '../../../../utils/Utils';
+import {ExpiryCodes} from 'utils/Utils';
 
 function createCalendar(currentDate) {
     if (!currentDate) {

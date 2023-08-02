@@ -3,8 +3,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {Dates, execWhen, SAIdUtils} from '../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates, execWhen, SAIdUtils} from 'utils/Utils';
 
 import {
     Button,
@@ -12,9 +12,9 @@ import {
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../components/tables';
-import {ANewDialog, InputDialog} from '../../../../components/dialogs';
+} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
+import {ANewDialog, InputDialog} from 'components/dialogs';
 
 import style from "./ImportDialog.lazy.css";
 // </editor-fold>

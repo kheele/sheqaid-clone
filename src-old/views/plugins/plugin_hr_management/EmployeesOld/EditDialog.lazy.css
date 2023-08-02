@@ -1,0 +1,23 @@
+@import '../../../../css/ANewTableFormDialog.css';
+@import '../../../../css/ANewDialog.css';
+
+#dialog-overlay.Employees-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+}
+#dialog-overlay.Employees-profile-dialog .row-tabs {
+    padding: 0 !important;
+}
+#dialog-overlay.Employees-profile-dialog .controls.col-lg-12,
+#dialog-overlay.Employees-profile-dialog .row.col-lg-12{
+    width: 100%;
+}
+#dialog-overlay.Employees-profile-dialog .dialog-content .NewDialogSpecificComplianceRequirementsTab-tab.active .table,
+#dialog-overlay.Employees-profile-dialog .dialog-content .NewDialogTeamMemberPermissionsTab-tab.active .table{
+    width: 100% !important;
+    margin: 0 !important;
+}
+#dialog-overlay.Employees-profile-dialog .dialog-content .NewDialogSpecificComplianceRequirementsTab-tab.active h6{
+    color: red;
+    font-style: italic;
+}

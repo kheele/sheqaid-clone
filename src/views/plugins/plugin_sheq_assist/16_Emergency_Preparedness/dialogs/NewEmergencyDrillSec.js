@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import style from "./NewEmergencyDrillSec.lazy.css";
-import {Button, ClearableInput} from '../../../../../components/inputs';
-import {ATableSavable, Table, TBody, THead, TRow} from '../../../../../components/tables';
+import {Button, ClearableInput} from 'components/inputs';
+import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 @observer
 class NewEmergencyDrillSec extends React.Component {

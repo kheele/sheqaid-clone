@@ -1,0 +1,96 @@
+import React from "react";
+import {observer} from 'mobx-react';
+
+import AggregateStat from "components/AggregateStat";
+
+import byLogged from "./Query/List/listAllEmployeeByLogged";
+
+@observer
+class AListTab extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.onLoadList = this.onLoadList.bind(this);
+
+        this.renderItem = this.renderItem.bind(this);
+        this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
+        this.renderFilterNode = this.renderFilterNode.bind(this);
+    }
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {list} = this.props;
+        if(list) {
+            return this.findByIdsEmployees(list.map(({id}) => id));
+        }
+
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            department_id,
+            job_position_id,
+            team_id,
+            supervisor_id,
+            name,
+            id_or_pass_num,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            removed: this.removed,
+            //
+            department_id,
+            job_position_id,
+            team_id,
+            supervisor_id,
+            name,
+            id_or_pass_num,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if(!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+    //</editor-fold>
+    
+}
+
+// <editor-fold defaultstate="collapsed" desc="StatsPanel">
+@observer
+class StatsPanel extends React.Component {
+
+    render() {
+        const {
+            data: {
+                medical_list_aggregate, leave_list_aggregate, ppe_list_aggregate,
+                trainer_training_list_aggregate, warning_list_aggregate,
+                supervisor_employee_list_aggregate,
+            }
+        } = this.props.item;
+
+        return <>
+            {/*<AggregateStat title="Employees" value={supervisor_employee_list_aggregate}/>*/}
+            <AggregateStat title="PPE" value={ppe_list_aggregate}/>
+            <AggregateStat title="Trainings" value={trainer_training_list_aggregate}/>
+            <AggregateStat title="Leaves" value={leave_list_aggregate}/>
+            <AggregateStat title="Medicals" value={medical_list_aggregate}/>
+            <AggregateStat title="Warnings" value={warning_list_aggregate}/>
+        </>;
+    }
+}
+
+// </editor-fold>
+
+export {StatsPanel};
+export default AListTab;

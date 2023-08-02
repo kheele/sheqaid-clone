@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {onSelectLoadAssetConditions, onSelectLoadAssetLocations} from '../../../utils';
+import Form from 'utils/Form';
+import {onSelectLoadAssetConditions, onSelectLoadAssetLocations} from 'views/plugins/utils';
 
-import {ClearableInput} from '../../../../../components/inputs';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
-import {SelectTable} from '../../../../../components/tables';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import {ClearableInput} from 'components/inputs';
+import ANewDialog from 'components/dialogs/ANewDialog';
+import {SelectTable} from 'components/tables';
+import {FormControls, Row} from 'components/FormComponents';
 import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 
 import CheckOutToolDialog from './CheckOutToolDialog.js';

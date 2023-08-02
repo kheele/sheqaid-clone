@@ -60,7 +60,7 @@ class TrailExiredDialog extends React.Component {
     }
 
     onUpgradeAccount() {
-//        alert(this)
+//
     }
 
     open() {

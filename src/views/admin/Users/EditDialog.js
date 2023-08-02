@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Permissions, ShouldUpdate} from '../../../utils/Utils';
+import {Permissions, ShouldUpdate} from 'utils/Utils';
 import {
     Button,
     ClearableInput,
@@ -14,14 +14,14 @@ import {
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput
-} from '../../../components/inputs';
-import {Row} from '../../../components/FormComponents';
-import {AEditDialog} from '../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import {
     NewUserModulePermissions,
     NewUserOtherPermissions
-} from '../../../components/common-modules/ANewUserPermissions';
+} from 'components/common-modules/ANewUserPermissions';
 
 import EditPasswordDialog from "./EditPasswordDialog.js";
 

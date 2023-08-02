@@ -111,11 +111,17 @@
 .flex-align-center{
     align-items: center !important;
 }
+.flex-align-bottom{
+    align-items: flex-end !important;
+}
 .flex-justify-top{
     justify-content: flex-start !important;
 }
 .flex-justify-center{
     justify-content: center !important;
+}
+.flex-justify-items-center{
+    justify-items: center !important;
 }
 .flex > *{
     flex: 1;

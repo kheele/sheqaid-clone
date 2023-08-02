@@ -4,7 +4,7 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntitySite} from "../../types.d.ts";
+import {EntitySite} from "mutations/types.d.ts";
 
 // 2
 const query = graphql`
@@ -13,6 +13,57 @@ const query = graphql`
       edges {
         node {
           id
+          created_at
+          name
+          address
+          project{
+            id
+            name
+          }
+          client{
+            id
+            name
+          }
+          contractor_site_user_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          contractor_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          user_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          employee_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          team_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          incident_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          training_matrix_list_aggregate {
+            aggregate {
+              count
+            }
+          }
+          asset_list_aggregate {
+            aggregate {
+              count
+            }
+          }
         }
       }
     }
@@ -20,5 +71,5 @@ const query = graphql`
 `;
 //firestore_id
 // 3
-export default (input: number) =>
-    findOneMutationImpl({ query, variables: {id: input} });
+export default async (input: number) =>
+    input && findOneMutationImpl({ query, variables: {id: input} });

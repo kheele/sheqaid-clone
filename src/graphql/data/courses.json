@@ -1,0 +1,5792 @@
+[
+  {
+    "job_position": "General Labourer: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "General Labourer: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Manual Slashing",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Prune for access in commercial forestry",
+    "unit_standard": 123142,
+    "unit_standard_desc": "Prune for access in Commercial Forestry and to ensure correct stem form",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "General labourer: Silviculture",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Apply fertilizer before and after planting - Basic",
+    "unit_standard": 123139,
+    "unit_standard_desc": "Apply fertilizer before and after planting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply pesticides/herbicides before and after planting - Basic",
+    "unit_standard": 123135,
+    "unit_standard_desc": "Apply pesticides before or after planting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Prune for access in commercial forestry",
+    "unit_standard": 123142,
+    "unit_standard_desc": "Prune for access in Commercial Forestry and to ensure correct stem form",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Marking for thinning",
+    "unit_standard": 123241,
+    "unit_standard_desc": "Select and mark trees for thinning in commercial forestry",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Spraying using a knapsack",
+    "unit_standard": 123135,
+    "unit_standard_desc": "Apply pesticides before or after planting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of a knapsack",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Weed control",
+    "unit_standard": 116301,
+    "unit_standard_desc": "Apply effective and responsible integrated pest, disease and weed control",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Clear plantation waste by burning Basic",
+    "unit_standard": 123140,
+    "unit_standard_desc": "Clear plantation waste by burning",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Planting",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Manual Slashing",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Brushcutter operator",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Brushcutter Operator",
+    "unit_standard": 123243,
+    "unit_standard_desc": "Operate brush-cutters in commercial forestry",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Brushcutter Operator: refresher",
+    "unit_standard": 123243,
+    "unit_standard_desc": "Operate brush-cutters in commercial forestry",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": "Supervisor: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid drivers license",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1 - 2",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": 120496,
+    "unit_standard_desc1": "Provide risk-based primary emergency care/first aid in the workplace",
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of knapsack",
+    "unit_standard": 123135,
+    "unit_standard_desc": "Apply pesticides before or after planting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Radio usage",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team leader skills",
+    "unit_standard": 242821,
+    "unit_standard_desc": "Team leader skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a disciplinary hearing",
+    "unit_standard": 10985,
+    "unit_standard_desc": "Conduct a disciplinary hearing",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Conde of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of bakkiesakkies",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC) (team leader/driver)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Gabion Training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training (only team leader/driver)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "4x4 forestry related driving",
+    "unit_standard": 254135,
+    "unit_standard_desc": "Apply the techniques for operating four wheel drive (4WD) vehicles, in on-road and off-road conditions",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": "Supervisor: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team leader skills",
+    "unit_standard": 242821,
+    "unit_standard_desc": "Team leader skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training (only team leader/driver)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Prune for access in commercial forestry",
+    "unit_standard": 123142,
+    "unit_standard_desc": "Prune for access in Commercial Forestry and to ensure correct stem form",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Select and mark trees for thinning in commercial forestry",
+    "unit_standard": 123241,
+    "unit_standard_desc": "Select and mark trees for thinning in commercial forestry",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Supervisor: Silviculture",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team leader skills",
+    "unit_standard": 242821,
+    "unit_standard_desc": "Team leader skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Prune for access in commercial forestry",
+    "unit_standard": 123142,
+    "unit_standard_desc": "Prune for access in Commercial Forestry and to ensure correct stem form",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Select and mark trees for thinning in commercial forestry",
+    "unit_standard": 123241,
+    "unit_standard_desc": "Select and mark trees for thinning in commercial forestry",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Ops Manager: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers Licence",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1 - 3",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedures",
+    "unit_standard1": 120496,
+    "unit_standard_desc1": "Provide risk-based primary emergency care/first aid in the workplace",
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "4x4 forestry related driving",
+    "unit_standard": 254135,
+    "unit_standard_desc": "Apply the techniques for operating four wheel drive (4WD) vehicles, in on-road and off-road conditions",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Excavation training",
+    "unit_standard": 116047,
+    "unit_standard_desc": "Operate excavator",
+    "unit_standard1": 336961,
+    "unit_standard_desc1": "Construct and maintain roads in surface excavations",
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of bakkiesakkies",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Radio usage",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team/ team member skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a disciplinary hearing",
+    "unit_standard": 10985,
+    "unit_standard_desc": "Conduct a disciplinary hearing",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a structured meeting",
+    "unit_standard": 242816,
+    "unit_standard_desc": "Conduct a structured meeting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Project Management tool and techniques",
+    "unit_standard": 120385,
+    "unit_standard_desc": "Project Management tool and techniques",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Fundamentals of Project Management",
+    "unit_standard": 120372,
+    "unit_standard_desc": "Fundamentals of Project Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Financial Management",
+    "unit_standard": 242810,
+    "unit_standard_desc": "Financial Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Ops Manager: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers Licence",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1 - 3",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedures",
+    "unit_standard1": 120496,
+    "unit_standard_desc1": "Provide risk-based primary emergency care/first aid in the workplace",
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Radio usage",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of bakkiesakkies",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Project Management tool and techniques",
+    "unit_standard": 120385,
+    "unit_standard_desc": "Project Management tool and techniques",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Fundamentals of Project Management",
+    "unit_standard": 120372,
+    "unit_standard_desc": "Fundamentals of Project Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Financial Management",
+    "unit_standard": 242810,
+    "unit_standard_desc": "Financial Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team/ team member skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a structured meeting",
+    "unit_standard": 242816,
+    "unit_standard_desc": "Conduct a structured meeting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a disciplinary hearing",
+    "unit_standard": 10985,
+    "unit_standard_desc": "Conduct a disciplinary hearing",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Ops Manager: Silviculture",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers Licence",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1 - 2",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedures",
+    "unit_standard1": 120496,
+    "unit_standard_desc1": "Provide risk-based primary emergency care/first aid in the workplace",
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of bakkiesakkies",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "4x4 forestry related driving",
+    "unit_standard": 254135,
+    "unit_standard_desc": "Apply the techniques for operating four wheel drive (4WD) vehicles, in on-road and off-road conditions",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Team management/ Prioritise time and work for self and team",
+    "unit_standard": 242811,
+    "unit_standard_desc": "Team management/ Prioritise time and work for self and team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Project Management tool and techniques",
+    "unit_standard": 120385,
+    "unit_standard_desc": "Project Management tool and techniques",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Fundamentals of Project Management",
+    "unit_standard": 120372,
+    "unit_standard_desc": "Fundamentals of Project Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Financial Management",
+    "unit_standard": 242810,
+    "unit_standard_desc": "Financial Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a structured meeting",
+    "unit_standard": 242816,
+    "unit_standard_desc": "Conduct a structured meeting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a disciplinary hearing",
+    "unit_standard": 10985,
+    "unit_standard_desc": "Conduct a disciplinary hearing",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Chemical Storeman",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Storage of hazardous chemicals",
+    "unit_standard": 244073,
+    "unit_standard_desc": "Receive, handle and store hazardous chemicals safely",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Handling of chemicals",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Importance of housekeeping",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": "Night watch",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Securing and guarding diesel access",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Emergency evacuation procedures",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "General Managers",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1 - 3",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedures",
+    "unit_standard1": 120496,
+    "unit_standard_desc1": "Provide risk-based primary emergency care/first aid in the workplace",
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic/ advanced fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Labour related training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a structured meeting",
+    "unit_standard": 242816,
+    "unit_standard_desc": "Conduct a structured meeting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Project Management tool and techniques",
+    "unit_standard": 120385,
+    "unit_standard_desc": "Project Management tool and techniques",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Financial Management",
+    "unit_standard": 242810,
+    "unit_standard_desc": "Financial Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Fundamentals of Project Management",
+    "unit_standard": 120372,
+    "unit_standard_desc": "Fundamentals of Project Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a disciplinary hearing",
+    "unit_standard": 10985,
+    "unit_standard_desc": "Conduct a disciplinary hearing",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard": 242822,
+    "unit_standard_desc": "Employ a systematic approach to achieve objectives/ goal setting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Chainsaw Operator",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety for workers",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a chainsaw",
+    "unit_standard": 117058,
+    "unit_standard_desc": "Maintain a chainsaw and cut felled timber using a chainsaw",
+    "unit_standard1": 117062,
+    "unit_standard_desc1": "Fell trees with a chainsaw using the standard technique and felling levers",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a chainsaw: refresher",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Tractor Driver: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers Licence: Code 10",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic tractor driving",
+    "unit_standard": 116820,
+    "unit_standard_desc": "Drive a tractor",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic tractor handling",
+    "unit_standard": 117076,
+    "unit_standard_desc": "Prepare, operate and maintain a tractor in a non-production situation",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Tractor Driver: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers Licence: Code 10",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": 116820,
+    "unit_standard_desc": "Drive a tractor",
+    "unit_standard1": 117076,
+    "unit_standard_desc1": "Prepare, operate and maintain a tractor in a non-production situation",
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Pest Control Officer (PCO)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application: spraying",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Tractor Assistant: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Weed control",
+    "unit_standard": 123135,
+    "unit_standard_desc": "Apply pesticides before or after planting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Manual Slashing",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Prune for access in commercial forestry",
+    "unit_standard": 123142,
+    "unit_standard_desc": "Prune for access in Commercial Forestry and to ensure correct stem form",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "TLB Operator: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic operation of TLB",
+    "unit_standard": 117045,
+    "unit_standard_desc": "Extract timber to a landing using a forwarder in a production situation",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic operation of TLB: refresher",
+    "unit_standard": 117048,
+    "unit_standard_desc": "Prepare, operate and maintain a mechanised harvesting machine in a non-production situation",
+    "unit_standard1": 117048,
+    "unit_standard_desc1": "Prepare, operate and maintain a mechanised harvesting machine in a non-production situation",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "TLB Operator: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic operation of TLB",
+    "unit_standard": 117045,
+    "unit_standard_desc": "Extract timber to a landing using a forwarder in a production situation",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic operation of TLB: refresher",
+    "unit_standard": 117048,
+    "unit_standard_desc": "Prepare, operate and maintain a mechanised harvesting machine in a non-production situation",
+    "unit_standard1": 117048,
+    "unit_standard_desc1": "Prepare, operate and maintain a mechanised harvesting machine in a non-production situation",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Grader Operator: SAPPI",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a grader",
+    "unit_standard": 262728,
+    "unit_standard_desc": "Grade to final levels using a motor grader",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a grader: refresher",
+    "unit_standard": 262735,
+    "unit_standard_desc": "Operate a grader",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Grader Operator: York",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a grader",
+    "unit_standard": 262728,
+    "unit_standard_desc": "Grade to final levels using a motor grader",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a grader: refresher",
+    "unit_standard": 262735,
+    "unit_standard_desc": "Operate a grader",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Driver (bakkie/SUV)",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": "Truck Driver (Seedling)",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License: Code 10/ 14",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": 123254,
+    "unit_standard_desc": "Operate a vehicle combination",
+    "unit_standard1": 377201,
+    "unit_standard_desc1": "Apply advanced driving skills: defensive driving",
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Truck Driver (Tipper)",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License: Code 10/ 14",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": 262734,
+    "unit_standard_desc": "Operate a tip truck",
+    "unit_standard1": 262731,
+    "unit_standard_desc1": "Operate a rigid body dump truck",
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Truck Driver (Fire)",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License: Code 10/ 14",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a Fire Truck",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 377201,
+    "unit_standard_desc1": "Apply advanced driving skills: defensive driving",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Truck Driver (Water)",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License: Code 10/ 14",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": 117012,
+    "unit_standard_desc": "Conduct advanced water cart operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Truck Driver: Silviculture",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License: Code 10/ 14",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Professional Driving Permit (PDP)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "2 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Driver training",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Operate a vehicle combination",
+    "unit_standard": 123254,
+    "unit_standard_desc": "Operate a vehicle combination",
+    "unit_standard1": 377201,
+    "unit_standard_desc1": "Apply advanced driving skills: defensive driving",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Certificate of Competency (COC)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Proto team",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Chemical application",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Proto team basic",
+    "unit_standard": 376882,
+    "unit_standard_desc": "Apply knowledge and understanding of fire behaviour to supervise a fire suppression team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Crew leader",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Lookout guard",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Written communication skills",
+    "unit_standard": 119456,
+    "unit_standard_desc": "Write/ present for a defined context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Mechanic",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Valid Drivers License",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Repair & replace heavy commercial vehicle tyres",
+    "unit_standard": 9864,
+    "unit_standard_desc": "Repair and replace light and heavy commercial vehicle tyres",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Radio usage",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Importance of housekeeping",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Environmental awareness",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Apply leadership concepts in a work context",
+    "unit_standard": 242824,
+    "unit_standard_desc": "Apply leadership concepts in a work context",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Motivate and build a team",
+    "unit_standard": 242819,
+    "unit_standard_desc": "Motivate and build a team",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team/ team member skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Mechanic Assistant",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Mechanical breakdown assistance",
+    "unit_standard": 377200,
+    "unit_standard_desc": "Demonstrate knowledge and understanding of basic vehicle components",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Importance of housekeeping",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Basic safety in forestry",
+    "unit_standard": 117049,
+    "unit_standard_desc": "Demonstrate knowledge of basic safety in forestry operations",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Office Administrator",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Ethics in the workplace",
+    "unit_standard": 242815,
+    "unit_standard_desc": "Code of conduct and business ethics",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Safety in the workplace",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Function in a team/ team member skills",
+    "unit_standard": 116594,
+    "unit_standard_desc": "Function in a team/ team member skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "MS Word & Excel",
+    "unit_standard": 22017,
+    "unit_standard_desc": "To equip potential learners with a thorough understanding of computers and simultaneously provide practical business knowledge, including bookkeeping and computerised accounting.",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Conduct a structured meeting",
+    "unit_standard": 242816,
+    "unit_standard_desc": "Conduct a structured meeting",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Financial Management",
+    "unit_standard": 242810,
+    "unit_standard_desc": "Financial Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Fundamentals of Project Management",
+    "unit_standard": 120372,
+    "unit_standard_desc": "Fundamentals of Project Management",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Project Management tool and techniques",
+    "unit_standard": 120385,
+    "unit_standard_desc": "Project Management tool and techniques",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Diesel issuing (only Logistics Coordinator)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Welder",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Welding",
+    "unit_standard": 119753,
+    "unit_standard_desc": "Perform basic welding/ joining of metals",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Different types of welding & gas",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hazard Identification and Risk Assessment (HIRA)",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "First aid level 1",
+    "unit_standard": 119567,
+    "unit_standard_desc": "Perform basic life support and first aid procedure",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "3 Years",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative",
+    "unit_standard": 259622,
+    "unit_standard_desc": "Describe the functions of the workplace health and safety representative",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "SHE Representative: refresher",
+    "unit_standard": 259639,
+    "unit_standard_desc": "Explain basic health and safety principles in and around the workplace",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Bi-Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Basic fire fighting: refresher",
+    "unit_standard": 252250,
+    "unit_standard_desc": "Apply fire fighting techniques",
+    "unit_standard1": 12484,
+    "unit_standard_desc1": "Perform basic fire fighting",
+    "frequency": "Annually",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Power tools",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Housekeeping",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Builder",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Working at heights",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Hand and power tools",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Electrical tools",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": "Housekeeper",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Importance of housekeeping",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Care for customers/ customer care",
+    "unit_standard": 246740,
+    "unit_standard_desc": "Care for customers/ customer care",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": "Plumber",
+    "course": "Induction",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Medical",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  },
+  {
+    "job_position": null,
+    "course": "Hand tools",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Healthy lifestyle and personal hygiene",
+    "unit_standard": 14659,
+    "unit_standard_desc": "Healthy Lifestyle and personal hygiene",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Personal budget skills",
+    "unit_standard": 119913,
+    "unit_standard_desc": "Personal budget skills",
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Working at heights",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Non-Expiry",
+    "provider": "External"
+  },
+  {
+    "job_position": null,
+    "course": "Electrical tools",
+    "unit_standard": null,
+    "unit_standard_desc": null,
+    "unit_standard1": null,
+    "unit_standard_desc1": null,
+    "frequency": "Annually",
+    "provider": "Internal"
+  }
+]

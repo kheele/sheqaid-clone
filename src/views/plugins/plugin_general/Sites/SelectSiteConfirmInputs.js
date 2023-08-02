@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
-import {SelectClientInput, SelectProjectInput, SelectSiteInput} from '../../../../components/inputs';
+import Form from 'utils/Form';
+import {SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 
 //import style from "./SelectSiteConfirmInputs.lazy.css";
 

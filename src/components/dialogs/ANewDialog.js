@@ -23,22 +23,6 @@ class ANewDialog extends AFormDialog {
             dialog.setTopButtons(this.topButtons);
         });
     }
-    
-    open(item) {
-        return new Promise((resolve, reject) => {
-            !!item && (this.state.item = item);
-            this.onResponse = resolve;
-            
-            const title = isFunction(this.title) ? this.title() : this.title;
-            this.refs.dialog.open(title);
-            
-            if(!this.topButtonsHiddenCancel) {
-                this.execWhen(() => this.refs.cancel).then(cancel => {
-                    cancel.show();
-                });
-            }
-        });
-    }
 
     @computed get topButtons() {
         return <React.Fragment>

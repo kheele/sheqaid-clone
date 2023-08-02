@@ -12,7 +12,7 @@ class SelectInput extends ASelectInput {
     @observable
     state = {
         lists: {
-            list: ['Electrical Tools', 'Electronics', 'Machinery', 'Fire Fighting Equipment', 'Furniture', 'Vehicles', 'Plant', 'Small Plant', 'Hand Tools', 'Office Equipment', 'Miscellaneous', 'Other Tools']
+            list: ['Electrical Tools', 'Electronics', 'Machinery', 'Fire Fighting Equipment', 'Furniture', 'Vehicles', 'Plant', 'Small Plant', 'Pneumatic Tools', 'Lifting Tools', 'Hydraulic Tools', 'Rigging Tools', 'Hand Tools', 'Office Equipment', 'Miscellaneous', 'Other Tools']
         },
         props: null
     };
@@ -33,7 +33,7 @@ class SelectInput extends ASelectInput {
             placeholder: "Asset Type...",
             values: this.list,
             returnValue: true,
-            add: true,
+            add: false,
             ...this.props,
             defaultValue: this.selectedItem,
             className

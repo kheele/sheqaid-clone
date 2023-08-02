@@ -4,7 +4,7 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
-import {EntityCity} from "../../types.d.ts";
+import {EntityCity} from "mutations/types.d.ts";
 
 // 2
 const mutation = graphql`
@@ -16,7 +16,7 @@ const mutation = graphql`
 `;
 
 // 3
-export default (attrs: EntityCity) =>
+export default async (attrs: EntityCity) =>
   updateMutationImpl({
     mutation,
     id: attrs.id,

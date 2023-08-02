@@ -79,7 +79,7 @@
                 const {email, fname, lname} = data.employee.data;
                 if (email) {
                     const opts = {
-                        from: '"SHEQ Aid" <support@sheqsolve.com>',
+                        from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
                         to: email,
                         subject: 'SHEQ Aid Application Link',
                         html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
@@ -88,9 +88,7 @@
                                 <p>Start Date: <b>' + Dates.formatDate(currD) + '</b></p>\n\
                                 <p>Kind Regards<br/>SHEQ Aid</p>'
                     };
-                    const sendEmail = functions.httpsCallable('callables-sendEmail');
-                    const mailRes = await sendEmail(opts);
-                    console.log('mailRes', mailRes)
+                    await Utils.sendEmail(opts);
                 }
 
                 return auditData;

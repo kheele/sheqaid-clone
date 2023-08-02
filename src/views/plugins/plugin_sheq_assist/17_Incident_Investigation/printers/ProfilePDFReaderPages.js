@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {Page, Text, View} from '@react-pdf/renderer';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 
-import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from '../../../utils';
+import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
 
-import {Panel} from '../../../../../pdf-components';
+import {Panel} from 'pdf-components';
 
 import styles from './ProfilePDFReader.style';
 // </editor-fold>

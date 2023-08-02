@@ -2,17 +2,17 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {Dates, isWeb, Permissions} from "../../../../utils/Utils";
+import {Dates, isWeb, Permissions} from "utils/Utils";
 import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import Popover from '../../../../components/popovers/Popover';
-import {Button, ClearableInput, ProfilePic} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import Popover from 'components/popovers/Popover';
+import {Button, ClearableInput, ProfilePic} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import ProfileDialog from '../../plugin_hr_management/Employees/ProfileDialog';
+import ProfileDialog from 'views/plugins/plugin_hr_management/Employees/forms/ProfileDialog';
 
 @observer
 class ATabEmployee extends React.Component {

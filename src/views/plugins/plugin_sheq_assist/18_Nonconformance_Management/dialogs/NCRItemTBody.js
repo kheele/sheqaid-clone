@@ -3,9 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, extendObservable, observable, toJS} from 'mobx';
 
-import {Dates} from "../../../../../utils/Utils";
-import {Button} from '../../../../../components/inputs';
-import {ATableSavable, TBody, TRow} from '../../../../../components/tables';
+import {Dates} from "utils/Utils";
+import {Button} from 'components/inputs';
+import {ATableSavable, TBody, TRow} from 'components/tables';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="NCRItemTBodyElement">

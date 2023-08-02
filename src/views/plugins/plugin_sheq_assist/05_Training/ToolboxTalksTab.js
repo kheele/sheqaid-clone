@@ -3,18 +3,18 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
-import APageListReadWrite from "../../../../views/APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../components/dialogs';
+import {Dates} from 'utils/Utils';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
 import {
     ActionsButton,
     Button,
     ClearableInput,
     SelectJobPositionInput,
     SelectUserInput
-} from '../../../../components/inputs';
-import {TData, THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {TData, THead, TRow} from 'components/tables';
 
 import NewToolboxTalkDialog from './dialogs/NewToolboxTalkDialog';
 import EditToolboxTalkDialog from './dialogs/EditToolboxTalkDialog';

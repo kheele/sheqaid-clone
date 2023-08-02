@@ -16,7 +16,7 @@ import style from "./NewToolboxTalkAttendanceRegisterDialog.lazy.css";
 import {THead} from "components/tables";
 import {NewEmployeeListTable} from "components/FormTableComponents";
 import {execWhen, isWeb} from "utils/UtilsFuns";
-import {Dates} from "../../../../../../utils/Dates";
+import {Dates} from "utils/Dates";
 
 @observer
 class NewToolboxTalkAttendanceRegisterDialog extends ANewDialog {

@@ -3,11 +3,11 @@ import {observer} from 'mobx-react';
 
 import style from "./ClaimsEmployeeTab.lazy.css";
 
-import {Dates} from "../../../../utils/Utils";
+import {Dates} from "utils/Utils";
 import APageListReadWrite from "../../../APageListReadWrite";
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 //import ProfileClaimsEmployeeDialog from './dialogs/ProfileClaimsEmployeeDialog';
 

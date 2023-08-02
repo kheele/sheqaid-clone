@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
+import Form from 'utils/Form';
+import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewMatrixDialog.lazy.css";
 

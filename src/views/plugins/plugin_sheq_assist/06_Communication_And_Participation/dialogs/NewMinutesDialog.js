@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates, execWhen} from '../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates, execWhen} from 'utils/Utils';
 
-import {TinyMCE} from '../../../../../components/documents';
+import {TinyMCE} from 'components/documents';
 
 import {
     SelectClientInput,
@@ -13,10 +13,10 @@ import {
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
-import ANewDialog from '../../../../../components/dialogs/ANewDialog';
-import {NewEmployeeListTable} from '../../../../../components/FormTableComponents';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import ANewDialog from 'components/dialogs/ANewDialog';
+import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 import style from "./NewMinutesDialog.lazy.css";
 

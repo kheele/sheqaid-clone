@@ -5,7 +5,7 @@ import {observable} from 'mobx';
 import style from "./Main.lazy.css";
 
 import APage from "../../../APage";
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 import OrganogramsTab from './OrganogramsTab';
 import AppointmentsTab from './AppointmentsTab';

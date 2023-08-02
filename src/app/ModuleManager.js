@@ -10,8 +10,8 @@ class Manager {
         }
         const colors = ['rgb(90, 120, 120)', 'rgb(110, 80, 80)', 'rgb(70, 100, 60)'];
         return listInstalled.map(({id, data, data: {key}}, n) => {
-            return data.modules.filter(({status}) => status === 'Installed').map(v => {
-                return {...v, borderColor: colors[n], group: key};
+            return data.module_list.filter(({status}) => status === 'Installed').map(v => {
+                return {...v, borderColor: colors[n]};
             });
         }).reduce((a1, a2) => [...a1, ...a2], []);
     }, true);
@@ -26,13 +26,6 @@ class Manager {
         return this.moduleListInstalledLoadBy(true);
     };
 
-    isInPlugin = computedFn((module, key) => {
-        if(!module) return false;
-        let {listInstalled} = pluginManager;
-        const item = listInstalled.find(v => v.data.key === key);
-        return item && item.data.modules.filter(({status}) => status === 'Installed').anyMatch(({key}) => key === module.key);
-    }, true);
-    
     @computed
     get contractorAllowedModules() {
         return ['_13_2_3_Hazardous_Chemical_Substances', '_17_Incident_Investigation', '_19_Maintenance'];

@@ -3,7 +3,7 @@ import {computed} from 'mobx';
 import {is, selected} from './';
 
 class List {
-    
+
     @computed
     get countries() {
         const {attrs} = this.storage;
@@ -15,6 +15,12 @@ class List {
         return this.countries.map((val, n) => {
             return val.data.name;
         });
+    }
+
+    @computed
+    get permissionOtherKeys() {
+        const {attrs} = this.storage;
+        return attrs.has("permissionOtherKeys") ? attrs.get("permissionOtherKeys") : [];
     }
 
     @computed
@@ -40,7 +46,7 @@ class List {
     @computed
     get clientsBlacklisted() {
         const {isLoggedClient} = is;
-        if(isLoggedClient) {
+        if (isLoggedClient) {
             return [];
         }
         const {client_blacklist = []} = this.storage.loggedUser.user.data;
@@ -51,7 +57,7 @@ class List {
     @computed
     get projectsBlacklisted() {
         const {isLoggedProject} = is;
-        if(isLoggedProject) {
+        if (isLoggedProject) {
             return [];
         }
         const {project_blacklist = []} = this.storage.loggedUser.user.data;
@@ -62,7 +68,7 @@ class List {
     @computed
     get sitesBlacklisted() {
         const {isLoggedSite} = is;
-        if(isLoggedSite) {
+        if (isLoggedSite) {
             return [];
         }
         const {site_blacklist = []} = this.storage.loggedUser.user.data;
@@ -75,11 +81,12 @@ class List {
         const {attrs} = this.storage;
         const {isLoggedClient, isLoggedProject} = is;
         const {projects} = this;
-        if(isLoggedClient) {
+        if (isLoggedClient) {
             const {client: my_client} = this.storage.loggedUser.user.data;
-            if(isLoggedProject) {
+            console.log('clients my_client', my_client)
+            if (isLoggedProject) {
                 setTimeout(() => {
-                    my_client.data.projects = projects;
+                    my_client.data.project_list = projects;
                 });
             }
             return [my_client];
@@ -99,12 +106,13 @@ class List {
         const {attrs} = this.storage;
         const {isLoggedProject, isLoggedSite} = is;
         const {sites} = this;
-        
-        if(isLoggedProject) {
+
+        if (isLoggedProject) {
             const {project: my_project} = this.storage.loggedUser.user.data;
-            if(isLoggedSite) {
+            console.log('projects my_project', my_project)
+            if (isLoggedSite) {
                 setTimeout(() => {
-                    my_project.data.sites = sites;
+                    my_project.data.site_list = sites;
                 });
             }
             return [my_project];
@@ -119,12 +127,14 @@ class List {
         const {isLoggedProject} = is;
         const {selectedClient} = selected;
         const {projects} = this;
-        
-        if(isLoggedProject) {
+
+        if (isLoggedProject) {
             return projects;
         }
-        if (selectedClient && selectedClient.data && selectedClient.data.projects) {
-            return selectedClient.data.projects;
+        if (selectedClient) {
+            const {data, project_list} = selectedClient;
+            if (project_list) return project_list;
+            if (data && data.project_list) return data.project_list;
 //            return projects.filter(({data: {client}}) => !!client).filter(({data: {client}}) => client.id === selectedClient.id);
         }
         return projects;
@@ -139,8 +149,8 @@ class List {
     get sites() {
         const {attrs} = this.storage;
         const {isLoggedSite} = is;
-        
-        if(isLoggedSite) {
+
+        if (isLoggedSite) {
             const {site: my_site} = this.storage.loggedUser.user.data;
             return [my_site];
         }
@@ -154,15 +164,19 @@ class List {
         const {selectedProject, selectedClient} = selected;
         const {isLoggedSite} = is;
         const {sites} = this;
-        if(isLoggedSite) {
+        if (isLoggedSite) {
             return sites;
         }
-        if (selectedProject && selectedProject.data && selectedProject.data.sites) {
-            return selectedProject.data.sites;
+        if (selectedProject) {
+            const {data, site_list} = selectedProject;
+            if (site_list) return site_list;
+            if (data && data.site_list) return data.site_list;
 //            return sites.filter(({data: {project}}) => !!project).filter(({data: {project}}) => project.id === selectedProject.id);
         }
-        if (selectedClient && selectedClient.data && selectedClient.data.sites) {
-            return selectedClient.data.sites;
+        if (selectedClient) {
+            const {data, site_list} = selectedClient;
+            if (site_list) return site_list;
+            if (data && data.site_list) return data.site_list;
 //            return sites.filter(({data: {client}}) => !!client).filter(({data: {client}}) => client.id === selectedClient.id);
         }
         return sites;

@@ -1,0 +1,11 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditClaimsEmployerDetailsDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.EditClaimsEmployerDetailsDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

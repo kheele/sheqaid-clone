@@ -47,17 +47,17 @@ class Actions extends React.Component {
     }
 
     copyQuestion = () => {
-        const {ques, questions, expandCloseAll} = this.props;
+        const {ques, question_list, expandCloseAll} = this.props;
         expandCloseAll().then(() => {
             const newQ = toJS(ques);
             newQ.open = true;
-            questions.push(newQ);
+            question_list.push(newQ);
         });
     }
 
     deleteQuestion = () => {
-        const {idx, questions} = this.props;
-        questions.removeIf((q, n) => n === idx);
+        const {idx, question_list} = this.props;
+        question_list.removeIf((q, n) => n === idx);
     } 
     
     onViewLinkedDoc(evt, el) {
@@ -100,7 +100,12 @@ class Actions extends React.Component {
                 return false;
         }
     }
-    
+
+    @computed
+    get showResponseAttachment() {
+        return this.showNotify;
+    }
+
     @computed
     get showMultiple() {
         const {ques} = this.props;
@@ -140,7 +145,7 @@ class Actions extends React.Component {
     }
     
     render() {
-        const {questions, ques, idx, isLibrary, isPrivate, visibilityState, sectionIdx, readonly, onSelectNotified, onSelectTemplateDocDialog, onViewTemplateDocDialog} = this.props;
+        const {question_list, ques, idx, isLibrary, isPrivate, visibilityState, sectionIdx, readonly, onSelectNotified, onSelectTemplateDocDialog, onViewTemplateDocDialog} = this.props;
         return <AccordionActions className="Actions">  
             <div className="left-actions">
                 <Option 
@@ -199,10 +204,23 @@ class Actions extends React.Component {
                     isLibrary={isLibrary}
                     isPrivate={isPrivate}
                     visibilityState={visibilityState}
-                    readonly={readonly} 
+                    readonly={readonly}
+                    addRightLine={this.showNotify}
                     onChange="handleLinkDoc"
                     onSelectTemplateDocDialog={onSelectTemplateDocDialog}
                     onViewTemplateDocDialog={onViewTemplateDocDialog}
+                    />
+                <Option
+                    name='attachResponseAttachment'
+                    className='attach-response-attachment'
+                    label="Response Attachment"
+                    idx={idx}
+                    ques={ques}
+                    isLibrary={isLibrary}
+                    isPrivate={isPrivate}
+                    visibilityState={visibilityState}
+                    readonly={readonly}
+                    onChange="handleResponseAttachment"
                     />
             </div>
             {!readonly && <IconButton aria-label="Copy" onClick={this.copyQuestion}>
@@ -233,6 +251,7 @@ class Option extends React.Component {
         this.handleLinkDoc = this.handleLinkDoc.bind(this);
         this.onSelectNotifyValueOption = this.onSelectNotifyValueOption.bind(this);
         this.onSelectLinkDocOption = this.onSelectLinkDocOption.bind(this);
+        this.handleResponseAttachment = this.handleResponseAttachment.bind(this);
     }
     
     componentWillMount() {
@@ -247,6 +266,8 @@ class Option extends React.Component {
             this.checked = !!ques.notify;
         } else if(name === 'linkDoc') {
             this.checked = !!ques.linkDoc;
+        } else if(name === 'attachResponseAttachment') {
+            this.checked = !!ques.hasResponseAttachment;
         } else {
             this.checked = false;
         }
@@ -285,7 +306,7 @@ class Option extends React.Component {
         } else {
             onSelectNotified && onSelectNotified(evt, ques).then(({notifyAction, list}) => {
                 ques.notifyAction = notifyAction;
-                ques.notifiedList = list;
+                ques.notified_list = list;
                 this.checked = ques.notify = true;
             });
         }
@@ -313,7 +334,7 @@ class Option extends React.Component {
             });
         }
     }
-    
+
     onSelectNotifyValueOption(evt, el) {
         const {idx, ques, onSelectNotified, onViewNotifiedList} = this.props;
         const {action} = el.props;
@@ -322,13 +343,13 @@ class Option extends React.Component {
         } else if(action === 'Change') {
             onSelectNotified && onSelectNotified(evt, ques).then(({notifyAction, list}) => {
                 ques.notifyAction = notifyAction;
-                ques.notifiedList = list;
+                ques.notified_list = list;
                 this.checked = ques.notify = true;
             });
         } else if(action === 'Remove') {
             confirmDialog.open("Are you sure you want to remove the Notify Value?").then(res => {
                 if (res === 1) {
-                    ques.notifiedList.clear();
+                    ques.notified_list.clear();
                     this.checked = ques.notify = false;
                     ques.notifyAction = null;
                 }
@@ -355,7 +376,12 @@ class Option extends React.Component {
             });
         }
     }
-    
+
+    handleResponseAttachment(evt, i){
+        const {idx, ques,} = this.props;
+        this.checked = ques.hasResponseAttachment = !ques.hasResponseAttachment;
+    }
+
     set checked(val) {
         this.state.checked = val;
     }

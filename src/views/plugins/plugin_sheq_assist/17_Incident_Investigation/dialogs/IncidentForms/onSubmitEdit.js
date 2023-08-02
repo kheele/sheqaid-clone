@@ -1,6 +1,8 @@
-import {mapIncidentPersonDetails} from "../../../../../../utils/ArrayMapperUtils";
+import {mapIncidentPersonDetails} from "utils/ArrayMapperUtils";
 import {isObservableArray, toJS} from "mobx";
-import {ShouldUpdate} from "../../../../../../utils/Utils";
+import {ShouldUpdate} from "utils/Utils";
+import insertIncident from "../../../../../../mutations/all/Incident/insertIncident";
+import updateIncident from "../../../../../../mutations/all/Incident/updateIncident";
 
 export default function onSubmitEdit(e, btn, onSaved) {
     const {form, item: {data: old_data}} = this;
@@ -42,42 +44,56 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //TODO: further validation
 
     const {
+        //0
         site,
         project,
         client,
-        category_list,
-        sector_list,
+        //1
         group,
         short_desc,
-        sub_category_list,
-        activity_list,
-        type,
-        secondary_type_list,
-        person_involved_list,
-        person_reporting,
-        person_reported_to,
+        desc,
+        location,
+        exact_location,
+        document_list,
+        //2
+        incident_date,
+        incident_time,
         date_reported,
         time_reported,
         time_shift,
+        //3
+        category_list,
+        //4
+        sub_category_list,
+        //5
+        sector_list,
+        activity_list,
+        //6.1
+        person_involved_list,
+        //6.2
+        person_reporting,
+        //6.3
+        person_reported_to,
+        //6.4
         witness_list,
-        incident_date,
-        incident_time,
-        exact_location,
-        location,
-        document_list,
-        desc,
+        //6.5
+        distribution_list,
+
+        //7.1
         person_injured,
         injured_person_dob,
         injured_person_gender,
         nature_of_injury_list,
         bodily_injury_location_list,
         injury_mechanism_list,
+        injury_desc,
+        //7.2
         test_undertaken,
         test_type_list,
         test_type_drug_undertaken,
         test_type_alcohol_undertaken,
         test_type_mobile_device_undertaken,
-        //13
+        //7.3
         is_vehicle_incident,
         is_infringement_issued,
         did_police_attend_scene,
@@ -128,12 +144,10 @@ export default function onSubmitEdit(e, btn, onSaved) {
         nature_of_charges,
         who_laid_charges,
         who_were_nature_charges_laid_against,
-
-        //14
+        //7.4
         consequence,
         likelihood,
         risk_rating,
-        distribution_list
     } = form.data;
 
     const data = {};
@@ -202,7 +216,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //sec6_data
     if (person_reporting) {
         const new_sec6_data = {};
-        ShouldUpdate.checkEmployee(new_sec6_data, old_data.sec6_data, person_reporting, 'person_reporting');
+        ShouldUpdate.checkEmployee_deprecated(new_sec6_data, old_data.sec6_data, person_reporting, 'person_reporting');
         if (!Object.keys(new_sec6_data).isEmpty()) {
             data.sec6_data = new_sec6_data;
         }
@@ -210,8 +224,8 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //sec7_data
     if (person_reported_to || date_reported || time_reported || time_shift) {
         const new_sec7_data = {};
-        ShouldUpdate.checkEmployee(new_sec7_data, old_data.sec7_data, person_reported_to, 'person_reported_to');
-        ShouldUpdate.checkDate(new_sec7_data, old_data.sec7_data, date_reported, 'date_reported');
+        ShouldUpdate.checkEmployee_deprecated(new_sec7_data, old_data.sec7_data, person_reported_to, 'person_reported_to');
+        ShouldUpdate.checkDate_deprecated(new_sec7_data, old_data.sec7_data, date_reported, 'date_reported');
         ShouldUpdate.check(new_sec7_data, old_data.sec7_data, time_reported, 'time_reported');
         ShouldUpdate.check(new_sec7_data, old_data.sec7_data, time_shift, 'time_shift');
         if (!Object.keys(new_sec7_data).isEmpty()) {
@@ -230,7 +244,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //sec9_data
     if (incident_date || incident_time || location || exact_location) {
         const new_sec9_data = {};
-        ShouldUpdate.checkDate(new_sec9_data, old_data.sec9_data, incident_date, 'incident_date');
+        ShouldUpdate.checkDate_deprecated(new_sec9_data, old_data.sec9_data, incident_date, 'incident_date');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, incident_time, 'incident_time');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, location, 'location');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, exact_location, 'exact_location');
@@ -254,8 +268,8 @@ export default function onSubmitEdit(e, btn, onSaved) {
         const bodily_injury_location_list_mapped = bodily_injury_location_list && bodily_injury_location_list.map(v => isString(v) ? v : v.value);
         const injury_mechanism_list_mapped = injury_mechanism_list && injury_mechanism_list.map(v => isString(v) ? v : v.value);
 
-        ShouldUpdate.checkEmployee(new_sec11_data, old_data.sec11_data, person_injured, 'person_injured');
-        ShouldUpdate.checkDate(new_sec11_data, old_data.sec11_data, injured_person_dob, 'injured_person_dob');
+        ShouldUpdate.checkEmployee_deprecated(new_sec11_data, old_data.sec11_data, person_injured, 'person_injured');
+        ShouldUpdate.checkDate_deprecated(new_sec11_data, old_data.sec11_data, injured_person_dob, 'injured_person_dob');
         ShouldUpdate.check(new_sec11_data, old_data.sec11_data, injured_person_gender, 'injured_person_gender');
         ShouldUpdate.checkListToJS(new_sec11_data, old_data.sec11_data, nature_of_injury_list_mapped, 'nature_of_injury_list');
         ShouldUpdate.checkListToJS(new_sec11_data, old_data.sec11_data, bodily_injury_location_list_mapped, 'bodily_injury_location_list');
@@ -295,14 +309,14 @@ export default function onSubmitEdit(e, btn, onSaved) {
         const new_sec13_data = {};
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, is_vehicle_incident, 'is_vehicle_incident');
 
-        ShouldUpdate.checkEmployee(new_sec13_data, old_data.sec11_data, driver, 'driver');
-        ShouldUpdate.checkDate(new_sec13_data, old_data.sec11_data, driver_dob, 'driver_dob');
+        ShouldUpdate.checkEmployee_deprecated(new_sec13_data, old_data.sec11_data, driver, 'driver');
+        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec11_data, driver_dob, 'driver_dob');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, driver_gender, 'driver_gender');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, address, 'address');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, email, 'email');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, phone, 'phone');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, licence_num, 'licence_num');
-        ShouldUpdate.checkDate(new_sec13_data, old_data.sec13_data, licence_expiry, 'licence_expiry');
+        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec13_data, licence_expiry, 'licence_expiry');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, licence_years, 'licence_years');
 
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, vehicle_make, 'vehicle_make');
@@ -337,7 +351,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_issued_to_name, 'addressee_issued_to_name');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_name_or_entity, 'addressee_name_or_entity');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_amount, 'addressee_amount');
-        ShouldUpdate.checkDate(new_sec13_data, old_data.sec13_data, addressee_due_date, 'addressee_due_date');
+        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec13_data, addressee_due_date, 'addressee_due_date');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, did_police_attend_scene, 'did_police_attend_scene');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, ref_or_report_num, 'ref_or_report_num');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, officer_name, 'officer_name');
@@ -380,7 +394,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
     console.log(data)
 
     btn.text("Saving...").disabled();
-    neonBinding.events.emit(this.path + "update", this.item.id, toJS(data)).then(res => {
+    updateIncident({id: this.item.id, ...data}).then(res => {
         console.log("res", res)
         onSaved && onSaved(res);
         infoDialog.open("Record successfully updated.");

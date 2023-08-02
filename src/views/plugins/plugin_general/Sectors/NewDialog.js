@@ -1,13 +1,14 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import Form from '../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ClearableInput} from '../../../../components/inputs';
-import {FormControls, Row} from '../../../../components/FormComponents';
-import {ANewDialog} from '../../../../components/dialogs';
+import {ClearableInput} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
+import insertSector from "mutations/all/Sector/insertSector";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -47,7 +48,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        progressDialog.open();
+        insertSector(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -55,6 +57,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
 

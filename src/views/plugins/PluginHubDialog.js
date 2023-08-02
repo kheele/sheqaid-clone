@@ -2,8 +2,8 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Dialog from '../../components/dialogs/Dialog';
-import Tabs from '../../components/tabs/Tabs';
+import Dialog from 'components/dialogs/Dialog';
+import Tabs from 'components/tabs/Tabs';
 import PluginsInstalledTab from './PluginsInstalledTab.js';
 import PluginsNotInstalledTab from './PluginsNotInstalledTab.js';
 import PluginsNewTab from './PluginsNewTab.js';

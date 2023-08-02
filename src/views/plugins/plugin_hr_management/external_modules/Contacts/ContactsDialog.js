@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 
 import ADialogList from "../../../../ADialogList";
 
-import Main from '../../../plugin_sheq_assist/16_Emergency_Preparedness/Main';
+import Main from 'views/plugins/plugin_sheq_assist/16_Emergency_Preparedness/Main';
 
 import style from "./ContactsDialog.lazy.css";
 

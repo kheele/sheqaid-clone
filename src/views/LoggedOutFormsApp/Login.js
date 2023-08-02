@@ -3,9 +3,9 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../utils/Form';
-import {getExternalLinkData} from '../../utils/ExternalLinkFuns';
-import {Button, ClearableInput} from '../../components/inputs';
+import Form from 'utils/Form';
+import {getExternalLinkData} from 'utils/ExternalLinkFuns';
+import {Button, ClearableInput} from 'components/inputs';
 
 // </editor-fold>
 

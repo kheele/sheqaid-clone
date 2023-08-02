@@ -3,12 +3,17 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import theme from "assets/theme";
 
 import {execWhen} from '../../utils/Utils';
 import {ErrorBoundary} from '../';
 
 import style from './Dialog.lazy.css';
 import {fromPromise} from "mobx-utils";
+import {MaterialUIControllerProvider} from "../../context";
+import CssBaseline from "@mui/material/CssBaseline";
+import {ThemeProvider} from "@mui/material/styles";
 
 function isDescendant(parent, child) {
     var node = child.parentNode;
@@ -113,7 +118,7 @@ class RenderToLayer extends React.Component {
                 //}.bind(this), 0);
             }
 
-            var layerElement = this.props.render();
+            const layerElement = this.props.render();
             this.layerElement = ReactDOM.unstable_renderSubtreeIntoContainer(this, layerElement, this.layer);
         } else {
             this.unrenderLayer();
@@ -138,8 +143,8 @@ class Header extends React.Component {
         let topButtons = isFunction(dialog.topButtons) ? dialog.topButtons() : dialog.topButtons;
         if (topButtons instanceof Promise) {
             return fromPromise(topButtons).case({
-                pending:   () => null,
-                rejected:  error => <div>An error occurred</div>,
+                pending: () => null,
+                rejected: error => <div>An error occurred</div>,
                 fulfilled: value => value,
             });
         }
@@ -151,8 +156,8 @@ class Header extends React.Component {
         let title = isFunction(dialog.title) ? dialog.title() : dialog.title;
         if (title instanceof Promise) {
             return fromPromise(title).case({
-                pending:   () => null,
-                rejected:  error => <div>An error occurred</div>,
+                pending: () => null,
+                rejected: error => <div>An error occurred</div>,
                 fulfilled: value => value,
             });
         }
@@ -160,13 +165,21 @@ class Header extends React.Component {
         return title || "";
     }
 
+    getDOMNode() {
+        return this.refs.header;
+    }
+
+    getTitleDOMNode() {
+        return this.refs.title;
+    }
+
     render() {
         const {onCancel, onClose, noBackAction, preventEsc} = this.props;
-        return (<div className="row dialog-header">
+        return (<div ref="header" className="row dialog-header">
             {!noBackAction && <i key="backButtonIcon" className="page-back-btn fa fa-arrow-left"
                                  onClick={onCancel || onClose}/>}
             {(!noBackAction && !preventEsc) && <i className="close-escape">Esc</i>}
-            <h3>{this.title}</h3>
+            <h3 ref="title">{this.title}</h3>
             <ErrorBoundary>
                 {!!this.topButtons && <div className="dialog-top-buttons">
                     <ErrorBoundary>{this.topButtons}</ErrorBoundary>
@@ -262,21 +275,39 @@ class DialogInline extends React.Component {
         return this.refs.dialogRef;
     }
 
+    getHeader() {
+        return this.refs.header;
+    }
+
+    getHeaderDOMNode() {
+        return this.getHeader().getDOMNode();
+    }
+
+    getTitleDOMNode() {
+        return this.getHeader().getTitleDOMNode();
+    }
+
     render() {
         const {className, onCancel, onClose, noBackAction, preventEsc, dialog, children} = this.props;
-        return (<div ref="dialogRef" key="dialog" id="dialog-overlay" className={className}>
-            <div className="dialog-container">
-                <Header
-                    dialog={dialog}
-                    onCancel={onCancel}
-                    onClose={onClose}
-                    noBackAction={noBackAction}
-                    preventEsc={preventEsc}
-                />
-                <Content>{children}</Content>
-                <Footer dialog={dialog}/>
-            </div>
-        </div>);
+        return (<MaterialUIControllerProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <div ref="dialogRef" key="dialog" id="dialog-overlay" className={className}>
+                    <div className="dialog-container">
+                        <Header
+                          ref="header"
+                            dialog={dialog}
+                            onCancel={onCancel}
+                            onClose={onClose}
+                            noBackAction={noBackAction}
+                            preventEsc={preventEsc}
+                        />
+                        <Content>{children}</Content>
+                        <Footer dialog={dialog}/>
+                    </div>
+                </div>
+            </ThemeProvider>
+        </MaterialUIControllerProvider>);
     }
 }
 
@@ -368,15 +399,35 @@ class Dialog extends React.Component {
         return this.dialogInline && this.dialogInline.getDOMNode();
     }
 
+    getHeader() {
+        return this.dialogInline && this.dialogInline.getHeader();
+    }
+
+    getHeaderDOMNode() {
+        return this.dialogInline && this.dialogInline.getHeaderDOMNode();
+    }
+
+    getTitleDOMNode() {
+        return this.dialogInline && this.dialogInline.getTitleDOMNode();
+    }
+
     render() {
         const {preventEsc, noBackAction} = this.props;
-        return React.createElement(RenderToLayer, {
-            render: this.renderLayer,
-            preventEsc: preventEsc || noBackAction,
-            onClickAway: this.close,
-            onKeyUp: this.onKeyUp,
-            state: this.layerState
-        });
+        // MaterialUIControllerProvider
+        // return React.createElement(RenderToLayer, {
+        //     render: this.renderLayer,
+        //     preventEsc: preventEsc || noBackAction,
+        //     onClickAway: this.close,
+        //     onKeyUp: this.onKeyUp,
+        //     state: this.layerState
+        // });
+        return <RenderToLayer
+            render={this.renderLayer}
+            preventEsc={preventEsc || noBackAction}
+            onClickAway={this.close}
+            onKeyUp={this.onKeyUp}
+            state={this.layerState}
+        />;
     }
 }
 

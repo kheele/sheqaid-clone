@@ -1,18 +1,18 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from "../../../../utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../components/dialogs/ConfirmDialog';
+import {Dates} from "utils/Utils";
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     Button,
     ClearableInput,
     DateRangeInput,
     SelectEmployeeInput
-} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import RemedialActionPlanDialog from "./dialogs/RemedialActionPlanDialog.js";
 import CauseAnalysisDialog from "./dialogs/CauseAnalysisDialog.js";

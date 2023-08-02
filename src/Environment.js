@@ -24,14 +24,16 @@ async function fetchQuery(operation, variables, cacheConfig) {
     headers.Authorization = `Bearer ${token}`;
     headers["X-Hasura-User-Id"] = loggedUserAuth.uid;
     headers["X-Hasura-Role"] = "user";
+  } else {
+    // headers["X-Hasura-Role"] = "public";
   }
 
   // Otherwise, fetch data from server
   return workers
     .emit("relay/send", {
-      API_URL,
       variables,
       headers,
+      operationKind: operation.operationKind,
       query: operation.text,
     })
     .then((json) => {

@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import APluginsTab from './APluginsTab.js';
-import {Button} from '../../components/inputs';
+import {Button} from 'components/inputs';
 
 import style from "./PluginsAllTab.lazy.css";
 

@@ -32,7 +32,7 @@
             const d = new Date();
 
             const opts = {
-                from: '"SHEQ Aid - Support" <support@sheqsolve.com>',
+                from: '"SHEQ Aid - Support" <no-reply@sheqsolve.com>',
                 to: "support@sheqsolve.com",
                 subject: 'Error Reporting',
                 html: '<h3>System Error</h3>\n\
@@ -60,9 +60,7 @@
                 <p>' + error_info + '</p>'
             };
 
-            const sendEmail = functions.httpsCallable('callables-sendEmail');
-            const mailRes = await sendEmail(opts);
-            console.log('mailRes', mailRes)
+            await Utils.sendEmail(opts);
             return true;
         }
     }

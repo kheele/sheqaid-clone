@@ -3,22 +3,22 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 
-import {Button} from '../../components/inputs';
-import Popover from '../../components/popovers/Popover';
-import NavItem from '../../components/navs/NavItem';
-import {calculateRightPos, Permissions} from '../../utils/Utils';
+import {Button} from 'components/inputs';
+import Popover from 'components/popovers/Popover';
+import NavItem from 'components/navs/NavItem';
+import {calculateRightPos, Permissions} from 'utils/Utils';
 
-//import NewPlannedJobObservationDialog from '../plugins/plugin_hr_management/Employees/dialogs/NewPlannedJobObservationDialog.js';
-import NewAttendanceDialog from '../plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceDialog.js';
+//import NewPlannedJobObservationDialog from 'views/plugins/plugin_hr_management/Employees/dialogs/NewPlannedJobObservationDialog.js';
+import NewAttendanceDialog from 'views/plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceDialog.js';
 import NewAttendanceSelfDialog
-    from '../plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceSelfDialog.js';
-import NewPPERegisterDialog from '../plugins/plugin_hr_management/other_modules/PPE/NewPPERegisterDialog.js';
+    from 'views/plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceSelfDialog.js';
+import NewPPERegisterDialog from 'views/plugins/plugin_hr_management/other_modules/PPE/NewPPERegisterDialog.js';
 
-import NewScreeningDialog from '../plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
+import NewScreeningDialog from 'views/plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
 import NewIncidentQuickDialog
-    from '../plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentQuickDialog.js';
-import NewIncidentDialog from '../plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentDialog.js';
-import NewCheckableDialog from '../plugins/plugin_sheq_assist/21_Internal_Audit/dialogs/NewCheckableDialog.js';
+    from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentQuickDialog.js';
+import NewIncidentDialog from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentDialog.js';
+import NewCheckableDialog from 'views/plugins/plugin_sheq_assist/Inspections/InspectionTab/forms/NewCheckableDialog.js';
 import Divider from "@mui/material/Divider";
 // </editor-fold>
 
@@ -92,12 +92,13 @@ class DashboardBtn extends React.Component {
 class AuditTrailBtn extends React.Component {
 
     render() {
+        const {isConsultant} = storage.is;
+        const {clients} = storage.list;
 //        if (!loggedInApp.defaultView)
 //            return null;
+        if (isConsultant && clients.isEmpty()) return null;
 
-        const {permissions_other} = storage.loggedUser.user.data;
-        const perm = (permissions_other || []).find(v => v.key === "Audit Logs");
-        if (Permissions.disallow(perm))
+        if (Permissions.disallowOther("Audit Logs"))
 //            return null;
 
         if (storage.is.isEmployee) {
@@ -124,25 +125,19 @@ class SelectOrgsBtn extends React.Component {
     onPopoverSettings(e) {
         const {isConsultant} = storage.is;
 
-        const {permissions_other} = storage.loggedUser.user.data;
-        const permSectors = (permissions_other || []).find(v => v.key === "Sectors");
-        const permClients = (permissions_other || []).find(v => v.key === "Clients");
-        const permProjects = (permissions_other || []).find(v => v.key === "Projects");
-        const permSites = (permissions_other || []).find(v => v.key === "Sites");
-
         this.refs.popover.settings({
             style: {left: "auto", right: calculateRightPos(this.refs.more.getDOMNode()), top: 60, width: 150},
             contentNode: <div key="more">
-                {Permissions.allow(permSectors) &&
+                {Permissions.allowOther("Sectors") &&
                     <NavItem module="Sectors" onClick={defaultView.onOpenPage} faIconLeft="project-diagram"
                              title="Sectors"/>}
                 <Divider />
-                {isConsultant && Permissions.allow(permClients) &&
+                {isConsultant && Permissions.allowOther("Clients") &&
                     <NavItem module="Clients" onClick={defaultView.onOpenPage} faIconLeft="building" title="Clients"/>}
-                {Permissions.allow(permProjects) &&
+                {Permissions.allowOther("Projects") &&
                     <NavItem module="Projects" onClick={defaultView.onOpenPage} faIconLeft="project-diagram"
                              title="Projects"/>}
-                {Permissions.allow(permSites) &&
+                {Permissions.allowOther("Sites") &&
                     <NavItem module="Sites" onClick={defaultView.onOpenPage} faIconLeft="dumpster" title="Sites"/>}
             </div>
         }).open();
@@ -154,13 +149,7 @@ class SelectOrgsBtn extends React.Component {
             return null;
         }
 
-        const {permissions_other} = storage.loggedUser.user.data;
-        const permSectors = (permissions_other || []).find(v => v.key === "Sectors");
-        const permClients = (permissions_other || []).find(v => v.key === "Clients");
-        const permProjects = (permissions_other || []).find(v => v.key === "Projects");
-        const permSites = (permissions_other || []).find(v => v.key === "Sites");
-
-        if (!Permissions.allow(permSectors) && !Permissions.allow(permClients) && !Permissions.allow(permProjects) && !Permissions.allow(permSites)) {
+        if (!Permissions.allowOther("Sectors") && !Permissions.allowOther("Clients") && !Permissions.allowOther("Projects") && !Permissions.allowOther("Sites")) {
             return null;
         }
 
@@ -254,53 +243,32 @@ class SelectShortcutsBtn extends React.Component {
     onPopoverSettings(e) {
         const {is: {isConsultant}, loggedUser} = storage;
 
-        const {permissions_other, permissions_modules} = loggedUser.user.data;
-        const permissions_mod_Covid = (permissions_modules || []).find(v => v.key === "__A_COVID_Management");
-        const permissions_mod_Audit = (permissions_modules || []).find(v => v.key === "_21_Internal_Audit");
-
-        const permissions_other_QuickIncident = (permissions_other || []).find(v => v.key === "Quick Incident");
-        const permissions_other_Attendance = (permissions_other || []).find(v => v.key === "Attendance");
-        const permissions_other_PPE = (permissions_other || []).find(v => v.key === "PPE");
-        const permissions_other_JobObservation = (permissions_other || []).find(v => v.key === "Planned Job Observations");
-
         this.refs.popover.settings({
             style: {left: "auto", right: calculateRightPos(this.refs.shortcuts.getDOMNode()), top: 60, width: 260},
             contentNode: <div key="shortcuts">
-                {Permissions.allow(permissions_mod_Covid) &&
+                {Permissions.allowMod("__A_COVID_Management") &&
                     <NavItem action="Screening" onClick={this.onClick} title="+ COVID Screening"/>}
-                {Permissions.allow(permissions_other_QuickIncident) &&
+                {Permissions.allowOther("Quick Incident") &&
                     <NavItem action="QuickIncident" onClick={this.onClick} title="+ Quick Incident"/>}
-                {Permissions.allow(permissions_mod_Audit) &&
+                {Permissions.allowMod("_21_Internal_Audit") &&
                     <NavItem action="Inspection" onClick={this.onClick} title="+ Inspection"/>}
-                {Permissions.allow(permissions_other_Attendance) &&
+                {Permissions.allowMod("Attendance") &&
                     <NavItem action="Attendance" onClick={this.onClick} title="+ Attendance"/>}
-                {Permissions.allow(permissions_other_PPE) &&
+                {Permissions.allowMod("PPE") &&
                     <NavItem action="PPE" onClick={this.onClick} title="+ PPE"/>}
-                {/*Permissions.allow(permissions_other_JobObservation) && <NavItem action="Job Observation" onClick={this.onClick} title="+ Planned Job Observation"/>*/}
+                {/*Permissions.allowOther("Planned Job Observations") && <NavItem action="Job Observation" onClick={this.onClick} title="+ Planned Job Observation"/>*/}
             </div>
         }).open();
     }
 
     @computed
     get shouldRender() {
-        const {permissions_other, permissions_modules} = storage.loggedUser.user.data;
-
-        const permissions_mod_Covid = (permissions_modules || []).find(v => v.key === "__A_COVID_Management");
-        const permissions_mod_Audit = (permissions_modules || []).find(v => v.key === "_21_Internal_Audit");
-
-        const permissions_other_QuickIncident = (permissions_other || []).find(v => v.key === "Quick Incident");
-        const permissions_other_Attendance = (permissions_other || []).find(v => v.key === "Attendance");
-        const permissions_other_PPE = (permissions_other || []).find(v => v.key === "PPE");
-        const permissions_other_JobObservation = (permissions_other || []).find(v => v.key === "Planned Job Observations");
-
-        const {selectedClientModules: {list}} = storage.selected;
-
-        return Permissions.allow(permissions_mod_Covid) ||
-            (Permissions.hasModule('_17_Incident_Investigation') && Permissions.allow(permissions_other_QuickIncident)) ||
-            Permissions.allow(permissions_mod_Audit) ||
-            Permissions.allow(permissions_other_Attendance) ||
-            Permissions.allow(permissions_other_PPE)/* ||
-                Permissions.allow(permissions_other_JobObservation)*/;
+        return Permissions.allowMod("__A_COVID_Management") ||
+            (Permissions.hasModule('_17_Incident_Investigation') && Permissions.allowOther("Quick Incident")) ||
+            Permissions.allowMod("_21_Internal_Audit") ||
+            Permissions.allowMod("Attendance") ||
+            Permissions.allowMod("PPE")/* ||
+                Permissions.allowOther("Planned Job Observations")*/;
     }
 
     render() {
@@ -338,9 +306,7 @@ class UsersBtn extends React.Component {
 
     render() {
         if (isAdminApp) {
-            const {permissions_other} = storage.loggedUser.user.data;
-            const perm = (permissions_other || []).find(v => v.key === "Users");
-            if (Permissions.disallow(perm))
+            if (Permissions.disallowOther("Users"))
                 return null;
 
             return <Button className="fa fa-users btn" module="Users" hoverText="Users"
@@ -351,9 +317,7 @@ class UsersBtn extends React.Component {
             return null;
 
         if(!isContractor) {
-            const {permissions_other} = storage.loggedUser.user.data;
-            const perm = (permissions_other || []).find(v => v.key === "Users");
-            if (Permissions.disallow(perm))
+            if (Permissions.disallowOther("Users"))
                 return null;
         }
 
@@ -388,13 +352,20 @@ class EmployeesBtn extends React.Component {
             return null;
         }
         const {isEmployee, isContractorView, isContractorViewIncContractorPack} = storage.is;
+        if (!loggedInApp.defaultView || isEmployee)
+            return null;
+        if (isContractorView && !isContractorViewIncContractorPack)
+            return null;
+
+        if (!loggedInApp.defaultView || isEmployee || (isContractorView && !isContractorViewIncContractorPack))
+            return null;
+        if (!loggedInApp.defaultView || isEmployee || (isContractorView && !isContractorViewIncContractorPack))
+            return null;
         if (!loggedInApp.defaultView || isEmployee || (isContractorView && !isContractorViewIncContractorPack))
             return null;
 
         if (!isContractorView) {
-            const {permissions_modules} = storage.loggedUser.user.data;
-            const perm = (permissions_modules || []).find(v => v.key === "Employees");
-            if (Permissions.disallow(perm))
+            if (Permissions.disallowMod("Employees"))
                 return null;
         }
 

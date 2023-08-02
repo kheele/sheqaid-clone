@@ -2,9 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 
-import {PluginsView} from '../components/page-lists';
-import {Button} from '../components/inputs';
-import Popover from '../components/popovers/Popover';
+import {PluginsView} from 'components/page-lists';
+import {Button} from 'components/inputs';
+import Popover from 'components/popovers/Popover';
 
 import style from "./InitViewOut.lazy.css";
 

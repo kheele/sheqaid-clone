@@ -1,3 +1,7 @@
+#dialog-overlay.TrailExiredDialog {
+    z-index: 1499;
+}
+
 #dialog-overlay.TrailExiredDialog > .dialog-container{
     width: 600px;
     height: 400px;

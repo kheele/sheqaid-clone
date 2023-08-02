@@ -2,12 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates} from '../../../../utils/Utils';
-import APageListReadWrite from "../../../../views/APageListReadWrite";
-import NavItem from '../../../../components/navs/NavItem';
-import {ConfirmDialog} from '../../../../components/dialogs';
-import {ActionsButton, ClearableInput, SelectEmployeeInput} from '../../../../components/inputs';
-import {THead, TRow} from '../../../../components/tables';
+import {Dates} from 'utils/Utils';
+import APageListReadWrite from "views/APageListReadWrite";
+import NavItem from 'components/navs/NavItem';
+import {ConfirmDialog} from 'components/dialogs';
+import {ActionsButton, ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewVaccineCertificateDialog from './VaccineCertificates/NewVaccineCertificateDialog';
 import EditVaccineCertificateDialog from './VaccineCertificates/EditVaccineCertificateDialog';

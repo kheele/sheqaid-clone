@@ -3,11 +3,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable} from 'mobx';
 
-import {Dates} from '../../../../../utils/Utils';
+import {Dates} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
-import NavItem from '../../../../../components/navs/NavItem';
-import {ActionsButton, ClearableInput, DateRangeInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import {ActionsButton, ClearableInput, DateRangeInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 // </editor-fold>
 

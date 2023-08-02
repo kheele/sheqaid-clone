@@ -4,8 +4,8 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import {ActionsButton, Button, ClearableInput} from '../../../../../components/inputs';
-import {TRow} from '../../../../../components/tables';
+import {ActionsButton, Button, ClearableInput} from 'components/inputs';
+import {TRow} from 'components/tables';
 
 import AttendanceByTeamDialog from './AttendanceByTeamDialog';
 import AttendanceByDepartmentDialog from './AttendanceByDepartmentDialog';

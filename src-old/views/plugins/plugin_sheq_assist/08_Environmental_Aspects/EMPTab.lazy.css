@@ -1,0 +1,17 @@
+#EMPTab-tab .filter-wrapper > .controls{
+	display: flex;
+}
+#EMPTab-tab .filter-wrapper > .controls > .clearable-field-control{
+	flex: 1;
+}
+#EMPTab-tab .filter-wrapper > .controls > .type{
+	min-width: 300px;
+}
+
+#EMPTab-tab .filter-wrapper + .table{
+    height: calc(100% - (20px + 122px)) !important;
+}
+#EMPTab-tab > .table > .thead > .td.td-type,
+#EMPTab-tab > .table > .tbody .tr > .td.td-type{
+    min-width: 160px;
+}

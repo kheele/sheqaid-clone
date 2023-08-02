@@ -3,15 +3,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
-import {getLocation} from '../../../../../utils/Maps';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
+import {getLocation} from 'utils/Maps';
 
-import {ANewDialog, VerifyFaceDialog} from '../../../../../components/dialogs';
-import {Button, ClearableInput} from '../../../../../components/inputs';
-import {Row} from '../../../../../components/FormComponents';
+import {ANewDialog, VerifyFaceDialog} from 'components/dialogs';
+import {Button, ClearableInput} from 'components/inputs';
+import {Row} from 'components/FormComponents';
 
-import NewScreeningDialog from '../../../plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
+import NewScreeningDialog from 'views/plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
 
 import {RadioWrapper, RenderScreeningStatus, RenderTimeIn, RenderTimeOut} from './AttendanceComponents';
 

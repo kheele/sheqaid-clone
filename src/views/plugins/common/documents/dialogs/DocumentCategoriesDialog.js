@@ -1,13 +1,13 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, Permissions} from '../../../../../utils/Utils';
+import {Dates, Permissions} from 'utils/Utils';
 import ADialogList from "../../../../ADialogList";
 import APageListReadWrite from "../../../../APageListReadWrite";
-import NavItem from '../../../../../components/navs/NavItem';
-import ConfirmDialog from '../../../../../components/dialogs/ConfirmDialog';
-import {ActionsButton, Button, ClearableInput} from '../../../../../components/inputs';
-import {THead, TRow} from '../../../../../components/tables';
+import NavItem from 'components/navs/NavItem';
+import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {ActionsButton, Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
 import NewDocumentCategoryDialog from "./NewDocumentCategoryDialog";
 import ProfileDocumentCategoryDialog from "./ProfileDocumentCategoryDialog";

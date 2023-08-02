@@ -2,9 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField, UploadButton} from '../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, UploadButton} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import TypedWrapper from "./TypedWrapper";
 import ProfilePDFReader from '../printers/ProfileOrganogramPDFReader';

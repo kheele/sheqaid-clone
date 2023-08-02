@@ -1,13 +1,21 @@
 /* */
 // <editor-fold desc="imports">
-import { useMemo, useEffect } from "react";
+import {useMemo, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import { useTable, usePagination, useGlobalFilter, useSortBy } from "react-table";
+import { useAsync, useTable, usePagination, useGlobalFilter, useSortBy } from "react-table";
 import TableContainer from "@mui/material/TableContainer";
 import DataTableFooter from "./DataTableFooter";
 import DataTableTop from "./DataTableTop";
 import DataTableCenter from "./DataTableCenter";
+import Table from "@mui/material/Table";
+import DataTableHead from "./DataTableHead";
+import MKBox from "../../MK/MKBox";
+import {CircularProgress} from "@mui/material";
 // </editor-fold>
+
+const loadingStatus_LOADING = 'LOADING';
+const loadingStatus_ERR = 'ERR';
+const loadingStatus_LOADED = 'LOADED';
 
 function DataTable({
   entriesPerPage,
@@ -18,12 +26,30 @@ function DataTable({
   isSorted,
   noEndBorder,
 }) {
+  const [loadingStatus, setLoadingStatus] = useState(loadingStatus_LOADING);
+  const [data, setData] = useState([]);
+
   const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 10;
   const entries = entriesPerPage.entries
     ? entriesPerPage.entries.map((el) => el.toString())
     : ["5", "10", "15", "20", "25"];
   const columns = useMemo(() => table.columns, [table]);
-  const data = useMemo(() => table.rows, [table]);
+  // const data = useMemo(() => table.rows, [table]);
+
+  useEffect(() => {
+    const {rows} = table;
+    if(rows instanceof Promise) {
+      rows.then((rows) => {
+        setData(rows);
+        setLoadingStatus(loadingStatus_LOADED);
+      }).catch((err) => {
+        setLoadingStatus(loadingStatus_ERR);
+      });
+    } else {
+      setData(rows);
+      setLoadingStatus(loadingStatus_LOADED);
+    }
+  }, []);
 
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0 } },
@@ -54,7 +80,7 @@ function DataTable({
   useEffect(() => setPageSize(defaultValue || 10), [defaultValue]);
 
   return (
-    <TableContainer sx={{ boxShadow: "none" }}>
+    <TableContainer sx={{ boxShadow: "none", height: "100%", paddingTop: "10px", }}>
       <DataTableTop
         entriesPerPage={entriesPerPage}
         canSearch={canSearch}
@@ -64,16 +90,30 @@ function DataTable({
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <DataTableCenter
-        getTableProps={getTableProps}
-        getTableBodyProps={getTableBodyProps}
-        prepareRow={prepareRow}
-        headerGroups={headerGroups}
-        isSorted={isSorted}
-        noEndBorder={noEndBorder}
-        page={page}
-        rows={rows}
-      />
+        {loadingStatus === loadingStatus_LOADING && <>
+            <CircularProgress/>
+            <p>Loading...</p>
+        </>}
+      {loadingStatus === loadingStatus_LOADED && <DataTableCenter
+          getTableProps={getTableProps}
+          getTableBodyProps={getTableBodyProps}
+          prepareRow={prepareRow}
+          headerGroups={headerGroups}
+          isSorted={isSorted}
+          noEndBorder={noEndBorder}
+          page={page}
+          rows={rows}
+      />}
+      {loadingStatus === loadingStatus_ERR && <>
+          <Table>
+              <DataTableHead headerGroups={headerGroups} isSorted={isSorted} />
+          </Table>
+          <MKBox
+              sx={{ display: "flex", alignItems: "center", justifyContent: "center", pt: 20, pb: 20 }}
+          >
+              Oops! An error occurred while loading content.
+          </MKBox>
+      </>}
       <DataTableFooter
         showTotalEntries={showTotalEntries}
         pagination={pagination}

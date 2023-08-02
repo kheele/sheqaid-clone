@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../utils/Form';
-import {Dates} from '../../../../../utils/Utils';
-import {onAsyncSelectLoadFlashReportEmployersOrContractors} from '../../../utils';
+import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
+import {onAsyncSelectLoadFlashReportEmployersOrContractors} from 'views/plugins/utils';
 
-import {AProfileDialog} from '../../../../../components/dialogs';
-import {ProfileField} from '../../../../../components/inputs';
-import GridView from '../../../../../components/lists/GridView';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField} from 'components/inputs';
+import GridView from 'components/lists/GridView';
 
 import style from "./ProfileFlashReportDialog.lazy.css";
 

@@ -2,20 +2,24 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import APage from "../../../APage";
+import APage from "views/APage";
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
-import ContractorsTab from './ContractorsTab.js';
+import ContractorsTab from './ContractorsTab';
 
-import DashboardMainTab from './DashboardMainTab.js';
-import DashboardSingleContractorTab from './DashboardSingleContractorTab.js';
-import TemplatesTab from './TemplatesTab.js';
-import LibraryTab from './LibraryTab.js';
-import ActiveTab from './ActiveTab.js';
-import CompleteTab from './CompleteTab.js';
+import DashboardMainTab from './DashboardMainTab';
+import DashboardSingleContractorTab from './DashboardSingleContractorTab';
+import TemplatesTab from './TemplatesTab';
+import LibraryTab from './LibraryTab';
+import ActiveTab from './ActiveTab';
+import CompleteTab from './CompleteTab';
 
 import style from "./Main.lazy.css";
+import {Button} from "components/inputs";
+import {TabledTopPanel} from "components/tables";
+import {Permissions} from "utils/Utils";
+import EditClientDialog from "../../plugin_general/Clients/EditDialog";
 
 @observer
 class Main extends APage {
@@ -29,7 +33,9 @@ class Main extends APage {
 
     constructor(props) {
         super(props);
-        
+
+        this.onPostChange = this.onPostChange.bind(this);
+        this.onRegisterAsContractor = this.onRegisterAsContractor.bind(this);
         this.onOpenContractorsTab = this.onOpenContractorsTab.bind(this);
     }
 
@@ -46,6 +52,30 @@ class Main extends APage {
     componentWillUnmount() {
         super.componentWillUnmount();
         style.unuse();
+    }
+
+    onRegisterAsContractor() {
+        const {selectedClient} = storage.selected;
+
+        if (Permissions.allowEditOther("Clients")) {
+            this.refs.editClientDialog.extraProp('index', 3).open(selectedClient);
+        } else {
+            infoDialog.open("Permission denied");
+        }
+    }
+
+    onPostChange(index) {
+        const {isContractor, isContractorView} = storage.is;
+        const showContractors = (!isContractor && !isContractorView);
+        if(!showContractors) return;
+
+        const {registerAsContractorBtn} = this.refs;
+        const node = registerAsContractorBtn.getDOMNode();
+        if(index === 0) {
+            node.style.marginRight = "0";
+        } else {
+            node.style.marginRight = "190px";
+        }
     }
     
     update() {
@@ -68,6 +98,15 @@ class Main extends APage {
             <div key="pageTitle" className="page-title">
                 {this.renderBackBtn()}
                 <h3 key="title">{showContractors ? "Contractors" : "Questionnaires"}</h3>
+                {showContractors && <TabledTopPanel ref="tabledTopPanel">
+                    <Button
+                        ref="registerAsContractorBtn"
+                        text="Register As Contractor"
+                        hoverText="Used to link this company as a contractor of other companies when required."
+                        className="btn btn-primary pull-right"
+                        onClick={this.onRegisterAsContractor}
+                    />
+                </TabledTopPanel>}
             </div>
             {showContractors && <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardMainTab ref="dashboard" title="Dashboard" path={this.path}/>
@@ -82,6 +121,7 @@ class Main extends APage {
                 <ActiveTab ref="active" title="Active" path={this.path}/>
                 <CompleteTab ref="complete" title="Complete" path={this.path}/>
             </Tabs>}
+            <EditClientDialog ref="editClientDialog"/>
         </div>);
     }
 }

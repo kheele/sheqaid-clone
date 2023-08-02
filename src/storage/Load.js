@@ -1,13 +1,25 @@
 import {execWhen} from '../utils/Utils';
 
 import {is, login} from './';
+import signatureSettingStore from "mutations/all/SignatureSetting";
+import clientStore from "../mutations/all/Client";
+import projectStore from "../mutations/all/Project";
+import siteStore from "../mutations/all/Site";
+import listAllPermissionOtherKey from "../mutations/all/PermissionOtherKey/listAllPermissionOtherKey";
+import listAllCountry from "../mutations/all/Country/listAllCountry";
+
+const stores = {
+    clients: clientStore,
+    projects: projectStore,
+    sites: siteStore,
+};
 
 class Load {
 
     loadCountries() {
         if (!is.isLoadingCountries) {
             is.isLoadingCountries = true;
-            return neonBinding.events.emit("countries/list").then(res => {
+            return listAllCountry().then(res => {
 //                console.log("countries/list", res)
                 this.storage.attrs.set("countries", res);
             }).catch(err => {
@@ -23,22 +35,25 @@ class Load {
     }
 
     loadImpl(path, title, loginFN, reload) {
-        return neonBinding.events.emit("plugin_sheq_assist/" + path + "/list").then(res => {
-//            console.log(path + "/list", res)
+        const store = stores[path];
+        return store.listAllByLogged().then(res => {
+           console.log(path + "/list", res)
             this.storage.attrs.set(path, res);
             if (res.isEmpty()) {
-                return confirmDialog.open("There are currently no " + title + " created. Would you like to create a " + path.replace("ts", "t").replace("es", "e") + "?").then(res => {
-                    if (res === 1) {
-                        return defaultView.navigate(title, 'New').then(item => {
-                            return login[loginFN](item.id).then(res => {
-                                selectedItems.refs[path].select(item);
-                                return true;
-                            });
-                        });
-                    } else if (path === "clients") {
-                        return true;
-                    }
-                });
+                // return confirmDialog.open("There are currently no " + title + " created. Would you like to create a " + path.replace("ts", "t").replace("es", "e") + "?").then(res => {
+                //     if (res === 1) {
+                //         return defaultView.navigate(title, 'New').then(item => {
+                //             return login[loginFN](item.id).then(res => {
+                //                 return execWhen(() => !!selectedItems && selectedItems.refs[path]).then(ref => {
+                //                     ref.select(item);
+                //                     return true;
+                //                 });
+                //             });
+                //         });
+                //     } else if (path === "clients") {
+                //         return true;
+                //     }
+                // });
             } else {
                 if (!reload) {
                     return execWhen(() => !!window.selectedItems).then(() => {
@@ -47,8 +62,10 @@ class Load {
                             setTimeout(() => {
                                 selectedItems.open(path).then(item => {
                                     return login[loginFN](item.id).then(res => {
-                                        selectedItems.refs[path].select(item);
-                                        return true;
+                                        return execWhen(() => !!selectedItems && selectedItems.refs[path]).then(ref => {
+                                            ref.select(item);
+                                            return true;
+                                        });
                                     });
                                 }).then(resolve, reject);
                             }, 0);
@@ -100,9 +117,17 @@ class Load {
     }
 
     loadSignatureSettings() {
+        // signatureSettingStore
         return neonBinding.events.emit("plugin_sheq_assist/signature-settings/list").then(res => {
             this.storage.attrs.set("signature-settings", res);
             console.log("signature-settings", res)
+        });
+    }
+
+    loadPermissionOtherKeys() {
+        return listAllPermissionOtherKey().then(res => {
+            // console.log('loadPermissionOtherKeys:', res)
+            this.storage.attrs.set("permissionOtherKeys", res.map(({id, data}) => ({id, ...data})));
         });
     }
 }

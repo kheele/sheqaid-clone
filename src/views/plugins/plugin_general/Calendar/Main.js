@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Permissions} from '../../../../utils/Utils';
+import {Permissions} from 'utils/Utils';
 
 import APage from "../../../APage";
 
@@ -14,7 +14,7 @@ import TabTasks from './TabTasks.js';
 import TabAppointments from './TabAppointments.js';
 import TabCOVID from './TabCOVID.js';
 
-import Tabs from '../../../../components/tabs/Tabs';
+import Tabs from 'components/tabs/Tabs';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import style from "./Main.lazy.css";
