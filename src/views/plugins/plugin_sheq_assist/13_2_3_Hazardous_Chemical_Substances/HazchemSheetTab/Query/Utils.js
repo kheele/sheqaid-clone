@@ -1,29 +1,43 @@
+import {orgsFilter} from "graphql/Filters";
 
 export const getVariablesAndQueryConfig = (
-    {
-        org_id: {key, value},
-        physical_state,
-        type,
-    }
+	{
+		name,
+		category,
+		manufacturer,
+		physical_state,
+		type,
+		risk_level,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    //<editor-fold desc="variables, filters">
-    const variables = {
-        [key]: value,
-        // removed,
-    };
+	//<editor-fold desc="variables, filters">
+	let filter = orgsFilter({site_id, project_id, client_id, exact_orgs,});
 
-    let filter = [];
-    if (physical_state) {
-        filter.push(`physical_state: {_eq: "${physical_state}"}`);
-    }
-    if (type) {
-        filter.push(`type: {_eq: "${type}"}`);
-    }
+	if (name) {
+		filter.push(`name: {_ilike: "%${name}%"}`);
+	}
+	if (category) {
+		filter.push(`category: {_eq: "${category}"}`);
+	}
+	if (manufacturer) {
+		filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
+	}
+	if (physical_state) {
+		filter.push(`physical_state: {_eq: "${physical_state}"}`);
+	}
+	if (type) {
+		filter.push(`type: {_eq: "${type}"}`);
+	}
+	if (risk_level) {
+		filter.push(`type: {_eq: "${risk_level}"}`);
+	}
 
-    if(!filter.isEmpty()) {
-        filter = filter.join(", ");
-    }
-    //</editor-fold>
+	filter = filter.join(',');
+	//</editor-fold>
 
-    return {variables, filter};
+	return {filter};
 };

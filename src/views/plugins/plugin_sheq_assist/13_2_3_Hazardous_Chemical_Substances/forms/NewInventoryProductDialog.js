@@ -5,7 +5,7 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {Dates, execWhen} from "utils/Utils";
+import {Dates, execWhen, toDataURI} from "utils/Utils";
 import {TinyMCE} from 'components/documents';
 import {
     ClearableInput,
@@ -250,7 +250,7 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
+    async onSubmit(e, btn, onSaved) {
         const {form} = this;
         const {isConsultant} = storage.is;
 
@@ -393,16 +393,16 @@ class Controls extends React.Component {
             //8
             has_sds,
             sds_id: sds && sds.id,
-            sds_doc: sds_doc && sds_doc.path,
+            sds_doc: sds_doc && {path: await toDataURI(sds_doc.path)},
             sds_date: Dates.formatDateSQL(sds_date),
             //9
             has_hazchem_sheet,
             hazchem_sheet_id: hazchem_sheet && hazchem_sheet.id,
-            hazchem_sheet_doc: hazchem_sheet_doc && hazchem_sheet_doc.path,
+            hazchem_sheet_doc: hazchem_sheet_doc && {path: await toDataURI(hazchem_sheet_doc.path)},
             hazchem_sheet_date: Dates.formatDateSQL(hazchem_sheet_date),
             //10
             has_risk_assessment,
-            risk_assessment_doc: risk_assessment_doc && risk_assessment_doc.path,
+            risk_assessment_doc: risk_assessment_doc && {path: await toDataURI(risk_assessment_doc.path)},
             risk_assessment_date: Dates.formatDateSQL(risk_assessment_date),
             //11
             ppe_list: {

@@ -5,7 +5,7 @@ import {autorun, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {execWhen} from "utils/Utils";
+import {execWhen, toDataURI} from "utils/Utils";
 import {
     Button,
     ClearableInput,
@@ -255,7 +255,7 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
+    async onSubmit(e, btn, onSaved) {
         const {form, precaution_photo_concentrate_list, precaution_photo_application_list} = this;
 
         const {isConsultant, isNoProjects} = storage.is;
@@ -328,9 +328,9 @@ class Controls extends React.Component {
         } = form.data;
         const data = {
             //0
-            client: client && client.id,
-            project: project && project.id,
-            site: site && site.id,
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
             //1
             name,
             physical_state,
@@ -339,16 +339,16 @@ class Controls extends React.Component {
             sds_id: sds && sds.id,
             //2
             precaution_photo_list: {
-                data: [
-                    ...(precaution_photo_concentrate_list || []).map(({path}) => ({
-                        path,
+                data: await Promise.all([
+                    ...(precaution_photo_concentrate_list || []).map(async ({path}) => ({
+                        path: {path: await toDataURI(path.path)},
                         type: "Concentrate"
                     })),
-                    ...(precaution_photo_application_list || []).map(({path}) => ({
-                        path,
+                    ...(precaution_photo_application_list || []).map(async ({path}) => ({
+                        path: {path: await toDataURI(path.path)},
                         type: "Application"
                     }))
-                ]
+                ])
             },
             //3, 4, 5, 6, 7
             list: {
@@ -437,7 +437,7 @@ class Controls extends React.Component {
             contacts_manufacturer_name,
             contacts_manufacturer_num,
             //9
-            doc: doc && doc.path,
+            doc: doc && {path: await toDataURI(doc.path)},
         };
 
         console.log(data)

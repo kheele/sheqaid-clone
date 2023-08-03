@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen} from 'utils/Utils';
+import {Dates, execWhen, toDataURI} from 'utils/Utils';
 
 import {TinyMCE} from 'components/documents';
 import {ANewDialog} from 'components/dialogs';
@@ -237,7 +237,7 @@ class Controls extends React.Component {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
+    async onSubmit(e, btn, onSaved) {
         const {form} = this;
            
         const {isConsultant, isNoProjects} = storage.is;
@@ -315,11 +315,11 @@ class Controls extends React.Component {
         } = form.data;
         const data = {
             //0
-            client: client && client.id,
-            project: project && project.id,
-            site: site && site.id,
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
             //
-            product: product && product.id,
+            product_id: product && product.id,
             name,
             common_names,
             chemical_name,
@@ -369,7 +369,7 @@ class Controls extends React.Component {
             //16
             other_info,
             //17
-            doc: doc && doc.path,
+            doc: doc && {path: await toDataURI(doc.path)},
         };
         
         console.log(data)

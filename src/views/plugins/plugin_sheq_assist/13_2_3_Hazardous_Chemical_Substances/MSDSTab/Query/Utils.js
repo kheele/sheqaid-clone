@@ -1,33 +1,39 @@
+import {orgsFilter} from "graphql/Filters";
 
 export const getVariablesAndQueryConfig = (
-    {
-        org_id: {key, value},
-        category,
-        risk_level,
-        manufacturer,
-    }
+	{
+		name,
+		category,
+		manufacturer,
+		risk_level,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    //<editor-fold desc="variables, filters">
-    const variables = {
-        [key]: value,
-        // removed,
-    };
+	//<editor-fold desc="variables, filters">
+	let filter = orgsFilter({site_id, project_id, client_id, exact_orgs,});
 
-    let filter = [];
-    if (category) {
-        filter.push(`category: {_eq: "${category}"}`);
-    }
-    if (risk_level) {
-        filter.push(`risk_level: {_eq: "${risk_level}"}`);
-    }
-    if (manufacturer) {
-        filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
-    }
+	if (name) {
+		filter.push(`_or: [
+			{name: {_ilike: "%${name}%"}}, 
+			{common_names: {_ilike: "%${name}%"}}, 
+			{chemical_name: {_ilike: "%${name}%"}}
+		]`);
+	}
+	if (category) {
+		filter.push(`category: {_eq: "${category}"}`);
+	}
+	if (manufacturer) {
+		filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
+	}
+	if (risk_level) {
+		filter.push(`risk_level: {_eq: "${risk_level}"}`);
+	}
 
-    if(!filter.isEmpty()) {
-        filter = filter.join(", ");
-    }
-    //</editor-fold>
+	filter = filter.join(',');
+	//</editor-fold>
 
-    return {variables, filter};
+	return {filter};
 };

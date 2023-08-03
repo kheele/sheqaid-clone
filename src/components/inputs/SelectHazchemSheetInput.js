@@ -2,11 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {onAsyncSelectLoadImpl} from '../../utils/AsyncSelect';
-
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import byLogged from "views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/HazchemSheetTab/Query/List/listAllHazchemSheetsByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -23,9 +22,12 @@ class SelectInput extends ASelectInput {
         super(props);
     }
     
-    componentDidMount() {
+    async componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectHazchemSheetInput`;
+
+        const res = await onAsyncSelectLoad();
+        this.state.lists.list = res.distinct();
         
         this.state.props = {
             ref: "input",
@@ -33,7 +35,8 @@ class SelectInput extends ASelectInput {
             name: "hazchem_sheet",
             type: "select",
             placeholder: "Hazchem Sheet...",
-            onAsyncSelectLoad: onAsyncSelectLoad,
+            values: this.list,
+            // onAsyncSelectLoad: onAsyncSelectLoad,
             returnValue: true,
             add: false,
             ...this.props,
@@ -72,9 +75,21 @@ class SelectInput extends ASelectInput {
     }
 }
 
-function onAsyncSelectLoad(value) {
-    return onAsyncSelectLoadImpl("plugin_sheq_assist/Hazardous_Chemical_Substances/hazchem-sheet/list/search_by_name", value, value => {
-        return {label: value.data.product.name, value};
+function onAsyncSelectLoad() {
+    const args = {
+        removed: false,
+        //
+        limit: 0,
+        //
+        exact_orgs: true,
+    };
+
+    return byLogged(args).then(list => {
+        console.log('listForSelectionByLogged', list)
+        return list.map((value) => {
+            const {id, data: {product,}} = value;
+            return {label: product.name, value};
+        });
     });
 }
 

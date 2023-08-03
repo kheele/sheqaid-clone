@@ -1,81 +1,64 @@
-import listAllInventoryProductsByLoggedImpl from "./listAllInventoryProductsByLoggedImpl";
+import GQLClient from "graphql/GQLClient";
+import {getVariablesAndQueryConfig} from "../Utils";
+import {orgs_fragment} from "graphql/Fragments";
+import {chemical_product_details_fragment} from "../Fragments";
 
-export const byCompany = (
-    {
-        company_id,
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    }
+export default (
+  {
+    offset = 0,
+    limit = 50,
+    //
+    removed = false,
+    name,
+    manufacturer,
+    type,
+    category,
+    physical_state,
+    risk_level,
+    is_stable,
+    is_hazardous,
+    is_combustible,
+    is_flammable,
+    //
+    site_id, project_id, client_id,
+    //
+    exact_orgs = true,
+  }
 ) => {
-    return listAllInventoryProductsByLoggedImpl({
-        org_id: {key: 'company_id', value: company_id},
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
+  const {filter} = getVariablesAndQueryConfig({
+    name,
+    manufacturer,
+    type,
+    category,
+    physical_state,
+    risk_level,
+    is_stable,
+    is_hazardous,
+    is_combustible,
+    is_flammable,
+    //
+    site_id, project_id, client_id,
+    //
+    exact_orgs
+  });
 
-export const byClient = (
-    {
-        client_id,
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllInventoryProductsByLoggedImpl({
-        org_id: {key: 'client_id', value: client_id},
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
-
-export const byProject = (
-    {
-        project_id,
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllInventoryProductsByLoggedImpl({
-        org_id: {key: 'project_id', value: project_id},
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
-
-export const bySite = (
-    {
-        site_id,
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllInventoryProductsByLoggedImpl({
-        org_id: {key: 'site_id', value: site_id},
-        physical_state,
-        type,
-        category,
-        risk_level,
-        manufacturer,
-    });
+  return GQLClient
+  .query({
+    query: `
+      query listAllInventoryProductsByLoggedQuery {
+        sheq_chemical_products(
+          where: {
+            removed: {_eq: ${removed}},
+            ${filter}
+          },
+          order_by: {name: asc},
+          offset: ${offset}
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          ${chemical_product_details_fragment}
+          ${orgs_fragment}
+        }
+      }
+    `,
+  });
 };

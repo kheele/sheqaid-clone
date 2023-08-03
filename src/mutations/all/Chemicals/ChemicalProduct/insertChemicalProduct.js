@@ -193,18 +193,6 @@ export default async (input: EntityChemicalProduct) => {
         chemical_stock_list
     } = input;
 
-    if(sds_doc) {
-
-    }
-
-    if(hazchem_sheet_doc) {
-
-    }
-
-    if(risk_assessment_doc) {
-
-    }
-
     crudUtils.injectCreate(input);
 
     return await createMutationImpl({mutation, input});

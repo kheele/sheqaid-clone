@@ -1,65 +1,52 @@
-import listAllSDSByLoggedImpl from "./listAllSDSByLoggedImpl";
+import GQLClient from "graphql/GQLClient";
+import {getVariablesAndQueryConfig} from "../Utils";
+import {orgs_fragment} from "graphql/Fragments";
+import {chemical_sds_details_fragment} from "../Fragments";
 
-export const byCompany = (
-    {
-        company_id,
-        category,
-        risk_level,
-        manufacturer,
-    }
+export default (
+  {
+    offset = 0,
+    limit = 50,
+    //
+    removed = false,
+    name,
+    category,
+    manufacturer,
+    risk_level,
+    //
+    site_id, project_id, client_id,
+    //
+    exact_orgs = true,
+  }
 ) => {
-    return listAllSDSByLoggedImpl({
-        org_id: {key: 'company_id', value: company_id},
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
+  const {filter} = getVariablesAndQueryConfig({
+    name,
+    category,
+    manufacturer,
+    risk_level,
+    //
+    site_id, project_id, client_id,
+    //
+    exact_orgs
+  });
 
-export const byClient = (
-    {
-        client_id,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllSDSByLoggedImpl({
-        org_id: {key: 'client_id', value: client_id},
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
-
-export const byProject = (
-    {
-        project_id,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllSDSByLoggedImpl({
-        org_id: {key: 'project_id', value: project_id},
-        category,
-        risk_level,
-        manufacturer,
-    });
-};
-
-export const bySite = (
-    {
-        site_id,
-        category,
-        risk_level,
-        manufacturer,
-    }
-) => {
-    return listAllSDSByLoggedImpl({
-        org_id: {key: 'site_id', value: site_id},
-        category,
-        risk_level,
-        manufacturer,
-    });
+  return GQLClient
+  .query({
+    query: `
+      query listAllSDSByLoggedQuery {
+        sheq_chemical_sds(
+          where: {
+            removed: {_eq: ${removed}},
+            ${filter}
+          },
+          order_by: {lname: asc},
+          offset: ${offset}
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          ${chemical_sds_details_fragment}
+          ${orgs_fragment}
+        }
+      }
+    `,
+  });
 };

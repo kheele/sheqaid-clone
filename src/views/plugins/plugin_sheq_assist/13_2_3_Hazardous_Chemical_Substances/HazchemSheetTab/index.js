@@ -26,7 +26,7 @@ import ExportHazchemSheetsDialog from '../dialogs/ExportHazchemSheetsDialog.js';
 import HazchemSheetRenderRow from "./HazchemSheetRenderRow";
 import ProfilePDFReader from '../printers/ProfileHazchemSheetPDFReader';
 
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllHazchemSheetsByLogged";
+import byLogged from "./Query/List/listAllHazchemSheetsByLogged";
 // </editor-fold>
 
 @observer
@@ -71,34 +71,44 @@ class HazchemSheetTab extends React.Component {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList(page, isNew) {
-        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+            category,
+            manufacturer,
+            physical_state,
+            type,
+            risk_level,
+        } = filterData || {};
 
-        let fn;
+        const limit = 50;
 
-        const args = {};
+        const args = {
+            //
+            name,
+            category,
+            manufacturer,
+            physical_state,
+            type,
+            risk_level,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
 
-        if (selectedSite) {
-            args.site_id = selectedSite.id;
-            fn = bySite;
-        } else if (selectedProject) {
-            args.project_id = selectedProject.id;
-            fn = byProject;
-        } else if (selectedClient) {
-            args.client_id = selectedClient.id;
-            fn = byClient;
+        if(!isNew) {
+            args.offset = this.refs.root.list.length;
         } else {
-            args.company_id = sess_company_id;
-            fn = byCompany;
+            args.offset = 0;
         }
 
-        return fn(args).then((res) => {
+        return byLogged(args).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
-
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="actions">

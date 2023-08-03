@@ -29,7 +29,7 @@ import ExportInventoryProductsDialog from '../dialogs/ExportInventoryProductsDia
 import InventoryProductRenderRow from "./InventoryProductRenderRow";
 import ProfilePDFReader from '../printers/ProfileInventoryProductPDFReader';
 
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllInventoryProductsByLogged";
+import byLogged from "./Query/List/listAllInventoryProductsByLogged";
 // </editor-fold>
 
 @observer
@@ -82,34 +82,52 @@ class InventoryProductTab extends React.Component {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList(page, isNew) {
-        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+            manufacturer,
+            type,
+            category,
+            physical_state,
+            risk_level,
+            is_stable,
+            is_hazardous,
+            is_combustible,
+            is_flammable,
+        } = filterData || {};
 
-        let fn;
+        const limit = 50;
 
-        const args = {};
+        const args = {
+            //
+            name,
+            manufacturer,
+            type,
+            category,
+            physical_state,
+            risk_level,
+            is_stable,
+            is_hazardous,
+            is_combustible,
+            is_flammable,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
 
-        if (selectedSite) {
-            args.site_id = selectedSite.id;
-            fn = bySite;
-        } else if (selectedProject) {
-            args.project_id = selectedProject.id;
-            fn = byProject;
-        } else if (selectedClient) {
-            args.client_id = selectedClient.id;
-            fn = byClient;
+        if(!isNew) {
+            args.offset = this.refs.root.list.length;
         } else {
-            args.company_id = sess_company_id;
-            fn = byCompany;
+            args.offset = 0;
         }
 
-        return fn(args).then((res) => {
+        return byLogged(args).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
-
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="actions">

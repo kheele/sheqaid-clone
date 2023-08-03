@@ -154,10 +154,6 @@ export default async (input: EntityChemicalHazchemsheet) => {
         doc,
     } = input;
 
-    if(doc) {
-        // delete input.doc;
-    }
-
     crudUtils.injectCreate(input);
 
     return await createMutationImpl({mutation, input});

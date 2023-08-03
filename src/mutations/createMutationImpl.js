@@ -19,7 +19,7 @@ export default async ({checkLogin = true, mutation, input, optimisticUpdater, up
 			object: convertMobx(input),
 		};
 
-		console.log('createMutationImpl input', input);
+		console.log('createMutationImpl input object', variables.object);
 
 		// 5
 		commitMutation(environment, {
