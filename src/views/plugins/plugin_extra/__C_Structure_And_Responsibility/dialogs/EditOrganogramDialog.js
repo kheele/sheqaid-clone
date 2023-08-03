@@ -197,7 +197,7 @@ class Controls extends React.Component {
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
         
         if(list) {
-            const mapFn = ({employee_list, team, employee, employeeReportedTo}) => {
+            const mapFn = ({employee_list, team, employee, employee_reported_to}) => {
                 let item = "";
                 if(team) {
                     item += ":" + team.id;
@@ -210,8 +210,8 @@ class Controls extends React.Component {
                         return v.id;
                     }).join(":");
                 }
-                if(employeeReportedTo) {
-                    item += ":" + employeeReportedTo.id;
+                if(employee_reported_to) {
+                    item += ":" + employee_reported_to.id;
                 }
                 return item;
             };
@@ -220,7 +220,7 @@ class Controls extends React.Component {
             console.log('newListIds', newListIds)
             console.log('oldListIds', oldListIds)
             if(oldListIds !== newListIds){
-                data.list = list.map(({employee_list, team, employee, employeeReportedTo}) => {
+                data.list = list.map(({employee_list, team, employee, employee_reported_to}) => {
                     const item = {};
                     if(team) {
                         item.team_id = team.id;
@@ -232,9 +232,9 @@ class Controls extends React.Component {
                     if(employee_list) {
                         item.employee_list = employee_list.map(({id}) => id);
                     }
-                    if(employeeReportedTo) {
-                        const {id, data: {fname, lname}} = employeeReportedTo;
-                        item.employeeReportedTo = {id, fname, lname};
+                    if(employee_reported_to) {
+                        const {id, data: {fname, lname}} = employee_reported_to;
+                        item.employee_reported_to = {id, fname, lname};
                     }
                     return item;
                 });

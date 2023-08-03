@@ -28,6 +28,9 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./EditInventoryProductDialog.lazy.css";
+import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
+import updateChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
+import updateChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -257,7 +260,7 @@ class Controls extends React.Component {
             name, common_names, chemical_name, empirical_formula, un_num, cas_num, concentration,
             category, physical_state, type,
             application_or_use,
-            manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+            supplier_list,
             emergency_phone_nums,
             //2
             location_where_product_is_used, process_where_product_is_used,
@@ -315,12 +318,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, physical_state, 'physical_state');
         ShouldUpdate.check(data, old_data, type, 'type');
         ShouldUpdate.check(data, old_data, application_or_use, 'application_or_use');
-        ShouldUpdate.check(data, old_data, manufacturer, 'manufacturer');
-        ShouldUpdate.check(data, old_data, manufacturer_addr, 'manufacturer_addr');
-        ShouldUpdate.check(data, old_data, manufacturer_phone_num, 'manufacturer_phone_num');
-        ShouldUpdate.check(data, old_data, manufacturer_email, 'manufacturer_email');
-        ShouldUpdate.check(data, old_data, manufacturer_fax, 'manufacturer_fax');
-        ShouldUpdate.check(data, old_data, manufacturer_website, 'manufacturer_website');
+        // ShouldUpdate.check(data, old_data, supplier_list, 'supplier_list');
         ShouldUpdate.checkListToJS(data, old_data, emergency_phone_nums, 'emergency_phone_nums');
         
         //2
@@ -390,14 +388,16 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(updateAttrs => {
-            console.log("res", updateAttrs)
-            onSaved && onSaved(updateAttrs);
+        progressDialog.open();
+        updateChemicalProduct({id: this.item.id, ...data}).then(res => {
+            console.log("res", res)
+            onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
     // </editor-fold>
@@ -440,7 +440,7 @@ class Controls extends React.Component {
                     name, common_names, chemical_name, empirical_formula, un_num, cas_num, concentration,
                     category, physical_state, type,
                     application_or_use,
-                    manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+                    supplier_list,
                     emergency_phone_nums,
                     //2
                     location_where_product_is_used, process_where_product_is_used,
@@ -525,13 +525,8 @@ class Controls extends React.Component {
                 <ClearableInput name="application_or_use" type="textarea" placeholder="Application / Use" defaultValue={application_or_use} className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
                 
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Manufacturer / Supplier</label>
-                <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..." defaultValue={manufacturer} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_addr" type="textarea" placeholder="Address" defaultValue={manufacturer_addr} className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_phone_num" type="text" placeholder="Telephone" defaultValue={manufacturer_phone_num} className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_fax" type="text" placeholder="Fax" defaultValue={manufacturer_fax} className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_email" type="text" placeholder="E-mail Address" defaultValue={manufacturer_email} className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_website" type="text" placeholder="Website" defaultValue={manufacturer_website} className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                
+                <NewChemicalSupplierListTable ref="supplier_list" name="supplier_list" defaultValue={[...(supplier_list || []), null]} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Emergency Details</label>
                 <ClearableInput name="emergency_phone_nums" type="select_multi" placeholder="Emergency Phone Numbers..." defaultValue={emergency_phone_nums} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.emergency_phone_nums} add returnValue/>
             </Row>

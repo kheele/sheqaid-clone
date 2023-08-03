@@ -151,12 +151,12 @@ class RemovedListWarning extends React.Component {
         if(!list || list.isEmpty()) return;
         
         const removedList = [];
-        list.forEach(({employee, employeeReportedTo, employee_list, team}) => {
+        list.forEach(({employee, employee_reported_to, employee_list, team}) => {
             if(employee && employee.data.removed) {
                 removedList.push(employee.id);
             }
-            if(employeeReportedTo && employeeReportedTo.data.removed) {
-                removedList.push(employeeReportedTo.id);
+            if(employee_reported_to && employee_reported_to.data.removed) {
+                removedList.push(employee_reported_to.id);
             }
             if(employee_list) {
                 const removedMembers = employee_list.filter(({data: {removed}}) => removed).map(({id}) => id);

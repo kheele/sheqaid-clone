@@ -41,7 +41,7 @@ class Controls extends React.Component {
         employee_list: null,
         team: null,
         selectedType: null,
-        employeeReportedTo: null
+        employee_reported_to: null
     };
     // </editor-fold>
     
@@ -52,7 +52,7 @@ class Controls extends React.Component {
         this.form = new Form();
         this.form.addChangeOne("type", this.onChangeType.bind(this));
         this.form.addChangeOne("employee", this.onChangeEmployee.bind(this));
-        this.form.addChangeOne("employeeReportedTo", this.onChangeEmployeeReportedTo.bind(this));
+        this.form.addChangeOne("employee_reported_to", this.onChangeEmployeeReportedTo.bind(this));
     }
     // </editor-fold>
 
@@ -66,14 +66,14 @@ class Controls extends React.Component {
     }
     
     onChangeEmployeeReportedTo(el, val) {
-        this.state.employeeReportedTo = val;
+        this.state.employee_reported_to = val;
         this.onLoadTeam();
     }
     
     // <editor-fold defaultstate="collapsed" desc="onLoadTeam">
     onLoadTeam() {
-        const {selectedType, employeeReportedTo} = this.state;
-        if(selectedType === 'Team' && employeeReportedTo) {
+        const {selectedType, employee_reported_to} = this.state;
+        if(selectedType === 'Team' && employee_reported_to) {
             //team
 //            this.state.employee_list = ;
         }
@@ -93,29 +93,20 @@ class Controls extends React.Component {
             return;
         }
         if (form.get('type') === 'Team') {
-            if (!form.isValid('team') || (!form.isValid('employee_list') || form.get('employee_list').isEmpty())) {
+            if (!form.isValid('team') && (!form.isValid('employee_list') || form.get('employee_list').isEmpty())) {
                 infoDialog.open('Select Team or Add at least one person');
                 return;
             }
         }
 
-        const {type, team, employee, employee_list, employeeReportedTo} = form.data;
-        const data = {};
-        if(team) {
-            data.team = team;
-        }
-        if(employee) {
-            data.employee = employee;
-        }
-        if(employee_list) {
-            data.employee_list = employee_list.map(v => {
-                const {id, data: {fname, lname}} = v.employee;
-                return {id, fname, lname};
-            });
-        }
-        if(employeeReportedTo) {
-            data.employeeReportedTo = employeeReportedTo;
-        }
+        const {type, team, employee, employee_list, employee_reported_to} = form.data;
+        const data = {
+            team,
+            employee,
+            employee_reported_to,
+            employee_list,
+        };
+
         console.log(data)
 
         onSaved && onSaved(data);
@@ -151,7 +142,7 @@ class Controls extends React.Component {
             if(employee_list) {
                 return [...employee_list, null];
             } else if(team) {
-                return [...team.data.list, null];
+                return [...(team.list || team.data.list), null];
             }
         }
         return [null];
@@ -172,9 +163,9 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="selectEmployeeReportedTo">
     get selectEmployeeReportedTo() {
         const {item} = this;
-        if(item && item.employeeReportedTo) {
-            const {id, data: {profile_pic, fname, lname}} = item.employeeReportedTo;
-            return {label: fname + ' ' + lname, value: item.employeeReportedTo};
+        if(item && item.employee_reported_to) {
+            const {id, data: {profile_pic, fname, lname}} = item.employee_reported_to;
+            return {label: fname + ' ' + lname, value: item.employee_reported_to};
         }
         return null;
     }
@@ -204,7 +195,7 @@ class Controls extends React.Component {
                 <div className="row">
                     <label>Report To</label>
                     <div className="row sec-group">
-                        <SelectEmployeeInput name="employeeReportedTo" placeholder="Employee Reported To..." defaultValue={this.selectEmployeeReportedTo} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <SelectEmployeeInput name="employee_reported_to" placeholder="Employee Reported To..." defaultValue={this.selectEmployeeReportedTo} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <SelectedEmployeeReportedToWrapper state={this.state}/>
                     </div>
                 </div>
@@ -221,10 +212,10 @@ class SelectedEmployeeWrapper extends React.Component {
     render() {
         const {state: {employee}} = this.props;
         if(!employee) return null;
-        const {id, data:{optional_info}} = employee;
+        const {id, data:{job_position, department}} = employee;
         return <React.Fragment key={new Date().getTime()}>
-            <ProfileField name="department" title="Department" value={optional_info && optional_info.department} renderer={v => v.name || v.data.name} className="col-lg-12"/>
-            <ProfileField name="job_position" title="Job Position" value={optional_info && optional_info.job_position} renderer={v => v.name || v.data.name} className="col-lg-12"/>
+            <ProfileField name="department" title="Department" value={department} renderer={v => v.name} className="col-lg-12"/>
+            <ProfileField name="job_position" title="Job Position" value={job_position} renderer={v => v.name} className="col-lg-12"/>
         </React.Fragment>;
     }
 }
@@ -235,12 +226,12 @@ class SelectedEmployeeWrapper extends React.Component {
 class SelectedEmployeeReportedToWrapper extends React.Component {
     
     render() {
-        const {state: {employeeReportedTo}} = this.props;
-        if(!employeeReportedTo) return null;
-        const {id, data:{optional_info}} = employeeReportedTo;
+        const {state: {employee_reported_to}} = this.props;
+        if(!employee_reported_to) return null;
+        const {id, data:{job_position, department}} = employee_reported_to;
         return <React.Fragment key={new Date().getTime()}>
-            <ProfileField name="department" title="Department" value={optional_info && optional_info.department} renderer={v => v.name || v.data.name} className="col-lg-12"/>
-            <ProfileField name="job_position" title="Job Position" value={optional_info && optional_info.job_position} renderer={v => v.name || v.data.name} className="col-lg-12"/>
+            <ProfileField name="department" title="Department" value={department} renderer={v => v.name} className="col-lg-12"/>
+            <ProfileField name="job_position" title="Job Position" value={job_position} renderer={v => v.name} className="col-lg-12"/>
         </React.Fragment>;
     }
 }

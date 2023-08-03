@@ -73,15 +73,15 @@ class TypedWrapper extends React.Component {
     // </editor-fold>
                  
     // <editor-fold defaultstate="collapsed" desc="create">                               
-    create({employee, employee_list, team, employeeReportedTo}, idx) {
+    create({employee, employee_list, team, employee_reported_to}, idx) {
         const {refName, readonly} = this.props;
         
         if(!employee) {
-            employee_list = employee_list || (team ? team.data.list : []);
+            employee_list = employee_list ? employee_list.map((v) => v.employee || v) : (team ? team.list || team.data.list : []);
         }
         
         const getTeamMember = function(item, id) {
-            return (item.employee_list || (item.team ? item.team.data.list : [])).find(function(_item) {
+            return (item.employee_list || (item.team ? item.team.list || team.data.list : [])).find(function(_item) {
                 return _item.id === id;
             });
         };
@@ -98,24 +98,24 @@ class TypedWrapper extends React.Component {
                 const parentId = organogramGetParentId(btn);
                 if(organogramIsTeam(btn)) {
                     list.removeIf(function(val) {
-                        const {employee_list, team, employeeReportedTo} = val;
-                        return (employee_list || team) && employeeReportedTo && (employeeReportedTo.id === parentId);
+                        const {employee_list, team, employee_reported_to} = val;
+                        return (employee_list || team) && employee_reported_to && (employee_reported_to.id === parentId);
                     });
                 } else {
                     const removeItem = function() {
                         if(isTeamMember) {
                             const item = list.find(function(item) {
-                                return getTeamMember(item, btn.id);
+                                return getTeamMember(item, parseInt(btn.id));
                             });
                             if(item) {
                                 const {employee_list, team} = item;
-                                (employee_list || team.data.list).removeIf(function(val) {
-                                    return val.id === btn.id;
+                                (employee_list || team.list || team.data.list).removeIf(function(val) {
+                                    return val.id === parseInt(btn.id);
                                 });
                             }
                         } else {
                             list.removeIf(function(val) {
-                                return val.id === btn.id;
+                                return val.id === parseInt(btn.id);
                             });
                         }
                     };
@@ -132,15 +132,15 @@ class TypedWrapper extends React.Component {
 //            organogramOnEdit(btn, list, onAddImpl);
             if(organogramIsTeam(btn)) {
                 const item = list.find(function(val) {
-                    const {employee_list, team, employeeReportedTo} = val;
-                    return (employee_list || team) && employeeReportedTo && employeeReportedTo.id === parentId;
+                    const {employee_list, team, employee_reported_to} = val;
+                    return (employee_list || team) && employee_reported_to && employee_reported_to.id === parentId;
                 });
 //                console.log('onEdit', item)
                 onAddImpl(item, true);
             } else {
                 const item = list.find(function(val) {
                     const {employee} = val;
-                    return employee && employee.id === btn.id;
+                    return employee && employee.id === parseInt(btn.id);
                 });
 //                console.log('onEdit', item)
                 onAddImpl(item, true);
@@ -151,9 +151,9 @@ class TypedWrapper extends React.Component {
 //            organogramOnAdd(btn, list, onAddImpl);
             const item = list.find(function(val) {
                 const {employee} = val;
-                return employee && (employee.id === btn.id);
+                return employee && (employee.id === parseInt(btn.id));
             });
-            onAddImpl({employeeReportedTo: item.employee});
+            onAddImpl({employee_reported_to: item.employee});
         };
         const onView = function(btn, createRef, getTeamMember, isTeamMember) {
             const {list, refs: {profileDialog}} = createRef(btn);
@@ -161,12 +161,12 @@ class TypedWrapper extends React.Component {
             const findItem = function() {
                 const item = list.find(function(item) {
                     if(isTeamMember) {
-                        return getTeamMember(item, btn.id);
+                        return getTeamMember(item, parseInt(btn.id));
                     }
-                    return item.employee && (item.employee.id === btn.id);
+                    return item.employee && (item.employee.id === parseInt(btn.id));
                 });
                 if(isTeamMember && item) {
-                    return getTeamMember(item, btn.id);
+                    return getTeamMember(item, parseInt(btn.id));
                 }
                 return item;
             };
@@ -180,9 +180,9 @@ class TypedWrapper extends React.Component {
         
         if(!readonly) {
             const {list} = this;
-            if(list.length === 1 && employeeReportedTo) {
+            if(list.length === 1 && employee_reported_to) {
                 setTimeout(() => {
-                    this.list.push({employee: employeeReportedTo});
+                    this.list.push({employee: employee_reported_to});
                 }, 0);
             }
         }
@@ -191,13 +191,12 @@ class TypedWrapper extends React.Component {
             return `var createRef = ${createRef};` + (hasTeamMember ? ` var getTeamMember = ${getTeamMember};` : '');
         };
         
-        const parentId = employeeReportedTo ? employeeReportedTo.id : "";
+        const parentId = employee_reported_to ? employee_reported_to.id : "";
         if(employee) {
-            const {id, data:{removed, profile_pic, lname, fname, optional_info}} = employee;
+            const {id, data:{removed, profile_pic, lname, fname, job_position}} = employee;
             let jobPosition; 
-            if(optional_info && optional_info.job_position) {
-                const {name, data: _data} = optional_info.job_position;
-                jobPosition = name || _data.name;
+            if(job_position) {
+                jobPosition = job_position.name;
             } else {
                 jobPosition = "N/A";
             }
@@ -220,15 +219,15 @@ class TypedWrapper extends React.Component {
                 f += '<div class="removed"/>';
             }
             return [
-                {'v': id, 'f': f},
-                parentId, jobPosition
+                {'v': String(id), 'f': f},
+                String(parentId), jobPosition
             ];
         } else {
             const id = parentId + "-team-" + idx;
             let f = '<div>';
             f +=    `<div class="team-header">${employee_list.length} Member(s)</div>`;
             f +=    '<ul>';
-            employee_list.forEach(({id, data:{removed, profile_pic, lname, fname, optional_info}}, n) => {
+            employee_list.forEach(({id, data:{removed, profile_pic, lname, fname, job_position}}, n) => {
                 if(removed) {
                     f +=    '<li class="removed">';
                 } else {
@@ -252,7 +251,7 @@ class TypedWrapper extends React.Component {
             f += '</div>';
             return [
                 {'v': id, 'f': f},
-                parentId, "Team"
+                String(parentId), "Team"
             ];
         }
     }

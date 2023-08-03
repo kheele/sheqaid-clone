@@ -24,6 +24,9 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./EditMSDSDialog.lazy.css";
+import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
+import insertChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/insertChemicalSDS";
+import updateChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -98,7 +101,7 @@ class Controls extends React.Component {
                             name, common_names, chemical_name, empirical_formula, un_num, cas_num, concentration,
                             category, physical_state, type,
                             application_or_use,
-                            manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+                            supplier_list,
                             emergency_phone_nums,
                             //4
                             risk_level,
@@ -125,23 +128,8 @@ class Controls extends React.Component {
                     execWhen(() => this.refs.application_or_use).then(ref => {
                         ref.value = application_or_use;
                     });
-                    execWhen(() => this.refs.manufacturer).then(ref => {
-                        ref.value = manufacturer;
-                    });
-                    execWhen(() => this.refs.manufacturer_addr).then(ref => {
-                        ref.value = manufacturer_addr;
-                    });
-                    execWhen(() => this.refs.manufacturer_phone_num).then(ref => {
-                        ref.value = manufacturer_phone_num;
-                    });
-                    execWhen(() => this.refs.manufacturer_fax).then(ref => {
-                        ref.value = manufacturer_fax;
-                    });
-                    execWhen(() => this.refs.manufacturer_email).then(ref => {
-                        ref.value = manufacturer_email;
-                    });
-                    execWhen(() => this.refs.manufacturer_website).then(ref => {
-                        ref.value = manufacturer_website;
+                    execWhen(() => this.refs.supplier_list).then(ref => {
+                        ref.value = supplier_list;
                     });
                     execWhen(() => this.refs.emergency_phone_nums).then(ref => {
                         ref.value = emergency_phone_nums;
@@ -280,7 +268,7 @@ class Controls extends React.Component {
             name, common_names, chemical_name, empirical_formula, un_num, 
             category, date_identified,//other added
             application_or_use,
-            manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+            supplier_list,
             emergency_phone_nums, 
 //            emergency_phone, //replaced with emergency_phone_nums
             risk_level,//other added
@@ -340,12 +328,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, category, 'category');//other added
         ShouldUpdate.checkDate_deprecated(data, old_data, date_identified, 'date_identified');//other added
         ShouldUpdate.check(data, old_data, application_or_use, 'application_or_use');
-        ShouldUpdate.check(data, old_data, manufacturer, 'manufacturer');
-        ShouldUpdate.check(data, old_data, manufacturer_addr, 'manufacturer_addr');
-        ShouldUpdate.check(data, old_data, manufacturer_phone_num, 'manufacturer_phone_num');
-        ShouldUpdate.check(data, old_data, manufacturer_email, 'manufacturer_email');
-        ShouldUpdate.check(data, old_data, manufacturer_fax, 'manufacturer_fax');
-        ShouldUpdate.check(data, old_data, manufacturer_website, 'manufacturer_website');
+        // ShouldUpdate.check(data, old_data, supplier_list, 'supplier_list');
         ShouldUpdate.checkListToJS(data, old_data, emergency_phone_nums, 'emergency_phone_nums');
 //        ShouldUpdate.check(data, old_data, emergency_phone, 'emergency_phone'); //replaced with emergency_phone_nums
         ShouldUpdate.check(data, old_data, risk_level, 'risk_level');//other added
@@ -377,7 +360,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        progressDialog.open();
+        updateChemicalSDS({id: this.item.id, ...data}).then(res => {
             this.item.data.product = product;
             console.log("res", res)
             onSaved && onSaved(res);
@@ -386,6 +370,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
     // </editor-fold>
@@ -414,7 +399,7 @@ class Controls extends React.Component {
                     name, common_names, chemical_name, empirical_formula, un_num, 
                     category, date_identified,//other added
                     application_or_use,
-                    manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+                    supplier_list,
                     emergency_phone_nums, 
         //            emergency_phone, //replaced with emergency_phone_nums
                     risk_level,//other added
@@ -440,9 +425,7 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
-        const manufacturerDefault = manufacturer ? {label: manufacturer, value: manufacturer} : null;
-        
+
         const {isConsultant, isNoProjects} = storage.is;
         
         return <FormControls>
@@ -484,12 +467,7 @@ class Controls extends React.Component {
                     <ClearableInput ref="application_or_use" name="application_or_use" type="textarea" placeholder="Application / Use" defaultValue={application_or_use} required className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
 
                     <label className="col-lg-12 margin-t-5 padding-0 pull-left">Manufacturer / Supplier</label>
-                    <SelectChemicalManufacturerInput ref="manufacturer" name="manufacturer" placeholder="Manufacturer..." defaultValue={manufacturer} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="manufacturer_addr" name="manufacturer_addr" type="textarea" placeholder="Address" defaultValue={manufacturer_addr} required className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="manufacturer_phone_num" name="manufacturer_phone_num" type="text" placeholder="Telephone" defaultValue={manufacturer_phone_num} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="manufacturer_fax" name="manufacturer_email" type="text" placeholder="E-mail Address" defaultValue={manufacturer_email} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="manufacturer_email" name="manufacturer_fax" type="text" placeholder="Fax" defaultValue={manufacturer_fax} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="manufacturer_website" name="manufacturer_website" type="text" placeholder="Website" defaultValue={manufacturer_website} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <NewChemicalSupplierListTable ref="supplier_list" name="supplier_list" defaultValue={[...(supplier_list || []), null]} className="col-lg-12 form-control" onChange={this.form.onChange}/>
 
                     <label className="col-lg-12 margin-t-5 padding-0 pull-left">Emergency Details</label>
                     <ClearableInput ref="emergency_phone_nums" name="emergency_phone_nums" type="select_multi" placeholder="Emergency Phone Numbers..." defaultValue={emergency_phone_nums} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.emergency_phone_nums} add returnValue/>

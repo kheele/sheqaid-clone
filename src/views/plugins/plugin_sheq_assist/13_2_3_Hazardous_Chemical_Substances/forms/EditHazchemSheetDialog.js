@@ -41,6 +41,9 @@ import {
 import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onChangeSDS} from '../dialogs/Utils';
 
 import style from "./EditHazchemSheetDialog.lazy.css";
+import updateChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
+import updateChemicalHazchemsheet
+    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -447,7 +450,8 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        progressDialog.open();
+        updateChemicalHazchemsheet({id: this.item.id, ...data}).then(res => {
             this.item.data.product = product;
             console.log("res", res)
             onSaved && onSaved(res);
@@ -456,6 +460,7 @@ class Controls extends React.Component {
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            progressDialog.close();
         });
     }
 

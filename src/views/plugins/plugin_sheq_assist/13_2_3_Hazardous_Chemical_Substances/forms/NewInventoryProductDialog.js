@@ -29,6 +29,7 @@ import {changeColors} from '../dialogs/Utils';
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewInventoryProductDialog.lazy.css";
 import insertChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/insertChemicalProduct";
+import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -284,12 +285,7 @@ class Controls extends React.Component {
             physical_state,
             type,
             application_or_use,
-            manufacturer,
-            manufacturer_addr,
-            manufacturer_phone_num,
-            manufacturer_email,
-            manufacturer_fax,
-            manufacturer_website,
+            supplier_list,
             emergency_phone_nums,
             //2
             location_where_product_is_used,
@@ -356,12 +352,16 @@ class Controls extends React.Component {
             physical_state,
             type,
             application_or_use,
-            manufacturer,
-            manufacturer_addr,
-            manufacturer_phone_num,
-            manufacturer_email,
-            manufacturer_fax,
-            manufacturer_website,
+            supplier_list: {
+                data: (supplier_list || []).map(({manufacturer, email, phone, fax, website, address,}) => ({
+                    manufacturer,
+                    email,
+                    phone,
+                    fax,
+                    website,
+                    address,
+                })),
+            },
             emergency_phone_nums,
             //2
             location_where_product_is_used,
@@ -515,18 +515,7 @@ class Controls extends React.Component {
                                 className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
 
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Manufacturer / Supplier</label>
-                <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..."
-                                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_addr" type="textarea" placeholder="Address"
-                                className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_phone_num" type="text" placeholder="Telephone"
-                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_fax" type="text" placeholder="Fax" className="col-lg-6 form-control"
-                                onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_email" type="text" placeholder="E-mail Address"
-                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manufacturer_website" type="text" placeholder="Website"
-                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <NewChemicalSupplierListTable ref="supplier_list" name="supplier_list" className="col-lg-12 form-control" onChange={this.form.onChange}/>
 
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Emergency Details</label>
                 <ClearableInput name="emergency_phone_nums" type="select_multi" placeholder="Emergency Phone Numbers..."

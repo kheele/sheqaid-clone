@@ -3,11 +3,11 @@ import {Dates} from "utils/Dates";
 
 export default (
 	{
-	                removed = false, //
-	                date_range = {}, //
-	                site_id, project_id, client_id, company_id,
-                }
-								) => {
+		removed = false, //
+		date_range = {}, //
+		site_id, project_id, client_id, company_id,
+	}
+) => {
 	const id = site_id || project_id || client_id || company_id;
 	let tbl;
 	if (site_id) {
@@ -120,9 +120,10 @@ export default (
 	});
 
 	//<editor-fold desc="ByEach">
-	return Promise.all([GQLClient
-	.query({
-		query: `
+	return Promise.all([
+		GQLClient
+		.query({
+			query: `
       query findByIdOrgNCRDashboardQuery {
         ${tbl}(
           where: {
@@ -297,8 +298,8 @@ export default (
 			  }
       }
     `,
-	}),
+		}),
 		...dateRangeQueries,
-	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));//.then(fillNullLists);
+	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
 	//</editor-fold>
 };

@@ -20,8 +20,6 @@ export default (
 		tbl = "default_companies";
 	}
 
-	const due_date = Dates.formatDateSQL(new Date());
-
 	const {start, end} = date_range;
 	const monStart = start || new Date().addMonths(-12);
 	const monEnd = end || new Date();
@@ -29,61 +27,84 @@ export default (
 	const datesOnlyPrev = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 
-	const dateRangeOnlyPrevQueries = datesOnlyPrev.map(date => {
+	const dateRangeOnlyPrevQueries = datesOnlyPrev.map(async date => {
 		const {year, month, start, end} = date;
-		return `
-			_${year}_${month}__prev_service_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, maintenance_plan_list: {plan_list: {service_date: {_gte: "${start}", _lte: "${end}"}}}}) {
-				aggregate {
-				  count
-				}
-			}
-			_${year}_${month}__prev_calibration_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, calibration_record_list: {calibration_list: {calibration_date: {_gte: "${start}", _lte: "${end}"}}}}) {
-				aggregate {
-				  count
-				}
-			}
-			_${year}_${month}__prev_monitoring_plan_fuel_usage_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {fuel_usage_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
-				aggregate {
-				  count
-				}
-			}
-			_${year}_${month}__prev_monitoring_plan_working_distance_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {working_distance_or_time_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
-				aggregate {
-				  count
-				}
-			}
-			_${year}_${month}__prev_monitoring_plan_working_time_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {working_distance_or_time_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
-				aggregate {
-				  count
-				}
-			}
-    `;
-	}).join('\n');
+		return GQLClient
+		.query({
+			query: `
+				query findByIdOrgAssetDashboardQuery_dateRangeOnlyPrev_${year}_${month} {
+	        ${tbl}(
+	          where: {
+	            id: {_eq: ${id}}
+	          }
+	        ) {
+						_${year}_${month}__prev_service_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, maintenance_plan_list: {plan_list: {service_date: {_gte: "${start}", _lte: "${end}"}}}}) {
+							aggregate {
+							  count
+							}
+						}
+						_${year}_${month}__prev_calibration_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, calibration_record_list: {calibration_list: {calibration_date: {_gte: "${start}", _lte: "${end}"}}}}) {
+							aggregate {
+							  count
+							}
+						}
+						_${year}_${month}__prev_monitoring_plan_fuel_usage_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {fuel_usage_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
+							aggregate {
+							  count
+							}
+						}
+						_${year}_${month}__prev_monitoring_plan_working_distance_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {working_distance_or_time_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
+							aggregate {
+							  count
+							}
+						}
+						_${year}_${month}__prev_monitoring_plan_working_time_date_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, monitoring_plan_list: {working_distance_or_time_list: {date: {_gte: "${start}", _lte: "${end}"}}}}) {
+							aggregate {
+							  count
+							}
+						}
+				  }
+	      }
+	    `,
+		});
+	});
 
-	const dateRangeQueries = dates.map(date => {
+	const dateRangeQueries = dates.map(async date => {
 		const {year, month, start, end} = date;
-		return `
-	    _${year}_${month}__next_calibration_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, calibration_record_list: {next_calibration_date: {_gte: "${start}", _lte: "${end}"}}}) {
-				aggregate {
-				  count
-				}
-			}
-			_${year}_${month}__doc_expiry_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, doc_list: {expiry: {_gte: "${start}", _lte: "${end}"}}}) {
-				aggregate {
-				  count
-				}
-			}
-    `;
-	}).join('\n');
+		return GQLClient
+		.query({
+			query: `
+				query findByIdOrgAssetDashboardQuery_dateRange_${year}_${month} {
+	        ${tbl}(
+	          where: {
+	            id: {_eq: ${id}}
+	          }
+	        ) {
+				    _${year}_${month}__next_calibration_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, calibration_record_list: {next_calibration_date: {_gte: "${start}", _lte: "${end}"}}}) {
+							aggregate {
+							  count
+							}
+						}
+						_${year}_${month}__doc_expiry_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, doc_list: {expiry: {_gte: "${start}", _lte: "${end}"}}}) {
+							aggregate {
+							  count
+							}
+						}
+				  }
+	      }
+	    `,
+		});
+	});
 
 	const mon = Dates.formatDateSQL(new Date().addMonths(1));
 	const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
 	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 
 	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
-		query: `
+	return Promise.all([
+		GQLClient
+		.query({
+			query: `
       query findByIdOrgAssetDashboardQuery {
         ${tbl}(
           where: {
@@ -286,6 +307,9 @@ export default (
 			  }
       }
     `,
-	}).then(res => res);
+		}),
+		...dateRangeOnlyPrevQueries,
+		...dateRangeQueries,
+	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
 	//</editor-fold>
 };
