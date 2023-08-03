@@ -1,11 +1,13 @@
 import GQLClient from "graphql/GQLClient";
 import {Dates} from "utils/Dates";
 
-export default ({
-	                written_off = false, //
-	                date_range = {}, //
-	                site_id, project_id, client_id, company_id,
-                }) => {
+export default (
+	{
+		written_off = false, //
+		date_range = {}, //
+		site_id, project_id, client_id, company_id,
+	}
+) => {
 	const id = site_id || project_id || client_id || company_id;
 	let tbl;
 	if (site_id) {
@@ -281,15 +283,9 @@ export default ({
               maintenance_plan_cost
             }
 			    }
-			  
-				  #
-				  ${dateRangeOnlyPrevQueries}
-				  
-				  #
-				  ${dateRangeQueries}
 			  }
       }
     `,
-	}).then(res => [res]);
+	}).then(res => res);
 	//</editor-fold>
 };
