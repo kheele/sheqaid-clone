@@ -130,6 +130,23 @@ global.onDriver = () => {
 	return authorize().then(auth => google.drive({auth, version: 'v3'}));
 };
 
-// console.log("here")
+global.getTriggeredEventsData = (body, name) => {
+	if (!body || !body.data || !body.data.table) {
+		return;
+	}
 
-// exports.default = {};
+	const {
+		table: {
+			table_name,//sheq_chemical_sds
+			schema,
+			old_item,
+			new_item,
+		}
+	} = body.data;
+
+	if (schema !== "public" || table_name !== name || !new_item) {
+		return;
+	}
+
+	return {old_item, new_item};
+};

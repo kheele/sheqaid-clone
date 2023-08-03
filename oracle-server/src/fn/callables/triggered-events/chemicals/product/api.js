@@ -1,42 +1,79 @@
-const updateNCRDoc = require('../../queries/updateNCRDoc');
+
 
 // <editor-fold defaultstate="collapsed" desc="uploadProductDocsUpdate">
 exports.uploadProductDocsUpdate = async (body) => {
 	// await authorize();
 
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "sheq_chemical_products");
+	if(!data){
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//sheq_non_conformance_docs
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
+	const {new_item} = data;
 
-	if (schema !== "public" || table_name !== "sheq_non_conformance_docs" || !new_item) {
-		return;
-	}
-
-	let {id, non_conformance_id, sds_doc, hazchem_sheet_doc, risk_assessment_doc, type} = new_item;
+	let {id, sds_doc, hazchem_sheet_doc, risk_assessment_doc} = new_item;
 
 	console.log('uploadProductDocsUpdate', new_item)
 
 	const attrs = {};
 
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadProductDocsUpdate doc', path)
+	const promises = [];
 
-		const new_name = `ncr/${non_conformance_id}/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
+	if (sds_doc && sds_doc.path) {
+		promises.push(async ()=>{
+			const {path} = sds_doc;
+			console.log('uploadProductDocsUpdate sds_doc', path)
+
+			const new_name = `chemicals/products/sds/${id}/docs`;
+			attrs.sds_doc = await uploadDataUri(path, new_name);
+		})
 	}
 
+	if (hazchem_sheet_doc && hazchem_sheet_doc.path) {
+		promises.push(async ()=>{
+			const {path} = hazchem_sheet_doc;
+			console.log('uploadProductDocsUpdate hazchem_sheet_doc', path)
+
+			const new_name = `chemicals/products/hazchem-sheet/${id}/docs`;
+			attrs.hazchem_sheet_doc = await uploadDataUri(path, new_name);
+		})
+	}
+
+	if (risk_assessment_doc && risk_assessment_doc.path) {
+		promises.push(async ()=>{
+			const {path} = risk_assessment_doc;
+			console.log('uploadProductDocsUpdate risk_assessment_doc', path)
+
+			const new_name = `chemicals/products/risk-assessment/${id}/docs`;
+			attrs.risk_assessment_doc = await uploadDataUri(path, new_name);
+		})
+	}
+
+	await Promise.all(promises);
+
 	if (Object.keys(attrs).isNotEmpty()) {
-		await updateNCRDoc({id, ...attrs});
+		await updateDoc({id, ...attrs});
 	}
 };
 // </editor-fold>
+
+const mutationData = {
+	mutation: `
+    mutation updateDocMutation($id: sheq_chemical_products_pk_columns_input!, $_set: sheq_chemical_products_set_input!) {
+      update_sheq_chemical_products_by_pk(pk_columns: $id, _set: $_set) {
+        id
+      }
+    }
+  `,
+	operationName: "updateDocMutation",
+};
+
+const updateDoc = async ({id, ...attrs}) => {
+	delete attrs.id;
+
+	await updateRelay({
+		...mutationData,
+		id,
+		attrs,
+	});
+};
