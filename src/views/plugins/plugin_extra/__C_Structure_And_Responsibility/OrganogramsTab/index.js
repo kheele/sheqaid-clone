@@ -5,20 +5,19 @@ import {observable} from 'mobx';
 import style from "./OrganogramsTab.lazy.css";
 
 import {calculateRightPos, Dates} from "utils/Utils";
-import APageListReadWrite from "../../../APageListReadWrite";
+import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewOrganogramDialog from './dialogs/NewOrganogramDialog';
-import ProfileOrganogramDialog from './dialogs/ProfileOrganogramDialog';
-import EditOrganogramDialog from './dialogs/EditOrganogramDialog';
+import {EditDialog, NewDialog, ProfileDialog} from './forms';
+
+import byLogged from "./Query/List/listAllOrganogramByLogged";
 
 @observer
 class OrganogramsTab extends React.Component {
 
-    path;
     pageKey = "OrganogramsTab";
     @observable
     state = {
@@ -31,8 +30,8 @@ class OrganogramsTab extends React.Component {
     constructor(props) {
         super(props);
 
-        this.path = props.path + 'organograms/';
-        
+        this.onLoadList = this.onLoadList.bind(this);
+
         this.onViewByDoc = this.onViewByDoc.bind(this);
         
         this.renderItem = this.renderItem.bind(this);
@@ -47,7 +46,41 @@ class OrganogramsTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
-    
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+            type,
+            target,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            name,
+            type,
+            target,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if(!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+    //</editor-fold>
+
     onViewByDoc(e, btn) {
         const {idx} = btn.props;
         this.refs.root.onView(e, btn);
@@ -66,7 +99,7 @@ class OrganogramsTab extends React.Component {
         if(isHasProjects) {
             return <div className="col-lg-12 controls flex">
                 <ClearableInput name="type" type="radio" placeholder="Source" className="fixed-flex min-w-400 form-control" onChange={onChange} values={this.state.lists.types} returnValue/>
-                <ClearableInput name="_target" type="select" placeholder="Target..." className="fixed-flex min-w-270 form-control" onChange={onChange} values={this.state.lists.target} returnValue/>
+                <ClearableInput name="target" type="select" placeholder="Target..." className="fixed-flex min-w-270 form-control" onChange={onChange} values={this.state.lists.target} returnValue/>
                 <ClearableInput name="name" type="text" placeholder="Company/Client, Project, Site Name" className="form-control" onChange={onChange}/>
             </div>;
         }
@@ -118,7 +151,7 @@ class OrganogramsTab extends React.Component {
             pageId={this.pageKey + "-tab"}
             pageTitle="Organograms"
             pageTitleSingular="organogram"
-            path={this.path}
+            onLoadList={this.onLoadList}
             noAnimation={true}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
@@ -126,9 +159,9 @@ class OrganogramsTab extends React.Component {
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
             
-            <ProfileOrganogramDialog ref="profileDialog"/>
-            <NewOrganogramDialog ref="newDialog"/>
-            <EditOrganogramDialog ref="editDialog"/>
+            <ProfileDialog ref="profileDialog"/>
+            <NewDialog ref="newDialog"/>
+            <EditDialog ref="editDialog"/>
         </APageListReadWrite>;
     }
 }

@@ -91,6 +91,15 @@ export const employee_personal_details_fragment = `
     email
     id_num
     passport_num
+    removed
+    job_position{
+      id
+      name
+    }
+    department{
+      id
+      name
+    }
 `;
 //</editor-fold>
 

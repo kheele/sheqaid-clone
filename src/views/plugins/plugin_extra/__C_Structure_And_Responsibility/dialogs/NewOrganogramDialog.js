@@ -5,13 +5,7 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {
-	ClearableInput,
-	SelectClientInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
@@ -207,7 +201,8 @@ class Controls extends React.Component {
 		console.log(data)
 
 		btn.text("Saving...").disabled();
-		neonBinding.events.emit(this.path + "create", data).then(res => {
+		progressDialog.open();
+		insertOrganogram(data).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully saved.");
@@ -215,6 +210,7 @@ class Controls extends React.Component {
 			this.props.close();
 		}).finally(() => {
 			btn.text("Save").enabled();
+			progressDialog.close();
 		});
 	}
 
