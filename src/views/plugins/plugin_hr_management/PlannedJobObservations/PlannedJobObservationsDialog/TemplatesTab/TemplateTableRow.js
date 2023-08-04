@@ -42,7 +42,7 @@ class TemplateTableRow extends React.Component {
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-40">{id}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-            <div className="td">{job_position.name}</div>
+            <div className="td">{job_position && job_position.name || "Any"}</div>
             <div className="td">{name}</div>
             <div className="td">{desc || 'N/A'}</div>
             <AsyncTD

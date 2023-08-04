@@ -11,7 +11,7 @@ import style from "./NewTemplateDialog.lazy.css";
 import insertJobObservationsQuestionnaireTemplate
     from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/insertJobObservationsQuestionnaireTemplate";
 import {FormControls, Row} from "components/FormComponents";
-import {ClearableInput, SelectAssetInput, SelectAssetTypeInput, SelectJobPositionInput} from "components/inputs";
+import {ClearableInput, SelectJobPositionInput} from "components/inputs";
 import {execWhen} from "utils/UtilsFuns";
 
 //<editor-fold desc="Dialog">
@@ -72,10 +72,6 @@ class Controls extends React.Component {
                 infoDialog.open('Please select "Visibility" option');
                 return;
             }
-            if (!form.isValid('job_position')) {
-                infoDialog.open('Job Position is required');
-                return;
-            }
         }
         if(idx === 2) {
             if (!questions.isValidForm()) {
@@ -93,10 +89,6 @@ class Controls extends React.Component {
 
         if (!form.isValid('visibility')) {
             infoDialog.open('Please select "Visibility" option');
-            return;
-        }
-        if (!form.isValid('job_position')) {
-            infoDialog.open('Job Position is required');
             return;
         }
 

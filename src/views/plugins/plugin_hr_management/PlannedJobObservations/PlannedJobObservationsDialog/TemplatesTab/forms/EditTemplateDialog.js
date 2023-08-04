@@ -13,7 +13,7 @@ import {ShouldUpdate} from "utils/Utils";
 import updateJobObservationsQuestionnaireTemplate
     from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
 import {FormControls, Row} from "components/FormComponents";
-import {ClearableInput, SelectAssetInput, SelectAssetTypeInput, SelectJobPositionInput} from "components/inputs";
+import {ClearableInput, SelectJobPositionInput} from "components/inputs";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -78,10 +78,6 @@ class Controls extends React.Component {
                 infoDialog.open('Please select "Visibility" option');
                 return;
             }
-            if (!form.isValid('job_position')) {
-                infoDialog.open('Job Position is required');
-                return;
-            }
         }
         if(idx === 2) {
             if (!questions.isValidForm()) {
@@ -99,11 +95,6 @@ class Controls extends React.Component {
 
         if (!form.isValid('visibility')) {
             infoDialog.open('Please select "Visibility" option');
-            return;
-        }
-
-        if (!form.isValid('job_position')) {
-            infoDialog.open('Job Position is required');
             return;
         }
 

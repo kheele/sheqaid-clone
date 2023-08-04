@@ -69,7 +69,7 @@ class ObservationTableRow extends React.Component {
 			{/*<div className="td">{name}</div>*/}
 			{/*<div className="td">{template && template.name || 'N/A'}</div>*/}
 			{/*<div className="td fixed-flex min-w-140">/!*score*!/</div>*/}
-			<div className="td">{job_position ? job_position.name : 'N/A'}</div>
+			<div className="td">{job_position ? job_position.name : 'Any'}</div>
 			<div className="td">{employee && employee.full_name || 'N/A'}</div>
 			<div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
 			<div className="td fixed-flex min-w-160">{interval}</div>

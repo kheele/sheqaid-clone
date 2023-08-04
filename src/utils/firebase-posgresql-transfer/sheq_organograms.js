@@ -6,16 +6,15 @@ import findByFirestoreIdSite from "../../mutations/all/Site/findByFirestoreIdSit
 import findByFirestoreIdUser from "../../mutations/all/User/findByFirestoreIdUser";
 import findByFirestoreIdContractor from "../../mutations/all/Contractor/findByFirestoreIdContractor";
 import findByFirestoreIdContractorUser from "../../mutations/all/ContractorUser/findByFirestoreIdContractorUser";
-import insertOrganogram from "../../mutations/all/StructureAndResponsibility/Organogram/insertOrganogram";
 import findByFirestoreIdOrganogram
 	from "../../mutations/all/StructureAndResponsibility/Organogram/findByFirestoreIdOrganogram";
 
-const tbl = "plugin_sheq_assist_17_Incident_Investigation";
+const tbl = "plugin_sheq_assist_StructureAndResponsibility_organograms";
 //<editor-fold desc="transfer">
 export const organograms_transfer = async () => {
 	await execWhen(() => window.db && window.storage && storage.loggedUserAuth);
 
-	const list = await workers.emit('relay/get_db', tbl);
+	const list = await workers.emit('relay/get_db2', tbl);
 
 	for (let n = 0; n < list.length; n++) {
 		const {id, data} = list[n];
@@ -31,7 +30,7 @@ export const organograms_transfer = async () => {
 			//1
 			created_at,
 			list: old_list,
-			target,
+			_target: target,
 			type,
 			doc,
 		} = data;
@@ -66,8 +65,9 @@ export const organograms_transfer = async () => {
 				type,
 				doc,
 				employee_list: {
-                    data: (old_list || []).map(({}) => ({
-
+                    data: (old_list || []).map(({employee, employeeReportedTo, team_id, employee_list}) => ({
+						employee_id: employee && employee.id,
+						employee_reported_to_id: employeeReportedTo && employeeReportedTo.id,
                     })),
                 },
 			};//
@@ -75,7 +75,7 @@ export const organograms_transfer = async () => {
 			console.log('insertOrganogram start', item)
 			//save
 			try {
-				const res = await insertOrganogram(item);
+				// const res = await insertOrganogram(item);
 				console.log('insertOrganogram end', res)
 			} catch (e) {
 				console.log(target, type, e);
