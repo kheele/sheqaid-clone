@@ -53,8 +53,10 @@ export default async (input: EntityIncident) =>  {
     person_involved_list,
     //6.2
     person_reporting,
+    person_reporting_other,
     //6.3
     person_reported_to,
+    person_reported_to_other,
     //6.4
     witness_list,
     //6.5
@@ -62,6 +64,7 @@ export default async (input: EntityIncident) =>  {
 
     //7.1
     person_injured,//
+    person_injured_other,//
     injured_person_dob,//
     injured_person_gender,//
     nature_of_injury_list,
@@ -154,6 +157,16 @@ export default async (input: EntityIncident) =>  {
         crudUtils.injectCreate(other_person.data);
       }
     });
+  }
+
+  if(person_reported_to_other && person_reported_to_other.data) {
+    crudUtils.injectCreate(person_reported_to_other.data);
+  }
+  if(person_reporting_other && person_reporting_other.data) {
+    crudUtils.injectCreate(person_reporting_other.data);
+  }
+  if(person_injured_other && person_injured_other.data) {
+    crudUtils.injectCreate(person_injured_other.data);
   }
 
   const res = await createMutationImpl({mutation, input});

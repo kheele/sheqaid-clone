@@ -14,7 +14,7 @@ const tbl = "plugin_sheq_assist_StructureAndResponsibility_organograms";
 export const organograms_transfer = async () => {
 	await execWhen(() => window.db && window.storage && storage.loggedUserAuth);
 
-	const list = await workers.emit('relay/get_db2', tbl);
+	const list = await workers.emit('relay/get_db', tbl);
 
 	for (let n = 0; n < list.length; n++) {
 		const {id, data} = list[n];
@@ -76,7 +76,7 @@ export const organograms_transfer = async () => {
 			//save
 			try {
 				// const res = await insertOrganogram(item);
-				console.log('insertOrganogram end', res)
+				// console.log('insertOrganogram end', res)
 			} catch (e) {
 				console.log(target, type, e);
 			}

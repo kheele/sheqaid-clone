@@ -46,6 +46,8 @@ import {inspections_templates_transfer} from "./sheq_inspections_templates";
 import {contractors_questionnaire_library_transfer} from "./contractors_questionnaire_library";
 import {contractors_questionnaires_transfer} from "./contractors_questionnaires";
 
+import {organograms_transfer} from "./sheq_organograms";
+
 // import courses from "graphql/data/courses";
 // import plan_gob from "graphql/data/plan_gob";
 // import plan_mzi from "graphql/data/plan_mzi";
@@ -119,6 +121,9 @@ import {contractors_questionnaires_transfer} from "./contractors_questionnaires"
 
     // await contractors_questionnaire_library_transfer();
     // await contractors_questionnaires_transfer();
+
+    await organograms_transfer();
+
 })();
 
 //document_categories// skip

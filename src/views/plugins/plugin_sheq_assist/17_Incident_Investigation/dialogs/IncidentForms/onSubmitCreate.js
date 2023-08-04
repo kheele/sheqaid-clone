@@ -304,7 +304,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         person_injured_other: person_injured && !person_injured.id ? {
             data: person_injured
         } : null,
-        injured_person_dob: (injured_person_dob),
+        injured_person_dob: Dates.formatDateSQL(injured_person_dob),
         injured_person_gender,
         injury_list: {
             data: [
