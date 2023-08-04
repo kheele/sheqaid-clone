@@ -310,6 +310,7 @@ export default (
 		}),
 		...dateRangeOnlyPrevQueries,
 		...dateRangeQueries,
-	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
+	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []).
+	reduce((a1, a2) => [...a1, ...a2], []));
 	//</editor-fold>
 };

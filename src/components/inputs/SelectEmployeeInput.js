@@ -114,6 +114,7 @@ class SelectInput extends ASelectInput {
 		return this;
 	}
 
+	@computed
 	get isOtherPerson() {
 		return this.showOtherPerson;
 	}
@@ -121,18 +122,20 @@ class SelectInput extends ASelectInput {
 	onFilter(option) {
 		if (!option) return false;
 		const {label, value} = option;
-		let {id, data: {fname, lname, contractor}} = value;
+		let {id, data, fname, lname, contractor} = value;
+		contractor = contractor || data && data.contractor;
 		const contractorName = contractor ? ` ${contractor.name}` : '';
-		return `${lname} ${fname}${contractorName}`;
+		return `${lname || data.lname} ${fname || data.fname}${contractorName}`;
 	}
 
 	renderItem(option, n) {
 		if (!option) return null;
 		const {label, value} = option;
-		let {id, data: {fname, lname, contractor}} = value;
+		let {id, data, fname, lname, contractor} = value;
+		contractor = contractor || data && data.contractor;
 		return {
 			label: <div className="SelectEmployeeInput-label flex-left">
-				<span className="fixed-flex">{lname} {fname}</span>
+				<span className="fixed-flex">{lname || data.lname} {fname || data.fname}</span>
 				{contractor && <span className="margin-l-5">
 						<Chip label={contractor.name} size="small"/>
 					</span>}
@@ -147,16 +150,16 @@ class SelectInput extends ASelectInput {
 			const {list} = this.state.lists;
 //            console.log('_v list', this.props.name, list.slice())
 			const item = list.filter(v => !!v).find(({label, value}) => {
-				if(isString(value) && !isString(_v)) {
+				if (isString(value) && !isString(_v)) {
 					return value === (_v.id || _v.value.id);
-				} else if(!isString(value) && isString(_v)) {
+				} else if (!isString(value) && isString(_v)) {
 					return value.id === _v;
-				} else if(isString(value) && isString(_v)) {
+				} else if (isString(value) && isString(_v)) {
 					return value === _v;
 				}
-				try{
+				try {
 					return value.id === (_v.id || _v.value.id);
-				} catch(e) {
+				} catch (e) {
 					return false;
 				}
 			});
@@ -164,34 +167,23 @@ class SelectInput extends ASelectInput {
 		});
 	}
 
-	renderer(option) {
-		const {label, value} = option;
-		const {id, data: {fname, lname, contractor}} = value;
-		return <div className="SelectEmployeeInput-label flex-left">
-			<span className="fixed-flex">{lname} {fname}</span>
-			{contractor && <span className="margin-l-5">
-					<Chip label={contractor.name} size="small"/>
-				</span>}
-		</div>;
-	}
-
 	renderer(v) {
-		if(isNullable(v)) {
+		if (isNullable(v)) {
 			return null;
 		}
-		if(isString(v)) {
+		if (isString(v)) {
 			return v;
 		}
-		if(v.label && v.value) {
+		if (v.label && v.value) {
 			return v.label;
 		}
-		if(isArray(v) || isObservableArray(v)) {
+		if (isArray(v) || isObservableArray(v)) {
 			return <>
 				{v.filter(v => !isNullable(v)).map((v) => {
 					let label;
-					if(isString(v)) {
+					if (isString(v)) {
 						label = v;
-					} else if(v.label && v.value) {
+					} else if (v.label && v.value) {
 						label = v.label;
 					} else {
 						let {name, data} = v;
@@ -201,8 +193,15 @@ class SelectInput extends ASelectInput {
 				})}
 			</>
 		}
-		let {name, data} = v;
-		return name || data.name;
+
+		let {id, data, fname, lname, contractor} = v;
+		contractor = contractor || data && data.contractor;
+		return <div className="SelectEmployeeInput-label flex-left">
+			<span className="fixed-flex">{lname || data.lname} {fname || data.fname}</span>
+			{contractor && <span className="margin-l-5">
+					<Chip label={contractor.name} size="small"/>
+				</span>}
+		</div>;
 	}
 
 	@computed
@@ -218,10 +217,11 @@ class SelectInput extends ASelectInput {
 					} else if (value.label && value.value) {
 						return value;
 					} else {
-						const {id, data: {fname, lname, contractor}} = value;
+						let {id, data, fname, lname, contractor} = value;
+						contractor = contractor || data && data.contractor;
 						const label = <div className="SelectEmployeeInput-label flex-left">
-							<span className="fixed-flex">{lname} {fname}</span>
-										{contractor && <span className="margin-l-5">
+							<span className="fixed-flex">{lname || data.lname} {fname || data.fname}</span>
+							{contractor && <span className="margin-l-5">
 								<Chip label={contractor.name} size="small"/>
 							</span>}
 						</div>;
@@ -233,9 +233,12 @@ class SelectInput extends ASelectInput {
 				if (defaultValue.label && defaultValue.value) {
 					return defaultValue;
 				}
-				const {id, data: {fname, lname, contractor}} = defaultValue;
+
+				let {id, data, fname, lname, contractor} = defaultValue;
+				contractor = contractor || data && data.contractor;
+
 				const label = <div className="SelectEmployeeInput-label flex-left">
-					<span className="fixed-flex">{lname} {fname}</span>
+					<span className="fixed-flex">{lname || data.lname} {fname || data.fname}</span>
 					{contractor && <span className="margin-l-5">
 					<Chip label={contractor.name} size="small"/>
 				</span>}

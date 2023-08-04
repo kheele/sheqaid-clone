@@ -30947,6 +30947,13 @@ type mutation_root {
         "filter the rows which have to be deleted"
         where: proxy_employee__organogram_bool_exp!
     ): proxy_employee__organogram_mutation_response
+    "delete data from the table: \"proxy_employee__organogram__employees\""
+    delete_proxy_employee__organogram__employees(
+        "filter the rows which have to be deleted"
+        where: proxy_employee__organogram__employees_bool_exp!
+    ): proxy_employee__organogram__employees_mutation_response
+    "delete single row from the table: \"proxy_employee__organogram__employees\""
+    delete_proxy_employee__organogram__employees_by_pk(id: bigint!): proxy_employee__organogram__employees
     "delete single row from the table: \"proxy_employee__organogram\""
     delete_proxy_employee__organogram_by_pk(id: bigint!): proxy_employee__organogram
     "delete data from the table: \"proxy_employee__ppe\""
@@ -31180,6 +31187,13 @@ type mutation_root {
     ): sheq_chemical_sds_mutation_response
     "delete single row from the table: \"sheq_chemical_sds\""
     delete_sheq_chemical_sds_by_pk(id: bigint!): sheq_chemical_sds
+    "delete data from the table: \"sheq_chemical_suppliers\""
+    delete_sheq_chemical_suppliers(
+        "filter the rows which have to be deleted"
+        where: sheq_chemical_suppliers_bool_exp!
+    ): sheq_chemical_suppliers_mutation_response
+    "delete single row from the table: \"sheq_chemical_suppliers\""
+    delete_sheq_chemical_suppliers_by_pk(id: bigint!): sheq_chemical_suppliers
     "delete data from the table: \"sheq_compliance_audits\""
     delete_sheq_compliance_audits(
         "filter the rows which have to be deleted"
@@ -32942,6 +32956,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: proxy_employee__organogram_on_conflict
     ): proxy_employee__organogram_mutation_response
+    "insert data into the table: \"proxy_employee__organogram__employees\""
+    insert_proxy_employee__organogram__employees(
+        "the rows to be inserted"
+        objects: [proxy_employee__organogram__employees_insert_input!]!,
+        "upsert condition"
+        on_conflict: proxy_employee__organogram__employees_on_conflict
+    ): proxy_employee__organogram__employees_mutation_response
+    "insert a single row into the table: \"proxy_employee__organogram__employees\""
+    insert_proxy_employee__organogram__employees_one(
+        "the row to be inserted"
+        object: proxy_employee__organogram__employees_insert_input!,
+        "upsert condition"
+        on_conflict: proxy_employee__organogram__employees_on_conflict
+    ): proxy_employee__organogram__employees
     "insert a single row into the table: \"proxy_employee__organogram\""
     insert_proxy_employee__organogram_one(
         "the row to be inserted"
@@ -33411,6 +33439,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: sheq_chemical_sds_on_conflict
     ): sheq_chemical_sds
+    "insert data into the table: \"sheq_chemical_suppliers\""
+    insert_sheq_chemical_suppliers(
+        "the rows to be inserted"
+        objects: [sheq_chemical_suppliers_insert_input!]!,
+        "upsert condition"
+        on_conflict: sheq_chemical_suppliers_on_conflict
+    ): sheq_chemical_suppliers_mutation_response
+    "insert a single row into the table: \"sheq_chemical_suppliers\""
+    insert_sheq_chemical_suppliers_one(
+        "the row to be inserted"
+        object: sheq_chemical_suppliers_insert_input!,
+        "upsert condition"
+        on_conflict: sheq_chemical_suppliers_on_conflict
+    ): sheq_chemical_suppliers
     "insert data into the table: \"sheq_compliance_audits\""
     insert_sheq_compliance_audits(
         "the rows to be inserted"
@@ -36502,6 +36544,28 @@ type mutation_root {
         "filter the rows which have to be updated"
         where: proxy_employee__organogram_bool_exp!
     ): proxy_employee__organogram_mutation_response
+    "update data of the table: \"proxy_employee__organogram__employees\""
+    update_proxy_employee__organogram__employees(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__organogram__employees_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__organogram__employees_set_input,
+        "filter the rows which have to be updated"
+        where: proxy_employee__organogram__employees_bool_exp!
+    ): proxy_employee__organogram__employees_mutation_response
+    "update single row of the table: \"proxy_employee__organogram__employees\""
+    update_proxy_employee__organogram__employees_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__organogram__employees_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__organogram__employees_set_input,
+        pk_columns: proxy_employee__organogram__employees_pk_columns_input!
+    ): proxy_employee__organogram__employees
+    "update multiples rows of table: \"proxy_employee__organogram__employees\""
+    update_proxy_employee__organogram__employees_many(
+        "updates to execute, in order"
+        updates: [proxy_employee__organogram__employees_updates!]!
+    ): [proxy_employee__organogram__employees_mutation_response]
     "update single row of the table: \"proxy_employee__organogram\""
     update_proxy_employee__organogram_by_pk(
         "increments the numeric columns with given value of the filtered values"
@@ -37241,6 +37305,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [sheq_chemical_sds_updates!]!
     ): [sheq_chemical_sds_mutation_response]
+    "update data of the table: \"sheq_chemical_suppliers\""
+    update_sheq_chemical_suppliers(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_chemical_suppliers_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_chemical_suppliers_set_input,
+        "filter the rows which have to be updated"
+        where: sheq_chemical_suppliers_bool_exp!
+    ): sheq_chemical_suppliers_mutation_response
+    "update single row of the table: \"sheq_chemical_suppliers\""
+    update_sheq_chemical_suppliers_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_chemical_suppliers_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_chemical_suppliers_set_input,
+        pk_columns: sheq_chemical_suppliers_pk_columns_input!
+    ): sheq_chemical_suppliers
+    "update multiples rows of table: \"sheq_chemical_suppliers\""
+    update_sheq_chemical_suppliers_many(
+        "updates to execute, in order"
+        updates: [sheq_chemical_suppliers_updates!]!
+    ): [sheq_chemical_suppliers_mutation_response]
     "update data of the table: \"sheq_compliance_audits\""
     update_sheq_compliance_audits(
         "increments the numeric columns with given value of the filtered values"
@@ -40540,6 +40626,45 @@ type proxy_employee__organogram implements Node {
     "An object relationship"
     employee: hr_employees!
     employee_id: bigint!
+    "An array relationship"
+    employee_list(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__organogram__employees_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__organogram__employees_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__organogram__employees_bool_exp
+    ): [proxy_employee__organogram__employees!]!
+    "An aggregate relationship"
+    employee_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__organogram__employees_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__organogram__employees_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__organogram__employees_bool_exp
+    ): proxy_employee__organogram__employees_aggregate!
+    "An array relationship connection"
+    employee_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__organogram__employees_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__organogram__employees_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__organogram__employees_bool_exp
+    ): proxy_employee__organogram__employeesConnection!
     "An object relationship"
     employee_reported_to: hr_employees
     employee_reported_to_id: bigint
@@ -40547,6 +40672,9 @@ type proxy_employee__organogram implements Node {
     "An object relationship"
     organogram: sheq_organograms!
     organogram_id: bigint!
+    "An object relationship"
+    team: default_teams
+    team_id: bigint
 }
 
 "A Relay connection object on \"proxy_employee__organogram\""
@@ -40558,6 +40686,127 @@ type proxy_employee__organogramConnection {
 type proxy_employee__organogramEdge {
     cursor: String!
     node: proxy_employee__organogram!
+}
+
+"columns and relationships of \"proxy_employee__organogram__employees\""
+type proxy_employee__organogram__employees implements Node {
+    "An object relationship"
+    employee: hr_employees!
+    employee_id: bigint!
+    id: ID!
+    "An object relationship"
+    proxy_employee__organogram: proxy_employee__organogram!
+    proxy_employee__organogram_id: bigint!
+}
+
+"A Relay connection object on \"proxy_employee__organogram__employees\""
+type proxy_employee__organogram__employeesConnection {
+    edges: [proxy_employee__organogram__employeesEdge!]!
+    pageInfo: PageInfo!
+}
+
+type proxy_employee__organogram__employeesEdge {
+    cursor: String!
+    node: proxy_employee__organogram__employees!
+}
+
+"aggregated selection of \"proxy_employee__organogram__employees\""
+type proxy_employee__organogram__employees_aggregate {
+    aggregate: proxy_employee__organogram__employees_aggregate_fields
+    nodes: [proxy_employee__organogram__employees!]!
+}
+
+"aggregate fields of \"proxy_employee__organogram__employees\""
+type proxy_employee__organogram__employees_aggregate_fields {
+    avg: proxy_employee__organogram__employees_avg_fields
+    count(columns: [proxy_employee__organogram__employees_select_column!], distinct: Boolean): Int!
+    max: proxy_employee__organogram__employees_max_fields
+    min: proxy_employee__organogram__employees_min_fields
+    stddev: proxy_employee__organogram__employees_stddev_fields
+    stddev_pop: proxy_employee__organogram__employees_stddev_pop_fields
+    stddev_samp: proxy_employee__organogram__employees_stddev_samp_fields
+    sum: proxy_employee__organogram__employees_sum_fields
+    var_pop: proxy_employee__organogram__employees_var_pop_fields
+    var_samp: proxy_employee__organogram__employees_var_samp_fields
+    variance: proxy_employee__organogram__employees_variance_fields
+}
+
+"aggregate avg on columns"
+type proxy_employee__organogram__employees_avg_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate max on columns"
+type proxy_employee__organogram__employees_max_fields {
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram_id: bigint
+}
+
+"aggregate min on columns"
+type proxy_employee__organogram__employees_min_fields {
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram_id: bigint
+}
+
+"response of any mutation on the table \"proxy_employee__organogram__employees\""
+type proxy_employee__organogram__employees_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [proxy_employee__organogram__employees!]!
+}
+
+"aggregate stddev on columns"
+type proxy_employee__organogram__employees_stddev_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type proxy_employee__organogram__employees_stddev_pop_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type proxy_employee__organogram__employees_stddev_samp_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate sum on columns"
+type proxy_employee__organogram__employees_sum_fields {
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram_id: bigint
+}
+
+"aggregate var_pop on columns"
+type proxy_employee__organogram__employees_var_pop_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate var_samp on columns"
+type proxy_employee__organogram__employees_var_samp_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
+}
+
+"aggregate variance on columns"
+type proxy_employee__organogram__employees_variance_fields {
+    employee_id: Float
+    id: Float
+    proxy_employee__organogram_id: Float
 }
 
 "aggregated selection of \"proxy_employee__organogram\""
@@ -40587,6 +40836,7 @@ type proxy_employee__organogram_avg_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate max on columns"
@@ -40595,6 +40845,7 @@ type proxy_employee__organogram_max_fields {
     employee_reported_to_id: bigint
     id: bigint
     organogram_id: bigint
+    team_id: bigint
 }
 
 "aggregate min on columns"
@@ -40603,6 +40854,7 @@ type proxy_employee__organogram_min_fields {
     employee_reported_to_id: bigint
     id: bigint
     organogram_id: bigint
+    team_id: bigint
 }
 
 "response of any mutation on the table \"proxy_employee__organogram\""
@@ -40619,6 +40871,7 @@ type proxy_employee__organogram_stddev_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate stddev_pop on columns"
@@ -40627,6 +40880,7 @@ type proxy_employee__organogram_stddev_pop_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate stddev_samp on columns"
@@ -40635,6 +40889,7 @@ type proxy_employee__organogram_stddev_samp_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate sum on columns"
@@ -40643,6 +40898,7 @@ type proxy_employee__organogram_sum_fields {
     employee_reported_to_id: bigint
     id: bigint
     organogram_id: bigint
+    team_id: bigint
 }
 
 "aggregate var_pop on columns"
@@ -40651,6 +40907,7 @@ type proxy_employee__organogram_var_pop_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate var_samp on columns"
@@ -40659,6 +40916,7 @@ type proxy_employee__organogram_var_samp_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "aggregate variance on columns"
@@ -40667,6 +40925,7 @@ type proxy_employee__organogram_variance_fields {
     employee_reported_to_id: Float
     id: Float
     organogram_id: Float
+    team_id: Float
 }
 
 "columns and relationships of \"proxy_employee__ppe\""
@@ -45175,6 +45434,19 @@ type query_root {
         "filter the rows returned"
         where: proxy_employee__auditor_bool_exp
     ): proxy_employee__auditorConnection!
+    "fetch data from the table: \"proxy_employee__organogram__employees\""
+    proxy_employee__organogram__employees_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__organogram__employees_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__organogram__employees_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__organogram__employees_bool_exp
+    ): proxy_employee__organogram__employeesConnection!
     "fetch data from the table: \"proxy_employee__organogram\""
     proxy_employee__organogram_connection(
         after: String,
@@ -45617,6 +45889,19 @@ type query_root {
         "filter the rows returned"
         where: sheq_chemical_sds_bool_exp
     ): sheq_chemical_sdsConnection!
+    "fetch data from the table: \"sheq_chemical_suppliers\""
+    sheq_chemical_suppliers_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliersConnection!
     "fetch data from the table: \"sheq_compliance_audits\""
     sheq_compliance_audits_connection(
         after: String,
@@ -47308,7 +47593,7 @@ type sheq_chemical_products implements Node {
         "JSON select path"
         path: String
     ): json
-    firestore_id: String!
+    firestore_id: String
     flammability_combustibility_class: String
     has_hazchem_sheet: Boolean
     has_risk_assessment: Boolean
@@ -47419,6 +47704,45 @@ type sheq_chemical_products implements Node {
         "JSON select path"
         path: String
     ): json
+    "An array relationship"
+    supplier_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): [sheq_chemical_suppliers!]!
+    "An aggregate relationship"
+    supplier_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliers_aggregate!
+    "An array relationship connection"
+    supplier_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliersConnection!
     type: String
     un_num: String
     "An object relationship"
@@ -47733,6 +48057,45 @@ type sheq_chemical_sds implements Node {
     site: default_sites
     site_id: bigint
     stability_and_reactivity: String
+    "An array relationship"
+    supplier_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): [sheq_chemical_suppliers!]!
+    "An aggregate relationship"
+    supplier_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliers_aggregate!
+    "An array relationship connection"
+    supplier_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliersConnection!
     toxicological_info: String
     transport_info: String
     un_num: String
@@ -47985,6 +48348,145 @@ type sheq_chemical_sds_variance_fields {
     project_id: Float
     site_id: Float
     user_id: Float
+}
+
+"columns and relationships of \"sheq_chemical_suppliers\""
+type sheq_chemical_suppliers implements Node {
+    address: String
+    email: String
+    fax: String
+    id: ID!
+    manufacturer: String!
+    phone: String
+    "An object relationship"
+    product: sheq_chemical_products
+    product_id: bigint
+    "An object relationship"
+    sds: sheq_chemical_sds
+    sds_id: bigint
+    website: String
+}
+
+"A Relay connection object on \"sheq_chemical_suppliers\""
+type sheq_chemical_suppliersConnection {
+    edges: [sheq_chemical_suppliersEdge!]!
+    pageInfo: PageInfo!
+}
+
+type sheq_chemical_suppliersEdge {
+    cursor: String!
+    node: sheq_chemical_suppliers!
+}
+
+"aggregated selection of \"sheq_chemical_suppliers\""
+type sheq_chemical_suppliers_aggregate {
+    aggregate: sheq_chemical_suppliers_aggregate_fields
+    nodes: [sheq_chemical_suppliers!]!
+}
+
+"aggregate fields of \"sheq_chemical_suppliers\""
+type sheq_chemical_suppliers_aggregate_fields {
+    avg: sheq_chemical_suppliers_avg_fields
+    count(columns: [sheq_chemical_suppliers_select_column!], distinct: Boolean): Int!
+    max: sheq_chemical_suppliers_max_fields
+    min: sheq_chemical_suppliers_min_fields
+    stddev: sheq_chemical_suppliers_stddev_fields
+    stddev_pop: sheq_chemical_suppliers_stddev_pop_fields
+    stddev_samp: sheq_chemical_suppliers_stddev_samp_fields
+    sum: sheq_chemical_suppliers_sum_fields
+    var_pop: sheq_chemical_suppliers_var_pop_fields
+    var_samp: sheq_chemical_suppliers_var_samp_fields
+    variance: sheq_chemical_suppliers_variance_fields
+}
+
+"aggregate avg on columns"
+type sheq_chemical_suppliers_avg_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate max on columns"
+type sheq_chemical_suppliers_max_fields {
+    address: String
+    email: String
+    fax: String
+    id: bigint
+    manufacturer: String
+    phone: String
+    product_id: bigint
+    sds_id: bigint
+    website: String
+}
+
+"aggregate min on columns"
+type sheq_chemical_suppliers_min_fields {
+    address: String
+    email: String
+    fax: String
+    id: bigint
+    manufacturer: String
+    phone: String
+    product_id: bigint
+    sds_id: bigint
+    website: String
+}
+
+"response of any mutation on the table \"sheq_chemical_suppliers\""
+type sheq_chemical_suppliers_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_chemical_suppliers!]!
+}
+
+"aggregate stddev on columns"
+type sheq_chemical_suppliers_stddev_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type sheq_chemical_suppliers_stddev_pop_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type sheq_chemical_suppliers_stddev_samp_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate sum on columns"
+type sheq_chemical_suppliers_sum_fields {
+    id: bigint
+    product_id: bigint
+    sds_id: bigint
+}
+
+"aggregate var_pop on columns"
+type sheq_chemical_suppliers_var_pop_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate var_samp on columns"
+type sheq_chemical_suppliers_var_samp_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
+}
+
+"aggregate variance on columns"
+type sheq_chemical_suppliers_variance_fields {
+    id: Float
+    product_id: Float
+    sds_id: Float
 }
 
 "columns and relationships of \"sheq_compliance_audits\""
@@ -53210,6 +53712,8 @@ type sheq_non_conformances implements Node {
     "An object relationship"
     site: default_sites
     site_id: bigint
+    "A computed field, executes function \"ncr_sort\""
+    sort: Int
     source: String!
     status_acceptance: String
     status_progress: String
@@ -53542,15 +54046,17 @@ type sheq_organograms implements Node {
         "filter the rows returned"
         where: proxy_employee__organogram_bool_exp
     ): proxy_employee__organogramConnection!
+    firestore_id: String
     id: ID!
     "An object relationship"
     project: default_projects
     project_id: bigint
+    removed: Boolean!
     "An object relationship"
     site: default_sites
     site_id: bigint
-    target: organogram_target!
-    type: organogram_type!
+    target: organogram_target
+    type: organogram_type
     "An object relationship"
     user: default_users
     user_id: bigint
@@ -53609,6 +54115,7 @@ type sheq_organograms_max_fields {
     contractor_site_id: bigint
     contractor_user_id: bigint
     created_at: timestamptz
+    firestore_id: String
     id: bigint
     project_id: bigint
     site_id: bigint
@@ -53625,6 +54132,7 @@ type sheq_organograms_min_fields {
     contractor_site_id: bigint
     contractor_user_id: bigint
     created_at: timestamptz
+    firestore_id: String
     id: bigint
     project_id: bigint
     site_id: bigint
@@ -58784,6 +59292,19 @@ type subscription_root {
         "filter the rows returned"
         where: proxy_employee__auditor_bool_exp
     ): proxy_employee__auditorConnection!
+    "fetch data from the table: \"proxy_employee__organogram__employees\""
+    proxy_employee__organogram__employees_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__organogram__employees_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__organogram__employees_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__organogram__employees_bool_exp
+    ): proxy_employee__organogram__employeesConnection!
     "fetch data from the table: \"proxy_employee__organogram\""
     proxy_employee__organogram_connection(
         after: String,
@@ -59226,6 +59747,19 @@ type subscription_root {
         "filter the rows returned"
         where: sheq_chemical_sds_bool_exp
     ): sheq_chemical_sdsConnection!
+    "fetch data from the table: \"sheq_chemical_suppliers\""
+    sheq_chemical_suppliers_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_suppliers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_suppliers_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_suppliers_bool_exp
+    ): sheq_chemical_suppliersConnection!
     "fetch data from the table: \"sheq_compliance_audits\""
     sheq_compliance_audits_connection(
         after: String,
@@ -70858,6 +71392,32 @@ enum proxy_employee__auditor_update_column {
     other_person_id
 }
 
+"unique or primary key constraints on table \"proxy_employee__organogram__employees\""
+enum proxy_employee__organogram__employees_constraint {
+    "unique or primary key constraint on columns \"id\""
+    proxy_employee__organogram__employees_pkey
+}
+
+"select columns of table \"proxy_employee__organogram__employees\""
+enum proxy_employee__organogram__employees_select_column {
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    proxy_employee__organogram_id
+}
+
+"update columns of table \"proxy_employee__organogram__employees\""
+enum proxy_employee__organogram__employees_update_column {
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    proxy_employee__organogram_id
+}
+
 "unique or primary key constraints on table \"proxy_employee__organogram\""
 enum proxy_employee__organogram_constraint {
     "unique or primary key constraint on columns \"id\""
@@ -70874,6 +71434,8 @@ enum proxy_employee__organogram_select_column {
     id
     "column name"
     organogram_id
+    "column name"
+    team_id
 }
 
 "update columns of table \"proxy_employee__organogram\""
@@ -70886,6 +71448,8 @@ enum proxy_employee__organogram_update_column {
     id
     "column name"
     organogram_id
+    "column name"
+    team_id
 }
 
 "unique or primary key constraints on table \"proxy_employee__ppe\""
@@ -72416,6 +72980,56 @@ enum sheq_chemical_sds_update_column {
     un_num
     "column name"
     user_id
+}
+
+"unique or primary key constraints on table \"sheq_chemical_suppliers\""
+enum sheq_chemical_suppliers_constraint {
+    "unique or primary key constraint on columns \"id\""
+    sheq_chemical_suppliers_pkey
+}
+
+"select columns of table \"sheq_chemical_suppliers\""
+enum sheq_chemical_suppliers_select_column {
+    "column name"
+    address
+    "column name"
+    email
+    "column name"
+    fax
+    "column name"
+    id
+    "column name"
+    manufacturer
+    "column name"
+    phone
+    "column name"
+    product_id
+    "column name"
+    sds_id
+    "column name"
+    website
+}
+
+"update columns of table \"sheq_chemical_suppliers\""
+enum sheq_chemical_suppliers_update_column {
+    "column name"
+    address
+    "column name"
+    email
+    "column name"
+    fax
+    "column name"
+    id
+    "column name"
+    manufacturer
+    "column name"
+    phone
+    "column name"
+    product_id
+    "column name"
+    sds_id
+    "column name"
+    website
 }
 
 "unique or primary key constraints on table \"sheq_compliance_audits\""
@@ -74030,6 +74644,8 @@ enum sheq_non_conformances_update_column {
 
 "unique or primary key constraints on table \"sheq_organograms\""
 enum sheq_organograms_constraint {
+    "unique or primary key constraint on columns \"firestore_id\""
+    sheq_organograms_firestore_id_key
     "unique or primary key constraint on columns \"id\""
     sheq_organograms_pkey
 }
@@ -74051,9 +74667,13 @@ enum sheq_organograms_select_column {
     "column name"
     doc
     "column name"
+    firestore_id
+    "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     site_id
     "column name"
@@ -74062,6 +74682,18 @@ enum sheq_organograms_select_column {
     type
     "column name"
     user_id
+}
+
+"select \"sheq_organograms_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_organograms\""
+enum sheq_organograms_select_column_sheq_organograms_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    removed
+}
+
+"select \"sheq_organograms_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_organograms\""
+enum sheq_organograms_select_column_sheq_organograms_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_organograms\""
@@ -74081,9 +74713,13 @@ enum sheq_organograms_update_column {
     "column name"
     doc
     "column name"
+    firestore_id
+    "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     site_id
     "column name"
@@ -99496,6 +100132,173 @@ input proxy_employee__auditor_variance_order_by {
     other_person_id: order_by
 }
 
+input proxy_employee__organogram__employees_aggregate_bool_exp {
+    count: proxy_employee__organogram__employees_aggregate_bool_exp_count
+}
+
+input proxy_employee__organogram__employees_aggregate_bool_exp_count {
+    arguments: [proxy_employee__organogram__employees_select_column!]
+    distinct: Boolean
+    filter: proxy_employee__organogram__employees_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_aggregate_order_by {
+    avg: proxy_employee__organogram__employees_avg_order_by
+    count: order_by
+    max: proxy_employee__organogram__employees_max_order_by
+    min: proxy_employee__organogram__employees_min_order_by
+    stddev: proxy_employee__organogram__employees_stddev_order_by
+    stddev_pop: proxy_employee__organogram__employees_stddev_pop_order_by
+    stddev_samp: proxy_employee__organogram__employees_stddev_samp_order_by
+    sum: proxy_employee__organogram__employees_sum_order_by
+    var_pop: proxy_employee__organogram__employees_var_pop_order_by
+    var_samp: proxy_employee__organogram__employees_var_samp_order_by
+    variance: proxy_employee__organogram__employees_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_arr_rel_insert_input {
+    data: [proxy_employee__organogram__employees_insert_input!]!
+    "upsert condition"
+    on_conflict: proxy_employee__organogram__employees_on_conflict
+}
+
+"order by avg() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_avg_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"proxy_employee__organogram__employees\". All fields are combined with a logical 'AND'."
+input proxy_employee__organogram__employees_bool_exp {
+    _and: [proxy_employee__organogram__employees_bool_exp!]
+    _not: proxy_employee__organogram__employees_bool_exp
+    _or: [proxy_employee__organogram__employees_bool_exp!]
+    employee: hr_employees_bool_exp
+    employee_id: bigint_comparison_exp
+    id: bigint_comparison_exp
+    proxy_employee__organogram: proxy_employee__organogram_bool_exp
+    proxy_employee__organogram_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_inc_input {
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram_id: bigint
+}
+
+"input type for inserting data into table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_insert_input {
+    employee: hr_employees_obj_rel_insert_input
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram: proxy_employee__organogram_obj_rel_insert_input
+    proxy_employee__organogram_id: bigint
+}
+
+"order by max() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_max_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by min() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_min_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"on_conflict condition type for table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_on_conflict {
+    constraint: proxy_employee__organogram__employees_constraint!
+    update_columns: [proxy_employee__organogram__employees_update_column!]! = []
+    where: proxy_employee__organogram__employees_bool_exp
+}
+
+"Ordering options when selecting data from \"proxy_employee__organogram__employees\"."
+input proxy_employee__organogram__employees_order_by {
+    employee: hr_employees_order_by
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram: proxy_employee__organogram_order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"primary key columns input for table: proxy_employee__organogram__employees"
+input proxy_employee__organogram__employees_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_set_input {
+    employee_id: bigint
+    id: bigint
+    proxy_employee__organogram_id: bigint
+}
+
+"order by stddev() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_stddev_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_stddev_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_stddev_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by sum() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_sum_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+input proxy_employee__organogram__employees_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: proxy_employee__organogram__employees_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: proxy_employee__organogram__employees_set_input
+    where: proxy_employee__organogram__employees_bool_exp!
+}
+
+"order by var_pop() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_var_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by var_samp() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_var_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
+"order by variance() on columns of table \"proxy_employee__organogram__employees\""
+input proxy_employee__organogram__employees_variance_order_by {
+    employee_id: order_by
+    id: order_by
+    proxy_employee__organogram_id: order_by
+}
+
 input proxy_employee__organogram_aggregate_bool_exp {
     count: proxy_employee__organogram_aggregate_bool_exp_count
 }
@@ -99535,6 +100338,7 @@ input proxy_employee__organogram_avg_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"proxy_employee__organogram\". All fields are combined with a logical 'AND'."
@@ -99544,11 +100348,15 @@ input proxy_employee__organogram_bool_exp {
     _or: [proxy_employee__organogram_bool_exp!]
     employee: hr_employees_bool_exp
     employee_id: bigint_comparison_exp
+    employee_list: proxy_employee__organogram__employees_bool_exp
+    employee_list_aggregate: proxy_employee__organogram__employees_aggregate_bool_exp
     employee_reported_to: hr_employees_bool_exp
     employee_reported_to_id: bigint_comparison_exp
     id: bigint_comparison_exp
     organogram: sheq_organograms_bool_exp
     organogram_id: bigint_comparison_exp
+    team: default_teams_bool_exp
+    team_id: bigint_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"proxy_employee__organogram\""
@@ -99557,17 +100365,21 @@ input proxy_employee__organogram_inc_input {
     employee_reported_to_id: bigint
     id: bigint
     organogram_id: bigint
+    team_id: bigint
 }
 
 "input type for inserting data into table \"proxy_employee__organogram\""
 input proxy_employee__organogram_insert_input {
     employee: hr_employees_obj_rel_insert_input
     employee_id: bigint
+    employee_list: proxy_employee__organogram__employees_arr_rel_insert_input
     employee_reported_to: hr_employees_obj_rel_insert_input
     employee_reported_to_id: bigint
     id: bigint
     organogram: sheq_organograms_obj_rel_insert_input
     organogram_id: bigint
+    team: default_teams_obj_rel_insert_input
+    team_id: bigint
 }
 
 "order by max() on columns of table \"proxy_employee__organogram\""
@@ -99576,6 +100388,7 @@ input proxy_employee__organogram_max_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by min() on columns of table \"proxy_employee__organogram\""
@@ -99584,6 +100397,14 @@ input proxy_employee__organogram_min_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
+}
+
+"input type for inserting object relation for remote table \"proxy_employee__organogram\""
+input proxy_employee__organogram_obj_rel_insert_input {
+    data: proxy_employee__organogram_insert_input!
+    "upsert condition"
+    on_conflict: proxy_employee__organogram_on_conflict
 }
 
 "on_conflict condition type for table \"proxy_employee__organogram\""
@@ -99597,11 +100418,14 @@ input proxy_employee__organogram_on_conflict {
 input proxy_employee__organogram_order_by {
     employee: hr_employees_order_by
     employee_id: order_by
+    employee_list_aggregate: proxy_employee__organogram__employees_aggregate_order_by
     employee_reported_to: hr_employees_order_by
     employee_reported_to_id: order_by
     id: order_by
     organogram: sheq_organograms_order_by
     organogram_id: order_by
+    team: default_teams_order_by
+    team_id: order_by
 }
 
 "primary key columns input for table: proxy_employee__organogram"
@@ -99615,6 +100439,7 @@ input proxy_employee__organogram_set_input {
     employee_reported_to_id: bigint
     id: bigint
     organogram_id: bigint
+    team_id: bigint
 }
 
 "order by stddev() on columns of table \"proxy_employee__organogram\""
@@ -99623,6 +100448,7 @@ input proxy_employee__organogram_stddev_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"proxy_employee__organogram\""
@@ -99631,6 +100457,7 @@ input proxy_employee__organogram_stddev_pop_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"proxy_employee__organogram\""
@@ -99639,6 +100466,7 @@ input proxy_employee__organogram_stddev_samp_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by sum() on columns of table \"proxy_employee__organogram\""
@@ -99647,6 +100475,7 @@ input proxy_employee__organogram_sum_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 input proxy_employee__organogram_updates {
@@ -99663,6 +100492,7 @@ input proxy_employee__organogram_var_pop_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by var_samp() on columns of table \"proxy_employee__organogram\""
@@ -99671,6 +100501,7 @@ input proxy_employee__organogram_var_samp_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 "order by variance() on columns of table \"proxy_employee__organogram\""
@@ -99679,6 +100510,7 @@ input proxy_employee__organogram_variance_order_by {
     employee_reported_to_id: order_by
     id: order_by
     organogram_id: order_by
+    team_id: order_by
 }
 
 input proxy_employee__ppe_aggregate_bool_exp {
@@ -105458,6 +106290,8 @@ input sheq_chemical_products_bool_exp {
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     spillage_control: json_comparison_exp
+    supplier_list: sheq_chemical_suppliers_bool_exp
+    supplier_list_aggregate: sheq_chemical_suppliers_aggregate_bool_exp
     type: String_comparison_exp
     un_num: String_comparison_exp
     user: default_users_bool_exp
@@ -105551,6 +106385,7 @@ input sheq_chemical_products_insert_input {
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     spillage_control: json
+    supplier_list: sheq_chemical_suppliers_arr_rel_insert_input
     type: String
     un_num: String
     user: default_users_obj_rel_insert_input
@@ -105725,6 +106560,7 @@ input sheq_chemical_products_order_by {
     site: default_sites_order_by
     site_id: order_by
     spillage_control: order_by
+    supplier_list_aggregate: sheq_chemical_suppliers_aggregate_order_by
     type: order_by
     un_num: order_by
     user: default_users_order_by
@@ -106016,6 +106852,8 @@ input sheq_chemical_sds_bool_exp {
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     stability_and_reactivity: String_comparison_exp
+    supplier_list: sheq_chemical_suppliers_bool_exp
+    supplier_list_aggregate: sheq_chemical_suppliers_aggregate_bool_exp
     toxicological_info: String_comparison_exp
     transport_info: String_comparison_exp
     un_num: String_comparison_exp
@@ -106088,6 +106926,7 @@ input sheq_chemical_sds_insert_input {
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     stability_and_reactivity: String
+    supplier_list: sheq_chemical_suppliers_arr_rel_insert_input
     toxicological_info: String
     transport_info: String
     un_num: String
@@ -106254,6 +107093,7 @@ input sheq_chemical_sds_order_by {
     site: default_sites_order_by
     site_id: order_by
     stability_and_reactivity: order_by
+    supplier_list_aggregate: sheq_chemical_suppliers_aggregate_order_by
     toxicological_info: order_by
     transport_info: order_by
     un_num: order_by
@@ -106419,6 +107259,209 @@ input sheq_chemical_sds_variance_order_by {
     project_id: order_by
     site_id: order_by
     user_id: order_by
+}
+
+input sheq_chemical_suppliers_aggregate_bool_exp {
+    count: sheq_chemical_suppliers_aggregate_bool_exp_count
+}
+
+input sheq_chemical_suppliers_aggregate_bool_exp_count {
+    arguments: [sheq_chemical_suppliers_select_column!]
+    distinct: Boolean
+    filter: sheq_chemical_suppliers_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_aggregate_order_by {
+    avg: sheq_chemical_suppliers_avg_order_by
+    count: order_by
+    max: sheq_chemical_suppliers_max_order_by
+    min: sheq_chemical_suppliers_min_order_by
+    stddev: sheq_chemical_suppliers_stddev_order_by
+    stddev_pop: sheq_chemical_suppliers_stddev_pop_order_by
+    stddev_samp: sheq_chemical_suppliers_stddev_samp_order_by
+    sum: sheq_chemical_suppliers_sum_order_by
+    var_pop: sheq_chemical_suppliers_var_pop_order_by
+    var_samp: sheq_chemical_suppliers_var_samp_order_by
+    variance: sheq_chemical_suppliers_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_arr_rel_insert_input {
+    data: [sheq_chemical_suppliers_insert_input!]!
+    "upsert condition"
+    on_conflict: sheq_chemical_suppliers_on_conflict
+}
+
+"order by avg() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_avg_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"sheq_chemical_suppliers\". All fields are combined with a logical 'AND'."
+input sheq_chemical_suppliers_bool_exp {
+    _and: [sheq_chemical_suppliers_bool_exp!]
+    _not: sheq_chemical_suppliers_bool_exp
+    _or: [sheq_chemical_suppliers_bool_exp!]
+    address: String_comparison_exp
+    email: String_comparison_exp
+    fax: String_comparison_exp
+    id: bigint_comparison_exp
+    manufacturer: String_comparison_exp
+    phone: String_comparison_exp
+    product: sheq_chemical_products_bool_exp
+    product_id: bigint_comparison_exp
+    sds: sheq_chemical_sds_bool_exp
+    sds_id: bigint_comparison_exp
+    website: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_inc_input {
+    id: bigint
+    product_id: bigint
+    sds_id: bigint
+}
+
+"input type for inserting data into table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_insert_input {
+    address: String
+    email: String
+    fax: String
+    id: bigint
+    manufacturer: String
+    phone: String
+    product: sheq_chemical_products_obj_rel_insert_input
+    product_id: bigint
+    sds: sheq_chemical_sds_obj_rel_insert_input
+    sds_id: bigint
+    website: String
+}
+
+"order by max() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_max_order_by {
+    address: order_by
+    email: order_by
+    fax: order_by
+    id: order_by
+    manufacturer: order_by
+    phone: order_by
+    product_id: order_by
+    sds_id: order_by
+    website: order_by
+}
+
+"order by min() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_min_order_by {
+    address: order_by
+    email: order_by
+    fax: order_by
+    id: order_by
+    manufacturer: order_by
+    phone: order_by
+    product_id: order_by
+    sds_id: order_by
+    website: order_by
+}
+
+"on_conflict condition type for table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_on_conflict {
+    constraint: sheq_chemical_suppliers_constraint!
+    update_columns: [sheq_chemical_suppliers_update_column!]! = []
+    where: sheq_chemical_suppliers_bool_exp
+}
+
+"Ordering options when selecting data from \"sheq_chemical_suppliers\"."
+input sheq_chemical_suppliers_order_by {
+    address: order_by
+    email: order_by
+    fax: order_by
+    id: order_by
+    manufacturer: order_by
+    phone: order_by
+    product: sheq_chemical_products_order_by
+    product_id: order_by
+    sds: sheq_chemical_sds_order_by
+    sds_id: order_by
+    website: order_by
+}
+
+"primary key columns input for table: sheq_chemical_suppliers"
+input sheq_chemical_suppliers_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_set_input {
+    address: String
+    email: String
+    fax: String
+    id: bigint
+    manufacturer: String
+    phone: String
+    product_id: bigint
+    sds_id: bigint
+    website: String
+}
+
+"order by stddev() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_stddev_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_stddev_pop_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_stddev_samp_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"order by sum() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_sum_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+input sheq_chemical_suppliers_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: sheq_chemical_suppliers_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: sheq_chemical_suppliers_set_input
+    where: sheq_chemical_suppliers_bool_exp!
+}
+
+"order by var_pop() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_var_pop_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"order by var_samp() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_var_samp_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
+}
+
+"order by variance() on columns of table \"sheq_chemical_suppliers\""
+input sheq_chemical_suppliers_variance_order_by {
+    id: order_by
+    product_id: order_by
+    sds_id: order_by
 }
 
 input sheq_compliance_audits_aggregate_bool_exp {
@@ -112127,6 +113170,7 @@ input sheq_non_conformances_bool_exp {
     selected_source_site_id: bigint_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
+    sort: Int_comparison_exp
     source: String_comparison_exp
     status_acceptance: String_comparison_exp
     status_progress: String_comparison_exp
@@ -112340,6 +113384,7 @@ input sheq_non_conformances_order_by {
     selected_source_site_id: order_by
     site: default_sites_order_by
     site_id: order_by
+    sort: order_by
     source: order_by
     status_acceptance: order_by
     status_progress: order_by
@@ -112531,7 +113576,23 @@ input sheq_non_conformances_variance_order_by {
 }
 
 input sheq_organograms_aggregate_bool_exp {
+    bool_and: sheq_organograms_aggregate_bool_exp_bool_and
+    bool_or: sheq_organograms_aggregate_bool_exp_bool_or
     count: sheq_organograms_aggregate_bool_exp_count
+}
+
+input sheq_organograms_aggregate_bool_exp_bool_and {
+    arguments: sheq_organograms_select_column_sheq_organograms_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: sheq_organograms_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input sheq_organograms_aggregate_bool_exp_bool_or {
+    arguments: sheq_organograms_select_column_sheq_organograms_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: sheq_organograms_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input sheq_organograms_aggregate_bool_exp_count {
@@ -112595,9 +113656,11 @@ input sheq_organograms_bool_exp {
     doc: json_comparison_exp
     employee_list: proxy_employee__organogram_bool_exp
     employee_list_aggregate: proxy_employee__organogram_aggregate_bool_exp
+    firestore_id: String_comparison_exp
     id: bigint_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     target: organogram_target_comparison_exp
@@ -112634,9 +113697,11 @@ input sheq_organograms_insert_input {
     created_at: timestamptz
     doc: json
     employee_list: proxy_employee__organogram_arr_rel_insert_input
+    firestore_id: String
     id: bigint
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    removed: Boolean
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     target: organogram_target
@@ -112653,6 +113718,7 @@ input sheq_organograms_max_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     created_at: order_by
+    firestore_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
@@ -112669,6 +113735,7 @@ input sheq_organograms_min_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     created_at: order_by
+    firestore_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
@@ -112706,9 +113773,11 @@ input sheq_organograms_order_by {
     created_at: order_by
     doc: order_by
     employee_list_aggregate: proxy_employee__organogram_aggregate_order_by
+    firestore_id: order_by
     id: order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     site: default_sites_order_by
     site_id: order_by
     target: order_by
@@ -112731,8 +113800,10 @@ input sheq_organograms_set_input {
     contractor_user_id: bigint
     created_at: timestamptz
     doc: json
+    firestore_id: String
     id: bigint
     project_id: bigint
+    removed: Boolean
     site_id: bigint
     target: organogram_target
     type: organogram_type

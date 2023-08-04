@@ -65,11 +65,11 @@ export const organograms_transfer = async () => {
 				type,
 				doc,
 				employee_list: {
-                    data: (old_list || []).map(({employee, employeeReportedTo, team_id, employee_list}) => ({
+					data: (old_list || []).map(({employee, employeeReportedTo, team_id, employee_list}) => ({
 						employee_id: employee && employee.id,
 						employee_reported_to_id: employeeReportedTo && employeeReportedTo.id,
-                    })),
-                },
+					})),
+				},
 			};//
 
 			console.log('insertOrganogram start', item)
