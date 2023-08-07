@@ -6,12 +6,17 @@ import {
 	ClearableInput,
 	ClickableHumanBody,
 	SelectClientInput,
-	SelectEmployeeInput, SelectGenderInput,
+	SelectEmployeeInput,
+	SelectGenderInput,
 	SelectIncidentActivityList,
-	SelectIncidentBodilyInjuryLocationList, SelectIncidentCategoryList,
-	SelectIncidentInjuryMechanismList, SelectIncidentNatureOfInjuryList,
-	SelectIncidentSubCategoryList, SelectIncidentTestTypeInput,
-	SelectProjectInput, SelectSectorInput,
+	SelectIncidentBodilyInjuryLocationList,
+	SelectIncidentCategoryList,
+	SelectIncidentInjuryMechanismList,
+	SelectIncidentNatureOfInjuryList,
+	SelectIncidentSubCategoryList,
+	SelectIncidentTestTypeInput,
+	SelectProjectInput,
+	SelectSectorInput,
 	SelectSiteInput
 } from 'components/inputs';
 import {FormControls, Fragment, RiskRating, Row} from 'components/FormComponents';
@@ -218,16 +223,16 @@ const newRender = function () {
 						                   onChange={this.form.onChange}/>
 
 						<SelectIncidentNatureOfInjuryList name="nature_of_injury_list"
-						                                  className="col-lg-12 form-control" onChange={this.form.onChange}
-						                                  values={this.state.lists.nature_of_injury_list} returnValue add/>
+						                                  className="col-lg-12 form-control"
+														  onChange={this.form.onChange}/>
 						<SelectIncidentBodilyInjuryLocationList ref="bodily_injury_location_list"
-						                                        className="col-lg-12 form-control" onChange={this.form.onChange}
-						                                        values={this.state.lists.bodily_injury_location_list}/>
+						                                        className="col-lg-12 form-control"
+																onChange={this.form.onChange}/>
 						<ClickableHumanBody ref="bodily_injury_location_list_pic" onAdded={this.onHumanBodyPartsAdded}
 						                    onRemoved={this.onHumanBodyPartsRemoved}/>
 						<SelectIncidentInjuryMechanismList name="injury_mechanism_list"
-						                                   className="col-lg-12 form-control" onChange={this.form.onChange}
-						                                   values={this.state.lists.injury_mechanism_list}/>
+						                                   className="col-lg-12 form-control"
+														   onChange={this.form.onChange}/>
 						<ClearableInput name="injury_desc" type="textarea" placeholder="Injury Description"
 						                className="col-lg-12 form-control" onChange={this.form.onChange}/>
 					</Row>

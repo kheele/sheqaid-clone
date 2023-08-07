@@ -1,9 +1,9 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef, useImperativeHandle, useState} from "react";
 import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
 import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
 import MKBox from "../../../../../../components/MK/MKBox";
@@ -87,7 +87,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-1 w-full grid-gap-10 padding-15"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<DefaultDoughnutChart
 				title="Risk Rating"

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen} from 'utils/Utils';
+import {Dates} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
@@ -13,8 +13,8 @@ import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
-import sectorStore from "mutations/all/Sector";
 import AggregateStat from "components/AggregateStat";
+import byLogged from "./Query/List/listAllSectorByLogged";
 
 @observer
 class Main extends React.Component {
@@ -25,6 +25,8 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.onLoadList = this.onLoadList.bind(this);
 
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -38,9 +40,34 @@ class Main extends React.Component {
         style.unuse();
     }
 
-    onLoadList(page, isNew) {
-        return sectorStore.listAllByLogged();
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            name,
+            //
+            limit,
+        };
+
+        if (!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
+
+    //</editor-fold>
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const permissionKey = "Sectors";

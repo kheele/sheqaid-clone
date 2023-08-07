@@ -9,6 +9,7 @@ export const inspection_question_list_fragment = (deep = 3) => {
     answer
     responseAttachment
     hasResponseAttachment
+    responseAttachmentRequired
     expiry
     hasExpiry
     isMandatory

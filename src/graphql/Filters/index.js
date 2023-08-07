@@ -12,6 +12,7 @@ export const orgsFilter = (orgs) => {
 		incContractors = false,
 		excContractors = false,
 		exact_orgs = false,
+		exact_orgs_company = false,
 	} = orgs || {};
 
 	const company_id = sess_company_id;
@@ -59,7 +60,7 @@ export const orgsFilter = (orgs) => {
 	}
 
 	const site_id_fn = (site_id) => {
-		if (site_id) {
+		if (site_id && !exact_orgs_company) {
 			if (sess_my_site_id || exact_orgs) {
 				return `, site_id: {_eq: ${site_id}}`;
 			} else {
@@ -72,22 +73,22 @@ export const orgsFilter = (orgs) => {
 		return ``;
 	};
 	const project_id_fn = (project_id) => {
-		if (project_id) {
+		if (project_id && !exact_orgs_company) {
 			if (sess_my_project_id || exact_orgs) {
 				return `, _or: [
-            {
-	            project_id: {_eq: ${project_id}} 
-	            ${site_id_fn(site_id)}
-	          }
-	        ]`;
+					{
+						project_id: {_eq: ${project_id}} 
+						${site_id_fn(site_id)}
+				  	}
+				]`;
 			} else {
 				return `, _or: [
-          {
-            project_id: {_eq: ${project_id}} 
-            ${site_id_fn(site_id)}
-          },
-          {project_id: {_is_null: true}}
-        ]`;
+          			{
+						project_id: {_eq: ${project_id}} 
+						${site_id_fn(site_id)}
+				  	},
+				  	{project_id: {_is_null: true}}
+        		]`;
 			}
 		}
 		return ``;
@@ -98,20 +99,20 @@ export const orgsFilter = (orgs) => {
 			if (sess_my_client_id || exact_orgs) {
 				filter.push(`_or: [
 					${qIncContractors ? `${qIncContractors},` : ''}
-	        {
-	          client_id: {_eq: ${client_id}}
-	          ${project_id_fn(project_id)}
-	        }
-	      ]`);
+					{
+					  client_id: {_eq: ${client_id}}
+					  ${project_id_fn(project_id)}
+					}
+				]`);
 			} else {
 				filter.push(`_or: [
 					${qIncContractors ? `${qIncContractors},` : ''}
-	        {
-	          client_id: {_eq: ${client_id}}
-	          ${project_id_fn(project_id)}
-	        }, 
-	        {client_id: {_is_null: true}}
-	      ]`);
+					{
+					  client_id: {_eq: ${client_id}}
+					  ${project_id_fn(project_id)}
+					}, 
+					{client_id: {_is_null: true}}
+				]`);
 			}
 		}
 	} else {
@@ -119,11 +120,11 @@ export const orgsFilter = (orgs) => {
 			filter.push(`_or: [
 				${qIncContractors ? `${qIncContractors},` : ''}
 				${project_id_fn(project_id).replace(', _or', '_or')}
-	    ]`);
+	    	]`);
 		} else if(qIncContractors) {
 			filter.push(`_or: [
 				${qIncContractors}
-	    ]`);
+	    	]`);
 		}
 	}
 	//</editor-fold>

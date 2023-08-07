@@ -1,11 +1,10 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MD/MDBox";
 import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
 import PropTypes from "prop-types";
-import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
-import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import ReportsLineChart from "containers/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "containers/Cards/StatisticsCards/ComplexStatisticsCard";
@@ -411,7 +410,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
         spacing={6}
         className="grid-1 w-full grid-gap-10"
         sx={{
-            m: 0, mt: '30px',
+            m: '0 !important', mt: '30px !important',
         }}
     >
         <Grid item sx={{padding: "0 !important", mb: "0px"}}>

@@ -159,7 +159,7 @@ function onSelectLoad(type) {
 }
 
 async function byLogged() {
-	let filter = orgsFilter({exact_orgs: false});
+	let filter = orgsFilter({exact_orgs_company: true});
 	filter = filter.join(',');
 
 	return GQLClient

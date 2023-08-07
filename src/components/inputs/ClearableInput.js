@@ -19,7 +19,7 @@ import {
 
 import Button from './Button';
 import * as Utils from '../../utils/Utils';
-import {execWhen, Dates} from '../../utils/Utils';
+import {Dates, execWhen} from '../../utils/Utils';
 import autosize from '../../utils/autosize';
 
 import ASelectInput from './ASelectInput';
@@ -115,16 +115,18 @@ class ClearableInput extends ASelectInput {
                 }
                 this.onChange(defaultValue, this, true);
             } else if (type === 'radio') {
-                this.props.values.forEach(item => {
+                const values = this.props.values || [];
+                values.forEach(item => {
                     item.checked = false;
                 });
-                const item = this.props.values.find(v => v || v.value === defaultValue);
+                const item = values.find(v => v || v.value === defaultValue);
                 if (item) {
                     item.checked = true;
                     this.onChange(defaultValue, this, true);
                 }
             } else if (type === 'checkbox') {
-                defaultValue = this.props.values.filter(item => {
+                const values = this.props.values || [];
+                defaultValue = values.filter(item => {
                     item.checked = false;
                     if (!defaultValue) return false;
                     if (isArray(defaultValue) || isObservableArray(defaultValue)) {
@@ -239,7 +241,7 @@ class ClearableInput extends ASelectInput {
         if (type === 'date') {
             return value instanceof Date;
         } else if (type === 'radio' || type === 'checkbox') {
-            return !this.props.values.filter(item => !!item.checked).isEmpty();
+            return (this.props.values || []).filter(item => !!item.checked).isNotEmpty();
         } else if (type === 'select_multi' || type === 'select_multiple') {
             // console.log('hasValue', toJS(value))
             return value.length > 0;
@@ -260,7 +262,7 @@ class ClearableInput extends ASelectInput {
         // console.log(`${this.props.name} - set value`, value)
     }
 
-    setValue(evt) {
+    setValue(evt, groups, groupKey, idx) {
         if (this.isSelectable) {
             this.onChange(evt);
             return;
@@ -273,7 +275,7 @@ class ClearableInput extends ASelectInput {
 //            console.log('setValue', evt.target)
             const onsRadio = evt.target.parentNode.parentNode;
             const idx = parseInt(onsRadio.getAttribute("idx"));
-            this.props.values.forEach(item => {
+            (this.props.values || []).forEach(item => {
                 item.checked = false;
             });
             const item = this.props.values[idx];
@@ -281,14 +283,26 @@ class ClearableInput extends ASelectInput {
 
             this.onChange(item);
         } else if (type === 'checkbox') {
+            let {groupBy} = this.props;
+            if (isFunction(groupBy)) {
+                const groupList = groups[groupKey];
+                const item = groupList[idx];
+                item.checked = !item.checked;
+
+                const values = this.props.values || [];
+                this.onChange(values.filter(val => val.checked));
+            } else {
+                const onsCheckbox = evt.target.parentNode.parentNode;
+                const idx = parseInt(onsCheckbox.getAttribute("idx"));
+                const values = this.props.values || [];
+                const item = values[idx];
+                item.checked = !item.checked;
+
+                this.onChange(values.filter(val => val.checked));
+            }
+
 //            if (!this.state.isEditable)
 //                return;
-            const onsCheckbox = evt.target.parentNode.parentNode;
-            const idx = parseInt(onsCheckbox.getAttribute("idx"));
-            const item = this.props.values[idx];
-            item.checked = !item.checked;
-
-            this.onChange(this.props.values.filter(val => val.checked));
         } else {
             this.onChange(evt.target.value);
         }
@@ -358,7 +372,8 @@ class ClearableInput extends ASelectInput {
         const {type} = this.props;
         this.clearError();
         if (type === 'radio' || type === 'checkbox') {
-            this.props.values.forEach(item => {
+            const values = this.props.values || [];
+            values.forEach(item => {
                 item.checked = false;
             });
             const {radioGroup, checkboxGroup} = this.refs;
@@ -413,11 +428,12 @@ class ClearableInput extends ASelectInput {
             });
 //            console.log(value)
         } else if (type === 'radio') {
-            this.props.values.forEach(item => {
+            const values = this.props.values || [];
+            values.forEach(item => {
                 item.checked = false;
             });
             if (isDefault) {
-                const item = this.props.values.find(v => {
+                const item = values.find(v => {
                     if (!isNullable(value) && isObject(value) && !isNullable(value.value)) {
                         return v.value === (el ? el.props.defaultValue : value.value);
                     } else {
@@ -429,7 +445,7 @@ class ClearableInput extends ASelectInput {
                     value = item.value;
                 }
             } else {
-                const item = this.props.values.find(v => {
+                const item = values.find(v => {
                     if (!isNullable(value) && isObject(value) && !isNullable(value.value)) {
                         return v.value === value.value;
                     } else {
@@ -454,7 +470,8 @@ class ClearableInput extends ASelectInput {
             if (!value || value.isEmpty()) {
                 value = null;
             } else {
-                if (this.props.values.length === 1) {
+                const values = this.props.values || [];
+                if (values.length === 1) {
                     value = value[0];
                     if (returnValue) {
                         value = value.value;
@@ -484,10 +501,11 @@ class ClearableInput extends ASelectInput {
                 // console.log(1, name, value);
             } else {
                 if (el.props.value === null) {
+                    const values = this.props.values || [];
                     //value = el.props.value;
                     // console.log(el.constructor.name)
                     onShowAddInput && onShowAddInput().then(value => {
-                        this.props.values.push(value);
+                        values.push(value);
                         this.state.value = value;
                         onChange && onChange(this.state.value, this.props.name, this);
                     });

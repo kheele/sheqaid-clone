@@ -1,10 +1,10 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import VerticalBarChart from "../../../../../../containers/Charts/BarCharts/VerticalBarChart";
 //</editor-fold>
@@ -133,7 +133,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		columns={1}
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
-		sx={{m: 0, mt: '30px',}}
+		sx={{m: '0 !important', mt: '30px !important',}}
 	>
 		<Card sx={{background: "#fff", padding: "5px",}}>
 			<>
@@ -143,7 +143,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					spacing={6}
 					className="grid-4 w-full grid-gap-10"
 					sx={{
-						m: 0, p: '8px',
+						m: '0 !important', p: '8px',
 					}}
 				>
 					<DoughnutChart
@@ -201,7 +201,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					spacing={6}
 					className="grid-3 w-full grid-gap-10"
 					sx={{
-						m: 0, p: '8px',
+						m: '0 !important', p: '8px',
 					}}
 				>
 					<VerticalBarChartWrapper

@@ -1,11 +1,10 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import style from "assets/styles/home.module.css";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MD/MDBox";
-import ComplexStatisticsCard from "containers/Cards/StatisticsCards/ComplexStatisticsCard";
 import ReportsLineChart from "containers/Charts/LineCharts/ReportsLineChart";
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {CircularProgress} from "@mui/material";
 import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
@@ -276,10 +275,10 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
 		sx={{
-			m: 0, mt: '20px',
+			m: '0 !important', mt: '20px !important',
 		}}
 	>
-		<Grid item sx={{padding: "0 !important", mb: "20px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "15px !important"}}>
 			<VerticalBarChartWrapper
 				title="Total Incidents"
 				color="#fff"
@@ -289,7 +288,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				chart={totalIncidentsPerMonth}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
 			<DefaultLineChartWrapper
 				data={group_lti_firstaid_nearmiss}
 				color="black"
@@ -298,7 +297,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				percLabel={percLabel}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
 			<ReportsLineChartWrapper
 				data={fatality}
 				color="dark"
@@ -308,7 +307,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				percLabel={percLabel}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
 			<ReportsLineChartWrapper
 				data={personsInjured}
 				color="info"
@@ -318,7 +317,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				percLabel={percLabel}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-20px!important"}}>
 			<ReportsLineChartWrapper
 				data={vehiclesInvolved}
 				color="warning"

@@ -55,7 +55,17 @@ class AnswerPreviewReadonly extends React.Component {
         let {
             quesPath,
             mainQuestions,
-            ques: {answer, responseAttachment, hasResponseAttachment, hasExpiry, expiry, isMultiAnswer, options, questionType},
+            ques: {
+                answer,
+                responseAttachment,
+                hasResponseAttachment,
+                responseAttachmentRequired,
+                hasExpiry,
+                expiry,
+                isMultiAnswer,
+                options,
+                questionType
+            },
             idx,
             readonly
         } = this.props;
@@ -65,7 +75,7 @@ class AnswerPreviewReadonly extends React.Component {
 
         const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
 
-        const createAnswerInputs = (idx, answer, responseAttachment, hasResponseAttachment, n) => {
+        const createAnswerInputs = (idx, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n) => {
             let node, className = "";
             switch (questionType) {
                 case "NoAnswer":
@@ -83,9 +93,9 @@ class AnswerPreviewReadonly extends React.Component {
                     break;
                 case "Multiple Choice":
                 case "Dropdown":
-                    if(answer) {
+                    if (answer) {
                         console.log('----answer', answer, answer.answer)
-                        if(answer.answer) {
+                        if (answer.answer) {
                             node = answer.answer;
                         } else {
                             // node = answer
@@ -171,7 +181,7 @@ class AnswerPreviewReadonly extends React.Component {
                 }
                 case "Checkboxes":
                     // node = answer ? answer.map(v => v).join(', ') : 'No Answer';
-                    if(answer) {
+                    if (answer) {
                         // node = answer.map(v => v.answer || v).join(', ');
                     } else {
                         node = 'No Answer';
@@ -182,46 +192,54 @@ class AnswerPreviewReadonly extends React.Component {
                     break;
             }
 
-            const renderFrag = (idx, responseAttachment, hasResponseAttachment, isMultiAnswer) => (<React.Fragment>
-                <span className={"block w-full margin-b-5 margin-l-10 pull-left font-size-15 font-weight-bold " + className}>{node}</span>
-                {hasResponseAttachment && <span className={"block w-full margin-b-5 pull-left " + className}>
+            const renderFrag = (idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer) => (
+                <React.Fragment>
+                    <span
+                        className={"block w-full margin-b-5 margin-l-10 pull-left font-size-15 font-weight-bold " + className}>{node}</span>
+                    {hasResponseAttachment && <span className={"block w-full margin-b-5 pull-left " + className}>
                         <UploadButton
-                          name={"response_attachment_" + idx}
-                          buttonTitle="Response Attachment"
-                          defaultValue={responseAttachment}
-                          type={['Photo', 'PDF', 'Word', 'Excel']}
-                          showOnlyIcon
-                          readonly
-                          className="w-340 pull-left margin-t-0"
+                            name={"response_attachment_" + idx}
+                            buttonTitle="Response Attachment"
+                            defaultValue={responseAttachment}
+                            type={['Photo', 'PDF', 'Word', 'Excel']}
+                            showOnlyIcon
+                            readonly
+                            className="w-340 pull-left margin-t-0"
                         />
+                        {responseAttachmentRequired && <span
+                            className="response-attachment-required block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
+                            Response Attachment Required
+                        </span>}
                     </span>}
-                {hasExpiry && <span className="expiry-date block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
+                    {hasExpiry &&
+                        <span className="expiry-date block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
                     Expiry Date: {(expiry && Dates.formatDate(expiry)) || "N/A"}
                 </span>}
-            </React.Fragment>);
+                </React.Fragment>);
 
             if (isMultiAnswer) {
                 return <div
                     className={"multi-answer-each pull-left margin-b-" + ((n === this.answerList.length - 1) ? 5 : 10)}>
                     <span className="counter">{index}.{n + 1}</span>
-                    {renderFrag(idx, responseAttachment, hasResponseAttachment, true)}
+                    {renderFrag(idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, true)}
                 </div>;
             }
-            return renderFrag(idx, responseAttachment, hasResponseAttachment);
+            return renderFrag(idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
         };
 
         console.log('answer', answer)
 
         if (isMultiAnswer) {
             return <React.Fragment>
-                {this.answerList.isEmpty() && <span className={"block w-full margin-b-5 font-size-15 font-weight-bold margin-l-10"}>No Answers</span>}
+                {this.answerList.isEmpty() && <span
+                    className={"block w-full margin-b-5 font-size-15 font-weight-bold margin-l-10"}>No Answers</span>}
                 {!this.answerList.isEmpty() && <div
                     className="multi-answer row w-full margin-0 padding-0 pos-relative">{this.answerList.map((v, n) => createAnswerInputs(
-                  idx, v, responseAttachment, hasResponseAttachment, n
+                    idx, v, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n
                 ))}</div>}
             </React.Fragment>;
         } else {
-            return createAnswerInputs(idx, answer, responseAttachment, hasResponseAttachment);
+            return createAnswerInputs(idx, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
         }
     }
 }
@@ -268,7 +286,8 @@ class AnswerPreviewWritable extends React.Component {
             this.wasChangedAnswerExpiry = true;
         }, 2000);
     }
-//task 
+
+//task
     async onChangeAnswer(el, val) {
         if (!this.wasChangedAnswer) {
             this.wasChangedAnswer = true;
@@ -393,7 +412,11 @@ class AnswerPreviewWritable extends React.Component {
         const opts = options && options.isNotEmpty() ? options : questionType.split(",");
         return opts.map(v => {
             if (questionType === 'Checkboxes') {
-                return {text: v.optionText || v, value: v, checked: (isArray(answer) || isObservableArray(answer)) && answer.contains(v.answer || v)};
+                return {
+                    text: v.optionText || v,
+                    value: v,
+                    checked: (isArray(answer) || isObservableArray(answer)) && answer.contains(v.answer || v)
+                };
             } else {
                 return {text: v.optionText || v, value: v, checked: answer === v.answer || answer === v};
             }
@@ -404,7 +427,17 @@ class AnswerPreviewWritable extends React.Component {
         let {
             quesPath,
             mainQuestions,
-            ques: {answer, responseAttachment, hasResponseAttachment, hasExpiry, expiry, isMultiAnswer, options, questionType},
+            ques: {
+                answer,
+                responseAttachment,
+                hasResponseAttachment,
+                responseAttachmentRequired,
+                hasExpiry,
+                expiry,
+                isMultiAnswer,
+                options,
+                questionType
+            },
             idx,
             readonly
         } = this.props;
@@ -416,7 +449,7 @@ class AnswerPreviewWritable extends React.Component {
 
         const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
 
-        const createAnswerInputs = (idx, questionType, answer, responseAttachment, hasResponseAttachment, n) => {
+        const createAnswerInputs = (idx, questionType, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n) => {
 //            alert(questionType)
             let node, className = "";
             switch (questionType) {
@@ -539,26 +572,31 @@ class AnswerPreviewWritable extends React.Component {
                 case "Compliant,Non-Compliant,N/A":
                     node =
                         <ClearableInput name={"answer_" + idx} type="radio" placeholder="Select" defaultValue={answer}
-                                        required className="form-control" onChange={onChange} values={this.values} returnValue/>;
+                                        required className="form-control" onChange={onChange} values={this.values}
+                                        returnValue/>;
                     break;
                 default:
                     node = null;
                     break;
             }
 
-            const renderFrag = (idx, node, responseAttachment, hasResponseAttachment, isMultiAnswer) => {
+            const renderFrag = (idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer) => {
                 return <React.Fragment>
                     <span className={"block w-full margin-b-5 pull-left " + className}>{node}</span>
                     {hasResponseAttachment && <span className={"block w-full margin-b-5 pull-left " + className}>
                         <UploadButton
-                          name={"response_attachment_" + idx}
-                          buttonTitle="Response Attachment"
-                          defaultValue={responseAttachment}
-                          type={['Photo', 'PDF', 'Word', 'Excel']}
-                          showOnlyIcon
-                          onChange={onChange}
-                          className="w-340 pull-left margin-t-0"
+                            name={"response_attachment_" + idx}
+                            buttonTitle="Response Attachment"
+                            defaultValue={responseAttachment}
+                            type={['Photo', 'PDF', 'Word', 'Excel']}
+                            showOnlyIcon
+                            onChange={onChange}
+                            className="w-340 pull-left margin-t-0"
                         />
+                        {responseAttachmentRequired && <span
+                            className="response-attachment-required block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
+                            Response Attachment Required
+                        </span>}
                     </span>}
                     {isMultiAnswer && <Button idx={n} className="btn btn-primary fa fa-trash padding-5 w-25 h-25"
                                               onClick={this.onRemoveAnswer}/>}
@@ -576,24 +614,24 @@ class AnswerPreviewWritable extends React.Component {
             if (isMultiAnswer) {
                 return <div className="multi-answer-each pull-left margin-b-10">
                     <span className="counter">{index}.{n + 1}</span>
-                    {renderFrag(idx, node, responseAttachment, hasResponseAttachment, true)}
+                    {renderFrag(idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, true)}
                 </div>;
             }
-            return renderFrag(idx, node, responseAttachment, hasResponseAttachment);
+            return renderFrag(idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
         };
 
         if (isMultiAnswer) {
             return <React.Fragment>
                 <div
                     className="multi-answer row w-full margin-0 pos-relative">{this.answerList.map((v, n) => createAnswerInputs(
-                      idx, questionType, v, responseAttachment, hasResponseAttachment, n
-                    ))}</div>
+                    idx, questionType, v, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n
+                ))}</div>
                 <Button className="btn btn-primary margin-b-5" onClick={this.onAddAnswer}>
                     <i className="fa fa-plus"/> Add another answer
                 </Button>
             </React.Fragment>;
         } else {
-            return createAnswerInputs(idx, questionType, answer, responseAttachment, hasResponseAttachment);
+            return createAnswerInputs(idx, questionType, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
         }
     }
 }

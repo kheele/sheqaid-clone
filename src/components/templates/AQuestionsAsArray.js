@@ -11,8 +11,7 @@ import Popover from '../popovers/Popover';
 import SelectEmployeesDialog from './SelectEmployeesDialog';
 import PageLoadingProgress from '../PageLoadingProgress';
 
-import ProfileDocTemplateDialog
-	from 'views/plugins/plugin_extra/__B_Contractors/forms/ProfileDocTemplateDialog';
+import ProfileDocTemplateDialog from 'views/plugins/plugin_extra/__B_Contractors/forms/ProfileDocTemplateDialog';
 
 import UploadDialog from './UploadDialog';
 import SelectTemplateDocDialog from './SelectTemplateDocDialog';
@@ -122,6 +121,9 @@ class AQuestions extends React.Component {
 			isMandatory: false,
 			isMultiAnswer: false,
 			hasExpiry: false,
+			hasResponseAttachment: false,
+			responseAttachmentRequired: false,
+			responseAttachment: null,
 			expiry: null,
 			notify: false,
 			notifyAction: null,

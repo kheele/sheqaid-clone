@@ -44,19 +44,19 @@ export const getVariablesAndQueryConfig = (
 		if (project_id) {
 			if (sess_my_project_id || exact_orgs) {
 				return `, _or: [
-            {
-	            project_id: {_eq: ${project_id}} 
-	            ${site_id_fn(site_id)}
-	          }
-	        ]`;
+					{
+						project_id: {_eq: ${project_id}} 
+						${site_id_fn(site_id)}
+					}
+				]`;
 			} else {
 				return `, _or: [
-          {
-            project_id: {_eq: ${project_id}} 
-            ${site_id_fn(site_id)}
-          },
-          {project_id: {_is_null: true}}
-        ]`;
+				  	{
+						project_id: {_eq: ${project_id}} 
+						${site_id_fn(site_id)}
+				  	},
+				  	{project_id: {_is_null: true}}
+				]`;
 			}
 		}
 		return ``;
@@ -66,26 +66,26 @@ export const getVariablesAndQueryConfig = (
 		if (client_id) {
 			if (sess_my_client_id || exact_orgs) {
 				filterSite.push(`_or: [
-	        {
-	          client_id: {_eq: ${client_id}},
-	          ${project_id_fn(project_id)}
-	        }
-	      ]`);
+					{
+					  client_id: {_eq: ${client_id}}
+					  ${project_id_fn(project_id)}
+					}
+				]`);
 			} else {
 				filterSite.push(`_or: [
-	        {
-	          client_id: {_eq: ${client_id}},
-	          ${project_id_fn(project_id)}
-	        }, 
-	        client_id: {_is_null: true}}
-	      ]`);
+					{
+					  client_id: {_eq: ${client_id}}
+					  ${project_id_fn(project_id)}
+					}, 
+					{client_id: {_is_null: true}}
+				]`);
 			}
 		}
 	} else {
 		if (hasProjects) {
 			filterSite.push(`_or: [
 				${project_id_fn(project_id).replace(', _or', '_or')}
-	    ]`);
+	    	]`);
 		}
 	}
 

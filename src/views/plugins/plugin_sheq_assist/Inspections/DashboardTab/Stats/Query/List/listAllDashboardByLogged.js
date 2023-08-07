@@ -100,6 +100,7 @@ export default (
 			    answer
 			    responseAttachment
 			    hasResponseAttachment
+    			responseAttachmentRequired
 			  }
 			  all_asset_list_aggregate: assets_aggregate(where: {inspection_and_template_list:{is_template:{_eq: false},schedule_list:{id:{_is_null: false}}},}) {
 		      aggregate {

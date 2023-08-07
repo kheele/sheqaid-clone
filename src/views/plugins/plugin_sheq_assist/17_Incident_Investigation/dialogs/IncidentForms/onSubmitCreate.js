@@ -204,6 +204,8 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         who_were_nature_charges_laid_against,
     };
 
+    console.log('sector_list', sector_list)
+
     const data = {
         //0
         client_id: client && client.id,

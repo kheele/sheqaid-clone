@@ -52,7 +52,14 @@ class Controls extends React.Component {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
 
 	@observable
-	state = {};
+	state = {
+		lists: {
+			interval: ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually'].map(value => {
+				return {value, label: value}
+			})
+		},
+		selectedTemplate: null
+	};
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor() {

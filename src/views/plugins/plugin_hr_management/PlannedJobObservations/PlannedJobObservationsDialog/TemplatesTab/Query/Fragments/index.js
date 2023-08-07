@@ -9,6 +9,7 @@ const job_observation_template_question_list_fragment = (deep = 3) => {
     answer
     responseAttachment
     hasResponseAttachment
+    responseAttachmentRequired
     expiry
     hasExpiry
     isMandatory

@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, isObservableArray, isObservableObject, observable} from 'mobx';
-import {Checkbox, FormControlLabel, Grid, Icon, Radio, RadioGroup} from '@material-ui/core';
+import {Checkbox, FormControlLabel, Icon, Radio, RadioGroup} from '@material-ui/core';
 
 import * as Utils from 'utils/Utils';
 import MKBox from "components/MK/MKBox";
@@ -64,7 +64,8 @@ class RadioGroupImpl extends React.Component {
 	}
 
 	componentDidMount() {
-		const {values} = this.props;
+		let {values} = this.props;
+		values = values || [];
 		const checkedItem = values.find((item) => item.checked);
 		this.checkedItem = checkedItem;
 	}
@@ -91,7 +92,7 @@ class RadioGroupImpl extends React.Component {
 	}
 
 	renderGroup({group, list}, idx) {
-		return <>
+		return  <MKBox key={group}>
 			<MKBox
 				sx={{
 					padding: '10px',
@@ -102,13 +103,14 @@ class RadioGroupImpl extends React.Component {
 				}}
 			>{group}</MKBox>
 			{list.map(this.renderItem)}
-		</>;
+		</MKBox>;
 	}
 
 	render() {
 //        if(this._refresh) return null;
 		const {state: {checkedItem}} = this;
-		const {name, className, values, groupBy, inputProps = {}} = this.props;
+		let {name, className, values, groupBy, inputProps = {}} = this.props;
+		values = values || [];
 //        console.log('RadioGroupImpl', checkedItem, inputProps)
 		if (isFunction(groupBy)) {
 			const groups = values.groupBy(groupBy);
@@ -136,17 +138,19 @@ class RadioGroupImpl extends React.Component {
 class CheckboxItemImpl extends React.Component {
 
 	render() {
-		const {item, idx, name, className, inputProps = {}} = this.props;
-//        console.log('CheckboxItemImpl', item)        
+		const {groups, groupKey, item, idx, name, className, inputProps = {}} = this.props;
+//        console.log('CheckboxItemImpl', item)
+		const key = (groupKey || '') + idx;
 		return <FormControlLabel
-			key={idx}
+			key={key}
 			className={className}
 			control={<Checkbox
-				idx={idx}
+				idx={key}
 				defaultChecked={item.checked}
-				name={name + "-" + idx}
+				name={name + "-" + key}
 				value={item.value}
 				{...inputProps}
+				onChange={(evt) => inputProps.onChange(evt, groups, groupKey, idx)}
 			/>}
 			label={item.text || item.label}
 		/>;
@@ -170,14 +174,14 @@ class CheckboxGroupImpl extends React.Component {
 		setTimeout(() => this._refresh = false);
 	}
 
-	renderItem(item, idx) {
+	renderItem(item, idx, groups, groupKey) {
 		const {name, className, inputProps} = this.props;
-		return <CheckboxItemImpl key={idx} item={item} idx={idx} name={name} className={className}
+		return <CheckboxItemImpl key={name} groups={groups} groupKey={groupKey} item={item} idx={idx} name={name} className={className}
 		                         inputProps={inputProps}/>;
 	}
 
-	renderGroup({group, list}, idx) {
-		return <>
+	renderGroup(groups, {group: groupKey, list}, groupIdx) {
+		return <MKBox key={groupKey}>
 			<MKBox
 				sx={{
 					padding: '10px',
@@ -186,18 +190,19 @@ class CheckboxGroupImpl extends React.Component {
 					background: '#f3f3f3',
 					float: 'left',
 				}}
-			>{group}</MKBox>
-			{list.map(this.renderItem)}
-		</>;
+			>{groupKey}</MKBox>
+			{list.map((item, idx) => this.renderItem(item, idx, groups, groupKey))}
+		</MKBox>;
 	}
 
 	render() {
 //        if(this._refresh) return null;
-		const {values, groupBy} = this.props;
+		let {values, groupBy} = this.props;
+		values = values || [];
 		if (isFunction(groupBy)) {
 			const groups = values.groupBy(groupBy);
 			return <React.Fragment key={new Date().getTime()}>
-				{Object.keys(groups).map(key => ({group: key, list: groups[key]})).map(this.renderGroup)}
+				{Object.keys(groups).map(key => ({group: key, list: groups[key]})).map((groupItem, groupIdx) => this.renderGroup(groups, groupItem, groupIdx))}
 			</React.Fragment>;
 		}
 		return <React.Fragment key={new Date().getTime()}>

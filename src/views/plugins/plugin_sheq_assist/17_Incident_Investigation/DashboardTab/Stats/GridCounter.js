@@ -1,10 +1,9 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef, useImperativeHandle, useState} from "react";
 import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
-import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
-import Divider from "@mui/material/Divider";
 import {CircularProgress} from "@mui/material";
 //</editor-fold>
 
@@ -70,7 +69,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-4 w-full grid-gap-10"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<Counter background="#933333" title={<b className="color-white font-size-14">Total<br/>Incidents</b>}
 			         count={all_incident_list_aggregate.aggregate.count}/>

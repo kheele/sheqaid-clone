@@ -5,6 +5,7 @@ import {computed, isObservableArray, observable} from "mobx";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import ASelectInput from "./ASelectInput";
+import {execWhen} from "../../utils/UtilsFuns";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -53,6 +54,23 @@ class SelectInput extends ASelectInput {
     get listMapped() {
         const {type} = this.props;
         return this.state.lists.list.map((value) => ({[type === 'checkbox' ? 'text' : 'label']: value.name || value.data.name, value}));
+    }
+
+    set list(value) {
+        const {lists} = this.state;
+        if(value && value.isNotEmpty()) {
+            const oldList = [...lists.list.slice()];
+            lists.list = value;
+            execWhen(() => this.state.props).then(props => {
+                console.log('new value: ', value.slice(), 'old value: ', this.value && this.value.slice(), 'oldList: ', oldList.slice())
+                props.values = this.listMapped;
+            });
+        } else {
+            lists.list = [];
+            execWhen(() => this.state.props).then(props => {
+                props.values = this.list;
+            });
+        }
     }
 
     renderer(v) {

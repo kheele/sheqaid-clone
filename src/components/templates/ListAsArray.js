@@ -204,7 +204,7 @@ class Section extends React.Component {
 
         const {question_list, indexes = [], ques, idx, sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
 
-//        console.log('Section indexes', indexes)
+       console.log('Section ques', ques)
         return <React.Fragment>
             <OpenCloseBtn question_list={question_list} ques={ques} top showOnOpen/>
             <OpenCloseBtn question_list={question_list} ques={ques}/>

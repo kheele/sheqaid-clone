@@ -50,7 +50,7 @@ export const contractor_details_fragment = () => {
 
 	return `
     id
-    created_at,
+    created_at
     name
     username
     inc_contractor_pack
