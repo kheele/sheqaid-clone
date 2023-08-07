@@ -12,7 +12,7 @@ function organogramIsTeam(btn) {
 
 //used
 function organogramGetParentId(btn) {
-    return btn.getAttribute('parentId');
+    return parseInt(btn.getAttribute('parentId'));
 }
 
 function organogramCreateRef(btn) {

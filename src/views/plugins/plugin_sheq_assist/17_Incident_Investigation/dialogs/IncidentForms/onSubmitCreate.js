@@ -1,5 +1,6 @@
 import insertIncident from "mutations/all/Incident/insertIncident";
 import {Dates} from "utils/Dates";
+import {isObservableArray} from "mobx";
 
 export default async function onSubmitCreate(e, btn, onSaved) {
     const {form} = this;
@@ -228,18 +229,21 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         time_shift,
         //3
         category_list: {
-            data: (category_list || []).map(({id: category_id}) => ({category_id}))
+            data: (category_list && (isArray(category_list) || isObservableArray(category_list)) ? category_list : category_list ? [category_list] : []).map(({id: category_id}) => ({category_id}))
         },
         //4
         sub_category_list: {
-            data: (sub_category_list || []).map(({id: sub_category_id}) => ({sub_category_id}))
+            data: (sub_category_list && (isArray(sub_category_list) || isObservableArray(sub_category_list)) ? sub_category_list : sub_category_list ? [sub_category_list] : [])
+            .map(({id: sub_category_id}) => ({sub_category_id}))
         },
         //5
         sector_list: {
-            data: (sector_list || []).map(({id: sector_id}) => ({sector_id}))
+            data: (sector_list && (isArray(sector_list) || isObservableArray(sector_list)) ? sector_list : sector_list ? [sector_list] : []).
+            map(({id: sector_id}) => ({sector_id}))
         },
         activity_list: {
-            data: (activity_list || []).map(({id: activity_id}) => ({activity_id}))
+            data: (activity_list && (isArray(activity_list) || isObservableArray(activity_list)) ? activity_list : activity_list ? [activity_list] : [])
+            .map(({id: activity_id}) => ({activity_id}))
         },
         //6
         person_involved_list: {
