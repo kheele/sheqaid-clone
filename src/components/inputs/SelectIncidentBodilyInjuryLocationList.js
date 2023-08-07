@@ -6,9 +6,10 @@ import {execWhen} from "utils/UtilsFuns";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import GQLClient from "graphql/GQLClient";
+import ASelectInput from "./ASelectInput";
 
 @observer
-class SelectInput extends React.Component {
+class SelectInput extends ASelectInput {
 
     @observable
     state = {
@@ -29,7 +30,7 @@ class SelectInput extends React.Component {
         className += ` SelectIncidentBodilyInjuryLocationInput`;
 
         const res = await onSelectLoad();
-        this.state.lists.list = res.distinct();
+        this.state.lists.list = res;
 
         const {type} = this.props;
 
@@ -51,33 +52,7 @@ class SelectInput extends React.Component {
     }
 
     renderer(v) {
-        if (isNullable(v)) {
-            return null;
-        }
-        if (isString(v)) {
-            return v;
-        }
-        if (v.label && v.value) {
-            return v.label;
-        }
-        if (isArray(v) || isObservableArray(v)) {
-            return <>
-                {v.filter(v => !isNullable(v)).map((v) => {
-                    let label;
-                    if (isString(v)) {
-                        label = v;
-                    } else if (v.label && v.value) {
-                        label = v.label;
-                    } else {
-                        let {name, data} = v;
-                        label = name || data.name;
-                    }
-                    return <Grid key={label} item><Chip label={label} size="small"/></Grid>;
-                })}
-            </>
-        }
-        let {name, data} = v;
-        return name || data.name;
+        return this.rendererImpl(v, (v) => v.name || v.data.name);
     }
 
     @computed

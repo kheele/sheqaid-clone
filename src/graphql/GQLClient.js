@@ -81,7 +81,7 @@ class GQLClient {
 						return node;
 					}
 				});
-				console.log("onCompleted nodes", nodes);
+				// console.log("onCompleted nodes", nodes);
 				return nodes;
 			}
 			// 	});

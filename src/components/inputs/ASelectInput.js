@@ -1,8 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, observable} from 'mobx';
+import {computed, isObservableArray, observable} from 'mobx';
 
 import {createValueSetter, execWhen} from '../../utils/Utils';
+import {Grid} from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
 
 @observer
 class ASelectInput extends React.Component {
@@ -11,6 +13,8 @@ class ASelectInput extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.rendererImpl = this.rendererImpl.bind(this);
         
         createValueSetter.call(this.state);
         execWhen(() => this.refs.input).then(ref => {
@@ -90,7 +94,34 @@ class ASelectInput extends React.Component {
         const {input} = this.refs;
         return input && input.setEditable && input.setEditable(bool);
     }
-    
+
+    rendererImpl(v, getLabel) {
+        if (isNullable(v)) {
+            return null;
+        }
+        if (isString(v)) {
+            return v;
+        }
+        if (v.label && v.value) {
+            return v.label;
+        }
+        if (isArray(v) || isObservableArray(v)) {
+            return <>
+                {v.filter(v => !isNullable(v)).map((v) => {
+                    let label;
+                    if (isString(v)) {
+                        label = v;
+                    } else if (v.label && v.value) {
+                        label = v.label;
+                    } else {
+                        label = getLabel(v);
+                    }
+                    return <Grid key={label} item><Chip label={label} size="small"/></Grid>;
+                })}
+            </>
+        }
+        return getLabel(v);
+    }
 }
 
 export default ASelectInput;
