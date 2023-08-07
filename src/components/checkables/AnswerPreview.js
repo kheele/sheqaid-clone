@@ -161,7 +161,6 @@ class AnswerPreviewReadonly extends React.Component {
                         if (singleAnswer) {
                             node = <UploadButton
                                 name={"answer_" + idx}
-                                buttonTitle="PDF/Word/Excel"
                                 defaultValue={singleAnswer}
                                 type={['PDF', 'Word', 'Excel']}
                                 showOnlyIcon
