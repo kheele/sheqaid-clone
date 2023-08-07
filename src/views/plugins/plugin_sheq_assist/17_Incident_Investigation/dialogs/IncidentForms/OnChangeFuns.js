@@ -37,7 +37,7 @@ const onChangePersonInjured = function (el, val) {
             injured_person_gender: injured_person_gender_ref
         } = this.refs;
         if (val) {
-            let {sex, dob} = val.data;
+            let {sex, dob} = val.data || val;
             sex && injured_person_gender_ref.onChange({label: sex, value: sex});
             dob && injured_person_dob_ref.onChange(dob);
         } else {
