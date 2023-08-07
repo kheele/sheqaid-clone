@@ -8,6 +8,7 @@ import Form from 'utils/Form';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import onSubmitCreate from "./IncidentForms/onSubmitCreate";
+import onNext from "./IncidentForms/onNext";
 import {newRender} from './IncidentForms';
 import style from "./NewIncidentDialog.lazy.css";
 import StateLists from "./IncidentForms/StateLists";
