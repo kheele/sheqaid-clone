@@ -39,7 +39,7 @@ export default (
             removed: {_eq: ${removed}},
             ${filter}
           },
-          order_by: {lname: asc},
+          order_by: {name: asc},
           offset: ${offset}
           ${limit > 0 ? `,limit: ${limit}` : ''}
         ) {
