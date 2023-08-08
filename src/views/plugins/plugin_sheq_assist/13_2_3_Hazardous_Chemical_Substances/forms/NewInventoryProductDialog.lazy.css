@@ -2,7 +2,7 @@
 
 #dialog-overlay.NewInventoryProductDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 800px;
+    width: 1200px;
     max-width: 100%;
 }
 #dialog-overlay.NewInventoryProductDialog-new-dialog .dialog-content{

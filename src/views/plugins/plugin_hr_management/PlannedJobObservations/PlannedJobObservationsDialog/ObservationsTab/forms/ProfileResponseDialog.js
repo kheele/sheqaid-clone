@@ -224,6 +224,7 @@ class Controls extends AControls {
 					responsible_department,
 					job_position,
 					employee,
+					employee_other,
 					//
 					template
 				}
@@ -254,7 +255,7 @@ class Controls extends AControls {
 				onFormBack={onFormBack}
 			>
 				<ProfileField name="job_position" placeholder="Job Position" value={job_position} renderer={v => v.name} className="col-lg-12"/>
-				<ProfileField name="employee" placeholder="Employee" value={employee}
+				<ProfileField name="employee" placeholder="Employee" value={employee || employee_other}
 				              renderer={v => v.full_name} className="col-lg-12"/>
 			</Row>
 			<Row

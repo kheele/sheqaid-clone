@@ -51,8 +51,8 @@ class ListTable extends ANewListTable {
 				{renderTable && renderTable(item, n)}
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="w-full padding-10">
-				<div className="td flex padding-0 margin-0">
+			return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-10 min-h-195">
+				<div className="td grid-2 grid-gap-10 padding-0 margin-0 min-h-130">
 					<ClearableInput
 						ref={this.onSetRef}
 						name="manufacturer"
@@ -66,7 +66,6 @@ class ListTable extends ANewListTable {
 						name="email"
 						type="email"
 						placeholder="Email Address"
-						required
 						className="form-control"
 						onChange={this.onChange}
 					/>
@@ -74,7 +73,6 @@ class ListTable extends ANewListTable {
 						ref={this.onSetRef}
 						name="phone"
 						placeholder="Phone No."
-						required
 						className="form-control"
 						onChange={this.onChange}
 					/>
@@ -82,7 +80,6 @@ class ListTable extends ANewListTable {
 						ref={this.onSetRef}
 						name="fax"
 						placeholder="Fax No."
-						required
 						className="form-control"
 						onChange={this.onChange}
 					/>
@@ -90,7 +87,6 @@ class ListTable extends ANewListTable {
 						ref={this.onSetRef}
 						name="website"
 						placeholder="Website"
-						required
 						className="form-control"
 						onChange={this.onChange}
 					/>
@@ -99,11 +95,12 @@ class ListTable extends ANewListTable {
 						name="address"
 						type="textarea"
 						placeholder="Address"
-						required
 						className="form-control"
 						onChange={this.onChange}
 					/>
-					<Button idx={n} action="save" className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l"
+				</div>
+				<div className="td grid-1 grid-gap-10 padding-0 margin-0">
+					<Button idx={n} action="save" className="btn btn-primary fixed-flex hor-center w-200 margin-0 border-radius-20"
 					        onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>

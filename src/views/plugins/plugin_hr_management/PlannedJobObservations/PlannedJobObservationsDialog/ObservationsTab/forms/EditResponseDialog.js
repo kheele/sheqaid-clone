@@ -190,6 +190,7 @@ class Controls extends AControls {
 					responsible_department,
 					job_position,
 					employee,
+					employee_other,
 					//
 					template
 				}
@@ -229,7 +230,7 @@ class Controls extends AControls {
 				<SelectEmployeeInput
 					name="employee"
 					placeholder="Employee..."
-					defaultValue={employee}
+					defaultValue={employee || employee_other}
 					className="col-lg-12 form-control"
 					onChange={this.form.onChange}
 				/>
