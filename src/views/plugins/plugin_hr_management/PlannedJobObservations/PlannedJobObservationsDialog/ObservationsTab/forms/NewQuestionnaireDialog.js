@@ -6,12 +6,12 @@ import {observable, toJS} from 'mobx';
 import Form from 'utils/Form';
 
 import {
-    ClearableInput,
-    RowOrgs,
-    SelectDepartmentInput,
-    SelectEmployeeInput,
-    SelectJobPositionInput,
-    SelectQuestionnaireTemplateInput
+	ClearableInput,
+	RowOrgs,
+	SelectDepartmentInput,
+	SelectEmployeeInput,
+	SelectJobPositionInput,
+	SelectQuestionnaireTemplateInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import SelectEmployeesDialog from 'components/templates/SelectEmployeesDialog';
@@ -21,7 +21,7 @@ import {TemplateQuestions} from 'components/templates';
 
 import style from "./NewQuestionnaireDialog.lazy.css";
 import insertJobObservationsQuestionnaire
-    from "mutations/all/Questionnaires/JobObservationsQuestionnaires/insertJobObservationsQuestionnaire";
+	from "mutations/all/Questionnaires/JobObservationsQuestionnaires/insertJobObservationsQuestionnaire";
 import byLogged from "../../TemplatesTab/Query/List/listAllJobObservationTemplatesByLogged";
 import {Dates} from "utils/Dates";
 import Divider from "@mui/material/Divider";
@@ -165,6 +165,7 @@ class Controls extends React.Component {
 			//
 			job_position_id: job_position && job_position.id,
 			employee_id: employee && employee.id,
+			employee_other: employee && !employee.id ? {data: employee} : null,
 			//
 			responsible_person_id: responsible_person && responsible_person.id,
 			responsible_department_id: responsible_department && responsible_department.id,

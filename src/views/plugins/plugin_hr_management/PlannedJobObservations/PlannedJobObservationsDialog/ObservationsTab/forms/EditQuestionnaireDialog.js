@@ -125,7 +125,7 @@ class Controls extends React.Component {
 		];
 
 		const {
-			job_position, employee,
+			job_position, employee, employee_other,
 			//
 			responsible_person, responsible_department, interval, start_date, time,
 		} = form.data;
@@ -139,6 +139,7 @@ class Controls extends React.Component {
 		//
 		ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position');
 		ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+		ShouldUpdate.checkEmployee(data, old_data, employee_other, 'employee_other');
 
 		//
 		ShouldUpdate.checkJobPosition(data, old_data, responsible_person, 'responsible_person');
@@ -215,6 +216,7 @@ class Controls extends React.Component {
 					//
 					job_position,
 					employee,
+					employee_other,
 				}
 			}
 		} = this;
@@ -242,7 +244,7 @@ class Controls extends React.Component {
 					<SelectEmployeeInput
 						ref="employee"
 						name="employee" placeholder="Employee..."
-						defaultValue={employee}
+						defaultValue={employee || employee_other}
 						showOtherPerson
 						incContractors
 						className="col-lg-12 form-control"

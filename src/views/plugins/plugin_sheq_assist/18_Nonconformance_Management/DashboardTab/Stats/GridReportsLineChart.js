@@ -328,10 +328,10 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
 		sx={{
-			m: 0, mt: '20px',
+			m: '0 !important', mt: '20px !important',
 		}}
 	>
-		<Grid item sx={{padding: "0 !important", mb: "20px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "10px !important"}}>
 			<VerticalBarChartWrapper
 				title="Total Non-Conformances"
 				color="#fff"
@@ -341,7 +341,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				chart={totalNCRPerMonth}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
 			<DefaultLineChartWrapper
 				data={source}
 				color="dark"
@@ -350,7 +350,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				percLabel={percLabel}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
 			<DefaultLineChartWrapper
 				data={priority}
 				color="dark"
@@ -359,7 +359,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				percLabel={percLabel}
 			/>
 		</Grid>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-20px !important"}}>
 			<DefaultLineChartWrapper
 				data={type}
 				color="dark"

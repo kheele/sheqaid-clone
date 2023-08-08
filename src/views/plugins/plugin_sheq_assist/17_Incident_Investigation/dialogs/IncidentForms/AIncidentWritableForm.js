@@ -1,6 +1,8 @@
-
+import React from "react";
 import * as OnChangeFuns from "./OnChangeFuns";
 import StateLists from "./StateLists";
+import {observer} from "mobx-react";
+import {observable} from "mobx";
 
 @observer
 class Controls extends React.Component {

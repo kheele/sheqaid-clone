@@ -135,7 +135,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		columns={1}
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
-		sx={{m: 0, mt: '30px',}}
+		sx={{m: '0 !important', mt: '30px !important',}}
 	>
 		<Card sx={{background: "#fff", padding: "5px",}}>
 			<>

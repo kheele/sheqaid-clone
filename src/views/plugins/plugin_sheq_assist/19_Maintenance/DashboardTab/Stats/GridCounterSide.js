@@ -87,7 +87,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-1 w-full grid-gap-10 padding-15"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<DefaultDoughnutChart
 				title="Asset Status"

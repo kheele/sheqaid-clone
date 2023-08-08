@@ -411,11 +411,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
         spacing={6}
         className="grid-1 w-full grid-gap-10"
         sx={{
-            m: 0, mt: '30px',
+            m: '0 !important', mt: '30px !important',
         }}
     >
-        <Grid item sx={{padding: "0 !important", mb: "0px"}}>
-            <MDBox mb={3}>
+        <Grid item sx={{padding: "0 !important", mb: "0px !important"}}>
+            <MDBox mb="10px !important">
                 <VerticalBarChartWrapper
                     title="Total Incidents Per Month (2022)"
                     color="#fff"

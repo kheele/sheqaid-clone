@@ -179,11 +179,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '0 !important', mb: '5px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart
-				height="226px"
+				height="232px"
 				title="Inspections Compliance"
 				color="#fff"
 				tickColor="white"
@@ -194,11 +194,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '0 !important', mb: '-10px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart
-				height="226px"
+				height="232px"
 				title="Inspections Statuses"
 				color="#fff"
 				tickColor="white"

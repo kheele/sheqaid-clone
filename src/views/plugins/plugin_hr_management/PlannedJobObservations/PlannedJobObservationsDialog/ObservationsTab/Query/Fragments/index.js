@@ -153,6 +153,21 @@ export const job_observation_details_fragment = `
       }
     }
     
+    employee_other{
+      id
+      fname
+      lname
+      full_name
+      id_num
+      passport_num
+      phone
+      email
+      job_position{
+        id
+        name
+      }
+    }
+    
     job_position{
       id
       name

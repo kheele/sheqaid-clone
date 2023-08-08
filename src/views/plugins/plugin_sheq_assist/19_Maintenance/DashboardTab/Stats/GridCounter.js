@@ -183,7 +183,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-3 w-full grid-gap-10"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<Counter background="#933333" title={<b className="color-white font-size-14">Total Assets</b>}
 			         count={all_asset_list_aggregate.aggregate.count}/>
@@ -217,7 +217,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-2 w-full grid-gap-10"
-			sx={{m: '0 !important', mt: '-10px !important', mb: '5px !important', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '-10px !important', mb: '10px !important', justifyItems: 'center',}}
 		>
 			<MDBox
 				className="w-full grid-gap-10"
@@ -263,7 +263,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: 0, mb: '15px', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart
@@ -279,7 +279,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: 0, mb: '15px', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart

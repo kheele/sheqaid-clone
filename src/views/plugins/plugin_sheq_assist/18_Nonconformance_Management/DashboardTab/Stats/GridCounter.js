@@ -71,7 +71,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-5 w-full grid-gap-10"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<Counter background="#933333" title={<b className="color-white font-size-14">Total<br/>Non-Conformances</b>}
 			         count={all_ncr_list_aggregate.aggregate.count}/>
