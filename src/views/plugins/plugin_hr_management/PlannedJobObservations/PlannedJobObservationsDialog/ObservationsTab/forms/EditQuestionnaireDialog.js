@@ -141,8 +141,8 @@ class Controls extends React.Component {
 
 			ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position');
 			if(employee) {
-				const {id, is_external, data} = employee;
-				if(is_external || data && data.is_external) {
+				const {id, is_external, data: _data} = employee;
+				if(is_external || _data && _data.is_external) {
 					ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_other');
 				} else {
 					ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');

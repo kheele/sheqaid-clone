@@ -4167,6 +4167,45 @@ type default_clients implements Node {
         where: default_job_categories_bool_exp
     ): default_job_categoriesConnection!
     "An array relationship"
+    job_observation_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): [hr_employees_docs_planned_job_observations!]!
+    "An aggregate relationship"
+    job_observation_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observations_aggregate!
+    "An array relationship connection"
+    job_observation_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observationsConnection!
+    "An array relationship"
     job_position_list(
         "distinct select on columns"
         distinct_on: [default_job_positions_select_column!],
@@ -5611,6 +5650,84 @@ type default_companies implements Node {
     "An object relationship"
     category: default_company_categories
     category_id: bigint
+    "An array relationship"
+    chemical_product_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): [sheq_chemical_products!]!
+    "An aggregate relationship"
+    chemical_product_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_products_aggregate!
+    "An array relationship connection"
+    chemical_product_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_productsConnection!
+    "An array relationship"
+    chemical_sds_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): [sheq_chemical_sds!]!
+    "An aggregate relationship"
+    chemical_sds_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sds_aggregate!
+    "An array relationship connection"
+    chemical_sds_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sdsConnection!
     "An object relationship"
     city: default_cities
     city_id: bigint
@@ -5692,6 +5809,45 @@ type default_companies implements Node {
         "filter the rows returned"
         where: hr_employees_docs_competencies_bool_exp
     ): hr_employees_docs_competenciesConnection!
+    "An array relationship"
+    compliance_audit_list(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): [sheq_compliance_audits!]!
+    "An aggregate relationship"
+    compliance_audit_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_audits_aggregate!
+    "An array relationship connection"
+    compliance_audit_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_auditsConnection!
     consultant: Boolean!
     "An array relationship"
     contract_list(
@@ -6167,6 +6323,45 @@ type default_companies implements Node {
         where: default_error_reporting_bool_exp
     ): default_error_reportingConnection!
     firestore_id: String
+    "An array relationship"
+    hazchem_sheet_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): [sheq_chemical_hazchem_sheets!]!
+    "An aggregate relationship"
+    hazchem_sheet_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheets_aggregate!
+    "An array relationship connection"
+    hazchem_sheet_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheetsConnection!
     id: ID!
     "An array relationship"
     incident_list(
@@ -6285,6 +6480,45 @@ type default_companies implements Node {
         "filter the rows returned"
         where: default_job_categories_bool_exp
     ): default_job_categoriesConnection!
+    "An array relationship"
+    job_observation_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): [hr_employees_docs_planned_job_observations!]!
+    "An aggregate relationship"
+    job_observation_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observations_aggregate!
+    "An array relationship connection"
+    job_observation_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observationsConnection!
     "An array relationship"
     job_position_list(
         "distinct select on columns"
@@ -8017,6 +8251,9 @@ type default_contractor_questionnaires implements Node {
     "An object relationship"
     employee: hr_employees
     employee_id: bigint
+    "An object relationship"
+    employee_other: hr_employees_external
+    employee_other_id: bigint
     firestore_id: String
     group: String
     id: ID!
@@ -8210,6 +8447,7 @@ type default_contractor_questionnaires_avg_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -8233,6 +8471,7 @@ type default_contractor_questionnaires_max_fields {
     created_at: timestamptz
     desc: String
     employee_id: bigint
+    employee_other_id: bigint
     firestore_id: String
     group: String
     id: bigint
@@ -8445,6 +8684,7 @@ type default_contractor_questionnaires_min_fields {
     created_at: timestamptz
     desc: String
     employee_id: bigint
+    employee_other_id: bigint
     firestore_id: String
     group: String
     id: bigint
@@ -8743,6 +8983,7 @@ type default_contractor_questionnaires_ques implements Node {
         "JSON select path"
         path: String
     ): json
+    responseAttachmentRequired: Boolean!
     score: Int
 }
 
@@ -9262,6 +9503,7 @@ type default_contractor_questionnaires_stddev_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -9281,6 +9523,7 @@ type default_contractor_questionnaires_stddev_pop_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -9300,6 +9543,7 @@ type default_contractor_questionnaires_stddev_samp_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -9319,6 +9563,7 @@ type default_contractor_questionnaires_sum_fields {
     contractor_site_id: bigint
     contractor_user_id: bigint
     employee_id: bigint
+    employee_other_id: bigint
     id: bigint
     job_position_id: bigint
     project_id: bigint
@@ -9338,6 +9583,7 @@ type default_contractor_questionnaires_var_pop_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -9357,6 +9603,7 @@ type default_contractor_questionnaires_var_samp_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -9376,6 +9623,7 @@ type default_contractor_questionnaires_variance_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     employee_id: Float
+    employee_other_id: Float
     id: Float
     job_position_id: Float
     project_id: Float
@@ -15860,6 +16108,84 @@ type default_projects implements Node {
         "filter the rows returned"
         where: default_users_blacklisting_project_bool_exp
     ): default_users_blacklisting_projectConnection!
+    "An array relationship"
+    chemical_product_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): [sheq_chemical_products!]!
+    "An aggregate relationship"
+    chemical_product_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_products_aggregate!
+    "An array relationship connection"
+    chemical_product_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_productsConnection!
+    "An array relationship"
+    chemical_sds_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): [sheq_chemical_sds!]!
+    "An aggregate relationship"
+    chemical_sds_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sds_aggregate!
+    "An array relationship connection"
+    chemical_sds_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sdsConnection!
     "An object relationship"
     client: default_clients
     client_id: bigint
@@ -15905,6 +16231,45 @@ type default_projects implements Node {
         "filter the rows returned"
         where: hr_employees_docs_competencies_bool_exp
     ): hr_employees_docs_competenciesConnection!
+    "An array relationship"
+    compliance_audit_list(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): [sheq_compliance_audits!]!
+    "An aggregate relationship"
+    compliance_audit_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_audits_aggregate!
+    "An array relationship connection"
+    compliance_audit_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_auditsConnection!
     "An array relationship"
     contract_list(
         "distinct select on columns"
@@ -16142,6 +16507,45 @@ type default_projects implements Node {
     ): sheq_documentsConnection!
     email: String
     "An array relationship"
+    employee_ext_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): [hr_employees_external!]!
+    "An aggregate relationship"
+    employee_ext_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): hr_employees_external_aggregate!
+    "An array relationship connection"
+    employee_ext_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): hr_employees_externalConnection!
+    "An array relationship"
     employee_list(
         "distinct select on columns"
         distinct_on: [hr_employees_select_column!],
@@ -16220,6 +16624,45 @@ type default_projects implements Node {
         where: default_error_reporting_bool_exp
     ): default_error_reportingConnection!
     firestore_id: String
+    "An array relationship"
+    hazchem_sheet_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): [sheq_chemical_hazchem_sheets!]!
+    "An aggregate relationship"
+    hazchem_sheet_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheets_aggregate!
+    "An array relationship connection"
+    hazchem_sheet_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheetsConnection!
     id: ID!
     "An array relationship"
     incident_list(
@@ -16338,6 +16781,45 @@ type default_projects implements Node {
         "filter the rows returned"
         where: default_job_categories_bool_exp
     ): default_job_categoriesConnection!
+    "An array relationship"
+    job_observation_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): [hr_employees_docs_planned_job_observations!]!
+    "An aggregate relationship"
+    job_observation_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observations_aggregate!
+    "An array relationship connection"
+    job_observation_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observationsConnection!
     "An array relationship"
     job_position_list(
         "distinct select on columns"
@@ -18327,6 +18809,84 @@ type default_sites implements Node {
         "filter the rows returned"
         where: default_users_blacklisting_site_bool_exp
     ): default_users_blacklisting_siteConnection!
+    "An array relationship"
+    chemical_product_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): [sheq_chemical_products!]!
+    "An aggregate relationship"
+    chemical_product_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_products_aggregate!
+    "An array relationship connection"
+    chemical_product_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_products_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_products_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_products_bool_exp
+    ): sheq_chemical_productsConnection!
+    "An array relationship"
+    chemical_sds_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): [sheq_chemical_sds!]!
+    "An aggregate relationship"
+    chemical_sds_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sds_aggregate!
+    "An array relationship connection"
+    chemical_sds_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_sds_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_sds_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_sds_bool_exp
+    ): sheq_chemical_sdsConnection!
     "An object relationship"
     client: default_clients
     client_id: bigint
@@ -18372,6 +18932,45 @@ type default_sites implements Node {
         "filter the rows returned"
         where: hr_employees_docs_competencies_bool_exp
     ): hr_employees_docs_competenciesConnection!
+    "An array relationship"
+    compliance_audit_list(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): [sheq_compliance_audits!]!
+    "An aggregate relationship"
+    compliance_audit_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_audits_aggregate!
+    "An array relationship connection"
+    compliance_audit_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_bool_exp
+    ): sheq_compliance_auditsConnection!
     "An array relationship"
     contract_list(
         "distinct select on columns"
@@ -19857,6 +20456,45 @@ type default_sites implements Node {
     ): sheq_documentsConnection!
     email: String
     "An array relationship"
+    employee_ext_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): [hr_employees_external!]!
+    "An aggregate relationship"
+    employee_ext_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): hr_employees_external_aggregate!
+    "An array relationship connection"
+    employee_ext_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_external_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_external_order_by!],
+        "filter the rows returned"
+        where: hr_employees_external_bool_exp
+    ): hr_employees_externalConnection!
+    "An array relationship"
     employee_list(
         "distinct select on columns"
         distinct_on: [hr_employees_select_column!],
@@ -19935,6 +20573,45 @@ type default_sites implements Node {
         where: default_error_reporting_bool_exp
     ): default_error_reportingConnection!
     firestore_id: String
+    "An array relationship"
+    hazchem_sheet_list(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): [sheq_chemical_hazchem_sheets!]!
+    "An aggregate relationship"
+    hazchem_sheet_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheets_aggregate!
+    "An array relationship connection"
+    hazchem_sheet_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_chemical_hazchem_sheets_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_chemical_hazchem_sheets_order_by!],
+        "filter the rows returned"
+        where: sheq_chemical_hazchem_sheets_bool_exp
+    ): sheq_chemical_hazchem_sheetsConnection!
     id: ID!
     "An array relationship"
     incident_list(
@@ -20053,6 +20730,45 @@ type default_sites implements Node {
         "filter the rows returned"
         where: default_job_categories_bool_exp
     ): default_job_categoriesConnection!
+    "An array relationship"
+    job_observation_list(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): [hr_employees_docs_planned_job_observations!]!
+    "An aggregate relationship"
+    job_observation_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observations_aggregate!
+    "An array relationship connection"
+    job_observation_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hr_employees_docs_planned_job_observations_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hr_employees_docs_planned_job_observations_order_by!],
+        "filter the rows returned"
+        where: hr_employees_docs_planned_job_observations_bool_exp
+    ): hr_employees_docs_planned_job_observationsConnection!
     "An array relationship"
     job_position_list(
         "distinct select on columns"
@@ -20327,6 +21043,45 @@ type default_sites implements Node {
         "filter the rows returned"
         where: sheq_non_conformances_bool_exp
     ): sheq_non_conformancesConnection!
+    "An array relationship"
+    organogram_list(
+        "distinct select on columns"
+        distinct_on: [sheq_organograms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_organograms_order_by!],
+        "filter the rows returned"
+        where: sheq_organograms_bool_exp
+    ): [sheq_organograms!]!
+    "An aggregate relationship"
+    organogram_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_organograms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_organograms_order_by!],
+        "filter the rows returned"
+        where: sheq_organograms_bool_exp
+    ): sheq_organograms_aggregate!
+    "An array relationship connection"
+    organogram_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_organograms_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_organograms_order_by!],
+        "filter the rows returned"
+        where: sheq_organograms_bool_exp
+    ): sheq_organogramsConnection!
     phone: String
     "An array relationship"
     ppe_list(
@@ -28699,6 +29454,86 @@ type hr_employees_docs_planned_job_observationsEdge {
     node: hr_employees_docs_planned_job_observations!
 }
 
+"aggregated selection of \"hr_employees_docs_planned_job_observations\""
+type hr_employees_docs_planned_job_observations_aggregate {
+    aggregate: hr_employees_docs_planned_job_observations_aggregate_fields
+    nodes: [hr_employees_docs_planned_job_observations!]!
+}
+
+"aggregate fields of \"hr_employees_docs_planned_job_observations\""
+type hr_employees_docs_planned_job_observations_aggregate_fields {
+    avg: hr_employees_docs_planned_job_observations_avg_fields
+    count(columns: [hr_employees_docs_planned_job_observations_select_column!], distinct: Boolean): Int!
+    max: hr_employees_docs_planned_job_observations_max_fields
+    min: hr_employees_docs_planned_job_observations_min_fields
+    stddev: hr_employees_docs_planned_job_observations_stddev_fields
+    stddev_pop: hr_employees_docs_planned_job_observations_stddev_pop_fields
+    stddev_samp: hr_employees_docs_planned_job_observations_stddev_samp_fields
+    sum: hr_employees_docs_planned_job_observations_sum_fields
+    var_pop: hr_employees_docs_planned_job_observations_var_pop_fields
+    var_samp: hr_employees_docs_planned_job_observations_var_samp_fields
+    variance: hr_employees_docs_planned_job_observations_variance_fields
+}
+
+"aggregate avg on columns"
+type hr_employees_docs_planned_job_observations_avg_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate max on columns"
+type hr_employees_docs_planned_job_observations_max_fields {
+    client_id: bigint
+    comments: String
+    company_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    date: date
+    employee_id: bigint
+    employee_job_duration: String
+    expiry_date: date
+    id: bigint
+    job_observed: String
+    observation_duration: String
+    observed_by_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"aggregate min on columns"
+type hr_employees_docs_planned_job_observations_min_fields {
+    client_id: bigint
+    comments: String
+    company_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    date: date
+    employee_id: bigint
+    employee_job_duration: String
+    expiry_date: date
+    id: bigint
+    job_observed: String
+    observation_duration: String
+    observed_by_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
 "response of any mutation on the table \"hr_employees_docs_planned_job_observations\""
 type hr_employees_docs_planned_job_observations_mutation_response {
     "number of rows affected by the mutation"
@@ -28814,6 +29649,111 @@ type hr_employees_docs_planned_job_observations_reasons_var_samp_fields {
 type hr_employees_docs_planned_job_observations_reasons_variance_fields {
     id: Float
     job_observation_id: Float
+}
+
+"aggregate stddev on columns"
+type hr_employees_docs_planned_job_observations_stddev_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type hr_employees_docs_planned_job_observations_stddev_pop_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type hr_employees_docs_planned_job_observations_stddev_samp_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate sum on columns"
+type hr_employees_docs_planned_job_observations_sum_fields {
+    client_id: bigint
+    company_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    employee_id: bigint
+    id: bigint
+    observed_by_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"aggregate var_pop on columns"
+type hr_employees_docs_planned_job_observations_var_pop_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate var_samp on columns"
+type hr_employees_docs_planned_job_observations_var_samp_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
+}
+
+"aggregate variance on columns"
+type hr_employees_docs_planned_job_observations_variance_fields {
+    client_id: Float
+    company_id: Float
+    contractor_id: Float
+    contractor_site_id: Float
+    contractor_user_id: Float
+    employee_id: Float
+    id: Float
+    observed_by_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "columns and relationships of \"hr_employees_docs_warnings\""
@@ -29485,8 +30425,11 @@ type hr_employees_external implements Node {
     created_at: timestamptz!
     email: String
     fname: String!
+    "A computed field, executes function \"employee_other_full_name\""
+    full_name: String
     id: ID!
     id_num: String
+    is_external: Boolean!
     "An object relationship"
     job_position: default_job_positions
     job_position_id: bigint
@@ -29532,6 +30475,9 @@ type hr_employees_external implements Node {
     ): proxy_meeting__participantsConnection!
     passport_num: String
     phone: String
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
     "An array relationship"
     proxy_employees_docs_warning__witnesses(
         "distinct select on columns"
@@ -29649,6 +30595,12 @@ type hr_employees_external implements Node {
         "filter the rows returned"
         where: sheq_training_registers_bool_exp
     ): sheq_training_registersConnection!
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    "An object relationship"
+    user: default_users
+    user_id: bigint
     "An array relationship"
     witness_list(
         "distinct select on columns"
@@ -29730,6 +30682,9 @@ type hr_employees_external_avg_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate max on columns"
@@ -29747,6 +30702,9 @@ type hr_employees_external_max_fields {
     lname: String
     passport_num: String
     phone: String
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
 }
 
 "aggregate min on columns"
@@ -29764,6 +30722,9 @@ type hr_employees_external_min_fields {
     lname: String
     passport_num: String
     phone: String
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
 }
 
 "response of any mutation on the table \"hr_employees_external\""
@@ -29782,6 +30743,9 @@ type hr_employees_external_stddev_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_pop on columns"
@@ -29792,6 +30756,9 @@ type hr_employees_external_stddev_pop_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_samp on columns"
@@ -29802,6 +30769,9 @@ type hr_employees_external_stddev_samp_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate sum on columns"
@@ -29812,6 +30782,9 @@ type hr_employees_external_sum_fields {
     contractor_site_id: bigint
     id: bigint
     job_position_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
 }
 
 "aggregate var_pop on columns"
@@ -29822,6 +30795,9 @@ type hr_employees_external_var_pop_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate var_samp on columns"
@@ -29832,6 +30808,9 @@ type hr_employees_external_var_samp_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "aggregate variance on columns"
@@ -29842,6 +30821,9 @@ type hr_employees_external_variance_fields {
     contractor_site_id: Float
     id: Float
     job_position_id: Float
+    project_id: Float
+    site_id: Float
+    user_id: Float
 }
 
 "columns and relationships of \"hr_employees_living_address\""
@@ -47043,6 +48025,7 @@ type sheq_chemical_hazchem_sheets implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    removed: Boolean!
     "An object relationship"
     sds: sheq_chemical_sds
     sds_id: bigint
@@ -47683,6 +48666,7 @@ type sheq_chemical_products implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    removed: Boolean!
     risk_assessment_date: date
     risk_assessment_doc(
         "JSON select path"
@@ -48030,7 +49014,7 @@ type sheq_chemical_sds implements Node {
     empirical_formula: String
     exposure_controls_or_personal_protection: String
     firefighting_measures: String
-    firestore_id: String!
+    firestore_id: String
     first_aid_measures_and_precautions: String
     handling_and_storage_requirements: String
     hazards_identification: String
@@ -48052,6 +49036,7 @@ type sheq_chemical_sds implements Node {
     project: default_projects
     project_id: bigint
     regulatory_info: String
+    removed: Boolean!
     risk_level: String
     "An object relationship"
     site: default_sites
@@ -49677,10 +50662,8 @@ type sheq_incident_investigation implements Node {
     id: ID!
     incident_date: date
     incident_time: timetz
-    "A computed field, executes function \"incident_injured_person_dob\""
     injured_person_dob: date
-    "A computed field, executes function \"incident_injured_person_gender\""
-    injured_person_gender: String
+    injured_person_gender: sex
     injury_desc: String
     "An array relationship"
     injury_list(
@@ -50987,6 +51970,8 @@ type sheq_incident_investigation_max_fields {
     id: bigint
     incident_date: date
     incident_time: timetz
+    injured_person_dob: date
+    injured_person_gender: sex
     injury_desc: String
     investigation_id: bigint
     location: String
@@ -51023,6 +52008,8 @@ type sheq_incident_investigation_min_fields {
     id: bigint
     incident_date: date
     incident_time: timetz
+    injured_person_dob: date
+    injured_person_gender: sex
     injury_desc: String
     investigation_id: bigint
     location: String
@@ -67423,6 +68410,8 @@ enum default_contractor_questionnaires_ques_select_column {
     "column name"
     responseAttachment
     "column name"
+    responseAttachmentRequired
+    "column name"
     score
 }
 
@@ -67442,6 +68431,8 @@ enum default_contractor_questionnaires_ques_select_column_default_contractor_que
     notify
     "column name"
     open
+    "column name"
+    responseAttachmentRequired
 }
 
 "select \"default_contractor_questionnaires_ques_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"default_contractor_questionnaires_ques\""
@@ -67460,6 +68451,8 @@ enum default_contractor_questionnaires_ques_select_column_default_contractor_que
     notify
     "column name"
     open
+    "column name"
+    responseAttachmentRequired
 }
 
 "update columns of table \"default_contractor_questionnaires_ques\""
@@ -67504,6 +68497,8 @@ enum default_contractor_questionnaires_ques_update_column {
     questionnaire_id
     "column name"
     responseAttachment
+    "column name"
+    responseAttachmentRequired
     "column name"
     score
 }
@@ -67591,6 +68586,8 @@ enum default_contractor_questionnaires_select_column {
     "column name"
     employee_id
     "column name"
+    employee_other_id
+    "column name"
     firestore_id
     "column name"
     group
@@ -67670,6 +68667,8 @@ enum default_contractor_questionnaires_update_column {
     desc
     "column name"
     employee_id
+    "column name"
+    employee_other_id
     "column name"
     firestore_id
     "column name"
@@ -70270,6 +71269,26 @@ enum hr_employees_docs_planned_job_observations_select_column {
     user_id
 }
 
+"select \"hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"hr_employees_docs_planned_job_observations\""
+enum hr_employees_docs_planned_job_observations_select_column_hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    expiry_updated
+    "column name"
+    notified_in_advance
+    "column name"
+    removed
+}
+
+"select \"hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"hr_employees_docs_planned_job_observations\""
+enum hr_employees_docs_planned_job_observations_select_column_hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    expiry_updated
+    "column name"
+    notified_in_advance
+    "column name"
+    removed
+}
+
 "update columns of table \"hr_employees_docs_planned_job_observations\""
 enum hr_employees_docs_planned_job_observations_update_column {
     "column name"
@@ -70623,6 +71642,8 @@ enum hr_employees_external_select_column {
     "column name"
     id_num
     "column name"
+    is_external
+    "column name"
     job_position_id
     "column name"
     lname
@@ -70630,6 +71651,24 @@ enum hr_employees_external_select_column {
     passport_num
     "column name"
     phone
+    "column name"
+    project_id
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"select \"hr_employees_external_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"hr_employees_external\""
+enum hr_employees_external_select_column_hr_employees_external_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    is_external
+}
+
+"select \"hr_employees_external_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"hr_employees_external\""
+enum hr_employees_external_select_column_hr_employees_external_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    is_external
 }
 
 "update columns of table \"hr_employees_external\""
@@ -70653,6 +71692,8 @@ enum hr_employees_external_update_column {
     "column name"
     id_num
     "column name"
+    is_external
+    "column name"
     job_position_id
     "column name"
     lname
@@ -70660,6 +71701,12 @@ enum hr_employees_external_update_column {
     passport_num
     "column name"
     phone
+    "column name"
+    project_id
+    "column name"
+    site_id
+    "column name"
+    user_id
 }
 
 "unique or primary key constraints on table \"hr_employees_living_address\""
@@ -72349,6 +73396,8 @@ enum sheq_chemical_hazchem_sheets_select_column {
     "column name"
     project_id
     "column name"
+    removed
+    "column name"
     sds_id
     "column name"
     site_id
@@ -72356,6 +73405,18 @@ enum sheq_chemical_hazchem_sheets_select_column {
     type
     "column name"
     user_id
+}
+
+"select \"sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_chemical_hazchem_sheets\""
+enum sheq_chemical_hazchem_sheets_select_column_sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    removed
+}
+
+"select \"sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_chemical_hazchem_sheets\""
+enum sheq_chemical_hazchem_sheets_select_column_sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_chemical_hazchem_sheets\""
@@ -72394,6 +73455,8 @@ enum sheq_chemical_hazchem_sheets_update_column {
     product_id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     sds_id
     "column name"
@@ -72579,6 +73642,8 @@ enum sheq_chemical_products_select_column {
     "column name"
     project_id
     "column name"
+    removed
+    "column name"
     risk_assessment_date
     "column name"
     risk_assessment_doc
@@ -72628,6 +73693,8 @@ enum sheq_chemical_products_select_column_sheq_chemical_products_aggregate_bool_
     is_hazardous
     "column name"
     is_stable
+    "column name"
+    removed
 }
 
 "select \"sheq_chemical_products_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_chemical_products\""
@@ -72656,6 +73723,8 @@ enum sheq_chemical_products_select_column_sheq_chemical_products_aggregate_bool_
     is_hazardous
     "column name"
     is_stable
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_chemical_products\""
@@ -72762,6 +73831,8 @@ enum sheq_chemical_products_update_column {
     process_where_product_is_used
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_assessment_date
     "column name"
@@ -72873,6 +73944,8 @@ enum sheq_chemical_sds_select_column {
     "column name"
     regulatory_info
     "column name"
+    removed
+    "column name"
     risk_level
     "column name"
     site_id
@@ -72886,6 +73959,18 @@ enum sheq_chemical_sds_select_column {
     un_num
     "column name"
     user_id
+}
+
+"select \"sheq_chemical_sds_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_chemical_sds\""
+enum sheq_chemical_sds_select_column_sheq_chemical_sds_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    removed
+}
+
+"select \"sheq_chemical_sds_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_chemical_sds\""
+enum sheq_chemical_sds_select_column_sheq_chemical_sds_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_chemical_sds\""
@@ -72966,6 +74051,8 @@ enum sheq_chemical_sds_update_column {
     project_id
     "column name"
     regulatory_info
+    "column name"
+    removed
     "column name"
     risk_level
     "column name"
@@ -73657,6 +74744,10 @@ enum sheq_incident_investigation_select_column {
     "column name"
     incident_time
     "column name"
+    injured_person_dob
+    "column name"
+    injured_person_gender
+    "column name"
     injury_desc
     "column name"
     investigation_id
@@ -73866,6 +74957,10 @@ enum sheq_incident_investigation_update_column {
     incident_date
     "column name"
     incident_time
+    "column name"
+    injured_person_dob
+    "column name"
+    injured_person_gender
     "column name"
     injury_desc
     "column name"
@@ -82074,6 +83169,8 @@ input default_clients_bool_exp {
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_bool_exp
     job_category_list: default_job_categories_bool_exp
     job_category_list_aggregate: default_job_categories_aggregate_bool_exp
+    job_observation_list: hr_employees_docs_planned_job_observations_bool_exp
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_bool_exp
     job_position_list: default_job_positions_bool_exp
     job_position_list_aggregate: default_job_positions_aggregate_bool_exp
     leave_list: hr_employees_docs_leaves_bool_exp
@@ -82186,6 +83283,7 @@ input default_clients_insert_input {
     incident_list: sheq_incident_investigation_arr_rel_insert_input
     job_appointment_list: hr_employees_docs_job_appointments_arr_rel_insert_input
     job_category_list: default_job_categories_arr_rel_insert_input
+    job_observation_list: hr_employees_docs_planned_job_observations_arr_rel_insert_input
     job_position_list: default_job_positions_arr_rel_insert_input
     leave_list: hr_employees_docs_leaves_arr_rel_insert_input
     license_list: hr_employees_docs_licenses_arr_rel_insert_input
@@ -82305,6 +83403,7 @@ input default_clients_order_by {
     incident_list_aggregate: sheq_incident_investigation_aggregate_order_by
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_order_by
     job_category_list_aggregate: default_job_categories_aggregate_order_by
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_order_by
     job_position_list_aggregate: default_job_positions_aggregate_order_by
     leave_list_aggregate: hr_employees_docs_leaves_aggregate_order_by
     license_list_aggregate: hr_employees_docs_licenses_aggregate_order_by
@@ -82503,12 +83602,18 @@ input default_companies_bool_exp {
     business_id: String_comparison_exp
     category: default_company_categories_bool_exp
     category_id: bigint_comparison_exp
+    chemical_product_list: sheq_chemical_products_bool_exp
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_bool_exp
+    chemical_sds_list: sheq_chemical_sds_bool_exp
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_bool_exp
     city: default_cities_bool_exp
     city_id: bigint_comparison_exp
     client_list: default_clients_bool_exp
     client_list_aggregate: default_clients_aggregate_bool_exp
     competency_list: hr_employees_docs_competencies_bool_exp
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_bool_exp
+    compliance_audit_list: sheq_compliance_audits_bool_exp
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_bool_exp
     consultant: Boolean_comparison_exp
     contract_list: hr_employees_docs_contracts_bool_exp
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_bool_exp
@@ -82539,6 +83644,8 @@ input default_companies_bool_exp {
     error_reporting_list: default_error_reporting_bool_exp
     error_reporting_list_aggregate: default_error_reporting_aggregate_bool_exp
     firestore_id: String_comparison_exp
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_bool_exp
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_bool_exp
     id: bigint_comparison_exp
     incident_list: sheq_incident_investigation_bool_exp
     incident_list_aggregate: sheq_incident_investigation_aggregate_bool_exp
@@ -82546,6 +83653,8 @@ input default_companies_bool_exp {
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_bool_exp
     job_category_list: default_job_categories_bool_exp
     job_category_list_aggregate: default_job_categories_aggregate_bool_exp
+    job_observation_list: hr_employees_docs_planned_job_observations_bool_exp
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_bool_exp
     job_position_list: default_job_positions_bool_exp
     job_position_list_aggregate: default_job_positions_aggregate_bool_exp
     leave_list: hr_employees_docs_leaves_bool_exp
@@ -82634,10 +83743,13 @@ input default_companies_insert_input {
     business_id: String
     category: default_company_categories_obj_rel_insert_input
     category_id: bigint
+    chemical_product_list: sheq_chemical_products_arr_rel_insert_input
+    chemical_sds_list: sheq_chemical_sds_arr_rel_insert_input
     city: default_cities_obj_rel_insert_input
     city_id: bigint
     client_list: default_clients_arr_rel_insert_input
     competency_list: hr_employees_docs_competencies_arr_rel_insert_input
+    compliance_audit_list: sheq_compliance_audits_arr_rel_insert_input
     consultant: Boolean
     contract_list: hr_employees_docs_contracts_arr_rel_insert_input
     contractor_list: default_contractors_arr_rel_insert_input
@@ -82656,10 +83768,12 @@ input default_companies_insert_input {
     employee_list: hr_employees_arr_rel_insert_input
     error_reporting_list: default_error_reporting_arr_rel_insert_input
     firestore_id: String
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_arr_rel_insert_input
     id: bigint
     incident_list: sheq_incident_investigation_arr_rel_insert_input
     job_appointment_list: hr_employees_docs_job_appointments_arr_rel_insert_input
     job_category_list: default_job_categories_arr_rel_insert_input
+    job_observation_list: hr_employees_docs_planned_job_observations_arr_rel_insert_input
     job_position_list: default_job_positions_arr_rel_insert_input
     leave_list: hr_employees_docs_leaves_arr_rel_insert_input
     license_list: hr_employees_docs_licenses_arr_rel_insert_input
@@ -82761,10 +83875,13 @@ input default_companies_order_by {
     business_id: order_by
     category: default_company_categories_order_by
     category_id: order_by
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_order_by
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_order_by
     city: default_cities_order_by
     city_id: order_by
     client_list_aggregate: default_clients_aggregate_order_by
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_order_by
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_order_by
     consultant: order_by
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_order_by
     contractor_list_aggregate: default_contractors_aggregate_order_by
@@ -82783,10 +83900,12 @@ input default_companies_order_by {
     employee_list_aggregate: hr_employees_aggregate_order_by
     error_reporting_list_aggregate: default_error_reporting_aggregate_order_by
     firestore_id: order_by
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_order_by
     id: order_by
     incident_list_aggregate: sheq_incident_investigation_aggregate_order_by
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_order_by
     job_category_list_aggregate: default_job_categories_aggregate_order_by
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_order_by
     job_position_list_aggregate: default_job_positions_aggregate_order_by
     leave_list_aggregate: hr_employees_docs_leaves_aggregate_order_by
     license_list_aggregate: hr_employees_docs_licenses_aggregate_order_by
@@ -83358,6 +84477,7 @@ input default_contractor_questionnaires_avg_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -83391,6 +84511,8 @@ input default_contractor_questionnaires_bool_exp {
     desc: String_comparison_exp
     employee: hr_employees_bool_exp
     employee_id: bigint_comparison_exp
+    employee_other: hr_employees_external_bool_exp
+    employee_other_id: bigint_comparison_exp
     firestore_id: String_comparison_exp
     group: String_comparison_exp
     id: bigint_comparison_exp
@@ -83434,6 +84556,7 @@ input default_contractor_questionnaires_inc_input {
     contractor_site_id: bigint
     contractor_user_id: bigint
     employee_id: bigint
+    employee_other_id: bigint
     id: bigint
     job_position_id: bigint
     project_id: bigint
@@ -83464,6 +84587,8 @@ input default_contractor_questionnaires_insert_input {
     desc: String
     employee: hr_employees_obj_rel_insert_input
     employee_id: bigint
+    employee_other: hr_employees_external_obj_rel_insert_input
+    employee_other_id: bigint
     firestore_id: String
     group: String
     id: bigint
@@ -83508,6 +84633,7 @@ input default_contractor_questionnaires_max_order_by {
     created_at: order_by
     desc: order_by
     employee_id: order_by
+    employee_other_id: order_by
     firestore_id: order_by
     group: order_by
     id: order_by
@@ -83811,6 +84937,7 @@ input default_contractor_questionnaires_min_order_by {
     created_at: order_by
     desc: order_by
     employee_id: order_by
+    employee_other_id: order_by
     firestore_id: order_by
     group: order_by
     id: order_by
@@ -83864,6 +84991,8 @@ input default_contractor_questionnaires_order_by {
     desc: order_by
     employee: hr_employees_order_by
     employee_id: order_by
+    employee_other: hr_employees_external_order_by
+    employee_other_id: order_by
     firestore_id: order_by
     group: order_by
     id: order_by
@@ -83999,6 +85128,7 @@ input default_contractor_questionnaires_ques_bool_exp {
     questionnaire: default_contractor_questionnaires_bool_exp
     questionnaire_id: bigint_comparison_exp
     responseAttachment: json_comparison_exp
+    responseAttachmentRequired: Boolean_comparison_exp
     score: Int_comparison_exp
 }
 
@@ -84043,6 +85173,7 @@ input default_contractor_questionnaires_ques_insert_input {
     questionnaire: default_contractor_questionnaires_obj_rel_insert_input
     questionnaire_id: bigint
     responseAttachment: json
+    responseAttachmentRequired: Boolean
     score: Int
 }
 
@@ -84290,6 +85421,7 @@ input default_contractor_questionnaires_ques_order_by {
     questionnaire: default_contractor_questionnaires_order_by
     questionnaire_id: order_by
     responseAttachment: order_by
+    responseAttachmentRequired: order_by
     score: order_by
 }
 
@@ -84475,6 +85607,7 @@ input default_contractor_questionnaires_ques_set_input {
     questionType: String
     questionnaire_id: bigint
     responseAttachment: json
+    responseAttachmentRequired: Boolean
     score: Int
 }
 
@@ -84768,6 +85901,7 @@ input default_contractor_questionnaires_set_input {
     created_at: timestamptz
     desc: String
     employee_id: bigint
+    employee_other_id: bigint
     firestore_id: String
     group: String
     id: bigint
@@ -84798,6 +85932,7 @@ input default_contractor_questionnaires_stddev_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84817,6 +85952,7 @@ input default_contractor_questionnaires_stddev_pop_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84836,6 +85972,7 @@ input default_contractor_questionnaires_stddev_samp_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84855,6 +85992,7 @@ input default_contractor_questionnaires_sum_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84882,6 +86020,7 @@ input default_contractor_questionnaires_var_pop_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84901,6 +86040,7 @@ input default_contractor_questionnaires_var_samp_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -84920,6 +86060,7 @@ input default_contractor_questionnaires_variance_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     employee_id: order_by
+    employee_other_id: order_by
     id: order_by
     job_position_id: order_by
     project_id: order_by
@@ -88380,12 +89521,18 @@ input default_projects_bool_exp {
     audit_trail_list_aggregate: default_audit_trails_aggregate_bool_exp
     blacklisted_user_list: default_users_blacklisting_project_bool_exp
     blacklisted_user_list_aggregate: default_users_blacklisting_project_aggregate_bool_exp
+    chemical_product_list: sheq_chemical_products_bool_exp
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_bool_exp
+    chemical_sds_list: sheq_chemical_sds_bool_exp
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_bool_exp
     client: default_clients_bool_exp
     client_id: bigint_comparison_exp
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     competency_list: hr_employees_docs_competencies_bool_exp
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_bool_exp
+    compliance_audit_list: sheq_compliance_audits_bool_exp
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_bool_exp
     contract_list: hr_employees_docs_contracts_bool_exp
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_bool_exp
     contractor_list: default_contractors_bool_exp
@@ -88400,11 +89547,15 @@ input default_projects_bool_exp {
     document_list: sheq_documents_bool_exp
     document_list_aggregate: sheq_documents_aggregate_bool_exp
     email: String_comparison_exp
+    employee_ext_list: hr_employees_external_bool_exp
+    employee_ext_list_aggregate: hr_employees_external_aggregate_bool_exp
     employee_list: hr_employees_bool_exp
     employee_list_aggregate: hr_employees_aggregate_bool_exp
     error_reporting_list: default_error_reporting_bool_exp
     error_reporting_list_aggregate: default_error_reporting_aggregate_bool_exp
     firestore_id: String_comparison_exp
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_bool_exp
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_bool_exp
     id: bigint_comparison_exp
     incident_list: sheq_incident_investigation_bool_exp
     incident_list_aggregate: sheq_incident_investigation_aggregate_bool_exp
@@ -88412,6 +89563,8 @@ input default_projects_bool_exp {
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_bool_exp
     job_category_list: default_job_categories_bool_exp
     job_category_list_aggregate: default_job_categories_aggregate_bool_exp
+    job_observation_list: hr_employees_docs_planned_job_observations_bool_exp
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_bool_exp
     job_position_list: default_job_positions_bool_exp
     job_position_list_aggregate: default_job_positions_aggregate_bool_exp
     leave_list: hr_employees_docs_leaves_bool_exp
@@ -88486,11 +89639,14 @@ input default_projects_insert_input {
     asset_list: assets_arr_rel_insert_input
     audit_trail_list: default_audit_trails_arr_rel_insert_input
     blacklisted_user_list: default_users_blacklisting_project_arr_rel_insert_input
+    chemical_product_list: sheq_chemical_products_arr_rel_insert_input
+    chemical_sds_list: sheq_chemical_sds_arr_rel_insert_input
     client: default_clients_obj_rel_insert_input
     client_id: bigint
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     competency_list: hr_employees_docs_competencies_arr_rel_insert_input
+    compliance_audit_list: sheq_compliance_audits_arr_rel_insert_input
     contract_list: hr_employees_docs_contracts_arr_rel_insert_input
     contractor_list: default_contractors_arr_rel_insert_input
     contractor_questionnaire_list: default_contractor_questionnaires_arr_rel_insert_input
@@ -88499,13 +89655,16 @@ input default_projects_insert_input {
     department_list: default_departments_arr_rel_insert_input
     document_list: sheq_documents_arr_rel_insert_input
     email: String
+    employee_ext_list: hr_employees_external_arr_rel_insert_input
     employee_list: hr_employees_arr_rel_insert_input
     error_reporting_list: default_error_reporting_arr_rel_insert_input
     firestore_id: String
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_arr_rel_insert_input
     id: bigint
     incident_list: sheq_incident_investigation_arr_rel_insert_input
     job_appointment_list: hr_employees_docs_job_appointments_arr_rel_insert_input
     job_category_list: default_job_categories_arr_rel_insert_input
+    job_observation_list: hr_employees_docs_planned_job_observations_arr_rel_insert_input
     job_position_list: default_job_positions_arr_rel_insert_input
     leave_list: hr_employees_docs_leaves_arr_rel_insert_input
     license_list: hr_employees_docs_licenses_arr_rel_insert_input
@@ -88587,11 +89746,14 @@ input default_projects_order_by {
     asset_list_aggregate: assets_aggregate_order_by
     audit_trail_list_aggregate: default_audit_trails_aggregate_order_by
     blacklisted_user_list_aggregate: default_users_blacklisting_project_aggregate_order_by
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_order_by
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_order_by
     client: default_clients_order_by
     client_id: order_by
     company: default_companies_order_by
     company_id: order_by
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_order_by
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_order_by
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_order_by
     contractor_list_aggregate: default_contractors_aggregate_order_by
     contractor_questionnaire_list_aggregate: default_contractor_questionnaires_aggregate_order_by
@@ -88600,13 +89762,16 @@ input default_projects_order_by {
     department_list_aggregate: default_departments_aggregate_order_by
     document_list_aggregate: sheq_documents_aggregate_order_by
     email: order_by
+    employee_ext_list_aggregate: hr_employees_external_aggregate_order_by
     employee_list_aggregate: hr_employees_aggregate_order_by
     error_reporting_list_aggregate: default_error_reporting_aggregate_order_by
     firestore_id: order_by
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_order_by
     id: order_by
     incident_list_aggregate: sheq_incident_investigation_aggregate_order_by
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_order_by
     job_category_list_aggregate: default_job_categories_aggregate_order_by
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_order_by
     job_position_list_aggregate: default_job_positions_aggregate_order_by
     leave_list_aggregate: hr_employees_docs_leaves_aggregate_order_by
     license_list_aggregate: hr_employees_docs_licenses_aggregate_order_by
@@ -89398,12 +90563,18 @@ input default_sites_bool_exp {
     audit_trail_list_aggregate: default_audit_trails_aggregate_bool_exp
     blacklisted_user_list: default_users_blacklisting_site_bool_exp
     blacklisted_user_list_aggregate: default_users_blacklisting_site_aggregate_bool_exp
+    chemical_product_list: sheq_chemical_products_bool_exp
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_bool_exp
+    chemical_sds_list: sheq_chemical_sds_bool_exp
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_bool_exp
     client: default_clients_bool_exp
     client_id: bigint_comparison_exp
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     competency_list: hr_employees_docs_competencies_bool_exp
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_bool_exp
+    compliance_audit_list: sheq_compliance_audits_bool_exp
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_bool_exp
     contract_list: hr_employees_docs_contracts_bool_exp
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_bool_exp
     contractor_list: proxy_contractors__sites_bool_exp
@@ -89482,11 +90653,15 @@ input default_sites_bool_exp {
     document_list: sheq_documents_bool_exp
     document_list_aggregate: sheq_documents_aggregate_bool_exp
     email: String_comparison_exp
+    employee_ext_list: hr_employees_external_bool_exp
+    employee_ext_list_aggregate: hr_employees_external_aggregate_bool_exp
     employee_list: hr_employees_bool_exp
     employee_list_aggregate: hr_employees_aggregate_bool_exp
     error_reporting_list: default_error_reporting_bool_exp
     error_reporting_list_aggregate: default_error_reporting_aggregate_bool_exp
     firestore_id: String_comparison_exp
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_bool_exp
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_bool_exp
     id: bigint_comparison_exp
     incident_list: sheq_incident_investigation_bool_exp
     incident_list_aggregate: sheq_incident_investigation_aggregate_bool_exp
@@ -89494,6 +90669,8 @@ input default_sites_bool_exp {
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_bool_exp
     job_category_list: default_job_categories_bool_exp
     job_category_list_aggregate: default_job_categories_aggregate_bool_exp
+    job_observation_list: hr_employees_docs_planned_job_observations_bool_exp
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_bool_exp
     job_position_list: default_job_positions_bool_exp
     job_position_list_aggregate: default_job_positions_aggregate_bool_exp
     leave_list: hr_employees_docs_leaves_bool_exp
@@ -89509,6 +90686,8 @@ input default_sites_bool_exp {
     name: String_comparison_exp
     non_conformance_list: sheq_non_conformances_bool_exp
     non_conformance_list_aggregate: sheq_non_conformances_aggregate_bool_exp
+    organogram_list: sheq_organograms_bool_exp
+    organogram_list_aggregate: sheq_organograms_aggregate_bool_exp
     phone: String_comparison_exp
     ppe_list: ppe_bool_exp
     ppe_list_aggregate: ppe_aggregate_bool_exp
@@ -89566,11 +90745,14 @@ input default_sites_insert_input {
     asset_list: assets_arr_rel_insert_input
     audit_trail_list: default_audit_trails_arr_rel_insert_input
     blacklisted_user_list: default_users_blacklisting_site_arr_rel_insert_input
+    chemical_product_list: sheq_chemical_products_arr_rel_insert_input
+    chemical_sds_list: sheq_chemical_sds_arr_rel_insert_input
     client: default_clients_obj_rel_insert_input
     client_id: bigint
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     competency_list: hr_employees_docs_competencies_arr_rel_insert_input
+    compliance_audit_list: sheq_compliance_audits_arr_rel_insert_input
     contract_list: hr_employees_docs_contracts_arr_rel_insert_input
     contractor_list: proxy_contractors__sites_arr_rel_insert_input
     contractor_questionnaire_list: default_contractor_questionnaires_arr_rel_insert_input
@@ -89611,13 +90793,16 @@ input default_sites_insert_input {
     department_list: default_departments_arr_rel_insert_input
     document_list: sheq_documents_arr_rel_insert_input
     email: String
+    employee_ext_list: hr_employees_external_arr_rel_insert_input
     employee_list: hr_employees_arr_rel_insert_input
     error_reporting_list: default_error_reporting_arr_rel_insert_input
     firestore_id: String
+    hazchem_sheet_list: sheq_chemical_hazchem_sheets_arr_rel_insert_input
     id: bigint
     incident_list: sheq_incident_investigation_arr_rel_insert_input
     job_appointment_list: hr_employees_docs_job_appointments_arr_rel_insert_input
     job_category_list: default_job_categories_arr_rel_insert_input
+    job_observation_list: hr_employees_docs_planned_job_observations_arr_rel_insert_input
     job_position_list: default_job_positions_arr_rel_insert_input
     leave_list: hr_employees_docs_leaves_arr_rel_insert_input
     license_list: hr_employees_docs_licenses_arr_rel_insert_input
@@ -89626,6 +90811,7 @@ input default_sites_insert_input {
     meeting_minute_list: sheq_meeting_minutes_arr_rel_insert_input
     name: String
     non_conformance_list: sheq_non_conformances_arr_rel_insert_input
+    organogram_list: sheq_organograms_arr_rel_insert_input
     phone: String
     ppe_list: ppe_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
@@ -89701,11 +90887,14 @@ input default_sites_order_by {
     asset_list_aggregate: assets_aggregate_order_by
     audit_trail_list_aggregate: default_audit_trails_aggregate_order_by
     blacklisted_user_list_aggregate: default_users_blacklisting_site_aggregate_order_by
+    chemical_product_list_aggregate: sheq_chemical_products_aggregate_order_by
+    chemical_sds_list_aggregate: sheq_chemical_sds_aggregate_order_by
     client: default_clients_order_by
     client_id: order_by
     company: default_companies_order_by
     company_id: order_by
     competency_list_aggregate: hr_employees_docs_competencies_aggregate_order_by
+    compliance_audit_list_aggregate: sheq_compliance_audits_aggregate_order_by
     contract_list_aggregate: hr_employees_docs_contracts_aggregate_order_by
     contractor_list_aggregate: proxy_contractors__sites_aggregate_order_by
     contractor_questionnaire_list_aggregate: default_contractor_questionnaires_aggregate_order_by
@@ -89746,13 +90935,16 @@ input default_sites_order_by {
     department_list_aggregate: default_departments_aggregate_order_by
     document_list_aggregate: sheq_documents_aggregate_order_by
     email: order_by
+    employee_ext_list_aggregate: hr_employees_external_aggregate_order_by
     employee_list_aggregate: hr_employees_aggregate_order_by
     error_reporting_list_aggregate: default_error_reporting_aggregate_order_by
     firestore_id: order_by
+    hazchem_sheet_list_aggregate: sheq_chemical_hazchem_sheets_aggregate_order_by
     id: order_by
     incident_list_aggregate: sheq_incident_investigation_aggregate_order_by
     job_appointment_list_aggregate: hr_employees_docs_job_appointments_aggregate_order_by
     job_category_list_aggregate: default_job_categories_aggregate_order_by
+    job_observation_list_aggregate: hr_employees_docs_planned_job_observations_aggregate_order_by
     job_position_list_aggregate: default_job_positions_aggregate_order_by
     leave_list_aggregate: hr_employees_docs_leaves_aggregate_order_by
     license_list_aggregate: hr_employees_docs_licenses_aggregate_order_by
@@ -89761,6 +90953,7 @@ input default_sites_order_by {
     meeting_minute_list_aggregate: sheq_meeting_minutes_aggregate_order_by
     name: order_by
     non_conformance_list_aggregate: sheq_non_conformances_aggregate_order_by
+    organogram_list_aggregate: sheq_organograms_aggregate_order_by
     phone: order_by
     ppe_list_aggregate: ppe_aggregate_order_by
     project: default_projects_order_by
@@ -95524,6 +96717,70 @@ input hr_employees_docs_medicals_variance_order_by {
     user_id: order_by
 }
 
+input hr_employees_docs_planned_job_observations_aggregate_bool_exp {
+    bool_and: hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_and
+    bool_or: hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_or
+    count: hr_employees_docs_planned_job_observations_aggregate_bool_exp_count
+}
+
+input hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_and {
+    arguments: hr_employees_docs_planned_job_observations_select_column_hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: hr_employees_docs_planned_job_observations_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_or {
+    arguments: hr_employees_docs_planned_job_observations_select_column_hr_employees_docs_planned_job_observations_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: hr_employees_docs_planned_job_observations_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input hr_employees_docs_planned_job_observations_aggregate_bool_exp_count {
+    arguments: [hr_employees_docs_planned_job_observations_select_column!]
+    distinct: Boolean
+    filter: hr_employees_docs_planned_job_observations_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_aggregate_order_by {
+    avg: hr_employees_docs_planned_job_observations_avg_order_by
+    count: order_by
+    max: hr_employees_docs_planned_job_observations_max_order_by
+    min: hr_employees_docs_planned_job_observations_min_order_by
+    stddev: hr_employees_docs_planned_job_observations_stddev_order_by
+    stddev_pop: hr_employees_docs_planned_job_observations_stddev_pop_order_by
+    stddev_samp: hr_employees_docs_planned_job_observations_stddev_samp_order_by
+    sum: hr_employees_docs_planned_job_observations_sum_order_by
+    var_pop: hr_employees_docs_planned_job_observations_var_pop_order_by
+    var_samp: hr_employees_docs_planned_job_observations_var_samp_order_by
+    variance: hr_employees_docs_planned_job_observations_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_arr_rel_insert_input {
+    data: [hr_employees_docs_planned_job_observations_insert_input!]!
+    "upsert condition"
+    on_conflict: hr_employees_docs_planned_job_observations_on_conflict
+}
+
+"order by avg() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_avg_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
 "Boolean expression to filter rows from the table \"hr_employees_docs_planned_job_observations\". All fields are combined with a logical 'AND'."
 input hr_employees_docs_planned_job_observations_bool_exp {
     _and: [hr_employees_docs_planned_job_observations_bool_exp!]
@@ -95595,6 +96852,50 @@ input hr_employees_docs_planned_job_observations_insert_input {
     removed: Boolean
     site_id: bigint
     user_id: bigint
+}
+
+"order by max() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_max_order_by {
+    client_id: order_by
+    comments: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    date: order_by
+    employee_id: order_by
+    employee_job_duration: order_by
+    expiry_date: order_by
+    id: order_by
+    job_observed: order_by
+    observation_duration: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by min() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_min_order_by {
+    client_id: order_by
+    comments: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    date: order_by
+    employee_id: order_by
+    employee_job_duration: order_by
+    expiry_date: order_by
+    id: order_by
+    job_observed: order_by
+    observation_duration: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "on_conflict condition type for table \"hr_employees_docs_planned_job_observations\""
@@ -95814,12 +97115,117 @@ input hr_employees_docs_planned_job_observations_set_input {
     user_id: bigint
 }
 
+"order by stddev() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_stddev_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_stddev_pop_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_stddev_samp_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by sum() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_sum_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
 input hr_employees_docs_planned_job_observations_updates {
     "increments the numeric columns with given value of the filtered values"
     _inc: hr_employees_docs_planned_job_observations_inc_input
     "sets the columns of the filtered rows to the given values"
     _set: hr_employees_docs_planned_job_observations_set_input
     where: hr_employees_docs_planned_job_observations_bool_exp!
+}
+
+"order by var_pop() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_var_pop_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by var_samp() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_var_samp_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
+}
+
+"order by variance() on columns of table \"hr_employees_docs_planned_job_observations\""
+input hr_employees_docs_planned_job_observations_variance_order_by {
+    client_id: order_by
+    company_id: order_by
+    contractor_id: order_by
+    contractor_site_id: order_by
+    contractor_user_id: order_by
+    employee_id: order_by
+    id: order_by
+    observed_by_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 input hr_employees_docs_warnings_aggregate_bool_exp {
@@ -96769,7 +98175,23 @@ input hr_employees_documents_variance_order_by {
 }
 
 input hr_employees_external_aggregate_bool_exp {
+    bool_and: hr_employees_external_aggregate_bool_exp_bool_and
+    bool_or: hr_employees_external_aggregate_bool_exp_bool_or
     count: hr_employees_external_aggregate_bool_exp_count
+}
+
+input hr_employees_external_aggregate_bool_exp_bool_and {
+    arguments: hr_employees_external_select_column_hr_employees_external_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: hr_employees_external_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input hr_employees_external_aggregate_bool_exp_bool_or {
+    arguments: hr_employees_external_select_column_hr_employees_external_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: hr_employees_external_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input hr_employees_external_aggregate_bool_exp_count {
@@ -96809,6 +98231,9 @@ input hr_employees_external_avg_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"hr_employees_external\". All fields are combined with a logical 'AND'."
@@ -96827,8 +98252,10 @@ input hr_employees_external_bool_exp {
     created_at: timestamptz_comparison_exp
     email: String_comparison_exp
     fname: String_comparison_exp
+    full_name: String_comparison_exp
     id: bigint_comparison_exp
     id_num: String_comparison_exp
+    is_external: Boolean_comparison_exp
     job_position: default_job_positions_bool_exp
     job_position_id: bigint_comparison_exp
     lname: String_comparison_exp
@@ -96836,12 +98263,18 @@ input hr_employees_external_bool_exp {
     meeting_participant_list_aggregate: proxy_meeting__participants_aggregate_bool_exp
     passport_num: String_comparison_exp
     phone: String_comparison_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
     proxy_employees_docs_warning__witnesses: proxy_employees_docs_warning__witness_bool_exp
     proxy_employees_docs_warning__witnesses_aggregate: proxy_employees_docs_warning__witness_aggregate_bool_exp
     sheq_training_matrices: sheq_training_matrices_bool_exp
     sheq_training_matrices_aggregate: sheq_training_matrices_aggregate_bool_exp
     sheq_training_registers: sheq_training_registers_bool_exp
     sheq_training_registers_aggregate: sheq_training_registers_aggregate_bool_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
     witness_list: proxy_employees_docs_counselling__witness_bool_exp
     witness_list_aggregate: proxy_employees_docs_counselling__witness_aggregate_bool_exp
 }
@@ -96854,6 +98287,9 @@ input hr_employees_external_inc_input {
     contractor_site_id: bigint
     id: bigint
     job_position_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
 }
 
 "input type for inserting data into table \"hr_employees_external\""
@@ -96871,15 +98307,22 @@ input hr_employees_external_insert_input {
     fname: String
     id: bigint
     id_num: String
+    is_external: Boolean
     job_position: default_job_positions_obj_rel_insert_input
     job_position_id: bigint
     lname: String
     meeting_participant_list: proxy_meeting__participants_arr_rel_insert_input
     passport_num: String
     phone: String
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
     proxy_employees_docs_warning__witnesses: proxy_employees_docs_warning__witness_arr_rel_insert_input
     sheq_training_matrices: sheq_training_matrices_arr_rel_insert_input
     sheq_training_registers: sheq_training_registers_arr_rel_insert_input
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
     witness_list: proxy_employees_docs_counselling__witness_arr_rel_insert_input
 }
 
@@ -96898,6 +98341,9 @@ input hr_employees_external_max_order_by {
     lname: order_by
     passport_num: order_by
     phone: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by min() on columns of table \"hr_employees_external\""
@@ -96915,6 +98361,9 @@ input hr_employees_external_min_order_by {
     lname: order_by
     passport_num: order_by
     phone: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "input type for inserting object relation for remote table \"hr_employees_external\""
@@ -96944,17 +98393,25 @@ input hr_employees_external_order_by {
     created_at: order_by
     email: order_by
     fname: order_by
+    full_name: order_by
     id: order_by
     id_num: order_by
+    is_external: order_by
     job_position: default_job_positions_order_by
     job_position_id: order_by
     lname: order_by
     meeting_participant_list_aggregate: proxy_meeting__participants_aggregate_order_by
     passport_num: order_by
     phone: order_by
+    project: default_projects_order_by
+    project_id: order_by
     proxy_employees_docs_warning__witnesses_aggregate: proxy_employees_docs_warning__witness_aggregate_order_by
     sheq_training_matrices_aggregate: sheq_training_matrices_aggregate_order_by
     sheq_training_registers_aggregate: sheq_training_registers_aggregate_order_by
+    site: default_sites_order_by
+    site_id: order_by
+    user: default_users_order_by
+    user_id: order_by
     witness_list_aggregate: proxy_employees_docs_counselling__witness_aggregate_order_by
 }
 
@@ -96974,10 +98431,14 @@ input hr_employees_external_set_input {
     fname: String
     id: bigint
     id_num: String
+    is_external: Boolean
     job_position_id: bigint
     lname: String
     passport_num: String
     phone: String
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
 }
 
 "order by stddev() on columns of table \"hr_employees_external\""
@@ -96988,6 +98449,9 @@ input hr_employees_external_stddev_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"hr_employees_external\""
@@ -96998,6 +98462,9 @@ input hr_employees_external_stddev_pop_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"hr_employees_external\""
@@ -97008,6 +98475,9 @@ input hr_employees_external_stddev_samp_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by sum() on columns of table \"hr_employees_external\""
@@ -97018,6 +98488,9 @@ input hr_employees_external_sum_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 input hr_employees_external_updates {
@@ -97036,6 +98509,9 @@ input hr_employees_external_var_pop_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by var_samp() on columns of table \"hr_employees_external\""
@@ -97046,6 +98522,9 @@ input hr_employees_external_var_samp_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "order by variance() on columns of table \"hr_employees_external\""
@@ -97056,6 +98535,9 @@ input hr_employees_external_variance_order_by {
     contractor_site_id: order_by
     id: order_by
     job_position_id: order_by
+    project_id: order_by
+    site_id: order_by
+    user_id: order_by
 }
 
 "input type for incrementing numeric columns in table \"hr_employees\""
@@ -105396,7 +106878,23 @@ input sheq_chemical_hazchem_sheet_docs_variance_order_by {
 }
 
 input sheq_chemical_hazchem_sheets_aggregate_bool_exp {
+    bool_and: sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_and
+    bool_or: sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_or
     count: sheq_chemical_hazchem_sheets_aggregate_bool_exp_count
+}
+
+input sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_and {
+    arguments: sheq_chemical_hazchem_sheets_select_column_sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: sheq_chemical_hazchem_sheets_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_or {
+    arguments: sheq_chemical_hazchem_sheets_select_column_sheq_chemical_hazchem_sheets_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: sheq_chemical_hazchem_sheets_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input sheq_chemical_hazchem_sheets_aggregate_bool_exp_count {
@@ -105476,6 +106974,7 @@ input sheq_chemical_hazchem_sheets_bool_exp {
     product_id: bigint_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
     sds: sheq_chemical_sds_bool_exp
     sds_id: bigint_comparison_exp
     site: default_sites_bool_exp
@@ -105528,6 +107027,7 @@ input sheq_chemical_hazchem_sheets_insert_input {
     product_id: bigint
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    removed: Boolean
     sds: sheq_chemical_sds_obj_rel_insert_input
     sds_id: bigint
     site: default_sites_obj_rel_insert_input
@@ -105791,6 +107291,7 @@ input sheq_chemical_hazchem_sheets_order_by {
     product_id: order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     sds: sheq_chemical_sds_order_by
     sds_id: order_by
     site: default_sites_order_by
@@ -105824,6 +107325,7 @@ input sheq_chemical_hazchem_sheets_set_input {
     physical_state: String
     product_id: bigint
     project_id: bigint
+    removed: Boolean
     sds_id: bigint
     site_id: bigint
     type: String
@@ -106280,6 +107782,7 @@ input sheq_chemical_products_bool_exp {
     process_where_product_is_used: String_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
     risk_assessment_date: date_comparison_exp
     risk_assessment_doc: json_comparison_exp
     risk_level: String_comparison_exp
@@ -106375,6 +107878,7 @@ input sheq_chemical_products_insert_input {
     process_where_product_is_used: String
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    removed: Boolean
     risk_assessment_date: date
     risk_assessment_doc: json
     risk_level: String
@@ -106550,6 +108054,7 @@ input sheq_chemical_products_order_by {
     process_where_product_is_used: order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     risk_assessment_date: order_by
     risk_assessment_doc: order_by
     risk_level: order_by
@@ -106625,6 +108130,7 @@ input sheq_chemical_products_set_input {
     physical_state: String
     process_where_product_is_used: String
     project_id: bigint
+    removed: Boolean
     risk_assessment_date: date
     risk_assessment_doc: json
     risk_level: String
@@ -106752,7 +108258,23 @@ input sheq_chemical_products_variance_order_by {
 }
 
 input sheq_chemical_sds_aggregate_bool_exp {
+    bool_and: sheq_chemical_sds_aggregate_bool_exp_bool_and
+    bool_or: sheq_chemical_sds_aggregate_bool_exp_bool_or
     count: sheq_chemical_sds_aggregate_bool_exp_count
+}
+
+input sheq_chemical_sds_aggregate_bool_exp_bool_and {
+    arguments: sheq_chemical_sds_select_column_sheq_chemical_sds_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: sheq_chemical_sds_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input sheq_chemical_sds_aggregate_bool_exp_bool_or {
+    arguments: sheq_chemical_sds_select_column_sheq_chemical_sds_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: sheq_chemical_sds_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input sheq_chemical_sds_aggregate_bool_exp_count {
@@ -106848,6 +108370,7 @@ input sheq_chemical_sds_bool_exp {
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
     regulatory_info: String_comparison_exp
+    removed: Boolean_comparison_exp
     risk_level: String_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
@@ -106922,6 +108445,7 @@ input sheq_chemical_sds_insert_input {
     project: default_projects_obj_rel_insert_input
     project_id: bigint
     regulatory_info: String
+    removed: Boolean
     risk_level: String
     site: default_sites_obj_rel_insert_input
     site_id: bigint
@@ -107089,6 +108613,7 @@ input sheq_chemical_sds_order_by {
     project: default_projects_order_by
     project_id: order_by
     regulatory_info: order_by
+    removed: order_by
     risk_level: order_by
     site: default_sites_order_by
     site_id: order_by
@@ -107146,6 +108671,7 @@ input sheq_chemical_sds_set_input {
     product_id: bigint
     project_id: bigint
     regulatory_info: String
+    removed: Boolean
     risk_level: String
     site_id: bigint
     stability_and_reactivity: String
@@ -108893,7 +110419,7 @@ input sheq_incident_investigation_bool_exp {
     incident_date: date_comparison_exp
     incident_time: timetz_comparison_exp
     injured_person_dob: date_comparison_exp
-    injured_person_gender: String_comparison_exp
+    injured_person_gender: sex_comparison_exp
     injury_desc: String_comparison_exp
     injury_list: proxy_incident__injury_bool_exp
     injury_list_aggregate: proxy_incident__injury_aggregate_bool_exp
@@ -109291,6 +110817,8 @@ input sheq_incident_investigation_insert_input {
     id: bigint
     incident_date: date
     incident_time: timetz
+    injured_person_dob: date
+    injured_person_gender: sex
     injury_desc: String
     injury_list: proxy_incident__injury_arr_rel_insert_input
     investigation: sheq_incident_investigation_investigations_obj_rel_insert_input
@@ -109738,6 +111266,8 @@ input sheq_incident_investigation_max_order_by {
     id: order_by
     incident_date: order_by
     incident_time: order_by
+    injured_person_dob: order_by
+    injured_person_gender: order_by
     injury_desc: order_by
     investigation_id: order_by
     location: order_by
@@ -109774,6 +111304,8 @@ input sheq_incident_investigation_min_order_by {
     id: order_by
     incident_date: order_by
     incident_time: order_by
+    injured_person_dob: order_by
+    injured_person_gender: order_by
     injury_desc: order_by
     investigation_id: order_by
     location: order_by
@@ -110333,6 +111865,8 @@ input sheq_incident_investigation_set_input {
     id: bigint
     incident_date: date
     incident_time: timetz
+    injured_person_dob: date
+    injured_person_gender: sex
     injury_desc: String
     investigation_id: bigint
     is_vehicle_incident: Boolean
