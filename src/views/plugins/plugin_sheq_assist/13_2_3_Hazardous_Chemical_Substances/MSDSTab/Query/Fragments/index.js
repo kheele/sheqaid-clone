@@ -16,12 +16,17 @@ export const chemical_sds_details_fragment = `
     category
     date_identified
     application_or_use
-    manufacturer
-    manufacturer_addr
-    manufacturer_phone_num
-    manufacturer_email
-    manufacturer_fax
-    manufacturer_website
+    
+    supplier_list{
+      id
+      manufacturer
+      address
+      phone
+      email
+      fax
+      website
+    }
+    
     emergency_phone_nums
     risk_level
     more_product_info

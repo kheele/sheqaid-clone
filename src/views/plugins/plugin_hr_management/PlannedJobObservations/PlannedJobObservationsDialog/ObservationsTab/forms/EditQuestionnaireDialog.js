@@ -25,6 +25,8 @@ import updateJobObservationsQuestionnaire
     from "mutations/all/Questionnaires/JobObservationsQuestionnaires/updateJobObservationsQuestionnaire";
 import byLogged from "../../TemplatesTab/Query/List/listAllJobObservationTemplatesByLogged";
 import Divider from "@mui/material/Divider";
+import updateEmployee from "../../../../../../../mutations/all/Employee/updateEmployee";
+import parsePhoneNumber from "libphonenumber-js";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -38,6 +40,10 @@ class EditQuestionnaireDialog extends AEditDialog {
 
 	get title() {
 		return "Edit Questionnaire";
+	}
+
+	get topButtonsHiddenSave() {
+		return true;
 	}
 
 	get controls() {
@@ -65,7 +71,7 @@ class Controls extends React.Component {
 	constructor() {
 		super();
 
-		this.onNext = this.onNext.bind(this);
+		this.onFormSave = this.onFormSave.bind(this);
 
 		this.getDialogDOM = this.getDialogDOM.bind(this);
 
@@ -74,101 +80,131 @@ class Controls extends React.Component {
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="onNext">
-	onNext(e, btn) {
-		const {form} = this;
+	//<editor-fold desc="onFormSave">
+	async onFormSave(e, btn) {
+		const {
+			form,
+			item: {id, data: old_data},
+			refs: {questionsRef},
+		} = this;
+
 		const {idx} = btn.props;
+
+		const onSubmit = (data, onSaved) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			btn.text("Saving...").disabled();
+			progressDialog.open();
+			updateJobObservationsQuestionnaire({id: this.item.id, ...data}).then(res => {
+				console.log("res", res)
+				onSaved && onSaved(res);
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+
 		if (idx === 0) {
 			const {isConsultant} = storage.is;
 			if (isConsultant && !form.isValid('client')) {
 				infoDialog.open('Company is required');
 				return;
 			}
+
+			const {
+				site, project, client,
+			} = form.data;
+
+			const data = {};
+
+				ShouldUpdate.checkClient(data, old_data, client);
+				ShouldUpdate.checkProject(data, old_data, project);
+				ShouldUpdate.checkSite(data, old_data, site);
+
+			onSubmit(data);
+			return;
 		}
+
+		if (idx === 1) {
+			const {
+				job_position, employee,
+			} = form.data;
+
+			const data = {};
+
+			ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position');
+			if(employee) {
+				const {id, is_external, data} = employee;
+				if(is_external || data && data.is_external) {
+					ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_other');
+				} else {
+					ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+				}
+			}
+
+			onSubmit(data);
+			return;
+		}
+
+		if (idx === 2) {
+			const {
+				responsible_person, responsible_department, interval, start_date, time,
+			} = form.data;
+
+			const data = {};
+
+			ShouldUpdate.checkEmployee(data, old_data, responsible_person, 'responsible_person');
+			ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
+			ShouldUpdate.check(data, old_data, interval, 'interval');
+			ShouldUpdate.checkDate(data, old_data, start_date, 'start_date');
+			ShouldUpdate.check(data, old_data, time, 'time');
+
+			onSubmit(data);
+			return;
+		}
+
 		if (idx === 3) {
-			if (!questions.isValidForm()) {
+			if (!questionsRef.isValidForm()) {
 				return;
 			}
+
+			progressDialog.open('Please wait...');
+			const qForm = await questionsRef.getForm();
+			let {
+				name,
+				desc,
+				type,
+				title_page_list,
+				question_list,
+			} = qForm;
+
+			question_list = [
+				...title_page_list.map(v => ({is_page_title: true, ...v})),
+				...question_list.map(v => ({is_page_title: false, ...v})),
+			];
+
+			const data = {};
+
+			//
+			ShouldUpdate.check(data, old_data, name, 'name');
+			ShouldUpdate.check(data, old_data, desc, 'desc');
+			ShouldUpdate.checkListToJS(data, old_data, question_list, 'question_list');//TODO: save question_list independently on edit
+
+			onSubmit(data);
+			return;
 		}
 
 		return true;
 	}
 
-	// </editor-fold>
-
-	// <editor-fold defaultstate="collapsed" desc="onSubmit">
-	async onSubmit(e, btn, onSaved) {
-		const {form, refs: {questions: questionsRef}, item: {data: old_data}} = this;
-		const {isConsultant} = storage.is;
-		if (isConsultant && !form.isValid('client')) {
-			infoDialog.open('Company is required');
-			return;
-		}
-
-		if (!questionsRef.isValidForm()) {
-			return;
-		}
-
-		progressDialog.open('Please wait...');
-		const qForm = await questionsRef.getForm();
-		let {
-			name,
-			desc,
-			type,
-			title_page_list,
-			question_list,
-		} = qForm;
-
-		question_list = [
-			...title_page_list.map(v => ({is_page_title: true, ...v})),
-			...question_list.map(v => ({is_page_title: false, ...v})),
-		];
-
-		const {
-			job_position, employee, employee_other,
-			//
-			responsible_person, responsible_department, interval, start_date, time,
-		} = form.data;
-		const data = {
-			// is_template: false,
-			// name,
-			// desc,
-			question_list: {data: question_list},
-		};
-
-		//
-		ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position');
-		ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
-		ShouldUpdate.checkEmployee(data, old_data, employee_other, 'employee_other');
-
-		//
-		ShouldUpdate.checkJobPosition(data, old_data, responsible_person, 'responsible_person');
-		ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
-		ShouldUpdate.check(data, old_data, interval, 'interval');
-		ShouldUpdate.checkDate(data, old_data, start_date, 'start_date');
-		ShouldUpdate.check(data, old_data, time, 'time');
-
-		//
-		ShouldUpdate.check(data, old_data, name, 'name');
-		ShouldUpdate.check(data, old_data, desc, 'desc');
-		ShouldUpdate.checkListToJS(data, old_data, question_list, 'question_list');
-
-		console.log(data)
-
-		btn.text("Saving...").disabled();
-		updateJobObservationsQuestionnaire({id: this.item.id, ...data}).then(res => {
-			console.log("res", res)
-			onSaved && onSaved(res);
-			infoDialog.open("Record successfully updated.");
-			infoDialog.close(2000);
-			this.props.close();
-		}).finally(() => {
-			progressDialog.close();
-			btn.text("Save").enabled();
-		});
-	}
-
-	// </editor-fold>
+	//</editor-fold>
 
 	getDialogDOM() {
 		const {props: {dialog}} = this;
@@ -228,6 +264,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
+				onFormSave={this.onFormSave}
 			>
 				<Row
 					rendered
@@ -259,6 +296,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
+				onFormSave={this.onFormSave}
 			>
 				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
 				                     defaultValue={responsible_person} className="col-lg-12 form-control"
@@ -282,6 +320,7 @@ class Controls extends React.Component {
 				title="3. Job Observation Questionnaire"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormSave={this.onFormSave}
 			>
 				<SelectQuestionnaireTemplateInput
 					name="template"

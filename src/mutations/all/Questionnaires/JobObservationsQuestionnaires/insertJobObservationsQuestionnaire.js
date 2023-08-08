@@ -29,6 +29,7 @@ export default async (input: EntityJobObservationsQuestionnaire) => {
 		asset_type,
 		asset_id,
 		//
+		employee_other,
 		responsible_person_id,
 		responsible_department_id,
 		interval,
@@ -44,6 +45,10 @@ export default async (input: EntityJobObservationsQuestionnaire) => {
 	//https://31ff-197-189-181-96.eu.ngrok.io/api/callables/triggered-events/questionnaires/uploadQuestionnaireFilesNew
 
 	crudUtils.injectCreate(input);
+
+	if(employee_other && employee_other.data) {
+		crudUtils.injectCreate(employee_other.data);
+	}
 
 	const res = await createMutationImpl({
 		mutation,

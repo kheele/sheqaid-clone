@@ -14,6 +14,7 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./ProfileInventoryProductDialog.lazy.css";
+import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -94,7 +95,7 @@ class Controls extends React.Component {
                     name, common_names, chemical_name, empirical_formula, un_num, cas_num, concentration,
                     category, physical_state, type,
                     application_or_use,
-                    manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+                    supplier_list,
                     emergency_phone_nums,
                     //2
                     location_where_product_is_used, process_where_product_is_used,
@@ -178,13 +179,8 @@ class Controls extends React.Component {
                 <ProfileField name="application_or_use" title="Application / Use" value={application_or_use} className="col-lg-12"/>
                 
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Manufacturer / Supplier</label>
-                <ProfileField name="manufacturer" title="Manufacturer" value={manufacturer} className="col-lg-12"/>
-                <ProfileField name="manufacturer_addr" title="Address" value={manufacturer_addr} className="col-lg-12"/>
-                <ProfileField name="manufacturer_phone_num" title="Telephone" value={manufacturer_phone_num} className="col-lg-6"/>
-                <ProfileField name="manufacturer_email" title="E-mail Address" value={manufacturer_email} className="col-lg-6"/>
-                <ProfileField name="manufacturer_fax" title="Fax" value={manufacturer_fax} className="col-lg-6"/>
-                <ProfileField name="manufacturer_website" title="Website" value={manufacturer_website} className="col-lg-6"/>
-                                
+                <NewChemicalSupplierListTable ref="supplier_list" name="supplier_list" defaultValue={supplier_list} className="col-lg-12 form-control" readonly/>
+
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Emergency Details</label>
                 <ProfileField name="emergency_phone_nums" title="Emergency Phone Numbers" value={emergency_phone_nums} renderer={v => v.join(', ')} className="col-lg-12"/>
             </Row>

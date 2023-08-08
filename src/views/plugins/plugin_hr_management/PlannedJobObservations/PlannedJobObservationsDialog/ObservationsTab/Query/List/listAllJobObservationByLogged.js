@@ -9,7 +9,9 @@ export default (
 		limit = 50,
 		//
 		removed = false,
-		status,
+		job_position,
+		employee,
+		template,
 		//
 		site_id, project_id, client_id,
 		//
@@ -17,17 +19,13 @@ export default (
 	}
 ) => {
 	const {filter} = getVariablesAndQueryConfig({
-		status,
+		template,
+		job_position,
+		employee,
 		//
 		site_id, project_id, client_id,
 		//
 		exact_orgs
-	});
-
-	const fillNullLists = (list) => list.map(v => {
-		// !v.data.page_title_list && (v.data.page_title_list = []);
-		// !v.data.question_list && (v.data.question_list = []);
-		return v;
 	});
 
 	//<editor-fold desc="ByEach">
@@ -42,7 +40,7 @@ export default (
             is_template: {_eq: false}
             ${filter}
           },
-	        order_by: {name: asc},
+	        order_by: {employee: {full_name: asc}, employee_other: {full_name: asc}},
 	        offset: ${offset},
 	        limit: ${limit}
         ) {

@@ -92,6 +92,9 @@ class SelectInput extends ASelectInput {
 	onAddOtherPerson(e, btn) {
 		this.refs.otherPersonDialog.open().then(other_person => {
 			this.showOtherPerson = !!other_person;
+			if(other_person) {
+				other_person.is_external = true;
+			}
 			this.refs.input.onChange({label: other_person.lname + ' ' + other_person.fname, value: other_person});
 		});
 	}

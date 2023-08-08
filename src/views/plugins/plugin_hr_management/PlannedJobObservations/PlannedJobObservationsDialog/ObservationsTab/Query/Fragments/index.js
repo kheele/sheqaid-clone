@@ -155,6 +155,7 @@ export const job_observation_details_fragment = `
     
     employee_other{
       id
+      is_external
       fname
       lname
       full_name

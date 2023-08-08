@@ -514,6 +514,7 @@ class ShouldUpdate {
         key = key || 'department';
         const key_id = key.endsWith('_id') ? key : `${key}_id`;
         if (department_id) {
+            department_id = department_id.id || department_id;
             if (!old_data) {
                 data[key_id] = department_id;
             } else {
@@ -557,6 +558,7 @@ class ShouldUpdate {
         key = key || 'job_position';
         const key_id = key.endsWith('_id') ? key : `${key}_id`;
         if (job_position_id) {
+            job_position_id = job_position_id.id || job_position_id;
             if (!old_data) {
                 data[key_id] = job_position_id;
             } else {
@@ -579,6 +581,7 @@ class ShouldUpdate {
         key = key || 'job_category';
         const key_id = key.endsWith('_id') ? key : `${key}_id`;
         if (job_category_id) {
+            job_category_id = job_category_id.id || job_category_id;
             if (!old_data) {
                 data[key_id] = job_category_id;
             } else {

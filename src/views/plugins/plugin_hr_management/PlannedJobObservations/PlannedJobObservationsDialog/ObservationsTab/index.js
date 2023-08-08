@@ -5,7 +5,7 @@ import style from "./ObservationsTab.lazy.css";
 import byLogged from "./Query/List/listAllJobObservationByLogged";
 import {observable, toJS} from "mobx";
 import NavItem from "components/navs/NavItem";
-import {ClearableInput} from "components/inputs";
+import {ClearableInput, SelectEmployeeInput, SelectJobPositionInput} from "components/inputs";
 import {THead} from "components/tables";
 import APageListReadWrite from "views/APageListReadWrite";
 import {
@@ -67,13 +67,17 @@ class ObservationsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            name,
+            job_position,
+            employee,
+            template,
         } = filterData || {};
 
         const limit = 50;
 
         const args = {
-            name,
+            job_position,
+            employee,
+            template,
             //
             limit,
             //
@@ -111,7 +115,8 @@ class ObservationsTab extends React.Component {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
+            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" showOtherPerson onChange={onChange}/>
             <ClearableInput name="template" type="text" placeholder="Template" className="form-control" onChange={onChange}/>
         </div>;
     }

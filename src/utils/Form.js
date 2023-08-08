@@ -164,13 +164,12 @@ const setFilterDataValues = (filterData, key, val) => {
 		}
 	} else if (isObservable(val) ||
 		isObservableObject(val) ||
-		isObservableMap(val)) {
+		isObservableMap(val) ||
+		isObject(val)) {
 		val = convert(val);
 		if (!!val) {
-			processObject(val, key);
+			processObject(filterData, val, key);
 		}
-	} else if (isObject(val)) {
-		processObject(val, key);
 	} else {
 		filterData[key] = val;
 	}
@@ -191,7 +190,7 @@ const convert = (arg) => {
 	return arg;
 };
 
-const processObject = (val, key) => {
+const processObject = (filterData, val, key) => {
 	if (isDate(val.start) || isDate(val.end)) {
 		if (isDate(val.start)) {
 			filterData[key] = {start: val.start.getTime()};
@@ -210,8 +209,8 @@ const processObject = (val, key) => {
 			filterData[key + '_id'] = id;
 		}
 		if (data) {
-			const {fname, lname, name, email, username} = data;
-			filterData[key] = {};
+			const {fname, lname, name, email, username, is_external} = data;
+			filterData[key] = {is_external};
 			if (id) {
 				filterData[key]['id'] = id;
 			}
@@ -231,8 +230,8 @@ const processObject = (val, key) => {
 				filterData[key]['username'] = username;
 			}
 		} else {
-			const {fname, lname, name, email, username} = val;
-			filterData[key] = {};
+			const {fname, lname, name, email, username, is_external} = val;
+			filterData[key] = {is_external};
 			if (id) {
 				filterData[key]['id'] = id;
 			}

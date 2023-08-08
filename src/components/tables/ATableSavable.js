@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {computed, extendObservable, observable, toJS} from 'mobx';
 
 import Form from "../../utils/Form";
-import {createListSetter} from '../../utils/Utils';
+import {createListSetter, createValueSetter} from '../../utils/Utils';
 
 @observer
 class ATableSavable extends React.Component {
@@ -26,7 +26,8 @@ class ATableSavable extends React.Component {
         super(props);
         
         createListSetter.call(this);
-        
+        createValueSetter.call(this);
+
         this.onLoadList = this.onLoadList.bind(this);
         this.renderItem && (this.renderItem = this.renderItem.bind(this));
         this.onClick = this.onClick.bind(this);
@@ -62,6 +63,10 @@ class ATableSavable extends React.Component {
         const {onChange, name} = this.props;
         onChange && onChange(toJS(this.list), name, this);
         console.log(`set list: ${value}`)
+    }
+
+    set value(value) {
+        this.list = value;
     }
 
     set listNoChange(value) {

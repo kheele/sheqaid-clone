@@ -14,6 +14,7 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./ProfileMSDSDialog.lazy.css";
+import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -136,7 +137,7 @@ class Controls extends React.Component {
                     name, common_names, chemical_name, empirical_formula, un_num, 
                     category, date_identified,//other added
                     application_or_use,
-                    manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
+                    supplier_list,
                     emergency_phone_nums = [], 
         //            emergency_phone, //replaced with emergency_phone_nums
                     risk_level,//other added
@@ -201,13 +202,8 @@ class Controls extends React.Component {
                 <ProfileField name="application_or_use" placeholder="Application / Use" value={application_or_use} required className="col-lg-12 min-h-60"/>
                 
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Manufacturer / Supplier</label>
-                <ProfileField name="manufacturer" placeholder="Manufacturer..." value={manufacturer} className="col-lg-12"/>
-                <ProfileField name="manufacturer_addr" placeholder="Address" value={manufacturer_addr} required className="col-lg-12 min-h-60"/>
-                <ProfileField name="manufacturer_phone_num" placeholder="Telephone" value={manufacturer_phone_num} required className="col-lg-12"/>
-                <ProfileField name="manufacturer_email" placeholder="E-mail Address" value={manufacturer_email} required className="col-lg-12"/>
-                <ProfileField name="manufacturer_fax" placeholder="Fax" value={manufacturer_fax} required className="col-lg-12"/>
-                <ProfileField name="manufacturer_website" placeholder="Website" value={manufacturer_website} required className="col-lg-12"/>
-                
+                <NewChemicalSupplierListTable ref="supplier_list" name="supplier_list" defaultValue={supplier_list} className="col-lg-12 form-control" readonly/>
+
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Emergency Details</label>
                 <ProfileField name="emergency_phone_nums" type="select_multi" placeholder="Emergency Phone Numbers..." value={emergency_phone_nums} renderer={v => v.join(', ')} required className="col-lg-12"/>
                 

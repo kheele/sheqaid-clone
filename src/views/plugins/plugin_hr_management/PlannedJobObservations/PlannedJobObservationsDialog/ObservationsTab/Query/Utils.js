@@ -2,7 +2,9 @@ import {orgsFilter} from "graphql/Filters";
 
 export const getVariablesAndQueryConfig = (
 	{
-		status,
+		template,
+		job_position,
+		employee,
 		//
 		site_id, project_id, client_id,
 		//
@@ -12,16 +14,14 @@ export const getVariablesAndQueryConfig = (
 	//<editor-fold desc="variables, filters">
 	let filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
 
-	if (status) {
-		let comp;
-		if (status.startsWith('!')) {
-			status = status.replace('!', '');
-			comp = '_neq';
-		} else {
-			comp = '_eq';
-		}
-
-		filter.push(`status: {${comp}: "${status}"}`);
+	if (template) {
+		filter.push(`status: {_eq: "${template}"}`);
+	}
+	if (job_position) {
+		filter.push(`job_position_id: {_eq: ${job_position.id}}`);
+	}
+	if (employee) {
+		filter.push(`_or: [{employee_id: {_eq: ${employee.id}}}, {employee_other_id: {_eq: ${employee.id}}}]`);
 	}
 
 	filter = filter.join(',');

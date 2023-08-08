@@ -342,7 +342,7 @@ class Controls extends React.Component {
 					address,
 				})),
 			},
-			emergency_phone_nums,
+			emergency_phone_nums: emergency_phone_nums ? emergency_phone_nums.slice() : null,
 //            emergency_phone, //replaced with emergency_phone_nums
 			risk_level,//other added
 			more_product_info,

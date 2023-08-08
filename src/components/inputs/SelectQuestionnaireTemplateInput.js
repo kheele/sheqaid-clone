@@ -50,7 +50,8 @@ class SelectInput extends ASelectInput {
             if(defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            const {data: {name: label}} = defaultValue;
+            const {data, name} = defaultValue;
+            const label = name || data.name;
             return {value: defaultValue, label};
         }
         return null;

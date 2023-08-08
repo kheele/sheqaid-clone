@@ -15,12 +15,17 @@ export const chemical_product_details_fragment = `
     physical_state
     type
     application_or_use
-    manufacturer
-    manufacturer_addr
-    manufacturer_phone_num
-    manufacturer_email
-    manufacturer_fax
-    manufacturer_website
+    
+    supplier_list{
+      id
+      manufacturer
+      address
+      phone
+      email
+      fax
+      website
+    }
+    
     emergency_phone_nums
     
     location_where_product_is_used
