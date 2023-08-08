@@ -36,7 +36,7 @@ exports.uploadQuestionnaireFilesUpdate = async (body) => {
 		return;
 	}
 
-	let {id, ques_id, questionnaire_id, isMultiAnswer, answer, responseAttachment, questionImage, questionType} = new_item;
+	let {id, questionnaire_id, isMultiAnswer, answer, responseAttachment, questionImage, questionType} = new_item;
 
 	console.log('uploadQuestionnaireFilesNew', new_item)
 
@@ -46,7 +46,7 @@ exports.uploadQuestionnaireFilesUpdate = async (body) => {
 		const {path} = questionImage;
 		console.log('uploadQuestionnaireFilesNew questionImage', path)
 
-		const new_name = `questionnaires/${questionnaire_id}/${ques_id}/${id}/questionImage`;
+		const new_name = `questionnaires/${questionnaire_id}/${id}/questionImage`;
 		attrs.questionImage = await uploadDataUri(path, new_name);
 	}
 
@@ -54,7 +54,7 @@ exports.uploadQuestionnaireFilesUpdate = async (body) => {
 		const {path} = responseAttachment;
 		console.log('uploadQuestionnaireFilesNew responseAttachment', path)
 
-		const new_name = `questionnaires/${questionnaire_id}/${ques_id}/${id}/responseAttachment`;
+		const new_name = `questionnaires/${questionnaire_id}/${id}/responseAttachment`;
 		attrs.responseAttachment = await uploadDataUri(path, new_name);
 	}
 
@@ -62,7 +62,7 @@ exports.uploadQuestionnaireFilesUpdate = async (body) => {
 		const {path} = answer;
 		console.log('uploadQuestionnaireFilesNew answer', path)
 
-		const new_name = `questionnaires/${questionnaire_id}/${ques_id}/${id}/answer`;
+		const new_name = `questionnaires/${questionnaire_id}/${id}/answer`;
 		attrs.answer = await uploadDataUri(path, new_name);
 	}
 
