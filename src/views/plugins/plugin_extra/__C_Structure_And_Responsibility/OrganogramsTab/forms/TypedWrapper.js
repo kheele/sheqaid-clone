@@ -78,7 +78,7 @@ class TypedWrapper extends React.Component {
         
         if(!employee) {
             employee_list = (employee_list ? employee_list.map((v) => v.employee || v) : (team ? team.list || team.data.list : [])).
-            filter(v => {
+            filter(employee => {
                 const {id, data: employee_data} = employee;
                 const {removed} = employee_data || employee;
                 return !removed;
