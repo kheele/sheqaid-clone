@@ -8,6 +8,8 @@ import html2canvas from 'html2canvas';
 import {drawChart} from '../../utils/Hierarchies';
 
 import style from "./Hierarchies.lazy.css";
+import Draggable from 'react-draggable';
+import MKBox from "../MK/MKBox";
 
 @observer
 class Hierarchies extends React.Component {
@@ -71,12 +73,12 @@ class Hierarchies extends React.Component {
         this.data.addColumn('string', 'ToolTip');
 
         // Create the chart.
-        this.chart = new google.visualization.OrgChart(findDOMNode(this));
-        
+        this.chart = new google.visualization.OrgChart(findDOMNode(this).querySelector("#drag-container"));
+
         this.update(list || this.props.list, true);
         this.state.isLoaded = true;
     }
-    
+
     update(list, internal = false) {
         if (list && (isObservableArray(list) || isArray(list))) {
             if(internal) {
@@ -91,7 +93,7 @@ class Hierarchies extends React.Component {
             }
         }
     }
-    
+
     async getPrintCanvas() {
         const node = this.getDOMNode();
         const nodeJq = $(node);
@@ -100,19 +102,22 @@ class Hierarchies extends React.Component {
             setTimeout(async () => {
                 const canvas = await html2canvas(node);
                 nodeJq.removeClass('print');
-                
+
                 resolve(canvas);
             }, 500);
         });
     }
-    
+
     getDOMNode() {
         return findDOMNode(this);
     }
 
     render() {
         const {isLoaded, isOffLine} = this.state;
-        return <div className="Hierarchies ">
+        return <div className="Hierarchies">
+            <Draggable draggableId="Hierarchies">
+                <MKBox id="drag-container" sx={{width: "100%", height: "100%",}}/>
+            </Draggable>
             {(!isOffLine && !isLoaded) && <div className="results-loading fixed-center hor-center text-center">
                 <CircularProgress/>
                 Loading organogram...

@@ -123,13 +123,13 @@ class OrganogramsTab extends React.Component {
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, _target, client, project, site, type, doc, list}} = item;
+        const {id, data: {created_at, target, client, project, site, type, doc, list}} = item;
 //        console.log('Organogram', item)
         const {isHasProjects} = storage.is;
         return <TRow key={"item-" + n}>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
             <div className="td">{doc ? <Clickable idx={n} onClick={this.onViewByDoc}><a href="#">PDF / Spreadsheet</a></Clickable> : "Typed"}</div>
-            <div className="td">{_target === "Client" ? "Company" : _target}</div>
+            <div className="td">{target === "Client" ? "Company" : target}</div>
             
             {isHasProjects && RenderUtils.renderOrgTD(client, null, 'Company')}
             {isHasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}

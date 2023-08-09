@@ -10,6 +10,7 @@ import findByFirestoreIdOrganogram
     from "../../mutations/all/StructureAndResponsibility/Organogram/findByFirestoreIdOrganogram";
 import findByFirestoreIdEmployee from "../../mutations/all/Employee/findByFirestoreIdEmployee";
 import findByFirestoreIdTeam from "../../mutations/all/Team/findByFirestoreIdTeam";
+import insertOrganogram from "../../mutations/all/StructureAndResponsibility/Organogram/insertOrganogram";
 
 const tbl = "plugin_sheq_assist_StructureAndResponsibility_organograms";
 //<editor-fold desc="transfer">
@@ -67,24 +68,32 @@ export const organograms_transfer = async () => {
                 type,
                 doc,
                 employee_list: {
-                    data: await Promise.all((old_list || []).map(async ({employee, employeeReportedTo, team, team_id, employee_list}) => {
+                    data: (await Promise.all((old_list || []).map(async ({employee, employeeReportedTo, team, team_id, employee_list}) => {
                         const employee_pg = await findByFirestoreIdEmployee(employee && employee.id);
                         const employeeReportedTo_pg = await findByFirestoreIdEmployee(employeeReportedTo && employeeReportedTo.id);
                         const team_pg = await findByFirestoreIdTeam(team_id || (team && team.id));
+                        if(employee_pg === null) {
+                            console.log('employee_pg1 not found', employee && employee.id)
+                            return;
+                        }
                         return {
                             employee_id: employee_pg && employee_pg.id,
                             employee_reported_to_id: employeeReportedTo_pg && employeeReportedTo_pg.id,
                             team_id: team_pg && team_pg.id,
                             employee_list: {
-                                data: await Promise.all((employee_list || []).map(async ({id}) => {
+                                data: (await Promise.all((employee_list || []).map(async ({id}) => {
                                     const employee_pg = await findByFirestoreIdEmployee(id);
+                                    if(employee_pg === null) {
+                                        console.log('employee_pg2 not found', id)
+                                        return;
+                                    }
                                     return {
                                         employee_id: employee_pg && employee_pg.id,
                                     };
-                                })),
+                                }))).filter(v => !!v),
                             },
                         };
-                    })),
+                    }))).filter(v => !!v),
                 },
             };//
 

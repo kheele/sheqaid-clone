@@ -122,7 +122,7 @@ import {organograms_transfer} from "./sheq_organograms";
     // await contractors_questionnaire_library_transfer();
     // await contractors_questionnaires_transfer();
 
-    await organograms_transfer();
+    // await organograms_transfer();
 
 })();
 

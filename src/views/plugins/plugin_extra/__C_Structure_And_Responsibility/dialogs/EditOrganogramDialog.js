@@ -66,7 +66,7 @@ class Controls extends React.Component {
         this.form = new Form();
         this.onChangeTarget = this.onChangeTarget.bind(this);
         this.onChangeType = this.onChangeType.bind(this);
-        this.form.addChangeOne("_target", this.onChangeTarget);
+        this.form.addChangeOne("target", this.onChangeTarget);
         this.form.addChangeOne("type", this.onChangeType);
     }
     // </editor-fold>
@@ -104,7 +104,7 @@ class Controls extends React.Component {
         const {form} = this;
         const {idx} = btn.props;
         if(idx === 0) {
-            if (!form.isValid('_target')) {
+            if (!form.isValid('target')) {
                 infoDialog.open('Organogram For is required');
                 return;
             }
@@ -112,12 +112,12 @@ class Controls extends React.Component {
                 infoDialog.open('Company is required');
                 return;
             }
-            const _target = form.get('_target');
-            if((_target === 'Project' || _target === 'Site') && !form.isValid('project')) {
+            const target = form.get('target');
+            if((target === 'Project' || target === 'Site') && !form.isValid('project')) {
                 infoDialog.open('Project is required');
                 return;
             }
-            if(_target === 'Site' && !form.isValid('site')) {
+            if(target === 'Site' && !form.isValid('site')) {
                 infoDialog.open('Site is required');
                 return;
             }
@@ -149,7 +149,7 @@ class Controls extends React.Component {
         const {isContractor, isHasProjects} = storage.is;
                  
         if(isHasProjects) {
-            if (!form.isValid('_target')) {
+            if (!form.isValid('target')) {
                 infoDialog.open('Organogram For is required');
                 return;
             }
@@ -157,12 +157,12 @@ class Controls extends React.Component {
                 infoDialog.open('Company is required');
                 return;
             }
-            const _target = form.get('_target');
-            if((_target === 'Project' || _target === 'Site') && !form.isValid('project')) {
+            const target = form.get('target');
+            if((target === 'Project' || target === 'Site') && !form.isValid('project')) {
                 infoDialog.open('Project is required');
                 return;
             }
-            if(_target === 'Site' && !form.isValid('site')) {
+            if(target === 'Site' && !form.isValid('site')) {
                 infoDialog.open('Site is required');
                 return;
             }
@@ -192,7 +192,7 @@ class Controls extends React.Component {
             ShouldUpdate.checkSite(data, old_data, site);
         }
 
-        ShouldUpdate.check(data, old_data, _target, '_target');
+        ShouldUpdate.check(data, old_data, target, 'target');
         ShouldUpdate.check(data, old_data, type, 'type');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
         
@@ -277,7 +277,7 @@ class Controls extends React.Component {
             item, item: {
                 id, data: {
                     created_at,
-                    _target, client, project, site, type, doc, list
+                    target, client, project, site, type, doc, list
                 }
             }
         } = this;
@@ -294,7 +294,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormNext={isHasProjects && onFormNext}
             >
-                <ClearableInput name="_target" type="radio" placeholder="Organogram For" defaultValue={_target} className="col-lg-7 pull-left-2_5 form-control" onChange={this.form.onChange} values={this.state.lists.target}/>
+                <ClearableInput name="target" type="radio" placeholder="Organogram For" defaultValue={target} className="col-lg-7 pull-left-2_5 form-control" onChange={this.form.onChange} values={this.state.lists.target}/>
                 {!isContractor && <SelectClientInputWrapper state={this.state} defaultValue={client} onChange={this.form.onChange}/>}
                 {!isContractor && <SelectProjectInputWrapper state={this.state} defaultValue={project} onChange={this.form.onChange}/>}
                 <SelectSiteInputWrapper state={this.state} defaultValue={site} onChange={this.form.onChange}/>

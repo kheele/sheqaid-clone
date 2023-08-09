@@ -1,9 +1,10 @@
 .Hierarchies{
-    width: 100%;
-    height: 100%;
-    margin: 0px;
+    width: calc(100% + 10px);
+    height: calc(100% + 15px);
+    margin: -5px 0px 0px -10px;
     padding: 0px;
     position: relative;
+    overflow: hidden;
 }
 .Hierarchies > .offline{
     background: #fafafa;
@@ -46,9 +47,9 @@
     border: none;
 }
 .Hierarchies .google-visualization-orgchart-node {
-    min-width: 140px !important;
-    width: 140px !important;
-    max-width: 140px !important;
+    min-width: 144px !important;
+    width: 144px !important;
+    max-width: 144px !important;
     border: none;
     background: rgb(2, 168, 168);
     vertical-align: top;
@@ -121,7 +122,8 @@
     background: #eee;
 }
 .Hierarchies ul > li.removed{
-    background: red !important;
+    background: rgba(255, 0, 0, 0.6) !important;
+    color: #fff;
 }
 .Hierarchies ul > li button{
     margin: 0 !important;

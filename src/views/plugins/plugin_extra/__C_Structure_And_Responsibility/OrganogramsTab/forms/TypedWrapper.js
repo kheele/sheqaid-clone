@@ -77,7 +77,12 @@ class TypedWrapper extends React.Component {
         const {refName, readonly} = this.props;
         
         if(!employee) {
-            employee_list = employee_list ? employee_list.map((v) => v.employee || v) : (team ? team.list || team.data.list : []);
+            employee_list = (employee_list ? employee_list.map((v) => v.employee || v) : (team ? team.list || team.data.list : [])).
+            filter(v => {
+                const {id, data: employee_data} = employee;
+                const {removed} = employee_data || employee;
+                return !removed;
+            });
         }
         
         const getTeamMember = function(item, id) {
@@ -161,7 +166,7 @@ class TypedWrapper extends React.Component {
             const findItem = function() {
                 const item = list.find(function(item) {
                     if(isTeamMember) {
-                        return getTeamMember(item, parseInt(btn.id));
+                        return !!getTeamMember(item, parseInt(btn.id));
                     }
                     return item.employee && (item.employee.id === parseInt(btn.id));
                 });
@@ -193,8 +198,9 @@ class TypedWrapper extends React.Component {
         
         const parentId = employee_reported_to ? employee_reported_to.id : "";
         if(employee) {
-            const {id, data:{removed, profile_pic, lname, fname, job_position}} = employee;
-            let jobPosition; 
+            const {id, data: employee_data} = employee;
+            const {removed, profile_pic, lname, fname, job_position} = employee_data || employee;
+            let jobPosition;
             if(job_position) {
                 jobPosition = job_position.name;
             } else {
@@ -227,7 +233,9 @@ class TypedWrapper extends React.Component {
             let f = '<div>';
             f +=    `<div class="team-header">${employee_list.length} Member(s)</div>`;
             f +=    '<ul>';
-            employee_list.forEach(({id, data:{removed, profile_pic, lname, fname, job_position}}, n) => {
+            employee_list.forEach((employee, n) => {
+                const {id, data: employee_data} = employee;
+                const {removed, profile_pic, lname, fname, job_position} = employee_data || employee;
                 if(removed) {
                     f +=    '<li class="removed">';
                 } else {
