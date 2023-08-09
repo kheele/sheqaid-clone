@@ -197,7 +197,7 @@ class Controls extends React.Component {
 					};
 				})
 			},
-			doc: doc && {path: await toDataURI(doc.path)},
+			doc: doc && doc.path,
 		};
 
 		console.log(data)

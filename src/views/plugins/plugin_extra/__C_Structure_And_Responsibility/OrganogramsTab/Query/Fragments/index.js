@@ -30,8 +30,8 @@ export const organogram_details_fragment = `
     	employee_list{
     		id
     		employee{
-				${employee_personal_details_fragment}
-			}
+					${employee_personal_details_fragment}
+				}
     	}
     }
 `;

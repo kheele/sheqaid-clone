@@ -6,7 +6,9 @@ import {graphql} from "react-relay";
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityOrganogram} from "mutations/types.d.ts";
 import findByIdOrganogram
-    from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/OrganogramsTab/Query/List/findByIdOrganogram";
+	from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/OrganogramsTab/Query/List/findByIdOrganogram";
+import crudUtils from "../../CRUDUtils/CRUDUtils";
+import updateMutationImpl from "mutations/updateMutationImpl";
 
 // 2
 const mutation = graphql`
@@ -21,12 +23,43 @@ const mutation = graphql`
 
 // 3
 export default async (input: EntityOrganogram) => {
-    const {
-        target, client, project, site, type, doc, employee_list
-    } = input;
+	const {
+		target, client, project, site, type, doc, employee_list
+	} = input;
 
-    // crudUtils.injectCreate(input);
+	crudUtils.injectCreate(input);
 
-    return await createMutationImpl({mutation, input}).
-    then(res => res && findByIdOrganogram(res.id));
+	if (doc) {
+		delete input.doc;
+	}
+
+	const newItem = await createMutationImpl({mutation, input});
+
+	if (newItem) {
+		if (doc) {
+			try {
+				const path = `organograms/${newItem.id}`;
+				const name = "organogram-doc";
+				const gcsUri = await workers.emit("files/upload", {
+					file: doc,
+					path,
+					name,
+				});
+				console.log("gcsUri", gcsUri);
+
+				if (gcsUri) {
+					return updateMutationImpl({
+						mutation,
+						id: newItem.id,
+						attrs: {
+							doc: gcsUri
+						},
+					}).then(res => res && findByIdOrganogram(res.id));
+				}
+			} catch (err) {
+				console.log('insertOrganogram error', err)
+			}
+		}
+	}
+	return newItem && findByIdOrganogram(newItem.id);
 };

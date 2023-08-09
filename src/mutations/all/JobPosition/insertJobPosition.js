@@ -79,7 +79,7 @@ export default async (input: EntityJobPosition) => {
     } = input;
 
     if (doc) {
-        // delete input.doc;
+        delete input.doc;
     }
 
     const {company, user} = storage.loggedUser;
@@ -89,30 +89,30 @@ export default async (input: EntityJobPosition) => {
     const newItem = await createMutationImpl({mutation, input});
 
     if (newItem) {
-        // if (doc) {
-        //     try {
-        //         const path = `job-positions/${newItem.id}`;
-        //         const name = "job-position-doc";
-        //         const gcsUri = await workers.emit("files/upload", {
-        //             file: doc,
-        //             path,
-        //             name,
-        //         });
-        //         console.log("gcsUri", gcsUri);
-        //
-        //         if (gcsUri) {
-        //             return updateMutationImpl({
-        //                 mutation,
-        //                 id: newItem.id,
-        //                 attrs: {
-        //                     doc: gcsUri
-        //                 },
-        //             });
-        //         }
-        //     } catch (err) {
-        //         console.log('insertJobPosition error', err)
-        //     }
-        // }
+        if (doc) {
+            try {
+                const path = `job-positions/${newItem.id}`;
+                const name = "job-position-doc";
+                const gcsUri = await workers.emit("files/upload", {
+                    file: doc,
+                    path,
+                    name,
+                });
+                console.log("gcsUri", gcsUri);
+
+                if (gcsUri) {
+                    return updateMutationImpl({
+                        mutation,
+                        id: newItem.id,
+                        attrs: {
+                            doc: gcsUri
+                        },
+                    });
+                }
+            } catch (err) {
+                console.log('insertJobPosition error', err)
+            }
+        }
     }
     return newItem;
 };

@@ -193,7 +193,7 @@ class Controls extends React.Component {
         }
 
         const {
-            client, project, site, type, doc, employee_list
+            client, project, site, target, type, doc, employee_list
         } = form.data;
         const data = {};
 
