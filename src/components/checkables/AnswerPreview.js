@@ -458,31 +458,31 @@ class AnswerPreviewWritable extends React.Component {
 				case "Short Answer":
 					node =
 						<ClearableInput name={"answer_" + idx} type="text" placeholder="Type here" defaultValue={answer}
-						                required className="form-control" onChange={onChange}/>;
+						                className="form-control" onChange={onChange}/>;
 					break;
 				case "Paragraph":
 					node = <ClearableInput name={"answer_" + idx} type="textarea" placeholder="Type here"
-					                       defaultValue={answer} required className="form-control"
+					                       defaultValue={answer} className="form-control"
 					                       onChange={onChange}/>;
 					break;
 				case "Date":
 					node =
 						<ClearableInput name={"answer_" + idx} type="date" placeholder="Date..." defaultValue={answer}
-						                required className="form-control" onChange={onChange}/>;
+						                className="form-control" onChange={onChange}/>;
 					break;
 				case "Time":
 					node =
 						<ClearableInput name={"answer_" + idx} type="time" placeholder="Time..." defaultValue={answer}
-						                required className="form-control" onChange={onChange}/>;
+						                className="form-control" onChange={onChange}/>;
 					break;
 				case "Dropdown":
 					node = <ClearableInput name={"answer_" + idx} type="select" placeholder="Select..."
-					                       defaultValue={answer} required className="form-control" onChange={onChange}
+					                       defaultValue={answer} className="form-control" onChange={onChange}
 					                       values={options} returnValue/>;
 					break;
 				case "Person":
 					node = <SelectEmployeeInput name={"answer_" + idx} type="select" placeholder="Select Person..."
-					                            defaultValue={answer} showOtherPerson required className="form-control"
+					                            defaultValue={answer} showOtherPerson className="form-control"
 					                            onChange={onChange}/>;
 					break;
 				case "Asset":
@@ -496,7 +496,7 @@ class AnswerPreviewWritable extends React.Component {
 					break;
 				case "Signature":
 					node = <ClearableInput name={"answer_" + idx} type="signature" placeholder="Draw Signature..."
-					                       defaultValue={answer} required className="form-control" onChange={onChange}
+					                       defaultValue={answer} className="form-control" onChange={onChange}
 					                       returnValue/>;
 					break;
 				case "Photo": {
@@ -560,10 +560,9 @@ class AnswerPreviewWritable extends React.Component {
 				}
 				case "Checkboxes":
 					node = <ClearableInput name={"answer_" + idx} type="checkbox" placeholder="Select"
-					                       defaultValue={answer} required className="form-control" onChange={onChange}
+					                       defaultValue={answer} vertical className="form-control" onChange={onChange}
 					                       values={this.values} returnValue/>;
 					break;
-				case "Multiple Choice":
 				case "Safe,At Risk,N/A":
 				case "Good,Fair,Poor,N/A":
 				case "Pass,Fail,N/A":
@@ -571,7 +570,13 @@ class AnswerPreviewWritable extends React.Component {
 				case "Compliant,Non-Compliant,N/A":
 					node =
 						<ClearableInput name={"answer_" + idx} type="radio" placeholder="Select" defaultValue={answer}
-						                required className="form-control" onChange={onChange} values={this.values}
+						                className="form-control" onChange={onChange} values={this.values}
+						                returnValue/>;
+					break;
+				case "Multiple Choice":
+					node =
+						<ClearableInput name={"answer_" + idx} type="radio" placeholder="Select" defaultValue={answer}
+						                vertical className="form-control" onChange={onChange} values={this.values}
 						                returnValue/>;
 					break;
 				default:
