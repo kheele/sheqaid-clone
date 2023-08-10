@@ -210,7 +210,7 @@ class Controls extends React.Component {
                 <label className="col-lg-12 margin-t-5 padding-0 pull-left">Risk Level</label>
                 <ProfileField name="risk_level" placeholder="Risk Level" value={risk_level} required className="col-lg-12"/>
                 <p className="hor-center text-center padding-t-10 margin-t-20 w-full"><b>Please refer to the diagram below</b></p>
-                <img src={riskLevelImg} width="100%"/>
+                <img src={riskLevelImg} width="100%" className="RiskLevelImg"/>
                 
                 <label className="col-lg-12 margin-t-5 margin-b-5 padding-0 pull-left">More Product Information</label>
                 <TinyMCE ref="more_product_info" name="more_product_info" height={300} open={false} defaultValue={more_product_info} readonly/>

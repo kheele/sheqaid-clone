@@ -272,22 +272,22 @@ export default (
 			        count
 			      }
 			    }
-			    has_sds_yes_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {_or: [{has_sds: {_eq: true}}, {sds_id: {_is_null: false}}, {sds_doc: {_is_null: false}}]}) {
+			    has_sds_yes_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {_or: [{has_sds_view: {_eq: true}}, {sds_id: {_is_null: false}}, {sds_doc: {_is_null: false}}]}) {
 			      aggregate {
 			        count
 			      }
 			    }
-			    has_sds_no_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {has_sds: {_eq: false}, sds_id: {_is_null: true}, sds_doc: {_is_null: true}}) {
+			    has_sds_no_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {has_sds_view: {_eq: false}, sds_id: {_is_null: true}, sds_doc: {_is_null: true}}) {
 			      aggregate {
 			        count
 			      }
 			    }
-			    has_hazchem_sheet_yes_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {_or: [{has_hazchem_sheet: {_eq: true}}, {hazchem_sheet_id: {_is_null: false}}, {hazchem_sheet_doc: {_is_null: false}}]}) {
+			    has_hazchem_sheet_yes_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {_or: [{has_hazchem_sheet_view: {_eq: true}}, {hazchem_sheet_id: {_is_null: false}}, {hazchem_sheet_doc: {_is_null: false}}]}) {
 			      aggregate {
 			        count
 			      }
 			    }
-			    has_hazchem_sheet_no_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {has_hazchem_sheet: {_eq: false}, hazchem_sheet_id: {_is_null: true}, hazchem_sheet_doc: {_is_null: true}}) {
+			    has_hazchem_sheet_no_chemical_product_list_aggregate: chemical_product_list_aggregate(where: {has_hazchem_sheet_view: {_eq: false}, hazchem_sheet_id: {_is_null: true}, hazchem_sheet_doc: {_is_null: true}}) {
 			      aggregate {
 			        count
 			      }

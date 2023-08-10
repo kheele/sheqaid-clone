@@ -17,7 +17,7 @@
     width: calc(100% + 10px);
 }
 
-#dialog-overlay.ProfileMSDSDialog-profile-dialog .dialog-content img {
+#dialog-overlay.ProfileMSDSDialog-profile-dialog .dialog-content img.RiskLevelImg {
     width: calc(100% + 17px);
     position: relative;
     left: -15px;

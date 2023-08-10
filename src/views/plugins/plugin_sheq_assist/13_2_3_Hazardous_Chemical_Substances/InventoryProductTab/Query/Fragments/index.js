@@ -56,6 +56,7 @@ export const chemical_product_details_fragment = `
     hazard_class_list
     
     has_sds
+    has_sds_view
     sds{
         id
     }
@@ -63,6 +64,7 @@ export const chemical_product_details_fragment = `
     sds_date
     
     has_hazchem_sheet
+    has_hazchem_sheet_view
     hazchem_sheet{
         id
     }

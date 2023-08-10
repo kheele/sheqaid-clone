@@ -63,6 +63,7 @@ const mutation = graphql`
             hazard_class_list
 
             has_sds
+            has_sds_view
             sds{
                 id
             }
@@ -70,6 +71,7 @@ const mutation = graphql`
             sds_date
 
             has_hazchem_sheet
+            has_hazchem_sheet_view
             hazchem_sheet{
                 id
             }
