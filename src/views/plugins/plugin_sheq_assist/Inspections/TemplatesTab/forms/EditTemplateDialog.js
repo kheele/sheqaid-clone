@@ -78,10 +78,10 @@ class Controls extends React.Component {
                 infoDialog.open('Please select "Visibility" option');
                 return;
             }
-            if (!form.isValid('asset_type')) {
-                infoDialog.open('Asset Type is required');
-                return;
-            }
+            // if (!form.isValid('asset_type')) {
+            //     infoDialog.open('Asset Type is required');
+            //     return;
+            // }
         }
         if(idx === 2) {
             if (!questions.isValidForm()) {
@@ -102,10 +102,10 @@ class Controls extends React.Component {
             return;
         }
 
-        if (!form.isValid('asset_type')) {
-            infoDialog.open('Asset Type is required');
-            return;
-        }
+        // if (!form.isValid('asset_type')) {
+        //     infoDialog.open('Asset Type is required');
+        //     return;
+        // }
 
         if (!questionsRef.isValidForm()) {
             return;

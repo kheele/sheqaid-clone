@@ -104,10 +104,10 @@ class Controls extends React.Component {
 			}
 		}
 		if (idx === 1) {
-			if (!form.isValid('asset_type')) {
-				infoDialog.open('Asset Type is required');
-				return;
-			}
+			// if (!form.isValid('asset_type')) {
+			// 	infoDialog.open('Asset Type is required');
+			// 	return;
+			// }
 		}
 		if (idx === 3) {
 			if (!questions.isValidForm()) {
@@ -129,10 +129,10 @@ class Controls extends React.Component {
 			return;
 		}
 
-		if (!form.isValid('asset_type')) {
-			infoDialog.open('Asset Type is required');
-			return;
-		}
+		// if (!form.isValid('asset_type')) {
+		// 	infoDialog.open('Asset Type is required');
+		// 	return;
+		// }
 
 		if (!questionsRef.isValidForm()) {
 			return;
