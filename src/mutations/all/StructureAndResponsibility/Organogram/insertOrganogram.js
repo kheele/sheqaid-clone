@@ -8,7 +8,7 @@ import {EntityOrganogram} from "mutations/types.d.ts";
 import findByIdOrganogram
 	from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/OrganogramsTab/Query/List/findByIdOrganogram";
 import crudUtils from "../../CRUDUtils/CRUDUtils";
-import updateMutationImpl from "mutations/updateMutationImpl";
+import updateOrganogram from "./updateOrganogram";
 
 // 2
 const mutation = graphql`
@@ -48,13 +48,10 @@ export default async (input: EntityOrganogram) => {
 				console.log("gcsUri", gcsUri);
 
 				if (gcsUri) {
-					return updateMutationImpl({
-						mutation,
+					return updateOrganogram({
 						id: newItem.id,
-						attrs: {
-							doc: gcsUri
-						},
-					}).then(res => res && findByIdOrganogram(res.id));
+						doc: gcsUri,
+					});
 				}
 			} catch (err) {
 				console.log('insertOrganogram error', err)

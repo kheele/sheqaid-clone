@@ -58,22 +58,7 @@ class Controls extends React.Component {
     get item() {
         return this.props.state.item;
     }
-    
-    getClientPos(target) {
-        let w, left;
-        if(target === "Client") {
-            w = 6;
-            left = " pull-left-" + 3;
-        } else if(target === "Project") {
-            w = 4;
-            left = " pull-left-" + 2;
-        } else if(target === "Site") {
-            w = 4;
-            left = "";
-        }
-        return w + left;
-    }
-    
+
     render() {
         if (!this.item)
             return null;
@@ -101,11 +86,11 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormNext={isHasProjects && onFormNext}
             >
-                <ProfileField name="target" placeholder="Organogram For" value={target === "Client" ? "Company" : target} required className="col-lg-6"/>
-                <ProfileField name="type" placeholder="Organogram Source" value={type === "Upload" ? "PDF / Spreadsheet" : "Typed"} required className="col-lg-6"/>
-                {!isContractor && <ProfileField name="client" placeholder="Company" value={client} renderer={v => v.name || v.data.name} required className={"col-lg-" + this.getClientPos(target)}/>}
-                {!isContractor && project && <ProfileField name="project" placeholder="Project" value={project} renderer={v => v.name || v.data.name} required className="col-lg-4"/>}
-                {site && <ProfileField name="site" placeholder="Site" value={site} renderer={v => v.name || v.data.name} required className="col-lg-4"/>}
+                <ProfileField name="target" placeholder="Organogram For" value={target === "Client" ? "Company" : target} required className="col-lg-12"/>
+                <ProfileField name="type" placeholder="Organogram Source" value={type === "Upload" ? "PDF / Spreadsheet" : "Typed"} required className="col-lg-12"/>
+                {!isContractor && <ProfileField name="client" placeholder="Company" value={client} renderer={v => v.name || v.data.name} required className="col-lg-12"/>}
+                {!isContractor && project && <ProfileField name="project" placeholder="Project" value={project} renderer={v => v.name || v.data.name} required className="col-lg-12"/>}
+                {site && <ProfileField name="site" placeholder="Site" value={site} renderer={v => v.name || v.data.name} required className="col-lg-12"/>}
            </Row>}
             {doc && <Row 
                 rendered 
@@ -126,7 +111,7 @@ class Controls extends React.Component {
                     className="col-lg-6 col-xs-12 hor-center"
                 />
             </Row>}
-            {list && <TypedWrapper ref="typedWrapper" onFormOpen={onFormOpen} onFormBack={onFormBack} list={list} readonly/>}
+            {list && list.isNotEmpty() && <TypedWrapper ref="typedWrapper" onFormOpen={onFormOpen} onFormBack={onFormBack} list={list} hasDoc={!!doc} readonly/>}
             <ProfilePDFReader ref="pdfReader"/>
         </FormControls>;
     }

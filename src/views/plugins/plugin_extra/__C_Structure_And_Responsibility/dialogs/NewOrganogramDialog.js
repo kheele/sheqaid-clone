@@ -230,7 +230,7 @@ class Controls extends React.Component {
 				onFormNext={isHasProjects && onFormNext}
 			>
 				<ClearableInput name="target" type="radio" defaultValue={!isContractor && "Site"} placeholder="Organogram For"
-				                className="col-lg-7 pull-left-2_5 form-control" onChange={this.form.onChange}
+				                className="col-lg-12 form-control" onChange={this.form.onChange}
 				                values={this.state.lists.target}/>
 				{!isContractor && <SelectClientInputWrapper state={this.state} onChange={this.form.onChange}/>}
 				{!isContractor && <SelectProjectInputWrapper state={this.state} onChange={this.form.onChange}/>}
@@ -279,7 +279,7 @@ class SelectClientInputWrapper extends React.Component {
 			return null;
 		}
 		return <SelectClientInput key={new Date().getTime()} name="client" placeholder="Company..." required
-		                          className={"col-lg-" + w + left + " form-control"} onChange={onChange}/>;
+		                          className={"col-lg-12 form-control"} onChange={onChange}/>;
 	}
 }
 
@@ -292,7 +292,7 @@ class SelectProjectInputWrapper extends React.Component {
 	render() {
 		const {state: {target}, onChange} = this.props;
 		return (target === "Project" || target === "Site") &&
-			<SelectProjectInput name="project" placeholder="Project..." required className="col-lg-4 form-control"
+			<SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
 			                    onChange={onChange}/>;
 	}
 }
@@ -306,7 +306,7 @@ class SelectSiteInputWrapper extends React.Component {
 	render() {
 		const {state: {target}, onChange} = this.props;
 		return target === "Site" &&
-			<SelectSiteInput name="site" placeholder="Site..." required className="col-lg-4 form-control"
+			<SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
 			                 onChange={onChange}/>;
 	}
 }
