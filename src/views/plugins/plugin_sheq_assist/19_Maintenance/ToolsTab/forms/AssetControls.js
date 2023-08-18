@@ -35,7 +35,7 @@ class AControls extends React.Component {
             models: [],
             locations: [],
             toolkits: [],
-            conditions: ['New', 'Good', 'Fair', 'Poor'],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap'],
             vendors: [],
             depreciation_methods: ['Straight Line', 'Declining Balance', "Sum of the Year`s Digits"],
             partial_year_depreciations: [{text: "Yes", value: true, checked: false}, {
@@ -83,7 +83,7 @@ class AControls extends React.Component {
         Promise.all(Object.keys(loads).map(k => {
             return loads[k]().then(res => {
                 if (k === 'conditions') {
-                    this.state.lists[k] = [...this.state.lists[k], ...res].distinct();
+                    this.state.lists[k] = [...this.state.lists[k], ...res.map(v => v.value)].distinct();
                 } else {
                     this.state.lists[k] = res;
                 }

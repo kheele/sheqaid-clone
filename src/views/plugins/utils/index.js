@@ -1,9 +1,15 @@
 import React from "react";
 
 import {onAsyncSelectLoadImpl} from 'utils/AsyncSelect';
-import GQLClient from "../../../graphql/GQLClient";
-import {asset_details_fragment} from "../plugin_sheq_assist/19_Maintenance/ToolsTab/Query/Fragments";
-import {orgs_fragment} from "../../../graphql/Fragments";
+import {
+	onSelectLoadAssetActionCategories,
+	onSelectLoadAssetManufacturers,
+	onSelectLoadAssetModels,
+	onSelectLoadAssetLocations,
+	onSelectLoadAssetToolkits,
+	onSelectLoadAssetConditions,
+	onSelectLoadAssetVendors,
+} from './assets';
 
 // <editor-fold defaultstate="collapsed" desc="AsyncSelectLoad. Click on the + sign on the left to edit the code.">
 function onAsyncSelectLoadFlashReportEmployersOrContractors(value) {
@@ -15,140 +21,6 @@ function onAsyncSelectLoadFlashReportEmployersOrContractors(value) {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="SelectLoad. Click on the + sign on the left to edit the code.">
-function onSelectLoadAssetActionCategories() {
-	return neonBinding.events.emit("plugin_sheq_assist/19_Maintenance/actions/categories/list").then(res => {
-		return res.map(value => {
-			return {label: value, value};
-		});
-	});
-}
-
-function onSelectLoadAssetManufacturers() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            manufacturer:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {manufacturer: asc},
-        ) {
-          manufacturer
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.manufacturer).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
-function onSelectLoadAssetModels() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            model:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {model: asc},
-        ) {
-          model
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.model).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
-function onSelectLoadAssetLocations() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            location:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {location: asc},
-        ) {
-          location
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.location).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
-function onSelectLoadAssetToolkits() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            toolkit:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {toolkit: asc},
-        ) {
-          toolkit
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.toolkit).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
-function onSelectLoadAssetConditions() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            condition:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {condition: asc},
-        ) {
-          condition
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.condition).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
-function onSelectLoadAssetVendors() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_purchase_info(
-          where: {
-            vendor:{_is_null: false}
-            #${filter}
-          },
-	        order_by: {vendor: asc},
-        ) {
-          vendor
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.vendor).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
 function onSelectLoadTrainingFrequencies() {
 	return neonBinding.events.emit("plugin_sheq_assist/05_Trainings/training-matrix/frequencies/list").then(res => {
 		return res.map(value => {
