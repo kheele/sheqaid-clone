@@ -204,11 +204,6 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		if (idx === 2) {
-			// if (form.isValid('email') && !form.get('email').isEmailAddress()) {
-			// 	infoDialog.open('Email Address is not valid');
-			// 	return;
-			// }
-
 			const {
 				//2
 				incident_date,
