@@ -284,8 +284,8 @@ class TypedWrapper extends React.Component {
     
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {readonly, onFormOpen, onFormBack, state = {}} = this.props;
-        const idx = readonly ? 1 : 2;
+        const {readonly, onFormOpen, onFormBack, hasDoc, state = {}} = this.props;
+        const idx = readonly ? (hasDoc ? 2 : 1) : 2;
         const {showTyping} = state;
         if(!readonly && !showTyping) return null;
         return <Row 

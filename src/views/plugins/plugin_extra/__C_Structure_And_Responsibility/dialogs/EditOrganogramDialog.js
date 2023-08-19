@@ -294,7 +294,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormNext={isHasProjects && onFormNext}
             >
-                <ClearableInput name="target" type="radio" placeholder="Organogram For" defaultValue={target} className="col-lg-7 pull-left-2_5 form-control" onChange={this.form.onChange} values={this.state.lists.target}/>
+                <ClearableInput name="target" type="radio" placeholder="Organogram For" defaultValue={target} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.target}/>
                 {!isContractor && <SelectClientInputWrapper state={this.state} defaultValue={client} onChange={this.form.onChange}/>}
                 {!isContractor && <SelectProjectInputWrapper state={this.state} defaultValue={project} onChange={this.form.onChange}/>}
                 <SelectSiteInputWrapper state={this.state} defaultValue={site} onChange={this.form.onChange}/>
@@ -336,7 +336,7 @@ class SelectClientInputWrapper extends React.Component {
         } else {
             return null;
         }
-        return <SelectClientInput key={new Date().getTime()} name="client" placeholder="Company..." defaultValue={defaultValue} required className={"col-lg-" + w + left + " form-control"} onChange={onChange}/>;
+        return <SelectClientInput key={new Date().getTime()} name="client" placeholder="Company..." defaultValue={defaultValue} required className={"col-lg-12 form-control"} onChange={onChange}/>;
     }
 }
 // </editor-fold>
@@ -347,7 +347,7 @@ class SelectProjectInputWrapper extends React.Component {
     
     render() {
         const {defaultValue, state: {target}, onChange} = this.props;
-        return (target === "Project" || target === "Site") && <SelectProjectInput key={new Date().getTime()} name="project" placeholder="Project..." defaultValue={defaultValue} required className="col-lg-4 form-control" onChange={onChange}/>;
+        return (target === "Project" || target === "Site") && <SelectProjectInput key={new Date().getTime()} name="project" placeholder="Project..." defaultValue={defaultValue} required className="col-lg-12 form-control" onChange={onChange}/>;
     }
 }
 // </editor-fold>
@@ -358,7 +358,7 @@ class SelectSiteInputWrapper extends React.Component {
     
     render() {
         const {defaultValue, state: {target}, onChange} = this.props;
-        return target === "Site" && <SelectSiteInput key={new Date().getTime()} name="site" placeholder="Site..." defaultValue={defaultValue} required className="col-lg-4 form-control" onChange={onChange}/>;
+        return target === "Site" && <SelectSiteInput key={new Date().getTime()} name="site" placeholder="Site..." defaultValue={defaultValue} required className="col-lg-12 form-control" onChange={onChange}/>;
     }
 }
 // </editor-fold>
