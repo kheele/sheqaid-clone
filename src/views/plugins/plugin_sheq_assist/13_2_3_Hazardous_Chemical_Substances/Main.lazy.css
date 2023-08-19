@@ -1,6 +1,6 @@
 
 #Hazardous_Chemical_Substances-page{
-    height: 100%;
+    height: calc(100% - 1px);
 }
 #Hazardous_Chemical_Substances-page > .tabs {
     margin: 0 10px 0 0px;

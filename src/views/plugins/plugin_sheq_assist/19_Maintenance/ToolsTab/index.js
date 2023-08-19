@@ -359,7 +359,7 @@ class ToolsTab extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="renderTHead">
 	renderTHead() {
 		return <THead>
-			<div className="td fixed-flex min-w-30">ID</div>
+			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td fixed-flex min-w-80">Photo</div>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
@@ -429,7 +429,7 @@ class ToolsTab extends React.Component {
 
 		console.log('Assets', item)
 		return <TRow key={id} className="w-full">
-			<div className="td fixed-flex min-w-30">{id}</div>
+			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
