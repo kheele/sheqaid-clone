@@ -6,6 +6,7 @@ const biometric = require("./biometric");
 const send = require("./send");
 const get = require("./get");
 const excel = require("./excel");
+const thumbnail_generator = require("./thumbnail-generator");
 
 const triggeredEvents = require("./triggered-events");
 const scheduledEvents = require("./scheduled-events");
@@ -16,6 +17,7 @@ router.use('/send', send);
 router.use('/get', express.text({type: '*/*', limit: "200mb"}), get);
 // router.use('/get', express.text({type: '*/*', limit: "200mb"}), get);
 router.use('/excel', excel);
+router.use('/thumbnail-generator', thumbnail_generator);
 
 router.use('/triggered-events', triggeredEvents);
 router.use('/scheduled-events', scheduledEvents);

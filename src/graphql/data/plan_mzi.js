@@ -163,6 +163,7 @@ console.log(groupedBy);
                     }));
                 }
             }));
+            const res = await insertTrainingPlanByEmployee(item);
         }
         // }
     }));
@@ -174,7 +175,6 @@ console.log(groupedBy);
 
         } else {
             try {
-                const res = await insertTrainingPlanByEmployee(item);
                 console.log("plan_mzi saved", res);
             } catch (err) {
 

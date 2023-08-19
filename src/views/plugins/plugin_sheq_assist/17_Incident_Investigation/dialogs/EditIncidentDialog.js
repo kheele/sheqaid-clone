@@ -82,7 +82,7 @@ class Controls extends AIncidentWritableForm {
 		const {
 			form,
 			item: {id, data: old_data},
-			refs: {optionalInfoTab, documentsTab, dependantsAndNextOfKinTab, specificComplianceRequirementsTab}
+			refs: {}
 		} = this;
 
 		const onSubmit = (data, onProgress) => {

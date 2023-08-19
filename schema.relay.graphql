@@ -8718,6 +8718,12 @@ type default_contractor_questionnaires_ques implements Node {
         "JSON select path"
         path: String
     ): json
+    "An object relationship"
+    answer_asset: assets
+    answer_asset_id: bigint
+    "An object relationship"
+    answer_employee: hr_employees
+    answer_employee_id: bigint
     expiry: date
     hasExpiry: Boolean!
     hasResponseAttachment: Boolean!
@@ -9021,6 +9027,8 @@ type default_contractor_questionnaires_ques_aggregate_fields {
 
 "aggregate avg on columns"
 type default_contractor_questionnaires_ques_avg_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9031,6 +9039,8 @@ type default_contractor_questionnaires_ques_avg_fields {
 
 "aggregate max on columns"
 type default_contractor_questionnaires_ques_max_fields {
+    answer_asset_id: bigint
+    answer_employee_id: bigint
     expiry: date
     id: bigint
     idx: String
@@ -9046,6 +9056,8 @@ type default_contractor_questionnaires_ques_max_fields {
 
 "aggregate min on columns"
 type default_contractor_questionnaires_ques_min_fields {
+    answer_asset_id: bigint
+    answer_employee_id: bigint
     expiry: date
     id: bigint
     idx: String
@@ -9302,6 +9314,8 @@ type default_contractor_questionnaires_ques_paths_variance_fields {
 
 "aggregate stddev on columns"
 type default_contractor_questionnaires_ques_stddev_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9312,6 +9326,8 @@ type default_contractor_questionnaires_ques_stddev_fields {
 
 "aggregate stddev_pop on columns"
 type default_contractor_questionnaires_ques_stddev_pop_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9322,6 +9338,8 @@ type default_contractor_questionnaires_ques_stddev_pop_fields {
 
 "aggregate stddev_samp on columns"
 type default_contractor_questionnaires_ques_stddev_samp_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9332,6 +9350,8 @@ type default_contractor_questionnaires_ques_stddev_samp_fields {
 
 "aggregate sum on columns"
 type default_contractor_questionnaires_ques_sum_fields {
+    answer_asset_id: bigint
+    answer_employee_id: bigint
     id: bigint
     link_doc_id: bigint
     maxScore: Int
@@ -9342,6 +9362,8 @@ type default_contractor_questionnaires_ques_sum_fields {
 
 "aggregate var_pop on columns"
 type default_contractor_questionnaires_ques_var_pop_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9352,6 +9374,8 @@ type default_contractor_questionnaires_ques_var_pop_fields {
 
 "aggregate var_samp on columns"
 type default_contractor_questionnaires_ques_var_samp_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -9362,6 +9386,8 @@ type default_contractor_questionnaires_ques_var_samp_fields {
 
 "aggregate variance on columns"
 type default_contractor_questionnaires_ques_variance_fields {
+    answer_asset_id: Float
+    answer_employee_id: Float
     id: Float
     link_doc_id: Float
     maxScore: Float
@@ -41606,8 +41632,8 @@ type proxy_employee__auditor_variance_fields {
 "columns and relationships of \"proxy_employee__organogram\""
 type proxy_employee__organogram implements Node {
     "An object relationship"
-    employee: hr_employees!
-    employee_id: bigint!
+    employee: hr_employees
+    employee_id: bigint
     "An array relationship"
     employee_list(
         "distinct select on columns"
@@ -48579,8 +48605,14 @@ type sheq_chemical_products implements Node {
     firestore_id: String
     flammability_combustibility_class: String
     has_hazchem_sheet: Boolean
+    "A computed field, executes function \"chemical_product_has_hazchem_sheet\""
+    has_hazchem_sheet_view: Boolean
     has_risk_assessment: Boolean
+    "A computed field, executes function \"chemical_product_has_risk_assessment\""
+    has_risk_assessment_view: Boolean
     has_sds: Boolean
+    "A computed field, executes function \"chemical_product_has_sds\""
+    has_sds_view: Boolean
     hazard_class_list(
         "JSON select path"
         path: String
@@ -51381,8 +51413,10 @@ type sheq_incident_investigation_docs implements Node {
     ): json!
     id: ID!
     "An object relationship"
-    incident: sheq_incident_investigation!
-    incident_id: bigint!
+    incident: sheq_incident_investigation
+    incident_id: bigint
+    quick_incident_id: bigint
+    type: String
 }
 
 "A Relay connection object on \"sheq_incident_investigation_docs\""
@@ -51421,18 +51455,23 @@ type sheq_incident_investigation_docs_aggregate_fields {
 type sheq_incident_investigation_docs_avg_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate max on columns"
 type sheq_incident_investigation_docs_max_fields {
     id: bigint
     incident_id: bigint
+    quick_incident_id: bigint
+    type: String
 }
 
 "aggregate min on columns"
 type sheq_incident_investigation_docs_min_fields {
     id: bigint
     incident_id: bigint
+    quick_incident_id: bigint
+    type: String
 }
 
 "response of any mutation on the table \"sheq_incident_investigation_docs\""
@@ -51447,42 +51486,49 @@ type sheq_incident_investigation_docs_mutation_response {
 type sheq_incident_investigation_docs_stddev_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate stddev_pop on columns"
 type sheq_incident_investigation_docs_stddev_pop_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate stddev_samp on columns"
 type sheq_incident_investigation_docs_stddev_samp_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate sum on columns"
 type sheq_incident_investigation_docs_sum_fields {
     id: bigint
     incident_id: bigint
+    quick_incident_id: bigint
 }
 
 "aggregate var_pop on columns"
 type sheq_incident_investigation_docs_var_pop_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate var_samp on columns"
 type sheq_incident_investigation_docs_var_samp_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "aggregate variance on columns"
 type sheq_incident_investigation_docs_variance_fields {
     id: Float
     incident_id: Float
+    quick_incident_id: Float
 }
 
 "columns and relationships of \"sheq_incident_investigation_injury_list\""
@@ -52087,6 +52133,45 @@ type sheq_incident_investigation_quick implements Node {
     company: default_companies
     company_id: bigint
     date_reported: date
+    "An array relationship"
+    doc_list(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_docs_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_docs_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_docs_bool_exp
+    ): [sheq_incident_investigation_docs!]!
+    "An aggregate relationship"
+    doc_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_docs_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_docs_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_docs_bool_exp
+    ): sheq_incident_investigation_docs_aggregate!
+    "An array relationship connection"
+    doc_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_docs_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_docs_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_docs_bool_exp
+    ): sheq_incident_investigation_docsConnection!
     "An object relationship"
     driver: hr_employees
     driver_email: bigint
@@ -68372,6 +68457,10 @@ enum default_contractor_questionnaires_ques_select_column {
     "column name"
     answer
     "column name"
+    answer_asset_id
+    "column name"
+    answer_employee_id
+    "column name"
     expiry
     "column name"
     hasExpiry
@@ -68459,6 +68548,10 @@ enum default_contractor_questionnaires_ques_select_column_default_contractor_que
 enum default_contractor_questionnaires_ques_update_column {
     "column name"
     answer
+    "column name"
+    answer_asset_id
+    "column name"
+    answer_employee_id
     "column name"
     expiry
     "column name"
@@ -74467,6 +74560,10 @@ enum sheq_incident_investigation_docs_select_column {
     id
     "column name"
     incident_id
+    "column name"
+    quick_incident_id
+    "column name"
+    type
 }
 
 "update columns of table \"sheq_incident_investigation_docs\""
@@ -74477,6 +74574,10 @@ enum sheq_incident_investigation_docs_update_column {
     id
     "column name"
     incident_id
+    "column name"
+    quick_incident_id
+    "column name"
+    type
 }
 
 "unique or primary key constraints on table \"sheq_incident_investigation_injury_list\""
@@ -85080,6 +85181,8 @@ input default_contractor_questionnaires_ques_arr_rel_insert_input {
 
 "order by avg() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_avg_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85094,6 +85197,10 @@ input default_contractor_questionnaires_ques_bool_exp {
     _not: default_contractor_questionnaires_ques_bool_exp
     _or: [default_contractor_questionnaires_ques_bool_exp!]
     answer: json_comparison_exp
+    answer_asset: assets_bool_exp
+    answer_asset_id: bigint_comparison_exp
+    answer_employee: hr_employees_bool_exp
+    answer_employee_id: bigint_comparison_exp
     expiry: date_comparison_exp
     hasExpiry: Boolean_comparison_exp
     hasResponseAttachment: Boolean_comparison_exp
@@ -85134,6 +85241,8 @@ input default_contractor_questionnaires_ques_bool_exp {
 
 "input type for incrementing numeric columns in table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_inc_input {
+    answer_asset_id: bigint
+    answer_employee_id: bigint
     id: bigint
     link_doc_id: bigint
     maxScore: Int
@@ -85145,6 +85254,10 @@ input default_contractor_questionnaires_ques_inc_input {
 "input type for inserting data into table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_insert_input {
     answer: json
+    answer_asset: assets_obj_rel_insert_input
+    answer_asset_id: bigint
+    answer_employee: hr_employees_obj_rel_insert_input
+    answer_employee_id: bigint
     expiry: date
     hasExpiry: Boolean
     hasResponseAttachment: Boolean
@@ -85179,6 +85292,8 @@ input default_contractor_questionnaires_ques_insert_input {
 
 "order by max() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_max_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     expiry: order_by
     id: order_by
     idx: order_by
@@ -85194,6 +85309,8 @@ input default_contractor_questionnaires_ques_max_order_by {
 
 "order by min() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_min_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     expiry: order_by
     id: order_by
     idx: order_by
@@ -85393,6 +85510,10 @@ input default_contractor_questionnaires_ques_options_variance_order_by {
 "Ordering options when selecting data from \"default_contractor_questionnaires_ques\"."
 input default_contractor_questionnaires_ques_order_by {
     answer: order_by
+    answer_asset: assets_order_by
+    answer_asset_id: order_by
+    answer_employee: hr_employees_order_by
+    answer_employee_id: order_by
     expiry: order_by
     hasExpiry: order_by
     hasResponseAttachment: order_by
@@ -85588,6 +85709,8 @@ input default_contractor_questionnaires_ques_pk_columns_input {
 "input type for updating data in table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_set_input {
     answer: json
+    answer_asset_id: bigint
+    answer_employee_id: bigint
     expiry: date
     hasExpiry: Boolean
     hasResponseAttachment: Boolean
@@ -85613,6 +85736,8 @@ input default_contractor_questionnaires_ques_set_input {
 
 "order by stddev() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_stddev_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85623,6 +85748,8 @@ input default_contractor_questionnaires_ques_stddev_order_by {
 
 "order by stddev_pop() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_stddev_pop_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85633,6 +85760,8 @@ input default_contractor_questionnaires_ques_stddev_pop_order_by {
 
 "order by stddev_samp() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_stddev_samp_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85643,6 +85772,8 @@ input default_contractor_questionnaires_ques_stddev_samp_order_by {
 
 "order by sum() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_sum_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85661,6 +85792,8 @@ input default_contractor_questionnaires_ques_updates {
 
 "order by var_pop() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_var_pop_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85671,6 +85804,8 @@ input default_contractor_questionnaires_ques_var_pop_order_by {
 
 "order by var_samp() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_var_samp_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -85681,6 +85816,8 @@ input default_contractor_questionnaires_ques_var_samp_order_by {
 
 "order by variance() on columns of table \"default_contractor_questionnaires_ques\""
 input default_contractor_questionnaires_ques_variance_order_by {
+    answer_asset_id: order_by
+    answer_employee_id: order_by
     id: order_by
     link_doc_id: order_by
     maxScore: order_by
@@ -107752,8 +107889,11 @@ input sheq_chemical_products_bool_exp {
     firestore_id: String_comparison_exp
     flammability_combustibility_class: String_comparison_exp
     has_hazchem_sheet: Boolean_comparison_exp
+    has_hazchem_sheet_view: Boolean_comparison_exp
     has_risk_assessment: Boolean_comparison_exp
+    has_risk_assessment_view: Boolean_comparison_exp
     has_sds: Boolean_comparison_exp
+    has_sds_view: Boolean_comparison_exp
     hazard_class_list: json_comparison_exp
     hazchem_sheet: sheq_chemical_hazchem_sheets_bool_exp
     hazchem_sheet_date: date_comparison_exp
@@ -108025,8 +108165,11 @@ input sheq_chemical_products_order_by {
     firestore_id: order_by
     flammability_combustibility_class: order_by
     has_hazchem_sheet: order_by
+    has_hazchem_sheet_view: order_by
     has_risk_assessment: order_by
+    has_risk_assessment_view: order_by
     has_sds: order_by
+    has_sds_view: order_by
     hazard_class_list: order_by
     hazchem_sheet: sheq_chemical_hazchem_sheets_order_by
     hazchem_sheet_date: order_by
@@ -110585,6 +110728,7 @@ input sheq_incident_investigation_docs_arr_rel_insert_input {
 input sheq_incident_investigation_docs_avg_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"sheq_incident_investigation_docs\". All fields are combined with a logical 'AND'."
@@ -110596,12 +110740,15 @@ input sheq_incident_investigation_docs_bool_exp {
     id: bigint_comparison_exp
     incident: sheq_incident_investigation_bool_exp
     incident_id: bigint_comparison_exp
+    quick_incident_id: bigint_comparison_exp
+    type: String_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_inc_input {
     id: bigint
     incident_id: bigint
+    quick_incident_id: bigint
 }
 
 "input type for inserting data into table \"sheq_incident_investigation_docs\""
@@ -110610,18 +110757,24 @@ input sheq_incident_investigation_docs_insert_input {
     id: bigint
     incident: sheq_incident_investigation_obj_rel_insert_input
     incident_id: bigint
+    quick_incident_id: bigint
+    type: String
 }
 
 "order by max() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_max_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
+    type: order_by
 }
 
 "order by min() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_min_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
+    type: order_by
 }
 
 "on_conflict condition type for table \"sheq_incident_investigation_docs\""
@@ -110637,6 +110790,8 @@ input sheq_incident_investigation_docs_order_by {
     id: order_by
     incident: sheq_incident_investigation_order_by
     incident_id: order_by
+    quick_incident_id: order_by
+    type: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_docs"
@@ -110649,30 +110804,36 @@ input sheq_incident_investigation_docs_set_input {
     doc: json
     id: bigint
     incident_id: bigint
+    quick_incident_id: bigint
+    type: String
 }
 
 "order by stddev() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_stddev_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_stddev_pop_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_stddev_samp_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "order by sum() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_sum_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 input sheq_incident_investigation_docs_updates {
@@ -110687,18 +110848,21 @@ input sheq_incident_investigation_docs_updates {
 input sheq_incident_investigation_docs_var_pop_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "order by var_samp() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_var_samp_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "order by variance() on columns of table \"sheq_incident_investigation_docs\""
 input sheq_incident_investigation_docs_variance_order_by {
     id: order_by
     incident_id: order_by
+    quick_incident_id: order_by
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation\""
@@ -111498,6 +111662,8 @@ input sheq_incident_investigation_quick_bool_exp {
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     date_reported: date_comparison_exp
+    doc_list: sheq_incident_investigation_docs_bool_exp
+    doc_list_aggregate: sheq_incident_investigation_docs_aggregate_bool_exp
     driver: hr_employees_bool_exp
     driver_email: bigint_comparison_exp
     driver_id: bigint_comparison_exp
@@ -111556,6 +111722,7 @@ input sheq_incident_investigation_quick_insert_input {
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     date_reported: date
+    doc_list: sheq_incident_investigation_docs_arr_rel_insert_input
     driver: hr_employees_obj_rel_insert_input
     driver_email: bigint
     driver_id: bigint
@@ -111663,6 +111830,7 @@ input sheq_incident_investigation_quick_order_by {
     company: default_companies_order_by
     company_id: order_by
     date_reported: order_by
+    doc_list_aggregate: sheq_incident_investigation_docs_aggregate_order_by
     driver: hr_employees_order_by
     driver_email: order_by
     driver_id: order_by

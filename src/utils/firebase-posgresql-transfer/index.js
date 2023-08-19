@@ -52,6 +52,8 @@ import {organograms_transfer} from "./sheq_organograms";
 // import plan_gob from "graphql/data/plan_gob";
 // import plan_mzi from "graphql/data/plan_mzi";
 
+import training_matrix from "graphql/data/training_matrix.js";
+
 (async () => {
     // await client_transfer();
     // await project_transfer();
@@ -123,7 +125,6 @@ import {organograms_transfer} from "./sheq_organograms";
     // await contractors_questionnaires_transfer();
 
     // await organograms_transfer();
-
 })();
 
 //document_categories// skip
