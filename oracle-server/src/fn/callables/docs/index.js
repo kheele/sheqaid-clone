@@ -8,6 +8,7 @@ const {
 	updateDocUpload,
 	removeDoc,
 	viewDoc,
+	wordToPDF,
 } = require('./api.js');
 
 router.post('/create', async (req, res) => {
@@ -37,6 +38,11 @@ router.post('/remove', async (req, res) => {
 
 router.post('/view', async (req, res) => {
 	const data = await viewDoc(req.body);
+	res.json(data);
+});
+
+router.post('/word-to-pdf', async (req, res) => {
+	const data = await wordToPDF(req.body);
 	res.json(data);
 });
 

@@ -4,12 +4,7 @@ const path = require('path');
 const os = require('os');
 const mime = require('mime');
 
-// const mammoth = require("mammoth");
-
-// const optionsPhantomjs = {
-//     "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs"
-// };
-
+const puppeteer = require("puppeteer");
 // const faceapi = require('face-api.js');
 
 // const canvas = require('canvas');
@@ -208,52 +203,30 @@ exports.deleteTmpImage = (uid) => {
 // </editor-fold>
 
 //<editor-fold desc="wordToPDF">
-// global.wordToPDF = async (dataUrl) => {
-//     if (!dataUrl)
-//         throw new Error('No source file supplied.');
-//
-//     const base64 = dataUrl.split(',')[1];
-//     const buffer = Buffer.from(base64, 'base64');//data_url
-//
-//     function docxConverter(buffer, callback) {
-//         const promise = mammoth.convertToHtml({
-//             buffer
-//         }).then(async (result) => {
-//             const html = result.value; // The generated HTML
-//             const messages = result.messages; // Any messages, such as warnings during conversion
-// //            console.log(messages);
-//             try {
-//                 const res = await new Promise((resolve, reject) => {
-//                     pdf.create(html, optionsPhantomjs).toBuffer((err, buffer) => {
-//                         if (err) {
-//                             console.log(err);
-//                             reject(err);
-//                         } else {
-//                             resolve(buffer);
-//                         }
-//                     });
-//                 });
-//                 return callback(null, res);
-//             } catch (err) {
-//                 return callback(err);
-//             }
-//         }).catch(err => {
-//             return callback(err);
-//         });
-//         promise.done();
-//     }
-//
-//     return new Promise((resolve, reject) => {
-//         docxConverter(buffer, (err, buffer) => {
-// //            console.log('wordToPDF result', buffer);
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(`data:application/pdf;base64,${buffer.toString('base64')}`);
-//             }
-//         });
-//     });
-// };
+global.wordToPDF = async (dataUrl) => {
+    console.log('wordToPDF', dataUrl)
+    if (!dataUrl)
+        throw new Error('No source file supplied.');
+
+    // const base64 = dataUrl.split(',')[1];
+    // const buffer = Buffer.from(base64, 'base64');//data_url
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(`<iframe src="${dataUrl}" frameborder="0"></iframe>`);
+
+    const pdfOptions = {
+        path: 'output.pdf',
+        format: 'A4',
+    };
+    await page.pdf(pdfOptions);
+
+    await browser.close();
+
+    const pdfData = fs.readFileSync(pdfOptions.path);
+    const base64Data = pdfData.toString('base64');
+    return `data:application/pdf;base64,${base64Data}`;
+};
 //</editor-fold>
 
 //<editor-fold desc="sendRelay">

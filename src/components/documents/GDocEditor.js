@@ -97,6 +97,7 @@ class GDocEditor extends React.Component {
                 neonBinding.events.emit("default/docs/doc/new", title).then(res => {
                     const {id} = res.data;
                     this.state.doc = state.new_doc_id = id;
+                    console.log('id', id)
                     createSrc();
                     // indexedStorage.orphanedUploadedDocs.createOrUpdate({id});
                 }).catch(err => {
@@ -283,12 +284,12 @@ class GDocEditor extends React.Component {
         const title = item ? item.data.title : state.title;
 //        if(!defaultValue) {
             if(this.state.loadStatus === 'LOADING') {
-                return <div className="results-loading text-center margin-t-50">
+                return <div className="results-loading text-center">
                     <CircularProgress/>
                     <label className="margin-t-20">Loading document viewer...</label>
                 </div>;
             } else if(this.state.loadStatus === 'ERROR') {
-                return <div className="results-loading text-center margin-t-50">
+                return <div className="results-loading text-center">
                     <CircularProgress/>
                     <label className="margin-t-20">{!app.isConnected ? 'No internet connection.' : 'An error occurred.'}<br />Document viewer couldn't be shown.<br /><br />Trying again in 10 seconds</label>
                 </div>;

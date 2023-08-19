@@ -12,11 +12,12 @@
             addAction('doc/update-upload', this.updateDocUpload.bind(this));
             addAction('doc/remove', this.removeDoc.bind(this));
             addAction('doc/view', this.viewDoc.bind(this));
+            addAction('doc/word-to-pdf', this.wordToPDF.bind(this));
         }
 
-        async sendReqImpl(path, ...args) {
+        async sendReqImpl(path, data) {
             return Events.whenLoggedIn(async loggedUser => {
-                const res = await Utils.apiCallable({path: `docs/${path}`, data: args});
+                const res = await Utils.apiCallable({path: `docs/${path}`, data});
                 console.log('sendReqImpl', path, res)
 
                 // evt = evt.replace("doc/", "");
@@ -27,16 +28,16 @@
             });
         }
 
-        async newDoc(evt, ...args) {
-            return this.sendReqImpl('create', ...args);
+        async newDoc(evt, title) {
+            return this.sendReqImpl('create', title);
         }
 
-        async editDoc(evt, ...args) {
-            return this.sendReqImpl('edit', ...args);
+        async editDoc(evt, path) {
+            return this.sendReqImpl('edit', path);
         }
 
-        async editDocTitle(evt, ...args) {
-            return this.sendReqImpl('edit-title', ...args);
+        async editDocTitle(evt, doc, val) {
+            return this.sendReqImpl('edit-title', {doc, val});
         }
 
         async updateDocUpload(evt, docId, filePath, type) {
@@ -45,17 +46,20 @@
                     console.log('updateDocUpload', bucketFile)
                     return 'temp/' + docId + '.' + fileUtils.getExtension(bucketFile.name);
                 });
-                const args = [docId, gcsUri, type];
-                return this.sendReqImpl('update-upload', ...args);
+                return this.sendReqImpl('update-upload', {docId, filePath, type});
             });
         }
 
-        async removeDoc(evt, ...args) {
-            return this.sendReqImpl('remove', ...args);
+        async removeDoc(evt, id) {
+            return this.sendReqImpl('remove', id);
         }
 
-        async viewDoc(evt, ...args) {
-            return this.sendReqImpl('view', ...args);
+        async viewDoc(evt, path) {
+            return this.sendReqImpl('view', path);
+        }
+
+        async wordToPDF(evt, dataUrl) {
+            return this.sendReqImpl('word-to-pdf', dataUrl);
         }
 
     }

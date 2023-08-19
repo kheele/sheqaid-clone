@@ -253,6 +253,7 @@ class Controls extends React.Component {
                 rendered
                 idx={2}
                 title="2. Document"
+                className="min-h-320"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}>
                 <GDocEditor ref="doc" state={this.state} name="doc" onChangeTitle={this.form.onChange}

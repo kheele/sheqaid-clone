@@ -157,8 +157,7 @@ window.electronDialog = {
             } else if (isWord || isExcel) {
                 if (filePath instanceof File) {
                     previewPath = await FileConverters.asDataUrl(filePath);
-                    const wordToPDF = functions.httpsCallable('callables-wordToPDF');
-                    const res = await wordToPDF(previewPath);
+                    const res = await neonBinding.events.emit('default/docs/doc/word-to-pdf', previewPath);
                     if(res && res.data) {
                         const {data: dataUrl} = res;
                         previewPath = dataUriToUrl(dataUrl);

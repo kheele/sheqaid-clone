@@ -5,7 +5,7 @@ exports.createDoc = async (title) => {
 
 	return authorize().then(auth => {
 		const drive = google.drive({auth, version: 'v3'});
-		return DriveUtils.createDoc(drive, title);
+		return DriveUtils.createDoc(drive, title).then(data => data && ({data}));
 	});
 };
 // </editor-fold>
@@ -102,6 +102,16 @@ exports.viewDoc = async (path) => {
 	return authorize().then(auth => {
 		const drive = google.drive({auth, version: 'v3'});
 		return DriveUtils.getDriveFileByPath(drive, path);
+	});
+};
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="wordToPDF">
+exports.wordToPDF = async (dataUrl) => {
+	if (!dataUrl) return;
+
+	return authorize().then(auth => {
+		return wordToPDF(dataUrl).then(data => data && ({data}));
 	});
 };
 // </editor-fold>
