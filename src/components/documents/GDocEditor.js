@@ -93,6 +93,7 @@ class GDocEditor extends React.Component {
             const {title} = state;
             const load = () => {
                 this.state.loadStatus = 'LOADING';
+
                 neonBinding.events.emit("default/docs/doc/new", title).then(res => {
                     const {id} = res.data;
                     this.state.doc = state.new_doc_id = id;

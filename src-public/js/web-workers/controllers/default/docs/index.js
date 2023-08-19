@@ -14,27 +14,29 @@
             addAction('doc/view', this.viewDoc.bind(this));
         }
 
-        async sendReqImpl(evt, ...args) {
+        async sendReqImpl(path, ...args) {
             return Events.whenLoggedIn(async loggedUser => {
-                const execFun = functions.httpsCallable('execFun');
-                evt = evt.replace("doc/", "");
-                const param = {path: evt, data: args};
-                console.log('sendReqImpl', evt, param)
-                const res = await execFun(param);
+                const res = await Utils.apiCallable({path: `docs/${path}`, data: args});
+                console.log('sendReqImpl', path, res)
+
+                // evt = evt.replace("doc/", "");
+                // const param = {path: evt, data: args};
+                // console.log('sendReqImpl', evt, param)
+                // const res = await execFun(param);
                 return res;
             });
         }
 
         async newDoc(evt, ...args) {
-            return this.sendReqImpl(evt, ...args);
+            return this.sendReqImpl('create', ...args);
         }
 
         async editDoc(evt, ...args) {
-            return this.sendReqImpl(evt, ...args);
+            return this.sendReqImpl('edit', ...args);
         }
 
         async editDocTitle(evt, ...args) {
-            return this.sendReqImpl(evt, ...args);
+            return this.sendReqImpl('edit-title', ...args);
         }
 
         async updateDocUpload(evt, docId, filePath, type) {
@@ -44,16 +46,16 @@
                     return 'temp/' + docId + '.' + fileUtils.getExtension(bucketFile.name);
                 });
                 const args = [docId, gcsUri, type];
-                return this.sendReqImpl(evt, ...args);
+                return this.sendReqImpl('update-upload', ...args);
             });
         }
 
         async removeDoc(evt, ...args) {
-            return this.sendReqImpl(evt, ...args);
+            return this.sendReqImpl('remove', ...args);
         }
 
         async viewDoc(evt, ...args) {
-            return this.sendReqImpl(evt, ...args);
+            return this.sendReqImpl('view', ...args);
         }
 
     }
