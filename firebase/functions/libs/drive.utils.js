@@ -196,7 +196,7 @@ class DriveUtils {
     //link to cloud storage
     static async getDriveFileByPath(drive, remoteFilePath) {
         let remoteFileName = getFilename(remoteFilePath);
-        remoteFileName = remoteFileName.replace(".pdf", "").replace(".docx", "").replace(".doc", "");
+        remoteFileName = remoteFileName.replace(".pdf", "").replace(".docx", "").replace(".doc", "").replace(".xls", "").replace(".xlsx", "");
         console.log("getDriveFileByPath 1", remoteFileName);
         return drive.files.list({
             maxResults: 1,

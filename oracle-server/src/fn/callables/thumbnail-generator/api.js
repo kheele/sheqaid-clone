@@ -12,18 +12,9 @@ exports.video = async (data) => {
     const {videoUrl} = data;
 
     return thumbsupply.generateThumbnail(videoUrl).then(thumb => {
-
+        console.log('thumbsupply video, thumb', thumb)
+        return thumb;
     });
-
-    const {filename} = options;
-    //read then file then delete it
-    const base64 = fs.readFileSync(filename, {encoding: 'base64'});
-    const dataUri = `data:${mime.getType(filename)};base64,${base64}`;
-    deleteTmpFile(filename);
-
-    // console.log('filename', filename, `data:${mime.getType(filename)};`)
-
-    return dataUri;
 };
 
 exports.image = async (data) => {

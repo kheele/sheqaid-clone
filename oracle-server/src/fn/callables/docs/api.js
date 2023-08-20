@@ -5,7 +5,7 @@ exports.createDoc = async (title) => {
 
 	return authorize().then(auth => {
 		const drive = google.drive({auth, version: 'v3'});
-		return DriveUtils.createDoc(drive, title).then(data => data && ({data}));
+		return DriveUtils.createDoc(drive, title).then(data => data && ({data}));//fileId
 	});
 };
 // </editor-fold>
@@ -63,7 +63,7 @@ exports.editDocTitle = async (body) => {
 		console.log("Step 1: editDocTitle", fileId, title);
 		const drive = google.drive({auth, version: 'v3'});
 
-		return DriveUtils.updateDocTitle(drive, fileId, title);
+		return DriveUtils.updateDocTitle(drive, fileId, title);//fileId
 	});
 };
 // </editor-fold>
@@ -79,7 +79,7 @@ exports.updateDocUpload = async (body) => {
 	return authorize().then(auth => {
 		console.log("Step 1: updateDocUpload", fileId, gcsUri, type);
 		const drive = google.drive({auth, version: 'v3'});
-		return DriveUtils.updateRemotePathToDrive(drive, fileId, gcsUri, type);
+		return DriveUtils.updateRemotePathToDrive(drive, fileId, gcsUri, type);//fileId
 	});
 };
 // </editor-fold>
@@ -90,7 +90,7 @@ exports.removeDoc = async (id) => {
 
 	return authorize().then(auth => {
 		const drive = google.drive({auth, version: 'v3'});
-		return DriveUtils.removeDoc(drive, id);
+		return DriveUtils.removeDoc(drive, id);//fileId
 	});
 };
 // </editor-fold>
@@ -101,7 +101,7 @@ exports.viewDoc = async (path) => {
 
 	return authorize().then(auth => {
 		const drive = google.drive({auth, version: 'v3'});
-		return DriveUtils.getDriveFileByPath(drive, path);
+		return DriveUtils.getDriveFileByPath(drive, path);//fileId
 	});
 };
 // </editor-fold>

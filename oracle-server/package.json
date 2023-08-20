@@ -7,7 +7,7 @@
     "start": "nodemon -r dotenv/config src/index.js",
     "docker:build": "docker build --no-cache . -t rhespo/sheqaid-server",
     "docker:push": "docker push rhespo/sheqaid-server",
-    "docker:build&push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
+    "docker:build & push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
     "install:mod": "npm i puppeteer@latest --save",
     "install:all": "npm install"
@@ -32,7 +32,9 @@
     "formidable": "^1.2.2",
     "fs-extra": "10.1.0",
     "googleapis": "^67.1.0",
+    "html-pdf": "^2.2.0",
     "js-excel-template": "^3.0.2",
+    "mammoth": "^1.6.0",
     "mime": "^3.0.0",
     "moment": "2.24.0",
     "moment-timezone": "0.5.13",
@@ -41,7 +43,6 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.16",
     "thumbsupply": "^0.4.0",
-    "puppeteer": "^21.1.0",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5"
   },

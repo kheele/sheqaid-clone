@@ -134,7 +134,7 @@ class App extends React.Component {
 
         execWhen(() => document.querySelector('#root-bg')).then(el => {
             const rootBg = $(el);
-            var n = 1;
+            let n = 1;
 
             function change() {
                 rootBg.attr('class', 'sheq_assist_bg' + n);
@@ -152,13 +152,13 @@ class App extends React.Component {
             //check updates
         });
 
-        window.addEventListener('online', this.onConnected)
-        window.addEventListener('offline', this.onConnected)
         this.onConnected();
+        setInterval(this.onConnected, 5000);
 
-//        electronRemote.globalShortcut.register('CommandOrControl+Shift+I', () => {
-//            console.log('Electron loves global shortcuts!')
-//        });
+        if (storage.list.countries.isEmpty()) {
+            storage.load.loadCountries();
+            pluginManager.start();
+        }
 //        (function(w, d, s, u) {
 //		w.RocketChat = function(c) { w.RocketChat._.push(c) }; 
 //                w.RocketChat._ = []; 
@@ -197,13 +197,6 @@ class App extends React.Component {
     onConnected() {
         this._isConnected = navigator.onLine;
         neonBinding.events.emit('connected', navigator.onLine);
-        // if (navigator.onLine) {
-        //     pluginManager.start();
-        // }
-        if (navigator.onLine && storage.list.countries.isEmpty()) {
-            storage.load.loadCountries();
-            pluginManager.start();
-        }
     }
 
     // </editor-fold>
