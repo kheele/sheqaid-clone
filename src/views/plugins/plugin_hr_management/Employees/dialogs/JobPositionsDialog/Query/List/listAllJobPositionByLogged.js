@@ -11,8 +11,6 @@ export default (
 		job_category_id,
 		//
 		site_id, project_id, client_id,
-		//
-		exact_orgs = false,
 	}
 ) => {
 	const {filter} = getVariablesAndQueryConfig({
@@ -20,8 +18,6 @@ export default (
 		job_category_id,
 		//
 		site_id, project_id, client_id,
-		//
-		exact_orgs
 	});
 
 	return GQLClient

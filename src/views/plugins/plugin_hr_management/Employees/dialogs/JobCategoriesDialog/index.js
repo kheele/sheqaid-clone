@@ -80,8 +80,6 @@ class JobCategoriesDialog extends ADialogList {
 			name,
 			//
 			limit,
-			//
-			exact_orgs: false,
 		};
 
 		if (!isNew) {

@@ -17,8 +17,8 @@ import EditDepartmentDialog from "./EditDepartmentDialog";
 import style from "./DepartmentsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
 import byLogged from "./Query/List/listAllDepartmentByLogged";
-import updateJobPosition from "../../../../../../mutations/all/JobPosition/updateJobPosition";
-import updateDepartment from "../../../../../../mutations/all/Department/updateDepartment";
+import updateJobPosition from "mutations/all/JobPosition/updateJobPosition";
+import updateDepartment from "mutations/all/Department/updateDepartment";
 
 @observer
 class DepartmentsDialog extends ADialogList {
@@ -59,8 +59,6 @@ class DepartmentsDialog extends ADialogList {
             name,
             //
             limit,
-            //
-            exact_orgs: false,
         };
 
         if(!isNew) {

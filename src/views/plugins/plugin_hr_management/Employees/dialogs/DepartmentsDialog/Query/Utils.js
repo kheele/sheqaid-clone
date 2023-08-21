@@ -6,11 +6,12 @@ export const getVariablesAndQueryConfig = (
 		//
 		site_id, project_id, client_id,
 		//
-		exact_orgs = false,
+		exact_orgs = true,
+		exact_orgs_company = true,
 	}
 ) => {
 	//<editor-fold desc="variables, filters">
-	let filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
+	let filter = orgsFilter({site_id, project_id, client_id, exact_orgs, exact_orgs_company,});
 
 	if (name) {
 		filter.push(`name: {_ilike: "%${name}%"}`);

@@ -58,9 +58,9 @@ export default async (input: EntityDepartment) => {
     client_id
   } = input;
 
-  // const {company, user} = storage.loggedUser;
-  // input.user_id = user.id;
-  // input.company_id = company.id;
+  const {company, user} = storage.loggedUser;
+  input.user_id = user.id;
+  input.company_id = company.id;
 
   return await createMutationImpl({mutation, input});
 };

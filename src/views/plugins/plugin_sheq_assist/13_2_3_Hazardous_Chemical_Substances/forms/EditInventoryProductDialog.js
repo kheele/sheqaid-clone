@@ -358,18 +358,18 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, has_sds, 'has_sds');
         ShouldUpdate.checkSDS(data, old_data, sds,  'sds');
         ShouldUpdate.checkFile(data, old_data, sds_doc,  'sds_doc');
-        ShouldUpdate.checkDate_deprecated(data, old_data, sds_date,  'sds_date');
+        ShouldUpdate.checkDate(data, old_data, sds_date,  'sds_date');
         
         //9
         ShouldUpdate.check(data, old_data, has_hazchem_sheet, 'has_hazchem_sheet');
         ShouldUpdate.checkHazchemSheet(data, old_data, hazchem_sheet,  'hazchem_sheet');
         ShouldUpdate.checkFile(data, old_data, hazchem_sheet_doc,  'hazchem_sheet_doc');
-        ShouldUpdate.checkDate_deprecated(data, old_data, hazchem_sheet_date,  'hazchem_sheet_date');
+        ShouldUpdate.checkDate(data, old_data, hazchem_sheet_date,  'hazchem_sheet_date');
         
         //10
         ShouldUpdate.check(data, old_data, has_risk_assessment, 'has_risk_assessment');
         ShouldUpdate.checkFile(data, old_data, risk_assessment_doc,  'risk_assessment_doc');
-        ShouldUpdate.checkDate_deprecated(data, old_data, risk_assessment_date,  'risk_assessment_date');
+        ShouldUpdate.checkDate(data, old_data, risk_assessment_date,  'risk_assessment_date');
         
         //11
         ShouldUpdate.checkPPEList(data, old_data, ppe_list, 'ppe_list');

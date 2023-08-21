@@ -129,6 +129,8 @@ class ATableSavable extends React.Component {
                     } else {
                         list.push(this.form);
                     }
+
+                    onClickComplete && onClickComplete(e, {props: {item: this.form, action, idx}});
                 } else {
                     const item = list[idx];
                     extendObservable(item, this.form);
@@ -138,9 +140,9 @@ class ATableSavable extends React.Component {
                     
                     list.removeAt(idx);
                     list.insertAt(idx, item);
+
+                    onClickComplete && onClickComplete(e, {props: {item, action, idx}});
                 }
-                
-                onClickComplete && onClickComplete(e, el);
                 
                 elems.forEach(node => {
                     node.reset && node.reset();
@@ -176,9 +178,8 @@ class ATableSavable extends React.Component {
             });
             return;
         }else if (action === "delete") {
+            onClickComplete && onClickComplete(e, {props: {item: list[idx], action, idx}});
             list.removeAt(idx);
-                
-            onClickComplete && onClickComplete(e, el);
         }
 
         onChange && onChange(toJS(this.list), name, this);

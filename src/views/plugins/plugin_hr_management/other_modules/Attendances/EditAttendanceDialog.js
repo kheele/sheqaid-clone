@@ -231,7 +231,7 @@ class Controls extends React.Component {
             }
         }
         
-        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+        ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, day, 'day');
         
         ShouldUpdate.checkSignature(data, old_data, supervisor_signature, 'supervisor_signature');

@@ -326,7 +326,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, empirical_formula, 'empirical_formula');
         ShouldUpdate.check(data, old_data, un_num, 'un_num');
         ShouldUpdate.check(data, old_data, category, 'category');//other added
-        ShouldUpdate.checkDate_deprecated(data, old_data, date_identified, 'date_identified');//other added
+        ShouldUpdate.checkDate(data, old_data, date_identified, 'date_identified');//other added
         ShouldUpdate.check(data, old_data, application_or_use, 'application_or_use');
         // ShouldUpdate.check(data, old_data, supplier_list, 'supplier_list');
         ShouldUpdate.checkListToJS(data, old_data, emergency_phone_nums, 'emergency_phone_nums');

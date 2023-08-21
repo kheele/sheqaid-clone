@@ -77,9 +77,9 @@ class Controls extends React.Component {
         
         const data = {};
         
-        ShouldUpdate.checkEmployee_deprecated(data, old_data, employee, 'employee');
-        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
-        ShouldUpdate.checkDate_deprecated(data, old_data, expiry_date, 'expiry_date');
+        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
+        ShouldUpdate.checkDate(data, old_data, date, 'date');
+        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, notes, 'notes');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 

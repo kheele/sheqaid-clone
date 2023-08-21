@@ -109,7 +109,7 @@ class Controls extends React.Component {
         ShouldUpdate.checkSite(data, old_data, site);
         
         ShouldUpdate.check(data, old_data, activity, 'activity');
-        ShouldUpdate.checkDate_deprecated(data, old_data, expiry_date, 'expiry_date');
+        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, risk_tolerance, 'risk_tolerance');
         
         if(list) {

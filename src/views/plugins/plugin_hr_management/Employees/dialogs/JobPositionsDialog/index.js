@@ -19,7 +19,7 @@ import EditJobPositionDialog from "./EditJobPositionDialog";
 import style from "./JobPositionsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
 import byLogged from "./Query/List/listAllJobPositionByLogged";
-import updateJobPosition from "../../../../../../mutations/all/JobPosition/updateJobPosition";
+import updateJobPosition from "mutations/all/JobPosition/updateJobPosition";
 
 // </editor-fold>
 
@@ -81,8 +81,6 @@ class JobPositionsDialog extends ADialogList {
 			job_category_id,
 			//
 			limit,
-			//
-			exact_orgs: false,
 		};
 
 		if (!isNew) {

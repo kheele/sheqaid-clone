@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {ShouldUpdate} from 'utils/Utils';
+import {Dates, ShouldUpdate} from 'utils/Utils';
 
 import {
 	AddFilesGridViewInput,
@@ -33,6 +33,9 @@ import {
 import updateAsset from "mutations/all/Asset/updateAsset";
 import findByIdAsset from "mutations/all/Asset/findByIdAsset";
 import InspectionTabs from "./InspectionTabs";
+import upsertAssetDetails from "mutations/all/Asset/upsertAssetDetails";
+import upsertAssetPurchaseInfo from "../../../../../../mutations/all/Asset/upsertAssetPurchaseInfo";
+import upsertAssetDepreciation from "../../../../../../mutations/all/Asset/upsertAssetDepreciation";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -85,7 +88,7 @@ class Controls extends AControls {
 					calibration_record_list,
 				}
 			},
-			refs: {optionalInfoTab, documentsTab, dependantsAndNextOfKinTab, specificComplianceRequirementsTab}
+			refs: {}
 		} = this;
 
 		const onSubmit = (data, onSaved) => {
@@ -110,7 +113,80 @@ class Controls extends AControls {
 			});
 		};
 
+		const onSubmitAssetDetails = (data, asset_detail) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			btn.text("Saving...").disabled();
+			progressDialog.open();
+			upsertAssetDetails({
+				id: asset_detail && asset_detail.id,
+				...data,
+			}).then(res => {
+				console.log("res", res)
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+
+		const onSubmitAssetPurchaseInfo = (data, purchase_info) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			btn.text("Saving...").disabled();
+			progressDialog.open();
+			upsertAssetPurchaseInfo({
+				id: purchase_info && purchase_info.id,
+				...data,
+			}).then(res => {
+				console.log("res", res)
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+
+		const onSubmitAssetDepreciation = (data, depreciation) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			btn.text("Saving...").disabled();
+			progressDialog.open();
+			upsertAssetDepreciation({
+				id: depreciation && depreciation.id,
+				...data,
+			}).then(res => {
+				console.log("res", res)
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+
 		const {idx} = btn.props;
+		//test
 		if (idx === 0) {
 			const {isConsultant} = storage.is;
 			if (isConsultant && !form.isValid('client')) {
@@ -131,6 +207,7 @@ class Controls extends AControls {
 			return;
 		}
 
+		//test
 		if (idx === 1) {
 			if (!form.isValid('name')) {
 				infoDialog.open('Asset Name is required');
@@ -175,10 +252,11 @@ class Controls extends AControls {
 			ShouldUpdate.check(data, asset_detail, qr_code, 'qr_code');
 			ShouldUpdate.check(data, asset_detail, notes, 'notes');
 
-			onSubmit(data);
+			onSubmitAssetDetails(data, asset_detail);
 			return;
 		}
 
+		//test
 		if (idx === 2) {
 			const {
 				//2
@@ -187,10 +265,11 @@ class Controls extends AControls {
 			const data = {};
 			ShouldUpdate.checkFileList(data, old_data, photo_list, 'photo_list');
 
-			// onSubmit(data);
+			onSubmit(data);
 			return;
 		}
 
+		//test
 		if (idx === 3) {
 			const {
 				//3
@@ -205,6 +284,7 @@ class Controls extends AControls {
 			return;
 		}
 
+		//test
 		if (idx === 4) {
 			const {
 				//4
@@ -219,6 +299,7 @@ class Controls extends AControls {
 			return;
 		}
 
+		//test
 		if (idx === 5) {
 			const {
 				//5
@@ -239,10 +320,11 @@ class Controls extends AControls {
 			ShouldUpdate.check(data, purchase_info, reference_num, 'reference_num');
 			ShouldUpdate.checkFile(data, purchase_info, warranty_certificate, 'warranty_certificate');
 
-			onSubmit(data);
+			onSubmitAssetPurchaseInfo(data, purchase_info);
 			return;
 		}
 
+		//test
 		if (idx === 6) {
 			const {
 				//6
@@ -263,46 +345,48 @@ class Controls extends AControls {
 			ShouldUpdate.check(data, depreciation, depreciation_factor, 'depreciation_factor');
 			ShouldUpdate.check(data, depreciation, partial_year_depreciation, 'partial_year_depreciation');
 
-			onSubmit(data);
+			onSubmitAssetDepreciation(data, depreciation);
 			return;
 		}
 
+		//todo: impl
 		if (idx === 7) {
 			const {
 				//7
 				monitoring_plan_working_distance_or_time_list,
 				monitoring_plan_fuel_usage_list,
 			} = form.data;
-			//
-			// // monitoring_plan_list,
-			//
-			// const data = {};
-			// let _monitoring_plan_working_distance_or_time_list;
-			// if (monitoring_plan_working_distance_or_time_list) {
-			// 	_monitoring_plan_working_distance_or_time_list = monitoring_plan_working_distance_or_time_list.map(v => {
-			// 		const {working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = v;
-			// 		if (date && isDate(date)) {
-			// 			v.date = date.getTime();
-			// 		}
-			// 		return v;
-			// 	});
-			// }
-			// let _monitoring_plan_fuel_usage_list;
-			// if (monitoring_plan_fuel_usage_list) {
-			// 	_monitoring_plan_fuel_usage_list = monitoring_plan_fuel_usage_list.map(v => {
-			// 		const {refilled_fuel, current_hrs_or_km, working_hrs_or_km, date} = v;
-			// 		if (date && isDate(date)) {
-			// 			v.date = date.getTime();
-			// 		}
-			// 		return v;
-			// 	});
-			// }
+
+			//monitoring_plan_list = [{fuel_usage_list = [], working_distance_or_time_list = [],}]
+
+			const data = {};
+			let _monitoring_plan_working_distance_or_time_list;
+			if (monitoring_plan_working_distance_or_time_list) {
+				_monitoring_plan_working_distance_or_time_list = monitoring_plan_working_distance_or_time_list.map(v => {
+					const {working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = v;
+					if (date && isDate(date)) {
+						v.date = Dates.formatDateSQL(date);
+					}
+					return v;
+				});
+			}
+			let _monitoring_plan_fuel_usage_list;
+			if (monitoring_plan_fuel_usage_list) {
+				_monitoring_plan_fuel_usage_list = monitoring_plan_fuel_usage_list.map(v => {
+					const {refilled_fuel, current_hrs_or_km, working_hrs_or_km, date} = v;
+					if (date && isDate(date)) {
+						v.date = Dates.formatDateSQL(date);
+					}
+					return v;
+				});
+			}
 			// ShouldUpdate.checkListToJS(data, old_data, _monitoring_plan_working_distance_or_time_list, 'monitoring_plan_working_distance_or_time_list');
 			// ShouldUpdate.checkListToJS(data, old_data, _monitoring_plan_fuel_usage_list, 'monitoring_plan_fuel_usage_list');
 			// onSubmit(data);
 			return;
 		}
 
+		//todo: impl
 		if (idx === 8) {
 			const {
 				//8
@@ -310,19 +394,20 @@ class Controls extends AControls {
 				next_service_hrs_or_km,
 			} = form.data;
 			//
-			// 	// maintenance_plan_list,
-			//
-			// const data = {};
-			// let _maintenance_plan_list;
-			// if (maintenance_plan_list) {
-			// 	_maintenance_plan_list = maintenance_plan_list.map(v => {
-			// 		const {service_hrs_or_km, reason_for_service, service_date} = v;
-			// 		if (service_date && isDate(service_date)) {
-			// 			v.service_date = service_date.getTime();
-			// 		}
-			// 		return v;
-			// 	});
-			// }
+
+			//maintenance_plan_list = [{next_service_hrs_or_km, plan_list = [],}]
+
+			const data = {};
+			let _maintenance_plan_list;
+			if (maintenance_plan_list) {
+				_maintenance_plan_list = maintenance_plan_list.map(v => {
+					const {service_hrs_or_km, reason_for_service, service_date} = v;
+					if (service_date && isDate(service_date)) {
+						v.service_date = Dates.formatDateSQL(service_date);
+					}
+					return v;
+				});
+			}
 			// if (_maintenance_plan_list || next_service_hrs_or_km) {
 			// 	const new_maintenance_plan = {};
 			// 	ShouldUpdate.checkListToJS(new_maintenance_plan, old_data.maintenance_plan, _maintenance_plan_list, 'list');
@@ -336,6 +421,7 @@ class Controls extends AControls {
 			return;
 		}
 
+		//todo: impl
 		if (idx === 9) {
 			const {
 				//9
@@ -344,45 +430,35 @@ class Controls extends AControls {
 				next_calibration_interval
 			} = form.data;
 
-			//9 done
-			// const {
-			// 	// id,
-			// 	next_calibration_interval,
-			// 	next_calibration_date,
-			// 	calibration_list = [],
-			// } = (calibration_record_list || []).getLastElement() || {};
+			//calibration_record_list = [{next_calibration_interval, next_calibration_date, calibration_list = [],}]
 
-			//
-			// 	// calibration_record_list{calibration_list, next_calibration_interval, next_calibration_date}
-			//
-			// const data = {};
-			// let _calibration_record_list;
-			// if (calibration_record_list) {
-			// 	_calibration_record_list = calibration_record_list.map(v => {
-			// 		const {reference_standard, certificate_num, calibrating_company, calibration_date} = v;
-			// 		if (calibration_date && isDate(calibration_date)) {
-			// 			v.calibration_date = calibration_date.getTime();
-			// 		}
-			// 		return v;
-			// 	});
-			// }
-			// if (_calibration_record_list || next_calibration_date || next_calibration_interval) {
-			// 	const new_calibration_record = {};
-			// 	ShouldUpdate.checkListToJS(new_calibration_record, old_data.calibration_record, _calibration_record_list, 'list');
-			// 	ShouldUpdate.checkDate_deprecated(new_calibration_record, old_data.calibration_record, next_calibration_date, 'next_calibration_date');
-			// 	ShouldUpdate.check(new_calibration_record, old_data.calibration_record, next_calibration_interval, 'next_calibration_interval');
-			// 	if (!Object.keys(new_calibration_record).isEmpty()) {
-			// 		data.calibration_record = new_calibration_record;
-			// 	}
-			// }
-			//
+			const data = {};
+			let _calibration_record_list;
+			if (calibration_record_list) {
+				_calibration_record_list = calibration_record_list.map(v => {
+					const {reference_standard, certificate_num, calibrating_company, calibration_date} = v;
+					if (calibration_date && isDate(calibration_date)) {
+						v.calibration_date = Dates.formatDateSQL(calibration_date);
+					}
+					return v;
+				});
+			}
+			if (_calibration_record_list || next_calibration_date || next_calibration_interval) {
+				const new_calibration_record = {};
+				ShouldUpdate.checkListToJS(new_calibration_record, old_data.calibration_record, _calibration_record_list, 'list');
+				ShouldUpdate.checkDate(new_calibration_record, old_data.calibration_record, next_calibration_date, 'next_calibration_date');
+				ShouldUpdate.check(new_calibration_record, old_data.calibration_record, next_calibration_interval, 'next_calibration_interval');
+				if (!Object.keys(new_calibration_record).isEmpty()) {
+					data.calibration_record = new_calibration_record;
+				}
+			}
+
 			// onSubmit(data);
 			return;
 		}
 
 		return true;
 	}
-
 	//</editor-fold>
 
 	get item() {

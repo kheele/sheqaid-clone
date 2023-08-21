@@ -72,15 +72,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "create", data).then(res => {
-        //     console.log("res", res)
-        //     onSaved && onSaved(res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
 
     render() {

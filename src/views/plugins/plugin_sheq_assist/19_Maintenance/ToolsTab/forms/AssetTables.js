@@ -49,6 +49,17 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 		list.insertAt(list.length - 1, form);
 	}
 
+	onClickComplete(e, el) {
+		let {action, idx, item} = el.props;
+		if (action === "save") {
+
+		} else if (action === "saveEdit") {
+
+		} else if (action === "delete") {
+
+		}
+	}
+
 	onPostChange(val, name, el) {
 		if (name === 'working_hrs_or_km_opening' || name === 'working_hrs_or_km_closing') {
 			execWhen(() => this.ctrl_refs.working_hrs_or_km && this.ctrl_refs.working_hrs_or_km_opening && this.ctrl_refs.working_hrs_or_km_closing).then(() => {
@@ -77,7 +88,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			const {working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = item;
+			const {id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = item;
 			const unit = unitsShort[this.selfState.units] || 'h/km';
 			return <TRow key={"item-" + n} className="tr-readonly w-full">
 				<div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
@@ -141,8 +152,8 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 					                defaultValue={new Date()} required className="form-control margin-r-10"
 					                onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-50 padding-l-0">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40" onClick={onClick}>
+				<div className="td flex-center">
+					<Button idx={n} action="save" className="btn btn-primary hor-center w-60" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -199,6 +210,17 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 
 	insertAt(list, form) {
 		list.insertAt(list.length - 1, form);
+	}
+
+	onClickComplete(e, el) {
+		let {action, idx, item} = el.props;
+		if (action === "save") {
+
+		} else if (action === "saveEdit") {
+
+		} else if (action === "delete") {
+
+		}
 	}
 
 	onPostChange(val, name, el) {
@@ -264,7 +286,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 		const {newCurrVal} = this;
 
 		if (item) {
-			const {refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost} = item;
+			const {id, refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost} = item;
 			return <TRow key={"item-" + n} className="tr-readonly w-full">
 				<div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
 				<div className="td">{refilled_fuel}l</div>
@@ -326,8 +348,8 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 					<ClearableInput ref={this.onSetRef} name="cost" type="number" placeholder="Cost"
 					                required className="form-control" onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-50 padding-l-0">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40" onClick={onClick}>
+				<div className="td flex-center">
+					<Button idx={n} action="save" className="btn btn-primary hor-center w-60" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -400,6 +422,17 @@ class NewMaintenancePlanTable extends ATableSavable {
 		list.insertAt(list.length - 1, form);
 	}
 
+	onClickComplete(e, el) {
+		let {action, idx, item} = el.props;
+		if (action === "save") {
+
+		} else if (action === "saveEdit") {
+
+		} else if (action === "delete") {
+
+		}
+	}
+
 	setUnits(units) {
 		this.selfState.units = units;
 		const list = this.state.list.slice();
@@ -426,7 +459,7 @@ class NewMaintenancePlanTable extends ATableSavable {
 		const {readonly, asset} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			const {reason_for_service, service, service_hrs_or_km, service_date, parts_used, cost_and_receipt} = item;
+			const {id, reason_for_service, service, service_hrs_or_km, service_date, parts_used, cost_and_receipt} = item;
 			return <TRow key={"item-" + n} className="min-h-60 tr-readonly w-full">
 				<div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
 				<div className="td">{reason_for_service}</div>
@@ -514,8 +547,8 @@ class NewMaintenancePlanTable extends ATableSavable {
 				{/*    <ClearableInput ref={this.onSetRef} name="cost" type="number" placeholder="Cost"*/}
 				{/*                    required className="form-control" onChange={this.onChange}/>*/}
 				{/*</div>*/}
-				<div className="td fixed-flex min-w-50 padding-l-0">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40" onClick={onClick}>
+				<div className="td flex-center">
+					<Button idx={n} action="save" className="btn btn-primary hor-center w-60" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -575,15 +608,26 @@ class NewCalibrationRecordTable extends ATableSavable {
 		this.insertAt = this.insertAt.bind(this);
 	}
 
-	insertAt(list, form) {
+	insertAt(list, form, idx) {
 		list.insertAt(list.length - 1, form);
+	}
+
+	onClickComplete(e, el) {
+		let {action, idx, item} = el.props;
+		if (action === "save") {
+
+		} else if (action === "saveEdit") {
+
+		} else if (action === "delete") {
+
+		}
 	}
 
 	renderItem(n, onClick) {
 		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			const {calibrating_company, reference_standard, certificate_num, calibration_date} = item;
+			const {id, calibrating_company, reference_standard, certificate_num, calibration_date} = item;
 			return <TRow key={"item-" + n} className="tr-readonly w-full">
 				<div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
 				<div className="td">{calibrating_company}</div>
@@ -599,25 +643,19 @@ class NewCalibrationRecordTable extends ATableSavable {
 			</TRow>;
 		} else {
 			// alert(this.list.length)
-			return <TRow key="item-new" className="w-full padding-t-10 padding-b-10">
-				<div className="td">
-					<ClearableInput ref={this.onSetRef} name="calibrating_company" type="text" placeholder="Type"
-					                required className="form-control margin-r-10" onChange={this.onChange}/>
-				</div>
-				<div className="td fixed-flex min-w-160">
-					<ClearableInput ref={this.onSetRef} name="reference_standard" type="text" placeholder="Type"
-					                className="form-control margin-r-10" onChange={this.onChange}/>
-				</div>
-				<div className="td fixed-flex min-w-160">
-					<ClearableInput ref={this.onSetRef} name="certificate_num" type="text" placeholder="Type"
-					                className="form-control margin-r-10" onChange={this.onChange}/>
-				</div>
-				<div className="td fixed-flex min-w-175">
-					<ClearableInput ref={this.onSetRef} name="calibration_date" type="date" placeholder="dd/mm/yyyy"
+			return <TRow key="item-new" className="w-full padding-t-10 padding-b-10 grid-1 grid-gap-10">
+				<div className="td grid-2 grid-gap-10">
+					<ClearableInput ref={this.onSetRef} name="calibrating_company" type="text" placeholder="Calibrating Company"
+					                required className="form-control" onChange={this.onChange}/>
+					<ClearableInput ref={this.onSetRef} name="reference_standard" type="text" placeholder="Reference Standard"
+					                className="form-control" onChange={this.onChange}/>
+					<ClearableInput ref={this.onSetRef} name="certificate_num" type="text" placeholder="Certificate No."
+					                className="form-control" onChange={this.onChange}/>
+					<ClearableInput ref={this.onSetRef} name="calibration_date" type="date" placeholder="Calibration Date"
 					                required className="form-control" onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-50 padding-l-0">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40" onClick={onClick}>
+				<div className="td flex-center">
+					<Button idx={n} action="save" className="btn btn-primary hor-center w-60" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>

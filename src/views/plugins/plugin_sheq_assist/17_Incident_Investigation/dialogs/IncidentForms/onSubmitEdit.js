@@ -224,8 +224,8 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //sec7_data
     if (person_reported_to || date_reported || time_reported || time_shift) {
         const new_sec7_data = {};
-        ShouldUpdate.checkEmployee_deprecated(new_sec7_data, old_data.sec7_data, person_reported_to, 'person_reported_to');
-        ShouldUpdate.checkDate_deprecated(new_sec7_data, old_data.sec7_data, date_reported, 'date_reported');
+        ShouldUpdate.checkEmployee(new_sec7_data, old_data.sec7_data, person_reported_to, 'person_reported_to');
+        ShouldUpdate.checkDate(new_sec7_data, old_data.sec7_data, date_reported, 'date_reported');
         ShouldUpdate.check(new_sec7_data, old_data.sec7_data, time_reported, 'time_reported');
         ShouldUpdate.check(new_sec7_data, old_data.sec7_data, time_shift, 'time_shift');
         if (!Object.keys(new_sec7_data).isEmpty()) {
@@ -244,7 +244,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //sec9_data
     if (incident_date || incident_time || location || exact_location) {
         const new_sec9_data = {};
-        ShouldUpdate.checkDate_deprecated(new_sec9_data, old_data.sec9_data, incident_date, 'incident_date');
+        ShouldUpdate.checkDate(new_sec9_data, old_data.sec9_data, incident_date, 'incident_date');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, incident_time, 'incident_time');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, location, 'location');
         ShouldUpdate.check(new_sec9_data, old_data.sec9_data, exact_location, 'exact_location');
@@ -268,8 +268,8 @@ export default function onSubmitEdit(e, btn, onSaved) {
         const bodily_injury_location_list_mapped = bodily_injury_location_list && bodily_injury_location_list.map(v => isString(v) ? v : v.value);
         const injury_mechanism_list_mapped = injury_mechanism_list && injury_mechanism_list.map(v => isString(v) ? v : v.value);
 
-        ShouldUpdate.checkEmployee_deprecated(new_sec11_data, old_data.sec11_data, person_injured, 'person_injured');
-        ShouldUpdate.checkDate_deprecated(new_sec11_data, old_data.sec11_data, injured_person_dob, 'injured_person_dob');
+        ShouldUpdate.checkEmployee(new_sec11_data, old_data.sec11_data, person_injured, 'person_injured');
+        ShouldUpdate.checkDate(new_sec11_data, old_data.sec11_data, injured_person_dob, 'injured_person_dob');
         ShouldUpdate.check(new_sec11_data, old_data.sec11_data, injured_person_gender, 'injured_person_gender');
         ShouldUpdate.checkListToJS(new_sec11_data, old_data.sec11_data, nature_of_injury_list_mapped, 'nature_of_injury_list');
         ShouldUpdate.checkListToJS(new_sec11_data, old_data.sec11_data, bodily_injury_location_list_mapped, 'bodily_injury_location_list');
@@ -309,14 +309,14 @@ export default function onSubmitEdit(e, btn, onSaved) {
         const new_sec13_data = {};
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, is_vehicle_incident, 'is_vehicle_incident');
 
-        ShouldUpdate.checkEmployee_deprecated(new_sec13_data, old_data.sec11_data, driver, 'driver');
-        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec11_data, driver_dob, 'driver_dob');
+        ShouldUpdate.checkEmployee(new_sec13_data, old_data.sec11_data, driver, 'driver');
+        ShouldUpdate.checkDate(new_sec13_data, old_data.sec11_data, driver_dob, 'driver_dob');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, driver_gender, 'driver_gender');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, address, 'address');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, email, 'email');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, phone, 'phone');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, licence_num, 'licence_num');
-        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec13_data, licence_expiry, 'licence_expiry');
+        ShouldUpdate.checkDate(new_sec13_data, old_data.sec13_data, licence_expiry, 'licence_expiry');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, licence_years, 'licence_years');
 
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, vehicle_make, 'vehicle_make');
@@ -351,7 +351,7 @@ export default function onSubmitEdit(e, btn, onSaved) {
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_issued_to_name, 'addressee_issued_to_name');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_name_or_entity, 'addressee_name_or_entity');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, addressee_amount, 'addressee_amount');
-        ShouldUpdate.checkDate_deprecated(new_sec13_data, old_data.sec13_data, addressee_due_date, 'addressee_due_date');
+        ShouldUpdate.checkDate(new_sec13_data, old_data.sec13_data, addressee_due_date, 'addressee_due_date');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, did_police_attend_scene, 'did_police_attend_scene');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, ref_or_report_num, 'ref_or_report_num');
         ShouldUpdate.check(new_sec13_data, old_data.sec13_data, officer_name, 'officer_name');

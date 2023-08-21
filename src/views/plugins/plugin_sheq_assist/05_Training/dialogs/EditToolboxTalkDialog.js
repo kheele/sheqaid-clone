@@ -202,7 +202,7 @@ class Controls extends React.Component {
         ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course');
         ShouldUpdate.check(data, old_data, training_frequency, 'training_frequency');
         ShouldUpdate.check(data, old_data, subject_category, 'subject_category');
-        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+        ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.check(data, old_data, time_from, 'time_from');
         ShouldUpdate.check(data, old_data, time_to, 'time_to');
 

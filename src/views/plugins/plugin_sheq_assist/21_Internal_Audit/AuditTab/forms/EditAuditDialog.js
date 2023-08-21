@@ -125,7 +125,7 @@ class Controls extends React.Component {
 
 		ShouldUpdate.checkClient(data, old_data, client, 'client');
 		ShouldUpdate.check(data, old_data, scope, 'scope');
-		ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+		ShouldUpdate.checkDate(data, old_data, date, 'date');
 		ShouldUpdate.check(data, old_data, type, 'type');
 
 		if (representative_list) {

@@ -80,7 +80,7 @@ class Controls extends React.Component {
         ShouldUpdate.checkSite(data, old_data, site);
 
         ShouldUpdate.check(data, old_data, course_or_module, 'course_or_module');
-        ShouldUpdate.checkDate_deprecated(data, old_data, date, 'date');
+        ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.checkEmployeeList_deprecated(data, old_data, employee_list, 'employee_list');
         
         console.log(data)
