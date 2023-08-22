@@ -86,7 +86,9 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetMonitoringPlanWorkingHrsOrKmListItem(item).then(savedItem => {
+				upsertAssetMonitoringPlanWorkingHrsOrKmListItem({
+					id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date,
+				}).then(savedItem => {
 					if (!savedItem) {
 						if (id) {
 							infoDialog.open("Sorry! Record couldn't be updated.");
@@ -595,7 +597,7 @@ class NewMaintenancePlanTable extends ATableSavable {
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetMaintenancePlanListItem(item).then(savedItem => {
+				upsertAssetMaintenancePlanListItem({item}).then(savedItem => {
 					if (!savedItem) {
 						if (id) {
 							infoDialog.open("Sorry! Record couldn't be updated.");

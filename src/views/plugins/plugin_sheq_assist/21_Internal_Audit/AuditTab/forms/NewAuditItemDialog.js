@@ -119,10 +119,10 @@ class Controls extends React.Component {
 			infoDialog.open('Element / Heading is required');
 			return;
 		}
-		if (!form.isValid('sub_element')) {
-			infoDialog.open('Sub-Element / Sub-Heading is required');
-			return;
-		}
+		// if (!form.isValid('sub_element')) {
+		// 	infoDialog.open('Sub-Element / Sub-Heading is required');
+		// 	return;
+		// }
 		// if (!form.isValid('audit_summary')) {
 		// 	infoDialog.open('Audit Summary is required');
 		// 	return;
