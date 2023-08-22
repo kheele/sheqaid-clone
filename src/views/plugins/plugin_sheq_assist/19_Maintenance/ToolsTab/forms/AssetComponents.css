@@ -3,10 +3,6 @@
     margin: 0;
     border-radius: 20px 0 0 20px;
 }
-.NewMaintenancePlanTable .td-number > .clearable-field-control > .MuiTextField-root,
-.NewMonitoringPlanTable .td-number > .clearable-field-control > .MuiTextField-root {
-    top: 0;
-}
 .NewMaintenancePlanTable .clearable-field-control.next_service_hrs_or_km input {
     text-align: center;
 }

@@ -97,16 +97,16 @@ class Controls extends React.Component {
 				infoDialog.open('Audit Findings is required');
 				return;
 			}
-			if (!form.isValid('audit_summary')) {
-				infoDialog.open('Audit Summary is required');
-				return;
-			}
+			// if (!form.isValid('audit_summary')) {
+			// 	infoDialog.open('Audit Summary is required');
+			// 	return;
+			// }
 		}
 		if (idx === 3) {
-			if (!form.isValid('achieved_score')) {
-				infoDialog.open('Achieved Score is required');
-				return;
-			}
+			// if (!form.isValid('achieved_score')) {
+			// 	infoDialog.open('Achieved Score is required');
+			// 	return;
+			// }
 		}
 
 		return true;
@@ -123,14 +123,14 @@ class Controls extends React.Component {
 			infoDialog.open('Sub-Element / Sub-Heading is required');
 			return;
 		}
-		if (!form.isValid('audit_summary')) {
-			infoDialog.open('Audit Summary is required');
-			return;
-		}
-		if (!form.isValid('achieved_score')) {
-			infoDialog.open('Achieved Score is required');
-			return;
-		}
+		// if (!form.isValid('audit_summary')) {
+		// 	infoDialog.open('Audit Summary is required');
+		// 	return;
+		// }
+		// if (!form.isValid('achieved_score')) {
+		// 	infoDialog.open('Achieved Score is required');
+		// 	return;
+		// }
 
 		const {
 			element, sub_element,
@@ -229,7 +229,7 @@ class Controls extends React.Component {
 				onFormBack={onFormBack}
 			>
 				<ClearableInput ref="possible_score" name="possible_score" type="number" placeholder="Possible Score"
-				                defaultValue={5} isEditable={false} className="col-lg-6 margin-b-10 form-control"
+				                defaultValue={5} className="col-lg-6 margin-b-10 form-control"
 				                onChange={this.form.onChange}/>
 				<ClearableInput ref="achieved_score" name="achieved_score" type="number" placeholder="Achieved Score" min='0'
 				                max={5} defaultValue={item && item.achieved_score} required

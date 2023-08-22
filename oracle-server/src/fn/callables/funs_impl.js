@@ -6,6 +6,11 @@ const mime = require('mime');
 
 const mammoth = require("mammoth");
 const pdf = require('html-pdf');
+const phantomjs = require('phantomjs-prebuilt');
+
+const optionsPhantomjs = {
+    "phantomPath": phantomjs.path,//"./node_modules/phantomjs/bin/phantomjs",
+};
 
 // const faceapi = require('face-api.js');
 

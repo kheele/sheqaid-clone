@@ -36,6 +36,13 @@ import InspectionTabs from "./InspectionTabs";
 import upsertAssetDetails from "mutations/all/Asset/upsertAssetDetails";
 import upsertAssetPurchaseInfo from "../../../../../../mutations/all/Asset/upsertAssetPurchaseInfo";
 import upsertAssetDepreciation from "../../../../../../mutations/all/Asset/upsertAssetDepreciation";
+import insertAssetCalibrationRecordListItem
+	from "../../../../../../mutations/all/Asset/insertAssetCalibrationRecordListItem";
+import upsertAssetCalibrationRecordListItem
+	from "../../../../../../mutations/all/Asset/upsertAssetCalibrationRecordListItem";
+import {extendObservable} from "mobx";
+import deleteAssetCalibrationRecordListItem
+	from "../../../../../../mutations/all/Asset/deleteAssetCalibrationRecordListItem";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -69,7 +76,29 @@ class Controls extends AControls {
 	constructor(props) {
 		super(props);
 
+		this.onUpdatedMonitoringPlanWorkingHrsOrKm = this.onUpdatedMonitoringPlanWorkingHrsOrKm.bind(this);
+		this.onUpdatedMonitoringPlanFuelUsage = this.onUpdatedMonitoringPlanFuelUsage.bind(this);
+		this.onUpdatedCalibrationRecord = this.onUpdatedCalibrationRecord.bind(this);
+		this.onUpdatedMaintenancePlan = this.onUpdatedMaintenancePlan.bind(this);
+
 		this.onFormSave = this.onFormSave.bind(this);
+	}
+
+	onUpdatedMonitoringPlanWorkingHrsOrKm(e, el) {
+		let {action, idx, item} = el.props;
+	}
+
+	onUpdatedMonitoringPlanFuelUsage(e, el) {
+		let {action, idx, item} = el.props;
+	}
+
+	onUpdatedMaintenancePlan(e, el) {
+		let {action, idx, item} = el.props;
+	}
+
+	onUpdatedCalibrationRecord(e, el) {
+		let {action, idx, item} = el.props;
+
 	}
 
 	//<editor-fold desc="onFormSave">
@@ -425,7 +454,7 @@ class Controls extends AControls {
 		if (idx === 9) {
 			const {
 				//9
-				calibration_record_list: calibration_list,
+				// calibration_record_list: calibration_list,
 				next_calibration_date,
 				next_calibration_interval
 			} = form.data;
@@ -433,19 +462,18 @@ class Controls extends AControls {
 			//calibration_record_list = [{next_calibration_interval, next_calibration_date, calibration_list = [],}]
 
 			const data = {};
-			let _calibration_record_list;
-			if (calibration_record_list) {
-				_calibration_record_list = calibration_record_list.map(v => {
-					const {reference_standard, certificate_num, calibrating_company, calibration_date} = v;
-					if (calibration_date && isDate(calibration_date)) {
-						v.calibration_date = Dates.formatDateSQL(calibration_date);
-					}
-					return v;
-				});
-			}
-			if (_calibration_record_list || next_calibration_date || next_calibration_interval) {
+			// let _calibration_record_list;
+			// if (calibration_record_list) {
+			// 	_calibration_record_list = calibration_record_list.map(v => {
+			// 		const {reference_standard, certificate_num, calibrating_company, calibration_date} = v;
+			// 		if (calibration_date && isDate(calibration_date)) {
+			// 			v.calibration_date = Dates.formatDateSQL(calibration_date);
+			// 		}
+			// 		return v;
+			// 	});
+			// }
+			if (next_calibration_date || next_calibration_interval) {
 				const new_calibration_record = {};
-				ShouldUpdate.checkListToJS(new_calibration_record, old_data.calibration_record, _calibration_record_list, 'list');
 				ShouldUpdate.checkDate(new_calibration_record, old_data.calibration_record, next_calibration_date, 'next_calibration_date');
 				ShouldUpdate.check(new_calibration_record, old_data.calibration_record, next_calibration_interval, 'next_calibration_interval');
 				if (!Object.keys(new_calibration_record).isEmpty()) {
@@ -459,6 +487,7 @@ class Controls extends AControls {
 
 		return true;
 	}
+
 	//</editor-fold>
 
 	get item() {
@@ -735,21 +764,37 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 				onFormSave={this.onFormSave}
 			>
-				<NewMonitoringPlanWorkingHrsOrKmTable ref="monitoring_plan_working_distance_or_time_list"
-				                                      name="monitoring_plan_working_distance_or_time_list"
-				                                      state={this.state}
-				                                      defaultValue={[...(working_distance_or_time_list || []), null]}
-				                                      onChange={this.form.onChange}/>
-				<MonitoringPlanStats ref="monitoring_plan_stats_working_distance_or_time"
-				                     name='working_distance_or_time_list' state={this.state}/>
+				<NewMonitoringPlanWorkingHrsOrKmTable
+					ref="monitoring_plan_working_distance_or_time_list"
+					name="monitoring_plan_working_distance_or_time_list"
+					state={this.state}
+					defaultValue={[...(working_distance_or_time_list || []), null]}
+					onUpdated={this.onUpdatedMonitoringPlanWorkingHrsOrKm}
+					item={item}
+					savable
+					onChange={this.form.onChange}
+				/>
+				<MonitoringPlanStats
+					ref="monitoring_plan_stats_working_distance_or_time"
+					name='working_distance_or_time_list'
+					state={this.state}
+				/>
 
-				<NewMonitoringPlanFuelUsageTable ref="monitoring_plan_fuel_usage_list"
-				                                 name="monitoring_plan_fuel_usage_list"
-				                                 state={this.state}
-				                                 defaultValue={[...(fuel_usage_list || []), null]}
-				                                 onChange={this.form.onChange}/>
-				<MonitoringPlanStats ref="monitoring_plan_stats_fuel_usage" name='fuel_usage_list'
-				                     state={this.state}/>
+				<NewMonitoringPlanFuelUsageTable
+					ref="monitoring_plan_fuel_usage_list"
+					name="monitoring_plan_fuel_usage_list"
+					state={this.state}
+					defaultValue={[...(fuel_usage_list || []), null]}
+					onUpdated={this.onUpdatedMonitoringPlanFuelUsage}
+					item={item}
+					savable
+					onChange={this.form.onChange}
+				/>
+				<MonitoringPlanStats
+					ref="monitoring_plan_stats_fuel_usage"
+					name='fuel_usage_list'
+					state={this.state}
+				/>
 			</Row>
 			<Row
 				rendered
@@ -765,6 +810,9 @@ class Controls extends AControls {
 					name="maintenance_plan_list"
 					asset={this.item}
 					defaultValue={[...(plan_list || []), null]}
+					onUpdated={this.onUpdatedMaintenancePlan}
+					item={item}
+					savable
 					onChange={this.form.onChange}
 				/>
 
@@ -796,6 +844,9 @@ class Controls extends AControls {
 			>
 				<NewCalibrationRecordTable ref="calibration_record_list" name="calibration_record_list"
 				                           defaultValue={[...(calibration_list || []), null]}
+				                           onUpdated={this.onUpdatedCalibrationRecord}
+				                           item={item}
+				                           savable
 				                           onChange={this.form.onChange}/>
 
 				<label className="hor-center margin-t-10 margin-b-0">Next Calibration Details</label>

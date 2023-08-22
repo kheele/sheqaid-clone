@@ -61,7 +61,7 @@ class PartsUsed extends React.Component {
                     <span className="active-cost">{parts_used && parts_used.length || 'No Parts'}</span>
                 </div>
                 <Button
-                    className='btn btn-primary fixed-flex font-size-12 padding-5 margin-r-20'
+                    className='btn btn-primary fixed-flex font-size-12 padding-5 hor-center'
                     text={parts_used && !parts_used.isEmpty() ? 'Edit' : 'Add'}
                     onClick={this.onEdit}
                 />
@@ -107,14 +107,14 @@ class CostAndReceipt extends React.Component {
             cost_and_receipt = cost_and_receipt || {};
             const {cost, receipt} = cost_and_receipt || {};
             return <React.Fragment>
-                <div className="grid-2 margin-r-5">
-                    <Button className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 -margin-b-20 h-15`}>
+                <div className="grid-1 h-50">
+                    <Button className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-15 hor-center w-200`}>
                         <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> Receipt
                     </Button>
-                    <span className="active-cost">{cost ? cost.toCurrency('R')  : 'No Cost'}</span>
+                    <span className="active-cost text-center hor-center w-200">{cost ? cost.toCurrency('R')  : 'No Cost'}</span>
                 </div>
                 <Button
-                    className='btn btn-primary fixed-flex font-size-12 padding-5 margin-r-20'
+                    className='btn btn-primary fixed-flex font-size-12 padding-5'
                     text={isEditable ? (cost || receipt ? 'Edit/View' : 'Add') : 'View'}
                     onClick={isEditable ? this.onEdit : this.onView}
                 />
@@ -123,14 +123,14 @@ class CostAndReceipt extends React.Component {
             const {cost_and_receipt} = state || {};
             const {cost, receipt} = cost_and_receipt || {};
             return <React.Fragment>
-                <div className="grid-2 margin-r-5">
-                    <Button className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 -margin-b-20 h-15`}>
+                <div className="grid-1 h-50">
+                    <Button className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-15 hor-center w-200`}>
                         <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> Receipt
                     </Button>
-                    <span className="active-cost">{cost && cost.toCurrency('R') || 'No Cost'}</span>
+                    <span className="active-cost text-center hor-center w-200">{cost && cost.toCurrency('R') || 'No Cost'}</span>
                 </div>
                 <Button
-                    className='btn btn-primary fixed-flex font-size-12 padding-5 margin-r-20'
+                    className='btn btn-primary fixed-flex w-100 hor-center font-size-12 padding-5'
                     text={cost || receipt ? 'Edit' : 'Add'}
                     onClick={this.onEdit}
                 />
