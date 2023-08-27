@@ -11,6 +11,7 @@ const mutation = graphql`
   mutation insertCityMutation($object: default_cities_insert_input!) {
     insert_default_cities_one(object: $object) {
       id
+      name
     }
   }
 `;

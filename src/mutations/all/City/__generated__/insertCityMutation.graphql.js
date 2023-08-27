@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a4eabc11f8058b38022d1d6949a566ca>>
+ * @generated SignedSource<<f7042c80c05e99bfdbc33328a0779a56>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,6 +37,13 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -60,16 +67,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "18192b671613de0bf9398e5dfdfe0af1",
+    "cacheID": "ea6ad89ca7a09fe1818d507e9f744d00",
     "id": null,
     "metadata": {},
     "name": "insertCityMutation",
     "operationKind": "mutation",
-    "text": "mutation insertCityMutation(\n  $object: default_cities_insert_input!\n) {\n  insert_default_cities_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertCityMutation(\n  $object: default_cities_insert_input!\n) {\n  insert_default_cities_one(object: $object) {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "902868eb6a5f30facdd4b46b7be70743";
+node.hash = "3c0a18e2b80acb315ee13eaf18903317";
 
 module.exports = node;

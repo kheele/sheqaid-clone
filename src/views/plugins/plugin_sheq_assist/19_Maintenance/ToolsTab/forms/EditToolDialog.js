@@ -864,6 +864,7 @@ class Controls extends AControls {
 				rendered
 				idx={10}
 				title="10. Inspections"
+				className="min-h-600"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}

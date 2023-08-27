@@ -396,32 +396,43 @@ class ToolsTab extends React.Component {
 		const {
 			id, data: {
 				created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
-				//1
+				client, project, site,
+				//1 done
 				asset_detail: {
-					name, asset_type, desc,
-					manufacturer, model, reg_num, serial_num,
-					location, toolkit, condition,
-					barcode, qr_code,
+					owning_company,
+					name,
+					asset_type,
+					desc,
+					manufacturer,
+					model,
+					reg_num,
+					serial_num,
+					location,
+					toolkit,
+					condition,
+					barcode,
+					qr_code,
 					notes,
 				},
-				//2
-				profile_pic,
-				//3
+				//2 done
+				photo_list,
+				//3 done
 				responsible_person,
-				//4
-				doc_pdf, doc_pdf_desc, doc_pdf_expiry,
-				//5
-				doc_work_manual, doc_procedure, doc_clearance_certificate,
-				//6
+				//4 done
+				doc_list,
+				//5 done
 				purchase_info,
-				//7
+				//6 done
 				depreciation,
-				//8
+				//7 done
 				monitoring_plan_list,
-				//9
-				maintenance_plan,
+				//8 done
+				maintenance_plan_list,
+				//9 done
+				calibration_record_list,
 				//10
-				calibration_record
+				inspection_template_list = [],
+				inspection_list = [],
 			}
 		} = item;
 

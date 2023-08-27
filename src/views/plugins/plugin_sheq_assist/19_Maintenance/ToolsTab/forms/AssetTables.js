@@ -30,6 +30,9 @@ import upsertAssetMonitoringPlanWorkingHrsOrKmListItem
 	from "../../../../../../mutations/all/Asset/upsertAssetMonitoringPlanWorkingHrsOrKmListItem";
 import deleteAssetMonitoringPlanWorkingHrsOrKmListItem
 	from "../../../../../../mutations/all/Asset/deleteAssetMonitoringPlanWorkingHrsOrKmListItem";
+import insertAssetCalibrationRecord from "../../../../../../mutations/all/Asset/insertAssetCalibrationRecord";
+import insertAssetMaintenancePlan from "../../../../../../mutations/all/Asset/insertAssetMaintenancePlan";
+import insertAssetMonitoringPlan from "../../../../../../mutations/all/Asset/insertAssetMonitoringPlan";
 //</editor-fold>
 
 const unitsShort = {
@@ -68,7 +71,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 	onClickComplete(e, el) {
 		let {savable, item: assetItem, onUpdated} = this.props;
 
-		if(savable && assetItem) {
+		if (savable && assetItem) {
 			let {action, idx, item} = el.props;
 			let {
 				// id,
@@ -77,41 +80,72 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 			} = assetItem;
 
 			//7 done
+			const lastMonitoringPlan = (monitoring_plan_list || []).getLastElement();
 			const {
 				// id,
 				working_distance_or_time_list = [],
-			} = (monitoring_plan_list || []).getLastElement() || {};
+			} = lastMonitoringPlan || {};
 
 			const {id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = item;
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetMonitoringPlanWorkingHrsOrKmListItem({
-					id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date,
-				}).then(savedItem => {
-					if (!savedItem) {
-						if (id) {
-							infoDialog.open("Sorry! Record couldn't be updated.");
+				let promise;
+				if (lastMonitoringPlan) {
+					promise = upsertAssetMonitoringPlanWorkingHrsOrKmListItem({
+						id,
+						monitoring_plan_id: lastMonitoringPlan.id,
+						working_hrs_or_km_opening,
+						working_hrs_or_km_closing,
+						date,
+					}).then(savedItem => {
+						if (!savedItem) {
+							if (id) {
+								infoDialog.open("Sorry! Record couldn't be updated.");
+							} else {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							}
 						} else {
+							if (id) {
+								infoDialog.open("Record successfully updated.");
+							} else {
+								working_distance_or_time_list.push(savedItem);
+								infoDialog.open("Record successfully added.");
+							}
+
+							if (!monitoring_plan_list) {
+								monitoring_plan_list = [{working_distance_or_time_list}];
+							}
+
+							extendObservable(old_data, {monitoring_plan_list});
+						}
+
+						infoDialog.close(2000);
+					});
+				} else {
+					promise = insertAssetMonitoringPlan({
+						asset_id: assetItem.id,
+						working_distance_or_time_list: {
+							data: [{
+								working_hrs_or_km_opening,
+								working_hrs_or_km_closing,
+								date: Dates.formatDateSQL(date),
+							}]
+						}
+					}).then(savedItem => {
+						if (!savedItem) {
 							infoDialog.open("Sorry! Record couldn't be added.");
-						}
-					} else {
-						if (id) {
-							infoDialog.open("Record successfully updated.");
 						} else {
-							working_distance_or_time_list.push(savedItem);
 							infoDialog.open("Record successfully added.");
+							extendObservable(old_data, {
+								monitoring_plan_list: [savedItem]
+							});
 						}
 
-						if (!monitoring_plan_list) {
-							monitoring_plan_list = [{working_distance_or_time_list}];
-						}
-
-						extendObservable(old_data, {monitoring_plan_list});
-					}
-
-					infoDialog.close(2000);
-				}).catch(err => {
+						infoDialog.close(2000);
+					});
+				}
+				promise.catch(err => {
 					infoDialog.open("An error occurred. Please try again later.");
 					infoDialog.close(2000);
 					console.error(err);
@@ -217,7 +251,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 						                isClearable={false}
 						                required className="form-control" onChange={this.onChange}/>
 						<label
-							className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+							className="fixed-flex min-w-45 margin-0 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
 					</div>
 					<div className="td td-number flex">
 						<ClearableInput ref={this.onSetRef} name="working_hrs_or_km_closing" type="number"
@@ -225,7 +259,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 						                isClearable={false}
 						                required className="form-control" onChange={this.onChange}/>
 						<label
-							className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+							className="fixed-flex min-w-45 margin-0 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
 					</div>
 					<div className="td td-number flex">
 						<ClearableInput ref={this.onSetRef} name="working_hrs_or_km" type="number"
@@ -233,7 +267,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 						                isEditable={false} isClearable={false}
 						                required className="form-control" onChange={this.onChange}/>
 						<label
-							className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+							className="fixed-flex min-w-45 margin-0 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
 					</div>
 					<ClearableInput ref={this.onSetRef} name="date" type="date"
 					                placeholder="Date"
@@ -241,7 +275,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 					                onChange={this.onChange}/>
 				</div>
 				<div className="td w-full flex-center">
-					<Button idx={n} action="save" className="btn btn-primary hor-center w-100" onClick={onClick}>
+					<Button idx={n} action="save" className="btn btn-primary border-radius-20 hor-center w-100" onClick={onClick}>
 						<i className="fa fa-plus"/> ADD
 					</Button>
 				</div>
@@ -303,7 +337,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 	onClickComplete(e, el) {
 		let {savable, item: assetItem, onUpdated} = this.props;
 
-		if(savable && assetItem) {
+		if (savable && assetItem) {
 			let {action, idx, item} = el.props;
 			let {
 				// id,
@@ -312,39 +346,78 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 			} = assetItem;
 
 			//7 done
+			const lastMonitoringPlan = (monitoring_plan_list || []).getLastElement();
 			const {
 				// id,
 				fuel_usage_list = [],
-			} = (monitoring_plan_list || []).getLastElement() || {};
+			} = lastMonitoringPlan || {};
 
 			const {id, refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost} = item;
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetMonitoringPlanFuelUsageListItem(item).then(savedItem => {
-					if (!savedItem) {
-						if (id) {
-							infoDialog.open("Sorry! Record couldn't be updated.");
+				let promise;
+				if (lastMonitoringPlan) {
+					promise = upsertAssetMonitoringPlanFuelUsageListItem({
+						id,
+						monitoring_plan_id: lastMonitoringPlan.id,
+						refilled_fuel,
+						current_hrs_or_km,
+						working_hrs_or_km,
+						date,
+						receipt,
+						cost,
+					}).then(savedItem => {
+						if (!savedItem) {
+							if (id) {
+								infoDialog.open("Sorry! Record couldn't be updated.");
+							} else {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							}
 						} else {
+							if (id) {
+								infoDialog.open("Record successfully updated.");
+							} else {
+								fuel_usage_list.push(savedItem);
+								infoDialog.open("Record successfully added.");
+							}
+
+							if (!monitoring_plan_list) {
+								monitoring_plan_list = [{fuel_usage_list}];
+							}
+
+							extendObservable(old_data, {monitoring_plan_list});
+						}
+
+						infoDialog.close(2000);
+					});
+				} else {
+					promise = insertAssetMonitoringPlan({
+						asset_id: assetItem.id,
+						fuel_usage_list: {
+							data: [{
+								refilled_fuel,
+								current_hrs_or_km,
+								working_hrs_or_km,
+								date: Dates.formatDateSQL(date),
+								receipt: receipt,
+								cost,
+							}]
+						}
+					}).then(savedItem => {
+						if (!savedItem) {
 							infoDialog.open("Sorry! Record couldn't be added.");
-						}
-					} else {
-						if (id) {
-							infoDialog.open("Record successfully updated.");
 						} else {
-							fuel_usage_list.push(savedItem);
 							infoDialog.open("Record successfully added.");
+							extendObservable(old_data, {
+								monitoring_plan_list: [savedItem]
+							});
 						}
 
-						if (!monitoring_plan_list) {
-							monitoring_plan_list = [{fuel_usage_list}];
-						}
-
-						extendObservable(old_data, {monitoring_plan_list});
-					}
-
-					infoDialog.close(2000);
-				}).catch(err => {
+						infoDialog.close(2000);
+					});
+				}
+				promise.catch(err => {
 					infoDialog.open("An error occurred. Please try again later.");
 					infoDialog.close(2000);
 					console.error(err);
@@ -472,28 +545,29 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 						<ClearableInput ref={this.onSetRef} name="refilled_fuel" type="number" required isClearable={false}
 						                placeholder="Refilled Fuel"
 						                className="form-control" onChange={this.onChange}/>
-						<label className="fixed-flex min-w-20 margin-0 margin-r-10 text-center">l</label>
+						<label className="fixed-flex min-w-20 margin-0 text-center">l</label>
 					</div>
 					<div className="td td-number flex">
 						<ClearableInput ref={this.onSetRef} name="current_hrs_or_km" type="number" required isClearable={false}
 						                placeholder={`Current ${this.selfState.units || 'Time/Distance'}`}
 						                className="form-control" onChange={this.onChange}/>
 						<label
-							className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+							className="fixed-flex min-w-45 margin-0 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
 					</div>
 					<div className="td td-number flex">
-						<ClearableInput ref={this.onSetRef} name="working_hrs_or_km" type="number" isEditable={false} isClearable={false}
+						<ClearableInput ref={this.onSetRef} name="working_hrs_or_km" type="number" isEditable={false}
+						                isClearable={false}
 						                placeholder={`Used ${this.selfState.units || 'Time/Distance'}`}
-						                required className="form-control" onChange={this.onChange}/>
+						                className="form-control" onChange={this.onChange}/>
 						<label
-							className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+							className="fixed-flex min-w-45 margin-0 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
 					</div>
 					<ClearableInput ref={this.onSetRef} name="date" type="date" placeholder="dd/mm/yyyy"
 					                defaultValue={new Date()} required
 					                placeholder="Date"
 					                className="form-control margin-r-10"
 					                onChange={this.onChange}/>
-					<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange} required
+					<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange}
 					              type={['Photo', 'Word', 'Excel', 'PDF']}
 					              buttonTitle='Receipt'
 					              showOnlyIcon
@@ -502,7 +576,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 					                className="form-control" onChange={this.onChange}/>
 				</div>
 				<div className="td w-full flex-center">
-					<Button idx={n} action="save" className="btn btn-primary hor-center w-100" onClick={onClick}>
+					<Button idx={n} action="save" className="btn btn-primary border-radius-20 hor-center w-100" onClick={onClick}>
 						<i className="fa fa-plus"/> ADD
 					</Button>
 				</div>
@@ -578,7 +652,7 @@ class NewMaintenancePlanTable extends ATableSavable {
 	onClickComplete(e, el) {
 		let {savable, item: assetItem, onUpdated} = this.props;
 
-		if(savable && assetItem) {
+		if (savable && assetItem) {
 			let {action, idx, item} = el.props;
 			let {
 				// id,
@@ -587,40 +661,87 @@ class NewMaintenancePlanTable extends ATableSavable {
 			} = assetItem;
 
 			//8 done
+			const lastMaintenancePlan = (maintenance_plan_list || []).getLastElement();
 			const {
 				// id,
 				next_service_hrs_or_km,
 				plan_list = [],
-			} = (maintenance_plan_list || []).getLastElement() || {};
+			} = lastMaintenancePlan || {};
 
 			const {id, reason_for_service, service, service_hrs_or_km, service_date, parts_used, cost_and_receipt} = item;
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetMaintenancePlanListItem({item}).then(savedItem => {
-					if (!savedItem) {
-						if (id) {
-							infoDialog.open("Sorry! Record couldn't be updated.");
+				let promise;
+				if (lastMaintenancePlan) {
+					promise = upsertAssetMaintenancePlanListItem({
+						id,
+						maintenance_plan_id: lastMaintenancePlan.id,
+						reason_for_service,
+						service,
+						service_hrs_or_km,
+						service_date,
+						parts_used,
+						cost: cost_and_receipt && cost_and_receipt.cost,
+						receipt: cost_and_receipt && cost_and_receipt.receipt,
+						parts_used_list: parts_used || [],
+					}).then(savedItem => {
+						if (!savedItem) {
+							if (id) {
+								infoDialog.open("Sorry! Record couldn't be updated.");
+							} else {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							}
 						} else {
+							if (id) {
+								infoDialog.open("Record successfully updated.");
+							} else {
+								plan_list.push(savedItem);
+								infoDialog.open("Record successfully added.");
+							}
+
+							if (!maintenance_plan_list) {
+								maintenance_plan_list = [{plan_list}];
+							}
+
+							extendObservable(old_data, {maintenance_plan_list});
+						}
+
+						infoDialog.close(2000);
+					});
+				} else {
+					promise = insertAssetMaintenancePlan({
+						asset_id: assetItem.id,
+						// next_service_hrs_or_km,
+						plan_list: {
+							data: [{
+								reason_for_service,
+								service,
+								service_hrs_or_km,
+								service_date: Dates.formatDateSQL(service_date),
+								cost: cost_and_receipt && cost_and_receipt.cost,
+								receipt: cost_and_receipt && cost_and_receipt.receipt,
+								parts_used_list: {data: parts_used || [],},
+							}]
+						}
+					}).then(savedItem => {
+						if (!savedItem) {
 							infoDialog.open("Sorry! Record couldn't be added.");
-						}
-					} else {
-						if (id) {
-							infoDialog.open("Record successfully updated.");
 						} else {
-							plan_list.push(savedItem);
-							infoDialog.open("Record successfully added.");
+							if (!savedItem) {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							} else {
+								infoDialog.open("Record successfully added.");
+								extendObservable(old_data, {
+									maintenance_plan_list: [savedItem]
+								});
+							}
 						}
 
-						if (!maintenance_plan_list) {
-							maintenance_plan_list = [{plan_list}];
-						}
-
-						extendObservable(old_data, {maintenance_plan_list});
-					}
-
-					infoDialog.close(2000);
-				}).catch(err => {
+						infoDialog.close(2000);
+					});
+				}
+				promise.catch(err => {
 					infoDialog.open("An error occurred. Please try again later.");
 					infoDialog.close(2000);
 					console.error(err);
@@ -720,7 +841,8 @@ class NewMaintenancePlanTable extends ATableSavable {
 		} else {
 			return <TRow key="item-new" className="w-full padding-t-10 padding-b-10 grid-1 grid-gap-10">
 				<div className="td w-full grid-1 grid-gap-10">
-					<ClearableInput ref={this.onSetRef} name="reason_for_service" type="select" placeholder="Reason For Service..."
+					<ClearableInput ref={this.onSetRef} name="reason_for_service" type="select"
+					                placeholder="Reason For Service..."
 					                required className="form-control margin-r-10" onChange={this.onChange}
 					                values={this.selfState.lists.reason_for_service} returnValue/>
 					<ClearableInput ref={this.onSetRef} name="service" type="select" placeholder="Service..."
@@ -826,8 +948,8 @@ class NewCalibrationRecordTable extends ATableSavable {
 
 	onClickComplete(e, el) {
 		let {savable, item: assetItem, onUpdated} = this.props;
-		
-		if(savable && assetItem) {
+
+		if (savable && assetItem) {
 			let {action, idx, item} = el.props;
 			let {
 				// id,
@@ -836,41 +958,82 @@ class NewCalibrationRecordTable extends ATableSavable {
 			} = assetItem;
 
 			//9 done
+			const lastCalibrationRecord = (calibration_record_list || []).getLastElement();
 			const {
 				// id,
 				next_calibration_interval,
 				next_calibration_date,
 				calibration_list = [],
-			} = (calibration_record_list || []).getLastElement() || {};
+			} = lastCalibrationRecord || {};
 
 			const {id, calibrating_company, reference_standard, certificate_num, calibration_date} = item;
 
 			if (action === "save" || action === "saveEdit") {
 				progressDialog.open();
-				upsertAssetCalibrationRecordListItem(item).then(savedItem => {
-					if (!savedItem) {
-						if (id) {
-							infoDialog.open("Sorry! Record couldn't be updated.");
+				let promise;
+				if (lastCalibrationRecord) {
+					promise = upsertAssetCalibrationRecordListItem({
+						id,
+						calibration_record_id: lastCalibrationRecord && lastCalibrationRecord.id,
+						calibrating_company,
+						reference_standard,
+						certificate_num,
+						calibration_date,
+					}).then(savedItem => {
+						if (!savedItem) {
+							if (id) {
+								infoDialog.open("Sorry! Record couldn't be updated.");
+							} else {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							}
 						} else {
+							if (id) {
+								infoDialog.open("Record successfully updated.");
+							} else {
+								calibration_list.push(savedItem);
+								infoDialog.open("Record successfully added.");
+							}
+
+							if (!calibration_record_list) {
+								calibration_record_list = [{calibration_list}];
+							}
+
+							extendObservable(old_data, {calibration_record_list});
+						}
+
+						infoDialog.close(2000);
+					});
+				} else {
+					promise = insertAssetCalibrationRecord({
+						asset_id: assetItem.id,
+						// next_calibration_interval,
+						// next_calibration_date,
+						calibration_list: {
+							data: [{
+								calibrating_company,
+								reference_standard,
+								certificate_num,
+								calibration_date: Dates.formatDateSQL(calibration_date),
+							}]
+						}
+					}).then(savedItem => {
+						if (!savedItem) {
 							infoDialog.open("Sorry! Record couldn't be added.");
-						}
-					} else {
-						if (id) {
-							infoDialog.open("Record successfully updated.");
 						} else {
-							calibration_list.push(savedItem);
-							infoDialog.open("Record successfully added.");
+							if (!savedItem) {
+								infoDialog.open("Sorry! Record couldn't be added.");
+							} else {
+								infoDialog.open("Record successfully added.");
+								extendObservable(old_data, {
+									calibration_record_list: [savedItem]
+								});
+							}
 						}
 
-						if (!calibration_record_list) {
-							calibration_record_list = [{calibration_list}];
-						}
-
-						extendObservable(old_data, {calibration_record_list});
-					}
-
-					infoDialog.close(2000);
-				}).catch(err => {
+						infoDialog.close(2000);
+					});
+				}
+				promise.catch(err => {
 					infoDialog.open("An error occurred. Please try again later.");
 					infoDialog.close(2000);
 					console.error(err);

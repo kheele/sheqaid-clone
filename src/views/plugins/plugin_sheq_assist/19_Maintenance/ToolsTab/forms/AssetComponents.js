@@ -257,9 +257,10 @@ class FutureMaintenanceDistanceOrTime extends AFutureOrCurrentMaintenanceDistanc
 //</editor-fold>
 
 const CONSTANTS = {
-    MONITORING: 8,
-    MAINTENANCE: 9,
-    CALIBRATION: 10,
+    MONITORING: 7,
+    MAINTENANCE: 8,
+    CALIBRATION: 9,
+    INSPECTIONS: 10,
     PARTS: 11,
     JOB_CARDS: 12
 };

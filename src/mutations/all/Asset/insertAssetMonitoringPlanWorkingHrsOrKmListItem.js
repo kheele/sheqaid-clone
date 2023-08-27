@@ -27,14 +27,10 @@ export default async (input) => {
 	const {
 		working_hrs_or_km_opening,
 		working_hrs_or_km_closing,
-		working_hrs_or_km,
+		// working_hrs_or_km,
 		date,
 		monitoring_plan_id,
 	} = input;
-
-	if(working_hrs_or_km) {
-		delete input.working_hrs_or_km;
-	}
 
 	if(date) {
 		input.date = Dates.formatDateSQL(date);

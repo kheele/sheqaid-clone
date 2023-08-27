@@ -180,47 +180,65 @@ class MaintanancePlanTab extends React.Component {
         const item = this.refs.root.list[n];
 //        const {id, data: {service_date, service_hrs_or_km, next_service_hrs_or_km, reason_for_service}} = item;
         const {id, data: {
-                created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/,
-                //1
-                name, asset_type, desc,
-                manufacturer, model, reg_num, serial_num, 
-                location, toolkit, condition,
-                barcode_or_qr_code_type, barcode_or_qr_code, 
+            created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/,
+            client, project, site,
+            //1 done
+            asset_detail: {
+                owning_company,
+                name,
+                asset_type,
+                desc,
+                manufacturer,
+                model,
+                reg_num,
+                serial_num,
+                location,
+                toolkit,
+                condition,
+                barcode,
+                qr_code,
                 notes,
-                //2
-                profile_pic,
-                //3
-                responsible_person,
-                //4
-                doc_pdf, doc_pdf_desc, doc_pdf_expiry,
-                //5
-                doc_work_manual, doc_procedure, doc_clearance_certificate,
-                //6
-                purchase_info,
-                //7
-                depreciation,
-                //8
-                monitoring_plan_list,
-                //9
-                maintenance_plan,
-                //10
-                calibration_record
+            },
+            //2 done
+            photo_list,
+            //3 done
+            responsible_person,
+            //4 done
+            doc_list,
+            //5 done
+            purchase_info,
+            //6 done
+            depreciation,
+            //7 done
+            monitoring_plan_list,
+            //8 done
+            maintenance_plan_list,
+            //9 done
+            calibration_record_list,
+            //10
+            inspection_template_list = [],
+            inspection_list = [],
             }
         } = item;
-        
-        const {next_service_hrs_or_km, list = []} = maintenance_plan;
-        //list = [service_hrs_or_km, reason_for_service, service_date]
-        list.sortBy('service_date');
-        const lastService = list.getLastElement() || {};
-        const {service_hrs_or_km, reason_for_service, service_date} = lastService;
 
-        const isHours = asset_type.contains('Plant');
+        //8 done
+        const lastMaintenancePlan = (maintenance_plan_list || []).getLastElement();
+        const {
+            // id,
+            next_service_hrs_or_km,
+            plan_list = [],
+        } = lastMaintenancePlan || {};
+
+        plan_list.sortBy('service_date');
+        const {reason_for_service, service, service_hrs_or_km, service_date, parts_used, cost_and_receipt} = plan_list.getLastElement() || {};
+
+        const isHours = !['Vehicles', 'Small Plant'].contains(asset_type);
         return <TRow key={"item-" + n}>
             <div className="td">{asset_type}</div>
             <div className="td">{name || 'N/A'}</div>
             <div className="td">{reg_num}</div>
             <div className="td fixed-flex min-w-220 flex flex padding-t-5 padding-b-5 padding-r-10">
-                {list.isEmpty() && 'N/A'}
+                {plan_list.isEmpty() && 'N/A'}
                 {service_date && <span className="text-center">Date<br />{Dates.formatDate(service_date)}</span>}
                 {service_hrs_or_km && <span className="text-center">{isHours ? 'Time' : 'Distance'}<br />{service_hrs_or_km}{isHours ? 'hrs' : 'km'}</span>}
             </div>

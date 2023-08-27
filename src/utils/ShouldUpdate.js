@@ -71,6 +71,16 @@ class ShouldUpdate {
         }
     }
 
+    static checkJson(data, old_data, newVal, key) {
+        if (newVal) {
+            if (!old_data) {
+                data[key] = newVal;
+            } else if (!old_data[key] || JSON.stringify(old_data[key]) !== JSON.stringify(newVal)) {
+                data[key] = newVal;
+            }
+        }
+    }
+
     static checkFile(data, old_data, newVal, key) {
         if (newVal && (isString(newVal.path) || newVal.path instanceof File)) {
             if (!old_data) {

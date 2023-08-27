@@ -259,8 +259,8 @@ class Controls extends React.Component {
                     onFormNext={onFormNext}
                     onFormBack={onFormBack}
                 >
-                    <ProfileField name="fname" title="First Name" value={fname} required className="col-lg-6"/>
-                    <ProfileField name="lname" title="Last Name" value={lname} required className="col-lg-6"/>
+                    <ProfileField name="fname" title="First Name" value={fname} className="col-lg-6"/>
+                    <ProfileField name="lname" title="Last Name" value={lname} className="col-lg-6"/>
                     <ProfileField name="id_num" title="Identification No." value={id_num} className="col-lg-6"/>
                     <ProfileField name="passport_num" title="Passport No." value={passport_num} className="col-lg-6"/>
                     <ProfileField name="dob" type="date" title="Date of Birth" value={dob} className="col-lg-6"/>

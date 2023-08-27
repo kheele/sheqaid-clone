@@ -43,7 +43,8 @@ export default async (attrs) => {
 		service_hrs_or_km,
 		service_date,
 		parts_used,
-		cost_and_receipt,
+		cost,
+		receipt,
 		maintenance_plan_id,
 	} = attrs;
 

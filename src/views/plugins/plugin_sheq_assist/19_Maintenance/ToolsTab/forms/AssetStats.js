@@ -25,8 +25,8 @@ class MonitoringPlanStats extends React.Component {
     state = {
         lists: {
             views: ['Annually', 'Monthly', 'Weekly'].map(text => ({text, value: text, checked: false})),
-            date_years: Array.range(2000, new Date().getFullYear()),
-            date_months: [...Dates.monthsStr.values()]
+            date_years: Array.range(2000, new Date().getFullYear()).reverse(),
+            date_months: [...Dates.monthsNum.keys()]
         },
         units: null,
         charts: null,
@@ -85,7 +85,7 @@ class MonitoringPlanStats extends React.Component {
 
         const date = new Date();
         date.setUTCFullYear(date_y);
-        date.setMonth(date_m);
+        date.setMonth(Dates.getMonthsNum(date_m));
 
         const fn = fns[name];
         const charts = fn({[name]: list, units, view, date});

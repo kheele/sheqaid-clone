@@ -24,13 +24,7 @@ async function toDataURI(filePath) {
 }
 
 function convertMobx(arg) {
-	if (isObservableArray(arg)) {
-		return convertMobx(toJS(arg));
-	}
-	if (isObservableObject(arg)) {
-		return convertMobx(toJS(arg));
-	}
-	if (isObservableMap(arg)) {
+	if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
 		return convertMobx(toJS(arg));
 	}
 	if (isArray(arg)) {

@@ -25095,6 +25095,1034 @@ type default_zones_variance_fields {
     id: Float
 }
 
+"columns and relationships of \"hira_baseline_ra\""
+type hira_baseline_ra implements Node {
+    activity: String
+    "An object relationship"
+    client: default_clients
+    client_id: bigint
+    "An object relationship"
+    company: default_companies
+    company_id: bigint
+    "An object relationship"
+    contractor: default_contractors
+    "An object relationship"
+    contractor_client: default_clients
+    contractor_client_id: bigint
+    contractor_id: bigint
+    "An object relationship"
+    contractor_site: default_sites
+    contractor_site_id: bigint
+    "An object relationship"
+    contractor_user: default_contractor_users
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: ID!
+    "An array relationship"
+    list(
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_bool_exp
+    ): [hira_baseline_ra_list!]!
+    "An aggregate relationship"
+    list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_bool_exp
+    ): hira_baseline_ra_list_aggregate!
+    "An array relationship connection"
+    list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_bool_exp
+    ): hira_baseline_ra_listConnection!
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
+    risk_tolerance: String
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    "An object relationship"
+    user: default_users
+    user_id: bigint
+}
+
+"A Relay connection object on \"hira_baseline_ra\""
+type hira_baseline_raConnection {
+    edges: [hira_baseline_raEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_baseline_raEdge {
+    cursor: String!
+    node: hira_baseline_ra!
+}
+
+"columns and relationships of \"hira_baseline_ra_list\""
+type hira_baseline_ra_list implements Node {
+    "An object relationship"
+    baseline_ra: hira_baseline_ra!
+    baseline_ra_id: bigint!
+    consequence_1: Int
+    consequence_2: Int
+    control_measure_list(
+        "JSON select path"
+        path: String
+    ): json
+    frequency_1: Int
+    frequency_2: Int
+    hazard: String
+    id: ID!
+    likelihood_1: Int
+    likelihood_2: Int
+    risk: String
+    risk_type(
+        "JSON select path"
+        path: String
+    ): json
+}
+
+"A Relay connection object on \"hira_baseline_ra_list\""
+type hira_baseline_ra_listConnection {
+    edges: [hira_baseline_ra_listEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_baseline_ra_listEdge {
+    cursor: String!
+    node: hira_baseline_ra_list!
+}
+
+"aggregated selection of \"hira_baseline_ra_list\""
+type hira_baseline_ra_list_aggregate {
+    aggregate: hira_baseline_ra_list_aggregate_fields
+    nodes: [hira_baseline_ra_list!]!
+}
+
+"aggregate fields of \"hira_baseline_ra_list\""
+type hira_baseline_ra_list_aggregate_fields {
+    avg: hira_baseline_ra_list_avg_fields
+    count(columns: [hira_baseline_ra_list_select_column!], distinct: Boolean): Int!
+    max: hira_baseline_ra_list_max_fields
+    min: hira_baseline_ra_list_min_fields
+    stddev: hira_baseline_ra_list_stddev_fields
+    stddev_pop: hira_baseline_ra_list_stddev_pop_fields
+    stddev_samp: hira_baseline_ra_list_stddev_samp_fields
+    sum: hira_baseline_ra_list_sum_fields
+    var_pop: hira_baseline_ra_list_var_pop_fields
+    var_samp: hira_baseline_ra_list_var_samp_fields
+    variance: hira_baseline_ra_list_variance_fields
+}
+
+"aggregate avg on columns"
+type hira_baseline_ra_list_avg_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate max on columns"
+type hira_baseline_ra_list_max_fields {
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    frequency_1: Int
+    frequency_2: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    risk: String
+}
+
+"aggregate min on columns"
+type hira_baseline_ra_list_min_fields {
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    frequency_1: Int
+    frequency_2: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    risk: String
+}
+
+"response of any mutation on the table \"hira_baseline_ra_list\""
+type hira_baseline_ra_list_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_baseline_ra_list!]!
+}
+
+"aggregate stddev on columns"
+type hira_baseline_ra_list_stddev_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate stddev_pop on columns"
+type hira_baseline_ra_list_stddev_pop_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate stddev_samp on columns"
+type hira_baseline_ra_list_stddev_samp_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate sum on columns"
+type hira_baseline_ra_list_sum_fields {
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    frequency_1: Int
+    frequency_2: Int
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+}
+
+"aggregate var_pop on columns"
+type hira_baseline_ra_list_var_pop_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate var_samp on columns"
+type hira_baseline_ra_list_var_samp_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"aggregate variance on columns"
+type hira_baseline_ra_list_variance_fields {
+    baseline_ra_id: Float
+    consequence_1: Float
+    consequence_2: Float
+    frequency_1: Float
+    frequency_2: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+}
+
+"response of any mutation on the table \"hira_baseline_ra\""
+type hira_baseline_ra_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_baseline_ra!]!
+}
+
+"columns and relationships of \"hira_sop\""
+type hira_sop implements Node {
+    category: String
+    "An object relationship"
+    client: default_clients
+    client_id: bigint
+    close_down_list(
+        "JSON select path"
+        path: String
+    ): json
+    "An object relationship"
+    company: default_companies
+    company_id: bigint
+    "An object relationship"
+    contractor: default_contractors
+    "An object relationship"
+    contractor_client: default_clients
+    contractor_client_id: bigint
+    contractor_id: bigint
+    "An object relationship"
+    contractor_site: default_sites
+    contractor_site_id: bigint
+    "An object relationship"
+    contractor_user: default_contractor_users
+    contractor_user_id: bigint
+    created_at: timestamptz
+    custom_safety_pre_requesite_list(
+        "JSON select path"
+        path: String
+    ): json
+    date_created: date
+    date_revised: date
+    doc(
+        "JSON select path"
+        path: String
+    ): json
+    firestore_id: String
+    id: ID!
+    key_point_list(
+        "JSON select path"
+        path: String
+    ): json
+    location: String
+    operation_list(
+        "JSON select path"
+        path: String
+    ): json
+    other: String
+    "An object relationship"
+    prepared_by: hr_employees
+    prepared_by_id: bigint
+    procedure_list(
+        "JSON select path"
+        path: String
+    ): json
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
+    risk_level: String
+    risk_list(
+        "JSON select path"
+        path: String
+    ): json
+    safety_pre_requesite_list(
+        "JSON select path"
+        path: String
+    ): json
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    "An object relationship"
+    user: default_users
+    user_id: bigint
+}
+
+"A Relay connection object on \"hira_sop\""
+type hira_sopConnection {
+    edges: [hira_sopEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_sopEdge {
+    cursor: String!
+    node: hira_sop!
+}
+
+"response of any mutation on the table \"hira_sop\""
+type hira_sop_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_sop!]!
+}
+
+"columns and relationships of \"hira_swp\""
+type hira_swp implements Node {
+    category: String
+    "An object relationship"
+    client: default_clients
+    client_id: bigint
+    "An object relationship"
+    company: default_companies
+    company_id: bigint
+    "An object relationship"
+    contractor: default_contractors
+    "An object relationship"
+    contractor_client: default_clients
+    contractor_client_id: bigint
+    contractor_id: bigint
+    "An object relationship"
+    contractor_site: default_sites
+    contractor_site_id: bigint
+    "An object relationship"
+    contractor_user: default_contractor_users
+    contractor_user_id: bigint
+    created_at: timestamptz
+    date_created: date
+    "An object relationship"
+    department: default_departments
+    department_id: bigint
+    doc(
+        "JSON select path"
+        path: String
+    ): json
+    expiry: date
+    firestore_id: String
+    id: ID!
+    location: String
+    notes: String
+    "An object relationship"
+    person_approving_procedure: hr_employees
+    person_approving_procedure_id: bigint
+    "An array relationship"
+    potential_hazard_and_possible_cause_list(
+        "distinct select on columns"
+        distinct_on: [hira_swp_potential_hazard_and_possible_cause_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_potential_hazard_and_possible_cause_list_order_by!],
+        "filter the rows returned"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    ): [hira_swp_potential_hazard_and_possible_cause_list!]!
+    "An aggregate relationship"
+    potential_hazard_and_possible_cause_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hira_swp_potential_hazard_and_possible_cause_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_potential_hazard_and_possible_cause_list_order_by!],
+        "filter the rows returned"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    ): hira_swp_potential_hazard_and_possible_cause_list_aggregate!
+    "An array relationship connection"
+    potential_hazard_and_possible_cause_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_swp_potential_hazard_and_possible_cause_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_potential_hazard_and_possible_cause_list_order_by!],
+        "filter the rows returned"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    ): hira_swp_potential_hazard_and_possible_cause_listConnection!
+    "An array relationship"
+    ppe_required_list(
+        "distinct select on columns"
+        distinct_on: [proxy_swp__ppe_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_swp__ppe_order_by!],
+        "filter the rows returned"
+        where: proxy_swp__ppe_bool_exp
+    ): [proxy_swp__ppe!]!
+    "An aggregate relationship"
+    ppe_required_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_swp__ppe_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_swp__ppe_order_by!],
+        "filter the rows returned"
+        where: proxy_swp__ppe_bool_exp
+    ): proxy_swp__ppe_aggregate!
+    "An array relationship connection"
+    ppe_required_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_swp__ppe_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_swp__ppe_order_by!],
+        "filter the rows returned"
+        where: proxy_swp__ppe_bool_exp
+    ): proxy_swp__ppeConnection!
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
+    "An array relationship"
+    sign_sheet_employee_list(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__swp_sign_sheet_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__swp_sign_sheet_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__swp_sign_sheet_bool_exp
+    ): [proxy_employee__swp_sign_sheet!]!
+    "An aggregate relationship"
+    sign_sheet_employee_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__swp_sign_sheet_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__swp_sign_sheet_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__swp_sign_sheet_bool_exp
+    ): proxy_employee__swp_sign_sheet_aggregate!
+    "An array relationship connection"
+    sign_sheet_employee_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__swp_sign_sheet_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__swp_sign_sheet_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__swp_sign_sheet_bool_exp
+    ): proxy_employee__swp_sign_sheetConnection!
+    sign_sheet_notes: String
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    steps_to_perform_task_list(
+        "JSON select path"
+        path: String
+    ): json
+    training_requirement_list(
+        "JSON select path"
+        path: String
+    ): json
+    "An object relationship"
+    user: default_users
+    user_id: bigint
+    work_task: String
+}
+
+"A Relay connection object on \"hira_swp\""
+type hira_swpConnection {
+    edges: [hira_swpEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_swpEdge {
+    cursor: String!
+    node: hira_swp!
+}
+
+"response of any mutation on the table \"hira_swp\""
+type hira_swp_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_swp!]!
+}
+
+"columns and relationships of \"hira_swp_potential_hazard_and_possible_cause_list\""
+type hira_swp_potential_hazard_and_possible_cause_list implements Node {
+    cause: String
+    hazard: String
+    id: ID!
+    rating: String
+    "An object relationship"
+    swp: hira_swp!
+    swp_id: bigint!
+}
+
+"A Relay connection object on \"hira_swp_potential_hazard_and_possible_cause_list\""
+type hira_swp_potential_hazard_and_possible_cause_listConnection {
+    edges: [hira_swp_potential_hazard_and_possible_cause_listEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_swp_potential_hazard_and_possible_cause_listEdge {
+    cursor: String!
+    node: hira_swp_potential_hazard_and_possible_cause_list!
+}
+
+"aggregated selection of \"hira_swp_potential_hazard_and_possible_cause_list\""
+type hira_swp_potential_hazard_and_possible_cause_list_aggregate {
+    aggregate: hira_swp_potential_hazard_and_possible_cause_list_aggregate_fields
+    nodes: [hira_swp_potential_hazard_and_possible_cause_list!]!
+}
+
+"aggregate fields of \"hira_swp_potential_hazard_and_possible_cause_list\""
+type hira_swp_potential_hazard_and_possible_cause_list_aggregate_fields {
+    avg: hira_swp_potential_hazard_and_possible_cause_list_avg_fields
+    count(columns: [hira_swp_potential_hazard_and_possible_cause_list_select_column!], distinct: Boolean): Int!
+    max: hira_swp_potential_hazard_and_possible_cause_list_max_fields
+    min: hira_swp_potential_hazard_and_possible_cause_list_min_fields
+    stddev: hira_swp_potential_hazard_and_possible_cause_list_stddev_fields
+    stddev_pop: hira_swp_potential_hazard_and_possible_cause_list_stddev_pop_fields
+    stddev_samp: hira_swp_potential_hazard_and_possible_cause_list_stddev_samp_fields
+    sum: hira_swp_potential_hazard_and_possible_cause_list_sum_fields
+    var_pop: hira_swp_potential_hazard_and_possible_cause_list_var_pop_fields
+    var_samp: hira_swp_potential_hazard_and_possible_cause_list_var_samp_fields
+    variance: hira_swp_potential_hazard_and_possible_cause_list_variance_fields
+}
+
+"aggregate avg on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_avg_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate max on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_max_fields {
+    cause: String
+    hazard: String
+    id: bigint
+    rating: String
+    swp_id: bigint
+}
+
+"aggregate min on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_min_fields {
+    cause: String
+    hazard: String
+    id: bigint
+    rating: String
+    swp_id: bigint
+}
+
+"response of any mutation on the table \"hira_swp_potential_hazard_and_possible_cause_list\""
+type hira_swp_potential_hazard_and_possible_cause_list_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_swp_potential_hazard_and_possible_cause_list!]!
+}
+
+"aggregate stddev on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_stddev_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_stddev_pop_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_stddev_samp_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate sum on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_sum_fields {
+    id: bigint
+    swp_id: bigint
+}
+
+"aggregate var_pop on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_var_pop_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate var_samp on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_var_samp_fields {
+    id: Float
+    swp_id: Float
+}
+
+"aggregate variance on columns"
+type hira_swp_potential_hazard_and_possible_cause_list_variance_fields {
+    id: Float
+    swp_id: Float
+}
+
+"columns and relationships of \"hira_taskbased_ra\""
+type hira_taskbased_ra implements Node {
+    activity: String
+    "An object relationship"
+    client: default_clients
+    client_id: bigint
+    "An object relationship"
+    company: default_companies
+    company_id: bigint
+    "An object relationship"
+    contractor: default_contractors
+    "An object relationship"
+    contractor_client: default_clients
+    contractor_client_id: bigint
+    contractor_id: bigint
+    "An object relationship"
+    contractor_site: default_sites
+    contractor_site_id: bigint
+    "An object relationship"
+    contractor_user: default_contractor_users
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: ID!
+    "An array relationship"
+    list(
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_list_bool_exp
+    ): [hira_taskbased_ra_list!]!
+    "An aggregate relationship"
+    list_aggregate(
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_list_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_list_bool_exp
+    ): hira_taskbased_ra_list_aggregate!
+    "An array relationship connection"
+    list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_list_bool_exp
+    ): hira_taskbased_ra_listConnection!
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
+    risk_tolerance: String
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    "An object relationship"
+    user: default_users
+    user_id: bigint
+}
+
+"A Relay connection object on \"hira_taskbased_ra\""
+type hira_taskbased_raConnection {
+    edges: [hira_taskbased_raEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_taskbased_raEdge {
+    cursor: String!
+    node: hira_taskbased_ra!
+}
+
+"columns and relationships of \"hira_taskbased_ra_list\""
+type hira_taskbased_ra_list implements Node {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    control_measure_list(
+        "JSON select path"
+        path: String
+    ): json
+    control_measure_list_additional(
+        "JSON select path"
+        path: String
+    ): json
+    due_date: date
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    hazard: String
+    id: ID!
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    "An object relationship"
+    responsible_person: hr_employees
+    responsible_person_id: bigint
+    risk: String
+    risk_type(
+        "JSON select path"
+        path: String
+    ): json
+    target_date: date
+    "An object relationship"
+    taskbased_ra: hira_taskbased_ra!
+    taskbased_ra_id: bigint!
+}
+
+"A Relay connection object on \"hira_taskbased_ra_list\""
+type hira_taskbased_ra_listConnection {
+    edges: [hira_taskbased_ra_listEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_taskbased_ra_listEdge {
+    cursor: String!
+    node: hira_taskbased_ra_list!
+}
+
+"aggregated selection of \"hira_taskbased_ra_list\""
+type hira_taskbased_ra_list_aggregate {
+    aggregate: hira_taskbased_ra_list_aggregate_fields
+    nodes: [hira_taskbased_ra_list!]!
+}
+
+"aggregate fields of \"hira_taskbased_ra_list\""
+type hira_taskbased_ra_list_aggregate_fields {
+    avg: hira_taskbased_ra_list_avg_fields
+    count(columns: [hira_taskbased_ra_list_select_column!], distinct: Boolean): Int!
+    max: hira_taskbased_ra_list_max_fields
+    min: hira_taskbased_ra_list_min_fields
+    stddev: hira_taskbased_ra_list_stddev_fields
+    stddev_pop: hira_taskbased_ra_list_stddev_pop_fields
+    stddev_samp: hira_taskbased_ra_list_stddev_samp_fields
+    sum: hira_taskbased_ra_list_sum_fields
+    var_pop: hira_taskbased_ra_list_var_pop_fields
+    var_samp: hira_taskbased_ra_list_var_samp_fields
+    variance: hira_taskbased_ra_list_variance_fields
+}
+
+"aggregate avg on columns"
+type hira_taskbased_ra_list_avg_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate max on columns"
+type hira_taskbased_ra_list_max_fields {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    due_date: date
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
+    risk: String
+    target_date: date
+    taskbased_ra_id: bigint
+}
+
+"aggregate min on columns"
+type hira_taskbased_ra_list_min_fields {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    due_date: date
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
+    risk: String
+    target_date: date
+    taskbased_ra_id: bigint
+}
+
+"response of any mutation on the table \"hira_taskbased_ra_list\""
+type hira_taskbased_ra_list_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_taskbased_ra_list!]!
+}
+
+"aggregate stddev on columns"
+type hira_taskbased_ra_list_stddev_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type hira_taskbased_ra_list_stddev_pop_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type hira_taskbased_ra_list_stddev_samp_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate sum on columns"
+type hira_taskbased_ra_list_sum_fields {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
+    taskbased_ra_id: bigint
+}
+
+"aggregate var_pop on columns"
+type hira_taskbased_ra_list_var_pop_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate var_samp on columns"
+type hira_taskbased_ra_list_var_samp_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"aggregate variance on columns"
+type hira_taskbased_ra_list_variance_fields {
+    consequence_1: Float
+    consequence_2: Float
+    consequence_3: Float
+    frequency_1: Float
+    frequency_2: Float
+    frequency_3: Float
+    id: Float
+    likelihood_1: Float
+    likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+    taskbased_ra_id: Float
+}
+
+"response of any mutation on the table \"hira_taskbased_ra\""
+type hira_taskbased_ra_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_taskbased_ra!]!
+}
+
 "columns and relationships of \"hr_employees\""
 type hr_employees implements Node {
     "An array relationship"
@@ -31733,6 +32761,55 @@ type mutation_root {
     ): default_zones_mutation_response
     "delete single row from the table: \"default_zones\""
     delete_default_zones_by_pk(id: bigint!): default_zones
+    "delete data from the table: \"hira_baseline_ra\""
+    delete_hira_baseline_ra(
+        "filter the rows which have to be deleted"
+        where: hira_baseline_ra_bool_exp!
+    ): hira_baseline_ra_mutation_response
+    "delete single row from the table: \"hira_baseline_ra\""
+    delete_hira_baseline_ra_by_pk(id: bigint!): hira_baseline_ra
+    "delete data from the table: \"hira_baseline_ra_list\""
+    delete_hira_baseline_ra_list(
+        "filter the rows which have to be deleted"
+        where: hira_baseline_ra_list_bool_exp!
+    ): hira_baseline_ra_list_mutation_response
+    "delete single row from the table: \"hira_baseline_ra_list\""
+    delete_hira_baseline_ra_list_by_pk(id: bigint!): hira_baseline_ra_list
+    "delete data from the table: \"hira_sop\""
+    delete_hira_sop(
+        "filter the rows which have to be deleted"
+        where: hira_sop_bool_exp!
+    ): hira_sop_mutation_response
+    "delete single row from the table: \"hira_sop\""
+    delete_hira_sop_by_pk(id: bigint!): hira_sop
+    "delete data from the table: \"hira_swp\""
+    delete_hira_swp(
+        "filter the rows which have to be deleted"
+        where: hira_swp_bool_exp!
+    ): hira_swp_mutation_response
+    "delete single row from the table: \"hira_swp\""
+    delete_hira_swp_by_pk(id: bigint!): hira_swp
+    "delete data from the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    delete_hira_swp_potential_hazard_and_possible_cause_list(
+        "filter the rows which have to be deleted"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp!
+    ): hira_swp_potential_hazard_and_possible_cause_list_mutation_response
+    "delete single row from the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    delete_hira_swp_potential_hazard_and_possible_cause_list_by_pk(id: bigint!): hira_swp_potential_hazard_and_possible_cause_list
+    "delete data from the table: \"hira_taskbased_ra\""
+    delete_hira_taskbased_ra(
+        "filter the rows which have to be deleted"
+        where: hira_taskbased_ra_bool_exp!
+    ): hira_taskbased_ra_mutation_response
+    "delete single row from the table: \"hira_taskbased_ra\""
+    delete_hira_taskbased_ra_by_pk(id: bigint!): hira_taskbased_ra
+    "delete data from the table: \"hira_taskbased_ra_list\""
+    delete_hira_taskbased_ra_list(
+        "filter the rows which have to be deleted"
+        where: hira_taskbased_ra_list_bool_exp!
+    ): hira_taskbased_ra_list_mutation_response
+    "delete single row from the table: \"hira_taskbased_ra_list\""
+    delete_hira_taskbased_ra_list_by_pk(id: bigint!): hira_taskbased_ra_list
     "delete data from the table: \"hr_employees\""
     delete_hr_employees(
         "filter the rows which have to be deleted"
@@ -31971,6 +33048,13 @@ type mutation_root {
     ): proxy_employee__ppe_mutation_response
     "delete single row from the table: \"proxy_employee__ppe\""
     delete_proxy_employee__ppe_by_pk(id: bigint!): proxy_employee__ppe
+    "delete data from the table: \"proxy_employee__swp_sign_sheet\""
+    delete_proxy_employee__swp_sign_sheet(
+        "filter the rows which have to be deleted"
+        where: proxy_employee__swp_sign_sheet_bool_exp!
+    ): proxy_employee__swp_sign_sheet_mutation_response
+    "delete single row from the table: \"proxy_employee__swp_sign_sheet\""
+    delete_proxy_employee__swp_sign_sheet_by_pk(id: bigint!): proxy_employee__swp_sign_sheet
     "delete data from the table: \"proxy_employee__training_register\""
     delete_proxy_employee__training_register(
         "filter the rows which have to be deleted"
@@ -32146,6 +33230,13 @@ type mutation_root {
     ): proxy_sector__training_matrix_mutation_response
     "delete single row from the table: \"proxy_sector__training_matrix\""
     delete_proxy_sector__training_matrix_by_pk(id: bigint!): proxy_sector__training_matrix
+    "delete data from the table: \"proxy_swp__ppe\""
+    delete_proxy_swp__ppe(
+        "filter the rows which have to be deleted"
+        where: proxy_swp__ppe_bool_exp!
+    ): proxy_swp__ppe_mutation_response
+    "delete single row from the table: \"proxy_swp__ppe\""
+    delete_proxy_swp__ppe_by_pk(id: bigint!): proxy_swp__ppe
     "delete data from the table: \"proxy_team__ppe\""
     delete_proxy_team__ppe(
         "filter the rows which have to be deleted"
@@ -33523,6 +34614,104 @@ type mutation_root {
         "upsert condition"
         on_conflict: default_zones_on_conflict
     ): default_zones
+    "insert data into the table: \"hira_baseline_ra\""
+    insert_hira_baseline_ra(
+        "the rows to be inserted"
+        objects: [hira_baseline_ra_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_on_conflict
+    ): hira_baseline_ra_mutation_response
+    "insert data into the table: \"hira_baseline_ra_list\""
+    insert_hira_baseline_ra_list(
+        "the rows to be inserted"
+        objects: [hira_baseline_ra_list_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_list_on_conflict
+    ): hira_baseline_ra_list_mutation_response
+    "insert a single row into the table: \"hira_baseline_ra_list\""
+    insert_hira_baseline_ra_list_one(
+        "the row to be inserted"
+        object: hira_baseline_ra_list_insert_input!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_list_on_conflict
+    ): hira_baseline_ra_list
+    "insert a single row into the table: \"hira_baseline_ra\""
+    insert_hira_baseline_ra_one(
+        "the row to be inserted"
+        object: hira_baseline_ra_insert_input!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_on_conflict
+    ): hira_baseline_ra
+    "insert data into the table: \"hira_sop\""
+    insert_hira_sop(
+        "the rows to be inserted"
+        objects: [hira_sop_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_sop_on_conflict
+    ): hira_sop_mutation_response
+    "insert a single row into the table: \"hira_sop\""
+    insert_hira_sop_one(
+        "the row to be inserted"
+        object: hira_sop_insert_input!,
+        "upsert condition"
+        on_conflict: hira_sop_on_conflict
+    ): hira_sop
+    "insert data into the table: \"hira_swp\""
+    insert_hira_swp(
+        "the rows to be inserted"
+        objects: [hira_swp_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_swp_on_conflict
+    ): hira_swp_mutation_response
+    "insert a single row into the table: \"hira_swp\""
+    insert_hira_swp_one(
+        "the row to be inserted"
+        object: hira_swp_insert_input!,
+        "upsert condition"
+        on_conflict: hira_swp_on_conflict
+    ): hira_swp
+    "insert data into the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    insert_hira_swp_potential_hazard_and_possible_cause_list(
+        "the rows to be inserted"
+        objects: [hira_swp_potential_hazard_and_possible_cause_list_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_swp_potential_hazard_and_possible_cause_list_on_conflict
+    ): hira_swp_potential_hazard_and_possible_cause_list_mutation_response
+    "insert a single row into the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    insert_hira_swp_potential_hazard_and_possible_cause_list_one(
+        "the row to be inserted"
+        object: hira_swp_potential_hazard_and_possible_cause_list_insert_input!,
+        "upsert condition"
+        on_conflict: hira_swp_potential_hazard_and_possible_cause_list_on_conflict
+    ): hira_swp_potential_hazard_and_possible_cause_list
+    "insert data into the table: \"hira_taskbased_ra\""
+    insert_hira_taskbased_ra(
+        "the rows to be inserted"
+        objects: [hira_taskbased_ra_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_taskbased_ra_on_conflict
+    ): hira_taskbased_ra_mutation_response
+    "insert data into the table: \"hira_taskbased_ra_list\""
+    insert_hira_taskbased_ra_list(
+        "the rows to be inserted"
+        objects: [hira_taskbased_ra_list_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_taskbased_ra_list_on_conflict
+    ): hira_taskbased_ra_list_mutation_response
+    "insert a single row into the table: \"hira_taskbased_ra_list\""
+    insert_hira_taskbased_ra_list_one(
+        "the row to be inserted"
+        object: hira_taskbased_ra_list_insert_input!,
+        "upsert condition"
+        on_conflict: hira_taskbased_ra_list_on_conflict
+    ): hira_taskbased_ra_list
+    "insert a single row into the table: \"hira_taskbased_ra\""
+    insert_hira_taskbased_ra_one(
+        "the row to be inserted"
+        object: hira_taskbased_ra_insert_input!,
+        "upsert condition"
+        on_conflict: hira_taskbased_ra_on_conflict
+    ): hira_taskbased_ra
     "insert data into the table: \"hr_employees\""
     insert_hr_employees(
         "the rows to be inserted"
@@ -33999,6 +35188,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: proxy_employee__ppe_on_conflict
     ): proxy_employee__ppe
+    "insert data into the table: \"proxy_employee__swp_sign_sheet\""
+    insert_proxy_employee__swp_sign_sheet(
+        "the rows to be inserted"
+        objects: [proxy_employee__swp_sign_sheet_insert_input!]!,
+        "upsert condition"
+        on_conflict: proxy_employee__swp_sign_sheet_on_conflict
+    ): proxy_employee__swp_sign_sheet_mutation_response
+    "insert a single row into the table: \"proxy_employee__swp_sign_sheet\""
+    insert_proxy_employee__swp_sign_sheet_one(
+        "the row to be inserted"
+        object: proxy_employee__swp_sign_sheet_insert_input!,
+        "upsert condition"
+        on_conflict: proxy_employee__swp_sign_sheet_on_conflict
+    ): proxy_employee__swp_sign_sheet
     "insert data into the table: \"proxy_employee__training_register\""
     insert_proxy_employee__training_register(
         "the rows to be inserted"
@@ -34349,6 +35552,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: proxy_sector__training_matrix_on_conflict
     ): proxy_sector__training_matrix
+    "insert data into the table: \"proxy_swp__ppe\""
+    insert_proxy_swp__ppe(
+        "the rows to be inserted"
+        objects: [proxy_swp__ppe_insert_input!]!,
+        "upsert condition"
+        on_conflict: proxy_swp__ppe_on_conflict
+    ): proxy_swp__ppe_mutation_response
+    "insert a single row into the table: \"proxy_swp__ppe\""
+    insert_proxy_swp__ppe_one(
+        "the row to be inserted"
+        object: proxy_swp__ppe_insert_input!,
+        "upsert condition"
+        on_conflict: proxy_swp__ppe_on_conflict
+    ): proxy_swp__ppe
     "insert data into the table: \"proxy_team__ppe\""
     insert_proxy_team__ppe(
         "the rows to be inserted"
@@ -36861,6 +38078,160 @@ type mutation_root {
         "updates to execute, in order"
         updates: [default_zones_updates!]!
     ): [default_zones_mutation_response]
+    "update data of the table: \"hira_baseline_ra\""
+    update_hira_baseline_ra(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_set_input,
+        "filter the rows which have to be updated"
+        where: hira_baseline_ra_bool_exp!
+    ): hira_baseline_ra_mutation_response
+    "update single row of the table: \"hira_baseline_ra\""
+    update_hira_baseline_ra_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_set_input,
+        pk_columns: hira_baseline_ra_pk_columns_input!
+    ): hira_baseline_ra
+    "update data of the table: \"hira_baseline_ra_list\""
+    update_hira_baseline_ra_list(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_list_set_input,
+        "filter the rows which have to be updated"
+        where: hira_baseline_ra_list_bool_exp!
+    ): hira_baseline_ra_list_mutation_response
+    "update single row of the table: \"hira_baseline_ra_list\""
+    update_hira_baseline_ra_list_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_list_set_input,
+        pk_columns: hira_baseline_ra_list_pk_columns_input!
+    ): hira_baseline_ra_list
+    "update multiples rows of table: \"hira_baseline_ra_list\""
+    update_hira_baseline_ra_list_many(
+        "updates to execute, in order"
+        updates: [hira_baseline_ra_list_updates!]!
+    ): [hira_baseline_ra_list_mutation_response]
+    "update multiples rows of table: \"hira_baseline_ra\""
+    update_hira_baseline_ra_many(
+        "updates to execute, in order"
+        updates: [hira_baseline_ra_updates!]!
+    ): [hira_baseline_ra_mutation_response]
+    "update data of the table: \"hira_sop\""
+    update_hira_sop(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_sop_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_sop_set_input,
+        "filter the rows which have to be updated"
+        where: hira_sop_bool_exp!
+    ): hira_sop_mutation_response
+    "update single row of the table: \"hira_sop\""
+    update_hira_sop_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_sop_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_sop_set_input,
+        pk_columns: hira_sop_pk_columns_input!
+    ): hira_sop
+    "update multiples rows of table: \"hira_sop\""
+    update_hira_sop_many(
+        "updates to execute, in order"
+        updates: [hira_sop_updates!]!
+    ): [hira_sop_mutation_response]
+    "update data of the table: \"hira_swp\""
+    update_hira_swp(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_swp_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_swp_set_input,
+        "filter the rows which have to be updated"
+        where: hira_swp_bool_exp!
+    ): hira_swp_mutation_response
+    "update single row of the table: \"hira_swp\""
+    update_hira_swp_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_swp_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_swp_set_input,
+        pk_columns: hira_swp_pk_columns_input!
+    ): hira_swp
+    "update multiples rows of table: \"hira_swp\""
+    update_hira_swp_many(
+        "updates to execute, in order"
+        updates: [hira_swp_updates!]!
+    ): [hira_swp_mutation_response]
+    "update data of the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    update_hira_swp_potential_hazard_and_possible_cause_list(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_swp_potential_hazard_and_possible_cause_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_swp_potential_hazard_and_possible_cause_list_set_input,
+        "filter the rows which have to be updated"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp!
+    ): hira_swp_potential_hazard_and_possible_cause_list_mutation_response
+    "update single row of the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    update_hira_swp_potential_hazard_and_possible_cause_list_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_swp_potential_hazard_and_possible_cause_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_swp_potential_hazard_and_possible_cause_list_set_input,
+        pk_columns: hira_swp_potential_hazard_and_possible_cause_list_pk_columns_input!
+    ): hira_swp_potential_hazard_and_possible_cause_list
+    "update multiples rows of table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    update_hira_swp_potential_hazard_and_possible_cause_list_many(
+        "updates to execute, in order"
+        updates: [hira_swp_potential_hazard_and_possible_cause_list_updates!]!
+    ): [hira_swp_potential_hazard_and_possible_cause_list_mutation_response]
+    "update data of the table: \"hira_taskbased_ra\""
+    update_hira_taskbased_ra(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_taskbased_ra_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_taskbased_ra_set_input,
+        "filter the rows which have to be updated"
+        where: hira_taskbased_ra_bool_exp!
+    ): hira_taskbased_ra_mutation_response
+    "update single row of the table: \"hira_taskbased_ra\""
+    update_hira_taskbased_ra_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_taskbased_ra_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_taskbased_ra_set_input,
+        pk_columns: hira_taskbased_ra_pk_columns_input!
+    ): hira_taskbased_ra
+    "update data of the table: \"hira_taskbased_ra_list\""
+    update_hira_taskbased_ra_list(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_taskbased_ra_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_taskbased_ra_list_set_input,
+        "filter the rows which have to be updated"
+        where: hira_taskbased_ra_list_bool_exp!
+    ): hira_taskbased_ra_list_mutation_response
+    "update single row of the table: \"hira_taskbased_ra_list\""
+    update_hira_taskbased_ra_list_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_taskbased_ra_list_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_taskbased_ra_list_set_input,
+        pk_columns: hira_taskbased_ra_list_pk_columns_input!
+    ): hira_taskbased_ra_list
+    "update multiples rows of table: \"hira_taskbased_ra_list\""
+    update_hira_taskbased_ra_list_many(
+        "updates to execute, in order"
+        updates: [hira_taskbased_ra_list_updates!]!
+    ): [hira_taskbased_ra_list_mutation_response]
+    "update multiples rows of table: \"hira_taskbased_ra\""
+    update_hira_taskbased_ra_many(
+        "updates to execute, in order"
+        updates: [hira_taskbased_ra_updates!]!
+    ): [hira_taskbased_ra_mutation_response]
     "update data of the table: \"hr_employees\""
     update_hr_employees(
         "increments the numeric columns with given value of the filtered values"
@@ -37609,6 +38980,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [proxy_employee__ppe_updates!]!
     ): [proxy_employee__ppe_mutation_response]
+    "update data of the table: \"proxy_employee__swp_sign_sheet\""
+    update_proxy_employee__swp_sign_sheet(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__swp_sign_sheet_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__swp_sign_sheet_set_input,
+        "filter the rows which have to be updated"
+        where: proxy_employee__swp_sign_sheet_bool_exp!
+    ): proxy_employee__swp_sign_sheet_mutation_response
+    "update single row of the table: \"proxy_employee__swp_sign_sheet\""
+    update_proxy_employee__swp_sign_sheet_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__swp_sign_sheet_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__swp_sign_sheet_set_input,
+        pk_columns: proxy_employee__swp_sign_sheet_pk_columns_input!
+    ): proxy_employee__swp_sign_sheet
+    "update multiples rows of table: \"proxy_employee__swp_sign_sheet\""
+    update_proxy_employee__swp_sign_sheet_many(
+        "updates to execute, in order"
+        updates: [proxy_employee__swp_sign_sheet_updates!]!
+    ): [proxy_employee__swp_sign_sheet_mutation_response]
     "update data of the table: \"proxy_employee__training_register\""
     update_proxy_employee__training_register(
         "increments the numeric columns with given value of the filtered values"
@@ -38159,6 +39552,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [proxy_sector__training_matrix_updates!]!
     ): [proxy_sector__training_matrix_mutation_response]
+    "update data of the table: \"proxy_swp__ppe\""
+    update_proxy_swp__ppe(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_swp__ppe_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_swp__ppe_set_input,
+        "filter the rows which have to be updated"
+        where: proxy_swp__ppe_bool_exp!
+    ): proxy_swp__ppe_mutation_response
+    "update single row of the table: \"proxy_swp__ppe\""
+    update_proxy_swp__ppe_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_swp__ppe_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_swp__ppe_set_input,
+        pk_columns: proxy_swp__ppe_pk_columns_input!
+    ): proxy_swp__ppe
+    "update multiples rows of table: \"proxy_swp__ppe\""
+    update_proxy_swp__ppe_many(
+        "updates to execute, in order"
+        updates: [proxy_swp__ppe_updates!]!
+    ): [proxy_swp__ppe_mutation_response]
     "update data of the table: \"proxy_team__ppe\""
     update_proxy_team__ppe(
         "increments the numeric columns with given value of the filtered values"
@@ -42069,6 +43484,127 @@ type proxy_employee__ppe_variance_fields {
     ppe_id: Float
 }
 
+"columns and relationships of \"proxy_employee__swp_sign_sheet\""
+type proxy_employee__swp_sign_sheet implements Node {
+    "An object relationship"
+    employee: hr_employees!
+    employee_id: bigint!
+    id: ID!
+    "An object relationship"
+    swp: hira_swp!
+    swp_id: bigint!
+}
+
+"A Relay connection object on \"proxy_employee__swp_sign_sheet\""
+type proxy_employee__swp_sign_sheetConnection {
+    edges: [proxy_employee__swp_sign_sheetEdge!]!
+    pageInfo: PageInfo!
+}
+
+type proxy_employee__swp_sign_sheetEdge {
+    cursor: String!
+    node: proxy_employee__swp_sign_sheet!
+}
+
+"aggregated selection of \"proxy_employee__swp_sign_sheet\""
+type proxy_employee__swp_sign_sheet_aggregate {
+    aggregate: proxy_employee__swp_sign_sheet_aggregate_fields
+    nodes: [proxy_employee__swp_sign_sheet!]!
+}
+
+"aggregate fields of \"proxy_employee__swp_sign_sheet\""
+type proxy_employee__swp_sign_sheet_aggregate_fields {
+    avg: proxy_employee__swp_sign_sheet_avg_fields
+    count(columns: [proxy_employee__swp_sign_sheet_select_column!], distinct: Boolean): Int!
+    max: proxy_employee__swp_sign_sheet_max_fields
+    min: proxy_employee__swp_sign_sheet_min_fields
+    stddev: proxy_employee__swp_sign_sheet_stddev_fields
+    stddev_pop: proxy_employee__swp_sign_sheet_stddev_pop_fields
+    stddev_samp: proxy_employee__swp_sign_sheet_stddev_samp_fields
+    sum: proxy_employee__swp_sign_sheet_sum_fields
+    var_pop: proxy_employee__swp_sign_sheet_var_pop_fields
+    var_samp: proxy_employee__swp_sign_sheet_var_samp_fields
+    variance: proxy_employee__swp_sign_sheet_variance_fields
+}
+
+"aggregate avg on columns"
+type proxy_employee__swp_sign_sheet_avg_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate max on columns"
+type proxy_employee__swp_sign_sheet_max_fields {
+    employee_id: bigint
+    id: bigint
+    swp_id: bigint
+}
+
+"aggregate min on columns"
+type proxy_employee__swp_sign_sheet_min_fields {
+    employee_id: bigint
+    id: bigint
+    swp_id: bigint
+}
+
+"response of any mutation on the table \"proxy_employee__swp_sign_sheet\""
+type proxy_employee__swp_sign_sheet_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [proxy_employee__swp_sign_sheet!]!
+}
+
+"aggregate stddev on columns"
+type proxy_employee__swp_sign_sheet_stddev_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type proxy_employee__swp_sign_sheet_stddev_pop_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type proxy_employee__swp_sign_sheet_stddev_samp_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate sum on columns"
+type proxy_employee__swp_sign_sheet_sum_fields {
+    employee_id: bigint
+    id: bigint
+    swp_id: bigint
+}
+
+"aggregate var_pop on columns"
+type proxy_employee__swp_sign_sheet_var_pop_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate var_samp on columns"
+type proxy_employee__swp_sign_sheet_var_samp_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
+"aggregate variance on columns"
+type proxy_employee__swp_sign_sheet_variance_fields {
+    employee_id: Float
+    id: Float
+    swp_id: Float
+}
+
 "columns and relationships of \"proxy_employee__training_register\""
 type proxy_employee__training_register implements Node {
     date: date
@@ -45166,6 +46702,127 @@ type proxy_sector__training_matrix_variance_fields {
     training_id: Float
 }
 
+"columns and relationships of \"proxy_swp__ppe\""
+type proxy_swp__ppe implements Node {
+    id: ID!
+    "An object relationship"
+    ppe: ppe!
+    ppe_id: bigint!
+    "An object relationship"
+    swp: hira_swp!
+    swp_id: bigint!
+}
+
+"A Relay connection object on \"proxy_swp__ppe\""
+type proxy_swp__ppeConnection {
+    edges: [proxy_swp__ppeEdge!]!
+    pageInfo: PageInfo!
+}
+
+type proxy_swp__ppeEdge {
+    cursor: String!
+    node: proxy_swp__ppe!
+}
+
+"aggregated selection of \"proxy_swp__ppe\""
+type proxy_swp__ppe_aggregate {
+    aggregate: proxy_swp__ppe_aggregate_fields
+    nodes: [proxy_swp__ppe!]!
+}
+
+"aggregate fields of \"proxy_swp__ppe\""
+type proxy_swp__ppe_aggregate_fields {
+    avg: proxy_swp__ppe_avg_fields
+    count(columns: [proxy_swp__ppe_select_column!], distinct: Boolean): Int!
+    max: proxy_swp__ppe_max_fields
+    min: proxy_swp__ppe_min_fields
+    stddev: proxy_swp__ppe_stddev_fields
+    stddev_pop: proxy_swp__ppe_stddev_pop_fields
+    stddev_samp: proxy_swp__ppe_stddev_samp_fields
+    sum: proxy_swp__ppe_sum_fields
+    var_pop: proxy_swp__ppe_var_pop_fields
+    var_samp: proxy_swp__ppe_var_samp_fields
+    variance: proxy_swp__ppe_variance_fields
+}
+
+"aggregate avg on columns"
+type proxy_swp__ppe_avg_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate max on columns"
+type proxy_swp__ppe_max_fields {
+    id: bigint
+    ppe_id: bigint
+    swp_id: bigint
+}
+
+"aggregate min on columns"
+type proxy_swp__ppe_min_fields {
+    id: bigint
+    ppe_id: bigint
+    swp_id: bigint
+}
+
+"response of any mutation on the table \"proxy_swp__ppe\""
+type proxy_swp__ppe_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [proxy_swp__ppe!]!
+}
+
+"aggregate stddev on columns"
+type proxy_swp__ppe_stddev_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type proxy_swp__ppe_stddev_pop_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type proxy_swp__ppe_stddev_samp_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate sum on columns"
+type proxy_swp__ppe_sum_fields {
+    id: bigint
+    ppe_id: bigint
+    swp_id: bigint
+}
+
+"aggregate var_pop on columns"
+type proxy_swp__ppe_var_pop_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate var_samp on columns"
+type proxy_swp__ppe_var_samp_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
+"aggregate variance on columns"
+type proxy_swp__ppe_variance_fields {
+    id: Float
+    ppe_id: Float
+    swp_id: Float
+}
+
 "columns and relationships of \"proxy_team__ppe\""
 type proxy_team__ppe implements Node {
     id: ID!
@@ -46035,6 +47692,97 @@ type query_root {
         "filter the rows returned"
         where: hr_employees_bool_exp
     ): hr_employeesConnection!
+    "fetch data from the table: \"hira_baseline_ra\""
+    hira_baseline_ra_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_bool_exp
+    ): hira_baseline_raConnection!
+    "fetch data from the table: \"hira_baseline_ra_list\""
+    hira_baseline_ra_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_bool_exp
+    ): hira_baseline_ra_listConnection!
+    "fetch data from the table: \"hira_sop\""
+    hira_sop_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_sop_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_sop_order_by!],
+        "filter the rows returned"
+        where: hira_sop_bool_exp
+    ): hira_sopConnection!
+    "fetch data from the table: \"hira_swp\""
+    hira_swp_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_swp_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_order_by!],
+        "filter the rows returned"
+        where: hira_swp_bool_exp
+    ): hira_swpConnection!
+    "fetch data from the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    hira_swp_potential_hazard_and_possible_cause_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_swp_potential_hazard_and_possible_cause_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_potential_hazard_and_possible_cause_list_order_by!],
+        "filter the rows returned"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    ): hira_swp_potential_hazard_and_possible_cause_listConnection!
+    "fetch data from the table: \"hira_taskbased_ra\""
+    hira_taskbased_ra_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_bool_exp
+    ): hira_taskbased_raConnection!
+    "fetch data from the table: \"hira_taskbased_ra_list\""
+    hira_taskbased_ra_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_list_bool_exp
+    ): hira_taskbased_ra_listConnection!
     "fetch data from the table: \"hr_employees_banking_details\""
     hr_employees_banking_details_connection(
         after: String,
@@ -46481,6 +48229,19 @@ type query_root {
         "filter the rows returned"
         where: proxy_employee__ppe_bool_exp
     ): proxy_employee__ppeConnection!
+    "fetch data from the table: \"proxy_employee__swp_sign_sheet\""
+    proxy_employee__swp_sign_sheet_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__swp_sign_sheet_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__swp_sign_sheet_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__swp_sign_sheet_bool_exp
+    ): proxy_employee__swp_sign_sheetConnection!
     "fetch data from the table: \"proxy_employee__training_register\""
     proxy_employee__training_register_connection(
         after: String,
@@ -46806,6 +48567,19 @@ type query_root {
         "filter the rows returned"
         where: proxy_sector__training_matrix_bool_exp
     ): proxy_sector__training_matrixConnection!
+    "fetch data from the table: \"proxy_swp__ppe\""
+    proxy_swp__ppe_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_swp__ppe_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_swp__ppe_order_by!],
+        "filter the rows returned"
+        where: proxy_swp__ppe_bool_exp
+    ): proxy_swp__ppeConnection!
     "fetch data from the table: \"proxy_team__ppe\""
     proxy_team__ppe_connection(
         after: String,
@@ -52224,6 +53998,8 @@ type sheq_incident_investigation_quick implements Node {
         where: proxy_incident_quick__injury_bool_exp
     ): proxy_incident_quick__injuryConnection!
     is_vehicle_incident: Boolean!
+    latitude: float8
+    longitude: float8
     "An object relationship"
     person_injured: hr_employees
     person_injured_id: bigint
@@ -52291,6 +54067,8 @@ type sheq_incident_investigation_quick_avg_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52311,6 +54089,8 @@ type sheq_incident_investigation_quick_max_fields {
     exact_location: String
     id: bigint
     incident_date: date
+    latitude: float8
+    longitude: float8
     person_injured_id: bigint
     person_injured_other_id: bigint
     person_reporting_id: bigint
@@ -52337,6 +54117,8 @@ type sheq_incident_investigation_quick_min_fields {
     exact_location: String
     id: bigint
     incident_date: date
+    latitude: float8
+    longitude: float8
     person_injured_id: bigint
     person_injured_other_id: bigint
     person_reporting_id: bigint
@@ -52367,6 +54149,8 @@ type sheq_incident_investigation_quick_stddev_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52383,6 +54167,8 @@ type sheq_incident_investigation_quick_stddev_pop_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52399,6 +54185,8 @@ type sheq_incident_investigation_quick_stddev_samp_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52415,6 +54203,8 @@ type sheq_incident_investigation_quick_sum_fields {
     driver_id: bigint
     driver_other_id: bigint
     id: bigint
+    latitude: float8
+    longitude: float8
     person_injured_id: bigint
     person_injured_other_id: bigint
     person_reporting_id: bigint
@@ -52431,6 +54221,8 @@ type sheq_incident_investigation_quick_var_pop_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52447,6 +54239,8 @@ type sheq_incident_investigation_quick_var_samp_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -52463,6 +54257,8 @@ type sheq_incident_investigation_quick_variance_fields {
     driver_id: Float
     driver_other_id: Float
     id: Float
+    latitude: Float
+    longitude: Float
     person_injured_id: Float
     person_injured_other_id: Float
     person_reporting_id: Float
@@ -59957,6 +61753,97 @@ type subscription_root {
         "filter the rows returned"
         where: hr_employees_bool_exp
     ): hr_employeesConnection!
+    "fetch data from the table: \"hira_baseline_ra\""
+    hira_baseline_ra_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_bool_exp
+    ): hira_baseline_raConnection!
+    "fetch data from the table: \"hira_baseline_ra_list\""
+    hira_baseline_ra_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_bool_exp
+    ): hira_baseline_ra_listConnection!
+    "fetch data from the table: \"hira_sop\""
+    hira_sop_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_sop_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_sop_order_by!],
+        "filter the rows returned"
+        where: hira_sop_bool_exp
+    ): hira_sopConnection!
+    "fetch data from the table: \"hira_swp\""
+    hira_swp_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_swp_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_order_by!],
+        "filter the rows returned"
+        where: hira_swp_bool_exp
+    ): hira_swpConnection!
+    "fetch data from the table: \"hira_swp_potential_hazard_and_possible_cause_list\""
+    hira_swp_potential_hazard_and_possible_cause_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_swp_potential_hazard_and_possible_cause_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_swp_potential_hazard_and_possible_cause_list_order_by!],
+        "filter the rows returned"
+        where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    ): hira_swp_potential_hazard_and_possible_cause_listConnection!
+    "fetch data from the table: \"hira_taskbased_ra\""
+    hira_taskbased_ra_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_bool_exp
+    ): hira_taskbased_raConnection!
+    "fetch data from the table: \"hira_taskbased_ra_list\""
+    hira_taskbased_ra_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_taskbased_ra_list_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_taskbased_ra_list_order_by!],
+        "filter the rows returned"
+        where: hira_taskbased_ra_list_bool_exp
+    ): hira_taskbased_ra_listConnection!
     "fetch data from the table: \"hr_employees_banking_details\""
     hr_employees_banking_details_connection(
         after: String,
@@ -60403,6 +62290,19 @@ type subscription_root {
         "filter the rows returned"
         where: proxy_employee__ppe_bool_exp
     ): proxy_employee__ppeConnection!
+    "fetch data from the table: \"proxy_employee__swp_sign_sheet\""
+    proxy_employee__swp_sign_sheet_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__swp_sign_sheet_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__swp_sign_sheet_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__swp_sign_sheet_bool_exp
+    ): proxy_employee__swp_sign_sheetConnection!
     "fetch data from the table: \"proxy_employee__training_register\""
     proxy_employee__training_register_connection(
         after: String,
@@ -60728,6 +62628,19 @@ type subscription_root {
         "filter the rows returned"
         where: proxy_sector__training_matrix_bool_exp
     ): proxy_sector__training_matrixConnection!
+    "fetch data from the table: \"proxy_swp__ppe\""
+    proxy_swp__ppe_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_swp__ppe_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_swp__ppe_order_by!],
+        "filter the rows returned"
+        where: proxy_swp__ppe_bool_exp
+    ): proxy_swp__ppeConnection!
     "fetch data from the table: \"proxy_team__ppe\""
     proxy_team__ppe_connection(
         after: String,
@@ -70246,6 +72159,580 @@ enum default_zones_update_column {
     type
 }
 
+"unique or primary key constraints on table \"hira_baseline_ra\""
+enum hira_baseline_ra_constraint {
+    "unique or primary key constraint on columns \"firestore_id\""
+    hira_baseline_ra_firestore_id_key
+    "unique or primary key constraint on columns \"id\""
+    hira_baseline_ra_pkey
+}
+
+"unique or primary key constraints on table \"hira_baseline_ra_list\""
+enum hira_baseline_ra_list_constraint {
+    "unique or primary key constraint on columns \"id\""
+    hira_baseline_ra_list_pkey
+}
+
+"select columns of table \"hira_baseline_ra_list\""
+enum hira_baseline_ra_list_select_column {
+    "column name"
+    baseline_ra_id
+    "column name"
+    consequence_1
+    "column name"
+    consequence_2
+    "column name"
+    control_measure_list
+    "column name"
+    frequency_1
+    "column name"
+    frequency_2
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    likelihood_1
+    "column name"
+    likelihood_2
+    "column name"
+    risk
+    "column name"
+    risk_type
+}
+
+"update columns of table \"hira_baseline_ra_list\""
+enum hira_baseline_ra_list_update_column {
+    "column name"
+    baseline_ra_id
+    "column name"
+    consequence_1
+    "column name"
+    consequence_2
+    "column name"
+    control_measure_list
+    "column name"
+    frequency_1
+    "column name"
+    frequency_2
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    likelihood_1
+    "column name"
+    likelihood_2
+    "column name"
+    risk
+    "column name"
+    risk_type
+}
+
+"select columns of table \"hira_baseline_ra\""
+enum hira_baseline_ra_select_column {
+    "column name"
+    activity
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    risk_tolerance
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"update columns of table \"hira_baseline_ra\""
+enum hira_baseline_ra_update_column {
+    "column name"
+    activity
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    risk_tolerance
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"unique or primary key constraints on table \"hira_sop\""
+enum hira_sop_constraint {
+    "unique or primary key constraint on columns \"firestore_id\""
+    hira_sop_firestore_id_key
+    "unique or primary key constraint on columns \"id\""
+    hira_sop_pkey
+}
+
+"select columns of table \"hira_sop\""
+enum hira_sop_select_column {
+    "column name"
+    category
+    "column name"
+    client_id
+    "column name"
+    close_down_list
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    custom_safety_pre_requesite_list
+    "column name"
+    date_created
+    "column name"
+    date_revised
+    "column name"
+    doc
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    key_point_list
+    "column name"
+    location
+    "column name"
+    operation_list
+    "column name"
+    other
+    "column name"
+    prepared_by_id
+    "column name"
+    procedure_list
+    "column name"
+    project_id
+    "column name"
+    risk_level
+    "column name"
+    risk_list
+    "column name"
+    safety_pre_requesite_list
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"update columns of table \"hira_sop\""
+enum hira_sop_update_column {
+    "column name"
+    category
+    "column name"
+    client_id
+    "column name"
+    close_down_list
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    custom_safety_pre_requesite_list
+    "column name"
+    date_created
+    "column name"
+    date_revised
+    "column name"
+    doc
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    key_point_list
+    "column name"
+    location
+    "column name"
+    operation_list
+    "column name"
+    other
+    "column name"
+    prepared_by_id
+    "column name"
+    procedure_list
+    "column name"
+    project_id
+    "column name"
+    risk_level
+    "column name"
+    risk_list
+    "column name"
+    safety_pre_requesite_list
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"unique or primary key constraints on table \"hira_swp\""
+enum hira_swp_constraint {
+    "unique or primary key constraint on columns \"firestore_id\""
+    hira_swp_firestore_id_key
+    "unique or primary key constraint on columns \"id\""
+    hira_swp_pkey
+}
+
+"unique or primary key constraints on table \"hira_swp_potential_hazard_and_possible_cause_list\""
+enum hira_swp_potential_hazard_and_possible_cause_list_constraint {
+    "unique or primary key constraint on columns \"id\""
+    hira_swp_potential_hazard_and_possible_cause_list_pkey
+}
+
+"select columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+enum hira_swp_potential_hazard_and_possible_cause_list_select_column {
+    "column name"
+    cause
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    rating
+    "column name"
+    swp_id
+}
+
+"update columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+enum hira_swp_potential_hazard_and_possible_cause_list_update_column {
+    "column name"
+    cause
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    rating
+    "column name"
+    swp_id
+}
+
+"select columns of table \"hira_swp\""
+enum hira_swp_select_column {
+    "column name"
+    category
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    date_created
+    "column name"
+    department_id
+    "column name"
+    doc
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    location
+    "column name"
+    notes
+    "column name"
+    person_approving_procedure_id
+    "column name"
+    project_id
+    "column name"
+    sign_sheet_notes
+    "column name"
+    site_id
+    "column name"
+    steps_to_perform_task_list
+    "column name"
+    training_requirement_list
+    "column name"
+    user_id
+    "column name"
+    work_task
+}
+
+"update columns of table \"hira_swp\""
+enum hira_swp_update_column {
+    "column name"
+    category
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    date_created
+    "column name"
+    department_id
+    "column name"
+    doc
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    location
+    "column name"
+    notes
+    "column name"
+    person_approving_procedure_id
+    "column name"
+    project_id
+    "column name"
+    sign_sheet_notes
+    "column name"
+    site_id
+    "column name"
+    steps_to_perform_task_list
+    "column name"
+    training_requirement_list
+    "column name"
+    user_id
+    "column name"
+    work_task
+}
+
+"unique or primary key constraints on table \"hira_taskbased_ra\""
+enum hira_taskbased_ra_constraint {
+    "unique or primary key constraint on columns \"firestore_id\""
+    hira_taskbased_ra_firestore_id_key
+    "unique or primary key constraint on columns \"id\""
+    hira_taskbased_ra_pkey
+}
+
+"unique or primary key constraints on table \"hira_taskbased_ra_list\""
+enum hira_taskbased_ra_list_constraint {
+    "unique or primary key constraint on columns \"id\""
+    hira_taskbased_ra_list_pkey
+}
+
+"select columns of table \"hira_taskbased_ra_list\""
+enum hira_taskbased_ra_list_select_column {
+    "column name"
+    consequence_1
+    "column name"
+    consequence_2
+    "column name"
+    consequence_3
+    "column name"
+    control_measure_list
+    "column name"
+    control_measure_list_additional
+    "column name"
+    due_date
+    "column name"
+    frequency_1
+    "column name"
+    frequency_2
+    "column name"
+    frequency_3
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    likelihood_1
+    "column name"
+    likelihood_2
+    "column name"
+    likelihood_3
+    "column name"
+    responsible_person_id
+    "column name"
+    risk
+    "column name"
+    risk_type
+    "column name"
+    target_date
+    "column name"
+    taskbased_ra_id
+}
+
+"update columns of table \"hira_taskbased_ra_list\""
+enum hira_taskbased_ra_list_update_column {
+    "column name"
+    consequence_1
+    "column name"
+    consequence_2
+    "column name"
+    consequence_3
+    "column name"
+    control_measure_list
+    "column name"
+    control_measure_list_additional
+    "column name"
+    due_date
+    "column name"
+    frequency_1
+    "column name"
+    frequency_2
+    "column name"
+    frequency_3
+    "column name"
+    hazard
+    "column name"
+    id
+    "column name"
+    likelihood_1
+    "column name"
+    likelihood_2
+    "column name"
+    likelihood_3
+    "column name"
+    responsible_person_id
+    "column name"
+    risk
+    "column name"
+    risk_type
+    "column name"
+    target_date
+    "column name"
+    taskbased_ra_id
+}
+
+"select columns of table \"hira_taskbased_ra\""
+enum hira_taskbased_ra_select_column {
+    "column name"
+    activity
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    risk_tolerance
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
+"update columns of table \"hira_taskbased_ra\""
+enum hira_taskbased_ra_update_column {
+    "column name"
+    activity
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    contractor_client_id
+    "column name"
+    contractor_id
+    "column name"
+    contractor_site_id
+    "column name"
+    contractor_user_id
+    "column name"
+    created_at
+    "column name"
+    expiry
+    "column name"
+    firestore_id
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    risk_tolerance
+    "column name"
+    site_id
+    "column name"
+    user_id
+}
+
 "unique or primary key constraints on table \"hr_employees_banking_details\""
 enum hr_employees_banking_details_constraint {
     "unique or primary key constraint on columns \"id\""
@@ -72636,6 +75123,34 @@ enum proxy_employee__ppe_update_column {
     ppe_id
 }
 
+"unique or primary key constraints on table \"proxy_employee__swp_sign_sheet\""
+enum proxy_employee__swp_sign_sheet_constraint {
+    "unique or primary key constraint on columns \"employee_id\", \"swp_id\""
+    proxy_employee__swp_sign_sheet_employee_id_swp_id_key
+    "unique or primary key constraint on columns \"id\""
+    proxy_employee__swp_sign_sheet_pkey
+}
+
+"select columns of table \"proxy_employee__swp_sign_sheet\""
+enum proxy_employee__swp_sign_sheet_select_column {
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    swp_id
+}
+
+"update columns of table \"proxy_employee__swp_sign_sheet\""
+enum proxy_employee__swp_sign_sheet_update_column {
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    swp_id
+}
+
 "unique or primary key constraints on table \"proxy_employee__training_register\""
 enum proxy_employee__training_register_constraint {
     "unique or primary key constraint on columns \"employee_id\", \"training_register_id\""
@@ -73350,6 +75865,34 @@ enum proxy_sector__training_matrix_update_column {
     sector_id
     "column name"
     training_id
+}
+
+"unique or primary key constraints on table \"proxy_swp__ppe\""
+enum proxy_swp__ppe_constraint {
+    "unique or primary key constraint on columns \"id\""
+    proxy_swp__ppe_pkey
+    "unique or primary key constraint on columns \"ppe_id\", \"swp_id\""
+    proxy_swp__ppe_swp_id_ppe_id_key
+}
+
+"select columns of table \"proxy_swp__ppe\""
+enum proxy_swp__ppe_select_column {
+    "column name"
+    id
+    "column name"
+    ppe_id
+    "column name"
+    swp_id
+}
+
+"update columns of table \"proxy_swp__ppe\""
+enum proxy_swp__ppe_update_column {
+    "column name"
+    id
+    "column name"
+    ppe_id
+    "column name"
+    swp_id
 }
 
 "unique or primary key constraints on table \"proxy_team__ppe\""
@@ -74719,6 +77262,10 @@ enum sheq_incident_investigation_quick_select_column {
     "column name"
     is_vehicle_incident
     "column name"
+    latitude
+    "column name"
+    longitude
+    "column name"
     person_injured_id
     "column name"
     person_injured_other_id
@@ -74746,6 +77293,14 @@ enum sheq_incident_investigation_quick_select_column {
     vehicle_reg_num
 }
 
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_avg_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_avg_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
 "select \"sheq_incident_investigation_quick_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
 enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_bool_and_arguments_columns {
     "column name"
@@ -74760,6 +77315,62 @@ enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation
     is_vehicle_incident
     "column name"
     removed
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_max_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_max_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_min_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_min_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_stddev_samp_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_stddev_samp_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_sum_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_sum_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
+}
+
+"select \"sheq_incident_investigation_quick_aggregate_bool_exp_var_samp_arguments_columns\" columns of table \"sheq_incident_investigation_quick\""
+enum sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_var_samp_arguments_columns {
+    "column name"
+    latitude
+    "column name"
+    longitude
 }
 
 "update columns of table \"sheq_incident_investigation_quick\""
@@ -74788,6 +77399,10 @@ enum sheq_incident_investigation_quick_update_column {
     incident_time
     "column name"
     is_vehicle_incident
+    "column name"
+    latitude
+    "column name"
+    longitude
     "column name"
     person_injured_id
     "column name"
@@ -78981,6 +81596,8 @@ scalar department_owner
 scalar doc_versions_doc_type
 
 scalar document_owner
+
+scalar float8
 
 scalar hr_employees_compliance_status
 
@@ -92883,6 +95500,19 @@ input document_owner_comparison_exp {
     _nin: [document_owner!]
 }
 
+"Boolean expression to compare columns of type \"float8\". All fields are combined with logical 'AND'."
+input float8_comparison_exp {
+    _eq: float8
+    _gt: float8
+    _gte: float8
+    _in: [float8!]
+    _is_null: Boolean
+    _lt: float8
+    _lte: float8
+    _neq: float8
+    _nin: [float8!]
+}
+
 input get_plan_employee_list_by_course_args {
     _row: sheq_training_courses_scalar
 }
@@ -92893,6 +95523,1467 @@ input get_plan_employee_list_by_training_args {
 
 input get_plan_employee_list_by_year_args {
     id: Int
+}
+
+"Boolean expression to filter rows from the table \"hira_baseline_ra\". All fields are combined with a logical 'AND'."
+input hira_baseline_ra_bool_exp {
+    _and: [hira_baseline_ra_bool_exp!]
+    _not: hira_baseline_ra_bool_exp
+    _or: [hira_baseline_ra_bool_exp!]
+    activity: String_comparison_exp
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
+    company: default_companies_bool_exp
+    company_id: bigint_comparison_exp
+    contractor: default_contractors_bool_exp
+    contractor_client: default_clients_bool_exp
+    contractor_client_id: bigint_comparison_exp
+    contractor_id: bigint_comparison_exp
+    contractor_site: default_sites_bool_exp
+    contractor_site_id: bigint_comparison_exp
+    contractor_user: default_contractor_users_bool_exp
+    contractor_user_id: bigint_comparison_exp
+    created_at: timestamptz_comparison_exp
+    expiry: date_comparison_exp
+    firestore_id: String_comparison_exp
+    id: bigint_comparison_exp
+    list: hira_baseline_ra_list_bool_exp
+    list_aggregate: hira_baseline_ra_list_aggregate_bool_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
+    risk_tolerance: String_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_baseline_ra\""
+input hira_baseline_ra_inc_input {
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"input type for inserting data into table \"hira_baseline_ra\""
+input hira_baseline_ra_insert_input {
+    activity: String
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
+    company: default_companies_obj_rel_insert_input
+    company_id: bigint
+    contractor: default_contractors_obj_rel_insert_input
+    contractor_client: default_clients_obj_rel_insert_input
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site: default_sites_obj_rel_insert_input
+    contractor_site_id: bigint
+    contractor_user: default_contractor_users_obj_rel_insert_input
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: bigint
+    list: hira_baseline_ra_list_arr_rel_insert_input
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
+    risk_tolerance: String
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
+}
+
+input hira_baseline_ra_list_aggregate_bool_exp {
+    count: hira_baseline_ra_list_aggregate_bool_exp_count
+}
+
+input hira_baseline_ra_list_aggregate_bool_exp_count {
+    arguments: [hira_baseline_ra_list_select_column!]
+    distinct: Boolean
+    filter: hira_baseline_ra_list_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_aggregate_order_by {
+    avg: hira_baseline_ra_list_avg_order_by
+    count: order_by
+    max: hira_baseline_ra_list_max_order_by
+    min: hira_baseline_ra_list_min_order_by
+    stddev: hira_baseline_ra_list_stddev_order_by
+    stddev_pop: hira_baseline_ra_list_stddev_pop_order_by
+    stddev_samp: hira_baseline_ra_list_stddev_samp_order_by
+    sum: hira_baseline_ra_list_sum_order_by
+    var_pop: hira_baseline_ra_list_var_pop_order_by
+    var_samp: hira_baseline_ra_list_var_samp_order_by
+    variance: hira_baseline_ra_list_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_arr_rel_insert_input {
+    data: [hira_baseline_ra_list_insert_input!]!
+    "upsert condition"
+    on_conflict: hira_baseline_ra_list_on_conflict
+}
+
+"order by avg() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_avg_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"Boolean expression to filter rows from the table \"hira_baseline_ra_list\". All fields are combined with a logical 'AND'."
+input hira_baseline_ra_list_bool_exp {
+    _and: [hira_baseline_ra_list_bool_exp!]
+    _not: hira_baseline_ra_list_bool_exp
+    _or: [hira_baseline_ra_list_bool_exp!]
+    baseline_ra: hira_baseline_ra_bool_exp
+    baseline_ra_id: bigint_comparison_exp
+    consequence_1: Int_comparison_exp
+    consequence_2: Int_comparison_exp
+    control_measure_list: json_comparison_exp
+    frequency_1: Int_comparison_exp
+    frequency_2: Int_comparison_exp
+    hazard: String_comparison_exp
+    id: bigint_comparison_exp
+    likelihood_1: Int_comparison_exp
+    likelihood_2: Int_comparison_exp
+    risk: String_comparison_exp
+    risk_type: json_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_inc_input {
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    frequency_1: Int
+    frequency_2: Int
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+}
+
+"input type for inserting data into table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_insert_input {
+    baseline_ra: hira_baseline_ra_obj_rel_insert_input
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    control_measure_list: json
+    frequency_1: Int
+    frequency_2: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    risk: String
+    risk_type: json
+}
+
+"order by max() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_max_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    risk: order_by
+}
+
+"order by min() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_min_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    risk: order_by
+}
+
+"on_conflict condition type for table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_on_conflict {
+    constraint: hira_baseline_ra_list_constraint!
+    update_columns: [hira_baseline_ra_list_update_column!]! = []
+    where: hira_baseline_ra_list_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_baseline_ra_list\"."
+input hira_baseline_ra_list_order_by {
+    baseline_ra: hira_baseline_ra_order_by
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    control_measure_list: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    risk: order_by
+    risk_type: order_by
+}
+
+"primary key columns input for table: hira_baseline_ra_list"
+input hira_baseline_ra_list_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_set_input {
+    baseline_ra_id: bigint
+    consequence_1: Int
+    consequence_2: Int
+    control_measure_list: json
+    frequency_1: Int
+    frequency_2: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    risk: String
+    risk_type: json
+}
+
+"order by stddev() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_stddev_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"order by stddev_pop() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_stddev_pop_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"order by stddev_samp() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_stddev_samp_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"order by sum() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_sum_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+input hira_baseline_ra_list_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_baseline_ra_list_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_baseline_ra_list_set_input
+    where: hira_baseline_ra_list_bool_exp!
+}
+
+"order by var_pop() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_var_pop_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"order by var_samp() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_var_samp_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"order by variance() on columns of table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_variance_order_by {
+    baseline_ra_id: order_by
+    consequence_1: order_by
+    consequence_2: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+}
+
+"input type for inserting object relation for remote table \"hira_baseline_ra\""
+input hira_baseline_ra_obj_rel_insert_input {
+    data: hira_baseline_ra_insert_input!
+    "upsert condition"
+    on_conflict: hira_baseline_ra_on_conflict
+}
+
+"on_conflict condition type for table \"hira_baseline_ra\""
+input hira_baseline_ra_on_conflict {
+    constraint: hira_baseline_ra_constraint!
+    update_columns: [hira_baseline_ra_update_column!]! = []
+    where: hira_baseline_ra_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_baseline_ra\"."
+input hira_baseline_ra_order_by {
+    activity: order_by
+    client: default_clients_order_by
+    client_id: order_by
+    company: default_companies_order_by
+    company_id: order_by
+    contractor: default_contractors_order_by
+    contractor_client: default_clients_order_by
+    contractor_client_id: order_by
+    contractor_id: order_by
+    contractor_site: default_sites_order_by
+    contractor_site_id: order_by
+    contractor_user: default_contractor_users_order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    expiry: order_by
+    firestore_id: order_by
+    id: order_by
+    list_aggregate: hira_baseline_ra_list_aggregate_order_by
+    project: default_projects_order_by
+    project_id: order_by
+    risk_tolerance: order_by
+    site: default_sites_order_by
+    site_id: order_by
+    user: default_users_order_by
+    user_id: order_by
+}
+
+"primary key columns input for table: hira_baseline_ra"
+input hira_baseline_ra_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_baseline_ra\""
+input hira_baseline_ra_set_input {
+    activity: String
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: bigint
+    project_id: bigint
+    risk_tolerance: String
+    site_id: bigint
+    user_id: bigint
+}
+
+input hira_baseline_ra_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_baseline_ra_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_baseline_ra_set_input
+    where: hira_baseline_ra_bool_exp!
+}
+
+"Boolean expression to filter rows from the table \"hira_sop\". All fields are combined with a logical 'AND'."
+input hira_sop_bool_exp {
+    _and: [hira_sop_bool_exp!]
+    _not: hira_sop_bool_exp
+    _or: [hira_sop_bool_exp!]
+    category: String_comparison_exp
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
+    close_down_list: json_comparison_exp
+    company: default_companies_bool_exp
+    company_id: bigint_comparison_exp
+    contractor: default_contractors_bool_exp
+    contractor_client: default_clients_bool_exp
+    contractor_client_id: bigint_comparison_exp
+    contractor_id: bigint_comparison_exp
+    contractor_site: default_sites_bool_exp
+    contractor_site_id: bigint_comparison_exp
+    contractor_user: default_contractor_users_bool_exp
+    contractor_user_id: bigint_comparison_exp
+    created_at: timestamptz_comparison_exp
+    custom_safety_pre_requesite_list: json_comparison_exp
+    date_created: date_comparison_exp
+    date_revised: date_comparison_exp
+    doc: json_comparison_exp
+    firestore_id: String_comparison_exp
+    id: bigint_comparison_exp
+    key_point_list: json_comparison_exp
+    location: String_comparison_exp
+    operation_list: json_comparison_exp
+    other: String_comparison_exp
+    prepared_by: hr_employees_bool_exp
+    prepared_by_id: bigint_comparison_exp
+    procedure_list: json_comparison_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
+    risk_level: String_comparison_exp
+    risk_list: json_comparison_exp
+    safety_pre_requesite_list: json_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_sop\""
+input hira_sop_inc_input {
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    id: bigint
+    prepared_by_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"input type for inserting data into table \"hira_sop\""
+input hira_sop_insert_input {
+    category: String
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
+    close_down_list: json
+    company: default_companies_obj_rel_insert_input
+    company_id: bigint
+    contractor: default_contractors_obj_rel_insert_input
+    contractor_client: default_clients_obj_rel_insert_input
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site: default_sites_obj_rel_insert_input
+    contractor_site_id: bigint
+    contractor_user: default_contractor_users_obj_rel_insert_input
+    contractor_user_id: bigint
+    created_at: timestamptz
+    custom_safety_pre_requesite_list: json
+    date_created: date
+    date_revised: date
+    doc: json
+    firestore_id: String
+    id: bigint
+    key_point_list: json
+    location: String
+    operation_list: json
+    other: String
+    prepared_by: hr_employees_obj_rel_insert_input
+    prepared_by_id: bigint
+    procedure_list: json
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
+    risk_level: String
+    risk_list: json
+    safety_pre_requesite_list: json
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
+}
+
+"on_conflict condition type for table \"hira_sop\""
+input hira_sop_on_conflict {
+    constraint: hira_sop_constraint!
+    update_columns: [hira_sop_update_column!]! = []
+    where: hira_sop_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_sop\"."
+input hira_sop_order_by {
+    category: order_by
+    client: default_clients_order_by
+    client_id: order_by
+    close_down_list: order_by
+    company: default_companies_order_by
+    company_id: order_by
+    contractor: default_contractors_order_by
+    contractor_client: default_clients_order_by
+    contractor_client_id: order_by
+    contractor_id: order_by
+    contractor_site: default_sites_order_by
+    contractor_site_id: order_by
+    contractor_user: default_contractor_users_order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    custom_safety_pre_requesite_list: order_by
+    date_created: order_by
+    date_revised: order_by
+    doc: order_by
+    firestore_id: order_by
+    id: order_by
+    key_point_list: order_by
+    location: order_by
+    operation_list: order_by
+    other: order_by
+    prepared_by: hr_employees_order_by
+    prepared_by_id: order_by
+    procedure_list: order_by
+    project: default_projects_order_by
+    project_id: order_by
+    risk_level: order_by
+    risk_list: order_by
+    safety_pre_requesite_list: order_by
+    site: default_sites_order_by
+    site_id: order_by
+    user: default_users_order_by
+    user_id: order_by
+}
+
+"primary key columns input for table: hira_sop"
+input hira_sop_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_sop\""
+input hira_sop_set_input {
+    category: String
+    client_id: bigint
+    close_down_list: json
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    custom_safety_pre_requesite_list: json
+    date_created: date
+    date_revised: date
+    doc: json
+    firestore_id: String
+    id: bigint
+    key_point_list: json
+    location: String
+    operation_list: json
+    other: String
+    prepared_by_id: bigint
+    procedure_list: json
+    project_id: bigint
+    risk_level: String
+    risk_list: json
+    safety_pre_requesite_list: json
+    site_id: bigint
+    user_id: bigint
+}
+
+input hira_sop_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_sop_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_sop_set_input
+    where: hira_sop_bool_exp!
+}
+
+"Boolean expression to filter rows from the table \"hira_swp\". All fields are combined with a logical 'AND'."
+input hira_swp_bool_exp {
+    _and: [hira_swp_bool_exp!]
+    _not: hira_swp_bool_exp
+    _or: [hira_swp_bool_exp!]
+    category: String_comparison_exp
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
+    company: default_companies_bool_exp
+    company_id: bigint_comparison_exp
+    contractor: default_contractors_bool_exp
+    contractor_client: default_clients_bool_exp
+    contractor_client_id: bigint_comparison_exp
+    contractor_id: bigint_comparison_exp
+    contractor_site: default_sites_bool_exp
+    contractor_site_id: bigint_comparison_exp
+    contractor_user: default_contractor_users_bool_exp
+    contractor_user_id: bigint_comparison_exp
+    created_at: timestamptz_comparison_exp
+    date_created: date_comparison_exp
+    department: default_departments_bool_exp
+    department_id: bigint_comparison_exp
+    doc: json_comparison_exp
+    expiry: date_comparison_exp
+    firestore_id: String_comparison_exp
+    id: bigint_comparison_exp
+    location: String_comparison_exp
+    notes: String_comparison_exp
+    person_approving_procedure: hr_employees_bool_exp
+    person_approving_procedure_id: bigint_comparison_exp
+    potential_hazard_and_possible_cause_list: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    potential_hazard_and_possible_cause_list_aggregate: hira_swp_potential_hazard_and_possible_cause_list_aggregate_bool_exp
+    ppe_required_list: proxy_swp__ppe_bool_exp
+    ppe_required_list_aggregate: proxy_swp__ppe_aggregate_bool_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
+    sign_sheet_employee_list: proxy_employee__swp_sign_sheet_bool_exp
+    sign_sheet_employee_list_aggregate: proxy_employee__swp_sign_sheet_aggregate_bool_exp
+    sign_sheet_notes: String_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    steps_to_perform_task_list: json_comparison_exp
+    training_requirement_list: json_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
+    work_task: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_swp\""
+input hira_swp_inc_input {
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    department_id: bigint
+    id: bigint
+    person_approving_procedure_id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"input type for inserting data into table \"hira_swp\""
+input hira_swp_insert_input {
+    category: String
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
+    company: default_companies_obj_rel_insert_input
+    company_id: bigint
+    contractor: default_contractors_obj_rel_insert_input
+    contractor_client: default_clients_obj_rel_insert_input
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site: default_sites_obj_rel_insert_input
+    contractor_site_id: bigint
+    contractor_user: default_contractor_users_obj_rel_insert_input
+    contractor_user_id: bigint
+    created_at: timestamptz
+    date_created: date
+    department: default_departments_obj_rel_insert_input
+    department_id: bigint
+    doc: json
+    expiry: date
+    firestore_id: String
+    id: bigint
+    location: String
+    notes: String
+    person_approving_procedure: hr_employees_obj_rel_insert_input
+    person_approving_procedure_id: bigint
+    potential_hazard_and_possible_cause_list: hira_swp_potential_hazard_and_possible_cause_list_arr_rel_insert_input
+    ppe_required_list: proxy_swp__ppe_arr_rel_insert_input
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
+    sign_sheet_employee_list: proxy_employee__swp_sign_sheet_arr_rel_insert_input
+    sign_sheet_notes: String
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    steps_to_perform_task_list: json
+    training_requirement_list: json
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
+    work_task: String
+}
+
+"input type for inserting object relation for remote table \"hira_swp\""
+input hira_swp_obj_rel_insert_input {
+    data: hira_swp_insert_input!
+    "upsert condition"
+    on_conflict: hira_swp_on_conflict
+}
+
+"on_conflict condition type for table \"hira_swp\""
+input hira_swp_on_conflict {
+    constraint: hira_swp_constraint!
+    update_columns: [hira_swp_update_column!]! = []
+    where: hira_swp_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_swp\"."
+input hira_swp_order_by {
+    category: order_by
+    client: default_clients_order_by
+    client_id: order_by
+    company: default_companies_order_by
+    company_id: order_by
+    contractor: default_contractors_order_by
+    contractor_client: default_clients_order_by
+    contractor_client_id: order_by
+    contractor_id: order_by
+    contractor_site: default_sites_order_by
+    contractor_site_id: order_by
+    contractor_user: default_contractor_users_order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    date_created: order_by
+    department: default_departments_order_by
+    department_id: order_by
+    doc: order_by
+    expiry: order_by
+    firestore_id: order_by
+    id: order_by
+    location: order_by
+    notes: order_by
+    person_approving_procedure: hr_employees_order_by
+    person_approving_procedure_id: order_by
+    potential_hazard_and_possible_cause_list_aggregate: hira_swp_potential_hazard_and_possible_cause_list_aggregate_order_by
+    ppe_required_list_aggregate: proxy_swp__ppe_aggregate_order_by
+    project: default_projects_order_by
+    project_id: order_by
+    sign_sheet_employee_list_aggregate: proxy_employee__swp_sign_sheet_aggregate_order_by
+    sign_sheet_notes: order_by
+    site: default_sites_order_by
+    site_id: order_by
+    steps_to_perform_task_list: order_by
+    training_requirement_list: order_by
+    user: default_users_order_by
+    user_id: order_by
+    work_task: order_by
+}
+
+"primary key columns input for table: hira_swp"
+input hira_swp_pk_columns_input {
+    id: bigint!
+}
+
+input hira_swp_potential_hazard_and_possible_cause_list_aggregate_bool_exp {
+    count: hira_swp_potential_hazard_and_possible_cause_list_aggregate_bool_exp_count
+}
+
+input hira_swp_potential_hazard_and_possible_cause_list_aggregate_bool_exp_count {
+    arguments: [hira_swp_potential_hazard_and_possible_cause_list_select_column!]
+    distinct: Boolean
+    filter: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_aggregate_order_by {
+    avg: hira_swp_potential_hazard_and_possible_cause_list_avg_order_by
+    count: order_by
+    max: hira_swp_potential_hazard_and_possible_cause_list_max_order_by
+    min: hira_swp_potential_hazard_and_possible_cause_list_min_order_by
+    stddev: hira_swp_potential_hazard_and_possible_cause_list_stddev_order_by
+    stddev_pop: hira_swp_potential_hazard_and_possible_cause_list_stddev_pop_order_by
+    stddev_samp: hira_swp_potential_hazard_and_possible_cause_list_stddev_samp_order_by
+    sum: hira_swp_potential_hazard_and_possible_cause_list_sum_order_by
+    var_pop: hira_swp_potential_hazard_and_possible_cause_list_var_pop_order_by
+    var_samp: hira_swp_potential_hazard_and_possible_cause_list_var_samp_order_by
+    variance: hira_swp_potential_hazard_and_possible_cause_list_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_arr_rel_insert_input {
+    data: [hira_swp_potential_hazard_and_possible_cause_list_insert_input!]!
+    "upsert condition"
+    on_conflict: hira_swp_potential_hazard_and_possible_cause_list_on_conflict
+}
+
+"order by avg() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_avg_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"hira_swp_potential_hazard_and_possible_cause_list\". All fields are combined with a logical 'AND'."
+input hira_swp_potential_hazard_and_possible_cause_list_bool_exp {
+    _and: [hira_swp_potential_hazard_and_possible_cause_list_bool_exp!]
+    _not: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+    _or: [hira_swp_potential_hazard_and_possible_cause_list_bool_exp!]
+    cause: String_comparison_exp
+    hazard: String_comparison_exp
+    id: bigint_comparison_exp
+    rating: String_comparison_exp
+    swp: hira_swp_bool_exp
+    swp_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_inc_input {
+    id: bigint
+    swp_id: bigint
+}
+
+"input type for inserting data into table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_insert_input {
+    cause: String
+    hazard: String
+    id: bigint
+    rating: String
+    swp: hira_swp_obj_rel_insert_input
+    swp_id: bigint
+}
+
+"order by max() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_max_order_by {
+    cause: order_by
+    hazard: order_by
+    id: order_by
+    rating: order_by
+    swp_id: order_by
+}
+
+"order by min() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_min_order_by {
+    cause: order_by
+    hazard: order_by
+    id: order_by
+    rating: order_by
+    swp_id: order_by
+}
+
+"on_conflict condition type for table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_on_conflict {
+    constraint: hira_swp_potential_hazard_and_possible_cause_list_constraint!
+    update_columns: [hira_swp_potential_hazard_and_possible_cause_list_update_column!]! = []
+    where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_swp_potential_hazard_and_possible_cause_list\"."
+input hira_swp_potential_hazard_and_possible_cause_list_order_by {
+    cause: order_by
+    hazard: order_by
+    id: order_by
+    rating: order_by
+    swp: hira_swp_order_by
+    swp_id: order_by
+}
+
+"primary key columns input for table: hira_swp_potential_hazard_and_possible_cause_list"
+input hira_swp_potential_hazard_and_possible_cause_list_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_set_input {
+    cause: String
+    hazard: String
+    id: bigint
+    rating: String
+    swp_id: bigint
+}
+
+"order by stddev() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_stddev_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_stddev_pop_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_stddev_samp_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"order by sum() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_sum_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+input hira_swp_potential_hazard_and_possible_cause_list_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_swp_potential_hazard_and_possible_cause_list_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_swp_potential_hazard_and_possible_cause_list_set_input
+    where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp!
+}
+
+"order by var_pop() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_var_pop_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"order by var_samp() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_var_samp_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"order by variance() on columns of table \"hira_swp_potential_hazard_and_possible_cause_list\""
+input hira_swp_potential_hazard_and_possible_cause_list_variance_order_by {
+    id: order_by
+    swp_id: order_by
+}
+
+"input type for updating data in table \"hira_swp\""
+input hira_swp_set_input {
+    category: String
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    date_created: date
+    department_id: bigint
+    doc: json
+    expiry: date
+    firestore_id: String
+    id: bigint
+    location: String
+    notes: String
+    person_approving_procedure_id: bigint
+    project_id: bigint
+    sign_sheet_notes: String
+    site_id: bigint
+    steps_to_perform_task_list: json
+    training_requirement_list: json
+    user_id: bigint
+    work_task: String
+}
+
+input hira_swp_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_swp_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_swp_set_input
+    where: hira_swp_bool_exp!
+}
+
+"Boolean expression to filter rows from the table \"hira_taskbased_ra\". All fields are combined with a logical 'AND'."
+input hira_taskbased_ra_bool_exp {
+    _and: [hira_taskbased_ra_bool_exp!]
+    _not: hira_taskbased_ra_bool_exp
+    _or: [hira_taskbased_ra_bool_exp!]
+    activity: String_comparison_exp
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
+    company: default_companies_bool_exp
+    company_id: bigint_comparison_exp
+    contractor: default_contractors_bool_exp
+    contractor_client: default_clients_bool_exp
+    contractor_client_id: bigint_comparison_exp
+    contractor_id: bigint_comparison_exp
+    contractor_site: default_sites_bool_exp
+    contractor_site_id: bigint_comparison_exp
+    contractor_user: default_contractor_users_bool_exp
+    contractor_user_id: bigint_comparison_exp
+    created_at: timestamptz_comparison_exp
+    expiry: date_comparison_exp
+    firestore_id: String_comparison_exp
+    id: bigint_comparison_exp
+    list: hira_taskbased_ra_list_bool_exp
+    list_aggregate: hira_taskbased_ra_list_aggregate_bool_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
+    risk_tolerance: String_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_taskbased_ra\""
+input hira_taskbased_ra_inc_input {
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    user_id: bigint
+}
+
+"input type for inserting data into table \"hira_taskbased_ra\""
+input hira_taskbased_ra_insert_input {
+    activity: String
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
+    company: default_companies_obj_rel_insert_input
+    company_id: bigint
+    contractor: default_contractors_obj_rel_insert_input
+    contractor_client: default_clients_obj_rel_insert_input
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site: default_sites_obj_rel_insert_input
+    contractor_site_id: bigint
+    contractor_user: default_contractor_users_obj_rel_insert_input
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: bigint
+    list: hira_taskbased_ra_list_arr_rel_insert_input
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
+    risk_tolerance: String
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
+}
+
+input hira_taskbased_ra_list_aggregate_bool_exp {
+    count: hira_taskbased_ra_list_aggregate_bool_exp_count
+}
+
+input hira_taskbased_ra_list_aggregate_bool_exp_count {
+    arguments: [hira_taskbased_ra_list_select_column!]
+    distinct: Boolean
+    filter: hira_taskbased_ra_list_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_aggregate_order_by {
+    avg: hira_taskbased_ra_list_avg_order_by
+    count: order_by
+    max: hira_taskbased_ra_list_max_order_by
+    min: hira_taskbased_ra_list_min_order_by
+    stddev: hira_taskbased_ra_list_stddev_order_by
+    stddev_pop: hira_taskbased_ra_list_stddev_pop_order_by
+    stddev_samp: hira_taskbased_ra_list_stddev_samp_order_by
+    sum: hira_taskbased_ra_list_sum_order_by
+    var_pop: hira_taskbased_ra_list_var_pop_order_by
+    var_samp: hira_taskbased_ra_list_var_samp_order_by
+    variance: hira_taskbased_ra_list_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_arr_rel_insert_input {
+    data: [hira_taskbased_ra_list_insert_input!]!
+    "upsert condition"
+    on_conflict: hira_taskbased_ra_list_on_conflict
+}
+
+"order by avg() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_avg_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"hira_taskbased_ra_list\". All fields are combined with a logical 'AND'."
+input hira_taskbased_ra_list_bool_exp {
+    _and: [hira_taskbased_ra_list_bool_exp!]
+    _not: hira_taskbased_ra_list_bool_exp
+    _or: [hira_taskbased_ra_list_bool_exp!]
+    consequence_1: Int_comparison_exp
+    consequence_2: Int_comparison_exp
+    consequence_3: Int_comparison_exp
+    control_measure_list: json_comparison_exp
+    control_measure_list_additional: json_comparison_exp
+    due_date: date_comparison_exp
+    frequency_1: Int_comparison_exp
+    frequency_2: Int_comparison_exp
+    frequency_3: Int_comparison_exp
+    hazard: String_comparison_exp
+    id: bigint_comparison_exp
+    likelihood_1: Int_comparison_exp
+    likelihood_2: Int_comparison_exp
+    likelihood_3: Int_comparison_exp
+    responsible_person: hr_employees_bool_exp
+    responsible_person_id: bigint_comparison_exp
+    risk: String_comparison_exp
+    risk_type: json_comparison_exp
+    target_date: date_comparison_exp
+    taskbased_ra: hira_taskbased_ra_bool_exp
+    taskbased_ra_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_inc_input {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
+    taskbased_ra_id: bigint
+}
+
+"input type for inserting data into table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_insert_input {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    control_measure_list: json
+    control_measure_list_additional: json
+    due_date: date
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person: hr_employees_obj_rel_insert_input
+    responsible_person_id: bigint
+    risk: String
+    risk_type: json
+    target_date: date
+    taskbased_ra: hira_taskbased_ra_obj_rel_insert_input
+    taskbased_ra_id: bigint
+}
+
+"order by max() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_max_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    due_date: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    risk: order_by
+    target_date: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by min() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_min_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    due_date: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    risk: order_by
+    target_date: order_by
+    taskbased_ra_id: order_by
+}
+
+"on_conflict condition type for table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_on_conflict {
+    constraint: hira_taskbased_ra_list_constraint!
+    update_columns: [hira_taskbased_ra_list_update_column!]! = []
+    where: hira_taskbased_ra_list_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_taskbased_ra_list\"."
+input hira_taskbased_ra_list_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    control_measure_list: order_by
+    control_measure_list_additional: order_by
+    due_date: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    hazard: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person: hr_employees_order_by
+    responsible_person_id: order_by
+    risk: order_by
+    risk_type: order_by
+    target_date: order_by
+    taskbased_ra: hira_taskbased_ra_order_by
+    taskbased_ra_id: order_by
+}
+
+"primary key columns input for table: hira_taskbased_ra_list"
+input hira_taskbased_ra_list_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_set_input {
+    consequence_1: Int
+    consequence_2: Int
+    consequence_3: Int
+    control_measure_list: json
+    control_measure_list_additional: json
+    due_date: date
+    frequency_1: Int
+    frequency_2: Int
+    frequency_3: Int
+    hazard: String
+    id: bigint
+    likelihood_1: Int
+    likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
+    risk: String
+    risk_type: json
+    target_date: date
+    taskbased_ra_id: bigint
+}
+
+"order by stddev() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_stddev_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_stddev_pop_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_stddev_samp_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by sum() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_sum_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+input hira_taskbased_ra_list_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_taskbased_ra_list_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_taskbased_ra_list_set_input
+    where: hira_taskbased_ra_list_bool_exp!
+}
+
+"order by var_pop() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_var_pop_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by var_samp() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_var_samp_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"order by variance() on columns of table \"hira_taskbased_ra_list\""
+input hira_taskbased_ra_list_variance_order_by {
+    consequence_1: order_by
+    consequence_2: order_by
+    consequence_3: order_by
+    frequency_1: order_by
+    frequency_2: order_by
+    frequency_3: order_by
+    id: order_by
+    likelihood_1: order_by
+    likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
+    taskbased_ra_id: order_by
+}
+
+"input type for inserting object relation for remote table \"hira_taskbased_ra\""
+input hira_taskbased_ra_obj_rel_insert_input {
+    data: hira_taskbased_ra_insert_input!
+    "upsert condition"
+    on_conflict: hira_taskbased_ra_on_conflict
+}
+
+"on_conflict condition type for table \"hira_taskbased_ra\""
+input hira_taskbased_ra_on_conflict {
+    constraint: hira_taskbased_ra_constraint!
+    update_columns: [hira_taskbased_ra_update_column!]! = []
+    where: hira_taskbased_ra_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_taskbased_ra\"."
+input hira_taskbased_ra_order_by {
+    activity: order_by
+    client: default_clients_order_by
+    client_id: order_by
+    company: default_companies_order_by
+    company_id: order_by
+    contractor: default_contractors_order_by
+    contractor_client: default_clients_order_by
+    contractor_client_id: order_by
+    contractor_id: order_by
+    contractor_site: default_sites_order_by
+    contractor_site_id: order_by
+    contractor_user: default_contractor_users_order_by
+    contractor_user_id: order_by
+    created_at: order_by
+    expiry: order_by
+    firestore_id: order_by
+    id: order_by
+    list_aggregate: hira_taskbased_ra_list_aggregate_order_by
+    project: default_projects_order_by
+    project_id: order_by
+    risk_tolerance: order_by
+    site: default_sites_order_by
+    site_id: order_by
+    user: default_users_order_by
+    user_id: order_by
+}
+
+"primary key columns input for table: hira_taskbased_ra"
+input hira_taskbased_ra_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_taskbased_ra\""
+input hira_taskbased_ra_set_input {
+    activity: String
+    client_id: bigint
+    company_id: bigint
+    contractor_client_id: bigint
+    contractor_id: bigint
+    contractor_site_id: bigint
+    contractor_user_id: bigint
+    created_at: timestamptz
+    expiry: date
+    firestore_id: String
+    id: bigint
+    project_id: bigint
+    risk_tolerance: String
+    site_id: bigint
+    user_id: bigint
+}
+
+input hira_taskbased_ra_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_taskbased_ra_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_taskbased_ra_set_input
+    where: hira_taskbased_ra_bool_exp!
 }
 
 input hr_employees_aggregate_bool_exp {
@@ -102323,6 +106414,173 @@ input proxy_employee__ppe_variance_order_by {
     ppe_id: order_by
 }
 
+input proxy_employee__swp_sign_sheet_aggregate_bool_exp {
+    count: proxy_employee__swp_sign_sheet_aggregate_bool_exp_count
+}
+
+input proxy_employee__swp_sign_sheet_aggregate_bool_exp_count {
+    arguments: [proxy_employee__swp_sign_sheet_select_column!]
+    distinct: Boolean
+    filter: proxy_employee__swp_sign_sheet_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_aggregate_order_by {
+    avg: proxy_employee__swp_sign_sheet_avg_order_by
+    count: order_by
+    max: proxy_employee__swp_sign_sheet_max_order_by
+    min: proxy_employee__swp_sign_sheet_min_order_by
+    stddev: proxy_employee__swp_sign_sheet_stddev_order_by
+    stddev_pop: proxy_employee__swp_sign_sheet_stddev_pop_order_by
+    stddev_samp: proxy_employee__swp_sign_sheet_stddev_samp_order_by
+    sum: proxy_employee__swp_sign_sheet_sum_order_by
+    var_pop: proxy_employee__swp_sign_sheet_var_pop_order_by
+    var_samp: proxy_employee__swp_sign_sheet_var_samp_order_by
+    variance: proxy_employee__swp_sign_sheet_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_arr_rel_insert_input {
+    data: [proxy_employee__swp_sign_sheet_insert_input!]!
+    "upsert condition"
+    on_conflict: proxy_employee__swp_sign_sheet_on_conflict
+}
+
+"order by avg() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_avg_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"proxy_employee__swp_sign_sheet\". All fields are combined with a logical 'AND'."
+input proxy_employee__swp_sign_sheet_bool_exp {
+    _and: [proxy_employee__swp_sign_sheet_bool_exp!]
+    _not: proxy_employee__swp_sign_sheet_bool_exp
+    _or: [proxy_employee__swp_sign_sheet_bool_exp!]
+    employee: hr_employees_bool_exp
+    employee_id: bigint_comparison_exp
+    id: bigint_comparison_exp
+    swp: hira_swp_bool_exp
+    swp_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_inc_input {
+    employee_id: bigint
+    id: bigint
+    swp_id: bigint
+}
+
+"input type for inserting data into table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_insert_input {
+    employee: hr_employees_obj_rel_insert_input
+    employee_id: bigint
+    id: bigint
+    swp: hira_swp_obj_rel_insert_input
+    swp_id: bigint
+}
+
+"order by max() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_max_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by min() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_min_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"on_conflict condition type for table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_on_conflict {
+    constraint: proxy_employee__swp_sign_sheet_constraint!
+    update_columns: [proxy_employee__swp_sign_sheet_update_column!]! = []
+    where: proxy_employee__swp_sign_sheet_bool_exp
+}
+
+"Ordering options when selecting data from \"proxy_employee__swp_sign_sheet\"."
+input proxy_employee__swp_sign_sheet_order_by {
+    employee: hr_employees_order_by
+    employee_id: order_by
+    id: order_by
+    swp: hira_swp_order_by
+    swp_id: order_by
+}
+
+"primary key columns input for table: proxy_employee__swp_sign_sheet"
+input proxy_employee__swp_sign_sheet_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_set_input {
+    employee_id: bigint
+    id: bigint
+    swp_id: bigint
+}
+
+"order by stddev() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_stddev_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_stddev_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_stddev_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by sum() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_sum_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+input proxy_employee__swp_sign_sheet_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: proxy_employee__swp_sign_sheet_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: proxy_employee__swp_sign_sheet_set_input
+    where: proxy_employee__swp_sign_sheet_bool_exp!
+}
+
+"order by var_pop() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_var_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by var_samp() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_var_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
+"order by variance() on columns of table \"proxy_employee__swp_sign_sheet\""
+input proxy_employee__swp_sign_sheet_variance_order_by {
+    employee_id: order_by
+    id: order_by
+    swp_id: order_by
+}
+
 input proxy_employee__training_register_aggregate_bool_exp {
     count: proxy_employee__training_register_aggregate_bool_exp_count
 }
@@ -106595,6 +110853,173 @@ input proxy_sector__training_matrix_variance_order_by {
     id: order_by
     sector_id: order_by
     training_id: order_by
+}
+
+input proxy_swp__ppe_aggregate_bool_exp {
+    count: proxy_swp__ppe_aggregate_bool_exp_count
+}
+
+input proxy_swp__ppe_aggregate_bool_exp_count {
+    arguments: [proxy_swp__ppe_select_column!]
+    distinct: Boolean
+    filter: proxy_swp__ppe_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_aggregate_order_by {
+    avg: proxy_swp__ppe_avg_order_by
+    count: order_by
+    max: proxy_swp__ppe_max_order_by
+    min: proxy_swp__ppe_min_order_by
+    stddev: proxy_swp__ppe_stddev_order_by
+    stddev_pop: proxy_swp__ppe_stddev_pop_order_by
+    stddev_samp: proxy_swp__ppe_stddev_samp_order_by
+    sum: proxy_swp__ppe_sum_order_by
+    var_pop: proxy_swp__ppe_var_pop_order_by
+    var_samp: proxy_swp__ppe_var_samp_order_by
+    variance: proxy_swp__ppe_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"proxy_swp__ppe\""
+input proxy_swp__ppe_arr_rel_insert_input {
+    data: [proxy_swp__ppe_insert_input!]!
+    "upsert condition"
+    on_conflict: proxy_swp__ppe_on_conflict
+}
+
+"order by avg() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_avg_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"proxy_swp__ppe\". All fields are combined with a logical 'AND'."
+input proxy_swp__ppe_bool_exp {
+    _and: [proxy_swp__ppe_bool_exp!]
+    _not: proxy_swp__ppe_bool_exp
+    _or: [proxy_swp__ppe_bool_exp!]
+    id: bigint_comparison_exp
+    ppe: ppe_bool_exp
+    ppe_id: bigint_comparison_exp
+    swp: hira_swp_bool_exp
+    swp_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"proxy_swp__ppe\""
+input proxy_swp__ppe_inc_input {
+    id: bigint
+    ppe_id: bigint
+    swp_id: bigint
+}
+
+"input type for inserting data into table \"proxy_swp__ppe\""
+input proxy_swp__ppe_insert_input {
+    id: bigint
+    ppe: ppe_obj_rel_insert_input
+    ppe_id: bigint
+    swp: hira_swp_obj_rel_insert_input
+    swp_id: bigint
+}
+
+"order by max() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_max_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by min() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_min_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"on_conflict condition type for table \"proxy_swp__ppe\""
+input proxy_swp__ppe_on_conflict {
+    constraint: proxy_swp__ppe_constraint!
+    update_columns: [proxy_swp__ppe_update_column!]! = []
+    where: proxy_swp__ppe_bool_exp
+}
+
+"Ordering options when selecting data from \"proxy_swp__ppe\"."
+input proxy_swp__ppe_order_by {
+    id: order_by
+    ppe: ppe_order_by
+    ppe_id: order_by
+    swp: hira_swp_order_by
+    swp_id: order_by
+}
+
+"primary key columns input for table: proxy_swp__ppe"
+input proxy_swp__ppe_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"proxy_swp__ppe\""
+input proxy_swp__ppe_set_input {
+    id: bigint
+    ppe_id: bigint
+    swp_id: bigint
+}
+
+"order by stddev() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_stddev_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_stddev_pop_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_stddev_samp_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by sum() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_sum_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+input proxy_swp__ppe_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: proxy_swp__ppe_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: proxy_swp__ppe_set_input
+    where: proxy_swp__ppe_bool_exp!
+}
+
+"order by var_pop() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_var_pop_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by var_samp() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_var_samp_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
+}
+
+"order by variance() on columns of table \"proxy_swp__ppe\""
+input proxy_swp__ppe_variance_order_by {
+    id: order_by
+    ppe_id: order_by
+    swp_id: order_by
 }
 
 input proxy_team__ppe_aggregate_bool_exp {
@@ -111586,9 +116011,24 @@ input sheq_incident_investigation_pk_columns_input {
 }
 
 input sheq_incident_investigation_quick_aggregate_bool_exp {
+    avg: sheq_incident_investigation_quick_aggregate_bool_exp_avg
     bool_and: sheq_incident_investigation_quick_aggregate_bool_exp_bool_and
     bool_or: sheq_incident_investigation_quick_aggregate_bool_exp_bool_or
+    corr: sheq_incident_investigation_quick_aggregate_bool_exp_corr
     count: sheq_incident_investigation_quick_aggregate_bool_exp_count
+    covar_samp: sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp
+    max: sheq_incident_investigation_quick_aggregate_bool_exp_max
+    min: sheq_incident_investigation_quick_aggregate_bool_exp_min
+    stddev_samp: sheq_incident_investigation_quick_aggregate_bool_exp_stddev_samp
+    sum: sheq_incident_investigation_quick_aggregate_bool_exp_sum
+    var_samp: sheq_incident_investigation_quick_aggregate_bool_exp_var_samp
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_avg {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_avg_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
 }
 
 input sheq_incident_investigation_quick_aggregate_bool_exp_bool_and {
@@ -111605,11 +116045,70 @@ input sheq_incident_investigation_quick_aggregate_bool_exp_bool_or {
     predicate: Boolean_comparison_exp!
 }
 
+input sheq_incident_investigation_quick_aggregate_bool_exp_corr {
+    arguments: sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments {
+    X: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments_columns!
+    Y: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_corr_arguments_columns!
+}
+
 input sheq_incident_investigation_quick_aggregate_bool_exp_count {
     arguments: [sheq_incident_investigation_quick_select_column!]
     distinct: Boolean
     filter: sheq_incident_investigation_quick_bool_exp
     predicate: Int_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp {
+    arguments: sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments {
+    X: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments_columns!
+    Y: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_covar_samp_arguments_columns!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_max {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_max_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_min {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_min_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_stddev_samp {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_stddev_samp_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_sum {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_sum_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
+}
+
+input sheq_incident_investigation_quick_aggregate_bool_exp_var_samp {
+    arguments: sheq_incident_investigation_quick_select_column_sheq_incident_investigation_quick_aggregate_bool_exp_var_samp_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_quick_bool_exp
+    predicate: float8_comparison_exp!
 }
 
 "order by aggregate values of table \"sheq_incident_investigation_quick\""
@@ -111642,6 +116141,8 @@ input sheq_incident_investigation_quick_avg_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111677,6 +116178,8 @@ input sheq_incident_investigation_quick_bool_exp {
     injury_list: proxy_incident_quick__injury_bool_exp
     injury_list_aggregate: proxy_incident_quick__injury_aggregate_bool_exp
     is_vehicle_incident: Boolean_comparison_exp
+    latitude: float8_comparison_exp
+    longitude: float8_comparison_exp
     person_injured: hr_employees_bool_exp
     person_injured_id: bigint_comparison_exp
     person_injured_other: hr_employees_external_bool_exp
@@ -111706,6 +116209,8 @@ input sheq_incident_investigation_quick_inc_input {
     driver_id: bigint
     driver_other_id: bigint
     id: bigint
+    latitude: float8
+    longitude: float8
     person_injured_id: bigint
     person_injured_other_id: bigint
     person_reporting_id: bigint
@@ -111735,6 +116240,8 @@ input sheq_incident_investigation_quick_insert_input {
     incident_time: time
     injury_list: proxy_incident_quick__injury_arr_rel_insert_input
     is_vehicle_incident: Boolean
+    latitude: float8
+    longitude: float8
     person_injured: hr_employees_obj_rel_insert_input
     person_injured_id: bigint
     person_injured_other: hr_employees_external_obj_rel_insert_input
@@ -111768,6 +116275,8 @@ input sheq_incident_investigation_quick_max_order_by {
     exact_location: order_by
     id: order_by
     incident_date: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111794,6 +116303,8 @@ input sheq_incident_investigation_quick_min_order_by {
     exact_location: order_by
     id: order_by
     incident_date: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111843,6 +116354,8 @@ input sheq_incident_investigation_quick_order_by {
     incident_time: order_by
     injury_list_aggregate: proxy_incident_quick__injury_aggregate_order_by
     is_vehicle_incident: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured: hr_employees_order_by
     person_injured_id: order_by
     person_injured_other: hr_employees_external_order_by
@@ -111883,6 +116396,8 @@ input sheq_incident_investigation_quick_set_input {
     incident_date: date
     incident_time: time
     is_vehicle_incident: Boolean
+    latitude: float8
+    longitude: float8
     person_injured_id: bigint
     person_injured_other_id: bigint
     person_reporting_id: bigint
@@ -111906,6 +116421,8 @@ input sheq_incident_investigation_quick_stddev_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111922,6 +116439,8 @@ input sheq_incident_investigation_quick_stddev_pop_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111938,6 +116457,8 @@ input sheq_incident_investigation_quick_stddev_samp_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111954,6 +116475,8 @@ input sheq_incident_investigation_quick_sum_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111978,6 +116501,8 @@ input sheq_incident_investigation_quick_var_pop_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -111994,6 +116519,8 @@ input sheq_incident_investigation_quick_var_samp_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by
@@ -112010,6 +116537,8 @@ input sheq_incident_investigation_quick_variance_order_by {
     driver_id: order_by
     driver_other_id: order_by
     id: order_by
+    latitude: order_by
+    longitude: order_by
     person_injured_id: order_by
     person_injured_other_id: order_by
     person_reporting_id: order_by

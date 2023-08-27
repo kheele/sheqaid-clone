@@ -1,4 +1,5 @@
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
+import {convertMobx} from "./Utils";
 
 class Form {
 
@@ -158,7 +159,7 @@ const setFilterDataValues = (filterData, key, val) => {
 		filterData[key] = val.getTime();
 	} else if (isObservableArray(val) ||
 		isArray(val)) {
-		val = val.map(convert);
+		val = val.map(convertMobx);
 		if (!val.isEmpty()) {
 			filterData[key] = val;
 		}
@@ -166,28 +167,13 @@ const setFilterDataValues = (filterData, key, val) => {
 		isObservableObject(val) ||
 		isObservableMap(val) ||
 		isObject(val)) {
-		val = convert(val);
+		val = convertMobx(val);
 		if (!!val) {
 			processObject(filterData, val, key);
 		}
 	} else {
 		filterData[key] = val;
 	}
-};
-
-const convert = (arg) => {
-	if (isObservable(arg)) {
-		return toJS(arg);
-	} else if (isObservableArray(arg)) {
-		return convert(toJS(arg));
-	} else if (isObservableObject(arg)) {
-		return convert(toJS(arg));
-	} else if (isObservableMap(arg)) {
-		return convert(toJS(arg));
-	} else if (isArray(arg)) {
-		return arg.map(convert);
-	}
-	return arg;
 };
 
 const processObject = (filterData, val, key) => {

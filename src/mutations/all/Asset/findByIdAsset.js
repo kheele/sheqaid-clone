@@ -7,7 +7,6 @@ import {
 } from "views/plugins/plugin_sheq_assist/19_Maintenance/ToolsTab/Query/Fragments";
 import {orgs_fragment,} from "graphql/Fragments";
 
-// 3
 export default async (input: number) => {
 
   //<editor-fold desc="ByEach">
