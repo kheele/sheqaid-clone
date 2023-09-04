@@ -106,12 +106,22 @@ exports.viewDoc = async (path) => {
 };
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="wordToPDF">
-exports.wordToPDF = async (dataUrl) => {
+// <editor-fold defaultstate="collapsed" desc="wordPreviewUrl">
+exports.wordPreviewUrl = async (dataUrl) => {
 	if (!dataUrl) return;
 
 	return authorize().then(auth => {
-		return wordToPDF(dataUrl).then(data => data && ({data}));
+		return wordPreviewUrl(dataUrl);
+	});
+};
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="excelPreviewUrl">
+exports.excelPreviewUrl = async (dataUrl) => {
+	if (!dataUrl) return;
+
+	return authorize().then(auth => {
+		return excelPreviewUrl(dataUrl);
 	});
 };
 // </editor-fold>

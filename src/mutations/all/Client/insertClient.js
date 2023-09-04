@@ -145,31 +145,31 @@ export default async (input: EntityClient) => {
         // delete input.profile_pic;//
     }
 
-    // const {company, user} = storage.loggedUser;
-    // input.user_id = user.id;
-    // input.company_id = company.id;
+    const {company, user} = storage.loggedUser;
+    input.user_id = user.id;
+    input.company_id = company.id;
 
     const newItem = await createMutationImpl({mutation, input});
 
     if (newItem) {
-        // if (profile_pic) {
-        //     try {
-        //         const path = `clients/${newItem.id}`;
-        //         const name = "profile-pic";
-        //         const gcsUri = await workers.emit("files/upload", {
-        //             file: profile_pic,
-        //             path,
-        //             name,
-        //         });
-        //         console.log("gcsUri", gcsUri);
-        //
-        //         if (gcsUri) {
-        //             return updateClient({id: newItem.id, profile_pic: gcsUri});
-        //         }
-        //     } catch (err) {
-        //         console.log('insertClient error', err)
-        //     }
-        // }
+        if (profile_pic) {
+            try {
+                const path = `clients/${newItem.id}`;
+                const name = "profile-pic";
+                const gcsUri = await workers.emit("files/upload", {
+                    file: profile_pic,
+                    path,
+                    name,
+                });
+                console.log("gcsUri", gcsUri);
+
+                if (gcsUri) {
+                    return updateClient({id: newItem.id, profile_pic: gcsUri});
+                }
+            } catch (err) {
+                console.log('insertClient error', err)
+            }
+        }
     }
     return newItem;
 };

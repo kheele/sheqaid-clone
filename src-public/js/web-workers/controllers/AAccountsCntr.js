@@ -175,7 +175,7 @@ class AAccountsCntr extends AAccountsServerCntr {
 			let {loggedUser, token} = res;
 			loggedUser = {...loggedUser, access_type: this.access_type};
 
-			self.session.loginUser(loggedUser);
+			self.session.loginUser(loggedUser, this.auth);
 			return {loggedUser, token};
 		}
 

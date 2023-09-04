@@ -157,19 +157,15 @@ window.electronDialog = {
             } else if (isWord || isExcel) {
                 if (filePath instanceof File) {
                     previewPath = await FileConverters.asDataUrl(filePath);
-                    const res = await neonBinding.events.emit('default/docs/doc/word-to-pdf', previewPath);
-                    if(res && res.data) {
-                        const {data: dataUrl} = res;
-                        previewPath = dataUriToUrl(dataUrl);
-                    }
+                    const fn = isWord ? 'word-preview-url' : 'excel-preview-url';
+                    previewPath = await neonBinding.events.emit(`default/docs/doc/${fn}`, previewPath);
                 } else {
                     const filePathDest = filePath.replace(mime.getExtension(filePath), "pdf");
                     const fn = isWord ? 'wordToPDF' : 'excelToPDF';
                     await neonBinding.events.emit(fn, filePath, filePathDest);
                     previewPath = await createPreviewPath(filePathDest);
+                    previewPath = createReactPDFPreviewUrl(previewPath);
                 }
-
-                previewPath = createReactPDFPreviewUrl(previewPath);
             } else {
                 previewPath = await createPreviewPath(filePath);
             }

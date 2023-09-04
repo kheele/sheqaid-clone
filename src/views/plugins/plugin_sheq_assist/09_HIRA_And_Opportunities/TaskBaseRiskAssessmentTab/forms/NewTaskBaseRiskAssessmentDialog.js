@@ -189,3 +189,7 @@ class Controls extends React.Component {
 }
 
 export default NewTaskBaseRiskAssessmentDialog;
+//1. sheqaid-hasura
+//2. sheqaid-server
+//3. sheqaid-server-contractors
+//4. sheqaid-general

@@ -1,24 +1,19 @@
 /* eslint-disable camelcase */
 
-// 1
-import { graphql } from "react-relay";
-// @ts-ignore
-import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityDocument} from "mutations/types.d.ts";
+import GQLClient from "graphql/GQLClient";
+import {orgs_fragment} from "graphql/Fragments";
+import {document_details_fragment} from "views/plugins/common/documents/Query/Fragments";
 
-// 2
-const query = graphql`
-  query findByIdDocumentQuery($id: bigint) {
-    sheq_documents_connection(where: {id: {_eq: $id}}) {
-      edges {
-        node {
-          id
-        }
-      }
-    }
-  }
-`;
-//firestore_id
-// 3
-export default async (input: number) =>
-    findOneMutationImpl({ query, variables: {id: input} });
+export default async (input: number) => {
+  return GQLClient
+  .query({
+    query: `
+       query findOneDocumentsByLoggedQuery {
+           sheq_documents(where: {id: {_eq: ${input}}}) {
+               ${document_details_fragment}
+               ${orgs_fragment}
+           }
+       }
+    `,
+  }).then(res => res && res[0]);
+}

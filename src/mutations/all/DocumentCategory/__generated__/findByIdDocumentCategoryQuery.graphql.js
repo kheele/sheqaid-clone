@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f93b4c818596df37cdcd6bb1c368440e>>
+ * @generated SignedSource<<f171f66ea4e67588c588dde6ba423faf>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,15 +38,15 @@ v1 = [
         "name": "where"
       }
     ],
-    "concreteType": "sheq_documentsConnection",
+    "concreteType": "default_document_categoriesConnection",
     "kind": "LinkedField",
-    "name": "sheq_documents_connection",
+    "name": "default_document_categories_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "sheq_documentsEdge",
+        "concreteType": "default_document_categoriesEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -54,7 +54,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "sheq_documents",
+            "concreteType": "default_document_categories",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -81,7 +81,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "findByIdDocumentQuery",
+    "name": "findByIdDocumentCategoryQuery",
     "selections": (v1/*: any*/),
     "type": "query_root",
     "abstractKey": null
@@ -90,20 +90,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "findByIdDocumentQuery",
+    "name": "findByIdDocumentCategoryQuery",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "4303ab62f670d8af43f7eb967b6f1f91",
+    "cacheID": "d6addc6699d7d8b4be457503014728ef",
     "id": null,
     "metadata": {},
-    "name": "findByIdDocumentQuery",
+    "name": "findByIdDocumentCategoryQuery",
     "operationKind": "query",
-    "text": "query findByIdDocumentQuery(\n  $id: bigint\n) {\n  sheq_documents_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdDocumentCategoryQuery(\n  $id: bigint\n) {\n  default_document_categories_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "48bc0ff6931159c9dc0f382ecd2c18bf";
+node.hash = "01c6241a2f8b0775bad70bac78b87374";
 
 module.exports = node;

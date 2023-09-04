@@ -27,7 +27,6 @@ class Form {
 		//         val = [];
 		//     }
 		// }
-		// console.log('Form onChange', val, name, el)
 		if (Form.hasVal(val)) {
 			if (type === 'number') {
 				val = parseInt(val);

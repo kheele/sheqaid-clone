@@ -8,6 +8,10 @@ export const document_details_fragment = `
     desc
     doc_type
     internal_or_external
+    category {
+        id
+        name
+    }
     doc_version_list(order_by:{expiry: desc_nulls_last}){
         id
         type

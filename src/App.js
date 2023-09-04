@@ -153,7 +153,7 @@ class App extends React.Component {
         });
 
         this.onConnected();
-        setInterval(this.onConnected, 5000);
+        setInterval(this.onConnected, 2000);
 
         if (storage.list.countries.isEmpty()) {
             storage.load.loadCountries();
@@ -196,7 +196,6 @@ class App extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="onConnected">
     onConnected() {
         this._isConnected = navigator.onLine;
-        neonBinding.events.emit('connected', navigator.onLine);
     }
 
     // </editor-fold>

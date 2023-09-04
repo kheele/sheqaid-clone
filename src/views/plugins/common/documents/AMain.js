@@ -285,15 +285,16 @@ class AMain extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-		const perm = this.notHasWritePermission ? null : this.props.permissionKey;
-		return <Options idx={idx} permissionModKey={perm}>
+		// const perm = this.notHasWritePermission ? null : this.props.permissionKey;
+		return <Options idx={idx}>
+		{/*return <Options idx={idx} permissionModKey={perm}>*/}
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-			{!this.notHasWritePermission && <>
+			{/*{!this.notHasWritePermission && <>*/}
 				<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
 				<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
 				<hr/>
 				<NavItem action="edit" onClick={this.onUpdateReview} faIconLeft="edit" title="Update Review"/>
-			</>}
+			{/*</>*/}
 			<hr/>
 			<NavItem action="download" onClick={this.onDownload} faIconLeft="download" title="Download"/>
 			<NavItem action="save-pdf" onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
@@ -432,7 +433,7 @@ class AMain extends React.Component {
 			<ConfirmDialog ref="removeDialog"/>
 
 			{!this.notHasWritePermission &&
-				<NewDialog ref="newDialog" path={this.path} title={pageTitleSingular} extraContent={ExtraContent}
+				<NewDialog ref="newDialog" doc_type={this.type} title={pageTitleSingular} extraContent={ExtraContent}
 				           showCategory={showCategory}/>}
 			<ProfileDialog ref="profileDialog" title={pageTitleSingular} extraContent={ExtraContent}
 			               showCategory={showCategory}/>

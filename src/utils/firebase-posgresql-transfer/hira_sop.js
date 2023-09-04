@@ -109,8 +109,8 @@ export const hira_sop_transfer = async () => {
 				console.log('insertSOP start', item)
 				//save
 				try {
-					// const res = await insertSOP(item);
-					// console.log('insertSOP end', res)
+					const res = await insertSOP(item);
+					console.log('insertSOP end', res)
 				} catch (e) {
 					console.error(id, e);
 				}

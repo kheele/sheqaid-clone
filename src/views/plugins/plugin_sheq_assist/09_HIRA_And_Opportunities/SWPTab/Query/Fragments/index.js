@@ -34,7 +34,7 @@ export const hira_swp_details_fragment = `
 			ppe{
 				id
 				name
-				photo
+				profile_pic
 			}
 		}
 		sign_sheet_employee_list{

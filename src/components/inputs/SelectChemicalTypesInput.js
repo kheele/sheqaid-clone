@@ -5,6 +5,10 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from '../../components/inputs';
 
 import ASelectInput from '../../components/inputs/ASelectInput';
+import listForSelectionChemicalCategories
+    from "../../views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/listForSelectionChemicalCategories";
+import listForSelectionChemicalTypes
+    from "../../views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/listForSelectionChemicalTypes";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -64,8 +68,9 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/Hazardous_Chemical_Substances/hazchem-sheet/type/list").then(res => {
-        return res.map(value => {
+    return listForSelectionChemicalTypes().then(list => {
+        console.log('listForSelectionChemicalTypes', list)
+        return list.map((value) => {
             return {label: value, value};
         });
     });

@@ -51,7 +51,7 @@ export default async (input: EntitySOP) => {
 		other,
 	} = input;
 
-	// crudUtils.injectCreate(input);
+	crudUtils.injectCreate(input);
 
 	return await createMutationImpl({mutation, input}).then(res => res && findByIdSOP(res.id));
 };

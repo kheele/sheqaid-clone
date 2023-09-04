@@ -10,15 +10,19 @@ import {AProfileDialog} from 'components/dialogs';
 import {ProfileField, ProfilePic, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
+import findByIdDocument from "mutations/all/Document/findByIdDocument";
 import ProfilePDFReader from './printers/ProfilePDFReader';
 
 import style from "./ProfileDialog.lazy.css";
+import {computed, observable} from "mobx";
+import {CircularProgress} from "@mui/material";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ADocumentProfile";
+	findById = findByIdDocument;
 
 	constructor(props) {
 		super(props, style);
@@ -50,6 +54,11 @@ class ProfileDialog extends AProfileDialog {
 
 @observer
 class Controls extends React.Component {
+
+	@observable
+	state = {
+		item: null,
+	};
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
@@ -165,8 +174,8 @@ class Controls extends React.Component {
 		return `https://docs.google.com/document/d/${doc}/preview`;
 	}
 
-	get item() {
-		return this.props.state.item;
+	@computed get item() {
+		return this.state.item;
 	}
 
 	// </editor-fold>
@@ -186,8 +195,10 @@ class Controls extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -214,6 +225,7 @@ class Controls extends React.Component {
 					removed,
 
 					doc_version_list: _doc_version_list,
+					latest_version,
 				}
 			}
 		} = this;
@@ -228,8 +240,6 @@ class Controls extends React.Component {
 		}
 
 		// const isBtnPreview = doc_old && isObject(doc_old);
-
-		const lastVersion = _doc_version_list.getLastItem();
 
 		return <FormControls>
 			{!isNoProjects && <Row
@@ -248,7 +258,7 @@ class Controls extends React.Component {
 				rendered
 				active={isNoProjects}
 				idx={1}
-				title="1. Document Details"
+				title="1. Basic Details"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={!isNoProjects && onFormBack}>
@@ -256,9 +266,9 @@ class Controls extends React.Component {
 				              className="col-lg-12"/>
 				<ProfileField title="Responsible Person" value={responsible_person}
 				              renderer={({fname, lname}) => `${fname} ${lname}`} className="col-lg-12"/>
-				<ProfileField title="Expiry Date" type="date" value={lastVersion && lastVersion.expiry} className="col-lg-12"/>
+				<ProfileField title="Expiry Date" type="date" value={latest_version && latest_version.expiry} className="col-lg-12"/>
 				<ProfileField title="Internal / External Document?" value={internal_or_external} className="col-lg-12"/>
-				{showCategory && <ProfileField title="Document Category" value={category} className="col-lg-12"/>}
+				{showCategory && <ProfileField title="Document Category" value={category} renderer={v => v.name} className="col-lg-12"/>}
 				<ProfileField title="Document Description" value={desc} className="col-lg-12"/>
 			</Row>
 			{/*<Row
@@ -288,7 +298,7 @@ class Controls extends React.Component {
 				{/*/>}*/}
 				<UploadButton
 					buttonTitle="PDF/Word/Spreadsheet"
-					defaultValue={lastVersion && lastVersion.doc}
+					defaultValue={latest_version && latest_version.doc}
 					showOnlyIcon
 					readonly
 					className="flex"

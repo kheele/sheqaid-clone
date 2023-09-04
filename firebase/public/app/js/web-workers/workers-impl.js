@@ -156,8 +156,9 @@ class Utils {
 
 class Events {
     static async whenLoggedIn(cb) {
-        if (self.session.isLoggedIn()) {
-            return await cb(self.session.getLoggedUser());
+        const {session} = self;
+        if (session.isLoggedIn()) {
+            return await cb(session.getLoggedUser(), session.auth);
         } else {
             throw new Error('Not authenticated');
         }
@@ -301,13 +302,15 @@ class Session {
         return !!this.data[key];
     }
 
-    loginUser(value) {
+    loginUser(value, auth) {
         this.set("logged_user", value);//user, company
+        this.set("auth", auth);
         Utils.onLogin();
     }
 
     logout() {
         delete this.data["logged_user"];//user, company
+        delete this.data["auth"];
         Utils.onLogout();
     }
 
@@ -315,8 +318,14 @@ class Session {
         return this.data["logged_user"];//user, company
     }
 
+    get auth() {
+        return this.data["auth"];
+    }
+
     isLoggedIn() {
-        return this.has("logged_user");
+        if(!this.has("logged_user")) return;
+        if(!this.has("auth")) return;
+        return !!this.auth.currentUser;
     }
 }
 

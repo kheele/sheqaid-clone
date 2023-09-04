@@ -51,7 +51,7 @@
                 console.log('users update', updateAttrs)
 
                 if (username || phone) {
-                    const {email: old_username, phoneNumber: old_phone} = auth.currentUser;
+                    const {email: old_username, phoneNumber: old_phone} = self.session.auth.currentUser;
                     const {username: new_username, phone: new_phone} = updateAttrs;
                     console.log('users update new_username new_phone', new_username, new_phone)
 
@@ -62,9 +62,9 @@
                         
                         const updateUsernameImpl = async (fnName, new_value, credental) => {
                             try {
-                                await auth.currentUser.reauthenticateWithCredential(credental);
+                                await self.session.auth.currentUser.reauthenticateWithCredential(credental);
                                 try {
-                                    await auth.currentUser[fnName](new_value);
+                                    await self.session.auth.currentUser[fnName](new_value);
                                     return new_value;
                                 } catch (err) {
                                     throw err;

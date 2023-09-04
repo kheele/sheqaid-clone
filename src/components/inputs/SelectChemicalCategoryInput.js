@@ -5,6 +5,8 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from '../../components/inputs';
 
 import ASelectInput from '../../components/inputs/ASelectInput';
+import listForSelectionChemicalCategories
+    from "../../views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/listForSelectionChemicalCategories";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -64,17 +66,12 @@ class SelectInput extends ASelectInput {
 }
 
 async function onSelectLoad() {
-    const res = await Promise.all([neonBinding.events.emit("plugin_sheq_assist/Hazardous_Chemical_Substances/chemical-inventory/category/list").then(res => {
-        return res.map(value => {
+    return listForSelectionChemicalCategories().then(list => {
+        console.log('listForSelectionChemicalCategories', list)
+        return list.map((value) => {
             return {label: value, value};
         });
-    }),
-    neonBinding.events.emit("plugin_sheq_assist/Hazardous_Chemical_Substances/msds/category/list").then(res => {
-        return res.map(value => {
-            return {label: value, value};
-        });
-    })]);
-    return res.reduce((a1, a2) => [...a1, ...a2], []);
+    });
 }
 
 export default SelectInput;

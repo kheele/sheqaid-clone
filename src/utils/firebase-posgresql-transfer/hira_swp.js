@@ -13,7 +13,7 @@ import findByFirestoreIdSWP from "../../mutations/all/HIRA_And_Opportunities/SWP
 
 const tbl = "plugin_sheq_assist_09_HIRA_And_Opportunities_swp";
 //<editor-fold desc="transfer">
-export const hira_sop_transfer = async () => {
+export const hira_swp_transfer = async () => {
 	await execWhen(() => window.db && window.storage && storage.loggedUserAuth);
 
 	const list = await workers.emit('relay/get_db', tbl);
@@ -101,7 +101,19 @@ export const hira_sop_transfer = async () => {
 						}))
 					}, //{id, swp_id, cause, hazard, rating,}
 					//4
-					ppe_required_list: {data: (ppe_required_list || []).map(({text}) => ({ppe_id}))},//{id, swp_id, ppe,}
+					ppe_required_list: {
+						data: (ppe_required_list || []).map(({text}) => ({
+							ppe: {
+								data: {
+									name: text,
+									company_id: pg_company && pg_company.id,
+									client_id: pg_client && pg_client.id,
+									project_id: pg_project && pg_project.id,
+									site_id: pg_site && pg_site.id,
+								},
+							}
+						}))
+					},//{id, swp_id, ppe,}
 					//5
 					steps_to_perform_task_list: steps_to_perform_task_list && steps_to_perform_task_list.map(({text}) => text),
 					//6
@@ -120,8 +132,8 @@ export const hira_sop_transfer = async () => {
 				console.log('insertSWP start', item)
 				//save
 				try {
-					// const res = await insertSWP(item);
-					// console.log('insertSWP end', res)
+					const res = await insertSWP(item);
+					console.log('insertSWP end', res)
 				} catch (e) {
 					console.log(id, e);
 				}

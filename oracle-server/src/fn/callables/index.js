@@ -34,11 +34,4 @@ router.post('/sendEmail', async (req, res) => {
     console.log('/sendEmail res')
 });
 
-router.post('/wordToPDF', async (req, res) => {
-    await authorize();
-
-    const data = await wordToPDF(req.body);
-    res.json(data);
-});
-
 module.exports = router;

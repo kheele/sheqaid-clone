@@ -5,7 +5,8 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import departmentStore from "../../mutations/all/Department";
+import listForSelectionDocumentCategoriesByLogged
+    from "views/plugins/common/documents/Query/List/listForSelectionDocumentCategoriesByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -13,7 +14,7 @@ class SelectInput extends ASelectInput {
     @observable
     state = {
         lists: {
-            list: ['Company Certificate', 'Company Insurance', 'Company Registration', 'Company Regulatory Body']
+            list: []
         },
         props: null
     };
@@ -27,7 +28,7 @@ class SelectInput extends ASelectInput {
         className += ` SelectDocumentCategoryInput`;
         
         const res = await onSelectLoad();
-        this.state.lists.list.push(...res.distinct());
+        this.state.lists.list = res.distinct();
         
         this.state.props = {
             ref: "input",
@@ -71,10 +72,19 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    // return documentCat.listForSelectionByLogged().then(res => {
-    return neonBinding.events.emit("plugin_sheq_assist/document-categories/list").then(res => {
-        return res.map(({data: {name}}) => {
-            return {label: name, value: name};
+    const args = {
+        removed: false,
+        //
+        limit: 0,
+        //
+        exact_orgs: true,
+    };
+
+    return listForSelectionDocumentCategoriesByLogged(args).then(list => {
+        // console.log('listForSelectionByLogged', list)
+        return list.map((value) => {
+            const {id, data: {name,}} = value;
+            return {label: name, value};
         });
     });
 }

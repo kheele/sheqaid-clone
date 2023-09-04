@@ -244,31 +244,36 @@ class DriveUtils {
         const remoteFile = await bucket.file(remoteFileName);
 //        remoteFileName = remoteFileName.replace(".pdf", "").replace(".docx", "").replace(".doc", "");
 
-//        console.log("updateRemotePathToDrive 0", JSON.stringify(remoteFile));
-//        console.log("updateRemotePathToDrive 0", remoteFile.createReadStream());
-//        console.log("updateRemotePathToDrive", remoteFile.name, type);
-//        const fileMetadata = {
-////            name,
-////            appProperties: {
-////                remoteFileName
-////            }
-//        };
         const media = {
             body: remoteFile.createReadStream()
         };
-        
+
         const mimes = {
             google: 'application/vnd.google-apps.document',
             pdf: 'application/pdf',
             word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         };
-        if(type) {
+        if (type) {
+            if(type === 'Type') {
+                type = "google";
+            } else {
+                remoteFileName = remoteFileName.toLowerCase()
+                if(remoteFileName.contains(".pdf")) {
+                    type = "pdf";
+                } else if(remoteFileName.contains(".doc") || remoteFileName.contains(".docx")) {
+                    type = "word";
+                } else if(remoteFileName.contains(".xls") || remoteFileName.contains(".xlsx")) {
+                    type = "excel";
+                } else {
+                    type = "google";//TODO: add other formats
+                }
+            }
             media.mimeType = mimes[type];
         }
-        
+
 //        console.log('updateRemotePathToDrive 2', fileId, media.mimeType);
-        
+
         return drive.files.update({
             fileId,
 //            resource: fileMetadata,

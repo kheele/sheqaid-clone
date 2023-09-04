@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -20,12 +20,16 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
+import findByIdDocument from "mutations/all/Document/findByIdDocument";
+import updateDocument from "mutations/all/Document/updateDocument";
+import {CircularProgress} from "@mui/material";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "ADocumentEdit";
+	findById = findByIdDocument;
 
 	constructor(props) {
 		super(props, style);
@@ -60,8 +64,8 @@ class Controls extends React.Component {
 		title: null,
 
 		last_doc_num: null,
-		showDoc: false,
-		selectedClient: null
+
+		item: null,
 	};
 	// </editor-fold>
 
@@ -70,35 +74,9 @@ class Controls extends React.Component {
 		super();
 
 		this.onNext = this.onNext.bind(this);
+		this.onFormSave = this.onFormSave.bind(this);
 
 		this.form = new Form();
-		this.onChangeType = this.onChangeType.bind(this);
-		this.onChangeClient = this.onChangeClient.bind(this);
-		this.form.addChangeOne("type", this.onChangeType);
-		this.form.addChangeOne("company", this.onChangeClient);
-	}
-
-	// </editor-fold>
-
-	// <editor-fold defaultstate="collapsed" desc="onChanges">
-	onChangeType(el, val) {
-		if (val) {
-			if (val === 'Upload') {
-				this.state.showDoc = true;
-				this.state.showTinyMCE = false;
-			} else if (val === 'Type') {
-				console.log('here')
-				this.state.showTinyMCE = true;
-				this.state.showDoc = false;
-			}
-		} else {
-			this.state.showTinyMCE = false;
-			this.state.showDoc = false;
-		}
-	}
-
-	onChangeClient(el, val) {
-		this.state.selectedClient = val;
 	}
 
 	// </editor-fold>
@@ -116,24 +94,94 @@ class Controls extends React.Component {
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="onNext">
-	onNext(e, btn) {
-		const {form, refs: {doc}} = this;
+	//<editor-fold desc="onFormSave">
+	onFormSave(e, btn) {
+		const {
+			form,
+			item: {id, data: old_data},
+		} = this;
+		const {is: {isConsultant, isContractor}, loggedContractor} = storage;
+
+		const onSubmit = (data, onSaved) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			btn.text("Saving...").disabled();
+			progressDialog.open();
+			updateDocument({id: this.item.id, ...data}).then(res => {
+				console.log("res", res)
+				if(res === 'NOT_FOUND') {
+					infoDialog.open("This record no longer exist.");
+				} else {
+					onSaved && onSaved(res);
+					infoDialog.open("Record successfully updated.");
+					infoDialog.close(2000);
+				}
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+
 		const {idx} = btn.props;
 		if (idx === 0) {
-			const {isConsultant} = storage.is;
-			if (isConsultant && !form.isValid('company')) {
+			if (isConsultant && !form.isValid('client')) {
 				infoDialog.open('Company is required');
 				return;
 			}
-		} else if (idx === 1) {
+
+			const {
+				//0
+				site, project, client,
+			} = form.data;
+
+			const data = {};
+
+			if (isContractor) {
+				ShouldUpdate.checkSite(data, old_data, site, 'contractor_site');
+			} else {
+				ShouldUpdate.checkClient(data, old_data, client);
+				ShouldUpdate.checkProject(data, old_data, project);
+				ShouldUpdate.checkSite(data, old_data, site);
+			}
+
+			onSubmit(data);
+			return;
+		}
+
+		if (idx === 1) {
 			if (!form.isValid('internal_or_external')) {
 				infoDialog.open('Please check if a document is Internal / External');
 				return;
 			}
 
-			doc.refresh();
-		} else if (idx === 2) {
+			const {
+				//1
+				responsible_department,
+				responsible_person,
+				expiry,
+				internal_or_external,
+				category,
+				desc,
+			} = form.data;
+
+			const data = {};
+			ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
+			ShouldUpdate.checkEmployee(data, old_data, responsible_person, 'responsible_person');
+			ShouldUpdate.checkDate(data, old_data, expiry, 'expiry');
+			ShouldUpdate.check(data, old_data, internal_or_external, 'internal_or_external');
+			ShouldUpdate.check(data, old_data, category && category.id, 'category_id');
+			ShouldUpdate.check(data, old_data, desc, 'desc');
+
+			onSubmit(data);
+			return;
+		}
+
+		if (idx === 2) {
 			if (!form.isValid('title')) {
 				infoDialog.open('Document Title is required');
 				return;
@@ -142,6 +190,33 @@ class Controls extends React.Component {
 				infoDialog.open('Document is required (Please upload/type)');
 				return;
 			}
+
+			const {
+				//2
+				type,
+				title,
+				doc,
+			} = form.data;
+			const data = {};
+			ShouldUpdate.check(data, old_data, type, 'type');
+			ShouldUpdate.check(data, old_data, title, 'title');
+			ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+
+			onSubmit(data);
+			return;
+		}
+
+		return true;
+	}
+
+	//</editor-fold>
+
+	// <editor-fold defaultstate="collapsed" desc="onNext">
+	onNext(e, btn) {
+		const {form, refs: {doc}} = this;
+		const {idx} = btn.props;
+		if (idx === 1) {
+			doc.refresh();
 		}
 
 		return true;
@@ -149,85 +224,20 @@ class Controls extends React.Component {
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="onSubmit">
-	onSubmit(e, btn, onSaved) {
-		const {form, item: {data: old_data}} = this;
-		const {isConsultant} = storage.is;
-
-		if (isConsultant && !form.isValid('company')) {
-			infoDialog.open('Company is required');
-			return;
-		}
-
-		if (!form.isValid('internal_or_external')) {
-			infoDialog.open('Please check if a document is Internal / External');
-			return;
-		}
-
-		if (!form.isValid('title')) {
-			infoDialog.open('Document Title is required');
-			return;
-		}
-		if (!form.isValid('doc')) {
-			infoDialog.open('Document is required (Please upload/type)');
-			return;
-		}
-
-		const {
-			site, project, company,
-			responsible_department, responsible_person,
-			expiry, internal_or_external, desc,
-			category, title, doc,
-//            doc_num, doc_rev_num
-		} = form.data;
-		const data = {};
-		if (isConsultant) {
-			ShouldUpdate.checkClient(data, old_data, company, "company");
-		} else {
-//            const {name} = storage.loggedUser.company.data;
-//            data.company = {name: name};
-		}
-
-		ShouldUpdate.checkProject(data, old_data, project);
-		ShouldUpdate.checkSite(data, old_data, site);
-		ShouldUpdate.checkDepartment_deprecated(data, old_data, responsible_department, 'responsible_department');
-
-		ShouldUpdate.checkEmployee_deprecated(data, old_data, responsible_person, 'responsible_person');
-		ShouldUpdate.checkDate_deprecated(data, old_data, expiry, 'expiry');
-		ShouldUpdate.check(data, old_data, internal_or_external, 'internal_or_external');
-		ShouldUpdate.check(data, old_data, category, 'category');
-		ShouldUpdate.check(data, old_data, desc, 'desc');
-
-		ShouldUpdate.check(data, old_data, title, 'title');
-
-		console.log(data)
-
-		btn.text("Saving...").disabled();
-		neonBinding.events.emit(this.props.path + "update", this.item.id, data).then(res => {
-			console.log("res", res)
-			onSaved && onSaved(res);
-			infoDialog.open("Record successfully updated.");
-			infoDialog.close(2000);
-			this.props.close();
-		}).finally(() => {
-			btn.text("Save").enabled();
-		});
-	}
-
-	// </editor-fold>
-
-	get item() {
-		return this.props.state.item;
+	@computed get item() {
+		return this.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
-				dialog: {renderProfileCover, props: {showCategory}}
+				dialog: {props: {showCategory}}
 			},
 			item, item: {
 				id, data: {
@@ -250,21 +260,14 @@ class Controls extends React.Component {
 					removed,
 
 					doc_version_list: _doc_version_list,
+					latest_version,
 				}
 			}
 		} = this;
 
-		const responsible_departmentDefault = responsible_department ? {
-			label: responsible_department.name,
-			value: responsible_department
-		} : null;
-		let responsible_personDefault;
-		if (responsible_person) {
-			const {lname, fname} = responsible_person;
-			responsible_personDefault = {label: lname + ' ' + fname, value: responsible_person};
-		}
-
 		const {isConsultant, isNoProjects} = storage.is;
+
+		const {expiry} = latest_version || {};
 
 		console.log(this.item)
 		return <FormControls onChange={this.form.onChange}>
@@ -274,29 +277,46 @@ class Controls extends React.Component {
 				idx={0}
 				title="Company / Project / Site"
 				onFormOpen={onFormOpen}
-				onFormNext={onFormNext}>
-				{isConsultant && <SelectClientInput name="company" placeholder="Company..."
-				                                    defaultValue={RenderUtils.selectedClient.call(this, 'company')} required
-				                                    className="col-lg-4 col-sm-12 form-control" onChange={this.form.onChange}/>}
-				<SelectProjectInput name="project" placeholder="Project..."
-				                    defaultValue={RenderUtils.selectedProject.call(this)} required showAll
-				                    className="col-lg-4 col-sm-6 col-xs-12 form-control" onChange={this.form.onChange}/>
-				<SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)} required
-				                 showAll className="col-lg-4 col-sm-6 col-xs-12 form-control" onChange={this.form.onChange}/>
+				onFormNext={onFormNext}
+				onFormSave={this.onFormSave}>
+				{isConsultant && <SelectClientInput
+					name="client"
+					placeholder="Company..."
+					defaultValue={RenderUtils.selectedClient.call(this)}
+					className="col-lg-4 col-sm-12 form-control"
+					onChange={this.form.onChange}
+				/>}
+				<SelectProjectInput
+					name="project"
+					placeholder="Project..."
+					defaultValue={RenderUtils.selectedProject.call(this)}
+					showAll
+					className="col-lg-4 col-sm-6 col-xs-12 form-control"
+					onChange={this.form.onChange}
+				/>
+				<SelectSiteInput
+					name="site"
+					placeholder="Site..."
+					defaultValue={RenderUtils.selectedSite.call(this)}
+					showAll
+					className="col-lg-4 col-sm-6 col-xs-12 form-control"
+					onChange={this.form.onChange}
+				/>
 			</Row>}
 			<Row
 				rendered
 				active={isNoProjects}
 				idx={1}
-				title="1. Document Details"
+				title="1. Basic Details"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
-				onFormBack={!isNoProjects && onFormBack}>
+				onFormBack={!isNoProjects && onFormBack}
+				onFormSave={this.onFormSave}>
 				<SelectDepartmentInput name="responsible_department" placeholder="Department..."
-				                       defaultValue={responsible_departmentDefault} required
+				                       defaultValue={responsible_department} required
 				                       className="col-lg-4 col-sm-6 col-xs-12 form-control" onChange={this.form.onChange}/>
 				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
-				                     defaultValue={responsible_personDefault} required
+				                     defaultValue={responsible_person} required
 				                     className="col-lg-4 col-sm-6 col-xs-12 form-control" onChange={this.form.onChange}/>
 				<ClearableInput name="expiry" type="date" placeholder="Expiry Date..." defaultValue={expiry} required
 				                className="col-lg-4 col-sm-6 col-xs-12 form-control" onChange={this.form.onChange}/>
@@ -316,17 +336,25 @@ class Controls extends React.Component {
                 title="2. Privacy Details" 
                 onFormOpen={onFormOpen} 
                 onFormNext={onFormNext} 
-                onFormBack={onFormBack}>
+                onFormBack={onFormBack}
+              onFormSave={this.onFormSave}>
                 
             </Row>*/}
 			<Row
 				rendered
 				idx={2}
 				title="2. Document"
-				sectionClassName="min-h-320"
 				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}>
-				<GDocEditor ref="doc" name="doc" item={item} onChangeTitle={this.form.onChange} onChange={this.form.onChange}/>
+				onFormBack={onFormBack}
+				onFormSave={this.onFormSave}>
+				<GDocEditor
+					ref="doc"
+					name="doc"
+					item={item}
+					onChangeFileType={this.form.onChange}
+					onChangeTitle={this.form.onChange}
+					onChange={this.form.onChange}
+				/>
 			</Row>
 		</FormControls>;
 	}

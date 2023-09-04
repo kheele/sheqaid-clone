@@ -52,7 +52,13 @@ import {organograms_transfer} from "./sheq_organograms";
 // import plan_gob from "graphql/data/plan_gob";
 // import plan_mzi from "graphql/data/plan_mzi";
 
-import training_matrix from "graphql/data/training_matrix.js";
+// import training_matrix from "graphql/data/training_matrix.js";
+
+import {hira_swp_transfer} from "./hira_swp.js";
+import {hira_sop_transfer} from "./hira_sop.js";
+
+import {hira_baseline_ra_transfer} from "./hira_baseline_ra.js";
+import {taskbased_ra_transfer} from "./hira_taskbased_ra.js";
 
 (async () => {
     // await client_transfer();
@@ -125,6 +131,12 @@ import training_matrix from "graphql/data/training_matrix.js";
     // await contractors_questionnaires_transfer();
 
     // await organograms_transfer();
+
+    // await hira_swp_transfer();
+    // await hira_sop_transfer();
+
+    // await hira_baseline_ra_transfer();
+    // await taskbased_ra_transfer();
 })();
 
 //document_categories// skip

@@ -51,7 +51,7 @@ export default async (input: EntitySWP) => {
 		sign_sheet_employee_list, //{id, swp_id, signature, employee,}
 	} = input;
 
-	// crudUtils.injectCreate(input);
+	crudUtils.injectCreate(input);
 
 	return await createMutationImpl({mutation, input}).then(res => res && findByIdSWP(res.id));
 };

@@ -8,7 +8,8 @@ const {
 	updateDocUpload,
 	removeDoc,
 	viewDoc,
-	wordToPDF,
+	wordPreviewUrl,
+	excelPreviewUrl,
 } = require('./api.js');
 
 router.post('/create', async (req, res) => {
@@ -41,8 +42,13 @@ router.post('/view', async (req, res) => {
 	res.json(data);
 });
 
-router.post('/word-to-pdf', async (req, res) => {
-	const data = await wordToPDF(req.body);
+router.post('/word-preview-url', async (req, res) => {
+	const data = await wordPreviewUrl(req.body);
+	res.json(data);
+});
+
+router.post('/excel-preview-url', async (req, res) => {
+	const data = await excelPreviewUrl(req.body);
 	res.json(data);
 });
 

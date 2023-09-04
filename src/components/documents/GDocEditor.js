@@ -6,10 +6,8 @@ import {observer} from 'mobx-react';
 
 import {CircularProgress} from '@material-ui/core';
 
-import Form from '../../utils/Form';
-
-import {execWhen, isMobile, isWeb} from '../../utils/Utils';
-import {ClearableInput, PDFUploadButton} from '../inputs';
+import {execWhen, isMobile, isWeb} from 'utils/Utils';
+import {ClearableInput, UploadButton} from '../inputs';
 
 import style from "./GDocEditor.lazy.css";
 
@@ -26,14 +24,13 @@ class GDocEditor extends React.Component {
 	@observable state = {
 		lists: {
 			type: [
-				{text: "Type", value: "typed", checked: true},
-				{text: "Word", value: "word", checked: false},
-				{text: "PDF", value: "pdf", checked: false}
+				{text: "Type", value: "Type", checked: true},
+				{text: "Upload", value: "Upload", checked: false},
 			]
 		},
 		loadStatus: 'LOADING',
 		doc: null,
-		type: "typed"
+		type: "Type"
 	};
 	// </editor-fold>
 
@@ -203,9 +200,9 @@ class GDocEditor extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="onChangeFile">
 	onChangeFile(val, name, el) {
 		const {type} = this.state;
-		console.log('onChangeFile', type, val)
+		// console.log('onChangeFile', type, val)
 		if (val) {
-			if (type === "word" || type === "pdf") {
+			if (type === "Upload") {
 				progressDialog.open("Uploading File...");
 				const {item, state} = this.props;
 				let doc;
@@ -233,8 +230,12 @@ class GDocEditor extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="onChangeFileType">
 	onChangeFileType(val, name, el) {
-		this.state.type = val || "typed";
-		if (this.state.type === "typed") {
+		let {onChangeFileType} = this.props;
+		this.state.type = val || "Type";
+
+		onChangeFileType && onChangeFileType(this.state.type, name, el);
+
+		if (this.state.type === "Type") {
 			this.refresh();
 		}
 	}
@@ -259,21 +260,27 @@ class GDocEditor extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="onChangeTitle">
 	onChangeTitle(val, name, el) {
-		if (Form.hasVal(val)) {
-			let {item, state = {}, onChangeTitle, readonly} = this.props;
-			let doc;
-			if (item) {
-				doc = item.data.doc;
-			} else if (state) {
-				doc = state.new_doc_id;
-			}
+		let {item, state = {}, onChangeTitle, readonly} = this.props;
+		if (val) {
+			const {type} = this.state;
 
-			neonBinding.events.emit("default/docs/doc/edit-title", doc, val).then(res => {
-				//                    state.new_doc_id = res.data.id;
+			if (type === "Upload") {
 				onChangeTitle && onChangeTitle(val, name, el);
-			});
-		} else {
+			} else {
+				let doc;
+				if (item) {
+					doc = item.data.doc;
+				} else if (state) {
+					doc = state.new_doc_id;
+				}
 
+				neonBinding.events.emit("default/docs/doc/edit-title", doc, val).then(res => {
+					//                    state.new_doc_id = res.data.id;
+					onChangeTitle && onChangeTitle(val, name, el);
+				});
+			}
+		} else {
+			onChangeTitle && onChangeTitle(val, name, el);
 		}
 	}
 
@@ -283,6 +290,7 @@ class GDocEditor extends React.Component {
 	render() {//this.state.loadStatus = 'LOADING';
 		let {item, state = {}, onChangeTitle, readonly, defaultValue} = this.props;
 		const title = item ? item.data.title : state.title;
+		const type = item ? item.data.type : this.state.type;
 //        if(!defaultValue) {
 		if (this.state.loadStatus === 'LOADING') {
 			return <div className="results-loading text-center">
@@ -301,38 +309,61 @@ class GDocEditor extends React.Component {
 
 		return <React.Fragment>
 			{!readonly && onChangeTitle &&
-				<ClearableInput name="title" type="textarea" placeholder="Document Title" defaultValue={title} required
-				                className="col-lg-4 hor-center form-control" onChange={this.onChangeTitle}/>}
+				<ClearableInput
+					name="title"
+					type="textarea"
+					placeholder="Document Title"
+					defaultValue={title}
+					className="col-lg-4 hor-center form-control"
+					onChange={this.onChangeTitle}
+				/>
+			}
 
 			{!readonly && <ClearableInput
 				ref="type"
 				name="type"
 				type="radio"
-				required
+				defaultValue={type}
 				className="form-control col-lg-4 hor-center"
 				onChange={this.onChangeFileType}
-				values={this.state.lists.type}/>}
+				values={this.state.lists.type}
+			/>}
 
 			{!readonly && <hr className="margin-t-10 margin-b-20"/>}
 
-			<PDFUploadButtonWrapper state={this.state} readonly={readonly} onChange={this.onChangeFile}/>
-			<FrameWrapper ref='frameWrapper' state={this.state} onLoadSuccess={this.onLoadSuccess}
-			              onLoadError={this.onLoadError}/>
+			<UploadButtonWrapper
+				state={this.state}
+				readonly={readonly}
+				onChange={this.onChangeFile}
+			/>
+
+			<FrameWrapper
+				ref='frameWrapper'
+				state={this.state}
+				onLoadSuccess={this.onLoadSuccess}
+				onLoadError={this.onLoadError}
+			/>
 		</React.Fragment>;
 	}
 
 	// </editor-fold>
 }
 
-// <editor-fold defaultstate="collapsed" desc="PDFUploadButtonWrapper">
+// <editor-fold defaultstate="collapsed" desc="UploadButtonWrapper">
 @observer
-class PDFUploadButtonWrapper extends React.Component {
+class UploadButtonWrapper extends React.Component {
 	render() {
 		let {state: {type}, readonly, onChange} = this.props;
-		if (type === "typed") return null;
-		type = type.toTitleCase();
-		return <PDFUploadButton key={new Date().getTime()} name="doc" buttonTitle={"Upload Document(" + type + ")"}
-		                        readonly={readonly} showOnlyIcon className="col-lg-4 hor-center" onChange={onChange}/>;
+		if (type === "Type") return null;
+		return <UploadButton
+			name="doc"
+			type={['PDF','Word','Excel']}
+			buttonTitle="Upload Document (PDF/Word/Excel)"
+			readonly={readonly}
+			showOnlyIcon
+			className="col-lg-4 hor-center"
+			onChange={onChange}
+		/>;
 	}
 }
 
@@ -360,7 +391,7 @@ class FrameWrapper extends React.Component {
 
 	render() {
 		let {state: {type}, onLoadSuccess, onLoadError} = this.props;
-		if (type !== "typed") return null;
+		if (type !== "Type") return null;
 		if (isMobile()) {
 			return <div key={new Date().getTime()} className="GDocEditor h-50">
 				<h4 className="fixed-center margin-0">

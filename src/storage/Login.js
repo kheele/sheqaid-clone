@@ -85,43 +85,47 @@ class Login {
 
 	loginClient(id) {
 		return execWhen(() => !!window.selectedItems && !!selectedItems.refs.clients).then(() => {
-			return neonBinding.events.emit("plugin_sheq_assist/clients/login", id).then(res => {
-				res && this.storage.attrs.set("loggedClient", id);
-			}).catch(e => {
-				console.log(e)
-			});
+			// return neonBinding.events.emit("plugin_sheq_assist/clients/login", id).then(res => {
+			// 	res && this.storage.attrs.set("loggedClient", id);
+				this.storage.attrs.set("loggedClient", id);
+			// }).catch(e => {
+			// 	console.log(e)
+			// });
 		});
 	}
 
 	loginProject(id) {
 		return execWhen(() => !!window.selectedItems && !!selectedItems.refs.projects).then(() => {
-			return neonBinding.events.emit("plugin_sheq_assist/projects/login", id).then(res => {
-				res && this.storage.attrs.set("loggedProject", id);
-			}).catch(e => {
-				console.log(e);
-			});
+			// return neonBinding.events.emit("plugin_sheq_assist/projects/login", id).then(res => {
+				// res && this.storage.attrs.set("loggedProject", id);
+				this.storage.attrs.set("loggedProject", id);
+			// }).catch(e => {
+			// 	console.log(e);
+			// });
 		});
 	}
 
 	loginSite(id) {
 		return execWhen(() => !!window.selectedItems && !!selectedItems.refs.sites).then(() => {
-			return neonBinding.events.emit("plugin_sheq_assist/sites/login", id).then(res => {
-				res && this.storage.attrs.set("loggedSite", id);
-			}).catch(e => {
-				console.log(e)
-			});
+			// return neonBinding.events.emit("plugin_sheq_assist/sites/login", id).then(res => {
+			// 	res && this.storage.attrs.set("loggedSite", id);
+				this.storage.attrs.set("loggedSite", id);
+			// }).catch(e => {
+			// 	console.log(e)
+			// });
 		});
 	}
 
-	loginContractor(item) {
-		return neonBinding.events.emit("plugin_sheq_assist/contractors/active/login", item.id).then(res => {
-			res && this.storage.attrs.set('contractor', item);
+	async loginContractor(item) {
+		// return neonBinding.events.emit("plugin_sheq_assist/contractors/active/login", item.id).then(res => {
+		// 	res && this.storage.attrs.set('contractor', item);
+			this.storage.attrs.set('contractor', item);
 			if (!is.isContractorViewIncContractorPack) {
 				defaultView.navigate('__B_Contractors');
 			}
-		}).catch(e => {
-			console.log(e)
-		});
+		// }).catch(e => {
+		// 	console.log(e)
+		// });
 	}
 
 	loginContractorClient(item) {

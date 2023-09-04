@@ -12,11 +12,12 @@
             addAction('doc/update-upload', this.updateDocUpload.bind(this));
             addAction('doc/remove', this.removeDoc.bind(this));
             addAction('doc/view', this.viewDoc.bind(this));
-            addAction('doc/word-to-pdf', this.wordToPDF.bind(this));
+            addAction('doc/word-preview-url', this.wordPreviewUrl.bind(this));
+            addAction('doc/excel-preview-url', this.excelPreviewUrl.bind(this));
         }
 
         async sendReqImpl(path, data) {
-            return Events.whenLoggedIn(async loggedUser => {
+            return Events.whenLoggedIn(async (loggedUser, auth) => {
                 const res = await Utils.apiCallable({path: `docs/${path}`, data});
                 console.log('sendReqImpl', path, res)
 
@@ -36,17 +37,18 @@
             return this.sendReqImpl('edit', path);
         }
 
-        async editDocTitle(evt, doc, val) {
-            return this.sendReqImpl('edit-title', {doc, val});
+        async editDocTitle(evt, fileId, title) {
+            console.log('editDocTitle', fileId, title)
+            return this.sendReqImpl('edit-title', {fileId, title});
         }
 
-        async updateDocUpload(evt, docId, filePath, type) {
+        async updateDocUpload(evt, fileId, filePath, type) {
             return Events.whenLoggedIn(async loggedUser => {
                 const gcsUri = await files.upload.call(this, filePath, async bucketFile => {
                     console.log('updateDocUpload', bucketFile)
-                    return 'temp/' + docId + '.' + fileUtils.getExtension(bucketFile.name);
+                    return 'temp/' + fileId + '.' + fileUtils.getExtension(bucketFile.name);
                 });
-                return this.sendReqImpl('update-upload', {docId, filePath, type});
+                return this.sendReqImpl('update-upload', {fileId, gcsUri, type});
             });
         }
 
@@ -58,8 +60,12 @@
             return this.sendReqImpl('view', path);
         }
 
-        async wordToPDF(evt, dataUrl) {
-            return this.sendReqImpl('word-to-pdf', dataUrl);
+        async wordPreviewUrl(evt, dataUrl) {
+            return this.sendReqImpl('word-preview-url', dataUrl);
+        }
+
+        async excelPreviewUrl(evt, dataUrl) {
+            return this.sendReqImpl('excel-preview-url', dataUrl);
         }
 
     }
