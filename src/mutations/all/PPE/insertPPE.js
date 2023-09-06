@@ -15,6 +15,7 @@ const mutation = graphql`
         insert_ppe_one(
             object: $object
         ) {
+		        id
             name
             unit
             qty_received

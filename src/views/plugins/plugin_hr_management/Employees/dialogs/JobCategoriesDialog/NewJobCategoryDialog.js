@@ -96,7 +96,6 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Job Category Details"
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
                 <ClearableInput name="name" type="text" placeholder="Name" required

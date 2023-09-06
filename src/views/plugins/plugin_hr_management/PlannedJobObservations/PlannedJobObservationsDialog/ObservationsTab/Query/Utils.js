@@ -21,7 +21,19 @@ export const getVariablesAndQueryConfig = (
 		filter.push(`job_position_id: {_eq: ${job_position.id}}`);
 	}
 	if (employee) {
-		filter.push(`_or: [{employee_id: {_eq: ${employee.id}}}, {employee_other_id: {_eq: ${employee.id}}}]`);
+		if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+			filter.push(`_and: {
+				_or: [
+					{employee_id: {_eq: ${employee.id}}}, 
+					{employee_other_id: {_eq: ${employee.id}}}
+				]
+			}`);
+		} else {
+			filter.push(`_or: [
+				{employee_id: {_eq: ${employee.id}}}, 
+				{employee_other_id: {_eq: ${employee.id}}}
+			]`);
+		}
 	}
 
 	filter = filter.join(',');

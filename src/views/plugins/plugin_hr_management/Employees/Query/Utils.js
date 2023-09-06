@@ -30,11 +30,45 @@ export const getVariablesAndQueryConfig = (
 	if (supervisor_id) {
 		filter.push(`supervisor_id: {_eq: ${supervisor_id}}`);
 	}
-	if (name) {
-		filter.push(`_or: [{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}}]`);
-	}
-	if (id_or_pass_num) {
-		filter.push(`_or: [{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}]`);
+
+	if (name || id_or_pass_num) {
+		if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+			if (name && id_or_pass_num) {
+				filter.push(`_and: {
+					_or: [
+						{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}},
+						{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+					]
+				}`);
+			} else if(name) {
+				filter.push(`_and: {
+					_or: [
+						{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}}
+					]
+				}`);
+			} else if (id_or_pass_num) {
+				filter.push(`_and: {
+					_or: [
+						{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+					]
+				}`);
+			}
+		} else {
+			if (name && id_or_pass_num) {
+				filter.push(`_or: [
+					{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}},
+					{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+				]`);
+			} else if(name) {
+				filter.push(`_or: [
+					{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}}
+				]`);
+			} else if (id_or_pass_num) {
+				filter.push(`_or: [
+					{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+				]`);
+			}
+		}
 	}
 
 	filter = filter.join(',');

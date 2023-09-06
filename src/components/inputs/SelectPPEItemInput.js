@@ -5,6 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
+import byLogged from "views/plugins/plugin_hr_management/other_modules/PPE/PPEDialog/Query/List/listAllPPEByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -66,9 +67,14 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/employees/ppe/list").then(res => {
+    const args = {
+        //
+        limit: 0,
+        offset: 0,
+    };
+    return byLogged(args).then(res => {
         return res.map(value => {
-            const {name, site, project, client} = value.data;
+            const {name, unit, profile_pic} = value.data;
             let label = name;
             return {label, value};
         });

@@ -10,6 +10,7 @@ import {EntityPPE} from "mutations/types.d.ts";
 const mutation = graphql`
     mutation updatePPEMutation($id: ppe_pk_columns_input!, $_set: ppe_set_input!) {
         update_ppe_by_pk(pk_columns: $id, _set: $_set) {
+            id
             name
             unit
             qty_received

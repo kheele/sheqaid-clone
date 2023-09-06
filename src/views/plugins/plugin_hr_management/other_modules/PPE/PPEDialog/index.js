@@ -2,8 +2,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ADialogList from "../../../../ADialogList";
-import APageListReadWrite from "../../../../APageListReadWrite";
+import ADialogList from "../../../../../ADialogList";
+import APageListReadWrite from "../../../../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
@@ -16,11 +16,11 @@ import {
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewPPEDialog from './NewPPEDialog';
-import EditPPEDialog from './EditPPEDialog';
-import ProfilePPEDialog from './ProfilePPEDialog';
+import NewPPEDialog from '../NewPPEDialog';
+import EditPPEDialog from '../EditPPEDialog';
+import ProfilePPEDialog from '../ProfilePPEDialog';
 
-import PPEIssueDialog from './PPEIssueDialog';
+import PPEIssueDialog from '../PPEIssueDialog';
 
 import style from "./PPEDialog.lazy.css";
 import SignatureDialog from "components/dialogs/SignatureDialog";

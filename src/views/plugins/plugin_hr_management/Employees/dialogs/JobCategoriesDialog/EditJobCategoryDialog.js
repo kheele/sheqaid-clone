@@ -128,7 +128,6 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Job Category Details"
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
                 <ClearableInput name="name" type="text" placeholder="Name" defaultValue={name} required className="col-lg-12 form-control" onChange={this.form.onChange}/>

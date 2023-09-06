@@ -269,7 +269,7 @@ class Controls extends React.Component {
 				              renderer={v => v.name} className="col-lg-12"/>
 
 				<ProfileField name="interval" placeholder="Interval" value={interval} className="col-lg-4"/>
-				<ProfileField name="start_date" placeholder="Start Date" value={start_date} className="col-lg-4"/>
+				<ProfileField name="start_date" type="date" placeholder="Start Date" value={start_date} className="col-lg-4"/>
 				<ProfileField name="time" placeholder="Time" value={time} className="col-lg-4"/>
 			</Row>
 			<Row

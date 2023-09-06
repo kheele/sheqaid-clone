@@ -43,7 +43,9 @@ class ASectionSection extends React.Component {
 		if (this.isNewEmployee) {
 			dialog.open().then(newItem => {
 				if (newItem) {
-					console.log(type, newItem)
+					if(type) {
+						newItem.type = type;
+					}
 					this.itemAdded(newItem);
 				}
 

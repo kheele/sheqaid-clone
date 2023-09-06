@@ -11,7 +11,13 @@ export const getVariablesAndQueryConfig = (
     let filter = orgsFilter({exact_orgs});
 
     if(name) {
+      if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+        filter.push(`_and: {
+          _or: [{fname: {_ilike: "${name}"}}, {lname: {_ilike: "${name}"}}]
+        }`);
+      } else {
         filter.push(`_or: [{fname: {_ilike: "${name}"}}, {lname: {_ilike: "${name}"}}]`);
+      }
     }
 
     filter = filter.join(',');

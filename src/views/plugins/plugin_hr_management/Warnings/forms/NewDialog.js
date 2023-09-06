@@ -138,9 +138,14 @@ class Controls extends React.Component {
             notes,
             type,
             witness_list: {
-                data: witness_list ? witness_list.map(mapPersonDetails).map(v => {
+                data: witness_list ? witness_list.map(v => {
                     if(v.id) {
                         return {witness_id: v.id};
+                    }
+                    const {job_position} = v;
+                    if(job_position) {
+                        delete v.job_position;
+                        v.job_position_id = job_position.id;
                     }
                     return {witness_external: {data: v}};
                 }) : []

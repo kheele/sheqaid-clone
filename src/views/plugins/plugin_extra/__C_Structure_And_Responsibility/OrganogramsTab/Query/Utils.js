@@ -21,11 +21,21 @@ export const getVariablesAndQueryConfig = (
         filter.push(`type: {_eq: ${type}}`);
     }
     if (name) {
+      if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+        filter.push(`_and: {
+          _or: [
+            {client: {name: {_ilike: "%${name}%"}}}, 
+            {project: {name: {_ilike: "%${name}%"}}}, 
+            {site: {name: {_ilike: "%${name}%"}}}
+          ]
+        }`);
+      } else {
         filter.push(`_or: [
-		    {client: {name: {_ilike: "%${name}%"}}}, 
-		    {project: {name: {_ilike: "%${name}%"}}}, 
-		    {site: {name: {_ilike: "%${name}%"}}}
-		]`);
+          {client: {name: {_ilike: "%${name}%"}}}, 
+          {project: {name: {_ilike: "%${name}%"}}}, 
+          {site: {name: {_ilike: "%${name}%"}}}
+        ]`);
+      }
     }
 
     filter = filter.join(',');

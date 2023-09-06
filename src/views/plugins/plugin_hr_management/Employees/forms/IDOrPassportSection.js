@@ -34,7 +34,6 @@ class IDOrPassportSection extends ASectionSection {
 		const {[listName]: list} = itemData || {};
 		return (list || []).filter(v => !v || v.type === "ID/Passport");
 	}
-
 	//</editor-fold>
 
 	get itemRenderer() {
