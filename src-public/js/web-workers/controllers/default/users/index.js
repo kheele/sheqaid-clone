@@ -3,8 +3,8 @@
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Administrator / User", plural: "Administrators / Users"}, "users/", "default_users");
+        constructor(events) {
+            super(events, {singular: "Administrator / User", plural: "Administrators / Users"}, "users/", "default_users");
 
             this.send_app_link = this.send_app_link.bind(this);
             this.filter = this.filter.bind(this);
@@ -163,5 +163,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

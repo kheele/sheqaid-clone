@@ -35,7 +35,7 @@ class NotificationsButton extends React.Component {
     }
 
     onPopoverNotifications(e) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const {list} = notificationStore;
         const {selectedClient} = storage.selected;
         const {name} = selectedClient.data;

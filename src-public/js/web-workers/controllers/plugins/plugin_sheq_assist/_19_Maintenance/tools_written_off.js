@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         //tool_id, store_keeper_signature, manager_signature
         //store_keeper_signature, manager_signature, tool_list[ids]
-        constructor(events, db) {
-            super(events, db, {singular: "Asset Written-Off", plural: "Assets Written-Off"}, "plugin_sheq_assist/19_Maintenance/tools-witten-off/", "plugin_sheq_assist_19_Maintenance_tools_witten_off");
+        constructor(events) {
+            super(events, {singular: "Asset Written-Off", plural: "Assets Written-Off"}, "plugin_sheq_assist/19_Maintenance/tools-witten-off/", "plugin_sheq_assist_19_Maintenance_tools_witten_off");
 
             this.pending_create = this.pending_create.bind(this);
             this.approved_create = this.approved_create.bind(this);
@@ -68,5 +68,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

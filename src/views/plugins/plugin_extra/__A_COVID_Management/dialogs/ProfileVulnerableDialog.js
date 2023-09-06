@@ -91,11 +91,11 @@ class Controls extends React.Component {
             }
         } = this;
         
-        const {isConsultant, isEmployee, isHasProjects} = storage.is;
+        const {isConsultant, isEmployee, hasProjects} = storage.is;
         
         let idx = 0;
         return <FormControls>
-            {isHasProjects && !showOnlyTable && <Row 
+            {hasProjects && !showOnlyTable && <Row
                 rendered  
                 active
                 idx={idx}

@@ -21,7 +21,7 @@
         importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/app.js");
         importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/auth.js");
         importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/functions.js");
-        importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/firestore.js");
+        // importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/firestore.js");
         importScripts(self.locationRoot + "/js/lib/firebase-8.0.2/storage.js");
         //importScripts(self.locationRoot + "/js/lib/firebase-9.2.0/app-check.js");
     }
@@ -42,14 +42,14 @@
                 self[functions] = app.functions();
             }
 
-            self[db] = app.firestore();
-            self[db].settings({
-                ignoreUndefinedProperties: true,
-                cacheSizeBytes: self[db].CACHE_SIZE_UNLIMITED,
-                // cacheSizeBytes: firebase.indexedDB.UNLIMITED_CACHE_SIZE,
-                persistence: 'indexeddb',
-            });
-            self[db].enablePersistence({experimentalForce: true});
+            // self[db] = app.firestore();
+            // self[db].settings({
+            //     ignoreUndefinedProperties: true,
+            //     cacheSizeBytes: self[db].CACHE_SIZE_UNLIMITED,
+            //     // cacheSizeBytes: firebase.indexedDB.UNLIMITED_CACHE_SIZE,
+            //     persistence: 'indexeddb',
+            // });
+            // self[db].enablePersistence({experimentalForce: true});
 
             if (isWorker) {
                 if (storage) {
@@ -122,9 +122,9 @@
     console.timeEnd('firebase.initializeApp');
 
     if (isWorker) {
-        const {FieldPath, FieldValue, Timestamp} = firebase.firestore;
-        self.FBSettings = {
-            FieldPath, FieldValue, Timestamp
-        }
+        // const {FieldPath, FieldValue, Timestamp} = firebase.firestore;
+        // self.FBSettings = {
+        //     FieldPath, FieldValue, Timestamp
+        // }
     }
 })(self || window);

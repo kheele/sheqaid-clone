@@ -1,4 +1,4 @@
-@import '../../../../../css/ANewDialog.css';
+@import '../../AEditEmployeeDocDialog.css';
 
 #dialog-overlay.EditCounselingDialog-profile-dialog .dialog-container{
     height: calc(100% - 35px);

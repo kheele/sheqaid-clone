@@ -1,8 +1,8 @@
 
 (() => {
     class Controller extends AControllerRead {
-        constructor(events, db) {
-            super(events, db, {singular: "Document", plural: "Documents"}, "default/docs/");
+        constructor(events) {
+            super(events, {singular: "Document", plural: "Documents"}, "default/docs/");
 
             const {addAction} = this;
 
@@ -70,5 +70,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

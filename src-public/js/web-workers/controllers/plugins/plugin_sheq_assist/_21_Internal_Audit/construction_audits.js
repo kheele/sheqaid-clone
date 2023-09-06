@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //audit_findings, audit_summary, possible_score, achieved_score
-        constructor(events, db) {
-            super(events, db, {singular: "Internal Audit Construction Audit", plural: "Internal Audit Construction Audits"}, "plugin_sheq_assist/21_Internal_Audit/construction-audits/", "plugin_sheq_assist_21_Internal_Audit_construction_audits");
+        constructor(events) {
+            super(events, {singular: "Internal Audit Construction Audit", plural: "Internal Audit Construction Audits"}, "plugin_sheq_assist/21_Internal_Audit/construction-audits/", "plugin_sheq_assist_21_Internal_Audit_construction_audits");
 
             const {addAction} = this;
             addAction("list/search_by_name", this.search_by_name.bind(this));
@@ -112,5 +112,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

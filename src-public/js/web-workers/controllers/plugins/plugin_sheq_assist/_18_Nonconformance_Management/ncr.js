@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         //date, type, auditor, company, representative, scope, definition_list, list
         //<editor-fold desc="constructor">
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Non-Conformance Report",
                 plural: "Non-Conformance Reports"
             }, "plugin_sheq_assist/ncr/", "plugin_sheq_assist_18_Nonconformance_Management");
@@ -381,5 +381,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

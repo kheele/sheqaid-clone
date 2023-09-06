@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db,
+        constructor(events) {
+            super(events,
                     {singular: "COID Medical Center", plural: "COID Medical Centers"},
                     "plugin_sheq_assist/COIDA_Management/companies/medical-center/"
                     );
@@ -101,6 +101,6 @@
         // </editor-fold>
     }
 
-    new Controller(events, db);
+    new Controller(events);
 
 })();

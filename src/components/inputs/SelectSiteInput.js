@@ -177,7 +177,7 @@ class SelectInput extends ASelectInput {
 						if (this.isConsultant) {
 							this.state.lists.list = site_list;
 						} else {
-							this.state.lists.list = storage.list.projects;//TODO: investigate this. why set to projects
+							this.state.lists.list = storage.list.sites;//TODO: investigate this. why set to projects
 						}
 						if (this.state.selectedVal) {
 							if (this.state.lists.list.noneMatch(v => {

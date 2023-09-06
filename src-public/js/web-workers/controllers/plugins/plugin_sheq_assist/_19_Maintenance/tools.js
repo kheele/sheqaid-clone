@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
 
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {singular: "Asset", plural: "Assets"}, "plugin_sheq_assist/19_Maintenance/tools/", "plugin_sheq_assist_19_Maintenance_tools");
+        constructor(events) {
+            super(events, {singular: "Asset", plural: "Assets"}, "plugin_sheq_assist/19_Maintenance/tools/", "plugin_sheq_assist_19_Maintenance_tools");
             this.checkout = this.checkout.bind(this);
             this.checkin = this.checkin.bind(this);
             this.write_off = this.write_off.bind(this);
@@ -949,5 +949,5 @@
     }
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 })();

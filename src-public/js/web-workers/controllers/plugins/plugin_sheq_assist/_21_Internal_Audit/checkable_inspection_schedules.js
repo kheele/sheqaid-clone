@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AInternalAuditCheckablesController {
         //title, type, document
-        constructor(events, db) {
-            super(events, db, {singular: "Inspection Schedule", plural: "Inspection Schedules"}, "plugin_sheq_assist/21_Internal_Audit/inspection/schedules/", "21_Internal_Audit_inspection_schedules");
+        constructor(events) {
+            super(events, {singular: "Inspection Schedule", plural: "Inspection Schedules"}, "plugin_sheq_assist/21_Internal_Audit/inspection/schedules/", "21_Internal_Audit_inspection_schedules");
         }
 
         getDB() {
@@ -163,5 +163,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

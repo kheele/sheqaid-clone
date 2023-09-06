@@ -81,7 +81,7 @@ class Controls extends React.Component {
     //</editor-fold>
 
     onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+        const {form, isNewEmployee, item: {data: old_data}} = this;
 
         //1
         if (!form.isValid('country')) {
@@ -108,6 +108,15 @@ class Controls extends React.Component {
         //2
         if (!form.isValid('doc')) {
             infoDialog.open("Proof of Living Address is required");
+            return;
+        }
+
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
             return;
         }
 
@@ -150,6 +159,11 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
     }
 
     get item() {

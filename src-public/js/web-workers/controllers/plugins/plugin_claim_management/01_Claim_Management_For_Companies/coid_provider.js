@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db,
+        constructor(events) {
+            super(events,
                     {singular: "COID Service Provider", plural: "COID Service Providers"},
                     "plugin_sheq_assist/COIDA_Management/companies/coid-provider/");
 
@@ -164,6 +164,6 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 
 })();

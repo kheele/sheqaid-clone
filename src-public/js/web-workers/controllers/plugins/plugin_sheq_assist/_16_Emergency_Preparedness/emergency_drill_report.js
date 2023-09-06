@@ -12,8 +12,8 @@
          observer_report_or_remarks_note,
          signature, signature_date
          */
-        constructor(events, db) {
-            super(events, db, {singular: "Emergency Drill Report", plural: "Emergency Drills Reports"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-drill/report/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_drill_report");
+        constructor(events) {
+            super(events, {singular: "Emergency Drill Report", plural: "Emergency Drills Reports"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-drill/report/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_drill_report");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -44,5 +44,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

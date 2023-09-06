@@ -61,7 +61,7 @@ class PageFirst extends APage {
         if(!item) return null;
         const {list, values} = item;
         
-        const {isHasProjects, isConsultant} = storage.is;
+        const {hasProjects, isConsultant} = storage.is;
         const {selectedClient} = storage.selected;
         
         const rowStyle = {margin: '30px auto 0px', display: 'flex', flexDirection: 'column', placeItems: "center", justifyContent: 'center'};
@@ -72,7 +72,7 @@ class PageFirst extends APage {
                     <Text style={{margin: '20px auto 0'}}>{title.toUpperCase()} REPORT</Text>
                     <Text style={{margin: '0px auto 20px', fontSize: '15px'}}>OF</Text>
                     
-                    {isHasProjects && <React.Fragment>
+                    {hasProjects && <React.Fragment>
                         {isConsultant && client && <View style={rowStyle}>
                             <Text>COMPANY</Text>
                             <Text style={{marginTop: '10px', fontSize: '15px'}}>{client}</Text>
@@ -88,7 +88,7 @@ class PageFirst extends APage {
                             <Text style={{marginTop: '10px', fontSize: '15px'}}>{site}</Text>
                         </View>}
                     </React.Fragment>}
-                    {!isHasProjects && <View style={rowStyle}>
+                    {!hasProjects && <View style={rowStyle}>
                         <Text>COMPANY</Text>
                         <Text style={{marginTop: '10px', fontSize: '15px'}}>{selectedClient.data.name}</Text>
                     </View>}

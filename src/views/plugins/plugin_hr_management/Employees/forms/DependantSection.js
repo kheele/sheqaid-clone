@@ -4,11 +4,13 @@ import {ProfileField} from "components/inputs";
 import NewDependantDialog from "./profile_forms/NewDependantDialog";
 import EditDependantDialog from "./profile_forms/EditDependantDialog";
 import ASectionSection from "./ASectionSection";
+import updateEmployeeDependant from "mutations/all/EmployeeDependant/updateEmployeeDependant";
 
 @observer
 class DependantSection extends ASectionSection {
 
 	listName = 'dependent_list';
+	onUpdate = updateEmployeeDependant;
 	NewDialog = NewDependantDialog;
 	EditDialog = EditDependantDialog;
 
@@ -41,6 +43,7 @@ class DependantSection extends ASectionSection {
 			/>,
 			<ProfileField
 				name="dob"
+				type="date"
 				title="Date of Birth"
 				defaultValueKey="dob"
 				className="col-lg-6"

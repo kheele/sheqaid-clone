@@ -65,6 +65,7 @@ class Logout {
 
         this.storage.attrs.set("countries", countries);
         this.storage.attrs.set("permissionOtherKeys", permissionOtherKeys);
+        this.storage.loggedUserAuthChecked = true;
     }
 
     async signOutAndConfirm() {

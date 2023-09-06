@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //name, desc, questions, contractor
-        constructor(events, db) {
-            super(events, db, {singular: "Template Schedule", plural: "Template Schedules"}, "plugin_sheq_assist/21_Internal_Audit/templates/schedules/", "21_Internal_Audit_checkable_templates_schedules");
+        constructor(events) {
+            super(events, {singular: "Template Schedule", plural: "Template Schedules"}, "plugin_sheq_assist/21_Internal_Audit/templates/schedules/", "21_Internal_Audit_checkable_templates_schedules");
 
             const {addAction} = this;
 
@@ -121,5 +121,5 @@
         // </editor-fold>
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

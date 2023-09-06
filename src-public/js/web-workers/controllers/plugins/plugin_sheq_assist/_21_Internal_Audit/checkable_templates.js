@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //name, desc, questions, contractor
-        constructor(events, db) {
-            super(events, db, {singular: "Internal Audit Form", plural: "Internal Audit Forms"}, "plugin_sheq_assist/21_Internal_Audit/forms/", "plugin_sheq_assist_21_Internal_Audit_forms");
+        constructor(events) {
+            super(events, {singular: "Internal Audit Form", plural: "Internal Audit Forms"}, "plugin_sheq_assist/21_Internal_Audit/forms/", "plugin_sheq_assist_21_Internal_Audit_forms");
 
             this.filter = this.filter.bind(this);
             this.by_logged_user_new = this.by_logged_user_new.bind(this);
@@ -192,5 +192,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

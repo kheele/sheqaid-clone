@@ -2,8 +2,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //title, sec1
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Hazchem Sheet",
                 plural: "Hazchem Sheets"
             }, "plugin_sheq_assist/Hazardous_Chemical_Substances/hazchem-sheet/", "plugin_sheq_assist_Hazardous_Chemical_Substances_hazchem_sheets");
@@ -549,5 +549,5 @@
 
     // </editor-fold>
 
-    new Controller(events, db2);
+    new Controller(events);
 })();

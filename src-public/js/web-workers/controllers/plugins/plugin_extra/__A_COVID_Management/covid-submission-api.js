@@ -1,8 +1,8 @@
 
 (() => {
     class Controller extends AControllerRead {
-        constructor(events, db) {
-            super(events, db, {singular: "COVID Submission", plural: "COVID Submissions"}, "plugin_sheq_assist/COVID_Management/covid-submission-api/");
+        constructor(events) {
+            super(events, {singular: "COVID Submission", plural: "COVID Submissions"}, "plugin_sheq_assist/COVID_Management/covid-submission-api/");
 
             const {addAction} = this;
 
@@ -46,5 +46,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

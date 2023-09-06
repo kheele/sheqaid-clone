@@ -1,4 +1,4 @@
-@import '../../../../../css/ANewDialog.css';
+@import '../../ANewEmployeeDocDialog.css';
 
 #dialog-overlay.NewLeaveDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);

@@ -2,8 +2,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //training_id, trainer_id, time_or_duration, date, list_proof, list_table
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Training Register",
                 plural: "Training Registers"
             }, "plugin_sheq_assist/05_Trainings/training-register/", "plugin_sheq_assist_trainings_register");
@@ -93,5 +93,5 @@
         // </editor-fold>
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

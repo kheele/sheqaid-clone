@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
 
-        constructor(events, db) {
-            super(events, db, {singular: "Baseline Risk Assessment", plural: "Baseline Risk Assessments"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/baseline/", "plugin_sheq_assist_09_risk_assessment_baseline");
+        constructor(events) {
+            super(events, {singular: "Baseline Risk Assessment", plural: "Baseline Risk Assessments"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/baseline/", "plugin_sheq_assist_09_risk_assessment_baseline");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -74,5 +74,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

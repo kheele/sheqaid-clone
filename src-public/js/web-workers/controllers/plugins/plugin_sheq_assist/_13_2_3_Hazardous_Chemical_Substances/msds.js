@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //title, sec1
-        constructor(events, db) {
-            super(events, db, {singular: "Material Safety Data Sheet", plural: "Material Safety Data Sheets"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/msds/", "plugin_sheq_assist_Hazardous_Chemical_Substances_msds");
+        constructor(events) {
+            super(events, {singular: "Material Safety Data Sheet", plural: "Material Safety Data Sheets"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/msds/", "plugin_sheq_assist_Hazardous_Chemical_Substances_msds");
 
             const {addAction} = this;
             addAction("list/search_by_name", this.search_by_name.bind(this));
@@ -438,5 +438,5 @@
     }
     // </editor-fold>
 
-    new Controller(events, db2);
+    new Controller(events);
 })();

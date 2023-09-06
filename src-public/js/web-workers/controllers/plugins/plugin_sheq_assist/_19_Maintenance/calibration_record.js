@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //equipment_name, equipment_id, maintanace_type, reference_standard, certificate_num, company_calibrating, calibration_date, next_calibration_date
-        constructor(events, db) {
-            super(events, db, {singular: "Asset Calibration Record", plural: "Assets Calibration Records"}, "plugin_sheq_assist/19_Maintenance/calibration-record/");
+        constructor(events) {
+            super(events, {singular: "Asset Calibration Record", plural: "Assets Calibration Records"}, "plugin_sheq_assist/19_Maintenance/calibration-record/");
 
             this.tbl = 'plugin_sheq_assist_19_Maintenance_tools';
 
@@ -73,5 +73,5 @@
         };
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -16,6 +16,7 @@ import insertEmployeeLeave from "mutations/all/EmployeeLeave/insertEmployeeLeave
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewLeaveDialog";
+    className = "ANewEmployeeDocDialog";
     title = "Create Leave";
 
     constructor(props) {
@@ -48,10 +49,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -78,9 +79,9 @@ class Controls extends React.Component {
     }
 
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -99,7 +100,16 @@ class Controls extends React.Component {
             infoDialog.open('Leave Start Date is required');
             return;
         }
-        
+
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
+            return;
+        }
+
         const {
             doc, //
             employee,//
@@ -140,15 +150,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "create", data).then(employee_res => {
-        //     console.log("res", employee_res)
-        //     onSaved && onSaved(employee_res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
     
     get dueToOccurredIncident(){
@@ -162,25 +163,28 @@ class Controls extends React.Component {
     render() {
         const {dueToOccurredIncident} = this;
         console.log('dueToOccurredIncident', dueToOccurredIncident)
-        const {dialog: {props: {onSetSignatureSettings}}, onFormNext, onFormBack, onFormOpen} = this.props;
+        const {dialog: {props: {onSetSignatureSettings}}} = this.props;
+        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = 1;
         return <FormControls>
-            <Row
+            {!isNewEmployee && <Row
                 rendered
                 active
                 idx={1}
-                title="1. Employee"
+                title={`${++idx}. Employee`}
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
                 <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            </Row>
+            </Row>}
             <Row
                 rendered
+                active={isNewEmployee}
                 idx={2}
-                title="2. Leave Details"
+                title={`${++idx}. Leave Details`}
                 onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
+                onFormBack={!isNewEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
                 {!dueToOccurredIncident && <ClearableInput name="due_to" type="radio" placeholder="Leave Due To" className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.due_to} returnValue/>}
@@ -196,7 +200,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={3}
-                title="3. Proof Of Sick Note"
+                title={`${++idx}. Proof Of Sick Note`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}

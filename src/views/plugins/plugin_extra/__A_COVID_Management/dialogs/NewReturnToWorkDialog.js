@@ -122,7 +122,7 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, refs:{newQuestionsTable}} = this;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
 
         if (isConsultant && !form.isValid('client')) {
             infoDialog.open('Company is required');
@@ -308,10 +308,10 @@ class Controls extends AControls {
         const exposure_infoDefault = {label: exposure_info, value: exposure_info};
         
 //        const date = new Date();
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         return (<div className="controls-wrapper">
-            {isHasProjects && <div className="controls SelectSiteConfirmInputs" style={{height: "auto"}}>
+            {hasProjects && <div className="controls SelectSiteConfirmInputs" style={{height: "auto"}}>
                 <label>Location</label>
                 <div className="row">
                     <div className="row sec-group padding-l-10 padding-r-10">

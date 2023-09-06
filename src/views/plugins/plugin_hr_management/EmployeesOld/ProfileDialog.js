@@ -219,7 +219,7 @@ class Controls extends React.Component {
         
         console.log('employee', this.item)
         
-        const {isContractorView, isConsultant, isHasProjects} = storage.is;
+        const {isContractorView, isConsultant, hasProjects} = storage.is;
         const isContractor = storage.is.isContractor || isContractorView;
         
         return <div className="controls-wrapper controls-sectioned">
@@ -229,7 +229,7 @@ class Controls extends React.Component {
                     <h3>{fname + ' ' + lname}</h3>
                     <h5>{'Created On ' + Dates.formatDate(created_at)}</h5>
                 </React.Fragment>)}
-                {(isHasProjects || isContractor) && <Row 
+                {(hasProjects || isContractor) && <Row 
                     rendered 
                     idx={0}
                     title="Company Details"

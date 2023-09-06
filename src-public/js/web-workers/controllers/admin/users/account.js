@@ -3,8 +3,8 @@
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Administrator / User", plural: "Administrators / Users"}, "admin/users/accounts/");
+        constructor(events) {
+            super(events, {singular: "Administrator / User", plural: "Administrators / Users"}, "admin/users/accounts/");
 
             this.tbl = 'admin_users';
 
@@ -361,7 +361,7 @@
 
     }
 
-    const userCntr = new Controller(events, db);
+    const userCntr = new Controller(events);
 
     // <editor-fold defaultstate="collapsed" desc="onLogin">
     async function onLogin() {

@@ -2,8 +2,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, questions, contractor
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Contractor Questionnaire Library",
                 plural: "Contractor Questionnaire Libraries"
             }, "plugin_sheq_assist/contractors/questionnaires/library/", "plugin_sheq_assist_contractors_questionnaire_library");
@@ -270,5 +270,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //title, sec1
-        constructor(events, db) {
-            super(events, db, {singular: "Container Inventory", plural: "Container Inventory"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/container-inventory/", "plugin_sheq_assist_Hazardous_Chemical_Substances_container_inventory");
+        constructor(events) {
+            super(events, {singular: "Container Inventory", plural: "Container Inventory"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/container-inventory/", "plugin_sheq_assist_Hazardous_Chemical_Substances_container_inventory");
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -282,5 +282,5 @@
     }
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 })();

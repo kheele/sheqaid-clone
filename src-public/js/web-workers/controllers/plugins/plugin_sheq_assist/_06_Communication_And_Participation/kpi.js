@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //training_id, trainer_id, time_or_duration, date, list_proof, list_table
-        constructor(events, db) {
-            super(events, db, {singular: "Key Performance Indicator", plural: "Key Performance Indicators"}, "plugin_sheq_assist/06_Communication_And_Participation/kpi/", "plugin_sheq_assist_06_Communication_And_Participation_kpi");
+        constructor(events) {
+            super(events, {singular: "Key Performance Indicator", plural: "Key Performance Indicators"}, "plugin_sheq_assist/06_Communication_And_Participation/kpi/", "plugin_sheq_assist_06_Communication_And_Participation_kpi");
 
             const {addAction} = this;
             addAction("dashboard/count", this.dashboard_count.bind(this));
@@ -31,5 +31,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -200,7 +200,7 @@ class TrainingRegistryTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const item = this.refs.root.list[n];
         const {
             id,

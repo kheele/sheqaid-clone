@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //training_id, trainer_id, time_or_duration, date, list_proof, list_table
-        constructor(events, db) {
-            super(events, db, {singular: "Training Registry", plural: "Training Registries"}, "plugin_sheq_assist/05_Trainings/training-registry/", "plugin_sheq_assist_trainings_registry");
+        constructor(events) {
+            super(events, {singular: "Training Registry", plural: "Training Registries"}, "plugin_sheq_assist/05_Trainings/training-registry/", "plugin_sheq_assist_trainings_registry");
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -214,5 +214,5 @@
         // </editor-fold>
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

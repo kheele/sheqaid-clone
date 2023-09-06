@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
 
-        constructor(events, db) {
-            super(events, db, {singular: "Task Base Risk Assessment", plural: "Task Base Risk Assessments"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/task-base/", "plugin_sheq_assist_09_risk_assessment_task_base");
+        constructor(events) {
+            super(events, {singular: "Task Base Risk Assessment", plural: "Task Base Risk Assessments"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/task-base/", "plugin_sheq_assist_09_risk_assessment_task_base");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -73,5 +73,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

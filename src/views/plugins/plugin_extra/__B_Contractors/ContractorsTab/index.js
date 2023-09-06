@@ -231,13 +231,13 @@ class ContractorsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Contractor Name" className="form-control"
                             onChange={onChange}/>
             <ClearableInput name="username" type="text" placeholder="Email Address" className="form-control"
                             onChange={onChange}/>
-            {isHasProjects && <ClearableInput name="site_name" type="text" placeholder="Site" className="form-control"
+            {hasProjects && <ClearableInput name="site_name" type="text" placeholder="Site" className="form-control"
                                               onChange={onChange}/>}
         </div>;
     }
@@ -246,11 +246,11 @@ class ContractorsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <THead>
             <div className="td">Contractor</div>
             <div className="td">Email Address</div>
-            {isHasProjects && <div className="td fixed-flex min-w-100">Site(s)</div>}
+            {hasProjects && <div className="td fixed-flex min-w-100">Site(s)</div>}
             <div className="td fixed-flex min-w-180">Contractor's Pack?</div>
             <div className="td fixed-flex min-w-200">Questionnaires</div>
             <div className="td fixed-flex min-w-200">Compliance</div>
@@ -275,12 +275,12 @@ class ContractorsTab extends React.Component {
             }
         } = item;
 
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
 
         return <TRow key={id} className="w-full" ignoreResize>
             <div className="td">{name}</div>
             <div className="td">{username}</div>
-            {isHasProjects && <div className="td fixed-flex min-w-100">{site_list.length || 'N/A'}</div>}
+            {hasProjects && <div className="td fixed-flex min-w-100">{site_list.length || 'N/A'}</div>}
             <div className="td fixed-flex min-w-180">{inc_contractor_pack}</div>
             <div className="td fixed-flex min-w-200 padding-r-10 flex td-stats">
                 <Questions item={item}/>

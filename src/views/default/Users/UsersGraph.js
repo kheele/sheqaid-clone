@@ -69,7 +69,7 @@ class Users extends React.Component {
     //<editor-fold desc="loader">
     @computed loader() {
         const {page_size} = this.state;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         const {isLoggedClient, isLoggedProject, isLoggedSite, isContractor, isContractorViewVisited} = storage.is;
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {selectedContractorSite} = storage.selected;
@@ -96,7 +96,7 @@ class Users extends React.Component {
             } else {//isLoggedClient
                 rows = listAllUserByLoggedClient(page_size, selectedClient.id);
             }
-        } else if(isHasProjects) {
+        } else if(hasProjects) {
             if(isLoggedSite) {
                 rows = listAllUserByLoggedSite(page_size, selectedSite.id);
             } else if(isLoggedProject) {
@@ -142,7 +142,7 @@ class Users extends React.Component {
 
     //<editor-fold desc="columns">
     get columns() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const getSitesLength = (contractor = {}) => {
             const {site_list} = contractor || {};
             if (!site_list) return 'N/A';
@@ -158,7 +158,7 @@ class Users extends React.Component {
             {Header: "Name", accessor: ({fname, lname}) => `${lname} ${fname}`, width: "100px", align: "left",},
             {Header: "Email Address", accessor: "username", width: "100px", align: "left",}
         ];
-        if (isHasProjects) {
+        if (hasProjects) {
             isConsultant && cols.push({Header: "Company Name", accessor: "client.name", align: "left"});
             cols.push(...[
                 {Header: "Project Name", accessor: "project.name", align: "left"},

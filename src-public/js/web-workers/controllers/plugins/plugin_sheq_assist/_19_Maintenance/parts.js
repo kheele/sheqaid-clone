@@ -2,8 +2,8 @@
     class Controller extends AControllerAid {
 
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Asset", plural: "Assets"
             }, "plugin_sheq_assist/19_Maintenance/parts/", "plugin_sheq_assist_19_Maintenance_parts");
 
@@ -713,5 +713,5 @@
 
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 })();

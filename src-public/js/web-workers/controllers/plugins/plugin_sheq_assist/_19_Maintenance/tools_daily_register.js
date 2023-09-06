@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //team_id, store_keeper_signature, team_supervisor_signature, tool_list[ids]
-        constructor(events, db) {
-            super(events, db, {singular: "Asset Register", plural: "Assets Registers"}, "plugin_sheq_assist/19_Maintenance/tools/daily-register/", "plugin_sheq_assist_19_Maintenance_tools_daily_register");
+        constructor(events) {
+            super(events, {singular: "Asset Register", plural: "Assets Registers"}, "plugin_sheq_assist/19_Maintenance/tools/daily-register/", "plugin_sheq_assist_19_Maintenance_tools_daily_register");
 //        this.search_by_name = this.search_by_name.bind(this);
 //        const {addAction, search_by_name} = this;
 //        addAction("list/search_by_name", search_by_name);
@@ -40,5 +40,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

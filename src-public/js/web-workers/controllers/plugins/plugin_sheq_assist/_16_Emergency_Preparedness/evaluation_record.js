@@ -10,8 +10,8 @@
          question_list,
          drill_observation_list
          */
-        constructor(events, db) {
-            super(events, db, {singular: "Evacuation Record", plural: "Evacuation Records"}, "plugin_sheq_assist/16_Emergency_Preparedness/evaluation-record/", "plugin_sheq_assist_16_Emergency_Preparedness_evaluation_record");
+        constructor(events) {
+            super(events, {singular: "Evacuation Record", plural: "Evacuation Records"}, "plugin_sheq_assist/16_Emergency_Preparedness/evaluation-record/", "plugin_sheq_assist_16_Emergency_Preparedness_evaluation_record");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -41,5 +41,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

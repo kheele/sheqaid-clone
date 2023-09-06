@@ -151,14 +151,14 @@ class Dialog extends AEmployeeDocDialog {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         if(view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
                 <div className="td">Department</div>
                 <div className="td">Job Position</div>
-                {isHasProjects && <div className="td sm-hidden">Location</div>}
+                {hasProjects && <div className="td sm-hidden">Location</div>}
                 <div className="td fixed-flex min-w-105">Latest On</div>
                 <div className="td fixed-flex min-w-240">Stats</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

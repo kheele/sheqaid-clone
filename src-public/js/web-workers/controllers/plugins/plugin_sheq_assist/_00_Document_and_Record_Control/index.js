@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //title, doc_num, revision_num, compiler, approving_officer, effective_date, revision_date, type, doc
-        constructor(events, db) {
-            super(events, db, {singular: "Document", plural: "Documents"}, "plugin_sheq_assist/Documents/");
+        constructor(events) {
+            super(events, {singular: "Document", plural: "Documents"}, "plugin_sheq_assist/Documents/");
 
             this.filter = this.filter.bind(this);
             const {addAction, filter} = this;
@@ -107,5 +107,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

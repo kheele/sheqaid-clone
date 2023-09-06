@@ -303,13 +303,13 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
 //        console.log(this.item)
         
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                {isHasProjects && <Row 
+                {hasProjects && <Row 
                     active
                     rendered 
                     idx={0}

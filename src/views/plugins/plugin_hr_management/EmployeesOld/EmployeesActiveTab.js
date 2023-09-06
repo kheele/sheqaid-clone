@@ -168,13 +168,13 @@ class Main extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-120 md-hidden">Date Created</div>
             <div className="td">Name</div>
             <div className="td">Department</div>
             <div className="td">Job Position</div>
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && <div className="td sm-hidden">Company Name</div>}
                 <div className="td">Project Name</div>
                 <div className="td">Site Name</div>
@@ -187,7 +187,7 @@ class Main extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const item = this.refs.root.list[n];
         let {
             id, data: {
@@ -214,7 +214,7 @@ class Main extends React.Component {
             <AsyncTD title="Job Position" defaultValue={optional_info && optional_info.job_position}
                      renderer={v => v.name || v.data.name}/>
 
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')}
                 {RenderUtils.renderOrgTD(project, null, 'Project Name')}
                 {RenderUtils.renderOrgTD(site, null, 'Site Name')}
@@ -222,7 +222,7 @@ class Main extends React.Component {
 
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                {isHasProjects && (!site || !project || (isConsultant && !client)) &&
+                {hasProjects && (!site || !project || (isConsultant && !client)) &&
                     <i className="fa fa-warning" idx={n} onClick={this.onCompleteEmploymentDetailsShowWarningMsg}/>}
             </div>
         </TRow>;

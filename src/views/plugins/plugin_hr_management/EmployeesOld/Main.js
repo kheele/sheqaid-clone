@@ -212,7 +212,7 @@ class Main extends APage {
     }
 
     onChangeMoreOptions(e, el) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         
         const {permissions_modules, permissions_other} = storage.loggedUser.user.data;
         const permissions_mod_Employees = (permissions_modules || []).find(v => v.key === "Employees");
@@ -241,7 +241,7 @@ class Main extends APage {
                 {Permissions.allowCreate(permissions_mod_Employees) && <NavItem faIconLeft="file-import" onClick={this.onImport} title="Import"/>}
                 <NavItem faIconLeft="download" onClick={this.onExport} title="Export"/>
                 <NavItem faIconLeft="clipboard-list" onClick={this.onPrintCards} title="Print Cards"/>
-                {isContractor && !isContractor && isHasProjects && <NavItem faIconLeft="send" onClick={this.onTransfer} title="Transfer"/>}
+                {isContractor && !isContractor && hasProjects && <NavItem faIconLeft="send" onClick={this.onTransfer} title="Transfer"/>}
                 <hr className="margin-t-0 margin-b-0"/>
                 {Permissions.allowRemove(permissions_mod_Employees) && <NavItem faIconLeft="trash" onClick={this.onBulkDelete} title="Bulk Delete"/>}
             </div>

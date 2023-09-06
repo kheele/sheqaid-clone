@@ -12,15 +12,17 @@ import {
     SelectTrainingMatixInput,
     UploadButton
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
 import insertEmployeeContract from "mutations/all/EmployeeContract/insertEmployeeContract";
 
+//<editor-fold desc="Dialog">
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewContractDialog";
+    className = "ANewEmployeeDocDialog";
     title = "Create Contract";
 
     constructor(props) {
@@ -31,6 +33,7 @@ class NewDialog extends ANewDialog {
         return  Controls;
     }
 }
+//</editor-fold>
 
 @observer
 class Controls extends React.Component {
@@ -49,11 +52,12 @@ class Controls extends React.Component {
         this.form = new Form();
     }
 
+    //<editor-fold desc="onNext">
     onNext(e, btn) {
-        const {form, refs: {contractDetailsTab, salaryInfoTab}} = this;
+        const {form, isNewEmployee, refs: {contractDetailsTab, salaryInfoTab}} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -99,11 +103,13 @@ class Controls extends React.Component {
         
         return true;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form, refs: {contractDetailsTab, salaryInfoTab}} = this;
+        const {form, isNewEmployee, refs: {contractDetailsTab, salaryInfoTab}} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -149,20 +155,27 @@ class Controls extends React.Component {
             doc,//
             job_profile_doc//
         } = form.data;
-        const data = { 
-            employee_id: employee.id,
-            doc: doc && doc.path,
-            job_profile_doc: job_profile_doc && job_profile_doc.path,
-        };
+
+        if(isNewEmployee) {
+            data = {
+                contractDetailsTab,
+                salaryInfoTab,
+                employee,
+                doc,
+                job_profile_doc,
+            };
+
+            console.log("res", data)
+            onSaved && onSaved(data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
+            return;
+        }
+
+        let data = {};
 
         if (contract_details) {
-            if (contractDetailsTab.form.isValid('start_date')) {
-                contract_details.start_date = contract_details.start_date.getTime();
-            }
-            if (contractDetailsTab.form.isValid('expiry_date')) {
-                contract_details.expiry_date = contract_details.expiry_date.getTime();
-            }
-
             const {
                 contract_type,
                 start_date,
@@ -209,6 +222,13 @@ class Controls extends React.Component {
             };
         }
 
+        data = {
+            ...data,
+            employee_id: employee.id,
+            doc: doc && doc.path,
+            job_profile_doc: job_profile_doc && job_profile_doc.path,
+        };
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -223,42 +243,41 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
+    }
+    //</editor-fold>
 
-        // neonBinding.events.emit(this.path + "create", data).then(employee_res => {
-        //     console.log("res", employee_res)
-        //     onSaved && onSaved(employee_res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
     }
 
     get employeeItem() {
         return this.props.state.item;
     }
 
+    //<editor-fold desc="render">
     render() {
-        const {onFormNext, onFormBack, onFormOpen} = this.props;
+        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = 1;
         return <FormControls>
-            <Row
+            {!isNewEmployee && <Row
                 rendered
                 active
                 idx={1}
-                title="1. Employee"
+                title={`${++idx}. Employee`}
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
                 <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            </Row>
+            </Row>}
             <Row
                 rendered
+                active={isNewEmployee}
                 idx={2}
-                title="2. Contract Details"
+                title={`${++idx}. Contract Details`}
                 onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
+                onFormBack={!isNewEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
                 <ContractDetails ref="contractDetailsTab"/>
@@ -266,7 +285,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={3}
-                title="3. Salary Information"
+                title={`${++idx}. Salary Information`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
@@ -276,7 +295,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={4}
-                title="4. Contract Document Attachment"
+                title={`${++idx}. Contract Document Attachment`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
@@ -293,7 +312,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={5}
-                title="5. Job Profile Document Attachment"
+                title={`${++idx}. Job Profile Document Attachment`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
@@ -308,8 +327,10 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
+    //</editor-fold>
 }
 
+//<editor-fold desc="ContractDetails">
 @observer
 class ContractDetails extends React.Component {
 
@@ -346,7 +367,9 @@ class ContractDetails extends React.Component {
             </div>;
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="SalaryInfo">
 @observer
 class SalaryInfo extends React.Component {
 
@@ -382,7 +405,9 @@ class SalaryInfo extends React.Component {
         </div>;
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="SalaryField">
 @observer
 class SalaryField extends React.Component {
 
@@ -405,7 +430,9 @@ class SalaryField extends React.Component {
         </React.Fragment>;
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="WageField">
 @observer
 class WageField extends React.Component {
 
@@ -414,7 +441,9 @@ class WageField extends React.Component {
         return !!isWage && <ClearableInput name="wage" type="number" placeholder="Wage" className="col-lg-12 form-control" onChange={onChange}/>;
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="Deductibles">
 @observer
 class Deductibles extends React.Component {
 
@@ -464,7 +493,9 @@ class Deductibles extends React.Component {
         </React.Fragment>;
     }
 }
+//</editor-fold>
 
+//<editor-fold desc="Deductible">
 @observer
 class Deductible extends React.Component {
 
@@ -501,5 +532,6 @@ class Deductible extends React.Component {
         </div>;
     }
 }
+//</editor-fold>
 
 export default NewDialog;

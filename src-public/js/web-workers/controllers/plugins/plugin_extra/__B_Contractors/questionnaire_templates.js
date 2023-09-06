@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, questions, contractor
-        constructor(events, db) {
-            super(events, db, {singular: "Contractor Questionnaire Template", plural: "Contractor Questionnaire Templates"}, "plugin_sheq_assist/contractors/questionnaires/templates/", "plugin_sheq_assist_contractors_questionnaire_templates");
+        constructor(events) {
+            super(events, {singular: "Contractor Questionnaire Template", plural: "Contractor Questionnaire Templates"}, "plugin_sheq_assist/contractors/questionnaires/templates/", "plugin_sheq_assist_contractors_questionnaire_templates");
 
             const {addAction} = this;
 
@@ -206,7 +206,7 @@
         }
     }
 
-    new Controller(events, db2);
+    new Controller(events);
 
     // <editor-fold defaultstate="collapsed" desc="mapResults">
     async function mapResults(item) {

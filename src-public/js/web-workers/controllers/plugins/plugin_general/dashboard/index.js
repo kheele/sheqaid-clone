@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //approvals, contracts, documents, employees, incidents, medical_records, sick_leaves, trainings, warnings, work_permits
-        constructor(events, db) {
-            super(events, db, {singular: "Dashboard", plural: "Dashboard"}, "plugin_sheq_assist/dashboard/");
+        constructor(events) {
+            super(events, {singular: "Dashboard", plural: "Dashboard"}, "plugin_sheq_assist/dashboard/");
 
             this.stats = this.stats.bind(this);
             const {addAction, stats} = this;
@@ -139,5 +139,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

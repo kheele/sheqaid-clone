@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Contractor",
                 plural: "Contractors"
             }, "plugin_sheq_assist/contractors/", "plugin_sheq_assist_contractors");
@@ -316,5 +316,5 @@
         }
     }
 
-    new Controller(events, db2);
+    new Controller(events);
 })();

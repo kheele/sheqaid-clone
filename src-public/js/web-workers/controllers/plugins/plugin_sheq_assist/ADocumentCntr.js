@@ -1,8 +1,8 @@
 
 class ADocumentCntr extends AControllerAid {
     //title, type, doc
-    constructor(events, db, name, root, fn) {
-        super(events, db, name, root, "plugin_sheq_assist_documents", fn);
+    constructor(events, name, root, fn) {
+        super(events, name, root, "plugin_sheq_assist_documents", fn);
 
         const {addAction} = this;
 

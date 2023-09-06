@@ -15,6 +15,7 @@ import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeM
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditMedicalFitnessCertificateDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit Medical Fitness Certificate";
 
     constructor(props) {

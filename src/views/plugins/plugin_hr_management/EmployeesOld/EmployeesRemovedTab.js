@@ -100,13 +100,13 @@ class Main extends React.Component {
     }
 
     renderTHead() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-120 md-hidden">Date Created</div>
             <div className="td">Name</div>
             <div className="td">Department</div>
             <div className="td">Job Position</div>
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && <div className="td sm-hidden">Company Name</div>}
                 <div className="td">Project Name</div>
                 <div className="td">Site Name</div>
@@ -116,7 +116,7 @@ class Main extends React.Component {
     }
 
     renderItem(n, onClick) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
 	const item = this.refs.root.list[n];
         let {id, data: {created_at, fname, lname, profile_pic, optional_info, client, project, site, client_id, project_id, site_id}} = item;
 //        console.log('employee', item)
@@ -135,7 +135,7 @@ class Main extends React.Component {
             <AsyncTD title="Department" defaultValue={optional_info && optional_info.department} renderer={v => v.name || v.data.name}/>
             <AsyncTD title="Job Position" defaultValue={optional_info && optional_info.job_position} renderer={v => v.name || v.data.name}/>
             
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')}
                 {RenderUtils.renderOrgTD(project, null, 'Project Name')}
                 {RenderUtils.renderOrgTD(site, null, 'Site Name')}

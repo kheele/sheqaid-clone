@@ -1,12 +1,13 @@
-const getUserUidByUsername = async (username, access_type) => {
+const getUserUidByUsername = async (username) => {
     const fnName = username.isEmailAddress() ? 'getUserByEmail' : 'getUserByPhoneNumber';
     try {
-        const userRecord = await adminAuth(access_type)[fnName](username);
+        const userRecord = await admin.auth()[fnName](username);
         if (!userRecord)
             return null;
         const {uid, email, phoneNumber} = userRecord;
         return uid;
     } catch (err) {
+        // console.error('getUserUidByUsername', err);
         switch (err.code) {
             case 'auth/user-not-found':
                 return null;
@@ -17,42 +18,41 @@ const getUserUidByUsername = async (username, access_type) => {
 };
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByUsername">
-exports.getUserUidByUsername = async (username, access_type) => {
-    await authorize(access_type);
-    return getUserUidByUsername(username, access_type);
+exports.getUserUidByUsername = async (username) => {
+    await authorize();
+    return getUserUidByUsername(username);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByEmail">
-exports.getUserUidByEmail = async (email, access_type) => {
-    await authorize(access_type);
+exports.getUserUidByEmail = async (email) => {
+    await authorize();
     if (!email.isEmailAddress()) {
         return null;
     }
-    return getUserUidByUsername(email, access_type);
+    return getUserUidByUsername(email);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByPhone">
-exports.getUserUidByPhone = async (phone, access_type) => {
-    await authorize(access_type);
+exports.getUserUidByPhone = async (phone) => {
+    await authorize();
     if (phone.isEmailAddress()) {
         return null;
     }
-    return getUserUidByUsername(phone, access_type);
+    return getUserUidByUsername(phone);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidAndPasswordByEmail">
-exports.getUserUidAndPasswordByEmail = async (email, access_type) => {
-    await authorize(access_type);
+exports.getUserUidAndPasswordByEmail = async (email) => {
+    await authorize();
 
-    const _auth = adminAuth(access_type);
-    const {currentUser} = _auth;
+    const {currentUser} = admin.auth();
     if (!currentUser) return null;
 
     try {
-        const userRecord = await _auth.getUserByEmail(email);
+        const userRecord = await admin.auth().getUserByEmail(email);
         if (!userRecord)
             return null;
         const {uid} = userRecord;

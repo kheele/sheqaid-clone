@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //area, manager_or_supervisor, date, team_member_list
-        constructor(events, db) {
-            super(events, db, {singular: "Emergency Drill", plural: "Emergency Drills"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-drill/drill/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_drill_drill");
+        constructor(events) {
+            super(events, {singular: "Emergency Drill", plural: "Emergency Drills"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-drill/drill/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_drill_drill");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -34,5 +34,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

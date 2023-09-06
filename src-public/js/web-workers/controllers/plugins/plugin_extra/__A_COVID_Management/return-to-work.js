@@ -2,8 +2,8 @@
 (() => {
     class Controller extends ACasesController {
         //audit_findings, audit_summary, possible_score, achieved_score
-        constructor(events, db) {
-            super(events, db, {singular: "COVID Management Return To Work Case", plural: "COVID Management Return To Work Cases"}, "plugin_sheq_assist/COVID_Management/return-to-work/", "plugin_sheq_assist_COVID_Management_return-to-work");
+        constructor(events) {
+            super(events, {singular: "COVID Management Return To Work Case", plural: "COVID Management Return To Work Cases"}, "plugin_sheq_assist/COVID_Management/return-to-work/", "plugin_sheq_assist_COVID_Management_return-to-work");
 
             this.notification_key = "receive_covid_return_to_work_notifs";
         }
@@ -165,5 +165,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

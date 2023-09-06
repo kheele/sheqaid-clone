@@ -7,6 +7,7 @@ import createMutationImpl from "mutations/createMutationImpl";
 import {EntityEmployee} from "mutations/types.d.ts";
 import crudUtils from "../CRUDUtils/CRUDUtils";
 import {Dates} from "../../../utils/Dates";
+import findByIdEmployee from "./findByIdEmployee";
 import findByEmailEmployee from "./findByEmailEmployee";
 import findByPhoneEmployee from "./findByPhoneEmployee";
 import findByAuthIdUser from "../User/findByAuthIdUser";
@@ -251,6 +252,8 @@ export default async (input: EntityEmployee) => {
 
 			return updateEmployee({id, ...updateAttrs});
 		}
+
+		return findByIdEmployee(id);
 	}
 
 	return res;

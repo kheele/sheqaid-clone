@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, location, project_id, manager_id
-        constructor(events, db) {
-            super(events, db, {singular: "Site", plural: "Sites"}, "plugin_sheq_assist/sites/", "plugin_sheq_assist_sites");
+        constructor(events) {
+            super(events, {singular: "Site", plural: "Sites"}, "plugin_sheq_assist/sites/", "plugin_sheq_assist_sites");
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -174,5 +174,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

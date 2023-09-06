@@ -10,8 +10,8 @@
          suggested_preemptive_action, suggested_preemptive_action_options,
          affected_person_name, form_completed_by, reported_to, 
          supervior_or_manager*/
-        constructor(events, db) {
-            super(events, db, {singular: "Incident Investigation Corrective Action", plural: "Incident Investigation  Corrective Actions"}, "plugin_sheq_assist/17_Incident_Investigation/corrective-actions/");
+        constructor(events) {
+            super(events, {singular: "Incident Investigation Corrective Action", plural: "Incident Investigation  Corrective Actions"}, "plugin_sheq_assist/17_Incident_Investigation/corrective-actions/");
 
             this.tbl = 'plugin_sheq_assist_17_Incident_Investigation';
 
@@ -53,5 +53,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

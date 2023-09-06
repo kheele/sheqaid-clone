@@ -9,8 +9,8 @@
          severity, immediate_causes_of_incident,
          immediate_actions_taken_to_prevent_a_similar_incident, distributions,
          reported_by, position, date_reported*/
-        constructor(events, db) {
-            super(events, db, {singular: "Incident Investigation Flash Report", plural: "Incident Investigation Flash Reports"}, "plugin_sheq_assist/17_Incident_Investigation/flash-reports/", "plugin_sheq_assist_17_Incident_Investigation_flash_reports");
+        constructor(events) {
+            super(events, {singular: "Incident Investigation Flash Report", plural: "Incident Investigation Flash Reports"}, "plugin_sheq_assist/17_Incident_Investigation/flash-reports/", "plugin_sheq_assist_17_Incident_Investigation_flash_reports");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -90,5 +90,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -67,7 +67,7 @@ class Storage {
                 const currentUser = list.find(item => !!item);
                 return onLogin(currentUser);
             }).then(() => {
-                this.attrs.set("loggedUserAuthChecked", true);
+                this.loggedUserAuthChecked = true;
             });
         };
         listenAuth();
@@ -94,6 +94,10 @@ class Storage {
 			    console.error(err)
 		    });
 	    }
+    }
+
+    set loggedUserAuthChecked(val) {
+        this.attrs.set("loggedUserAuthChecked", val);
     }
 
     @computed

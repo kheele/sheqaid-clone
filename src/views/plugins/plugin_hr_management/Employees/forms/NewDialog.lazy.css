@@ -3,7 +3,8 @@
 
 #dialog-overlay.Employees-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 800px;
+    width: 100%;
+    max-width: 1150px;
 }
 #dialog-overlay.Employees-new-dialog .row-tabs {
     padding: 0 !important;
@@ -20,7 +21,4 @@
 #dialog-overlay.Employees-new-dialog .dialog-content .NewDialogSpecificComplianceRequirementsTab-tab.active h6{
     color: red;
     font-style: italic;
-}
-#dialog-overlay.Employees-new-dialog .Carousel > .carousel > .carousel-inner-no-results{
-    height: calc(100% - 50px);
 }

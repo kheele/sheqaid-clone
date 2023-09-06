@@ -17,6 +17,7 @@ import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeW
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditWarningDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit Warning";
 
     constructor(props) {

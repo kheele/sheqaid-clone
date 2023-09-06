@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
 
-        constructor(events, db) {
-            super(events, db, {singular: "Incident Investigation", plural: "Incident Investigations"}, "plugin_sheq_assist/17_Incident_Investigation/investigations/");
+        constructor(events) {
+            super(events, {singular: "Incident Investigation", plural: "Incident Investigations"}, "plugin_sheq_assist/17_Incident_Investigation/investigations/");
 
             this.tbl = 'plugin_sheq_assist_17_Incident_Investigation';
 
@@ -161,5 +161,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

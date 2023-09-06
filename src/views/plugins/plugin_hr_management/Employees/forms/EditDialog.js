@@ -9,12 +9,12 @@ import Form from 'utils/Form';
 import {Dates, execWhen, SAIdUtils, ShouldUpdate} from 'utils/Utils';
 import {
 	ClearableInput,
-	ProfilePic,
+	ProfilePic, RowOrgs,
 	SelectClientInput, SelectGenderInput,
 	SelectProjectInput,
 	SelectSiteInput
 } from 'components/inputs';
-import {Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import OptionalInfoSection from './EditOptionalInfoSection';
@@ -33,7 +33,7 @@ import updateEmployee from "mutations/all/Employee/updateEmployee";
 class EditDialog extends AEditDialog {
 	pageKey = "Employees";
 	// className = 'ANewTableFormDialog';
-	className = "AProfileEmployeeDocDialog";
+	className = "AEditEmployeeDocDialog";
 	findById = findByIdEmployee;
 
 	constructor(props) {
@@ -222,7 +222,7 @@ class Controls extends React.Component {
 
 			const data = {};
 
-			if(isContractor) {
+			if (isContractor) {
 				ShouldUpdate.checkSite(data, old_data, site, 'contractor_site_id');
 			} else {
 				ShouldUpdate.checkClient(data, old_data, client);
@@ -540,59 +540,36 @@ class Controls extends React.Component {
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
-				dialog: {renderProfileCover}
 			},
 			item, item: {
 				id, data: {
 					created_at,
 					profile_pic,
-					fname, lname, id_num, passport_num, dob, sex,
 					client, project, site,
-					phone, email, password,
-					receive_expired_docs_notifs,
-					optional_info,
-					documents,
-					next_of_kin_1, next_of_kin_2, dependants,
-					compliance_requirements,
-					permissions_modules, permissions_other
+					fname, lname, id_num, passport_num, dob, sex,
+					phone, email,
 				}
 			}
 		} = this;
-		const {isConsultant, isHasProjects, isContractor} = storage.is;
 
 //        console.log(this.item)
 
-		return (<div className="controls-wrapper controls-sectioned">
-			<div className="controls">
-				{(isContractor || isHasProjects) && <Row
-					active
-					rendered
-					idx={0}
-					title="Company / Project / Site"
-					onFormOpen={onFormOpen}
-					onFormNext={onFormNext}
-					onFormSave={this.onFormSave}
-				>
-					{(isContractor || isConsultant) && <SelectClientInput name="client" placeholder="Company..."
-					                                    defaultValue={RenderUtils.selectedClient.call(this)} showAll
-					                                    required className="col-lg-12 form-control"
-					                                    onChange={this.form.onChange}/>}
-					<SelectProjectInput name="project" placeholder="Project..."
-					                    defaultValue={RenderUtils.selectedProject.call(this)} showAll required
-					                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
-					<SelectSiteInput name="site" placeholder="Site..."
-					                 defaultValue={RenderUtils.selectedSite.call(this)} required showAll
-					                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-				</Row>}
+		return <FormControls>
+			<RowOrgs
+				onChange={this.form.onChange}
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+				onFormNext={onFormNext}
+				onFormSave={this.onFormSave}
+				client={client}
+				project={project}
+				site={site}
+				showAll
+			>
 				<Row
-					active={(!isContractor && !isHasProjects)}
 					rendered
 					idx={1}
-					title="1. Basic Details"
-					onFormOpen={onFormOpen}
-					onFormNext={onFormNext}
-					onFormBack={(isContractor || isHasProjects) && onFormBack}
-					onFormSave={this.onFormSave}
+					title="1. Basic Info"
 				>
 					<ProfilePic path={this.path + "upload/profile-pic"} id={item.id} profilePic={profile_pic}
 					            onUploaded={this.onUploaded}/>
@@ -610,33 +587,33 @@ class Controls extends React.Component {
 					<SelectGenderInput ref="sex" name="sex" defaultValue={sex} className="col-lg-6 form-control"
 					                   onChange={this.form.onChange}/>
 				</Row>
-				<Row
-					rendered
-					idx={2}
-					title="2. Contact Details"
-					onFormOpen={onFormOpen}
-					onFormNext={onFormNext}
-					onFormBack={onFormBack}
-					onFormSave={this.onFormSave}
-				>
-					<ClearableInput name="phone" type="text" placeholder="Phone No." defaultValue={phone}
-					                className="col-lg-6 form-control" onChange={this.form.onChange}/>
-					<ClearableInput name="email" type="email" placeholder="Email Address / Username"
-					                defaultValue={email} className="col-lg-6 form-control"
-					                onChange={this.form.onChange}/>
-				</Row>
-				{/*<Row*/}
-				{/*    rendered*/}
-				{/*    idx={3}*/}
-				{/*    title="3. Notifications Settings"*/}
-				{/*    onFormOpen={onFormOpen}*/}
-				{/*    onFormBack={onFormBack}*/}
-				{/*>*/}
-				{/*    <ClearableInput name="receive_expired_docs_notifs" type="checkbox" defaultValue={receive_expired_docs_notifs} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.receive_expired_docs_notifs} returnValue/>*/}
-				{/*</Row>*/}
-				{this.components.map(this.renderComponent)}
-			</div>
-		</div>);
+			</RowOrgs>
+			<Row
+				rendered
+				idx={2}
+				title="2. Contact Details"
+				onFormOpen={onFormOpen}
+				onFormNext={onFormNext}
+				onFormBack={onFormBack}
+				onFormSave={this.onFormSave}
+			>
+				<ClearableInput name="phone" type="text" placeholder="Phone No." defaultValue={phone}
+				                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+				<ClearableInput name="email" type="email" placeholder="Email Address / Username"
+				                defaultValue={email} className="col-lg-6 form-control"
+				                onChange={this.form.onChange}/>
+			</Row>
+			{/*<Row*/}
+			{/*    rendered*/}
+			{/*    idx={3}*/}
+			{/*    title="3. Notifications Settings"*/}
+			{/*    onFormOpen={onFormOpen}*/}
+			{/*    onFormBack={onFormBack}*/}
+			{/*>*/}
+			{/*    <ClearableInput name="receive_expired_docs_notifs" type="checkbox" defaultValue={receive_expired_docs_notifs} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.receive_expired_docs_notifs} returnValue/>*/}
+			{/*</Row>*/}
+			{this.components.map(this.renderComponent)}
+		</FormControls>;
 	}
 
 	// </editor-fold>

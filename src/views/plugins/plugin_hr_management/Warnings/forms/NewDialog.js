@@ -18,6 +18,7 @@ import insertEmployeeWarning from "mutations/all/EmployeeWarning/insertEmployeeW
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewWarningDialog";
+    className = "ANewEmployeeDocDialog";
     title = "Create Warning";
 
     constructor(props) {
@@ -66,10 +67,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -89,9 +90,9 @@ class Controls extends React.Component {
     }
 
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -101,6 +102,15 @@ class Controls extends React.Component {
         }
         if (!form.isValid('date')) {
             infoDialog.open('Warning Date is required');
+            return;
+        }
+
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
             return;
         }
 
@@ -151,15 +161,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "create", data).then(employee_res => {
-        //     console.log("res", employee_res)
-        //     onSaved && onSaved(employee_res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
 
     get employeeItem() {
@@ -167,7 +168,8 @@ class Controls extends React.Component {
     }
 
     render() {
-        const {dialog: {props: {onSetSignatureSettings}}, onFormNext, onFormBack, onFormOpen} = this.props;
+        const {dialog: {props: {onSetSignatureSettings}}} = this.props;
+        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
             <Row
@@ -178,7 +180,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {!isNewEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..." defaultUser className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row

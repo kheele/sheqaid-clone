@@ -124,12 +124,12 @@ class TaskBaseRiskAssessmentTab extends React.Component {
 	}
 
 	renderTHead() {
-		const {isHasProjects} = storage.is;
+		const {hasProjects} = storage.is;
 		return <THead>
 			<div className="td fixed-flex min-w-120">Date Created</div>
 			<div className="td">Description Of Task</div>
-			{isHasProjects && <div className="td">Project</div>}
-			{isHasProjects && <div className="td">Site</div>}
+			{hasProjects && <div className="td">Project</div>}
+			{hasProjects && <div className="td">Site</div>}
 			<div className="td fixed-flex min-w-120">Risk Tolerance</div>
 			<div className="td fixed-flex min-w-100">Revision Date</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -137,7 +137,7 @@ class TaskBaseRiskAssessmentTab extends React.Component {
 	}
 
 	renderItem(n, onClick) {
-		const {isHasProjects} = storage.is;
+		const {hasProjects} = storage.is;
 
 		const item = this.refs.root.list[n];
 		const {id, data: {created_at, activity, expiry_date, risk_tolerance, list, client, project, site}} = item;
@@ -146,8 +146,8 @@ class TaskBaseRiskAssessmentTab extends React.Component {
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
 			<div className="td">{activity}</div>
 
-			{isHasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
-			{isHasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
+			{hasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
+			{hasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
 
 			<div className="td fixed-flex min-w-120">{!!risk_tolerance ? String(risk_tolerance) : 'N/A'}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(expiry_date) || 'N/A'}</div>

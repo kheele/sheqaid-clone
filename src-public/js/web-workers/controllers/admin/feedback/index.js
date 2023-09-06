@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         //fname, lname, email, message
-        constructor(events, db) {
-            super(events, db, {singular: "Feedback", plural: "Feedbacks"}, "admin/feedback/", "admin_feedback");
+        constructor(events) {
+            super(events, {singular: "Feedback", plural: "Feedbacks"}, "admin/feedback/", "admin_feedback");
         }
 
         getDB() {
@@ -27,5 +27,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

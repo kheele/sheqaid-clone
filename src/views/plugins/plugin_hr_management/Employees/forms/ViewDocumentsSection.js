@@ -64,7 +64,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormOpen={onFormOpen}
                     onFormNext={onFormNext}
                 >
-                    <IDOrPassportSection item={item}/>
+                    <IDOrPassportSection item={item} isEmbedded isEmbedded/>
                 </Row>
                 <Row
                     rendered
@@ -75,7 +75,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <CompetencyControls item={item} tabsHeight="530px"/>
+                    <CompetencyControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -86,7 +86,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <ContractControls item={item} tabsHeight="530px"/>
+                    <ContractControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -97,7 +97,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <JobAppointmentControls item={item} tabsHeight="530px"/>
+                    <JobAppointmentControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -108,7 +108,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <CounselingControls item={item} tabsHeight="530px"/>
+                    <CounselingControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -119,7 +119,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <LeaveControls item={item} tabsHeight="530px"/>
+                    <LeaveControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -138,7 +138,7 @@ class ViewDocumentsSection extends React.Component {
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                         >
-                            <LicenseControls item={item} tabsHeight="530px"/>
+                            <LicenseControls item={item} isEmbedded tabsHeight="530px"/>
                         </Row>
                         <Row
                             rendered
@@ -148,7 +148,7 @@ class ViewDocumentsSection extends React.Component {
                             onFormOpen={onFormOpen}
                             onFormBack={onFormBack}
                         >
-                            <PrDPSection item={item}/>
+                            <PrDPSection item={item} isEmbedded/>
                         </Row>
                     </FormControls>
                 </Row>
@@ -161,7 +161,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <MedicalControls item={item} tabsHeight="530px"/>
+                    <MedicalControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -172,7 +172,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <WarningControls item={item} tabsHeight="530px"/>
+                    <WarningControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
                     rendered
@@ -182,7 +182,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                 >
-                    <WorkPermitControls item={item} tabsHeight="530px"/>
+                    <WorkPermitControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
             </FormControls>
         </div>

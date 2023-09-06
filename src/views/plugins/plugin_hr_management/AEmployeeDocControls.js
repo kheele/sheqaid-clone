@@ -15,6 +15,7 @@ class AEmployeeDocControls extends React.Component {
 	@observable
 	state = {
 		index: 0,
+		list: [],
 		item: null,
 	};
 
@@ -25,6 +26,7 @@ class AEmployeeDocControls extends React.Component {
 		this.onChange = this.onChange.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onEdit = this.onEdit.bind(this);
+		this.onRemove = this.onRemove.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 		this.loadDashboard = this.loadDashboard.bind(this);
 	}
@@ -69,11 +71,25 @@ class AEmployeeDocControls extends React.Component {
 				ref.show();
 			}
 		});
+		execWhen(() => this.refs.removeB).then(ref => {
+			if (index === 0) {
+				ref.hide();
+			} else {
+				ref.show();
+			}
+		});
 	}
 	//</editor-fold>
 
 	//<editor-fold desc="loadDashboard">
 	async loadDashboard() {
+		if(!this.item) {
+			return {
+				topStats: {data: null},
+				bottomStats: [],
+			};
+		}
+
 		const {id} = this.item;
 		const topStats = await this.loadDashboardTopStats(id);
 		const bottomStats = await this.loadDashboardBottomStats(id);//[{id, month_year: date.formatMonthYear(), count}]
@@ -91,82 +107,159 @@ class AEmployeeDocControls extends React.Component {
 
 	//<editor-fold desc="onCreate">
 	onCreate() {
-		this.refs.newDialog.open(this.item).then(newItem => {
-			const {[this.listName]: list = []} = this.item.data;
+		const {isNewEmployee, onChange} =this.props;
+		if(isNewEmployee) {
+			this.refs.newDialog.open().then(newItem => {
+				const {list} = this;
 
-			const newData = newItem.data;
-			list.push(newData);
+				list.push(newItem);
+				onChange && onChange(list, this.listName, this);
 
-			const {tabWrapper, tabWrapper: {index}} = this.refs;
-			if (index === 0) {
-				tabWrapper.updateDashboard();
-			} else if (index === 1) {
-				tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === newData.id));
-			}
-		});
+				const {tabWrapper, tabWrapper: {index}} = this.refs;
+				if (index === 0) {
+					// tabWrapper.moveToSlide(1);
+				} else if (index === 1) {
+					tabWrapper.moveToSlide(list.indexOf(newItem));
+				}
+			});
+		} else {
+			this.refs.newDialog.open(this.item).then(newItem => {
+				const {list} = this;
+
+				const newData = newItem.data;
+				list.push(newData);
+
+				const {tabWrapper, tabWrapper: {index}} = this.refs;
+				if (index === 0) {
+					tabWrapper.updateDashboard();
+				} else if (index === 1) {
+					tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === newData.id));
+				}
+			});
+		}
 	}
 
 	//</editor-fold>
 
 	//<editor-fold desc="onEdit">
 	onEdit() {
+		const {isNewEmployee, onChange} =this.props;
 		const {tabWrapper, tabWrapper: {index}} = this.refs;
 		if (index === 0) {
 			return;
 		}
 
-		const {[this.listName]: list = []} = this.item.data;
+		if(isNewEmployee) {
+			const {list} = this.state;
 
-		const sliderIndex = tabWrapper.sliderIndex || 0;
-		let updateItem = list[sliderIndex];
-		updateItem = {id: updateItem.id, data: updateItem};
+			const sliderIndex = tabWrapper.sliderIndex || 0;
+			let updateItem = list[sliderIndex];
 
-		this.refs.editDialog.open(updateItem).then(editedItem => {
-			extendObservable(updateItem, editedItem);
-			// const editData = editItem.data;
-			// list.push(newData);
+			this.refs.editDialog.open({data: updateItem}).then(editedItem => {
+				extendObservable(updateItem, editedItem);
+				// const editData = editItem.data;
+				// list.push(newData);
 
-			const {tabWrapper, tabWrapper: {index}} = this.refs;
-			if (index === 0) {
-				tabWrapper.updateDashboard();
-			} else if (index === 1) {
-				// tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === editData.id));
+				const {tabWrapper, tabWrapper: {index}} = this.refs;
+				if (index === 0) {
+					tabWrapper.updateDashboard();
+				} else if (index === 1) {
+					// tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === editData.id));
+				}
+			});
+		} else {
+			const {[this.listName]: list = []} = this.item.data;
+
+			const sliderIndex = tabWrapper.sliderIndex || 0;
+			let updateItem = list[sliderIndex];
+			updateItem = {id: updateItem.id, data: updateItem};
+
+			this.refs.editDialog.open(updateItem).then(editedItem => {
+				extendObservable(updateItem, editedItem);
+				// const editData = editItem.data;
+				// list.push(newData);
+
+				const {tabWrapper, tabWrapper: {index}} = this.refs;
+				if (index === 0) {
+					tabWrapper.updateDashboard();
+				} else if (index === 1) {
+					// tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === editData.id));
+				}
+			});
+		}
+	}
+
+	//</editor-fold>
+
+	//<editor-fold desc="onRemove">
+	onRemove(evt, btn) {
+		const {onUpdate} = this;
+		const {isNewEmployee, onChange} =this.props;
+		const {tabWrapper, tabWrapper: {index}} = this.refs;
+		if (index === 0) {
+			return;
+		}
+
+		confirmDialog.open('Are you sure you want to remove the record').then(res => {
+			if (res) {
+				const sliderIndex = tabWrapper.sliderIndex || 0;
+
+				if (isNewEmployee) {
+					const {list} = this.state;
+
+					list.removeAt(sliderIndex);
+					infoDialog.open("Record successfully removed.");
+					infoDialog.close(2000);
+				} else {
+					const {[this.listName]: list = []} = this.item.data;
+
+					const removeItem = list[sliderIndex];
+
+					onUpdate && onUpdate({id: removeItem.id, removed: true}).then(res => {
+						if (res) {
+							list.removeAt(sliderIndex);
+							infoDialog.open("Record successfully removed.");
+							infoDialog.close(2000);
+						} else {
+							infoDialog.open("Sorry! The record couldn't be removed. Please try again later.");
+						}
+					});
+				}
 			}
 		});
 	}
-
 	//</editor-fold>
 
 	@computed get item() {
 		return this.state.item;
 	}
 
+	@computed get list() {
+		if(!this.item) return this.state.list;
+
+		const {item: {data: {[this.listName]: list = []}}} = this;
+		return list || [];
+	}
+
 	//<editor-fold desc="render">
 	render() {
-		if (!this.item) {
-			return <CircularProgress className="fixed-center"/>;
-		}
-
 		const {
 			NewDialog,
 			EditDialog,
-			item: {
-				id,
-				data: {
-					fname, lname,
-
-					[this.listName]: list = [],
-				},
-			},
 			listName,
-			props: {tabsHeight}
+			list,
+			props: {tabsHeight, isEmbedded: __isEmbedded, isNewEmployee}
 		} = this;
 
 		const {isEmployee} = storage.is;
 
-		const isEmbedded = !!this.props.item;
+		const isEmbedded = __isEmbedded || !!this.props.item;
 
-		const slider = (activeId, isEmbedded) => {
+		if (!isEmbedded && !this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
+		const slider = (activeId, isEmbedded, list) => {
 			const sliderIndex = activeId ? list.indexOfWithPredicate(item => item.id === activeId) : 0;
 			const tabIndex = activeId ? 1 : 0;
 			return <>
@@ -175,10 +268,20 @@ class AEmployeeDocControls extends React.Component {
 					sx={{
 						background: "none",
 						borderBottom: "1px solid #ddd",
-						p: "10px",
+						p: isEmbedded ? '3px' : '10px',
+						mb: isEmbedded ? '-40px' : '0',
 						height: "40px",
+						// position: isEmbedded ? 'absolute' : 'relative',
+						// top: isEmbedded ? '0' : 'unset',
+						// right: isEmbedded ? '0' : 'unset',
 					}}>
-					{!isEmployee && <Button
+					{!isEmployee && !isNewEmployee && list.isNotEmpty() && <Button
+						ref="removeB"
+						className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+						onClick={this.onRemove}>
+						Remove
+					</Button>}
+					{!isEmployee && !isNewEmployee && list.isNotEmpty() && <Button
 						ref="editB"
 						className="btn btn-primary pull-right btn-edit border-radius-20 padding-v-5 padding-h-15 margin-r-15"
 						onClick={this.onEdit}>
@@ -203,7 +306,7 @@ class AEmployeeDocControls extends React.Component {
 					tabsHeight={tabsHeight}
 					isEmbedded={isEmbedded}
 				/>
-				{NewDialog && <NewDialog ref="newDialog"/>}
+				{NewDialog && <NewDialog ref="newDialog" isNewEmployee={isNewEmployee}/>}
 				{EditDialog && <EditDialog ref="editDialog"/>}
 			</>;
 		};
@@ -211,7 +314,7 @@ class AEmployeeDocControls extends React.Component {
 		if (isEmbedded) {
 			const {props: {activeId},} = this;
 			return <>
-				{slider(activeId, isEmbedded)}
+				{slider(activeId, isEmbedded, list)}
 			</>;
 		}
 
@@ -220,17 +323,23 @@ class AEmployeeDocControls extends React.Component {
 				dialog, dialog: {renderProfileCover},
 			},
 			ProfilePDFReader,
+			item: {
+				id,
+				data: {
+					fname, lname,
+				},
+			},
 		} = this;
 
 		const activeId = dialog.extraProp('activeId');
 
 		return <div className="controls-wrapper">
 			<div className="controls">
-				{renderProfileCover(<React.Fragment>
+				{renderProfileCover(<>
 					<h3>{lname + ' ' + fname}</h3>
-					<h5>{list.length + ' Competency Certificates'}</h5>
-				</React.Fragment>)}
-				{slider(activeId)}
+					<h5>{this.list.length + ' Competency Certificates'}</h5>
+				</>)}
+				{slider(activeId, false, list)}
 			</div>
 			{ProfilePDFReader && <ProfilePDFReader ref="pdfReader"/>}
 		</div>;

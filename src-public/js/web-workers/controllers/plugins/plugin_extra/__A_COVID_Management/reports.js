@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //name, department, desc
-        constructor(events, db) {
-            super(events, db, {singular: "COVID Management Report", plural: "COVID Management Reports"}, "plugin_sheq_assist/COVID_Management/reports/");
+        constructor(events) {
+            super(events, {singular: "COVID Management Report", plural: "COVID Management Reports"}, "plugin_sheq_assist/COVID_Management/reports/");
             this.stats = this.stats.bind(this);
             const {addAction, stats} = this;
             addAction("stats", stats);
@@ -65,5 +65,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -1,18 +1,19 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {ProfileField, UploadButton} from "components/inputs";
-import NewDocBankingDetailsDialog from "./profile_forms/NewDocBankingDetailsDialog";
-import EditDocBankingDetailsDialog from "./profile_forms/EditDocBankingDetailsDialog";
 import ASectionSection from "./ASectionSection";
 import NewDocumentDialog from "./profile_forms/NewDocumentDialog";
 import EditDocumentDialog from "./profile_forms/EditDocumentDialog";
 import {computed} from "mobx";
+import updateEmployeeDocDocument
+	from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 @observer
 class IDOrPassportSection extends ASectionSection {
 
 	type = 'ID/Passport';
 	listName = 'document_list';
+	onUpdate = updateEmployeeDocDocument;
 	NewDialog = NewDocumentDialog;
 	EditDialog = EditDocumentDialog;
 
@@ -25,13 +26,11 @@ class IDOrPassportSection extends ASectionSection {
 
 	//<editor-fold desc="list">
 	@computed get list() {
-		const {isNew} = this.props;
-		if(isNew) {
-			return [null];
+		if (this.isNewEmployee) {
+			return this.state.newList;
 		}
 
-		const {itemData} = this;
-		const {listName} = this;
+		const {itemData, listName} = this;
 		const {[listName]: list} = itemData || {};
 		return (list || []).filter(v => !v || v.type === "ID/Passport");
 	}

@@ -12,10 +12,12 @@ class Store {
     }
 
     load() {
-        neonBinding.events.emit("notifications/list/unread").then(list => {
-//            console.log("emit = notifications/list/unread", list)
-            this.state.list = list;
-        });
+//        TODO: load from graphql
+
+//         neonBinding.events.emit("notifications/list/unread").then(list => {
+// //            console.log("emit = notifications/list/unread", list)
+//             this.state.list = list;
+//         });
         neonBinding.events.on("notifications/onCreated", item => {
             const {data: {_group, name}} = item;
             let itemGroup = this.list.find(v => v._group === _group);

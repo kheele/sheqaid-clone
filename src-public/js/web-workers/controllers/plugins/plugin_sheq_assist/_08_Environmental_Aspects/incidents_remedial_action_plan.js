@@ -10,8 +10,8 @@
      is_there_possible_new_or_additional_risks_in_terms_of_safety, is_there_possible_new_or_additional_risks_in_terms_of_health, is_there_possible_new_or_additional_risks_in_terms_of_environment, additional_hazards_or_risks_and_action_to_take_list,
      incident_assessor_name, incident_assessor_signature, incident_assessor_signature_date
      */
-    constructor(events, db) {
-        super(events, db, {singular: "Environmental Aspects Incident Remedial Action Plan", plural: "Environmental Aspects Incidents Remedial Action Plans"}, "plugin_sheq_assist/08_Environmental_Aspects/incidents/remedial-action-plan/", "plugin_sheq_assist_08_Environmental_Aspects_incidents_remedial_action_plan");
+    constructor(events) {
+        super(events, {singular: "Environmental Aspects Incident Remedial Action Plan", plural: "Environmental Aspects Incidents Remedial Action Plans"}, "plugin_sheq_assist/08_Environmental_Aspects/incidents/remedial-action-plan/", "plugin_sheq_assist_08_Environmental_Aspects_incidents_remedial_action_plan");
                 
         this.filter = this.filter.bind(this);
         const {addAction, filter} = this;
@@ -34,5 +34,5 @@
     }
 }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

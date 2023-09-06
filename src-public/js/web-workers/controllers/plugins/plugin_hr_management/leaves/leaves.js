@@ -2,10 +2,9 @@
 (() => {
     class Controller extends AEmployeeDocsController {
         //date, expiry_date, type, notes, employee, department
-        constructor(events, db) {
+        constructor(events) {
             super(
                     events,
-                    db,
                     {singular: "Employee Leave", plural: "Employees Leaves"},
                     "plugin_sheq_assist/employees/leaves/"
                     );
@@ -284,5 +283,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

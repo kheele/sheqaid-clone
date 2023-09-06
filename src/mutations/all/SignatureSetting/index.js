@@ -3,7 +3,7 @@ import {computed} from "mobx";
 class Store {
 
     @computed get listAllByLogged() {
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         const {isLoggedClient, isLoggedProject, isLoggedSite, isContractor, isContractorViewVisited} = storage.is;
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {selectedContractorSite} = storage.selected;

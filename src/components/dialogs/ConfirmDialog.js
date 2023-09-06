@@ -39,7 +39,7 @@ class ConfirmDialog extends React.Component {
     }
 
     onCancel() {
-        this.onResponse && this.onResponse(-1);
+        this.onResponse && this.onResponse(0);
         this.close();
     }
 

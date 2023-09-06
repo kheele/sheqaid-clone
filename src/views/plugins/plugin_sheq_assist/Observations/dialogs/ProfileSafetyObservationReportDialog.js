@@ -57,7 +57,7 @@ class Controls extends React.Component {
             }
         } = this;
         
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         return <div className="controls-wrapper">
             <div className="controls">
@@ -66,7 +66,7 @@ class Controls extends React.Component {
                 </React.Fragment>)}
                 <div className="row">
                     <div className="row sec-group">
-                        {isHasProjects && <ProfileField name="site" placeholder="Site" value={site} renderer={val => val.name} required className="col-lg-12"/>}
+                        {hasProjects && <ProfileField name="site" placeholder="Site" value={site} renderer={val => val.name} required className="col-lg-12"/>}
                         <ProfileField name="observation_type" placeholder="Observation Type" value={observation_type} required className="col-lg-12"/>
                         <ProfileField name="location" placeholder="Location Of Observation" value={location} required className="col-lg-12"/>
                     </div>

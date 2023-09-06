@@ -209,5 +209,5 @@ export default async (attrs: EntityEmployee) => {
         mutation,
         id: attrs.id,
         attrs,
-    });
+    }).then(res => res && findByIdEmployee(res.id));
 };

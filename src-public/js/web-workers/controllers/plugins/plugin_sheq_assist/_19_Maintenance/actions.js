@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         /* */
-        constructor(events, db) {
-            super(events, db, {singular: "Asset Action", plural: "Assets Actions"}, "plugin_sheq_assist/19_Maintenance/actions/", "plugin_sheq_assist_19_Maintenance_actions");
+        constructor(events) {
+            super(events, {singular: "Asset Action", plural: "Assets Actions"}, "plugin_sheq_assist/19_Maintenance/actions/", "plugin_sheq_assist_19_Maintenance_actions");
 
             this.list_categories = this.list_categories.bind(this);
             this.filter = this.filter.bind(this);
@@ -56,5 +56,5 @@
         });
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

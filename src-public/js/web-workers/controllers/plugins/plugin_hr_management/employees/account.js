@@ -3,10 +3,10 @@
     class Controller extends AAccountsCntr {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Employee", plural: "Employees"}, "plugin_sheq_assist/employees/accounts/");
+        constructor(events) {
+            super(events, {singular: "Employee", plural: "Employees"}, "plugin_sheq_assist/employees/accounts/");
 
-            this.tbl = TBL_EMPLOYEES;
+            // this.tbl = TBL_EMPLOYEES;
 
             const {addAction} = this;
         }
@@ -34,7 +34,7 @@
         
     }
 
-    const staffCntr = new Controller(events, db);
+    const staffCntr = new Controller(events);
 
     // <editor-fold defaultstate="collapsed" desc="auth.onAuthStateChanged">
     auth_hr.onAuthStateChanged((staff) => {

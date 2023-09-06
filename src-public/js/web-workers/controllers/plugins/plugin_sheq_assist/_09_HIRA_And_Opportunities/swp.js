@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //title, sec1
-        constructor(events, db) {
-            super(events, db, {singular: "Written Safe Work Procedure", plural: "Written Safe Work Procedures"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/swp/", "plugin_sheq_assist_09_HIRA_And_Opportunities_swp");
+        constructor(events) {
+            super(events, {singular: "Written Safe Work Procedure", plural: "Written Safe Work Procedures"}, "plugin_sheq_assist/09_HIRA_And_Opportunities/swp/", "plugin_sheq_assist_09_HIRA_And_Opportunities_swp");
 
             this.filter = this.filter.bind(this);
             this.list_categories = this.list_categories.bind(this);
@@ -65,5 +65,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

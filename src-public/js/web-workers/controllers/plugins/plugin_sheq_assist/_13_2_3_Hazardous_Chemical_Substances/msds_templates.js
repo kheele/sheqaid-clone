@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //name, desc, questions, contractor
-        constructor(events, db) {
-            super(events, db, {singular: "MSDS Template", plural: "MSDS Templates"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/msds/templates/", "Hazardous_Chemical_Substances_msds_templates");
+        constructor(events) {
+            super(events, {singular: "MSDS Template", plural: "MSDS Templates"}, "plugin_sheq_assist/Hazardous_Chemical_Substances/msds/templates/", "Hazardous_Chemical_Substances_msds_templates");
 
             const {addAction} = this;
 
@@ -93,5 +93,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

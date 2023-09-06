@@ -95,8 +95,8 @@ class OrganogramsTab extends React.Component {
     }
 
     renderFilterNode(onChange) {
-        const {isHasProjects} = storage.is;
-        if(isHasProjects) {
+        const {hasProjects} = storage.is;
+        if(hasProjects) {
             return <div className="col-lg-12 controls flex">
                 <ClearableInput name="type" type="radio" placeholder="Source" className="fixed-flex min-w-400 form-control" onChange={onChange} values={this.state.lists.types} returnValue/>
                 <ClearableInput name="target" type="select" placeholder="Target..." className="fixed-flex min-w-270 form-control" onChange={onChange} values={this.state.lists.target} returnValue/>
@@ -109,14 +109,14 @@ class OrganogramsTab extends React.Component {
     }
 
     renderTHead() {
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-120">Date Created</div>
             <div className="td">Source</div>
             <div className="td">Target</div>
-            {isHasProjects && <div className="td">Company</div>}
-            {isHasProjects && <div className="td">Project</div>}
-            {isHasProjects && <div className="td">Site</div>}
+            {hasProjects && <div className="td">Company</div>}
+            {hasProjects && <div className="td">Project</div>}
+            {hasProjects && <div className="td">Site</div>}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -125,15 +125,15 @@ class OrganogramsTab extends React.Component {
         const item = this.refs.root.list[n];
         const {id, data: {created_at, target, client, project, site, type, doc, list}} = item;
 //        console.log('Organogram', item)
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <TRow key={"item-" + n}>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
             <div className="td">{doc ? <Clickable idx={n} onClick={this.onViewByDoc}><a href="#">PDF / Spreadsheet</a></Clickable> : "Typed"}</div>
             <div className="td">{target === "Client" ? "Company" : target}</div>
             
-            {isHasProjects && RenderUtils.renderOrgTD(client, null, 'Company')}
-            {isHasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
-            {isHasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
+            {hasProjects && RenderUtils.renderOrgTD(client, null, 'Company')}
+            {hasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
+            {hasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
             
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
             	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

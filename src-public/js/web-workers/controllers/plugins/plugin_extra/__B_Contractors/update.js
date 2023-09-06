@@ -1,8 +1,8 @@
 
 (() => {
     class Controller extends AControllerAid {
-        constructor(events, db) {
-//        super(events, db, "contractors/");
+        constructor(events) {
+//        super(events, "contractors/");
 
             this.update_profile_user = this.update_profile_user.bind(this);
             this.update_profile_company = this.update_profile_company.bind(this);
@@ -134,5 +134,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

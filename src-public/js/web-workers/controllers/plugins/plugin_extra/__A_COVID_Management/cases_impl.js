@@ -33,8 +33,8 @@ function create_column_chart(title, title_axis_y, title_axis_x, y_value_format_s
 class ACasesController extends AControllerAid {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     //audit_findings, audit_summary, possible_score, achieved_score
-    constructor(events, db, name, root, tbl, fn) {
-        super(events, db, name, root, tbl, fn);
+    constructor(events, name, root, tbl, fn) {
+        super(events, name, root, tbl, fn);
 
         const {addAction} = this;
 

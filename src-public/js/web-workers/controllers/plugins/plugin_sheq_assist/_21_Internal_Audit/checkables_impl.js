@@ -1,8 +1,8 @@
 
 class AInternalAuditCheckablesController extends AControllerAid {
     //audit_findings, audit_summary, possible_score, achieved_score
-    constructor(events, db, name, path, tbl) {
-        super(events, db, name, path, tbl);
+    constructor(events, name, path, tbl) {
+        super(events, name, path, tbl);
 
         const {addAction} = this;
 

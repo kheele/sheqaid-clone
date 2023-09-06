@@ -96,16 +96,16 @@ class Controls extends React.Component {
             }
         } = this;
         
-        const {isContractor, isHasProjects} = storage.is;
+        const {isContractor, hasProjects} = storage.is;
         
         return <FormControls>
-            {isHasProjects && <Row 
+            {hasProjects && <Row 
                 rendered  
                 active
                 idx={0}
                 title={(!isContractor && "Company / Project / ") + "Site"}
                 onFormOpen={onFormOpen} 
-                onFormNext={isHasProjects && onFormNext}
+                onFormNext={hasProjects && onFormNext}
             >
                 <ProfileField name="target" placeholder="Organogram For" value={target === "Client" ? "Company" : target} required className="col-lg-6"/>
                 <ProfileField name="type" placeholder="Organogram Source" value={type === "Upload" ? "PDF / Spreadsheet" : "Typed"} required className="col-lg-6"/>
@@ -115,11 +115,11 @@ class Controls extends React.Component {
            </Row>}
             {doc && <Row 
                 rendered 
-                active={!isHasProjects}
+                active={!hasProjects}
                 idx={1}
                 title="1. Uploaded Organogram Structure" 
                 onFormOpen={onFormOpen} 
-                onFormBack={isHasProjects && onFormBack}
+                onFormBack={hasProjects && onFormBack}
                 onFormNext={onFormNext}
             >
                 <UploadButton 

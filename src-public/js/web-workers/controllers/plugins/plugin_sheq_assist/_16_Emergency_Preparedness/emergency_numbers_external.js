@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //org_name, area, contacts
-        constructor(events, db) {
-            super(events, db, {singular: "External Emergency Number", plural: "External Emergency Numbers"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-numbers/external/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_numbers_external");
+        constructor(events) {
+            super(events, {singular: "External Emergency Number", plural: "External Emergency Numbers"}, "plugin_sheq_assist/16_Emergency_Preparedness/emergency-numbers/external/", "plugin_sheq_assist_16_Emergency_Preparedness_emergency_numbers_external");
 
             const {addAction} = this;
             
@@ -77,5 +77,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

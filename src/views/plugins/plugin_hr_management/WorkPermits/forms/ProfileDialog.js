@@ -12,6 +12,7 @@ import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
 import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
+import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
 
 //<editor-fold desc="ProfileDialog">
 @observer
@@ -46,6 +47,7 @@ class ProfileDialog extends AProfileDialog {
 class Controls extends AEmployeeDocControls {
 
     listName = "work_permit_list";
+    onUpdate = updateEmployeeWorkPermit;
     NewDialog = NewDialog;
     EditDialog = EditDialog;
     ProfilePDFReader = ProfilePDFReader;

@@ -2,8 +2,8 @@
 
 class AAccountsCntr extends AAccountsServerCntr {
 // class AAccountsCntr extends AAccountsFunsCntr {
-	constructor(events, db, name, root, tbl, fn) {
-		super(events, db, name, root, tbl, fn);
+	constructor(events, name, root, tbl, fn) {
+		super(events, name, root, tbl, fn);
 
 		const {addAction} = this;
 
@@ -264,7 +264,7 @@ class AAccountsCntr extends AAccountsServerCntr {
 			console.log('logout res', res)
 
 			self.session.logout();
-			return this.auth.signOut().finally(() => true);
+			return this.auth.signOut().then(() => true);
 		});
 	}
 

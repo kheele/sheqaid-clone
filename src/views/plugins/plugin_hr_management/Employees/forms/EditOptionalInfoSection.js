@@ -104,44 +104,10 @@ class EditOptionalInfoSection extends React.Component {
 			supervisor_phone,
 			supervisor_email,
 			//
-			living_addr_country,
-			living_addr_province,
-			living_addr_city,
-			living_addr_local_area,
-			living_addr_street,
-			living_addr_doc,
+			living_address_list,
 			//
-			banking_name,
-			banking_branch,
-			banking_branch_code,
-			banking_account_num,
-			banking_doc
+			banking_detail_list,
 		} = data;
-
-		const living_address_list = [];
-		if (living_addr_street || living_addr_local_area || living_addr_city || living_addr_province || living_addr_country || living_addr_doc) {
-			living_address_list.push({
-				street_address: living_addr_street,
-				local_address: living_addr_local_area,
-				city_id: living_addr_city && living_addr_city.id,//living_addr_city
-				zone_id: living_addr_province && living_addr_province.id,//living_addr_province
-				country_id: living_addr_country && living_addr_country.id,
-				doc: living_addr_doc && living_addr_doc.path,
-				is_default: true,
-			});
-		}
-
-		const banking_detail_list = [];
-		if (banking_account_num || banking_branch || banking_branch_code || banking_name || banking_doc) {
-			banking_detail_list.push({
-				account_num: banking_account_num,
-				branch: banking_branch,
-				code: banking_branch_code,
-				name: banking_name,
-				doc: banking_doc && banking_doc.path,
-				is_default: true,
-			});
-		}
 
 		return {
 			//
@@ -152,8 +118,31 @@ class EditOptionalInfoSection extends React.Component {
 			//
 			supervisor_id: supervisor && supervisor.id,
 			//
-			living_address_list: {data: living_address_list},
-			banking_detail_list: {data: banking_detail_list},
+			living_address_list: {
+				data: (living_address_list || []).map(({country, province, city, local_address, street_address, doc}) => ({
+					is_default: true,
+					//1
+					country_id: country.id,
+					province_id: province.id,
+					city_id: city.id,
+					local_address,
+					street_address,
+					//2
+					doc: doc && doc.path,
+				}))
+			},
+			banking_detail_list: {
+				data: (banking_detail_list || []).map(({name, branch, code, account_num, doc}) => ({
+					is_default: true,
+					//1
+					name,
+					branch,
+					code,
+					account_num,
+					//2
+					doc: doc && doc.path,
+				}))
+			},
 		}
 	}
 
@@ -169,7 +158,7 @@ class EditOptionalInfoSection extends React.Component {
 			employment_date, employment_num,
 		} = (item && item.data) || {};
 
-		const isNew = !id;
+		const isNewEmployee = !id;
 
 		const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
 		return <div id={this.pageKey + "-tab"} className={className}>
@@ -226,7 +215,7 @@ class EditOptionalInfoSection extends React.Component {
 						onFormBack={onFormBack}
 						onFormSave={onFormSave}
 					>
-						<LivingAddressSection item={item} isNew={isNew} onChange={this.form.onChange}/>
+						<LivingAddressSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
 					</Row>
 					<Row
 						rendered
@@ -236,7 +225,7 @@ class EditOptionalInfoSection extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormBack={onFormBack}
 					>
-						<BankingDetailsSection item={item} isNew={isNew} onChange={this.form.onChange}/>
+						<BankingDetailsSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
 					</Row>
 				</div>
 			</div>

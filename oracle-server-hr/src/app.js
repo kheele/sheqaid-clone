@@ -55,13 +55,15 @@ const options = {
 	cert: fs.readFileSync(process.env.CERT_PUBLIC_KEY),
 };
 
-const server = app.listen(process.env.PORT, () => {
-    console.log(`server started on port: ${server.address().port}`);
-});
-
-// https.createServer(options, app).listen(process.env.PORT, () => {
-// 	console.log(`Server securely listening on port ${process.env.PORT}`);
-// });
+if(isProduction) {
+	https.createServer(options, app).listen(process.env.PORT, () => {
+		console.log(`Server securely listening on port ${process.env.PORT}`);
+	});
+} else {
+	const server = app.listen(process.env.PORT, () => {
+		console.log(`server started on port: ${server.address().port}`);
+	});
+}
 
 // function cleanupAndExit() {
 //     server.close(() => {

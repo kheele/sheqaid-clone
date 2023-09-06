@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //date, type, auditor, company, representative, scope, definition_list, list
-        constructor(events, db) {
-            super(events, db, {singular: "Internal Audit", plural: "Internal Audits"}, "plugin_sheq_assist/21_Internal_Audit/audit/", "plugin_sheq_assist_21_Internal_Audit_audit");
+        constructor(events) {
+            super(events, {singular: "Internal Audit", plural: "Internal Audits"}, "plugin_sheq_assist/21_Internal_Audit/audit/", "plugin_sheq_assist_21_Internal_Audit_audit");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -123,5 +123,5 @@
         });
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

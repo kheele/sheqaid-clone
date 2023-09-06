@@ -15,6 +15,7 @@ import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditLeaveDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit Leave";
 
     constructor(props) {
@@ -144,19 +145,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
-        //     console.log("res", res)
-        //     if(res === "ERROR") {
-        //         infoDialog.open("An error occurred. Please try again.");
-        //     } else {
-        //         onSaved && onSaved(res);
-        //         infoDialog.open("Record successfully updated.");
-        //         this.props.close();
-        //     }
-        //     infoDialog.close(2000);
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
 
     get item() {

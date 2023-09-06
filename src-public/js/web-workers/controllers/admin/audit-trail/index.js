@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Audit Log", plural: "Audit Logs"}, "admin/audit-trail/", "admin_audit_trail");
+        constructor(events) {
+            super(events, {singular: "Audit Log", plural: "Audit Logs"}, "admin/audit-trail/", "admin_audit_trail");
 
             this.filter = this.filter.bind(this);
             const {addAction, filter} = this;
@@ -54,5 +54,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

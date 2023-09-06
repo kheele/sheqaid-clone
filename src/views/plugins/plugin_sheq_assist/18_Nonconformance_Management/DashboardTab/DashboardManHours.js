@@ -225,7 +225,7 @@ class DashboardManHours extends React.Component {
             charts_injury_mechanism_list
         } = this;
 
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         const {selectedClient = {}, selectedProject = {}, selectedSite = {}} = storage.selected;
         const renderName = (title, titlePlural, selected) => {
             if(!selected) return <React.Fragment>All<br/>{titlePlural}</React.Fragment>;
@@ -234,7 +234,7 @@ class DashboardManHours extends React.Component {
         };
         return <React.Fragment>
             <div className="filter-input flex">
-                {isHasProjects && <label className="margin-b-0 flex">
+                {hasProjects && <label className="margin-b-0 flex">
                     {isConsultant && <span className="counter border-radius-20 font-size-13 h-40 margin-r-10">
                         {renderName("Company", "Companies", selectedClient)}
                     </span>}

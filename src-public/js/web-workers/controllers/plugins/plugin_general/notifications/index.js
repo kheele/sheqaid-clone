@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerAid {
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Notification", plural: "Notifications"}, "notifications/", "default_notifications");
+        constructor(events) {
+            super(events, {singular: "Notification", plural: "Notifications"}, "notifications/", "default_notifications");
 
             const {addAction} = this;
 
@@ -96,5 +96,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Plugin", plural: "Plugins"}, "admin/plugin_manager/", "plugin_manager", "unauthorized");
+        constructor(events) {
+            super(events, {singular: "Plugin", plural: "Plugins"}, "admin/plugin_manager/", "plugin_manager", "unauthorized");
 
             const {addAction} = this;
             addAction("list/search_by_name", this.search_by_name.bind(this));
@@ -72,5 +72,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

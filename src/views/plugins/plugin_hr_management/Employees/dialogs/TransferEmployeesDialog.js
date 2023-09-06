@@ -169,7 +169,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSearch">
     onSearch() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
 
         const {form} = this;
         if (isConsultant) {
@@ -184,7 +184,7 @@ class Controls extends React.Component {
             this.filterData.client_id = client_from.id;
         }
 
-        if (!isContractor && isHasProjects) {
+        if (!isContractor && hasProjects) {
             const {
                 project_from, site_from
             } = form.data;
@@ -407,12 +407,12 @@ class Controls extends React.Component {
 
     //<editor-fold desc="renderTHeadEmployeesFrom">
     renderTHeadEmployeesFrom() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         return <THead>
             <div className="td">Name</div>
             <div className="td">Department</div>
             <div className="td">Job Position</div>
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && <div className="td">Company</div>}
                 <div className="td">Project</div>
                 <div className="td">Site</div>
@@ -425,7 +425,7 @@ class Controls extends React.Component {
 
     //<editor-fold desc="renderItemEmployeesFrom">
     renderItemEmployeesFrom(item, n) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         let {
             id, data: {
                 created_at, fname, lname,
@@ -442,7 +442,7 @@ class Controls extends React.Component {
             <div className="td">{department && department.name || 'N/A'}</div>
             <div className="td">{job_position && job_position.name || 'N/A'}</div>
 
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && RenderUtils.renderOrgTD(client, null, 'Company')}
                 {RenderUtils.renderOrgTD(project, null, 'Project')}
                 {RenderUtils.renderOrgTD(site, null, 'Site')}
@@ -467,7 +467,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const {title, titleSelected, props: {dialog: {isTransfer, isExport, isPrintCards}}} = this;
         return (<div className="controls-wrapper h-full">
             <div className="controls h-full">
@@ -475,7 +475,7 @@ class Controls extends React.Component {
                     <label className="heading text-center h-45"><h4>Find Employee(s) To {title}:</h4></label>
                     <div
                         className="row sec-group margin-t-10 padding-l-10 grid-1 grid-gap-10 overflow-y-auto w-full h-full-calc-add-45">
-                        {!isContractor && isHasProjects && <React.Fragment>
+                        {!isContractor && hasProjects && <React.Fragment>
                             {isConsultant && <SelectClientInput ref="client_id" name="client_from" group="orgs1"
                                                                 placeholder="Company..." required
                                                                 className="col-lg-12 margin-0 form-control"

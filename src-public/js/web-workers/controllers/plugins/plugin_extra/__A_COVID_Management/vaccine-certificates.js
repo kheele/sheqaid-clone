@@ -1,10 +1,9 @@
 
 (() => {
     class Controller extends AEmployeeDocsController {
-        constructor(events, db) {
+        constructor(events) {
             super(
                     events,
-                    db,
                     {singular: "Employee Vaccine Certificate", plural: "Employees Vaccine Certificates"},
                     "plugin_sheq_assist/COVID_Management/vaccine-certificates/"
                     );
@@ -89,5 +88,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

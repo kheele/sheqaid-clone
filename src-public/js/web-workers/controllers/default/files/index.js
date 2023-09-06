@@ -1,7 +1,7 @@
 (function () {
   class Controller extends AControllerRead {
-    constructor() {
-      super(events, null, null, "files/");
+    constructor(events) {
+      super(events, null, "files/");
 
       const { addAction } = this;
       addAction("upload", this.upload.bind(this));
@@ -37,5 +37,5 @@
   }
 
   // eslint-disable-next-line no-new
-  new Controller();
+  new Controller(events);
 })();

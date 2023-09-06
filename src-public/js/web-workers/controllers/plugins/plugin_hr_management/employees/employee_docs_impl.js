@@ -1,8 +1,8 @@
 
 class AEmployeeDocsController extends AControllerAid {
     // <editor-fold defaultstate="collapsed" desc="constructor">
-    constructor(events, db, name, root) {
-        super(events, db, name, root);
+    constructor(events, name, root) {
+        super(events, name, root);
 
         this.tblTemp = TBL_EMPLOYEES;
 

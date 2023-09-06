@@ -140,9 +140,9 @@ class Controls extends React.Component {
 	async onSubmit(e, btn, onSaved) {
 		const {form} = this;
 
-		const {isHasProjects} = storage.is;
+		const {hasProjects} = storage.is;
 
-		if (isHasProjects) {
+		if (hasProjects) {
 			if (!form.isValid('target')) {
 				infoDialog.open('Organogram For is required');
 				return;
@@ -221,15 +221,15 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		const {props: {onFormNext, onFormBack, onFormOpen}} = this;
-		const {isContractor, isHasProjects} = storage.is;
+		const {isContractor, hasProjects} = storage.is;
 		return <FormControls>
-			{isHasProjects && <Row
+			{hasProjects && <Row
 				rendered
 				active
 				idx={0}
 				title={(!isContractor && "Company / Project / ") + "Site"}
 				onFormOpen={onFormOpen}
-				onFormNext={isHasProjects && onFormNext}
+				onFormNext={hasProjects && onFormNext}
 			>
 				<ClearableInput name="target" type="radio" defaultValue={!isContractor && "Site"} placeholder="Organogram For"
 				                className="col-lg-7 pull-left-2_5 form-control" onChange={this.form.onChange}
@@ -240,11 +240,11 @@ class Controls extends React.Component {
 			</Row>}
 			<Row
 				rendered
-				active={!isHasProjects}
+				active={!hasProjects}
 				idx={1}
 				title="1. Source"
 				onFormOpen={onFormOpen}
-				onFormBack={isHasProjects && onFormBack}
+				onFormBack={hasProjects && onFormBack}
 				onFormNext={onFormNext}
 			>
 				<ClearableInput name="type" type="radio" placeholder="Organogram Source"

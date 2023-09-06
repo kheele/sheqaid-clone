@@ -367,11 +367,11 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                {isHasProjects && <Row 
+                {hasProjects && <Row 
                     active
                     rendered 
                     idx={0}

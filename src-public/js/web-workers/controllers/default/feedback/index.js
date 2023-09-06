@@ -2,8 +2,8 @@
 (function () {
     class Controller extends AControllerRead {
         //fname, lname, email, message
-        constructor(events, db) {
-            super(events, db, {singular: "Feedback", plural: "Feedbacks"}, "feedback/", "default_feedback");
+        constructor(events) {
+            super(events, {singular: "Feedback", plural: "Feedbacks"}, "feedback/", "default_feedback");
         }
 
         async create(evt, data) {
@@ -23,5 +23,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

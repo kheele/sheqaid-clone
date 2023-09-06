@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //title, start, end, allDay, participants
-        constructor(events, db) {
-            super(events, db, {singular: "Safety Meeting", plural: "Safety Meetings"}, "plugin_sheq_assist/06_Communication_And_Participation/safety-meeting/");
+        constructor(events) {
+            super(events, {singular: "Safety Meeting", plural: "Safety Meetings"}, "plugin_sheq_assist/06_Communication_And_Participation/safety-meeting/");
 
             const {addAction} = this;
             
@@ -51,5 +51,5 @@
         return list;
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

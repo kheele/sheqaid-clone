@@ -2,8 +2,8 @@
     class Controller extends AAccountsCntr {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db, {singular: "Administrator / User", plural: "Administrators / Users"}, "users/accounts/");
+        constructor(events) {
+            super(events, {singular: "Administrator / User", plural: "Administrators / Users"}, "users/accounts/");
 
             this.tbl = 'default_users';
 
@@ -139,5 +139,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();//585

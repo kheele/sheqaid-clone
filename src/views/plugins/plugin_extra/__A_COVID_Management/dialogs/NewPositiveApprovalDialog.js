@@ -515,11 +515,11 @@ class Controls extends AControls {
         const reporting_action_coidDefault = reporting_action_coid && {label: reporting_action_coid, value: reporting_action_coid};
         const reporting_action_dmreDefault = {label: reporting_action_dmre, value: reporting_action_dmre};
         
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         const SelectSiteConfirmInputsStyle = {height: "auto"};
         return (<div className="controls-wrapper">
-            {isHasProjects && <div className="controls SelectSiteConfirmInputs" style={SelectSiteConfirmInputsStyle}>
+            {hasProjects && <div className="controls SelectSiteConfirmInputs" style={SelectSiteConfirmInputsStyle}>
                 <label>Location</label>
                 <div className="row">
                     <div className="row sec-group padding-l-10 padding-r-10">

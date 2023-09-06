@@ -25,8 +25,8 @@
          suggested_preemptive_action, suggested_preemptive_action_options,
          affected_person_name, form_completed_by, reported_to, 
          supervior_or_manager*/
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Incident Investigation",
                 plural: "Incident Investigations"
             }, "plugin_sheq_assist/17_Incident_Investigation/", "plugin_sheq_assist_17_Incident_Investigation");
@@ -1511,5 +1511,5 @@
         return null;
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

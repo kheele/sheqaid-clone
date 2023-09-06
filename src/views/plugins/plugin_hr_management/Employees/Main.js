@@ -209,7 +209,7 @@ class Main extends APage {
 	}
 
 	onChangeMoreOptions(e, el) {
-		const {isConsultant, isHasProjects, isContractor} = storage.is;
+		const {isConsultant, hasProjects, isContractor} = storage.is;
 
 		const jqElem = $(el.getDOMNode());
 		const offset = jqElem.offset();
@@ -239,7 +239,7 @@ class Main extends APage {
 				{Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}
 				<NavItem onClick={this.onExport} title="Export"/>
 				<NavItem onClick={this.onPrintCards} title="Print Cards"/>
-				{isContractor && !isContractor && isHasProjects && <NavItem onClick={this.onTransfer} title="Transfer"/>}
+				{isContractor && !isContractor && hasProjects && <NavItem onClick={this.onTransfer} title="Transfer"/>}
 				<hr className="margin-t-0 margin-b-0"/>
 				{Permissions.allowRemoveMod("Employees") && <NavItem onClick={this.onBulkDelete} title="Bulk Delete"/>}
 			</div>

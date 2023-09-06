@@ -25,34 +25,15 @@ class EditDependentsAndNextOfKinSection extends React.Component {
         const {data} = this.form;
         let {
             //
-            fname,
-            lname,
-            phone1,
-            phone2,
-            relationship,
+            next_of_kin_list,
             //
-            dependent_list
+            dependent_list,
         } = data;
 
-        const next_of_kin_list = [];
-        if (lname && fname) {
-            next_of_kin_list.push({
-                fname,
-                lname,
-                phone1,
-                phone2,
-                relationship,
-            });
-        }
-
-        if (dependent_list) {
-            dependent_list = dependent_list.map(v => ({...v, dob: Dates.formatTimestampSQL(v.dob)}))
-        }
-
         return {
-            next_of_kin_list: {data: next_of_kin_list},
+            next_of_kin_list: {data: (next_of_kin_list || []).slice().map(v => ({...v}))},
             //
-            dependent_list: {data: dependent_list || []},
+            dependent_list: {data: (dependent_list || []).map(v => ({...v, dob: Dates.formatTimestampSQL(v.dob)}))},
         }
     }
     //</editor-fold>
@@ -64,7 +45,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
         let {
             id,
         } = (item && item.data) || {};
-        const isNew = !id;
+        const isNewEmployee = !id;
 
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
@@ -78,7 +59,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                     >
-                        <NextOfKinSection item={item} isNew={isNew} onChange={this.form.onChange}/>
+                        <NextOfKinSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
                     </Row>
                     <Row
                         rendered
@@ -88,7 +69,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormBack={onFormBack}
                     >
-                        <DependantSection item={item} isNew={isNew} onChange={this.form.onChange}/>
+                        <DependantSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
                     </Row>
                 </div>
             </div>

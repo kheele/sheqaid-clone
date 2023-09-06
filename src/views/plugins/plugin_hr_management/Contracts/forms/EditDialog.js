@@ -16,6 +16,7 @@ import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmploye
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditContractDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit Contract";
 
     constructor(props) {

@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //equipment_type, equipment_name, equipment_id, service, fuel_usage, working_hrs_or_km
-        constructor(events, db) {
-            super(events, db, {singular: "Asset Monitoring Plan", plural: "Assets Monitoring Plans"}, "plugin_sheq_assist/19_Maintenance/monitoring-plan/");
+        constructor(events) {
+            super(events, {singular: "Asset Monitoring Plan", plural: "Assets Monitoring Plans"}, "plugin_sheq_assist/19_Maintenance/monitoring-plan/");
 
             this.tbl = 'plugin_sheq_assist_19_Maintenance_tools';
 
@@ -70,5 +70,5 @@
         };
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

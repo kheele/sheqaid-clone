@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //site_id, observation_type, location, desc, causes, corrective_action, observed_team_member_id, signature
-        constructor(events, db) {
-            super(events, db, {singular: "Internal Audit Safety Observations Report", plural: "Internal Audit Safety Observations Reports"}, "plugin_sheq_assist/21_Internal_Audit/safety-observations-report/", "plugin_sheq_assist_21_Internal_Audit_safety_observations_report");
+        constructor(events) {
+            super(events, {singular: "Internal Audit Safety Observations Report", plural: "Internal Audit Safety Observations Reports"}, "plugin_sheq_assist/21_Internal_Audit/safety-observations-report/", "plugin_sheq_assist_21_Internal_Audit_safety_observations_report");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -92,5 +92,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

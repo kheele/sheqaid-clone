@@ -161,7 +161,7 @@ class Controls extends React.Component {
             item: {id, data: old_data},
         } = this;
 
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
 
         const onSubmit = (data, onSaved) => {
             if (Object.keys(data).isEmpty()) {
@@ -222,7 +222,7 @@ class Controls extends React.Component {
         }
 
         if (idx === 2) {
-            if(isHasProjects) {
+            if(hasProjects) {
                 if (!form.isValid('site_list') || form.get('site_list').isEmpty()) {
                     infoDialog.open('At least one Site is required');
                     return;
@@ -233,7 +233,7 @@ class Controls extends React.Component {
                 site_list
             } = form.data;
             const data = {};
-            if(isHasProjects) {
+            if(hasProjects) {
                 ShouldUpdate.checkSiteList(data, old_data, site_list, 'site_list');
             }
 
@@ -268,7 +268,7 @@ class Controls extends React.Component {
             }
         } = this;
         
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         console.log(this.item)
 
@@ -293,14 +293,14 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Employer Details" 
                 onFormOpen={onFormOpen} 
-                onFormNext={isHasProjects && onFormNext}
+                onFormNext={hasProjects && onFormNext}
                 onFormSave={this.onFormSave}
             >
                 <ClearableInput name="name" placeholder="Contractor Name" defaultValue={name} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="username" type="email" placeholder="Email Address" defaultValue={username} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="inc_contractor_pack" type="radio"  placeholder="Include Contractor's Pack" defaultValue={inc_contractor_pack} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.inc_contractor_pack} returnValue/>
             </Row>
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 rendered
                 active={!!viewStatus && viewStatus !== "Removed"}
                 idx={2}
@@ -322,7 +322,7 @@ class Controls extends React.Component {
                                       className="table-Cancelled"/>
                 </Tabs>
             </Row>}
-            {/*{isHasProjects && <Row */}
+            {/*{hasProjects && <Row */}
             {/*    rendered */}
             {/*    idx={2}*/}
             {/*    title="2. Add/Remove Site(s)" */}
@@ -334,7 +334,7 @@ class Controls extends React.Component {
             {/*    <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>*/}
             {/*    <NewSiteListTable name="site_list" defaultValue={[...site_list, null]} onChange={this.form.onChange}/>*/}
             {/*</Row>}*/}
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 active={viewStatus === "Removed"}
                 rendered
                 idx={3}

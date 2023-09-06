@@ -181,10 +181,10 @@ class Controls extends AControls {
     //<editor-fold desc="render">
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
 
         return <FormControls>
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 rendered
                 active
                 idx={0}
@@ -202,12 +202,12 @@ class Controls extends AControls {
             </Row>}
             <Row
                 rendered
-                active={!isHasProjects}
+                active={!hasProjects}
                 idx={1}
                 title="1. Date Section"
                 sectionClassName="dates-group"
                 onFormOpen={onFormOpen}
-                onFormBack={isHasProjects && onFormBack}
+                onFormBack={hasProjects && onFormBack}
                 onFormNext={onFormNext}
             >
                 <ClearableInput name="year" type="select" placeholder="Year..." required

@@ -2,8 +2,8 @@
 (() => {
     class Controller extends ADocumentCntr {
         //title, doc_num, revision_num, compiler, approving_officer, effective_date, revision_date, type, doc
-        constructor(events, db) {
-            super(events, db, {singular: "IMS Policy", plural: "IMS Policies"}, "plugin_sheq_assist/02_IMS_Policies/");
+        constructor(events) {
+            super(events, {singular: "IMS Policy", plural: "IMS Policies"}, "plugin_sheq_assist/02_IMS_Policies/");
         
             this.doc_type_key = "plugin_sheq_assist_02_IMS_Policies";
         }
@@ -80,5 +80,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

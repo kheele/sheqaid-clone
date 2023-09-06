@@ -4,11 +4,14 @@ import {ProfileField, UploadButton} from "components/inputs";
 import NewDocLivingAddressDialog from "./profile_forms/NewDocLivingAddressDialog";
 import EditDocLivingAddressDialog from "./profile_forms/EditDocLivingAddressDialog";
 import ASectionSection from "./ASectionSection";
+import updateEmployeeDocLivingAddress
+	from "mutations/all/EmployeeDocument/EmployeeDocLivingAddress/updateEmployeeDocLivingAddress";
 
 @observer
 class LivingAddressSection extends ASectionSection {
 
 	listName = 'living_address_list';
+	onUpdate = updateEmployeeDocLivingAddress;
 	NewDialog = NewDocLivingAddressDialog;
 	EditDialog = EditDocLivingAddressDialog;
 

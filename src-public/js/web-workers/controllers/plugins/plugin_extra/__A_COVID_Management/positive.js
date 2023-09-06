@@ -2,8 +2,8 @@
 (() => {
     class Controller extends ACasesController {
         //audit_findings, audit_summary, possible_score, achieved_score
-        constructor(events, db) {
-            super(events, db, {singular: "COVID Management Positive Case", plural: "COVID Management Positive Cases"}, "plugin_sheq_assist/COVID_Management/positive/", "plugin_sheq_assist_COVID_Management_positive");
+        constructor(events) {
+            super(events, {singular: "COVID Management Positive Case", plural: "COVID Management Positive Cases"}, "plugin_sheq_assist/COVID_Management/positive/", "plugin_sheq_assist_COVID_Management_positive");
 
             this.notification_key = "receive_covid_positive_case_notifs";
 
@@ -455,5 +455,5 @@
         };
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

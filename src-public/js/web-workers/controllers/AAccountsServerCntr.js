@@ -1,6 +1,6 @@
 class AAccountsServerCntr extends AControllerRead {
-    constructor(events, db, name, root, tbl, fn) {
-        super(events, db, name, root, tbl, fn);
+    constructor(events, name, root, tbl, fn) {
+        super(events, name, root, tbl, fn);
     }
 
     // <editor-fold defaultstate="collapsed" desc="onSetCustomUserClaimsImpl">

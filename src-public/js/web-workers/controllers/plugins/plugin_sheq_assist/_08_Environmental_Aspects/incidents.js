@@ -11,8 +11,8 @@
          environmental_incident_classification, environmental_incident_type, environmental_incident_consequence, environmental_incident_severity, environmental_incident_state_of_pollutant, environmental_incident_quality_of_pollutant, environmental_incident_duration_of_pollution, environmental_incident_on_site_contained,
          investigator_designated, investigator_of_incident, investigator_incident_date
          */
-        constructor(events, db) {
-            super(events, db, {singular: "Environmental Aspects Incident", plural: "Environmental Aspects Incidents"}, "plugin_sheq_assist/08_Environmental_Aspects/incidents/", "plugin_sheq_assist_08_Environmental_Aspects_incidents");
+        constructor(events) {
+            super(events, {singular: "Environmental Aspects Incident", plural: "Environmental Aspects Incidents"}, "plugin_sheq_assist/08_Environmental_Aspects/incidents/", "plugin_sheq_assist_08_Environmental_Aspects_incidents");
 
             this.filter = this.filter.bind(this);
             const {addAction, filter} = this;
@@ -38,5 +38,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

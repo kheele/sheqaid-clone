@@ -24,6 +24,7 @@ import {Dates} from "utils/Dates";
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewCompetencyCertificateDialog";
+    className = "ANewEmployeeDocDialog";
     title = "Create Competency Certificate";
 
     constructor(props) {
@@ -73,10 +74,10 @@ class Controls extends React.Component {
     
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -98,10 +99,10 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, isNewEmployee} = this;
 
         //1
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -115,14 +116,26 @@ class Controls extends React.Component {
             return;
         }
 
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
+            return;
+        }
+
         const {
             employee,//
-            issued_date, expiry_date, //
-            type, competency_type, //
+            issued_date, //
+            expiry_date, //
+            type, //
+            competency_type, //
             accreditation_num, //
             training, //
             doc//
         } = form.data;
+
         const data = { 
             employee_id: employee.id,
             issued_date: Dates.formatDateSQL(issued_date),
@@ -149,18 +162,13 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-
-        // neonBinding.events.emit(this.path + "create", data).then(employee_res => {
-        //     console.log("res", employee_res)
-        //     onSaved && onSaved(employee_res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
     // </editor-fold>
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
 
     get employeeItem() {
         return this.props.state.item;
@@ -168,7 +176,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {onFormNext, onFormBack, onFormOpen} = this.props;
+        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
         
         return <FormControls>
             <Row 
@@ -179,7 +187,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormNext={onFormNext}
             >
-                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {!isNewEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="type" type="radio" placeholder="Certificate Type" required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.type}/>

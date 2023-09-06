@@ -15,6 +15,7 @@ import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeL
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditLicenseDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit License";
 
     constructor(props) {

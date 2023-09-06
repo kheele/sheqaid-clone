@@ -135,7 +135,7 @@ class AControls extends React.Component {
     }
 
     onPrepareSearchOrgs() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
 
         const {form} = this;
         if (isConsultant) {
@@ -150,7 +150,7 @@ class AControls extends React.Component {
             this.filterData.client_id = client_from.id;
         }
 
-        if (!isContractor && isHasProjects) {
+        if (!isContractor && hasProjects) {
             const {
                 project_from, site_from
             } = form.data;
@@ -277,7 +277,7 @@ class AControls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const {props: {dialog: {titlePlural}}, title, titleSelected, renderBeforeResults} = this;
         return (<div className="controls-wrapper h-full">
             <div className="controls h-full">
@@ -287,7 +287,7 @@ class AControls extends React.Component {
                     </label>
                     <div
                         className="row sec-group padding-t-10 padding-b-15 padding-l-10 grid-1 grid-gap-10 overflow-y-auto w-full h-full">
-                        {!isContractor && isHasProjects && <React.Fragment>
+                        {!isContractor && hasProjects && <React.Fragment>
                             {isConsultant && <SelectClientInput ref="client_id" name="client_from" group="orgs1"
                                                                 placeholder="Company..." required
                                                                 className="col-lg-12 margin-0 form-control"

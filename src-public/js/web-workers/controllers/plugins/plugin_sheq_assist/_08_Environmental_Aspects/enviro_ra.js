@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //issue, hazard, consequence, impact, etc
-        constructor(events, db) {
-            super(events, db, {singular: "Environmental Aspects Risk Assessment", plural: "Environmental Aspects Risk Assessments"}, "plugin_sheq_assist/08_Environmental_Aspects/enviro-ra/", "plugin_sheq_assist_08_Environmental_Aspects_enviro_ra");
+        constructor(events) {
+            super(events, {singular: "Environmental Aspects Risk Assessment", plural: "Environmental Aspects Risk Assessments"}, "plugin_sheq_assist/08_Environmental_Aspects/enviro-ra/", "plugin_sheq_assist_08_Environmental_Aspects_enviro_ra");
 
             this.search_by_name = this.search_by_name.bind(this);
             this.filter = this.filter.bind(this);
@@ -33,5 +33,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

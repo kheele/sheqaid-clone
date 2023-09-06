@@ -3,8 +3,8 @@
 
 	class Controller extends AControllerAid {
 		// <editor-fold defaultstate="collapsed" desc="constructor">
-		constructor(events, db) {
-			super(events, db, {
+		constructor(events) {
+			super(events, {
 					singular: "Employee",
 					plural: "Employees"
 				}, "plugin_sheq_assist/employees/",
@@ -1673,5 +1673,5 @@
 		}
 	}
 
-	self.employeesCntr = new Controller(events, db);
+	self.employeesCntr = new Controller(events);
 })();

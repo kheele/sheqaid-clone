@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {singular: "Training Manual", plural: "Training Manuals"}, "plugin_sheq_assist/05_Trainings/manuals/", "plugin_sheq_assist_trainings_manuals");
+        constructor(events) {
+            super(events, {singular: "Training Manual", plural: "Training Manuals"}, "plugin_sheq_assist/05_Trainings/manuals/", "plugin_sheq_assist_trainings_manuals");
             
             const fn = async (tbl) => {
                 console.log('start', tbl)
@@ -158,5 +158,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

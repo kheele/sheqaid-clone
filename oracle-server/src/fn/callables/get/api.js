@@ -8,6 +8,7 @@ const getUserUidByUsername = async (username, access_type) => {
         }).then(res => res.json());
     }
     if(access_type === 'Staff') {
+        // return null;//TODO: deploy HR Server
         return fetch(`${HR_ENDPOINT}api/callables/get/getUserUidByUsername`, {
             method: "POST",
             body: username,

@@ -160,7 +160,7 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, refs:{newQuestionsTable}} = this;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
 
         if (isConsultant && !form.isValid('client')) {
             infoDialog.open('Company is required');
@@ -339,12 +339,12 @@ class Controls extends AControls {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
         const {showOnlyTable} = this;
         
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         const date = new Date();
         
         let idx = 0;
         return <FormControls>
-            {isHasProjects && !showOnlyTable && <Row 
+            {hasProjects && !showOnlyTable && <Row
                 rendered  
                 active
                 idx={idx}

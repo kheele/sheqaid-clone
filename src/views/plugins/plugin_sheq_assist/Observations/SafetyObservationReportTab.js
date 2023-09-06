@@ -44,23 +44,23 @@ class SafetyObservationReportTab extends React.Component {
     }
 
     renderFilterNode(onChange) {
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <div className="col-lg-12 controls multiline-controls absolute-btns">
             <ClearableInput name="observation_type" type="text" placeholder="Observation Type" className="col-lg-4 form-control" onChange={onChange}/>
             <ClearableInput name="location" type="text" placeholder="Location of Observation" className="col-lg-4 form-control" onChange={onChange}/>
-            {isHasProjects && <ClearableInput name="site" type="text" placeholder="Site" className="col-lg-4 form-control" onChange={onChange}/>}
+            {hasProjects && <ClearableInput name="site" type="text" placeholder="Site" className="col-lg-4 form-control" onChange={onChange}/>}
             <ClearableInput name="observed_team_member" type="text" placeholder="Observed Team Member" className="col-lg-4 form-control" onChange={onChange}/>
             <ClearableInput name="created_at" type="date" placeholder="Date..." className="col-lg-4 form-control" onChange={onChange}/>
         </div>;
     }
 
     renderTHead() {
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-140">Date Created</div>
             <div className="td">Observation Type</div>
             <div className="td">Location of Observation</div>
-            {isHasProjects && <div className="td">Site</div>}
+            {hasProjects && <div className="td">Site</div>}
             <div className="td">Observed Team Member</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
@@ -69,12 +69,12 @@ class SafetyObservationReportTab extends React.Component {
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
         const {id, data: {created_at, observation_type, location, site, observed_team_member}} = item;
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
         return <TRow key={"item-" + n}>
             <div className="td fixed-flex min-w-140">{Dates.formatDateTime(created_at)}</div>
             <div className="td">{observation_type}</div>
             <div className="td">{location}</div>
-            {isHasProjects && <div className="td">{site.name}</div>}
+            {hasProjects && <div className="td">{site.name}</div>}
             <div className="td">{observed_team_member.fname + ' ' + observed_team_member.lname}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
             	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

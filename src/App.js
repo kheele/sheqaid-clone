@@ -298,6 +298,7 @@ class AppMainContent extends React.Component {
     render() {
         const {isLoggedUserAuthChecked, isLoadedCountries, isLoadedPermissionOtherKeys} = storage.is;
         // alert(isLoggedUserAuthChecked)
+        // console.log('AppMainContent', isLoggedUserAuthChecked, isLoadedCountries, isLoadedPermissionOtherKeys)
         if (isLoggedUserAuthChecked && isLoadedCountries && isLoadedPermissionOtherKeys && pluginManager.isLoaded) {
             return <Suspense fallback={<PageLoadingProgress/>}>
                 <React.Fragment>

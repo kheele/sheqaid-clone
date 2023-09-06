@@ -74,7 +74,7 @@ class Controls extends React.Component {
     onSubmit(e, btn, onSaved) {
         const {form} = this;
 
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
 
         //1
         if (!form.isValid('name')) {
@@ -94,7 +94,7 @@ class Controls extends React.Component {
         }
            
         //2
-        if(isHasProjects) {
+        if(hasProjects) {
             if (!form.isValid('site_list') || form.get('site_list').isEmpty()) {
                 infoDialog.open('At least one Site is required');
                 return;
@@ -111,7 +111,7 @@ class Controls extends React.Component {
             username,
         };
         
-        if(isHasProjects) {
+        if(hasProjects) {
             data.site_list = {data: site_list.map(({inc_contractor_pack, site: {id: site_id}}) => {
                 return {site_id, inc_contractor_pack,};
             })};
@@ -139,7 +139,7 @@ class Controls extends React.Component {
 
     render() {
         let {props: {onFormNext, onFormBack, onFormOpen}} = this;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         return <FormControls>
             <Row
@@ -148,13 +148,13 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Employer Details" 
                 onFormOpen={onFormOpen} 
-                onFormNext={isHasProjects && onFormNext}
+                onFormNext={hasProjects && onFormNext}
             >
                 <ClearableInput name="name" placeholder="Contractor Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="username" type="email" placeholder="Email Address" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="inc_contractor_pack" type="radio" placeholder="Include Contractor's Pack?" required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.inc_contractor_pack} returnValue/>
            </Row>
-            {isHasProjects && <Row 
+            {hasProjects && <Row
                 rendered 
                 idx={2}
                 title="2. Add Site(s)" 

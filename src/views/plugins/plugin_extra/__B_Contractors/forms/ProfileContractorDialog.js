@@ -239,7 +239,7 @@ class Controls extends React.Component {
             }
         } = this;
 
-        const {isHasProjects} = storage.is;
+        const {hasProjects} = storage.is;
 
         console.log(this.item)
 
@@ -264,14 +264,14 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Employer Details"
                 onFormOpen={onFormOpen}
-                onFormNext={isHasProjects && onFormNext}
+                onFormNext={hasProjects && onFormNext}
             >
                 <ProfileField title="Contractor Name" name="name" value={name} className="col-lg-12"/>
                 <ProfileField title="Email Address" name="username" value={username} className="col-lg-12"/>
                 <ProfileField title="Include Contractor's Pack" name="inc_contractor_pack" value={inc_contractor_pack}
                               className="col-lg-12"/>
             </Row>
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 rendered
                 active={!!viewStatus && viewStatus !== "Removed"}
                 idx={2}
@@ -293,7 +293,7 @@ class Controls extends React.Component {
                                       className="table-Cancelled"/>
                 </Tabs>
             </Row>}
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 active={viewStatus === "Removed"}
                 rendered
                 idx={3}

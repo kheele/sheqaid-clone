@@ -9,8 +9,8 @@
          author1_name, environmental_representative, date_of_action_to_be_completed_by, evidence,
          author2_name, non_conformance_closed, date, further_info
          */
-        constructor(events, db) {
-            super(events, db, {singular: "Environmental Aspects Non-Conformance Report", plural: "Environmental Aspects Non-Conformance Reports"}, "plugin_sheq_assist/08_Environmental_Aspects/ncr/", "plugin_sheq_assist_08_Environmental_Aspects_ncr");
+        constructor(events) {
+            super(events, {singular: "Environmental Aspects Non-Conformance Report", plural: "Environmental Aspects Non-Conformance Reports"}, "plugin_sheq_assist/08_Environmental_Aspects/ncr/", "plugin_sheq_assist_08_Environmental_Aspects_ncr");
 
             this.filter = this.filter.bind(this);
             const {addAction, filter} = this;
@@ -40,5 +40,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

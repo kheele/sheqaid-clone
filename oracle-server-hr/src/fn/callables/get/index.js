@@ -2,50 +2,30 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getUserUidByUsername,
-    getUserUidByEmail,
-    getUserUidByPhone,
-    getUserUidAndPasswordByEmail,
+	getUserUidByUsername,
+	getUserUidByEmail,
+	getUserUidByPhone,
+	getUserUidAndPasswordByEmail,
 } = require('./api.js');
 
-router.post('/getUserUidByUsername/:access_type', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
-    const {access_type} = req.params;
-    if (isValidAccessType(access_type)) {
-        const data = await getUserUidByUsername(req.body, access_type);
-        res.json(data);
-    } else {
-        res.json();
-    }
+router.post('/getUserUidByUsername', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
+	const data = await getUserUidByUsername(req.body);
+	res.json(data);
 });
 
-router.post('/getUserUidByEmail/:access_type', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
-    const {access_type} = req.params;
-    if (isValidAccessType(access_type)) {
-        const data = await getUserUidByEmail(req.body, access_type);
-        res.json(data);
-    } else {
-        res.json();
-    }
+router.post('/getUserUidByEmail', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
+	const data = await getUserUidByEmail(req.body);
+	res.json(data);
 });
 
 router.post('/getUserUidByPhone', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
-    const {access_type} = req.params;
-    if (isValidAccessType(access_type)) {
-        const data = await getUserUidByPhone(req.body, access_type);
-        res.json(data);
-    } else {
-        res.json();
-    }
+	const data = await getUserUidByPhone(req.body);
+	res.json(data);
 });
 
-router.post('/getUserUidAndPasswordByEmail/:access_type', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
-    const {access_type} = req.params;
-    if (isValidAccessType(access_type)) {
-        const data = await getUserUidAndPasswordByEmail(req.body, access_type);
-        res.json(data);
-    } else {
-        res.json();
-    }
+router.post('/getUserUidAndPasswordByEmail', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
+	const data = await getUserUidAndPasswordByEmail(req.body);
+	res.json(data);
 });
 
 module.exports = router;

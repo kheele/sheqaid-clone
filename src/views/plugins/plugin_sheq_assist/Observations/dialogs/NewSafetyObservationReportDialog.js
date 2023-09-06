@@ -45,9 +45,9 @@ class Controls extends React.Component {
 
     onSubmit(e, btn, onSaved) {
         const {form} = this;
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
 
-        if (isHasProjects && !form.isValid('site')) {
+        if (hasProjects && !form.isValid('site')) {
             infoDialog.open('Site is required');
             return;
         }
@@ -117,12 +117,12 @@ class Controls extends React.Component {
     }
 
     render() {
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         return (<div className="controls-wrapper">
             <div className="controls">
                 <div className="row row-details col-lg-4">
                     <div className="row sec-group">
-                        {isHasProjects && <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                        {hasProjects && <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                         <ClearableInput name="observation_type" type="text" placeholder="Observation Type" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="location" type="text" placeholder="Location Of Observation *" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>

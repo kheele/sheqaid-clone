@@ -112,7 +112,7 @@ class Is {
     }
 
     @computed
-    get isHasProjects() {
+    get hasProjects() {
         if (isAdminApp || !this.isLoggedIn) return false;
         if(this.isContractor) {
             const {selectedContractorSite} = selected;
@@ -158,8 +158,14 @@ class Is {
             }
             return false;
         }
+
+        if (!this.isConsultant) {
+            return true;
+        }
+
         const {loggedUser} = this.storage;
         const {client: my_client} = loggedUser.user.data;
+
         return !!my_client;
     }
 
@@ -267,7 +273,7 @@ class Is {
         }
         if (this.isConsultant) {
             const {selectedClient} = selected;
-            if (selectedClient) {
+            if (selectedClient && selectedClient.data) {
                 const {payment_interval} = selectedClient.data;
                 return !!payment_interval;
             }

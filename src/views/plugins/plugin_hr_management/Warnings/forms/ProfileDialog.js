@@ -13,92 +13,112 @@ import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
 import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
+import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-    pageKey = "ProfileWarningDialog";
-    className = "AProfileEmployeeDocDialog";
-    findById = findByIdEmployee;
-  
-    constructor(props) {
-        super(props, style);
-    }
+	pageKey = "ProfileWarningDialog";
+	className = "AProfileEmployeeDocDialog";
+	findById = findByIdEmployee;
 
-    title() {
-        return "Warnings";
-    }
-    
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
-    
-    get topButtonsHiddenDelete() {
-        return true;
-    }
+	constructor(props) {
+		super(props, style);
+	}
 
-    get controls() {
-        return  Controls;
-    }
+	title() {
+		return "Warnings";
+	}
+
+	onSaveAsPDF(e, btn) {
+		this.refs.controls.onSaveAsPDF(e, btn);
+	}
+
+	get topButtonsHiddenDelete() {
+		return true;
+	}
+
+	get controls() {
+		return Controls;
+	}
 }
+
 //</editor-fold>
 
 @observer
 class Controls extends AEmployeeDocControls {
 
-    listName = "warning_list";
-    NewDialog = NewDialog;
-    EditDialog = EditDialog;
-    ProfilePDFReader = ProfilePDFReader;
+	listName = "warning_list";
+	onUpdate = updateEmployeeWarning;
+	NewDialog = NewDialog;
+	EditDialog = EditDialog;
+	ProfilePDFReader = ProfilePDFReader;
 
-    constructor(props) {
-        super(props);
-    }
+	constructor(props) {
+		super(props);
+	}
 
-    //<editor-fold desc="loadDashboardTopStats">
-    async loadDashboardTopStats(id) {
-        return employeeStore.findByIdHRWarningsDashboardStats(id);
-    }
-    //</editor-fold>
+	//<editor-fold desc="loadDashboardTopStats">
+	async loadDashboardTopStats(id) {
+		return employeeStore.findByIdHRWarningsDashboardStats(id);
+	}
 
-    //<editor-fold desc="loadDashboardBottomStats">
-    async loadDashboardBottomStats(id) {
-        return employeeStore.findByIdHRWarningsDateRangeDashboardStats(id);
-    }
-    //</editor-fold>
+	//</editor-fold>
 
-    renderItem(item, n, onClick) {
-        const {
-            props: {
-                onFormNext, onFormBack, onFormOpen
-            }
-        } = this;
-        const {created_at, issued_by, type, date, expiry_date, details, employee_comments, notes, witness_list, doc} = item.data || item;
-        
-        return <div className="row item-wrapper padding-t-10 h-full">
-            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Warning Details</label>
-            <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-4"/>
-                <ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-4"/>
-                <ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date} className="col-lg-4"/>
-                <ProfileField title="Warning Issued By" name="issued_by" value={issued_by} renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
-                <UploadButton 
-                    name="doc" 
-                    defaultValue={doc}
-                    buttonTitle="Warning Attachment" 
-                    type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon 
-                    readonly
-                    className="col-lg-6"
-                />
-                <ProfileField title="Details Of Misconduct" name="details" value={details} type="textarea" className="col-lg-12"/>
-                <ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments} type="textarea" className="col-lg-12"/>
-                <ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
-                <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
-                <NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
-            </div>
-        </div>;
-    }
+	//<editor-fold desc="loadDashboardBottomStats">
+	async loadDashboardBottomStats(id) {
+		return employeeStore.findByIdHRWarningsDateRangeDashboardStats(id);
+	}
+
+	//</editor-fold>
+
+	renderItem(item, n, onClick) {
+		const {
+			props: {
+				onFormNext, onFormBack, onFormOpen
+			}
+		} = this;
+		const {
+			created_at,
+			issued_by,
+			type,
+			date,
+			expiry_date,
+			details,
+			employee_comments,
+			notes,
+			witness_list,
+			doc
+		} = item.data || item;
+
+		return <div className="row item-wrapper padding-t-10 h-full">
+			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Warning Details</label>
+			<div className="row margin-l-10 margin-r-10 row-details">
+				<ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-4"/>
+				<ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-4"/>
+				<ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date}
+				              className="col-lg-4"/>
+				<ProfileField title="Warning Issued By" name="issued_by" value={issued_by}
+				              renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
+				<UploadButton
+					name="doc"
+					defaultValue={doc}
+					buttonTitle="Warning Attachment"
+					type={['PDF', 'Word', 'Image']}
+					showOnlyIcon
+					readonly
+					className="col-lg-6"
+				/>
+				<ProfileField title="Details Of Misconduct" name="details" value={details} type="textarea"
+				              className="col-lg-12"/>
+				<ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments} type="textarea"
+				              className="col-lg-12"/>
+				<ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
+				<label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
+				<NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
+			</div>
+		</div>;
+	}
 
 }
 

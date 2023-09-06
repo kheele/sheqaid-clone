@@ -2,8 +2,8 @@
 (function() {
     class Controller extends AControllerRead {
         //fname, lname, email, message
-        constructor(events, db) {
-            super(events, db, {singular: "Update", plural: "Updates"}, "updates/", "default_updates_desktop");
+        constructor(events) {
+            super(events, {singular: "Update", plural: "Updates"}, "updates/", "default_updates_desktop");
             
             this.check = this.check.bind(this);
             const {addAction, check} = this;
@@ -25,5 +25,5 @@
         }
     }
     
-    new Controller(events, db);
+    new Controller(events);
 })();

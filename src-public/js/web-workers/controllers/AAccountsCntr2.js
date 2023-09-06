@@ -1,7 +1,7 @@
 class AAccountsCntr2 extends AControllerRead {
     //<editor-fold desc="constructor">
-    constructor(events, db, name, root, tbl, fn) {
-        super(events, db, name, root, tbl, fn);
+    constructor(events, name, root, tbl, fn) {
+        super(events, name, root, tbl, fn);
 
         const {addAction} = this;
 

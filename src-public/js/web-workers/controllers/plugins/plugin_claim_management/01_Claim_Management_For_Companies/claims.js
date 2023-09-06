@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
-        constructor(events, db) {
-            super(events, db,
+        constructor(events) {
+            super(events,
                     {singular: "COID Claim", plural: "COID Claims"},
                     "plugin_sheq_assist/COIDA_Management/claims/client/",
                     "plugin_sheq_assist_coida_claims"
@@ -1139,6 +1139,6 @@
     }
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 
 })();

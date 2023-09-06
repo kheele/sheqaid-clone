@@ -3,8 +3,8 @@
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //title, sec1
-        constructor(events, db) {
-            super(events, db, {singular: "Organogram", plural: "Organograms"}, "plugin_sheq_assist/StructureAndResponsibility/organograms/", "plugin_sheq_assist_StructureAndResponsibility_organograms");
+        constructor(events) {
+            super(events, {singular: "Organogram", plural: "Organograms"}, "plugin_sheq_assist/StructureAndResponsibility/organograms/", "plugin_sheq_assist_StructureAndResponsibility_organograms");
 
             const {addAction} = this;
 
@@ -339,5 +339,5 @@
     }
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 })();

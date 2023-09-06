@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {singular: "Supervisor", plural: "Supervisors"}, "plugin_sheq_assist/employees/supervisors/");
+        constructor(events) {
+            super(events, {singular: "Supervisor", plural: "Supervisors"}, "plugin_sheq_assist/employees/supervisors/");
 
             const {addAction} = this;
 
@@ -58,5 +58,5 @@
         // </editor-fold>
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

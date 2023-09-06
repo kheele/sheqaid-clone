@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         //surveyed_by_id, date, list
-        constructor(events, db) {
-            super(events, db, {singular: "Environmental Aspects Pollution Register", plural: "Environmental Aspects Pollution Registers"}, "plugin_sheq_assist/08_Environmental_Aspects/pollution-register/", "plugin_sheq_assist_08_Environmental_Aspects_pollution_register");
+        constructor(events) {
+            super(events, {singular: "Environmental Aspects Pollution Register", plural: "Environmental Aspects Pollution Registers"}, "plugin_sheq_assist/08_Environmental_Aspects/pollution-register/", "plugin_sheq_assist_08_Environmental_Aspects_pollution_register");
 
             this.filter = this.filter.bind(this);
             const {addAction, filter} = this;
@@ -25,5 +25,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

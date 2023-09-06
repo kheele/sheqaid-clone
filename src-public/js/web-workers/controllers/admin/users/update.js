@@ -1,8 +1,8 @@
 
 (function () {
     class Controller extends AControllerRead {
-        constructor(events, db) {
-            super(events, db, {singular: "Administrator / User", plural: "Administrators / Users"}, "admin/users/update/");
+        constructor(events) {
+            super(events, {singular: "Administrator / User", plural: "Administrators / Users"}, "admin/users/update/");
 
             this.tbl = 'admin_users';
 
@@ -136,5 +136,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

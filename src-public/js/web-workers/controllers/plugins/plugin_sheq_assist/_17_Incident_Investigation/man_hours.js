@@ -5,8 +5,8 @@
          num_of_employees, hrs_worked_by_employees, employees_absent_hrs, employees_tranport_hrs, employees_exposure_hrs, employees_num_of_days_lost, 
          num_of_contractor_employees, hrs_worked_by_contractor, contractor_employees_absent_hrs, contractor_employees_tranport_hrs, contractor_employees_exposure_hrs, contractor_employees_num_of_days_lost 
          */
-        constructor(events, db) {
-            super(events, db, {singular: "Incident Investigation Man Hours", plural: "Incident Investigation Man Hours"}, "plugin_sheq_assist/17_Incident_Investigation/man-hours/", "plugin_sheq_assist_17_Incident_Investigation_man_hours");
+        constructor(events) {
+            super(events, {singular: "Incident Investigation Man Hours", plural: "Incident Investigation Man Hours"}, "plugin_sheq_assist/17_Incident_Investigation/man-hours/", "plugin_sheq_assist_17_Incident_Investigation_man_hours");
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -675,5 +675,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

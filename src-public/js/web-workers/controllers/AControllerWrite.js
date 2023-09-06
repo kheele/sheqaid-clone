@@ -2,7 +2,7 @@
 class AControllerWrite {
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
-    constructor(events, db, name, root, tbl, fn) {
+    constructor(events, name, root, tbl, fn) {
         Events.add(root, this);
 
         this.getDB = this.getDB.bind(this);

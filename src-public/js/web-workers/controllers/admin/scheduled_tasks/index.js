@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {singular: "Scheduled Task", plural: "Scheduled Tasks"}, "admin/scheduled-tasks/", 'default_tasks');
+        constructor(events) {
+            super(events, {singular: "Scheduled Task", plural: "Scheduled Tasks"}, "admin/scheduled-tasks/", 'default_tasks');
 
             const {addAction} = this;
 
@@ -57,5 +57,5 @@
         }
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

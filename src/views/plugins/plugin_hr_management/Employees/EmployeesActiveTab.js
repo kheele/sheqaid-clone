@@ -189,13 +189,13 @@ class Main extends AEmployeeListTab {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
-        const {isConsultant, isHasProjects, isContractorView} = storage.is;
+        const {isConsultant, hasProjects, isContractorView} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-50">ID</div>
             <div className="td">Name</div>
             <div className="td">Department</div>
             <div className="td">Job Position</div>
-            {(isHasProjects || isContractorView) && <>
+            {(hasProjects || isContractorView) && <>
                 {/*isConsultant && <div className="td sm-hidden">Company Name</div>*/}
                 {isContractorView && <div className="td">Company Name</div>}
                 {!isContractorView && <div className="td">Project Name</div>}
@@ -210,7 +210,7 @@ class Main extends AEmployeeListTab {
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
-        const {isConsultant, isHasProjects, isContractorView} = storage.is;
+        const {isConsultant, hasProjects, isContractorView} = storage.is;
         const item = this.refs.root.list[n];
         let {
             id,
@@ -245,7 +245,7 @@ class Main extends AEmployeeListTab {
             <AsyncTD title="Job Position" defaultValue={job_position}
                      renderer={v => v.name}/>
 
-            {(isHasProjects || isContractorView) && <>
+            {(hasProjects || isContractorView) && <>
                 {/*isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')*/}
                 {isContractorView && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')}
                 {!isContractorView && RenderUtils.renderOrgTD(project, null, 'Project Name')}
@@ -258,7 +258,7 @@ class Main extends AEmployeeListTab {
 
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                {isHasProjects && (!site || !project || (isConsultant && !client)) &&
+                {hasProjects && (!site || !project || (isConsultant && !client)) &&
                     <i className="fa fa-warning" idx={n} onClick={this.onCompleteEmploymentDetailsShowWarningMsg}/>}
             </div>
         </TRow>;

@@ -28,7 +28,7 @@ class ViewDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                     >
-                        <NextOfKinSection item={item}/>
+                        <NextOfKinSection item={item} isEmbedded/>
                     </Row>
                     <Row
                         rendered
@@ -38,7 +38,7 @@ class ViewDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormBack={onFormBack}
                     >
-                        <DependantSection item={item}/>
+                        <DependantSection item={item} isEmbedded/>
                     </Row>
                 </div>
             </div>

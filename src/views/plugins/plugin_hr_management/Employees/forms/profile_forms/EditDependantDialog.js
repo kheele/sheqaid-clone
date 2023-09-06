@@ -42,7 +42,7 @@ class Controls extends React.Component {
     //</editor-fold>
 
     onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+        const {form, isNewEmployee, item: {data: old_data}} = this;
 
         if (!form.isValid('fname')) {
             infoDialog.open('First Name is required');
@@ -58,6 +58,15 @@ class Controls extends React.Component {
         }
         if (!form.isValid('dob')) {
             infoDialog.open("Date of Birth is required");
+            return;
+        }
+
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
             return;
         }
 
@@ -93,6 +102,11 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
     }
 
     get item() {

@@ -76,7 +76,7 @@ class Controls extends React.Component {
             }}
         } = this;
         
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
         
         return <div className="controls-wrapper">
             <div className="controls">
@@ -84,7 +84,7 @@ class Controls extends React.Component {
                     <ProfilePic profilePic="employees" id={employee.id} readonly className="x60 hor-center margin-b-5"/>
                     <h3>{employee.lname + " " + employee.fname}</h3>
                 </React.Fragment>)}
-                {isHasProjects && <div className="row SelectSiteConfirmInputs">
+                {hasProjects && <div className="row SelectSiteConfirmInputs">
                     <label className="margin-b-0">Location</label>
                     <div className="row sec-group">
                         {isConsultant && <ProfileField name="client" placeholder="Company" value={client} renderer={v => v.name || v.data.name} required className="col-lg-12"/>}

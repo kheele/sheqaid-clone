@@ -227,11 +227,11 @@ class Users extends React.Component {
 
     //<editor-fold desc="renderTHead">
     renderTHead() {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         return <THead>
             <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Name</div>
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && <div className="td">Company Name</div>}
                 <div className="td">Project Name</div>
                 <div className="td">{isContractor ? "Sites" : "Site Name"}</div>
@@ -243,7 +243,7 @@ class Users extends React.Component {
 
     //<editor-fold desc="renderItem">
     renderItem(n, onClick) {
-        const {isConsultant, isHasProjects, isContractor} = storage.is;
+        const {isConsultant, hasProjects, isContractor} = storage.is;
         const item = this.refs.root.list[n];
         const {
             id,
@@ -266,7 +266,7 @@ class Users extends React.Component {
                 <h6 className="xs-shown font-size-13">Name</h6>
                 {lname + ' ' + fname}
             </div>
-            {isHasProjects && <React.Fragment>
+            {hasProjects && <React.Fragment>
                 {isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name')}
                 {RenderUtils.renderOrgTD(project, null, 'Project Name')}
                 {!isContractor && RenderUtils.renderOrgTD(site, null, 'Site Name')}

@@ -22,13 +22,13 @@ export const orgsFilter = (orgs) => {
 
 	//<editor-fold desc="variables, filters">
 	const filter = [];
-	if(isContractor) {
-		if(loggedContractor) {
+	if (isContractor) {
+		if (loggedContractor) {
 			filter.push(`contractor_id: {_eq: ${loggedContractor.id}}`);
 		}
-		if(selectedContractorSite) {
+		if (selectedContractorSite) {
 			filter.push(`contractor_site_id: {_eq: ${selectedContractorSite.id}}`);
-		} else if(selectedContractorClient) {
+		} else if (selectedContractorClient) {
 			filter.push(`contractor_site: {client_id: {_eq: ${selectedContractorClient.id}}}`);
 		}
 		return filter;
@@ -46,7 +46,7 @@ export const orgsFilter = (orgs) => {
 		}
 	}
 
-	if(company_id) {
+	if (company_id) {
 		filter.push(`company_id: {_eq: ${company_id}}`);
 	}
 
@@ -72,26 +72,45 @@ export const orgsFilter = (orgs) => {
 		}
 		return ``;
 	};
-	const project_id_fn = (project_id) => {
-		if (project_id && !exact_orgs_company) {
-			if (sess_my_project_id || exact_orgs) {
-				return `, _or: [
+	const project_id_fn = (project_id, isConsultant) => {
+		if (isConsultant) {
+			if (project_id && !exact_orgs_company) {
+				if (sess_my_project_id || exact_orgs) {
+					return `, _or: [
 					{
 						project_id: {_eq: ${project_id}} 
 						${site_id_fn(site_id)}
-				  	}
+				  }
 				]`;
-			} else {
-				return `, _or: [
-          			{
+				} else {
+					return `, _or: [
+           {
+            project_id: {_eq: ${project_id}} 
+						${site_id_fn(site_id)}
+				   },
+				   {project_id: {_is_null: true}}
+        ]`;
+				}
+			}
+			return ``;
+		}
+
+		if (sess_my_project_id || exact_orgs) {
+			return `, {
 						project_id: {_eq: ${project_id}} 
 						${site_id_fn(site_id)}
+				}`;
+		} else {
+			return `, {
+					_or: [
+            {
+              project_id: {_eq: ${project_id}} 
+							${site_id_fn(site_id)}
 				  	},
 				  	{project_id: {_is_null: true}}
-        		]`;
-			}
+				  ]
+        }`;
 		}
-		return ``;
 	};
 
 	if (isConsultant) {
@@ -101,7 +120,7 @@ export const orgsFilter = (orgs) => {
 					${qIncContractors ? `${qIncContractors},` : ''}
 					{
 					  client_id: {_eq: ${client_id}}
-					  ${project_id_fn(project_id)}
+					  ${project_id_fn(project_id, isConsultant)}
 					}
 				]`);
 			} else {
@@ -109,7 +128,7 @@ export const orgsFilter = (orgs) => {
 					${qIncContractors ? `${qIncContractors},` : ''}
 					{
 					  client_id: {_eq: ${client_id}}
-					  ${project_id_fn(project_id)}
+					  ${project_id_fn(project_id, isConsultant)}
 					}, 
 					{client_id: {_is_null: true}}
 				]`);
@@ -117,11 +136,13 @@ export const orgsFilter = (orgs) => {
 		}
 	} else {
 		if (hasProjects) {
-			filter.push(`_or: [
-				${qIncContractors ? `${qIncContractors},` : ''}
-				${project_id_fn(project_id).replace(', _or', '_or')}
-	    	]`);
-		} else if(qIncContractors) {
+			if (project_id && !exact_orgs_company) {
+				filter.push(`_or: [
+					${qIncContractors ? `${qIncContractors},` : ''}
+					${project_id_fn(project_id, isConsultant).replace(', _or', '_or')}
+		    ]`);
+			}
+		} else if (qIncContractors) {
 			filter.push(`_or: [
 				${qIncContractors}
 	    	]`);
@@ -154,7 +175,7 @@ export const createOrgQuery = (orgs, fragment) => {
 	const project_id = selectedProject && selectedProject.id;
 	const site_id = selectedSite && selectedSite.id;
 
-	if(site_id) {
+	if (site_id) {
 		return `query findOneSiteQuery {
 			default_sites_by_pk(${site_id}) {
 				${fragment}
@@ -162,27 +183,27 @@ export const createOrgQuery = (orgs, fragment) => {
 		}`;
 	}
 
-	if(project_id) {
+	if (project_id) {
 		return 'default_projects';
 	}
 
-	if(client_id) {
+	if (client_id) {
 		return 'default_clients';
 	}
 
-	if(company_id) {
+	if (company_id) {
 		return 'default_companies';
 	}
 
 	//<editor-fold desc="variables, filters">
 	const filter = [];
-	if(isContractor) {
-		if(loggedContractor) {
+	if (isContractor) {
+		if (loggedContractor) {
 			filter.push(`contractor_id: {_eq: ${loggedContractor.id}}`);
 		}
-		if(selectedContractorSite) {
+		if (selectedContractorSite) {
 			filter.push(`contractor_site_id: {_eq: ${selectedContractorSite.id}}`);
-		} else if(selectedContractorClient) {
+		} else if (selectedContractorClient) {
 			filter.push(`contractor_site: {client_id: {_eq: ${selectedContractorClient.id}}}`);
 		}
 		return filter;
@@ -200,7 +221,7 @@ export const createOrgQuery = (orgs, fragment) => {
 		}
 	}
 
-	if(company_id) {
+	if (company_id) {
 		filter.push(`company_id: {_eq: ${company_id}}`);
 	}
 
@@ -275,7 +296,7 @@ export const createOrgQuery = (orgs, fragment) => {
 				${qIncContractors ? `${qIncContractors},` : ''}
 				${project_id_fn(project_id).replace(', _or', '_or')}
 	    	]`);
-		} else if(qIncContractors) {
+		} else if (qIncContractors) {
 			filter.push(`_or: [
 				${qIncContractors}
 	    	]`);

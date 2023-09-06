@@ -4,11 +4,14 @@ import {ProfileField, UploadButton} from "components/inputs";
 import NewDocBankingDetailsDialog from "./profile_forms/NewDocBankingDetailsDialog";
 import EditDocBankingDetailsDialog from "./profile_forms/EditDocBankingDetailsDialog";
 import ASectionSection from "./ASectionSection";
+import updateEmployeeDocBankingDetail
+	from "mutations/all/EmployeeDocument/EmployeeDocBankingDetail/updateEmployeeDocBankingDetail";
 
 @observer
 class BankingDetailsSection extends ASectionSection {
 
 	listName = 'banking_detail_list';
+	onUpdate = updateEmployeeDocBankingDetail;
 	NewDialog = NewDocBankingDetailsDialog;
 	EditDialog = EditDocBankingDetailsDialog;
 

@@ -125,10 +125,10 @@ class Controls extends React.Component {
             }
         } = this;
 
-        const {isConsultant, isHasProjects} = storage.is;
+        const {isConsultant, hasProjects} = storage.is;
 
         return <FormControls>
-            {isHasProjects && <Row
+            {hasProjects && <Row
                 rendered
                 active
                 idx={0}
@@ -142,12 +142,12 @@ class Controls extends React.Component {
             </Row>}
             <Row
                 rendered
-                active={!isHasProjects}
+                active={!hasProjects}
                 idx={1}
                 title="1. Date Section"
                 sectionClassName="dates-group"
                 onFormOpen={onFormOpen}
-                onFormBack={isHasProjects && onFormBack}
+                onFormBack={hasProjects && onFormBack}
                 onFormNext={onFormNext}
             >
                 <ProfileField name="year" type="select" title="Year" value={year} className="col-lg-4"/>

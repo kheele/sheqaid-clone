@@ -233,7 +233,7 @@ class SelectInput extends ASelectInput {
 	}
 
 	render() {
-		const {isConsultant, isContractor, isHasProjects} = storage.is;
+		const {isConsultant, isContractor, hasProjects} = storage.is;
 		const {props} = this.state;
 		if (!props) return null;
 

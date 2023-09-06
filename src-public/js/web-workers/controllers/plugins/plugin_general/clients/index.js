@@ -2,8 +2,8 @@
 (() => {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
-        constructor(events, db) {
-            super(events, db, {singular: "Company / Client", plural: "Companies / Clients"}, "plugin_sheq_assist/clients/", "plugin_sheq_assist_clients");
+        constructor(events) {
+            super(events, {singular: "Company / Client", plural: "Companies / Clients"}, "plugin_sheq_assist/clients/", "plugin_sheq_assist_clients");
 
             this.filter = this.filter.bind(this);
             this.search_by_name = this.search_by_name.bind(this);
@@ -218,5 +218,5 @@
     }
     // </editor-fold>
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -15,6 +15,7 @@ import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmp
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditWorkPermitDialog";
+    className = "AEditEmployeeDocDialog";
     title = "Edit Work Permit";
 
     constructor(props) {

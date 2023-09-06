@@ -69,7 +69,7 @@ class ViewOptionalInfoSection extends React.Component {
                         onFormBack={onFormBack} 
                         onFormNext={onFormNext}
                     >
-	                    <LivingAddressSection item={item}/>
+	                    <LivingAddressSection item={item} isEmbedded/>
                     </Row>
                     <Row 
                         rendered 
@@ -79,7 +79,7 @@ class ViewOptionalInfoSection extends React.Component {
                         onFormOpen={onFormOpen} 
                         onFormBack={onFormBack} 
                     >
-	                    <BankingDetailsSection item={item}/>
+	                    <BankingDetailsSection item={item} isEmbedded/>
                     </Row>
                 </div>
             </div>

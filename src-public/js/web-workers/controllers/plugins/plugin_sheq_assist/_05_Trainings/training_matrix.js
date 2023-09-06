@@ -8,8 +8,8 @@
         //cost, certificate
 
         //hr, job_title, course_or_module, requirement
-        constructor(events, db) {
-            super(events, db, {
+        constructor(events) {
+            super(events, {
                 singular: "Training Training Matrix",
                 plural: "Training Training Matrix"
             }, "plugin_sheq_assist/05_Trainings/training-matrix/", "plugin_sheq_assist_trainings_matrix");
@@ -614,5 +614,5 @@
 
     }
 
-    new Controller(events, db);
+    new Controller(events);
 })();

@@ -5,12 +5,15 @@ import ASectionSection from "./ASectionSection";
 import NewDocumentDialog from "./profile_forms/NewDocumentDialog";
 import EditDocumentDialog from "./profile_forms/EditDocumentDialog";
 import {computed} from "mobx";
+import updateEmployeeDocDocument
+	from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 @observer
 class PrDPSection extends ASectionSection {
 
 	type = 'PrPD';
 	listName = 'document_list';
+	onUpdate = updateEmployeeDocDocument;
 	NewDialog = NewDocumentDialog;
 	EditDialog = EditDocumentDialog;
 
@@ -23,13 +26,11 @@ class PrDPSection extends ASectionSection {
 
 	//<editor-fold desc="list">
 	@computed get list() {
-		const {isNew} = this.props;
-		if(isNew) {
-			return [null];
+		if(this.isNewEmployee) {
+			return this.state.newList;
 		}
 
-		const {itemData} = this;
-		const {listName} = this;
+		const {itemData, listName} = this;
 		const {[listName]: list} = itemData || {};
 		return (list || []).filter(v => !v || v.type === "PrPD");
 	}

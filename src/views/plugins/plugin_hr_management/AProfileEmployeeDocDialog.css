@@ -133,7 +133,8 @@
     /*margin-top: 20px !important;*/
 }
 #dialog-overlay.AProfileEmployeeDocDialog .btn-create,
-#dialog-overlay.AProfileEmployeeDocDialog .btn-edit {
+#dialog-overlay.AProfileEmployeeDocDialog .btn-edit,
+#dialog-overlay.AProfileEmployeeDocDialog .btn-remove {
     position: absolute;
     top: 139px;
     z-index: 16;
@@ -141,7 +142,8 @@
     padding: 0 20px !important;
 }
 #dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-create,
-#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-edit {
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-edit,
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-remove {
     top: 7px;
 }
 #dialog-overlay.AProfileEmployeeDocDialog .btn-create {
@@ -149,4 +151,15 @@
 }
 #dialog-overlay.AProfileEmployeeDocDialog .btn-edit {
     right: 110px;
+}
+#dialog-overlay.AProfileEmployeeDocDialog .btn-remove {
+    right: 190px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar + .Carousel {
+    height: calc(100% - 40px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }

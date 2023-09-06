@@ -1,8 +1,8 @@
 
 (function () {
     class Controller extends AControllerRead {
-        constructor(events, db) {
-            super(events, db, {}, "relay/");
+        constructor(events) {
+            super(events, {}, "relay/");
 
             const {addAction} = this;
             addAction("send", this.send.bind(this));
@@ -81,5 +81,5 @@
     }
 
     // eslint-disable-next-line no-new
-    new Controller(events, db);
+    new Controller(events);
 })();
