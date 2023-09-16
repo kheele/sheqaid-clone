@@ -808,10 +808,8 @@ window.isSetter = function (obj, prop) {
         for (let n = 1; n <= self.length; n++) {
             let item = self[n - 1];
             if (item) {
-                if (n % chunkLen !== 0) {
-                    list.push(item);
-                } else {
-                    list.push(item);
+                list.push(item);
+                if (n % chunkLen === 0) {
                     newList[idx++] = list;
                     list = [];
                 }

@@ -102,7 +102,7 @@ const execWhen = (test) => {
 					return;
 				}
 			}
-			if (res) {
+			if (res !== false && res !== null && res !== undefined) {
 				resolve(res);
 			} else {
 				setImmediate(exec);
@@ -234,6 +234,14 @@ function getRandomRolor() {
 	return color;
 }
 
+function getDashboardCounter(v) {
+	if (isString(v) || isNumber(v)) {
+		return v === 'NaN' ? 0 : parseInt(v, 10);
+	}
+	const {aggregate: {count}} = v;
+	return count;
+}
+
 function creatQRCodeLink(type, id) {
 	return new Promise((resolve, reject) => {
 		const loc = `https://sheqaid/qrcode?type=${type}&id=${id}`;
@@ -299,6 +307,7 @@ export {
 	createValueGetter,
 	createListGetter,
 	getRandomRolor,
+	getDashboardCounter,
 	creatQRCodeLink,
 	isTouch,
 	isMobile,

@@ -11,7 +11,7 @@ import updateEmployeeDocDocument
 @observer
 class PrDPSection extends ASectionSection {
 
-	type = 'PrPD';
+	type = 'PrDP';
 	listName = 'document_list';
 	onUpdate = updateEmployeeDocDocument;
 	NewDialog = NewDocumentDialog;
@@ -32,7 +32,7 @@ class PrDPSection extends ASectionSection {
 
 		const {itemData, listName} = this;
 		const {[listName]: list} = itemData || {};
-		return (list || []).filter(v => !v || v.type === "PrPD");
+		return (list || []).filter(v => !v || v.type === "PrDP");
 	}
 
 	//</editor-fold>
@@ -52,7 +52,7 @@ class PrDPSection extends ASectionSection {
 				name="expiry_date"
 				type="date"
 				placeholder="Expiry Date"
-				valueKey="expiry_date"
+				valKey="expiry_date"
 				className="col-lg-6 pull-left-3"
 			/>
 		];

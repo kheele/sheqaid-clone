@@ -11,6 +11,7 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
 import insertEmployeeMedical from "mutations/all/EmployeeMedical/insertEmployeeMedical";
+import {SignatureListRow} from "components/SignatureComponents";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -46,10 +47,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!isNewEmployee && !form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -73,9 +74,9 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
 
-        if (!isNewEmployee && !form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -109,7 +110,7 @@ class Controls extends React.Component {
             doc//
         } = form.data;
         const data = {
-            employee_id: employee.id,
+            employee_id: (embeddedEmployee || employee).id,
             doc: doc && doc.path,
 
             expiry_date: Dates.formatTimestampSQL(expiry_date),
@@ -133,12 +134,27 @@ class Controls extends React.Component {
         });
     }
 
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
     get employeeItem() {
         return this.props.state.item;
     }
 
     render() {
-        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
+        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
             <Row
@@ -149,7 +165,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" required className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.annexture_3}/>
                 <ClearableInput name="restrictions" type="textarea" placeholder="Restrictions (if any)" className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -160,6 +176,7 @@ class Controls extends React.Component {
                 title="2. Document"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
+                onFormNext={onFormNext}
             >
                 <UploadButton
                     name="doc"
@@ -170,6 +187,16 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
             </Row>
+            <SignatureListRow
+              idx={3}
+              pluginKey="HR"
+              module="Medicals"
+              onSetSignatureSettings={onSetSignatureSettings}
+              onFormOpen={onFormOpen}
+              onFormBack={onFormBack}
+            >
+
+            </SignatureListRow>
         </FormControls>;
     }
 }

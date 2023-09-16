@@ -55,6 +55,6 @@ export default async (input: EntityEmployeeJobAppointment) => insertEmployeeDocI
   mutation,
   input,
   updateEmployeeDocFn: updateEmployeeJobAppointment,
-  name: 'JobAppointment',
+  name: 'Job-Appointment',
   plural: 'job_appointments',
 });

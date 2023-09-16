@@ -2,6 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import Carousel from "./Carousel";
 import {computed, isObservableArray} from "mobx";
+import {execWhen} from "utils/Utils";
 
 @observer
 class SliderWithChildren extends React.Component {
@@ -10,10 +11,46 @@ class SliderWithChildren extends React.Component {
 		super(props);
 
 		this.renderItem = this.renderItem.bind(this);
+
+		this.move = this.move.bind(this);
+		this.moveStart = this.moveStart.bind(this);
+		this.moveEnd = this.moveEnd.bind(this);
+		this.next = this.next.bind(this);
+		this.prev = this.prev.bind(this);
+	}
+
+	componentDidMount() {
+		execWhen(() => this.refs.slider).then(slider => {
+			const {list, indexFilter} = this.props;
+			if (list && list.isNotEmpty()) {
+				const index = isFunction(indexFilter) ? list.indexOfWithPredicate(indexFilter) : 0;
+				this.move(index);
+			}
+		});
 	}
 
 	@computed get sliderIndex() {
 		return this.refs.slider.index;
+	}
+
+	move(n) {
+		this.refs.slider.move(n);
+	}
+
+	moveStart() {
+		this.refs.slider.moveStart();
+	}
+
+	moveEnd() {
+		this.refs.slider.moveEnd();
+	}
+
+	next() {
+		this.refs.slider.next();
+	}
+
+	prev() {
+		this.refs.slider.prev();
 	}
 
 	renderItem(item, n, onClick) {
@@ -23,14 +60,14 @@ class SliderWithChildren extends React.Component {
 				let {valKey, defaultValueKey} = child.props;
 
 				const props = {};
-				if(defaultValueKey) {
-					if(isFunction(defaultValueKey)) {
+				if (defaultValueKey) {
+					if (isFunction(defaultValueKey)) {
 						props.defaultValue = defaultValueKey(item);
 					} else {
 						props.defaultValue = item[defaultValueKey];
 					}
-				} else if(valKey) {
-					if(isFunction(valKey)) {
+				} else if (valKey) {
+					if (isFunction(valKey)) {
 						props.value = valKey(item);
 					} else {
 						props.value = item[valKey];
@@ -44,13 +81,11 @@ class SliderWithChildren extends React.Component {
 
 	render() {
 		const {list, createDefault, indexFilter, onClick} = this.props;
-		if(!list) return null;
-		if(!isArray(list) && !isObservableArray(list)) return null;
+		if (!list) return null;
+		if (!isArray(list) && !isObservableArray(list)) return null;
 
-		const index = isFunction(indexFilter) ? list.indexOfWithPredicate(indexFilter) : 0;
 		return <Carousel
 			ref="slider"
-			index={index}
 			renderer={this.renderItem}
 			list={list}
 			splitBy={1}

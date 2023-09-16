@@ -144,9 +144,15 @@ global.getTriggeredEventsData = (body, name) => {
 		}
 	} = body.data;
 
-	if (schema !== "public" || table_name !== name || !new_item) {
-		return;
+	if(Array.isArray(name)) {
+		if (schema !== "public" || !name.contains(table_name) || !new_item) {
+			return;
+		}
+	} else {
+		if (schema !== "public" || table_name !== name || !new_item) {
+			return;
+		}
 	}
 
-	return {old_item, new_item};
+	return {table_name, old_item, new_item};
 };

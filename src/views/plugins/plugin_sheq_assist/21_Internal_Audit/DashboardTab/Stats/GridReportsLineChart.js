@@ -148,7 +148,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 	// _2022_Aug__all_expiry_document_list_aggregate,
 	// _2022_Aug__projectplan_expiry_document_list_aggregate,
 	// _2022_Aug__imspolicy_expiry_document_list_aggregate,
@@ -238,10 +238,10 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
 		sx={{
-			m: 0, mt: '0px',
+			m: '0 !important', mt: '-5px !important',
 		}}
 	>
-		<Grid item sx={{padding: "0 !important", mb: "-10px"}}>
+		<Grid item sx={{padding: "0 !important", mb: "-20px !important"}}>
 			<DefaultLineChartWrapper
 				data={lists}
 				color="black"

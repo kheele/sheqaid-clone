@@ -84,7 +84,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 	// _2022_Aug__expiry_document_list_aggregate,
 
 	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {

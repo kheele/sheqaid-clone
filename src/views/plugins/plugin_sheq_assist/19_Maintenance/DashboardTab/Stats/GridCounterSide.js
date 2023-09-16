@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
-import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import MKBox from "../../../../../../components/MK/MKBox";
+import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
+import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -59,13 +60,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		status_in_storage_list_aggregate,
-		status_checked_out_list_aggregate,
-		status_loaned_out_list_aggregate,
-		status_out_for_repair_list_aggregate,
-		status_non_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		status_in_storage_list_aggregate = defaults,
+		status_checked_out_list_aggregate = defaults,
+		status_loaned_out_list_aggregate = defaults,
+		status_out_for_repair_list_aggregate = defaults,
+		status_non_list_aggregate = defaults,
+	} = item;
 
 	const total = status_in_storage_list_aggregate.aggregate.count +
 		status_checked_out_list_aggregate.aggregate.count +
@@ -99,17 +104,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Asset Status",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'error'],
 						data: [
-							status_non_list_aggregate.aggregate.count,
-							status_in_storage_list_aggregate.aggregate.count,
-							status_checked_out_list_aggregate.aggregate.count,
-							status_loaned_out_list_aggregate.aggregate.count,
-							status_out_for_repair_list_aggregate.aggregate.count,
+							getDashboardCounter(status_non_list_aggregate),
+							getDashboardCounter(status_in_storage_list_aggregate),
+							getDashboardCounter(status_checked_out_list_aggregate),
+							getDashboardCounter(status_loaned_out_list_aggregate),
+							getDashboardCounter(status_out_for_repair_list_aggregate),
 						],
 					},
 					cutout: 60
 				}}
 			/>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
@@ -126,12 +131,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${status_non_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(status_non_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={status_non_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(status_non_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
@@ -148,12 +153,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${status_in_storage_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(status_in_storage_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={status_in_storage_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(status_in_storage_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
@@ -170,12 +175,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${status_checked_out_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(status_checked_out_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={status_checked_out_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(status_checked_out_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
@@ -192,12 +197,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${status_loaned_out_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(status_loaned_out_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={status_loaned_out_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(status_loaned_out_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
@@ -214,12 +219,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${status_out_for_repair_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(status_out_for_repair_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={status_out_for_repair_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(status_out_for_repair_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.91rem 0'}}/>
+			<Divider sx={{m: '0'}}/>
 		</Grid>
 	</>;
 });

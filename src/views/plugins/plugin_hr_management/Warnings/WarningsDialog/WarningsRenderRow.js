@@ -47,15 +47,19 @@ class RenderRow extends ARenderRow {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Issued By</h6>
-                {issued_by ? `${issued_by.lname} ${issued_by.fname}` : 'N/A'}
+                {issued_by ? `${issued_by.full_name}` : 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-105">
+                <h6 className="xs-shown font-size-13">Witnesses</h6>
+                {witness_list ? witness_list.length || 'N/A' : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Warning Type</h6>
                 {type || 'N/A'}
             </div>
-            <div className="td fixed-flex min-w-105">
-                <h6 className="xs-shown font-size-13">Witnesses</h6>
-                {witness_list.length}
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Details</h6>
+                {details || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-105">
                 <h6 className="xs-shown font-size-13">Warning Date</h6>

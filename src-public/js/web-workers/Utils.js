@@ -99,6 +99,28 @@ Number.prototype.rangeExpiryCodes = function (val) {
 };
 
 class Utils {
+	static expiryDateWithDue(expiry_date) {
+		const currD = new Date();
+		expiry_date = Dates.parse(expiry_date);
+		if(expiry_date) {
+			const days = currD.durationPrevDays(expiry_date);
+
+			let expiry_due;
+			if (days !== null) {
+				const exactDays = Math.floor(days);
+				if (exactDays === 0) {
+					expiry_due = 'Due today';
+				} else if (exactDays > 0) {
+					expiry_due = `${exactDays} days due`;
+				} else if (exactDays < 0) {
+					expiry_due = `Due in ${-exactDays} day${exactDays === -1 ? '' : 's'}`;
+				}
+				expiry_date = `${expiry_date.formatDate()}\n(${expiry_due})`
+			}
+		}
+		return expiry_date;
+	}
+
 	static toArray(args) {
 		const array = [];
 		for (let n in args) {

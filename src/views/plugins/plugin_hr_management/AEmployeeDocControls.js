@@ -1,13 +1,13 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {Carousel} from 'components/lists';
-import {Button} from "components/inputs";
 import MKBox from "components/MK/MKBox";
 import {computed, extendObservable, observable} from "mobx";
 import {Tabs} from "components/tabs";
 import DashboardTab from "./AEmployeeDocDialog/ADashboardTab";
 import {CircularProgress} from "@mui/material";
 import {execWhen} from "utils/Utils";
+import CreateAndEditBar from "./CreateAndEditBar";
 
 @observer
 class AEmployeeDocControls extends React.Component {
@@ -63,19 +63,11 @@ class AEmployeeDocControls extends React.Component {
 	onChange(index) {
 		const {state} = this;
 		state.index = index;
-
-		execWhen(() => this.refs.editB).then(ref => {
+		execWhen(() => this.refs.createAndEditBar).then(ref => {
 			if (index === 0) {
-				ref.hide();
+				ref.hideEditableButtons();
 			} else {
-				ref.show();
-			}
-		});
-		execWhen(() => this.refs.removeB).then(ref => {
-			if (index === 0) {
-				ref.hide();
-			} else {
-				ref.show();
+				ref.showEditableButtons();
 			}
 		});
 	}
@@ -83,14 +75,17 @@ class AEmployeeDocControls extends React.Component {
 
 	//<editor-fold desc="loadDashboard">
 	async loadDashboard() {
-		if(!this.item) {
+		const {isNewEmployee} = this.props;
+		if(isNewEmployee) {
 			return {
 				topStats: {data: null},
 				bottomStats: [],
 			};
 		}
 
-		const {id} = this.item;
+		const item = await execWhen(() => this.item);
+
+		const {id} = item;
 		const topStats = await this.loadDashboardTopStats(id);
 		const bottomStats = await this.loadDashboardBottomStats(id);//[{id, month_year: date.formatMonthYear(), count}]
 		return {topStats, bottomStats};
@@ -124,10 +119,14 @@ class AEmployeeDocControls extends React.Component {
 			});
 		} else {
 			this.refs.newDialog.open(this.item).then(newItem => {
-				const {list} = this;
-
 				const newData = newItem.data;
-				list.push(newData);
+
+				const {item: {data, data: {[this.listName]: list}}} = this;
+				if (list) {
+					list.push(newData);
+				} else {
+					extendObservable(data, {[this.listName]: [newData]});
+				}
 
 				const {tabWrapper, tabWrapper: {index}} = this.refs;
 				if (index === 0) {
@@ -275,23 +274,15 @@ class AEmployeeDocControls extends React.Component {
 						// top: isEmbedded ? '0' : 'unset',
 						// right: isEmbedded ? '0' : 'unset',
 					}}>
-					{!isEmployee && !isNewEmployee && list.isNotEmpty() && <Button
-						ref="removeB"
-						className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-						onClick={this.onRemove}>
-						Remove
-					</Button>}
-					{!isEmployee && !isNewEmployee && list.isNotEmpty() && <Button
-						ref="editB"
-						className="btn btn-primary pull-right btn-edit border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-						onClick={this.onEdit}>
-						Edit
-					</Button>}
-					{!isEmployee && <Button
-						className="btn btn-primary pull-right btn-create border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-						onClick={this.onCreate}>
-						Create
-					</Button>}
+					{!isEmployee && <CreateAndEditBar
+						ref="createAndEditBar"
+						onRemove={this.onRemove}
+						onEdit={this.onEdit}
+						onCreate={this.onCreate}
+						list={list}
+						isEmbedded={isEmbedded}
+						isContained
+					/>}
 				</MKBox>
 				<TabWrapper
 					ref="tabWrapper"
@@ -306,8 +297,8 @@ class AEmployeeDocControls extends React.Component {
 					tabsHeight={tabsHeight}
 					isEmbedded={isEmbedded}
 				/>
-				{NewDialog && <NewDialog ref="newDialog" isNewEmployee={isNewEmployee}/>}
-				{EditDialog && <EditDialog ref="editDialog"/>}
+				{NewDialog && <NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={this.item}/>}
+				{EditDialog && <EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={this.item}/>}
 			</>;
 		};
 

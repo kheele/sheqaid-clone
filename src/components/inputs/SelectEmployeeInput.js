@@ -48,7 +48,8 @@ class SelectInput extends ASelectInput {
 		this.state.lists.list = res.distinct();
 		const {defaultValue, defaultUser} = this.props;
 
-		if (defaultValue && !defaultValue.data) {
+		console.log('defaultValue', defaultValue)
+		if (defaultValue && defaultValue.id) {
 			this.state.newDefaultValue = await findByIdEmployee(defaultValue.id);
 		}
 
@@ -360,7 +361,7 @@ function onAsyncSelectLoad(incContractors = false) {
 	};
 
 	return byLogged(args).then(list => {
-		console.log('listForSelectionByLogged', list)
+		// console.log('listForSelectionByLogged', list)
 		return list.map((value) => {
 			const {id, data: {fname, lname, contractor}} = value;
 			const contractorName = contractor ? ` ${contractor.name}` : '';

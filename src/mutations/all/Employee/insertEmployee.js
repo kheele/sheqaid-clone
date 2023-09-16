@@ -6,18 +6,11 @@ import {graphql} from "react-relay";
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityEmployee} from "mutations/types.d.ts";
 import crudUtils from "../CRUDUtils/CRUDUtils";
-import {Dates} from "../../../utils/Dates";
 import findByIdEmployee from "./findByIdEmployee";
 import findByEmailEmployee from "./findByEmailEmployee";
 import findByPhoneEmployee from "./findByPhoneEmployee";
 import findByAuthIdUser from "../User/findByAuthIdUser";
 import updateUser from "../User/updateUser";
-import updateEmployee from "./updateEmployee";
-import insertEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
-import insertEmployeeDocBankingDetail
-	from "../EmployeeDocument/EmployeeDocBankingDetail/insertEmployeeDocBankingDetail";
-import insertEmployeeDocLivingAddress
-	from "../EmployeeDocument/EmployeeDocLivingAddress/insertEmployeeDocLivingAddress";
 
 // 2
 const mutation = graphql`
@@ -138,6 +131,16 @@ export default async (input: EntityEmployee) => {
 		living_address_list,//[doc]
 		banking_detail_list,//[doc]
 		document_list,//[doc]
+		//
+		competency_list,//[doc]
+		contract_list,//[doc]
+		counselling_list,//[doc]
+		leave_list,//[doc]
+		license_list,//[doc]
+		medical_list,//[doc]
+		warning_list,//[doc]
+		work_permit_list,//[doc]
+		job_appointment_list,//[doc]
 	} = input;
 
 	let existingUser = await findByEmailEmployee(email);
@@ -161,97 +164,110 @@ export default async (input: EntityEmployee) => {
 		input.linked_user_id = linkedUser && linkedUser.id;
 	}
 
-	let living_address_list_doc, banking_detail_list_doc, document_list_doc;
-	if (profile_pic) {
-		delete input.profile_pic;
-	}
-	if (living_address_list && living_address_list.data && living_address_list.data.anyMatch(v => !!v.doc)) {
-		living_address_list_doc = true;
-		delete input.living_address_list;
-	}
-	if (banking_detail_list && banking_detail_list.data && banking_detail_list.data.anyMatch(v => !!v.doc)) {
-		banking_detail_list_doc = true;
-		delete input.banking_detail_list;
-	}
-	if (document_list && document_list.data && document_list.data.anyMatch(v => !!v.doc)) {
-		document_list_doc = true;
-		delete input.document_list;
-	}
+	// let living_address_list_doc, banking_detail_list_doc, document_list_doc;
+	// if (profile_pic) {
+	// 	delete input.profile_pic;
+	// }
+	// if (living_address_list && living_address_list.data && living_address_list.data.anyMatch(v => !!v.doc)) {
+	// 	living_address_list_doc = true;
+	// 	delete input.living_address_list;
+	// }
+	// if (banking_detail_list && banking_detail_list.data && banking_detail_list.data.anyMatch(v => !!v.doc)) {
+	// 	banking_detail_list_doc = true;
+	// 	delete input.banking_detail_list;
+	// }
+	// if (document_list && document_list.data && document_list.data.anyMatch(v => !!v.doc)) {
+	// 	document_list_doc = true;
+	// 	delete input.document_list;
+	// }
 
 	crudUtils.injectCreate(input);
 
 	const res = await createMutationImpl({mutation, input});
 	if (res) {
-		const id = convertIdToBigint(res.id);
+		const {id} = res;
 
 		if (input.linked_user_id) {
 			await updateUser({id: input.linked_user_id, linked_employee_id: id});
 		}
 
-		if (profile_pic || living_address_list_doc || banking_detail_list_doc || document_list_doc) {
-			const updateAttrs = {};
-			const updoad = async ({key, doc, name}) => {
-				const path = `employees/${id}/docs`;
-				const gcsUri = await workers.emit("files/upload", {
-					file: doc,
-					path,
-					name,
-				});
-				console.log("gcsUri", gcsUri);
-				if (key) {
-					updateAttrs[key] = gcsUri;
-				} else {
-					return gcsUri;
-				}
-			};
+		// if (profile_pic || living_address_list_doc || banking_detail_list_doc || document_list_doc) {
+		return new Promise((resolve, reject) => {
+			socket.on('insertEmployee', (data) => {
 
-			const promises = [];
-			if (profile_pic) {
-				const name = `profile_pic-${Dates.formatTimestamp(new Date())}`;
-				promises.push(updoad({
-					key: "profile_pic",
-					doc: profile_pic,
-					name,
-				}));
-			}
-			if (living_address_list_doc) {
-				promises.push(Promise.all(living_address_list.data.map(async (v, n) => {
-					const name = `living_address-${n}-${Dates.formatTimestamp(new Date())}`;
-					const gcsUri = await updoad({
-						doc: v.doc,
-						name,
-					});
-					v.doc = gcsUri;
-					return insertEmployeeDocLivingAddress({...v, employee_id: id});
-				})));
-			}
-			if (banking_detail_list_doc) {
-				promises.push(Promise.all(banking_detail_list.data.map(async (v, n) => {
-					const name = `banking_detail-${n}-${Dates.formatTimestamp(new Date())}`;
-					const gcsUri = await updoad({
-						doc: v.doc,
-						name,
-					});
-					v.doc = gcsUri;
-					return insertEmployeeDocBankingDetail({...v, employee_id: id});
-				})));
-			}
-			if (document_list_doc) {
-				promises.push(Promise.all(document_list.data.map(async (v, n) => {
-					const name = `document-${n}-${Dates.formatTimestamp(new Date())}`;
-					const gcsUri = await updoad({
-						doc: v.doc,
-						name,
-					});
-					v.doc = gcsUri;
-					return insertEmployeeDocDocument({...v, employee_id: id});
-				})));
-			}
+			});
+			source.addEventListener('message', message => {
+				console.log('Got', message);
 
-			await Promise.all(promises);
+				// Display the event data in the `content` div
+				// document.querySelector('#content').innerHTML = event.data;
+				findByIdEmployee(id).then(resolve, reject);
+			});
+		});
 
-			return updateEmployee({id, ...updateAttrs});
-		}
+		// const updateAttrs = {};
+		// const updoad = async ({key, doc, name}) => {
+		// 	const path = `employees/${id}/docs`;
+		// 	const gcsUri = await workers.emit("files/upload", {
+		// 		file: doc,
+		// 		path,
+		// 		name,
+		// 	});
+		// 	console.log("gcsUri", gcsUri);
+		// 	if (key) {
+		// 		updateAttrs[key] = gcsUri;
+		// 	} else {
+		// 		return gcsUri;
+		// 	}
+		// };
+		//
+		// const promises = [];
+		// if (profile_pic) {
+		// 	const name = `profile_pic-${Dates.formatTimestamp(new Date())}`;
+		// 	promises.push(updoad({
+		// 		key: "profile_pic",
+		// 		doc: profile_pic,
+		// 		name,
+		// 	}));
+		// }
+		// if (living_address_list_doc) {
+		// 	promises.push(Promise.all(living_address_list.data.map(async (v, n) => {
+		// 		const name = `living_address-${n}-${Dates.formatTimestamp(new Date())}`;
+		// 		const gcsUri = await updoad({
+		// 			doc: v.doc,
+		// 			name,
+		// 		});
+		// 		v.doc = gcsUri;
+		// 		return insertEmployeeDocLivingAddress({...v, employee_id: id});
+		// 	})));
+		// }
+		// if (banking_detail_list_doc) {
+		// 	promises.push(Promise.all(banking_detail_list.data.map(async (v, n) => {
+		// 		const name = `banking_detail-${n}-${Dates.formatTimestamp(new Date())}`;
+		// 		const gcsUri = await updoad({
+		// 			doc: v.doc,
+		// 			name,
+		// 		});
+		// 		v.doc = gcsUri;
+		// 		return insertEmployeeDocBankingDetail({...v, employee_id: id});
+		// 	})));
+		// }
+		// if (document_list_doc) {
+		// 	promises.push(Promise.all(document_list.data.map(async (v, n) => {
+		// 		const name = `document-${n}-${Dates.formatTimestamp(new Date())}`;
+		// 		const gcsUri = await updoad({
+		// 			doc: v.doc,
+		// 			name,
+		// 		});
+		// 		v.doc = gcsUri;
+		// 		return insertEmployeeDocDocument({...v, employee_id: id});
+		// 	})));
+		// }
+		//
+		// await Promise.all(promises);
+		//
+		// 	return updateEmployee({id, ...updateAttrs});
+		// }
 
 		return findByIdEmployee(id);
 	}

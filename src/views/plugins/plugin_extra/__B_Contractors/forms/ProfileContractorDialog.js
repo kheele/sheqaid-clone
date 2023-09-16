@@ -257,7 +257,7 @@ class Controls extends React.Component {
             index = 0;
         }
 
-        return <FormControls>
+        return <FormControls lazyLoad>
             <Row
                 rendered
                 active={!viewStatus}

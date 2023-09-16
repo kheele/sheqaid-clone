@@ -56,22 +56,26 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		active_document_list_aggregate,
-		removed_document_list_aggregate,
-		all_project_plan_list_aggregate,
-		all_ims_policy_list_aggregate,
-		all_other_list_aggregate,
-		shared_list_aggregate,
-		doc_type_unclassified_incident_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		active_document_list_aggregate = defaults,
+		removed_document_list_aggregate = defaults,
+		all_project_plan_list_aggregate = defaults,
+		all_ims_policy_list_aggregate = defaults,
+		all_other_list_aggregate = defaults,
+		shared_list_aggregate = defaults,
+		doc_type_unclassified_incident_list_aggregate = defaults,
 		//
-		list_no_expiry_aggregate,
-		list_expired_aggregate,
-		list_mon_expiry_aggregate,
-		list_2mon_expiry_aggregate,
-		list_3mon_expiry_aggregate,
-		list_4mon_expiry_aggregate,
-	}] = data;
+		list_no_expiry_aggregate = defaults,
+		list_expired_aggregate = defaults,
+		list_mon_expiry_aggregate = defaults,
+		list_2mon_expiry_aggregate = defaults,
+		list_3mon_expiry_aggregate = defaults,
+		list_4mon_expiry_aggregate = defaults,
+	} = item;
 
 	const chart = {
 		labels: ['No Expiry', 'Expired', '1 Month Expiry', '2 Month Expiry', '3 Month Expiry', '+4 Month Expiry'],
@@ -97,7 +101,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-4 w-full grid-gap-10"
-			sx={{m: 0, mt: '10px', mb: '15px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', mb: '15px !important', justifyItems: 'center',}}
 		>
 			<Counter background="#933333" title={<b className="color-white font-size-14">Total<br/>Documents</b>}
 			         count={active_document_list_aggregate.aggregate.count}/>

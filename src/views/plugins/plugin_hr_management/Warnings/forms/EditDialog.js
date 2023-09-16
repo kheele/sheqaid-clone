@@ -61,10 +61,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee, props: {dialog: {props:{embeddedEmployee}}}} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -84,9 +84,9 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -107,8 +107,10 @@ class Controls extends React.Component {
         } = form.data;
         
         const data = {};
-        
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+
+        if(!embeddedEmployee) {
+            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+        }
         ShouldUpdate.checkEmployee(data, old_data, issued_by, 'issued_by_id');
         ShouldUpdate.check(data, old_data, type, 'type');
         ShouldUpdate.checkDate(data, old_data, date, 'date');
@@ -153,6 +155,11 @@ class Controls extends React.Component {
         // });
     }
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
     get item() {
         return this.props.state.item;
     }
@@ -162,8 +169,8 @@ class Controls extends React.Component {
             return null;
         let {
             props: {
-                onFormNext, onFormBack, onFormOpen, 
-                dialog: {renderProfileCover}
+                onFormNext, onFormBack, onFormOpen,
+                dialog: {props: {embeddedEmployee, isNewEmployee,}}
             },
             item, item: {
                 id, data: {
@@ -180,7 +187,8 @@ class Controls extends React.Component {
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        {!isNewEmployee && !embeddedEmployee &&
+                          <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                         <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..." defaultValue={issued_by} defaultUser className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>

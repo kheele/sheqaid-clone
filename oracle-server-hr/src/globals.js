@@ -99,6 +99,29 @@ global.onDriver = () => {
 	return authorize().then(auth => google.drive({auth, version: 'v3'}));
 };
 
-// console.log("here")
+global.getTriggeredEventsData = (body, name) => {
+	if (!body || !body.data || !body.data.table) {
+		return;
+	}
 
-// exports.default = {};
+	const {
+		table: {
+			table_name,//sheq_chemical_sds
+			schema,
+			old_item,
+			new_item,
+		}
+	} = body.data;
+
+	if(Array.isArray(name)) {
+		if (schema !== "public" || !name.contains(table_name) || !new_item) {
+			return;
+		}
+	} else {
+		if (schema !== "public" || table_name !== name || !new_item) {
+			return;
+		}
+	}
+
+	return {table_name, old_item, new_item};
+};

@@ -40,7 +40,7 @@ const Comp = forwardRef((
 		columns={1}
 		spacing={5}
 		className="grid-8 w-full grid-gap-10"
-		sx={{m: 0, mt: '20px', mb: "0px", p: "20px", background: "white", justifyItems: 'center',}}
+		sx={{m: 0, mt: '15px', mb: "0px", p: "20px", background: "white", justifyItems: 'center',}}
 	>
 		<Counter size={topStatsSize}
 		         color="white"

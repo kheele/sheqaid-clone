@@ -15,8 +15,10 @@ import {THead} from 'components/tables';
 import {NewNCRDialog, EditNCRDialog, ProfileNCRDialog} from '../forms';
 
 import ProfileSiteDialog from 'views/plugins/plugin_general/Sites/ProfileDialog.js';
-import ProfileAuditDialog from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
-import ProfileIncidentDialog from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
+import ProfileAuditDialog
+	from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
+import ProfileIncidentDialog
+	from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
 
 import NCRRenderRow from "./NCRRenderRow";
 import ExportNCRDialog from "./ExportNCRDialog";
@@ -24,6 +26,7 @@ import ExportNCRDialog from "./ExportNCRDialog";
 import style from "./NCRItemListDialog.lazy.css";
 import byLogged from "../NCRTab/Query/List/listAllNCRByLogged";
 import updateNCR from "mutations/all/NCR/updateNCR";
+
 // </editor-fold>
 
 @observer
@@ -281,16 +284,32 @@ class NCRItemListDialog extends ADialogList {
 		const item = this.refs.root.list[idx];
 		const {
 			selected_source_ref,
+			assigned_job_position_list,
+			assigned_person_list,
 			approving_person,
 			status_progress,
 			status_acceptance
 		} = item.data;
 
-		const {id: user_uid} = storage.loggedUser.user;
+		const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
 
 		const isResponsible = () => {
-			return true;//responsible_person && user_uid === responsible_person.id;
+			if (assigned_job_position_list || assigned_person_list) {
+				if (
+					linked_employee &&
+					linked_employee.job_position &&
+					assigned_job_position_list &&
+					assigned_job_position_list.anyMatch(({job_position_id}) => linked_employee.job_position.id === job_position_id)
+				) {
+					return true;
+				}
+				if (assigned_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_uid)) {
+					return true;
+				}
+			}
+			return false;
 		};
+
 		const isApproving = () => {
 			return approving_person && user_uid === approving_person.id;
 		};
@@ -335,7 +354,16 @@ class NCRItemListDialog extends ADialogList {
 
 	// <editor-fold defaultstate="collapsed" desc="renderFilterNode">
 	renderFilterNode(onChange) {
-		const {responsible_party_list, type, priority, allocation, source, status_progress, status_acceptance, result,} = this.selfState.lists;
+		const {
+			responsible_party_list,
+			type,
+			priority,
+			allocation,
+			source,
+			status_progress,
+			status_acceptance,
+			result,
+		} = this.selfState.lists;
 		return <div className="col-lg-12 controls">
 			<DateRangeInput name="due_date_range" className="col-lg-4 h-105 grid-6 margin-b-10 form-control"
 			                placeholder="Due Date" onChange={onChange}>

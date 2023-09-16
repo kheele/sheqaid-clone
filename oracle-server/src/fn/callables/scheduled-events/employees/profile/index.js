@@ -5,8 +5,8 @@ const {onEmployeesProfileIncomplete} = require("./api.js");
 
 router.post('/onEmployeesProfileIncomplete', async (req, res) => {
     // console.log(req.path, req.body)
-    // const data = await onEmployeesProfileIncomplete(req.body);
-    // res.json(data);
+    const data = await onEmployeesProfileIncomplete(req.body);
+    res.json(data);
 });
 
 module.exports = router;

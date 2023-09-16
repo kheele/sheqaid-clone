@@ -5,7 +5,7 @@ import parsePhoneNumber from 'libphonenumber-js';
 import {observable} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen, SAIdUtils} from 'utils/Utils';
+import {Dates, execWhen, SAIdUtils, toDataURI} from 'utils/Utils';
 
 import {
 	ClearableInput,
@@ -194,7 +194,7 @@ class Controls extends React.Component {
 		} = form.data;
 
 		const data = {
-			profile_pic: profile_pic && profile_pic.path,
+			profile_pic: profile_pic && {path: await toDataURI(profile_pic.path)},
 
 			//
 			fname,
@@ -251,7 +251,7 @@ class Controls extends React.Component {
 			});
 		}
 
-		const documentsFormData = documentsSection.formData;
+		const documentsFormData = await documentsSection.formData;
 		if (documentsFormData) {
 			Object.keys(documentsFormData).forEach(key => {
 				data[key] = documentsFormData[key];

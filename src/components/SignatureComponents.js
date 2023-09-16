@@ -18,7 +18,7 @@ class SignatureListRow extends React.Component {
         return <Row
             rendered
             idx={idx}
-            title="4. Signature List"
+            title={`${idx}. Signature List`}
             onFormOpen={onFormOpen}
             onFormBack={onFormBack}
         >

@@ -43,10 +43,10 @@ class Controls extends React.Component {
     }
     
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee, props: {dialog: {props:{embeddedEmployee}}}} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -66,9 +66,9 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -84,8 +84,10 @@ class Controls extends React.Component {
         const {employee, date, expiry_date, notes, doc} = form.data;
         
         const data = {};
-        
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+
+        if(!embeddedEmployee) {
+            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+        }
         ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, notes, 'notes');
@@ -125,6 +127,11 @@ class Controls extends React.Component {
         // });
     }
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
     get item() {
         return this.props.state.item;
     }
@@ -134,8 +141,8 @@ class Controls extends React.Component {
             return null;
         let {
             props: {
-                onFormNext, onFormBack, onFormOpen, 
-                dialog: {renderProfileCover}
+                onFormNext, onFormBack, onFormOpen,
+                dialog: {props: {embeddedEmployee, isNewEmployee,}}
             },
             item, item: {
                 id, data: {
@@ -151,7 +158,8 @@ class Controls extends React.Component {
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        {!isNewEmployee && !embeddedEmployee &&
+                          <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                         <ClearableInput name="date" type="date" placeholder="Date..." defaultValue={date} className="col-lg-6 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} className="col-lg-12 form-control" onChange={this.form.onChange}/>

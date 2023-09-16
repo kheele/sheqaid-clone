@@ -57,42 +57,46 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		all_chemical_sds_list_aggregate,
-		all_hazchem_sheet_list_aggregate,
-		all_chemical_product_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		all_chemical_sds_list_aggregate = defaults,
+		all_hazchem_sheet_list_aggregate = defaults,
+		all_chemical_product_list_aggregate = defaults,
 		//
-		physical_state_unclassified_sds_list_aggregate,
-		physical_state_gas_sds_list_aggregate,
-		physical_state_liquid_sds_list_aggregate,
-		physical_state_solid_sds_list_aggregate,
-		physical_state_liquid_crystal_sds_list_aggregate,
+		physical_state_unclassified_sds_list_aggregate = defaults,
+		physical_state_gas_sds_list_aggregate = defaults,
+		physical_state_liquid_sds_list_aggregate = defaults,
+		physical_state_solid_sds_list_aggregate = defaults,
+		physical_state_liquid_crystal_sds_list_aggregate = defaults,
 		//
-		physical_state_unclassified_hazchem_sheet_list_aggregate,
-		physical_state_gas_hazchem_sheet_list_aggregate,
-		physical_state_liquid_hazchem_sheet_list_aggregate,
-		physical_state_solid_hazchem_sheet_list_aggregate,
-		physical_state_liquid_crystal_hazchem_sheet_list_aggregate,
+		physical_state_unclassified_hazchem_sheet_list_aggregate = defaults,
+		physical_state_gas_hazchem_sheet_list_aggregate = defaults,
+		physical_state_liquid_hazchem_sheet_list_aggregate = defaults,
+		physical_state_solid_hazchem_sheet_list_aggregate = defaults,
+		physical_state_liquid_crystal_hazchem_sheet_list_aggregate = defaults,
 		//
-		physical_state_unclassified_chemical_product_list_aggregate,
-		physical_state_gas_chemical_product_list_aggregate,
-		physical_state_liquid_chemical_product_list_aggregate,
-		physical_state_solid_chemical_product_list_aggregate,
-		physical_state_liquid_crystal_chemical_product_list_aggregate,
+		physical_state_unclassified_chemical_product_list_aggregate = defaults,
+		physical_state_gas_chemical_product_list_aggregate = defaults,
+		physical_state_liquid_chemical_product_list_aggregate = defaults,
+		physical_state_solid_chemical_product_list_aggregate = defaults,
+		physical_state_liquid_crystal_chemical_product_list_aggregate = defaults,
 		//
-		person_injured_incident_list_aggregate,
-		non_person_injured_incident_list_aggregate,
+		person_injured_incident_list_aggregate = defaults,
+		non_person_injured_incident_list_aggregate = defaults,
 		//
-		vehicle_incident_list_aggregate,
-		non_vehicle_incident_list_aggregate,
+		vehicle_incident_list_aggregate = defaults,
+		non_vehicle_incident_list_aggregate = defaults,
 		//
-		status_closed_incident_list_aggregate,
-		status_open_incident_list_aggregate,
+		status_closed_incident_list_aggregate = defaults,
+		status_open_incident_list_aggregate = defaults,
 		//
-		time_shift_day_incident_list_aggregate,
-		time_shift_night_incident_list_aggregate,
-		time_shift_non_incident_list_aggregate,
-	}] = data;
+		time_shift_day_incident_list_aggregate = defaults,
+		time_shift_night_incident_list_aggregate = defaults,
+		time_shift_non_incident_list_aggregate = defaults,
+	} = item;
 
 	const chartSDS = {
 		labels: ['Unclassified', 'Gas', 'Liquid', 'Solid', 'Liquid Crystal'],

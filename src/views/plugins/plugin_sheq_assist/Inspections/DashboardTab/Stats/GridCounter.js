@@ -96,19 +96,22 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		});
 	}
 
-	const [{
-		all_template_list_aggregate,
-		all_questionnaire_list_aggregate,
-		all_asset_list_aggregate,
-		all_non_compliant_questionnaire_list,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+	const {
+		all_template_list_aggregate = defaults,
+		all_questionnaire_list_aggregate = defaults,
+		all_asset_list_aggregate = defaults,
+		all_non_compliant_questionnaire_list = defaults,
 		//
-		active_questionnaire_list_aggregate,
-		completed_questionnaire_list_aggregate,
-		completion_requests_questionnaire_list_aggregate,
-		declined_requests_questionnaire_list_aggregate,
+		active_questionnaire_list_aggregate = defaults,
+		completed_questionnaire_list_aggregate = defaults,
+		completion_requests_questionnaire_list_aggregate = defaults,
+		declined_requests_questionnaire_list_aggregate = defaults,
 		//
-		questionnaire_list,
-	}] = data;
+		questionnaire_list = defaults,
+	} = item;
 
 	const all_non_compliant_questionnaire_list_aggregate = {
 		aggregate: {

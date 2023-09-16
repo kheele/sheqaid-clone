@@ -168,7 +168,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 	// _2022_Aug__all_incident_list_aggregate,
 	// _2022_Aug__fatality_incident_list_aggregate,
 	// _2022_Aug__group_lti_incident_list_aggregate,

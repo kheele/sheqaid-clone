@@ -169,7 +169,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 	// _2022_Aug__all_non_conformance_list_aggregate,
 	//
 	// _2022_Aug__source_site_audit_non_conformance_list_aggregate,

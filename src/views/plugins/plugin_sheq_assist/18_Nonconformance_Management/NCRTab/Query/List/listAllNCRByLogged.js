@@ -63,7 +63,7 @@ export default (
             removed: {_eq: ${removed}},
             ${filter}
           },
-          order_by: {sort: asc},
+          order_by: {desc: asc, sort: asc},
           offset: ${offset}
           ${limit > 0 ? `,limit: ${limit}` : ''}
         ) {

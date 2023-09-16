@@ -100,33 +100,37 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		fatality_incident_list_aggregate,
-		non_fatality_incident_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		fatality_incident_list_aggregate = defaults,
+		non_fatality_incident_list_aggregate = defaults,
 		//
-		group_lti_incident_list_aggregate,
-		group_nlti_incident_list_aggregate,
-		group_non_incident_list_aggregate,
-		firstaid_incident_list_aggregate,
-		nearmiss_incident_list_aggregate,
+		group_lti_incident_list_aggregate = defaults,
+		group_nlti_incident_list_aggregate = defaults,
+		group_non_incident_list_aggregate = defaults,
+		firstaid_incident_list_aggregate = defaults,
+		nearmiss_incident_list_aggregate = defaults,
 		//
-		incident_time_afternoon_incident_list_aggregate,
-		incident_time_morning_incident_list_aggregate,
-		incident_time_non_incident_list_aggregate,
+		incident_time_afternoon_incident_list_aggregate = defaults,
+		incident_time_morning_incident_list_aggregate = defaults,
+		incident_time_non_incident_list_aggregate = defaults,
 		//
-		person_injured_incident_list_aggregate,
-		non_person_injured_incident_list_aggregate,
+		person_injured_incident_list_aggregate = defaults,
+		non_person_injured_incident_list_aggregate = defaults,
 		//
-		vehicle_incident_list_aggregate,
-		non_vehicle_incident_list_aggregate,
+		vehicle_incident_list_aggregate = defaults,
+		non_vehicle_incident_list_aggregate = defaults,
 		//
-		status_closed_incident_list_aggregate,
-		status_open_incident_list_aggregate,
+		status_closed_incident_list_aggregate = defaults,
+		status_open_incident_list_aggregate = defaults,
 		//
-		time_shift_day_incident_list_aggregate,
-		time_shift_night_incident_list_aggregate,
-		time_shift_non_incident_list_aggregate,
-	}] = data;
+		time_shift_day_incident_list_aggregate = defaults,
+		time_shift_night_incident_list_aggregate = defaults,
+		time_shift_non_incident_list_aggregate = defaults,
+	} = item;
 
 	return <Grid
 		container

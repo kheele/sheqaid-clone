@@ -149,7 +149,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 	// _2022_Aug__all_expiry_document_list_aggregate,
 	// _2022_Aug__projectplan_expiry_document_list_aggregate,
 	// _2022_Aug__imspolicy_expiry_document_list_aggregate,

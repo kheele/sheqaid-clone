@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
-import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import MKBox from "../../../../../../components/MK/MKBox";
+import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
+import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -59,15 +60,18 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		list_interval_unclassified_questionnaire_list_aggregate,
-		list_interval_daily_questionnaire_list_aggregate,
-		list_interval_weekly_questionnaire_list_aggregate,
-		list_interval_monthly_questionnaire_list_aggregate,
-		list_interval_quarterly_questionnaire_list_aggregate,
-		list_interval_biannually_questionnaire_list_aggregate,
-		list_interval_annually_questionnaire_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+	const {
+		list_interval_unclassified_questionnaire_list_aggregate = defaults,
+		list_interval_daily_questionnaire_list_aggregate = defaults,
+		list_interval_weekly_questionnaire_list_aggregate = defaults,
+		list_interval_monthly_questionnaire_list_aggregate = defaults,
+		list_interval_quarterly_questionnaire_list_aggregate = defaults,
+		list_interval_biannually_questionnaire_list_aggregate = defaults,
+		list_interval_annually_questionnaire_list_aggregate = defaults,
+	} = item;
 
 	const total = list_interval_unclassified_questionnaire_list_aggregate.aggregate.count +
 		list_interval_daily_questionnaire_list_aggregate.aggregate.count +
@@ -110,13 +114,13 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Interval",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'info', 'error', 'dark'],
 						data: [
-							list_interval_unclassified_questionnaire_list_aggregate.aggregate.count,
-							list_interval_daily_questionnaire_list_aggregate.aggregate.count,
-							list_interval_annually_questionnaire_list_aggregate.aggregate.count,
-							list_interval_weekly_questionnaire_list_aggregate.aggregate.count,
-							list_interval_monthly_questionnaire_list_aggregate.aggregate.count,
-							list_interval_quarterly_questionnaire_list_aggregate.aggregate.count,
-							list_interval_biannually_questionnaire_list_aggregate.aggregate.count,
+							getDashboardCounter(list_interval_unclassified_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_daily_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_annually_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_weekly_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_monthly_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_quarterly_questionnaire_list_aggregate),
+							getDashboardCounter(list_interval_biannually_questionnaire_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -139,9 +143,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_unclassified_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_unclassified_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_unclassified_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_unclassified_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -161,9 +165,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_daily_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_daily_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_daily_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_daily_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -183,9 +187,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_weekly_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_weekly_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_weekly_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_weekly_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -205,9 +209,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_monthly_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_monthly_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_monthly_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_monthly_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -227,9 +231,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_quarterly_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_quarterly_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_quarterly_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_quarterly_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -249,9 +253,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_biannually_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_biannually_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_biannually_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_biannually_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>
@@ -271,9 +275,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_interval_annually_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_interval_annually_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_interval_annually_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_interval_annually_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0rem 0'}}/>

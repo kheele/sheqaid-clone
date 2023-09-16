@@ -53,6 +53,6 @@ export default async (attrs: EntityEmployeeJobAppointment) => updateEmployeeDocI
     mutation,
     attrs,
     findByIdEmployeeFn: findByIdEmployeeJobAppointment,
-    name: 'JobAppointment',
+    name: 'Job-Appointment',
     plural: 'job_appointments',
 });

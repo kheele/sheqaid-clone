@@ -98,7 +98,7 @@ class Controls extends React.Component {
         
         const {isContractor, hasProjects} = storage.is;
         
-        return <FormControls>
+        return <FormControls lazyLoad>
             {hasProjects && <Row 
                 rendered  
                 active

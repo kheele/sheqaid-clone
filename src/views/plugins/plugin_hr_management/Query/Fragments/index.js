@@ -25,6 +25,7 @@ export const employee_personal_details_fragment = `
     id
     fname
     lname
+    full_name
     phone
     email
     id_num

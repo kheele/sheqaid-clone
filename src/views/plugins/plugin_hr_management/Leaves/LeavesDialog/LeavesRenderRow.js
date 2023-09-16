@@ -44,11 +44,11 @@ class RenderRow extends ARenderRow {
                 <h6 className="xs-shown font-size-13">Employee</h6>
                 {lname + ' ' + fname}
             </div>
-            <div className="td fixed-flex min-w-140">
+            <div className="td fixed-flex min-w-180">
                 <h6 className="xs-shown font-size-13">Leave Type</h6>
                 {type || 'N/A'}
             </div>
-            <div className="td fixed-flex min-w-120">
+            <div className="td fixed-flex min-w-160">
                 <h6 className="xs-shown font-size-13">Leave Due To</h6>
                 {due_to || 'N/A'}
             </div>

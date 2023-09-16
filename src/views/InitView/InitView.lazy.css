@@ -79,7 +79,7 @@
 .InitView .grid-view > div > div {
     border-radius: 50%;
     border-width: 2px;
-    border-style: solid;
+    /*border-style: solid;*/
 }
 
 .InitView .grid-view > div > div > h3 {

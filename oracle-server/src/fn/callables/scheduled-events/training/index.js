@@ -5,8 +5,8 @@ const {onTrainingPlanExpiry} = require("./api.js");
 
 router.post('/onTrainingPlanExpiry', async (req, res) => {
     // console.log(req.path, req.body)
-    // const data = await onTrainingPlanExpiry(req.body);
-    // res.json(data);
+    const data = await onTrainingPlanExpiry(req.body);
+    res.json(data);
 });
 
 module.exports = router;

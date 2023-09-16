@@ -135,10 +135,10 @@ class Controls extends React.Component {
 				try {
 					return !!findDOMNode(this);
 				} catch (e) {
-					return false;
+					return;
 				}
 			}).then(() => {
-				this.props.onFormGoto(index + 1 + 1);//Another 1 is form renderProfileCover() row
+				this.props.onFormGoto(index + 1);
 			});
 		}
 	}

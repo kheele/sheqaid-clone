@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
 import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -49,25 +50,28 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	}));
 	// </editor-fold>
 
-	if(data === DATA_LOAD_STATUS.LOADING) {
+	if (data === DATA_LOAD_STATUS.LOADING) {
 		return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
-			<CircularProgress />
+			<CircularProgress/>
 		</div>;
 	}
 
-	if(data === DATA_LOAD_STATUS.ERROR) {
+	if (data === DATA_LOAD_STATUS.ERROR) {
 		return null;
 	}
 
-	const [{
-		doc_type_unclassified_incident_list_aggregate,
-		all_project_plan_list_aggregate,
-		all_ims_policy_list_aggregate,
-		doc_type_company_certificate_list_aggregate,
-		doc_type_company_insurance_list_aggregate,
-		doc_type_company_registration_list_aggregate,
-		doc_type_company_regulatory_body_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+	const {
+		doc_type_unclassified_incident_list_aggregate = defaults,
+		all_project_plan_list_aggregate = defaults,
+		all_ims_policy_list_aggregate = defaults,
+		doc_type_company_certificate_list_aggregate = defaults,
+		doc_type_company_insurance_list_aggregate = defaults,
+		doc_type_company_registration_list_aggregate = defaults,
+		doc_type_company_regulatory_body_list_aggregate = defaults,
+	} = item;
 
 	const total = doc_type_unclassified_incident_list_aggregate.aggregate.count +
 		all_project_plan_list_aggregate.aggregate.count +
@@ -93,7 +97,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-1 w-full grid-gap-10 padding-15"
-			sx={{m: 0, mt: '10px', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<DefaultDoughnutChart
 				title="Document Category"
@@ -105,13 +109,13 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Document Categories",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'info', 'error', 'dark'],
 						data: [
-							doc_type_unclassified_incident_list_aggregate.aggregate.count,
-							all_project_plan_list_aggregate.aggregate.count,
-							all_ims_policy_list_aggregate.aggregate.count,
-							doc_type_company_certificate_list_aggregate.aggregate.count,
-							doc_type_company_insurance_list_aggregate.aggregate.count,
-							doc_type_company_registration_list_aggregate.aggregate.count,
-							doc_type_company_regulatory_body_list_aggregate.aggregate.count,
+							getDashboardCounter(doc_type_unclassified_incident_list_aggregate),
+							getDashboardCounter(all_project_plan_list_aggregate),
+							getDashboardCounter(all_ims_policy_list_aggregate),
+							getDashboardCounter(doc_type_company_certificate_list_aggregate),
+							getDashboardCounter(doc_type_company_insurance_list_aggregate),
+							getDashboardCounter(doc_type_company_registration_list_aggregate),
+							getDashboardCounter(doc_type_company_regulatory_body_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -134,9 +138,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${doc_type_unclassified_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(doc_type_unclassified_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={doc_type_unclassified_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(doc_type_unclassified_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -156,9 +160,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${all_project_plan_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(all_project_plan_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={all_project_plan_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(all_project_plan_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -178,9 +182,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${all_ims_policy_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(all_ims_policy_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={all_ims_policy_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(all_ims_policy_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -200,9 +204,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${doc_type_company_certificate_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(doc_type_company_certificate_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={doc_type_company_certificate_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(doc_type_company_certificate_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -222,9 +226,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${doc_type_company_insurance_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(doc_type_company_insurance_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={doc_type_company_insurance_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(doc_type_company_insurance_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -244,9 +248,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${doc_type_company_registration_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(doc_type_company_registration_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={doc_type_company_registration_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(doc_type_company_registration_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>
@@ -266,9 +270,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${doc_type_company_regulatory_body_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(doc_type_company_regulatory_body_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={doc_type_company_regulatory_body_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(doc_type_company_regulatory_body_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.1rem 0'}}/>

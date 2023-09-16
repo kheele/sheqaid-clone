@@ -56,13 +56,12 @@ class ListTable extends ANewListTable {
                         ref={this.onSetRef}
                         name="job_position"
                         placeholder="Add Job Position..."
-                        required
                         className="form-control"
                         onChange={this.onChange}
                     />
                 </div>
                 <div className="td padding-r-5">
-                    <SelectEmployeeInput ref={this.onSetRef} name="employee" placeholder="Select Employee..." required
+                    <SelectEmployeeInput ref={this.onSetRef} name="employee" placeholder="Select Employee..."
                                          className="form-control" onChange={this.onChange}/>
                 </div>
                 <div className="td fixed-flex padding-0 margin-0">

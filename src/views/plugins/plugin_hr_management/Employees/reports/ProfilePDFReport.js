@@ -189,7 +189,7 @@ class Controls extends React.Component {
         const banking_detail_default = banking_detail_list.find(v => v.is_default);
 
         const document_id_passport_list = document_list.filter(v => !!v && v.type === "ID/Passport");
-        const document_id_prdp_list = document_list.filter(v => !!v && v.type === "PrPD");
+        const document_id_prdp_list = document_list.filter(v => !!v && v.type === "PrDP");
 
         const {
             dashboard_competency_list_img,

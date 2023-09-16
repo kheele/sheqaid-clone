@@ -220,6 +220,9 @@ class DrawerNav extends React.Component {
     
     renderNavItem(item) {
         const {module: {key, color}} = item;
+        if (key === "_06_Communication_And_Participation" || key === "_16_Emergency_Preparedness"
+          || key === "_01_Project_Plan" || key === "_02_IMS_Policies") return null;
+
         let disallow;
         if(storage.is.isEmployee) {
             const {employeeDisallowedModules} = moduleManager;

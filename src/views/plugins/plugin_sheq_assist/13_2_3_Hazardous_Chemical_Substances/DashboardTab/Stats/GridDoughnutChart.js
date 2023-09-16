@@ -100,32 +100,36 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		has_product_yes_sds_list_aggregate,
-		has_product_no_sds_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		has_product_yes_sds_list_aggregate = defaults,
+		has_product_no_sds_list_aggregate = defaults,
 		//
-		has_product_yes_hazchem_sheet_list_aggregate,
-		has_product_no_hazchem_sheet_list_aggregate,
+		has_product_yes_hazchem_sheet_list_aggregate = defaults,
+		has_product_no_hazchem_sheet_list_aggregate = defaults,
 		//
-		is_stable_yes_chemical_product_list_aggregate,
-		is_stable_no_chemical_product_list_aggregate,
+		is_stable_yes_chemical_product_list_aggregate = defaults,
+		is_stable_no_chemical_product_list_aggregate = defaults,
 		//
-		is_hazardous_yes_chemical_product_list_aggregate,
-		is_hazardous_no_chemical_product_list_aggregate,
+		is_hazardous_yes_chemical_product_list_aggregate = defaults,
+		is_hazardous_no_chemical_product_list_aggregate = defaults,
 		//
-		is_combustible_yes_chemical_product_list_aggregate,
-		is_combustible_no_chemical_product_list_aggregate,
+		is_combustible_yes_chemical_product_list_aggregate = defaults,
+		is_combustible_no_chemical_product_list_aggregate = defaults,
 		//
-		is_flammable_yes_chemical_product_list_aggregate,
-		is_flammable_no_chemical_product_list_aggregate,
+		is_flammable_yes_chemical_product_list_aggregate = defaults,
+		is_flammable_no_chemical_product_list_aggregate = defaults,
 		//
-		has_sds_yes_chemical_product_list_aggregate,
-		has_sds_no_chemical_product_list_aggregate,
-		has_hazchem_sheet_yes_chemical_product_list_aggregate,
-		has_hazchem_sheet_no_chemical_product_list_aggregate,
-		has_risk_assessment_yes_chemical_product_list_aggregate,
-		has_risk_assessment_no_chemical_product_list_aggregate,
-	}] = data;
+		has_sds_yes_chemical_product_list_aggregate = defaults,
+		has_sds_no_chemical_product_list_aggregate = defaults,
+		has_hazchem_sheet_yes_chemical_product_list_aggregate = defaults,
+		has_hazchem_sheet_no_chemical_product_list_aggregate = defaults,
+		has_risk_assessment_yes_chemical_product_list_aggregate = defaults,
+		has_risk_assessment_no_chemical_product_list_aggregate = defaults,
+	} = item;
 
 	return <Grid
 		container

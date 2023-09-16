@@ -54,14 +54,16 @@ const Comp = forwardRef(({data: __data}, ref) => {
         return null;
     }
 
+    const defaults = {aggregate: {count: 0}};
+
     const {
-        cost_list_aggregate,
-        training_list_aggregate,
-        participant_list_aggregate,
-        training_course_list_aggregate,
-        institution_list_aggregate,
-        trainer_internal_list_aggregate,
-        trainer_external_list_aggregate,
+        cost_list_aggregate = defaults,
+        training_list_aggregate = defaults,
+        participant_list_aggregate = defaults,
+        training_course_list_aggregate = defaults,
+        institution_list_aggregate = defaults,
+        trainer_internal_list_aggregate = defaults,
+        trainer_external_list_aggregate = defaults,
     } = data; //stats_top_counter;
 
     return <Grid

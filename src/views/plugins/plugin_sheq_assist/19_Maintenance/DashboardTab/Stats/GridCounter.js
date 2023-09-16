@@ -57,45 +57,49 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		all_asset_list_aggregate,
-		removed_asset_list_aggregate,
-		maintenance_plan_cost_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		all_asset_list_aggregate = defaults,
+		removed_asset_list_aggregate = defaults,
+		maintenance_plan_cost_aggregate = {nodes: []},
 		//
-		condition_new_aggregate,
-		condition_good_aggregate,
-		condition_fair_aggregate,
-		condition_poor_aggregate,
-		condition_scrap_aggregate,
-		condition_non_aggregate,
+		condition_new_aggregate = defaults,
+		condition_good_aggregate = defaults,
+		condition_fair_aggregate = defaults,
+		condition_poor_aggregate = defaults,
+		condition_scrap_aggregate = defaults,
+		condition_non_aggregate = defaults,
 		//
-		next_service_reason_for_service_due_date_list_aggregate,
-		next_service_reason_for_service_mechanical_failure_list_aggregate,
-		next_service_reason_for_service_wear_and_tear_list_aggregate,
-		next_service_reason_for_service_non_list_aggregate,
+		next_service_reason_for_service_due_date_list_aggregate = defaults,
+		next_service_reason_for_service_mechanical_failure_list_aggregate = defaults,
+		next_service_reason_for_service_wear_and_tear_list_aggregate = defaults,
+		next_service_reason_for_service_non_list_aggregate = defaults,
 		//
-		next_service_non_list_aggregate,
-		next_service_expired_list_aggregate,
-		next_service_expired_25_list_aggregate,
-		next_service_expired_50_list_aggregate,
-		next_service_expired_75_list_aggregate,
-		next_service_expired_100_list_aggregate,
+		next_service_non_list_aggregate = defaults,
+		next_service_expired_list_aggregate = defaults,
+		next_service_expired_25_list_aggregate = defaults,
+		next_service_expired_50_list_aggregate = defaults,
+		next_service_expired_75_list_aggregate = defaults,
+		next_service_expired_100_list_aggregate = defaults,
 		//
-		next_calibration_date_non_list_aggregate,
-		next_calibration_expired_list_aggregate,
-		next_calibration_mon_expiry_list_aggregate,
-		next_calibration_2mon_expiry_list_aggregate,
-		next_calibration_3mon_expiry_list_aggregate,
-		next_calibration_4mon_expiry_list_aggregate,
+		next_calibration_date_non_list_aggregate = defaults,
+		next_calibration_expired_list_aggregate = defaults,
+		next_calibration_mon_expiry_list_aggregate = defaults,
+		next_calibration_2mon_expiry_list_aggregate = defaults,
+		next_calibration_3mon_expiry_list_aggregate = defaults,
+		next_calibration_4mon_expiry_list_aggregate = defaults,
 		//
-		doc_non_expiry_list_aggregate,
-		doc_expired_list_aggregate,
-		doc_mon_expiry_list_aggregate,
-		doc_2mon_expiry_list_aggregate,
-		doc_3mon_expiry_list_aggregate,
-		doc_4mon_expiry_list_aggregate,
+		doc_non_expiry_list_aggregate = defaults,
+		doc_expired_list_aggregate = defaults,
+		doc_mon_expiry_list_aggregate = defaults,
+		doc_2mon_expiry_list_aggregate = defaults,
+		doc_3mon_expiry_list_aggregate = defaults,
+		doc_4mon_expiry_list_aggregate = defaults,
 		//
-	}] = data;
+	} = item;
 
 	console.log('data', data)
 
@@ -183,7 +187,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-3 w-full grid-gap-10"
-			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '10px !important', mb: '15px !important', justifyItems: 'center',}}
 		>
 			<Counter background="#933333" title={<b className="color-white font-size-14">Total Assets</b>}
 			         count={all_asset_list_aggregate.aggregate.count}/>
@@ -204,7 +208,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			}}
 		>
 			<VerticalBarChart
-				height="130px"
+				height="166px"
 				title="Asset Condition"
 				color="#fff"
 				tickColor="white"
@@ -217,7 +221,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			columns={1}
 			spacing={6}
 			className="grid-2 w-full grid-gap-10"
-			sx={{m: '0 !important', mt: '-10px !important', mb: '10px !important', justifyItems: 'center',}}
+			sx={{m: '0 !important', mt: '-10px !important', mb: '0px !important', justifyItems: 'center',}}
 		>
 			<MDBox
 				className="w-full grid-gap-10"
@@ -231,7 +235,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 				}}
 			>
 				<VerticalBarChart
-					height="130px"
+					height="166px"
 					title="Next Service Date"
 					color="#fff"
 					tickColor="white"
@@ -251,7 +255,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 				}}
 			>
 				<VerticalBarChart
-					height="130px"
+					height="166px"
 					title="Next Calibration Date"
 					color="#fff"
 					tickColor="white"

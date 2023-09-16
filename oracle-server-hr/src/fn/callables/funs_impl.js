@@ -4,24 +4,12 @@ const path = require('path');
 const os = require('os');
 const mime = require('mime');
 
-// const mammoth = require("mammoth");
-
-// const optionsPhantomjs = {
-//     "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs"
-// };
-
-// const faceapi = require('face-api.js');
-
-// const canvas = require('canvas');
 const {convertMutations} = require("../../graphql/convertMutations");
-// patch nodejs environment, we need to provide an implementation of
-// HTMLCanvasElement and HTMLImageElement
-// const {Canvas, Image, ImageData} = canvas;
-// faceapi.env.monkeyPatch({Canvas, Image, ImageData});
 // </editor-fold>
 
-global.addCustomUserClaims = (uid, claims, access_type) => {
-    const _auth = adminAuth(access_type);
+//<editor-fold desc="addCustomUserClaims">
+global.addCustomUserClaims = (uid, claims) => {
+    const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims = {}}) => {
         if (claims.access_type_list) {
             claims.access_type_list = {...(customClaims.access_type_list || {}), ...claims.access_type_list};
@@ -29,12 +17,15 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
         return _auth.setCustomUserClaims(uid, {...customClaims, ...claims});
     });
 };
+//</editor-fold>
 
-global.setCustomUserClaims = (uid, claims, access_type) => {
-    const _auth = adminAuth(access_type);
+//<editor-fold desc="setCustomUserClaims">
+global.setCustomUserClaims = (uid, claims) => {
+    const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims}) =>
       _auth.setCustomUserClaims(uid, claims));
 }
+//</editor-fold>
 
 global.isValidAccessType = (access_type) => access_type === "User" || access_type === "ContractorUser" || access_type === "Staff";
 
@@ -47,7 +38,11 @@ global.adminApp = (access_type) => {
 }
 
 global.adminAuth = (access_type) => {
-    return adminApp(access_type).auth();
+    return {
+        "User": admin,
+        "ContractorUser": admin2,
+        "Staff": admin_hr
+    }[access_type].auth();
 }
 
 exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
@@ -142,55 +137,6 @@ exports.deleteTmpImage = (uid) => {
     });
 };
 // </editor-fold>
-
-//<editor-fold desc="wordToPDF">
-// global.wordToPDF = async (dataUrl) => {
-//     if (!dataUrl)
-//         throw new Error('No source file supplied.');
-//
-//     const base64 = dataUrl.split(',')[1];
-//     const buffer = Buffer.from(base64, 'base64');//data_url
-//
-//     function docxConverter(buffer, callback) {
-//         const promise = mammoth.convertToHtml({
-//             buffer
-//         }).then(async (result) => {
-//             const html = result.value; // The generated HTML
-//             const messages = result.messages; // Any messages, such as warnings during conversion
-// //            console.log(messages);
-//             try {
-//                 const res = await new Promise((resolve, reject) => {
-//                     pdf.create(html, optionsPhantomjs).toBuffer((err, buffer) => {
-//                         if (err) {
-//                             console.log(err);
-//                             reject(err);
-//                         } else {
-//                             resolve(buffer);
-//                         }
-//                     });
-//                 });
-//                 return callback(null, res);
-//             } catch (err) {
-//                 return callback(err);
-//             }
-//         }).catch(err => {
-//             return callback(err);
-//         });
-//         promise.done();
-//     }
-//
-//     return new Promise((resolve, reject) => {
-//         docxConverter(buffer, (err, buffer) => {
-// //            console.log('wordToPDF result', buffer);
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(`data:application/pdf;base64,${buffer.toString('base64')}`);
-//             }
-//         });
-//     });
-// };
-//</editor-fold>
 
 //<editor-fold desc="sendRelay">
 global.sendRelay = async (args) => {
@@ -309,6 +255,9 @@ global.insertRelay = async ({query, operationName, input}) => {
 
 //<editor-fold desc="updateRelay">
 global.updateRelay = async ({mutation, operationName, id, attrs}) => {
+    if(attrs.id) {
+        delete attrs.id;
+    }
     return await sendRelay({
         query: mutation,
         operationName,

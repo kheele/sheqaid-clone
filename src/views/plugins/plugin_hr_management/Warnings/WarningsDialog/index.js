@@ -173,8 +173,9 @@ class Dialog extends AEmployeeDocDialog {
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
                 <div className="td">Issued By</div>
-                <div className="td">Warning Type</div>
                 <div className="td fixed-flex min-w-105">Witnesses</div>
+                <div className="td">Warning Type</div>
+                <div className="td">Details</div>
                 <div className="td fixed-flex min-w-105">Warning Date</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

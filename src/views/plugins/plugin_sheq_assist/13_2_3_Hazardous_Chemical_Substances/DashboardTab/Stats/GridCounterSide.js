@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
 import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -39,13 +40,16 @@ function Counter({background, title, count, value, label, color, sx}) {
 
 //<editor-fold desc="GridCounter">
 const CompImpl = forwardRef(({title, type, data}, ref) => {
+
+	const defaults = {aggregate: {count: 0}};
+
 	const {
-		[`risk_unclassified_${type}_list_aggregate`]: risk_unclassified_list_aggregate,
-		[`risk_low_${type}_list_aggregate`]: risk_low_list_aggregate,
-		[`risk_medium_${type}_list_aggregate`]: risk_medium_list_aggregate,
-		[`risk_high_${type}_list_aggregate`]: risk_high_list_aggregate,
-		[`risk_very_high_${type}_list_aggregate`]: risk_very_high_list_aggregate,
-	} = data;
+		[`risk_unclassified_${type}_list_aggregate`]: risk_unclassified_list_aggregate = defaults,
+		[`risk_low_${type}_list_aggregate`]: risk_low_list_aggregate = defaults,
+		[`risk_medium_${type}_list_aggregate`]: risk_medium_list_aggregate = defaults,
+		[`risk_high_${type}_list_aggregate`]: risk_high_list_aggregate = defaults,
+		[`risk_very_high_${type}_list_aggregate`]: risk_very_high_list_aggregate = defaults,
+	} = data || {};
 
 	const total = risk_unclassified_list_aggregate.aggregate.count +
 		risk_low_list_aggregate.aggregate.count +
@@ -79,11 +83,11 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 						label: "Risk Rating",
 						backgroundColors: ['primary', 'secondary', 'warning', 'info', 'success'],
 						data: [
-							risk_unclassified_list_aggregate.aggregate.count,
-							risk_low_list_aggregate.aggregate.count,
-							risk_medium_list_aggregate.aggregate.count,
-							risk_high_list_aggregate.aggregate.count,
-							risk_very_high_list_aggregate.aggregate.count,
+							getDashboardCounter(risk_unclassified_list_aggregate),
+							getDashboardCounter(risk_low_list_aggregate),
+							getDashboardCounter(risk_medium_list_aggregate),
+							getDashboardCounter(risk_high_list_aggregate),
+							getDashboardCounter(risk_very_high_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -106,9 +110,9 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_unclassified_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_unclassified_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_unclassified_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_unclassified_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '-1px 0 !important'}}/>
@@ -128,9 +132,9 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_low_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_low_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_low_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_low_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '-1px 0 !important'}}/>
@@ -150,9 +154,9 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_medium_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_medium_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_medium_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_medium_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '-1px 0 !important'}}/>
@@ -172,9 +176,9 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_high_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_high_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_high_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_high_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '-1px 0 !important'}}/>
@@ -194,9 +198,9 @@ const CompImpl = forwardRef(({title, type, data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_very_high_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_very_high_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_very_high_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_very_high_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '-1px 0 !important'}}/>
@@ -225,7 +229,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item] = data;
+	const [item = {}] = data;
 
 	return <>
 		<CompImpl

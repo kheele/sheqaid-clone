@@ -51,7 +51,7 @@ class IDOrPassportSection extends ASectionSection {
 				name="expiry_date"
 				type="date"
 				placeholder="Expiry Date"
-				valueKey="expiry_date"
+				valKey="expiry_date"
 				className="col-lg-6 pull-left-3"
 			/>
 		];

@@ -182,15 +182,19 @@ class Login {
 			const loginClients = () => {
 				if (my_site) {
 					this.loginSite(my_site.id).then(res => {
-						selectedItems.refs.sites.select(my_site);
-						this.storage.isLoaded = false;
+						execWhen(() => window.selectedItems).then(selectedItems => {
+							selectedItems.refs.sites.select(my_site);
+							this.storage.isLoaded = false;
+						});
 					});
 					return;
 				}
 				if (my_project) {
 					this.loginProject(my_project.id).then(res => {
-						selectedItems.refs.projects.select(my_project);
-						load.loadSites();
+						execWhen(() => window.selectedItems).then(selectedItems => {
+							selectedItems.refs.projects.select(my_project);
+							load.loadSites();
+						});
 					});
 					return;
 				}
@@ -202,8 +206,10 @@ class Login {
 				if (continue_) {
 					if (my_client) {
 						this.loginClient(my_client.id).then(res => {
-							selectedItems.refs.clients.select(my_client);
-							load.loadProjects();
+							execWhen(() => window.selectedItems).then(selectedItems => {
+								selectedItems.refs.clients.select(my_client);
+								load.loadProjects();
+							});
 						});
 						return;
 					}

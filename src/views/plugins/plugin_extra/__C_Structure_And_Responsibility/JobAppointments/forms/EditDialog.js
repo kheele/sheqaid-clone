@@ -45,10 +45,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee, props: {dialog: {props:{embeddedEmployee}}}} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -58,9 +58,9 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -78,8 +78,10 @@ class Controls extends React.Component {
         } = form.data;
         
         const data = {};
-        
-        ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+
+        if(!embeddedEmployee) {
+            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+        }
         ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, notes, 'notes');
@@ -106,6 +108,11 @@ class Controls extends React.Component {
         });
     }
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
     get item() {
         return this.props.state.item;
     }
@@ -115,8 +122,8 @@ class Controls extends React.Component {
             return null;
         let {
             props: {
-                onFormNext, onFormBack, onFormOpen, 
-                dialog: {renderProfileCover}
+                onFormNext, onFormBack, onFormOpen,
+                dialog: {props: {embeddedEmployee, isNewEmployee,}}
             },
             item, item: {
                 id, data: {
@@ -128,9 +135,11 @@ class Controls extends React.Component {
             }
         } = this;
         console.log('item', item)
+
+        let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                <div className="row active">
+                {!isNewEmployee && !embeddedEmployee && <div className="row active">
                     <label>
                         1. Employee
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
@@ -139,10 +148,10 @@ class Controls extends React.Component {
                         <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
-                </div>
-                <div className="row">
+                </div>}
+                <div className={`row${(isNewEmployee || embeddedEmployee) ? ' active' : ''}`}>
                     <label>
-                        2. Job Appointment Details
+                        {++idx}. Job Appointment Details
                         <Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
@@ -150,11 +159,11 @@ class Controls extends React.Component {
                         <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
-                    <NavButtons idx={2} onBack={onFormBack} onNext={onFormNext}/>
+                    <NavButtons idx={2} onBack={!isNewEmployee && !embeddedEmployee && onFormBack} onNext={onFormNext}/>
                 </div>
                 <div className="row row-doc">
                     <label>
-                        3. Document
+                        {++idx}. Document
                         <Clickable idx={3} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">

@@ -153,22 +153,26 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return contractorList.isEmpty() ? "N/A" : contractorList.join(', ');
 	}
 
-	const [{
-		all_contractor_list_aggregate,
-		all_questionnaire_list_aggregate,
-		all_documents_questionnaire_list_aggregate,
-		all_expired_questionnaire_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		all_contractor_list_aggregate = defaults,
+		all_questionnaire_list_aggregate = defaults,
+		all_documents_questionnaire_list_aggregate = defaults,
+		all_expired_questionnaire_list_aggregate = defaults,
 		//
-		active_questionnaire_list_aggregate,
-		completed_questionnaire_list_aggregate,
-		completion_requests_questionnaire_list_aggregate,
-		declined_requests_questionnaire_list_aggregate,
+		active_questionnaire_list_aggregate = defaults,
+		completed_questionnaire_list_aggregate = defaults,
+		completion_requests_questionnaire_list_aggregate = defaults,
+		declined_requests_questionnaire_list_aggregate = defaults,
 		//
-		active_questionnaire_list,
-		completed_questionnaire_list,
-		completion_requests_questionnaire_list,
-		declined_requests_questionnaire_list,
-	}] = data;
+		active_questionnaire_list = [],
+		completed_questionnaire_list = [],
+		completion_requests_questionnaire_list = [],
+		declined_requests_questionnaire_list = [],
+	} = item;
 
 	const chart = {
 		labels: ['Active Questionnaires', 'Completed Questionnaires', 'Completion Requests', 'Declined Requests'],

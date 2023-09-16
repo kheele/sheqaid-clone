@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const https = require('https');
+const {Server} = require('socket.io');
 const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
@@ -55,12 +56,26 @@ const options = {
 	cert: fs.readFileSync(process.env.CERT_PUBLIC_KEY),
 };
 
+let server;
 if(isProduction) {
-	https.createServer(options, app).listen(process.env.PORT, () => {
+	server = https.createServer(options, app);
+	server.listen(process.env.PORT, () => {
 		console.log(`Server securely listening on port ${process.env.PORT}`);
 	});
 } else {
-	const server = app.listen(process.env.PORT, () => {
-    console.log(`server started on port: ${server.address().port}`);
+	server = app.listen(process.env.PORT, () => {
+		console.log(`server started on port: ${server.address().port}`);
 	});
 }
+
+const io = new Server(server, {
+	cors: {
+		origin: '*',
+	}
+});
+io.on('connection', (socket) => {
+	console.log('a user connected');
+	socket.on('disconnect', () => {
+		console.log('user disconnected');
+	});
+});

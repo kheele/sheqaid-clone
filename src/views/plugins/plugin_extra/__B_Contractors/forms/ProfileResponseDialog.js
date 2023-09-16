@@ -424,7 +424,7 @@ class Controls extends AControls {
 		} = this;
 		console.log('item', item)
 
-		return <FormControls>
+		return <FormControls lazyLoad>
 			<Row
 				rendered
 				active

@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
-import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import MKBox from "../../../../../../components/MK/MKBox";
+import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
+import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -59,13 +60,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		priority_non_ncr_list_aggregate,
-		priority_low_ncr_list_aggregate,
-		priority_medium_ncr_list_aggregate,
-		priority_high_ncr_list_aggregate,
-		priority_critical_ncr_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		priority_non_ncr_list_aggregate = defaults,
+		priority_low_ncr_list_aggregate = defaults,
+		priority_medium_ncr_list_aggregate = defaults,
+		priority_high_ncr_list_aggregate = defaults,
+		priority_critical_ncr_list_aggregate = defaults,
+	} = item;
 
 	const total = priority_non_ncr_list_aggregate.aggregate.count +
 		priority_low_ncr_list_aggregate.aggregate.count +
@@ -99,11 +104,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Risk Rating",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'error'],
 						data: [
-							priority_non_ncr_list_aggregate.aggregate.count,
-							priority_low_ncr_list_aggregate.aggregate.count,
-							priority_medium_ncr_list_aggregate.aggregate.count,
-							priority_high_ncr_list_aggregate.aggregate.count,
-							priority_critical_ncr_list_aggregate.aggregate.count,
+							getDashboardCounter(priority_non_ncr_list_aggregate),
+							getDashboardCounter(priority_low_ncr_list_aggregate),
+							getDashboardCounter(priority_medium_ncr_list_aggregate),
+							getDashboardCounter(priority_high_ncr_list_aggregate),
+							getDashboardCounter(priority_critical_ncr_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -126,9 +131,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${priority_non_ncr_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(priority_non_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={priority_non_ncr_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(priority_non_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -148,9 +153,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${priority_low_ncr_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(priority_low_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={priority_low_ncr_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(priority_low_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -170,9 +175,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${priority_medium_ncr_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(priority_medium_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={priority_medium_ncr_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(priority_medium_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -192,9 +197,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${priority_high_ncr_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(priority_high_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={priority_high_ncr_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(priority_high_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -214,9 +219,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${priority_critical_ncr_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(priority_critical_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={priority_critical_ncr_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(priority_critical_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>

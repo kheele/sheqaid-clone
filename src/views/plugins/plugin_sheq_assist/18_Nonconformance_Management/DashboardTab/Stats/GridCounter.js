@@ -55,13 +55,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		all_ncr_list_aggregate,
-		source_site_audit_aggregate,
-		source_compliance_audit_aggregate,
-		source_inspection_aggregate,
-		source_incident_investigation_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		all_ncr_list_aggregate = defaults,
+		source_site_audit_aggregate = defaults,
+		source_compliance_audit_aggregate = defaults,
+		source_inspection_aggregate = defaults,
+		source_incident_investigation_aggregate = defaults,
+	} = item;
 
 	console.log('data', data)
 

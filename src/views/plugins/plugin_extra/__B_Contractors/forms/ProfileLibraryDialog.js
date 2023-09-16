@@ -203,7 +203,7 @@ class Controls extends React.Component {
             }
         } = this;
 
-        return <FormControls>
+        return <FormControls lazyLoad>
             <Row
                 rendered
                 active

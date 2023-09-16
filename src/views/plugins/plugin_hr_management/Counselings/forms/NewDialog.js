@@ -72,10 +72,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!isNewEmployee && !form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -85,9 +85,9 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
 
-        if (!isNewEmployee && !form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -117,7 +117,7 @@ class Controls extends React.Component {
             doc//
         } = form.data;
         const data = {
-            employee_id: employee.id,
+            employee_id: (embeddedEmployee || employee).id,
             doc: doc && doc.path,
 
             responsible_person_id: responsible_person && responsible_person.id,
@@ -159,13 +159,27 @@ class Controls extends React.Component {
         });
     }
 
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
     get employeeItem() {
         return this.props.state.item;
     }
 
     render() {
-        const {dialog: {props: {onSetSignatureSettings}}} = this.props;
-        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
+        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
             <Row
@@ -176,7 +190,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." defaultUser className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row

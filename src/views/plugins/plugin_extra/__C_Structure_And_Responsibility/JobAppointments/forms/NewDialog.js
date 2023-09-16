@@ -46,10 +46,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -59,13 +59,22 @@ class Controls extends React.Component {
     }
 
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
 
-        if (!form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
-        
+
+        if(isNewEmployee) {
+            console.log("res", form.data)
+            onSaved && onSaved(form.data);
+            infoDialog.open("Record added.");
+            infoDialog.close(2000);
+            this.props.close();
+            return;
+        }
+
         const {
             doc, //
             employee,//
@@ -74,7 +83,7 @@ class Controls extends React.Component {
             notes//
         } = form.data;
         const data = {
-            employee_id: employee.id,
+            employee_id: (embeddedEmployee || employee).id,
             doc: doc && doc.path,
 
             date: Dates.formatTimestampSQL(date),
@@ -96,15 +105,21 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "create", data).then(employee_res => {
-        //     console.log("res", employee_res)
-        //     onSaved && onSaved(employee_res);
-        //     infoDialog.open("Record successfully saved.");
-        //     infoDialog.close(2000);
-        //     this.props.close();
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
+    }
+
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
     }
 
     get employeeItem() {
@@ -112,25 +127,27 @@ class Controls extends React.Component {
     }
 
     render() {
-        const {dialog: {props: {onSetSignatureSettings}}, onFormNext, onFormBack, onFormOpen} = this.props;
+        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return <FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
                 active
                 idx={1}
-                title="1. Employee"
+                title={`${++idx}. Employee`}
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
                 <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            </Row>
+            </Row>}
             <Row
                 rendered
+                active={isNewEmployee || embeddedEmployee}
                 idx={2}
-                title="2. Job Appointment Details"
+                title={`${++idx}. Job Appointment Details`}
                 onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
+                onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
                 <ClearableInput ref="date" name="date" type="date" placeholder="JobAppointment Start Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
@@ -140,7 +157,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={3}
-                title="3. Document"
+                title={`${++idx}. Document`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
@@ -155,7 +172,7 @@ class Controls extends React.Component {
                 />
             </Row>
             <SignatureListRow
-                idx={4}
+                idx={!isNewEmployee && !embeddedEmployee ? 4 : 3}
                 pluginKey="HR"
                 module="JobAppointments"
                 onSetSignatureSettings={onSetSignatureSettings}

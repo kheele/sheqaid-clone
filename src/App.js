@@ -81,6 +81,9 @@ class App extends React.Component {
         window.isFormsApp = this.isFormsApp;
         window.isAdminApp = this.isAdminApp;
 
+        // window.socket = io("http://localhost:5000");
+        // window.socket = io("https://cloud.sheqaid.com:5000");
+
         this.onConnected = this.onConnected.bind(this);
     }
 

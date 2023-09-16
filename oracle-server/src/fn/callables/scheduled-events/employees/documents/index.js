@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const {onEmployeesExpiry} = require("./api.js");
+const {onEmployeeDocsExpiry} = require("./api.js");
 
-router.post('/onEmployeesExpiry', async (req, res) => {
+router.post('/onEmployeeDocsExpiry', async (req, res) => {
     // console.log(req.path, req.body)
-    // const data = await onEmployeesExpiry(req.body);
-    // res.json(data);
+    const data = await onEmployeeDocsExpiry(req.body);
+    res.json(data);
 });
+
+// onEmployeeDocsExpiry({});
 
 module.exports = router;
 

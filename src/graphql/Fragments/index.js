@@ -91,6 +91,8 @@ export const employee_personal_details_fragment = `
     email
     id_num
     passport_num
+    employment_num
+    employment_date
     removed
     job_position{
       id
@@ -99,6 +101,18 @@ export const employee_personal_details_fragment = `
     department{
       id
       name
+    }
+    linked_user_id
+    linked_user{
+      id
+      auth_id
+      created_at
+      profile_pic
+      fname
+      lname
+      full_name
+      phone
+      username
     }
 `;
 //</editor-fold>
@@ -115,6 +129,7 @@ export const user_personal_details_fragment = `
     phone
     username
     
+    linked_employee_id
     linked_employee {
       ${employee_personal_details_fragment}
     }

@@ -3,255 +3,314 @@ import {findDOMNode} from "react-dom";
 import {computed, extendObservable, observable} from 'mobx';
 import {observer} from 'mobx-react';
 
-import {execWhen, scrollTo} from '../../utils/Utils';
+import {execWhen, findReactComponent, scrollTo} from '../../utils/Utils';
 
 @observer
 class AFormDialog extends React.Component {
-    style;
+	style;
 
-    @observable
-    state = {item: null, onResponse: null,};
-    @observable
-    extraProps = {};
+	@observable
+	state = {item: null, onResponse: null,};
+	@observable
+	extraProps = {};
 
-    constructor(props, style) {
-        super(props);
+	constructor(props, style) {
+		super(props);
 
-        this.style = style;
-        this.onCancel = this.onCancel.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-        this.onClose = this.onClose.bind(this);
+		this.style = style;
+		this.onCancel = this.onCancel.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
+		this.open = this.open.bind(this);
+		this.close = this.close.bind(this);
+		this.onClose = this.onClose.bind(this);
 
-        this.execWhen = execWhen.bind(this);
-        this.scrollTo = scrollTo.bind(this);
-        this.onFormGotoImpl = this.onFormGotoImpl.bind(this);
-        this.onFormGoto = this.onFormGoto.bind(this);
-        this.onFormGotoNext = this.onFormGotoNext.bind(this);
-        this.onFormGotoPrev = this.onFormGotoPrev.bind(this);
-        this.onFormOpen = this.onFormOpen.bind(this);
-        this.onFormBack = this.onFormBack.bind(this);
-        this.onFormNext = this.onFormNext.bind(this);
-        this.onFormChange = this.onFormChange.bind(this);
-        
-        this.showSubmitBtn = this.showSubmitBtn.bind(this);
-        this.showCancelBtn = this.showCancelBtn.bind(this);
-        this.hideSubmitBtn = this.hideSubmitBtn.bind(this);
-        this.hideCancelBtn = this.hideCancelBtn.bind(this);
-    }
+		this.execWhen = execWhen.bind(this);
+		this.scrollTo = scrollTo.bind(this);
+		this.onFormGotoImpl = this.onFormGotoImpl.bind(this);
+		this.onFormGoto = this.onFormGoto.bind(this);
+		this.onFormGotoNext = this.onFormGotoNext.bind(this);
+		this.onFormGotoPrev = this.onFormGotoPrev.bind(this);
+		this.onFormOpen = this.onFormOpen.bind(this);
+		this.onFormBack = this.onFormBack.bind(this);
+		this.onFormNext = this.onFormNext.bind(this);
+		this.onFormChange = this.onFormChange.bind(this);
 
-    componentWillMount() {
-        !!this.style && this.style.use();
-    }
+		this.showSubmitBtn = this.showSubmitBtn.bind(this);
+		this.showCancelBtn = this.showCancelBtn.bind(this);
+		this.hideSubmitBtn = this.hideSubmitBtn.bind(this);
+		this.hideCancelBtn = this.hideCancelBtn.bind(this);
+	}
 
-    componentDidMount() {
-        setTimeout(() => {
-            const {open} = this.props;
-            open && this.open();
-        }, 0);
-    }
+	componentWillMount() {
+		!!this.style && this.style.use();
+	}
 
-    componentWillUnmount() {
-        !!this.style && this.style.unuse();
-    }
+	componentDidMount() {
+		setTimeout(() => {
+			const {open} = this.props;
+			open && this.open();
+		}, 0);
+	}
 
-    setTitle(title) {
-        setTimeout(() => {
-            this.refs.dialog.setTitle(title);
-        });
-        return this;
-    }
+	componentWillUnmount() {
+		!!this.style && this.style.unuse();
+	}
 
-    extraProp(key, val) {
-        if(!!key && !!val){
-            extendObservable(this.extraProps, {[key]: val});
-            return this;
-        } else if(!!key && val === null){
-            if(key in this.extraProps){
-                delete this.extraProps[key];
-            }
-            return this;
-        } else if(key in this.extraProps){
-            return this.extraProps[key];
-        }
-        return null;
-    }
+	setTitle(title) {
+		setTimeout(() => {
+			this.refs.dialog.setTitle(title);
+		});
+		return this;
+	}
 
-    open(item) {
-        return new Promise(async (resolve, reject) => {
-            !!item && (this.state.item = item);
+	extraProp(key, val) {
+		if (!!key && !!val) {
+			extendObservable(this.extraProps, {[key]: val});
+			return this;
+		} else if (!!key && val === null) {
+			if (key in this.extraProps) {
+				delete this.extraProps[key];
+			}
+			return this;
+		} else if (key in this.extraProps) {
+			return this.extraProps[key];
+		}
+		return null;
+	}
 
-            this.state.onResponse = resolve;
+	open(item) {
+		return new Promise(async (resolve, reject) => {
+			!!item && (this.state.item = item);
 
-            let title = isFunction(this.title) ? this.title() : this.title;
-            if(title instanceof Promise) {
-                title = await title;
-            }
-            this.refs.dialog.open(title);
+			this.state.onResponse = resolve;
 
-            if(!this.topButtonsHiddenCancel) {
-                this.execWhen(() => this.refs.cancel).then(cancel => {
-                    cancel.show();
-                });
-            }
+			this.refs.dialog.open();
 
-            const {findById} = this;
-            if(findById) {
-                const controls = await execWhen(() => this.refs.controls);
-                controls.state.item = await findById(item.id);
-            }
-        });
-    }
+			let title = isFunction(this.title) ? this.title() : this.title;
+			if (title instanceof Promise) {
+				title = await title;
+			}
+			this.refs.dialog.setTitle(title);
 
-    close() {
-        const {dialog} = this.refs;
-        dialog && dialog.close();
-    }
+			if (!this.topButtonsHiddenCancel) {
+				this.execWhen(() => this.refs.cancel).then(cancel => {
+					cancel.show();
+				});
+			}
 
-    onClose() {
-        this.extraProps = {};
-        this.state.item = null;
-    }
+			const {findById} = this;
 
-    onCancel(e, btn) {
-        this.close();
-    }
+			if (findById) {
+				const controls = await execWhen(() => this.refs.controls);
+				controls.state.item = await findById(item.id);
+			}
+		});
+	}
 
-    onSubmit(e, btn) {
-        this.refs.controls.onSubmit(e, btn, this.state.onResponse);
-    }
+	close() {
+		const {dialog} = this.refs;
+		dialog && dialog.close();
+	}
 
-    onFormGotoImpl(currRow) {
-        const curr = currRow.addClass('active');
-        currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-        currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-        this.scrollTo(curr).then(() => {
-            this.onFormChange(curr.index());
-        });
-    }
+	onClose() {
+		this.extraProps = {};
+		this.state.item = null;
+	}
 
-    onFormGoto(idx) {
-        const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row:not(.row-profile-cover, .active-always):nth-child(' + idx + ')');
-        this.onFormGotoImpl(currRow);
-    }
+	onCancel(e, btn) {
+		this.close();
+	}
 
-    onFormGotoNext() {
-        const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').next(".row:not(.row-profile-cover, .active-always)");
-        this.onFormGotoImpl(currRow);
-    }
+	onSubmit(e, btn) {
+		this.refs.controls.onSubmit(e, btn, this.state.onResponse);
+	}
 
-    onFormGotoPrev() {
-        const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').prev(".row:not(.row-profile-cover, .active-always)");
-        this.onFormGotoImpl(currRow);
-    }
+	onFormGotoImpl(currRow) {
+		const curr = currRow.addClass('active');
+		currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
+		currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
 
-    onFormOpen(e, btn) {
-        const currRow = $(e.target).closest('.row');
-        if (currRow.hasClass('active')) {
-            currRow.removeClass('active');
-        } else {
-            const curr = currRow.addClass('active');
-            currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-            currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-            this.scrollTo(curr).then(() => {
-                this.onFormChange(curr.index());
-            });
-        }
-    }
+		const currComp = findReactComponent(curr[0]);
+		if (currComp && currComp.props.lazyLoad) {
+			currComp.show();
+		}
+		this.scrollTo(curr).then(() => {
+			this.onFormChange(curr.index());
+		});
+	}
 
-    onFormBack(e, btn) {
-        const currRow = $(btn.getDOMNode ? btn.getDOMNode() : e.target).closest('.row.active');
-        currRow.removeClass('active');
-        const prev = currRow.prev(".row:not(.row-profile-cover, .active-always)").addClass('active');
-        this.scrollTo(prev).then(() => {
-            this.onFormChange(prev.index());
-        });
-    }
+	onFormGoto(idx) {
+		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row:not(.row-profile-cover, .active-always):nth-child(' + idx + ')');
+		this.onFormGotoImpl(currRow);
+	}
 
-    async onFormNext(e, btn) {
-        const {onNext} = this.refs.controls;
-        if (isFunction(onNext)) {
-            let res = onNext(e, btn);
-            if(res instanceof Promise) {
-                res = await res;
-            }
-            if(!res) return;
-        }
+	onFormGotoNext() {
+		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').next(".row:not(.row-profile-cover, .active-always)");
+		this.onFormGotoImpl(currRow);
+	}
 
-        const currRow = $(btn.getDOMNode()).closest('.row.active');
-        currRow.removeClass('active');
-        const next = currRow.next(".row:not(.row-profile-cover, .active-always)").addClass('active');
-        this.scrollTo(next).then(() => {
-            this.onFormChange(next.index());
-        });
-    }
-    
-    onFormChange(idx) {
-        const {onFormChange} = this.refs.controls;
-        isFunction(onFormChange) && onFormChange(idx + 1);
-    }
+	onFormGotoPrev() {
+		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').prev(".row:not(.row-profile-cover, .active-always)");
+		this.onFormGotoImpl(currRow);
+	}
 
-    addClass(c) {
-        setTimeout(() => {
-            const {dialog} = this.refs;
-            dialog && dialog.addClass(c);
-        });
-        return this;
-    }
-    
-    removeClass(c) {
-        setTimeout(() => {
-            const {dialog} = this.refs;
-            dialog && dialog.removeClass(c);
-        });
-        return this;
-    }
+	onFormOpen(e, btn) {
+		const {idx, lazyLoad, getFormChildren} = btn.props;
 
-    getDOMNode() {
-        return this.refs.dialog.getDOMNode();
-    }
+		const currRow = $(e.target).closest('.row');
+		if (currRow.hasClass('active')) {
+			currRow.removeClass('active');
+			if (lazyLoad) {
+				const rows = getFormChildren();
+				console.log('rows', rows)
+				const currRowComp = rows.find(row => row.props.idx === idx);
+				currRowComp && currRowComp.hide && currRowComp.hide();
+			}
+		} else {
+			const curr = currRow.addClass('active');
+			currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
+			currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
 
-    getHeader() {
-        return this.refs.dialog.getHeader();
-    }
+			if (lazyLoad) {
+				const rows = getFormChildren();
+				rows.forEach(row => {
+					const {idx: _idx, className} = row.props;
 
-    getHeaderDOMNode() {
-        return this.refs.dialog.getHeaderDOMNode();
-    }
+					if(className && (className.contains('row-profile-cover') || className.contains('active-always'))) return;
 
-    getTitleDOMNode() {
-        return this.refs.dialog.getTitleDOMNode();
-    }
+					if (_idx === idx) {
+						row.show && row.show();
+					} else {
+						row.hide && row.hide();
+					}
+				});
+			}
+			this.scrollTo(curr).then(() => {
+				this.onFormChange(curr.index());
+			});
+		}
+	}
 
-    @computed get item() {
-        return this.state.item;
-    }
-    
-    showSubmitBtn() {
-        const {submit} = this.refs;
-        submit && submit.show();
-        return this;
-    }
-    
-    showCancelBtn() {
-        const {cancel} = this.refs;
-        cancel && cancel.show();
-        return this;
-    }
-    
-    hideSubmitBtn() {
-        const {submit} = this.refs;
-        submit && submit.hide();
-        return this;
-    }
-    
-    hideCancelBtn() {
-        const {cancel} = this.refs;
-        cancel && cancel.hide();
-        return this;
-    }
-    
+	onFormBack(e, btn) {
+		const {idx, lazyLoad, getFormChildren} = btn.props;
+
+		const currRow = $(btn.getDOMNode ? btn.getDOMNode() : e.target).closest('.row.active');
+		currRow.removeClass('active');
+		if (lazyLoad) {
+			const rows = getFormChildren();
+			const currRowComp = rows.find(row => row.props.idx === idx);
+			currRowComp && currRowComp.hide && currRowComp.hide();
+		}
+
+		const prev = currRow.prev(".row:not(.row-profile-cover, .active-always)").addClass('active');
+		if (lazyLoad) {
+			const rows = getFormChildren();
+			const prevRowCompIdx = rows.indexOfWithPredicate(row => row.props.idx === idx);
+			const prevRowComp = rows[prevRowCompIdx - 1];
+			prevRowComp && prevRowComp.show && prevRowComp.show();
+		}
+		this.scrollTo(prev).then(() => {
+			this.onFormChange(prev.index());
+		});
+	}
+
+	async onFormNext(e, btn) {
+		const {onNext} = this.refs.controls;
+		if (isFunction(onNext)) {
+			let res = onNext(e, btn);
+			if (res instanceof Promise) {
+				res = await res;
+			}
+			if (!res) return;
+		}
+
+		const {idx, lazyLoad, getFormChildren} = btn.props;
+
+		const currRow = $(btn.getDOMNode()).closest('.row.active');
+		currRow.removeClass('active');
+		if (lazyLoad) {
+			const rows = getFormChildren();
+			const currRowComp = rows.find(row => row.props.idx === idx);
+			currRowComp && currRowComp.hide && currRowComp.hide();
+		}
+
+		const next = currRow.next(".row:not(.row-profile-cover, .active-always)").addClass('active');
+		if (lazyLoad) {
+			const rows = getFormChildren();
+			const nextRowCompIdx = rows.indexOfWithPredicate(row => row.props.idx === idx);
+			const nextRowComp = rows[nextRowCompIdx + 1];
+			nextRowComp && nextRowComp.show && nextRowComp.show();
+		}
+		this.scrollTo(next).then(() => {
+			this.onFormChange(next.index());
+		});
+	}
+
+	onFormChange(idx) {
+		const {onFormChange} = this.refs.controls;
+		isFunction(onFormChange) && onFormChange(idx + 1);
+	}
+
+	addClass(c) {
+		setTimeout(() => {
+			const {dialog} = this.refs;
+			dialog && dialog.addClass(c);
+		});
+		return this;
+	}
+
+	removeClass(c) {
+		setTimeout(() => {
+			const {dialog} = this.refs;
+			dialog && dialog.removeClass(c);
+		});
+		return this;
+	}
+
+	getDOMNode() {
+		return this.refs.dialog.getDOMNode();
+	}
+
+	getHeader() {
+		return this.refs.dialog.getHeader();
+	}
+
+	getHeaderDOMNode() {
+		return this.refs.dialog.getHeaderDOMNode();
+	}
+
+	getTitleDOMNode() {
+		return this.refs.dialog.getTitleDOMNode();
+	}
+
+	@computed get item() {
+		return this.state.item;
+	}
+
+	showSubmitBtn() {
+		const {submit} = this.refs;
+		submit && submit.show();
+		return this;
+	}
+
+	showCancelBtn() {
+		const {cancel} = this.refs;
+		cancel && cancel.show();
+		return this;
+	}
+
+	hideSubmitBtn() {
+		const {submit} = this.refs;
+		submit && submit.hide();
+		return this;
+	}
+
+	hideCancelBtn() {
+		const {cancel} = this.refs;
+		cancel && cancel.hide();
+		return this;
+	}
+
 }
 
 export default AFormDialog;

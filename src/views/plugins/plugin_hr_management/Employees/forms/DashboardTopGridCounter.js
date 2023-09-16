@@ -90,7 +90,7 @@ const Comp = forwardRef((
                  color="white"
                  countUpClass="color-white"
                  background={getRandomRolor()}
-                 title={<b className="color-white font-size-14">PrPDs</b>}
+                 title={<b className="color-white font-size-14">PrDPs</b>}
                  count={document_prdp_list_aggregate.aggregate.count}
         />
         <Counter size={topStatsSize}

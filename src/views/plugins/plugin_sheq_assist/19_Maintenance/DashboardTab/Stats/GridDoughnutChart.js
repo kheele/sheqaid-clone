@@ -102,33 +102,37 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		acceptance_status_pending_ncr_list_aggregate,
-		acceptance_status_approved_ncr_list_aggregate,
-		acceptance_status_rejected_ncr_list_aggregate,
-		acceptance_status_non_ncr_list_aggregate,
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		acceptance_status_pending_ncr_list_aggregate = defaults,
+		acceptance_status_approved_ncr_list_aggregate = defaults,
+		acceptance_status_rejected_ncr_list_aggregate = defaults,
+		acceptance_status_non_ncr_list_aggregate = defaults,
 		//
-		status_pending_ncr_list_aggregate,
-		status_progressed_ncr_list_aggregate,
-		status_completed_ncr_list_aggregate,
-		status_non_ncr_list_aggregate,
+		status_pending_ncr_list_aggregate = defaults,
+		status_progressed_ncr_list_aggregate = defaults,
+		status_completed_ncr_list_aggregate = defaults,
+		status_non_ncr_list_aggregate = defaults,
 		//
-		status_open_ncr_list_aggregate,
-		status_closed_ncr_list_aggregate,
+		status_open_ncr_list_aggregate = defaults,
+		status_closed_ncr_list_aggregate = defaults,
 		//
-		due_date_passed_ncr_list_aggregate,
-		due_date_notpassed_ncr_list_aggregate,
-		due_date_non_ncr_list_aggregate,
+		due_date_passed_ncr_list_aggregate = defaults,
+		due_date_notpassed_ncr_list_aggregate = defaults,
+		due_date_non_ncr_list_aggregate = defaults,
 		//
-		result_passed_ncr_list_aggregate,
-		result_failed_ncr_list_aggregate,
-		result_non_ncr_list_aggregate,
+		result_passed_ncr_list_aggregate = defaults,
+		result_failed_ncr_list_aggregate = defaults,
+		result_non_ncr_list_aggregate = defaults,
 		//
-		type_corrective_action_ncr_list_aggregate,
-		type_preventative_action_ncr_list_aggregate,
-		type_opportunity_for_improver_ncr_list_aggregate,
-		type_non_ncr_list_aggregate,
-	}] = data;
+		type_corrective_action_ncr_list_aggregate = defaults,
+		type_preventative_action_ncr_list_aggregate = defaults,
+		type_opportunity_for_improver_ncr_list_aggregate = defaults,
+		type_non_ncr_list_aggregate = defaults,
+	} = item;
 
 	return <Grid
 		container

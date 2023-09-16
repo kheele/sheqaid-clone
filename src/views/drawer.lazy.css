@@ -83,7 +83,7 @@
 }
 .drawer-container .nav-item {
     color: #adadad !important;
-    border-bottom: 1px solid rgba(75, 84, 92, 0.4) !important;
+    border-bottom: 1px solid rgba(75, 84, 92, 0.3) !important;
     margin: 0 0px 0 0px;
     padding: 7px 0 7px 5px;
     height: 52px;
@@ -96,13 +96,13 @@
 .drawer-container .nav-item:hover {
     background: none;
 }
-.drawer-container .nav-item:nth-child(odd){
-    background: rgba(47, 51, 56, 0.6);
-}
+/*.drawer-container .nav-item:nth-child(odd){*/
+/*    background: rgba(47, 51, 56, 0.6);*/
+/*}*/
 .drawer-container .nav-item > i.fa{
-    margin: -2px 5px 0 0;
+    margin: -1px 5px 0 0;
     text-align: center;
-    font-size: 24px;
+    font-size: 18px;
     height: auto;
 }
 .drawer-container .nav-item > .nav-item-title{

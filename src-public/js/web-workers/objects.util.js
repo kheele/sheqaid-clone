@@ -1,3 +1,4 @@
+
 ((self) => {
     // <editor-fold defaultstate="collapsed" desc="Default Functions. Click on the + sign on the left to edit the code."> 
     self.isNullable = function ($this) {
@@ -399,7 +400,10 @@
     };
     //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="String Functions. Click on the + sign on the left to edit the code."> 
+    // <editor-fold defaultstate="collapsed" desc="String Functions. Click on the + sign on the left to edit the code.">
+    String.prototype.formatDate = function () {
+        return Dates.formatDate(this);
+    };
     String.prototype.foreach = function (callback, doneCallback) {
         let self = this;
         let lastInx, len = 0;
@@ -739,7 +743,10 @@
     };
     //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Number Functions. Click on the + sign on the left to edit the code."> 
+    // <editor-fold defaultstate="collapsed" desc="Number Functions. Click on the + sign on the left to edit the code.">
+    Number.prototype.formatDate = function () {
+        return Dates.formatDate(this);
+    };
     Number.prototype.foreach = function (callback, doneCallback) {
         let self = this;
         let str = self.toString();

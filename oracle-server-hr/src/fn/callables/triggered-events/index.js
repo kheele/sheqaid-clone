@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const incidents = require("./incidents");
-const assets = require("./assets");
-const questionnaires = require("./questionnaires");
+const docs = require("./docs");
+const employees = require("./employees");
+const module_lists = require("./module-lists");
 
-router.use('/incidents', incidents);
-router.use('/assets', assets);
-router.use('/questionnaires', questionnaires);
+router.use('/docs', docs);
+router.use('/employees', employees);
+router.use('/module-lists', module_lists);
 
 module.exports = router;

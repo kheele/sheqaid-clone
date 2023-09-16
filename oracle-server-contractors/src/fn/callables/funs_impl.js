@@ -1,12 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const mime = require('mime');
-
 const {convertMutations} = require("../../graphql/convertMutations");
 // </editor-fold>
 
+//<editor-fold desc="addCustomUserClaims">
 global.addCustomUserClaims = (uid, claims) => {
     const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims = {}}) => {
@@ -16,12 +12,15 @@ global.addCustomUserClaims = (uid, claims) => {
         return _auth.setCustomUserClaims(uid, {...customClaims, ...claims});
     });
 };
+//</editor-fold>
 
+//<editor-fold desc="setCustomUserClaims">
 global.setCustomUserClaims = (uid, claims) => {
     const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims}) =>
       _auth.setCustomUserClaims(uid, claims));
 }
+//</editor-fold>
 
 //<editor-fold desc="sendRelay">
 global.sendRelay = async (args) => {

@@ -226,7 +226,7 @@ class Controls extends React.Component {
 
 		console.log('employee', this.item)
 
-		return <FormControls>
+		return <FormControls lazyLoad>
 			<RowOrgs
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}

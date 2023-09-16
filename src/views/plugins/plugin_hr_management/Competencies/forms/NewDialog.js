@@ -18,6 +18,7 @@ import {ANewDialog} from 'components/dialogs';
 import style from "./NewDialog.lazy.css";
 import insertEmployeeCompetency from "mutations/all/EmployeeCompetency/insertEmployeeCompetency";
 import {Dates} from "utils/Dates";
+import {SignatureListRow} from "components/SignatureComponents";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -74,10 +75,10 @@ class Controls extends React.Component {
     
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
         if(idx === 1) {
-            if (!isNewEmployee && !form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -99,10 +100,10 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee} = this;
 
         //1
-        if (!isNewEmployee && !form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }
@@ -137,7 +138,7 @@ class Controls extends React.Component {
         } = form.data;
 
         const data = { 
-            employee_id: employee.id,
+            employee_id: (embeddedEmployee || employee).id,
             issued_date: Dates.formatDateSQL(issued_date),
             expiry_date: Dates.formatDateSQL(expiry_date),
             type,
@@ -165,6 +166,16 @@ class Controls extends React.Component {
     }
     // </editor-fold>
 
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
     get isNewEmployee() {
         const {props: {dialog: {props: {isNewEmployee}}}} = this;
         return isNewEmployee;
@@ -176,7 +187,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {isNewEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
+        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
         
         return <FormControls>
             <Row 
@@ -187,7 +198,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="type" type="radio" placeholder="Certificate Type" required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.type}/>
@@ -211,6 +222,7 @@ class Controls extends React.Component {
                 title="3. Certificate Details" 
                 onFormOpen={onFormOpen} 
                 onFormBack={onFormBack}
+                onFormNext={onFormNext}
             >
                 <UploadButton 
                     name="doc" 
@@ -221,6 +233,16 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
             </Row>
+            <SignatureListRow
+              idx={4}
+              pluginKey="HR"
+              module="Competencies"
+              onSetSignatureSettings={onSetSignatureSettings}
+              onFormOpen={onFormOpen}
+              onFormBack={onFormBack}
+            >
+
+            </SignatureListRow>
         </FormControls>;
     }
     // </editor-fold>

@@ -1,13 +1,11 @@
+//<editor-fold desc="imports">
 import {observer} from "mobx-react";
 import React from "react";
 import {computed, extendObservable, observable} from "mobx";
 import CreateAndEditBar from "../../CreateAndEditBar";
 import {SliderWithChildren} from "components/lists";
-import {ProfileField, UploadButton} from "components/inputs";
-import NewDependantDialog from "./profile_forms/NewDependantDialog";
-import EditDependantDialog from "./profile_forms/EditDependantDialog";
-import NewDocLivingAddressDialog from "./profile_forms/NewDocLivingAddressDialog";
-import EditDocLivingAddressDialog from "./profile_forms/EditDocLivingAddressDialog";
+
+//</editor-fold>
 
 @observer
 class ASectionSection extends React.Component {
@@ -43,18 +41,11 @@ class ASectionSection extends React.Component {
 		if (this.isNewEmployee) {
 			dialog.open().then(newItem => {
 				if (newItem) {
-					if(type) {
+					if (type) {
 						newItem.type = type;
 					}
 					this.itemAdded(newItem);
 				}
-
-				// const {tabWrapper, tabWrapper: {index}} = this.refs;
-				// if (index === 0) {
-				//     tabWrapper.updateDashboard();
-				// } else if (index === 1) {
-				//     tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === newData.id));
-				// }
 			});
 		} else {
 			dialog.open(this.props.item).then(newItem => {
@@ -62,13 +53,6 @@ class ASectionSection extends React.Component {
 					const newData = newItem.data;
 					this.itemAdded(newData);
 				}
-
-				// const {tabWrapper, tabWrapper: {index}} = this.refs;
-				// if (index === 0) {
-				//     tabWrapper.updateDashboard();
-				// } else if (index === 1) {
-				//     tabWrapper.moveToSlide(list.indexOfWithPredicate(v => v.id === newData.id));
-				// }
 			});
 		}
 	}
@@ -152,31 +136,50 @@ class ASectionSection extends React.Component {
 			}
 		});
 	}
+
 	//</editor-fold>
 
 	//<editor-fold desc="itemAdded">
 	itemAdded(newItemData) {
-		const {state: {newList}, props: {onChange}, listName} = this;
+		const {state: {newList}, props: {onChange}, type} = this;
+		let {listName} = this;
 		const {itemData} = this;
 		if (itemData) {
 			const {[listName]: list} = itemData;
 			if (list) {
 				list.push(newItemData);
+				this.updateIndexes();
+				console.log(itemData, newItemData);
 			} else {
-				itemData[listName] = [newItemData];
+				extendObservable(itemData, {[listName]: [newItemData]});
+				console.log(listName, itemData, newItemData);
 			}
 		} else {
 			newList.push(newItemData);
+			this.updateIndexes();
+
+			if (type) {
+				listName = `${listName}__${type}`;
+			}
 			onChange && onChange(newList, listName, this);
 		}
 	}
-
 	//</editor-fold>
 
+	//<editor-fold desc="updateIndexes">
+	updateIndexes() {
+		const {slider} = this.refs;
+		setTimeout(() => slider.moveEnd());
+	}
+	//</editor-fold>
+
+	//<editor-fold desc="isNewEmployee">
 	@computed get isNewEmployee() {
 		const {isNewEmployee} = this.props;
 		return isNewEmployee;
 	}
+
+	//</editor-fold>
 
 	//<editor-fold desc="list">
 	@computed get list() {

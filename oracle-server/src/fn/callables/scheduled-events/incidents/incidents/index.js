@@ -5,8 +5,8 @@ const {onIncidentExpiry} = require("./api.js");
 
 router.post('/onIncidentExpiry', async (req, res) => {
     // console.log(req.path, req.body)
-    // const data = await onIncidentExpiry(req.body);
-    // res.json(data);
+    const data = await onIncidentExpiry(req.body);
+    res.json(data);
 });
 
 module.exports = router;

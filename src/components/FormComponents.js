@@ -93,9 +93,15 @@ class FormControls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor() {
 		super();
+
+		this.getFormChildren = this.getFormChildren.bind(this);
 	}
 
 	// </editor-fold>
+
+	getFormChildren() {
+		return Object.values(this.refs);
+	}
 
 	@computed get inputRefs() {
 		let {children} = this;
@@ -104,11 +110,17 @@ class FormControls extends React.Component {
 	}
 
 	@computed get children() {
-		const {onChange, onCountFields, lazyLoad, children} = this.props;
-		if (!onChange || !isFunction(onChange)) return React.Children.map(children, (child, index) => child);
+		const {onChange, onCountFields, lazyLoad, idx, children, form} = this.props;
 		return React.Children.map(children, (child, index) => {
 			if (!child) return null;
-			return React.cloneElement(child, {onChange, lazyLoad, onCountFields});
+			return React.cloneElement(child, {
+				ref: 'ref_row_' + index,
+				onChange,
+				form,
+				lazyLoad,
+				onCountFields,
+				getFormChildren: this.getFormChildren
+			});
 		}).filter(child => !!child);
 	}
 
@@ -138,21 +150,28 @@ class Row extends React.Component {
 	constructor() {
 		super();
 
+		this.show = this.show.bind(this);
+		this.hide = this.hide.bind(this);
 		this.onRendered = this.onRendered.bind(this);
 	}
 
 	// </editor-fold>
 
 	show() {
-		this.state.rendered = true;
+		execWhen(() => this.refs.rowSecGroup).then(ref => ref.show());
 	}
 
 	hide() {
-		this.state.rendered = false;
+		execWhen(() => this.refs.rowSecGroup).then(ref => ref.hide());
 	}
 
 	componentWillMount() {
-		this.state.rendered = !!this.props.rendered;
+		const {lazyLoad, active, rendered} = this.props;
+		if (lazyLoad) {
+			this.state.rendered = active;
+		} else {
+			this.state.rendered = !!rendered;
+		}
 	}
 
 	onNavigate(evt, btn) {
@@ -211,7 +230,10 @@ class Row extends React.Component {
 				onFormNext,
 				onFormSave,
 				lazyLoad,
-			}, children
+				form,
+				getFormChildren,
+			},
+			children
 		} = this;
 		className = (className ? (className + " ") : "") + ("row" + (active ? " active" : "") + (activeAlways ? " active-always" : ""));
 
@@ -221,22 +243,39 @@ class Row extends React.Component {
 		} else {
 			sx.gridTemplateColumns = "52px auto auto 52px !important";
 		}
-		return <MKBox className={className} sx={sx}>
+
+		const actionProps = {
+			idx,
+			getFormChildren,
+			lazyLoad,
+		};
+
+		return <MKBox id={`Row-${idx}`} dataIdx={idx} className={className} sx={sx}>
 			<label>
 				{countFields && <RowTitle ref="rowTitle" idx={idx} title={title} onCountFields={onCountFields}/>}
 				{!countFields && title}
-				<Clickable idx={idx} onClick={onFormOpen}><i
+				<Clickable {...actionProps} onClick={onFormOpen}><i
 					className="fa fa-angle-down margin-l-10 icon-right pull-right"/></Clickable>
-				{onFormNext && <Clickable idx={idx} onClick={onFormNext}>
+				{onFormNext && <Clickable {...actionProps} onClick={onFormNext}>
 					<i className="fa fa-angle-right margin-l-10 icon-right pull-right"/>
 				</Clickable>}
-				{onFormBack && <Clickable idx={idx} onClick={onFormBack}>
+				{onFormBack && <Clickable {...actionProps} onClick={onFormBack}>
 					<i className="fa fa-angle-left margin-l-10 icon-right pull-right"/>
 				</Clickable>}
 			</label>
-			<RowSecGroup ref='rowSecGroup' rendered={this.state.rendered} onRendered={this.onRendered}
-			             className={sectionClassName}>{children}</RowSecGroup>
-			<NavButtons idx={idx} onBack={onFormBack} onNext={onFormNext} onSave={onFormSave} backText={backText}
+			<RowSecGroup
+				ref='rowSecGroup'
+				rendered={this.state.rendered}
+				lazyLoad={lazyLoad}
+				{...actionProps}
+				form={form}
+				onRendered={this.onRendered}
+				className={sectionClassName}
+			>
+				{children}
+			</RowSecGroup>
+			<NavButtons {...actionProps} onBack={onFormBack} onNext={onFormNext} onSave={onFormSave}
+			            backText={backText}
 			            nextText={nextText} saveText={saveText}/>
 		</MKBox>;
 	}
@@ -307,6 +346,16 @@ class RowSecGroup extends React.Component {
 	@observable
 	state = {rendered: false};
 
+	// <editor-fold defaultstate="collapsed" desc="constructor">
+	constructor() {
+		super();
+
+		this.show = this.show.bind(this);
+		this.hide = this.hide.bind(this);
+	}
+
+	// </editor-fold>
+
 	show() {
 		this.state.rendered = true;
 	}
@@ -341,13 +390,28 @@ class RowSecGroup extends React.Component {
 		return children;
 	}
 
-	@computed get children() {
-		let {children} = this.props;
-		return children;
+	// @computed get children() {
+	// 	let {children} = this.props;
+	// 	return children;
+	// }
+
+	get children() {
+		const {form, lazyLoad, children} = this.props;
+		if (!lazyLoad || !form) return children;
+
+		return React.Children.map(children, (child, index) => {
+			if (!child) return null;
+			const {name} = child.props;
+			if(!name) return child;
+
+			const value = form.get(name);
+			console.log(name, value)
+			return React.cloneElement(child, {defaultValue: value});
+		}).filter(child => !!child);
 	}
 
 	render() {
-		let {children, className} = this.props;
+		let {children, props: {className}} = this;
 		if (!this.state.rendered) return null;
 		className = (className ? (className + " ") : "") + "row sec-group";
 		return <div key={new Date().getTime()} className={className}>
@@ -397,6 +461,8 @@ class NavButtons extends React.Component {
 	render() {
 		const {
 			idx,
+			getFormChildren,
+			lazyLoad,
 			onBack,
 			onNext,
 			onSave,
@@ -405,13 +471,32 @@ class NavButtons extends React.Component {
 			saveText = "Save & Continue"
 		} = this.props;
 
-		const next = () => <Button className="btn btn-primary padding-v-0 btn-next pull-right" text={nextText} idx={idx}
-		                           onClick={onNext}/>;
-		const save = () => <Button className="btn btn-primary padding-v-0 btn-save pull-right" text={saveText} idx={idx}
-		                           onClick={onSave}/>;
-		return <React.Fragment>
+		const actionProps = {
+			idx,
+			getFormChildren,
+			lazyLoad,
+		};
+
+		const next = () => <Button
+			{...actionProps}
+			className="btn btn-primary padding-v-0 btn-next pull-right"
+			text={nextText}
+			onClick={onNext}
+		/>;
+		const save = () => <Button
+			{...actionProps}
+			className="btn btn-primary padding-v-0 btn-save pull-right"
+			text={saveText}
+			onClick={onSave}
+		/>;
+		return <>
 			<hr/>
-			{onBack && <Button className="btn btn-primary btn-back pull-left" text={backText} idx={idx} onClick={onBack}/>}
+			{onBack && <Button
+				{...actionProps}
+				className="btn btn-primary btn-back pull-left"
+				text={backText}
+				onClick={onBack}
+			/>}
 			{(onNext && onSave) &&
 				<MKBox sx={{display: "flex"}} className="next-and-save-buttons flex pull-right grid-gap-10">
 					{next()}{save()}
@@ -421,7 +506,7 @@ class NavButtons extends React.Component {
 					<MKBox className="pull-right" sx={{visibility: "hidden"}}/>{save()}
 				</MKBox>}
 			{(onNext && !onSave) && next()}
-		</React.Fragment>;
+		</>;
 	}
 }
 

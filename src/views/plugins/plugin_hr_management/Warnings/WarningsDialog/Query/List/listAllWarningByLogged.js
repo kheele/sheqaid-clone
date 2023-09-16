@@ -41,6 +41,8 @@ export default (
     view = 'Employee',
     mon, mon2, mon3,
     expiry_date = 'ALL',
+    date_range,
+    date,
     removed = false,
     //
     department_id,
@@ -48,6 +50,10 @@ export default (
     team_id,
     supervisor_id,
     employee_id,
+    //
+    issued_by_id,
+    witness_id,
+    type,
     //
     site_id, project_id, client_id,
     //
@@ -58,12 +64,18 @@ export default (
     view,
     mon, mon2, mon3,
     expiry_date,
+    date_range,
+    date,
     //
     department_id,
     job_position_id,
     team_id,
     supervisor_id,
     employee_id,
+    //
+    issued_by_id,
+    witness_id,
+    type,
     //
     site_id, project_id, client_id,
     //

@@ -14,6 +14,9 @@
     margin-top: -50px;
     border: none;
 }
+#dialog-overlay.AEmployeeDocDialog-dialog .ActiveTab-tab > .page-title > .page-back-btn.fa {
+    display: none !important;
+}
 
 #dialog-overlay.AEmployeeDocDialog-dialog .table{
     width: 100%;

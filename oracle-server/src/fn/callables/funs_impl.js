@@ -16,6 +16,7 @@ const {convertMutations} = require("../../graphql/convertMutations");
 const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 // </editor-fold>
 
+//<editor-fold desc="addCustomUserClaims">
 global.addCustomUserClaims = (uid, claims, access_type) => {
     if(access_type === 'ContractorUser') {
         return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/addCustomUserClaims`, {
@@ -44,7 +45,9 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
         return _auth.setCustomUserClaims(uid, {...customClaims, ...claims});
     });
 };
+//</editor-fold>
 
+//<editor-fold desc="setCustomUserClaims">
 global.setCustomUserClaims = (uid, claims, access_type) => {
     if(access_type === 'ContractorUser') {
         return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/setCustomUserClaims`, {
@@ -69,7 +72,9 @@ global.setCustomUserClaims = (uid, claims, access_type) => {
     return _auth.getUser(uid).then(({customClaims}) =>
       _auth.setCustomUserClaims(uid, claims));
 }
+//</editor-fold>
 
+//<editor-fold desc="createCustomToken">
 global.createCustomToken = (uid, data) => {
     const {access_type} = data;
     if(access_type === 'ContractorUser') {
@@ -93,19 +98,16 @@ global.createCustomToken = (uid, data) => {
 
     return admin.auth().createCustomToken(uid, {access_type});
 }
+//</editor-fold>
 
 global.isValidAccessType = (access_type) => access_type === "User" || access_type === "ContractorUser" || access_type === "Staff";
 
-global.adminApp = (access_type) => {
+global.adminAuth = (access_type) => {
     return {
         "User": admin,
         "ContractorUser": admin2,
         "Staff": admin_hr
-    }[access_type];
-}
-
-global.adminAuth = (access_type) => {
-    return adminApp(access_type).auth();
+    }[access_type].auth();
 }
 
 exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
@@ -340,6 +342,9 @@ global.insertRelay = async ({query, operationName, input}) => {
 
 //<editor-fold desc="updateRelay">
 global.updateRelay = async ({mutation, operationName, id, attrs}) => {
+    if(attrs.id) {
+        delete attrs.id;
+    }
     return await sendRelay({
         query: mutation,
         operationName,

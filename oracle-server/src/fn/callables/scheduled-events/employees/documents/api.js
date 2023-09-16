@@ -1,19 +1,32 @@
 const {send: send__users} = require("./send__users");
 const {send: send__employees} = require("./send__employees");
 
+const fragment_attr = {
+	receive_employees_expired_docs_medicals: `
+		#date
+		annexture_3
+		restrictions
+	`,
+	// receive_employees_expired_docs_medicals: `
+	// 	date
+	// 	annexture_3
+	// 	restrictions
+	// `,
+};
+
 //<editor-fold desc="where">
 const where_expired = `
-    doc_version_list: {expiry: {_lte: $today_date}},
+    expiry_date: {_lte: $today_date},
     removed:{_eq: false},
 `;
 
 const where_month_expiry = `
-    doc_version_list: {expiry: {_gt: $today_date, _lte: $mon_date}},
+    expiry_date: {_gt: $today_date, _lte: $mon_date},
     removed:{_eq: false},
 `;
 
 const where_no_expiry = `
-    doc_version_list: {expiry: {_is_null: true}},
+    expiry_date: {_is_null: true},
     removed:{_eq: false},
 `;
 //</editor-fold>
@@ -40,35 +53,41 @@ const simple_orgs_fragment = `
 //</editor-fold>
 
 //<editor-fold desc="fragment">
-const fragment = `
+const fragment = ({notification_key}) => `
   id
   created_at
-  name
-  desc
-  category
-  
-  doc_version_list(order_by:{expiry: desc_nulls_last}){
-      id
-      expiry
-      doc_num
-      type
-      doc
-  }
-  latest_version: doc_version_list(order_by:{expiry: desc_nulls_last}, limit: 1){
-      id
-      expiry
-      doc_num
-      type
-      doc
-  }
-  
-  contractor{
+  expiry_date
+  expiry_updated
+  doc
+  removed
+  ${fragment_attr[notification_key]}
+  employee{
+    id
+    full_name
+    sex
+    dob
+    id_num
+    passport_num
+    email
+    phone
+    employment_num
+    employment_date
+    department{
       id
       name
+    }
+    job_position{
+      id
+      name
+    }
+  }
+  contractor{
+    id
+    name
   }
   contractor_site{
-      id
-      name
+    id
+    name
   }
   
   ${simple_orgs_fragment}
@@ -76,139 +95,131 @@ const fragment = `
 //</editor-fold>
 
 //<editor-fold desc="lists_fragment">
-const lists_fragment = `
-  #list_template
-  list_template_expired:contractor_questionnaire_template_list(
+const lists_fragment = ({list, notification_key}) => `
+  #${list}
+  ${list}_expired:${list}(
     where: {
         ${where_expired} 
     },
-    order_by: {company: {name: asc}, client: {name: asc}, name: asc}
+    order_by: {company: {name: asc}, client: {name: asc}}
   ){
-    ${fragment}
+    ${fragment({notification_key})}
   }
-  list_template_month_expiry:contractor_questionnaire_template_list(
+  ${list}_month_expiry:${list}(
     where: {
         ${where_month_expiry} 
     },
-    order_by: {company: {name: asc}, client: {name: asc}, name: asc}
+    order_by: {company: {name: asc}, client: {name: asc}}
   ){
-    ${fragment}
+    ${fragment({notification_key})}
   }
-  list_template_no_expiry:contractor_questionnaire_template_list(
+  ${list}_no_expiry:${list}(
     where: {
         ${where_no_expiry} 
     },
-    order_by: {company: {name: asc}, client: {name: asc}, name: asc}
+    order_by: {company: {name: asc}, client: {name: asc}}
   ){
-    ${fragment}
+    ${fragment({notification_key})}
   }
 `;
 //</editor-fold>
 
 //<editor-fold desc="orgs_fragment">
-const orgs_fragment = `
+const orgs_fragment = ({list, notification_key}) => `
     company{
         id
         name
-        ${lists_fragment}
+        ${lists_fragment({list, notification_key})}
     }
     client{
         id
         name
-        ${lists_fragment}
+        ${lists_fragment({list, notification_key})}
     }
     project{
         id
         name
-        ${lists_fragment}
+        ${lists_fragment({list, notification_key})}
     }
     site{
         id
         name
-        ${lists_fragment}
+        ${lists_fragment({list, notification_key})}
     }
 `;
 //</editor-fold>
 
 //<editor-fold desc="user_fragment">
-const user_fragment = ` 
+const user_fragment = ({list, notification_key}) => ` 
     id
     fname
     lname
     username
     notifications_settings{
-        receive_contractor_management_notifs
+        ${notification_key}
     }
-    ${orgs_fragment}
+    ${orgs_fragment({list, notification_key})}
 `;
 //</editor-fold>
 
 //<editor-fold desc="employee_fragment">
-const employee_fragment = `
+const employee_fragment = ({list, notification_key}) => `
     id
     fname
     lname
     email
-    ${orgs_fragment}
+    ${orgs_fragment({list, notification_key})}
 `;
 //</editor-fold>
 
 //<editor-fold desc="query">
-const query = `
-query getEmployeesExpiryQuery($today_date: date, $mon_date: date) {
+const query = ({list, notification_key}) => `
+query onEmployeeDocsExpiryQuery($today_date: date, $mon_date: date) {
   user_list:default_users_connection(
       where: {
           removed: {_eq: false}, 
-          notifications_settings: {receive_contractor_management_notifs: {_eq: true}},
+          notifications_settings: {${notification_key}: {_eq: true}},
           _or:[
             {
               site: {
-                contractor_questionnaire_template_list: {
-                  doc_version_list: {
-                    _or:[
-                      {expiry: {_is_null: true}},
-                      {expiry: {_lte: $mon_date}}
-                    ]
-                  },
+                ${list}: {
+                  _or:[
+                    {expiry_date: {_is_null: true}},
+                    {expiry_date: {_lte: $mon_date}}
+                  ],
                   removed:{_eq: false},
                 }
               },
             },
             {
               project: {
-                contractor_questionnaire_template_list: {
-                  doc_version_list: {
-                    _or:[
-                      {expiry: {_is_null: true}},
-                      {expiry: {_lte: $mon_date}}
-                    ]
-                  },
+                ${list}: {
+                  _or:[
+                    {expiry_date: {_is_null: true}},
+                    {expiry_date: {_lte: $mon_date}}
+                  ],
                   removed:{_eq: false},
                 }
               },
             },
             {
               client: {
-                contractor_questionnaire_template_list: {
-                  doc_version_list: {
-                    _or:[
-                      {expiry: {_is_null: true}},
-                      {expiry: {_lte: $mon_date}}
-                    ]
-                  },
+                ${list}: {
+                  _or:[
+                    {expiry_date: {_is_null: true}},
+                    {expiry_date: {_lte: $mon_date}}
+                  ],
                   removed:{_eq: false},
                 }
               },
             },
             {
               company: {
-                contractor_questionnaire_template_list: {
-                  doc_version_list: {
-                    _or:[
-                      {expiry: {_is_null: true}},
-                      {expiry: {_lte: $mon_date}}
-                    ]
-                  },
+                ${list}: {
+                  _or:[
+                    {expiry_date: {_is_null: true}},
+                    {expiry_date: {_lte: $mon_date}}
+                  ],
                   removed:{_eq: false},
                 }
               }
@@ -218,7 +229,7 @@ query getEmployeesExpiryQuery($today_date: date, $mon_date: date) {
   ){
     edges{
       node{
-        ${user_fragment}
+        ${user_fragment({list, notification_key})}
       }
     }
   }
@@ -226,13 +237,16 @@ query getEmployeesExpiryQuery($today_date: date, $mon_date: date) {
 `;
 //</editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="onEmployeesExpiry">
-exports.onEmployeesExpiry = async (data) => {
+// <editor-fold defaultstate="collapsed" desc="onEmployeeDocsExpiry">
+exports.onEmployeeDocsExpiry = async (data) => {
 	// await authorize();
 
 	const item = await getRelayOne({
-		query,
-		operationName: "getEmployeesExpiryQuery",
+		query: query({
+			list: 'medical_list',
+			notification_key: 'receive_employees_expired_docs_medicals',
+		}),
+		operationName: "onEmployeeDocsExpiryQuery",
 		variables: {
 			today_date: new Date(),
 			mon_date: new Date().addMonths(1),
@@ -244,7 +258,7 @@ exports.onEmployeesExpiry = async (data) => {
 		return;
 	}
 
-	console.log('onEmployeesExpiry', item)
+	console.log('onEmployeeDocsExpiry', item)
 
 	const {
 		user_list = [],
@@ -252,7 +266,7 @@ exports.onEmployeesExpiry = async (data) => {
 	} = item;
 
 	if(!user_list.isEmpty()) {
-		// await send__users(user_list);
+		await send__users(user_list);
 	}
 
 	if(!employee_list.isEmpty()) {

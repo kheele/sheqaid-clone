@@ -170,11 +170,8 @@ class Dialog extends AEmployeeDocDialog {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
-                <div className="td fixed-flex min-w-140">Leave Type</div>
-                <div className="td fixed-flex min-w-120">Leave Due To</div>
-                <div className="td">Reason Of Leave</div>
-                <div className="td fixed-flex min-w-120 font-size-12">Days Booked</div>
-                <div className="td fixed-flex min-w-105">Start Date</div>
+                <div className="td">Notes</div>
+                <div className="td fixed-flex min-w-105">Date</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;

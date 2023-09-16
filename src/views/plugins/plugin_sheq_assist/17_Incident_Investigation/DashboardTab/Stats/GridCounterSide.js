@@ -5,9 +5,10 @@ import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import Divider from "@mui/material/Divider";
-import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import MKBox from "../../../../../../components/MK/MKBox";
+import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
+import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -59,13 +60,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		risk_rating_non_incident_list_aggregate,
-		risk_rating_low_incident_list_aggregate,
-		risk_rating_medium_incident_list_aggregate,
-		risk_rating_high_incident_list_aggregate,
-		risk_rating_extreme_incident_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		risk_rating_non_incident_list_aggregate = defaults,
+		risk_rating_low_incident_list_aggregate = defaults,
+		risk_rating_medium_incident_list_aggregate = defaults,
+		risk_rating_high_incident_list_aggregate = defaults,
+		risk_rating_extreme_incident_list_aggregate = defaults,
+	} = item;
 
 	const total = risk_rating_non_incident_list_aggregate.aggregate.count +
 		risk_rating_low_incident_list_aggregate.aggregate.count +
@@ -79,7 +84,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	const risk_rating_high_incident_list_aggregate_perc = ((risk_rating_high_incident_list_aggregate.aggregate.count / total) * 100).toFixed(1);
 	const risk_rating_extreme_incident_list_aggregate_perc = ((risk_rating_extreme_incident_list_aggregate.aggregate.count / total) * 100).toFixed(1);
 
-	console.log('data', data)
+	console.log('item', item)
 
 	return <>
 		<Grid
@@ -99,11 +104,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Risk Rating",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'error'],
 						data: [
-							risk_rating_non_incident_list_aggregate.aggregate.count,
-							risk_rating_low_incident_list_aggregate.aggregate.count,
-							risk_rating_medium_incident_list_aggregate.aggregate.count,
-							risk_rating_high_incident_list_aggregate.aggregate.count,
-							risk_rating_extreme_incident_list_aggregate.aggregate.count,
+							getDashboardCounter(risk_rating_non_incident_list_aggregate),
+							getDashboardCounter(risk_rating_low_incident_list_aggregate),
+							getDashboardCounter(risk_rating_medium_incident_list_aggregate),
+							getDashboardCounter(risk_rating_high_incident_list_aggregate),
+							getDashboardCounter(risk_rating_extreme_incident_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -126,9 +131,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_rating_non_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_rating_non_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_rating_non_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_rating_non_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -148,9 +153,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_rating_low_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_rating_low_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_rating_low_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_rating_low_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -170,9 +175,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_rating_medium_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_rating_medium_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_rating_medium_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_rating_medium_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -192,9 +197,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_rating_high_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_rating_high_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_rating_high_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_rating_high_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>
@@ -214,9 +219,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${risk_rating_extreme_incident_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(risk_rating_extreme_incident_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={risk_rating_extreme_incident_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(risk_rating_extreme_incident_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.91rem 0'}}/>

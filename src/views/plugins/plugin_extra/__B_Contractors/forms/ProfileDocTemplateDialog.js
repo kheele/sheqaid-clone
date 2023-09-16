@@ -169,7 +169,7 @@ class Controls extends React.Component {
 
 		const {isConsultant, isNoProjects} = storage.is;
 
-		return <FormControls>
+		return <FormControls lazyLoad>
 			{!isNoProjects && <Row
 				rendered
 				active

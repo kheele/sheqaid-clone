@@ -64,33 +64,35 @@ const Comp = forwardRef(({data: __data}, ref) => {
         return null;
     }
 
+    const defaults = {aggregate: {count: 0}};
+
     const {
-        status_not_started_aggregate,
-        status_outstanding_aggregate,
-        status_in_progress_aggregate,
-        status_completed_aggregate,
+        status_not_started_aggregate = defaults,
+        status_outstanding_aggregate = defaults,
+        status_in_progress_aggregate = defaults,
+        status_completed_aggregate = defaults,
 
-        results_passed_aggregate,
-        results_failed_aggregate,
-        results_average_aggregate,//avg:{result}
+        results_passed_aggregate = defaults,
+        results_failed_aggregate = defaults,
+        results_average_aggregate = {aggregate:{avg:{result: 0}}},//avg:{result}
 
-        training_provider_requirement_accredited_aggregate,
-        training_provider_requirement_non_accredited_aggregate,
+        training_provider_requirement_accredited_aggregate = defaults,
+        training_provider_requirement_non_accredited_aggregate = defaults,
 
-        employee_gender_male_aggregate,
-        employee_gender_female_aggregate,
+        employee_gender_male_aggregate = defaults,
+        employee_gender_female_aggregate = defaults,
 
-        training_requirement_compulsory_aggregate,
-        training_requirement_optional_aggregate,
+        training_requirement_compulsory_aggregate = defaults,
+        training_requirement_optional_aggregate = defaults,
 
-        legal_requirement_yes_aggregate,
-        legal_requirement_no_aggregate,
+        legal_requirement_yes_aggregate = defaults,
+        legal_requirement_no_aggregate = defaults,
 
-        training_provider_external_aggregate,
-        training_provider_internal_aggregate,
+        training_provider_external_aggregate = defaults,
+        training_provider_internal_aggregate = defaults,
 
-        competency_evaluation_on_day_of_evaluation_aggregate,
-        competency_evaluation_last_day_of_evaluation_aggregate,
+        competency_evaluation_on_day_of_evaluation_aggregate = defaults,
+        competency_evaluation_last_day_of_evaluation_aggregate = defaults,
     } = data; //stats_top_doughnut_chart;
 
     return <Grid

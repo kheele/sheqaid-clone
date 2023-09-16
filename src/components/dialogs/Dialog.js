@@ -16,7 +16,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {ThemeProvider} from "@mui/material/styles";
 
 function isDescendant(parent, child) {
-    var node = child.parentNode;
+    let node = child.parentNode;
 
     while (node !== null) {
         if (node === parent)

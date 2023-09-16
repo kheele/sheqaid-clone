@@ -1,5 +1,5 @@
 import GQLClient from "graphql/GQLClient";
-import {orgs_fragment, employee_personal_details_fragment} from "../../../../Query/Fragments";
+import {employee_personal_details_fragment, orgs_fragment} from "graphql/Fragments";
 import {getVariablesAndQueryConfig} from "../../../../Query/Utils";
 
 //<editor-fold desc="counselling_inc_fragment">
@@ -39,6 +39,7 @@ export default (
     view = 'Employee',
     mon, mon2, mon3,
     expiry_date = 'ALL',
+    date_range,
     removed = false,
     //
     department_id,
@@ -46,6 +47,10 @@ export default (
     team_id,
     supervisor_id,
     employee_id,
+    //
+    responsible_person,
+    types,
+    reasons,
     //
     site_id, project_id, client_id,
     //
@@ -56,12 +61,17 @@ export default (
     view,
     mon, mon2, mon3,
     expiry_date,
+    date_range,
     //
     department_id,
     job_position_id,
     team_id,
     supervisor_id,
     employee_id,
+    //
+    responsible_person,
+    types,
+    reasons,
     //
     site_id, project_id, client_id,
     //

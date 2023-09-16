@@ -6,46 +6,74 @@ const createSheets = async ({sheets, list, sheetName, onProcess}) => {
 			{
 				id,
 				created_at,
-				//1
-				type,
-				priority,
-				//2
-				desc, process,
-				//3
-				due_date, responsible_person, approving_person,
-				//4
-				document_list,
-				//5
-				comments, remarks,
-				//6
-				progress_list,
-				//7
-				status_acceptance, status, result, completed_date, additional_notes,
 				//
-				client, project, site,
+				company,
+				client,
+				project,
+				site,
+				//
+				expiry_date,
+				expiry_updated,
+				doc,
+				employee: {
+					full_name,
+					sex,
+					dob,
+					id_num,
+					passport_num,
+					email,
+					phone,
+					employment_num,
+					employment_date,
+					department,
+					job_position,
+				},
+
+				removed,
+				//
+				date,
+				annexture_3,
+				restrictions,
 			}, idx
 		) => {
 
 			const res = {
 				idx: idx + 1,
 				id: id,
-				company_name: client && client.name || "",
-				project_name: project && project.name || "",
-				site_name: site && site.name || "",
 
-				responsible_person_name: responsible_person ? (responsible_person.lname + " " + responsible_person.fname) : "N/A",
-				approving_person_name: approving_person ? (approving_person.lname + " " + approving_person.fname) : "N/A",
+				company: client && client.name || "",
+				project: project && project.name || "",
+				site: site && site.name || "",
 
-				type: type || "",
-				priority: priority || "N/A",
+				job_position: job_position && job_position.name,
+				// department: department && department.name,
+				// supervisor: supervisor && supervisor.full_name,
 
-				desc: desc || "N/A",
-				status_acceptance: status_acceptance || "",
-				status: status || "",
-				completed_date: completed_date || "",
+				id,
+				full_name,
+				id_or_passport: id_num || passport_num,
+				// dob: Dates.formatDate(dob),
+				// sex,
+				// phone,
+				// email,
+
+				employment_num,
+				employment_date: Dates.formatDate(employment_date),
+
+				//
+				// ...otherVals,
+				expiry_date: Dates.formatDate(expiry_date),
+				// expiry_updated,
+				// doc: doc && doc.dlUrls ? doc.dlUrls[0] : '',
+
+				status: removed ? "Inactive" : "Active",
+				//
+				date: Dates.formatDate(date),
+				annexture_3,
+				restrictions,
 			};
 
-			onProcess(res, due_date);
+			onProcess(res, expiry_date);
 
 			return res;
 		});
@@ -57,24 +85,24 @@ const createSheets = async ({sheets, list, sheetName, onProcess}) => {
 
 exports.send_no_expiry = async ({sheets, list}) => {
 	return createSheets({
-		sheets, list, sheetName: `Non-Conformances-With-No-Expiry`, onProcess: (res) => res.due_date = "N/A"
+		sheets, list, sheetName: `Medicals-With-No-Expiry`, onProcess: (res) => res.expiry_date = "N/A"
 	});
 };
 
 exports.send_to_expire = async ({sheets, list}) => {
 	return createSheets({
-		sheets, list, sheetName: `Non-Conformances-To-Expire-In-Month`, onProcess: (res, due_date) => {
-			res.due_date = Dates.formatDate(due_date);
-			res.days_left = moment(Dates.parse(due_date)).fromNow();
+		sheets, list, sheetName: `Medicals-To-Expire-In-Month`, onProcess: (res, expiry_date) => {
+			res.expiry_date = Dates.formatDate(expiry_date);
+			res.days_left = moment(Dates.parse(expiry_date)).fromNow();
 		}
 	});
 };
 
 exports.send_expired = async ({sheets, list}) => {
 	return createSheets({
-		sheets, list, sheetName: `Non-Conformances-Expired`, onProcess: (res, due_date) => {
-			res.due_date = Dates.formatDate(due_date);
-			res.days_passed = moment(Dates.parse(due_date)).fromNow();
+		sheets, list, sheetName: `Medicals-Expired`, onProcess: (res, expiry_date) => {
+			res.expiry_date = Dates.formatDate(expiry_date);
+			res.days_passed = moment(Dates.parse(expiry_date)).fromNow();
 		}
 	});
 };

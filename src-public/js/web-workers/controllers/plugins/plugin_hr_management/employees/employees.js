@@ -10,30 +10,16 @@
 				}, "plugin_sheq_assist/employees/",
 			);
 
-			this.filter_by_notification_key = this.filter_by_notification_key.bind(this);
-
 			const {addAction} = this;
 
 			addAction("import/file", this.importFile.bind(this));
 			addAction("import/create", this.createImported.bind(this));
 			addAction("send-app-link", this.send_app_link.bind(this));
 
-			addAction("active/dashboard/count", this.active_dashboard_count.bind(this));
-			addAction("removed/dashboard/count", this.removed_dashboard_count.bind(this));
-
 			addAction("transfer", this.transfer.bind(this));
-			addAction("select/filter", this.filter_select.bind(this));
-
-			addAction("list/search_by_name", this.search_by_name.bind(this));
-
-			addAction("list/filter", this.filter.bind(this));
 
 			addAction("remove/bulk", this.bulk_remove.bind(this));
 			addAction("removed/re-instead", this.re_instead.bind(this));
-			addAction("removed/list", this.list_removed.bind(this));
-			addAction("removed/list/filter", this.list_removed_filter.bind(this));
-
-//            EmployeeTransferFuns.run.call(this);
 		}
 
 		// </editor-fold>
@@ -42,7 +28,7 @@
 			return db_hr;
 		}
 
-		// <editor-fold defaultstate="collapsed" desc="importFile, createImported">
+		// <editor-fold defaultstate="collapsed" desc="importFile">
 		async importFile(evt, path) {
 			const validHeaderNames = [
 				{key: 'fname', value: ['First Name', 'Name'], required: true},
@@ -106,7 +92,9 @@
 			res.sortBy('lname');
 			return res.distinct();
 		}
+		// </editor-fold>
 
+		//<editor-fold desc="createImported">
 		async createImported(evt, list) {
 			return Events.whenLoggedIn(async loggedUser => {
 				const emails = list.filter(({email}) => !!email).map(({email}) => email.toLowerCase());
@@ -127,536 +115,61 @@
 				}));
 			});
 		}
+		//</editor-fold>
 
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="create">
-		async create(evt, data) {
+		// <editor-fold defaultstate="collapsed" desc="send_app_link">
+		async send_app_link(evt, id) {
 			return Events.whenLoggedIn(async loggedUser => {
-				if (data.email) {
-					data.email = data.email.toLowerCase();
-				}
-				const {email, phone} = data;
-				data.access_type = "Staff";
-				data.removed = false;
-				data.notifications_removed = false;
+				const item = await this.find_by_id(null, id);
+				if (item) {
+					let {id, data: {password, email, fname, lname}} = item;
+					if (email) {
+//                        if (!password) {
+//                            password = uuidv4();
+//                            password = password.substring(0, password.indexOf('-'));
+//
+//                            const doc_ref = await this.getDB().collection(this.tbl).doc(id);
+//                            let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
+//                            if (!doc_snapshot.exists) {
+//                                return null;
+//                            }
+//
+//                            const updated = await doc_ref.update({password});//Promise < void >
+//                        }
+//                        const opts = {
+//                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
+//                            to: email,
+//                            subject: 'SHEQ Aid Application Link',
+//                            html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
+//                                <p>If you have not yet used SHEQ Aid Application, please use the link below to download the application.</p>\n\
+//                                <p>Your SHEQ Aid Username is <b>' + email + '</b>, Password is <b>' + password + '</b></p>\n\
+//                                ' + Utils.getAppDownloadOptionMsg()
+//                        };
+//                        await Utils.sendEmail(opts);
 
-				const getDBUser = async (uid) => {
-					const doc_ref = await this.getDB().collection('default_users').doc(uid);
-					const snapshot = await doc_ref.get();
-					return {snapshot, doc_ref};
-				};
-				const getAuthUid = async (key, value, returnDup, fn) => {
-					const snapshot = await this.getDB().collection(this.tbl).where(key, '==', value).limit(1).get();
-					if (!snapshot.empty) {
-						return returnDup;
+						return true;
 					}
-
-					const getUserUidByFN = functions.httpsCallable(`callables-${fn}`);
-					const res = await getUserUidByFN(email);
-					if (res && res.data) {
-						return res.data;
-					}
-				};
-
-				if (email) {
-					const res = await getAuthUid('email', email, 'EMAIL_DUP', 'getUserUidByEmail');
-					if (res === "EMAIL_DUP") {
-						return res;
-					} else if (res) {
-						data.auth_uid = res;
-					}
-				}
-				if (phone) {
-					const res = await getAuthUid('phone', phone, 'PHONE_DUP', 'getUserUidByPhone');
-					if (res === "PHONE_DUP") {
-						return res;
-					} else if (res) {
-						data.auth_uid = res;
-					}
+					return "NO_EMAIL";
 				}
 
-				this.injectSavable(evt, loggedUser, data);
-				const {user_id, company_id, created_at} = data;
-
-				const {
-					site,
-					project,
-					client,
-					optional_info,
-					documents,
-					profile_pic,
-
-					fname, lname,
-					permissions_modules, permissions_other
-				} = data;
-				if (profile_pic) {
-					delete data.profile_pic;
-				}
-
-				let living_addr_doc, banking_doc;
-				if (optional_info) {
-					if (optional_info.living_addr_doc) {
-						living_addr_doc = optional_info.living_addr_doc;
-						delete optional_info.living_addr_doc;
-					}
-					if (optional_info.banking_doc) {
-						banking_doc = optional_info.banking_doc;
-						delete optional_info.banking_doc;
-					}
-				}
-				let doc_id_or_passport, doc_driver_or_operator_licence, doc_pdrp, doc_work_permit;
-				if (documents) {
-					if (documents.doc_id_or_passport) {
-						doc_id_or_passport = documents.doc_id_or_passport;
-						delete documents.doc_id_or_passport;
-					}
-					if (documents.doc_driver_or_operator_licence) {
-						doc_driver_or_operator_licence = documents.doc_driver_or_operator_licence;
-						delete documents.doc_driver_or_operator_licence;
-					}
-					if (documents.doc_pdrp) {
-						doc_pdrp = documents.doc_pdrp;
-						delete documents.doc_pdrp;
-					}
-					if (documents.doc_work_permit) {
-						doc_work_permit = documents.doc_work_permit;
-						delete documents.doc_work_permit;
-					}
-				}
-
-				if (!site || site === 'All') {
-					data.site = null;
-					data.site_id = null;
-				} else if (site) {
-					data.site_id = site.id;
-				}
-				if (!project || project === 'All') {
-					data.project = null;
-					data.project_id = null;
-				} else if (project) {
-					data.project_id = project.id;
-				}
-				if (!client || client === 'All') {
-					data.client = null;
-					data.client_id = null;
-				} else if (client) {
-					data.client_id = client.id;
-				}
-				if (optional_info) {
-					const {department, job_position} = optional_info;
-					if (department && typeof department === 'string') {
-						let val = await Events.get('plugin_sheq_assist/employees/departments/').then(departments => {
-							return departments.search_by_name(evt, department);
-						});
-						if (val && !val.isEmpty()) {
-							val = val[0];
-							optional_info.department = {id: val.id, name: val.data.name};
-						} else {
-							const _data = {name: department, user_id, company_id, created_at};
-							const department_doc_ref = await this.getDB().collection('plugin_sheq_assist_departments').add(_data);//Promise < DocumentReference < T > >
-							const department_doc_snapshot = await department_doc_ref.get();//Promise < DocumentSnapshot < T > >
-							optional_info.department = {
-								id: department_doc_snapshot.id,
-								name: department_doc_snapshot.data().name
-							};
-						}
-					}
-					if (job_position && (typeof job_position === 'string' || !job_position.id)) {
-						let val = await Events.get('plugin_sheq_assist/employees/job-positions/').then(job_positions => {
-							return job_positions.search_by_name(evt, job_position.name || job_position);
-						});
-						if (val && !val.isEmpty()) {
-							val = val[0];
-							optional_info.job_position = {id: val.id, name: val.data.name};
-						} else {
-							const _data = {name: job_position.name || job_position, user_id, company_id, created_at};
-							if (job_position.job_category) {
-								_data.job_category = job_position.job_category;
-							}
-							const job_position_doc_ref = await this.getDB().collection('plugin_sheq_assist_job_positions').add(_data);//Promise < DocumentReference < T > >
-							const job_position_doc_snapshot = await job_position_doc_ref.get();//Promise < DocumentSnapshot < T > >
-							optional_info.job_position = {
-								id: job_position_doc_snapshot.id,
-								name: job_position_doc_snapshot.data().name
-							};
-						}
-					}
-				}
-
-				data.keywords = this.generateKeywords([data.lname, data.fname]);
-				const doc_ref = await this.getDB().collection(this.tbl).add(data);//Promise < DocumentReference < T > >
-				let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
-
-				const updateAttrs = {};
-				if (data.auth_uid) {
-					const {snapshot, doc_ref} = await getDBUser(data.auth_uid);
-					if (snapshot.exists) {
-						updateAttrs.linked_user_id = snapshot.id;
-						const updated = await doc_ref.set({linked_employee_id: doc_snapshot.id}, {merge: true});//Promise < void >
-					}
-				}
-
-				if (profile_pic) {
-					const gcsUri = await files.upload.call(this, profile_pic, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/profile-pic.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					updateAttrs.profile_pic = gcsUri;
-				}
-
-				if (living_addr_doc) {
-					const gcsUri = await files.upload.call(this, living_addr_doc, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/optional_info/living_addr_doc.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					optional_info.living_addr_doc = gcsUri;
-					updateAttrs.optional_info = optional_info;
-				}
-				if (banking_doc) {
-					const gcsUri = await files.upload.call(this, banking_doc, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/optional_info/banking_doc.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					optional_info.banking_doc = gcsUri;
-					updateAttrs.optional_info = optional_info;
-				}
-
-				if (doc_id_or_passport) {
-					const gcsUri = await files.upload.call(this, doc_id_or_passport, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/documents/doc_id_or_passport.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					documents.doc_id_or_passport = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (doc_driver_or_operator_licence) {
-					const gcsUri = await files.upload.call(this, doc_driver_or_operator_licence, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/documents/doc_driver_or_operator_licence.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					documents.doc_driver_or_operator_licence = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (doc_pdrp) {
-					const gcsUri = await files.upload.call(this, doc_pdrp, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/documents/doc_pdrp.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					documents.doc_pdrp = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (doc_work_permit) {
-					const gcsUri = await files.upload.call(this, doc_work_permit, async function (bucketFile) {
-						const new_name = this.tbl + '/' + doc_snapshot.id + '/documents/doc_work_permit.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-						throw e;
-					});
-					documents.doc_work_permit = gcsUri;
-					updateAttrs.documents = documents;
-				}
-
-				const updated = await doc_ref.update(updateAttrs);//Promise <void>
-				doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
-
-				data = doc_snapshot.data();
-				const {created_at: created_at_2} = data;
-				if (created_at_2 && created_at_2.toDate) {
-					data.created_at = created_at_2.toDate();
-				}
-
-				if (email) {
-					const opts = {
-						from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
-						to: email,
-						subject: 'Welcome to SHEQ Aid',
-						html: '<h3><b>Dear ' + data.fname + ' ' + data.lname + '</b></h3>\n\
-                                <p>Your account was recently created on SHEQ Aid.</p>\n\
-                                <p>Your SHEQ Aid Username is <b>' + email + '</b>, Please login the App to setup your Password</p>\n\
-                                ' + Utils.getAppDownloadOptionMsg(true)
-					};
-					await Utils.sendEmail(opts);
-				}
-
-				let auditData = {id: doc_snapshot.id, data};
-
-				this.createAudit(loggedUser, data.created_at.getTime(), auditData);
-
-				auditData = await EmployeeFuns.mapResults.call(this, auditData);
-				return auditData;
+				return "NOT_FOUND";
 			});
 		}
 
 		// </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="update">
-		async update(evt, id, updateAttrs) {
+		// <editor-fold defaultstate="collapsed" desc="transfer">
+		async transfer(evt, employeeListData) {
 			return Events.whenLoggedIn(async loggedUser => {
-				const col = this.getDB().collection(this.tbl);
-				if (updateAttrs.email) {
-					updateAttrs.email = updateAttrs.email.toLowerCase();
-				}
+				const res = await Promise.all(employeeListData.map(async ({id, data}) => {
+					this.injectSavable(evt, loggedUser, data, true);
+					const res = await this.update(evt, id, data);
+					return res;
+				}));
 
-				const {email, phone} = updateAttrs;
-				if (email || phone) {
-					const docIdKey = firebase.firestore.FieldPath.documentId();
-					if (email) {
-						let snapshot = await col.where(docIdKey, '!=', id).where('email', '==', email).limit(1).get();
-						if (!snapshot.empty) {
-							return "EMAIL_DUP";
-						}
-					}
-					if (phone) {
-						let snapshot = await col.where(docIdKey, '!=', id).where('phone', '==', phone).limit(1).get();
-						if (!snapshot.empty) {
-							return "PHONE_DUP";
-						}
-					}
-				}
+				console.log('transfer', res);
 
-				const doc_ref = await col.doc(id);
-				let snapshot = await doc_ref.get();
-				if (!snapshot.exists) {
-					return null;
-				}
-
-				const old_data = snapshot.data();
-				let {created_at} = old_data;
-				if (created_at && created_at.toDate) {
-					old_data.created_at = created_at.toDate();
-				}
-
-//                this.injectSavable(evt, loggedUser, data);
-				const {user: {id: user_id}, company_id} = loggedUser;
-				created_at = FBSettings.FieldValue.serverTimestamp();
-
-				const {
-					site,
-					project,
-					client,
-					optional_info,
-					documents,
-					profile_pic,
-
-					fname, lname,
-					permissions_modules, permissions_other
-				} = updateAttrs;
-
-				if (typeof site === 'string') {
-					delete updateAttrs.site;
-					if (site !== 'All') {
-						const _data = {name: site, user_id, company_id, created_at};
-						const site_doc_ref = await this.getDB().collection('plugin_sheq_assist_sites').add(_data);//Promise < DocumentReference < T > >
-						const site_doc_snapshot = await site_doc_ref.get();//Promise < DocumentSnapshot < T > >
-						updateAttrs.site = {id: site_doc_snapshot.id, name: site_doc_snapshot.data().name};
-						updateAttrs.site_id = site_doc_snapshot.id;
-					} else {
-//                        updateAttrs.site = null;
-						updateAttrs.site_id = null;
-					}
-				} else if (site) {
-					updateAttrs.site_id = site.id;
-				}
-				if (typeof project === 'string') {
-					delete updateAttrs.project;
-					if (project !== 'All') {
-						const _data = {name: project, user_id, company_id, created_at};
-						const project_doc_ref = await this.getDB().collection('plugin_sheq_assist_projects').add(_data);//Promise < DocumentReference < T > >
-						const project_doc_snapshot = await project_doc_ref.get();//Promise < DocumentSnapshot < T > >
-						updateAttrs.project = {id: project_doc_snapshot.id, name: project_doc_snapshot.data().name};
-						updateAttrs.project_id = project_doc_snapshot.id;
-					} else {
-//                        updateAttrs.project = null;
-						updateAttrs.project_id = null;
-					}
-				} else if (project) {
-					updateAttrs.project_id = project.id;
-				}
-				if (typeof client === 'string') {
-					delete updateAttrs.client;
-					if (client !== 'All') {
-						const _data = {name: client, user_id, company_id, created_at};
-						const client_doc_ref = await this.getDB().collection('plugin_sheq_assist_clients').add(_data);//Promise < DocumentReference < T > >
-						const client_doc_snapshot = await client_doc_ref.get();//Promise < DocumentSnapshot < T > >
-						updateAttrs.client = {id: client_doc_snapshot.id, name: client_doc_snapshot.data().name};
-						updateAttrs.client_id = client_doc_snapshot.id;
-					} else {
-//                        updateAttrs.client = null;
-						updateAttrs.client_id = null;
-					}
-				} else if (client) {
-					updateAttrs.client_id = client.id;
-				}
-				if (optional_info) {
-					const {department, job_position} = optional_info;
-					if (department && (typeof department === 'string' || !department.id)) {
-						delete optional_info.department;
-						let val = await Events.get('plugin_sheq_assist/employees/departments/').then(departments => {
-							return departments.search_by_name(evt, department.name || department);
-						});
-						if (val) {
-							val = val[0];
-							optional_info.department = {id: val.id, name: val.data.name};
-						} else {
-							const _data = {name: department.name || department, user_id, company_id, created_at};
-							const department_doc_ref = await this.getDB().collection('plugin_sheq_assist_departments').add(_data);//Promise < DocumentReference < T > >
-							const department_doc_snapshot = await department_doc_ref.get();//Promise < DocumentSnapshot < T > >
-							optional_info.department = {
-								id: department_doc_snapshot.id,
-								name: department_doc_snapshot.data().name
-							};
-						}
-					}
-					if (job_position && (typeof job_position === 'string' || !job_position.id)) {
-						delete optional_info.job_position;
-						let val = await Events.get('plugin_sheq_assist/employees/job-positions/').then(job_positions => {
-							return job_positions.search_by_name(evt, job_position.name || job_position);
-						});
-						if (val && !val.isEmpty()) {
-							val = val[0];
-							optional_info.job_position = {id: val.id, name: val.data.name};
-						} else {
-							const _data = {name: job_position.name || job_position, user_id, company_id, created_at};
-							if (job_position.job_category) {
-								_data.job_category = job_position.job_category;
-							}
-							const job_position_doc_ref = await this.getDB().collection('plugin_sheq_assist_job_positions').add(_data);//Promise < DocumentReference < T > >
-							const job_position_doc_snapshot = await job_position_doc_ref.get();//Promise < DocumentSnapshot < T > >
-							optional_info.job_position = {
-								id: job_position_doc_snapshot.id,
-								name: job_position_doc_snapshot.data().name
-							};
-						}
-					}
-				}
-
-				if (fname && lname) {
-					updateAttrs.keywords = this.generateKeywords([lname, fname]);
-				} else if (fname && !lname) {
-					updateAttrs.keywords = this.generateKeywords([snapshot.get('lname'), fname]);
-				} else if (!fname && lname) {
-					updateAttrs.keywords = this.generateKeywords([lname, snapshot.get('fname')]);
-				}
-//                const doc_ref = await this.getDB().collection(this.tbl).add(data);//Promise < DocumentReference < T > >
-//                let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
-
-				if (profile_pic) {
-					const gcsUri = await files.upload.call(this, profile_pic, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/profile-pic.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					updateAttrs.profile_pic = gcsUri;
-				}
-
-				if (optional_info && optional_info.living_addr_doc) {
-					const gcsUri = await files.upload.call(this, optional_info.living_addr_doc, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/optional_info/living_addr_doc.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					optional_info.living_addr_doc = gcsUri;
-					updateAttrs.optional_info = optional_info;
-				}
-				if (optional_info && optional_info.banking_doc) {
-					const gcsUri = await files.upload.call(this, optional_info.banking_doc, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/optional_info/banking_doc.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					optional_info.banking_doc = gcsUri;
-					updateAttrs.optional_info = optional_info;
-				}
-
-				if (documents && documents.doc_id_or_passport) {
-					const gcsUri = await files.upload.call(this, documents.doc_id_or_passport, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/documents/doc_id_or_passport.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					documents.doc_id_or_passport = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (documents && documents.doc_driver_or_operator_licence) {
-					const gcsUri = await files.upload.call(this, documents.doc_driver_or_operator_licence, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/documents/doc_driver_or_operator_licence.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					documents.doc_driver_or_operator_licence = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (documents && documents.doc_pdrp) {
-					const gcsUri = await files.upload.call(this, documents.doc_pdrp, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/documents/doc_pdrp.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					documents.doc_pdrp = gcsUri;
-					updateAttrs.documents = documents;
-				}
-				if (documents && documents.doc_work_permit) {
-					const gcsUri = await files.upload.call(this, documents.doc_work_permit, async function (bucketFile) {
-						const new_name = this.tbl + '/' + snapshot.id + '/documents/doc_work_permit.' + fileUtils.getExtension(bucketFile.name);
-						return new_name;
-					}.bind(this)).catch(e => {
-//                        doc_ref.delete();//Promise < void >
-//                        throw e;
-					});
-					documents.doc_work_permit = gcsUri;
-					updateAttrs.documents = documents;
-				}
-
-				const updated = await doc_ref.set(updateAttrs, {merge: true});//Promise < void >
-				snapshot = await doc_ref.get();
-
-				let data = snapshot.data();
-				const {created_at: created_at_2} = data;
-				if (created_at_2 && created_at_2.toDate) {
-					data.created_at = created_at_2.toDate();
-				}
-
-				let updatedItem = {id: snapshot.id, data};
-				updatedItem = await EmployeeFuns.mapResults.call(this, updatedItem);
-
-				const auditData = {id: snapshot.id, data: old_data};
-
-				this.editAudit(loggedUser, new Date().getTime(), auditData);
-
-//                console.log('update', data, updatedItem)
-				return updatedItem.data;
+				return true;
 			});
 		}
 
@@ -688,34 +201,6 @@
 					return true;
 				}));
 				return resList;
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="remove">
-		async remove(evt, id) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const doc_ref = await this.getDB().collection(this.tbl).doc(id);
-				const snapshot = await doc_ref.get();
-				if (!snapshot.exists) {
-					return null;
-				}
-
-				const data = snapshot.data();
-				const {created_at} = data;
-				if (created_at && created_at.toDate) {
-					data.created_at = created_at.toDate();
-				}
-
-				const auditData = {id: snapshot.id, data};
-
-				const updated = await doc_ref.set({removed: true}, {merge: true});//Promise < void >
-
-				this.removeAudit(loggedUser, new Date().getTime(), auditData);
-
-				//console.log(this.tbl, 'remove', res)
-				return true;
 			});
 		}
 
@@ -835,7 +320,7 @@
 					}
 
 					const response = await fetch(
-						`${self.locationRoot}/templates/xlsx/Template-List-Employee${type}.xlsx`.replace('//', '/')
+						`${self.locationRoot}/templates/xlsx/employees/Template-List-Employee${type}.xlsx`.replace('//', '/')
 					);
 					const arrayBuffer = await response.arrayBuffer();
 					const data = new Map();
@@ -1369,308 +854,6 @@
 
 		// </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="send_app_link">
-		async send_app_link(evt, id) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const item = await this.find_by_id(null, id);
-				if (item) {
-					let {id, data: {password, email, fname, lname}} = item;
-					if (email) {
-//                        if (!password) {
-//                            password = uuidv4();
-//                            password = password.substring(0, password.indexOf('-'));
-//
-//                            const doc_ref = await this.getDB().collection(this.tbl).doc(id);
-//                            let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
-//                            if (!doc_snapshot.exists) {
-//                                return null;
-//                            }
-//
-//                            const updated = await doc_ref.update({password});//Promise < void >
-//                        }
-//                        const opts = {
-//                            from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
-//                            to: email,
-//                            subject: 'SHEQ Aid Application Link',
-//                            html: '<h3><b>Dear ' + fname + ' ' + lname + '</b></h3>\n\
-//                                <p>If you have not yet used SHEQ Aid Application, please use the link below to download the application.</p>\n\
-//                                <p>Your SHEQ Aid Username is <b>' + email + '</b>, Password is <b>' + password + '</b></p>\n\
-//                                ' + Utils.getAppDownloadOptionMsg()
-//                        };
-//                        await Utils.sendEmail(opts);
-
-						return true;
-					}
-					return "NO_EMAIL";
-				}
-
-				return "NOT_FOUND";
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="dashboard_count">
-		async active_dashboard_count(evt, opts = {}) {
-			return Events.whenLoggedIn(async loggedUser => {
-				let {
-					user: {data: {client: my_client, project: my_project, site: my_site}},
-					company: {id: company_id},
-					client_id, project_id, site_id
-				} = loggedUser;
-
-				let q = this.getDB().collection(`${TBL_EMPLOYEES}_active_counters`);
-
-				let key;
-				site_id = my_site ? my_site.id : site_id;
-				if (site_id) {
-					q = q.doc(`site`);
-					key = site_id;
-				} else {
-					project_id = my_project ? my_project.id : project_id;
-					if (project_id) {
-						q = q.doc(`project`);
-						key = project_id;
-					} else {
-						client_id = my_client ? my_client.id : client_id;
-						if (client_id) {
-							q = q.doc(`client`);
-							key = client_id;
-						} else {
-							q = q.doc(`company`);
-							key = company_id;
-						}
-					}
-				}
-
-				const snapshot = await q.get();
-				if (snapshot.exists) {
-					return snapshot.get(key);
-				}
-				return 'N/A';
-			});
-		}
-
-		async removed_dashboard_count(evt, opts = {}) {
-			return Events.whenLoggedIn(async loggedUser => {
-				let {
-					user: {data: {client: my_client, project: my_project, site: my_site}},
-					company: {id: company_id},
-					client_id, project_id, site_id
-				} = loggedUser;
-
-				let q = this.getDB().collection(`${TBL_EMPLOYEES}_removed_counters`);
-
-				let key;
-				site_id = my_site ? my_site.id : site_id;
-				if (site_id) {
-					q = q.doc(`site`);
-					key = site_id;
-				} else {
-					project_id = my_project ? my_project.id : project_id;
-					if (project_id) {
-						q = q.doc(`project`);
-						key = project_id;
-					} else {
-						client_id = my_client ? my_client.id : client_id;
-						if (client_id) {
-							q = q.doc(`client`);
-							key = client_id;
-						} else {
-							q = q.doc(`company`);
-							key = company_id;
-						}
-					}
-				}
-
-				const snapshot = await q.get();
-				if (snapshot.exists) {
-					return snapshot.get(key);
-				}
-				return 'N/A';
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="transfer">
-		async transfer(evt, employeeListData) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const res = await Promise.all(employeeListData.map(async ({id, data}) => {
-					this.injectSavable(evt, loggedUser, data, true);
-					const res = await this.update(evt, id, data);
-					return res;
-				}));
-
-				console.log('transfer', res);
-
-				return true;
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="filter_select">
-		async filter_select(evt, filterData) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const {user: {data: {client: my_client, project: my_project, site: my_site}}} = loggedUser;
-				const {name = "", client_id, project_id, site_id, department_id, job_position_id, isNew} = filterData;
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, {isNew, limit: -1}, q => {
-					q = q.where('removed', '==', false);
-					if (my_client) {
-						q = q.where('client_id', '==', my_client.id);
-					} else if (client_id) {
-						q = q.where('client_id', '==', client_id);
-					}
-					if (my_project) {
-						q = q.where('project_id', '==', my_project.id);
-					} else if (project_id) {
-						q = q.where('project_id', '==', project_id);
-					}
-					if (my_site) {
-						q = q.where('site_id', '==', my_site.id);
-					} else if (site_id) {
-						q = q.where('site_id', '==', site_id);
-					}
-
-					if (job_position_id) {
-						q = q.where('optional_info.job_position.id', '==', job_position_id);
-					}
-					if (department_id) {
-						q = q.where('optional_info.department.id', '==', department_id);
-					}
-					return q.where("keywords", "array-contains", name);
-				});
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="find_by_id">
-		async find_by_id(evt, id, actions) {
-			// console.log('find_by_id', this, evt, id, actions)
-			return Events.whenLoggedIn(async loggedUser => {
-				const doc_ref = await this.getDB().collection(this.tbl).doc(id);
-				let doc_snapshot = await doc_ref.get();//Promise < DocumentSnapshot < T > >
-				if (!doc_snapshot.exists) {
-					return null;
-				}
-
-				let item = {id: doc_snapshot.id, data: doc_snapshot.data()};
-				item = await EmployeeFuns.mapResults.call(this, item, actions);
-				return item;
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="search_by_name, list, list_removed, filter, list_removed_filter">
-		async search_by_name(evt, searchText) {
-			return await this.list(evt, {searchText});
-		}
-
-		async list(evt, opts = {}) {
-			let {searchText = ""} = opts;
-			searchText = searchText.toLowerCase();
-			return Events.whenLoggedIn(async loggedUser => {
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, opts, q => {
-					q = q.where('removed', '==', false);
-					const filter = EmployeeFuns.createDbFilter.call(this, searchText);
-					return filter(q);
-				});
-//                console.log('emp', list)
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		async list_removed(evt, opts = {}) {
-			let {searchText = ""} = opts;
-			searchText = searchText.toLowerCase();
-			return Events.whenLoggedIn(async loggedUser => {
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, opts, q => {
-					q = q.where('removed', '==', true);
-					const filter = EmployeeFuns.createDbFilter.call(this, searchText);
-					return filter(q);
-				});
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		async filter(evt, filterData, extraFilterData) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const {name = "", identity_num, job_position: job_position_id, department: department_id} = filterData;
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
-					q = q.where('removed', '==', false);
-					if (identity_num) {
-						q = q.where('id_num', '==', identity_num);
-					}
-					if (job_position_id) {
-						q = q.where('optional_info.job_position.id', '==', job_position_id);
-					}
-					if (department_id) {
-						q = q.where('optional_info.department.id', '==', department_id);
-					}
-					const filter = EmployeeFuns.createDbFilter.call(this, name);
-					return filter(q);
-				});
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		async list_removed_filter(evt, filterData, extraFilterData) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const {name = "", identity_num, job_position: job_position_id, department: department_id} = filterData;
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
-					q = q.where('removed', '==', true);
-					if (identity_num) {
-						q = q.where('id_num', '==', identity_num);
-					}
-					if (job_position_id) {
-						q = q.where('optional_info.job_position.id', '==', job_position_id);
-					}
-					if (department_id) {
-						q = q.where('optional_info.department.id', '==', department_id);
-					}
-					const filter = EmployeeFuns.createDbFilter.call(this, name);
-					return filter(q);
-				});
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		// </editor-fold>
-
-		// <editor-fold defaultstate="collapsed" desc="filter_by_notification_key">
-		async filter_by_notification_key(evt, key, value) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const name = "";
-				let list = await AControllerRead.prototype.listImpl.call(this, evt, null, q => {
-					q = q.where('removed', '==', false);
-					if (key) {
-						q = q.where(key, '==', value);
-					}
-					const filter = EmployeeFuns.createDbFilter.call(this, name);
-					return filter(q);
-				});
-				list = await Promise.all(list.map(EmployeeFuns.mapResults.bind(this)));
-				return list;
-			});
-		}
-
-		// </editor-fold>
-
-//        sortBy(list) {
-//            list.sortBy("data.lname");
-//        }
-		sortBy() {
-			return "lname";
-		}
 	}
 
 	self.employeesCntr = new Controller(events);

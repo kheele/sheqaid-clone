@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
-import DefaultDoughnutChart from "../../../../../../containers/Charts/DoughnutCharts/DefaultDoughnutChart";
-import MKBox from "../../../../../../components/MK/MKBox";
+import DefaultDoughnutChart from "containers/Charts/DoughnutCharts/DefaultDoughnutChart";
+import MKBox from "components/MK/MKBox";
 import {CircularProgress} from "@mui/material";
+import {getDashboardCounter} from "utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -59,14 +60,18 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [{
-		list_no_expiry_questionnaire_list_aggregate,
-		list_mon_expiry_questionnaire_list_aggregate,
-		list_2mon_expiry_questionnaire_list_aggregate,
-		list_3mon_expiry_questionnaire_list_aggregate,
-		list_4mon_expiry_questionnaire_list_aggregate,
-		all_expired_questionnaire_list_aggregate,
-	}] = data;
+	const [item = {}] = data;
+
+	const defaults = {aggregate: {count: 0}};
+
+	const {
+		list_no_expiry_questionnaire_list_aggregate = defaults,
+		list_mon_expiry_questionnaire_list_aggregate = defaults,
+		list_2mon_expiry_questionnaire_list_aggregate = defaults,
+		list_3mon_expiry_questionnaire_list_aggregate = defaults,
+		list_4mon_expiry_questionnaire_list_aggregate = defaults,
+		all_expired_questionnaire_list_aggregate = defaults,
+	} = item;
 
 	const total = list_no_expiry_questionnaire_list_aggregate.aggregate.count +
 		list_mon_expiry_questionnaire_list_aggregate.aggregate.count +
@@ -107,12 +112,12 @@ const Comp = forwardRef(({data: __data}, ref) => {
 						label: "Document Categories",
 						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'info', 'error', 'dark'],
 						data: [
-							list_no_expiry_questionnaire_list_aggregate.aggregate.count,
-							all_expired_questionnaire_list_aggregate.aggregate.count,
-							list_mon_expiry_questionnaire_list_aggregate.aggregate.count,
-							list_2mon_expiry_questionnaire_list_aggregate.aggregate.count,
-							list_3mon_expiry_questionnaire_list_aggregate.aggregate.count,
-							list_4mon_expiry_questionnaire_list_aggregate.aggregate.count,
+							getDashboardCounter(list_no_expiry_questionnaire_list_aggregate),
+							getDashboardCounter(all_expired_questionnaire_list_aggregate),
+							getDashboardCounter(list_mon_expiry_questionnaire_list_aggregate),
+							getDashboardCounter(list_2mon_expiry_questionnaire_list_aggregate),
+							getDashboardCounter(list_3mon_expiry_questionnaire_list_aggregate),
+							getDashboardCounter(list_4mon_expiry_questionnaire_list_aggregate),
 						],
 					},
 					cutout: 60
@@ -135,9 +140,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_no_expiry_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_no_expiry_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_no_expiry_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_no_expiry_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
@@ -157,9 +162,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${all_expired_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(all_expired_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={all_expired_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(all_expired_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
@@ -179,9 +184,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_mon_expiry_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_mon_expiry_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_mon_expiry_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_mon_expiry_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
@@ -201,9 +206,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_2mon_expiry_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_2mon_expiry_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_2mon_expiry_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_2mon_expiry_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
@@ -223,9 +228,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_3mon_expiry_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_3mon_expiry_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_3mon_expiry_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_3mon_expiry_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
@@ -245,9 +250,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${list_4mon_expiry_questionnaire_list_aggregate_perc}%`}/>
+					         value={`${getDashboardCounter(list_4mon_expiry_questionnaire_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={list_4mon_expiry_questionnaire_list_aggregate.aggregate.count}/>
+					         count={getDashboardCounter(list_4mon_expiry_questionnaire_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0.2rem 0'}}/>
