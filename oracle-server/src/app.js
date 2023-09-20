@@ -114,6 +114,7 @@ io.on('connection', (socket) => {
 
 	const timer = setInterval(() => {
 		socket.request.session.reload((err) => {
+			console.log('socket reload err:', err);
 			if (err) {
 				// forces the client to reconnect
 				socket.conn.close();
