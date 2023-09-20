@@ -84,6 +84,7 @@ class App extends React.Component {
         // window.socket = io("http://localhost:5000");
         // window.socket = io("https://cloud.sheqaid.com:5000");
         window.socket = io("https://cloud.sheqaid.com", {
+            withCredentials: true,
             transports: ['websocket'], // Only allow WebSocket transport
         });
         // window.socket = io("https://server.cloud.sheqaid.com");

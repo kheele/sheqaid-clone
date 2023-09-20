@@ -7,7 +7,7 @@ const {
 
 router.put('/uploadProfileImageUpdate', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await uploadProfileImageUpdate(req.body);
+	const data = await uploadProfileImageUpdate(req);
 	res.json(data);
 });
 

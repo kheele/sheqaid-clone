@@ -268,7 +268,7 @@ export default async (input: EntityEmployee) => {
 		// 	return updateEmployee({id, ...updateAttrs});
 		// }
 
-		return findByIdEmployee(id);
+		// return findByIdEmployee(id);
 	}
 
 	return res;

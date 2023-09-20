@@ -42,7 +42,14 @@ router.post('/out/:access_type', async (req, res) => {
 			res.json(true);
 		})
 		.catch((error) => {
-			res.json(true);
+			const sessionId = req.session.id;
+
+			req.session.destroy(() => {
+				// disconnect all Socket.IO connections linked to this session ID
+				io.in(sessionId).disconnectSockets();
+				// res.status(204).end();
+				res.json(true);
+			});
 		});
 	} else {
 		res.end();

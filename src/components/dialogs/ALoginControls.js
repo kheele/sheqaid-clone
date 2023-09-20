@@ -208,21 +208,21 @@ class ALoginControls extends React.Component {
                         });
                     } else {
                         const {dialog} = this.props;
-                        if (isMultiFactor) {
-                            const {phoneNumber} = currentUser;
-                            if (!phoneNumber) {
-                                this.refs.setupPhoneNumDialog.open(loggedUser).then(() => {
-                                    dialog.close();
-                                });
-                            } else {
-                                this.refs.verifyPhoneNumDialog.open(loggedUser).then(() => {
-                                    dialog.close();
-                                });
-                            }
-                        } else {
+                        // if (isMultiFactor) {
+                        //     const {phoneNumber} = currentUser;
+                        //     if (!phoneNumber) {
+                        //         this.refs.setupPhoneNumDialog.open(loggedUser).then(() => {
+                        //             dialog.close();
+                        //         });
+                        //     } else {
+                        //         this.refs.verifyPhoneNumDialog.open(loggedUser).then(() => {
+                        //             dialog.close();
+                        //         });
+                        //     }
+                        // } else {
                             storage.login.loginUser(loggedUser);
                             dialog.close();
-                        }
+                        // }
                     }
                 } else {
                     infoDialog.open("Authentication failed.");

@@ -1,7 +1,10 @@
 
 // <editor-fold defaultstate="collapsed" desc="uploadProfileImageUpdate">
-exports.uploadProfileImageUpdate = async (body) => {
+exports.uploadProfileImageUpdate = async (req) => {
 	// await authorize();
+	if (!req) {
+		return;
+	}
 
 	const data = getTriggeredEventsData(body, "hr_employees");
 	if (!data) {
@@ -37,6 +40,9 @@ exports.uploadProfileImageUpdate = async (body) => {
 			id,
 			attrs,
 		});
+
+		const session = req.session;
+		io.to(session.id).emit("insertEmployee", req.path);
 	}
 };
 // </editor-fold>

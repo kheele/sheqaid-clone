@@ -20,19 +20,21 @@ app.use((req, res, next) => {
 })
 
 app.use(express.text({limit: "200mb"}), express.json({strict: false, limit: "200mb"}));
-app.use(cors({origin: true, credentials: true}));
+
+const corsOptions = {origin: true, credentials: true};
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 const secret = "&6%^#-=!!!=+A+`;\"[[`bRHPD8*&~";
-app.use(
-	session({
-		secret,
-		cookieName: 'sheqaid',
-		cookie: {},
-		resave: false,
-		saveUninitialized: false,
-	}),
-);
+const sessionMiddleware = session({
+	secret,
+	cookieName: 'sheqaid',
+	cookie: {},
+	resave: true,
+	saveUninitialized: true,
+});
+app.use(sessionMiddleware);
 // app.use(csrf({ sessionKey: 'sheqaid' }));
 
 const morganMiddleware = morgan(
@@ -96,15 +98,33 @@ server.on('listening', () => {
 	console.log('Server is now listening');
 });
 
-const io = new Server(server, {
-	cors: {
-		origin: '*',
-	},
+global.io = new Server(server, {
+	cors: corsOptions,
 	transports: ['websocket'], // Only allow WebSocket transport
 });
+io.engine.use(sessionMiddleware);
+
+const SESSION_RELOAD_INTERVAL = 30 * 1000;
 io.on('connection', (socket) => {
+	const sessionId = socket.request.session.id;
+	// the session ID is used as a room
+	socket.join(sessionId);
+
 	console.log('a user connected');
-	socket.on('disconnect', () => {
+
+	const timer = setInterval(() => {
+		socket.request.session.reload((err) => {
+			if (err) {
+				// forces the client to reconnect
+				socket.conn.close();
+				// you can also use socket.disconnect(), but in that case the client
+				// will not try to reconnect
+			}
+		});
+	}, SESSION_RELOAD_INTERVAL);
+
+	socket.on("disconnect", () => {
 		console.log('user disconnected');
+		clearInterval(timer);
 	});
 });
