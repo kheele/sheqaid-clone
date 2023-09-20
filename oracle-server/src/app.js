@@ -99,7 +99,8 @@ server.on('listening', () => {
 const io = new Server(server, {
 	cors: {
 		origin: '*',
-	}
+	},
+	transports: ['websocket'], // Only allow WebSocket transport
 });
 io.on('connection', (socket) => {
 	console.log('a user connected');

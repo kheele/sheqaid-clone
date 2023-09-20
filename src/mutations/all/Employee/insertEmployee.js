@@ -193,11 +193,10 @@ export default async (input: EntityEmployee) => {
 
 		// if (profile_pic || living_address_list_doc || banking_detail_list_doc || document_list_doc) {
 		return new Promise((resolve, reject) => {
-			socket.on('insertEmployee', (data) => {
+			findByIdEmployee(id).then(resolve, reject);//TODO: remove after socket on server send response
 
-			});
-			source.addEventListener('message', message => {
-				console.log('Got', message);
+			socket.on('insertEmployee', (data) => {
+				console.log('insertEmployee got', data);
 
 				// Display the event data in the `content` div
 				// document.querySelector('#content').innerHTML = event.data;
