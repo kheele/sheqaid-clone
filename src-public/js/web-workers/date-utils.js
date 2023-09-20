@@ -495,46 +495,46 @@
         return res;
     };
     Date.prototype.durationNextYears = function (nextDate) {
-        return this.durationNext(nextDate)._data.years;
+        return this.durationNext(nextDate).asYears();
     };
     Date.prototype.durationPrevYears = function (nextDate) {
-        return this.durationPrev(nextDate)._data.years;
+        return this.durationPrev(nextDate).asYears();
     };
     Date.prototype.durationNextMonths = function (nextDate) {
-        return this.durationNext(nextDate)._data.months;
+        return this.durationNext(nextDate).asMonths();
     };
     Date.prototype.durationPrevMonths = function (nextDate) {
-        return this.durationPrev(nextDate)._data.months;
+        return this.durationPrev(nextDate).asMonths();
     };
     Date.prototype.durationNextWeeks = function (nextDate) {
-        return this.durationNext(nextDate)._data.weeks;
+        return this.durationNext(nextDate).asWeeks();
     };
     Date.prototype.durationPrevWeeks = function (nextDate) {
-        return this.durationPrev(nextDate)._data.weeks;
+        return this.durationPrev(nextDate).asWeeks();
     };
     Date.prototype.durationNextDays = function (nextDate) {
-        return this.durationNext(nextDate)._data.days;
+        return this.durationNext(nextDate).asDays();
     };
     Date.prototype.durationPrevDays = function (nextDate) {
-        return this.durationPrev(nextDate)._data.days;
+        return this.durationPrev(nextDate).asDays();
     };
     Date.prototype.durationNextHours = function (nextDate) {
-        return this.durationNext(nextDate)._data.hours;
+        return this.durationNext(nextDate).asHours();
     };
     Date.prototype.durationPrevHours = function (nextDate) {
-        return this.durationPrev(nextDate)._data.hours;
+        return this.durationPrev(nextDate).asHours();
     };
     Date.prototype.durationNextMinutes = function (nextDate) {
-        return this.durationNext(nextDate)._data.minutes;
+        return this.durationNext(nextDate).asMinutes();
     };
     Date.prototype.durationPrevMinutes = function (nextDate) {
-        return this.durationPrev(nextDate)._data.minutes;
+        return this.durationPrev(nextDate).asMinutes();
     };
     Date.prototype.durationNextSeconds = function (nextDate) {
-        return this.durationNext(nextDate)._data.seconds;
+        return this.durationNext(nextDate).asSeconds();
     };
     Date.prototype.durationPrevSeconds = function (nextDate) {
-        return this.durationPrev(nextDate)._data.seconds;
+        return this.durationPrev(nextDate).asSeconds();
     };
     Date.prototype.getWeekNumber = function () {
 //        const d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
