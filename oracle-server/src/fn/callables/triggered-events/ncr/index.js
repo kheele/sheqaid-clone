@@ -13,6 +13,6 @@ router.put('/uploadNCRDocsUpdate', async (req, res) => {
 	res.json(data);
 });
 
-automate.run();
+// automate.run();
 
 module.exports = router;

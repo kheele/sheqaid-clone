@@ -29,9 +29,11 @@
 
             // Otherwise, fetch data from server
             // const url = `http://localhost:5000/v1beta1/relay`;
-            const url = `https://cloud.sheqaid.com:5000/v1beta1/relay`;
 
-            // const url = `http://cloud.sheqaid.com:8080/v1beta1/relay`;
+            const url = `https://cloud.sheqaid.com/v1beta1/relay`;
+            // const url = `https://cloud.sheqaid.com:5000/v1beta1/relay`;
+            // const url = `https://hasura.cloud.sheqaid.com/v1beta1/relay`;
+            // const url = `https://server.cloud.sheqaid.com/v1beta1/relay`;
             return fetch(url, {
                 method: "POST",
                 headers: {

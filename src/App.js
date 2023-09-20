@@ -83,6 +83,8 @@ class App extends React.Component {
 
         // window.socket = io("http://localhost:5000");
         // window.socket = io("https://cloud.sheqaid.com:5000");
+        window.socket = io("https://cloud.sheqaid.com");
+        // window.socket = io("https://server.cloud.sheqaid.com");
 
         this.onConnected = this.onConnected.bind(this);
     }

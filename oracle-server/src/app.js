@@ -46,6 +46,10 @@ const morganMiddleware = morgan(
 
 app.use(morganMiddleware);
 
+app.get('/', async (req, res) => {
+	res.send('welcome home');
+	console.log('welcome home');
+});
 app.use('/api', api);
 app.use('/v1beta1/relay', relay);
 app.use('/v1/graphql', general);
@@ -57,16 +61,40 @@ const options = {
 };
 
 let server;
-if(isProduction) {
-	server = https.createServer(options, app);
-	server.listen(process.env.PORT, () => {
-		console.log(`Server securely listening on port ${process.env.PORT}`);
-	});
-} else {
+// if(isProduction) {
+// 	server = https.createServer(options, app);
+// 	server.listen(process.env.PORT, () => {
+// 		console.log(`Server securely listening on port ${process.env.PORT}`);
+// 	});
+// } else {
 	server = app.listen(process.env.PORT, () => {
 		console.log(`server started on port: ${server.address().port}`);
 	});
-}
+// }
+
+// Handle server errors
+server.on('error', (error) => {
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
+
+	switch (error.code) {
+		case 'EACCES':
+			console.error(`Port ${process.env.PORT} requires elevated privileges`);
+			process.exit(1);
+			break;
+		case 'EADDRINUSE':
+			console.error(`Port ${process.env.PORT} is already in use`);
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
+});
+
+server.on('listening', () => {
+	console.log('Server is now listening');
+});
 
 const io = new Server(server, {
 	cors: {

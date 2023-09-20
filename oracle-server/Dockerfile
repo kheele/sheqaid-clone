@@ -1,5 +1,6 @@
 # Use Node 16 alpine as parent image
-FROM --platform=linux/arm64/v8 node:16-alpine
+FROM --platform=linux/arm64/v8 node:20-alpine
+#FROM --platform=linux/arm64/v8 oven/bun
 
 # Change the working directory on the Docker image to /app
 WORKDIR /app
@@ -8,7 +9,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN bun install
 
 # Copy the rest of project files into this image
 COPY . .
@@ -17,4 +18,5 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
+#CMD bun run start
 CMD npm start

@@ -1,3 +1,5 @@
+import {Dates} from "../../../src/utils/Dates";
+
 self.execWhen = (test) => {
 	return new Promise((resolve, reject) => {
 		const exec = async () => {
@@ -99,23 +101,39 @@ Number.prototype.rangeExpiryCodes = function (val) {
 };
 
 class Utils {
-	static expiryDateWithDue(expiry_date) {
-		const currD = new Date();
-		expiry_date = Dates.parse(expiry_date);
-		if(expiry_date) {
-			const days = currD.durationPrevDays(expiry_date);
 
-			let expiry_due;
+	static daysPrev(expiry_date) {
+		if (!expiry_date) return null;
+		const d = new Date();
+		const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
+		console.log('ExpiryCodes.daysPrev', d.durationPrevDays(otherD))
+		return d.durationPrevDays(otherD);
+	}
+
+	static daysNext(expiry_date) {
+		if (!expiry_date) return null;
+		const d = new Date();
+		const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
+		console.log('ExpiryCodes.daysNext', d.durationNextDays(otherD))
+		return d.durationNextDays(otherD);
+	}
+
+	static expiryDateWithDue(expiry_date) {
+		if (expiry_date) {
+			const days = Utils.daysPrev(expiry_date);
 			if (days !== null) {
-				const exactDays = Math.floor(days);
-				if (exactDays === 0) {
-					expiry_due = 'Due today';
-				} else if (exactDays > 0) {
-					expiry_due = `${exactDays} days due`;
-				} else if (exactDays < 0) {
-					expiry_due = `Due in ${-exactDays} day${exactDays === -1 ? '' : 's'}`;
+				let expiry_due;
+				if (days !== null) {
+					const exactDays = Math.floor(days);
+					if (exactDays === 0) {
+						expiry_due = 'Due today';
+					} else if (exactDays > 0) {
+						expiry_due = `${exactDays} days due`;
+					} else if (exactDays < 0) {
+						expiry_due = `Due in ${-exactDays} day${exactDays === -1 ? '' : 's'}`;
+					}
+					expiry_date = `${expiry_date.formatDate()}\n(${expiry_due})`
 				}
-				expiry_date = `${expiry_date.formatDate()}\n(${expiry_due})`
 			}
 		}
 		return expiry_date;
@@ -161,11 +179,13 @@ class Utils {
 		return mailRes;
 	}
 
-	static async apiCallable({path, access_type = 'User',  data}) {
+	static async apiCallable({path, access_type = 'User', data}) {
 		// const port = access_type === 'Staff' ? 5002 : access_type === 'ContractorUser' ? 5001 : 5000;
 		const port = 5000;
 		// const url = `http://localhost:${port}/api/callables/${path}`;
-		const url = `https://cloud.sheqaid.com:${port}/api/callables/${path}`;
+		// const url = `https://cloud.sheqaid.com:${port}/api/callables/${path}`;
+		const url = `https://cloud.sheqaid.com/api/callables/${path}`;
+		// const url = `https://server.cloud.sheqaid.com/api/callables/${path}`;
 		return await fetch(url, {
 			method: "POST",
 			headers: {

@@ -4,11 +4,15 @@ import {convertMutations} from 'mutations/convertMutations';
 import { pipe, subscribe } from 'wonka';
 
 const wsClient = createWSClient({
-	url: "ws://cloud.sheqaid.com:8080/v1/graphql",
+	// url: "ws://cloud.sheqaid.com:8080/v1/graphql",
+	url: "ws://cloud.sheqaid.com/v1/graphql",
+	// url: "ws://hasura.cloud.sheqaid.com/v1/graphql",
 });
 
 const client = createClient({
-	url: "https://cloud.sheqaid.com:5000/v1/graphql",
+	// url: "https://cloud.sheqaid.com:5000/v1/graphql",
+	url: "https://cloud.sheqaid.com/v1/graphql",
+	// url: "https://hasura.cloud.sheqaid.com/v1/graphql",
 	requestPolicy: 'network-only',
 	fetchOptions: () => {
 		const headers = {};

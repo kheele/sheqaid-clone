@@ -15,7 +15,11 @@ class ViewsClient {
 
 		const worker = new WebWorker(() => {
 			Events.on("process", async (db, {path, headers}) => {
-				return fetch(`https://cloud.sheqaid.com:5000/api/rest/views`, {
+				return fetch(
+					// `https://hasura.cloud.sheqaid.com/api/rest/views`,
+					// `https://cloud.sheqaid.com:5000/api/rest/views`,
+					`https://cloud.sheqaid.com/api/rest/views`,
+					{
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",

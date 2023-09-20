@@ -231,6 +231,7 @@ global.sendRelay = async (args) => {
     const {query, variables, operationName} = args;
 
     const API_URL = "http://cloud.sheqaid.com:8080/v1beta1/relay";
+    // const API_URL = "http://hasura.cloud.sheqaid.com/v1beta1/relay";
     const result = await fetch(API_URL, {
         method: "POST",
         headers: {

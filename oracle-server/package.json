@@ -4,12 +4,13 @@
   "scripts": {
     "test": "mocha --reporter spec",
     "lint": "eslint .",
-    "start": "nodemon -r dotenv/config src/index.js",
+    "start": "bun run src/index.js",
+    "docker:prune": "docker system prune -a",
     "docker:build": "docker build --no-cache . -t rhespo/sheqaid-server",
     "docker:push": "docker push rhespo/sheqaid-server",
     "docker:build & push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm install thumbsupply --save",
+    "install:mod": "npm install",
     "install:all": "rm -rf node_modules package-lock.json"
   },
   "engines": {

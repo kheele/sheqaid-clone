@@ -24,24 +24,29 @@ exports.run = async () => {
 			{key: "completed_date", value: "Completion Date"},
 		],
 	})).map(v => {
-		const {
-			idx,
-			priority,//[Important]
-			allocation,//[NCR, Finding]
-			desc,
-			completed_date,
+		let {
+			idx,//
+			priority,//[Important]//
+			allocation,//[NCR, Finding]//
+			desc,//
+			completed_date,//
 			process,
-			responsible_party_list,//[Client]
+			responsible_party_list,//[Client]//
 			assigned_person_list,
 			progress_list,//[In progress, Not Started]
-			// document_list,
+			// document_list,//
 		} = v;
 
-		const filename = path.join(__dirname, `ECO-NCR/NCR-ECO/${idx}.jpg`);
-		const dataUri = fs.readFileSync(filename, {encoding: 'base64url'});
-		// v.document_list = [dataUri];
+		const filenameProof = path.join(__dirname, `ECO-NCR/Feb 2023 Ecco Aggregates/proof-${idx}.jpg`);
+		const filenameIncident = path.join(__dirname, `ECO-NCR/Feb 2023 Ecco Aggregates/${idx}.jpg`);
+		const docProof = filenameProof && fs.readFileSync(filenameProof, {encoding: 'base64url'});
+		const docIncident = filenameIncident && fs.readFileSync(filenameIncident, {encoding: 'base64url'});
 
 		const assigned_job_position_list = assigned_person_list ? {
+			data: []
+		} : null;
+
+		assigned_person_list = assigned_person_list ? {
 			data: []
 		} : null;
 
@@ -52,7 +57,7 @@ exports.run = async () => {
 			client_id: client && client.id,
 			//1
 			// type,
-			priority,
+			priority: priority === 'Important' ? 'High' : priority,
 			allocation,
 			// source,
 			// [sources[source]]: selected_source && selected_source.id,
@@ -78,7 +83,10 @@ exports.run = async () => {
 			// approving_person_id: approving_person && approving_person.id,
 			//4
 			document_list: {
-				data: [{type: 'Document Proof', doc: {path: dataUri},},],
+				data: [
+					docProof ? {type: 'Document Proof', doc: {path: docProof},} : null,
+					docIncident ? {type: 'Document Incident', doc: {path: docIncident},} : null,
+				].filter(v => !!v),
 			},
 			//5
 			comments: process,
