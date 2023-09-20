@@ -19,7 +19,8 @@ router.post('/', (req, res) => {
         headers["Authorization"] = Authorization;
     }
 
-    fetch("http://hasura.cloud.sheqaid.com/v1beta1/relay", {
+    fetch("http://cloud.sheqaid.com:8080/v1beta1/relay", {
+    // fetch("http://hasura.cloud.sheqaid.com/v1beta1/relay", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

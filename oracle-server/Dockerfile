@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN #bun install
+#RUN bun install
 RUN npm install
 
 # Copy the rest of project files into this image

@@ -19,8 +19,8 @@ router.post('/', (req, res) => {
         headers["Authorization"] = Authorization;
     }
 
-    // fetch(`http://cloud.sheqaid.com:8080/v1/graphql`, {
-    fetch(`http://hasura.cloud.sheqaid.com/v1/graphql`, {
+    fetch(`http://cloud.sheqaid.com:8080/v1/graphql`, {
+    // fetch(`http://hasura.cloud.sheqaid.com/v1/graphql`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
