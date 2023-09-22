@@ -4,7 +4,6 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {
-    onSelectLoadAssetConditions,
     onSelectLoadAssetLocations,
     onSelectLoadAssetManufacturers,
     onSelectLoadAssetModels,
@@ -51,7 +50,7 @@ class Controls extends React.Component {
             models: [],
             locations: [],
             toolkits: [],
-            conditions: ['New', 'Good', 'Fair', 'Poor'],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap'],
             vendors: []
         },
         showBarcode: false,
@@ -72,16 +71,11 @@ class Controls extends React.Component {
             models: onSelectLoadAssetModels,
             locations: onSelectLoadAssetLocations,
             toolkits: onSelectLoadAssetToolkits,
-            conditions: onSelectLoadAssetConditions,
             vendors: onSelectLoadAssetVendors
         };
         Promise.all(Object.keys(loads).map(k => {
             return loads[k]().then(res => {
-                if (k === 'conditions') {
-                    this.state.lists[k] = ['New', 'Good', 'Fair', 'Poor', ...res];
-                } else {
-                    this.state.lists[k] = res;
-                }
+                this.state.lists[k] = res;
             });
         })).then(res => {
             this.state.loadedSelectLists = true;

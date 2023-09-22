@@ -7,7 +7,6 @@ import {
 	onSelectLoadAssetModels,
 	onSelectLoadAssetLocations,
 	onSelectLoadAssetToolkits,
-	onSelectLoadAssetConditions,
 	onSelectLoadAssetVendors,
 } from './assets';
 
@@ -91,7 +90,6 @@ export {
 	onSelectLoadAssetModels,
 	onSelectLoadAssetLocations,
 	onSelectLoadAssetToolkits,
-	onSelectLoadAssetConditions,
 	onSelectLoadAssetVendors,
 	onSelectLoadTrainingFrequencies,
 

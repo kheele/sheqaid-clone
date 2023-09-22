@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
 import {
-	onSelectLoadAssetConditions,
 	onSelectLoadAssetLocations,
 	onSelectLoadAssetManufacturers
 } from 'views/plugins/utils';
@@ -43,7 +42,7 @@ class ToolsTab extends React.Component {
 		lists: {
 			manufacturers: [],
 			locations: [],
-			conditions: ['New', 'Good', 'Fair', 'Poor']
+			conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap']
 		},
 		loadedSelectLists: false
 	};
@@ -88,15 +87,10 @@ class ToolsTab extends React.Component {
 		const loads = {
 			manufacturers: onSelectLoadAssetManufacturers,
 			locations: onSelectLoadAssetLocations,
-			conditions: onSelectLoadAssetConditions
 		};
 		Promise.all(Object.keys(loads).map(k => {
 			return loads[k]().then(res => {
-				if (k === 'conditions') {
-					this.state.lists[k] = [...this.state.lists[k], ...res].distinct();
-				} else {
-					this.state.lists[k] = res.distinct();
-				}
+				this.state.lists[k] = res.distinct();
 			});
 		})).then(res => {
 			this.state.loadedSelectLists = true;
@@ -416,6 +410,7 @@ class ToolsTab extends React.Component {
 				},
 				//2 done
 				photo_list,
+				profile_pic: profile_pic_list,
 				//3 done
 				responsible_person,
 				//4 done
@@ -437,6 +432,8 @@ class ToolsTab extends React.Component {
 		} = item;
 
 		const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
+
+		const [profile_pic] = profile_pic_list || [];
 
 		console.log('Assets', item)
 		return <TRow key={id} className="w-full">

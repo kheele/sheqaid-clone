@@ -839,7 +839,6 @@ class Controls extends AControls {
 				title="9. Calibration Record"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
-				onFormNext={onFormNext}
 				onFormSave={this.onFormSave}
 			>
 				<NewCalibrationRecordTable ref="calibration_record_list" name="calibration_record_list"
@@ -860,39 +859,39 @@ class Controls extends AControls {
 				                defaultValue={next_calibration_date}
 				                className="col-lg-4 form-control" onChange={this.form.onChange}/>
 			</Row>
-			<Row
-				rendered
-				idx={10}
-				title="10. Inspections"
-				className="min-h-600"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-				onFormSave={this.onFormSave}
-			>
-				<InspectionTabs item={item}/>
-			</Row>
-			<Row
-				rendered
-				idx={11}
-				title="11. Parts Inventory"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-				onFormSave={this.onFormSave}
-			>
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={10}*/}
+			{/*	title="10. Inspections"*/}
+			{/*	className="min-h-600"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormNext={onFormNext}*/}
+			{/*	onFormSave={this.onFormSave}*/}
+			{/*>*/}
+			{/*	<InspectionTabs item={item}/>*/}
+			{/*</Row>*/}
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={11}*/}
+			{/*	title="11. Parts Inventory"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormNext={onFormNext}*/}
+			{/*	onFormSave={this.onFormSave}*/}
+			{/*>*/}
 
-			</Row>
-			<Row
-				rendered
-				idx={12}
-				title="12. Job Cards"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormSave={this.onFormSave}
-			>
+			{/*</Row>*/}
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={12}*/}
+			{/*	title="12. Job Cards"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormSave={this.onFormSave}*/}
+			{/*>*/}
 
-			</Row>
+			{/*</Row>*/}
 		</FormControls>;
 	}
 

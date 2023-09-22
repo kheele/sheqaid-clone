@@ -484,7 +484,6 @@ class Controls extends React.Component {
 				title="9. Calibration Record"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
-				onFormNext={onFormNext}
 			>
 				<NewCalibrationRecordTable name="calibration_record_list"
 				                           defaultValue={calibration_list || []}
@@ -503,36 +502,36 @@ class Controls extends React.Component {
 				              value={next_calibration_date}
 				              placeholder="Next Calibration Date" className="col-lg-4"/>
 			</Row>
-			<Row
-				rendered
-				idx={10}
-				title="10. Inspections"
-				className="min-h-600"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<InspectionTabs item={item}/>
-			</Row>
-			<Row
-				rendered
-				idx={11}
-				title="11. Parts Inventory"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={10}*/}
+			{/*	title="10. Inspections"*/}
+			{/*	className="min-h-600"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormNext={onFormNext}*/}
+			{/*>*/}
+			{/*	<InspectionTabs item={item}/>*/}
+			{/*</Row>*/}
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={11}*/}
+			{/*	title="11. Parts Inventory"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormNext={onFormNext}*/}
+			{/*>*/}
 
-			</Row>
-			<Row
-				rendered
-				idx={12}
-				title="12. Job Cards"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-			>
+			{/*</Row>*/}
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={12}*/}
+			{/*	title="12. Job Cards"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*>*/}
 
-			</Row>
+			{/*</Row>*/}
 
 			{!isEmployee && <EditToolDialog ref="editDialog"/>}
 			<ProfilePDFReader ref="pdfReader"/>

@@ -35,7 +35,7 @@ class Controls extends React.Component {
         lists: {
             toolkits: [],
             manufacturers: [],
-            conditions: ['New', 'Good', 'Fair', 'Poor'],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap'],
             barcode_or_qr_code_types: [{text: "Barcode", value: "Barcode", checked: false}, {text: "QR Code", value: "QR Code", checked: false}],
             vendors: [],
             statuses: ['Checked Out', 'Loaned Out', 'Out For Repair']

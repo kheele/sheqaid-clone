@@ -497,7 +497,6 @@ class Controls extends AControls {
 				title="9. Calibration Record"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
-				onFormNext={onFormNext}
 			>
 				<NewCalibrationRecordTable ref="calibration_record_list" name="calibration_record_list"
 				                           onChange={this.form.onChange}/>
@@ -511,25 +510,25 @@ class Controls extends AControls {
 				                isEditable={false} placeholder="Next Calibration Date..." required
 				                className="col-lg-4 form-control" onChange={this.form.onChange}/>
 			</Row>
-			<Row
-				rendered
-				idx={10}
-				title="10. Parts Inventory"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={10}*/}
+			{/*	title="10. Parts Inventory"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*	onFormNext={onFormNext}*/}
+			{/*>*/}
 
-			</Row>
-			<Row
-				rendered
-				idx={11}
-				title="11. Job Cards"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-			>
+			{/*</Row>*/}
+			{/*<Row*/}
+			{/*	rendered*/}
+			{/*	idx={11}*/}
+			{/*	title="11. Job Cards"*/}
+			{/*	onFormOpen={onFormOpen}*/}
+			{/*	onFormBack={onFormBack}*/}
+			{/*>*/}
 
-			</Row>
+			{/*</Row>*/}
 		</FormControls>;
 	}
 

@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import Form from 'utils/Form';
-import {onSelectLoadAssetConditions, onSelectLoadAssetLocations} from 'views/plugins/utils';
+import {onSelectLoadAssetLocations} from 'views/plugins/utils';
 
 import {ClearableInput} from 'components/inputs';
 import ANewDialog from 'components/dialogs/ANewDialog';
@@ -39,7 +39,7 @@ class Controls extends React.Component {
             toolkits: [],
             manufacturers: [],
             statuses: ['In Storage', 'Checked Out', 'Loaned Out', 'Out For Repair'],
-            conditions: ['New', 'Good', 'Fair', 'Poor'],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap'],
             barcode_or_qr_code_types: [{text: "Barcode", value: "Barcode", checked: false}, {text: "QR Code", value: "QR Code", checked: false}],
             locations: [],
             vendors: []
@@ -74,7 +74,7 @@ class Controls extends React.Component {
     }
     
     componentDidMount() {
-        const loads = {locations: onSelectLoadAssetLocations, conditions: onSelectLoadAssetConditions};
+        const loads = {locations: onSelectLoadAssetLocations};
         Promise.all(Object.keys(loads).map(k => {
             return loads[k]().then(res => {
                 this.state.lists[k].push(...res);

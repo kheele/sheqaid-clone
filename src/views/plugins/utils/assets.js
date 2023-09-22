@@ -98,26 +98,6 @@ function onSelectLoadAssetToolkits() {
 	}));
 }
 
-function onSelectLoadAssetConditions() {
-	return GQLClient
-	.query({
-		query: `
-      query listAllToolsByLoggedQuery {
-        asset_details(
-          where: {
-            condition:{_is_null: false}
-          },
-	        order_by: {condition: asc},
-        ) {
-          condition
-        }
-      }
-    `,
-	}).then(res => res.map(v => v.condition).distinct().map(value => {
-		return {label: value, value};
-	}));
-}
-
 function onSelectLoadAssetVendors() {
 	return GQLClient
 	.query({
@@ -146,7 +126,6 @@ export {
 	onSelectLoadAssetModels,
 	onSelectLoadAssetLocations,
 	onSelectLoadAssetToolkits,
-	onSelectLoadAssetConditions,
 	onSelectLoadAssetVendors,
 // </editor-fold>
 };

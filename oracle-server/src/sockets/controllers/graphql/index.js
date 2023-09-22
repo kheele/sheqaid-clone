@@ -16,14 +16,17 @@ class Cntr extends ACntr {
 		let {query, variables} = data;
 
 		let headers = {};
-		const {currentUser} = admin.auth();
-		console.log("currentUser, variables", currentUser, variables)
-		if (currentUser) {
-			const token = await currentUser.getIdToken();
-			headers.Authorization = `Bearer ${token}`;
-			headers["X-Hasura-User-Id"] = currentUser.uid;
-			headers["X-Hasura-Role"] = "user";
+		if(socket.auth_id) {
+			const currentUser = await admin.auth().getUser(socket.auth_id);
+			console.log("relay variables", currentUser, socket.auth_id, variables)
+			if (currentUser) {
+				const token = await currentUser.getIdToken(true);
+				headers.Authorization = `Bearer ${token}`;
+				headers["X-Hasura-User-Id"] = currentUser.uid;
+				headers["X-Hasura-Role"] = "user";
+			}
 		}
+
 		if (variables && "headers" in variables) {
 			headers = {...headers, ...variables.headers};
 			// eslint-disable-next-line no-param-reassign
@@ -51,18 +54,20 @@ class Cntr extends ACntr {
 		const {mutation, query, variables, multi_queries, count} = data;
 
 		let headers = {};
-		const {currentUser} = admin.auth();
-		console.log("currentUser, variables", currentUser, variables)
-		if (currentUser) {
-			const token = await currentUser.getIdToken();
-			headers.Authorization = `Bearer ${token}`;
-			headers["X-Hasura-User-Id"] = currentUser.uid;
-			headers["X-Hasura-Role"] = "user";
-		}
-		if (variables && "headers" in variables) {
-			headers = {...headers, ...variables.headers};
-			// eslint-disable-next-line no-param-reassign
-			delete variables.headers;
+		if(socket.auth_id) {
+			const currentUser = await admin.auth().getUser(socket.auth_id);
+			console.log("graphql variables", currentUser, socket.auth_id, variables)
+			if (currentUser) {
+				const token = await currentUser.getIdToken(true);
+				headers.Authorization = `Bearer ${token}`;
+				headers["X-Hasura-User-Id"] = currentUser.uid;
+				headers["X-Hasura-Role"] = "user";
+			}
+			if (variables && "headers" in variables) {
+				headers = {...headers, ...variables.headers};
+				// eslint-disable-next-line no-param-reassign
+				delete variables.headers;
+			}
 		}
 
 		if (mutation) {
@@ -142,12 +147,16 @@ class Cntr extends ACntr {
 		// console.log('data', path)
 
 		let headers = {};
-		const {currentUser} = admin.auth();
-		if (currentUser) {
-			const token = await currentUser.getIdToken();
-			headers.Authorization = `Bearer ${token}`;
-			headers["X-Hasura-User-Id"] = currentUser.uid;
-			headers["X-Hasura-Role"] = "user";
+
+		if(socket.auth_id) {
+			const currentUser = await admin.auth().getUser(socket.auth_id);
+			console.log("relay variables", currentUser, socket.auth_id, variables)
+			if (currentUser) {
+				const token = await currentUser.getIdToken(true);
+				headers.Authorization = `Bearer ${token}`;
+				headers["X-Hasura-User-Id"] = currentUser.uid;
+				headers["X-Hasura-Role"] = "user";
+			}
 		}
 
 		return fetch(`http://cloud.sheqaid.com:8080/api/rest/${path}`, {

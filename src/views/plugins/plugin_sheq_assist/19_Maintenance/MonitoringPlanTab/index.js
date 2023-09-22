@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {
-	onSelectLoadAssetConditions,
 	onSelectLoadAssetLocations,
 	onSelectLoadAssetManufacturers
 } from 'views/plugins/utils';
@@ -36,7 +35,7 @@ class MonitoringPlanTab extends React.Component {
 		lists: {
 			manufacturers: [],
 			locations: [],
-			conditions: ['New', 'Good', 'Fair', 'Poor']
+			conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap']
 		},
 		loadedSelectLists: false
 	};
@@ -67,15 +66,10 @@ class MonitoringPlanTab extends React.Component {
 		const loads = {
 			manufacturers: onSelectLoadAssetManufacturers,
 			locations: onSelectLoadAssetLocations,
-			conditions: onSelectLoadAssetConditions
 		};
 		Promise.all(Object.keys(loads).map(k => {
 			return loads[k]().then(res => {
-				if (k === 'conditions') {
-					this.state.lists[k] = [...this.state.lists[k], ...res].distinct();
-				} else {
-					this.state.lists[k] = res.distinct();
-				}
+				this.state.lists[k] = res.distinct();
 			});
 		})).then(res => {
 			this.state.loadedSelectLists = true;

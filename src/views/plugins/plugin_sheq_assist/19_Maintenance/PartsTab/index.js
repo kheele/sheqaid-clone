@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {onSelectLoadAssetConditions, onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from 'views/plugins/utils';
+import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from 'views/plugins/utils';
 
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
