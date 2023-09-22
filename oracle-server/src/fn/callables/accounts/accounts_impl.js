@@ -15,7 +15,7 @@ global.convertIdToBigint = (encodedHasuraRelayID) => {
         // console.log(actualDatabaseID); // 1  (the actual database ID)!
         return actualDatabaseID;
     } catch(err) {
-        console.error('convertIdToBigint', encodedHasuraRelayID, err);
+        // console.error('convertIdToBigint', encodedHasuraRelayID, err);
         return encodedHasuraRelayID;
     }
 };
@@ -32,7 +32,7 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
 
     const {query, operationName} = queryData;
 
-    console.log('onSetCustomUserClaims decodedIdToken', decodedIdToken)
+    // console.log('onSetCustomUserClaims decodedIdToken', decodedIdToken)
     if (!decodedIdToken) return null;
 
     const {uid} = decodedIdToken;
@@ -42,7 +42,7 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
         operationName,
         variables: {auth_id: uid},
     });
-    console.log('onSetCustomUserClaims item', item)
+    // console.log('onSetCustomUserClaims item', item)
     if (!item) {
         return null;
     }

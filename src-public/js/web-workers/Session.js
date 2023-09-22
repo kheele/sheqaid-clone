@@ -17,13 +17,15 @@ class Session {
         return !!this.data[key];
     }
 
-    loginUser(value) {
+    loginUser(value, auth) {
         this.set("logged_user", value);//user, company
+        this.set("auth", auth);
         Utils.onLogin();
     }
 
     logout() {
         delete this.data["logged_user"];//user, company
+        delete this.data["auth"];
         Utils.onLogout();
     }
 
@@ -31,8 +33,14 @@ class Session {
         return this.data["logged_user"];//user, company
     }
 
-    isLoggedIn() {
-        return this.has("logged_user");
+    get auth() {
+        return this.data["auth"];
+    }
+
+    get isLoggedIn() {
+        if(!this.has("logged_user")) return false;
+        if(!this.has("auth")) return false;
+        return !!this.auth.currentUser;
     }
 }
 

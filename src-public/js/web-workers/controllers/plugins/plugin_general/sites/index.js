@@ -106,7 +106,7 @@
 
         // <editor-fold defaultstate="collapsed" desc="find_by_id">
         async find_by_id(evt, id, isLoggedIn = true) {
-            if (isLoggedIn && !self.session.isLoggedIn()) {
+            if (isLoggedIn && !self.session.isLoggedIn) {
                 throw new Error('Not authenticated');
             }
 
@@ -148,7 +148,7 @@
 
         // <editor-fold defaultstate="collapsed" desc="list, filter">
         async list(evt, isLoggedIn = true) {
-            if (isLoggedIn && !self.session.isLoggedIn()) {
+            if (isLoggedIn && !self.session.isLoggedIn) {
                 throw new Error('Not authenticated');
             }
 

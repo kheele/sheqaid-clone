@@ -1,12 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    sendUserOTP,
-    confirmUserOTP,
-    sendForgotPass,
-} = require('./api.js');
-
 router.post('/sendUserOTP/:access_type', async (req, res) => {
     const {access_type} = req.params;
     if (isValidAccessType(access_type)) {

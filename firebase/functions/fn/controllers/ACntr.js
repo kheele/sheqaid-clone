@@ -1,5 +1,6 @@
 
 class ACntr {
+
     constructor(eventManager, root, tbl) {
         eventManager.add(root, this);
 

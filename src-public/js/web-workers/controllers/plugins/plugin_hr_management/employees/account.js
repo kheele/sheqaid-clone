@@ -53,7 +53,7 @@
                 });
             } else {
             }
-        } else if (self.session.isLoggedIn()) {
+        } else if (self.session.isLoggedIn) {
         }
     });
     // </editor-fold>

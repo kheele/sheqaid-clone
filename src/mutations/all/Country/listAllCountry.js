@@ -3,8 +3,6 @@
 // 1
 import { graphql } from "react-relay";
 // @ts-ignore
-import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityUser} from "mutations/types.d.ts";
 import listMutationImpl from "../../listMutationImpl";
 
 // 2

@@ -1,13 +1,13 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 const {v4: uuidv4} = require("uuid");
-const {query: getByAuthIdOTPQuery} = require("../graphql/getByAuthIdOTPQuery");
-const {mutation: updateOTPMutation} = require("../graphql/updateOTPMutation");
-const {mutation: insertOTPMutation} = require("../graphql/insertOTPMutation");
-const updateResetPassID = require("../queries/updateResetPassID");
+const {query: getByAuthIdOTPQuery} = require("../../fn/callables/graphql/getByAuthIdOTPQuery");
+const {mutation: updateOTPMutation} = require("../../fn/callables/graphql/updateOTPMutation");
+const {mutation: insertOTPMutation} = require("../../fn/callables/graphql/insertOTPMutation");
+const updateResetPassID = require("../../fn/callables/queries/updateResetPassID");
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendUserOTP">
-exports.sendUserOTP = async (username, access_type) => {
+global.sendUserOTP = async (username, access_type) => {
     await authorize(access_type);
     if (!username)
         return;
@@ -47,7 +47,7 @@ exports.sendUserOTP = async (username, access_type) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="confirmUserOTP">
-exports.confirmUserOTP = async (data, access_type) => {
+global.confirmUserOTP = async (data, access_type) => {
     await authorize(access_type);
     if (!data)
         return;
@@ -112,7 +112,7 @@ exports.confirmUserOTP = async (data, access_type) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendForgotPass">
-exports.sendForgotPass = async (username, access_type) => {
+global.sendForgotPass = async (username, access_type) => {
     await authorize(access_type);
     if (!username)
         return;

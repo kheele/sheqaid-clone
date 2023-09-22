@@ -636,7 +636,7 @@ class EmployeeTransferFuns {
 
     // <editor-fold defaultstate="collapsed" desc="transfer">
     static async transfer(items) {
-        await execWhen(() => session.isLoggedIn());
+        await execWhen(() => session.isLoggedIn);
 
         await Events.whenLoggedIn(async loggedUser => {
             const {docs} = await (await db.collection('default_companies')).get();

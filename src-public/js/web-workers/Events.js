@@ -10,7 +10,7 @@ controllers = {};
 
 class Events {
     static async whenLoggedIn(cb) {
-        if (self.session.isLoggedIn()) {
+        if (self.session.isLoggedIn) {
             return await cb(self.session.getLoggedUser());
         } else {
             throw new Error('Not authenticated');

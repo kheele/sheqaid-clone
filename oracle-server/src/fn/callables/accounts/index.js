@@ -7,7 +7,7 @@ const {
     sendNewContractorSiteEmail,
     sendUpdateStatusContractorSiteEmail,
     onResetPassword,
-} = require('./api.js');
+} = accountsApi;
 
 const CustomUserClaims = require('./CustomUserClaims.js');
 const sign = require('./sign.js');

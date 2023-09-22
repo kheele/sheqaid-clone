@@ -341,7 +341,7 @@
 			});
 		}
 
-//
+		//
 //         async export_excel(evt, list) {
 //             return Events.whenLoggedIn(async loggedUser => {
 //                 const cols = [

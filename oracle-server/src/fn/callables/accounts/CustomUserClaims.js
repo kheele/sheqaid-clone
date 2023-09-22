@@ -1,38 +1,45 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    onSetCustomUserClaims,
-} = require('./api.js');
-
 router.post('/User', async (req, res) => {
     const access_type = "User";
-    const decodedIdToken = await loginSession({req, res, access_type});
-    console.log(`/${access_type} decodedIdToken`, decodedIdToken)
-    if(!decodedIdToken) return;
 
-    const data = await onSetCustomUserClaims(req.body, decodedIdToken, access_type);
-    console.log('/User data', data)
+    const {idToken, csrfToken} = req.body;
+    const {session} = req;
+
+    const data = await onSetCustomUserClaims({
+        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
+            res.cookie('session', sessionCookie, options);
+        }
+    });
     res.json(data);
 });
 
 router.post('/ContractorUser', async (req, res) => {
     const access_type = "ContractorUser";
-    const decodedIdToken = await loginSession({req, res, access_type});
-    console.log(`/${access_type} decodedIdToken`, decodedIdToken)
-    if(!decodedIdToken) return;
 
-    const data = await onSetCustomUserClaims(req.body, decodedIdToken, access_type);
+    const {idToken, csrfToken} = req.body;
+    const {session} = req;
+
+    const data = await onSetCustomUserClaims({
+        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
+            res.cookie('session', sessionCookie, options);
+        }
+    });
     res.json(data);
 });
 
 router.post('/Staff', async (req, res) => {
     const access_type = "Staff";
-    const decodedIdToken = await loginSession({req, res, access_type});
-    console.log(`/${access_type} decodedIdToken`, decodedIdToken)
-    if(!decodedIdToken) return;
 
-    const data = await onSetCustomUserClaims(req.body, decodedIdToken, access_type);
+    const {idToken, csrfToken} = req.body;
+    const {session} = req;
+
+    const data = await onSetCustomUserClaims({
+        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
+            res.cookie('session', sessionCookie, options);
+        }
+    });
     res.json(data);
 });
 

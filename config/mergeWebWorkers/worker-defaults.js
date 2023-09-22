@@ -15,5 +15,5 @@ module.exports = path => [
         'docs/index.js',
 
         "files/index.js",
-        "relay/index.js"
+        "graphql/index.js"
     ].map(v => path + '/default/' + v);

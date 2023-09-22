@@ -11,14 +11,27 @@ class AAccountsServerCntr extends AControllerRead {
             // CSRF protection should be taken into account.
             // ...
 
-            const path = `accounts/onSetCustomUserClaims/${this.access_type}`;
-
             const csrfToken = await Utils.cookie('csrfToken');
             console.log("csrfToken", csrfToken)
-            const res = await Utils.apiCallable({path, data: {
-                idToken, csrfToken
-            }});
-            return convertMutations(res);
+
+            return new Promise((resolve, reject) => {
+                socket.emit('emit', {
+                    path: 'accounts/onSetCustomUserClaims',
+                    data: {access_type: this.access_type, idToken, csrfToken},
+                }, (res, err) => {
+                    if(err) {
+                        console.log('onSetCustomUserClaimsImpl emit err', err)
+                        return reject(err);
+                    }
+
+                    console.log('onSetCustomUserClaimsImpl emit res', res)
+                    if(res) {
+                        resolve(convertMutations(res));
+                    } else {
+                        resolve();
+                    }
+                });
+            });
         };
 
         if (isString(userOrToken)) {
@@ -51,31 +64,59 @@ class AAccountsServerCntr extends AControllerRead {
 
     // <editor-fold defaultstate="collapsed" desc="reloginImpl">
     async reloginImpl(evt, uid) {
-        const path = `accounts/sign/onReAuthUser/${this.access_type}`;
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'accounts/sign/onReAuthUser',
+                data: {access_type: this.access_type, uid},
+            }, (res, err) => {
+                if(err) {
+                    console.log('reloginImpl emit err', err)
+                    return reject(err);
+                }
 
-        const res = await Utils.apiCallable({path, data: uid});
-        return res;
+                console.log('reloginImpl emit res', res)
+                resolve(res);
+            });
+        });
     }
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="logout">
     async logoutImpl(evt) {
-        const path = `accounts/sign/out/${this.access_type}`;
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'accounts/sign/out',
+                data: {access_type: this.access_type,},
+            }, (res, err) => {
+                if(err) {
+                    console.log('logoutImpl emit err', err)
+                    return reject(err);
+                }
 
-        const res = await Utils.apiCallable({path});
-        console.log('logoutImpl res', res)
-        return res;
+                console.log('logoutImpl emit res', res)
+                resolve(res);
+            });
+        });
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="forgot_passImpl">
     async forgot_passImpl(evt, username) {
-        const path = `send/sendForgotPass/${this.access_type}`;
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'send/sendForgotPass',
+                data: {access_type: this.access_type, username,},
+            }, (res, err) => {
+                if(err) {
+                    console.log('forgot_passImpl emit err', err)
+                    return reject(err);
+                }
 
-        const res = await Utils.apiCallable({path, data: username});
-        console.log('forgot_pass res', res)
-        return res;
+                console.log('forgot_passImpl emit res', res)
+                resolve(res);
+            });
+        });
     }
 
     // </editor-fold>
@@ -85,50 +126,86 @@ class AAccountsServerCntr extends AControllerRead {
         console.log('getUserUID')
         username = username.toLowerCase();
 
-        const path = `get/getUserUidByUsername/${this.access_type}`;
-        console.log('getUserUIDImpl', path)
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'get/getUserUidByUsername',
+                data: {access_type: this.access_type, username,},
+            }, (uid, err) => {
+                if(err) {
+                    console.log('getUserUIDImpl emit err', err)
+                    return reject(err);
+                }
 
-        const uid = await Utils.apiCallable({path, data: username});
-        return uid;
+                console.log('getUserUIDImpl emit res', uid)
+                resolve(uid);
+            });
+        });
     }
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="loginUsernameImpl">
     async loginUsernameImpl(evt, username) {
-        const res = await Utils.apiCallable({path: `get/getUserUidByUsername`, data: username});
-        return res && res.uid;
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'get/getUserUidByUsername',
+                data: {access_type: this.access_type, username,},
+            }, (res, err) => {
+                if(err) {
+                    console.log('loginUsernameImpl emit err', err)
+                    return reject(err);
+                }
+
+                console.log('loginUsernameImpl emit res', res)
+                if(res) {
+                    resolve(res.uid);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="emailOTPImpl">
     async emailOTPImpl(evt, username) {
-        console.log('emailOTP')
-        username = username.toLowerCase();
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'send/sendUserOTP',
+                data: {access_type: this.access_type, username,},
+            }, (res, err) => {
+                if(err) {
+                    console.log('emailOTPImpl emit err', err)
+                    return reject(err);
+                }
 
-        console.log('sendUserOTP')
-        const path = `send/sendUserOTP/${this.access_type}`;
-
-        const res = await Utils.apiCallable({path, data: username});
-        if (!res) {
-            return null;
-        }
-        console.log('sendUserOTP res', res)
-        return res;
+                console.log('emailOTPImpl emit res', res)
+                resolve(res);
+            });
+        });
     }
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="confirmOTPImpl">
     async confirmOTPImpl(evt, attrs) {
-        console.log('confirmOTP')
+        const {username, code} = attrs;
 
-        console.log('confirmUserOTP')
-        const path = `send/confirmUserOTP/${this.access_type}`;
+        return new Promise((resolve, reject) => {
+            socket.emit('emit', {
+                path: 'send/confirmUserOTP',
+                data: {access_type: this.access_type, username, code,},
+            }, (res, err) => {
+                if(err) {
+                    console.log('confirmOTPImpl emit err', err)
+                    return reject(err);
+                }
 
-        const res = await Utils.apiCallable({path, data: attrs});
-        return res;
+                console.log('confirmOTPImpl emit res', res)
+                resolve(res);
+            });
+        });
     }
 
     // </editor-fold>

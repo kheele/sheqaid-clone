@@ -1,12 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    getUserUidByUsername,
-    getUserUidByEmail,
-    getUserUidByPhone,
-} = require('./api.js');
-
 router.post('/getUserUidByUsername/:access_type', express.text({type: '*/*', limit: "200mb"}), async (req, res) => {
     const {access_type} = req.params;
     if (isValidAccessType(access_type)) {

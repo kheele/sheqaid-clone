@@ -14,21 +14,9 @@ async function fetchQuery(operation, variables, cacheConfig) {
     return fromCache;
   }
 
-  const headers = {};
-  const { is, loggedUserAuth } = storage;
-  if (is.isLoggedInAuth) {
-    const idTokenResult = await execWhen(() => storage.idTokenResult);
-    const { token } = idTokenResult;
-    headers.Authorization = `Bearer ${token}`;
-    headers["X-Hasura-User-Id"] = loggedUserAuth.uid;
-    headers["X-Hasura-Role"] = "user";
-  }
-
-  // Otherwise, fetch data from server
   return workers
-    .emit("relay/send", {
+    .emit("graphql/v1beta1/relay", {
       variables,
-      headers,
       operationKind: operation.operationKind,
       query: operation.text,
     })

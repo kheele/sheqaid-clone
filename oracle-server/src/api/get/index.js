@@ -34,14 +34,14 @@ const getUserUidByUsername = async (username, access_type) => {
 };
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByUsername">
-exports.getUserUidByUsername = async (username, access_type) => {
+global.getUserUidByUsername = async (username, access_type) => {
     await authorize(access_type);
     return getUserUidByUsername(username, access_type);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByEmail">
-exports.getUserUidByEmail = async (email, access_type) => {
+global.getUserUidByEmail = async (email, access_type) => {
     await authorize(access_type);
     if (!email.isEmailAddress()) {
         return null;
@@ -51,7 +51,7 @@ exports.getUserUidByEmail = async (email, access_type) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByPhone">
-exports.getUserUidByPhone = async (phone, access_type) => {
+global.getUserUidByPhone = async (phone, access_type) => {
     await authorize(access_type);
     if (phone.isEmailAddress()) {
         return null;
