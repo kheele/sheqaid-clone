@@ -21,8 +21,7 @@ router.get('/', (req, res) => {
 
     const {body: path} = req;
 
-    fetch(`http://cloud.sheqaid.com:8080/api/rest/${path}`, {
-    // fetch(`http://hasura.cloud.sheqaid.com/api/rest/${path}`, {
+    return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

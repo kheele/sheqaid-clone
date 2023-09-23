@@ -33,8 +33,7 @@ class Cntr extends ACntr {
 			delete variables.headers;
 		}
 
-		return fetch("http://cloud.sheqaid.com:8080/v1beta1/relay", {
-			// fetch("http://hasura.cloud.sheqaid.com/v1beta1/relay", {
+		return fetch(process.env.HASURA_RELAY_ENDPOINT, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -99,8 +98,7 @@ class Cntr extends ACntr {
 			});
 		}
 
-		return fetch("http://cloud.sheqaid.com:8080/v1/graphql", {
-			// fetch("http://hasura.cloud.sheqaid.com/v1/graphql", {
+		return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -159,8 +157,7 @@ class Cntr extends ACntr {
 			}
 		}
 
-		return fetch(`http://cloud.sheqaid.com:8080/api/rest/${path}`, {
-			// fetch(`http://hasura.cloud.sheqaid.com/api/rest/${path}`, {
+		return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
