@@ -51,22 +51,9 @@ app.use('/v1beta1/relay', relay);
 app.use('/v1/graphql', general);
 app.use('/api/rest/views', views);
 
-const options = {
-	key: fs.readFileSync(process.env.CERT_PRIVATE_KEY),
-	cert: fs.readFileSync(process.env.CERT_PUBLIC_KEY),
-};
-
-let server;
-if(isProduction) {
-	server = https.createServer(options, app);
-	server.listen(process.env.PORT, () => {
-		console.log(`Server securely listening on port ${process.env.PORT}`);
-	});
-} else {
-	server = app.listen(process.env.PORT, () => {
-		console.log(`server started on port: ${server.address().port}`);
-	});
-}
+const server = app.listen(process.env.PORT, () => {
+	console.log(`server started on port: ${server.address().port}`);
+});
 
 const io = new Server(server);
 io.on('connection', (socket) => {

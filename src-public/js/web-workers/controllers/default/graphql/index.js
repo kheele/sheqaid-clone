@@ -23,13 +23,6 @@
 			if (!data) return null;
 			const {query, variables} = data;
 
-			// const url = `http://localhost:5000/v1beta1/relay`;
-
-			const url = `https://cloud.sheqaid.com/v1beta1/relay`;
-			// const url = `https://cloud.sheqaid.com:5000/v1beta1/relay`;
-			// const url = `https://hasura.cloud.sheqaid.com/v1beta1/relay`;
-			// const url = `https://server.cloud.sheqaid.com/v1beta1/relay`;
-
 			if(!socket.connected){
 
 			}
@@ -59,13 +52,6 @@
 		async default(evt, data) {
 			if (!data) return null;
 			const {query, variables, multi_queries = false, count = false} = data;
-
-			// const url = `http://localhost:5000/v1/graphql`;
-
-			const url = `https://cloud.sheqaid.com/v1/graphql`;
-			// const url = `https://cloud.sheqaid.com:5000/v1/graphql`;
-			// const url = `https://hasura.cloud.sheqaid.com/v1/graphql`;
-			// const url = `https://server.cloud.sheqaid.com/v1/graphql`;
 
 			if(!socket.connected){
 
@@ -97,13 +83,6 @@
 		// eslint-disable-next-line class-methods-use-this
 		async views(evt, path) {
 			if (!path) return null;
-
-			// const url = `http://localhost:5000/api/rest`;
-
-			const url = `https://cloud.sheqaid.com/api/rest`;
-			// const url = `https://cloud.sheqaid.com:5000/api/rest`;
-			// const url = `https://hasura.cloud.sheqaid.com/api/rest`;
-			// const url = `https://server.cloud.sheqaid.com/api/rest`;
 
 			if(!socket.connected){
 
