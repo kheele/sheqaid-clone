@@ -78,6 +78,7 @@ class ViewDocumentsSection extends React.Component {
                     <CompetencyControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
                 <Row
+                    lazyLoad={false}
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Contracts`}
@@ -129,7 +130,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <FormControls>
+                    <FormControls lazyLoad>
                         <Row
                             rendered
                             idx={idx + `.${__idx}.1`}

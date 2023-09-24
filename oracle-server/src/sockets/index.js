@@ -3,7 +3,8 @@ const {createAdapter} = require("@socket.io/redis-adapter");
 const {createClient} = require("redis");
 
 const controllers = require("./controllers");
-
+//api/accounts/sign: add catch and throw: 177
+//
 // const pubClient = createClient({url: "redis://localhost:6379"});
 // const subClient = pubClient.duplicate();
 

@@ -67,8 +67,8 @@ const workers = {
             //                    console.log('res', res)
           })
           .catch((mainErr) => {
-            clearTimeout(to);
             reject(mainErr);
+            clearTimeout(to);
             console.error(evt, mainErr);
             execWhen(() => !!window.infoDialog).then(() => {
               if (!mainErr) {
@@ -109,7 +109,7 @@ const workers = {
                 } else {
                   console.log("fs", mainErr.message, mainErr.stack, mainErr.componentStack);
                   // eslint-disable-next-line no-empty
-                  if (!mainErr.message && !mainErr.stack && !mainErr.componentStack) {
+                  if (!mainErr.stack && !mainErr.componentStack) {
                   } else {
                     infoDialog
                       .action("Report Problem", () => {
