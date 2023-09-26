@@ -107,7 +107,7 @@ global.onReAuthUser = async ({uid, access_type}) => {
 	return {token};
 };
 
-global.loginSession = async ({socket, session, onSetCookie, data, access_type}) => {
+global.loginSession = async ({onSetCookie, data, access_type}) => {
 	console.log('loginSession access_type', access_type)
 	if (access_type === 'ContractorUser') {
 		return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/loginSession`, {
@@ -152,17 +152,6 @@ global.loginSession = async ({socket, session, onSetCookie, data, access_type}) 
 			const options = {maxAge: expiresIn, httpOnly: true, secure: true};
 			console.log("session", sessionCookie)
 			onSetCookie(sessionCookie, options);
-
-			const {uid} = decodedIdToken;
-			const sessionId = session.id;
-
-			// const [socket] = await io.in(sessionId).fetchSockets();
-			if(socket) {
-				socket.auth_uid = uid;
-				console.log('user logged', socket.id, sessionId);
-				// console.log("session uid", uid, sessionId)
-			}
-
 			return decodedIdToken;
 		}).catch(err => {
 			console.error(err)

@@ -3,7 +3,7 @@ import React from "react";
 import {ProfileField, UploadButton} from "components/inputs";
 import NewNextOfKinDialog from "./profile_forms/NewNextOfKinDialog";
 import EditNextOfKinDialog from "./profile_forms/EditNextOfKinDialog";
-import ASectionSection from "./ASectionSection";
+import {ASectionSection} from "components/FormComponents";
 import updateEmployeeNextOfKin from "mutations/all/EmployeeNextOfKin/updateEmployeeNextOfKin";
 
 @observer

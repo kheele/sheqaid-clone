@@ -3,8 +3,8 @@ const {
 	onSetCustomUserClaims,
 } = require('./api.js');
 
-global.onSetCustomUserClaims = async ({session, data, access_type, onSetCookie}) => {
-	const decodedIdToken = await loginSession({session, data, access_type, onSetCookie});
+global.onSetCustomUserClaims = async ({data, access_type, onSetCookie}) => {
+	const decodedIdToken = await loginSession({data, access_type, onSetCookie});
 	// console.log(`/${access_type} decodedIdToken`, decodedIdToken)
 	if (!decodedIdToken) return;
 

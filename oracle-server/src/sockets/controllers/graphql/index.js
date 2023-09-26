@@ -41,8 +41,10 @@ class Cntr extends ACntr {
 				...headers,
 			},
 			body: JSON.stringify({query, variables}),
-		}).then(res => res.json()).catch(err => {
-			console.log("response err", err.message)
+		}).
+		then(res => res.json()).
+		catch(err => {
+			console.error("response err", err)
 			throw err;
 		});
 	}
@@ -70,13 +72,22 @@ class Cntr extends ACntr {
 		}
 
 		if (mutation) {
-			return client
-			.mutation(mutation, variables)
-			.toPromise()
-			.then(async res => {
+			return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"x-hasura-access-key": "rhespo-g",
+					...headers,
+				},
+				body: JSON.stringify({mutation, variables}),
+			}).then(res => res.json()).then(res => {
 				console.log(res); // { data: ... }
 
-				const {error, data} = res;
+				const {errors, data} = res;
+
+				if(errors) {
+					throw new Error(errors);
+				}
 
 				const key = Object.keys(data)[0];
 				const list = data[key];
@@ -107,8 +118,12 @@ class Cntr extends ACntr {
 			},
 			body: JSON.stringify({query, variables}),
 		}).then(res => res.json()).then(res => {
-			console.log(res); // { data: ... }
-			const {error, data} = res;
+			// console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+			const {errors, data} = res;
+
+			if(errors) {
+				throw new Error(errors);
+			}
 
 			if (multi_queries) {
 				if (!count) {
@@ -136,7 +151,7 @@ class Cntr extends ACntr {
 				return nodes;
 			}
 		}).catch(err => {
-			console.log("response err", err.message)
+			console.error(err)
 			throw err;
 		});
 	}
@@ -148,7 +163,7 @@ class Cntr extends ACntr {
 
 		if(socket.auth_id) {
 			const currentUser = await admin.auth().getUser(socket.auth_id);
-			console.log("relay variables", currentUser, socket.auth_id, variables)
+			console.log("relay variables", currentUser, socket.auth_id)
 			if (currentUser) {
 				const token = await currentUser.getIdToken(true);
 				headers.Authorization = `Bearer ${token}`;

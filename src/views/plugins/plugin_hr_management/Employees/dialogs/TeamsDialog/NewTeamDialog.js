@@ -7,7 +7,7 @@ import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
 import {
-    ClearableInput,
+    ClearableInput, RowOrgs,
     SelectClientInput,
     SelectEmployeeInput,
     SelectProjectInput,
@@ -217,41 +217,27 @@ class Controls extends React.Component {
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
 
-        const {isConsultant, isNoProjects} = storage.is;
         return (<FormControls>
-            {!isNoProjects && <Row
-                active
-                rendered
-                idx={0}
-                title="Company / Project / Site"
-                onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
+            <RowOrgs
+              onChange={this.form.onChange}
+              onFormOpen={onFormOpen}
+              onFormBack={onFormBack}
+              onFormNext={onFormNext}
             >
-                {isConsultant && <SelectClientInput name="client" placeholder="Company..." required
-                                                    className="col-lg-12 form-control"
-                                                    onChange={this.form.onChange}/>}
-                <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
+                <Row
+                  rendered
+                  idx={1}
+                  title="1. Team Details"
+                >
+                    <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="col-lg-12 form-control"
+                                         onChange={this.form.onChange}/>
+                    <ClearableInput name="name" type="text" placeholder="Team Name" className="col-lg-12 form-control"
                                     onChange={this.form.onChange}/>
-                <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
-                                 onChange={this.form.onChange}/>
-            </Row>}
-            <Row
-                rendered
-                active={isNoProjects}
-                idx={1}
-                title="1. Team Details"
-                onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
-                onFormBack={onFormBack}
-            >
-                <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="col-lg-12 form-control"
-                                     onChange={this.form.onChange}/>
-                <ClearableInput name="name" type="text" placeholder="Team Name" className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
-                <ClearableInput name="status" type="radio" placeholder="Status" isClearable={false}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.status} returnValue/>
-            </Row>
+                    <ClearableInput name="status" type="radio" placeholder="Status" isClearable={false}
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.status} returnValue/>
+                </Row>
+            </RowOrgs>
             <Row
                 rendered
                 idx={2}

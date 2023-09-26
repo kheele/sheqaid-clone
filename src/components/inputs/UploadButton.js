@@ -31,7 +31,7 @@ class UploadButton extends React.Component {
 //        let {props: {readonly, className, buttonTitle, showOnlyIcon}, fileIcon, isPDF, isWord} = this;
         let {props: {name, type, defaultValue, onChange, readonly, showDownload, fileName, className, buttonTitle, showOnlyIcon}} = this;
 //        let {state, state: {base64, docState, path}, props: {className, buttonTitle}} = this;
-        return <React.Fragment>
+        return <>
             <ShowOnlyIcon 
                 name={name}
                 type={type}
@@ -56,7 +56,7 @@ class UploadButton extends React.Component {
                 buttonTitle={buttonTitle} 
                 showOnlyIcon={showOnlyIcon} 
                 />
-        </React.Fragment>;
+        </>;
     }
 }
 

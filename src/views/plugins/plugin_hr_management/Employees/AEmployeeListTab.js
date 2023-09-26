@@ -12,6 +12,7 @@ class AListTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
 
+        this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -23,6 +24,10 @@ class AListTab extends React.Component {
         if(list) {
             return this.findByIdsEmployees(list.map(({id}) => id));
         }
+
+        const paramsProps = this.props.params || {};
+
+        params = {...params, ...paramsProps};
 
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {

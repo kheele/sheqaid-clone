@@ -121,10 +121,17 @@
 .UploadButton .preview{
     position: absolute;
     left: 0;
-    top: 52px;
     width: 100%;
     height: calc(100% - 50px);
     background: #000;
+}
+.UploadButton .preview.readonly{
+    top: 0px;
+    height: 100%;
+}
+.UploadButton .preview:not(.readonly){
+    top: 52px;
+    height: calc(100% - 50px);
 }
 .UploadButton .preview > .Rotating{
     background: rgba(2, 168, 168, 0.8);

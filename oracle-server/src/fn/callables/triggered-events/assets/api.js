@@ -7,40 +7,19 @@ const updateAssetMonitoringPlanFuelUsage = require('../../queries/updateAssetMon
 exports.uploadAssetPhotoFilesUpdate = async (body) => {
 	// await authorize();
 
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "asset_photos");
+	if(!data){
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//asset_photos
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "asset_photos" || !new_item) {
-		return;
-	}
+	const {new_item} = data;
 
 	let {id, asset_id, doc, is_default,} = new_item;
 
 	console.log('uploadAssetPhotoFilesUpdate', new_item)
 
-	const attrs = {};
-
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadAssetPhotoFilesUpdate doc', path)
-
-		const new_name = `assets/${asset_id}/${id}/photos`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateAssetPhoto({id, ...attrs});
-	}
+	const new_name = `assets/${asset_id}/${id}/photos`;
+	await uploadFilesUpdate({id, doc, new_name, onUpdate: updateAssetPhoto});
 };
 // </editor-fold>
 

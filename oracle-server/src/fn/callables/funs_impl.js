@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
+const {fileTypeFromBuffer} = require('file-type');
 
 // const faceapi = require('face-api.js');
 
@@ -113,13 +114,20 @@ global.adminAuth = (access_type) => {
 exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
 
 //<editor-fold desc="uploadDataUri">
-global.uploadDataUri = async (datauri, filePath) => {
-    const parts = datauri.split(',');
-    const contentType = parts[0].replace('data:', '').split(';')[0];
-    const base64 = parts[1];
-    const buffer = Buffer.from(base64, 'base64');
+global.uploadDataUri = async (datauri_or_buffer, filePath) => {
+    let buffer, contentType, ext;
+    if(typeof datauri_or_buffer === 'string') {
+        const parts = datauri_or_buffer.split(',');
+        contentType = parts[0].replace('data:', '').split(';')[0];
+        const base64 = parts[1];
+        buffer = Buffer.from(base64, 'base64');
+        ext = mime.getExtension(contentType);
+    } else {
+        const res = await fileTypeFromBuffer(datauri_or_buffer);//=> {ext: 'png', mime: 'image/png'}
+        contentType = res.mime;
+        ext = res.ext;
+    }
 
-    const ext = mime.getExtension(contentType);
     const newName = `${filePath}.${ext}`;
 
     const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);

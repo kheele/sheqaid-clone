@@ -336,9 +336,8 @@ type asset_depreciation_mutation_response {
 
 "columns and relationships of \"asset_details\""
 type asset_details implements Node {
-    asset_type: String
     "An array relationship"
-    assets(
+    asset_list(
         "distinct select on columns"
         distinct_on: [assets_select_column!],
         "limit the number of rows returned"
@@ -351,7 +350,7 @@ type asset_details implements Node {
         where: assets_bool_exp
     ): [assets!]!
     "An aggregate relationship"
-    assets_aggregate(
+    asset_list_aggregate(
         "distinct select on columns"
         distinct_on: [assets_select_column!],
         "limit the number of rows returned"
@@ -364,7 +363,7 @@ type asset_details implements Node {
         where: assets_bool_exp
     ): assets_aggregate!
     "An array relationship connection"
-    assets_connection(
+    asset_list_connection(
         after: String,
         before: String,
         "distinct select on columns"
@@ -376,6 +375,7 @@ type asset_details implements Node {
         "filter the rows returned"
         where: assets_bool_exp
     ): assetsConnection!
+    asset_type: String
     barcode: String
     condition: String
     desc: String
@@ -2239,9 +2239,87 @@ type asset_purchase_info_mutation_response {
 
 "columns and relationships of \"assets\""
 type assets implements Node {
+    "An array relationship"
+    asset_children_list(
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): [proxy_asset__asset!]!
+    "An aggregate relationship"
+    asset_children_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__asset_aggregate!
+    "An array relationship connection"
+    asset_children_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__assetConnection!
     "An object relationship"
     asset_detail: asset_details!
     asset_detail_id: bigint!
+    "An array relationship"
+    asset_parent_list(
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): [proxy_asset__asset!]!
+    "An aggregate relationship"
+    asset_parent_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__asset_aggregate!
+    "An array relationship connection"
+    asset_parent_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__assetConnection!
     "An array relationship"
     calibration_record_list(
         "distinct select on columns"
@@ -2589,6 +2667,45 @@ type assets implements Node {
     "An object relationship"
     purchase_info: asset_purchase_info
     purchase_info_id: bigint
+    "An array relationship"
+    questionnaire_ques_answered_list(
+        "distinct select on columns"
+        distinct_on: [default_contractor_questionnaires_ques_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [default_contractor_questionnaires_ques_order_by!],
+        "filter the rows returned"
+        where: default_contractor_questionnaires_ques_bool_exp
+    ): [default_contractor_questionnaires_ques!]!
+    "An aggregate relationship"
+    questionnaire_ques_answered_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [default_contractor_questionnaires_ques_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [default_contractor_questionnaires_ques_order_by!],
+        "filter the rows returned"
+        where: default_contractor_questionnaires_ques_bool_exp
+    ): default_contractor_questionnaires_ques_aggregate!
+    "An array relationship connection"
+    questionnaire_ques_answered_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [default_contractor_questionnaires_ques_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [default_contractor_questionnaires_ques_order_by!],
+        "filter the rows returned"
+        where: default_contractor_questionnaires_ques_bool_exp
+    ): default_contractor_questionnaires_quesConnection!
     "An object relationship"
     responsible_person: hr_employees
     responsible_person_id: bigint
@@ -25117,7 +25234,7 @@ type hira_baseline_ra implements Node {
     contractor_user: default_contractor_users
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: ID!
     "An array relationship"
@@ -25162,7 +25279,8 @@ type hira_baseline_ra implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean!
+    risk_tolerance: Int
     "An object relationship"
     site: default_sites
     site_id: bigint
@@ -25189,21 +25307,81 @@ type hira_baseline_ra_list implements Node {
     baseline_ra_id: bigint!
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
     control_measure_list(
         "JSON select path"
         path: String
     ): json
+    "An array relationship"
+    control_measure_list_additional(
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_control_measure_list_additional_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_control_measure_list_additional_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    ): [hira_baseline_ra_list_control_measure_list_additional!]!
+    "An aggregate relationship"
+    control_measure_list_additional_aggregate(
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_control_measure_list_additional_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_control_measure_list_additional_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    ): hira_baseline_ra_list_control_measure_list_additional_aggregate!
+    "An array relationship connection"
+    control_measure_list_additional_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_control_measure_list_additional_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_control_measure_list_additional_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    ): hira_baseline_ra_list_control_measure_list_additionalConnection!
+    due_date: date
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     hazard: String
     id: ID!
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    "An object relationship"
+    responsible_person: hr_employees
+    responsible_person_id: bigint
     risk: String
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rank_1\""
+    risk_rank_1: String
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rank_2\""
+    risk_rank_2: String
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rank_3\""
+    risk_rank_3: String
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rating_1\""
+    risk_rating_1: Int
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rating_2\""
+    risk_rating_2: Int
+    "A computed field, executes function \"hira_baseline_ra_list_risk_rating_3\""
+    risk_rating_3: Int
     risk_type(
         "JSON select path"
         path: String
     ): json
+    target_date: date
+    task_step: String
 }
 
 "A Relay connection object on \"hira_baseline_ra_list\""
@@ -25243,11 +25421,153 @@ type hira_baseline_ra_list_avg_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
+}
+
+"columns and relationships of \"hira_baseline_ra_list_control_measure_list_additional\""
+type hira_baseline_ra_list_control_measure_list_additional implements Node {
+    "An object relationship"
+    baseline_ra: hira_baseline_ra_list!
+    baseline_ra_list_id: bigint!
+    cost: money
+    date_completed: date
+    id: ID!
+    "An object relationship"
+    responsible_person: hr_employees
+    responsible_person_id: bigint
+    text: String!
+}
+
+"A Relay connection object on \"hira_baseline_ra_list_control_measure_list_additional\""
+type hira_baseline_ra_list_control_measure_list_additionalConnection {
+    edges: [hira_baseline_ra_list_control_measure_list_additionalEdge!]!
+    pageInfo: PageInfo!
+}
+
+type hira_baseline_ra_list_control_measure_list_additionalEdge {
+    cursor: String!
+    node: hira_baseline_ra_list_control_measure_list_additional!
+}
+
+"aggregated selection of \"hira_baseline_ra_list_control_measure_list_additional\""
+type hira_baseline_ra_list_control_measure_list_additional_aggregate {
+    aggregate: hira_baseline_ra_list_control_measure_list_additional_aggregate_fields
+    nodes: [hira_baseline_ra_list_control_measure_list_additional!]!
+}
+
+"aggregate fields of \"hira_baseline_ra_list_control_measure_list_additional\""
+type hira_baseline_ra_list_control_measure_list_additional_aggregate_fields {
+    avg: hira_baseline_ra_list_control_measure_list_additional_avg_fields
+    count(columns: [hira_baseline_ra_list_control_measure_list_additional_select_column!], distinct: Boolean): Int!
+    max: hira_baseline_ra_list_control_measure_list_additional_max_fields
+    min: hira_baseline_ra_list_control_measure_list_additional_min_fields
+    stddev: hira_baseline_ra_list_control_measure_list_additional_stddev_fields
+    stddev_pop: hira_baseline_ra_list_control_measure_list_additional_stddev_pop_fields
+    stddev_samp: hira_baseline_ra_list_control_measure_list_additional_stddev_samp_fields
+    sum: hira_baseline_ra_list_control_measure_list_additional_sum_fields
+    var_pop: hira_baseline_ra_list_control_measure_list_additional_var_pop_fields
+    var_samp: hira_baseline_ra_list_control_measure_list_additional_var_samp_fields
+    variance: hira_baseline_ra_list_control_measure_list_additional_variance_fields
+}
+
+"aggregate avg on columns"
+type hira_baseline_ra_list_control_measure_list_additional_avg_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate max on columns"
+type hira_baseline_ra_list_control_measure_list_additional_max_fields {
+    baseline_ra_list_id: bigint
+    cost: money
+    date_completed: date
+    id: bigint
+    responsible_person_id: bigint
+    text: String
+}
+
+"aggregate min on columns"
+type hira_baseline_ra_list_control_measure_list_additional_min_fields {
+    baseline_ra_list_id: bigint
+    cost: money
+    date_completed: date
+    id: bigint
+    responsible_person_id: bigint
+    text: String
+}
+
+"response of any mutation on the table \"hira_baseline_ra_list_control_measure_list_additional\""
+type hira_baseline_ra_list_control_measure_list_additional_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [hira_baseline_ra_list_control_measure_list_additional!]!
+}
+
+"aggregate stddev on columns"
+type hira_baseline_ra_list_control_measure_list_additional_stddev_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type hira_baseline_ra_list_control_measure_list_additional_stddev_pop_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type hira_baseline_ra_list_control_measure_list_additional_stddev_samp_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate sum on columns"
+type hira_baseline_ra_list_control_measure_list_additional_sum_fields {
+    baseline_ra_list_id: bigint
+    cost: money
+    id: bigint
+    responsible_person_id: bigint
+}
+
+"aggregate var_pop on columns"
+type hira_baseline_ra_list_control_measure_list_additional_var_pop_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate var_samp on columns"
+type hira_baseline_ra_list_control_measure_list_additional_var_samp_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
+}
+
+"aggregate variance on columns"
+type hira_baseline_ra_list_control_measure_list_additional_variance_fields {
+    baseline_ra_list_id: Float
+    cost: Float
+    id: Float
+    responsible_person_id: Float
 }
 
 "aggregate max on columns"
@@ -25255,13 +25575,20 @@ type hira_baseline_ra_list_max_fields {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
+    due_date: date
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
     risk: String
+    target_date: date
+    task_step: String
 }
 
 "aggregate min on columns"
@@ -25269,13 +25596,20 @@ type hira_baseline_ra_list_min_fields {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
+    due_date: date
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
     risk: String
+    target_date: date
+    task_step: String
 }
 
 "response of any mutation on the table \"hira_baseline_ra_list\""
@@ -25291,11 +25625,15 @@ type hira_baseline_ra_list_stddev_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "aggregate stddev_pop on columns"
@@ -25303,11 +25641,15 @@ type hira_baseline_ra_list_stddev_pop_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "aggregate stddev_samp on columns"
@@ -25315,11 +25657,15 @@ type hira_baseline_ra_list_stddev_samp_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "aggregate sum on columns"
@@ -25327,11 +25673,15 @@ type hira_baseline_ra_list_sum_fields {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
 }
 
 "aggregate var_pop on columns"
@@ -25339,11 +25689,15 @@ type hira_baseline_ra_list_var_pop_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "aggregate var_samp on columns"
@@ -25351,11 +25705,15 @@ type hira_baseline_ra_list_var_samp_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "aggregate variance on columns"
@@ -25363,11 +25721,15 @@ type hira_baseline_ra_list_variance_fields {
     baseline_ra_id: Float
     consequence_1: Float
     consequence_2: Float
+    consequence_3: Float
     frequency_1: Float
     frequency_2: Float
+    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
+    likelihood_3: Float
+    responsible_person_id: Float
 }
 
 "response of any mutation on the table \"hira_baseline_ra\""
@@ -25436,6 +25798,7 @@ type hira_sop implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    removed: Boolean!
     risk_level: String
     risk_list(
         "JSON select path"
@@ -25591,6 +25954,7 @@ type hira_swp implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    removed: Boolean!
     "An array relationship"
     sign_sheet_employee_list(
         "distinct select on columns"
@@ -25806,7 +26170,7 @@ type hira_taskbased_ra implements Node {
     contractor_user: default_contractor_users
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: ID!
     "An array relationship"
@@ -25851,7 +26215,8 @@ type hira_taskbased_ra implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean!
+    risk_tolerance: Int
     "An object relationship"
     site: default_sites
     site_id: bigint
@@ -25875,33 +26240,33 @@ type hira_taskbased_raEdge {
 type hira_taskbased_ra_list implements Node {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
     control_measure_list(
         "JSON select path"
         path: String
     ): json
-    control_measure_list_additional(
-        "JSON select path"
-        path: String
-    ): json
     due_date: date
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     hazard: String
     id: ID!
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     "An object relationship"
     responsible_person: hr_employees
     responsible_person_id: bigint
     risk: String
+    "A computed field, executes function \"hira_taskbased_ra_list_risk_rank_1\""
+    risk_rank_1: String
+    "A computed field, executes function \"hira_taskbased_ra_list_risk_rank_2\""
+    risk_rank_2: String
+    "A computed field, executes function \"hira_taskbased_ra_list_risk_rating_1\""
+    risk_rating_1: Int
+    "A computed field, executes function \"hira_taskbased_ra_list_risk_rating_2\""
+    risk_rating_2: Int
     risk_type(
         "JSON select path"
         path: String
     ): json
     target_date: date
+    task_step: String
     "An object relationship"
     taskbased_ra: hira_taskbased_ra!
     taskbased_ra_id: bigint!
@@ -25943,14 +26308,9 @@ type hira_taskbased_ra_list_aggregate_fields {
 type hira_taskbased_ra_list_avg_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -25959,19 +26319,15 @@ type hira_taskbased_ra_list_avg_fields {
 type hira_taskbased_ra_list_max_fields {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
     due_date: date
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person_id: bigint
     risk: String
     target_date: date
+    task_step: String
     taskbased_ra_id: bigint
 }
 
@@ -25979,19 +26335,15 @@ type hira_taskbased_ra_list_max_fields {
 type hira_taskbased_ra_list_min_fields {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
     due_date: date
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person_id: bigint
     risk: String
     target_date: date
+    task_step: String
     taskbased_ra_id: bigint
 }
 
@@ -26007,14 +26359,9 @@ type hira_taskbased_ra_list_mutation_response {
 type hira_taskbased_ra_list_stddev_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -26023,14 +26370,9 @@ type hira_taskbased_ra_list_stddev_fields {
 type hira_taskbased_ra_list_stddev_pop_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -26039,14 +26381,9 @@ type hira_taskbased_ra_list_stddev_pop_fields {
 type hira_taskbased_ra_list_stddev_samp_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -26055,14 +26392,9 @@ type hira_taskbased_ra_list_stddev_samp_fields {
 type hira_taskbased_ra_list_sum_fields {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person_id: bigint
     taskbased_ra_id: bigint
 }
@@ -26071,14 +26403,9 @@ type hira_taskbased_ra_list_sum_fields {
 type hira_taskbased_ra_list_var_pop_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -26087,14 +26414,9 @@ type hira_taskbased_ra_list_var_pop_fields {
 type hira_taskbased_ra_list_var_samp_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -26103,14 +26425,9 @@ type hira_taskbased_ra_list_var_samp_fields {
 type hira_taskbased_ra_list_variance_fields {
     consequence_1: Float
     consequence_2: Float
-    consequence_3: Float
-    frequency_1: Float
-    frequency_2: Float
-    frequency_3: Float
     id: Float
     likelihood_1: Float
     likelihood_2: Float
-    likelihood_3: Float
     responsible_person_id: Float
     taskbased_ra_id: Float
 }
@@ -32775,6 +33092,13 @@ type mutation_root {
     ): hira_baseline_ra_list_mutation_response
     "delete single row from the table: \"hira_baseline_ra_list\""
     delete_hira_baseline_ra_list_by_pk(id: bigint!): hira_baseline_ra_list
+    "delete data from the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    delete_hira_baseline_ra_list_control_measure_list_additional(
+        "filter the rows which have to be deleted"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp!
+    ): hira_baseline_ra_list_control_measure_list_additional_mutation_response
+    "delete single row from the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    delete_hira_baseline_ra_list_control_measure_list_additional_by_pk(id: bigint!): hira_baseline_ra_list_control_measure_list_additional
     "delete data from the table: \"hira_sop\""
     delete_hira_sop(
         "filter the rows which have to be deleted"
@@ -32985,6 +33309,13 @@ type mutation_root {
     ): ppe_mutation_response
     "delete single row from the table: \"ppe\""
     delete_ppe_by_pk(id: bigint!): ppe
+    "delete data from the table: \"proxy_asset__asset\""
+    delete_proxy_asset__asset(
+        "filter the rows which have to be deleted"
+        where: proxy_asset__asset_bool_exp!
+    ): proxy_asset__asset_mutation_response
+    "delete single row from the table: \"proxy_asset__asset\""
+    delete_proxy_asset__asset_by_pk(id: bigint!): proxy_asset__asset
     "delete data from the table: \"proxy_chemical_product__ppe\""
     delete_proxy_chemical_product__ppe(
         "filter the rows which have to be deleted"
@@ -34628,6 +34959,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: hira_baseline_ra_list_on_conflict
     ): hira_baseline_ra_list_mutation_response
+    "insert data into the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    insert_hira_baseline_ra_list_control_measure_list_additional(
+        "the rows to be inserted"
+        objects: [hira_baseline_ra_list_control_measure_list_additional_insert_input!]!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_list_control_measure_list_additional_on_conflict
+    ): hira_baseline_ra_list_control_measure_list_additional_mutation_response
+    "insert a single row into the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    insert_hira_baseline_ra_list_control_measure_list_additional_one(
+        "the row to be inserted"
+        object: hira_baseline_ra_list_control_measure_list_additional_insert_input!,
+        "upsert condition"
+        on_conflict: hira_baseline_ra_list_control_measure_list_additional_on_conflict
+    ): hira_baseline_ra_list_control_measure_list_additional
     "insert a single row into the table: \"hira_baseline_ra_list\""
     insert_hira_baseline_ra_list_one(
         "the row to be inserted"
@@ -35062,6 +35407,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: ppe_on_conflict
     ): ppe
+    "insert data into the table: \"proxy_asset__asset\""
+    insert_proxy_asset__asset(
+        "the rows to be inserted"
+        objects: [proxy_asset__asset_insert_input!]!,
+        "upsert condition"
+        on_conflict: proxy_asset__asset_on_conflict
+    ): proxy_asset__asset_mutation_response
+    "insert a single row into the table: \"proxy_asset__asset\""
+    insert_proxy_asset__asset_one(
+        "the row to be inserted"
+        object: proxy_asset__asset_insert_input!,
+        "upsert condition"
+        on_conflict: proxy_asset__asset_on_conflict
+    ): proxy_asset__asset
     "insert data into the table: \"proxy_chemical_product__ppe\""
     insert_proxy_chemical_product__ppe(
         "the rows to be inserted"
@@ -38112,6 +38471,28 @@ type mutation_root {
         _set: hira_baseline_ra_list_set_input,
         pk_columns: hira_baseline_ra_list_pk_columns_input!
     ): hira_baseline_ra_list
+    "update data of the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    update_hira_baseline_ra_list_control_measure_list_additional(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_list_control_measure_list_additional_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_list_control_measure_list_additional_set_input,
+        "filter the rows which have to be updated"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp!
+    ): hira_baseline_ra_list_control_measure_list_additional_mutation_response
+    "update single row of the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    update_hira_baseline_ra_list_control_measure_list_additional_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: hira_baseline_ra_list_control_measure_list_additional_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: hira_baseline_ra_list_control_measure_list_additional_set_input,
+        pk_columns: hira_baseline_ra_list_control_measure_list_additional_pk_columns_input!
+    ): hira_baseline_ra_list_control_measure_list_additional
+    "update multiples rows of table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    update_hira_baseline_ra_list_control_measure_list_additional_many(
+        "updates to execute, in order"
+        updates: [hira_baseline_ra_list_control_measure_list_additional_updates!]!
+    ): [hira_baseline_ra_list_control_measure_list_additional_mutation_response]
     "update multiples rows of table: \"hira_baseline_ra_list\""
     update_hira_baseline_ra_list_many(
         "updates to execute, in order"
@@ -38782,6 +39163,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [ppe_updates!]!
     ): [ppe_mutation_response]
+    "update data of the table: \"proxy_asset__asset\""
+    update_proxy_asset__asset(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_asset__asset_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_asset__asset_set_input,
+        "filter the rows which have to be updated"
+        where: proxy_asset__asset_bool_exp!
+    ): proxy_asset__asset_mutation_response
+    "update single row of the table: \"proxy_asset__asset\""
+    update_proxy_asset__asset_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_asset__asset_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_asset__asset_set_input,
+        pk_columns: proxy_asset__asset_pk_columns_input!
+    ): proxy_asset__asset
+    "update multiples rows of table: \"proxy_asset__asset\""
+    update_proxy_asset__asset_many(
+        "updates to execute, in order"
+        updates: [proxy_asset__asset_updates!]!
+    ): [proxy_asset__asset_mutation_response]
     "update data of the table: \"proxy_chemical_product__ppe\""
     update_proxy_chemical_product__ppe(
         "increments the numeric columns with given value of the filtered values"
@@ -41895,8 +42298,8 @@ type ppe implements Node {
         "filter the rows returned"
         where: proxy_department__ppe_bool_exp
     ): proxy_department__ppeConnection!
-    duration_type: ppe_duration_type!
-    duration_value: Int!
+    duration_type: ppe_duration_type
+    duration_value: Int
     "An array relationship"
     employee_list(
         "distinct select on columns"
@@ -42070,7 +42473,7 @@ type ppe implements Node {
         "filter the rows returned"
         where: proxy_team__ppe_bool_exp
     ): proxy_team__ppeConnection!
-    unit: String!
+    unit: String
     "An object relationship"
     user: default_users
     user_id: bigint
@@ -42296,6 +42699,127 @@ type ppe_variance_fields {
     qty_received: Float
     site_id: Float
     user_id: Float
+}
+
+"columns and relationships of \"proxy_asset__asset\""
+type proxy_asset__asset implements Node {
+    "An object relationship"
+    child_asset: assets!
+    child_asset_id: bigint!
+    id: ID!
+    "An object relationship"
+    parent_asset: assets!
+    parent_asset_id: bigint!
+}
+
+"A Relay connection object on \"proxy_asset__asset\""
+type proxy_asset__assetConnection {
+    edges: [proxy_asset__assetEdge!]!
+    pageInfo: PageInfo!
+}
+
+type proxy_asset__assetEdge {
+    cursor: String!
+    node: proxy_asset__asset!
+}
+
+"aggregated selection of \"proxy_asset__asset\""
+type proxy_asset__asset_aggregate {
+    aggregate: proxy_asset__asset_aggregate_fields
+    nodes: [proxy_asset__asset!]!
+}
+
+"aggregate fields of \"proxy_asset__asset\""
+type proxy_asset__asset_aggregate_fields {
+    avg: proxy_asset__asset_avg_fields
+    count(columns: [proxy_asset__asset_select_column!], distinct: Boolean): Int!
+    max: proxy_asset__asset_max_fields
+    min: proxy_asset__asset_min_fields
+    stddev: proxy_asset__asset_stddev_fields
+    stddev_pop: proxy_asset__asset_stddev_pop_fields
+    stddev_samp: proxy_asset__asset_stddev_samp_fields
+    sum: proxy_asset__asset_sum_fields
+    var_pop: proxy_asset__asset_var_pop_fields
+    var_samp: proxy_asset__asset_var_samp_fields
+    variance: proxy_asset__asset_variance_fields
+}
+
+"aggregate avg on columns"
+type proxy_asset__asset_avg_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate max on columns"
+type proxy_asset__asset_max_fields {
+    child_asset_id: bigint
+    id: bigint
+    parent_asset_id: bigint
+}
+
+"aggregate min on columns"
+type proxy_asset__asset_min_fields {
+    child_asset_id: bigint
+    id: bigint
+    parent_asset_id: bigint
+}
+
+"response of any mutation on the table \"proxy_asset__asset\""
+type proxy_asset__asset_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [proxy_asset__asset!]!
+}
+
+"aggregate stddev on columns"
+type proxy_asset__asset_stddev_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type proxy_asset__asset_stddev_pop_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type proxy_asset__asset_stddev_samp_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate sum on columns"
+type proxy_asset__asset_sum_fields {
+    child_asset_id: bigint
+    id: bigint
+    parent_asset_id: bigint
+}
+
+"aggregate var_pop on columns"
+type proxy_asset__asset_var_pop_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate var_samp on columns"
+type proxy_asset__asset_var_samp_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
+}
+
+"aggregate variance on columns"
+type proxy_asset__asset_variance_fields {
+    child_asset_id: Float
+    id: Float
+    parent_asset_id: Float
 }
 
 "columns and relationships of \"proxy_chemical_product__ppe\""
@@ -43490,6 +44014,10 @@ type proxy_employee__swp_sign_sheet implements Node {
     employee: hr_employees!
     employee_id: bigint!
     id: ID!
+    signature(
+        "JSON select path"
+        path: String
+    ): json
     "An object relationship"
     swp: hira_swp!
     swp_id: bigint!
@@ -47718,6 +48246,19 @@ type query_root {
         "filter the rows returned"
         where: hira_baseline_ra_list_bool_exp
     ): hira_baseline_ra_listConnection!
+    "fetch data from the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    hira_baseline_ra_list_control_measure_list_additional_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_control_measure_list_additional_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_control_measure_list_additional_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    ): hira_baseline_ra_list_control_measure_list_additionalConnection!
     "fetch data from the table: \"hira_sop\""
     hira_sop_connection(
         after: String,
@@ -48112,6 +48653,19 @@ type query_root {
         "filter the rows returned"
         where: ppe_bool_exp
     ): ppeConnection!
+    "fetch data from the table: \"proxy_asset__asset\""
+    proxy_asset__asset_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__assetConnection!
     "fetch data from the table: \"proxy_chemical_product__ppe\""
     proxy_chemical_product__ppe_connection(
         after: String,
@@ -52004,7 +52558,7 @@ type sheq_documents implements Node {
     "An object relationship"
     employee: hr_employees
     employee_id: bigint
-    firestore_id: String!
+    firestore_id: String
     id: ID!
     internal_or_external: internal_or_external
     "An object relationship"
@@ -61779,6 +62333,19 @@ type subscription_root {
         "filter the rows returned"
         where: hira_baseline_ra_list_bool_exp
     ): hira_baseline_ra_listConnection!
+    "fetch data from the table: \"hira_baseline_ra_list_control_measure_list_additional\""
+    hira_baseline_ra_list_control_measure_list_additional_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [hira_baseline_ra_list_control_measure_list_additional_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [hira_baseline_ra_list_control_measure_list_additional_order_by!],
+        "filter the rows returned"
+        where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    ): hira_baseline_ra_list_control_measure_list_additionalConnection!
     "fetch data from the table: \"hira_sop\""
     hira_sop_connection(
         after: String,
@@ -62173,6 +62740,19 @@ type subscription_root {
         "filter the rows returned"
         where: ppe_bool_exp
     ): ppeConnection!
+    "fetch data from the table: \"proxy_asset__asset\""
+    proxy_asset__asset_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_asset__asset_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_asset__asset_order_by!],
+        "filter the rows returned"
+        where: proxy_asset__asset_bool_exp
+    ): proxy_asset__assetConnection!
     "fetch data from the table: \"proxy_chemical_product__ppe\""
     proxy_chemical_product__ppe_connection(
         after: String,
@@ -72173,6 +72753,44 @@ enum hira_baseline_ra_list_constraint {
     hira_baseline_ra_list_pkey
 }
 
+"unique or primary key constraints on table \"hira_baseline_ra_list_control_measure_list_additional\""
+enum hira_baseline_ra_list_control_measure_list_additional_constraint {
+    "unique or primary key constraint on columns \"id\""
+    hira_taskbased_ra_list_control_measure_list_additional_pkey
+}
+
+"select columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+enum hira_baseline_ra_list_control_measure_list_additional_select_column {
+    "column name"
+    baseline_ra_list_id
+    "column name"
+    cost
+    "column name"
+    date_completed
+    "column name"
+    id
+    "column name"
+    responsible_person_id
+    "column name"
+    text
+}
+
+"update columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+enum hira_baseline_ra_list_control_measure_list_additional_update_column {
+    "column name"
+    baseline_ra_list_id
+    "column name"
+    cost
+    "column name"
+    date_completed
+    "column name"
+    id
+    "column name"
+    responsible_person_id
+    "column name"
+    text
+}
+
 "select columns of table \"hira_baseline_ra_list\""
 enum hira_baseline_ra_list_select_column {
     "column name"
@@ -72182,11 +72800,17 @@ enum hira_baseline_ra_list_select_column {
     "column name"
     consequence_2
     "column name"
+    consequence_3
+    "column name"
     control_measure_list
+    "column name"
+    due_date
     "column name"
     frequency_1
     "column name"
     frequency_2
+    "column name"
+    frequency_3
     "column name"
     hazard
     "column name"
@@ -72196,9 +72820,17 @@ enum hira_baseline_ra_list_select_column {
     "column name"
     likelihood_2
     "column name"
+    likelihood_3
+    "column name"
+    responsible_person_id
+    "column name"
     risk
     "column name"
     risk_type
+    "column name"
+    target_date
+    "column name"
+    task_step
 }
 
 "update columns of table \"hira_baseline_ra_list\""
@@ -72210,11 +72842,17 @@ enum hira_baseline_ra_list_update_column {
     "column name"
     consequence_2
     "column name"
+    consequence_3
+    "column name"
     control_measure_list
+    "column name"
+    due_date
     "column name"
     frequency_1
     "column name"
     frequency_2
+    "column name"
+    frequency_3
     "column name"
     hazard
     "column name"
@@ -72224,9 +72862,17 @@ enum hira_baseline_ra_list_update_column {
     "column name"
     likelihood_2
     "column name"
+    likelihood_3
+    "column name"
+    responsible_person_id
+    "column name"
     risk
     "column name"
     risk_type
+    "column name"
+    target_date
+    "column name"
+    task_step
 }
 
 "select columns of table \"hira_baseline_ra\""
@@ -72248,13 +72894,15 @@ enum hira_baseline_ra_select_column {
     "column name"
     created_at
     "column name"
-    expiry
+    expiry_date
     "column name"
     firestore_id
     "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_tolerance
     "column name"
@@ -72282,13 +72930,15 @@ enum hira_baseline_ra_update_column {
     "column name"
     created_at
     "column name"
-    expiry
+    expiry_date
     "column name"
     firestore_id
     "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_tolerance
     "column name"
@@ -72352,6 +73002,8 @@ enum hira_sop_select_column {
     "column name"
     project_id
     "column name"
+    removed
+    "column name"
     risk_level
     "column name"
     risk_list
@@ -72409,6 +73061,8 @@ enum hira_sop_update_column {
     procedure_list
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_level
     "column name"
@@ -72502,6 +73156,8 @@ enum hira_swp_select_column {
     "column name"
     project_id
     "column name"
+    removed
+    "column name"
     sign_sheet_notes
     "column name"
     site_id
@@ -72554,6 +73210,8 @@ enum hira_swp_update_column {
     "column name"
     project_id
     "column name"
+    removed
+    "column name"
     sign_sheet_notes
     "column name"
     site_id
@@ -72588,19 +73246,9 @@ enum hira_taskbased_ra_list_select_column {
     "column name"
     consequence_2
     "column name"
-    consequence_3
-    "column name"
     control_measure_list
     "column name"
-    control_measure_list_additional
-    "column name"
     due_date
-    "column name"
-    frequency_1
-    "column name"
-    frequency_2
-    "column name"
-    frequency_3
     "column name"
     hazard
     "column name"
@@ -72610,8 +73258,6 @@ enum hira_taskbased_ra_list_select_column {
     "column name"
     likelihood_2
     "column name"
-    likelihood_3
-    "column name"
     responsible_person_id
     "column name"
     risk
@@ -72619,6 +73265,8 @@ enum hira_taskbased_ra_list_select_column {
     risk_type
     "column name"
     target_date
+    "column name"
+    task_step
     "column name"
     taskbased_ra_id
 }
@@ -72630,19 +73278,9 @@ enum hira_taskbased_ra_list_update_column {
     "column name"
     consequence_2
     "column name"
-    consequence_3
-    "column name"
     control_measure_list
     "column name"
-    control_measure_list_additional
-    "column name"
     due_date
-    "column name"
-    frequency_1
-    "column name"
-    frequency_2
-    "column name"
-    frequency_3
     "column name"
     hazard
     "column name"
@@ -72652,8 +73290,6 @@ enum hira_taskbased_ra_list_update_column {
     "column name"
     likelihood_2
     "column name"
-    likelihood_3
-    "column name"
     responsible_person_id
     "column name"
     risk
@@ -72661,6 +73297,8 @@ enum hira_taskbased_ra_list_update_column {
     risk_type
     "column name"
     target_date
+    "column name"
+    task_step
     "column name"
     taskbased_ra_id
 }
@@ -72684,13 +73322,15 @@ enum hira_taskbased_ra_select_column {
     "column name"
     created_at
     "column name"
-    expiry
+    expiry_date
     "column name"
     firestore_id
     "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_tolerance
     "column name"
@@ -72718,13 +73358,15 @@ enum hira_taskbased_ra_update_column {
     "column name"
     created_at
     "column name"
-    expiry
+    expiry_date
     "column name"
     firestore_id
     "column name"
     id
     "column name"
     project_id
+    "column name"
+    removed
     "column name"
     risk_tolerance
     "column name"
@@ -74825,6 +75467,34 @@ enum ppe_update_column {
     user_id
 }
 
+"unique or primary key constraints on table \"proxy_asset__asset\""
+enum proxy_asset__asset_constraint {
+    "unique or primary key constraint on columns \"child_asset_id\", \"parent_asset_id\""
+    proxy_asset__asset_parent_asset_id_child_asset_id_key
+    "unique or primary key constraint on columns \"id\""
+    proxy_asset__asset_pkey
+}
+
+"select columns of table \"proxy_asset__asset\""
+enum proxy_asset__asset_select_column {
+    "column name"
+    child_asset_id
+    "column name"
+    id
+    "column name"
+    parent_asset_id
+}
+
+"update columns of table \"proxy_asset__asset\""
+enum proxy_asset__asset_update_column {
+    "column name"
+    child_asset_id
+    "column name"
+    id
+    "column name"
+    parent_asset_id
+}
+
 "unique or primary key constraints on table \"proxy_chemical_product__ppe\""
 enum proxy_chemical_product__ppe_constraint {
     "unique or primary key constraint on columns \"ppe_id\", \"product_id\""
@@ -75138,6 +75808,8 @@ enum proxy_employee__swp_sign_sheet_select_column {
     "column name"
     id
     "column name"
+    signature
+    "column name"
     swp_id
 }
 
@@ -75147,6 +75819,8 @@ enum proxy_employee__swp_sign_sheet_update_column {
     employee_id
     "column name"
     id
+    "column name"
+    signature
     "column name"
     swp_id
 }
@@ -82194,9 +82868,9 @@ input asset_details_bool_exp {
     _and: [asset_details_bool_exp!]
     _not: asset_details_bool_exp
     _or: [asset_details_bool_exp!]
+    asset_list: assets_bool_exp
+    asset_list_aggregate: assets_aggregate_bool_exp
     asset_type: String_comparison_exp
-    assets: assets_bool_exp
-    assets_aggregate: assets_aggregate_bool_exp
     barcode: String_comparison_exp
     condition: String_comparison_exp
     desc: String_comparison_exp
@@ -82220,8 +82894,8 @@ input asset_details_inc_input {
 
 "input type for inserting data into table \"asset_details\""
 input asset_details_insert_input {
+    asset_list: assets_arr_rel_insert_input
     asset_type: String
-    assets: assets_arr_rel_insert_input
     barcode: String
     condition: String
     desc: String
@@ -82254,8 +82928,8 @@ input asset_details_on_conflict {
 
 "Ordering options when selecting data from \"asset_details\"."
 input asset_details_order_by {
+    asset_list_aggregate: assets_aggregate_order_by
     asset_type: order_by
-    assets_aggregate: assets_aggregate_order_by
     barcode: order_by
     condition: order_by
     desc: order_by
@@ -84644,8 +85318,12 @@ input assets_bool_exp {
     _and: [assets_bool_exp!]
     _not: assets_bool_exp
     _or: [assets_bool_exp!]
+    asset_children_list: proxy_asset__asset_bool_exp
+    asset_children_list_aggregate: proxy_asset__asset_aggregate_bool_exp
     asset_detail: asset_details_bool_exp
     asset_detail_id: bigint_comparison_exp
+    asset_parent_list: proxy_asset__asset_bool_exp
+    asset_parent_list_aggregate: proxy_asset__asset_aggregate_bool_exp
     calibration_record_list: asset_calibration_record_bool_exp
     calibration_record_list_aggregate: asset_calibration_record_aggregate_bool_exp
     client: default_clients_bool_exp
@@ -84684,6 +85362,8 @@ input assets_bool_exp {
     project_id: bigint_comparison_exp
     purchase_info: asset_purchase_info_bool_exp
     purchase_info_id: bigint_comparison_exp
+    questionnaire_ques_answered_list: default_contractor_questionnaires_ques_bool_exp
+    questionnaire_ques_answered_list_aggregate: default_contractor_questionnaires_ques_aggregate_bool_exp
     responsible_person: hr_employees_bool_exp
     responsible_person_id: bigint_comparison_exp
     site: default_sites_bool_exp
@@ -84712,8 +85392,10 @@ input assets_inc_input {
 
 "input type for inserting data into table \"assets\""
 input assets_insert_input {
+    asset_children_list: proxy_asset__asset_arr_rel_insert_input
     asset_detail: asset_details_obj_rel_insert_input
     asset_detail_id: bigint
+    asset_parent_list: proxy_asset__asset_arr_rel_insert_input
     calibration_record_list: asset_calibration_record_arr_rel_insert_input
     client: default_clients_obj_rel_insert_input
     client_id: bigint
@@ -84742,6 +85424,7 @@ input assets_insert_input {
     project_id: bigint
     purchase_info: asset_purchase_info_obj_rel_insert_input
     purchase_info_id: bigint
+    questionnaire_ques_answered_list: default_contractor_questionnaires_ques_arr_rel_insert_input
     responsible_person: hr_employees_obj_rel_insert_input
     responsible_person_id: bigint
     site: default_sites_obj_rel_insert_input
@@ -84807,8 +85490,10 @@ input assets_on_conflict {
 
 "Ordering options when selecting data from \"assets\"."
 input assets_order_by {
+    asset_children_list_aggregate: proxy_asset__asset_aggregate_order_by
     asset_detail: asset_details_order_by
     asset_detail_id: order_by
+    asset_parent_list_aggregate: proxy_asset__asset_aggregate_order_by
     calibration_record_list_aggregate: asset_calibration_record_aggregate_order_by
     client: default_clients_order_by
     client_id: order_by
@@ -84839,6 +85524,7 @@ input assets_order_by {
     project_id: order_by
     purchase_info: asset_purchase_info_order_by
     purchase_info_id: order_by
+    questionnaire_ques_answered_list_aggregate: default_contractor_questionnaires_ques_aggregate_order_by
     responsible_person: hr_employees_order_by
     responsible_person_id: order_by
     site: default_sites_order_by
@@ -95544,14 +96230,15 @@ input hira_baseline_ra_bool_exp {
     contractor_user: default_contractor_users_bool_exp
     contractor_user_id: bigint_comparison_exp
     created_at: timestamptz_comparison_exp
-    expiry: date_comparison_exp
+    expiry_date: date_comparison_exp
     firestore_id: String_comparison_exp
     id: bigint_comparison_exp
     list: hira_baseline_ra_list_bool_exp
     list_aggregate: hira_baseline_ra_list_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
-    risk_tolerance: String_comparison_exp
+    removed: Boolean_comparison_exp
+    risk_tolerance: Int_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     user: default_users_bool_exp
@@ -95568,6 +96255,7 @@ input hira_baseline_ra_inc_input {
     contractor_user_id: bigint
     id: bigint
     project_id: bigint
+    risk_tolerance: Int
     site_id: bigint
     user_id: bigint
 }
@@ -95588,13 +96276,14 @@ input hira_baseline_ra_insert_input {
     contractor_user: default_contractor_users_obj_rel_insert_input
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: bigint
     list: hira_baseline_ra_list_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean
+    risk_tolerance: Int
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     user: default_users_obj_rel_insert_input
@@ -95639,11 +96328,15 @@ input hira_baseline_ra_list_avg_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"hira_baseline_ra_list\". All fields are combined with a logical 'AND'."
@@ -95655,15 +96348,225 @@ input hira_baseline_ra_list_bool_exp {
     baseline_ra_id: bigint_comparison_exp
     consequence_1: Int_comparison_exp
     consequence_2: Int_comparison_exp
+    consequence_3: Int_comparison_exp
     control_measure_list: json_comparison_exp
+    control_measure_list_additional: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    control_measure_list_additional_aggregate: hira_baseline_ra_list_control_measure_list_additional_aggregate_bool_exp
+    due_date: date_comparison_exp
     frequency_1: Int_comparison_exp
     frequency_2: Int_comparison_exp
+    frequency_3: Int_comparison_exp
     hazard: String_comparison_exp
     id: bigint_comparison_exp
     likelihood_1: Int_comparison_exp
     likelihood_2: Int_comparison_exp
+    likelihood_3: Int_comparison_exp
+    responsible_person: hr_employees_bool_exp
+    responsible_person_id: bigint_comparison_exp
     risk: String_comparison_exp
+    risk_rank_1: String_comparison_exp
+    risk_rank_2: String_comparison_exp
+    risk_rank_3: String_comparison_exp
+    risk_rating_1: Int_comparison_exp
+    risk_rating_2: Int_comparison_exp
+    risk_rating_3: Int_comparison_exp
     risk_type: json_comparison_exp
+    target_date: date_comparison_exp
+    task_step: String_comparison_exp
+}
+
+input hira_baseline_ra_list_control_measure_list_additional_aggregate_bool_exp {
+    count: hira_baseline_ra_list_control_measure_list_additional_aggregate_bool_exp_count
+}
+
+input hira_baseline_ra_list_control_measure_list_additional_aggregate_bool_exp_count {
+    arguments: [hira_baseline_ra_list_control_measure_list_additional_select_column!]
+    distinct: Boolean
+    filter: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_aggregate_order_by {
+    avg: hira_baseline_ra_list_control_measure_list_additional_avg_order_by
+    count: order_by
+    max: hira_baseline_ra_list_control_measure_list_additional_max_order_by
+    min: hira_baseline_ra_list_control_measure_list_additional_min_order_by
+    stddev: hira_baseline_ra_list_control_measure_list_additional_stddev_order_by
+    stddev_pop: hira_baseline_ra_list_control_measure_list_additional_stddev_pop_order_by
+    stddev_samp: hira_baseline_ra_list_control_measure_list_additional_stddev_samp_order_by
+    sum: hira_baseline_ra_list_control_measure_list_additional_sum_order_by
+    var_pop: hira_baseline_ra_list_control_measure_list_additional_var_pop_order_by
+    var_samp: hira_baseline_ra_list_control_measure_list_additional_var_samp_order_by
+    variance: hira_baseline_ra_list_control_measure_list_additional_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_arr_rel_insert_input {
+    data: [hira_baseline_ra_list_control_measure_list_additional_insert_input!]!
+    "upsert condition"
+    on_conflict: hira_baseline_ra_list_control_measure_list_additional_on_conflict
+}
+
+"order by avg() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_avg_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"hira_baseline_ra_list_control_measure_list_additional\". All fields are combined with a logical 'AND'."
+input hira_baseline_ra_list_control_measure_list_additional_bool_exp {
+    _and: [hira_baseline_ra_list_control_measure_list_additional_bool_exp!]
+    _not: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+    _or: [hira_baseline_ra_list_control_measure_list_additional_bool_exp!]
+    baseline_ra: hira_baseline_ra_list_bool_exp
+    baseline_ra_list_id: bigint_comparison_exp
+    cost: money_comparison_exp
+    date_completed: date_comparison_exp
+    id: bigint_comparison_exp
+    responsible_person: hr_employees_bool_exp
+    responsible_person_id: bigint_comparison_exp
+    text: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_inc_input {
+    baseline_ra_list_id: bigint
+    cost: money
+    id: bigint
+    responsible_person_id: bigint
+}
+
+"input type for inserting data into table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_insert_input {
+    baseline_ra: hira_baseline_ra_list_obj_rel_insert_input
+    baseline_ra_list_id: bigint
+    cost: money
+    date_completed: date
+    id: bigint
+    responsible_person: hr_employees_obj_rel_insert_input
+    responsible_person_id: bigint
+    text: String
+}
+
+"order by max() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_max_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    date_completed: order_by
+    id: order_by
+    responsible_person_id: order_by
+    text: order_by
+}
+
+"order by min() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_min_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    date_completed: order_by
+    id: order_by
+    responsible_person_id: order_by
+    text: order_by
+}
+
+"on_conflict condition type for table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_on_conflict {
+    constraint: hira_baseline_ra_list_control_measure_list_additional_constraint!
+    update_columns: [hira_baseline_ra_list_control_measure_list_additional_update_column!]! = []
+    where: hira_baseline_ra_list_control_measure_list_additional_bool_exp
+}
+
+"Ordering options when selecting data from \"hira_baseline_ra_list_control_measure_list_additional\"."
+input hira_baseline_ra_list_control_measure_list_additional_order_by {
+    baseline_ra: hira_baseline_ra_list_order_by
+    baseline_ra_list_id: order_by
+    cost: order_by
+    date_completed: order_by
+    id: order_by
+    responsible_person: hr_employees_order_by
+    responsible_person_id: order_by
+    text: order_by
+}
+
+"primary key columns input for table: hira_baseline_ra_list_control_measure_list_additional"
+input hira_baseline_ra_list_control_measure_list_additional_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_set_input {
+    baseline_ra_list_id: bigint
+    cost: money
+    date_completed: date
+    id: bigint
+    responsible_person_id: bigint
+    text: String
+}
+
+"order by stddev() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_stddev_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_stddev_pop_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_stddev_samp_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"order by sum() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_sum_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+input hira_baseline_ra_list_control_measure_list_additional_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: hira_baseline_ra_list_control_measure_list_additional_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: hira_baseline_ra_list_control_measure_list_additional_set_input
+    where: hira_baseline_ra_list_control_measure_list_additional_bool_exp!
+}
+
+"order by var_pop() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_var_pop_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"order by var_samp() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_var_samp_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
+}
+
+"order by variance() on columns of table \"hira_baseline_ra_list_control_measure_list_additional\""
+input hira_baseline_ra_list_control_measure_list_additional_variance_order_by {
+    baseline_ra_list_id: order_by
+    cost: order_by
+    id: order_by
+    responsible_person_id: order_by
 }
 
 "input type for incrementing numeric columns in table \"hira_baseline_ra_list\""
@@ -95671,11 +96574,15 @@ input hira_baseline_ra_list_inc_input {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
 }
 
 "input type for inserting data into table \"hira_baseline_ra_list\""
@@ -95684,15 +96591,24 @@ input hira_baseline_ra_list_insert_input {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
     control_measure_list: json
+    control_measure_list_additional: hira_baseline_ra_list_control_measure_list_additional_arr_rel_insert_input
+    due_date: date
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person: hr_employees_obj_rel_insert_input
+    responsible_person_id: bigint
     risk: String
     risk_type: json
+    target_date: date
+    task_step: String
 }
 
 "order by max() on columns of table \"hira_baseline_ra_list\""
@@ -95700,13 +96616,20 @@ input hira_baseline_ra_list_max_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
+    due_date: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
     risk: order_by
+    target_date: order_by
+    task_step: order_by
 }
 
 "order by min() on columns of table \"hira_baseline_ra_list\""
@@ -95714,13 +96637,27 @@ input hira_baseline_ra_list_min_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
+    due_date: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
     risk: order_by
+    target_date: order_by
+    task_step: order_by
+}
+
+"input type for inserting object relation for remote table \"hira_baseline_ra_list\""
+input hira_baseline_ra_list_obj_rel_insert_input {
+    data: hira_baseline_ra_list_insert_input!
+    "upsert condition"
+    on_conflict: hira_baseline_ra_list_on_conflict
 }
 
 "on_conflict condition type for table \"hira_baseline_ra_list\""
@@ -95736,15 +96673,30 @@ input hira_baseline_ra_list_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     control_measure_list: order_by
+    control_measure_list_additional_aggregate: hira_baseline_ra_list_control_measure_list_additional_aggregate_order_by
+    due_date: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person: hr_employees_order_by
+    responsible_person_id: order_by
     risk: order_by
+    risk_rank_1: order_by
+    risk_rank_2: order_by
+    risk_rank_3: order_by
+    risk_rating_1: order_by
+    risk_rating_2: order_by
+    risk_rating_3: order_by
     risk_type: order_by
+    target_date: order_by
+    task_step: order_by
 }
 
 "primary key columns input for table: hira_baseline_ra_list"
@@ -95757,15 +96709,22 @@ input hira_baseline_ra_list_set_input {
     baseline_ra_id: bigint
     consequence_1: Int
     consequence_2: Int
+    consequence_3: Int
     control_measure_list: json
+    due_date: date
     frequency_1: Int
     frequency_2: Int
+    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
+    likelihood_3: Int
+    responsible_person_id: bigint
     risk: String
     risk_type: json
+    target_date: date
+    task_step: String
 }
 
 "order by stddev() on columns of table \"hira_baseline_ra_list\""
@@ -95773,11 +96732,15 @@ input hira_baseline_ra_list_stddev_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"hira_baseline_ra_list\""
@@ -95785,11 +96748,15 @@ input hira_baseline_ra_list_stddev_pop_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"hira_baseline_ra_list\""
@@ -95797,11 +96764,15 @@ input hira_baseline_ra_list_stddev_samp_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "order by sum() on columns of table \"hira_baseline_ra_list\""
@@ -95809,11 +96780,15 @@ input hira_baseline_ra_list_sum_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 input hira_baseline_ra_list_updates {
@@ -95829,11 +96804,15 @@ input hira_baseline_ra_list_var_pop_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "order by var_samp() on columns of table \"hira_baseline_ra_list\""
@@ -95841,11 +96820,15 @@ input hira_baseline_ra_list_var_samp_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "order by variance() on columns of table \"hira_baseline_ra_list\""
@@ -95853,11 +96836,15 @@ input hira_baseline_ra_list_variance_order_by {
     baseline_ra_id: order_by
     consequence_1: order_by
     consequence_2: order_by
+    consequence_3: order_by
     frequency_1: order_by
     frequency_2: order_by
+    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
+    likelihood_3: order_by
+    responsible_person_id: order_by
 }
 
 "input type for inserting object relation for remote table \"hira_baseline_ra\""
@@ -95890,12 +96877,13 @@ input hira_baseline_ra_order_by {
     contractor_user: default_contractor_users_order_by
     contractor_user_id: order_by
     created_at: order_by
-    expiry: order_by
+    expiry_date: order_by
     firestore_id: order_by
     id: order_by
     list_aggregate: hira_baseline_ra_list_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     risk_tolerance: order_by
     site: default_sites_order_by
     site_id: order_by
@@ -95918,11 +96906,12 @@ input hira_baseline_ra_set_input {
     contractor_site_id: bigint
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: bigint
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean
+    risk_tolerance: Int
     site_id: bigint
     user_id: bigint
 }
@@ -95970,6 +96959,7 @@ input hira_sop_bool_exp {
     procedure_list: json_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
     risk_level: String_comparison_exp
     risk_list: json_comparison_exp
     safety_pre_requesite_list: json_comparison_exp
@@ -96026,6 +97016,7 @@ input hira_sop_insert_input {
     procedure_list: json
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    removed: Boolean
     risk_level: String
     risk_list: json
     safety_pre_requesite_list: json
@@ -96074,6 +97065,7 @@ input hira_sop_order_by {
     procedure_list: order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     risk_level: order_by
     risk_list: order_by
     safety_pre_requesite_list: order_by
@@ -96112,6 +97104,7 @@ input hira_sop_set_input {
     prepared_by_id: bigint
     procedure_list: json
     project_id: bigint
+    removed: Boolean
     risk_level: String
     risk_list: json
     safety_pre_requesite_list: json
@@ -96163,6 +97156,7 @@ input hira_swp_bool_exp {
     ppe_required_list_aggregate: proxy_swp__ppe_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
     sign_sheet_employee_list: proxy_employee__swp_sign_sheet_bool_exp
     sign_sheet_employee_list_aggregate: proxy_employee__swp_sign_sheet_aggregate_bool_exp
     sign_sheet_notes: String_comparison_exp
@@ -96222,6 +97216,7 @@ input hira_swp_insert_input {
     ppe_required_list: proxy_swp__ppe_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    removed: Boolean
     sign_sheet_employee_list: proxy_employee__swp_sign_sheet_arr_rel_insert_input
     sign_sheet_notes: String
     site: default_sites_obj_rel_insert_input
@@ -96278,6 +97273,7 @@ input hira_swp_order_by {
     ppe_required_list_aggregate: proxy_swp__ppe_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     sign_sheet_employee_list_aggregate: proxy_employee__swp_sign_sheet_aggregate_order_by
     sign_sheet_notes: order_by
     site: default_sites_order_by
@@ -96481,6 +97477,7 @@ input hira_swp_set_input {
     notes: String
     person_approving_procedure_id: bigint
     project_id: bigint
+    removed: Boolean
     sign_sheet_notes: String
     site_id: bigint
     steps_to_perform_task_list: json
@@ -96516,14 +97513,15 @@ input hira_taskbased_ra_bool_exp {
     contractor_user: default_contractor_users_bool_exp
     contractor_user_id: bigint_comparison_exp
     created_at: timestamptz_comparison_exp
-    expiry: date_comparison_exp
+    expiry_date: date_comparison_exp
     firestore_id: String_comparison_exp
     id: bigint_comparison_exp
     list: hira_taskbased_ra_list_bool_exp
     list_aggregate: hira_taskbased_ra_list_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
-    risk_tolerance: String_comparison_exp
+    removed: Boolean_comparison_exp
+    risk_tolerance: Int_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     user: default_users_bool_exp
@@ -96540,6 +97538,7 @@ input hira_taskbased_ra_inc_input {
     contractor_user_id: bigint
     id: bigint
     project_id: bigint
+    risk_tolerance: Int
     site_id: bigint
     user_id: bigint
 }
@@ -96560,13 +97559,14 @@ input hira_taskbased_ra_insert_input {
     contractor_user: default_contractor_users_obj_rel_insert_input
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: bigint
     list: hira_taskbased_ra_list_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean
+    risk_tolerance: Int
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     user: default_users_obj_rel_insert_input
@@ -96610,14 +97610,9 @@ input hira_taskbased_ra_list_arr_rel_insert_input {
 input hira_taskbased_ra_list_avg_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96629,23 +97624,22 @@ input hira_taskbased_ra_list_bool_exp {
     _or: [hira_taskbased_ra_list_bool_exp!]
     consequence_1: Int_comparison_exp
     consequence_2: Int_comparison_exp
-    consequence_3: Int_comparison_exp
     control_measure_list: json_comparison_exp
-    control_measure_list_additional: json_comparison_exp
     due_date: date_comparison_exp
-    frequency_1: Int_comparison_exp
-    frequency_2: Int_comparison_exp
-    frequency_3: Int_comparison_exp
     hazard: String_comparison_exp
     id: bigint_comparison_exp
     likelihood_1: Int_comparison_exp
     likelihood_2: Int_comparison_exp
-    likelihood_3: Int_comparison_exp
     responsible_person: hr_employees_bool_exp
     responsible_person_id: bigint_comparison_exp
     risk: String_comparison_exp
+    risk_rank_1: String_comparison_exp
+    risk_rank_2: String_comparison_exp
+    risk_rating_1: Int_comparison_exp
+    risk_rating_2: Int_comparison_exp
     risk_type: json_comparison_exp
     target_date: date_comparison_exp
+    task_step: String_comparison_exp
     taskbased_ra: hira_taskbased_ra_bool_exp
     taskbased_ra_id: bigint_comparison_exp
 }
@@ -96654,14 +97648,9 @@ input hira_taskbased_ra_list_bool_exp {
 input hira_taskbased_ra_list_inc_input {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person_id: bigint
     taskbased_ra_id: bigint
 }
@@ -96670,23 +97659,18 @@ input hira_taskbased_ra_list_inc_input {
 input hira_taskbased_ra_list_insert_input {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
     control_measure_list: json
-    control_measure_list_additional: json
     due_date: date
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person: hr_employees_obj_rel_insert_input
     responsible_person_id: bigint
     risk: String
     risk_type: json
     target_date: date
+    task_step: String
     taskbased_ra: hira_taskbased_ra_obj_rel_insert_input
     taskbased_ra_id: bigint
 }
@@ -96695,19 +97679,15 @@ input hira_taskbased_ra_list_insert_input {
 input hira_taskbased_ra_list_max_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
     due_date: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     risk: order_by
     target_date: order_by
+    task_step: order_by
     taskbased_ra_id: order_by
 }
 
@@ -96715,19 +97695,15 @@ input hira_taskbased_ra_list_max_order_by {
 input hira_taskbased_ra_list_min_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
     due_date: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     risk: order_by
     target_date: order_by
+    task_step: order_by
     taskbased_ra_id: order_by
 }
 
@@ -96742,23 +97718,22 @@ input hira_taskbased_ra_list_on_conflict {
 input hira_taskbased_ra_list_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
     control_measure_list: order_by
-    control_measure_list_additional: order_by
     due_date: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     hazard: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person: hr_employees_order_by
     responsible_person_id: order_by
     risk: order_by
+    risk_rank_1: order_by
+    risk_rank_2: order_by
+    risk_rating_1: order_by
+    risk_rating_2: order_by
     risk_type: order_by
     target_date: order_by
+    task_step: order_by
     taskbased_ra: hira_taskbased_ra_order_by
     taskbased_ra_id: order_by
 }
@@ -96772,22 +97747,17 @@ input hira_taskbased_ra_list_pk_columns_input {
 input hira_taskbased_ra_list_set_input {
     consequence_1: Int
     consequence_2: Int
-    consequence_3: Int
     control_measure_list: json
-    control_measure_list_additional: json
     due_date: date
-    frequency_1: Int
-    frequency_2: Int
-    frequency_3: Int
     hazard: String
     id: bigint
     likelihood_1: Int
     likelihood_2: Int
-    likelihood_3: Int
     responsible_person_id: bigint
     risk: String
     risk_type: json
     target_date: date
+    task_step: String
     taskbased_ra_id: bigint
 }
 
@@ -96795,14 +97765,9 @@ input hira_taskbased_ra_list_set_input {
 input hira_taskbased_ra_list_stddev_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96811,14 +97776,9 @@ input hira_taskbased_ra_list_stddev_order_by {
 input hira_taskbased_ra_list_stddev_pop_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96827,14 +97787,9 @@ input hira_taskbased_ra_list_stddev_pop_order_by {
 input hira_taskbased_ra_list_stddev_samp_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96843,14 +97798,9 @@ input hira_taskbased_ra_list_stddev_samp_order_by {
 input hira_taskbased_ra_list_sum_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96867,14 +97817,9 @@ input hira_taskbased_ra_list_updates {
 input hira_taskbased_ra_list_var_pop_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96883,14 +97828,9 @@ input hira_taskbased_ra_list_var_pop_order_by {
 input hira_taskbased_ra_list_var_samp_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96899,14 +97839,9 @@ input hira_taskbased_ra_list_var_samp_order_by {
 input hira_taskbased_ra_list_variance_order_by {
     consequence_1: order_by
     consequence_2: order_by
-    consequence_3: order_by
-    frequency_1: order_by
-    frequency_2: order_by
-    frequency_3: order_by
     id: order_by
     likelihood_1: order_by
     likelihood_2: order_by
-    likelihood_3: order_by
     responsible_person_id: order_by
     taskbased_ra_id: order_by
 }
@@ -96941,12 +97876,13 @@ input hira_taskbased_ra_order_by {
     contractor_user: default_contractor_users_order_by
     contractor_user_id: order_by
     created_at: order_by
-    expiry: order_by
+    expiry_date: order_by
     firestore_id: order_by
     id: order_by
     list_aggregate: hira_taskbased_ra_list_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
+    removed: order_by
     risk_tolerance: order_by
     site: default_sites_order_by
     site_id: order_by
@@ -96969,11 +97905,12 @@ input hira_taskbased_ra_set_input {
     contractor_site_id: bigint
     contractor_user_id: bigint
     created_at: timestamptz
-    expiry: date
+    expiry_date: date
     firestore_id: String
     id: bigint
     project_id: bigint
-    risk_tolerance: String
+    removed: Boolean
+    risk_tolerance: Int
     site_id: bigint
     user_id: bigint
 }
@@ -104792,6 +105729,173 @@ input ppe_variance_order_by {
     user_id: order_by
 }
 
+input proxy_asset__asset_aggregate_bool_exp {
+    count: proxy_asset__asset_aggregate_bool_exp_count
+}
+
+input proxy_asset__asset_aggregate_bool_exp_count {
+    arguments: [proxy_asset__asset_select_column!]
+    distinct: Boolean
+    filter: proxy_asset__asset_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"proxy_asset__asset\""
+input proxy_asset__asset_aggregate_order_by {
+    avg: proxy_asset__asset_avg_order_by
+    count: order_by
+    max: proxy_asset__asset_max_order_by
+    min: proxy_asset__asset_min_order_by
+    stddev: proxy_asset__asset_stddev_order_by
+    stddev_pop: proxy_asset__asset_stddev_pop_order_by
+    stddev_samp: proxy_asset__asset_stddev_samp_order_by
+    sum: proxy_asset__asset_sum_order_by
+    var_pop: proxy_asset__asset_var_pop_order_by
+    var_samp: proxy_asset__asset_var_samp_order_by
+    variance: proxy_asset__asset_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"proxy_asset__asset\""
+input proxy_asset__asset_arr_rel_insert_input {
+    data: [proxy_asset__asset_insert_input!]!
+    "upsert condition"
+    on_conflict: proxy_asset__asset_on_conflict
+}
+
+"order by avg() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_avg_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"proxy_asset__asset\". All fields are combined with a logical 'AND'."
+input proxy_asset__asset_bool_exp {
+    _and: [proxy_asset__asset_bool_exp!]
+    _not: proxy_asset__asset_bool_exp
+    _or: [proxy_asset__asset_bool_exp!]
+    child_asset: assets_bool_exp
+    child_asset_id: bigint_comparison_exp
+    id: bigint_comparison_exp
+    parent_asset: assets_bool_exp
+    parent_asset_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"proxy_asset__asset\""
+input proxy_asset__asset_inc_input {
+    child_asset_id: bigint
+    id: bigint
+    parent_asset_id: bigint
+}
+
+"input type for inserting data into table \"proxy_asset__asset\""
+input proxy_asset__asset_insert_input {
+    child_asset: assets_obj_rel_insert_input
+    child_asset_id: bigint
+    id: bigint
+    parent_asset: assets_obj_rel_insert_input
+    parent_asset_id: bigint
+}
+
+"order by max() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_max_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by min() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_min_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"on_conflict condition type for table \"proxy_asset__asset\""
+input proxy_asset__asset_on_conflict {
+    constraint: proxy_asset__asset_constraint!
+    update_columns: [proxy_asset__asset_update_column!]! = []
+    where: proxy_asset__asset_bool_exp
+}
+
+"Ordering options when selecting data from \"proxy_asset__asset\"."
+input proxy_asset__asset_order_by {
+    child_asset: assets_order_by
+    child_asset_id: order_by
+    id: order_by
+    parent_asset: assets_order_by
+    parent_asset_id: order_by
+}
+
+"primary key columns input for table: proxy_asset__asset"
+input proxy_asset__asset_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"proxy_asset__asset\""
+input proxy_asset__asset_set_input {
+    child_asset_id: bigint
+    id: bigint
+    parent_asset_id: bigint
+}
+
+"order by stddev() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_stddev_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_stddev_pop_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_stddev_samp_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by sum() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_sum_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+input proxy_asset__asset_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: proxy_asset__asset_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: proxy_asset__asset_set_input
+    where: proxy_asset__asset_bool_exp!
+}
+
+"order by var_pop() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_var_pop_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by var_samp() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_var_samp_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
+"order by variance() on columns of table \"proxy_asset__asset\""
+input proxy_asset__asset_variance_order_by {
+    child_asset_id: order_by
+    id: order_by
+    parent_asset_id: order_by
+}
+
 input proxy_chemical_product__ppe_aggregate_bool_exp {
     count: proxy_chemical_product__ppe_aggregate_bool_exp_count
 }
@@ -106462,6 +107566,7 @@ input proxy_employee__swp_sign_sheet_bool_exp {
     employee: hr_employees_bool_exp
     employee_id: bigint_comparison_exp
     id: bigint_comparison_exp
+    signature: json_comparison_exp
     swp: hira_swp_bool_exp
     swp_id: bigint_comparison_exp
 }
@@ -106478,6 +107583,7 @@ input proxy_employee__swp_sign_sheet_insert_input {
     employee: hr_employees_obj_rel_insert_input
     employee_id: bigint
     id: bigint
+    signature: json
     swp: hira_swp_obj_rel_insert_input
     swp_id: bigint
 }
@@ -106508,6 +107614,7 @@ input proxy_employee__swp_sign_sheet_order_by {
     employee: hr_employees_order_by
     employee_id: order_by
     id: order_by
+    signature: order_by
     swp: hira_swp_order_by
     swp_id: order_by
 }
@@ -106521,6 +107628,7 @@ input proxy_employee__swp_sign_sheet_pk_columns_input {
 input proxy_employee__swp_sign_sheet_set_input {
     employee_id: bigint
     id: bigint
+    signature: json
     swp_id: bigint
 }
 

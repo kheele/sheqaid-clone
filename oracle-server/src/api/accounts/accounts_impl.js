@@ -83,7 +83,7 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
         access_type,
         company_id: company && company.id,
         loggedUser: {
-            user: {id: loggedUser.user.id},
+            user: {id: user_data.id, auth_id: user_data.auth_id},
             // company: {id: company.id},
         },
     };
@@ -110,7 +110,7 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
     return setCustomUserClaims(uid, currentCustomClaims, access_type).then(async () => {
         try {
             const token = await createCustomToken(uid, {access_type});
-            return {loggedUser, token};
+            return {loggedUser, token, customClaims: currentCustomClaims};
         } catch (err) {
             console.error(err)
             return "ERR_CREATING_TOKEN";

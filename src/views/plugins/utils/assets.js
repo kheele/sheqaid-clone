@@ -19,6 +19,7 @@ function onSelectLoadAssetManufacturers() {
           where: {
             manufacturer:{_is_null: false}
           },
+          distinct_on: manufacturer,
 	        order_by: {manufacturer: asc},
         ) {
           manufacturer
@@ -39,6 +40,7 @@ function onSelectLoadAssetModels() {
           where: {
             model:{_is_null: false}
           },
+          distinct_on: model,
 	        order_by: {model: asc},
         ) {
           model
@@ -56,20 +58,19 @@ function onSelectLoadAssetLocations() {
 	.query({
 		query: `
       query listAllToolsByLoggedQuery {
-        assets(
+        asset_details(
           where: {
-            asset_detail: {location:{_is_null: false}},
-            ${filter}
+            location:{_is_null: false},
+            asset_list: {${filter}}
           },
-	        order_by: {asset_detail: {location: asc}},
+	        order_by: {location: asc},
         ) {
-          asset_detail{
-            location
-          }
+          location
         }
       }
     `,
-	}).then(res => res.map(v => v.asset_detail.location).distinct().map(value => {
+	}).then(res => res.map(v => {
+		const {location: value} = v;
 		return {label: value, value};
 	}));
 }
@@ -80,20 +81,19 @@ function onSelectLoadAssetToolkits() {
 	.query({
 		query: `
       query listAllToolsByLoggedQuery {
-        assets(
+        asset_details(
           where: {
-            asset_detail: {toolkit:{_is_null: false}},
-            ${filter}
+            toolkit:{_is_null: false},
+            asset_list: {${filter}}
           },
-	        order_by: {asset_detail: {toolkit: asc}},
+	        order_by: {toolkit: asc},
         ) {
-          asset_detail{
-            toolkit
-          }
+          toolkit
         }
       }
     `,
-	}).then(res => res.map(v => v.asset_detail.toolkit).distinct().map(value => {
+	}).then(res => res.map(v => {
+		const {toolkit: value} = v;
 		return {label: value, value};
 	}));
 }
@@ -107,6 +107,7 @@ function onSelectLoadAssetVendors() {
           where: {
             vendor:{_is_null: false}
           },
+          distinct_on: vendor,
 	        order_by: {vendor: asc},
         ) {
           vendor

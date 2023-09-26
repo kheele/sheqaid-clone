@@ -69,6 +69,7 @@ global.EmailUtils = require('./libs/email.util');
 global.DriveUtils = require('./libs/drive.utils');
 
 require('./libs/face.util');
+const updateAssetPhoto = require("./fn/callables/queries/updateAssetPhoto");
 
 global.execWhen = (test, max) => {
 	return new Promise((resolve, reject) => {
@@ -155,4 +156,27 @@ global.getTriggeredEventsData = (body, name) => {
 	}
 
 	return {table_name, old_item, new_item};
+};
+
+global.uploadFilesUpdate = async ({id, doc, new_name, onUpdate}) => {
+	if (!doc || !new_name) {
+		return;
+	}
+
+	const attrs = {};
+
+	if (doc.path || doc.data) {
+		const {path, data} = doc;
+		console.log('uploadFilesUpdate doc', path || data)
+
+		if(data) {
+			attrs.doc = await uploadDataUri(data, new_name);
+		} else {
+			attrs.doc = await uploadDataUri(path, new_name);
+		}
+	}
+
+	if (Object.keys(attrs).isNotEmpty()) {
+		await onUpdate({id, ...attrs});
+	}
 };

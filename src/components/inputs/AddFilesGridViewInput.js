@@ -40,18 +40,18 @@ class AddFilesGridViewInput extends React.Component {
         this.refs.viewPhotoDialog.open(evt.target.src);
     }
 
-    onAddFile(evt, btn) {
+    async onAddFile(evt, btn) {
         const {onChange, name} = this.props;
         const {action, idx} = btn.props;
         const {list} = this.refs.gridView;
         if (action === 'self') {
-            electronDialog.showOpenDialogDocOrImage().then(file => {
+            await electronDialog.showOpenDialogDocOrImage().then(file => {
                 list[idx] = file;
             });
         } else {
-            electronDialog.showOpenDialogDocOrImage().then(file => {
+            await electronDialog.showOpenDialogDocOrImage().then(file => {
                 let added = false;
-                for (var n = 0; n < list.length; n++) {
+                for (let n = 0; n < list.length; n++) {
                     if (list[n] === null) {
                         list[n] = file;
                         added = true;
@@ -155,7 +155,7 @@ class AddFilesGridViewInput extends React.Component {
     render() {
         const {title, readonly, className} = this.props;
         return <div className={"AddFilesGridViewInput" + (className ? ` ${className}` : "")}>
-            <GridView ref="gridView" title={title} renderItem={this.renderItem} onLoadList={this.onLoadPlaceholderList} className="grid-2"/>
+            <GridView ref="gridView" title={title} renderItem={this.renderItem} onLoadList={this.onLoadPlaceholderList} className="grid-3"/>
             {!readonly && <Button className="btn btn-primary hor-center margin-t-10" onClick={this.onAddFile}>{title}</Button>}
             <ViewPhotoDialog ref="viewPhotoDialog" title={title}/>
         </div>;

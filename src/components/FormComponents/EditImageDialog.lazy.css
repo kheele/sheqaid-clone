@@ -1,0 +1,16 @@
+@import '../../css/AProfileDialog.css';
+
+#dialog-overlay.EditImageDialog-profile-dialog .controls-wrapper,
+#dialog-overlay.EditImageDialog-profile-dialog .controls-wrapper > .controls {
+    height: 100%;
+}
+
+#dialog-overlay.EditImageDialog-profile-dialog .dialog-container{
+    height: 300px;
+    width: 500px;
+    max-width: 100%;
+}
+#dialog-overlay.EditImageDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

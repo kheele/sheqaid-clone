@@ -14,7 +14,7 @@ import {
 } from 'components/inputs';
 import {Row} from 'components/FormComponents';
 import {SliderWithChildren} from "components/lists";
-import CreateAndEditBar from "../../CreateAndEditBar";
+import {CreateAndEditBar} from "components/FormComponents";
 import {extendObservable} from "mobx";
 import NewDocBankingDetailsDialog from "./profile_forms/NewDocBankingDetailsDialog";
 import EditDocBankingDetailsDialog from "./profile_forms/EditDocBankingDetailsDialog";

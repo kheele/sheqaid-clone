@@ -313,7 +313,7 @@ class ShowOnlyIcon extends AShowFile {
 		if (!showOnlyIcon)
 			return null;
 
-		className = "UploadButton clearable-field-control grid-1 form-control" + (className ? (" " + className) : "");
+		className = "UploadButton ShowOnlyIcon clearable-field-control grid-1 form-control" + (className ? (" " + className) : "");
 
 		if (fileIcon) {
 			className += " file-icon";
@@ -389,7 +389,7 @@ class ShowFile extends AShowFile {
 		if (showOnlyIcon)
 			return null;
 
-		className = "UploadButton" + (className ? (" " + className) : "");
+		className = "UploadButton ShowFile " + (className ? (" " + className) : "");
 
 		if (isLoading) {
 			return <div className={className}>
@@ -408,17 +408,29 @@ class ShowFile extends AShowFile {
 
 		if (isPDF || isWord || isExcel) {
 			return <div className={className}>
-				{!readonly && <Button className="btn btn-primary"
-				                      onClick={this.onUpload}>{buttonTitle ? buttonTitle : 'Upload File'}</Button>}
-				{!!previewPath && !readonly && <i className="fa fa-trash" onClick={this.onClear}/>}
-				{!!previewPath && <div className="preview"><Document previewPath={previewPath} className="fixed-center"/></div>}
+				{!readonly && <>
+					<Button
+						className="btn btn-primary"
+						onClick={this.onUpload}>
+						{buttonTitle ? buttonTitle : 'Upload File'}
+					</Button>
+					{!!previewPath && <i className="fa fa-trash" onClick={this.onClear}/>}
+				</>}
+				{!!previewPath && <div className={"preview" + (readonly ? " readonly" : "")}>
+					<Document previewPath={previewPath} className="fixed-center"/>
+				</div>}
 			</div>;
 		} else if (isPic) {
 			return <div className={className}>
-				{!readonly && <Button className="btn btn-primary"
-				                      onClick={this.onUpload}>{buttonTitle ? buttonTitle : 'Upload File'}</Button>}
-				{!!previewPath && !readonly && <i className="fa fa-trash" onClick={this.onClear}/>}
-				{(!!previewPath) && <div className="preview">
+				{!readonly && <>
+					<Button
+						className="btn btn-primary"
+						onClick={this.onUpload}>
+						{buttonTitle ? buttonTitle : 'Upload File'}
+					</Button>
+					{!!previewPath && <i className="fa fa-trash" onClick={this.onClear}/>}
+				</>}
+				{(!!previewPath) && <div className={"preview" + (readonly ? " readonly" : "")}>
 					<img ref="img" src={previewPath} className="fixed-center"/>
 					<Rotating state={state}/>
 					<Button className="btn btn-primary btn-rotate" onClick={this.onRotate}>Rotate</Button>
@@ -426,10 +438,15 @@ class ShowFile extends AShowFile {
 			</div>;
 		} else if (isVideo) {
 			return <div className={className}>
-				{!readonly && <Button className="btn btn-primary"
-				                      onClick={this.onUpload}>{buttonTitle ? buttonTitle : 'Upload File'}</Button>}
-				{!!previewPath && !readonly && <i className="fa fa-trash" onClick={this.onClear}/>}
-				{(!!previewPath) && <div className="preview">
+				{!readonly && <>
+					<Button
+						className="btn btn-primary"
+						onClick={this.onUpload}>
+						{buttonTitle ? buttonTitle : 'Upload File'}
+					</Button>
+					{!!previewPath && <i className="fa fa-trash" onClick={this.onClear}/>}
+				</>}
+				{(!!previewPath) && <div className={"preview" + (readonly ? " readonly" : "")}>
 					<video ref="video" src={previewPath} className="fixed-center" autoplay/>
 				</div>}
 			</div>;

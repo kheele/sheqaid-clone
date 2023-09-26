@@ -3,7 +3,7 @@ import React from "react";
 import {ProfileField} from "components/inputs";
 import NewDependantDialog from "./profile_forms/NewDependantDialog";
 import EditDependantDialog from "./profile_forms/EditDependantDialog";
-import ASectionSection from "./ASectionSection";
+import {ASectionSection} from "components/FormComponents";
 import updateEmployeeDependant from "mutations/all/EmployeeDependant/updateEmployeeDependant";
 
 @observer

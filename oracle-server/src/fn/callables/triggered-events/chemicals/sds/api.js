@@ -14,19 +14,8 @@ exports.uploadSDSDocsUpdate = async (body) => {
 
 	console.log('uploadSDSDocsUpdate', new_item)
 
-	const attrs = {};
-
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadSDSDocsUpdate doc', path)
-
-		const new_name = `chemicals/sds/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateDoc({id, ...attrs});
-	}
+	const new_name = `chemicals/sds/${id}/docs`;
+	await uploadFilesUpdate({id, doc, new_name, onUpdate: updateDoc});
 };
 // </editor-fold>
 

@@ -374,7 +374,7 @@ class ToolsTab extends React.Component {
 		if (!('statusVal' in item.data)) {
 			item.data.statusVal = computed(() => {
 				const {status} = item.data;
-				console.log(item.id, 'status', status)
+				// console.log(item.id, 'status', status)
 				if (status === 'In Storage') {
 					return 'Check Out';
 				} else if (status === 'Checked Out') {
@@ -435,7 +435,7 @@ class ToolsTab extends React.Component {
 
 		const [profile_pic] = profile_pic_list || [];
 
-		console.log('Assets', item)
+		// console.log('Assets', item)
 		return <TRow key={id} className="w-full">
 			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>

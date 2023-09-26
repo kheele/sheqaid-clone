@@ -153,8 +153,8 @@ export const inspection_fragment = () => {
 };
 //</editor-fold>
 
-//<editor-fold desc="asset_details_fragment">
-export const asset_details_fragment = `
+//<editor-fold desc="asset_basic_details_fragment">
+export const asset_basic_details_fragment = `
     id
     created_at
     status
@@ -197,6 +197,12 @@ export const asset_details_fragment = `
         qr_code
         notes
     }
+`;
+//</editor-fold>
+
+//<editor-fold desc="asset_details_fragment">
+export const asset_details_fragment = `
+    ${asset_basic_details_fragment}
     purchase_info{
         id
         created_at
@@ -215,6 +221,18 @@ export const asset_details_fragment = `
         title    
         desc    
         type
+    }
+    asset_children_list{
+      id
+      child_asset{
+        ${asset_basic_details_fragment}
+      }
+    }
+    asset_parent_list{
+      id
+      parent_asset{
+        ${asset_basic_details_fragment}
+      }
     }
     inspection_template_list: inspection_and_template_list(where: {is_template: {_eq: true}}){
       ${inspection_fragment()}

@@ -10,12 +10,11 @@ import {Button} from "components/inputs";
 
 @observer
 class EmployeesDialog extends React.Component {
-    path = {path: 'plugin_sheq_assist/employees/list/search_by', data: null};
     pageKey = "EmployeesDialog";
 
     @observable
     state = {
-        list: [],
+        params: null,
     }
 
     constructor(props) {
@@ -26,9 +25,9 @@ class EmployeesDialog extends React.Component {
         this.close = this.close.bind(this);
     }
     
-    open({list, title}){
+    open({params, title}){
         return new Promise((resolve, reject) => {
-            this.state.list = list;
+            this.state.params = params;
             this.refs.dialog.open(title);
             resolve();
         });
@@ -77,10 +76,10 @@ class EmployeesDialog extends React.Component {
 @observer
 class Comp extends React.Component {
     render() {
-        const {state: {list}} = this.props;
-        if(list.isEmpty()) return null;
+        const {state: {params}} = this.props;
+        if(!params) return null;
 
-        return <Employees permissionKey="Employees" excludeDashboard excludeRemoved list={list}/>;
+        return <Employees permissionKey="Employees" excludeDashboard excludeRemoved params={params}/>;
     }
 }
 

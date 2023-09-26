@@ -44,3 +44,15 @@
 #dialog-overlay.ProfileToolDialog-profile-dialog .row .AddFilesGridViewInput {
     min-height: 200px !important;
 }
+
+#dialog-overlay.ProfileToolDialog-profile-dialog .row.Carousel {
+    margin-top: 40px;
+}
+
+#dialog-overlay.ProfileToolDialog-profile-dialog .EmbeddedBtnBar + .Carousel {
+    height: calc(100% - 40px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

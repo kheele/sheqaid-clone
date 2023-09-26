@@ -2,12 +2,12 @@
 import React from "react";
 import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
-import {autorun, observable} from 'mobx';
+import {autorun, computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {Dates, execWhen} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
-import {AddFilesGridViewInput, Button, ProfileField, RowOrgs, UploadButton} from 'components/inputs';
+import {Button, ProfileField, RowOrgs, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {CONSTANTS, CurrentDistanceOrTime, FutureMaintenanceDistanceOrTime} from './AssetComponents';
 
@@ -25,6 +25,11 @@ import {
 } from "./AssetTables";
 import findByIdAsset from "mutations/all/Asset/findByIdAsset";
 import InspectionTabs from "./InspectionTabs";
+import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
+import {CircularProgress} from "@mui/material";
+import ImageSection from "components/FormComponents/ImageSection";
+import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
+import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -59,6 +64,7 @@ class Controls extends React.Component {
 	@observable
 	state = {
 		lists: {},
+		item: null,
 		showBarcode: false,
 		showQRCode: false
 	};
@@ -176,14 +182,16 @@ class Controls extends React.Component {
 
 	// </editor-fold>
 
-	get item() {
-		return this.props.state.item;
+	@computed get item() {
+		return this.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -327,12 +335,20 @@ class Controls extends React.Component {
 				idx={2}
 				title="2. Asset Photo(s)"
 				className="row-photo"
+				sectionClassName="h-550 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
 			>
-				<AddFilesGridViewInput name="photo_list" title="Asset Photo(s)" defaultValue={photo_list || []} readonly
-				                       className="padding-v-15 margin-0 margin-t-5 col-lg-12 pull-left"/>
+				<ImageSection
+					listName="photo_list"
+					item_id_key="asset_id"
+					onInsert={insertAssetPhoto}
+					onUpdate={updateAssetPhoto}
+					item={item}
+					embeddedEmployee={this.item}
+					isEmbedded
+				/>
 			</Row>
 			<Row
 				rendered
@@ -484,6 +500,7 @@ class Controls extends React.Component {
 				title="9. Calibration Record"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormNext={onFormNext}
 			>
 				<NewCalibrationRecordTable name="calibration_record_list"
 				                           defaultValue={calibration_list || []}
@@ -502,10 +519,40 @@ class Controls extends React.Component {
 				              value={next_calibration_date}
 				              placeholder="Next Calibration Date" className="col-lg-4"/>
 			</Row>
+			<Row
+				rendered
+				idx={10}
+				title="10. Linked Assets"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+			>
+				<FormControls>
+					<Row
+						rendered
+						idx={10.1}
+						title="10.1 Linked Parent Assets"
+						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+						onFormOpen={onFormOpen}
+						onFormNext={onFormNext}
+					>
+						<LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded/>
+					</Row>
+					<Row
+						rendered
+						idx={10.2}
+						title="10.2 Linked Child Assets"
+						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+						onFormOpen={onFormOpen}
+						onFormBack={onFormBack}
+					>
+						<LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded/>
+					</Row>
+				</FormControls>
+			</Row>
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={10}*/}
-			{/*	title="10. Inspections"*/}
+			{/*	idx={11}*/}
+			{/*	title="11. Inspections"*/}
 			{/*	className="min-h-600"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
@@ -515,8 +562,8 @@ class Controls extends React.Component {
 			{/*</Row>*/}
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={11}*/}
-			{/*	title="11. Parts Inventory"*/}
+			{/*	idx={12}*/}
+			{/*	title="12. Parts Inventory"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
 			{/*	onFormNext={onFormNext}*/}
@@ -525,8 +572,8 @@ class Controls extends React.Component {
 			{/*</Row>*/}
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={12}*/}
-			{/*	title="12. Job Cards"*/}
+			{/*	idx={13}*/}
+			{/*	title="13. Job Cards"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
 			{/*>*/}

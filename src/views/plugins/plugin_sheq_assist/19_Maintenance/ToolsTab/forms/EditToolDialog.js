@@ -1,11 +1,11 @@
 //<editor-fold desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed, extendObservable} from "mobx";
 
-import {Dates, ShouldUpdate} from 'utils/Utils';
+import {Dates, ShouldUpdate, toDataURI} from 'utils/Utils';
 
 import {
-	AddFilesGridViewInput,
 	ClearableInput,
 	RowOrgs,
 	SelectAssetTypeInput,
@@ -40,9 +40,16 @@ import insertAssetCalibrationRecordListItem
 	from "../../../../../../mutations/all/Asset/insertAssetCalibrationRecordListItem";
 import upsertAssetCalibrationRecordListItem
 	from "../../../../../../mutations/all/Asset/upsertAssetCalibrationRecordListItem";
-import {extendObservable} from "mobx";
 import deleteAssetCalibrationRecordListItem
 	from "../../../../../../mutations/all/Asset/deleteAssetCalibrationRecordListItem";
+import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
+import {CircularProgress} from "@mui/material";
+import updateEmployeeDependant from "../../../../../../mutations/all/EmployeeDependant/updateEmployeeDependant";
+import updateIncidentDocument from "../../../../../../mutations/all/Incident/IncidentDocument/updateIncidentDocument";
+import insertIncidentDocument from "../../../../../../mutations/all/Incident/IncidentDocument/insertIncidentDocument";
+import insertAssetPhoto from "../../../../../../mutations/all/Asset/insertAssetPhoto";
+import updateAssetPhoto from "../../../../../../mutations/all/Asset/updateAssetPhoto";
+import ImageSection from "components/FormComponents/ImageSection";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -60,7 +67,8 @@ class EditToolDialog extends AEditDialog {
 	}
 
 	get topButtonsHiddenSave() {
-		return true;
+		const {props: {isNewEmployee}} = this;
+		return !isNewEmployee;
 	}
 
 	get controls() {
@@ -102,7 +110,7 @@ class Controls extends AControls {
 	}
 
 	//<editor-fold desc="onFormSave">
-	onFormSave(e, btn) {
+	async onFormSave(e, btn) {
 		const {
 			form,
 			item: {
@@ -120,7 +128,7 @@ class Controls extends AControls {
 			refs: {}
 		} = this;
 
-		const onSubmit = (data, onSaved) => {
+		const onSubmit = (data, onProgress) => {
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
@@ -128,14 +136,17 @@ class Controls extends AControls {
 
 			console.log(data)
 
-			btn.text("Saving...").disabled();
-			progressDialog.open();
-			updateAsset({id: this.item.id, ...data}).then(res => {
+			if (!onProgress) {
+				btn.text("Saving...").disabled();
+				progressDialog.open();
+			}
+			return updateAsset({id: this.item.id, ...data}).then(res => {
 				console.log("res", res)
 				onSaved && onSaved(res);
 				infoDialog.open("Record successfully updated.");
 				infoDialog.close(2000);
 				// this.props.close();
+				return true;
 			}).finally(() => {
 				btn.text("Save").enabled();
 				setTimeout(() => progressDialog.close());
@@ -292,9 +303,56 @@ class Controls extends AControls {
 				photo_list,
 			} = form.data;
 			const data = {};
+			console.log('photo_list', photo_list)
 			ShouldUpdate.checkFileList(data, old_data, photo_list, 'photo_list');
+			console.log('photo_list data', data)
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
 
-			onSubmit(data);
+			console.log(data)
+
+			let onProgress;
+			if (data.photo_list) {
+				onProgress = true;
+				const {photo_list} = data;
+				delete data.photo_list;
+
+				btn.text("Saving...").disabled();
+				progressDialog.open();
+
+				const res = await Promise.all(photo_list.map(async item => {
+					if (item.id) {
+						if (item.doc.path) {
+							return await updateAssetPhoto({id: item.id, doc: item.doc.path});
+							// return updateAssetPhoto({id: item.id, doc: {path: await toDataURI(item.doc.path)}});
+						}
+					} else {
+						// return insertAssetPhoto({asset_id: this.item.id, doc: item.path});
+						return await insertAssetPhoto({asset_id: this.item.id, doc: {path: await toDataURI(item.path)}});
+					}
+				}));
+
+				if (Object.keys(data).isEmpty()) {
+					console.log("res", res)
+					// onSaved && onSaved(res);
+					infoDialog.open("Record successfully updated.");
+					infoDialog.close(2000);
+					// this.props.close();
+
+					btn.text("Save").enabled();
+					setTimeout(() => progressDialog.close());
+					return;
+				}
+			}
+
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			onSubmit(data, onProgress);
 			return;
 		}
 
@@ -490,14 +548,45 @@ class Controls extends AControls {
 
 	//</editor-fold>
 
-	get item() {
-		return this.props.state.item;
+	onSubmit(e, btn, onSaved) {
+		const {form, isNewEmployee, item: {data: old_data}} = this;
+
+		if (!form.isValid('name')) {
+			infoDialog.open('Asset Name is required');
+			return;
+		}
+		if (!form.isValid('asset_type')) {
+			infoDialog.open('Asset Type is required');
+			return;
+		}
+
+		if(isNewEmployee) {
+			console.log("res", form.data)
+			onSaved && onSaved(form.data);
+			infoDialog.open("Record added.");
+			infoDialog.close(2000);
+			this.props.close();
+			return;
+		}
+
+
+	}
+
+	get isNewEmployee() {
+		const {props: {dialog: {props: {isNewEmployee}}}} = this;
+		return isNewEmployee;
+	}
+
+	@computed get item() {
+		return this.state.item;
 	}
 
 	//<editor-fold desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -655,14 +744,21 @@ class Controls extends AControls {
 				idx={2}
 				title="2. Asset Photo"
 				className="row-photo"
+				sectionClassName="h-550 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
-				onFormSave={this.onFormSave}
 			>
-				<AddFilesGridViewInput name="photo_list" title="Add Photo(s)" defaultValue={[...(photo_list || []), null]}
-				                       className="padding-v-15 margin-0 margin-t-5 col-lg-12 pull-left"
-				                       onChange={this.form.onChange}/>
+				<ImageSection
+					listName="photo_list"
+					item_id_key="asset_id"
+					onInsert={insertAssetPhoto}
+					onUpdate={updateAssetPhoto}
+					item={item}
+					embeddedEmployee={this.item}
+					isEmbedded
+					onChange={this.form.onChange}
+				/>
 			</Row>
 			<Row
 				rendered
@@ -839,6 +935,7 @@ class Controls extends AControls {
 				title="9. Calibration Record"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormNext={onFormNext}
 				onFormSave={this.onFormSave}
 			>
 				<NewCalibrationRecordTable ref="calibration_record_list" name="calibration_record_list"
@@ -859,10 +956,40 @@ class Controls extends AControls {
 				                defaultValue={next_calibration_date}
 				                className="col-lg-4 form-control" onChange={this.form.onChange}/>
 			</Row>
+			<Row
+				rendered
+				idx={10}
+				title="10. Linked Assets"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+			>
+				<FormControls>
+					<Row
+						rendered
+						idx={10.1}
+						title="10.1 Linked Parent Assets"
+						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+						onFormOpen={onFormOpen}
+						onFormNext={onFormNext}
+					>
+						<LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded onChange={this.form.onChange}/>
+					</Row>
+					<Row
+						rendered
+						idx={10.2}
+						title="10.2 Linked Child Assets"
+						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+						onFormOpen={onFormOpen}
+						onFormBack={onFormBack}
+					>
+						<LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded onChange={this.form.onChange}/>
+					</Row>
+				</FormControls>
+			</Row>
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={10}*/}
-			{/*	title="10. Inspections"*/}
+			{/*	idx={11}*/}
+			{/*	title="11. Inspections"*/}
 			{/*	className="min-h-600"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
@@ -873,8 +1000,8 @@ class Controls extends AControls {
 			{/*</Row>*/}
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={11}*/}
-			{/*	title="11. Parts Inventory"*/}
+			{/*	idx={12}*/}
+			{/*	title="12. Parts Inventory"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
 			{/*	onFormNext={onFormNext}*/}
@@ -884,8 +1011,8 @@ class Controls extends AControls {
 			{/*</Row>*/}
 			{/*<Row*/}
 			{/*	rendered*/}
-			{/*	idx={12}*/}
-			{/*	title="12. Job Cards"*/}
+			{/*	idx={13}*/}
+			{/*	title="13. Job Cards"*/}
 			{/*	onFormOpen={onFormOpen}*/}
 			{/*	onFormBack={onFormBack}*/}
 			{/*	onFormSave={this.onFormSave}*/}

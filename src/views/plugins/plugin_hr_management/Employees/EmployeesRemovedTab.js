@@ -127,11 +127,13 @@ class Main extends AEmployeeListTab {
     //<editor-fold desc="renderTHead">
     renderTHead() {
         const {isConsultant, hasProjects, isContractorView} = storage.is;
+        const {filterData} = this.props.params || {};
+        const {department_id, job_position_id} = filterData || {};
         return <THead>
             <div className="td fixed-flex min-w-50">ID</div>
             <div className="td">Name</div>
-            <div className="td">Department</div>
-            <div className="td">Job Position</div>
+            {!department_id && <div className="td">Department</div>}
+            {!job_position_id && <div className="td">Job Position</div>}
             {(hasProjects || isContractorView) && <>
                 {/*isConsultant && <div className="td sm-hidden">Company Name</div>*/}
                 {isContractorView && <div className="td">Company Name</div>}
@@ -148,6 +150,10 @@ class Main extends AEmployeeListTab {
     //<editor-fold desc="renderItem">
     renderItem(n, onClick) {
         const {isConsultant, hasProjects, isContractorView} = storage.is;
+
+        const {filterData} = this.props.params || {};
+        const {department_id, job_position_id} = filterData || {};
+
         const item = this.refs.root.list[n];
         let {
             id,
@@ -177,8 +183,8 @@ class Main extends AEmployeeListTab {
                     />
                 </Clickable>
             </div>
-            <AsyncTD title="Department" defaultValue={department} renderer={v => v.name}/>
-            <AsyncTD title="Job Position" defaultValue={job_position} renderer={v => v.name}/>
+            {!department_id && <AsyncTD title="Department" defaultValue={department} renderer={v => v.name}/>}
+            {!job_position_id && <AsyncTD title="Job Position" defaultValue={job_position} renderer={v => v.name}/>}
 
             {(hasProjects || isContractorView) && <>
                 {/*isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')*/}

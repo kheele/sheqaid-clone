@@ -1,12 +1,12 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {computed, extendObservable} from "mobx";
-import CreateAndEditBar from "../../CreateAndEditBar";
+import {CreateAndEditBar} from "components/FormComponents";
 import {SliderWithChildren} from "components/lists";
 import {ProfileField, UploadButton} from "components/inputs";
 import NewNextOfKinDialog from "./profile_forms/NewNextOfKinDialog";
 import EditNextOfKinDialog from "./profile_forms/EditNextOfKinDialog";
-import ASectionSection from "./ASectionSection";
+import {ASectionSection} from "components/FormComponents";
 import NewDocLivingAddressDialog from "./profile_forms/NewDocLivingAddressDialog";
 import EditDocLivingAddressDialog from "./profile_forms/EditDocLivingAddressDialog";
 

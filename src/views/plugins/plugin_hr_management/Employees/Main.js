@@ -368,7 +368,7 @@ class Main extends APage {
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		const {permissionKey, excludeDashboard, excludeRemoved, list} = this.props;
+		const {permissionKey, excludeDashboard, excludeRemoved, params} = this.props;
 		const {isContractorViewVisited, isEmployee} = storage.is;
 		const tabs = [];
 		if (!excludeDashboard) {
@@ -386,9 +386,9 @@ class Main extends APage {
 				elements={this.elements}
 			/>);
 		}
-		tabs.push(<EmployeesActiveTab ref="employeesActiveTab" title="Active" list={list}/>);
+		tabs.push(<EmployeesActiveTab ref="employeesActiveTab" title="Active" params={params}/>);
 		if (!excludeRemoved) {
-			tabs.push(<EmployeesRemovedTab ref="employeesRemovedTab" title="Removed" list={list}/>);
+			tabs.push(<EmployeesRemovedTab ref="employeesRemovedTab" title="Removed" params={params}/>);
 		}
 		return (<div key="Employees-page" id="Employees-page" className={this.classNames}>
 			<div key="pageTitle" className="page-title">

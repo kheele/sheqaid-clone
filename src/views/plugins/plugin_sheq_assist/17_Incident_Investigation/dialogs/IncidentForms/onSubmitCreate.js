@@ -1,5 +1,5 @@
 import insertIncident from "mutations/all/Incident/insertIncident";
-import {Dates} from "utils/Dates";
+import {Dates, toDataURI} from "utils/Utils";
 import {isObservableArray} from "mobx";
 
 export default async function onSubmitCreate(e, btn, onSaved) {
@@ -181,7 +181,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         liability_admitted_to_name,
         third_party_opinion,
         third_party_document_list: {
-            data: await Promise.all([...(third_party_document_list || [])].map(async doc => ({doc: {path: await toDataURL(doc)}}))),
+            data: await Promise.all([...(third_party_document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc)}}))),
         },
         //
         is_infringement_issued,
@@ -219,7 +219,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         location,
         exact_location,
         document_list: {
-            data: await Promise.all([...(document_list || [])].map(async doc => ({doc: {path: await toDataURL(doc)}})))
+            data: await Promise.all([...(document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc)}})))
         },
         //2
         incident_date: Dates.formatDateSQL(incident_date),

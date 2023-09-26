@@ -7,7 +7,7 @@ import {Tabs} from "components/tabs";
 import DashboardTab from "./AEmployeeDocDialog/ADashboardTab";
 import {CircularProgress} from "@mui/material";
 import {execWhen} from "utils/Utils";
-import CreateAndEditBar from "./CreateAndEditBar";
+import {CreateAndEditBar} from "components/FormComponents";
 
 @observer
 class AEmployeeDocControls extends React.Component {

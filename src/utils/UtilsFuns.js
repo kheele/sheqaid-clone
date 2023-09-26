@@ -18,7 +18,7 @@ async function toDataURI(filePath) {
 	const worker = new WebWorker(() => {
 		Events.on("process", Utils.toDataURI);
 	});
-	const res = await worker.emit("process", toJS(filePath));
+	const res = await worker.emit("process", isObservable(filePath) ? toJS(filePath) : filePath);
 	worker.terminate();
 	return res;
 }

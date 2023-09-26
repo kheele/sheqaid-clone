@@ -40,7 +40,7 @@
 						return reject(err);
 					}
 
-					console.log('relay emit res', res)
+					// console.log('relay emit res', res)
 					resolve(res);
 				});
 			});
@@ -72,7 +72,7 @@
 						return reject(err);
 					}
 
-					console.log('default emit res', res)
+					// console.log('default emit res', res)
 					resolve(res);
 				});
 			});
@@ -98,7 +98,7 @@
 						return reject(err);
 					}
 
-					console.log('views emit res', res)
+					// console.log('views emit res', res)
 					resolve(res);
 				});
 			});

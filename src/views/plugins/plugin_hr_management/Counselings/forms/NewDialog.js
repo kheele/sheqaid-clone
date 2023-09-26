@@ -129,16 +129,17 @@ class Controls extends React.Component {
             reasons,
             types,
             witness_list: {
-                data: witness_list ? witness_list.map(v => {
-                    if(v.id) {
-                        return {witness_id: v.id};
+                data: witness_list ? witness_list.map(({employee, other_person}) => {
+                    console.log('witness_list', employee, other_person)
+                    if(employee) {
+                        return {witness_id: employee.id};
                     }
-                    const {job_position} = v;
+                    const {job_position} = other_person;
                     if(job_position) {
-                        delete v.job_position;
-                        v.job_position_id = job_position.id;
+                        delete other_person.job_position;
+                        other_person.job_position_id = job_position.id;
                     }
-                    return {witness_external: {data: v}};
+                    return {witness_other: {data: other_person}};
                 }) : []
             },
         };

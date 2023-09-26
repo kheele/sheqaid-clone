@@ -78,3 +78,15 @@
 #dialog-overlay.EditToolDialog-profile-dialog .Sign{
     margin-top: 0 !important;
 }
+
+#dialog-overlay.EditToolDialog-profile-dialog .row.Carousel {
+    margin-top: 40px;
+}
+
+#dialog-overlay.EditToolDialog-profile-dialog .EmbeddedBtnBar + .Carousel {
+    height: calc(100% - 40px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

@@ -32,26 +32,26 @@ export default async (input) => {
 		asset_id,
 	} = input;
 
-	if (doc) {
-		delete input.doc;
-	}
+	// if (doc) {
+	// 	delete input.doc;
+	// }
 
 	const res = await createMutationImpl({mutation, input});
 	if (res) {
-		if (doc) {
-			const id = convertIdToBigint(res.id);
-
-			const path = `assets/${asset_id}/photos`;
-			const name = `document-${id}-${Dates.formatTimestamp(new Date())}`;
-			const gcsUri = await workers.emit("files/upload", {
-				file: doc,
-				path,
-				name,
-			});
-			console.log("gcsUri", gcsUri);
-
-			return updateAssetPhoto({id, doc: gcsUri});
-		}
+		// if (doc) {
+		// 	const id = convertIdToBigint(res.id);
+		//
+		// 	const path = `assets/${asset_id}/photos`;
+		// 	const name = `document-${id}-${Dates.formatTimestamp(new Date())}`;
+		// 	const gcsUri = await workers.emit("files/upload", {
+		// 		file: doc,
+		// 		path,
+		// 		name,
+		// 	});
+		// 	console.log("gcsUri", gcsUri);
+		//
+		// 	return updateAssetPhoto({id, doc: gcsUri});
+		// }
 	}
 
 	return res;

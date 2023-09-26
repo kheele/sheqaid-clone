@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {ProfileField, UploadButton} from "components/inputs";
-import ASectionSection from "./ASectionSection";
+import {ASectionSection} from "components/FormComponents";
 import NewDocumentDialog from "./profile_forms/NewDocumentDialog";
 import EditDocumentDialog from "./profile_forms/EditDocumentDialog";
 import {computed} from "mobx";
