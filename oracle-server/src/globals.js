@@ -132,6 +132,8 @@ global.onDriver = () => {
 };
 
 global.getTriggeredEventsData = (body, name) => {
+	// await authorize();
+
 	if (!body || !body.data || !body.data.table) {
 		return;
 	}
@@ -158,7 +160,7 @@ global.getTriggeredEventsData = (body, name) => {
 	return {table_name, old_item, new_item};
 };
 
-global.uploadFilesUpdate = async ({id, doc, new_name, onUpdate}) => {
+global.uploadFilesUpdate = async ({id, doc, key, new_name, onUpdate}) => {
 	if (!doc || !new_name) {
 		return;
 	}
@@ -169,10 +171,12 @@ global.uploadFilesUpdate = async ({id, doc, new_name, onUpdate}) => {
 		const {path, data} = doc;
 		console.log('uploadFilesUpdate doc', path || data)
 
+		key = key || 'doc';
+
 		if(data) {
-			attrs.doc = await uploadDataUri(data, new_name);
+			attrs[key] = await uploadDataUri(data, new_name);
 		} else {
-			attrs.doc = await uploadDataUri(path, new_name);
+			attrs[key] = await uploadDataUri(path, new_name);
 		}
 	}
 

@@ -10,7 +10,7 @@
     "docker:push": "docker push rhespo/sheqaid-server",
     "docker:build & push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm i @urql/core --save",
+    "install:mod": "npm i file-type --save",
     "install:all": "rm -rf node_modules package-lock.json"
   },
   "engines": {
@@ -29,6 +29,7 @@
     "exceljs": "^4.3.0",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "file-type": "^18.5.0",
     "firebase": "^9.9.0",
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.1",
