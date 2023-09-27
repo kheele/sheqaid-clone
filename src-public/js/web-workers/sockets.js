@@ -1,7 +1,7 @@
 importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 
-const ws_url = "http://localhost:5000";
-// const ws_url = "https://server.cloud.sheqaid.com";
+// const ws_url = "http://localhost:5000";
+const ws_url = "https://server.cloud.sheqaid.com";
 
 self.socket = io(ws_url, {
 	withCredentials: true,
