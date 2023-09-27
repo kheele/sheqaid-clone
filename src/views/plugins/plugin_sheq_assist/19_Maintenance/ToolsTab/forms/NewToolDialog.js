@@ -61,7 +61,7 @@ class Controls extends AControls {
 
 	//<editor-fold desc="onSubmit">
 	async onSubmit(e, btn, onSaved) {
-		const {form, isNewEmployee} = this;
+		const {form, isNewEmployee, assetItem, isParent, isChild} = this;
 
 		if (!form.isValid('name')) {
 			infoDialog.open('Asset Name is required');
@@ -305,12 +305,16 @@ class Controls extends AControls {
 					].filter(v => !!v),
 				} : null,
 				//10
-				asset_parent_list: {
+				asset_parent_list: isParent ? {
+					data: [{parent_asset_id: assetItem.id}],
+				} : isChild ? null : {
 					data: await Promise.all((asset_parent_list || []).map(async v => ({
 						parent_asset: {data: await onProcessFormData(v)},
 					}))),
 				},
-				asset_children_list: {
+				asset_children_list: isChild ? {
+					data: [{child_asset_id: assetItem.id}],
+				} : isParent ? null : {
 					data: await Promise.all((asset_children_list || []).map(async v => ({
 						child_asset: {data: await onProcessFormData(v)},
 					}))),
@@ -342,12 +346,28 @@ class Controls extends AControls {
 		return isNewEmployee;
 	}
 
+	get listName() {
+		const {props: {dialog: {props: {listName}}}} = this;
+		return listName;
+	}
+
+	get isParent() {
+		const {listName} = this;
+		return listName === 'asset_parent_list';
+	}
+
+	get isChild() {
+		const {listName} = this;
+		return listName === 'asset_children_list';
+	}
+
 	get assetItem() {
 		return this.props.state.item;
 	}
 
 	//<editor-fold desc="render">
 	render() {
+		const {isParent, isChild} = this;
 		const {onFormNext, onFormBack, onFormOpen} = this.props;
 		return <FormControls>
 			<RowOrgs
@@ -560,7 +580,7 @@ class Controls extends AControls {
 				                isEditable={false} placeholder="Next Calibration Date..." required
 				                className="col-lg-4 form-control" onChange={this.form.onChange}/>
 			</Row>
-			<Row
+			{!isParent && !isChild && <Row
 				rendered
 				idx={10}
 				title="10. Linked Assets"
@@ -574,7 +594,7 @@ class Controls extends AControls {
 						title="10.1 Linked Parent Assets"
 						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
 						onFormOpen={onFormOpen}
-						onFormNext={onFormNext}
+						onFormNext={!isChild && onFormNext}
 					>
 						<LinkedAssetsDetailsSection listName="asset_parent_list" isNewEmployee isEmbedded
 						                            onChange={this.form.onChange}/>
@@ -585,13 +605,13 @@ class Controls extends AControls {
 						title="10.2 Linked Child Assets"
 						sectionClassName="h-680 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
 						onFormOpen={onFormOpen}
-						onFormBack={onFormBack}
+						onFormBack={!isParent && onFormBack}
 					>
 						<LinkedAssetsDetailsSection listName="asset_children_list" isNewEmployee isEmbedded
 						                            onChange={this.form.onChange}/>
 					</Row>
 				</FormControls>
-			</Row>
+			</Row>}
 			{/*<Row*/}
 			{/*	rendered*/}
 			{/*	idx={11}*/}

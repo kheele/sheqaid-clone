@@ -205,22 +205,22 @@ export default async (input: EntityAsset) => {
 
 	crudUtils.injectCreate(input);
 
-	if (asset_parent_list && asset_parent_list.data) {
-		delete input.asset_parent_list;
-	}
-
-	if (asset_children_list && asset_children_list.data) {
-		delete input.asset_children_list;
-	}
+	// if (asset_parent_list && asset_parent_list.data) {
+	// 	// delete input.asset_parent_list;
+	// }
+	//
+	// if (asset_children_list && asset_children_list.data) {
+	// 	// delete input.asset_children_list;
+	// }
 
 	const res = await createMutationImpl({mutation, input});
 	if (res) {
-		await Promise.all(asset_parent_list.data.map(async ({parent_asset: {data: parent_asset}}) => {
-			return insertProxyAssetAsset({parent_asset, child_asset_id: res.id});
-		}));
-		await Promise.all(asset_children_list.data.map(async ({child_asset: {data: child_asset}}) => {
-			return insertProxyAssetAsset({child_asset, parent_asset_id: res.id});
-		}));
+		// await Promise.all(asset_parent_list.data.map(async ({parent_asset: {data: parent_asset}}) => {
+		// 	return insertProxyAssetAsset({parent_asset, child_asset_id: res.id});
+		// }));
+		// await Promise.all(asset_children_list.data.map(async ({child_asset: {data: child_asset}}) => {
+		// 	return insertProxyAssetAsset({child_asset, parent_asset_id: res.id});
+		// }));
 		return findByIdAsset(res.id);
 	}
 	return res;

@@ -108,12 +108,26 @@ class ToolsTab extends React.Component {
 		const {page, lastItem, filterData, filtered, isNew} = params;
 		const {
 			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
 		} = filterData || {};
 
 		const limit = 50;
 
 		const args = {
 			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
 			written_off: false,
 			//
 			limit,
@@ -341,6 +355,12 @@ class ToolsTab extends React.Component {
 			                className="col-lg-4 margin-t-10 form-control" onChange={onChange}
 			                values={this.state.lists.conditions} returnValue/>
 			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="reg_num" type="text" placeholder="Registration No." className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="serial_num" type="text" placeholder="Serial No." className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="model" type="text" placeholder="Model" className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
 			{/*<Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
                 <i className="fa fa-barcode icon-left"/>Scan Barcode

@@ -8,6 +8,15 @@ export default (
 		offset = 0,
 		limit = 50,
 		//
+		name,
+		reg_num,
+		serial_num,
+		model,
+		condition,
+		location,
+		manufacturer,
+		asset_type,
+		//
 		written_off = false,
 		//
 		site_id, project_id, client_id,
@@ -16,6 +25,15 @@ export default (
 	}
 ) => {
 	const {filter} = getVariablesAndQueryConfig({
+		name,
+		reg_num,
+		serial_num,
+		model,
+		condition,
+		location,
+		manufacturer,
+		asset_type,
+		//
 		written_off,
 		//
 		site_id, project_id, client_id,

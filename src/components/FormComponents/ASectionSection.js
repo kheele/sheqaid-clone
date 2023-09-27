@@ -204,7 +204,7 @@ class ASectionSection extends React.Component {
 
 	//<editor-fold desc="render">
 	render() {
-		const {props: {onChange, onInsert, onUpdate, isEmbedded, isNewEmployee, embeddedEmployee, item_id_key}, type, list, itemRenderer, NewDialog, EditDialog} = this;
+		const {props: {onChange, onInsert, onUpdate, isEmbedded, isNewEmployee, embeddedEmployee, item_id_key}, type, list, listName, itemRenderer, NewDialog, EditDialog} = this;
 
 		return <>
 			<CreateAndEditBar
@@ -225,8 +225,8 @@ class ASectionSection extends React.Component {
 				{itemRenderer}
 			</SliderWithChildren>
 
-			<NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee} onInsert={onInsert} onUpdate={onUpdate} item_id_key={item_id_key}/>
-			<EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee} onInsert={onInsert} onUpdate={onUpdate} item_id_key={item_id_key}/>
+			<NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee} onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
+			<EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee} onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
 		</>;
 	}
 

@@ -700,6 +700,7 @@ Date.prototype.equals = function (date) {
         this.getDate() === date.getDate();
     return res;
 };
+
 Date.prototype.getWeekday = function () {
     return Dates.getWeekday(this);
 };
@@ -893,6 +894,9 @@ Date.prototype.setMidnight = function () {
     return this;
 };
 
+setTimeout(() => {
+    console.log('Dates', Dates.formatDate('2025-08-16'));
+}, 3000);
 
 const monthShortArray = monthArray.map(m => m.substring(0, 2));
 

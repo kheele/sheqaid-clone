@@ -219,7 +219,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         location,
         exact_location,
         document_list: {
-            data: await Promise.all([...(document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc)}})))
+            data: await Promise.all([...(document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc.path)}})))
         },
         //2
         incident_date: Dates.formatDateSQL(incident_date),
