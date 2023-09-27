@@ -31,19 +31,19 @@ router.put('/createScheduleQuestionnaireUpdate', async (req, res) => {
 
 router.post('/onCreatedQuestionnaire', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await onCreatedQuestionnaire(req);
+	const data = await onCreatedQuestionnaire(req.body);
 	res.json(data);
 });
 
 router.post('/onCreatedQuestionnaireMessage', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await onCreatedQuestionnaireMessage(req);
+	const data = await onCreatedQuestionnaireMessage(req.body);
 	res.json(data);
 });
 
 router.put('/onUpdatedQuestionnaireStatus', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await onUpdatedQuestionnaireStatus(req);
+	const data = await onUpdatedQuestionnaireStatus(req.body);
 	res.json(data);
 });
 

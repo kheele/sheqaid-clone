@@ -4,7 +4,8 @@
   "scripts": {
     "test": "mocha --reporter spec",
     "lint": "eslint .",
-    "start": "nodemon -r dotenv/config src/index.js",
+    "start": "bun src/index.js",
+    "start:local": "nodemon -r dotenv/config src/index.js",
     "docker:prune": "docker system prune -a",
     "docker:build": "docker build --no-cache . -t rhespo/sheqaid-server",
     "docker:push": "docker push rhespo/sheqaid-server",

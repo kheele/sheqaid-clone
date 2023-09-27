@@ -69,7 +69,6 @@ global.EmailUtils = require('./libs/email.util');
 global.DriveUtils = require('./libs/drive.utils');
 
 require('./libs/face.util');
-const updateAssetPhoto = require("./fn/callables/queries/updateAssetPhoto");
 
 global.execWhen = (test, max) => {
 	return new Promise((resolve, reject) => {

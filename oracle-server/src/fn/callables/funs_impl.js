@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
-const {fileTypeFromBuffer} = require('file-type');
+import {fileTypeFromBuffer} from 'file-type';
 
 // const faceapi = require('face-api.js');
 

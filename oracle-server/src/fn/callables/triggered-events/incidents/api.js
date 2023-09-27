@@ -1,126 +1,94 @@
-const updateIncidentDoc = require('../../queries/updateIncidentDoc');
-const updateIncidentVehicleThirdPartyDoc = require('../../queries/updateIncidentVehicleThirdPartyDoc');
-const updateIncidentInvestigationDoc = require('../../queries/updateIncidentInvestigationDoc');
 
 // <editor-fold defaultstate="collapsed" desc="uploadIncidentDocsUpdate">
 exports.uploadIncidentDocsUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "sheq_incident_investigation_docs");
+	if (!data) {
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//sheq_incident_investigation_docs
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "sheq_incident_investigation_docs" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, incident_id, doc,} = new_item;
 
 	console.log('uploadIncidentDocsUpdate', new_item)
 
-	const attrs = {};
+	const new_name = `incidents/${incident_id}/${id}/docs`;
+	await uploadFilesUpdate({id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
 
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadIncidentDocsUpdate doc', path)
-
-		const new_name = `incidents/${incident_id}/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateIncidentDoc({id, ...attrs});
-	}
+			await updateRelay({
+				mutation: `
+			    mutation updateIncidentDocMutation($id: sheq_incident_investigation_docs_pk_columns_input!, $_set: sheq_incident_investigation_docs_set_input!) {
+			      update_sheq_incident_investigation_docs_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateIncidentDocMutation",
+				id,
+				attrs,
+			});
+		}});
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="uploadIncidentVehicleThirdPartyDocsUpdate">
 exports.uploadIncidentVehicleThirdPartyDocsUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "sheq_incident_investigation_vehicle_third_party_docs");
+	if (!data) {
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//sheq_incident_investigation_vehicle_third_party_docs
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "sheq_incident_investigation_vehicle_third_party_docs" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, vehicle_details_id, doc,} = new_item;
 
 	console.log('uploadIncidentVehicleThirdPartyDocsUpdate', new_item)
 
-	const attrs = {};
+	const new_name = `incidents/vehicle-details/${vehicle_details_id}/${id}/docs`;
+	await uploadFilesUpdate({id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
 
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadIncidentVehicleThirdPartyDocsUpdate doc', path)
-
-		const new_name = `incidents/vehicle-details/${vehicle_details_id}/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateIncidentVehicleThirdPartyDoc({id, ...attrs});
-	}
+			await updateRelay({
+				mutation: `
+			    mutation updateIncidentVehicleThirdPartyDocMutation($id: sheq_incident_investigation_vehicle_third_party_docs_pk_columns_input!, $_set: sheq_incident_investigation_vehicle_third_party_docs_set_input!) {
+			      update_sheq_incident_investigation_vehicle_third_party_docs_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateIncidentVehicleThirdPartyDocMutation",
+				id,
+				attrs,
+			});
+		}});
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="uploadIncidentInvestigationDocsUpdate">
 exports.uploadIncidentInvestigationDocsUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "sheq_incident_investigation_investigations_docs");
+	if (!data) {
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//sheq_incident_investigation_investigations_docs
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "sheq_incident_investigation_investigations_docs" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, investigation_id, doc,} = new_item;
 
-	console.log('uploadIncidentInvestigationDocsUpdate', new_item)
+	const new_name = `incidents/investigations/${investigation_id}/${id}/docs`;
+	await uploadFilesUpdate({id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
 
-	const attrs = {};
-
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadIncidentInvestigationDocsUpdate doc', path)
-
-		const new_name = `incidents/investigations/${investigation_id}/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateIncidentInvestigationDoc({id, ...attrs});
-	}
+			await updateRelay({
+				mutation: `
+			    mutation updateIncidentInvestigationDocMutation($id: sheq_incident_investigation_investigations_docs_pk_columns_input!, $_set: sheq_incident_investigation_investigations_docs_set_input!) {
+			      update_sheq_incident_investigation_investigations_docs_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateIncidentInvestigationDocMutation",
+				id,
+				attrs,
+			});
+		}});
 };
 // </editor-fold>

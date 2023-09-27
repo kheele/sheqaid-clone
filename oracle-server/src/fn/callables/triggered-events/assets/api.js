@@ -1,7 +1,3 @@
-const updateAssetPhoto = require('../../queries/updateAssetPhoto');
-const updateAssetDoc = require('../../queries/updateAssetDoc');
-const updateAssetPurchaseInfo = require('../../queries/updateAssetPurchaseInfo');
-const updateAssetMonitoringPlanFuelUsage = require('../../queries/updateAssetMonitoringPlanFuelUsage');
 
 // <editor-fold defaultstate="collapsed" desc="uploadAssetPhotoFilesUpdate">
 exports.uploadAssetPhotoFilesUpdate = async (body) => {
@@ -16,7 +12,24 @@ exports.uploadAssetPhotoFilesUpdate = async (body) => {
 	console.log('uploadAssetPhotoFilesUpdate', new_item)
 
 	const new_name = `assets/${asset_id}/${id}/photos`;
-	await uploadFilesUpdate({id, doc, new_name, onUpdate: updateAssetPhoto});
+	await uploadFilesUpdate({
+		id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
+
+			await updateRelay({
+				mutation: `
+			    mutation updateAssetPhotoMutation($id: asset_photos_pk_columns_input!, $_set: asset_photos_set_input!) {
+			      update_asset_photos_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateAssetPhotoMutation",
+				id,
+				attrs,
+			});
+		}
+	});
 };
 // </editor-fold>
 
@@ -33,7 +46,24 @@ exports.uploadAssetDocFilesUpdate = async (body) => {
 	console.log('uploadAssetDocFilesUpdate', new_item)
 
 	const new_name = `assets/${asset_id}/${id}/docs`;
-	await uploadFilesUpdate({id, doc, new_name, onUpdate: updateAssetDoc});
+	await uploadFilesUpdate({
+		id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
+
+			await updateRelay({
+				mutation: `
+			    mutation updateAssetDocMutation($id: asset_docs_pk_columns_input!, $_set: asset_docs_set_input!) {
+			      update_asset_docs_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateAssetDocMutation",
+				id,
+				attrs,
+			});
+		}
+	});
 };
 // </editor-fold>
 
@@ -55,7 +85,22 @@ exports.uploadAssetPurchaseInfoFilesUpdate = async (body) => {
 		doc: warranty_certificate,
 		key: 'warranty_certificate',
 		new_name,
-		onUpdate: updateAssetPurchaseInfo
+		onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
+
+			await updateRelay({
+				mutation: `
+			    mutation updateAssetPurchaseInfoMutation($id: asset_purchase_info_pk_columns_input!, $_set: asset_purchase_info_set_input!) {
+			      update_asset_purchase_info_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateAssetPurchaseInfoMutation",
+				id,
+				attrs,
+			});
+		}
 	});
 };
 // </editor-fold>
@@ -73,6 +118,23 @@ exports.uploadAssetMonitoringPlanFuelUsageFilesUpdate = async (body) => {
 	console.log('uploadAssetMonitoringPlanFuelUsageFilesUpdate', new_item)
 
 	const new_name = `assets/monitoring-plans/${monitoring_plan_id}/fuel-usage/${id}/receipt`;
-	await uploadFilesUpdate({id, doc: receipt, key: 'receipt', new_name, onUpdate: updateAssetMonitoringPlanFuelUsage});
+	await uploadFilesUpdate({
+		id, doc: receipt, key: 'receipt', new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
+
+			await updateRelay({
+				mutation: `
+			    mutation updateAssetMonitoringPlanFuelUsageMutation($id: asset_monitoring_plan_fuel_usage_pk_columns_input!, $_set: asset_monitoring_plan_fuel_usage_set_input!) {
+			      update_asset_monitoring_plan_fuel_usage_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateAssetMonitoringPlanFuelUsageMutation",
+				id,
+				attrs,
+			});
+		}
+	});
 };
 // </editor-fold>

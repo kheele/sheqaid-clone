@@ -1,7 +1,5 @@
 const findByIdQuestionnaire = require('../../queries/findByIdQuestionnaire');
 const findByIdQuestionMessage = require('../../queries/findByIdQuestionMessage');
-const updateQuestion = require('../../queries/updateQuestion');
-const updateQuestionOption = require('../../queries/updateQuestionOption');
 const {mutation: insertQuestionnaireScheduleMutation} = require("../../graphql/insertQuestionnaireScheduleMutation");
 
 const isSection = (ques) => {
@@ -17,131 +15,110 @@ const all_question_list = (question_list) => {
 
 // <editor-fold defaultstate="collapsed" desc="uploadQuestionnaireFilesUpdate">
 exports.uploadQuestionnaireFilesUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires_ques");
+	if(!data){
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//default_contractor_questionnaires_ques
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires_ques" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, questionnaire_id, isMultiAnswer, answer, responseAttachment, questionImage, questionType} = new_item;
 
 	console.log('uploadQuestionnaireFilesNew', new_item)
 
-	const attrs = {};
+	const onUpdate = async ({id, ...attrs}) => {
+		delete attrs.id;
 
-	if (questionImage && questionImage.path) {
-		const {path} = questionImage;
-		console.log('uploadQuestionnaireFilesNew questionImage', path)
+		await updateRelay({
+			mutation: `
+					    mutation updateQuestionMutation($id: default_contractor_questionnaires_ques_pk_columns_input!, $_set: default_contractor_questionnaires_ques_set_input!) {
+					      update_default_contractor_questionnaires_ques_by_pk(pk_columns: $id, _set: $_set) {
+					        id
+					      }
+					    }
+					  `,
+			operationName: "updateQuestionMutation",
+			id,
+			attrs,
+		});
+	};
 
-		const new_name = `questionnaires/${questionnaire_id}/${id}/questionImage`;
-		attrs.questionImage = await uploadDataUri(path, new_name);
-	}
-
-	if (responseAttachment && responseAttachment.path) {
-		const {path} = responseAttachment;
-		console.log('uploadQuestionnaireFilesNew responseAttachment', path)
-
-		const new_name = `questionnaires/${questionnaire_id}/${id}/responseAttachment`;
-		attrs.responseAttachment = await uploadDataUri(path, new_name);
-	}
-
-	if (answer && answer.path) {
-		const {path} = answer;
-		console.log('uploadQuestionnaireFilesNew answer', path)
-
-		const new_name = `questionnaires/${questionnaire_id}/${id}/answer`;
-		attrs.answer = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateQuestion({id, ...attrs});
-	}
+	await Promise.all([
+		async () => {
+			const new_name = `questionnaires/${questionnaire_id}/${id}/questionImage`;
+			await uploadFilesUpdate({
+				id, doc: questionImage, key: 'questionImage', new_name, onUpdate,
+			});
+		},
+		async () => {
+			const new_name = `questionnaires/${questionnaire_id}/${id}/responseAttachment`;
+			await uploadFilesUpdate({
+				id, doc: responseAttachment, key: 'responseAttachment', new_name, onUpdate,
+			});
+		},
+		async () => {
+			const new_name = `questionnaires/${questionnaire_id}/${id}/answer`;
+			await uploadFilesUpdate({
+				id, doc: answer, key: 'answer', new_name, onUpdate,
+			});
+		},
+	]);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="uploadQuestionOptionFilesUpdate">
 exports.uploadQuestionOptionFilesUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires_ques_options");
+	if(!data){
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//default_contractor_questionnaires_ques_options
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires_ques_options" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, ques_id, answer, optionImage, optionType} = new_item;
 
 	console.log('uploadQuestionOptionFilesNew', new_item)
 
-	const attrs = {};
+	const onUpdate = async ({id, ...attrs}) => {
+		delete attrs.id;
 
-	if (optionImage && optionImage.path) {
-		const {path} = optionImage;
-		console.log('uploadQuestionOptionFilesNew optionImage', path)
+		await updateRelay({
+			mutation: `
+					    mutation updateQuestionOptionMutation($id: default_contractor_questionnaires_ques_options_pk_columns_input!, $_set: default_contractor_questionnaires_ques_options_set_input!) {
+					      update_default_contractor_questionnaires_ques_options_by_pk(pk_columns: $id, _set: $_set) {
+					        id
+					      }
+					    }
+					  `,
+			operationName: "updateQuestionOptionMutation",
+			id,
+			attrs,
+		});
+	};
 
-		const new_name = `questionnaires/questions/${ques_id}/${id}/optionImage`;
-		attrs.optionImage = await uploadDataUri(path, new_name);
-	}
-
-	if (answer && answer.path) {
-		const {path} = answer;
-		console.log('uploadQuestionOptionFilesNew answer', path)
-
-		const new_name = `questionnaires/questions/${ques_id}/${id}/answer`;
-		attrs.answer = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateQuestionOption({id, ...attrs});
-	}
+	await Promise.all([
+		async () => {
+			const new_name = `questionnaires/questions/${ques_id}/${id}/optionImage`;
+			await uploadFilesUpdate({
+				id, doc: optionImage, key: 'optionImage', new_name, onUpdate,
+			});
+		},
+		async () => {
+			const new_name = `questionnaires/questions/${ques_id}/${id}/answer`;
+			await uploadFilesUpdate({
+				id, doc: answer, key: 'answer', new_name, onUpdate,
+			});
+		},
+	]);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="createScheduleQuestionnaireUpdate">
 exports.createScheduleQuestionnaireUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires");
+	if(!data){
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//default_contractor_questionnaires
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, interval, start_date, time} = new_item;
 
 	console.log('createScheduleQuestionnaireNew', new_item)
@@ -173,30 +150,13 @@ exports.createScheduleQuestionnaireUpdate = async (body) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="onCreatedQuestionnaire">
-exports.onCreatedQuestionnaire = async (req) => {
-	// await authorize();
-	if (!req) {
-		return;
-	}
-	const {body} = req;
-
-	if (!body || !body.data || !body.data.table) {
+exports.onCreatedQuestionnaire = async (body) => {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires");
+	if(!data){
 		return;
 	}
 
-	let {
-		table: {
-			table_name,//default_contractor_questionnaires
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires" || !new_item) {
-		return;
-	}
-
+	let {new_item} = data;
 	let {
 		id,
 		is_template,
@@ -306,30 +266,13 @@ exports.onCreatedQuestionnaire = async (req) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="onCreatedQuestionnaireMessage">
-exports.onCreatedQuestionnaireMessage = async (req) => {
-	// await authorize();
-	if (!req) {
-		return;
-	}
-	const {body} = req;
-
-	if (!body || !body.data || !body.data.table) {
+exports.onCreatedQuestionnaireMessage = async (body) => {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires_messages");
+	if(!data){
 		return;
 	}
 
-	let {
-		table: {
-			table_name,//default_contractor_questionnaires_messages
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires_messages" || !new_item) {
-		return;
-	}
-
+	let {new_item} = data;
 	let {
 		id,
 		// msg,
@@ -425,31 +368,15 @@ exports.onCreatedQuestionnaireMessage = async (req) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="onUpdatedQuestionnaireStatus">
-exports.onUpdatedQuestionnaireStatus = async (req) => {
-	// await authorize();
-	if (!req) {
-		return;
-	}
-	const {body} = req;
-
-	if (!body || !body.data || !body.data.table) {
+exports.onUpdatedQuestionnaireStatus = async (body) => {
+	const data = getTriggeredEventsData(body, "default_contractor_questionnaires");
+	if(!data){
 		return;
 	}
 
-	let {
-		table: {
-			table_name,//default_contractor_questionnaires
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
+	let {new_item, old_item} = data;
 
-	if (schema !== "public" || table_name !== "default_contractor_questionnaires" || !new_item || !old_item) {
-		return;
-	}
-
-	if(old_item.is_template) {
+	if (!old_item || old_item.is_template) {
 		return;
 	}
 
@@ -671,3 +598,4 @@ function createDateList(interval, year, startDate) {
 }
 
 //</editor-fold>
+//674

@@ -1,42 +1,33 @@
-const updateNCRDoc = require('../../queries/updateNCRDoc');
-
 // <editor-fold defaultstate="collapsed" desc="uploadNCRDocsUpdate">
 exports.uploadNCRDocsUpdate = async (body) => {
-	// await authorize();
-
-	if (!body || !body.data || !body.data.table) {
+	const data = getTriggeredEventsData(body, "sheq_non_conformance_docs");
+	if (!data) {
 		return;
 	}
 
-	const {
-		table: {
-			table_name,//sheq_non_conformance_docs
-			schema,
-			old_item,
-			new_item,
-		}
-	} = body.data;
-
-	if (schema !== "public" || table_name !== "sheq_non_conformance_docs" || !new_item) {
-		return;
-	}
-
+	const {new_item} = data;
 	let {id, non_conformance_id, doc, type} = new_item;
 
 	console.log('uploadIncidentDocsUpdate', new_item)
 
-	const attrs = {};
+	const new_name = `ncr/${non_conformance_id}/${id}/docs`;
+	await uploadFilesUpdate({
+		id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
 
-	if (doc && doc.path) {
-		const {path} = doc;
-		console.log('uploadIncidentDocsUpdate doc', path)
-
-		const new_name = `ncr/${non_conformance_id}/${id}/docs`;
-		attrs.doc = await uploadDataUri(path, new_name);
-	}
-
-	if (Object.keys(attrs).isNotEmpty()) {
-		await updateNCRDoc({id, ...attrs});
-	}
+			await updateRelay({
+				mutation: `
+			    mutation updateNCRDocMutation($id: sheq_non_conformance_docs_pk_columns_input!, $_set: sheq_non_conformance_docs_set_input!) {
+			      update_sheq_non_conformance_docs_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateNCRDocMutation",
+				id,
+				attrs,
+			});
+		}
+	});
 };
 // </editor-fold>
