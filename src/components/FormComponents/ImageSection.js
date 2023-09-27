@@ -70,7 +70,7 @@ class ControlsNewImage extends React.Component {
 		} = form.data;
 		const data = {
 			[item_id_key]: embeddedEmployee && embeddedEmployee.id,
-			doc: doc ? await toDataURI(doc.path) : null,
+			doc: doc ? {path: await toDataURI(doc.path)} : null,
 		};
 
 		console.log(data)

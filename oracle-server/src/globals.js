@@ -168,13 +168,14 @@ global.uploadFilesUpdate = async ({id, doc, key, new_name, onUpdate}) => {
 
 	if (doc.path || doc.data) {
 		const {path, data} = doc;
-		console.log('uploadFilesUpdate doc', path || data)
 
 		key = key || 'doc';
 
 		if(data) {
+			console.log('uploadFilesUpdate doc data', data)
 			attrs[key] = await uploadDataUri(data, new_name);
 		} else {
+			console.log('uploadFilesUpdate doc path', path)
 			attrs[key] = await uploadDataUri(path, new_name);
 		}
 	}
