@@ -8,7 +8,7 @@ import {AEditDialog, ANewDialog} from "../dialogs";
 import styleNewImage from "./NewImageDialog.lazy.css";
 import styleEditImage from "./EditImageDialog.lazy.css";
 import Form from "utils/Form";
-import {ShouldUpdate} from "utils/Utils";
+import {ShouldUpdate, toDataURI} from "utils/Utils";
 //</editor-fold>
 
 //<editor-fold desc="NewImageDialog">
@@ -53,7 +53,7 @@ class ControlsNewImage extends React.Component {
 		this.form = new Form();
 	}
 
-	onSubmit(e, btn, onSaved) {
+	async onSubmit(e, btn, onSaved) {
 		const {form, isNewEmployee, embeddedEmployee, props: {dialog: {props:{item_id_key, onInsert}}}} = this;
 
 		if(isNewEmployee) {
@@ -70,7 +70,7 @@ class ControlsNewImage extends React.Component {
 		} = form.data;
 		const data = {
 			[item_id_key]: embeddedEmployee && embeddedEmployee.id,
-			doc: doc && doc.path,
+			doc: doc ? await toDataURI(doc.path) : null,
 		};
 
 		console.log(data)
