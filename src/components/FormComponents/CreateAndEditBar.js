@@ -26,7 +26,7 @@ class Comp extends React.Component {
 	}
 
 	render() {
-		const {onRemove, onEdit, onCreate, list: _list, type, isEmbedded, isContained} = this.props;
+		const {onRemove, onView, onEdit, onCreate, list: _list, type, isEmbedded, isContained} = this.props;
 		const {isEmployee} = storage.is;
 		const sx = {};
 
@@ -40,6 +40,13 @@ class Comp extends React.Component {
 		}
 
 		const node = <>
+			{!isEmployee && list.isNotEmpty() && onView && <Button
+				ref="viewB"
+				type={type}
+				className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+				onClick={onView}>
+				View
+			</Button>}
 			{!isEmployee && list.isNotEmpty() && <Button
 				ref="removeB"
 				type={type}

@@ -1,12 +1,8 @@
 require("../eventManager");
 require("./ACntr");
 
-require("./graphql");
-
-require("./excel");
-require("./accounts");
-require("./get");
-require("./send");
+require("./general");
+require("./modules");
 
 exports.start = (socket) => {
 	socket.on("emit", async (req, callback) => {

@@ -68,6 +68,7 @@ require('./libs/date-utils');
 global.EmailUtils = require('./libs/email.util');
 global.DriveUtils = require('./libs/drive.utils');
 
+require('./graphql/convertMutations');
 require('./libs/face.util');
 
 global.execWhen = (test, max) => {

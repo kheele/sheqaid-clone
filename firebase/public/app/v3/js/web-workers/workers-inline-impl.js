@@ -45,7 +45,7 @@ self.convertMutations = convertMutations = (obj) => {
 };
 
 class Utils {
-    static async toDataURI(filePath) {
+    static async toDataURI(db, filePath) {
         if (filePath instanceof File) {
             return await new Promise((resolve, reject) => {
                 const reader = new FileReader();

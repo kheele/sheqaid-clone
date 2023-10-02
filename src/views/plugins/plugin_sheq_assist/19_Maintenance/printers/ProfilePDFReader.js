@@ -48,13 +48,13 @@ class PDFReader extends AProfileDialog {
 
     @computed get topButtons() {
         const download = ("AssetInvestigationProfile_" + Dates.formatDateTime(new Date())).replaceAll(" ", "_") + ".pdf";
-        return <React.Fragment>
+        return <>
             <Clickable onClick={this.onDownload}>
                 <a className="btn btn-primary" download={download} type="application/pdf">
                     <i className="fa fa-download icon-left"/> Download
                 </a>
             </Clickable>
-        </React.Fragment>;
+        </>;
     }
 
     get controls() {

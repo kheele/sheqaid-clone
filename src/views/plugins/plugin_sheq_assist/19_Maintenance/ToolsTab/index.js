@@ -433,21 +433,21 @@ class ToolsTab extends React.Component {
 				profile_pic: profile_pic_list,
 				//3 done
 				responsible_person,
-				//4 done
-				doc_list,
-				//5 done
-				purchase_info,
-				//6 done
-				depreciation,
-				//7 done
-				monitoring_plan_list,
-				//8 done
-				maintenance_plan_list,
-				//9 done
-				calibration_record_list,
-				//10
-				inspection_template_list = [],
-				inspection_list = [],
+				// //4 done
+				// doc_list,
+				// //5 done
+				// purchase_info,
+				// //6 done
+				// depreciation,
+				// //7 done
+				// monitoring_plan_list,
+				// //8 done
+				// maintenance_plan_list,
+				// //9 done
+				// calibration_record_list,
+				// //10
+				// inspection_template_list = [],
+				// inspection_list = [],
 			}
 		} = item;
 

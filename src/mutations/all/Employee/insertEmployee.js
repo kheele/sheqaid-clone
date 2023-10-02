@@ -195,7 +195,7 @@ export default async (input: EntityEmployee) => {
 		return new Promise((resolve, reject) => {
 			findByIdEmployee(id).then(resolve, reject);//TODO: remove after socket on server send response
 
-			socket.on('insertEmployee', (data) => {
+			workers.on('insertEmployee', (data) => {
 				console.log('insertEmployee got', data);
 
 				// Display the event data in the `content` div

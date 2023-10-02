@@ -12,6 +12,25 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/.react-playground" />
       <excludeFolder url="file://$MODULE_DIR$/src-old" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase-2/functions/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase-hr/functions/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/functions/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_funs/nbproject" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server-contractors/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server-hr/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/public/admin" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/public/app" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/public/contractors" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/public/forms" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase/public/remote" />
+      <excludeFolder url="file://$MODULE_DIR$/public/css" />
+      <excludeFolder url="file://$MODULE_DIR$/public/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/public/img" />
+      <excludeFolder url="file://$MODULE_DIR$/public/js/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/src-public/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/src-public/js/web-workers/node/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

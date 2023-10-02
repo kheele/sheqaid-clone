@@ -6,11 +6,21 @@ import {computed, observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {Dates, isWeb} from 'utils/Utils';
-import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {
+    Button,
+    ClearableInput, DateRangeInput, SelectAssetTypeInput,
+    SelectClientInput, SelectEmployeeInput,
+    SelectJobPositionInput,
+    SelectProjectInput,
+    SelectSiteInput
+} from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
 import ANewDialog from 'components/dialogs/ANewDialog';
 // </editor-fold>
 import style from "./ExportAssetsDialog.lazy.css";
+import byLogged from "../ToolsTab/Query/List/listAllToolsByLogged";
+import {AControls} from "components/exports/AExportDialog";
+import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
@@ -47,115 +57,108 @@ class ExportAssetsDialog extends ANewDialog {
 // </editor-fold>
 
 @observer
-class Controls extends React.Component {
+class Controls extends AControls {
     path = 'plugin_sheq_assist/19_Maintenance/tools/';
 
     @observable
     state = {
-        assetList: []
+        lists: {
+            manufacturers: [],
+            locations: [],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap']
+        },
+        searchList: [],
+        loadedSelectLists: false
     };
-    filterData;
+    @observable
+    filterData = {
+        //
+        client_id: null,
+        project_id: null,
+        site_id: null,
+        //
+        responsible_person_list: null,
+        asset_type: null,
+        manufacturer: null,
+        location: null,
+        condition: null,
+        name: null,
+        reg_num: null,
+        serial_num: null,
+        model: null,
+    };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
-    constructor() {
-        super();
-
-        this.onSearch = this.onSearch.bind(this);
-        this.onLoadListAssets = this.onLoadListAssets.bind(this);
-        this.onSelectAll = this.onSelectAll.bind(this);
-        this.onUnSelectAll = this.onUnSelectAll.bind(this);
-
-        this.form = new Form();
+    constructor(props) {
+        super(props);
     }
 
     // </editor-fold>
 
-    onLoadListAssets(isNew) {
-        return neonBinding.events.emit(this.path + 'select/filter', {isNew, ...this.filterData});
+    // <editor-fold defaultstate="collapsed" desc="componentMount">
+    componentDidMount() {
+        const loads = {
+            manufacturers: onSelectLoadAssetManufacturers,
+            locations: onSelectLoadAssetLocations,
+        };
+        Promise.all(Object.keys(loads).map(k => {
+            return loads[k]().then(res => {
+                this.state.lists[k] = res.distinct();
+            });
+        })).then(res => {
+            this.state.loadedSelectLists = true;
+        });
     }
 
-    // <editor-fold defaultstate="collapsed" desc="onSearch">
-    onSearch() {
-        const {form} = this;
-        if (!form.isValid('client_from')) {
-            infoDialog.open('Company is required');
-            return;
-        }
+    // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            client_from, project_from, site_from
-        } = form.data;
-        this.filterData = {client_id: client_from.id};
-        if (project_from) {
-            this.filterData.project_id = project_from.id;
-        }
-        if (site_from) {
-            this.filterData.site_id = site_from.id;
+            name,
+            reg_num,
+            serial_num,
+            model,
+            condition,
+            location,
+            manufacturer,
+            asset_type,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            name,
+            reg_num,
+            serial_num,
+            model,
+            condition,
+            location,
+            manufacturer,
+            asset_type,
+            written_off: false,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if (!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
         }
 
-        const {assetList} = this.state;
-        this.refs.selectAssetTable.setSelectedList(assetList).open().then(list => {
-            this.state.assetList.clear();
-            this.state.assetList.push(...list);
-            this.reset();
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
         });
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
-        return this.onSubmitExport(e, btn, onSaved);
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onSubmitExport">
-    onSubmitExport(e, btn, onSaved) {
-        const {form, state: {assetList}} = this;
-
-        if (assetList.isEmpty()) {
-            infoDialog.open('Please select at least one Asset');
-            return;
-        }
-
-        btn.text("Exporting...").disabled();
-        neonBinding.events.emit(this.path + "export-excel", assetList.slice()).then(res => {
-            if (!res) {
-                infoDialog.open(<React.Fragment>
-                    <p>An error occurred. Please try again</p>
-                </React.Fragment>);
-            } else {
-                if (isWeb()) {
-                    infoDialog.open(<React.Fragment>
-                        <p>Assets successfully exported.</p>
-                        <p><small>The file will be automatically downloaded</small></p>
-                    </React.Fragment>);
-                    saveFileAs(res, `Assets-Report_${Dates.formatDate(new Date())}.xlsx`);
-                } else {
-                    infoDialog.open(<React.Fragment>
-                        <p>Assets successfully exported.</p>
-                        <p>Saved in the following folder:</p>
-                        <p><small>{res.path}</small></p>
-                        <p><small>The file will open after 3 seconds</small></p>
-                    </React.Fragment>);
-                }
-            }
-        }).finally(() => {
-            btn.text("Export").enabled();
-        });
-    }
-
-    // </editor-fold>
-
-    onSelectAll(e, btn) {
-
-    }
-
-    onUnSelectAll(e, btn) {
-
-    }
-
-    renderTHeadAssetsFrom() {
+    renderTHeadFrom() {
         return <THead>
             <div className="td fixed-flex min-w-80">Photo</div>
             <div className="td">Type</div>
@@ -169,11 +172,11 @@ class Controls extends React.Component {
         </THead>;
     }
 
-    renderItemAssetsFrom(item, n) {
-        if (!item.data.statusVal) {
+    renderItemFrom(item, n) {
+        if (!('statusVal' in item.data)) {
             item.data.statusVal = computed(() => {
                 const {status} = item.data;
-                console.log(item.id, 'status', status)
+                // console.log(item.id, 'status', status)
                 if (status === 'In Storage') {
                     return 'Check Out';
                 } else if (status === 'Checked Out') {
@@ -189,32 +192,50 @@ class Controls extends React.Component {
         const {
             id, data: {
                 created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
-                //1
-                name, asset_type, desc,
-                manufacturer, model, reg_num, serial_num,
-                location, toolkit, condition,
-                barcode_or_qr_code_type, barcode_or_qr_code,
-                notes,
-                //2
-                profile_pic,
-                //3
+                client, project, site,
+                //1 done
+                asset_detail: {
+                    owning_company,
+                    name,
+                    asset_type,
+                    desc,
+                    manufacturer,
+                    model,
+                    reg_num,
+                    serial_num,
+                    location,
+                    toolkit,
+                    condition,
+                    barcode,
+                    qr_code,
+                    notes,
+                },
+                //2 done
+                photo_list,
+                profile_pic: profile_pic_list,
+                //3 done
                 responsible_person,
-                //4
-                doc_pdf, doc_pdf_desc, doc_pdf_expiry,
-                //5
-                doc_work_manual, doc_procedure, doc_clearance_certificate,
-                //6
-                purchase_info,
-                //7
-                depreciation,
-                //8
-                monitoring_plan_list,
-                //9
-                maintenance_plan,
-                //10
-                calibration_record
+                // //4 done
+                // doc_list,
+                // //5 done
+                // purchase_info,
+                // //6 done
+                // depreciation,
+                // //7 done
+                // monitoring_plan_list,
+                // //8 done
+                // maintenance_plan_list,
+                // //9 done
+                // calibration_record_list,
+                // //10
+                // inspection_template_list = [],
+                // inspection_list = [],
             }
         } = item;
+
+        const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
+
+        const [profile_pic] = profile_pic_list || [];
 
         return <React.Fragment key={id}>
             <div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
@@ -228,61 +249,61 @@ class Controls extends React.Component {
         </React.Fragment>;
     }
 
-    get title() {
-        return "Export";
-    }
+    // <editor-fold defaultstate="collapsed" desc="renderFields">
+    get renderFields() {
+        if (!this.state.loadedSelectLists) {
+            return <div className="col-lg-12 controls flex text-center">Loading...</div>;
+        }
+        const {onChange} = this.form;
 
-    get titleSelected() {
-        return "Export";
-    }
+        return <>
+            <SelectEmployeeInput ref="responsible_person_list" name="responsible_person_list"
+                                 placeholder="Responsible Person..." type="select_multi"
+                                 className="col-lg-12 form-control" onChange={onChange}/>
+            <SelectAssetTypeInput ref="asset_type" name="asset_type" placeholder="Asset Type..."
+                                  className="col-lg-12 form-control"
+                                  onChange={onChange}/>
+            <ClearableInput ref="manufacturer" name="manufacturer" type="select" placeholder="Manufacturer..."
+                            className="col-lg-12 form-control"
+                            onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
+            <ClearableInput ref="location" name="location" type="select" placeholder="Location..."
+                            className="col-lg-12 form-control"
+                            onChange={onChange} values={this.state.lists.locations} returnValue/>
+            <ClearableInput ref="condition" name="condition" type="select" placeholder="Condition..."
+                            className="col-lg-12 form-control" onChange={onChange}
+                            values={this.state.lists.conditions} returnValue/>
+            <ClearableInput ref="name" name="name" type="text" placeholder="Asset Name"
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="reg_num" name="reg_num" type="text" placeholder="Registration No."
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="serial_num" name="serial_num" type="text" placeholder="Serial No."
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="model" name="model" type="text" placeholder="Model" className="col-lg-12 form-control"
+                            onChange={onChange}/>
 
-    // <editor-fold defaultstate="collapsed" desc="render">
-    render() {
-        const {title, titleSelected} = this;
-        return (<div className="controls-wrapper h-full">
-            <div className="controls h-full">
-                <div className="row col-lg-3 h-full padding-0">
-                    <label className="heading text-center"><h4>Find Asset(s) To {title}:</h4></label>
-                    <div className="row sec-group margin-t-10 padding-l-10 padding-r-10">
-                        <SelectClientInput name="client_from" group="orgs1" placeholder="Company..." required showAll
-                                           className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <SelectProjectInput name="project_from" group="orgs1" placeholder="Project..." required showAll
-                                            className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <SelectSiteInput name="site_from" group="orgs1" placeholder="Site..." required showAll
-                                         className="col-lg-12 margin-b-15 form-control" onChange={this.form.onChange}/>
-                        <Button className="btn btn-primary hor-center" onClick={this.onSearch}>
-                            Find Asset(s)
-                        </Button>
-                    </div>
-                    <SelectTable ref="selectAssetTable"
-                                 isDialog
-                                 replaceCols
-                                 name="asset"
-                                 desc="Assets"
-                                 title="Select Asset(s)"
-                                 className="col-lg-12 no-padding SelectAssetTable"
-                                 renderTHead={this.renderTHeadAssetsFrom}
-                                 renderItem={this.renderItemAssetsFrom}
-                                 onLoadList={this.onLoadListAssets}
-                                 onUnSelectAll={this.onUnSelectAll}
-                                 onSelectAll={this.onSelectAll}
-                                 isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
-                </div>
-                <div className="row col-lg-9 h-full pull-right padding-0">
-                    <label className="heading text-center"><h4>Asset(s) To {titleSelected}:</h4></label>
-                    <SelectTable ref="selectedAssetTable"
-                                 replaceCols
-                                 name="asset"
-                                 desc="Assets"
-                                 title="Selected Asset(s)"
-                                 className={"col-lg-12 no-padding SelectedAssetTable Table-" + (title.replaceAll(' ', ''))}
-                                 renderTHead={this.renderTHeadAssetsFrom}
-                                 renderItem={this.renderItemAssetsFrom}
-                                 list={this.state.assetList}
-                                 isChecked={(item, selectedList) => true}/>
-                </div>
-            </div>
-        </div>);
+            {/*<hr className="pull-left no-border bg-ddd h-2"/>*/}
+            {/*<DateRangeInput ref="due_date_range" name="due_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Due Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+            {/*<DateRangeInput ref="progress_date_range" name="progress_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Progress Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+            {/*<DateRangeInput ref="completed_date_range" name="completed_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Completed Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+        </>;
     }
 
     // </editor-fold>

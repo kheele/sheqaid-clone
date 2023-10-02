@@ -92,7 +92,7 @@ class Slider extends React.Component {
                            index={index} hasViewBtn={hasViewBtn} disableNavs={disableNavs} renderer={renderer}
                            getSplitBy={this.getSplitBy} colSize={colSize} onClick={onClick}
                            onBeforeChange={onBeforeChange} onAfterChange={onAfterChange}/>
-            {!disableNavs && <React.Fragment>
+            {!disableNavs && <>
                 <a className="left carousel-control" href={"#" + name} role="button" data-slide="prev">
                     <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>
@@ -101,7 +101,7 @@ class Slider extends React.Component {
                     <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>
-            </React.Fragment>}
+            </>}
         </div>);
     }
 }

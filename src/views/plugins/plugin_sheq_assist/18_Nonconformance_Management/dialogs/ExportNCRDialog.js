@@ -182,7 +182,7 @@ class Controls extends AControls {
 
         const {onChange} = this.form;
         
-        return <React.Fragment>
+        return <>
             <ClearableInput ref="responsible_party_list" name="responsible_party_list" type="select_multi" placeholder="Responsible Party..."
                             className="col-lg-12 margin-b-10 form-control" onChange={onChange}
                             values={responsible_party_list} returnValue add/>
@@ -219,7 +219,7 @@ class Controls extends AControls {
                 <label className="min-w-65">From</label>
                 <label className="min-w-50">To</label>
             </DateRangeInput>
-        </React.Fragment>;
+        </>;
     }
     // </editor-fold>
 }

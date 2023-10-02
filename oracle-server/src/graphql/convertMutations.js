@@ -1,4 +1,4 @@
-module.exports.convertMutations = convertMutations = (obj) => {
+global.convertMutations = convertMutations = (obj) => {
     if(isArray(obj)) {
         return obj.map(convertMutations);
     } else  if (typeof obj === 'object' && !isNullable(obj)) {

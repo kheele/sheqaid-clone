@@ -3,12 +3,11 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
-import {fileTypeFromBuffer} from 'file-type';
+// import {fileTypeFromBuffer} from 'file-type';
 
 // const faceapi = require('face-api.js');
 
 // const canvas = require('canvas');
-const {convertMutations} = require("../../graphql/convertMutations");
 // patch nodejs environment, we need to provide an implementation of
 // HTMLCanvasElement and HTMLImageElement
 // const {Canvas, Image, ImageData} = canvas;
