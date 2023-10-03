@@ -336,7 +336,8 @@ class AControls extends React.Component {
 						name="selectTable"
 						desc={titlePlural}
 						title={`Select ${titlePlural}`}
-						className="col-lg-12 no-padding SelectAExportTable"
+						className={"col-lg-12 no-padding SelectAExportTable" + (this.props.dialog.className && (" " + this.props.dialog.className) || "")}
+						dialogClassName={this.props.dialog.className && (" " + this.props.dialog.className)}
 						renderTHead={this.renderTHeadFrom}
 						renderItem={this.renderItemFrom}
 						onLoadList={this.onLoadListImpl}

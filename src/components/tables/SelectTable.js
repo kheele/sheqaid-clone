@@ -294,7 +294,7 @@ class SelectTable extends React.Component {
 	}
 
 	render() {
-		const {children, desc, className, isDialog, renderTHead} = this.props;
+		const {children, desc, className, dialogClassName, isDialog, renderTHead} = this.props;
 		const tbl = <Table className={"SelectTable " + className} ignoreResize>
 			{renderTHead && renderTHead(this.props)}
 			{!renderTHead && <THead className="align-left">
@@ -309,7 +309,7 @@ class SelectTable extends React.Component {
 			return (<Dialog
 				key={this.pageKey + '-profile-dialog'}
 				ref="dialog"
-				className={'SelectTable-dialog'}
+				className={'SelectTable-dialog' + (dialogClassName ? (' ' + dialogClassName) : '')}
 				topButtons={this.topButtons}
 				dialog={this}
 			>

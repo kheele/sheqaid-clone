@@ -1,37 +1,35 @@
-/*@import '../../../../../css/ANewTableFormDialog.css';*/
-@import '../../../../../css/ANewDialog.css';
 
-#dialog-overlay.ExportAssetsDialog-new-dialog .dialog-container{
+#dialog-overlay.ExportAssetsDialog .dialog-container{
     height: calc(100% - 35px);
     width: 100%;
     max-width: calc(100% - 30px);
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .dialog-content{
+#dialog-overlay.ExportAssetsDialog .dialog-content{
     padding: 0;
     height: calc(100% - 50px);
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .heading {
+#dialog-overlay.ExportAssetsDialog .heading {
     background: #fafafa;
     display: block;
     padding: 2px !important;
     margin: 0 !important;
     border-radius: 3px 3px 0 0;
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .sec-group-transfer {
+#dialog-overlay.ExportAssetsDialog .sec-group-transfer {
     width: calc(100% - 10px) !important;
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .table {
+#dialog-overlay.ExportAssetsDialog .table {
     margin: 0 !important;
     width: calc(100% - 0px) !important;
     height: calc(100% - 162px) !important;
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .table.Table-Transfer {
+#dialog-overlay.ExportAssetsDialog .table.Table-Transfer {
     height: calc(100% - 116px) !important;
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .table:not(.Table-Transfer) {
+#dialog-overlay.ExportAssetsDialog .table:not(.Table-Transfer) {
     height: calc(100% - 45px) !important;
 }
-#dialog-overlay.ExportAssetsDialog-new-dialog .table .tbody .td img{
+#dialog-overlay.ExportAssetsDialog .table .tbody .td img{
     width: 60px;
     height: 60px;
     margin: 5px 0;
