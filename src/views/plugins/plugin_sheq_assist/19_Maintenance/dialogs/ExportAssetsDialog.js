@@ -23,8 +23,19 @@ import ProfileToolDialog from "../ToolsTab/forms/ProfileToolDialog";
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ExportAssetsDialog extends AExportDialog {
+    className = "ExportAssetsDialog";
     titleSingular = 'Asset';
     titlePlural = 'Assets';
+    
+    componentWillMount() {
+        super.componentWillMount();
+        style.use();
+    }
+    
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        style.unuse();
+    }
     
     get excludePDF() {
         return true;
