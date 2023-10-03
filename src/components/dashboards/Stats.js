@@ -54,7 +54,7 @@ class Comp extends React.Component {
 		const {LOADING, ERROR} = DATA_LOAD_STATUS;
 
 		const company_id = sess_company_id;
-		const client_id = selectedClient && selectedClient.id;
+		const client_id = isConsultant ? selectedClient && selectedClient.id : undefined;
 		const project_id = selectedProject && selectedProject.id;
 		const site_id = selectedSite && selectedSite.id;
 

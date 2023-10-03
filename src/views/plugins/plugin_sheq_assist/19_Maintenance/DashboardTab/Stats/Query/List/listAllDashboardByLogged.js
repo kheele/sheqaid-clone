@@ -99,7 +99,7 @@ export default (
 	const mon = Dates.formatDateSQL(new Date().addMonths(1));
 	const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
 	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
+	
 	//<editor-fold desc="ByEach">
 	return Promise.all([
 		GQLClient

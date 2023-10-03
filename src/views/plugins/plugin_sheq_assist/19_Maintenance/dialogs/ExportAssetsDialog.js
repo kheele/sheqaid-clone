@@ -3,9 +3,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import Form from 'utils/Form';
-
-import {Dates, isWeb} from 'utils/Utils';
 import {
     Button,
     ClearableInput, DateRangeInput, SelectAssetTypeInput,
@@ -15,38 +12,20 @@ import {
     SelectSiteInput
 } from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
-import ANewDialog from 'components/dialogs/ANewDialog';
 // </editor-fold>
 import style from "./ExportAssetsDialog.lazy.css";
 import byLogged from "../ToolsTab/Query/List/listAllToolsByLogged";
-import {AControls} from "components/exports/AExportDialog";
+import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
-class ExportAssetsDialog extends ANewDialog {
-    pageKey = "ExportAssetsDialog";
-
-//    className = 'ANewTableFormDialog';
-
-    constructor(props) {
-        super(props, style);
-    }
-
-    get title() {
-        return "Export Asset(s)";
-    }
-
-    get topButtons() {
-        const title = () => {
-            return "Export";
-        };
-        return <React.Fragment>
-            <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-            <Button className="btn btn-primary save" onClick={this.onSubmit}>
-                <i className="fa fa-check icon-left"/>{title()}
-            </Button>
-        </React.Fragment>;
+class ExportAssetsDialog extends AExportDialog {
+    titleSingular = 'Asset';
+    titlePlural = 'Assets';
+    
+    get excludePDF() {
+        return true;
     }
 
     get controls() {
