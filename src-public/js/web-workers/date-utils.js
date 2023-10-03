@@ -239,6 +239,50 @@
 
             return dd + "-" + mon + "-" + yr + " " + Dates.formatTime(date);
         }
+        
+        static formatTimestampSQL(date) {
+            if (!date)
+                return null;
+            
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+            
+            return Dates.formatDateSQL(date) + " " + Dates.formatTime(date);//+date;
+        }
+        
+        static formatDateSQL(date) {
+            if (!date)
+                return null;
+            
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+            const d = date.getDate();
+            const dd = (d < 10) ? ("0" + d) : d;
+            const mon = monthsDoubleNumStr.get(date.getMonth());
+            const yr = date.getFullYear();
+            
+            return yr + "-" + mon + "-" + dd;
+        }
 
         static formatDateTime(date) {
             if (!date)

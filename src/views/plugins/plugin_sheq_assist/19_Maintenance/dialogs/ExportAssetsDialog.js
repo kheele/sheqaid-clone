@@ -126,7 +126,7 @@ class Controls extends AControls {
             asset_type,
         } = filterData || {};
 
-        const limit = 50;
+        const limit = 0;
 
         const args = {
             name,
@@ -144,11 +144,11 @@ class Controls extends AControls {
             exact_orgs: true,
         };
 
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
+        // if (!isNew) {
+        //     args.offset = this.refs.root.list.length;
+        // } else {
             args.offset = 0;
-        }
+        // }
 
         return byLogged(args).then((res) => {
             console.log('onLoadList res', res)

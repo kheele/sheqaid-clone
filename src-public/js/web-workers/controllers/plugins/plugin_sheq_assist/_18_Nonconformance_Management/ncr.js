@@ -267,7 +267,7 @@
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
-        async export_excel(evt, list) {
+        async export_excel(evt, {client, project, site, department, job_position, supervisor, list}) {
             return Events.whenLoggedIn(async loggedUser => {
                 const cols = [
                     {header: 'Company', key: 'Company', width: 25},

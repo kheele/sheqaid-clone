@@ -76,11 +76,12 @@ class AEmployeeDocsController extends AControllerAid {
 						// email,
 
 						employment_num,
-						employment_date: Dates.formatDate(employment_date),
+						employment_date: Dates.formatDateSQL(employment_date),
 
 						//
 						...otherVals,
-						expiry_date: Utils.expiryDateWithDue(expiry_date),
+						expiry_date: Dates.formatDateSQL(expiry_date),
+						// expiry_date: Utils.expiryDateWithDue(expiry_date),
 						// expiry_updated,
 						doc: doc && doc.dlUrls ? doc.dlUrls[0] : '',
 
