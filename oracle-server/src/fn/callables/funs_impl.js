@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
-// import {fileTypeFromBuffer} from 'file-type';
+import {fileTypeFromBuffer} from 'file-type';
 
 // const faceapi = require('face-api.js');
 
@@ -115,6 +115,7 @@ exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
 //<editor-fold desc="uploadDataUri">
 global.uploadDataUri = async (datauri_or_buffer, filePath) => {
     let buffer, contentType, ext;
+    console.log('uploadDataUri is string', typeof datauri_or_buffer, typeof datauri_or_buffer === 'string')
     if(typeof datauri_or_buffer === 'string') {
         const parts = datauri_or_buffer.split(',');
         contentType = parts[0].replace('data:', '').split(';')[0];
