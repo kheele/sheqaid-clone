@@ -53,7 +53,6 @@ class AShowFile extends React.Component {
 //            if(url instanceof Promise) {
 //                url = await url.then(res => res);
 //            }
-				alert(defaultValue.path)
 
 				const isPDF = FileTypes.isPDF(defaultValue);
 				const isWord = FileTypes.isWord(defaultValue);
@@ -61,11 +60,8 @@ class AShowFile extends React.Component {
 				const isPic = FileTypes.isPic(defaultValue);
 				const isVideo = FileTypes.isVideo(defaultValue);
 				
-				alert(isPic)
-
 				if (isPDF) {
 					this.state.previewPath = createPDFPreviewUrl(url);
-					alert(this.state.previewPath)
 				} else if (isWord || isExcel) {
 					this.state.previewPath = `https://docs.google.com/gview?url=${url}&embedded=true`;
 				} else if (isPic || isVideo) {
