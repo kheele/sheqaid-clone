@@ -254,7 +254,7 @@ class ASectionSection extends React.Component {
                 ref="slider"
                 title="Details"
                 rowClassName="padding-l-10 padding-v-10"
-                indexFilter={v => !v}
+                indexFilter={v => !v || v.is_default}
                 list={list}
             >
                 {itemRenderer}

@@ -43,25 +43,29 @@ class AShowFile extends React.Component {
 	componentWillMount() {
 		const {name, defaultValue, readonly, onChange} = this.props;
 		this.setLoading();
-		if (defaultValue && (defaultValue.dlUrls || defaultValue.previewPath)) {
+		if (defaultValue && (defaultValue.dlUrls || defaultValue.previewPath || defaultValue.path)) {
 			if (readonly && defaultValue.previewPath) {
 				extendObservable(this.state, toJS(defaultValue));
 			} else {
-				let url = defaultValue.dlUrls[0];
+				let url = defaultValue.path ? defaultValue.path : defaultValue.dlUrls[0];
 
 //            url = createPDFPreviewUrl(url);
 //            if(url instanceof Promise) {
 //                url = await url.then(res => res);
 //            }
+				alert(defaultValue.path)
 
 				const isPDF = FileTypes.isPDF(defaultValue);
 				const isWord = FileTypes.isWord(defaultValue);
 				const isExcel = FileTypes.isExcel(defaultValue);
 				const isPic = FileTypes.isPic(defaultValue);
 				const isVideo = FileTypes.isVideo(defaultValue);
+				
+				alert(isPic)
 
 				if (isPDF) {
 					this.state.previewPath = createPDFPreviewUrl(url);
+					alert(this.state.previewPath)
 				} else if (isWord || isExcel) {
 					this.state.previewPath = `https://docs.google.com/gview?url=${url}&embedded=true`;
 				} else if (isPic || isVideo) {
