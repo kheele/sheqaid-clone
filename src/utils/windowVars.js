@@ -3,10 +3,18 @@ import React from "react";
 import {AsyncSpan, AsyncTD} from '../views/plugins/components';
 
 window.RenderUtils = {
-    renderImage: (f, w, h) => {
+    renderImage: (f, w, h, defaultPic) => {
         console.log(f)
-        if (f && f.dlUrls) {
-            return <img src={f ? f.dlUrls[0] : ""} width={w} height={h}/>;
+        if (f) {
+            if (f.dlUrls) {
+                return <img src={f.dlUrls[0]} width={w} height={h}/>;
+            }
+            if (f.path) {
+                return <img src={f.path} width={w} height={h}/>;
+            }
+        }
+        if(defaultPic) {
+            return <img src={defaultPic} width={w} height={h}/>;
         }
         return null;
     },

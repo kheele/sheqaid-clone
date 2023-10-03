@@ -5,18 +5,20 @@ import {computed, observable} from 'mobx';
 
 import {
     Button,
-    ClearableInput, DateRangeInput, SelectAssetTypeInput,
+    ClearableInput, Clickable, DateRangeInput, SelectAssetTypeInput,
     SelectClientInput, SelectEmployeeInput,
     SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput
 } from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
-// </editor-fold>
 import style from "./ExportAssetsDialog.lazy.css";
 import byLogged from "../ToolsTab/Query/List/listAllToolsByLogged";
 import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
+import assetProfilePic from "assets/images/vehicle-image-loading.png";
+import ProfileToolDialog from "../ToolsTab/forms/ProfileToolDialog";
+// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
@@ -70,6 +72,8 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+        
+        this.onView = this.onView.bind(this);
     }
 
     // </editor-fold>
@@ -137,6 +141,13 @@ class Controls extends AControls {
     }
 
     //</editor-fold>
+    
+    onView(evt, el) {
+        const {profileDialog} = this.refs;
+        const {id} = el.props;
+        const item = this.state.searchList.find(v => v.id === id);
+        profileDialog && item && profileDialog.open(item);
+    }
 
     renderTHeadFrom() {
         return <THead>
@@ -221,7 +232,11 @@ class Controls extends AControls {
         }
 
         return <React.Fragment key={id}>
-            <div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
+            <div className="td fixed-flex min-w-80">
+                <Clickable id={id} onClick={this.onView}>
+                    {RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
+                </Clickable>
+            </div>
             <div className="td">{asset_type}</div>
             <div className="td">{name || 'N/A'}</div>
             <div className="td">{manufacturer || 'N/A'}</div>
@@ -286,6 +301,7 @@ class Controls extends AControls {
             {/*    <label className="min-w-65">From</label>*/}
             {/*    <label className="min-w-50">To</label>*/}
             {/*</DateRangeInput>*/}
+            <ProfileToolDialog ref="profileDialog"/>
         </>;
     }
 

@@ -11,13 +11,14 @@ import {
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {Button, ClearableInput, SelectAssetTypeInput} from 'components/inputs';
+import {Button, ClearableInput, Clickable, SelectAssetTypeInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import ProfileToolWrittenOffDialog from '../ToolsTab/forms/ProfileToolWrittenOffDialog.js';
 import byLogged from "./Query/List/listAllToolsByLogged";
 
 import style from "./ToolsWrittenOffTab.lazy.css";
+import assetProfilePic from "assets/images/vehicle-image-loading.png";
 
 // </editor-fold>
 
@@ -212,7 +213,11 @@ class ToolsWrittenOffTab extends React.Component {
 		}
 
 		return <TRow key={id}>
-			<div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
+			<div className="td fixed-flex min-w-80">
+				<Clickable idx={n} onClick={this.refs.root.onView}>
+					{RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
+				</Clickable>
+			</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
 			<div className="td">{manufacturer || 'N/A'}</div>

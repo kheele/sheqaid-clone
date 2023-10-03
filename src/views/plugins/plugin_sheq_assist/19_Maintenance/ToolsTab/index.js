@@ -11,7 +11,7 @@ import {
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {Button, ClearableInput, SelectAssetTypeInput} from 'components/inputs';
+import {Button, ClearableInput, Clickable, SelectAssetTypeInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import WrittenOffDialog from '../dialogs/WrittenOffDialog.js';
@@ -24,6 +24,7 @@ import CheckOutToolDialog from '../dialogs/CheckOutToolDialog.js';
 import ExportAssetsDialog from '../dialogs/ExportAssetsDialog.js';
 
 import style from "./ToolsTab.lazy.css";
+import assetProfilePic from "assets/images/vehicle-image-loading.png";
 
 import ProfilePDFReader from '../printers/ProfilePDFReader';
 import {CONSTANTS} from "./forms/AssetComponents";
@@ -32,9 +33,9 @@ import byLogged from "./Query/List/listAllToolsByLogged";
 // </editor-fold>
 @observer
 class ToolsTab extends React.Component {
-
+	
 	pageKey = "ToolsTab";
-
+	
 	// <editor-fold defaultstate="collapsed" desc="state">
 	@observable
 	state = {
@@ -46,42 +47,42 @@ class ToolsTab extends React.Component {
 		loadedSelectLists: false
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onLoadList = this.onLoadList.bind(this);
-
+		
 		this.onFilter = this.onFilter.bind(this);
-
+		
 		this.onAddMonitoringService = this.onAddMonitoringService.bind(this);
 		this.onAddMaintenanceService = this.onAddMaintenanceService.bind(this);
 		this.onAddCalibrationService = this.onAddCalibrationService.bind(this);
-
+		
 		this.onStartInspection = this.onStartInspection.bind(this);
 		this.onCreateInspection = this.onCreateInspection.bind(this);
-
+		
 		this.onExport = this.onExport.bind(this);
-
+		
 		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
 		this.onChangeStatus = this.onChangeStatus.bind(this);
 		this.onWriteOffTools = this.onWriteOffTools.bind(this);
-
+		
 		this.renderFilterNode = this.renderFilterNode.bind(this);
 		this.renderLeftButtons = this.renderLeftButtons.bind(this);
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
-
+		
 		this.renderItem = this.renderItem.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentWillMount, componentMount, componentWillUnmount">
 	componentWillMount() {
 		style.use();
 	}
-
+	
 	componentDidMount() {
 		const loads = {
 			manufacturers: onSelectLoadAssetManufacturers,
@@ -95,13 +96,13 @@ class ToolsTab extends React.Component {
 			this.state.loadedSelectLists = true;
 		});
 	}
-
+	
 	componentWillUnmount() {
 		style.unuse();
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="onLoadList">
 	onLoadList(params = {}) {
 		const {page, lastItem, filterData, filtered, isNew} = params;
@@ -115,9 +116,9 @@ class ToolsTab extends React.Component {
 			manufacturer,
 			asset_type,
 		} = filterData || {};
-
+		
 		const limit = 50;
-
+		
 		const args = {
 			name,
 			reg_num,
@@ -133,36 +134,36 @@ class ToolsTab extends React.Component {
 			//
 			exact_orgs: true,
 		};
-
+		
 		if (!isNew) {
 			args.offset = this.refs.root.list.length;
 		} else {
 			args.offset = 0;
 		}
-
+		
 		return byLogged(args).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	onFilter({group, title, value}) {
 		// alert(title)
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="actions">
 	onExport(e, btn) {
 		this.refs.exportAssetsDialog.open();
 	}
-
+	
 	async onSaveAsPDF(e, btn) {
 		const {idx} = btn.props;
 		const item = this.refs.root.list[idx];
 		this.refs.pdfReader.open(item);
 	}
-
+	
 	onChangeStatus(e, btn) {
 		const open = item => {
 			let {checkOutToolDialog, checkInToolDialog} = this.refs;
@@ -220,7 +221,7 @@ class ToolsTab extends React.Component {
 			}
 		}
 	}
-
+	
 	onAddMonitoringService(e, el) {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
@@ -229,7 +230,7 @@ class ToolsTab extends React.Component {
 			this.refs.editDialog.extraProp('index', CONSTANTS.MONITORING).open(item);
 		}
 	}
-
+	
 	onAddMaintenanceService(e, el) {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
@@ -238,7 +239,7 @@ class ToolsTab extends React.Component {
 			this.refs.editDialog.extraProp('index', CONSTANTS.MAINTENANCE).open(item);
 		}
 	}
-
+	
 	onAddCalibrationService(e, el) {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
@@ -247,7 +248,7 @@ class ToolsTab extends React.Component {
 			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
 		}
 	}
-
+	
 	onStartInspection(e, el) {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
@@ -256,7 +257,7 @@ class ToolsTab extends React.Component {
 			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
 		}
 	}
-
+	
 	onCreateInspection(e, el) {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
@@ -265,7 +266,7 @@ class ToolsTab extends React.Component {
 			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
 		}
 	}
-
+	
 	onWriteOffTools(e, el) {
 		if (el && 'idx' in el.props) {
 			let idx = el.props.idx;
@@ -278,9 +279,9 @@ class ToolsTab extends React.Component {
 			this.refs.writtenOffDialog.open();
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
 	renderLeftButtons() {
 		const {isEmployee, isContractorView} = storage.is;
@@ -306,9 +307,9 @@ class ToolsTab extends React.Component {
 			</Button>
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
 		const item = this.refs.root.list[idx];
@@ -325,19 +326,21 @@ class ToolsTab extends React.Component {
 			<NavItem action="writable" idx={idx} onClick={this.onAddCalibrationService} faIconLeft="plus"
 			         title="Add Calibration Service"/>
 			<hr action="writable"/>
-			{inspection_template_list.isNotEmpty() && <NavItem action="writable" idx={idx} onClick={this.onStartInspection} faIconLeft="plus"
-			         title="Start Inspection"/>}
-			{inspection_template_list.isEmpty() && <NavItem action="writable" idx={idx} onClick={this.onCreateInspection} faIconLeft="plus"
-			         title="Create Inspection"/>}
+			{inspection_template_list.isNotEmpty() &&
+				<NavItem action="writable" idx={idx} onClick={this.onStartInspection} faIconLeft="plus"
+				         title="Start Inspection"/>}
+			{inspection_template_list.isEmpty() &&
+				<NavItem action="writable" idx={idx} onClick={this.onCreateInspection} faIconLeft="plus"
+				         title="Create Inspection"/>}
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onWriteOffTools} faIconLeft="ban" title="Write Off"/>
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
 		</Options>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderFilterNode">
 	renderFilterNode(onChange) {
 		if (!this.state.loadedSelectLists) {
@@ -355,9 +358,11 @@ class ToolsTab extends React.Component {
 			                values={this.state.lists.conditions} returnValue/>
 			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
-			<ClearableInput name="reg_num" type="text" placeholder="Registration No." className="col-lg-4 margin-t-10 form-control"
+			<ClearableInput name="reg_num" type="text" placeholder="Registration No."
+			                className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
-			<ClearableInput name="serial_num" type="text" placeholder="Serial No." className="col-lg-4 margin-t-10 form-control"
+			<ClearableInput name="serial_num" type="text" placeholder="Serial No."
+			                className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
 			<ClearableInput name="model" type="text" placeholder="Model" className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
@@ -366,9 +371,9 @@ class ToolsTab extends React.Component {
             </Button>*/}
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderTHead">
 	renderTHead() {
 		return <THead>
@@ -384,9 +389,9 @@ class ToolsTab extends React.Component {
 			<div className="td fixed-flex min-w-170 padding-l-0 padding-r-0"></div>
 		</THead>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderItem">
 	renderItem(n, onClick) {
 		const item = this.refs.root.list[n];
@@ -449,18 +454,22 @@ class ToolsTab extends React.Component {
 				// inspection_list = [],
 			}
 		} = item;
-
+		
 		const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
-
+		
 		let [profile_pic] = profile_pic_list || [];
-		if(!profile_pic) {
+		if (!profile_pic) {
 			profile_pic = (photo_list || [])[0];
 		}
-
+		
 		// console.log('Assets', item)
 		return <TRow key={id} className="w-full">
 			<div className="td fixed-flex min-w-50">{id}</div>
-			<div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
+			<div className="td fixed-flex min-w-80">
+				<Clickable idx={n} onClick={this.refs.root.onView}>
+					{RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
+				</Clickable>
+			</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
 			<div className="td">{manufacturer || 'N/A'}</div>
@@ -477,9 +486,9 @@ class ToolsTab extends React.Component {
 			</div>
 		</TRow>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		return <APageListReadWrite
@@ -498,11 +507,11 @@ class ToolsTab extends React.Component {
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
 			<ConfirmDialog ref="removeDialog"/>
-
+			
 			<NewToolDialog ref="newDialog"/>
 			<EditToolDialog ref="editDialog"/>
 			<ProfileToolDialog ref="profileDialog"/>
-
+			
 			<WrittenOffDialog ref="writtenOffDialog"/>
 			<CheckInToolDialog ref="checkInToolDialog"/>
 			<CheckOutToolDialog ref="checkOutToolDialog"/>
@@ -510,7 +519,7 @@ class ToolsTab extends React.Component {
 			<ProfilePDFReader ref="pdfReader"/>
 		</APageListReadWrite>;
 	}
-
+	
 	// </editor-fold>
 }
 
