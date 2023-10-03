@@ -537,7 +537,10 @@
 		// </editor-fold>
 		
 		// <editor-fold defaultstate="collapsed" desc="export_excel">
-		async export_excel(evt, {client, project, site, list}) {
+		async export_excel(evt, {
+			client: _client, project: _project, site: _site,
+			list,
+		}) {
 			return Events.whenLoggedIn(async loggedUser => {
 				if (isArray(list)) {
 					const rows = list.map((item, idx) => {
@@ -635,9 +638,11 @@
 					const arrayBuffer = await response.arrayBuffer();
 					const data = new Map();
 					
-					data.set('company_name', client && client.name || "ANY");
-					data.set('project_name', project && project.name || "ANY");
-					data.set('site_name', site && site.name || "ANY");
+					data.set('date', new Date().formatDate());
+					
+					data.set('company', _client ? _client.name || _client.data.name : "ANY");
+					data.set('project', _project ? _project.name || _project.data.name : "ANY");
+					data.set('site', _site ? _site.name || _site.data.name : "ANY");
 					
 					data.set("rows", rows);
 					return await Events.emit("excelTemplate", {arrayBuffer, data});

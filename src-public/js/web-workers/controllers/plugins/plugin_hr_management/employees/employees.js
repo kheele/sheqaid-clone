@@ -233,7 +233,11 @@
 		// </editor-fold>
 
 		// <editor-fold defaultstate="collapsed" desc="export_excel">
-		async export_excel(evt, {client, project, site, department, job_position, supervisor, list}) {
+		async export_excel(evt,{
+			client: _client, project: _project, site: _site,
+				department: _department, job_position: _job_position, supervisor: _supervisor,
+				list,
+		}) {
 			return Events.whenLoggedIn(async loggedUser => {
 				if (isArray(list)) {
 					const rows = list.map((
@@ -241,7 +245,7 @@
 							id,
 							data: {
 								created_at,
-								client, project, site,
+								company, client, project, site,
 
 								profile_pic,
 								fname,
@@ -265,73 +269,50 @@
 						},
 						idx
 					) => {
-						const res = {
+						
+						client = client || company;
+						
+						return {
 							idx: idx + 1,
 
-							project_name: project && project.name,
-							site_name: site && site.name,
+							project: project && project.name,
+							site: site && site.name,
+							
+							job_position: job_position && job_position.name,
+							// department: department && department.name,
+							// supervisor: supervisor && supervisor.full_name,
 
 							id,
 							fname,
 							lname,
 							id_or_passport: id_num || passport_num,
-							dob: Dates.formatDate(dob),
+							dob: Dates.formatDateSQL(dob),
 							sex,
 							phone,
 							email,
 
 							employee_num,
-							employment_date: Dates.formatDate(employment_date),
+							employment_date: Dates.formatDateSQL(employment_date),
 
 							status: removed ? "Active" : "Inactive",
 						};
-
-						if (job_position) {
-							const {name} = job_position;
-							res.job_position_name = name;
-						}
-						if (department) {
-							const {name} = department;
-							res.department_name = name;
-						}
-						if (supervisor) {
-							const {lname, fname, email, phone} = supervisor;
-							res.supervisor_name = lname + " " + fname;
-							// res.supervisor_email = email;
-							// res.supervisor_phone = phone;
-						}
-
-						return res;
 					});
 
-					let type = '';
-
-					if ((project && project.name) && (site && site.name)) {
-						type += '-NoProjectAndSite';
-					} else if (project && project.name) {
-						type += '-NoProject';
-					}
-
-					if (department && department.name) {
-						type += '-NoDepartment';
-					}
-					if (job_position && job_position.name) {
-						type += '-NoJobPosition';
-					}
-
 					const response = await fetch(
-						`${self.locationRoot}/templates/xlsx/employees/Template-List-Employee${type}.xlsx`.replace('//', '/')
+						`${self.locationRoot}/templates/xlsx/employees/Template-List-Employee.xlsx`.replace('//', '/')
 					);
 					const arrayBuffer = await response.arrayBuffer();
 					const data = new Map();
-
-					data.set('company_name', client && client.name || "ANY");
-					data.set('project_name', project && project.name || "ANY");
-					data.set('site_name', site && site.name || "ANY");
-
-					data.set('department_name', department && department.name || "ANY");
-					data.set('job_position_name', job_position && job_position.name || "ANY");
-					data.set('supervisor_name', supervisor ? `${supervisor.lname} ${supervisor.fname}` : "ANY");
+					
+					data.set('date', new Date().formatDate());
+					
+					data.set('company', _client ? _client.name || _client.data.name : "ANY");
+					data.set('project', _project ? _project.name || _project.data.name : "ANY");
+					data.set('site', _site ? _site.name || _site.data.name : "ANY");
+					
+					data.set('department', _department ? _department.name || _department.data.name : "ANY");
+					data.set('job_position', _job_position ? _job_position.name || _job_position.data.name : "ANY");
+					data.set('supervisor', _supervisor ? _supervisor.full_name || _supervisor.data.full_name : "ANY");
 
 					data.set("rows", rows);
 					return await Events.emit("excelTemplate", {arrayBuffer, data});
