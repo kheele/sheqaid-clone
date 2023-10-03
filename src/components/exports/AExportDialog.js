@@ -147,6 +147,8 @@ class AControls extends React.Component {
 				client_from
 			} = form.data;
 			this.filterData.client_id = client_from.id;
+		} else {
+		
 		}
 
 		if (!isContractor && hasProjects) {

@@ -202,8 +202,8 @@ export const asset_basic_details_fragment = `
 `;
 //</editor-fold>
 
-//<editor-fold desc="asset_details_fragment">
-export const asset_details_fragment = `
+//<editor-fold desc="asset_export_details_fragment">
+export const asset_export_details_fragment = `
     ${asset_basic_details_fragment}
     purchase_info{
         id
@@ -222,6 +222,83 @@ export const asset_details_fragment = `
         expiry    
         title    
         desc    
+        type
+    }
+    depreciation{
+        id
+        depreciation_method
+        asset_cost
+        salvage_value
+        depreciation_years
+        depreciation_factor
+        partial_year_depreciation
+    }
+    job_card_list{
+        id
+    }
+    part_list{
+        id
+    }
+    calibration_record_list{
+        id
+        next_calibration_interval
+				next_calibration_date
+        calibration_list{
+          calibrating_company
+					reference_standard
+					certificate_num
+					calibration_date
+        }
+    }
+    maintenance_plan_list{
+        id
+        next_service_hrs_or_km
+        plan_list{
+          reason_for_service
+					service_date
+					service_hrs_or_km
+        }
+    }
+    monitoring_plan_list{
+        id
+        fuel_usage_list{
+	        refilled_fuel
+					current_hrs_or_km
+					working_hrs_or_km
+					date
+					receipt
+					cost
+        }
+        working_distance_or_time_list{
+	        working_hrs_or_km_opening
+					working_hrs_or_km_closing
+					working_hrs_or_km
+					date
+        }
+    }
+`;
+//</editor-fold>
+
+//<editor-fold desc="asset_details_fragment">
+export const asset_details_fragment = `
+    ${asset_basic_details_fragment}
+    purchase_info{
+        id
+        created_at
+        acquisition_date
+        acquisition_value
+        vendor
+        warranty_expiry
+        reference_num
+        warranty_certificate
+    }
+    doc_list(where: {type: {_neq: "Image"}}){
+        id
+        created_at
+        doc
+        expiry
+        title
+        desc
         type
     }
     asset_children_list{

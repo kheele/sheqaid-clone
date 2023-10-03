@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from "mobx";
 
 import Form from 'utils/Form';
 
@@ -304,12 +304,18 @@ class Controls extends React.Component {
             infoDialog.open('Please select at least one Employee');
             return;
         }
-
+        
+        const {selectedClient, selectedProject, selectedSite} = storage.selected;
+        
         const {
-            client_from: client, project_from: project, site_from: site,
+            client_from, project_from, site_from,
             department, job_position,
             supervisor
         } = form.data;
+        
+        const client = client_from || selectedClient;
+        const project = project_from || selectedProject;
+        const site = site_from || selectedSite;
 
         progressDialog.open();
         btn.text("Exporting...").disabled();
@@ -320,7 +326,7 @@ class Controls extends React.Component {
             department,
             job_position,
             supervisor,
-            list: employeeList.slice()
+            list: toJS(employeeList.map(v => toJS(v)))
         }).then(res => {
             if (!res) {
                 infoDialog.open(<React.Fragment>

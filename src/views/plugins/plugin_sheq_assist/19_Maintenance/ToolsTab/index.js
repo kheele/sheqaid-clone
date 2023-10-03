@@ -30,7 +30,6 @@ import {CONSTANTS} from "./forms/AssetComponents";
 import byLogged from "./Query/List/listAllToolsByLogged";
 
 // </editor-fold>
-
 @observer
 class ToolsTab extends React.Component {
 

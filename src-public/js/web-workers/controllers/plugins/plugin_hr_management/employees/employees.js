@@ -279,8 +279,8 @@
 							site: site && site.name,
 							
 							job_position: job_position && job_position.name,
-							// department: department && department.name,
-							// supervisor: supervisor && supervisor.full_name,
+							department: department && department.name,
+							supervisor: supervisor && supervisor.full_name,
 
 							id,
 							fname,
@@ -294,7 +294,7 @@
 							employee_num,
 							employment_date: Dates.formatDateSQL(employment_date),
 
-							status: removed ? "Active" : "Inactive",
+							status: removed ? "Inactive" : "Active",
 						};
 					});
 

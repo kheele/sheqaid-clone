@@ -1,7 +1,7 @@
 import GQLClient from "graphql/GQLClient";
 import {getVariablesAndQueryConfig} from "../Utils";
 import {orgs_fragment} from "graphql/Fragments";
-import {asset_details_fragment} from "../Fragments";
+import {asset_basic_details_fragment, asset_details_fragment, asset_export_details_fragment} from "../Fragments";
 
 export default (
 	{
@@ -22,6 +22,7 @@ export default (
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
+		data_export = false,
 	}
 ) => {
 	const {filter} = getVariablesAndQueryConfig({
@@ -54,9 +55,9 @@ export default (
 	        offset: ${offset},
 	        ${limit > 0 ? `limit: ${limit}` : ''}
         ) {
-          ${asset_details_fragment}
+          ${data_export ? asset_export_details_fragment : asset_basic_details_fragment}
           ${orgs_fragment}
-          }
+        }
       }
     `,
 	});

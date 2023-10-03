@@ -121,6 +121,7 @@ class Controls extends AControls {
             limit,
             //
             exact_orgs: true,
+            data_export: true,
         };
 
         // if (!isNew) {
