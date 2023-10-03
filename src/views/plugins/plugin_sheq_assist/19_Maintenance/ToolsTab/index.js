@@ -453,7 +453,10 @@ class ToolsTab extends React.Component {
 
 		const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
 
-		const [profile_pic] = profile_pic_list || [];
+		let [profile_pic] = profile_pic_list || [];
+		if(!profile_pic) {
+			profile_pic = (photo_list || [])[0];
+		}
 
 		// console.log('Assets', item)
 		return <TRow key={id} className="w-full">

@@ -235,7 +235,10 @@ class Controls extends AControls {
 
         const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
 
-        const [profile_pic] = profile_pic_list || [];
+        let [profile_pic] = profile_pic_list || [];
+        if(!profile_pic) {
+            profile_pic = (photo_list || [])[0];
+        }
 
         return <React.Fragment key={id}>
             <div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>

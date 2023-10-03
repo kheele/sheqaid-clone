@@ -262,6 +262,7 @@ class AControls extends React.Component {
 				}
 			}
 		}).catch(err => {
+			console.error(err);
 			infoDialog.open(<>
 				<p>An error occurred. Please check your network connection and try again</p>
 			</>);

@@ -206,7 +206,10 @@ class ToolsWrittenOffTab extends React.Component {
 			}
 		} = item;
 
-		const [profile_pic] = profile_pic_list || [];
+		let [profile_pic] = profile_pic_list || [];
+		if(!profile_pic) {
+			profile_pic = (photo_list || [])[0];
+		}
 
 		return <TRow key={id}>
 			<div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic)}</div>
