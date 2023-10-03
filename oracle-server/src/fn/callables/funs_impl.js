@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
-import {fileTypeFromBuffer} from 'file-type';
-
+const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 // const faceapi = require('face-api.js');
 
 // const canvas = require('canvas');
@@ -13,7 +12,7 @@ import {fileTypeFromBuffer} from 'file-type';
 // const {Canvas, Image, ImageData} = canvas;
 // faceapi.env.monkeyPatch({Canvas, Image, ImageData});
 
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
+// import {fileTypeFromBuffer} from 'file-type';
 // </editor-fold>
 
 //<editor-fold desc="addCustomUserClaims">
