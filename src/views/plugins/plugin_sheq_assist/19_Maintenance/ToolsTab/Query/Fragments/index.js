@@ -159,15 +159,17 @@ export const asset_basic_details_fragment = `
     created_at
     status
     written_off
-    profile_pic:photo_list(where: {is_default: {_eq: true}}){
+    profile_pic:photo_list(where: {removed: {_eq: false}, is_default: {_eq: true}}){
         id
         doc    
         is_default
+        removed
     }
-    photo_list{
+    photo_list(where: {removed: {_eq: false}}){
         id
         doc    
         is_default
+        removed
     }
     responsible_person{
         id

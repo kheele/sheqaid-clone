@@ -252,7 +252,7 @@ class ImageSection extends ASectionSection {
 
 		const {itemData, listName} = this;
 		const {[listName]: list} = itemData || {};
-		return (list || []);//.filter(v => !v || v.type === "ID/Passport");
+		return (list || []).filter(v => v && !v.removed);
 	}
 	//</editor-fold>
 
