@@ -8,6 +8,10 @@
 /oracle-server/node_modules
 /oracle-server-contractors/node_modules
 /oracle-server-hr/node_modules
+/firebase/public/admin
+/firebase/public/app
+/firebase/public/forms
+/firebase/public/remote
 /.pnp
 .pnp.js
 
