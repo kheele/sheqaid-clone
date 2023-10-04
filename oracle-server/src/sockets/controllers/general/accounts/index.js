@@ -73,6 +73,7 @@ class Cntr extends ACntr {
 				socket.handshake.headers.cookie = `session=${sessionCookie}`;
 			},
 		}).then(res => {
+			console.log('onSetCustomUserClaims user logged', socket.id, socket.auth_uid, res.token);
 			if(res && res.token) {
 				const {loggedUser, token, customClaims} = res;
 				socket.auth_uid = customClaims.loggedUser.user.auth_id;
