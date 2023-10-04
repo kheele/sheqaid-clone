@@ -133,26 +133,34 @@ global.uploadDataUri = async (datauri_or_buffer, filePath) => {
 
     const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);
     let bucketFile = await storageBucket.file(newName);
-    const stream = bucketFile.createWriteStream({
-        metadata: {
-            contentType, // Set the content type according to your dataURI
-        },
-    });
-
-    // Pipe buffer to write stream
-    stream.end(buffer);
-
-    return new Promise((resolve, reject) => {
-        stream.on('error', reject);
-        stream.on('finish', async () => {
-            const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
-            const dlUrls = await bucketFile.getSignedUrl({
-                action: 'read',
-                expires: '03-17-2099'
-            });
-            resolve({gcsUri, dlUrls});
+    return bucketFile.save(buffer, {contentType}).then(async () => {
+        const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
+        const dlUrls = await bucketFile.getSignedUrl({
+            action: 'read',
+            expires: '03-17-2099'
         });
+        return {gcsUri, dlUrls};
     });
+    // const stream = bucketFile.createWriteStream({
+    //     metadata: {
+    //         contentType, // Set the content type according to your dataURI
+    //     },
+    // });
+    //
+    // // Pipe buffer to write stream
+    // stream.end(buffer);
+
+    // return new Promise((resolve, reject) => {
+    //     stream.on('error', reject);
+    //     stream.on('finish', async () => {
+    //         const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
+    //         const dlUrls = await bucketFile.getSignedUrl({
+    //             action: 'read',
+    //             expires: '03-17-2099'
+    //         });
+    //         resolve({gcsUri, dlUrls});
+    //     });
+    // });
 };
 //</editor-fold>
 
