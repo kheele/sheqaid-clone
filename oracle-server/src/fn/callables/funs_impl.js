@@ -121,12 +121,12 @@ global.uploadDataUri = async (datauri_or_buffer, filePath) => {
         const base64 = parts[1];
         buffer = Buffer.from(base64, 'base64');
         ext = mime.getExtension(contentType);
-        console.log('uploadDataUri datauri', contentType, ext, buffer)
+        console.log('uploadDataUri datauri', contentType, ext)
     } else {
         const res = await fileTypeFromBuffer(datauri_or_buffer);//=> {ext: 'png', mime: 'image/png'}
         contentType = res.mime;
         ext = res.ext;
-        console.log('uploadDataUri buffer', contentType, ext, buffer)
+        console.log('uploadDataUri buffer', contentType, ext)
     }
 
     const newName = `${filePath}.${ext}`;

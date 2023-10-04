@@ -9,7 +9,7 @@ const {
 router.post('/video', async (req, res) => {
     await authorize();
 
-    const data = await vid4eo(req.body);
+    const data = await video(req.body);
     res.json(data);
 });
 

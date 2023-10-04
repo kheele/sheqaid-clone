@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 
 app.use(express.text({limit: "200mb"}), express.json({strict: false, limit: "200mb"}));
 
-const corsOptions = {origin: true, credentials: true};
+const corsOptions = {origin: "*", credentials: true};
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
