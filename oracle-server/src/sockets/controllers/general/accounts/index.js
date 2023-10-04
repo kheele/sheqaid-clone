@@ -65,6 +65,8 @@ class Cntr extends ACntr {
 
 		const {access_type, idToken, csrfToken} = data;
 		// const {session} = socket.request;
+		
+		console.log('onSetCustomUserClaims', access_type, idToken, csrfToken);
 
 		return onSetCustomUserClaims({
 			data: {idToken, csrfToken},
