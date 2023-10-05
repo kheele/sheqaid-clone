@@ -37,7 +37,7 @@ class Cntr extends ACntr {
 		})
 		.then((res) => {
 			if(res) {
-				socket.auth_uid = null;
+				socket.auth_id = null;
 				socket.handshake.headers.cookie = `session=`;
 				// res.clearCookie('session');
 				return res;
@@ -75,13 +75,13 @@ class Cntr extends ACntr {
 				socket.handshake.headers.cookie = `session=${sessionCookie}`;
 			},
 		}).then(res => {
-			console.log('onSetCustomUserClaims user logged', socket.id, socket.auth_uid, res.token);
+			console.log('onSetCustomUserClaims user logged', socket.id, socket.auth_id, res.token);
 			if(res && res.token) {
 				const {loggedUser, token, customClaims} = res;
-				socket.auth_uid = customClaims.loggedUser.user.auth_id;
+				socket.auth_id = customClaims.loggedUser.user.auth_id;
 				// socket.token = token;
 				socket.customClaims = customClaims;
-				console.log('user logged', socket.id, socket.auth_uid);
+				console.log('user logged', socket.id, socket.auth_id);
 				return {loggedUser, token};
 			}
 			return res;

@@ -54,6 +54,7 @@ class Cntr extends ACntr {
 		const {mutation, query, variables, multi_queries, count} = data;
 
 		let headers = {};
+		console.log('v1/graphql', socket, socket.auth_id);
 		if(socket.auth_id) {
 			const currentUser = await admin.auth().getUser(socket.auth_id);
 			console.log("graphql variables", currentUser, socket.auth_id, variables)
