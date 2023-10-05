@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
 
-// const thumbsupply = require('thumbsupply');
+const thumbsupply = require('thumbsupply');
 
 exports.video = async (data) => {
     if (!data) {
