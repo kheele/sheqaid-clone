@@ -35,7 +35,7 @@ const queries = {
     },
 };
 
-exports = async ({id, attrs, access_type}) => {
+module.exports = async ({id, attrs, access_type}) => {
     const queryData = CheckUserById[access_type];
     if (!queryData) {
         return null;
