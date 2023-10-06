@@ -3,7 +3,7 @@ const {v4: uuidv4} = require("uuid");
 const {query: getByAuthIdOTPQuery} = require("../../fn/callables/graphql/getByAuthIdOTPQuery");
 const {mutation: updateOTPMutation} = require("../../fn/callables/graphql/updateOTPMutation");
 const {mutation: insertOTPMutation} = require("../../fn/callables/graphql/insertOTPMutation");
-const updateResetPassID = require("../../fn/callables/queries/updateResetPassID");
+const CheckUserByUsername = require("../../fn/callables/graphql/CheckUserByUsername");
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendUserOTP">
@@ -151,3 +151,70 @@ global.sendForgotPass = async (username, access_type) => {
     });
 };
 // </editor-fold>
+
+//<editor-fold desc="updateResetPassID">
+const updateResetPassID = async ({username, reset_password_id, access_type}) => {
+    const queryData = CheckUserByUsername[access_type];
+    if (!queryData) {
+        return null;
+    }
+
+    const queries = {
+        User: {
+            mutation: `
+          mutation updateResetPassIDMutation($id: default_users_pk_columns_input!, $_set: default_users_set_input!) {
+            update_default_users_by_pk(pk_columns: $id, _set: $_set) {
+              id
+              auth_id
+            }
+          }
+        `,
+            operationName: "updateResetPassIDMutation",
+        },
+        ContractorUser: {
+            mutation: `
+          mutation updateResetPassIDMutation($id: default_contractor_users_pk_columns_input!, $_set: default_contractor_users_set_input!) {
+            update_default_contractor_users_by_pk(pk_columns: $id, _set: $_set) {
+              id
+              auth_id
+            }
+          }
+        `,
+            operationName: "updateResetPassIDMutation",
+        },
+        Staff: {
+            mutation: `
+          mutation updateResetPassIDMutation($id: hr_employees_pk_columns_input!, $_set: hr_employees_set_input!) {
+            update_hr_employees_by_pk(pk_columns: $id, _set: $_set) {
+              id
+              auth_id
+            }
+          }
+        `,
+            operationName: "updateResetPassIDMutation",
+        },
+    };
+
+    const item = await getRelayOne({
+        ...queryData,
+        variables: {username},
+    });
+    console.log('CheckUserByUsername item', item)
+    if (!item) {
+        return 'NO_DB_USER';
+    }
+
+    const {id} = item;
+
+    const mutationData = queries[access_type];
+    if (!mutationData) {
+        return null;
+    }
+
+    await updateRelay({
+        ...mutationData,
+        id,
+        attrs: {reset_password_id},
+    });
+};
+//</editor-fold>
