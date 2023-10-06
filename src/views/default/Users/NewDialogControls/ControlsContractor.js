@@ -185,10 +185,14 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="funs">
 	onChangeNames(el, name, val) {
 		const {
-			profile_pic: ref_profile_pic,
-			fname: ref_fname,
-			lname: ref_lname,
-			username: ref_username
+			username: ref_username,
+			userDetails: {
+				refs: {
+					fname: ref_fname,
+					lname: ref_lname,
+					profile_pic: ref_profile_pic,
+				}
+			},
 		} = this.refs;
 		if (isString(val) && !this.employeeTO) {
 			console.log('onChangeNames', name, val)

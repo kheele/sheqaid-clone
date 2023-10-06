@@ -29,21 +29,21 @@ class UserDetails extends React.Component {
     get renderEmployeeNames() {
         const {isNewContractorUser, onChange} = this.props;
         if (!isNewContractorUser && Permissions.hasModule('Employees')) {
-            return <React.Fragment>
+            return <>
                 <SelectEmployeeInput ref="fname" name="fname" type="select" placeholder="First Name"
                                      footerDesc="enter existing employee" required className="col-lg-6 form-control"
                                      onChange={onChange} add/>
                 <SelectEmployeeInput ref="lname" name="lname" type="select" placeholder="Last Name"
                                      footerDesc="enter existing employee" required className="col-lg-6 form-control"
                                      onChange={onChange} add/>
-            </React.Fragment>;
+            </>;
         }
-        return <React.Fragment>
+        return <>
             <ClearableInput ref="fname" name="fname" type="text" placeholder="First Name" required
                             className="col-lg-6 form-control" onChange={onChange}/>
             <ClearableInput ref="lname" name="lname" type="text" placeholder="Last Name" required
                             className="col-lg-6 form-control" onChange={onChange}/>
-        </React.Fragment>;
+        </>;
     }
 
     //</editor-fold>
@@ -55,7 +55,7 @@ class UserDetails extends React.Component {
             return null;
         }
 
-        return <React.Fragment>
+        return <>
             <ProfilePic ref="profile_pic" name="profile_pic" onChange={onChange}/>
             {this.renderEmployeeNames}
             <div className="clearfix"/>
@@ -63,7 +63,7 @@ class UserDetails extends React.Component {
                             className="col-lg-12 form-control" onChange={onChange}/>
             <ClearableInput ref="conf_password" name="conf_password" type="password" placeholder="Confirmation Password"
                             rendered={false} className="col-lg-12 form-control" onChange={onChange}/>
-        </React.Fragment>;
+        </>;
     }
 
     // </editor-fold>
