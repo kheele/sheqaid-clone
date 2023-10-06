@@ -42,6 +42,13 @@ class Session {
         if(!this.has("auth")) return false;
         return !!this.auth.currentUser;
     }
+
+    async getIdToken() {
+        if (this.isLoggedIn) {
+            const {currentUser} = this.auth;
+            return currentUser.getIdToken();
+        }
+    }
 }
 
 self.session = new Session();

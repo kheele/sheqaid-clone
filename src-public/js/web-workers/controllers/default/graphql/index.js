@@ -27,12 +27,19 @@
 
 			}
 
+			let token;
+			try {
+				token = await self.session.getIdToken();
+			} catch (e) {
+			}
+
 			return new Promise((resolve, reject) => {
 				socket.emit('emit', {
 					path: 'graphql/v1beta1/relay',
 					data: {
 						query,
 						variables,
+						token,
 					},
 				}, (res, err) => {
 					if(err) {
@@ -57,6 +64,12 @@
 
 			}
 
+			let token;
+			try {
+				token = await self.session.getIdToken();
+			} catch (e) {
+			}
+
 			return new Promise((resolve, reject) => {
 				socket.emit('emit', {
 					path: 'graphql/v1/graphql',
@@ -65,6 +78,7 @@
 						variables,
 						multi_queries,
 						count,
+						token,
 					},
 				}, (res, err) => {
 					if(err) {

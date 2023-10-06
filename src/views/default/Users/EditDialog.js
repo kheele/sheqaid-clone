@@ -9,9 +9,8 @@ import {AEditDialog} from 'components/dialogs';
 import {ControlsContractor, ControlsUser} from './EditDialogControls';
 
 import style from "./EditDialog.lazy.css";
-import findByIdEmployee from "../../../mutations/all/Employee/findByIdEmployee";
-import findByIdUser from "../../../mutations/all/User/findByIdUser";
-import findByIdContractorUser from "../../../mutations/all/ContractorUser/findByIdContractorUser";
+import findByIdUser from "mutations/all/User/findByIdUser";
+import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

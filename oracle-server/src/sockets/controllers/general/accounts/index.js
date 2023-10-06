@@ -79,7 +79,7 @@ class Cntr extends ACntr {
 			if(res && res.token) {
 				const {loggedUser, token, customClaims} = res;
 				socket.auth_id = customClaims.loggedUser.user.auth_id;
-				// socket.token = token;
+				socket.token = token;
 				socket.customClaims = customClaims;
 				console.log('user logged', socket.id, socket.auth_id);
 				return {loggedUser, token};

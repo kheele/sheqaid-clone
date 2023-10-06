@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+const quick_incidents = require("./quick-incidents");
+
 const {
 	uploadIncidentDocsUpdate,
 	uploadIncidentVehicleThirdPartyDocsUpdate,
 	uploadIncidentInvestigationDocsUpdate,
 } = require("./api.js");
+
+router.use('/quick-incidents', quick_incidents);
 
 router.put('/uploadIncidentDocsUpdate', async (req, res) => {
 	// console.log(req.path, req.body)

@@ -13,9 +13,11 @@ exports.start = (socket) => {
 
 		try{
 			const res = await eventManager.emit.apply(eventManager, args);
-			callback && callback(res);
+			callback && callback(res, null);
 		} catch (err) {
-			callback && callback(null, err);
+			console.error(err);
+			const {name, message, stack} = err;
+			callback && callback(null, JSON.stringify({name, message, stack}));
 		}
 	});
 };

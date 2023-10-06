@@ -99,7 +99,7 @@ class Cntr extends ACntr {
 						return node;
 					}
 				})[0];
-				console.log("onCompleted node", node);
+				// console.log("onCompleted node", node);
 				return node;
 			})
 			.catch(err => {

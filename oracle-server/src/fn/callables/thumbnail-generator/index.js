@@ -1,23 +1,31 @@
+const thumbsupply = require('thumbsupply');
+
 const express = require('express');
 const router = express.Router();
 
-const {
-    video,
-    image,
-} = require('./api.js');
-
 router.post('/video', async (req, res) => {
-    await authorize();
+    // await authorize();
+    if (!req.body) {
+        return null;
+    }
 
-    const data = await video(req.body);
-    res.json(data);
+    const {videoUrl} = req.body;
+
+    const thumb = await thumbsupply.generateThumbnail(videoUrl);
+    console.log('thumbsupply video, thumb', thumb)
+    res.json(thumb);
 });
 
 router.post('/image', async (req, res) => {
-    await authorize();
+    // await authorize();
+    if (!req.body) {
+        return null;
+    }
 
-    const data = await image(req.body);
-    res.json(data);
+    const {imageUrl} = req.body;
+
+    // const data = await image(req.body);
+    // res.json(data);
 });
 
 module.exports = router;
