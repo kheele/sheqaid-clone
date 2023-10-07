@@ -43,6 +43,7 @@
 					},
 				}, (res, err) => {
 					if(err) {
+						err = JSON.parse(err);
 						console.log('relay emit err', err)
 						return reject(err);
 					}
@@ -82,6 +83,7 @@
 					},
 				}, (res, err) => {
 					if(err) {
+						err = JSON.parse(err);
 						console.log('default emit err', err)
 						return reject(err);
 					}
@@ -108,6 +110,7 @@
 					data: path,
 				}, (res, err) => {
 					if(err) {
+						err = JSON.parse(err);
 						console.log('views emit err', err)
 						return reject(err);
 					}

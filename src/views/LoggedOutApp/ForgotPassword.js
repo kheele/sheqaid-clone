@@ -76,11 +76,13 @@ class ForgotPassword extends React.Component {
 
         btn.text("Wait...").disabled();
         neonBinding.events.emit(path + "forgot-pass", data).then(res => {
-            console.log("res", res)
+            console.log("res", res);
             if(!res) {
                 infoDialog.open('An error occurred. Please try again.');
             } else if(res === "NO_DB_USER") {
                 infoDialog.open("The user no longer exists");
+            } else if(res === "NO_USER_AUTH") {
+                infoDialog.open("The user doesn't exist");
             } else if(res) {
                 infoDialog.open(<p>Email has been sent to you to recover your password.<br /><br />Please login to your email account to reset your password.</p>);
             }

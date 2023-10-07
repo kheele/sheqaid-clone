@@ -536,7 +536,7 @@ class Controls extends React.Component {
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                         >
-                            <LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded/>
+                            <LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded readonly/>
                         </Row>
                         <Row
                             rendered
@@ -546,7 +546,7 @@ class Controls extends React.Component {
                             onFormOpen={onFormOpen}
                             onFormBack={onFormBack}
                         >
-                            <LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded/>
+                            <LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded readonly/>
                         </Row>
                     </FormControls>
                 </Row>

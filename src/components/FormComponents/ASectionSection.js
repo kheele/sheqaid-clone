@@ -219,9 +219,16 @@ class ASectionSection extends React.Component {
 
     //</editor-fold>
 
+    //<editor-fold desc="item">
+    @computed get item() {
+        return this.props.item;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="itemData">
     @computed get itemData() {
-        const {item} = this.props;
+        const {item} = this;
         return item && item.data;
     }
 

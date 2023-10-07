@@ -22,12 +22,8 @@ global.signOut = async ({session, sessionCookie, access_type}) => {
 		.then((decodedClaims) => {
 			return _auth.revokeRefreshTokens(decodedClaims.sub);
 		}).then(() => {
-			const sessionId = session.id;
-
 			return new Promise((resolve, reject) => {
 				session.destroy(() => {
-					// disconnect all Socket.IO connections linked to this session ID
-					io.in(sessionId).disconnectSockets();
 					// res.status(204).end();
 					resolve(true);
 				});
@@ -214,4 +210,3 @@ global.getDecodedIdTokenFromSession = async ({req, access_type}) => {
 		return decodedClaims;
 	}
 };
-

@@ -5,9 +5,11 @@ import {ASectionSection} from "components/FormComponents";
 import NewToolDialog from "./NewToolDialog";
 import EditToolDialog from "./EditToolDialog";
 import ProfileToolDialog from "./ProfileToolDialog";
-import {computed} from "mobx";
+import {computed, extendObservable} from "mobx";
 import updateAsset from "mutations/all/Asset/updateAsset";
 import {Slider} from "components/lists";
+import listByIdLinkedParentTools from "../Query/List/listByIdLinkedParentTools";
+import listByIdLinkedChildTools from "../Query/List/listByIdLinkedChildTools";
 
 @observer
 class LinkedAssetsDetailsSection extends ASectionSection {
@@ -23,6 +25,29 @@ class LinkedAssetsDetailsSection extends ASectionSection {
     }
 
     //</editor-fold>
+    
+    async componentDidMount() {
+        const {readonly} =  this.props;
+        if(readonly) {
+            const {item, itemData, listName} = this;
+            
+            let promise;
+            if (listName === 'asset_parent_list') {
+                promise = listByIdLinkedParentTools({id: item.id});
+            } else if (listName === 'asset_children_list') {
+                promise = listByIdLinkedChildTools({id: item.id});
+            }
+            
+            if(promise) {
+                promise.then(list => {
+                    if(list) {
+                        list = list.map(({data}) => data);
+                        extendObservable(itemData, {[listName]: list});
+                    }
+                });
+            }
+        }
+    }
 
     get listName() {
         return this.props.listName;
@@ -36,6 +61,18 @@ class LinkedAssetsDetailsSection extends ASectionSection {
 
         const {itemData, listName} = this;
         const {[listName]: list} = itemData || {};
+        if(this.props.readonly) {
+            return (list || []).map((
+              {
+                  id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off
+              }
+            ) => ({
+                ...asset_detail,
+                id, //Asset ID must override spread asset_detail
+                photo_list, profile_pic, responsible_person, status, written_off
+            }));
+        }
+        
         if (listName === 'asset_parent_list') {
             return (list || []).map((
                 {

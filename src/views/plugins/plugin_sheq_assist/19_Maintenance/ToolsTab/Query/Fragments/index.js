@@ -301,18 +301,16 @@ export const asset_details_fragment = `
         desc
         type
     }
-    asset_children_list{
-      id
-      child_asset{
-        ${asset_basic_details_fragment}
-      }
-    }
-    asset_parent_list{
-      id
-      parent_asset{
-        ${asset_basic_details_fragment}
-      }
-    }
+    #asset_children_list_aggregate{
+    #  aggregate{
+    #    count
+    #  }
+    #}
+    #asset_parent_list_aggregate{
+    #  aggregate{
+    #    count
+    #  }
+    #}
     inspection_template_list: inspection_and_template_list(where: {is_template: {_eq: true}}){
       ${inspection_fragment()}
     }

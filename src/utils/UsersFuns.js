@@ -129,7 +129,7 @@ function onSendUserOTP(username) {
                 Please try again later.<br/>
                 If the issue persists, please contact support.
             </div>);
-        } else if (res === 'NO_USER_AUTH') {
+        } else if (res === 'NO_USER_DB' || res === 'NO_USER_AUTH') {
             infoDialog.open(<div>
                 Sorry, the user associated with this<br/>
                 <b>Email Address</b> or <b>Phone Number</b> does not exist.
@@ -160,7 +160,7 @@ function onSendOTPContractor(id) {
                 Please try again later.<br/>
                 If the issue persists, please contact support.
             </div>);
-        } else if (res === 'NO_USER_DB') {
+        } else if (res === 'NO_USER_DB' || res === 'NO_USER_AUTH') {
             infoDialog.open(<div>
                 Sorry, the contractor associated with this<br/>
                 <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>
@@ -285,6 +285,7 @@ function onConfirmUserOTP(data) {
         console.log("onSendOTPUser res", res)
         if (isString(res)) {
             switch (res) {
+                case 'NO_USER_DB':
                 case 'NO_USER_AUTH':
                     infoDialog.open(<div>
                         Sorry, the user associated with this<br/>
@@ -361,6 +362,7 @@ function onConfirmContractorOTP(data) {
         if (isString(res)) {
             switch (res) {
                 case 'NO_USER_DB':
+                case 'NO_USER_AUTH':
                     infoDialog.open(<div>
                         Sorry, the user associated with this<br/>
                         <b>Email Address</b> or <b>Phone Number</b> does not exist.<br/><br/>

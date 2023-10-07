@@ -42,6 +42,11 @@ global.sendUserOTP = async (username, access_type) => {
         });
 
         return true;
+    }).catch(err => {
+        if(err.code === "auth/user-not-found") {
+            return "NO_USER_AUTH";
+        }
+        throw err;
     });
 };
 // </editor-fold>
@@ -107,6 +112,11 @@ global.confirmUserOTP = async (data, access_type) => {
             console.error(err)
             return "ERR_CREATING_TOKEN";
         }
+    }).catch(err => {
+        if(err.code === "auth/user-not-found") {
+            return "NO_USER_AUTH";
+        }
+        throw err;
     });
 };
 // </editor-fold>
@@ -148,6 +158,11 @@ global.sendForgotPass = async (username, access_type) => {
         });
 
         return true;
+    }).catch(err => {
+        if(err.code === "auth/user-not-found") {
+            return "NO_USER_AUTH";
+        }
+        throw err;
     });
 };
 // </editor-fold>

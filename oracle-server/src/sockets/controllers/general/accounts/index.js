@@ -1,4 +1,3 @@
-// const cookie = require('cookie');
 require('../../../../api/accounts');
 
 const {
