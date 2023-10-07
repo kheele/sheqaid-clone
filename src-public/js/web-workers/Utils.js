@@ -181,11 +181,7 @@ class Utils {
 	static async apiCallable({path, access_type = 'User', data}) {
 		// const port = access_type === 'Staff' ? 5002 : access_type === 'ContractorUser' ? 5001 : 5000;
 
-		const port = 5000;
-		// const url = `http://localhost:${port}/api/callables/${path}`;
-		const url = `https://server.cloud.sheqaid.com/api/callables/${path}`;
-
-		return await fetch(url, {
+		return await fetch(`${SERVER_HOST}/api/callables/${path}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

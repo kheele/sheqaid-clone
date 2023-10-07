@@ -55,7 +55,7 @@ module.exports = async ({id, attrs, access_type}) => {
         return null;
     }
 
-    await updateRelay({
+    return await updateRelay({
         ...mutationData,
         id,
         attrs,

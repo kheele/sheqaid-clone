@@ -17,18 +17,20 @@ global.signOut = async ({session, sessionCookie, access_type}) => {
 		const _auth = adminAuth(access_type);
 
 		// res.clearCookie('session');
-		_auth
+		return _auth
 		.verifySessionCookie(sessionCookie)
 		.then((decodedClaims) => {
 			return _auth.revokeRefreshTokens(decodedClaims.sub);
 		}).then(() => {
 			const sessionId = session.id;
 
-			session.destroy(() => {
-				// disconnect all Socket.IO connections linked to this session ID
-				io.in(sessionId).disconnectSockets();
-				// res.status(204).end();
-				return true;
+			return new Promise((resolve, reject) => {
+				session.destroy(() => {
+					// disconnect all Socket.IO connections linked to this session ID
+					io.in(sessionId).disconnectSockets();
+					// res.status(204).end();
+					resolve(true);
+				});
 			});
 		});
 	}
@@ -147,7 +149,7 @@ global.loginSession = async ({onSetCookie, data, access_type}) => {
 		// Only process if the user just signed in in the last 60 minutes.
 		// if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 60 * 60) {
 		// Create session cookie and set it.
-		return _auth.createSessionCookie(idToken, {expiresIn}).then(async (sessionCookie) => {
+		return _auth.createSessionCookie(idToken, {expiresIn}).then(sessionCookie => {
 			// Set cookie policy for session cookie.
 			const options = {maxAge: expiresIn, httpOnly: true, secure: true};
 			console.log("session", sessionCookie)

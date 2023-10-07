@@ -143,12 +143,12 @@ exports.onResetPassword = async (data, access_type) => {
         ...queryData,
         variables: {reset_password_id},
     });
-    console.log('CheckUserByResetPassId item', item)
+    // console.log('CheckUserByResetPassId item', item)
     if (!item) {
         return "TOKEN_NOT_FOUND";
     }
 
-    const {id, auth_id, email, phone} = item;
+    const {id, data: {auth_id, email, phone}} = item;
 
     const _auth = adminAuth(access_type);
 
@@ -178,19 +178,19 @@ exports.onResetPassword = async (data, access_type) => {
             if (res === "NO_DB_USER") {
                 return res;
             }
-            // await doc_ref.update({password, reset_password_id: null});
         } catch (err) {
             return "UDATE_ERROR";
         }
-        console.log('onResetPassword', access_type, userRecord.changePassword, userRecord.updatePassword)
+
+        // console.log('onResetPassword', access_type, userRecord.changePassword, userRecord.updatePassword);
+
         try {
             await _auth.updateUser(uid, {password});
             console.log('onResetPassword success')
             return true;
         } catch (err) {
             console.log('onResetPassword err 2', err.message)
-            const res = await updateUser({id, attrs: {reset_password_id: reset_id}, access_type});
-            // await doc_ref.update({password, reset_password_id: reset_id});
+            const res = await updateUser({id, attrs: {reset_password_id}, access_type});
             if (!res) {
                 return null;
             }
@@ -198,7 +198,7 @@ exports.onResetPassword = async (data, access_type) => {
                 return res;
             }
 
-            return "UDATE_ERROR";
+            return "UPDATE_ERROR";
         }
     });
 };

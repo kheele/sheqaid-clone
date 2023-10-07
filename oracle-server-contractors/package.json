@@ -9,7 +9,7 @@
     "docker:push": "docker push rhespo/sheqaid-server-contractors",
     "docker:build & push": "docker build . -t rhespo/sheqaid-server-contractors && docker push rhespo/sheqaid-server-contractors",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm install socket.io --save",
+    "install:mod": "npm i express-socket.io-session helmet --save",
     "install:all": "npm install"
   },
   "engines": {

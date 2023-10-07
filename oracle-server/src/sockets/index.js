@@ -1,12 +1,13 @@
 const {Server} = require("socket.io");
-const {createAdapter} = require("@socket.io/redis-adapter");
+const {createShardedAdapter } = require("@socket.io/redis-adapter");
 const {createClient} = require("redis");
+const sharedSession = require("express-socket.io-session");
 
 const controllers = require("./controllers");
 //api/accounts/sign: add catch and throw: 177
-//
-// const pubClient = createClient({url: "redis://localhost:6379"});
-// const subClient = pubClient.duplicate();
+
+const pubClient = createClient({url: "redis://redis-server:6379"});
+const subClient = pubClient.duplicate();
 
 exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	// Handle server errors
@@ -35,12 +36,18 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 
 	global.io = new Server(server, {
 		cors: corsOptions,
-		transports: ['websocket'], // Only allow WebSocket transport
+		transports: ['websocket'],
+		adapter: createShardedAdapter(pubClient, subClient),
 	});
-	io.engine.use(sessionMiddleware);
+	// io.engine.use(sessionMiddleware);
+	io.use(sharedSession(sessionMiddleware, {
+		autoSave:true
+	}));
 	io.use((socket, next) => {
 		// console.log('socket.handshake', socket.handshake);//
 		if(socket.handshake) {
+			const {session} = socket.handshake;
+			console.log('io.use session', session);
 			const {token = null} = socket.handshake.query || {};
 			if (token) {
 				try {
@@ -69,14 +76,12 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	// io.adapter(createAdapter(pubClient, subClient));
 
 	io.on('connection', (socket) => {
-		const session = socket.request.session;
+		const {session} = socket.handshake;
+
 		const sessionId = session.id;
-		const handshake = socket.handshake;
 		// the session ID is used as a room
 		socket.join(sessionId);
 
-		// console.log('socket.request', socket.request);
-		// console.log('socket.request.session', session);
 		console.log('user connected', socket.id, sessionId);
 
 		socket.on("disconnect", () => {
@@ -84,20 +89,20 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 			console.log('user disconnected', socket.id, sessionId);
 		});
 
-		socket.use((__, next) => {
-			session.reload((err) => {
-				// WARNING! "session" still points towards the previous session object
-				// console.log('socket reload err:', err);
-				if (err) {
-					// forces the client to reconnect
-					// socket.conn.close();
-					// you can also use socket.disconnect(), but in that case the client
-					// will not try to reconnect
-				}
-
-				next();
-			});
-		});
+		// socket.use((__, next) => {
+		// 	session.reload((err) => {
+		// 		// WARNING! "session" still points towards the previous session object
+		// 		if (err) {
+		// 			console.log('socket reload err:', err);
+		// 			// forces the client to reconnect
+		// 			// socket.conn.close();
+		// 			// you can also use socket.disconnect(), but in that case the client
+		// 			// will not try to reconnect
+		// 		}
+		//
+		// 		next();
+		// 	});
+		// });
 
 		controllers.start(socket);
 	});

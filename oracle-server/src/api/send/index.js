@@ -134,7 +134,7 @@ global.sendForgotPass = async (username, access_type) => {
             return res;
         }
 
-        const url = `https://web.sheqaid.com/accounts/pass-recovery.html?id=${reset_password_id}&type=${access_type}`;// -H "Content-Type:application/json" --data '{"name":"Keyboard Cat"}';
+        const url = `https://server.cloud.sheqaid.com/accounts/pass-recovery.html?id=${reset_password_id}&type=${access_type}`;// -H "Content-Type:application/json" --data '{"name":"Keyboard Cat"}';
         await EmailUtils.send({
             from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
             to: username,
@@ -216,5 +216,7 @@ const updateResetPassID = async ({username, reset_password_id, access_type}) => 
         id,
         attrs: {reset_password_id},
     });
+
+    return true;
 };
 //</editor-fold>

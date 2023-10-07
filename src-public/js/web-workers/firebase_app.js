@@ -55,9 +55,6 @@
                 if (storage) {
                     self[storage] = app.storage();
                 }
-
-                // app.functions().useEmulator("localhost", 5002);
-                // self[db].useEmulator("localhost", 8081);
             }
         } catch (e) {
             console.log(`Firestore ${name} already started`, e)
@@ -110,7 +107,6 @@
     }, {
         apiKey: "AIzaSyADbOHcROu1cf-p74TVCwZPkipX8z87yWI",
         authDomain: "sheqaid-hr.firebaseapp.com",
-        // databaseURL: "http://localhost:8081/emulator/v1/projects/sheqaid-hr",
         databaseURL: "https://sheqaid-hr.firebaseio.com",
         projectId: "sheqaid-hr",
         storageBucket: "sheqaid-hr.appspot.com",

@@ -36,13 +36,13 @@ router.post('/sendUpdateStatusContractorSiteEmail', async (req, res) => {
     res.json(data);
 });
 
-router.post('/onResetPassword', async (req, res) => {
+router.post('/onResetPassword/:access_type', async (req, res) => {
     const {access_type} = req.params;
     if (isValidAccessType(access_type)) {
         const data = await onResetPassword(req.body, access_type);
         res.json(data);
     } else {
-
+        res.end();
     }
 });
 

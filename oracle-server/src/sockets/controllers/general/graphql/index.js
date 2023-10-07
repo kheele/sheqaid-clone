@@ -11,14 +11,15 @@ class Cntr extends ACntr {
 
     async relay(socket, data = {}) {
         // console.log('data', data)
+        const {auth_id} = socket.handshake.session;
 
         let {query, variables, token} = data;
 
         let headers = {};
-        console.log('v1beta1/relay', token, socket.auth_id);
-        if (socket.auth_id) {
-            // const currentUser = await admin.auth().getUser(socket.auth_id);
-            // console.log("relay variables", currentUser, socket.auth_id, variables)
+        console.log('v1beta1/relay', token, auth_id);
+        if (auth_id) {
+            // const currentUser = await admin.auth().getUser(auth_id);
+            // console.log("relay variables", currentUser, auth_id, variables)
             // if (currentUser) {
             // 	const token = await currentUser.getIdToken(true);
             // 	headers.Authorization = `Bearer ${token}`;
@@ -26,7 +27,7 @@ class Cntr extends ACntr {
             // 	headers["X-Hasura-Role"] = "user";
             // }
 
-            headers["X-Hasura-User-Id"] = socket.auth_id;
+            headers["X-Hasura-User-Id"] = auth_id;
             headers["X-Hasura-Role"] = "user";
         }
 
@@ -56,21 +57,22 @@ class Cntr extends ACntr {
 
     async default(socket, data = {}) {
         // console.log('data', data)
+        const {auth_id} = socket.handshake.session;
 
         const {mutation, query, variables, operationName, multi_queries, count, token} = data;
 
         let headers = {};
-        console.log('v1/graphql', token, socket.auth_id);
-        if (socket.auth_id) {
-            // const currentUser = await admin.auth().getUser(socket.auth_id);
-            // console.log("graphql variables", currentUser, socket.auth_id, variables)
+        console.log('v1/graphql', token, auth_id);
+        if (auth_id) {
+            // const currentUser = await admin.auth().getUser(auth_id);
+            // console.log("graphql variables", currentUser, auth_id, variables)
             // if (currentUser) {
             // const token = await currentUser.getIdToken(true);
             // headers.Authorization = `Bearer ${token}`;
             // headers["X-Hasura-User-Id"] = currentUser.uid;
             // }
 
-            headers["X-Hasura-User-Id"] = socket.auth_id;
+            headers["X-Hasura-User-Id"] = auth_id;
             headers["X-Hasura-Role"] = "user";
 
             if (variables && "headers" in variables) {
@@ -178,12 +180,13 @@ class Cntr extends ACntr {
 
     async views(socket, path) {
         // console.log('data', path)
+        const {auth_id} = socket.handshake.session;
 
         let headers = {};
 
-        if (socket.auth_id) {
-            // const currentUser = await admin.auth().getUser(socket.auth_id);
-            // console.log("relay variables", currentUser, socket.auth_id)
+        if (auth_id) {
+            // const currentUser = await admin.auth().getUser(auth_id);
+            // console.log("relay variables", currentUser, auth_id)
             // if (currentUser) {
             // const token = await currentUser.getIdToken(true);
             // headers.Authorization = `Bearer ${token}`;
@@ -191,7 +194,7 @@ class Cntr extends ACntr {
             // 	headers["X-Hasura-Role"] = "user";
             // }
 
-            headers["X-Hasura-User-Id"] = socket.auth_id;
+            headers["X-Hasura-User-Id"] = auth_id;
             headers["X-Hasura-Role"] = "user";
         }
 

@@ -16,9 +16,9 @@ router.post('/out/:access_type', async (req, res) => {
 			res.end();
 		}
 	})
-	.catch((error) => {
-		res.clearCookie('session');
-		res.json(true);
+	.catch((err) => {
+		// res.clearCookie('session');
+		res.end();
 	});
 });
 

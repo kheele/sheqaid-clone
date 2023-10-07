@@ -1,9 +1,9 @@
 importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 
-// const ws_url = "http://localhost:5000";
-const ws_url = "https://server.cloud.sheqaid.com";
+self.SERVER_HOST = "http://localhost:5000";
+//self.SERVER_HOST = "https://server.cloud.sheqaid.com";
 
-self.socket = io(ws_url, {
+self.socket = io(SERVER_HOST, {
 	withCredentials: true,
 	transports: ['websocket'], // Only allow WebSocket transport
 	auth: (cb) => {
