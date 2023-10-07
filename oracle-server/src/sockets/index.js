@@ -1,13 +1,13 @@
 const {Server} = require("socket.io");
-const {createShardedAdapter } = require("@socket.io/redis-adapter");
-const {createClient} = require("redis");
+// const {createShardedAdapter } = require("@socket.io/redis-adapter");
+// const {createClient} = require("redis");
 const sharedSession = require("express-socket.io-session");
 
 const controllers = require("./controllers");
 //api/accounts/sign: add catch and throw: 177
 
-const pubClient = createClient({url: "redis://redis-server:6379"});
-const subClient = pubClient.duplicate();
+// const pubClient = createClient({url: "redis://redis-server:6379"});
+// const subClient = pubClient.duplicate();
 
 exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	// Handle server errors
@@ -37,7 +37,7 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	global.io = new Server(server, {
 		cors: corsOptions,
 		transports: ['websocket'],
-		adapter: createShardedAdapter(pubClient, subClient),
+		// adapter: createShardedAdapter(pubClient, subClient),
 	});
 	// io.engine.use(sessionMiddleware);
 	io.use(sharedSession(sessionMiddleware, {
