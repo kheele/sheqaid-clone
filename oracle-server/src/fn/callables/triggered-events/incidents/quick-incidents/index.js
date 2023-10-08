@@ -7,8 +7,11 @@ const {
 
 router.post('/sendNewQuickIncidentNotification', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await sendNewQuickIncidentNotification(req.body);
-	res.json(data);
+	const auth_id = await sendNewQuickIncidentNotification(req.body);
+	if(auth_id) {
+		io.to(auth_id).emit('sendNewQuickIncidentNotification');
+	}
+	res.end();
 });
 
 module.exports = router;

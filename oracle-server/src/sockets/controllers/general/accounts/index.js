@@ -27,7 +27,7 @@ class Cntr extends ACntr {
         // console.log('data', data)
 
         let {access_type} = data;
-        const {session} = socket.handshake;
+        const {session, session: {auth_id}} = socket.handshake;
 
         return signOut({
             session,
@@ -37,15 +37,7 @@ class Cntr extends ACntr {
         })
             .then((res) => {
                 if (res) {
-                    // delete session.sessionCookie;
-                    //
-                    // delete session.auth_id;
-                    // delete session.token;
-                    // delete session.customClaims;
-                    // session.save();
-                    //
-                    // socket.handshake.headers.cookie = `session=`;
-                    // res.clearCookie('session');
+                    socket.leave(auth_id);
                     return res;
                 }
             });
@@ -86,7 +78,7 @@ class Cntr extends ACntr {
                 session.save();
             },
         }).then(res => {
-            console.log('onSetCustomUserClaims user logged', socket.id, socket.auth_id, res.token);
+            console.log('onSetCustomUserClaims user logged', socket.id, session.auth_id);
             if (res && res.token) {
                 const {loggedUser, token, customClaims} = res;
 
@@ -94,6 +86,9 @@ class Cntr extends ACntr {
                 session.token = token;
                 session.customClaims = customClaims;
                 session.save();
+
+                socket.join(session.auth_id);
+
                 console.log('user logged', socket.id, session.auth_id);
 
                 // socket.auth_id = customClaims.loggedUser.user.auth_id;

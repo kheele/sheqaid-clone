@@ -55,7 +55,16 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                     node {
                         id
                         removed
-                        //
+                        logged_user{
+                            id
+                            auth_id
+                            username
+                        }
+                        logged_employee{
+                            id
+                            auth_id
+                            email
+                        }
                         company{
                             ${orgs_fragment}
                         }
@@ -68,7 +77,6 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                         site{
                             ${orgs_fragment}
                         }
-                        //
                         person_injured{
                             ${person_fragment}
                         }
@@ -81,20 +89,17 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                         person_reporting_other{
                             ${person_fragment}
                         }
-                        //
                         incident_date
                         incident_time
                         date_reported
                         time_reported
                         time_shift
-                        //
                         is_vehicle_incident
                         short_desc
                         severity
                         exact_location
                         latitude
                         longitude
-                        //
                         driver{
                             ${person_fragment}
                         }
@@ -106,7 +111,6 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                         vehicle_make
                         vehicle_reg_num
                         category_list{
-                            id
                             category{
                               id
                               name
@@ -141,6 +145,8 @@ exports.sendNewQuickIncidentNotification = async (body) => {
 //7Qk6ipL0kgj0ThgYqOMQ, GypCgmbrT13AZgfx8peG, XvEGdxUp0GAaLpcduNro (message),
     const {
         removed,
+        logged_user,
+        logged_employee,
         //
         company,
         client,
@@ -182,7 +188,16 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         video_list,
     } = item.data;
 
-    const emails = [driver_email];
+    const emails = [];
+    if(logged_user) {
+        emails.push(logged_user.username);
+    }
+    if(logged_employee) {
+        emails.push(logged_employee.email);
+    }
+    if(driver_email) {
+        emails.push(driver_email);
+    }
     if(site && site.user_list) {
         emails.push(...site.user_list.map(v => v.username));
     }
@@ -229,7 +244,7 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         <p>Driver Email Address: <b>${driver_email || ((driver || driver_other) && (driver || driver_other).email) || 'N/A'}</b></p>
     ` : '';
 
-    await EmailUtils.send({
+    EmailUtils.send({
         from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
 //      to: emails.join(','),
         bcc: emails.distinct().join(','),
@@ -267,5 +282,8 @@ exports.sendNewQuickIncidentNotification = async (body) => {
             <p>Kind Regards<br/>SHEQ Aid</p>
         `
     });
+
+    if(logged_user) return logged_user.auth_id;
+    if(logged_employee) return logged_employee.auth_id;
 };
 // </editor-fold>
