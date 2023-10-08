@@ -4,7 +4,7 @@
         // <editor-fold defaultstate="collapsed" desc="constructor">
         constructor(events) {
             super(events,
-                    {singular: "COID Claim Employer Details", plural: "COID Claim Employer Details"},
+                    {singular: "COID ClaimsClient Employer Details", plural: "COID ClaimsClient Employer Details"},
                     "plugin_sheq_assist/COIDA_Management/claims/client/employer-details/",
                     "plugin_sheq_assist_coida_claims_employer_details"
                     );

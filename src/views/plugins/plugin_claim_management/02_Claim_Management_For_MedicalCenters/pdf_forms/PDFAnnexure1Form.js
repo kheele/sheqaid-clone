@@ -44,7 +44,7 @@ class PDFAnnexure1Form extends React.Component {
                         part_of_body_affected = [],
                         effect_on_person = [],
                         expected_period_of_disablement,
-                        incident_reported_compensation_commissioner_and_provincial_director,
+                        incident_reported_compensationcommissioner__provincial_director,
                         incident_reported_police
                     }
                 }
@@ -88,10 +88,10 @@ class PDFAnnexure1Form extends React.Component {
                 async (page, form) => expected_period_of_disablement === '>52 weeks or permanent disablement' && createTimesSVG(page, 414.4, 353.5, 20, 0.06),
                 async (page, form) => expected_period_of_disablement === 'Killed' && createTimesSVG(page, 494, 353.5, 20, 0.06),
 
-                //incident_reported_compensation_commissioner_and_provincial_director
+                //incident_reported_compensationcommissioner__provincial_director
                 //Was the incident reported to the Compensation Commissioner and Provincial Director?
-                async (page, form) => incident_reported_compensation_commissioner_and_provincial_director === 'Yes' && createTimesSVG(page, 324.2, 260.49, 20, 0.06),
-                async (page, form) => incident_reported_compensation_commissioner_and_provincial_director === 'No' && createTimesSVG(page, 355.7, 260.49, 20, 0.06),
+                async (page, form) => incident_reported_compensationcommissioner__provincial_director === 'Yes' && createTimesSVG(page, 324.2, 260.49, 20, 0.06),
+                async (page, form) => incident_reported_compensationcommissioner__provincial_director === 'No' && createTimesSVG(page, 355.7, 260.49, 20, 0.06),
 
                 //incident_reported_police
                 //Was the incident reported to the police?*
@@ -130,7 +130,7 @@ class PDFAnnexure1Form extends React.Component {
                     expected_period_of_disablement,
                     disease_desc,
                     process,
-                    incident_reported_compensation_commissioner_and_provincial_director,
+                    incident_reported_compensationcommissioner__provincial_director,
                     incident_reported_police,
                     saps_office,
                     saps_reference,

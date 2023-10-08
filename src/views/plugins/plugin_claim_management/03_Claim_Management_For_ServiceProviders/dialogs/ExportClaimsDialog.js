@@ -117,7 +117,7 @@ class Controls extends React.Component {
         const {form, state: {claimList}} = this;
         
         if(claimList.isEmpty()) {
-            infoDialog.open('Please select at least one Claim');
+            infoDialog.open('Please select at least one ClaimsClient');
             return;
         }
         

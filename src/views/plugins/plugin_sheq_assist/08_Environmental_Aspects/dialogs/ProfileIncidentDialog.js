@@ -47,7 +47,7 @@ class Controls extends React.Component {
             //4
             environmental_incident_classification: ['Major', 'Medium', 'Minor', 'Near Miss'],
             incident_type: ['Contained Emission / Discharge', 'Uncontained Emission / Discharge', 'Controlled Emission / Discharge', 'Uncontrolled Emission / Discharge', 'Excessive Resource Use', 'Inappropriate Manipulation Of The Environment', 'Excessive Waste Generation  And/Or Disposal', 'Complaint/Undesired Public Or Media Attention', 'Environmental Damage - Natural', 'Environmental Damage - Human', null],
-            incident_consequence: ['Pollution', 'Legal Non-Compliance', 'Permit Requirements Exceeded', 'Non-Compliance With Corporate Standard Or Policy', 'Financial Consequence', 'Common Law Claim', 'Nuisance To Public / Community', 'Damage To Public / Community', 'Socio-Economic Disruption', 'Ecological Stress / Damage', 'Resource Depletion', 'Climate Change', 'Negative Publicity', 'Alteration Of Physical Environment', null],
+            incident_consequence: ['Pollution', 'Legal Non-Compliance', 'Permit Requirements Exceeded', 'Non-Compliance With Corporate Standard Or Policy', 'Financial Consequence', 'Common Law ClaimsClient', 'Nuisance To Public / Community', 'Damage To Public / Community', 'Socio-Economic Disruption', 'Ecological Stress / Damage', 'Resource Depletion', 'Climate Change', 'Negative Publicity', 'Alteration Of Physical Environment', null],
             duration_of_pollution: ['Less Than 1 Day', 'Less Than 1 Month', 'Less Than 1 Year', 'Less Than 5 Years', 'More Than 5 Years'],
             on_site_contained: ['On-Site - Not Contained', 'Local', 'Regional', 'National', 'Global', 'Off-Site Affecting On-Site', null],
 

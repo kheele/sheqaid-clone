@@ -36,7 +36,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "Claim";
+        return "ClaimsClient";
     }
     
     get topButtonsHiddenDelete() {
@@ -218,7 +218,7 @@ class Controls extends React.Component {
                     <ButtonGeneratePDF value={wcl_4} name="wcl_4" dialogName="printWCL4Dialog" text="W.CI.4" onClick={this.onPrintDialog}/>
                     <hr className="margin-t-5 margin-b-15"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
-                        Medical Practioner/Chiropractor Email Address
+                        Medical Practitioner/Chiropractor Email Address
                     </label>
                     <ProfileField name="doctor_email_1" type="text" title="Email Address" value={doctor_email} footerDesc="For Filling W.CI.4 Online" className="col-lg-12"/>
                 </Row>

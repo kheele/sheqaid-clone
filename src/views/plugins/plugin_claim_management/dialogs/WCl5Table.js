@@ -141,7 +141,7 @@ class WCl5Table extends ANewListTable {
                     </TRow>;
                 } else if(item.wcl_5) {
                     const {
-                        //4. Medical Practioner/Chiropractor Consultation Details
+                        //4. Medical Practitioner/Chiropractor Consultation Details
                         operation_procedure_test_carried_out_and_dates,
                         prognosis_and_further_treatment,
                         employee_been_fit_normal_work_date,
@@ -149,7 +149,7 @@ class WCl5Table extends ANewListTable {
                         employee_condition_became_stabilised_yes_or_no,
                         present_permanent_anatomical_defect_or_impairment,
 
-                        //5. Medical Practioner/Chiropractor Declaration
+                        //5. Medical Practitioner/Chiropractor Declaration
                         practioner_signature,
                         practioner_signature_name,
                         practioner_signature_date,
@@ -397,7 +397,7 @@ class WCL5TableNewRowEmail extends React.Component {
         if(type !== 'Email') return null;
         return <React.Fragment>
             <label className="col-lg-12 text-center margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
-                Medical Practioner/Chiropractor Email Address
+                Medical Practitioner/Chiropractor Email Address
             </label>
             <ClearableInput 
                 idx={idx}

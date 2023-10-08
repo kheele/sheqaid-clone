@@ -91,7 +91,7 @@ class Controls extends React.Component {
             employee_str_addr,
             employee_str_addr_code,
 
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             first_consultation_date,
             how_accident_happen,
             injury_clinical_desc,
@@ -113,7 +113,7 @@ class Controls extends React.Component {
             employee_fitness_light_duty_date,
             employee_fitness_normal_duty_date,
 
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             practioner_signature,
             practioner_signature_name,
             practioner_signature_date,
@@ -215,7 +215,7 @@ class Controls extends React.Component {
                         I certify that I have by examination, satisfied myself that the injury(ies) of the employee is the result of the accident as described above.
                     </label>
                     
-                    <ProfileField name="practioner_signature" type="signature" title="Medical Practioner/Chiropractor Signature" value={practioner_signature} className="col-lg-12"/>
+                    <ProfileField name="practioner_signature" type="signature" title="Medical Practitioner/Chiropractor Signature" value={practioner_signature} className="col-lg-12"/>
                     <ProfileField name="practioner_signature_name" title="Name of Person Signing" value={practioner_signature_name} className="col-lg-12"/>
                     <ProfileField name="practioner_signature_date" type="date" title="Signature Date" value={practioner_signature_date} className="col-lg-12"/>
                 

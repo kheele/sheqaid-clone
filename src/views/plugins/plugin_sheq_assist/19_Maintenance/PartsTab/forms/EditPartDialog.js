@@ -51,7 +51,7 @@ class Controls extends AControls {
         const {idx} = btn.props;
         if (idx === 1) {
             if (!form.isValid('claim_number')) {
-                infoDialog.open('Claim Number is required');
+                infoDialog.open('ClaimsClient Number is required');
                 return;
             }
             if (!form.isValid('accident_date')) {

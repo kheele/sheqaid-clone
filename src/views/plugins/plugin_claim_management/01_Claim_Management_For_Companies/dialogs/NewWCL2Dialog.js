@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {execWhen, SAIdUtils, setDefaultVal} from 'utils/Utils';
+import {Dates, execWhen, SAIdUtils, setDefaultVal} from 'utils/Utils';
 import {getGeocode} from 'utils/Maps';
 
 import {
@@ -524,147 +524,110 @@ class Controls extends React.Component {
             employer_signature_name,
             employer_signature_date
         } = form.data;
-        const data = {totalFieldCount, totalFieldMax};
         
-        //1. Employer Details
-        company_name && (data.company_name = company_name);
-        company_reg_num && (data.company_reg_num = company_reg_num);
-        if(company_contact_person) {
-            if(company_contact_person.id) {
-                const {id, data: _data, fname, lname} = company_contact_person;
-                data.company_contact_person = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-            } else {
-                data.company_contact_person = company_contact_person;
-            }
-        }
-        company_str_addr && (data.company_str_addr = company_str_addr);
-        company_str_addr_code && (data.company_str_addr_code = company_str_addr_code);
-        company_postal_addr && (data.company_postal_addr = company_postal_addr);
-        company_postal_addr_code && (data.company_postal_addr_code = company_postal_addr_code);
-        company_tel_code && (data.company_tel_code = company_tel_code);
-        company_tel_num && (data.company_tel_num = company_tel_num);
-        company_fax_code && (data.company_fax_code = company_fax_code);
-        company_fax_num && (data.company_fax_num = company_fax_num);
-        company_email && (data.company_email = company_email);
-        company_location && (data.company_location = company_location);
-        company_nature && (data.company_nature = company_nature);
-        
-        //2. Employee Details
-        company_employee_association && (data.company_employee_association = company_employee_association);
-//        if(employee) {
-//            const {id = null, data: _data, fname, lname} = employee;
-//            data.employee = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-//        }
-        doc_certified_id && (data.doc_certified_id = doc_certified_id.path);
-        id_num && (data.id_num = id_num);
-        dob && (data.dob = dob.getTime());
-        gender && (data.gender = gender);
-        marital_status && (data.marital_status = marital_status);
-        citizen_of && (data.citizen_of = citizen_of);
-        personnel_num && (data.personnel_num = personnel_num);
-        if(occupation) {
-            const {id, data: _data, name} = occupation;
-            console.log('occupation', occupation)
-            data.occupation = {id, name: name || _data.name};
-        }
-        employee_str_addr && (data.employee_str_addr = employee_str_addr);
-        employee_str_addr_code && (data.employee_str_addr_code = employee_str_addr_code);
-        employee_postal_addr && (data.employee_postal_addr = employee_postal_addr);
-        employee_postal_addr_code && (data.employee_postal_addr_code = employee_postal_addr_code);
-        employee_tel_code && (data.employee_tel_code = employee_tel_code);
-        employee_tel_num && (data.employee_tel_num = employee_tel_num);
-        period_employ_years && (data.period_employ_years = period_employ_years);
-        period_employ_months && (data.period_employ_months = period_employ_months);
-        expected_disablement_period && (data.expected_disablement_period = expected_disablement_period);
-        
-        //3. Accident Details
-//        incident_source && (data.incident_source = incident_source);
-//        if(incident) {
-//            const {id, data: _data, name} = incident;
-//            data.incident = {id, name: name || _data.name};
-//        }
-        accident_date && (data.accident_date = accident_date.getTime());
-        accident_time && (data.accident_time = accident_time);
-        incident_place && (data.incident_place = incident_place);
-        incident_place_province && (data.incident_place_province = incident_place_province);
-        incident_place_district && (data.incident_place_district = incident_place_district);
-        accident_date_reported && (data.accident_date_reported = accident_date_reported.getTime());
-        accident_time_reported && (data.accident_time_reported = accident_time_reported);
-        task_employee_performing_during_accident && (
-                data.task_employee_performing_during_accident = task_employee_performing_during_accident
-                );
-        period_experience_task_performed_years && (
-                data.period_experience_task_performed_years = period_experience_task_performed_years
-                );
-        period_experience_task_performed_months && (
-                data.period_experience_task_performed_months = period_experience_task_performed_months
-                );
-        employee_action_connected_business && (
-                data.employee_action_connected_business = employee_action_connected_business);
-        accident_desc && (data.accident_desc = accident_desc);
-        traffic_accident_on_public_road && (data.traffic_accident_on_public_road = traffic_accident_on_public_road
-                );
-        nature_of_injury_list && (data.nature_of_injury_list = nature_of_injury_list.filter(v => !!v).slice());
-        nature_of_injury_options && (data.nature_of_injury_options = nature_of_injury_options.filter(v => !!v).slice());
-        employee_injured_explanation_satisfactory && (
-                data.employee_injured_explanation_satisfactory = employee_injured_explanation_satisfactory
-                );
-        employee_injured_explanation_satisfactory_nope_desc && (
-                data.employee_injured_explanation_satisfactory_nope_desc = employee_injured_explanation_satisfactory_nope_desc
-                );
-        
-        //4. Further Particulars Of Employee
-        doc_salary_slip && (data.doc_salary_slip = doc_salary_slip.path);
-        earning_list && (data.earning_list = earning_list.slice());
-        prepared_further_payments_after_3_months_4rm_accident_date && (
-                data.prepared_further_payments_after_3_months_4rm_accident_date = prepared_further_payments_after_3_months_4rm_accident_date
-                );
-        total_amount_already_paid && (data.total_amount_already_paid = total_amount_already_paid);
-        if(period_payments_made_range) {
-            const {start, end} = period_payments_made_range;
-            data.period_payments_made_range = {date_from: start.getTime(), date_to: end.getTime()};
-        }
-        num_of_week_days_worked_by_employee && (data.num_of_week_days_worked_by_employee = num_of_week_days_worked_by_employee);
-        date_ceased_work && (data.date_ceased_work = date_ceased_work.getTime());
-        time_ceased_work && (data.time_ceased_work = time_ceased_work);
-        did_employee_complete_shift_on_date_work_ceased && (
-                data.did_employee_complete_shift_on_date_work_ceased = did_employee_complete_shift_on_date_work_ceased
-                );
-        date_resumed_work && (data.date_resumed_work = date_resumed_work.getTime());
-        time_resumed_work && (data.time_resumed_work = time_resumed_work);
-        dependant_name && (data.dependant_name = dependant_name);
-        dependant_address && (data.dependant_address = dependant_address);
-        
-        //5. Further Particulars
-        previously_received_compensation_full_names && (
-                data.previously_received_compensation_full_names = previously_received_compensation_full_names
-                );
-        was_1st_aid_given && (data.was_1st_aid_given = was_1st_aid_given);
-        medical_practitioner_or_chiropractor_who_treated_employee && (
-                data.medical_practitioner_or_chiropractor_who_treated_employee = medical_practitioner_or_chiropractor_who_treated_employee
-                );
-        hospital_which_treated_employee && (data.hospital_which_treated_employee = hospital_which_treated_employee);
-        was_accidnt_caused_by_employee_options_1 && (data.was_accidnt_caused_by_employee_options_1 = was_accidnt_caused_by_employee_options_1);
-        was_accidnt_caused_by_employee_options_2 && (data.was_accidnt_caused_by_employee_options_2 = was_accidnt_caused_by_employee_options_2);
-        was_accidnt_caused_by_employee_options_3 && (data.was_accidnt_caused_by_employee_options_3 = was_accidnt_caused_by_employee_options_3);
-        accident_witness && (data.accident_witness = accident_witness);
-        accident_aware_person && (data.accident_aware_person = accident_aware_person);
-        num_of_employees_involved_in_accident && (
-                data.num_of_employees_involved_in_accident = num_of_employees_involved_in_accident
-                );
-        accident_police_station && (data.accident_police_station = accident_police_station);
-        accident_docket_num && (data.accident_docket_num = accident_docket_num);
-        involved_vehicle_reg_numbers && (data.involved_vehicle_reg_numbers = involved_vehicle_reg_numbers.slice());
-        contributing_factor_list_A && (data.contributing_factor_list_A = contributing_factor_list_A.slice());
-        contributing_factor_list_B && (data.contributing_factor_list_B = contributing_factor_list_B.slice());
-        other_machinery_list && (data.other_machinery_list = other_machinery_list.slice());
-        other_contributing_factor_list && (data.other_contributing_factor_list = other_contributing_factor_list.slice());
-        additional_details_or_comments && (data.additional_details_or_comments = additional_details_or_comments);
-              
-        //6. Employer's Declaration
-        employer_signature && (data.employer_signature = JSON.stringify(employer_signature));
-        employer_signature_name && (data.employer_signature_name = employer_signature_name);
-        employer_signature_date && (data.employer_signature_date = employer_signature_date.getTime());
+        const data = {
+            totalFieldCount,
+            totalFieldMax,
+            //1. Employer Details
+            company_name,
+            company_reg_num,
+            company_contact_person_id: company_contact_person && company_contact_person.id ? company_contact_person.id : null,
+            company_contact_person_other: company_contact_person && !company_contact_person.id ? {data: company_contact_person} : null,
+            company_str_addr,
+            company_str_addr_code,
+            company_postal_addr,
+            company_postal_addr_code,
+            company_tel_code,
+            company_tel_num,
+            company_fax_code,
+            company_fax_num,
+            company_email,
+            company_location,
+            company_nature,
+            
+            //2. Employee Details
+            company_employee_association,
+//            employee,
+            doc_certified_id,
+            id_num,
+            dob: Dates.formatDateSQL(dob),
+            gender,
+            marital_status,
+            citizen_of,
+            personnel_num,
+            occupation_id: occupation && occupation.id,
+            employee_str_addr,
+            employee_str_addr_code,
+            employee_postal_addr,
+            employee_postal_addr_code,
+            employee_tel_code,
+            employee_tel_num,
+            period_employ_years,
+            period_employ_months,
+            expected_disablement_period,
+            
+            //3. Accident Details
+//            incident_source,
+//            incident,
+            accident_date: Dates.formatDateSQL(accident_date),
+            accident_time,
+            incident_place,
+            incident_place_province_id: incident_place_province && incident_place_province.id,
+            incident_place_district,
+            accident_date_reported: Dates.formatDateSQL(accident_date_reported),
+            accident_time_reported,
+            task_employee_performing_during_accident,
+            period_experience_task_performed_years,
+            period_experience_task_performed_months,
+            employee_action_connected_business,
+            accident_desc,
+            traffic_accident_on_public_road,
+            nature_of_injury_list: nature_of_injury_list && nature_of_injury_list.slice(),
+            nature_of_injury_options: nature_of_injury_options && nature_of_injury_options.slice(),
+            employee_injured_explanation_satisfactory,
+            employee_injured_explanation_satisfactory_nope_desc,
+            
+            //4. Further Particulars Of Employee
+            doc_salary_slip,
+            earning_list: earning_list && earning_list.slice(),
+            prepared_further_payments_after_3_months_4rm_accident_date,
+            total_amount_already_paid,
+            period_payments_made_range_date_from: period_payments_made_range && Dates.formatDateSQL(period_payments_made_range.start),
+            period_payments_made_range_date_to: period_payments_made_range && Dates.formatDateSQL(period_payments_made_range.end),
+            num_of_week_days_worked_by_employee,
+            date_ceased_work: Dates.formatDateSQL(date_ceased_work),
+            time_ceased_work,
+            did_employee_complete_shift_on_date_work_ceased,
+            date_resumed_work: Dates.formatDateSQL(date_resumed_work),
+            time_resumed_work,
+            dependant_name,
+            dependant_address,
+            
+            //5. Further Particulars
+            previously_received_compensation_full_names,
+            was_1st_aid_given,
+            medical_practitioner_or_chiropractor_who_treated_employee,
+            hospital_which_treated_employee,
+            was_accidnt_caused_by_employee_options_1,
+            was_accidnt_caused_by_employee_options_2,
+            was_accidnt_caused_by_employee_options_3,
+            accident_witness,
+            accident_aware_person,
+            num_of_employees_involved_in_accident,
+            accident_police_station,
+            accident_docket_num,
+            involved_vehicle_reg_numbers: involved_vehicle_reg_numbers && involved_vehicle_reg_numbers.slice(),
+            contributing_factor_list_A: contributing_factor_list_A && contributing_factor_list_A.slice(),
+            contributing_factor_list_B: contributing_factor_list_B && contributing_factor_list_B.slice(),
+            other_machinery_list: other_machinery_list && other_machinery_list.slice(),
+            other_contributing_factor_list: other_contributing_factor_list && other_contributing_factor_list.slice(),
+            additional_details_or_comments,
+            
+            //6. Employer's Declaration
+            employer_signature: employer_signature && toJS(employer_signature),
+            employer_signature_name,
+            employer_signature_date: Dates.formatDateSQL(employer_signature_date)
+        };
         
         console.log("res", data)
         onSaved(data);

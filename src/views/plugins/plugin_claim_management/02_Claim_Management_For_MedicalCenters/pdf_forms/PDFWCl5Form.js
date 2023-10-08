@@ -253,7 +253,7 @@ class PDFWCl5Form extends React.Component {
                     employee_str_addr,
                     employee_str_addr_code,
 
-                    //4. Medical Practioner/Chiropractor Consultation Details
+                    //4. Medical Practitioner/Chiropractor Consultation Details
                     operation_procedure_test_carried_out_and_dates,
                     prognosis_and_further_treatment,
                     employee_been_fit_normal_work_date,
@@ -261,7 +261,7 @@ class PDFWCl5Form extends React.Component {
                     employee_condition_became_stabilised_yes_or_no,
                     present_permanent_anatomical_defect_or_impairment,
 
-                    //5. Medical Practioner/Chiropractor Declaration
+                    //5. Medical Practitioner/Chiropractor Declaration
                     practioner_signature,
                     practioner_signature_name,
                     practioner_signature_date,

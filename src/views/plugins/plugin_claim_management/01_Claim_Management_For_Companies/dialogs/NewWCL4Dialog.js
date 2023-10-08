@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {execWhen, setDefaultVal} from 'utils/Utils';
+import {Dates, execWhen, setDefaultVal} from 'utils/Utils';
 
 import {ClearableInput, PDFUploadButton, SelectEmployeeInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -125,7 +125,7 @@ class Controls extends React.Component {
             setDefaultValue('employee_str_addr');
             setDefaultValue('employee_str_addr_code');
 
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             setDefaultValue('first_consultation_date');
             setDefaultValue('how_accident_happen');
             setDefaultValue('injury_clinical_desc');
@@ -147,7 +147,7 @@ class Controls extends React.Component {
             setDefaultValue('employee_fitness_light_duty_date');
             setDefaultValue('employee_fitness_normal_duty_date');
 
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             setDefaultValue('practioner_signature');
             setDefaultValue('practioner_signature_name');
             setDefaultValue('practioner_signature_date');
@@ -248,7 +248,7 @@ class Controls extends React.Component {
             employee_str_addr,
             employee_str_addr_code,
             
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             first_consultation_date,
             how_accident_happen,
             injury_clinical_desc,
@@ -270,62 +270,61 @@ class Controls extends React.Component {
             employee_fitness_light_duty_date,
             employee_fitness_normal_duty_date,
             
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             practioner_signature,
             practioner_signature_name,
             practioner_signature_date,
             practioner_addr,
             practioner_practice_num
         } = form.data;
-        const data = {totalFieldCount, totalFieldMax};
         
-        //1. General Details
-        claim_number && (data.claim_number = claim_number);
-        accident_date && (data.accident_date = accident_date.getTime());
-        
-        //2. Employer Details
-        company_name && (data.company_name = company_name);
-        company_str_addr && (data.company_str_addr = company_str_addr);
-        company_str_addr_code && (data.company_str_addr_code = company_str_addr_code);
-        
-        //3. Employee Details
-//        if(employee) {
-//            const {id = null, data: _data, fname, lname} = employee;
-//            data.employee = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-//        }
-        id_num && (data.id_num = id_num);
-        employee_str_addr && (data.employee_str_addr = employee_str_addr);
-        employee_str_addr_code && (data.employee_str_addr_code = employee_str_addr_code);
-        
-        //4. Medical Practioner/Chiropractor Consultation Details
-        first_consultation_date && (data.first_consultation_date = first_consultation_date.getTime());
-        how_accident_happen && (data.how_accident_happen = how_accident_happen);
-        injury_clinical_desc && (data.injury_clinical_desc = injury_clinical_desc);
-        pre_existing_defect_disease && (data.pre_existing_defect_disease = pre_existing_defect_disease);
-        x_rays_date && (data.x_rays_date = x_rays_date.getTime());
-        x_rays_conducting_person && (data.x_rays_conducting_person = x_rays_conducting_person);
-        x_rays_report && (data.x_rays_report = x_rays_report.path);
-        surgical_procedure_date && (data.surgical_procedure_date = surgical_procedure_date.getTime());
-        surgical_procedure_conducting_person && (data.surgical_procedure_conducting_person = surgical_procedure_conducting_person);
-        surgical_procedure_desc && (data.surgical_procedure_desc = surgical_procedure_desc);
-        anaesthetics_general_or_local && (data.anaesthetics_general_or_local = anaesthetics_general_or_local);
-        anaesthetics_dur && (data.anaesthetics_dur = anaesthetics_dur);
-        consultation_yes_or_no && (data.consultation_yes_or_no = consultation_yes_or_no);
-        consultation_date && (data.consultation_date = consultation_date.getTime());
-        consultation_conducting_person && (data.consultation_conducting_person = consultation_conducting_person);
-        physiotherapy_employee_referred_yes_or_no && (data.physiotherapy_employee_referred_yes_or_no = physiotherapy_employee_referred_yes_or_no);
-        physiotherapy_conducting_person && (data.physiotherapy_conducting_person = physiotherapy_conducting_person);
-        employee_fitness_yes_or_no && (data.employee_fitness_yes_or_no = employee_fitness_yes_or_no);
-        employee_fitness_light_duty_date && (data.employee_fitness_light_duty_date = employee_fitness_light_duty_date.getTime());
-        employee_fitness_normal_duty_date && (data.employee_fitness_normal_duty_date = employee_fitness_normal_duty_date.getTime());
-        
-        //5. Medical Practioner/Chiropractor Declaration
-        console.log('practioner_signature', practioner_signature);
-        practioner_signature && (data.practioner_signature = JSON.stringify(practioner_signature));
-        practioner_signature_name && (data.practioner_signature_name = practioner_signature_name);
-        practioner_signature_date && (data.practioner_signature_date = practioner_signature_date.getTime());
-        practioner_addr && (data.practioner_addr = practioner_addr);
-        practioner_practice_num && (data.practioner_practice_num = practioner_practice_num);
+        const data = {
+            totalFieldCount,
+            totalFieldMax,
+            //1. General Details
+            claim_number,
+            accident_date: Dates.formatDateSQL(accident_date),
+            
+            //2. Employer Details
+            company_name,
+            company_str_addr,
+            company_str_addr_code,
+            
+            //3. Employee Details
+//            employee,
+            id_num,
+            employee_str_addr,
+            employee_str_addr_code,
+            
+            //4. Medical Practitioner/Chiropractor Consultation Details
+            first_consultation_date: Dates.formatDateSQL(first_consultation_date),
+            how_accident_happen,
+            injury_clinical_desc,
+            pre_existing_defect_disease,
+            x_rays_date: Dates.formatDateSQL(x_rays_date),
+            x_rays_conducting_person,
+            x_rays_report,
+            surgical_procedure_date: Dates.formatDateSQL(surgical_procedure_date),
+            surgical_procedure_conducting_person,
+            surgical_procedure_desc,
+            anaesthetics_general_or_local,
+            anaesthetics_dur,
+            consultation_yes_or_no,
+            consultation_date: Dates.formatDateSQL(consultation_date),
+            consultation_conducting_person,
+            physiotherapy_employee_referred_yes_or_no,
+            physiotherapy_conducting_person,
+            employee_fitness_yes_or_no,
+            employee_fitness_light_duty_date: Dates.formatDateSQL(employee_fitness_light_duty_date),
+            employee_fitness_normal_duty_date: Dates.formatDateSQL(employee_fitness_normal_duty_date),
+            
+            //5. Medical Practitioner/Chiropractor Declaration
+            practioner_signature: practioner_signature && toJS(practioner_signature),
+            practioner_signature_name,
+            practioner_signature_date: Dates.formatDateSQL(practioner_signature_date),
+            practioner_addr,
+            practioner_practice_num,
+        };
         
         console.log("res", data)
         onSaved(data);
@@ -401,7 +400,7 @@ class Controls extends React.Component {
                     rendered 
                     countFields
                     idx={4}
-                    title="4. Medical Practioner/Chiropractor Consultation Details" 
+                    title="4. Medical Practitioner/Chiropractor Consultation Details"
                     onFormOpen={onFormOpen} 
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
@@ -443,7 +442,7 @@ class Controls extends React.Component {
                     rendered 
                     countFields
                     idx={5}
-                    title="5. Medical Practioner/Chiropractor Declaration" 
+                    title="5. Medical Practitioner/Chiropractor Declaration"
                     onFormOpen={onFormOpen} 
                     onFormBack={onFormBack} 
                 >
@@ -451,7 +450,7 @@ class Controls extends React.Component {
                         I certify that I have by examination, satisfied myself that the injury(ies) of the employee is the result of the accident as described above.
                     </label>
                     
-                    <ClearableInput ref="practioner_signature" name="practioner_signature" type="signature" placeholder="Medical Practioner/Chiropractor Signature" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput ref="practioner_signature" name="practioner_signature" type="signature" placeholder="Medical Practitioner/Chiropractor Signature" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <ClearableInput ref="practioner_signature_name" name="practioner_signature_name" type="text" placeholder="Name of Person Signing" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <ClearableInput ref="practioner_signature_date" name="practioner_signature_date" type="date" placeholder="Signature Date..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 

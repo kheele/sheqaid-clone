@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {execWhen, setDefaultVal} from 'utils/Utils';
+import {Dates, execWhen, setDefaultVal} from 'utils/Utils';
 
 import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -45,7 +45,7 @@ class Controls extends React.Component {
             expected_period_of_disablement: ['0-13 days', '2-4 weeks', '>4-16 weeks', '>16-52 weeks', '>52 weeks or permanent disablement', 'Killed'].map(text => {
                 return {value: text, text, checked: false};
             }),
-            incident_reported_compensation_commissioner_and_provincial_director: ['Yes', 'No'].map(text => {
+            incident_reported_compensationcommissioner__provincial_director: ['Yes', 'No'].map(text => {
                 return {value: text, text, checked: false};
             }),
             incident_reported_police: ['Yes', 'No'].map(text => {
@@ -104,7 +104,7 @@ class Controls extends React.Component {
             setDefaultValue('expected_period_of_disablement');
             setDefaultValue('disease_desc');
             setDefaultValue('process');
-            setDefaultValue('incident_reported_compensation_commissioner_and_provincial_director');
+            setDefaultValue('incident_reported_compensationcommissioner__provincial_director');
             setDefaultValue('incident_reported_police');
             setDefaultValue('saps_office');
             setDefaultValue('saps_reference');
@@ -214,7 +214,7 @@ class Controls extends React.Component {
             expected_period_of_disablement, 
             disease_desc, 
             process,
-            incident_reported_compensation_commissioner_and_provincial_director,
+            incident_reported_compensationcommissioner__provincial_director,
             incident_reported_police,
             saps_office,
             saps_reference,
@@ -240,57 +240,48 @@ class Controls extends React.Component {
             chairperson_of_health_and_safety_committee_signature,
             chairperson_of_health_and_safety_committee_signature_date
         } = form.data;
-        const data = {totalFieldCount, totalFieldMax};
-        //A. Recording Of Incident
-        company_name && (data.company_name = company_name);
-//        if(affected_person) {
-//            const {id = null, data: _data, fname, lname} = affected_person;
-//            data.affected_person = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-//        }
-        id_num && (data.id_num = id_num);
-        accident_date && (data.accident_date = accident_date.getTime());
-        accident_time && (data.accident_time = accident_time);
-        part_of_body_affected && (data.part_of_body_affected = part_of_body_affected.slice());
-        effect_on_person && (data.effect_on_person = effect_on_person);
-        expected_period_of_disablement && (data.expected_period_of_disablement = expected_period_of_disablement);
-        disease_desc && (data.disease_desc = disease_desc);
-        process && (data.process = process);
-        incident_reported_compensation_commissioner_and_provincial_director && (
-                data.incident_reported_compensation_commissioner_and_provincial_director = incident_reported_compensation_commissioner_and_provincial_director
-                );
-        incident_reported_police && (data.incident_reported_police = incident_reported_police);
-        saps_office && (data.saps_office = saps_office);
-        saps_reference && (data.saps_reference = saps_reference);
-        substance_exposed_to && (data.substance_exposed_to = substance_exposed_to);
         
-        //B. Incident Investigation
-        if(investigator) {
-            const {id = null, data: _data, fname, lname} = investigator;
-            data.investigator = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-        }
-        investigation_date && (data.investigation_date = investigation_date.getTime());
-        investigator_designation && (data.investigator_designation = investigator_designation);
-        incident_desc && (data.incident_desc = incident_desc);
-        incident_cause && (data.incident_cause = incident_cause);
-        steps_to_prevent_recurrence && (data.steps_to_prevent_recurrence = steps_to_prevent_recurrence);
-        investigator_signature && (data.investigator_signature = JSON.stringify(investigator_signature));
-        investigator_signature_date && (data.investigator_signature_date = investigator_signature_date.getTime());
+        const data = {
+            totalFieldCount,
+            totalFieldMax,
+            //A. Recording Of Incident
+            company_name,
+//            affected_person,
+            id_num,
+            accident_date: Dates.formatDateSQL(accident_date),
+            accident_time,
+            part_of_body_affected: part_of_body_affected && part_of_body_affected.slice(),
+            effect_on_person,
+            expected_period_of_disablement,
+            disease_desc,
+            process,
+            incident_reported_compensationcommissioner__provincial_director,
+            incident_reported_police,
+            saps_office,
+            saps_reference,
+            substance_exposed_to,
             
-        //C. Action Taken By Employer To Prevent The Recurrence Of Similar Incident
-        employer_preventative_action_for_recurrence_of_similar_incident && (
-                data.employer_preventative_action_for_recurrence_of_similar_incident = employer_preventative_action_for_recurrence_of_similar_incident
-                );
-        employer_signature && (data.employer_signature = JSON.stringify(employer_signature));
-        employer_signature_date && (data.employer_signature_date = employer_signature_date.getTime());
+            //B. Incident Investigation
+            investigator_id: investigator && investigator.id,
+            investigator_other: investigator && !investigator.id ? {data: investigator} : null,
+            investigation_date: Dates.formatDateSQL(investigation_date),
+            investigator_designation,
+            incident_desc,
+            incident_cause,
+            steps_to_prevent_recurrence,
+            investigator_signature: investigator_signature && toJS(investigator_signature),
+            investigator_signature_date: Dates.formatDateSQL(investigator_signature_date),
             
-        //D. Remarks By Health & Safety Committee
-        health_and_safety_committee_remarks && (data.health_and_safety_committee_remarks = health_and_safety_committee_remarks);
-         chairperson_of_health_and_safety_committee_signature && (
-            data.chairperson_of_health_and_safety_committee_signature = JSON.stringify(chairperson_of_health_and_safety_committee_signature)
-            );
-        chairperson_of_health_and_safety_committee_signature_date && (
-            data.chairperson_of_health_and_safety_committee_signature_date = chairperson_of_health_and_safety_committee_signature_date.getTime()
-            );
+            //C. Action Taken By Employer To Prevent The Recurrence Of Similar Incident
+            employer_preventative_action_for_recurrence_of_similar_incident,
+            employer_signature: employer_signature && toJS(employer_signature),
+            employer_signature_date: Dates.formatDateSQL(employer_signature_date),
+            
+            //D. Remarks By Health & Safety Committee
+            health_and_safety_committee_remarks,
+            chairperson_of_health_and_safety_committee_signature: chairperson_of_health_and_safety_committee_signature && toJS(chairperson_of_health_and_safety_committee_signature),
+            chairperson_of_health_and_safety_committee_signature_date: Dates.formatDateSQL(chairperson_of_health_and_safety_committee_signature_date),
+        };
         
         console.log("res", data)
         onSaved(data);
@@ -343,7 +334,7 @@ class Controls extends React.Component {
                     <ClearableInput ref="disease_desc" name="disease_desc" type="textarea" placeholder="Description of occupational disease" className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
                     <ClearableInput ref="process" name="process" type="textarea" placeholder="Machine/process involved/type of work performed/exposure**" className="col-lg-12 min-h-60 form-control" onChange={this.form.onChange}/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Was the incident reported to:</label>
-                    <ClearableInput ref="incident_reported_compensation_commissioner_and_provincial_director" name="incident_reported_compensation_commissioner_and_provincial_director" type="radio" placeholder="a) the Compensation Commissioner and Provincial Director?" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.incident_reported_compensation_commissioner_and_provincial_director} returnValue/>
+                    <ClearableInput ref="incident_reported_compensationcommissioner__provincial_director" name="incident_reported_compensationcommissioner__provincial_director" type="radio" placeholder="a) the Compensation Commissioner and Provincial Director?" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.incident_reported_compensationcommissioner__provincial_director} returnValue/>
                     <ClearableInput ref="incident_reported_police" name="incident_reported_police" type="radio" placeholder="b) the police?*" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.incident_reported_police} returnValue/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and reference</label>
                     <ClearableInput ref="saps_office" name="saps_office" type="text" placeholder="SAPS office" className="col-lg-6 col-xs-12 form-control" onChange={this.form.onChange}/>

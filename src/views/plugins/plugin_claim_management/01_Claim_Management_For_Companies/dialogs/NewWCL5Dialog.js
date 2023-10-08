@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {execWhen, setDefaultVal} from 'utils/Utils';
+import {Dates, execWhen, setDefaultVal} from 'utils/Utils';
 
 import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -116,7 +116,7 @@ class Controls extends React.Component {
             setDefaultValue('employee_str_addr');
             setDefaultValue('employee_str_addr_code');
 
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             setDefaultValue('operation_procedure_test_carried_out_and_dates');
             setDefaultValue('prognosis_and_further_treatment');
             setDefaultValue('employee_been_fit_normal_work_date');
@@ -124,7 +124,7 @@ class Controls extends React.Component {
             setDefaultValue('employee_condition_became_stabilised_yes_or_no');
             setDefaultValue('present_permanent_anatomical_defect_or_impairment');
 
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             setDefaultValue('practioner_signature');
             setDefaultValue('practioner_signature_name');
             setDefaultValue('practioner_signature_date');
@@ -160,7 +160,7 @@ class Controls extends React.Component {
         const {idx} = btn.props;
         if(idx === 1) {
             if (!form.isValid('claim_number')) {
-                infoDialog.open('Claim Number is required');
+                infoDialog.open('ClaimsClient Number is required');
                 return;
             }
             if (!form.isValid('accident_date')) {
@@ -229,7 +229,7 @@ class Controls extends React.Component {
             employee_str_addr,
             employee_str_addr_code,
             
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             operation_procedure_test_carried_out_and_dates,
             prognosis_and_further_treatment,
             employee_been_fit_normal_work_date,
@@ -237,49 +237,49 @@ class Controls extends React.Component {
             employee_condition_became_stabilised_yes_or_no,
             present_permanent_anatomical_defect_or_impairment,
             
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             practioner_signature,
             practioner_signature_name,
             practioner_signature_date,
             practioner_addr,
             practioner_practice_num
         } = form.data;
-        const data = {totalFieldCount, totalFieldMax};
         
-        //1. General Details
-        claim_number && (data.claim_number = claim_number);
-        accident_date && (data.accident_date = accident_date.getTime());
-        
-        //2. Employer Details
-        company_name && (data.company_name = company_name);
-        company_str_addr && (data.company_str_addr = company_str_addr);
-        company_str_addr_code && (data.company_str_addr_code = company_str_addr_code);
-        
-        //3. Employee Details
-//        if(employee) {
-//            const {id = null, data: _data, fname, lname} = employee;
-//            data.employee = {id, fname: fname || _data.fname, lname: lname || _data.lname};
-//        }
-        id_num && (data.id_num = id_num);
-        employee_str_addr && (data.employee_str_addr = employee_str_addr);
-        employee_str_addr_code && (data.employee_str_addr_code = employee_str_addr_code);
-        
-        //4. Medical Practioner/Chiropractor Consultation Details
-        operation_procedure_test_carried_out_and_dates && (data.operation_procedure_test_carried_out_and_dates = operation_procedure_test_carried_out_and_dates.map(({desc, date}) => {
-            return {desc, date: date && date.getTime()};
-        }));
-        prognosis_and_further_treatment && (data.prognosis_and_further_treatment = prognosis_and_further_treatment);
-        employee_been_fit_normal_work_date && (data.employee_been_fit_normal_work_date = employee_been_fit_normal_work_date.getTime());
-        employee_likely_to_be_fit_normal_work_date && (data.employee_likely_to_be_fit_normal_work_date = employee_likely_to_be_fit_normal_work_date.getTime());
-        employee_condition_became_stabilised_yes_or_no && (data.employee_condition_became_stabilised_yes_or_no = employee_condition_became_stabilised_yes_or_no);
-        present_permanent_anatomical_defect_or_impairment && (data.present_permanent_anatomical_defect_or_impairment = present_permanent_anatomical_defect_or_impairment);
-        
-        //5. Medical Practioner/Chiropractor Declaration
-        practioner_signature && (data.practioner_signature = JSON.stringify(practioner_signature));
-        practioner_signature_name && (data.practioner_signature_name = practioner_signature_name);
-        practioner_signature_date && (data.practioner_signature_date = practioner_signature_date.getTime());
-        practioner_addr && (data.practioner_addr = practioner_addr);
-        practioner_practice_num && (data.practioner_practice_num = practioner_practice_num);
+        const data = {
+            totalFieldCount,
+            totalFieldMax,
+            //1. General Details
+            claim_number,
+            accident_date: Dates.formatDateSQL(accident_date),
+            
+            //2. Employer Details
+            company_name,
+            company_str_addr,
+            company_str_addr_code,
+            
+            //3. Employee Details
+//            employee,
+            id_num,
+            employee_str_addr,
+            employee_str_addr_code,
+            
+            //4. Medical Practitioner/Chiropractor Consultation Details
+            operation_procedure_test_carried_out_and_dates: operation_procedure_test_carried_out_and_dates && operation_procedure_test_carried_out_and_dates.map(({desc, date}) => {
+                return {desc, date: Dates.formatDateSQL(date)};
+            }).slice(),
+            prognosis_and_further_treatment,
+            employee_been_fit_normal_work_date: Dates.formatDateSQL(employee_been_fit_normal_work_date),
+            employee_likely_to_be_fit_normal_work_date: Dates.formatDateSQL(employee_likely_to_be_fit_normal_work_date),
+            employee_condition_became_stabilised_yes_or_no,
+            present_permanent_anatomical_defect_or_impairment,
+            
+            //5. Medical Practitioner/Chiropractor Declaration
+            practioner_signature: practioner_signature && toJS(practioner_signature),
+            practioner_signature_name,
+            practioner_signature_date: Dates.formatDateSQL(practioner_signature_date),
+            practioner_addr,
+            practioner_practice_num
+        };
         
         console.log("res", data)
         onSaved(data);
@@ -356,7 +356,7 @@ class Controls extends React.Component {
                     rendered 
                     countFields
                     idx={4}
-                    title="4. Medical Practioner/Chiropractor Consultation Details" 
+                    title="4. Medical Practitioner/Chiropractor Consultation Details"
                     onFormOpen={onFormOpen} 
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
@@ -378,7 +378,7 @@ class Controls extends React.Component {
                     rendered 
                     countFields
                     idx={5}
-                    title="5. Medical Practioner/Chiropractor Declaration" 
+                    title="5. Medical Practitioner/Chiropractor Declaration"
                     onFormOpen={onFormOpen} 
                     onFormBack={onFormBack} 
                 >
@@ -386,7 +386,7 @@ class Controls extends React.Component {
                         I certify that I have by examination, satisfied myself that the injury(ies) of the employee is the result of the accident.
                     </label>
                     
-                    <ClearableInput ref="practioner_signature" name="practioner_signature" type="signature" placeholder="Medical Practioner/Chiropractor Signature" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput ref="practioner_signature" name="practioner_signature" type="signature" placeholder="Medical Practitioner/Chiropractor Signature" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <ClearableInput ref="practioner_signature_name" name="practioner_signature_name" type="text" placeholder="Name of Person Signing" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <ClearableInput ref="practioner_signature_date" name="practioner_signature_date" type="date" placeholder="Signature Date..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 

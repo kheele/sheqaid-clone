@@ -56,7 +56,7 @@
                 await sendEmail(
                         loggedUser,
                         receipient_coid_provider_id,
-                        'Claim Management (New Request)',
+                        'ClaimsClient Management (New Request)',
                         `<p>Your company (__), has received the request from ${sender_name} to manage your company's (__) claims.</p>\n`
                         );
 
@@ -99,7 +99,7 @@
                 await sendEmail(
                         loggedUser,
                         receipient_coid_provider_id,
-                        'Claim Management (Request Cancelled)',
+                        'ClaimsClient Management (Request Cancelled)',
                         `<p>The request that was sent to your company (__), from ${sender_name}, for claim management has been cancelled.</p>\n`
                         );
 
@@ -147,7 +147,7 @@
                 await sendEmail(
                         loggedUser,
                         receipient_coid_provider_id,
-                        'Claim Management (Your Account Removed)',
+                        'ClaimsClient Management (Your Account Removed)',
                         `<p>Your company (__), will no longer have access to manage ${sender_name} claims. ${sender_name} has removed your company (__) from its claim management.</p>\n`
                         );
 

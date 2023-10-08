@@ -4,5 +4,4 @@ require("./excel");
 require("./accounts");
 require("./get");
 require("./send");
-
-require("./send");
+require("./send-msg");

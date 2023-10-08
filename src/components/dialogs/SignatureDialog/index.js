@@ -47,7 +47,7 @@ class Controls extends React.Component {
             plugin: [
                 {text: 'SHEQ Management', value: 'plugin_sheq_assist', checked: false},
                 {text: 'Human Resource Management', value: 'plugin_hr_management', checked: false},
-                {text: 'Claim Management', value: 'plugin_claim_management', checked: false},
+                {text: 'ClaimsClient Management', value: 'plugin_claim_management', checked: false},
                 {text: 'Extra Modules', value: 'plugin_extra', checked: false},
             ],
             is_employee_owning: [

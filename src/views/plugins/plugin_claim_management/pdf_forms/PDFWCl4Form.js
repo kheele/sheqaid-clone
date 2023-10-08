@@ -253,7 +253,7 @@ class PDFWCl4Form extends React.Component {
                     employee_str_addr,
                     employee_str_addr_code,
 
-                    //4. Medical Practioner/Chiropractor Consultation Details
+                    //4. Medical Practitioner/Chiropractor Consultation Details
                     first_consultation_date,
                     how_accident_happen,
                     injury_clinical_desc,
@@ -275,7 +275,7 @@ class PDFWCl4Form extends React.Component {
                     employee_fitness_light_duty_date,
                     employee_fitness_normal_duty_date,
 
-                    //5. Medical Practioner/Chiropractor Declaration
+                    //5. Medical Practitioner/Chiropractor Declaration
                     practioner_signature,
                     practioner_signature_name,
                     practioner_signature_date,

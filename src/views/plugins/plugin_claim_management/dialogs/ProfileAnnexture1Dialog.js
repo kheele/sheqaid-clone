@@ -87,7 +87,7 @@ class Controls extends React.Component {
             expected_period_of_disablement, 
             disease_desc, 
             process,
-            incident_reported_compensation_commissioner_and_provincial_director,
+            incident_reported_compensationcommissioner__provincial_director,
             incident_reported_police,
             saps_office,
             saps_reference,
@@ -139,7 +139,7 @@ class Controls extends React.Component {
                     <ProfileField name="disease_desc" title="Description of occupational disease" value={disease_desc} className="col-lg-12"/>
                     <ProfileField name="process" title="Machine/process involved/type of work performed/exposure**" value={process} className="col-lg-12"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Was the incident reported to:</label>
-                    <ProfileField name="incident_reported_compensation_commissioner_and_provincial_director" title="a) the Compensation Commissioner and Provincial Director?" value={incident_reported_compensation_commissioner_and_provincial_director} className="col-lg-12"/>
+                    <ProfileField name="incident_reported_compensationcommissioner__provincial_director" title="a) the Compensation Commissioner and Provincial Director?" value={incident_reported_compensationcommissioner__provincial_director} className="col-lg-12"/>
                     <ProfileField name="incident_reported_police" title="b) the police?*" value={incident_reported_police} className="col-lg-12"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and reference</label>
                     <ProfileField name="saps_office" title="SAPS office" value={saps_office} className="col-lg-6 col-xs-12"/>

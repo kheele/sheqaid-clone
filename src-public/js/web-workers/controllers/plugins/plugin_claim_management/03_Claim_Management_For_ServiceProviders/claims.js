@@ -5,7 +5,7 @@
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events) {
             super(events,
-                    {singular: "COID Claim", plural: "COID Claims"},
+                    {singular: "COID ClaimsClient", plural: "COID Claims"},
                     "plugin_sheq_assist/COIDA_Management/claims/coid-provider/",
                     "plugin_sheq_assist_coida_claims"
                     );
@@ -56,7 +56,7 @@
 //                //'Submit - CF',
                 data.status = "Pending";
 
-//                  'Old Claim - No Data On CompEasy',
+//                  'Old ClaimsClient - No Data On CompEasy',
 //                  'Not Employed',
 //                  'Reject',
 //                  'Liability Repudiated',
@@ -64,7 +64,7 @@
 //                  'Liability Accepted',
 //                  'Wait on info',
 //                  'Adjudication still Pending',
-//                  'Request Claim no'
+//                  'Request ClaimsClient no'
                 data.claim_status = null;
 
                 const setSplitDate = (o, key) => {
@@ -461,7 +461,7 @@
                     const {company_name, employee} = res.data;
 //                    await sendEmail(
 //                            receipient_coid_provider,
-//                            'Claim Management (Claim Number Added/Updated)',
+//                            'ClaimsClient Management (ClaimsClient Number Added/Updated)',
 //                            `<p>${sender_name} has added/updated the claim status (${claim_status}).</p>\n`
 //                            );
                 }
@@ -490,7 +490,7 @@
                     const {company_name, employee} = res.data;
 //                    await sendEmail(
 //                            receipient_coid_provider,
-//                            'Claim Management (Claim Number Added/Updated)',
+//                            'ClaimsClient Management (ClaimsClient Number Added/Updated)',
 //                            `<p>${sender_name} has added/updated the claim status (${claim_status}).</p>\n`
 //                            );
                 }
@@ -819,7 +819,7 @@
                     return val;
                 });
 
-                return await this.export_excel_impl(loggedUser, "Claim-Management-Docs", "Claim-Management-ServiceProvider", "Claim-Management Data", cols, rows);
+                return await this.export_excel_impl(loggedUser, "ClaimsClient-Management-Docs", "ClaimsClient-Management-ServiceProvider", "ClaimsClient-Management Data", cols, rows);
             });
         }
         // </editor-fold>

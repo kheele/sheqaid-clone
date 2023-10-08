@@ -32,7 +32,7 @@ import PrintAnnexture1Dialog from '../../dialogs/PrintAnnexture1Dialog.js';
 
 import ButtonWCl from '../../dialogs/ButtonWCl';
 
-import NewClaimsEmployerDetailsDialog from './NewClaimsEmployerDetailsDialog';
+import NewDialog from './ClaimsEmployerDetailsDialog/NewDialog';
 
 import WCl5Table from "../../dialogs/WCl5Table";
 
@@ -49,7 +49,7 @@ class EditClaimsClientDialog extends AEditDialog {
     }
     
     title() {
-        return "Edit Claim";
+        return "Edit ClaimsClient";
     }
 
     get controls() {
@@ -270,13 +270,13 @@ class Controls extends React.Component {
         }
         if(idx === 4) {
             if (form.isValid('doctor_email_1') && !form.get('doctor_email_1').isEmailAddress()) {
-                infoDialog.open('Medical Practioner/Chiropractor Email Address is not valid email address');
+                infoDialog.open('Medical Practitioner/Chiropractor Email Address is not valid email address');
                 return;
             }
         }
         if(idx === 5) {
             if (form.isValid('doctor_email_2') && !form.get('doctor_email_2').isEmailAddress()) {
-                infoDialog.open('Medical Practioner/Chiropractor Email Address is not valid email address');
+                infoDialog.open('Medical Practitioner/Chiropractor Email Address is not valid email address');
                 return;
             }
         }
@@ -302,7 +302,7 @@ class Controls extends React.Component {
             return;
         }
         if (form.isValid('doctor_email_1') && !form.get('doctor_email_1').isEmailAddress()) {
-            infoDialog.open('Medical Practioner/Chiropractor Email Address is not valid email address');
+            infoDialog.open('Medical Practitioner/Chiropractor Email Address is not valid email address');
             return;
         }
         
@@ -570,7 +570,7 @@ class Controls extends React.Component {
                 employee_str_addr,
                 employee_str_addr_code,
 
-                //4. Medical Practioner/Chiropractor Consultation Details
+                //4. Medical Practitioner/Chiropractor Consultation Details
                 first_consultation_date,
                 how_accident_happen,
                 injury_clinical_desc,
@@ -592,7 +592,7 @@ class Controls extends React.Component {
                 employee_fitness_light_duty_date,
                 employee_fitness_normal_duty_date,
 
-                //5. Medical Practioner/Chiropractor Declaration
+                //5. Medical Practitioner/Chiropractor Declaration
                 practioner_signature,
                 practioner_signature_name,
                 practioner_signature_date,
@@ -617,7 +617,7 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, employee_str_addr, 'employee_str_addr');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, employee_str_addr_code, 'employee_str_addr_code');
                 
-            //4. Medical Practioner/Chiropractor Consultation Details
+            //4. Medical Practitioner/Chiropractor Consultation Details
             ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, first_consultation_date, 'first_consultation_date');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, how_accident_happen, 'how_accident_happen');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, injury_clinical_desc, 'injury_clinical_desc');
@@ -639,7 +639,7 @@ class Controls extends React.Component {
             ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, employee_fitness_light_duty_date, 'employee_fitness_light_duty_date');
             ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, employee_fitness_normal_duty_date, 'employee_fitness_normal_duty_date');
 
-            //5. Medical Practioner/Chiropractor Declaration
+            //5. Medical Practitioner/Chiropractor Declaration
             ShouldUpdate.checkSignature(new_wcl_4, old_data.wcl_4, practioner_signature, 'practioner_signature');
             ShouldUpdate.check(new_wcl_4, old_data.wcl_4, practioner_signature_name, 'practioner_signature_name');
             ShouldUpdate.checkDate_deprecated(new_wcl_4, old_data.wcl_4, practioner_signature_date, 'practioner_signature_date');
@@ -680,7 +680,7 @@ class Controls extends React.Component {
 //                employee_str_addr,
 //                employee_str_addr_code,
 //
-//                //4. Medical Practioner/Chiropractor Consultation Details
+//                //4. Medical Practitioner/Chiropractor Consultation Details
 //                operation_procedure_test_carried_out_and_dates,
 //                prognosis_and_further_treatment,
 //                employee_been_fit_normal_work_date,
@@ -688,7 +688,7 @@ class Controls extends React.Component {
 //                employee_condition_became_stabilised_yes_or_no,
 //                present_permanent_anatomical_defect_or_impairment,
 //
-//                //5. Medical Practioner/Chiropractor Declaration
+//                //5. Medical Practitioner/Chiropractor Declaration
 //                practioner_signature,
 //                practioner_signature_name,
 //                practioner_signature_date,
@@ -713,7 +713,7 @@ class Controls extends React.Component {
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, employee_str_addr, 'employee_str_addr');
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, employee_str_addr_code, 'employee_str_addr_code');
 //            
-//            //4. Medical Practioner/Chiropractor Consultation Details
+//            //4. Medical Practitioner/Chiropractor Consultation Details
 //            ShouldUpdate.checkListToJS(new_wcl_5, old_data.wcl_5, operation_procedure_test_carried_out_and_dates, 'operation_procedure_test_carried_out_and_dates');
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, prognosis_and_further_treatment, 'prognosis_and_further_treatment');
 //            ShouldUpdate.checkDate(new_wcl_5, old_data.wcl_5, employee_been_fit_normal_work_date, 'employee_been_fit_normal_work_date');
@@ -721,7 +721,7 @@ class Controls extends React.Component {
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, employee_condition_became_stabilised_yes_or_no, 'employee_condition_became_stabilised_yes_or_no');
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, present_permanent_anatomical_defect_or_impairment, 'present_permanent_anatomical_defect_or_impairment');
 //                
-//            //5. Medical Practioner/Chiropractor Declaration
+//            //5. Medical Practitioner/Chiropractor Declaration
 //            ShouldUpdate.checkSignature(new_wcl_5, old_data.wcl_5, practioner_signature, 'practioner_signature');
 //            ShouldUpdate.check(new_wcl_5, old_data.wcl_5, practioner_signature_name, 'practioner_signature_name');
 //            ShouldUpdate.checkDate(new_wcl_5, old_data.wcl_5, practioner_signature_date, 'practioner_signature_date');
@@ -858,7 +858,7 @@ class Controls extends React.Component {
                 expected_period_of_disablement, 
                 disease_desc, 
                 process,
-                incident_reported_compensation_commissioner_and_provincial_director,
+                incident_reported_compensationcommissioner__provincial_director,
                 incident_reported_police,
                 saps_office,
                 saps_reference,
@@ -898,7 +898,7 @@ class Controls extends React.Component {
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, expected_period_of_disablement, 'expected_period_of_disablement'); 
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, disease_desc, 'disease_desc'); 
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, process, 'process');
-            ShouldUpdate.check(new_annexture_1, old_data.annexture_1, incident_reported_compensation_commissioner_and_provincial_director, 'incident_reported_compensation_commissioner_and_provincial_director');
+            ShouldUpdate.check(new_annexture_1, old_data.annexture_1, incident_reported_compensationcommissioner__provincial_director, 'incident_reported_compensationcommissioner__provincial_director');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, incident_reported_police, 'incident_reported_police');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, saps_office, 'saps_office');
             ShouldUpdate.check(new_annexture_1, old_data.annexture_1, saps_reference, 'saps_reference');
@@ -1049,7 +1049,7 @@ class Controls extends React.Component {
                         className="col-lg-12 col-xs-12 margin-t-10"
                     />
                     <label className="col-lg-12 text-center margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
-                        Medical Practioner/Chiropractor Email Address
+                        Medical Practitioner/Chiropractor Email Address
                     </label>
                     <ClearableInput ref="doctor_email_1" name="doctor_email_1" type="text" placeholder="Email Address" defaultValue={doctor_email} footerDesc="For Filling W.CI.4 Online" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 </Row>
@@ -1095,7 +1095,7 @@ class Controls extends React.Component {
             <PrintWCL6Dialog ref="printWCL6Dialog"/>
             <PrintAnnexture1Dialog ref="printAnnexture1Dialog"/>
             
-            <NewClaimsEmployerDetailsDialog ref="newClaimsEmployerDetailsDialog"/>
+            <NewDialog ref="newClaimsEmployerDetailsDialog"/>
             
             <ChatBtn item={item} onClick={this.onClickChat}/>
         </FormControls>;

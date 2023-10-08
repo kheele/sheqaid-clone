@@ -58,7 +58,7 @@
                 await sendEmail(
                         loggedUser,
                         sender_company_id,
-                        'Claim Management (Request Accepted)',
+                        'ClaimsClient Management (Request Accepted)',
                         `<p>The request that was sent from your company (__), to ${receipient_name}, has been accepted.</p>\n`
                         );
 
@@ -101,7 +101,7 @@
                 await sendEmail(
                         loggedUser,
                         sender_company_id,
-                        'Claim Management (Request Declined)',
+                        'ClaimsClient Management (Request Declined)',
                         `<p>The request that was sent from your company (__), to ${receipient_name}, has been declined.</p>\n`
                         );
 
@@ -149,7 +149,7 @@
                 await sendEmail(
                         loggedUser,
                         sender_company_id,
-                        'Claim Management (Your Account Removed)',
+                        'ClaimsClient Management (Your Account Removed)',
                         `<p>Your company (__), will no longer be able to send claims to ${receipient_name}. ${receipient_name} has removed your company (__) from its claim management.</p>\n`
                         );
 

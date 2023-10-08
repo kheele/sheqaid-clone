@@ -6,12 +6,12 @@ import style from "./Main.lazy.css";
 
 import APage from "../../../APage";
 
-import ClaimsEmployeeTab from './ClaimsEmployeeTab.js';
-import ClaimsClientTab from './ClaimsClientTab.js';
-import ClaimsContractorTab from './ClaimsContractorTab.js';
+import ClaimsEmployeeTab from './ClaimsEmployeeTab';
+import ClaimsClientTab from './ClaimsClientTab';
+import ClaimsContractorTab from './ClaimsContractorTab';
 
-import COIDServiceProvidersTab from './COIDServiceProvidersTab.js';
-import COIDMedicalCentersTab from './COIDMedicalCentersTab.js';
+import COIDServiceProvidersTab from './COIDServiceProvidersTab';
+import COIDMedicalCentersTab from './COIDMedicalCentersTab';
 
 import Tabs from 'components/tabs/Tabs';
 
