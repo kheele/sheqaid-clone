@@ -25,7 +25,6 @@ exports.sendNewQuickIncidentNotification = async (body) => {
     `;
 
     const injury_fragment = `
-        id
         injury{
           id
           name
@@ -139,7 +138,7 @@ exports.sendNewQuickIncidentNotification = async (body) => {
     if (!item) {
         return;
     }
-
+//7Qk6ipL0kgj0ThgYqOMQ, GypCgmbrT13AZgfx8peG, XvEGdxUp0GAaLpcduNro (message),
     const {
         removed,
         //
