@@ -10,12 +10,13 @@ export default async (input: number) => {
   return GQLClient
     .query({
       query: `
-      query findByClientIdClaimsEmployerDetailsQuery {
-        coida_claims_employer_details(where:{client_id: ${input}}) {
-          ${coida_claims_employer_details_fragment}
-          ${orgs_fragment}
-        }
-      }
-    `,
+          query findByClientIdClaimsEmployerDetailsQuery($id: bigint) {
+            coida_claims_employer_details(where:{client_id: $id}}) {
+              ${coida_claims_employer_details_fragment}
+              ${orgs_fragment}
+            }
+          }
+      `,
+      variables: {id: input},
     }).then(res => res && res[0]);
 }

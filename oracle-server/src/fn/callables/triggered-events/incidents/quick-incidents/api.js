@@ -48,8 +48,7 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         query: `
             query findByIdQuery($id: bigint) {
                 sheq_incident_investigation_quick_connection(
-                    where: {id: {_eq: $id}},
-                    limit: 1
+                    where: {id: {_eq: $id}}
                 ) {
                   edges {
                     node {
