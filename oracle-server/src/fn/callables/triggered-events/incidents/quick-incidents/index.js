@@ -7,10 +7,15 @@ const {
 
 router.post('/sendNewQuickIncidentNotification', async (req, res) => {
 	// console.log(req.path, req.body)
-	const auth_id = await sendNewQuickIncidentNotification(req.body);
-	if(auth_id) {
-		io.to(auth_id).emit('sendNewQuickIncidentNotification');
+	try {
+		const auth_id = await sendNewQuickIncidentNotification(req.body);
+		if (auth_id) {
+			io.to(auth_id).emit('sendNewQuickIncidentNotification');
+		}
+	} catch (err) {
+
 	}
+
 	res.end();
 });
 

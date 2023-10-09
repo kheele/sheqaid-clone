@@ -226,22 +226,37 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         location = "N/A";
     }
 
-    let imageSection =  '';
+    let imageSection = [];
     (image_list || []).forEach(v => {
-        imageSection +=  `<img src="${v.doc.dlUrls[0]}"/>`;
+        imageSection.push(`<img width="100%" src="${v.doc.dlUrls[0]}"/>`);
     });
-    let videoSection =  '';
+    let videoSection =  [];
     (video_list || []).forEach(v => {
-        videoSection +=  `<video src="${v.doc.dlUrls[0]}"/>`;
+        videoSection.push(`<video width="100%" src="${v.doc.dlUrls[0]}"/>`);
     });
 
+    const createTR = (title, value) => {
+        return <tr style="background: #eee">
+            <td style="width: 240px">
+                ${title}
+            </td>
+            <td>
+                <b>${value || 'N/A'}</b>
+            </td>
+        </tr>;
+    };
+
     const vehicleSection = is_vehicle_incident ? `
-        <p>Vehicle Make: <b>${vehicle_make || 'N/A'}</b></p>
-        <p>Vehicle Registration : <b>${vehicle_reg_num || 'N/A'}</b></p>
-        <p>Driver: <b>${driver || driver_other ? (driver || driver_other).full_name : 'N/A'}</b></p>
-        <p>Driver Phone No.: <b>${driver_phone || ((driver || driver_other) && (driver || driver_other).phone) || 'N/A'}</b></p>
-        <p>Driver Email Address: <b>${driver_email || ((driver || driver_other) && (driver || driver_other).email) || 'N/A'}</b></p>
-    ` : '';
+        <table border-collapse="10">
+            <tbody>
+                ${createTR("Vehicle Make", vehicle_make)}
+                ${createTR("Vehicle Registration ", vehicle_reg_num)}
+                ${createTR("Driver", (driver || driver_other) && (driver || driver_other).full_name)}
+                ${createTR("Driver Phone No.", driver_phone || ((driver || driver_other) && (driver || driver_other).phone))}
+                ${createTR("Driver Email Address", driver_email || ((driver || driver_other) && (driver || driver_other).email))}
+            </tbody>
+        </table>
+    ` : null;
 
     EmailUtils.send({
         from: '"SHEQ Aid" <no-reply@sheqsolve.com>',
@@ -251,31 +266,36 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         html: `
             <p>This is an automated email from SHEQ Aid.<br />Please do not reply to this email.</p>
             <p>The following incident has been reported:</p>
-            <p>Location (Company/Project/Site): <b>${location}</b></p>
-            <p>ID: <b>${id}</b></p>
-            <p>Short Description: <b>${short_desc}</b></p>
-            <p>Exact Location: <b>${exact_location}</b></p>
-            <p>Location Reported: <b>latitude: ${latitude}, longitude: ${longitude}</b></p>
-            <p>Incident Category: <b>${(!category_list.isEmpty() ? category_list.map(v => v.category.name).join(',') : 'N/A')}</b></p>
+            <table border-collapse="10">
+                <tbody>
+                    ${createTR("Location (Company/Project/Site)", location)}
+                    ${createTR("ID", id)}
+                    ${createTR("Short Description", short_desc)}
+                    ${createTR("Exact Location", exact_location)}
+                    
+                    ${createTR("Location Reported", `latitude: ${latitude || 'N/A'}, longitude: ${longitude || 'N/A'}`)}
+                    ${createTR("Incident Category", !category_list.isEmpty() && category_list.map(v => v.category.name).join(','))}
             
-            <p>Nature Of Injury: <b>${(!nature_of_injury_list.isEmpty() ? nature_of_injury_list.map(v => v.injury.name).join(',') : 'N/A')}</b></p>
-            <p>Bodily Injury Location: <b>${(!bodily_injury_location_list.isEmpty() ? bodily_injury_location_list.map(v => v.injury.name).join(',') : 'N/A')}</b></p>
-            <p>Injury Mechanism: <b>${(!injury_mechanism_list.isEmpty() ? injury_mechanism_list.map(v => v.injury.name).join(',') : 'N/A')}</b></p>
+                    ${createTR("Nature Of Injury", !nature_of_injury_list.isEmpty() && nature_of_injury_list.map(v => v.injury.name).join(','))}
+                    ${createTR("Bodily Injury Location", !bodily_injury_location_list.isEmpty() && bodily_injury_location_list.map(v => v.injury.name).join(','))}
+                    ${createTR("Injury Mechanism", !injury_mechanism_list.isEmpty() && injury_mechanism_list.map(v => v.injury.name).join(','))}
+                    
+                    ${createTR("Images", imageSection.isNotEmpty() && imageSection)}
+                    ${createTR("Videos", videoSection.isNotEmpty() && videoSection)}
             
-            ${imageSection}
-            ${videoSection}
-            
-            <p>Date Of Incident: <b>${Dates.formatDate(incident_date) || 'N/A'}</b></p>
-            <p>Time Of Incident: <b>${incident_time}</b></p>
-            <p>Date Reported: <b>${Dates.formatDate(date_reported) || 'N/A'}</b></p>
-            <p>Time Reported: <b>${time_reported}</b></p>
-            <p>Time Shift: <b>${time_shift}</b></p>
-            <p>Incident Severity: <b>${severity}</b></p>
-            
-            <p>Reported By: <b>${person_reporting || person_reporting_other ? (person_reporting || person_reporting_other).full_name : 'N/A'}</b></p>
-            <p>Person Injured: <b>${person_injured || person_injured_other ? (person_injured || person_injured_other).full_name : 'N/A'}</b></p>
-            
-            ${vehicleSection}
+                    ${createTR("Date Of Incident", Dates.formatDate(incident_date))}
+                    ${createTR("Time Of Incident", incident_time)}
+                    ${createTR("Date Reported", Dates.formatDate(date_reported))}
+                    ${createTR("Time Reported", time_reported)}
+                    ${createTR("Time Shift", time_shift)}
+                    ${createTR("Incident Severity", severity)}
+                    
+                    ${createTR("Reported By", (person_reporting || person_reporting_other) && (person_reporting || person_reporting_other).full_name)}
+                    ${createTR("Person Injured", (person_injured || person_injured_other) && (person_injured || person_injured_other).full_name)}
+                    
+                    ${createTR("Vehicle Details", vehicleSection)}               
+                </tbody>
+            </table>
             
             <p>If you didn't request this, you can ignore this email or let us know.</p>
             <p>Kind Regards<br/>SHEQ Aid</p>
