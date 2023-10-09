@@ -101,7 +101,7 @@ class Cntr extends ACntr {
                 const {errors, data} = res;
 
                 if (errors) {
-                    throw new Error(errors);
+                    throw new Error(JSON.stringify(errors));
                 }
 
                 const key = Object.keys(data)[0];
@@ -135,7 +135,7 @@ class Cntr extends ACntr {
             const {errors, data} = res;
 
             if (errors) {
-                throw new Error(errors);
+                throw new Error(JSON.stringify(errors));
             }
 
             if (multi_queries) {
