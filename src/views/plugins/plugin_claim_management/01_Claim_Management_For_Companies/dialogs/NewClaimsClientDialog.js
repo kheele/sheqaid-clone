@@ -35,6 +35,9 @@ import NewDialog from './ClaimsEmployerDetailsDialog/NewDialog';
 import WCl5Table from "../../dialogs/WCl5Table";
 
 import style from "./NewClaimsClientDialog.lazy.css";
+import findByClientIdClaimsEmployerDetails
+	from "mutations/all/COIDA/ClaimsEmployerDetails/findByClientIdClaimsEmployerDetails";
+import insertClaimsClient from "mutations/all/COIDA/ClaimsClient/insertClaimsClient";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -56,7 +59,6 @@ class NewClaimsClientDialog extends ANewDialog {
 
 @observer
 class Controls extends React.Component {
-	path = "plugin_sheq_assist/COIDA_Management/claims/client/";
 	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable
@@ -125,7 +127,7 @@ class Controls extends React.Component {
 	onChangeClient(el, val) {
 		if (val) {
 			progressDialog.open();
-			neonBinding.events.emit(`${this.path}employer-details/find_by_client_id`, val.id).then(res => {
+			findByClientIdClaimsEmployerDetails(val.id).then(res => {
 				progressDialog.close();
 				if (!res) {
 					infoDialog.open('No Employer Details found');
@@ -339,7 +341,7 @@ class Controls extends React.Component {
 		console.log(data)
 		
 		btn.text("Saving...").disabled();
-		neonBinding.events.emit(this.path + "create", data).then(res => {
+		insertClaimsClient(data).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully saved.");

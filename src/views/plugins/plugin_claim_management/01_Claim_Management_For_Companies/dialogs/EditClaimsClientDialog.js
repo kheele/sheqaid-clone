@@ -37,6 +37,11 @@ import NewDialog from './ClaimsEmployerDetailsDialog/NewDialog';
 import WCl5Table from "../../dialogs/WCl5Table";
 
 import style from "./EditClaimsClientDialog.lazy.css";
+import findByClientIdClaimsEmployerDetails
+    from "mutations/all/COIDA/ClaimsEmployerDetails/findByClientIdClaimsEmployerDetails";
+import insertClaimsProviderMessage
+    from "mutations/all/COIDA/ClaimsProviderMessage/insertClaimsProviderMessage";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -60,7 +65,6 @@ class EditClaimsClientDialog extends AEditDialog {
 
 @observer
 class Controls extends React.Component {
-    path = "plugin_sheq_assist/COIDA_Management/claims/client/";
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
@@ -146,7 +150,7 @@ class Controls extends React.Component {
     onChangeClient(el, val) {
         if(val) {
             progressDialog.open();
-            neonBinding.events.emit(`${this.path}employer-details/find_by_client_id`, val.id).then(res => {
+            findByClientIdClaimsEmployerDetails(val.id).then(res => {
                 setTimeout(() => progressDialog.close(), 1000);
                 if(!res) {
                     infoDialog.open('No Employer Details found');
@@ -237,8 +241,8 @@ class Controls extends React.Component {
     onClickChat(btn) {
         const {onChange} = this.props;
         chatBoxClaims.setActiveItem(this.item, btn, newMsg => {
-            const {id, data: {message_list_provider}} = this.item;
-            neonBinding.events.emit(this.path + "chat", id, message_list_provider).then(res => {
+            newMsg.claim_id = item.id;
+            insertClaimsProviderMessage(newMsg).then(res => {
                 console.log("claim chat res", res)
             });
         });
@@ -941,7 +945,7 @@ class Controls extends React.Component {
         }
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        updateClaimsClient({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");
