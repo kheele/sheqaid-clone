@@ -235,9 +235,9 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         videoSection.push(`<video width="100%" src="${v.doc.dlUrls[0]}"/>`);
     });
 
-    const createTR = (title, value) => {
+    const createTR = (title, value, w = "240px") => {
         return `<tr style="background: #eee">
-            <td style="width: 240px">
+            <td style="width: ${w || "240px"}; padding: 10px; text-align: right;">
                 ${title}
             </td>
             <td>
@@ -247,13 +247,13 @@ exports.sendNewQuickIncidentNotification = async (body) => {
     };
 
     const vehicleSection = is_vehicle_incident ? `
-        <table border-collapse="10">
+        <table style="width: 100%; display: block;">
             <tbody>
-                ${createTR("Vehicle Make", vehicle_make)}
-                ${createTR("Vehicle Registration ", vehicle_reg_num)}
-                ${createTR("Driver", (driver || driver_other) && (driver || driver_other).full_name)}
-                ${createTR("Driver Phone No.", driver_phone || ((driver || driver_other) && (driver || driver_other).phone))}
-                ${createTR("Driver Email Address", driver_email || ((driver || driver_other) && (driver || driver_other).email))}
+                ${createTR("Vehicle Make", vehicle_make, "160px")}
+                ${createTR("Vehicle Registration ", vehicle_reg_num, "160px")}
+                ${createTR("Driver", (driver || driver_other) && (driver || driver_other).full_name, "160px")}
+                ${createTR("Driver Phone No.", driver_phone || ((driver || driver_other) && (driver || driver_other).phone), "160px")}
+                ${createTR("Driver Email Address", driver_email || ((driver || driver_other) && (driver || driver_other).email), "160px")}
             </tbody>
         </table>
     ` : null;
@@ -266,7 +266,7 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         html: `
             <p>This is an automated email from SHEQ Aid.<br />Please do not reply to this email.</p>
             <p>The following incident has been reported:</p>
-            <table border-collapse="10">
+            <table style="width: 100%; display: block;">
                 <tbody>
                     ${createTR("Location (Company/Project/Site)", location)}
                     ${createTR("ID", id)}
@@ -293,7 +293,14 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                     ${createTR("Reported By", (person_reporting || person_reporting_other) && (person_reporting || person_reporting_other).full_name)}
                     ${createTR("Person Injured", (person_injured || person_injured_other) && (person_injured || person_injured_other).full_name)}
                     
-                    ${createTR("Vehicle Details", vehicleSection)}               
+                    <tr style="background: #eee">
+                        <td style="width: 240px; padding: 10px;; text-align: right;">
+                            Vehicle Details
+                        </td>
+                        <td>
+                            ${vehicleSection || 'N/A'}
+                        </td>
+                    </tr>               
                 </tbody>
             </table>
             
