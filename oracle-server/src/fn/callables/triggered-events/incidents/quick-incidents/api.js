@@ -236,14 +236,14 @@ exports.sendNewQuickIncidentNotification = async (body) => {
     });
 
     const createTR = (title, value) => {
-        return <tr style="background: #eee">
+        return `<tr style="background: #eee">
             <td style="width: 240px">
                 ${title}
             </td>
             <td>
                 <b>${value || 'N/A'}</b>
             </td>
-        </tr>;
+        </tr>`;
     };
 
     const vehicleSection = is_vehicle_incident ? `
