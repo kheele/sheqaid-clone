@@ -1,6 +1,6 @@
 import GQLClient from "graphql/GQLClient";
 import {getVariablesAndQueryConfig} from "../Utils";
-import {orgs_fragment} from "graphql/Fragments";
+import {orgs_no_project_and_site_fragment} from "graphql/Fragments";
 import {coida_claims_employer_details_fragment} from "../Fragments";
 
 export default (
@@ -42,7 +42,7 @@ export default (
 	        ${limit > 0 ? `limit: ${limit}` : ''}
         ) {
           ${coida_claims_employer_details_fragment}
-          ${orgs_fragment}
+          ${orgs_no_project_and_site_fragment}
         }
       }
     `,

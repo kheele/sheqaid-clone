@@ -19,4 +19,8 @@ export default async (input: number) => {
       `,
     }).then(res => res && res[0]);
 }
-//"[{"extensions":{"code":"validation-failed","path":"$.selectionSet.coida_claims_employer_details.selectionSet.project"},"message":"field 'project' not found in type: 'coida_claims_employer_details'"}]"
+//"Error: [{"extensions":{"code":"validation-failed","path":"$.selectionSet.coida_claims_employer_details.selectionSet.project"},"message":"field 'project' not found in type: 'coida_claims_employer_details'"}]
+//     at /app/src/sockets/controllers/general/graphql/index.js:138:23
+//     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+//     at async EventManager.emit (/app/src/sockets/eventManager.js:38:13)
+//     at async Socket.<anonymous> (/app/src/sockets/controllers/index.js:15:16)"
