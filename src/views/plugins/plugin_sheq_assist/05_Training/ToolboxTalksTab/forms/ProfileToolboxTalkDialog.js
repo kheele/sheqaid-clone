@@ -9,7 +9,7 @@ import {
     SelectClientInput, SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput,
-    SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput, SelectUserInput, UploadButton
+    SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput, SelectUserInput, UploadButton
 } from '../../../../../../components/inputs';
 import {FormControls, Row} from '../../../../../../components/FormComponents';
 import {AProfileDialog} from '../../../../../../components/dialogs';
@@ -105,7 +105,7 @@ class Controls extends React.Component {
                 rendered
                 active={isNoProjects}
                 idx={1}
-                title="1. Course Details"
+                title="1. Subject Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={!isNoProjects && onFormBack}

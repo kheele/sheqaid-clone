@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3049c46b9a3f8814554c715ec1c37ff9>>
+ * @generated SignedSource<<60939ac2972b43d533fec9b5c88a0739>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,15 +38,15 @@ v1 = [
         "name": "where"
       }
     ],
-    "concreteType": "sheq_training_toolbox_talk_subject_categoriesConnection",
+    "concreteType": "sheq_training_toolbox_talk_subjectsConnection",
     "kind": "LinkedField",
-    "name": "sheq_training_toolbox_talk_subject_categories_connection",
+    "name": "sheq_training_toolbox_talk_subjects_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "sheq_training_toolbox_talk_subject_categoriesEdge",
+        "concreteType": "sheq_training_toolbox_talk_subjectsEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -54,7 +54,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "sheq_training_toolbox_talk_subject_categories",
+            "concreteType": "sheq_training_toolbox_talk_subjects",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -95,7 +95,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "findByIdTrainingToolboxTalkSubjectCategoryQuery",
+    "name": "findByIdTrainingToolboxTalkSubjectQuery",
     "selections": (v1/*: any*/),
     "type": "query_root",
     "abstractKey": null
@@ -104,20 +104,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "findByIdTrainingToolboxTalkSubjectCategoryQuery",
+    "name": "findByIdTrainingToolboxTalkSubjectQuery",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "206ce7b326d5c9a0b81cf5bc06e9b72a",
+    "cacheID": "7ad1d034ca02ad226c3dae97141bd48a",
     "id": null,
     "metadata": {},
-    "name": "findByIdTrainingToolboxTalkSubjectCategoryQuery",
+    "name": "findByIdTrainingToolboxTalkSubjectQuery",
     "operationKind": "query",
-    "text": "query findByIdTrainingToolboxTalkSubjectCategoryQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talk_subject_categories_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdTrainingToolboxTalkSubjectQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talk_subjects_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "6ba6aa888a5c00ef1187d7fdd2b5cf63";
+node.hash = "cc646fb9884a109134078a74f6e30218";
 
 module.exports = node;

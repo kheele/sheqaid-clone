@@ -398,7 +398,7 @@ class ClearableInput extends ASelectInput {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange, onSelectInputChange">
-    onChange(value, el, isDefault) {
+    async onChange(value, el, isDefault) {
         if (!isDefault && !this.state.isEditable)
             return;
 
@@ -418,7 +418,7 @@ class ClearableInput extends ASelectInput {
 //                popover.close();
             }
         } else if (type === 'signature') {
-            execWhen(() => this.refs.signaturePicker).then(signaturePicker => {
+            await execWhen(() => this.refs.signaturePicker).then(signaturePicker => {
                 if (!value) {
                     signaturePicker.clear();
                 } else {

@@ -14,13 +14,13 @@ import NewDialog from "./NewDialog";
 import ProfileDialog from "./ProfileDialog";
 import EditDialog from "./EditDialog";
 
-import style from "./ToolboxTalkSubjectCategoryDialog.lazy.css";
-import byLogged from "./Query/List/listAllToolboxTalkSubjectCategoryByLogged";
+import style from "./ToolboxTalkSubjectDialog.lazy.css";
+import byLogged from "./Query/List/listAllToolboxTalkSubjectByLogged";
 
 @observer
-class ToolboxTalkSubjectCategoryDialog extends ADialogList {
-    pageKey = "ToolboxTalkSubjectCategoryDialog";
-    title = "Toolbox Talk Subject Categories";
+class ToolboxTalkSubjectDialog extends ADialogList {
+    pageKey = "ToolboxTalkSubjectDialog";
+    title = "Toolbox Talk Subjects";
 
     constructor(props) {
         super(props);
@@ -70,7 +70,7 @@ class ToolboxTalkSubjectCategoryDialog extends ADialogList {
     //</editor-fold>
     
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-        const permissionKey = "Toolbox Talk Subject Categories";
+        const permissionKey = "Toolbox Talk Subjects";
         return <Options idx={idx} permissionOtherKey={permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
@@ -111,8 +111,8 @@ class ToolboxTalkSubjectCategoryDialog extends ADialogList {
             hasBackBtn={false}
             createBtnTitle="Create"
             pageId={this.pageKey + '-page'}
-            listCountTopTitle="Toolbox Talk Subject Category"
-            pageTitleSingular="toolbox talk subject category"
+            listCountTopTitle="Toolbox Talk Subject"
+            pageTitleSingular="toolbox talk subject"
             onLoadList={this.onLoadList}
             noAnimation={true}
             renderPopoverOptions={this.renderPopoverOptions}
@@ -129,4 +129,4 @@ class ToolboxTalkSubjectCategoryDialog extends ADialogList {
 
 }
 
-export default ToolboxTalkSubjectCategoryDialog;
+export default ToolboxTalkSubjectDialog;

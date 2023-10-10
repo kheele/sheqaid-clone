@@ -15,7 +15,8 @@ const query = graphql`
           id
           created_at
           training_frequency
-          subject_category{
+          subject_category
+          subject{
             id
             name
           }

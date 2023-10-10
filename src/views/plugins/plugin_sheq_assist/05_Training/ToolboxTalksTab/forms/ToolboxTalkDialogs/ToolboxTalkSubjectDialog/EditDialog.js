@@ -10,22 +10,22 @@ import {ClearableInput, ProfileField, SelectClientInput} from 'components/inputs
 import {AEditDialog} from 'components/dialogs';
 import {FormControls, Row} from "components/FormComponents";
 import style from "./EditDialog.lazy.css";
-import updateTrainingToolboxTalkSubjectCategory
-    from "mutations/all/TrainingToolboxTalkSubjectCategory/updateTrainingToolboxTalkSubjectCategory";
-import findByIdTrainingToolboxTalkSubjectCategory from "mutations/all/TrainingToolboxTalkSubjectCategory/findByIdTrainingToolboxTalkSubjectCategory";
+import updateTrainingToolboxTalkSubject
+    from "mutations/all/TrainingToolboxTalkSubject/updateTrainingToolboxTalkSubject";
+import findByIdTrainingToolboxTalkSubject from "mutations/all/TrainingToolboxTalkSubject/findByIdTrainingToolboxTalkSubject";
 
 @observer
 class EditDialog extends AEditDialog {
-    pageKey = "ToolboxTalkSubjectCategoryDialog";
+    pageKey = "ToolboxTalkSubjectDialog";
     className = 'ANewTableFormDialog';
-    findById: findByIdTrainingToolboxTalkSubjectCategory;
+    findById: findByIdTrainingToolboxTalkSubject;
 
     constructor(props) {
         super(props, style);
     }
 
     get title() {
-        return "Edit Toolbox Talk Subject Category";
+        return "Edit Toolbox Talk Subject";
     }
 
     get controls() {
@@ -49,7 +49,7 @@ class Controls extends React.Component {
         const {form, item: {data: old_data}} = this;
 
         if (!form.isValid('name')) {
-            infoDialog.open('Toolbox Talk Subject Category Name is required');
+            infoDialog.open('Toolbox Talk Subject Name is required');
             return;
         }
         
@@ -70,7 +70,7 @@ class Controls extends React.Component {
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        updateTrainingToolboxTalkSubjectCategory({id: this.item.id, ...data}).then(res => {
+        updateTrainingToolboxTalkSubject({id: this.item.id, ...data}).then(res => {
             if(!res) {
                 return infoDialog.open("The record no longer exist.");
             }
@@ -114,9 +114,9 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={1}
-                title="Toolbox Talk Subject Category Details"
+                title="Toolbox Talk Subject Details"
             >
-                <ClearableInput name="name" type="text" placeholder="Toolbox Talk Subject Category Name" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="name" type="text" placeholder="Toolbox Talk Subject Name" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }

@@ -3,18 +3,18 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates, getRandomRolor} from '../../../../../../utils/Utils';
+import {Dates, getRandomRolor} from 'utils/Utils';
 import {
     ActionsButton,
     ClearableInput,
     DateRangeInput,
     SelectEmployeeInput,
-    SelectJobPositionInput, SelectToolboxTalkCourseInput,
+    SelectJobPositionInput, SelectToolboxTalkSubjectInput,
     SelectUserInput
-} from '../../../../../../components/inputs';
-import {THead, TRow} from '../../../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import {AControls, AExportDialog} from '../../../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -63,7 +63,7 @@ class Controls extends AControls {
         hr_id: null,
         job_title_id: null,
         //
-        course_or_module: null,
+        subject: null,
         //
         training_provider_requirement: null,
         requirement: null,
@@ -84,7 +84,7 @@ class Controls extends AControls {
             <div className="td fixed-flex min-w-120">Accreditation</div>
             <div className="td">Training Conductor</div>
             <div className="td">Job Title</div>
-            <div className="td">Course</div>
+            <div className="td">Subject</div>
             <div className="td fixed-flex min-w-100">Requirement</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
         </THead>;
@@ -93,13 +93,13 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
-        const {id, data:{created_at, status, training_provider_requirement, institution_conducting_training, hr, job_title, course_or_module, requirement, certificate_expiration}} = item;
+        const {id, data:{created_at, status, training_provider_requirement, institution_conducting_training, hr, job_title, subject, requirement, certificate_expiration}} = item;
         return <TRow key={"item-" + n} className="w-full">
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{training_provider_requirement || 'N/A'}</div>
             <div className="td">{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</div>
             <div className="td">{job_title ? job_title.name : 'N/A'}</div>
-            <div className="td">{isObject(course_or_module) ? (course_or_module.name || course_or_module.data.name) : (course_or_module || 'N/A')}</div>
+            <div className="td">{isObject(subject) ? (subject.name || subject.data.name) : (subject || 'N/A')}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
         </TRow>;
@@ -112,7 +112,7 @@ class Controls extends AControls {
             <SelectUserInput ref="hr_id" name="hr" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <SelectJobPositionInput ref="job_title_id" name="job_title" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
-            <SelectToolboxTalkCourseInput ref="course_or_module" name="course_or_module" placeholder="Course..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            <SelectToolboxTalkSubjectInput ref="subject" name="subject" placeholder="Subject..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
             <ClearableInput ref="training_provider_requirement" name="training_provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.training_provider_requirement}/>
             <ClearableInput ref="requirement" name="requirement" type="radio" placeholder="Requirement" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.requirement}/>

@@ -93,7 +93,7 @@ class Controls extends React.Component {
             props: {dialog: {renderProfileCover}},
             item: {
                 id, data: {
-                    created_at, course_or_module, date, employee_list, client, project, site
+                    created_at, subject, date, employee_list, client, project, site
                 }
             }
         } = this;
@@ -120,7 +120,7 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Register Details"
             >
-                <ProfileField title="Course" value={course_or_module} className="col-lg-12"/>
+                <ProfileField title="Subject" value={subject} className="col-lg-12"/>
                 <ProfileField title="Date" value={date} type="date" className="col-lg-12"/>
             </Row>
             <Row

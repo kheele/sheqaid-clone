@@ -20,7 +20,7 @@ import NewToolboxTalkDialog from './forms/NewToolboxTalkDialog';
 import EditToolboxTalkDialog from './forms/EditToolboxTalkDialog';
 import ProfileToolboxTalkDialog from './forms/ProfileToolboxTalkDialog';
 
-import ToolboxTalkSubjectCategoryDialog from "./forms/ToolboxTalkDialogs/ToolboxTalkSubjectCategoryDialog";
+import ToolboxTalkSubjectDialog from "./forms/ToolboxTalkDialogs/ToolboxTalkSubjectDialog";
 import ExportToolboxTalksDialog from "./forms/ExportToolboxTalksDialog";
 
 import style from "./ToolboxTalksTab.lazy.css";
@@ -56,7 +56,7 @@ class ToolboxTalksTab extends React.Component {
 		super(props);
 		
 		this.onExportAll = this.onExportAll.bind(this);
-		this.onViewSubjectCategories = this.onViewSubjectCategories.bind(this);
+		this.onViewSubjects = this.onViewSubjects.bind(this);
 		this.onCreateAttendanceRegister = this.onCreateAttendanceRegister.bind(this);
 		
 		this.renderItem = this.renderItem.bind(this);
@@ -84,11 +84,11 @@ class ToolboxTalksTab extends React.Component {
 	
 	// </editor-fold>
 	
-	// <editor-fold defaultstate="collapsed" desc="onViewSubjectCategories">
-	onViewSubjectCategories(e, btn) {
+	// <editor-fold defaultstate="collapsed" desc="onViewSubjects">
+	onViewSubjects(e, btn) {
 		const {getDialogByRef} = this.refs.root;
-		const toolboxTalkSubjectCategoryDialog = getDialogByRef('toolboxTalkSubjectCategoryDialog');
-		toolboxTalkSubjectCategoryDialog.open();
+		const toolboxTalkSubjectDialog = getDialogByRef('toolboxTalkSubjectDialog');
+		toolboxTalkSubjectDialog.open();
 	}
 	
 	// </editor-fold>
@@ -111,8 +111,8 @@ class ToolboxTalksTab extends React.Component {
 			{!isReadonly && <Button className="btn btn-primary pull-right" onClick={this.onExportAll}>
 				Export
 			</Button>}
-			<Button className="btn btn-primary pull-right" onClick={this.onViewSubjectCategories}>
-				Subject Categories
+			<Button className="btn btn-primary pull-right" onClick={this.onViewSubjects}>
+				Subjects
 			</Button>
 			<Button className="btn btn-primary pull-right" onClick={this.onCreateAttendanceRegister}>
 				Attendance Registers
@@ -148,7 +148,7 @@ class ToolboxTalksTab extends React.Component {
 			<TData flex={120}>Accreditation</TData>
 			<TData>Training Conductor</TData>
 			<TData>Job Title</TData>
-			<TData>Course</TData>
+			<TData>Subject</TData>
 			<TData flex={100}>Requirement</TData>
 			<TData flex={60} className="padding-l-0 padding-r-0"/>
 		</THead>;
@@ -165,7 +165,7 @@ class ToolboxTalksTab extends React.Component {
 				institution_conducting_training,
 				hr,
 				job_title,
-				course_or_module,
+				subject,
 				requirement,
 				certificate_expiration
 			}
@@ -177,7 +177,7 @@ class ToolboxTalksTab extends React.Component {
 			<TData flex={120}>{training_provider_requirement || 'N/A'}</TData>
 			<TData>{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</TData>
 			<TData>{job_title ? job_title.name : 'N/A'}</TData>
-			<TData>{course_or_module}</TData>
+			<TData>{subject}</TData>
 			<TData flex={100}>{requirement || 'N/A'}</TData>
 			<TData flex={50} className="padding-l-10 padding-r-0">
 				<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
@@ -208,7 +208,7 @@ class ToolboxTalksTab extends React.Component {
 			<EditToolboxTalkDialog ref="editDialog"/>
 			<ProfileToolboxTalkDialog ref="profileDialog"/>
 			
-			<ToolboxTalkSubjectCategoryDialog ref="toolboxTalkSubjectCategoryDialog"/>
+			<ToolboxTalkSubjectDialog ref="toolboxTalkSubjectDialog"/>
 			<ToolboxTalkAttendanceRegisterDialog ref="toolboxTalkAttendanceRegisterDialog"/>
 			<ExportToolboxTalksDialog ref="exportDialog"/>
 		</APageListReadWrite>;

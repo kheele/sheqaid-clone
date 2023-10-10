@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8468c58e784169d96d12dc5afb1574cf>>
+ * @generated SignedSource<<9ba8ff7b07a21de4b2d7b451ba2b22d2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -94,9 +94,16 @@ v3 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "sheq_training_toolbox_talk_subject_categories",
-                "kind": "LinkedField",
+                "kind": "ScalarField",
                 "name": "subject_category",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "sheq_training_toolbox_talk_subjects",
+                "kind": "LinkedField",
+                "name": "subject",
                 "plural": false,
                 "selections": (v2/*: any*/),
                 "storageKey": null
@@ -179,16 +186,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "9434823f886f7dd979cd8a6cc95b07df",
+    "cacheID": "7da7dcbbf75914db42c72fb78d390684",
     "id": null,
     "metadata": {},
     "name": "findByIdTrainingToolboxTalkQuery",
     "operationKind": "query",
-    "text": "query findByIdTrainingToolboxTalkQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talks_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        training_frequency\n        subject_category {\n          id\n          name\n        }\n        contractor {\n          id\n          name\n        }\n        contractor_site {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdTrainingToolboxTalkQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talks_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        training_frequency\n        subject_category\n        subject {\n          id\n          name\n        }\n        contractor {\n          id\n          name\n        }\n        contractor_site {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "7bb73c0d85ea355d242e141c6628e8ac";
+node.hash = "3282479e593720f66387cb3cb9a23177";
 
 module.exports = node;

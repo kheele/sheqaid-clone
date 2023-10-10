@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<beb65e54e74a125f191102038d59c3fc>>
+ * @generated SignedSource<<6b170e0ff654a51633570c823cb3431d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,9 +34,9 @@ v2 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "sheq_training_toolbox_talk_subject_categories",
+    "concreteType": "sheq_training_toolbox_talk_subjects",
     "kind": "LinkedField",
-    "name": "update_sheq_training_toolbox_talk_subject_categories_by_pk",
+    "name": "update_sheq_training_toolbox_talk_subjects_by_pk",
     "plural": false,
     "selections": [
       {
@@ -58,7 +58,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "updateTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "updateTrainingToolboxTalkSubjectMutation",
     "selections": (v2/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
@@ -70,20 +70,20 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "updateTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "updateTrainingToolboxTalkSubjectMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "bcde466ead0e38ddae50b5088558ff33",
+    "cacheID": "bb13d9c6c74b37224c107ba3860ebb36",
     "id": null,
     "metadata": {},
-    "name": "updateTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "updateTrainingToolboxTalkSubjectMutation",
     "operationKind": "mutation",
-    "text": "mutation updateTrainingToolboxTalkSubjectCategoryMutation(\n  $id: sheq_training_toolbox_talk_subject_categories_pk_columns_input!\n  $_set: sheq_training_toolbox_talk_subject_categories_set_input!\n) {\n  update_sheq_training_toolbox_talk_subject_categories_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateTrainingToolboxTalkSubjectMutation(\n  $id: sheq_training_toolbox_talk_subjects_pk_columns_input!\n  $_set: sheq_training_toolbox_talk_subjects_set_input!\n) {\n  update_sheq_training_toolbox_talk_subjects_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "b06c9c8d0c621c3317837256870f123d";
+node.hash = "2594e44bdbd46074dd1ea0fc33bf4554";
 
 module.exports = node;

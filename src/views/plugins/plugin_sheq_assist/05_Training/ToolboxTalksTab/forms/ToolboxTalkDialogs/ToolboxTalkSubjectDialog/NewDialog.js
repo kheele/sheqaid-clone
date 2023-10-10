@@ -9,13 +9,13 @@ import {ANewDialog} from 'components/dialogs';
 
 import {FormControls, Row} from "components/FormComponents";
 import style from "./NewDialog.lazy.css";
-import insertTrainingToolboxTalkSubjectCategory
-	from "mutations/all/TrainingToolboxTalkSubjectCategory/insertTrainingToolboxTalkSubjectCategory";
+import insertTrainingToolboxTalkSubject
+	from "mutations/all/TrainingToolboxTalkSubject/insertTrainingToolboxTalkSubject";
 
 @observer
-class NewToolboxTalkSubjectCategoryDialog extends ANewDialog {
-	pageKey = "NewToolboxTalkSubjectCategoryDialog";
-	title = "Create Toolbox Talk Subject Category";
+class NewToolboxTalkSubjectDialog extends ANewDialog {
+	pageKey = "NewToolboxTalkSubjectDialog";
+	title = "Create Toolbox Talk Subject";
 	
 	constructor(props) {
 		super(props, style);
@@ -45,7 +45,7 @@ class Controls extends React.Component {
 		const {form} = this;
 		
 		if (!form.isValid('name')) {
-			infoDialog.open('Toolbox Talk Subject Category Name is required');
+			infoDialog.open('Toolbox Talk Subject Name is required');
 			return;
 		}
 		
@@ -63,7 +63,7 @@ class Controls extends React.Component {
 		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
-		insertTrainingToolboxTalkSubjectCategory(data).then(res => {
+		insertTrainingToolboxTalkSubject(data).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully saved.");
@@ -92,13 +92,13 @@ class Controls extends React.Component {
 				activeAlways
 				rendered
 				idx={1}
-				title="Toolbox Talk Subject Category Details"
+				title="Toolbox Talk Subject Details"
 			>
-				<ClearableInput name="name" type="text" placeholder="Toolbox Talk Subject Category Name"
+				<ClearableInput name="name" type="text" placeholder="Toolbox Talk Subject Name"
 				                className="col-lg-12 form-control" onChange={this.form.onChange}/>
 			</Row>
 		</FormControls>;
 	}
 }
 
-export default NewToolboxTalkSubjectCategoryDialog;
+export default NewToolboxTalkSubjectDialog;

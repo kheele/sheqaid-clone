@@ -3,30 +3,26 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
-import {Dates, execWhen} from '../../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {Dates, execWhen} from 'utils/Utils';
 import {onSelectLoadTrainingFrequencies} from '../../../../utils';
 
 import {
 	Button,
 	ClearableInput,
-	DateRangeInput,
 	SelectClientInput,
-	SelectJobCategoryInput,
 	SelectJobPositionInput,
 	SelectProjectInput,
 	SelectSiteInput,
-	SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
+	SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput,
 	SelectUserInput, UploadButton
-} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewToolboxTalkDialog.lazy.css";
-import Divider from "@mui/material/Divider";
-import {SelectTable, THead} from "../../../../../../components/tables";
-import {NewEmployeeListTable} from "../../../../../../components/FormTableComponents";
-import insertTrainingToolboxTalk from "../../../../../../mutations/all/TrainingToolboxTalk/insertTrainingToolboxTalk";
+import {NewEmployeeListTable} from "components/FormTableComponents";
+import insertTrainingToolboxTalk from "mutations/all/TrainingToolboxTalk/insertTrainingToolboxTalk";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -94,11 +90,11 @@ class Controls extends React.Component {
 	
 	// </editor-fold>
 	
-	// <editor-fold defaultstate="collapsed" desc="onChangeCourse">
-	onChangeCourse(el, val) {
+	// <editor-fold defaultstate="collapsed" desc="onChangeSubject">
+	onChangeSubject(el, val) {
 		execWhen(() => this.refs.attendance_register_list).then(attendance_register_list => {
 			if (val) {
-				console.log('onChangeCourse', val)
+				console.log('onChangeSubject', val)
 				workers.emit('plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/list/search_by_name', val).then(list => {
 					// attendance_register_list.list = list[0].data;
 				});
@@ -165,24 +161,33 @@ class Controls extends React.Component {
 		
 		const {
 			//0
-			client, project, site,
+			client,
+			project,
+			site,
 			//1
-			training_frequency,
 			subject,
 			subject_category,
+			training_frequency,
+			
+			//2
+			//2.1
 			date,
 			time_from,
-			time_to,//list
-			//2
-			institution_conducting_training,//list
-			hr,//list
+			time_to,
+			//2.2
+			institution_conducting_training,
+			hr,
 			job_desc,
-			//3
-			doc,//list
-			//4
-			attendance_register_doc,//list
-			attendance_register_list,//list
+			//2.3
+			doc,
+			
+			//2.4 (Attendance Register)
+			//2.4.1
+			attendance_register_doc,
+			//2.4.1
+			attendance_register_list,
 		} = form.data;
+		
 		const data = {
 			//0
 			client_id: client && client.id,
@@ -192,40 +197,33 @@ class Controls extends React.Component {
 			training_frequency,
 			subject_id: subject && subject.id,
 			subject_category,
-			date: Dates.formatDateSQL(date),
-			time_from,
-			time_to,//list
+			
 			//2
-			institution_conducting_training,
-			hr_id: hr && hr.id,//list
-			job_desc_id: job_desc && job_desc.id,
-			//3
-			doc,//list
-			//4
-			attendance_register_doc,//list
-			attendance_register_list,//list
+			toolbox_talk_list: {
+				data: [{
+					//2.1
+					date: Dates.formatDateSQL(date),
+					time_from,
+					time_to,
+					//2.2
+					institution_conducting_training,
+					hr_id: hr && hr.id,
+					job_desc_id: job_desc && job_desc.id,
+					//2.3
+					doc,
+					
+					//2.4 (Attendance Register)
+					//2.4.1
+					attendance_register_doc,
+					//2.4.1
+					attendance_register_list: {
+						data: (attendance_register_list || []).map(({employee,signature,date,}) => ({
+							employee_id: employee.id, signature, date: Dates.formatDateSQL(date),
+						})),
+					},
+				}],
+			},
 		};
-		
-		if (attendance_register_list) {
-			data.attendance_register_list = attendance_register_list.map((
-				{
-					employee,
-					employee: {
-						id,
-						data: {
-							fname,
-							lname,
-							email,
-							phone,
-							id_num,
-							passport_num
-						}
-					}
-				}
-			) => ({
-				id, fname, lname, email, phone, id_num, passport_num
-			}));
-		}
 		
 		console.log(data)
 		
@@ -275,9 +273,9 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={!isNoProjects && onFormBack}
 			>
-				<SelectToolboxTalkCourseInput name="subject" placeholder="Toolbox Talk / Training Meeting..."
-				                              className="col-lg-12 form-control"
-				                              onChange={this.form.onChange}/>
+				<SelectToolboxTalkSubjectInput name="subject" placeholder="Toolbox Talk / Training Meeting Subject..."
+				                               className="col-lg-12 form-control"
+				                               onChange={this.form.onChange}/>
 				<SelectToolboxTalkSubjectCategoryInput name="subject_category" placeholder="Subject Category..."
 				                                       className="col-lg-6 form-control"
 				                                       onChange={this.form.onChange}/>

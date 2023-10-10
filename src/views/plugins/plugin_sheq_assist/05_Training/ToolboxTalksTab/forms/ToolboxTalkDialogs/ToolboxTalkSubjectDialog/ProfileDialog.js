@@ -10,20 +10,20 @@ import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
-import findByIdTrainingToolboxTalkSubjectCategory
-    from "mutations/all/TrainingToolboxTalkSubjectCategory/findByIdTrainingToolboxTalkSubjectCategory";
+import findByIdTrainingToolboxTalkSubject
+    from "mutations/all/TrainingToolboxTalkSubject/findByIdTrainingToolboxTalkSubject";
 
 @observer
-class ProfileToolboxTalkSubjectCategoryDialog extends AProfileDialog {
-    pageKey = "ProfileToolboxTalkSubjectCategoryDialog";
-    findById: findByIdTrainingToolboxTalkSubjectCategory;
+class ProfileToolboxTalkSubjectDialog extends AProfileDialog {
+    pageKey = "ProfileToolboxTalkSubjectDialog";
+    findById: findByIdTrainingToolboxTalkSubject;
 
     constructor(props) {
         super(props, style);
     }
 
     title() {
-        return "Toolbox Talk Subject Category";
+        return "Toolbox Talk Subject";
     }
 
     get controls() {
@@ -73,13 +73,13 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={1}
-                title="Toolbox Talk Subject Category Details"
+                title="Toolbox Talk Subject Details"
             >
-                <ProfileField title="Toolbox Talk Subject Category Name" name="name" value={name} className="col-lg-12"/>
+                <ProfileField title="Toolbox Talk Subject Name" name="name" value={name} className="col-lg-12"/>
             </Row>
         </FormControls>;
     }
 
 }
 
-export default ProfileToolboxTalkSubjectCategoryDialog;
+export default ProfileToolboxTalkSubjectDialog;

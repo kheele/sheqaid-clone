@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<db458062ecc15627893ac5f12ce6a99f>>
+ * @generated SignedSource<<a126e2348ee9cf9372c1768a0925b074>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,9 +26,9 @@ v1 = [
         "variableName": "object"
       }
     ],
-    "concreteType": "sheq_training_toolbox_talk_subject_categories",
+    "concreteType": "sheq_training_toolbox_talk_subjects",
     "kind": "LinkedField",
-    "name": "insert_sheq_training_toolbox_talk_subject_categories_one",
+    "name": "insert_sheq_training_toolbox_talk_subjects_one",
     "plural": false,
     "selections": [
       {
@@ -47,7 +47,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "insertTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "insertTrainingToolboxTalkSubjectMutation",
     "selections": (v1/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
@@ -56,20 +56,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "insertTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "insertTrainingToolboxTalkSubjectMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "936395707706c55e8288c599a1ceceec",
+    "cacheID": "3445f85e44d3e75154af766110ca56ee",
     "id": null,
     "metadata": {},
-    "name": "insertTrainingToolboxTalkSubjectCategoryMutation",
+    "name": "insertTrainingToolboxTalkSubjectMutation",
     "operationKind": "mutation",
-    "text": "mutation insertTrainingToolboxTalkSubjectCategoryMutation(\n  $object: sheq_training_toolbox_talk_subject_categories_insert_input!\n) {\n  insert_sheq_training_toolbox_talk_subject_categories_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertTrainingToolboxTalkSubjectMutation(\n  $object: sheq_training_toolbox_talk_subjects_insert_input!\n) {\n  insert_sheq_training_toolbox_talk_subjects_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "a949816ce31245f952ef41774839716f";
+node.hash = "bdb2f72e8a53f4e0c217c99e37177e59";
 
 module.exports = node;

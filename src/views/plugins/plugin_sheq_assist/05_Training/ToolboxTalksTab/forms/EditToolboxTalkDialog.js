@@ -16,7 +16,7 @@ import {
     SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput,
-    SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
+    SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput,
     SelectUserInput, UploadButton
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -108,10 +108,10 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
-    onChangeCourse(el, val) {
+    onChangeSubject(el, val) {
         execWhen(() => this.refs.attendance_register_list).then(attendance_register_list => {
             if (val) {
-                console.log('onChangeCourse', val)
+                console.log('onChangeSubject', val)
                 workers.emit('plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/list/search_by_name', val).then(list => {
                     // attendance_register_list.list = list[0].data;
                 });
@@ -282,7 +282,7 @@ class Controls extends React.Component {
                 rendered
                 active={isNoProjects}
                 idx={1}
-                title="1. Course Details"
+                title="1. Subject Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={!isNoProjects && onFormBack}

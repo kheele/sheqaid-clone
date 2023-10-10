@@ -7,7 +7,7 @@ import Form from 'utils/Form';
 import {
     ClearableInput,
     SelectClientInput, SelectProjectInput, SelectSiteInput,
-    SelectToolboxTalkCourseInput,
+    SelectToolboxTalkSubjectInput,
 } from 'components/inputs';
 import {ANewDialog} from 'components/dialogs';
 
@@ -67,8 +67,8 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
-            infoDialog.open('Course is required');
+        if (!form.isValid('subject')) {
+            infoDialog.open('Subject is required');
             return;
         }
         if (!form.isValid('date')) {
@@ -80,7 +80,7 @@ class Controls extends React.Component {
             return;
         }
 
-        const {client, project, site, course_or_module, date, employee_list} = form.data;
+        const {client, project, site, subject, date, employee_list} = form.data;
         const data = {};
 
         if (client) {
@@ -110,8 +110,8 @@ class Controls extends React.Component {
             }
         }
 
-        if (course_or_module) {
-            data.course_or_module = course_or_module;
+        if (subject) {
+            data.subject = subject;
         }
         if (date) {
             data.date = date.getTime();
@@ -195,7 +195,7 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Register Details"
             >
-                <SelectToolboxTalkCourseInput name="course_or_module" placeholder="Course..."
+                <SelectToolboxTalkSubjectInput name="subject" placeholder="Subject..."
                                               className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>

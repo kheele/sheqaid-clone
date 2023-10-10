@@ -34,7 +34,7 @@ import SelectAssetInput from "./SelectAssetInput";
 import SelectAssetTypeInput from "./SelectAssetTypeInput";
 import SelectTrainingCourseInput from "./SelectTrainingCourseInput";
 import SelectTrainingMatixInput from "./SelectTrainingMatixInput";
-import SelectToolboxTalkCourseInput from "./SelectToolboxTalkCourseInput";
+import SelectToolboxTalkSubjectInput from "./SelectToolboxTalkSubjectInput";
 import SelectToolboxTalkSubjectCategoryInput from "./SelectToolboxTalkSubjectCategoryInput";
 import SelectPPEItemInput from "./SelectPPEItemInput";
 import SelectPartItemInput from "./SelectPartItemInput";
@@ -89,7 +89,7 @@ export {
     SelectSectorInput,
     SelectJobPositionInput, SelectJobCategoryInput, SelectDepartmentInput, SelectTeamInput, SelectEmployeeInput, SelectUserInput, SelectContractorInput,
     SelectPartInput, SelectAssetTypeInput, SelectAssetInput, SelectChemicalProductInput, SelectSDSProductInput, SelectHazchemSheetInput,
-    SelectTrainingCourseInput, SelectTrainingMatixInput, SelectToolboxTalkCourseInput, SelectToolboxTalkSubjectCategoryInput,
+    SelectTrainingCourseInput, SelectTrainingMatixInput, SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput,
     SelectPPEItemInput, SelectPartItemInput, SelectIncidentInput,
     SelectChemicalCategoryInput, SelectChemicalManufacturerInput, SelectChemicalPhysicalStateInput, SelectChemicalTypesInput, 
     SelectContractorQuestionnaireTemplateInput, SelectContractorQuestionnaireTemplateCategoryInput,

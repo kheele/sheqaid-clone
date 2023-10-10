@@ -25,8 +25,8 @@ export default (
 		.query({
 			variables,
 			query: `
-        query listAllToolboxTalkSubjectCategoryByLoggedQuery {
-            sheq_training_toolbox_talks(
+        query listAllToolboxTalkSubjectByLoggedQuery {
+            sheq_training_toolbox_talk_subjects(
                 where: {
                     ${filter}
                 },

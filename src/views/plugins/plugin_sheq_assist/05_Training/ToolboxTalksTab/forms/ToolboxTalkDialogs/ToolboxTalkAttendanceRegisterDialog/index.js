@@ -80,14 +80,14 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="course_or_module" type="text" placeholder="Course" className="form-control" onChange={onChange}/>
+            <ClearableInput name="subject" type="text" placeholder="Subject" className="form-control" onChange={onChange}/>
         </div>;
     }
 
     renderTHead() {
         return <THead>
             <div className="td">Date Created</div>
-            <div className="td">Course</div>
+            <div className="td">Subject</div>
             <div className="td">Date</div>
             <div className="td">No. Of Attendants</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -96,10 +96,10 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, course_or_module, date, employee_list, client, project, site}} = item;
+        const {id, data: {created_at, subject, date, employee_list, client, project, site}} = item;
         return <TRow key={id}>
             <div className="td">{Dates.formatDate(created_at)}</div>
-            <div className="td">{course_or_module}</div>
+            <div className="td">{subject}</div>
             <div className="td">{Dates.formatDate(date)}</div>
             <div className="td">{employee_list.length}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

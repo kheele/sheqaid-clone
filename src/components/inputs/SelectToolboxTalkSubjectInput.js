@@ -6,7 +6,7 @@ import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
 import byLogged
-    from "views/plugins/plugin_sheq_assist/05_Training/ToolboxTalksTab/forms/ToolboxTalkDialogs/ToolboxTalkSubjectCategoryDialog/Query/List/listAllToolboxTalkSubjectCategoryByLogged";
+    from "views/plugins/plugin_sheq_assist/05_Training/ToolboxTalksTab/forms/ToolboxTalkDialogs/ToolboxTalkSubjectDialog/Query/List/listAllToolboxTalkSubjectByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -27,7 +27,7 @@ class SelectInput extends ASelectInput {
 
     async componentDidMount() {
         let {className = ''} = this.props;
-        className += ` SelectToolboxTalkCourseInput`;
+        className += ` SelectToolboxTalkSubjectInput`;
 
         const res = await onSelectLoad();
         this.state.lists.list = res;

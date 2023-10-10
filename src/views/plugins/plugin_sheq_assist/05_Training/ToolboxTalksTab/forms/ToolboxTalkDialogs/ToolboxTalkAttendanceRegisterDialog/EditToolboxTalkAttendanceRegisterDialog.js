@@ -10,7 +10,7 @@ import {
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
-    SelectToolboxTalkCourseInput
+    SelectToolboxTalkSubjectInput
 } from 'components/inputs';
 
 import {AEditDialog} from 'components/dialogs';
@@ -59,8 +59,8 @@ class Controls extends React.Component {
             return;
         }
         //2
-        if (!form.isValid('course_or_module')) {
-            infoDialog.open('Course is required');
+        if (!form.isValid('subject')) {
+            infoDialog.open('Subject is required');
             return;
         }
         if (!form.isValid('date')) {
@@ -72,14 +72,14 @@ class Controls extends React.Component {
             return;
         }
 
-        const {client, project, site, course_or_module, date, employee_list} = form.data;
+        const {client, project, site, subject, date, employee_list} = form.data;
         const data = {};
 
         ShouldUpdate.checkClient(data, old_data, client);
         ShouldUpdate.checkProject(data, old_data, project);
         ShouldUpdate.checkSite(data, old_data, site);
 
-        ShouldUpdate.check(data, old_data, course_or_module, 'course_or_module');
+        ShouldUpdate.check(data, old_data, subject, 'subject');
         ShouldUpdate.checkDate(data, old_data, date, 'date');
         ShouldUpdate.checkEmployeeList_deprecated(data, old_data, employee_list, 'employee_list');
         
@@ -136,7 +136,7 @@ class Controls extends React.Component {
             props: {dialog: {renderProfileCover}},
              item, item: {
                 id, data: {
-                    created_at, course_or_module, date, employee_list, client, project, site
+                    created_at, subject, date, employee_list, client, project, site
                 }
             }
         } = this;
@@ -168,8 +168,8 @@ class Controls extends React.Component {
                 idx={1}
                 title="1. Register Details"
             >
-                <SelectToolboxTalkCourseInput name="course_or_module" placeholder="Course..."
-                                              defaultValue={course_or_module}
+                <SelectToolboxTalkSubjectInput name="subject" placeholder="Subject..."
+                                              defaultValue={subject}
                                               className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="date" type="date" placeholder="Date..."
                                 defaultValue={date}

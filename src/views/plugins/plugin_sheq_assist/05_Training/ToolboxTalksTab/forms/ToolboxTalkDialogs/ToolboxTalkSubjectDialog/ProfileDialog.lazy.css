@@ -1,0 +1,11 @@
+@import '../../../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileToolboxTalkSubjectDialog-profile-dialog .dialog-container{
+    height: 360px;
+    width: 710px;
+    max-width: 100%;
+}
+#dialog-overlay.ProfileToolboxTalkSubjectDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
