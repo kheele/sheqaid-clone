@@ -11,7 +11,7 @@ export default async (input: number) => {
     .query({
       query: `
           query findByClientIdClaimsEmployerDetailsQuery($id: bigint) {
-            coida_claims_employer_details(where:{client_id: $id}}) {
+            coida_claims_employer_details(where:{client_id: $id}) {
               ${coida_claims_employer_details_fragment}
               ${orgs_fragment}
             }
