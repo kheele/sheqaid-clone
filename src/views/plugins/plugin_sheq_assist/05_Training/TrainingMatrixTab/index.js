@@ -14,11 +14,11 @@ import {
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewTrainingMatrixDialog from '../dialogs/NewTrainingMatrixDialog';
-import EditTrainingMatrixDialog from '../dialogs/EditTrainingMatrixDialog';
-import ProfileTrainingMatrixDialog from '../dialogs/ProfileTrainingMatrixDialog';
+import NewTrainingMatrixDialog from './forms/NewTrainingMatrixDialog';
+import EditTrainingMatrixDialog from './forms/EditTrainingMatrixDialog';
+import ProfileTrainingMatrixDialog from './forms/ProfileTrainingMatrixDialog';
 
-import ExportTrainingMatrixDialog from "../dialogs/ExportTrainingMatrixDialog";
+import ExportTrainingMatrixDialog from "./forms/ExportTrainingMatrixDialog";
 
 import style from "./TrainingMatrixTab.lazy.css";
 import {Grid} from "@material-ui/core";

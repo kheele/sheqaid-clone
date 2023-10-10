@@ -12,8 +12,8 @@ class SessionIds {
         const {sess_claims} = this;
         if (!sess_claims) return null;
         const {access_type, user_id, company_id} = sess_claims;
-        if (!company_id) return null;
-        return company_id;
+        if (!user_id) return null;
+        return user_id;
     }
 
     get sess_company_id() {

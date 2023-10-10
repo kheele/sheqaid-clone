@@ -16,7 +16,7 @@ import {
     EmployeeTrainingRegisterTable
 } from 'views/plugins/plugin_sheq_assist/05_Training/dialogs/ComponentsEmployeeTraining';
 import NewTrainingPlanForEmployeeDialog
-    from 'views/plugins/plugin_sheq_assist/05_Training/dialogs/NewTrainingPlanForEmployeeDialog';
+    from '../../plugin_sheq_assist/05_Training/TrainingPlanTab/forms/NewTrainingPlanForEmployeeDialog';
 
 // </editor-fold>
 

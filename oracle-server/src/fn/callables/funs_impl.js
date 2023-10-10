@@ -36,11 +36,8 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
         }).then(res => res.text());
     }
 
-    const _auth = adminAuth(access_type);
+    const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims = {}}) => {
-        if (claims.access_type_list) {
-            claims.access_type_list = {...(customClaims.access_type_list || {}), ...claims.access_type_list};
-        }
         return _auth.setCustomUserClaims(uid, {...customClaims, ...claims});
     });
 };

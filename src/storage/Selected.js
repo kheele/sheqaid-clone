@@ -9,7 +9,7 @@ class Selected {
         let name;
         if (is.isConsultant) {
             const {selectedClient} = this;
-            name = selectedClient && selectedClient.data.name;
+            name = selectedClient && selectedClient.name;
         } else {
             const {loggedUser} = this.storage;
             name = loggedUser.company.data.name;

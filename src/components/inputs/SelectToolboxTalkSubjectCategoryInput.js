@@ -29,8 +29,8 @@ class SelectInput extends ASelectInput {
         let {className = ''} = this.props;
         className += ` SelectToolboxTalkSubjectCategoryInput`;
 
-        const res = await onSelectLoad();
-        this.state.lists.list.push(...res);
+        // const res = await onSelectLoad();
+        // this.state.lists.list.push(...res);
 
         this.state.props = {
             ref: "input",
@@ -47,17 +47,6 @@ class SelectInput extends ASelectInput {
         };
     }
 
-    // <editor-fold defaultstate="collapsed" desc="onLoadList">
-    onLoadList(promise) {
-        const {input} = this.refs;
-        if (input) {
-            return input.onLoadList(promise);
-        }
-        return Promise.reject('onLoadList not defined');
-    }
-
-    // </editor-fold>
-
     @computed
     get selectedItem() {
         let {defaultValue: _defaultValue} = this.props;
@@ -65,7 +54,7 @@ class SelectInput extends ASelectInput {
             if (_defaultValue.label && _defaultValue.value) {
                 return _defaultValue;
             }
-            const defaultValue = this.list.find(v => v.value.id === _defaultValue.id);
+            const defaultValue = this.list.find(v => v.value === _defaultValue);
             // console.log('defaultValue', defaultValue, _defaultValue, this.list.map(v => v.value.id).slice())
             if (!defaultValue) {
                 return null;
@@ -73,10 +62,9 @@ class SelectInput extends ASelectInput {
             if (defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            let {data: {name: label}} = defaultValue;
             // const label = data ? data.name : name;
-            console.log('selectedVal', label, defaultValue)
-            return {value: defaultValue, label};
+            console.log('selectedVal', defaultValue)
+            return {value: defaultValue, label: defaultValue};
         }
         return null;
     }
@@ -87,14 +75,6 @@ class SelectInput extends ASelectInput {
 
         return <ClearableInput {...props}/>;
     }
-}
-
-async function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/05_Trainings/toolbox-talks/subject-categories/list").then(res => {
-        return res.map(({data: {name: value}}) => {
-            return {label: value, value};
-        }).distinct();
-    });
 }
 
 export default SelectInput;

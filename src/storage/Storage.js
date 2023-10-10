@@ -71,6 +71,14 @@ class Storage {
             });
         };
         listenAuth();
+        
+        // workers.on("getIdTokenResult", () => {
+        //     this.loggedUserAuth.getIdTokenResult(true).then(idTokenResult => {
+        //         this.idTokenResult = idTokenResult;
+        //     }).catch(async err => {
+        //         console.error(err)
+        //     });
+        // });
     }
 
     get toJS() {

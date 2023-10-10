@@ -1,0 +1,11 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileManualVideoDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 700px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileManualVideoDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

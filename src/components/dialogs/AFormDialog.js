@@ -80,29 +80,35 @@ class AFormDialog extends React.Component {
 
 	open(item) {
 		return new Promise(async (resolve, reject) => {
-			!!item && (this.state.item = item);
-
 			this.state.onResponse = resolve;
 
 			this.refs.dialog.open();
-
-			let title = isFunction(this.title) ? this.title() : this.title;
-			if (title instanceof Promise) {
-				title = await title;
-			}
-			this.refs.dialog.setTitle(title);
-
+			
 			if (!this.topButtonsHiddenCancel) {
 				this.execWhen(() => this.refs.cancel).then(cancel => {
 					cancel.show();
 				});
 			}
-
+			
 			const {findById} = this;
-
+			
 			if (findById) {
 				const controls = await execWhen(() => this.refs.controls);
-				controls.state.item = await findById(item.id);
+				controls.item = computed(function() {
+					return this.props.state.item;
+				}.bind(controls));
+			} else {
+				!!item && (this.state.item = item);
+			}
+			
+			let title = isFunction(this.title) ? this.title() : this.title;
+			if (title instanceof Promise) {
+				title = await title;
+			}
+			this.refs.dialog.setTitle(title);
+			
+			if (findById && item.id) {
+				this.state.item = await findById(item.id);
 			}
 		});
 	}

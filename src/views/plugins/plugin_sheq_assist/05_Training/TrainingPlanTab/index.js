@@ -19,9 +19,9 @@ import {
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewTrainingPlanDialog from '../dialogs/NewTrainingPlanDialog';
-import EditTrainingPlanDialog from '../dialogs/EditTrainingPlanDialog';
-import ProfileTrainingPlanDialog from '../dialogs/ProfileTrainingPlanDialog';
+import NewTrainingPlanDialog from './forms/NewTrainingPlanDialog';
+import EditTrainingPlanDialog from './forms/EditTrainingPlanDialog';
+import ProfileTrainingPlanDialog from './forms/ProfileTrainingPlanDialog';
 
 import style from "./TrainingPlanTab.lazy.css";
 import TrainingPlanEmployeesButtons from "components/Omni/TrainingPlanEmployeesButtons";

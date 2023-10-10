@@ -64,7 +64,6 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {},
-        item: null,
         showBarcode: false,
         showQRCode: false
     };
@@ -181,10 +180,6 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
-    @computed get item() {
-        return this.state.item;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {

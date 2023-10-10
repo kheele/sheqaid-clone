@@ -9,11 +9,11 @@ import {ConfirmDialog} from 'components/dialogs';
 import {ActionsButton, Button, ClearableInput, SelectJobPositionInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewTrainingRegistryDialog from '../dialogs/NewTrainingRegistryDialog';
-import EditTrainingRegistryDialog from '../dialogs/EditTrainingRegistryDialog';
-import ProfileTrainingRegistryDialog from '../dialogs/ProfileTrainingRegistryDialog';
+import NewTrainingRegistryDialog from './forms/NewTrainingRegistryDialog';
+import EditTrainingRegistryDialog from './forms/EditTrainingRegistryDialog';
+import ProfileTrainingRegistryDialog from './forms/ProfileTrainingRegistryDialog';
 
-import ExportTrainingCoursesDialog from "../dialogs/ExportTrainingCoursesDialog";
+import ExportTrainingCoursesDialog from "./forms/ExportTrainingCoursesDialog";
 
 import style from "./TrainingRegistryTab.lazy.css";
 import Avatar from "@mui/material/Avatar";

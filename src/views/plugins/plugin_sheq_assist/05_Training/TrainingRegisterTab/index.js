@@ -14,8 +14,8 @@ import {
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import NewTrainingRegisterDialog from '../dialogs/NewTrainingRegisterDialog';
-import ProfileTrainingRegisterDialog from '../dialogs/ProfileTrainingRegisterDialog';
+import NewTrainingRegisterDialog from './forms/NewTrainingRegisterDialog';
+import ProfileTrainingRegisterDialog from './forms/ProfileTrainingRegisterDialog';
 
 import style from "./TrainingRegisterTab.lazy.css";
 import {Grid} from "@material-ui/core";

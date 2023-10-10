@@ -1,127 +1,82 @@
-class Cntr extends ACntr {
 
-    constructor() {
-        super('graphql/');
-
-        const {addAction} = this;
-        addAction('v1beta1/relay', this.relay.bind(this));
-        addAction('v1/graphql', this.default.bind(this));
-        addAction('api/rest/views', this.views.bind(this));
+eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
+    // console.log('data', data)
+    const {auth_id} = socket.handshake.session;
+    
+    let {query, variables, token} = data;
+    
+    let headers = {};
+    console.log('v1beta1/relay', token, auth_id);
+    if (auth_id) {
+        // const currentUser = await admin.auth().getUser(auth_id);
+        // console.log("relay variables", currentUser, auth_id, variables)
+        // if (currentUser) {
+        // 	const token = await currentUser.getIdToken(true);
+        // 	headers.Authorization = `Bearer ${token}`;
+        // 	headers["X-Hasura-User-Id"] = currentUser.uid;
+        // 	headers["X-Hasura-Role"] = "user";
+        // }
+        
+        headers["X-Hasura-User-Id"] = auth_id;
+        headers["X-Hasura-Role"] = "user";
     }
+    
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+    
+    if (variables && "headers" in variables) {
+        headers = {...headers, ...variables.headers};
+        // eslint-disable-next-line no-param-reassign
+        delete variables.headers;
+    }
+    
+    return fetch(process.env.HASURA_RELAY_ENDPOINT, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-hasura-access-key": "rhespo-g",
+            ...headers,
+        },
+        body: JSON.stringify({query, variables}),
+    }).then(res => res.json()).catch(err => {
+        console.error("response err", err)
+        throw err;
+    });
+});
 
-    async relay(socket, data = {}) {
-        // console.log('data', data)
-        const {auth_id} = socket.handshake.session;
-
-        let {query, variables, token} = data;
-
-        let headers = {};
-        console.log('v1beta1/relay', token, auth_id);
-        if (auth_id) {
-            // const currentUser = await admin.auth().getUser(auth_id);
-            // console.log("relay variables", currentUser, auth_id, variables)
-            // if (currentUser) {
-            // 	const token = await currentUser.getIdToken(true);
-            // 	headers.Authorization = `Bearer ${token}`;
-            // 	headers["X-Hasura-User-Id"] = currentUser.uid;
-            // 	headers["X-Hasura-Role"] = "user";
-            // }
-
-            headers["X-Hasura-User-Id"] = auth_id;
-            headers["X-Hasura-Role"] = "user";
-        }
-
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
-        }
-
+eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
+    // console.log('data', data)
+    const {auth_id} = socket.handshake.session;
+    
+    const {mutation, query, variables, operationName, multi_queries, count, token} = data;
+    
+    let headers = {};
+    console.log('v1/graphql', token, auth_id);
+    if (auth_id) {
+        // const currentUser = await admin.auth().getUser(auth_id);
+        // console.log("graphql variables", currentUser, auth_id, variables)
+        // if (currentUser) {
+        // const token = await currentUser.getIdToken(true);
+        // headers.Authorization = `Bearer ${token}`;
+        // headers["X-Hasura-User-Id"] = currentUser.uid;
+        // }
+        
+        headers["X-Hasura-User-Id"] = auth_id;
+        headers["X-Hasura-Role"] = "user";
+        
         if (variables && "headers" in variables) {
             headers = {...headers, ...variables.headers};
             // eslint-disable-next-line no-param-reassign
             delete variables.headers;
         }
-
-        return fetch(process.env.HASURA_RELAY_ENDPOINT, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-hasura-access-key": "rhespo-g",
-                ...headers,
-            },
-            body: JSON.stringify({query, variables}),
-        }).then(res => res.json()).catch(err => {
-            console.error("response err", err)
-            throw err;
-        });
     }
-
-    async default(socket, data = {}) {
-        // console.log('data', data)
-        const {auth_id} = socket.handshake.session;
-
-        const {mutation, query, variables, operationName, multi_queries, count, token} = data;
-
-        let headers = {};
-        console.log('v1/graphql', token, auth_id);
-        if (auth_id) {
-            // const currentUser = await admin.auth().getUser(auth_id);
-            // console.log("graphql variables", currentUser, auth_id, variables)
-            // if (currentUser) {
-            // const token = await currentUser.getIdToken(true);
-            // headers.Authorization = `Bearer ${token}`;
-            // headers["X-Hasura-User-Id"] = currentUser.uid;
-            // }
-
-            headers["X-Hasura-User-Id"] = auth_id;
-            headers["X-Hasura-Role"] = "user";
-
-            if (variables && "headers" in variables) {
-                headers = {...headers, ...variables.headers};
-                // eslint-disable-next-line no-param-reassign
-                delete variables.headers;
-            }
-        }
-
-        if (token) {
-            headers.Authorization = `Bearer ${token}`;
-        }
-
-        if (mutation) {
-            return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-hasura-access-key": "rhespo-g",
-                    ...headers,
-                },
-                body: JSON.stringify({query: mutation, operationName, variables}),
-            }).then(res => res.json()).then(res => {
-                console.log(res); // { data: ... }
-
-                const {errors, data} = res;
-
-                if (errors) {
-                    throw new Error(JSON.stringify(errors));
-                }
-
-                const key = Object.keys(data)[0];
-                const item = data[key];
-                if (item) {
-                    const node = convertMutations(item);
-                    // console.log("onCompleted node", node);
-                    if (node.id) {
-                        return {data: node, id: node.id};
-                    } else {
-                        return node;
-                    }
-                }
-            })
-                .catch(err => {
-                    console.log(JSON.stringify({mutation, operationName, variables}));
-                    throw err;
-                });
-        }
-
+    
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+    
+    if (mutation) {
         return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
             method: "POST",
             headers: {
@@ -129,88 +84,120 @@ class Cntr extends ACntr {
                 "x-hasura-access-key": "rhespo-g",
                 ...headers,
             },
-            body: JSON.stringify({query, variables}),
+            body: JSON.stringify({query: mutation, operationName, variables}),
         }).then(res => res.json()).then(res => {
-            // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+            console.log(res); // { data: ... }
+            
             const {errors, data} = res;
-
+            
             if (errors) {
                 throw new Error(JSON.stringify(errors));
             }
-
-            if (multi_queries) {
-                if (!count) {
-                    Object.keys(data).forEach(key => {
-                        const list = data[key];
-                        list.forEach(node => {
-                            convertMutations(node);
-                        });
-                    });
-                }
-                return data;
-            } else {
-                const key = Object.keys(data)[0];
-                const list = data[key];
-                // console.log('connection', connection)
-                if (isArray(list)) {
-                    const nodes = list.map(node => {
-                        node = convertMutations(node);
-                        if (node.id) {
-                            return {data: node, id: node.id};
-                        } else {
-                            return node;
-                        }
-                    });
-                    // console.log("onCompleted nodes", nodes);
-                    return nodes;
+            
+            const key = Object.keys(data)[0];
+            const item = data[key];
+            if (item) {
+                const node = convertMutations(item);
+                // console.log("onCompleted node", node);
+                if (node.id) {
+                    return {data: node, id: node.id};
                 } else {
-                    const node = convertMutations(list);
+                    return node;
+                }
+            }
+        })
+          .catch(err => {
+              console.log(JSON.stringify({mutation, operationName, variables}));
+              throw err;
+          });
+    }
+    
+    return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-hasura-access-key": "rhespo-g",
+            ...headers,
+        },
+        body: JSON.stringify({query, variables}),
+    }).then(res => res.json()).then(res => {
+        // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+        const {errors, data} = res;
+        
+        if (errors) {
+            throw new Error(JSON.stringify(errors));
+        }
+        
+        if (multi_queries) {
+            if (!count) {
+                Object.keys(data).forEach(key => {
+                    const list = data[key];
+                    list.forEach(node => {
+                        convertMutations(node);
+                    });
+                });
+            }
+            return data;
+        } else {
+            const key = Object.keys(data)[0];
+            const list = data[key];
+            // console.log('connection', connection)
+            if (isArray(list)) {
+                const nodes = list.map(node => {
+                    node = convertMutations(node);
                     if (node.id) {
                         return {data: node, id: node.id};
                     } else {
                         return node;
                     }
+                });
+                // console.log("onCompleted nodes", nodes);
+                return nodes;
+            } else {
+                const node = convertMutations(list);
+                if (node.id) {
+                    return {data: node, id: node.id};
+                } else {
+                    return node;
                 }
             }
-        }).catch(err => {
-            console.error(err)
-            throw err;
-        });
-    }
-
-    async views(socket, path) {
-        // console.log('data', path)
-        const {auth_id} = socket.handshake.session;
-
-        let headers = {};
-
-        if (auth_id) {
-            // const currentUser = await admin.auth().getUser(auth_id);
-            // console.log("relay variables", currentUser, auth_id)
-            // if (currentUser) {
-            // const token = await currentUser.getIdToken(true);
-            // headers.Authorization = `Bearer ${token}`;
-            // 	headers["X-Hasura-User-Id"] = currentUser.uid;
-            // 	headers["X-Hasura-Role"] = "user";
-            // }
-
-            headers["X-Hasura-User-Id"] = auth_id;
-            headers["X-Hasura-Role"] = "user";
         }
+    }).catch(err => {
+        console.error(err)
+        throw err;
+    });
+});
 
-        return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "x-hasura-access-key": "rhespo-g",
-                ...headers,
-            },
-        }).then(res => res.json()).catch(err => {
-            console.log("response err", err.message)
-            throw err;
-        });
+eventManager.on("graphql/api/rest/viewsl", (socket, path) => {
+    // console.log('data', path)
+    const {auth_id} = socket.handshake.session;
+    
+    let headers = {};
+    
+    if (auth_id) {
+        // const currentUser = await admin.auth().getUser(auth_id);
+        // console.log("relay variables", currentUser, auth_id)
+        // if (currentUser) {
+        // const token = await currentUser.getIdToken(true);
+        // headers.Authorization = `Bearer ${token}`;
+        // 	headers["X-Hasura-User-Id"] = currentUser.uid;
+        // 	headers["X-Hasura-Role"] = "user";
+        // }
+        
+        headers["X-Hasura-User-Id"] = auth_id;
+        headers["X-Hasura-Role"] = "user";
     }
-
-}
-
-module.exports = new Cntr();
+    
+    return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "x-hasura-access-key": "rhespo-g",
+            ...headers,
+        },
+    }).then(res => res.json()).catch(err => {
+        console.log("response err", err.message)
+        throw err;
+    });
+});
+//216

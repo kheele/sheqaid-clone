@@ -83,7 +83,7 @@ class Cntr extends ACntr {
                 const {loggedUser, token, customClaims} = res;
 
                 session.auth_id = customClaims.loggedUser.user.auth_id;
-                session.token = token;
+                session.access_type = access_type;
                 session.customClaims = customClaims;
                 session.save();
 

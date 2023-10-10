@@ -39,7 +39,7 @@ import findByClientIdClaimsEmployerDetails
 	from "mutations/all/COIDA/ClaimsEmployerDetails/findByClientIdClaimsEmployerDetails";
 import insertClaimsClient from "mutations/all/COIDA/ClaimsClient/insertClaimsClient";
 // </editor-fold>
-
+//
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class NewClaimsClientDialog extends ANewDialog {
@@ -337,7 +337,7 @@ class Controls extends React.Component {
 				data.wcl_4.data.external_doc = wcl_4_external_doc;
 			}
 		}
-		
+		//"[{"extensions":{"code":"validation-failed","path":"$.selectionSet.coida_claims_employer_details.args.where.client_id"},"message":"variable 'id' is declared as 'bigint', but used where 'bigint_comparison_exp' is expected"}]"
 		console.log(data)
 		
 		btn.text("Saving...").disabled();
@@ -358,113 +358,115 @@ class Controls extends React.Component {
 	render() {
 		const {state, props: {onFormNext, onFormBack, onFormOpen}} = this;
 		const {isContractor, isConsultant} = storage.is;
-		return <FormControls onChange={this.form.onChange}>
-			<Row
-				rendered
-				active
-				idx={0}
-				title="Company / Project / Site"
-				onFormOpen={onFormOpen}
-				onFormNext={onFormNext}
-			>
-				{isConsultant && <SelectClientInput ref="client" name="client" placeholder="Company..." required
-				                                    className="col-lg-12 form-control"/>}
-				<SelectProjectInput ref="project" name="project" placeholder="Project..." required
-				                    className="col-lg-12 form-control"/>
-				<SelectSiteInput ref="site" name="site" placeholder="Site..." required className={"col-lg-12 form-control"}/>
-			</Row>
-			<Row
-				rendered
-				idx={1}
-				title="Employee Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<SelectEmployeeInput ref="employee" name="employee" placeholder="Employee..." required
-				                     className="col-lg-12 form-control"/>
-			</Row>
-			<Row
-				rendered
-				idx={2}
-				title="Claim Number / Provincial Office / Date of Accident"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<ClearableInput ref="claim_number" name="claim_number" type="text" placeholder="Claim Number"
-				                className="col-lg-12 form-control"/>
-				<ClearableInput ref="provincial_office" name="provincial_office" type="text" placeholder="Provincial Office"
-				                className="col-lg-12 form-control"/>
-				<ClearableInput ref="accident_date" name="accident_date" type="date" placeholder="Date of Accident..."
-				                className="col-lg-12 form-control"/>
-			</Row>
-			<Row
-				rendered
-				idx={3}
-				title="W.CI.2 Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<ButtonWCl state={state} name="wcl_2" dialogName="newWCL2Dialog" text="W.CI.2" onClick={this.onNewDialog}/>
-			</Row>
-			<Row
-				rendered
-				idx={4}
-				title="W.CI.4 Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<ButtonWCl state={state} name="wcl_4" dialogName="newWCL4Dialog" text="W.CI.4" onClick={this.onNewDialog}/>
-				<h3 className="text-center col-lg-12 margin-t-10 margin-b-0">OR</h3>
-				<UploadButton
-					ref="wcl_4_external_doc"
-					name="wcl_4_external_doc"
-					buttonTitle="Upload W.CI.4"
-					type={['PDF', 'Word', 'Photo']}
-					showOnlyIcon
-					className="col-lg-12 col-xs-12 margin-t-10"
-				/>
-				<h3 className="text-center col-lg-12 margin-t-10 margin-b-0">OR</h3>
-				<label className="col-lg-12 text-center margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
-					Medical Practitioner/Chiropractor Email Address
-				</label>
-				<ClearableInput ref="doctor_email_1" name="doctor_email_1" type="text" placeholder="Email Address"
-				                footerDesc="For Filling W.CI.4 Online" className="col-lg-12 form-control"/>
-			</Row>
-			<Row
-				rendered
-				idx={5}
-				title="W.CI.5 Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<WCl5Table ref="wcl_5_list" name="wcl_5_list" defaultValue={[null]} onNewDialog={this.onNewDialog}
-				           onPrintDialog={this.onPrintDialog}/>
-			</Row>
-			<Row
-				rendered
-				idx={6}
-				title="W.CI.6 Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-				onFormNext={onFormNext}
-			>
-				<ButtonWCl state={state} name="wcl_6" dialogName="newWCL6Dialog" text="W.CI.6" onClick={this.onNewDialog}/>
-			</Row>
-			<Row
-				rendered
-				idx={7}
-				title="Annexture 1 Details"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-			>
-				<ButtonWCl state={state} name="annexture_1" dialogName="newAnnexture1Dialog" text="Annexture 1"
-				           onClick={this.onNewDialog}/>
-			</Row>
+		return <>
+			<FormControls onChange={this.form.onChange}>
+				<Row
+					rendered
+					active
+					idx={0}
+					title="Company / Project / Site"
+					onFormOpen={onFormOpen}
+					onFormNext={onFormNext}
+				>
+					{isConsultant && <SelectClientInput ref="client" name="client" placeholder="Company..." required
+					                                    className="col-lg-12 form-control"/>}
+					<SelectProjectInput ref="project" name="project" placeholder="Project..." required
+					                    className="col-lg-12 form-control"/>
+					<SelectSiteInput ref="site" name="site" placeholder="Site..." required className={"col-lg-12 form-control"}/>
+				</Row>
+				<Row
+					rendered
+					idx={1}
+					title="Employee Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<SelectEmployeeInput ref="employee" name="employee" placeholder="Employee..." required
+					                     className="col-lg-12 form-control"/>
+				</Row>
+				<Row
+					rendered
+					idx={2}
+					title="Claim Number / Provincial Office / Date of Accident"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<ClearableInput ref="claim_number" name="claim_number" type="text" placeholder="Claim Number"
+					                className="col-lg-12 form-control"/>
+					<ClearableInput ref="provincial_office" name="provincial_office" type="text" placeholder="Provincial Office"
+					                className="col-lg-12 form-control"/>
+					<ClearableInput ref="accident_date" name="accident_date" type="date" placeholder="Date of Accident..."
+					                className="col-lg-12 form-control"/>
+				</Row>
+				<Row
+					rendered
+					idx={3}
+					title="W.CI.2 Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<ButtonWCl state={state} name="wcl_2" dialogName="newWCL2Dialog" text="W.CI.2" onClick={this.onNewDialog}/>
+				</Row>
+				<Row
+					rendered
+					idx={4}
+					title="W.CI.4 Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<ButtonWCl state={state} name="wcl_4" dialogName="newWCL4Dialog" text="W.CI.4" onClick={this.onNewDialog}/>
+					<h3 className="text-center col-lg-12 margin-t-10 margin-b-0">OR</h3>
+					<UploadButton
+						ref="wcl_4_external_doc"
+						name="wcl_4_external_doc"
+						buttonTitle="Upload W.CI.4"
+						type={['PDF', 'Word', 'Photo']}
+						showOnlyIcon
+						className="col-lg-12 col-xs-12 margin-t-10"
+					/>
+					<h3 className="text-center col-lg-12 margin-t-10 margin-b-0">OR</h3>
+					<label className="col-lg-12 text-center margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
+						Medical Practitioner/Chiropractor Email Address
+					</label>
+					<ClearableInput ref="doctor_email_1" name="doctor_email_1" type="text" placeholder="Email Address"
+					                footerDesc="For Filling W.CI.4 Online" className="col-lg-12 form-control"/>
+				</Row>
+				<Row
+					rendered
+					idx={5}
+					title="W.CI.5 Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<WCl5Table ref="wcl_5_list" name="wcl_5_list" defaultValue={[null]} onNewDialog={this.onNewDialog}
+					           onPrintDialog={this.onPrintDialog}/>
+				</Row>
+				<Row
+					rendered
+					idx={6}
+					title="W.CI.6 Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+					onFormNext={onFormNext}
+				>
+					<ButtonWCl state={state} name="wcl_6" dialogName="newWCL6Dialog" text="W.CI.6" onClick={this.onNewDialog}/>
+				</Row>
+				<Row
+					rendered
+					idx={7}
+					title="Annexture 1 Details"
+					onFormOpen={onFormOpen}
+					onFormBack={onFormBack}
+				>
+					<ButtonWCl state={state} name="annexture_1" dialogName="newAnnexture1Dialog" text="Annexture 1"
+					           onClick={this.onNewDialog}/>
+				</Row>
+			</FormControls>
 			
 			<NewWCL2Dialog ref="newWCL2Dialog"/>
 			<NewWCL4Dialog ref="newWCL4Dialog"/>
@@ -479,7 +481,7 @@ class Controls extends React.Component {
 			<PrintAnnexture1Dialog ref="printAnnexture1Dialog"/>
 			
 			<NewDialog ref="newClaimsEmployerDetailsDialog"/>
-		</FormControls>;
+		</>;
 	}
 	
 	// </editor-fold>
