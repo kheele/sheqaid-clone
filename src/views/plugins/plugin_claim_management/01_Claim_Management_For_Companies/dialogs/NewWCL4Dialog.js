@@ -303,7 +303,7 @@ class Controls extends React.Component {
             pre_existing_defect_disease,
             x_rays_date: Dates.formatDateSQL(x_rays_date),
             x_rays_conducting_person,
-            x_rays_report,
+            x_rays_report:x_rays_report && {path:x_rays_report.path},
             surgical_procedure_date: Dates.formatDateSQL(surgical_procedure_date),
             surgical_procedure_conducting_person,
             surgical_procedure_desc,
