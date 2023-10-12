@@ -57,8 +57,8 @@ class Controls extends React.Component {
     onChangeClient(el, val) {
         execWhen(() => this.refs.company_name).then(company_name_ref => {
             if(val) {
-                let {name} = val.data;
-                company_name_ref.onChange(name);
+                let {name, data} = val;
+                company_name_ref.onChange(name || data.name);
             }
         });
     }

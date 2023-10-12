@@ -444,7 +444,7 @@ class ClaimsClientTab extends AClaimsTab {
 			}
 		} = item;
 		
-		const {date_resumed_work} = wcl_2;
+		const {date_resumed_work} = wcl_2 || {};
 		console.log('Claim', toJS(item))
 		
 		return <TRow key={"item-" + n} className="w-full">

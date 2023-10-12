@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f8a7a6ad340ba58cbb95b5140d40cf98>>
+ * @generated SignedSource<<83803cb568d976199f61e7ff87690e1e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -106,6 +106,16 @@ v3 = [
                 "plural": true,
                 "selections": (v2/*: any*/),
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "sheq_incident_investigation",
+                "kind": "LinkedField",
+                "name": "incident_list",
+                "plural": true,
+                "selections": (v2/*: any*/),
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -135,16 +145,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "0357841ea0511288a9d31b53af83879e",
+    "cacheID": "e411c918b8a8bf902937dc90ec70e3b2",
     "id": null,
     "metadata": {},
     "name": "findByIdIncidentInvestigationQuery",
     "operationKind": "query",
-    "text": "query findByIdIncidentInvestigationQuery(\n  $id: bigint\n) {\n  sheq_incident_investigation_investigations_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        due_date\n        document_list {\n          id\n        }\n        investigation_finding_list {\n          id\n        }\n        investigation_team_list {\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdIncidentInvestigationQuery(\n  $id: bigint\n) {\n  sheq_incident_investigation_investigations_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        due_date\n        document_list {\n          id\n        }\n        investigation_finding_list {\n          id\n        }\n        investigation_team_list {\n          id\n        }\n        incident_list {\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "d4306a479de2beaf2968ec4faeace851";
+node.hash = "bdd0a96a328ecdc806025768c43c4779";
 
 module.exports = node;

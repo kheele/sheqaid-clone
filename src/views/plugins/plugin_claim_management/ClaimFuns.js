@@ -35,7 +35,7 @@ const renderSpan = (v, title, counter) => {
 
 const getDocsStatus = item => {
     const {data: {wcl_2 = {}}} = item;
-    const {doc_certified_id, doc_salary_slip} = wcl_2;
+    const {doc_certified_id, doc_salary_slip} = wcl_2 || {};
 
     return [
         renderSpan(doc_certified_id, 'Certified ID/Passport'),
@@ -62,3 +62,4 @@ const getWClStatus = item => {
 };
 
 export {getDocsStatus, getWClStatus};
+//
