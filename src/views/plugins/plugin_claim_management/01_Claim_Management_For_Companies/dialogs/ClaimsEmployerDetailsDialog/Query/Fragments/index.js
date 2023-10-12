@@ -20,10 +20,14 @@ export const coida_claims_employer_details_fragment = `
     
     company_contact_person{
       id
+      fname
+      lname
       full_name
     }
     company_contact_person_other{
       id
+      fname
+      lname
       full_name
     }
     

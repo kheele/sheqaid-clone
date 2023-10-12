@@ -2,7 +2,7 @@
 import React from "react";
 import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
-import {autorun, computed, observable} from 'mobx';
+import {autorun, observable, computed} from 'mobx';
 
 import Form from 'utils/Form';
 import {Dates, execWhen} from 'utils/Utils';
@@ -26,7 +26,6 @@ import {
 import findByIdAsset from "mutations/all/Asset/findByIdAsset";
 import InspectionTabs from "./InspectionTabs";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
-import {CircularProgress} from "@mui/material";
 import ImageSection from "components/FormComponents/ImageSection";
 import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
 import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
@@ -180,13 +179,17 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
+    
+    @computed get item() {
+        return this.props.state.item;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item) {
-            return <CircularProgress className="fixed-center"/>;
+            return null;
         }
-
+        
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,

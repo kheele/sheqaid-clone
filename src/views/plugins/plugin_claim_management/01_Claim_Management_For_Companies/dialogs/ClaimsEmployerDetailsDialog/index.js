@@ -72,8 +72,9 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 	//</editor-fold>
 	
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-		const permissionKey = "__D_COIDA_Management";
-		return <Options idx={idx} permissionOtherKey={permissionKey}>
+		// const permissionKey = "_01_Claim_Management_For_Companies";
+		// return <Options idx={idx} permissionOtherKey={permissionKey}>
+		return <Options idx={idx}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
 			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
@@ -121,8 +122,7 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 				className="td fixed-flex min-w-80">{RenderUtils.renderImage(client && client.profile_pic, '100%')}</div>
 			<div className="td">{company_name}</div>
 			<div className="td fixed-flex min-w-120">{company_reg_num}</div>
-			<AsyncTD title="Contact Person" defaultValue={company_contact_person}
-			         renderer={v => v.full_name}/>
+			<div className="td">{company_contact_person ? company_contact_person.full_name : "N/A"}</div>
 			<div className="td">{email}</div>
 			<div className="td">{company_location}</div>
 			<div className="td">{company_nature}</div>

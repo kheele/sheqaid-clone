@@ -25,8 +25,6 @@ class SelectInput extends ASelectInput {
 	
 	constructor(props) {
 		super(props);
-		
-		this.onLoadList = this.onLoadList.bind(this);
 	}
 	
 	async componentDidMount() {

@@ -86,7 +86,7 @@ class ToolboxTalkSubjectDialog extends ADialogList {
 
     renderTHead() {
         return <THead>
-            <div className="td">Date Created</div>
+            <div className="td fixed-flex min-w-60">ID</div>
             <div className="td">Name</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
@@ -96,7 +96,7 @@ class ToolboxTalkSubjectDialog extends ADialogList {
         const item = this.refs.root.list[n];
         const {id, data: {created_at, name}} = item;
         return <TRow key={id}>
-            <div className="td">{Dates.formatDate(created_at)}</div>
+            <div className="td fixed-flex min-w-60">{id}</div>
             <div className="td">{name}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
             	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

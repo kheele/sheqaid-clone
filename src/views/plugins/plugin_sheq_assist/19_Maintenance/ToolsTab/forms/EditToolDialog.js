@@ -57,20 +57,20 @@ import ImageSection from "components/FormComponents/ImageSection";
 class EditToolDialog extends AEditDialog {
 	pageKey = "EditToolDialog";
 	findById = findByIdAsset;
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get title() {
 		return "Edit Asset";
 	}
-
+	
 	get topButtonsHiddenSave() {
 		const {props: {isNewEmployee}} = this;
 		return !isNewEmployee;
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -80,35 +80,35 @@ class EditToolDialog extends AEditDialog {
 
 @observer
 class Controls extends AControls {
-
+	
 	constructor(props) {
 		super(props);
-
+		
 		this.onUpdatedMonitoringPlanWorkingHrsOrKm = this.onUpdatedMonitoringPlanWorkingHrsOrKm.bind(this);
 		this.onUpdatedMonitoringPlanFuelUsage = this.onUpdatedMonitoringPlanFuelUsage.bind(this);
 		this.onUpdatedCalibrationRecord = this.onUpdatedCalibrationRecord.bind(this);
 		this.onUpdatedMaintenancePlan = this.onUpdatedMaintenancePlan.bind(this);
-
+		
 		this.onFormSave = this.onFormSave.bind(this);
 	}
-
+	
 	onUpdatedMonitoringPlanWorkingHrsOrKm(e, el) {
 		let {action, idx, item} = el.props;
 	}
-
+	
 	onUpdatedMonitoringPlanFuelUsage(e, el) {
 		let {action, idx, item} = el.props;
 	}
-
+	
 	onUpdatedMaintenancePlan(e, el) {
 		let {action, idx, item} = el.props;
 	}
-
+	
 	onUpdatedCalibrationRecord(e, el) {
 		let {action, idx, item} = el.props;
-
+		
 	}
-
+	
 	//<editor-fold desc="onFormSave">
 	async onFormSave(e, btn) {
 		const {
@@ -127,15 +127,15 @@ class Controls extends AControls {
 			},
 			refs: {}
 		} = this;
-
+		
 		const onSubmit = (data, onProgress) => {
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			console.log(data)
-
+			
 			if (!onProgress) {
 				btn.text("Saving...").disabled();
 				progressDialog.open();
@@ -152,15 +152,15 @@ class Controls extends AControls {
 				setTimeout(() => progressDialog.close());
 			});
 		};
-
+		
 		const onSubmitAssetDetails = (data, asset_detail) => {
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			console.log(data)
-
+			
 			btn.text("Saving...").disabled();
 			progressDialog.open();
 			upsertAssetDetails({
@@ -176,15 +176,15 @@ class Controls extends AControls {
 				setTimeout(() => progressDialog.close());
 			});
 		};
-
+		
 		const onSubmitAssetPurchaseInfo = (data, purchase_info) => {
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			console.log(data)
-
+			
 			btn.text("Saving...").disabled();
 			progressDialog.open();
 			upsertAssetPurchaseInfo({
@@ -200,15 +200,15 @@ class Controls extends AControls {
 				setTimeout(() => progressDialog.close());
 			});
 		};
-
+		
 		const onSubmitAssetDepreciation = (data, depreciation) => {
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			console.log(data)
-
+			
 			btn.text("Saving...").disabled();
 			progressDialog.open();
 			upsertAssetDepreciation({
@@ -224,7 +224,7 @@ class Controls extends AControls {
 				setTimeout(() => progressDialog.close());
 			});
 		};
-
+		
 		const {idx} = btn.props;
 		//test
 		if (idx === 0) {
@@ -233,20 +233,20 @@ class Controls extends AControls {
 				infoDialog.open('Company is required');
 				return;
 			}
-
+			
 			const {
 				site, project, client,
 			} = form.data;
-
+			
 			const data = {};
 			ShouldUpdate.checkClient(data, old_data, client);
 			ShouldUpdate.checkProject(data, old_data, project);
 			ShouldUpdate.checkSite(data, old_data, site);
-
+			
 			onSubmit(data);
 			return;
 		}
-
+		
 		//test
 		if (idx === 1) {
 			if (!form.isValid('name')) {
@@ -257,7 +257,7 @@ class Controls extends AControls {
 				infoDialog.open('Asset Type is required');
 				return;
 			}
-
+			
 			const {
 				owning_company,
 				name,
@@ -274,12 +274,12 @@ class Controls extends AControls {
 				qr_code,
 				notes,
 			} = form.data;
-
+			
 			const data = {};
 			ShouldUpdate.check(data, asset_detail, owning_company, 'owning_company');
 			ShouldUpdate.check(data, asset_detail, name, 'name');
 			ShouldUpdate.check(data, asset_detail, asset_type, 'asset_type');
-
+			
 			ShouldUpdate.check(data, asset_detail, desc, 'desc');
 			ShouldUpdate.check(data, asset_detail, manufacturer, 'manufacturer');
 			ShouldUpdate.check(data, asset_detail, model, 'model');
@@ -291,11 +291,11 @@ class Controls extends AControls {
 			ShouldUpdate.check(data, asset_detail, barcode, 'barcode');
 			ShouldUpdate.check(data, asset_detail, qr_code, 'qr_code');
 			ShouldUpdate.check(data, asset_detail, notes, 'notes');
-
+			
 			onSubmitAssetDetails(data, asset_detail);
 			return;
 		}
-
+		
 		//test
 		if (idx === 2) {
 			const {
@@ -310,82 +310,78 @@ class Controls extends AControls {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			console.log(data)
-
+			
 			let onProgress;
 			if (data.photo_list) {
 				onProgress = true;
 				const {photo_list} = data;
 				delete data.photo_list;
-
+				
 				btn.text("Saving...").disabled();
 				progressDialog.open();
-
+				
 				const res = await Promise.all(photo_list.map(async item => {
 					if (item.id) {
 						if (item.doc.path) {
 							return await updateAssetPhoto({id: item.id, doc: item.doc.path});
-							// return updateAssetPhoto({id: item.id, doc: {path: await toDataURI(item.doc.path)}});
 						}
 					} else {
-						// return insertAssetPhoto({asset_id: this.item.id, doc: item.path});
 						return await insertAssetPhoto({asset_id: this.item.id, doc: {path: await toDataURI(item.path)}});
 					}
 				}));
-
-				if (Object.keys(data).isEmpty()) {
-					console.log("res", res)
-					// onSaved && onSaved(res);
-					infoDialog.open("Record successfully updated.");
-					infoDialog.close(2000);
-					// this.props.close();
-
-					btn.text("Save").enabled();
-					setTimeout(() => progressDialog.close());
-					return;
-				}
+				
+				console.log("res", res)
+				// onSaved && onSaved(res);
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+				
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+				return;
 			}
-
+			
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
 				return;
 			}
-
+			
 			onSubmit(data, onProgress);
 			return;
 		}
-
+		
 		//test
 		if (idx === 3) {
 			const {
 				//3
 				responsible_person,
 			} = form.data;
-
+			
 			const data = {};
-
+			
 			ShouldUpdate.checkEmployee(data, old_data, responsible_person, 'responsible_person');
-
+			
 			onSubmit(data);
 			return;
 		}
-
+		
 		//test
 		if (idx === 4) {
 			const {
 				//4
 				doc_list,
 			} = form.data;
-
+			
 			const data = {};
-
+			
 			ShouldUpdate.checkFileList(data, old_data, doc_list, 'doc_list');
-
+			
 			onSubmit(data);
 			return;
 		}
-
+		
 		//test
 		if (idx === 5) {
 			const {
@@ -397,20 +393,20 @@ class Controls extends AControls {
 				reference_num,
 				warranty_certificate,
 			} = form.data;
-
+			
 			const data = {};
-
+			
 			ShouldUpdate.check(data, purchase_info, vendor, 'vendor');
 			ShouldUpdate.checkDate(data, purchase_info, acquisition_date, 'acquisition_date');
 			ShouldUpdate.check(data, purchase_info, acquisition_value, 'acquisition_value');
 			ShouldUpdate.checkDate(data, purchase_info, warranty_expiry, 'warranty_expiry');
 			ShouldUpdate.check(data, purchase_info, reference_num, 'reference_num');
 			ShouldUpdate.checkFile(data, purchase_info, warranty_certificate, 'warranty_certificate');
-
+			
 			onSubmitAssetPurchaseInfo(data, purchase_info);
 			return;
 		}
-
+		
 		//test
 		if (idx === 6) {
 			const {
@@ -422,20 +418,20 @@ class Controls extends AControls {
 				depreciation_factor,
 				partial_year_depreciation,
 			} = form.data;
-
+			
 			const data = {};
-
+			
 			ShouldUpdate.check(data, depreciation, depreciation_method, 'depreciation_method');
 			ShouldUpdate.check(data, depreciation, asset_cost, 'asset_cost');
 			ShouldUpdate.check(data, depreciation, salvage_value, 'salvage_value');
 			ShouldUpdate.check(data, depreciation, depreciation_years, 'depreciation_years');
 			ShouldUpdate.check(data, depreciation, depreciation_factor, 'depreciation_factor');
 			ShouldUpdate.check(data, depreciation, partial_year_depreciation, 'partial_year_depreciation');
-
+			
 			onSubmitAssetDepreciation(data, depreciation);
 			return;
 		}
-
+		
 		//todo: impl
 		if (idx === 7) {
 			const {
@@ -443,9 +439,9 @@ class Controls extends AControls {
 				monitoring_plan_working_distance_or_time_list,
 				monitoring_plan_fuel_usage_list,
 			} = form.data;
-
+			
 			//monitoring_plan_list = [{fuel_usage_list = [], working_distance_or_time_list = [],}]
-
+			
 			const data = {};
 			let _monitoring_plan_working_distance_or_time_list;
 			if (monitoring_plan_working_distance_or_time_list) {
@@ -472,7 +468,7 @@ class Controls extends AControls {
 			// onSubmit(data);
 			return;
 		}
-
+		
 		//todo: impl
 		if (idx === 8) {
 			const {
@@ -481,9 +477,9 @@ class Controls extends AControls {
 				next_service_hrs_or_km,
 			} = form.data;
 			//
-
+			
 			//maintenance_plan_list = [{next_service_hrs_or_km, plan_list = [],}]
-
+			
 			const data = {};
 			let _maintenance_plan_list;
 			if (maintenance_plan_list) {
@@ -507,7 +503,7 @@ class Controls extends AControls {
 			// onSubmit(data);
 			return;
 		}
-
+		
 		//todo: impl
 		if (idx === 9) {
 			const {
@@ -516,9 +512,9 @@ class Controls extends AControls {
 				next_calibration_date,
 				next_calibration_interval
 			} = form.data;
-
+			
 			//calibration_record_list = [{next_calibration_interval, next_calibration_date, calibration_list = [],}]
-
+			
 			const data = {};
 			// let _calibration_record_list;
 			// if (calibration_record_list) {
@@ -538,19 +534,19 @@ class Controls extends AControls {
 					data.calibration_record = new_calibration_record;
 				}
 			}
-
+			
 			// onSubmit(data);
 			return;
 		}
-
+		
 		return true;
 	}
-
+	
 	//</editor-fold>
-
+	
 	onSubmit(e, btn, onSaved) {
 		const {form, isNewEmployee, item: {data: old_data}} = this;
-
+		
 		if (!form.isValid('name')) {
 			infoDialog.open('Asset Name is required');
 			return;
@@ -559,8 +555,8 @@ class Controls extends AControls {
 			infoDialog.open('Asset Type is required');
 			return;
 		}
-
-		if(isNewEmployee) {
+		
+		if (isNewEmployee) {
 			console.log("res", form.data)
 			onSaved && onSaved(form.data);
 			infoDialog.open("Record added.");
@@ -568,25 +564,25 @@ class Controls extends AControls {
 			this.props.close();
 			return;
 		}
-
-
+		
+		
 	}
-
+	
 	get isNewEmployee() {
 		const {props: {dialog: {props: {isNewEmployee}}}} = this;
 		return isNewEmployee;
 	}
-
+	
 	@computed get item() {
 		return this.state.item;
 	}
-
+	
 	//<editor-fold desc="render">
 	render() {
 		if (!this.item) {
 			return <CircularProgress className="fixed-center"/>;
 		}
-
+		
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -635,9 +631,9 @@ class Controls extends AControls {
 				}
 			}
 		} = this;
-
+		
 		const {isContractor, isConsultant, isEmployee} = storage.is;
-
+		
 		//5 done
 		const {
 			// id,
@@ -648,7 +644,7 @@ class Controls extends AControls {
 			reference_num,
 			warranty_certificate,
 		} = purchase_info || {};
-
+		
 		//6 done
 		const {
 			// id,
@@ -659,21 +655,21 @@ class Controls extends AControls {
 			depreciation_factor,
 			partial_year_depreciation,
 		} = depreciation || {};
-
+		
 		//7 done
 		const {
 			// id,
 			fuel_usage_list = [],
 			working_distance_or_time_list = [],
 		} = (monitoring_plan_list || []).getLastElement() || {};
-
+		
 		//8 done
 		const {
 			// id,
 			next_service_hrs_or_km,
 			plan_list = [],
 		} = (maintenance_plan_list || []).getLastElement() || {};
-
+		
 		//9 done
 		const {
 			// id,
@@ -681,7 +677,7 @@ class Controls extends AControls {
 			next_calibration_date,
 			calibration_list = [],
 		} = (calibration_record_list || []).getLastElement() || {};
-
+		
 		return <FormControls>
 			<RowOrgs
 				client={client}
@@ -709,7 +705,7 @@ class Controls extends AControls {
 					                      className="col-lg-6 form-control" onChange={this.form.onChange}/>
 					<ClearableInput name="desc" type="textarea" placeholder="Description" defaultValue={desc}
 					                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-
+					
 					<SelectWrapper state={this.state} name="manufacturer" placeholder="Manufacturer..."
 					               defaultValue={manufacturer} className="col-lg-6 form-control"
 					               onChange={this.form.onChange} values="manufacturers" add/>
@@ -719,7 +715,7 @@ class Controls extends AControls {
 					                required className="col-lg-6 form-control" onChange={this.form.onChange}/>
 					<ClearableInput name="serial_num" type="text" placeholder="Serial No." defaultValue={serial_num}
 					                required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-
+					
 					<SelectWrapper state={this.state} name="location" placeholder="Location..."
 					               defaultValue={location} onChange={this.form.onChange}
 					               className="col-lg-12 form-control" values="locations" add/>
@@ -729,12 +725,12 @@ class Controls extends AControls {
 					<SelectWrapper state={this.state} name="condition" placeholder="Condition..."
 					               defaultValue={condition} onChange={this.form.onChange}
 					               className="col-lg-6 form-control" values="conditions"/>
-
+					
 					<ClearableInput name="barcode" type="text" placeholder="Barcode" defaultValue={barcode}
 					                className="col-lg-6 form-control" onChange={this.form.onChange}/>
 					<ClearableInput name="qr_code" type="text" placeholder="QR Code" defaultValue={qr_code}
 					                className="col-lg-6 form-control" onChange={this.form.onChange}/>
-
+					
 					<ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required
 					                className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				</Row>
@@ -875,7 +871,7 @@ class Controls extends AControls {
 					name='working_distance_or_time_list'
 					state={this.state}
 				/>
-
+				
 				<NewMonitoringPlanFuelUsageTable
 					ref="monitoring_plan_fuel_usage_list"
 					name="monitoring_plan_fuel_usage_list"
@@ -911,7 +907,7 @@ class Controls extends AControls {
 					savable
 					onChange={this.form.onChange}
 				/>
-
+				
 				<label className="hor-center margin-t-10 margin-b-0">Next Service Details</label>
 				<div className="flex grid-gap-10 w-680 margin-t-20 margin-b-10 hor-center flex-center">
 					<CurrentDistanceOrTime state={this.state}/>
@@ -944,7 +940,7 @@ class Controls extends AControls {
 				                           item={item}
 				                           savable
 				                           onChange={this.form.onChange}/>
-
+				
 				<label className="hor-center margin-t-10 margin-b-0">Next Calibration Details</label>
 				<ClearableInput ref="next_calibration_interval" name="next_calibration_interval" type="select"
 				                placeholder="Calibration Interval..." defaultValue={next_calibration_interval || "12 Months"}
@@ -972,7 +968,8 @@ class Controls extends AControls {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 					>
-						<LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded onChange={this.form.onChange}/>
+						<LinkedAssetsDetailsSection listName="asset_parent_list" item={item} isEmbedded
+						                            onChange={this.form.onChange}/>
 					</Row>
 					<Row
 						rendered
@@ -982,7 +979,8 @@ class Controls extends AControls {
 						onFormOpen={onFormOpen}
 						onFormBack={onFormBack}
 					>
-						<LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded onChange={this.form.onChange}/>
+						<LinkedAssetsDetailsSection listName="asset_children_list" item={item} isEmbedded
+						                            onChange={this.form.onChange}/>
 					</Row>
 				</FormControls>
 			</Row>
@@ -1007,7 +1005,7 @@ class Controls extends AControls {
 			{/*	onFormNext={onFormNext}*/}
 			{/*	onFormSave={this.onFormSave}*/}
 			{/*>*/}
-
+			
 			{/*</Row>*/}
 			{/*<Row*/}
 			{/*	rendered*/}
@@ -1017,11 +1015,11 @@ class Controls extends AControls {
 			{/*	onFormBack={onFormBack}*/}
 			{/*	onFormSave={this.onFormSave}*/}
 			{/*>*/}
-
+			
 			{/*</Row>*/}
 		</FormControls>;
 	}
-
+	
 	//</editor-fold>
 }
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a126e2348ee9cf9372c1768a0925b074>>
+ * @generated SignedSource<<62425ee3327da21be01799416ecbb2ec>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,6 +37,13 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -60,16 +67,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "3445f85e44d3e75154af766110ca56ee",
+    "cacheID": "b6ca3a7536fdb3789eebe44ffadcb99d",
     "id": null,
     "metadata": {},
     "name": "insertTrainingToolboxTalkSubjectMutation",
     "operationKind": "mutation",
-    "text": "mutation insertTrainingToolboxTalkSubjectMutation(\n  $object: sheq_training_toolbox_talk_subjects_insert_input!\n) {\n  insert_sheq_training_toolbox_talk_subjects_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertTrainingToolboxTalkSubjectMutation(\n  $object: sheq_training_toolbox_talk_subjects_insert_input!\n) {\n  insert_sheq_training_toolbox_talk_subjects_one(object: $object) {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "bdb2f72e8a53f4e0c217c99e37177e59";
+node.hash = "b27baffabace1bf8229c99d372af65e6";
 
 module.exports = node;

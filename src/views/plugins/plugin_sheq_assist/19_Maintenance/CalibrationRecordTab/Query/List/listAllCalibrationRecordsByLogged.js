@@ -1,57 +1,67 @@
-import listAllCalibrationRecordsByLoggedImpl from "./listAllCalibrationRecordsByLoggedImpl";
+import GQLClient from "graphql/GQLClient";
+import {getVariablesAndQueryConfig} from "../Utils";
+import {orgs_fragment} from "graphql/Fragments";
+import {
+	asset_details_calibration_record_fragment,
+} from "../Fragments";
 
-export const byCompany = (
-    {
-        company_id,
-        scope,
-        type,
-    }
+export default (
+	{
+		offset = 0,
+		limit = 50,
+		//
+		name,
+		reg_num,
+		serial_num,
+		model,
+		condition,
+		location,
+		manufacturer,
+		asset_type,
+		//
+		written_off = false,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    return listAllCalibrationRecordsByLoggedImpl({
-        org_id: {key: 'company_id', value: company_id},
-        scope,
-        type,
-    });
-};
+	const {filter} = getVariablesAndQueryConfig({
+		name,
+		reg_num,
+		serial_num,
+		model,
+		condition,
+		location,
+		manufacturer,
+		asset_type,
+		//
+		written_off,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs
+	});
 
-export const byClient = (
-    {
-        client_id,
-        scope,
-        type,
-    }
-) => {
-    return listAllCalibrationRecordsByLoggedImpl({
-        org_id: {key: 'client_id', value: client_id},
-        scope,
-        type,
-    });
-};
-
-export const byProject = (
-    {
-        project_id,
-        scope,
-        type,
-    }
-) => {
-    return listAllCalibrationRecordsByLoggedImpl({
-        org_id: {key: 'project_id', value: project_id},
-        scope,
-        type,
-    });
-};
-
-export const bySite = (
-    {
-        site_id,
-        scope,
-        type,
-    }
-) => {
-    return listAllCalibrationRecordsByLoggedImpl({
-        org_id: {key: 'site_id', value: site_id},
-        scope,
-        type,
-    });
+	//<editor-fold desc="ByEach">
+	return GQLClient
+	.query({
+		query: `
+      query listAllToolsByLoggedQuery {
+        assets(
+          where: {
+            ${filter},
+            calibration_record_list:{id: {_is_null: false}}
+          },
+	        order_by: [{asset_detail:{asset_type: asc}}, {asset_detail:{name: asc}},],
+	        offset: ${offset},
+	        ${limit > 0 ? `limit: ${limit}` : ''}
+        ) {
+          ${asset_details_calibration_record_fragment}
+          ${orgs_fragment}
+        }
+      }
+    `,
+	});
+	//</editor-fold>
 };

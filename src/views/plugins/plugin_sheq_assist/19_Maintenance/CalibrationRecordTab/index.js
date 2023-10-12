@@ -21,7 +21,7 @@ import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 
 import style from "./CalibrationRecordTab.lazy.css";
 import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllCalibrationRecordsByLogged";
+import byLogged from "./Query/List/listAllCalibrationRecordsByLogged";
 
 // </editor-fold>
 
@@ -86,34 +86,49 @@ class CalibrationRecordTab extends React.Component {
 	// </editor-fold>
 
 	//<editor-fold desc="onLoadList">
-	onLoadList(page, isNew) {
-		const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-		const {selectedClient, selectedProject, selectedSite} = storage.selected;
-
-		let fn;
-
-		const args = {};
-
-		if (selectedSite) {
-			args.site_id = selectedSite.id;
-			fn = bySite;
-		} else if (selectedProject) {
-			args.project_id = selectedProject.id;
-			fn = byProject;
-		} else if (selectedClient) {
-			args.client_id = selectedClient.id;
-			fn = byClient;
+	onLoadList(params = {}) {
+		const {page, lastItem, filterData, filtered, isNew} = params;
+		const {
+			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
+		} = filterData || {};
+		
+		const limit = 50;
+		
+		const args = {
+			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
+			written_off: false,
+			//
+			limit,
+			//
+			exact_orgs: true,
+		};
+		
+		if (!isNew) {
+			args.offset = this.refs.root.list.length;
 		} else {
-			args.company_id = sess_company_id;
-			fn = byCompany;
+			args.offset = 0;
 		}
-
-		return fn(args).then((res) => {
+		
+		return byLogged(args).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
 	}
-
+	
 	//</editor-fold>
 
 	onPrintForm() {
@@ -192,7 +207,7 @@ class CalibrationRecordTab extends React.Component {
 		const item = this.refs.root.list[n];
 		const {
 			id, data: {
-				created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/,
+				created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
 				client, project, site,
 				//1 done
 				asset_detail: {
@@ -213,23 +228,24 @@ class CalibrationRecordTab extends React.Component {
 				},
 				//2 done
 				photo_list,
+				profile_pic: profile_pic_list,
 				//3 done
 				responsible_person,
-				//4 done
-				doc_list,
-				//5 done
-				purchase_info,
-				//6 done
-				depreciation,
-				//7 done
-				monitoring_plan_list,
-				//8 done
-				maintenance_plan_list,
-				//9 done
+				// //4 done
+				// doc_list,
+				// //5 done
+				// purchase_info,
+				// //6 done
+				// depreciation,
+				// //7 done
+				// monitoring_plan_list,
+				// //8 done
+				// maintenance_plan_list,
+				// //9 done
 				calibration_record_list,
-				//10
-				inspection_template_list = [],
-				inspection_list = [],
+				// //10
+				// inspection_template_list = [],
+				// inspection_list = [],
 			}
 		} = item;
 

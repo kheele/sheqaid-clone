@@ -3,13 +3,13 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {Dates} from 'utils/Utils';
-import {AProfileDialog} from 'components/dialogs';
+import {ANewDialog} from 'components/dialogs';
 import {Button, ProfileField} from 'components/inputs';
 
 import style from "./PluginsPrivilegesDialog.lazy.css";
 
 @observer
-class PluginsPrivilegesDialog extends AProfileDialog {
+class PluginsPrivilegesDialog extends ANewDialog {
     pageKey = "PluginsPrivilegesDialog";
   
     constructor(props) {

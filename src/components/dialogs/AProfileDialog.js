@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {Button, Clickable} from '../inputs';
 import Dialog from './Dialog';
@@ -9,16 +10,16 @@ import AFormDialog from './AFormDialog';
 
 @observer
 class AProfileDialog extends AFormDialog {
-
+	
 	constructor(props, style) {
 		super(props, style);
-
+		
 		this.onSaveAsPDF && (this.onSaveAsPDF = this.onSaveAsPDF.bind(this));
 		this.onDownload && (this.onDownload = this.onDownload.bind(this));
 		this.onEdit && (this.onEdit = this.onEdit.bind(this));
 		this.onDelete = this.onDelete.bind(this);
 	}
-
+	
 	componentDidMount() {
 		super.componentDidMount();
 		this.execWhen(() => {
@@ -28,7 +29,7 @@ class AProfileDialog extends AFormDialog {
 			dialog.setTopButtons(this.topButtons);
 		});
 	}
-
+	
 	open(item) {
 		this.execWhen(() => this.state.item).then(() => {
 			if (!this.topButtonsHiddenDelete && !storage.is.isEmployee) {
@@ -54,7 +55,7 @@ class AProfileDialog extends AFormDialog {
 		});
 		return super.open(item);
 	}
-
+	
 	onDelete(e, btn) {
 //        this.refs.controls.onDelete(e, btn);
 		confirmDialog.open("Are you sure you want to remove the record?").then(res => {
@@ -77,7 +78,7 @@ class AProfileDialog extends AFormDialog {
 			}
 		});
 	}
-
+	
 	@computed get topButtons() {
 		const {isContractorViewVisited} = storage.is;
 		if (this.topButtonsHidden || isContractorViewVisited) return null;
@@ -105,19 +106,20 @@ class AProfileDialog extends AFormDialog {
 			</Button>}
 		</React.Fragment>;
 	}
-
+	
 	renderProfileCover(val) {
 		return <div className="row row-profile-cover">
 			{isString(val) && <h3>{val}</h3>}
 			{!isString(val) && val}
 		</div>;
 	}
-
+	
 	render() {
 		let className = this.pageKey + '-profile-dialog';
 		!!this.className && (className += ' ' + this.className);
+		
 		const Controls = this.controls;
-
+		
 		return (<Dialog
 			key={this.pageKey + '-profile-dialog'}
 			ref="dialog"
@@ -129,6 +131,7 @@ class AProfileDialog extends AFormDialog {
 			onClose={this.onClose}
 			dialog={this}
 		>
+			<CircularProgressWrapper state={this.state}/>
 			<Controls
 				ref="controls"
 				dialog={this}
@@ -145,6 +148,17 @@ class AProfileDialog extends AFormDialog {
 				execWhen={this.execWhen}
 			/>
 		</Dialog>);
+	}
+}
+
+@observer
+class CircularProgressWrapper extends React.Component {
+	
+	render() {
+		const {item} = this.props.state;
+		if(!item) return <CircularProgress className="fixed-center"/>;
+		
+		return null;
 	}
 }
 

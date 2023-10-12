@@ -17,7 +17,7 @@ import SetupEmailPasswordDialog from './SetupEmailPasswordDialog';
 import SetupPhonePasswordDialog from './SetupPhonePasswordDialog';
 import NewContractorUserDialog from '../../views/default/Users/NewDialog';
 
-import AEditDialog from './AEditDialog';
+import ANewDialog from './ANewDialog';
 import ALoginControls from './ALoginControls';
 
 import style from './LoginPasswordDialog.lazy.css';
@@ -27,7 +27,7 @@ import {execWhen} from "../../utils/UtilsFuns";
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
-class LoginPasswordDialog extends AEditDialog {
+class LoginPasswordDialog extends ANewDialog {
     pageKey = "LoginPasswordDialog";
     className = "AAuthDialog";
 

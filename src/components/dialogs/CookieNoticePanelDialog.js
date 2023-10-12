@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {AProfileDialog, PrivacyPolicyDialog} from "./index";
+import {ANewDialog, PrivacyPolicyDialog} from "./index";
 import style from "./CookieNoticePanelDialog.lazy.css";
 import {execWhen} from "utils/UtilsFuns";
 import React from "react";
@@ -9,7 +9,7 @@ import {Clickable} from "../inputs";
 
 // <editor-fold defaultstate="collapsed" desc="CookieNoticePanelDialog">
 @observer
-class CookieNoticePanelDialog extends AProfileDialog {
+class CookieNoticePanelDialog extends ANewDialog {
 	pageKey = "CookieNoticePanelDialog";
 
 	constructor(props) {
@@ -24,12 +24,9 @@ class CookieNoticePanelDialog extends AProfileDialog {
 	title() {
 		return 'Cookie Notice';
 	}
-
-	open() {
-		return new Promise((resolve, reject) => {
-			this.refs.dialog.open(this.title());
-			this.onResponse = resolve;
-		});
+	
+	get topButtons() {
+		return null;
 	}
 
 	get noBackAction() {

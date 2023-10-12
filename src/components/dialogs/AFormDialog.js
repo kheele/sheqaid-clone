@@ -3,7 +3,7 @@ import {findDOMNode} from "react-dom";
 import {computed, extendObservable, observable} from 'mobx';
 import {observer} from 'mobx-react';
 
-import {execWhen, findReactComponent, scrollTo} from '../../utils/Utils';
+import {createGetter, execWhen, findReactComponent, scrollTo} from '../../utils/Utils';
 
 @observer
 class AFormDialog extends React.Component {
@@ -93,12 +93,9 @@ class AFormDialog extends React.Component {
 			const {findById} = this;
 			
 			if (findById) {
-				const controls = await execWhen(() => this.refs.controls);
-				controls.item = computed(function() {
-					return this.props.state.item;
-				}.bind(controls));
-			} else {
-				!!item && (this.state.item = item);
+				this.state.item = await findById(item.id);
+			} else if(item) {
+				this.state.item = item;
 			}
 			
 			let title = isFunction(this.title) ? this.title() : this.title;
@@ -107,8 +104,22 @@ class AFormDialog extends React.Component {
 			}
 			this.refs.dialog.setTitle(title);
 			
-			if (findById && item.id) {
-				this.state.item = await findById(item.id);
+			const controls = await execWhen(() => this.refs.controls);
+			// createGetter.call(controls, "dialog", () => this);
+			if(item && controls.state) {
+				controls.state.item = item;
+			// 	// createGetter.call(controls, "item", () => {
+			// 	// 	const {$mobx} = this;
+			// 	// 	if ($mobx && $mobx.values) {
+			// 	// 		const {values} = $mobx;
+			// 	// 		if (values['item']) {
+			// 	// 			return values['item'].get();
+			// 	// 		}
+			// 	// 	}
+			// 	// });
+			// 	// createGetter.call(controls, "item", computed(() => this.state.item));
+			// 	// createGetter.call(controls, "item", () => this.state.item);
+			// 	// extendObservable(controls, {item: computed(() => this.state.item)});
 			}
 		});
 	}

@@ -34133,6 +34133,13 @@ type mutation_root {
     ): proxy_employee__training_register_mutation_response
     "delete single row from the table: \"proxy_employee__training_register\""
     delete_proxy_employee__training_register_by_pk(id: bigint!): proxy_employee__training_register
+    "delete data from the table: \"proxy_employee__training_toolbox_talk_register\""
+    delete_proxy_employee__training_toolbox_talk_register(
+        "filter the rows which have to be deleted"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp!
+    ): proxy_employee__training_toolbox_talk_register_mutation_response
+    "delete single row from the table: \"proxy_employee__training_toolbox_talk_register\""
+    delete_proxy_employee__training_toolbox_talk_register_by_pk(id: bigint!): proxy_employee__training_toolbox_talk_register
     "delete data from the table: \"proxy_employees_docs_counselling__witness\""
     delete_proxy_employees_docs_counselling__witness(
         "filter the rows which have to be deleted"
@@ -34658,6 +34665,13 @@ type mutation_root {
     ): sheq_training_toolbox_talk_list_registers_mutation_response
     "delete single row from the table: \"sheq_training_toolbox_talk_list_registers\""
     delete_sheq_training_toolbox_talk_list_registers_by_pk(id: bigint!): sheq_training_toolbox_talk_list_registers
+    "delete data from the table: \"sheq_training_toolbox_talk_registers\""
+    delete_sheq_training_toolbox_talk_registers(
+        "filter the rows which have to be deleted"
+        where: sheq_training_toolbox_talk_registers_bool_exp!
+    ): sheq_training_toolbox_talk_registers_mutation_response
+    "delete single row from the table: \"sheq_training_toolbox_talk_registers\""
+    delete_sheq_training_toolbox_talk_registers_by_pk(id: bigint!): sheq_training_toolbox_talk_registers
     "delete data from the table: \"sheq_training_toolbox_talk_subjects\""
     delete_sheq_training_toolbox_talk_subjects(
         "filter the rows which have to be deleted"
@@ -36455,6 +36469,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: proxy_employee__training_register_on_conflict
     ): proxy_employee__training_register
+    "insert data into the table: \"proxy_employee__training_toolbox_talk_register\""
+    insert_proxy_employee__training_toolbox_talk_register(
+        "the rows to be inserted"
+        objects: [proxy_employee__training_toolbox_talk_register_insert_input!]!,
+        "upsert condition"
+        on_conflict: proxy_employee__training_toolbox_talk_register_on_conflict
+    ): proxy_employee__training_toolbox_talk_register_mutation_response
+    "insert a single row into the table: \"proxy_employee__training_toolbox_talk_register\""
+    insert_proxy_employee__training_toolbox_talk_register_one(
+        "the row to be inserted"
+        object: proxy_employee__training_toolbox_talk_register_insert_input!,
+        "upsert condition"
+        on_conflict: proxy_employee__training_toolbox_talk_register_on_conflict
+    ): proxy_employee__training_toolbox_talk_register
     "insert data into the table: \"proxy_employees_docs_counselling__witness\""
     insert_proxy_employees_docs_counselling__witness(
         "the rows to be inserted"
@@ -37505,6 +37533,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: sheq_training_toolbox_talk_list_registers_on_conflict
     ): sheq_training_toolbox_talk_list_registers
+    "insert data into the table: \"sheq_training_toolbox_talk_registers\""
+    insert_sheq_training_toolbox_talk_registers(
+        "the rows to be inserted"
+        objects: [sheq_training_toolbox_talk_registers_insert_input!]!,
+        "upsert condition"
+        on_conflict: sheq_training_toolbox_talk_registers_on_conflict
+    ): sheq_training_toolbox_talk_registers_mutation_response
+    "insert a single row into the table: \"sheq_training_toolbox_talk_registers\""
+    insert_sheq_training_toolbox_talk_registers_one(
+        "the row to be inserted"
+        object: sheq_training_toolbox_talk_registers_insert_input!,
+        "upsert condition"
+        on_conflict: sheq_training_toolbox_talk_registers_on_conflict
+    ): sheq_training_toolbox_talk_registers
     "insert data into the table: \"sheq_training_toolbox_talk_subjects\""
     insert_sheq_training_toolbox_talk_subjects(
         "the rows to be inserted"
@@ -40527,6 +40569,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [proxy_employee__training_register_updates!]!
     ): [proxy_employee__training_register_mutation_response]
+    "update data of the table: \"proxy_employee__training_toolbox_talk_register\""
+    update_proxy_employee__training_toolbox_talk_register(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__training_toolbox_talk_register_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__training_toolbox_talk_register_set_input,
+        "filter the rows which have to be updated"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp!
+    ): proxy_employee__training_toolbox_talk_register_mutation_response
+    "update single row of the table: \"proxy_employee__training_toolbox_talk_register\""
+    update_proxy_employee__training_toolbox_talk_register_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: proxy_employee__training_toolbox_talk_register_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: proxy_employee__training_toolbox_talk_register_set_input,
+        pk_columns: proxy_employee__training_toolbox_talk_register_pk_columns_input!
+    ): proxy_employee__training_toolbox_talk_register
+    "update multiples rows of table: \"proxy_employee__training_toolbox_talk_register\""
+    update_proxy_employee__training_toolbox_talk_register_many(
+        "updates to execute, in order"
+        updates: [proxy_employee__training_toolbox_talk_register_updates!]!
+    ): [proxy_employee__training_toolbox_talk_register_mutation_response]
     "update data of the table: \"proxy_employees_docs_counselling__witness\""
     update_proxy_employees_docs_counselling__witness(
         "increments the numeric columns with given value of the filtered values"
@@ -42177,6 +42241,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [sheq_training_toolbox_talk_list_registers_updates!]!
     ): [sheq_training_toolbox_talk_list_registers_mutation_response]
+    "update data of the table: \"sheq_training_toolbox_talk_registers\""
+    update_sheq_training_toolbox_talk_registers(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_training_toolbox_talk_registers_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_training_toolbox_talk_registers_set_input,
+        "filter the rows which have to be updated"
+        where: sheq_training_toolbox_talk_registers_bool_exp!
+    ): sheq_training_toolbox_talk_registers_mutation_response
+    "update single row of the table: \"sheq_training_toolbox_talk_registers\""
+    update_sheq_training_toolbox_talk_registers_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_training_toolbox_talk_registers_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_training_toolbox_talk_registers_set_input,
+        pk_columns: sheq_training_toolbox_talk_registers_pk_columns_input!
+    ): sheq_training_toolbox_talk_registers
+    "update multiples rows of table: \"sheq_training_toolbox_talk_registers\""
+    update_sheq_training_toolbox_talk_registers_many(
+        "updates to execute, in order"
+        updates: [sheq_training_toolbox_talk_registers_updates!]!
+    ): [sheq_training_toolbox_talk_registers_mutation_response]
     "update data of the table: \"sheq_training_toolbox_talk_subjects\""
     update_sheq_training_toolbox_talk_subjects(
         "increments the numeric columns with given value of the filtered values"
@@ -45480,6 +45566,134 @@ type proxy_employee__training_register_variance_fields {
     employee_id: Float
     id: Float
     training_register_id: Float
+}
+
+"columns and relationships of \"proxy_employee__training_toolbox_talk_register\""
+type proxy_employee__training_toolbox_talk_register implements Node {
+    date: date
+    "An object relationship"
+    employee: hr_employees!
+    employee_id: bigint!
+    id: ID!
+    "An object relationship"
+    register: sheq_training_toolbox_talk_registers!
+    register_id: bigint!
+    signature(
+        "JSON select path"
+        path: String
+    ): json
+}
+
+"A Relay connection object on \"proxy_employee__training_toolbox_talk_register\""
+type proxy_employee__training_toolbox_talk_registerConnection {
+    edges: [proxy_employee__training_toolbox_talk_registerEdge!]!
+    pageInfo: PageInfo!
+}
+
+type proxy_employee__training_toolbox_talk_registerEdge {
+    cursor: String!
+    node: proxy_employee__training_toolbox_talk_register!
+}
+
+"aggregated selection of \"proxy_employee__training_toolbox_talk_register\""
+type proxy_employee__training_toolbox_talk_register_aggregate {
+    aggregate: proxy_employee__training_toolbox_talk_register_aggregate_fields
+    nodes: [proxy_employee__training_toolbox_talk_register!]!
+}
+
+"aggregate fields of \"proxy_employee__training_toolbox_talk_register\""
+type proxy_employee__training_toolbox_talk_register_aggregate_fields {
+    avg: proxy_employee__training_toolbox_talk_register_avg_fields
+    count(columns: [proxy_employee__training_toolbox_talk_register_select_column!], distinct: Boolean): Int!
+    max: proxy_employee__training_toolbox_talk_register_max_fields
+    min: proxy_employee__training_toolbox_talk_register_min_fields
+    stddev: proxy_employee__training_toolbox_talk_register_stddev_fields
+    stddev_pop: proxy_employee__training_toolbox_talk_register_stddev_pop_fields
+    stddev_samp: proxy_employee__training_toolbox_talk_register_stddev_samp_fields
+    sum: proxy_employee__training_toolbox_talk_register_sum_fields
+    var_pop: proxy_employee__training_toolbox_talk_register_var_pop_fields
+    var_samp: proxy_employee__training_toolbox_talk_register_var_samp_fields
+    variance: proxy_employee__training_toolbox_talk_register_variance_fields
+}
+
+"aggregate avg on columns"
+type proxy_employee__training_toolbox_talk_register_avg_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate max on columns"
+type proxy_employee__training_toolbox_talk_register_max_fields {
+    date: date
+    employee_id: bigint
+    id: bigint
+    register_id: bigint
+}
+
+"aggregate min on columns"
+type proxy_employee__training_toolbox_talk_register_min_fields {
+    date: date
+    employee_id: bigint
+    id: bigint
+    register_id: bigint
+}
+
+"response of any mutation on the table \"proxy_employee__training_toolbox_talk_register\""
+type proxy_employee__training_toolbox_talk_register_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [proxy_employee__training_toolbox_talk_register!]!
+}
+
+"aggregate stddev on columns"
+type proxy_employee__training_toolbox_talk_register_stddev_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type proxy_employee__training_toolbox_talk_register_stddev_pop_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type proxy_employee__training_toolbox_talk_register_stddev_samp_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate sum on columns"
+type proxy_employee__training_toolbox_talk_register_sum_fields {
+    employee_id: bigint
+    id: bigint
+    register_id: bigint
+}
+
+"aggregate var_pop on columns"
+type proxy_employee__training_toolbox_talk_register_var_pop_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate var_samp on columns"
+type proxy_employee__training_toolbox_talk_register_var_samp_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
+}
+
+"aggregate variance on columns"
+type proxy_employee__training_toolbox_talk_register_variance_fields {
+    employee_id: Float
+    id: Float
+    register_id: Float
 }
 
 "columns and relationships of \"proxy_employees_docs_counselling__witness\""
@@ -50160,6 +50374,19 @@ type query_root {
         "filter the rows returned"
         where: proxy_employee__training_register_bool_exp
     ): proxy_employee__training_registerConnection!
+    "fetch data from the table: \"proxy_employee__training_toolbox_talk_register\""
+    proxy_employee__training_toolbox_talk_register_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__training_toolbox_talk_register_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__training_toolbox_talk_register_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp
+    ): proxy_employee__training_toolbox_talk_registerConnection!
     "fetch data from the table: \"proxy_employees_docs_counselling__witness\""
     proxy_employees_docs_counselling__witness_connection(
         after: String,
@@ -51135,6 +51362,19 @@ type query_root {
         "filter the rows returned"
         where: sheq_training_toolbox_talk_list_registers_bool_exp
     ): sheq_training_toolbox_talk_list_registersConnection!
+    "fetch data from the table: \"sheq_training_toolbox_talk_registers\""
+    sheq_training_toolbox_talk_registers_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_registers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_registers_bool_exp
+    ): sheq_training_toolbox_talk_registersConnection!
     "fetch data from the table: \"sheq_training_toolbox_talk_subjects\""
     sheq_training_toolbox_talk_subjects_connection(
         after: String,
@@ -62424,6 +62664,208 @@ type sheq_training_toolbox_talk_list_variance_fields {
     training_toolbox_talk_id: Float
 }
 
+"columns and relationships of \"sheq_training_toolbox_talk_registers\""
+type sheq_training_toolbox_talk_registers implements Node {
+    "An object relationship"
+    client: default_clients
+    client_id: bigint
+    "An object relationship"
+    company: default_companies!
+    company_id: bigint!
+    date: date!
+    "An array relationship"
+    employee_list(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__training_toolbox_talk_register_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__training_toolbox_talk_register_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp
+    ): [proxy_employee__training_toolbox_talk_register!]!
+    "An aggregate relationship"
+    employee_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__training_toolbox_talk_register_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__training_toolbox_talk_register_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp
+    ): proxy_employee__training_toolbox_talk_register_aggregate!
+    "An array relationship connection"
+    employee_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__training_toolbox_talk_register_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__training_toolbox_talk_register_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp
+    ): proxy_employee__training_toolbox_talk_registerConnection!
+    id: ID!
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
+    "An object relationship"
+    subject: sheq_training_toolbox_talk_subjects!
+    subject_id: bigint!
+}
+
+"A Relay connection object on \"sheq_training_toolbox_talk_registers\""
+type sheq_training_toolbox_talk_registersConnection {
+    edges: [sheq_training_toolbox_talk_registersEdge!]!
+    pageInfo: PageInfo!
+}
+
+type sheq_training_toolbox_talk_registersEdge {
+    cursor: String!
+    node: sheq_training_toolbox_talk_registers!
+}
+
+"aggregated selection of \"sheq_training_toolbox_talk_registers\""
+type sheq_training_toolbox_talk_registers_aggregate {
+    aggregate: sheq_training_toolbox_talk_registers_aggregate_fields
+    nodes: [sheq_training_toolbox_talk_registers!]!
+}
+
+"aggregate fields of \"sheq_training_toolbox_talk_registers\""
+type sheq_training_toolbox_talk_registers_aggregate_fields {
+    avg: sheq_training_toolbox_talk_registers_avg_fields
+    count(columns: [sheq_training_toolbox_talk_registers_select_column!], distinct: Boolean): Int!
+    max: sheq_training_toolbox_talk_registers_max_fields
+    min: sheq_training_toolbox_talk_registers_min_fields
+    stddev: sheq_training_toolbox_talk_registers_stddev_fields
+    stddev_pop: sheq_training_toolbox_talk_registers_stddev_pop_fields
+    stddev_samp: sheq_training_toolbox_talk_registers_stddev_samp_fields
+    sum: sheq_training_toolbox_talk_registers_sum_fields
+    var_pop: sheq_training_toolbox_talk_registers_var_pop_fields
+    var_samp: sheq_training_toolbox_talk_registers_var_samp_fields
+    variance: sheq_training_toolbox_talk_registers_variance_fields
+}
+
+"aggregate avg on columns"
+type sheq_training_toolbox_talk_registers_avg_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate max on columns"
+type sheq_training_toolbox_talk_registers_max_fields {
+    client_id: bigint
+    company_id: bigint
+    date: date
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    subject_id: bigint
+}
+
+"aggregate min on columns"
+type sheq_training_toolbox_talk_registers_min_fields {
+    client_id: bigint
+    company_id: bigint
+    date: date
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    subject_id: bigint
+}
+
+"response of any mutation on the table \"sheq_training_toolbox_talk_registers\""
+type sheq_training_toolbox_talk_registers_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_training_toolbox_talk_registers!]!
+}
+
+"aggregate stddev on columns"
+type sheq_training_toolbox_talk_registers_stddev_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type sheq_training_toolbox_talk_registers_stddev_pop_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type sheq_training_toolbox_talk_registers_stddev_samp_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate sum on columns"
+type sheq_training_toolbox_talk_registers_sum_fields {
+    client_id: bigint
+    company_id: bigint
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    subject_id: bigint
+}
+
+"aggregate var_pop on columns"
+type sheq_training_toolbox_talk_registers_var_pop_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate var_samp on columns"
+type sheq_training_toolbox_talk_registers_var_samp_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
+"aggregate variance on columns"
+type sheq_training_toolbox_talk_registers_variance_fields {
+    client_id: Float
+    company_id: Float
+    id: Float
+    project_id: Float
+    site_id: Float
+    subject_id: Float
+}
+
 "columns and relationships of \"sheq_training_toolbox_talk_subjects\""
 type sheq_training_toolbox_talk_subjects implements Node {
     "An object relationship"
@@ -62447,6 +62889,45 @@ type sheq_training_toolbox_talk_subjects implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    "An array relationship"
+    register_list(
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_registers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_registers_bool_exp
+    ): [sheq_training_toolbox_talk_registers!]!
+    "An aggregate relationship"
+    register_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_registers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_registers_bool_exp
+    ): sheq_training_toolbox_talk_registers_aggregate!
+    "An array relationship connection"
+    register_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_registers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_registers_bool_exp
+    ): sheq_training_toolbox_talk_registersConnection!
     "An object relationship"
     site: default_sites
     site_id: bigint
@@ -64398,6 +64879,19 @@ type subscription_root {
         "filter the rows returned"
         where: proxy_employee__training_register_bool_exp
     ): proxy_employee__training_registerConnection!
+    "fetch data from the table: \"proxy_employee__training_toolbox_talk_register\""
+    proxy_employee__training_toolbox_talk_register_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [proxy_employee__training_toolbox_talk_register_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__training_toolbox_talk_register_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__training_toolbox_talk_register_bool_exp
+    ): proxy_employee__training_toolbox_talk_registerConnection!
     "fetch data from the table: \"proxy_employees_docs_counselling__witness\""
     proxy_employees_docs_counselling__witness_connection(
         after: String,
@@ -65373,6 +65867,19 @@ type subscription_root {
         "filter the rows returned"
         where: sheq_training_toolbox_talk_list_registers_bool_exp
     ): sheq_training_toolbox_talk_list_registersConnection!
+    "fetch data from the table: \"sheq_training_toolbox_talk_registers\""
+    sheq_training_toolbox_talk_registers_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_registers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_registers_bool_exp
+    ): sheq_training_toolbox_talk_registersConnection!
     "fetch data from the table: \"sheq_training_toolbox_talk_subjects\""
     sheq_training_toolbox_talk_subjects_connection(
         after: String,
@@ -78615,6 +79122,42 @@ enum proxy_employee__training_register_update_column {
     training_register_id
 }
 
+"unique or primary key constraints on table \"proxy_employee__training_toolbox_talk_register\""
+enum proxy_employee__training_toolbox_talk_register_constraint {
+    "unique or primary key constraint on columns \"employee_id\", \"register_id\""
+    proxy_employee__training_toolbox_ta_register_id_employee_id_key
+    "unique or primary key constraint on columns \"id\""
+    proxy_employee__training_toolbox_talk_register_pkey
+}
+
+"select columns of table \"proxy_employee__training_toolbox_talk_register\""
+enum proxy_employee__training_toolbox_talk_register_select_column {
+    "column name"
+    date
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    register_id
+    "column name"
+    signature
+}
+
+"update columns of table \"proxy_employee__training_toolbox_talk_register\""
+enum proxy_employee__training_toolbox_talk_register_update_column {
+    "column name"
+    date
+    "column name"
+    employee_id
+    "column name"
+    id
+    "column name"
+    register_id
+    "column name"
+    signature
+}
+
 "unique or primary key constraints on table \"proxy_employees_docs_counselling__witness\""
 enum proxy_employees_docs_counselling__witness_constraint {
     "unique or primary key constraint on columns \"witness_external_id\", \"counselling_id\""
@@ -82913,6 +83456,48 @@ enum sheq_training_toolbox_talk_list_update_column {
     time_to
     "column name"
     training_toolbox_talk_id
+}
+
+"unique or primary key constraints on table \"sheq_training_toolbox_talk_registers\""
+enum sheq_training_toolbox_talk_registers_constraint {
+    "unique or primary key constraint on columns \"id\""
+    sheq_training_toolbox_talk_registers_pkey
+}
+
+"select columns of table \"sheq_training_toolbox_talk_registers\""
+enum sheq_training_toolbox_talk_registers_select_column {
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    date
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    site_id
+    "column name"
+    subject_id
+}
+
+"update columns of table \"sheq_training_toolbox_talk_registers\""
+enum sheq_training_toolbox_talk_registers_update_column {
+    "column name"
+    client_id
+    "column name"
+    company_id
+    "column name"
+    date
+    "column name"
+    id
+    "column name"
+    project_id
+    "column name"
+    site_id
+    "column name"
+    subject_id
 }
 
 "unique or primary key constraints on table \"sheq_training_toolbox_talk_subjects\""
@@ -112481,6 +113066,183 @@ input proxy_employee__training_register_variance_order_by {
     training_register_id: order_by
 }
 
+input proxy_employee__training_toolbox_talk_register_aggregate_bool_exp {
+    count: proxy_employee__training_toolbox_talk_register_aggregate_bool_exp_count
+}
+
+input proxy_employee__training_toolbox_talk_register_aggregate_bool_exp_count {
+    arguments: [proxy_employee__training_toolbox_talk_register_select_column!]
+    distinct: Boolean
+    filter: proxy_employee__training_toolbox_talk_register_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_aggregate_order_by {
+    avg: proxy_employee__training_toolbox_talk_register_avg_order_by
+    count: order_by
+    max: proxy_employee__training_toolbox_talk_register_max_order_by
+    min: proxy_employee__training_toolbox_talk_register_min_order_by
+    stddev: proxy_employee__training_toolbox_talk_register_stddev_order_by
+    stddev_pop: proxy_employee__training_toolbox_talk_register_stddev_pop_order_by
+    stddev_samp: proxy_employee__training_toolbox_talk_register_stddev_samp_order_by
+    sum: proxy_employee__training_toolbox_talk_register_sum_order_by
+    var_pop: proxy_employee__training_toolbox_talk_register_var_pop_order_by
+    var_samp: proxy_employee__training_toolbox_talk_register_var_samp_order_by
+    variance: proxy_employee__training_toolbox_talk_register_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_arr_rel_insert_input {
+    data: [proxy_employee__training_toolbox_talk_register_insert_input!]!
+    "upsert condition"
+    on_conflict: proxy_employee__training_toolbox_talk_register_on_conflict
+}
+
+"order by avg() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_avg_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"proxy_employee__training_toolbox_talk_register\". All fields are combined with a logical 'AND'."
+input proxy_employee__training_toolbox_talk_register_bool_exp {
+    _and: [proxy_employee__training_toolbox_talk_register_bool_exp!]
+    _not: proxy_employee__training_toolbox_talk_register_bool_exp
+    _or: [proxy_employee__training_toolbox_talk_register_bool_exp!]
+    date: date_comparison_exp
+    employee: hr_employees_bool_exp
+    employee_id: bigint_comparison_exp
+    id: bigint_comparison_exp
+    register: sheq_training_toolbox_talk_registers_bool_exp
+    register_id: bigint_comparison_exp
+    signature: json_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_inc_input {
+    employee_id: bigint
+    id: bigint
+    register_id: bigint
+}
+
+"input type for inserting data into table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_insert_input {
+    date: date
+    employee: hr_employees_obj_rel_insert_input
+    employee_id: bigint
+    id: bigint
+    register: sheq_training_toolbox_talk_registers_obj_rel_insert_input
+    register_id: bigint
+    signature: json
+}
+
+"order by max() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_max_order_by {
+    date: order_by
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by min() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_min_order_by {
+    date: order_by
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"on_conflict condition type for table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_on_conflict {
+    constraint: proxy_employee__training_toolbox_talk_register_constraint!
+    update_columns: [proxy_employee__training_toolbox_talk_register_update_column!]! = []
+    where: proxy_employee__training_toolbox_talk_register_bool_exp
+}
+
+"Ordering options when selecting data from \"proxy_employee__training_toolbox_talk_register\"."
+input proxy_employee__training_toolbox_talk_register_order_by {
+    date: order_by
+    employee: hr_employees_order_by
+    employee_id: order_by
+    id: order_by
+    register: sheq_training_toolbox_talk_registers_order_by
+    register_id: order_by
+    signature: order_by
+}
+
+"primary key columns input for table: proxy_employee__training_toolbox_talk_register"
+input proxy_employee__training_toolbox_talk_register_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_set_input {
+    date: date
+    employee_id: bigint
+    id: bigint
+    register_id: bigint
+    signature: json
+}
+
+"order by stddev() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_stddev_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_stddev_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_stddev_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by sum() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_sum_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+input proxy_employee__training_toolbox_talk_register_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: proxy_employee__training_toolbox_talk_register_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: proxy_employee__training_toolbox_talk_register_set_input
+    where: proxy_employee__training_toolbox_talk_register_bool_exp!
+}
+
+"order by var_pop() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_var_pop_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by var_samp() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_var_samp_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
+"order by variance() on columns of table \"proxy_employee__training_toolbox_talk_register\""
+input proxy_employee__training_toolbox_talk_register_variance_order_by {
+    employee_id: order_by
+    id: order_by
+    register_id: order_by
+}
+
 input proxy_employees_docs_counselling__witness_aggregate_bool_exp {
     count: proxy_employees_docs_counselling__witness_aggregate_bool_exp_count
 }
@@ -129821,6 +130583,244 @@ input sheq_training_toolbox_talk_list_variance_order_by {
     training_toolbox_talk_id: order_by
 }
 
+input sheq_training_toolbox_talk_registers_aggregate_bool_exp {
+    count: sheq_training_toolbox_talk_registers_aggregate_bool_exp_count
+}
+
+input sheq_training_toolbox_talk_registers_aggregate_bool_exp_count {
+    arguments: [sheq_training_toolbox_talk_registers_select_column!]
+    distinct: Boolean
+    filter: sheq_training_toolbox_talk_registers_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_aggregate_order_by {
+    avg: sheq_training_toolbox_talk_registers_avg_order_by
+    count: order_by
+    max: sheq_training_toolbox_talk_registers_max_order_by
+    min: sheq_training_toolbox_talk_registers_min_order_by
+    stddev: sheq_training_toolbox_talk_registers_stddev_order_by
+    stddev_pop: sheq_training_toolbox_talk_registers_stddev_pop_order_by
+    stddev_samp: sheq_training_toolbox_talk_registers_stddev_samp_order_by
+    sum: sheq_training_toolbox_talk_registers_sum_order_by
+    var_pop: sheq_training_toolbox_talk_registers_var_pop_order_by
+    var_samp: sheq_training_toolbox_talk_registers_var_samp_order_by
+    variance: sheq_training_toolbox_talk_registers_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_arr_rel_insert_input {
+    data: [sheq_training_toolbox_talk_registers_insert_input!]!
+    "upsert condition"
+    on_conflict: sheq_training_toolbox_talk_registers_on_conflict
+}
+
+"order by avg() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_avg_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"sheq_training_toolbox_talk_registers\". All fields are combined with a logical 'AND'."
+input sheq_training_toolbox_talk_registers_bool_exp {
+    _and: [sheq_training_toolbox_talk_registers_bool_exp!]
+    _not: sheq_training_toolbox_talk_registers_bool_exp
+    _or: [sheq_training_toolbox_talk_registers_bool_exp!]
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
+    company: default_companies_bool_exp
+    company_id: bigint_comparison_exp
+    date: date_comparison_exp
+    employee_list: proxy_employee__training_toolbox_talk_register_bool_exp
+    employee_list_aggregate: proxy_employee__training_toolbox_talk_register_aggregate_bool_exp
+    id: bigint_comparison_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
+    subject: sheq_training_toolbox_talk_subjects_bool_exp
+    subject_id: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_inc_input {
+    client_id: bigint
+    company_id: bigint
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    subject_id: bigint
+}
+
+"input type for inserting data into table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_insert_input {
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
+    company: default_companies_obj_rel_insert_input
+    company_id: bigint
+    date: date
+    employee_list: proxy_employee__training_toolbox_talk_register_arr_rel_insert_input
+    id: bigint
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
+    subject: sheq_training_toolbox_talk_subjects_obj_rel_insert_input
+    subject_id: bigint
+}
+
+"order by max() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_max_order_by {
+    client_id: order_by
+    company_id: order_by
+    date: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by min() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_min_order_by {
+    client_id: order_by
+    company_id: order_by
+    date: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"input type for inserting object relation for remote table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_obj_rel_insert_input {
+    data: sheq_training_toolbox_talk_registers_insert_input!
+    "upsert condition"
+    on_conflict: sheq_training_toolbox_talk_registers_on_conflict
+}
+
+"on_conflict condition type for table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_on_conflict {
+    constraint: sheq_training_toolbox_talk_registers_constraint!
+    update_columns: [sheq_training_toolbox_talk_registers_update_column!]! = []
+    where: sheq_training_toolbox_talk_registers_bool_exp
+}
+
+"Ordering options when selecting data from \"sheq_training_toolbox_talk_registers\"."
+input sheq_training_toolbox_talk_registers_order_by {
+    client: default_clients_order_by
+    client_id: order_by
+    company: default_companies_order_by
+    company_id: order_by
+    date: order_by
+    employee_list_aggregate: proxy_employee__training_toolbox_talk_register_aggregate_order_by
+    id: order_by
+    project: default_projects_order_by
+    project_id: order_by
+    site: default_sites_order_by
+    site_id: order_by
+    subject: sheq_training_toolbox_talk_subjects_order_by
+    subject_id: order_by
+}
+
+"primary key columns input for table: sheq_training_toolbox_talk_registers"
+input sheq_training_toolbox_talk_registers_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_set_input {
+    client_id: bigint
+    company_id: bigint
+    date: date
+    id: bigint
+    project_id: bigint
+    site_id: bigint
+    subject_id: bigint
+}
+
+"order by stddev() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_stddev_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_stddev_pop_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_stddev_samp_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by sum() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_sum_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+input sheq_training_toolbox_talk_registers_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: sheq_training_toolbox_talk_registers_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: sheq_training_toolbox_talk_registers_set_input
+    where: sheq_training_toolbox_talk_registers_bool_exp!
+}
+
+"order by var_pop() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_var_pop_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by var_samp() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_var_samp_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
+"order by variance() on columns of table \"sheq_training_toolbox_talk_registers\""
+input sheq_training_toolbox_talk_registers_variance_order_by {
+    client_id: order_by
+    company_id: order_by
+    id: order_by
+    project_id: order_by
+    site_id: order_by
+    subject_id: order_by
+}
+
 input sheq_training_toolbox_talk_subjects_aggregate_bool_exp {
     count: sheq_training_toolbox_talk_subjects_aggregate_bool_exp_count
 }
@@ -129887,6 +130887,8 @@ input sheq_training_toolbox_talk_subjects_bool_exp {
     name: String_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    register_list: sheq_training_toolbox_talk_registers_bool_exp
+    register_list_aggregate: sheq_training_toolbox_talk_registers_aggregate_bool_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
     toolbox_talk_list: sheq_training_toolbox_talks_bool_exp
@@ -129925,6 +130927,7 @@ input sheq_training_toolbox_talk_subjects_insert_input {
     name: String
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    register_list: sheq_training_toolbox_talk_registers_arr_rel_insert_input
     site: default_sites_obj_rel_insert_input
     site_id: bigint
     toolbox_talk_list: sheq_training_toolbox_talks_arr_rel_insert_input
@@ -129993,6 +130996,7 @@ input sheq_training_toolbox_talk_subjects_order_by {
     name: order_by
     project: default_projects_order_by
     project_id: order_by
+    register_list_aggregate: sheq_training_toolbox_talk_registers_aggregate_order_by
     site: default_sites_order_by
     site_id: order_by
     toolbox_talk_list_aggregate: sheq_training_toolbox_talks_aggregate_order_by

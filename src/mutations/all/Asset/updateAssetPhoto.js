@@ -38,9 +38,7 @@ export default async (attrs) => {
 		const path = `assets/${asset_id}/photos`;
 		const name = `document-${id}-${Dates.formatTimestamp(new Date())}`;
 		const gcsUri = await workers.emit("files/upload", {
-			file: doc,
-			path,
-			name,
+			file: doc, path, name,
 		});
 		console.log("gcsUri", gcsUri);
 

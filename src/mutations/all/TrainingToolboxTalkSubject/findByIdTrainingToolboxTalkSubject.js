@@ -13,7 +13,6 @@ const query = graphql`
       edges {
         node {
           id
-          created_at
           name
         }
       }

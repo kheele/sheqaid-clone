@@ -626,20 +626,6 @@ class InvestigationFindingsTable extends ATableSavable {
 @observer
 class IncidentStatus extends React.Component {
 
-	componentWillMount() {
-		const {item} = this.props;
-		if (!item.data.status) {
-			extendObservable(item.data, {status: []});
-		}
-	}
-
-	componentDidMount() {
-		autorun(() => {
-			const {status} = this;
-//           console.log('IncidentStatus status autorun', status)
-		});
-	}
-
 	@computed get status() {
 		let {
 			data: {
@@ -659,11 +645,11 @@ class IncidentStatus extends React.Component {
 
 		const AssignedInvestigator = !!investigation_team_list && investigation_team_list.isNotEmpty();
 		const isInvestigating = !!investigation;
-
-		if (status_awaiting_approval) {
-			return ['Awaiting Approval'];
-		} else if (status_closed) {
+		
+		if (status_closed) {
 			return ['Closed Incident'];
+		} else if (status_awaiting_approval) {
+			return ['Awaiting Approval'];
 		} else if (status_investigating) {
 			return ['Investigating'];
 		} else {
@@ -707,7 +693,7 @@ class IncidentTableRow extends React.Component {
 		let {
 			id,
 			data: {
-				created_at, status,
+				created_at,
 				client, project, site,
 				investigation,
 				//

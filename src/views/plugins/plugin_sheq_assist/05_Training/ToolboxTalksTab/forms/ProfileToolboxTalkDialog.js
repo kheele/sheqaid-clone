@@ -1,22 +1,16 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 
-import {Dates} from '../../../../../../utils/Utils';
 import {
-    ClearableInput,
-    ProfileField,
-    SelectClientInput, SelectJobPositionInput,
-    SelectProjectInput,
-    SelectSiteInput,
-    SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput, SelectUserInput, UploadButton
-} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../../components/dialogs';
+    ProfileField, UploadButton
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileToolboxTalkDialog.lazy.css";
-import {NewEmployeeListTable} from "../../../../../../components/FormTableComponents";
-import {SelectTable} from "../../../../../../components/tables";
+import {NewEmployeeListTable} from "components/FormTableComponents";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -48,8 +42,8 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
-    get item() {
+    
+    @computed get item() {
         return this.props.state.item;
     }
 

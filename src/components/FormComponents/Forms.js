@@ -33,14 +33,19 @@ class FormControls extends React.Component {
 		const {onChange, onCountFields, lazyLoad, idx, children, form} = this.props;
 		return React.Children.map(children, (child, index) => {
 			if (!child) return null;
-			return React.cloneElement(child, {
-				ref: 'ref_row_' + index,
-				onChange,
-				form,
-				lazyLoad,
-				onCountFields,
-				getFormChildren: this.getFormChildren
-			});
+			
+			if(child.type && child.type.name === "Row") {
+				return React.cloneElement(child, {
+					ref: 'ref_row_' + index,
+					onChange,
+					form,
+					lazyLoad,
+					onCountFields,
+					getFormChildren: this.getFormChildren
+				});
+			}
+			
+			return child;
 		}).filter(child => !!child);
 	}
 

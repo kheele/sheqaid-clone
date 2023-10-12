@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6b170e0ff654a51633570c823cb3431d>>
+ * @generated SignedSource<<94e17e5ebfe306374e9703c9327f9f54>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -45,6 +45,13 @@ v2 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
       }
     ],
     "storageKey": null
@@ -74,16 +81,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "bb13d9c6c74b37224c107ba3860ebb36",
+    "cacheID": "5a43d4b3b5b1b36ebbb0511c808143c9",
     "id": null,
     "metadata": {},
     "name": "updateTrainingToolboxTalkSubjectMutation",
     "operationKind": "mutation",
-    "text": "mutation updateTrainingToolboxTalkSubjectMutation(\n  $id: sheq_training_toolbox_talk_subjects_pk_columns_input!\n  $_set: sheq_training_toolbox_talk_subjects_set_input!\n) {\n  update_sheq_training_toolbox_talk_subjects_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateTrainingToolboxTalkSubjectMutation(\n  $id: sheq_training_toolbox_talk_subjects_pk_columns_input!\n  $_set: sheq_training_toolbox_talk_subjects_set_input!\n) {\n  update_sheq_training_toolbox_talk_subjects_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "2594e44bdbd46074dd1ea0fc33bf4554";
+node.hash = "bdd560d854154d302f3b9dbc73f9dad9";
 
 module.exports = node;

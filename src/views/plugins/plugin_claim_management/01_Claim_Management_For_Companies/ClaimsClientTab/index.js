@@ -425,7 +425,7 @@ class ClaimsClientTab extends AClaimsTab {
 			id,
 			data: {
 				created_at,
-				client, project, site,
+				company, client, project, site,
 				//
 				employee, employee_id,
 				claim_number,
@@ -459,13 +459,8 @@ class ClaimsClientTab extends AClaimsTab {
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(date_resumed_work) || 'N/A'}</div>
 			<div className="td fixed-flex min-w-110">{status || 'N/A'}</div>
 			<div className="td fixed-flex min-w-140">{claim_status || 'N/A'}</div>
-			<div className="td w-auto">{client ? (client.name || client.data.name) : 'N/A'}</div>
-			<AsyncTD
-				title="Employee Name"
-				defaultValue={employee}
-				renderer={v => `${v.lname || v.data.lname} ${v.fname || v.data.fname}`}
-				className="w-auto"
-			/>
+			<div className="td w-auto">{(client || company) ? (client || company).name : "N/A"}</div>
+			<div className="td w-auto">{employee ? employee.full_name : "N/A"}</div>
 			<div className="td fixed-flex min-w-110">Injury</div>
 			<div className="td fixed-flex grid-1 min-w-150 padding-t-3">{getDocsStatus(item)}</div>
 			<div className="td fixed-flex grid-2 min-w-160 padding-t-3">{getWClStatus(item)}</div>

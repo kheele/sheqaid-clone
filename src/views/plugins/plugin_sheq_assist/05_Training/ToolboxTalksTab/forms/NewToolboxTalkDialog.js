@@ -92,13 +92,10 @@ class Controls extends React.Component {
 	
 	// <editor-fold defaultstate="collapsed" desc="onChangeSubject">
 	onChangeSubject(el, val) {
-		execWhen(() => this.refs.attendance_register_list).then(attendance_register_list => {
+		execWhen(() => this.refs.attendance_register_list).then(ref => {
 			if (val) {
 				console.log('onChangeSubject', val)
-				workers.emit('plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/list/search_by_name', val).then(list => {
-					// attendance_register_list.list = list[0].data;
-				});
-				
+				ref.list = val.data.register_list;//[{id,date,employee_list{employee,signature,date}}]
 			}
 		});
 	}

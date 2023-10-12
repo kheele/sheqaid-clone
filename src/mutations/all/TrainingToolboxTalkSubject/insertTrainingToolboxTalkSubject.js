@@ -14,6 +14,7 @@ const mutation = graphql`
             object: $object
         ) {
             id
+            name
         }
     }
 `;

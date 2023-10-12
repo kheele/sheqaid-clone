@@ -109,7 +109,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 							if (id) {
 								infoDialog.open("Record successfully updated.");
 							} else {
-								working_distance_or_time_list.push(savedItem);
+								working_distance_or_time_list.push(savedItem.data);
 								infoDialog.open("Record successfully added.");
 							}
 
@@ -138,7 +138,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
 						} else {
 							infoDialog.open("Record successfully added.");
 							extendObservable(old_data, {
-								monitoring_plan_list: [savedItem]
+								monitoring_plan_list: [savedItem.data]
 							});
 						}
 
@@ -378,7 +378,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 							if (id) {
 								infoDialog.open("Record successfully updated.");
 							} else {
-								fuel_usage_list.push(savedItem);
+								fuel_usage_list.push(savedItem.data);
 								infoDialog.open("Record successfully added.");
 							}
 
@@ -410,7 +410,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 						} else {
 							infoDialog.open("Record successfully added.");
 							extendObservable(old_data, {
-								monitoring_plan_list: [savedItem]
+								monitoring_plan_list: [savedItem.data]
 							});
 						}
 
@@ -696,7 +696,7 @@ class NewMaintenancePlanTable extends ATableSavable {
 							if (id) {
 								infoDialog.open("Record successfully updated.");
 							} else {
-								plan_list.push(savedItem);
+								plan_list.push(savedItem.data);
 								infoDialog.open("Record successfully added.");
 							}
 
@@ -733,7 +733,7 @@ class NewMaintenancePlanTable extends ATableSavable {
 							} else {
 								infoDialog.open("Record successfully added.");
 								extendObservable(old_data, {
-									maintenance_plan_list: [savedItem]
+									maintenance_plan_list: [savedItem.data]
 								});
 							}
 						}
@@ -990,7 +990,7 @@ class NewCalibrationRecordTable extends ATableSavable {
 							if (id) {
 								infoDialog.open("Record successfully updated.");
 							} else {
-								calibration_list.push(savedItem);
+								calibration_list.push(savedItem.data);
 								infoDialog.open("Record successfully added.");
 							}
 
@@ -1025,7 +1025,7 @@ class NewCalibrationRecordTable extends ATableSavable {
 							} else {
 								infoDialog.open("Record successfully added.");
 								extendObservable(old_data, {
-									calibration_record_list: [savedItem]
+									calibration_record_list: [savedItem.data]
 								});
 							}
 						}

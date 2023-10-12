@@ -1,7 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
-import {CircularProgress} from "@mui/material";
+import {observable, computed} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -25,7 +24,7 @@ class ProfileToolboxTalkSubjectDialog extends AProfileDialog {
     title() {
         return "Toolbox Talk Subject";
     }
-
+    
     get controls() {
         return Controls;
     }
@@ -34,18 +33,19 @@ class ProfileToolboxTalkSubjectDialog extends AProfileDialog {
 @observer
 class Controls extends React.Component {
 
-    @observable
-    state = {};
-
     constructor(props) {
         super(props);
 
         this.form = new Form();
     }
-
+    
+    @computed get item() {
+        return this.props.state.item;
+    }
+    
     render() {
         if (!this.item) {
-            return <CircularProgress className="fixed-center"/>;
+            return null;
         }
         
         const {

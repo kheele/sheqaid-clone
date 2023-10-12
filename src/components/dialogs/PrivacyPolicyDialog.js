@@ -1,18 +1,22 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {AProfileDialog} from './';
+import {ANewDialog} from './';
 
 import style from "./PrivacyPolicyDialog.lazy.css";
 
 @observer
-class PrivacyPolicyDialog extends AProfileDialog {
+class PrivacyPolicyDialog extends ANewDialog {
     pageKey = "PrivacyPolicyDialog";
     title = "Privacy Policy";
 
     constructor(props) {
         super(props, style);
     }
-
+    
+    get topButtons() {
+        return null;
+    }
+    
     get controls() {
         return  Controls;
     }

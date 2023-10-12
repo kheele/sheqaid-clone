@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<60939ac2972b43d533fec9b5c88a0739>>
+ * @generated SignedSource<<4e8dab55a888020d0a1f8a1b0f1c750d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -70,13 +70,6 @@ v1 = [
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "created_at",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
                 "name": "name",
                 "storageKey": null
               }
@@ -108,16 +101,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "7ad1d034ca02ad226c3dae97141bd48a",
+    "cacheID": "6bf2a81f4e7a06302c507ca94228eff3",
     "id": null,
     "metadata": {},
     "name": "findByIdTrainingToolboxTalkSubjectQuery",
     "operationKind": "query",
-    "text": "query findByIdTrainingToolboxTalkSubjectQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talk_subjects_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdTrainingToolboxTalkSubjectQuery(\n  $id: bigint\n) {\n  sheq_training_toolbox_talk_subjects_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "cc646fb9884a109134078a74f6e30218";
+node.hash = "03addceb30892bb8d268ecd6f3c56672";
 
 module.exports = node;

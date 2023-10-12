@@ -14,6 +14,20 @@ export const coida_claims_fragment = `
       full_name
     }
     
+    message_list_provider{
+      id
+      date
+      msg
+      read
+      sender{
+        id
+        full_name
+        fname
+        lname
+        username
+      }
+    }
+    
     wcl_2{
       id
     }

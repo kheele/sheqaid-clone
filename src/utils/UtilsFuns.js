@@ -143,6 +143,7 @@ function scrollTo(elem, container) {
 }
 
 function setDefaultVal(key, altValFn) {
+	// console.log('setDefaultVal', key, altValFn);
 	execWhen(() => this.refs[key]).then(ref => {
 		let val;
 		const data = this.item ? this.item.data || this.item : null;
@@ -155,12 +156,13 @@ function setDefaultVal(key, altValFn) {
 			val = altValFn();
 		}
 		if (val) {
-			if (isSetter(ref, 'value')) {
+			if (isSetter(ref, 'value') || "value" in ref) {
 				ref.value = val;
-			} else if (isSetter(ref, 'list')) {
+			} else if (isSetter(ref, 'list') || "list" in ref) {
 				ref.list = val;
 			}
 		}
+		// console.log(key, val, ref)
 	});
 }
 

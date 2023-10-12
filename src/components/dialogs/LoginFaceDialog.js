@@ -11,7 +11,7 @@ import Form from '../../utils/Form';
 
 import {ClearableInput} from '../inputs';
 import {Row} from '../FormComponents';
-import AEditDialog from './AEditDialog';
+import ANewDialog from './ANewDialog';
 import ALoginControls from './ALoginControls';
 
 import {
@@ -33,7 +33,7 @@ import {execWhen} from "../../utils/UtilsFuns";
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
-class LoginFaceDialog extends AEditDialog {
+class LoginFaceDialog extends ANewDialog {
     pageKey = "LoginFaceDialog";
     className = "AAuthDialog";
 

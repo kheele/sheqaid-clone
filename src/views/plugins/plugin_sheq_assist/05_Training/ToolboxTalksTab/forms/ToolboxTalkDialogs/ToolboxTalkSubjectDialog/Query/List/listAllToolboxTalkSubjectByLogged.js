@@ -34,11 +34,22 @@ export default (
 			          offset: ${offset}
 			          ${limit > 0 ? `,limit: ${limit}` : ''}
             ) {
-                  id
-                  created_at
-        
-                  name
-                  ${orgs_fragment}
+              id
+              created_at
+              name
+              register_list{
+                id
+                date
+                employee_list{
+                  employee{
+                    id
+                    full_name
+                  }
+                  signature
+                  date
+                }
+              }
+              ${orgs_fragment}
             }
           }
         `,

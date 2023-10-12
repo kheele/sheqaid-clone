@@ -85,10 +85,6 @@ class Controls extends React.Component {
 	path = 'plugin_sheq_assist/employees/';
 
 	// <editor-fold defaultstate="collapsed" desc="fields">
-	@observable
-	state = {
-		item: null,
-	};
 	components = [
 		{title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoTab"},
 		{title: 'Documents', comp: ViewDocumentsSection, ref: "documentsTab"},
@@ -197,15 +193,15 @@ class Controls extends React.Component {
 	}
 
 	// </editor-fold>
-
+	
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		if (!this.item) {
-			return <CircularProgress className="fixed-center"/>;
+			return null;
 		}
 
 		const {

@@ -10,9 +10,9 @@ import {THead, TRow} from 'components/tables';
 import ADialogList from "views/ADialogList";
 import APageListReadWrite from "views/APageListReadWrite";
 
-import NewDialog from "./NewToolboxTalkAttendanceRegisterDialog";
-import ProfileDialog from "./ProfileToolboxTalkAttendanceRegisterDialog";
-import EditDialog from "./EditToolboxTalkAttendanceRegisterDialog";
+import NewDialog from "./NewDialog";
+import ProfileDialog from "./ProfileDialog";
+import EditDialog from "./EditDialog";
 
 import style from "./ToolboxTalkAttendanceRegisterDialog.lazy.css";
 

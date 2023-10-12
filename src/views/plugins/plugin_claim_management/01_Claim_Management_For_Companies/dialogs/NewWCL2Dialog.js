@@ -172,12 +172,13 @@ class Controls extends React.Component {
         setDefaultValue('dob', (dob) => dob || (employee && employee.data && employee.data.dob));
         setDefaultValue('gender', (gender) => gender || (employee && employee.data && employee.data.gender));
         setDefaultValue('occupation', v => {
-            v = v || (employee && employee.data && employee.data.optional_info && employee.data.optional_info.job_position);
+            v = v || (employee && employee.data && employee.data.job_position);
             if(!v) return false;
-            return {label: `${v.name || v.data.name}`, value: v};
+            return {label: `${v.name}`, value: v};
         });
         
         const setEmployerDetails = employer_details => {
+            console.log('employer_details', employer_details)
             const {
                 data: {
                     company_reg_num, 
@@ -200,8 +201,8 @@ class Controls extends React.Component {
             setDefaultValue('company_contact_person', (v) => {
                 v = v || company_contact_person;
                 if(!v) return false;
-                const {lname, fname, data} = v;
-                return {label: `${lname || data.lname} ${fname || data.fname}`, value: employee};
+                const {full_name} = v;
+                return {label: full_name, value: v};
             });
             setDefaultValue('company_str_addr', (v) => v || company_str_addr);
             setDefaultValue('company_str_addr_code', (v) => v || company_str_addr_code);

@@ -12,6 +12,7 @@ const mutation = graphql`
   mutation updateTrainingToolboxTalkSubjectMutation($id: sheq_training_toolbox_talk_subjects_pk_columns_input!, $_set: sheq_training_toolbox_talk_subjects_set_input!) {
     update_sheq_training_toolbox_talk_subjects_by_pk(pk_columns: $id, _set: $_set) {
         id
+      name
     }
   }
 `;
