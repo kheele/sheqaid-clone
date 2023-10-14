@@ -46,7 +46,7 @@ export default (
 	        limit: ${limit}
         ) {
         	group
-            incidnt_date
+            incident_date
             short_desc
             location
             exact_location

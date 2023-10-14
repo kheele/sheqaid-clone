@@ -1,7 +1,7 @@
 import GQLClient from "graphql/GQLClient";
 import {getVariablesAndQueryConfig} from "../Utils";
 import {orgs_fragment} from "graphql/Fragments";
-import {incident_details_fragment} from "../Fragments";
+import {incident_investigation_corrective_actions_fragment} from "../Fragments";
 
 export default (
 	{
@@ -44,7 +44,7 @@ export default (
 	        offset: ${offset},
 	        limit: ${limit}
         ) {
-            ${incident_details_fragment}
+            ${incident_investigation_corrective_actions_fragment}
             ${orgs_fragment}
         }
       }

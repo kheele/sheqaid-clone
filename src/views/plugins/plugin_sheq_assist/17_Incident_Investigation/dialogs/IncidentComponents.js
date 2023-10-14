@@ -11,14 +11,10 @@ import {NewCauseAnalysisImmediateDialog, NewCauseAnalysisRootDialog} from './New
 import NewCorrectiveActionsDialog from './NewCorrectiveActionsDialog';
 import insertIncidentCauseAnalysis
     from "mutations/all/Incident/IncidentCauseAnalysis/insertIncidentCauseAnalysis";
-import updateIncidentCauseAnalysis
-    from "mutations/all/Incident/IncidentCauseAnalysis/updateIncidentCauseAnalysis";
 import insertIncidentCauseAnalysisImmediate
     from "mutations/all/Incident/IncidentCauseAnalysisImmediate/insertIncidentCauseAnalysisImmediate";
 import insertIncidentCauseAnalysisRoot
     from "mutations/all/Incident/IncidentCauseAnalysisRoot/insertIncidentCauseAnalysisRoot";
-import updateIncidentInvestigation
-    from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="CauseAnalysisPanel">
@@ -59,7 +55,10 @@ class CauseAnalysisPanel extends React.Component {
                     progressDialog.open();
                     try {
                         if (this.cause_analysis) {
-                            const savedCauseAnalysis = await insertIncidentCauseAnalysisImmediate(immediate_analysis);
+                            const savedCauseAnalysis = await insertIncidentCauseAnalysisImmediate({
+                                cause_analysis_id: this.cause_analysis.id,
+                                ...immediate_analysis,
+                            });
                             if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
                             if (savedCauseAnalysis) {
@@ -95,7 +94,10 @@ class CauseAnalysisPanel extends React.Component {
                     progressDialog.open();
                     try {
                         if (this.cause_analysis) {
-                            const savedCauseAnalysis = await insertIncidentCauseAnalysisRoot(root_analysis);
+                            const savedCauseAnalysis = await insertIncidentCauseAnalysisRoot({
+                                cause_analysis_id: this.cause_analysis.id,
+                                ...root_analysis,
+                            });
                             if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
                             if (savedCauseAnalysis) {

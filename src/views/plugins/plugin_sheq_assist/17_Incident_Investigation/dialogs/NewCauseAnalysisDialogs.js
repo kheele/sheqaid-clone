@@ -10,18 +10,10 @@ import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from 'components/
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewCauseAnalysisDialogs.lazy.css";
-import insertIncidentCauseAnalysis
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysis/insertIncidentCauseAnalysis";
-import updateIncidentCauseAnalysis
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysis/updateIncidentCauseAnalysis";
 import updateIncidentCauseAnalysisRoot
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisRoot/updateIncidentCauseAnalysisRoot";
-import insertIncidentCauseAnalysisRoot
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisRoot/insertIncidentCauseAnalysisRoot";
+    from "mutations/all/Incident/IncidentCauseAnalysisRoot/updateIncidentCauseAnalysisRoot";
 import updateIncidentCauseAnalysisImmediate
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisImmediate/updateIncidentCauseAnalysisImmediate";
-import insertIncidentCauseAnalysisImmediate
-    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisImmediate/insertIncidentCauseAnalysisImmediate";
+    from "mutations/all/Incident/IncidentCauseAnalysisImmediate/updateIncidentCauseAnalysisImmediate";
 //</editor-fold>
 
 //<editor-fold desc="NewCauseAnalysisRootDialog">
