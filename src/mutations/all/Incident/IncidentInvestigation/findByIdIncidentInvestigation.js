@@ -1,37 +1,16 @@
 /* eslint-disable camelcase */
 
-// 1
-import { graphql } from "react-relay";
-// @ts-ignore
-import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityAudit} from "mutations/types.d.ts";
+import GQLClient from "graphql/GQLClient";
+import {
+    incident_investigation_details_fragment
+} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/InvestigationsTab/Query/Fragments";
 
-// 2
-const query = graphql`
-  query findByIdIncidentInvestigationQuery($id: bigint) {
-    sheq_incident_investigation_investigations_connection(where: {id: {_eq: $id}}) {
-      edges {
-        node {
-            id
-            due_date
-            document_list{
-                id
-            }
-            investigation_finding_list{
-                id
-            }
-            investigation_team_list{
-                id
-            }
-            incident_list{
-                id
-            }
+export default async (input: number) => GQLClient
+    .query({
+        query: `
+      query findByIdIncidentInvestigationQuery {
+        sheq_incident_investigation_investigations_by_pk(id: ${input}) {
+          ${incident_investigation_details_fragment}
         }
       }
-    }
-  }
-`;
-//firestore_id
-// 3
-export default async (input: number) =>
-    findOneMutationImpl({ query, variables: {id: input} });
+    `});

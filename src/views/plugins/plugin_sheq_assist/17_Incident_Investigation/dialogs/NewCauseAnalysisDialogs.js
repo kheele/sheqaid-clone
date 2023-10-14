@@ -10,6 +10,18 @@ import {ATableSavable, SelectTable, Table, TBody, THead, TRow} from 'components/
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewCauseAnalysisDialogs.lazy.css";
+import insertIncidentCauseAnalysis
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysis/insertIncidentCauseAnalysis";
+import updateIncidentCauseAnalysis
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysis/updateIncidentCauseAnalysis";
+import updateIncidentCauseAnalysisRoot
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisRoot/updateIncidentCauseAnalysisRoot";
+import insertIncidentCauseAnalysisRoot
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisRoot/insertIncidentCauseAnalysisRoot";
+import updateIncidentCauseAnalysisImmediate
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisImmediate/updateIncidentCauseAnalysisImmediate";
+import insertIncidentCauseAnalysisImmediate
+    from "../../../../../mutations/all/Incident/IncidentCauseAnalysisImmediate/insertIncidentCauseAnalysisImmediate";
 //</editor-fold>
 
 //<editor-fold desc="NewCauseAnalysisRootDialog">
@@ -118,7 +130,7 @@ class ControlsImmediate extends React.Component {
     }
 
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, investigation, cause_analysis} = this;
 
         if(!form.isValid('sub_standard_practices_or_unsafe_acts') && !form.isValid('sub_standard_practices_or_unsafe_conditions') && 
                 !form.isValid('custom_sub_standard_practices_or_unsafe_acts') && !form.isValid('custom_sub_standard_practices_or_unsafe_conditions')) {
@@ -130,7 +142,10 @@ class ControlsImmediate extends React.Component {
             sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions,
             custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
         } = form.data;
-        const data = {};
+
+        const data = {
+
+        };
         
         if(sub_standard_practices_or_unsafe_acts) {
             data.sub_standard_practices_or_unsafe_acts = sub_standard_practices_or_unsafe_acts.map(text => {
@@ -151,12 +166,36 @@ class ControlsImmediate extends React.Component {
         
         console.log(data)
 
+        if(cause_analysis.id) {
+            if(this.isNew) {
+                // insertIncidentCauseAnalysisImmediate({...data})
+                onSaved && onSaved(data);
+            } else {
+                updateIncidentCauseAnalysisImmediate({id: this.immediate_analysis.id, ...data}).
+                then(onSaved);
+            }
+        } else {
+            onSaved && onSaved(data);
+        }
+
         onSaved && onSaved(data);
         infoDialog.open("Record successfully added.");
         infoDialog.close(1500);
         this.props.close();
     }
     
+    get isNew() {
+        return !this.immediate_analysis.id;
+    }
+
+    get investigation() {
+        return this.dialog.extraProp('investigation');
+    }
+
+    get cause_analysis() {
+        return this.dialog.extraProp('cause_analysis');
+    }
+
     get immediate_analysis() {
         return this.props.state.item || {};
     }
@@ -238,7 +277,7 @@ class ControlsRoot extends React.Component {
     }
 
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, investigation, cause_analysis} = this;
  
         if(!form.isValid('personal_factors') && !form.isValid('job_factors') && 
                 !form.isValid('custom_personal_factors') && !form.isValid('custom_job_factors')) {
@@ -271,12 +310,36 @@ class ControlsRoot extends React.Component {
         
         console.log(data)
 
+        if(cause_analysis.id) {
+            if(this.isNew) {
+                // insertIncidentCauseAnalysisRoot({...data})
+                onSaved && onSaved(data);
+            } else {
+                updateIncidentCauseAnalysisRoot({id: this.root_analysis.id, ...data}).
+                then(onSaved);
+            }
+        } else {
+            onSaved && onSaved(data);
+        }
+
         onSaved && onSaved(data);
         infoDialog.open("Record successfully added.");
         infoDialog.close(1500);
         this.props.close();
     }
-    
+
+    get isNew() {
+        return !this.root_analysis.id;
+    }
+
+    get investigation() {
+        return this.dialog.extraProp('investigation');
+    }
+
+    get cause_analysis() {
+        return this.dialog.extraProp('cause_analysis');
+    }
+
     get root_analysis() {
         return this.props.state.item || {};
     }

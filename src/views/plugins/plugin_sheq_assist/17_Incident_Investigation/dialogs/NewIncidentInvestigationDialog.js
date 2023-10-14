@@ -1,11 +1,11 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {isObservableArray, observable, toJS} from 'mobx';
+import {isObservableArray, computed, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
-import {Dates, execWhen} from 'utils/Utils';
+import {Dates, execWhen, ShouldUpdate} from 'utils/Utils';
 import {AddFilesGridViewInput, ClearableInput, Clickable, ProfileField, RowOrgs} from 'components/inputs';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
@@ -13,18 +13,23 @@ import {mapIncidentCorrectiveActions, mapIncidentPersonDetails} from 'utils/Arra
 import {CauseAnalysisPanel, InvestigationFindingsTable, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
 import {FormControls, NavButtons, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
-// </editor-fold>
 import style from "./NewIncidentInvestigationDialog.lazy.css";
 import insertProxyEmployeeIncidentInvestigator
-    from "../../../../../mutations/all/ProxyEmployeeIncidentInvestigator/insertProxyEmployeeIncidentInvestigator";
+    from "mutations/all/ProxyEmployeeIncidentInvestigator/insertProxyEmployeeIncidentInvestigator";
 import deleteProxyEmployeeIncidentInvestigator
-    from "../../../../../mutations/all/ProxyEmployeeIncidentInvestigator/deleteProxyEmployeeIncidentInvestigator";
+    from "mutations/all/ProxyEmployeeIncidentInvestigator/deleteProxyEmployeeIncidentInvestigator";
+import findByIdIncidentInvestigation
+    from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
+import updateIncidentInvestigation
+    from "../../../../../mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
+// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewIncidentInvestigationDialog";
     title = "Create Incident Investigation";
+    findById = findByIdIncidentInvestigation;
 
     constructor(props) {
         super(props, style);
@@ -156,7 +161,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, item: {data: old_data}} = this;
         if (!form.isValid('investigation_team_list') || form.get('investigation_team_list').isEmpty()) {
             infoDialog.open('Investigation Team is required');
             return;
@@ -167,292 +172,120 @@ class Controls extends React.Component {
         }
 
         const {
-            //1
-            investigation_team_list,
-            investigation_due_date,
             //2
-            investigation_details,
-            investigation_findings_list,
-            investigation_findings_further_desc,
-            document_list,
+            investigation_team_list,//saved internally
+            due_date,//
             //3
+            investigation_details,//
+            investigation_findings_list,//saved internally
+            investigation_findings_further_desc,//
+            document_list,//saved internally
+            //4
+            // severity,//{consequence, likelihood}
             consequence,
             likelihood,
-            risk_rating,
-            //4
-            cause_analysis,
+            // risk_rating,
             //5
-            corrective_actions,
+            cause_analysis,//saved internally
             //6
-            distribution_list,
+            corrective_actions,//saved internally
             //7
-            weather_condition_list,
+            distribution_list,//saved internally
             //8
-            protective_equipment_worn_list,
+            weather_condition_list,//
             //9
-            class_list,
+            protective_equipment_worn_list,//
             //10
-            environment_list,
+            class_list,//
             //11
-            estimated_costs_damages,
-            estimated_costs_medical,
-            estimated_costs_salaries_wages,
-            estimated_costs_investigations,
-            estimated_costs_others
+            environment_list,//
+            //12
+            estimated_costs_damages,//
+            estimated_costs_medical,//
+            estimated_costs_salaries_wages,//
+            estimated_costs_investigations,//
+            estimated_costs_others,//
         } = form.data;
 
         const data = {};
+        //2
+        ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
+        //3
+        ShouldUpdate.checkDate(data, old_data, investigation_details, 'investigation_details');
+        ShouldUpdate.checkDate(data, old_data, investigation_findings_further_desc, 'investigation_findings_further_desc');
+        //8
+        ShouldUpdate.checkDate(data, old_data, weather_condition_list, 'weather_condition_list');
+        //9
+        ShouldUpdate.checkDate(data, old_data, protective_equipment_worn_list, 'protective_equipment_worn_list');
+        //10
+        ShouldUpdate.checkDate(data, old_data, class_list, 'class_list');
+        //11
+        ShouldUpdate.checkDate(data, old_data, environment_list, 'environment_list');
+        //12
+        ShouldUpdate.checkDate(data, old_data, estimated_costs_damages, 'estimated_costs_damages');
+        ShouldUpdate.checkDate(data, old_data, estimated_costs_medical, 'estimated_costs_medical');
+        ShouldUpdate.checkDate(data, old_data, estimated_costs_salaries_wages, 'estimated_costs_salaries_wages');
+        ShouldUpdate.checkDate(data, old_data, estimated_costs_investigations, 'estimated_costs_investigations');
+        ShouldUpdate.checkDate(data, old_data, estimated_costs_others, 'estimated_costs_others');
 
-        if (this.investigation) {
-            data.investigation = {};
-            if (this.investigation.status && (isArray(this.investigation.status) || isObservableArray(this.investigation.status))) {
-                data.investigation.status = toJS(this.investigation.status);
-            } else {
-                data.investigation.status = [];
-            }
-
-            //sec1_data
-            const {sec1_data: old_sec1_data} = this.investigation;
-            if (investigation_team_list && (!old_sec1_data || !old_sec1_data.investigation_team_list || toJS(old_sec1_data.investigation_team_list.map(v => v.id)) !== toJS(investigation_team_list.filter(v => !!v).map(v => v.other_person || v.id || v.employee.id)))) {
-                data.investigation.sec1_data = {
-                    investigation_team_list: investigation_team_list.filter(v => !!v).map(mapIncidentPersonDetails)
-                };
-            }
-            if (investigation_due_date && (!old_sec1_data || old_sec1_data.investigation_due_date !== investigation_due_date.getTime())) {
-                if (!data.investigation.sec1_data) {
-                    data.investigation.sec1_data = {};
-                }
-                data.investigation.sec1_data.investigation_due_date = investigation_due_date.getTime();
-            }
-
-            //sec2_data
-            const {sec2_data: old_sec2_data} = this.investigation;
-            if (!old_sec2_data || old_sec2_data.investigation_details !== investigation_details) {
-                data.investigation.sec2_data = {
-                    investigation_details
-                };
-            }
-            if (investigation_findings_list && (!old_sec2_data || !old_sec2_data.investigation_findings_list || toJS(old_sec2_data.investigation_findings_list) !== toJS(investigation_findings_list.filter(v => !!v).map(v => isString(v) ? v : v.text)))) {
-                if (!data.investigation.sec2_data) {
-                    data.investigation.sec2_data = {};
-                }
-                data.investigation.sec2_data.investigation_findings_list = toJS(investigation_findings_list.filter(v => !!v).map(v => isString(v) ? v : v.text));
-            }
-            if (!old_sec2_data || old_sec2_data.investigation_findings_further_desc !== investigation_findings_further_desc) {
-                if (!data.investigation.sec2_data) {
-                    data.investigation.sec2_data = {};
-                }
-                data.investigation.sec2_data.investigation_findings_further_desc = investigation_findings_further_desc;
-            }
-            if (document_list && (!old_sec2_data || !old_sec2_data.document_list || toJS(old_sec2_data.document_list) !== toJS(document_list.filter(v => !!v).map(v => v.path ? v.path : v)))) {
-                if (!data.investigation.sec2_data) {
-                    data.investigation.sec2_data = {};
-                }
-                data.investigation.sec2_data.document_list = toJS(document_list.filter(v => !!v).map(v => v.path ? v.path : v));
-            }
-
-            //sec3_data
-            const {sec3_data: old_sec3_data} = this.investigation;
-            if (!old_sec3_data || old_sec3_data.consequence !== consequence) {
-                data.investigation.sec3_data = {
-                    consequence
-                };
-            }
-            if (!old_sec3_data || old_sec3_data.likelihood !== likelihood) {
-                if (!data.investigation.sec3_data) {
-                    data.investigation.sec3_data = {};
-                }
-                data.investigation.sec3_data.likelihood = likelihood;
-            }
-            if (!old_sec3_data || old_sec3_data.risk_rating !== risk_rating) {
-                if (!data.investigation.sec3_data) {
-                    data.investigation.sec3_data = {};
-                }
-                data.investigation.sec3_data.risk_rating = risk_rating;
-            }
-
-            //sec4_data
-            const {sec4_data: old_sec4_data} = this.investigation;
-            if (cause_analysis && (!old_sec4_data || !old_sec4_data.cause_analysis || toJS(old_sec4_data.cause_analysis) !== toJS(cause_analysis))) {
-                data.investigation.sec4_data = {
-                    cause_analysis: toJS(cause_analysis)
-                };
-            }
-
-            //sec5_data
-            const {sec5_data: old_sec5_data} = this.investigation;
-            if (corrective_actions && (!old_sec5_data || !old_sec5_data.corrective_actions || toJS(old_sec5_data.corrective_actions.map(mapIncidentCorrectiveActions)) !== toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions)))) {
-                data.investigation.sec5_data = {
-                    corrective_actions: toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions))
-                };
-            }
-
-            //sec6_data
-            const {sec6_data: old_sec6_data} = this.investigation;
-            if (distribution_list && (!old_sec6_data || !old_sec6_data.distribution_list || toJS(old_sec6_data.distribution_list.map(mapIncidentPersonDetails)) !== toJS(distribution_list.filter(v => !!v).map(mapIncidentPersonDetails)))) {
-                data.investigation.sec6_data = {
-                    distribution_list: toJS(distribution_list.map(mapIncidentPersonDetails))
-                };
-            }
-
-            let {
-                //7
-                weather_condition_list: old_weather_condition_list = [],
-                //8
-                protective_equipment_worn_list: old_protective_equipment_worn_list = [],
-                //9
-                class_list: old_class_list = [],
-                //10
-                environment_list: old_environment_list = [],
-                //11
-                estimated_costs_damages: old_estimated_costs_damages,
-                estimated_costs_medical: old_estimated_costs_medical,
-                estimated_costs_salaries_wages: old_estimated_costs_salaries_wages,
-                estimated_costs_investigations: old_estimated_costs_investigations,
-                estimated_costs_others: old_estimated_costs_others
-            } = this.investigation;
-            //7
-            if (weather_condition_list && weather_condition_list.slice() !== old_weather_condition_list.slice()) {
-                data.investigation.weather_condition_list = toJS(weather_condition_list);
-            }
-            //8
-            if (protective_equipment_worn_list && protective_equipment_worn_list.slice() !== old_protective_equipment_worn_list.slice()) {
-                data.investigation.protective_equipment_worn_list = toJS(protective_equipment_worn_list);
-            }
-            //9
-            if (class_list && class_list.slice() !== old_class_list.slice()) {
-                data.investigation.class_list = toJS(class_list);
-            }
-            //10
-            if (environment_list && environment_list.slice() !== old_environment_list.slice()) {
-                data.investigation.environment_list = toJS(environment_list);
-            }
-            //11
-            if (estimated_costs_damages && estimated_costs_damages !== old_estimated_costs_damages) {
-                data.investigation.estimated_costs_damages = estimated_costs_damages;
-            }
-            if (estimated_costs_medical && estimated_costs_medical !== old_estimated_costs_medical) {
-                data.investigation.estimated_costs_medical = estimated_costs_medical;
-            }
-            if (estimated_costs_salaries_wages && estimated_costs_salaries_wages !== old_estimated_costs_salaries_wages) {
-                data.investigation.estimated_costs_salaries_wages = estimated_costs_salaries_wages;
-            }
-            if (estimated_costs_investigations && estimated_costs_investigations !== old_estimated_costs_investigations) {
-                data.investigation.estimated_costs_investigations = estimated_costs_investigations;
-            }
-            if (estimated_costs_others && estimated_costs_others !== old_estimated_costs_others) {
-                data.investigation.estimated_costs_others = estimated_costs_others;
-            }
-        } else {
-            data.investigation = {
-                status: [],
-                sec1_data: {},
-                sec2_data: {},
-                sec3_data: {},
-                sec4_data: {},
-                sec5_data: {},
-                sec6_data: {}
+        //sec3_data
+        const {sec3_data: old_sec3_data} = this.investigation;
+        if (!old_sec3_data || old_sec3_data.consequence !== consequence) {
+            data.investigation.sec3_data = {
+                consequence
             };
-            //sec1_data
-            if (investigation_team_list) {
-                console.log('investigation_team_list', investigation_team_list)
-                data.investigation.sec1_data.investigation_team_list = toJS(investigation_team_list.map(mapIncidentPersonDetails));
+        }
+        if (!old_sec3_data || old_sec3_data.likelihood !== likelihood) {
+            if (!data.investigation.sec3_data) {
+                data.investigation.sec3_data = {};
             }
-            if (investigation_due_date) {
-                data.investigation.sec1_data.investigation_due_date = investigation_due_date.getTime();
-            }
+            data.investigation.sec3_data.likelihood = likelihood;
+        }
 
-            //sec2_data
-            if (investigation_details) {
-                data.investigation.sec2_data.investigation_details = investigation_details;
-            }
-            if (investigation_findings_list) {
-                data.investigation.sec2_data.investigation_findings_list = toJS(investigation_findings_list);
-            }
-            if (investigation_findings_further_desc) {
-                data.investigation.sec2_data.investigation_findings_further_desc = investigation_findings_further_desc;
-            }
-            if (document_list) {
-                data.investigation.sec2_data.document_list = toJS(document_list.map(({path}) => path));
-            }
-            //sec3_data
-            if (consequence) {
-                data.investigation.sec3_data.consequence = consequence;
-            }
-            if (likelihood) {
-                data.investigation.sec3_data.likelihood = likelihood;
-            }
-            if (risk_rating) {
-                data.investigation.sec3_data.risk_rating = risk_rating;
-            }
-            //sec4_data
-            if (cause_analysis) {
-                data.investigation.sec4_data.cause_analysis = toJS(cause_analysis);
-            }
-            //sec5_data
-            if (corrective_actions) {
-                data.investigation.sec5_data.corrective_actions = toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions));
-            }
-            //sec6_data
-            if (distribution_list) {
-                data.investigation.sec6_data.distribution_list = toJS(distribution_list.map(mapIncidentPersonDetails));
-            }
+        //sec5_data
+        const {sec5_data: old_sec5_data} = this.investigation;
+        if (corrective_actions && (!old_sec5_data || !old_sec5_data.corrective_actions || toJS(old_sec5_data.corrective_actions.map(mapIncidentCorrectiveActions)) !== toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions)))) {
+            data.investigation.sec5_data = {
+                corrective_actions: toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions))
+            };
+        }
 
-            //7
-            if (weather_condition_list) {
-                data.investigation.weather_condition_list = toJS(weather_condition_list);
-            }
-            //8
-            if (protective_equipment_worn_list) {
-                data.investigation.protective_equipment_worn_list = toJS(protective_equipment_worn_list);
-            }
-            //9
-            if (class_list) {
-                data.investigation.class_list = toJS(class_list);
-            }
-            //10
-            if (environment_list) {
-                data.investigation.environment_list = toJS(environment_list);
-            }
-            //11
-            if (estimated_costs_damages) {
-                data.investigation.estimated_costs_damages = estimated_costs_damages;
-            }
-            if (estimated_costs_medical) {
-                data.investigation.estimated_costs_medical = estimated_costs_medical;
-            }
-            if (estimated_costs_salaries_wages) {
-                data.investigation.estimated_costs_salaries_wages = estimated_costs_salaries_wages;
-            }
-            if (estimated_costs_investigations) {
-                data.investigation.estimated_costs_investigations = estimated_costs_investigations;
-            }
-            if (estimated_costs_others) {
-                data.investigation.estimated_costs_others = estimated_costs_others;
-            }
+        //4
+        // severity
+        // consequence,
+        // likelihood,
+        //5
+        if(cause_analysis) {
+
+        }
+        //6
+        if(corrective_actions) {
+
         }
 
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "investigation", this.item.id, data).then(res => {
+        progressDialog.open();
+        updateIncidentInvestigation({id: this.id, ...data}).then(res => {
             console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully saved.");
+            onSaved && onSaved(data);
+            infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
 
     // </editor-fold>
 
-    get investigation() {
-        return this.item.data.investigation;
+    get incident() {
+        return this.props.dialog.extraProp('incident');
     }
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
@@ -460,14 +293,14 @@ class Controls extends React.Component {
     render() {
         if (!this.item)
             return null;
+
         let {
             props: {
                 onFormNext, onFormBack, onFormOpen,
-                dialog: {renderProfileCover}
+                dialog,
             },
             item, item: {
                 id, data: {
-                    created_at,
                     //1
 
                     //2
@@ -501,10 +334,49 @@ class Controls extends React.Component {
                     estimated_costs_investigations,//
                     estimated_costs_others,//
                 }
-            }
+            },
+            incident,
         } = this;
 
+        const {
+            id: incidentId,
+            data: {
+                created_at,
+                //0
+                site,
+                project,
+                client,
+                //1
+                group,
+                short_desc,
+                desc,
+                location,
+                exact_location,
+                // document_list,
+                //2
+                incident_date,
+                incident_time,
+                date_reported,
+                time_reported,
+                time_shift,
+                //3
+                category_list,
+                //4
+                sub_category_list,
+                //7.4
+                severity: incident_severity,
+            },
+        } = incident;
+
         console.log('=', item)
+
+        const {
+            consequence: incident_consequence,
+            likelihood: incident_likelihood,
+        } = incident_severity || {};
+
+        const consequence = severity ? severity.consequence : incident_consequence;
+        const likelihood = severity ? severity.likelihood : incident_likelihood;
 
         return <FormControls>
             <RowOrgs
@@ -532,7 +404,7 @@ class Controls extends React.Component {
                             <ProfileField
                                 name="incident_num"
                                 title="Incident No."
-                                value={id}
+                                value={incidentId}
                                 className="col-lg-6"
                             />
                             <ProfileField
@@ -618,8 +490,8 @@ class Controls extends React.Component {
                 <NewEmployeeListTable
                     name="investigation_team_list"
                     defaultValue={investigation_team_list}
-                    savable={!!this.investigation}
-                    targetItem={this.investigation && {key: "investigation_id", item: this.investigation} || null}
+                    savable
+                    targetItem={item && {key: "investigation_id", item} || null}
                     insertFn={insertProxyEmployeeIncidentInvestigator}
                     deleteFn={deleteProxyEmployeeIncidentInvestigator}
                     onAttrs={({employee, other_person}) => ({
@@ -683,7 +555,12 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <CauseAnalysisPanel name="cause_analysis" defaultValue={cause_analysis} onChange={this.form.onChange}/>
+                <CauseAnalysisPanel
+                    name="cause_analysis"
+                    investigation={item}
+                    defaultValue={cause_analysis}
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 rendered
@@ -693,9 +570,13 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <RemedialOrCorrectiveActionPanel ref="corrective_actions" name="corrective_actions"
-                                                 defaultValue={corrective_actions} onChange={this.form.onChange}
-                                                 onBack={onFormBack}/>
+                <RemedialOrCorrectiveActionPanel
+                    ref="corrective_actions"
+                    name="corrective_actions"
+                    investigation={item}
+                    defaultValue={corrective_actions}
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 rendered
