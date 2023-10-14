@@ -5,10 +5,8 @@ import { graphql } from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityAudit} from "mutations/types.d.ts";
-import findByIdIncidentCauseAnalysis from "./findByIdIncidentCauseAnalysis";
-import updateIncidentCauseAnalysis from "./updateIncidentCauseAnalysis";
-import updateIncident from "../updateIncident";
-import findByIdIncident from "../findByIdIncident";
+import updateIncidentInvestigation from "../IncidentInvestigation/updateIncidentInvestigation";
+import findByIdIncidentInvestigation from "../IncidentInvestigation/findByIdIncidentInvestigation";
 
 // 2
 const mutation = graphql`
@@ -24,18 +22,18 @@ const mutation = graphql`
 // 3
 export default async (input: EntityAudit) =>  {
   const {
-    incident_id,
+    investigation_id,
   } = input;
 
-  const incident = await findByIdIncident(incident_id);
-  if(!incident) {
-    return "INCIDENT_NOT_FOUND";
+  const investigation = await findByIdIncidentInvestigation(investigation_id);
+  if(!investigation) {
+    return "INVESTIGATION_NOT_FOUND";
   }
 
-  delete input.incident_id;
+  delete input.investigation_id;
 
   const res = await createMutationImpl({mutation, input});
   if(res) {
-   return updateIncident({id: incident_id, investigation_id: res.id, status_investigating: true,});
+   return updateIncidentInvestigation({id: investigation_id, cause_analysis_id: res.id});
   }
 };

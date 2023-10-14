@@ -132,7 +132,7 @@ class Controls extends React.Component {
     onChangeCauseAnalysis(el, val) {
         if (val) {
             execWhen(() => this.refs.corrective_actions).then(corrective_actions_ref => {
-                corrective_actions_ref.setCauseAnalysis(val);
+                corrective_actions_ref.cause_analysis = val;
             });
         }
     }
@@ -160,8 +160,18 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
-        const {form, item: {data: old_data}} = this;
+    async onSubmit(e, btn, onSaved) {
+        let {
+            form,
+            item: {
+                data: old_data,
+                data: {
+                    severity: old_severity = {},
+                    cause_analysis: old_cause_analysis = {},
+                    corrective_actions: old_corrective_actions = {},
+                }
+            }
+        } = this;
         if (!form.isValid('investigation_team_list') || form.get('investigation_team_list').isEmpty()) {
             infoDialog.open('Investigation Team is required');
             return;
@@ -184,7 +194,6 @@ class Controls extends React.Component {
             // severity,//{consequence, likelihood}
             consequence,
             likelihood,
-            // risk_rating,
             //5
             cause_analysis,//saved internally
             //6
@@ -208,59 +217,58 @@ class Controls extends React.Component {
         } = form.data;
 
         const data = {};
+
         //2
         ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
         //3
-        ShouldUpdate.checkDate(data, old_data, investigation_details, 'investigation_details');
-        ShouldUpdate.checkDate(data, old_data, investigation_findings_further_desc, 'investigation_findings_further_desc');
+        ShouldUpdate.check(data, old_data, investigation_details, 'investigation_details');
+        ShouldUpdate.check(data, old_data, investigation_findings_further_desc, 'investigation_findings_further_desc');
         //8
-        ShouldUpdate.checkDate(data, old_data, weather_condition_list, 'weather_condition_list');
+        ShouldUpdate.checkBoxList(data, old_data, weather_condition_list, 'weather_condition_list');
         //9
-        ShouldUpdate.checkDate(data, old_data, protective_equipment_worn_list, 'protective_equipment_worn_list');
+        ShouldUpdate.checkBoxList(data, old_data, protective_equipment_worn_list, 'protective_equipment_worn_list');
         //10
-        ShouldUpdate.checkDate(data, old_data, class_list, 'class_list');
+        ShouldUpdate.checkBoxList(data, old_data, class_list, 'class_list');
         //11
-        ShouldUpdate.checkDate(data, old_data, environment_list, 'environment_list');
+        ShouldUpdate.checkBoxList(data, old_data, environment_list, 'environment_list');
         //12
-        ShouldUpdate.checkDate(data, old_data, estimated_costs_damages, 'estimated_costs_damages');
-        ShouldUpdate.checkDate(data, old_data, estimated_costs_medical, 'estimated_costs_medical');
-        ShouldUpdate.checkDate(data, old_data, estimated_costs_salaries_wages, 'estimated_costs_salaries_wages');
-        ShouldUpdate.checkDate(data, old_data, estimated_costs_investigations, 'estimated_costs_investigations');
-        ShouldUpdate.checkDate(data, old_data, estimated_costs_others, 'estimated_costs_others');
-
-        //sec3_data
-        const {sec3_data: old_sec3_data} = this.investigation;
-        if (!old_sec3_data || old_sec3_data.consequence !== consequence) {
-            data.investigation.sec3_data = {
-                consequence
-            };
-        }
-        if (!old_sec3_data || old_sec3_data.likelihood !== likelihood) {
-            if (!data.investigation.sec3_data) {
-                data.investigation.sec3_data = {};
-            }
-            data.investigation.sec3_data.likelihood = likelihood;
-        }
-
-        //sec5_data
-        const {sec5_data: old_sec5_data} = this.investigation;
-        if (corrective_actions && (!old_sec5_data || !old_sec5_data.corrective_actions || toJS(old_sec5_data.corrective_actions.map(mapIncidentCorrectiveActions)) !== toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions)))) {
-            data.investigation.sec5_data = {
-                corrective_actions: toJS(corrective_actions.filter(v => !!v).map(mapIncidentCorrectiveActions))
-            };
-        }
+        ShouldUpdate.check(data, old_data, estimated_costs_damages, 'estimated_costs_damages');
+        ShouldUpdate.check(data, old_data, estimated_costs_medical, 'estimated_costs_medical');
+        ShouldUpdate.check(data, old_data, estimated_costs_salaries_wages, 'estimated_costs_salaries_wages');
+        ShouldUpdate.check(data, old_data, estimated_costs_investigations, 'estimated_costs_investigations');
+        ShouldUpdate.check(data, old_data, estimated_costs_others, 'estimated_costs_others');
 
         //4
-        // severity
-        // consequence,
-        // likelihood,
-        //5
-        if(cause_analysis) {
+        {
+            if(!old_severity) {
+                old_severity = {};
+            }
+            const severity_data = {};
+            ShouldUpdate.check(severity_data, old_severity, consequence, 'consequence');
+            ShouldUpdate.check(severity_data, old_severity, likelihood, 'likelihood');
+            // severity
+            // consequence,
+            // likelihood,
 
+            if(Object.values(severity_data).isNotEmpty()) {
+                if(old_severity.id) {
+                    await updateIncidentInvestigationSeverity({id: old_severity.id, ...severity_data});
+                } else {
+                    const savedSeverity = await insertIncidentInvestigationSeverity(severity_data);
+                    if(savedSeverity) {
+                        data.severity_id = savedSeverity.id;
+                    }
+                }
+            }
         }
+
         //6
         if(corrective_actions) {
+            if(corrective_actions.id) {
 
+            } else {
+                // data.corrective_actions_id = ;
+            }
         }
 
         console.log(data)
@@ -491,7 +499,7 @@ class Controls extends React.Component {
                     name="investigation_team_list"
                     defaultValue={investigation_team_list}
                     savable
-                    targetItem={item && {key: "investigation_id", item} || null}
+                    targetItem={{key: "investigation_id", item}}
                     insertFn={insertProxyEmployeeIncidentInvestigator}
                     deleteFn={deleteProxyEmployeeIncidentInvestigator}
                     onAttrs={({employee, other_person}) => ({
@@ -576,6 +584,7 @@ class Controls extends React.Component {
                     investigation={item}
                     defaultValue={corrective_actions}
                     onChange={this.form.onChange}
+                    onBack={onFormBack}
                 />
             </Row>
             <Row
@@ -586,8 +595,21 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <NewEmployeeListTable name="distribution_list" defaultValue={distribution_list}
-                                      onChange={this.form.onChange}/>
+                <NewEmployeeListTable
+                    name="distribution_list"
+                    defaultValue={distribution_list}
+                    savable
+                    targetItem={{key: "investigation_id", item}}
+                    insertFn={insertProxyEmployeeIncidentInvestigator}
+                    deleteFn={deleteProxyEmployeeIncidentInvestigator}
+                    onAttrs={({employee, other_person}) => ({
+                        employee_id: employee && employee.id,
+                        other_person_id: other_person && other_person.id ? other_person.id : null,
+                        other_person: other_person && !other_person.id ? {data: other_person} : null
+                    })}
+                    className="w-full-calc-add-10 -margin-l-10"
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 rendered

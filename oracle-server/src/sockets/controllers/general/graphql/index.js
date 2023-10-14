@@ -40,7 +40,7 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
         },
         body: JSON.stringify({query, variables}),
     }).then(res => res.json()).catch(err => {
-        console.error("response err", err)
+        console.error("response err", err, 'query', query)
         throw err;
     });
 });
@@ -107,7 +107,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
             }
         })
           .catch(err => {
-              console.log(JSON.stringify({mutation, operationName, variables}));
+              console.error("response err", err, 'query', query)
               throw err;
           });
     }
@@ -163,12 +163,12 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
             }
         }
     }).catch(err => {
-        console.error(err)
+        console.error("response err", err, 'query', query)
         throw err;
     });
 });
 
-eventManager.on("graphql/api/rest/viewsl", (socket, path) => {
+eventManager.on("graphql/api/rest/views", (socket, path) => {
     // console.log('data', path)
     const {auth_id} = socket.handshake.session;
     

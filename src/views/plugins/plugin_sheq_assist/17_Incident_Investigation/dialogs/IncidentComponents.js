@@ -9,6 +9,16 @@ import {ATableSavable, ReadonlyListTable, Table, TBody, THead, TRow} from 'compo
 
 import {NewCauseAnalysisImmediateDialog, NewCauseAnalysisRootDialog} from './NewCauseAnalysisDialogs';
 import NewCorrectiveActionsDialog from './NewCorrectiveActionsDialog';
+import insertIncidentCauseAnalysis
+    from "mutations/all/Incident/IncidentCauseAnalysis/insertIncidentCauseAnalysis";
+import updateIncidentCauseAnalysis
+    from "mutations/all/Incident/IncidentCauseAnalysis/updateIncidentCauseAnalysis";
+import insertIncidentCauseAnalysisImmediate
+    from "mutations/all/Incident/IncidentCauseAnalysisImmediate/insertIncidentCauseAnalysisImmediate";
+import insertIncidentCauseAnalysisRoot
+    from "mutations/all/Incident/IncidentCauseAnalysisRoot/insertIncidentCauseAnalysisRoot";
+import updateIncidentInvestigation
+    from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="CauseAnalysisPanel">
@@ -16,8 +26,7 @@ import NewCorrectiveActionsDialog from './NewCorrectiveActionsDialog';
 class CauseAnalysisPanel extends React.Component {
 
     @observable state = {
-        immediate_analysis: null,
-        root_analysis: null
+        cause_analysis: null,
     };
 
     constructor(props) {
@@ -25,9 +34,10 @@ class CauseAnalysisPanel extends React.Component {
 
         const {defaultValue: cause_analysis} = props;
         if (cause_analysis) {
-            this.state = cause_analysis;
+            this.state.cause_analysis = cause_analysis;
+
             const {onChange, name} = this.props;
-            onChange && onChange(this.state, name, this);
+            onChange && onChange(cause_analysis, name, this);
         }
 
         this.onAdd = this.onAdd.bind(this);
@@ -36,121 +46,139 @@ class CauseAnalysisPanel extends React.Component {
     }
 
     onAdd(e, btn) {
-        const {onChange, name, investigation, defaultValue: cause_analysis} = this.props;
+        const {onChange, name, investigation} = this.props;
         const {newImmediateDialog, newRootDialog} = this.refs;
         const {action} = btn.props;
-        const {immediate_analysis, root_analysis} = this.state;
+        const {immediate_analysis, root_analysis, cause_analysis} = this;
 
         if (action === 'immediate') {
-            newImmediateDialog.
-            extraProp('cause_analysis', cause_analysis).
-            extraProp('investigation', investigation).
-            open(immediate_analysis).then(immediate_analysis => {
-                this.state.immediate_analysis = immediate_analysis;
+            newImmediateDialog.extraProp('cause_analysis', cause_analysis).extraProp('investigation', investigation).open(immediate_analysis).then(async immediate_analysis => {
+                if (immediate_analysis.id) {
+                    extendObservable(this.immediate_analysis, immediate_analysis);
+                } else {
+                    progressDialog.open();
+                    try {
+                        if (this.cause_analysis) {
+                            const savedCauseAnalysis = await insertIncidentCauseAnalysisImmediate(immediate_analysis);
+                            if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
-                onChange && onChange(this.state, name, this);
+                            if (savedCauseAnalysis) {
+                                this.immediate_analysis = savedCauseAnalysisImmediate.data.immediate_analysis;
+
+                                infoDialog.open("Record successfully updated.");
+                                infoDialog.close(2000);
+                            } else {
+                                infoDialog.open("Record couldn't be updated.");
+                            }
+                        } else {
+                            const savedInvestigation = await insertIncidentCauseAnalysis({
+                                investigation_id: investigation.id,
+                                immediate_analysis: {data: immediate_analysis},
+                            });
+                            this.onUpdateIncidentInvestigation(savedInvestigation);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        infoDialog.open("An error occurred. Please try again.");
+                    } finally {
+                        setTimeout(() => progressDialog.close());
+                    }
+                }
+
+                onChange && onChange(this.cause_analysis, name, this);
             });
         } else if (action === 'root') {
-            newRootDialog.
-            extraProp('cause_analysis', cause_analysis).
-            extraProp('investigation', investigation).
-            open(root_analysis).then(root_analysis => {
-                this.state.root_analysis = root_analysis;
+            newRootDialog.extraProp('cause_analysis', cause_analysis).extraProp('investigation', investigation).open(root_analysis).then(async root_analysis => {
+                if (root_analysis.id) {
+                    extendObservable(this.root_analysis, root_analysis);
+                } else {
+                    progressDialog.open();
+                    try {
+                        if (this.cause_analysis) {
+                            const savedCauseAnalysis = await insertIncidentCauseAnalysisRoot(root_analysis);
+                            if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
-                onChange && onChange(this.state, name, this);
+                            if (savedCauseAnalysis) {
+                                this.root_analysis = savedCauseAnalysisRoot.data.root_analysis;
+
+                                infoDialog.open("Record successfully updated.");
+                                infoDialog.close(2000);
+                            } else {
+                                infoDialog.open("Record couldn't be updated.");
+                            }
+                        } else {
+                            const savedInvestigation = await insertIncidentCauseAnalysis({
+                                investigation_id: investigation.id,
+                                root_analysis: {data: root_analysis},
+                            });
+                            this.onUpdateIncidentInvestigation(savedInvestigation);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        infoDialog.open("An error occurred. Please try again.");
+                    } finally {
+                        setTimeout(() => progressDialog.close());
+                    }
+                }
+
+                onChange && onChange(this.cause_analysis, name, this);
             });
         }
     }
 
-    ReadonlyImmediate({item: immediate_analysis}) {
-        if (!immediate_analysis) return null;
-        const {
-            sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions,
-            custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
-        } = immediate_analysis;
-        return <div className="RemedialOrCorrectiveActionPanel-Immediate">
-            <label className="w-full text-center">Direct/Immediate Cause(s)</label>
-            <div className="RemedialOrCorrectiveActionPanelListCover">
-                {!!sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Immediate Cause"
-                    title="Sub-Standard Practices / Unsafe Acts"
-                    className="col-lg-12 no-padding"
-                    list={sub_standard_practices_or_unsafe_acts}/>}
-                {!!custom_sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Immediate Cause"
-                    title="Custom Sub-Standard Practices / Unsafe Acts"
-                    className="col-lg-12 no-padding"
-                    list={custom_sub_standard_practices_or_unsafe_acts}/>}
-                {!!sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Immediate Cause"
-                    title="Sub-Standard Conditions / Unsafe Conditions"
-                    className="col-lg-12 no-padding"
-                    list={sub_standard_practices_or_unsafe_conditions}/>}
-                {!!custom_sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Immediate Cause"
-                    title="Custom Sub-Standard Conditions / Unsafe Conditions"
-                    className="col-lg-12 no-padding"
-                    list={custom_sub_standard_practices_or_unsafe_conditions}/>}
-            </div>
-        </div>;
+    async onUpdateIncidentInvestigation(savedInvestigation) {
+        if (savedInvestigation === "INVESTIGATION_NOT_FOUND") return infoDialog.open("Incident Investigation no longer exist.");
+
+        if (savedInvestigation) {
+            this.cause_analysis = savedCauseAnalysis.data.cause_analysis;
+
+            infoDialog.open("Record successfully updated.");
+            infoDialog.close(2000);
+        } else {
+            infoDialog.open("Record couldn't be updated.");
+        }
     }
 
-    ReadonlyRoot({item: root_analysis}) {
-        if (!root_analysis) return null;
-        const {
-            personal_factors, job_factors,
-            custom_personal_factors, custom_job_factors
-        } = root_analysis;
-        return <div className="RemedialOrCorrectiveActionPanel-Root">
-            <label className="w-full text-center">Indirect/Basic/Root Cause(s)</label>
-            <div className="RemedialOrCorrectiveActionPanelListCover">
-                {!!personal_factors && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Root Cause"
-                    title="Personal Factors"
-                    className="col-lg-12 no-padding"
-                    list={personal_factors}/>}
-                {!!custom_personal_factors && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Root Cause"
-                    title="Custom Personal Factors"
-                    className="col-lg-12 no-padding"
-                    list={custom_personal_factors}/>}
-                {!!job_factors && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Root Cause"
-                    title="Job Factors"
-                    className="col-lg-12 no-padding"
-                    list={job_factors}/>}
-                {!!custom_job_factors && <CorrectiveActionListByCauseTable
-                    readonly
-                    group="Root Cause"
-                    title="Custom Job Factors"
-                    className="col-lg-12 no-padding"
-                    list={custom_job_factors}/>}
-            </div>
-        </div>;
+    @computed get cause_analysis() {
+        return this.state.cause_analysis;
+    }
+
+    set cause_analysis(value) {
+        this.state.cause_analysis = value;
+    }
+
+    set immediate_analysis(immediate_analysis) {
+        this.state.cause_analysis.immediate_analysis = immediate_analysis;
+    }
+
+    set root_analysis(root_analysis) {
+        this.state.cause_analysis.root_analysis = root_analysis;
+    }
+
+    @computed get immediate_analysis() {
+        const {immediate_analysis} = this.cause_analysis || {};
+        return immediate_analysis;
+    }
+
+    @computed get root_analysis() {
+        const {root_analysis} = this.cause_analysis || {};
+        return root_analysis;
     }
 
     renderReadonly() {
-        const {ReadonlyImmediate, ReadonlyRoot} = this;
-        const {immediate_analysis, root_analysis} = this.state;
+        const {immediate_analysis, root_analysis} = this;
         return (<div className={"CauseAnalysisPanel col-lg-12 margin-0 padding-0 readonly"}>
             {immediate_analysis && <div className="CauseAnalysisPanel-Immediate">
-                <ReadonlyImmediate item={immediate_analysis}/>
+                <ReadonlyImmediateCauseAnalysis item={immediate_analysis}/>
             </div>}
             {root_analysis && <div className="CauseAnalysisPanel-Root">
-                <ReadonlyRoot item={root_analysis}/>
+                <ReadonlyRootCauseAnalysis item={root_analysis}/>
             </div>}
         </div>);
     }
 
     renderEditable() {
-        const {immediate_analysis, root_analysis} = this.state;
+        const {immediate_analysis, root_analysis} = this;
         let immediate_analysis_count = 0;
         let root_analysis_count = 0;
         if (!!immediate_analysis) {
@@ -206,6 +234,88 @@ class CauseAnalysisPanel extends React.Component {
     }
 }
 
+@observer
+class ReadonlyImmediateCauseAnalysis extends React.Component {
+    render() {
+        const {item: immediate_analysis} = this.props;
+        if (!immediate_analysis) return null;
+        const {
+            sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions,
+            custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
+        } = immediate_analysis;
+        return <div className="CauseAnalysisPanel-Immediate">
+            <label className="w-full text-center">Direct/Immediate Cause(s)</label>
+            <div className="CauseAnalysisPanelListCover">
+                {!!sub_standard_practices_or_unsafe_acts && <CauseAnalysisTable
+                    readonly
+                    group="Immediate Cause"
+                    title="Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_acts}/>}
+                {!!custom_sub_standard_practices_or_unsafe_acts && <CauseAnalysisTable
+                    readonly
+                    group="Immediate Cause"
+                    title="Custom Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    list={custom_sub_standard_practices_or_unsafe_acts}/>}
+                {!!sub_standard_practices_or_unsafe_conditions && <CauseAnalysisTable
+                    readonly
+                    group="Immediate Cause"
+                    title="Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_conditions}/>}
+                {!!custom_sub_standard_practices_or_unsafe_conditions && <CauseAnalysisTable
+                    readonly
+                    group="Immediate Cause"
+                    title="Custom Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    list={custom_sub_standard_practices_or_unsafe_conditions}/>}
+            </div>
+        </div>;
+    }
+}
+
+@observer
+class ReadonlyRootCauseAnalysis extends React.Component {
+    render() {
+        const {item: root_analysis} = this.props;
+        if (!root_analysis) return null;
+        const {
+            personal_factors, job_factors,
+            custom_personal_factors, custom_job_factors
+        } = root_analysis;
+        return <div className="CauseAnalysisPanel-Root">
+            <label className="w-full text-center">Indirect/Basic/Root Cause(s)</label>
+            <div className="CauseAnalysisPanelListCover">
+                {!!personal_factors && <CauseAnalysisTable
+                    readonly
+                    group="Root Cause"
+                    title="Personal Factors"
+                    className="col-lg-12 no-padding"
+                    list={personal_factors}/>}
+                {!!custom_personal_factors && <CauseAnalysisTable
+                    readonly
+                    group="Root Cause"
+                    title="Custom Personal Factors"
+                    className="col-lg-12 no-padding"
+                    list={custom_personal_factors}/>}
+                {!!job_factors && <CauseAnalysisTable
+                    readonly
+                    group="Root Cause"
+                    title="Job Factors"
+                    className="col-lg-12 no-padding"
+                    list={job_factors}/>}
+                {!!custom_job_factors && <CauseAnalysisTable
+                    readonly
+                    group="Root Cause"
+                    title="Custom Job Factors"
+                    className="col-lg-12 no-padding"
+                    list={custom_job_factors}/>}
+            </div>
+        </div>;
+    }
+}
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RemedialOrCorrectiveActionPanel">
@@ -214,16 +324,18 @@ class RemedialOrCorrectiveActionPanel extends React.Component {
 
     @observable state = {
         cause_analysis: null,
-        corrective_actions: []
+        corrective_actions: null,
     };
 
     constructor(props) {
         super(props);
 
-        if (props.defaultValue) {//immediate_analysis, root_analysis
-            this.state.corrective_actions = toJS(props.defaultValue);
+        const {defaultValue: corrective_actions} = props;
+        if (corrective_actions) {
+            this.state.corrective_actions = corrective_actions;
+
             const {onChange, name} = this.props;
-            onChange && onChange(toJS(props.defaultValue), name, this);
+            onChange && onChange(corrective_actions, name, this);
         }
 
         this.onAdded = this.onAdded.bind(this);
@@ -256,90 +368,8 @@ class RemedialOrCorrectiveActionPanel extends React.Component {
         return newCorrectiveActionsDialog.open(cause);
     }
 
-    setCauseAnalysis(cause_analysis) {//immediate_analysis, root_analysis
-        this.state.cause_analysis = toJS(cause_analysis);
-    }
-
-    Immediate({onAdded, onAddCorrectiveActionsToCause, item: immediate_analysis}) {
-        if (!immediate_analysis) return null;
-        const {
-            sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions,
-            custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
-        } = immediate_analysis;
-        return <div className="RemedialOrCorrectiveActionPanel-Immediate">
-            <label className="w-full text-center">Direct/Immediate Cause(s)</label>
-            <div className="RemedialOrCorrectiveActionPanelListCover">
-                {!!sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Immediate Cause"
-                    title="Sub-Standard Practices / Unsafe Acts"
-                    className="col-lg-12 no-padding"
-                    list={sub_standard_practices_or_unsafe_acts}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!custom_sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Immediate Cause"
-                    title="Custom Sub-Standard Practices / Unsafe Acts"
-                    className="col-lg-12 no-padding"
-                    list={custom_sub_standard_practices_or_unsafe_acts}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Immediate Cause"
-                    title="Sub-Standard Conditions / Unsafe Conditions"
-                    className="col-lg-12 no-padding"
-                    list={sub_standard_practices_or_unsafe_conditions}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!custom_sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Immediate Cause"
-                    title="Custom Sub-Standard Conditions / Unsafe Conditions"
-                    className="col-lg-12 no-padding"
-                    list={custom_sub_standard_practices_or_unsafe_conditions}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-            </div>
-        </div>;
-    }
-
-    Root({onAdded, onAddCorrectiveActionsToCause, item: root_analysis}) {
-        if (!root_analysis) return null;
-        const {
-            personal_factors, job_factors,
-            custom_personal_factors, custom_job_factors
-        } = root_analysis;
-        return <div className="RemedialOrCorrectiveActionPanel-Root">
-            <label className="w-full text-center">Indirect/Basic/Root Cause(s)</label>
-            <div className="RemedialOrCorrectiveActionPanelListCover">
-                {!!personal_factors && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Root Cause"
-                    title="Personal Factors"
-                    className="col-lg-12 no-padding"
-                    list={personal_factors}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!custom_personal_factors && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Root Cause"
-                    title="Custom Personal Factors"
-                    className="col-lg-12 no-padding"
-                    list={custom_personal_factors}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!job_factors && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Root Cause"
-                    title="Job Factors"
-                    className="col-lg-12 no-padding"
-                    list={job_factors}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-                {!!custom_job_factors && <CorrectiveActionListByCauseTable
-                    onAdded={onAdded}
-                    group="Root Cause"
-                    title="Custom Job Factors"
-                    className="col-lg-12 no-padding"
-                    list={custom_job_factors}
-                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
-            </div>
-        </div>;
+    set cause_analysis(cause_analysis) {//immediate_analysis, root_analysis
+        this.state.cause_analysis = cause_analysis;
     }
 
     renderReadonly() {
@@ -414,18 +444,25 @@ class RemedialOrCorrectiveActionPanel extends React.Component {
     }
 
     renderEditable() {
-        const {Immediate, Root, state: {cause_analysis}} = this;
+        const {state: {cause_analysis}} = this;
         console.log('cause_analysis', cause_analysis)
         return (<div className="RemedialOrCorrectiveActionPanel col-lg-12 margin-0 padding-0">
-            {!!cause_analysis && <React.Fragment>
-                <Immediate onAdded={this.onAdded} item={cause_analysis.immediate_analysis}
-                           onAddCorrectiveActionsToCause={this.onAddCorrectiveActionsToCause}/>
-                <Root onAdded={this.onAdded} item={cause_analysis.root_analysis}
-                      onAddCorrectiveActionsToCause={this.onAddCorrectiveActionsToCause}/>
-            </React.Fragment>}
+            {!!cause_analysis && <>
+                <ImmediateCorrectiveActions
+                    onAdded={this.onAdded}
+                    item={cause_analysis.immediate_analysis}
+                    onAddCorrectiveActionsToCause={this.onAddCorrectiveActionsToCause}
+                />
+                <RootCorrectiveActions
+                    onAdded={this.onAdded}
+                    item={cause_analysis.root_analysis}
+                    onAddCorrectiveActionsToCause={this.onAddCorrectiveActionsToCause}
+                />
+            </>}
             {!cause_analysis && <p className="no-content text-center">
-                Please complete previous section <Clickable idx={5} onClick={this.props.onBack}><b>(Cause
-                Analysis)</b></Clickable> in order to complete this section.
+                Please complete previous section <Clickable idx={5} onClick={this.props.onBack}>
+                <b>(Cause Analysis)</b>
+            </Clickable> in order to complete this section.
             </p>}
 
             <NewCorrectiveActionsDialog ref="newCorrectiveActionsDialog"/>
@@ -435,6 +472,157 @@ class RemedialOrCorrectiveActionPanel extends React.Component {
     render() {
         const {readonly} = this.props;
         return readonly ? this.renderReadonly() : this.renderEditable();
+    }
+}
+
+@observer
+class ImmediateCorrectiveActions extends React.Component {
+    render() {
+        const {onAdded, onAddCorrectiveActionsToCause, item: immediate_analysis} = this.props;
+        if (!immediate_analysis) return null;
+
+        const {
+            sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions,
+            custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
+        } = immediate_analysis;
+        return <div className="RemedialOrCorrectiveActionPanel-Immediate">
+            <label className="w-full text-center">Direct/Immediate Cause(s)</label>
+            <div className="RemedialOrCorrectiveActionPanelListCover">
+                {!!sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Immediate Cause"
+                    title="Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_acts}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!custom_sub_standard_practices_or_unsafe_acts && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Immediate Cause"
+                    title="Custom Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    list={custom_sub_standard_practices_or_unsafe_acts}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Immediate Cause"
+                    title="Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_conditions}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!custom_sub_standard_practices_or_unsafe_conditions && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Immediate Cause"
+                    title="Custom Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    list={custom_sub_standard_practices_or_unsafe_conditions}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+            </div>
+        </div>;
+    }
+}
+
+@observer
+class RootCorrectiveActions extends React.Component {
+    render() {
+        const {onAdded, onAddCorrectiveActionsToCause, item: root_analysis} = this.props;
+        if (!root_analysis) return null;
+
+        const {
+            personal_factors, job_factors,
+            custom_personal_factors, custom_job_factors
+        } = root_analysis;
+        return <div className="RemedialOrCorrectiveActionPanel-Root">
+            <label className="w-full text-center">Indirect/Basic/Root Cause(s)</label>
+            <div className="RemedialOrCorrectiveActionPanelListCover">
+                {!!personal_factors && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Root Cause"
+                    title="Personal Factors"
+                    className="col-lg-12 no-padding"
+                    list={personal_factors}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!custom_personal_factors && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Root Cause"
+                    title="Custom Personal Factors"
+                    className="col-lg-12 no-padding"
+                    list={custom_personal_factors}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!job_factors && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Root Cause"
+                    title="Job Factors"
+                    className="col-lg-12 no-padding"
+                    list={job_factors}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+                {!!custom_job_factors && <CorrectiveActionListByCauseTable
+                    onAdded={onAdded}
+                    group="Root Cause"
+                    title="Custom Job Factors"
+                    className="col-lg-12 no-padding"
+                    list={custom_job_factors}
+                    onAddCorrectiveActionsToCause={onAddCorrectiveActionsToCause}/>}
+            </div>
+        </div>;
+    }
+}
+
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="CauseAnalysisTable">
+@observer
+class CauseAnalysisTable extends ATableSavable {
+
+    constructor(props) {
+        super(props);
+
+        const {list} = this.props;
+        this.state.list = list;
+    }
+
+    // calcItemStats(item) {
+    //     const {
+    //         text, corrective_actions = {}
+    //     } = item;
+    //     const {
+    //         personal_factors = [], job_factors = [],
+    //         custom_personal_factors = [], custom_job_factors = []
+    //     } = corrective_actions;
+    //     let total_cost = personal_factors.map(v => v.cost || 0).reduce((v1, v2) => v1 + v2, 0);
+    //     total_cost += job_factors.map(v => v.cost || 0).reduce((v1, v2) => v1 + v2, 0);
+    //     total_cost += custom_personal_factors.map(v => v.cost || 0).reduce((v1, v2) => v1 + v2, 0);
+    //     total_cost += custom_job_factors.map(v => v.cost || 0).reduce((v1, v2) => v1 + v2, 0);
+    //     let sum = personal_factors.length + job_factors.length + custom_personal_factors.length + custom_job_factors.length;
+    //     console.log('calcItemStats', item, total_cost)
+    //     return {total_cost, sum};
+    // }
+
+    renderItem(n, onClick) {
+        const {readonly} = this.props;
+        const item = this.state.list[n];
+        const {text} = item;
+
+        console.log('renderItem', item)
+        return <TRow key={"item-" + n} className="tr-readonly">
+            <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
+            <div className="td padding-l-0 padding-r-0">{text}</div>
+            <div className="td fixed-flex min-w-0 padding-0"></div>
+        </TRow>;
+        ;
+    }
+
+    render() {
+        const {title} = this.props;
+        return (<Table className="CauseAnalysisTable w-full margin-0 padding-0">
+            <THead className="align-left">
+                <div className="td fixed-flex min-w-20 font-size-12">#</div>
+                <div className="td padding-l-0 padding-r-0 font-size-12">{title}</div>
+                <div className="td fixed-flex min-w-0 padding-0"></div>
+            </THead>
+            <TBody ref="body" title={title} renderItem={this.renderItem} onClick={this.onClick} state={this.state}
+                   onLoadList={this.onLoadList} disablePullToRefresh={true}/>
+        </Table>);
     }
 }
 
