@@ -37,6 +37,20 @@ export const incident_investigation_details_fragment = `
   
   cause_analysis{
     id
+    immediate_analysis{
+      id
+      sub_standard_practices_or_unsafe_acts
+      sub_standard_practices_or_unsafe_conditions
+      custom_sub_standard_practices_or_unsafe_acts
+      custom_sub_standard_practices_or_unsafe_conditions
+    }
+    root_analysis{
+      id
+      custom_job_factors
+      custom_personal_factors
+      job_factors
+      personal_factors
+    }
   }
   corrective_actions{
     id

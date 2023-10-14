@@ -24,12 +24,6 @@ export default (
         exact_orgs
     });
 
-    const fillNullLists = (list) => list.map(v => {
-        // !v.data.page_title_list && (v.data.page_title_list = []);
-        // !v.data.question_list && (v.data.question_list = []);
-        return v;
-    });
-
     //<editor-fold desc="ByEach">
     return GQLClient
         .query({

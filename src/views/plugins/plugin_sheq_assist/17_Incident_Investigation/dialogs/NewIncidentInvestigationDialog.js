@@ -21,7 +21,7 @@ import deleteProxyEmployeeIncidentInvestigator
 import findByIdIncidentInvestigation
     from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
 import updateIncidentInvestigation
-    from "../../../../../mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
+    from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
