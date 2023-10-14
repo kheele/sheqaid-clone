@@ -62,7 +62,7 @@ class CauseAnalysisPanel extends React.Component {
                             if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
                             if (savedCauseAnalysis) {
-                                this.immediate_analysis = savedCauseAnalysisImmediate.data.immediate_analysis;
+                                this.immediate_analysis = savedCauseAnalysis.data.immediate_analysis;
 
                                 infoDialog.open("Record successfully updated.");
                                 infoDialog.close(2000);
@@ -101,7 +101,7 @@ class CauseAnalysisPanel extends React.Component {
                             if (savedCauseAnalysis === "INCIDENT_CAUSE_ANALYSIS_NOT_FOUND") return infoDialog.open("Incident Cause Analysis no longer exist.");
 
                             if (savedCauseAnalysis) {
-                                this.root_analysis = savedCauseAnalysisRoot.data.root_analysis;
+                                this.root_analysis = savedCauseAnalysis.data.root_analysis;
 
                                 infoDialog.open("Record successfully updated.");
                                 infoDialog.close(2000);
@@ -132,7 +132,7 @@ class CauseAnalysisPanel extends React.Component {
         if (savedInvestigation === "INVESTIGATION_NOT_FOUND") return infoDialog.open("Incident Investigation no longer exist.");
 
         if (savedInvestigation) {
-            this.cause_analysis = savedCauseAnalysis.data.cause_analysis;
+            this.cause_analysis = savedInvestigation.data.cause_analysis;
 
             infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
