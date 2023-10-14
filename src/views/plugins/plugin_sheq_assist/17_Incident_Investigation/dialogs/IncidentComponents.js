@@ -66,6 +66,7 @@ class CauseAnalysisPanel extends React.Component {
 
                                 infoDialog.open("Record successfully updated.");
                                 infoDialog.close(2000);
+                                newImmediateDialog.close();
                             } else {
                                 infoDialog.open("Record couldn't be updated.");
                             }
@@ -75,6 +76,7 @@ class CauseAnalysisPanel extends React.Component {
                                 immediate_analysis: {data: immediate_analysis},
                             });
                             this.onUpdateIncidentInvestigation(savedInvestigation);
+                            newImmediateDialog.close();
                         }
                     } catch (err) {
                         console.error(err);
@@ -105,6 +107,7 @@ class CauseAnalysisPanel extends React.Component {
 
                                 infoDialog.open("Record successfully updated.");
                                 infoDialog.close(2000);
+                                newRootDialog.close();
                             } else {
                                 infoDialog.open("Record couldn't be updated.");
                             }
@@ -114,6 +117,7 @@ class CauseAnalysisPanel extends React.Component {
                                 root_analysis: {data: root_analysis},
                             });
                             this.onUpdateIncidentInvestigation(savedInvestigation);
+                            newRootDialog.close();
                         }
                     } catch (err) {
                         console.error(err);
