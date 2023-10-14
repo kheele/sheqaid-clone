@@ -1,0 +1,96 @@
+import {employee_personal_details_fragment, personal_details_other_fragment} from "graphql/Fragments";
+
+//<editor-fold desc="incident_corrective_actions_factors_fragment">
+export const incident_corrective_actions_factors_fragment = `
+      id
+      text
+      cost
+      date_completed
+      responsible_person{
+        id
+        full_name
+        email
+        job_position{
+          id
+          name
+        }
+      }
+`;
+//</editor-fold>
+
+//<editor-fold desc="incident_investigation_details_fragment">
+export const incident_investigation_details_fragment = `
+  id
+  created_at
+  due_date
+  investigation_details
+  estimated_costs_damages
+  estimated_costs_medical
+  estimated_costs_salaries_wages
+  estimated_costs_investigations
+  estimated_costs_others
+  environment_list
+  class_list
+  protective_equipment_worn_list
+  weather_condition_list
+  investigation_findings_further_desc
+  
+  cause_analysis{
+    id
+  }
+  corrective_actions{
+    id
+    custom_job_factors{
+      ${incident_corrective_actions_factors_fragment}
+    }
+    custom_personal_factors{
+      ${incident_corrective_actions_factors_fragment}
+    }
+    job_factors{
+      ${incident_corrective_actions_factors_fragment}
+    }
+    personal_factors{
+      ${incident_corrective_actions_factors_fragment}
+    }
+  }
+  severity{
+    id
+    consequence
+    likelihood
+    risk_rating
+    risk_rating_score
+  }
+  distribution_list{
+    id
+    employee{
+      ${employee_personal_details_fragment}
+    }
+    other_person{
+      ${personal_details_other_fragment}
+    }
+  }
+  document_list{
+    id
+    doc
+    investigation_id
+  }
+  investigation_finding_list{
+    id
+    desc
+    investigation_id
+  }
+  investigation_team_list{
+    id
+    investigator{
+      ${employee_personal_details_fragment}
+    }
+    investigator_other{
+      ${personal_details_other_fragment}
+    }
+    investigation_id
+  }
+  incident_list{
+    id
+  }
+`;
+//</editor-fold>

@@ -56,6 +56,13 @@ export const incident_details_fragment = `
   investigation{
     id
     due_date
+    severity{
+        id
+        consequence
+        likelihood
+        risk_rating
+        risk_rating_score
+    }
     document_list{
       id
       doc

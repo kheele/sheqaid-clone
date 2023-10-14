@@ -90,8 +90,8 @@ class Controls extends React.Component {
 
     async onClickPredefined(list, selectedList, corrective_action, action, tbl) {
         const checkedItem = selectedList.find(v => v.text === corrective_action.text);
-        if (action === "add") {
-            const {newCorrectiveActionsItemDialog} = this.refs;
+        if (action === "add") {newCorrectiveActionsItemDialog
+            const {} = this.refs;
             await newCorrectiveActionsItemDialog.extraProp('corrective_action_desc', true).open(checkedItem || corrective_action).then(corrective_action_updated => {
                 selectedList.push(corrective_action_updated);
 
@@ -206,15 +206,18 @@ class Controls extends React.Component {
             return null;
         let {
             cause, cause: {
-                text, corrective_actions = {}
+                text,
+                corrective_actions = {}
             }
         } = this;
+
         const {
             personal_factors: default_personal_factors = [],
             job_factors: default_job_factors = [],
             custom_personal_factors: default_custom_personal_factors = [],
             custom_job_factors: default_custom_job_factors = []
         } = corrective_actions;
+
         const {personal_factors, job_factors} = this.state.lists;
 
         console.log('cause', cause)
