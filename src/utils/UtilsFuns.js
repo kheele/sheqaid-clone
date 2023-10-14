@@ -2,6 +2,7 @@ import React from "react";
 import {findDOMNode} from "react-dom";
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
 import WebWorker from "../web-worker/WebWorker";
+import {Dates} from "./Dates";
 
 function findReactComponent(el) {
 	for (const key in el) {
@@ -157,7 +158,11 @@ function setDefaultVal(key, altValFn) {
 		}
 		if (val) {
 			if (isSetter(ref, 'value') || "value" in ref) {
-				ref.value = val;
+				if(ref.props.type === "date") {
+					ref.value = Dates.parse(val);
+				} else {
+					ref.value = val;
+				}
 			} else if (isSetter(ref, 'list') || "list" in ref) {
 				ref.list = val;
 			}
