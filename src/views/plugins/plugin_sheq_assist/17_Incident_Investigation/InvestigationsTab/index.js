@@ -22,6 +22,9 @@ import ProfilePDFReader from '../printers/ProfilePDFReader';
 
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
+import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
+import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponents";
+
 // </editor-fold>
 
 @observer
@@ -29,7 +32,7 @@ class InvestigationsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="state">
     path;
     pageKey = "InvestigationsTab";
-    
+
     @observable
     state = {
         lists: {
@@ -55,7 +58,7 @@ class InvestigationsTab extends React.Component {
     constructor(props) {
         super(props);
 
-        this.path = props.path + 'investigations/';
+        this.onLoadList = this.onLoadList.bind(this);
 
         this.onSetCategoryRef = this.onSetCategoryRef.bind(this);
 
@@ -64,7 +67,7 @@ class InvestigationsTab extends React.Component {
         this.onInvestigate = this.onInvestigate.bind(this);
         this.onCloseInvestigation = this.onCloseInvestigation.bind(this);
         this.onReOpen = this.onReOpen.bind(this);
-        
+
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         this.onViewReport = this.onViewReport.bind(this);
 
@@ -86,54 +89,87 @@ class InvestigationsTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
-    
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            // name,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            // name,
+            removed: false,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if (!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    //</editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="actions">
     onApproveInvestigation(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];   
+        const item = this.refs.root.list[idx];
         const {investigation} = item.data;
         confirmDialog.open("Are you sure you want to approve the investigation?").then(res => {
-            if(res === 1) {
+            if (res === 1) {
                 progressDialog.open("Approving the investigation...");
                 neonBinding.events.emit(this.path + "add-status", item.id, "ApprovedInvestigation").then(res => {
                     progressDialog.close();
                     console.log("res", res)
-                    if(!investigation.status) {
+                    if (!investigation.status) {
                         setTimeout(() => {
                             extendObservable(investigation, {status: ['ApprovedInvestigation']});
                         });
                     }
                     infoDialog.open("Investigation successfully approved.");
                     infoDialog.close(2000);
-                });   
+                });
             }
         })
     }
-    
+
     onAssignInvestigator(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];        
+        const item = this.refs.root.list[idx];
         this.refs.newIncidentAssignInvestigatorsDialog.open(item);
     }
-    
+
     onInvestigate(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx]; 
+        const item = this.refs.root.list[idx];
         this.refs.newInvestigationDialog.open(item);
     }
-    
+
     onCloseInvestigation(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];    
+        const item = this.refs.root.list[idx];
         const {investigation} = item.data;
         confirmDialog.open("Are you sure you want to close the investigation?").then(res => {
-            if(res === 1) {
+            if (res === 1) {
                 progressDialog.open("Closing the investigation...");
                 neonBinding.events.emit(this.path + "add-status", item.id, "ClosedInvestigation").then(res => {
                     progressDialog.close();
                     console.log("res", res)
-                    if(!investigation.status) {
+                    if (!investigation.status) {
                         extendObservable(investigation, {status: ['ClosedInvestigation']});
                     }
                     setTimeout(() => {
@@ -141,17 +177,17 @@ class InvestigationsTab extends React.Component {
                     }, 2000);
                     infoDialog.open("Investigation successfully closed.");
                     infoDialog.close(2000);
-                });   
+                });
             }
         })
     }
-    
+
     onReOpen(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];   
-        const {investigation} = item.data; 
+        const item = this.refs.root.list[idx];
+        const {investigation} = item.data;
         confirmDialog.open("Are you sure you want to re-open the investigation?").then(res => {
-            if(res === 1) {
+            if (res === 1) {
                 progressDialog.open("Re-opening the investigation...");
                 neonBinding.events.emit(this.path + "remove-status", item.id, "ClosedInvestigation").then(res => {
                     progressDialog.close();
@@ -161,28 +197,30 @@ class InvestigationsTab extends React.Component {
                     });
                     infoDialog.open("Investigation successfully re-opened.");
                     infoDialog.close(2000);
-                });   
+                });
             }
         })
     }
-    
+
     async onSaveAsPDF(e, btn) {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
-    
+
     onViewReport(e, el) {
         const {idx} = el.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSetCategoryRef">
     onSetCategoryRef(ref) {
         this.innerRefs.sub_category = ref;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
@@ -200,6 +238,7 @@ class InvestigationsTab extends React.Component {
             }
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
@@ -207,25 +246,34 @@ class InvestigationsTab extends React.Component {
         const item = this.refs.root.list[idx];
         let {id, data: {investigation, investigation: {status = []}}} = item;
         status = isArray(status) || isObservableArray(status) ? status : [];
-        
-       console.log('this.props.permissionKey', this.props.permissionKey)
+
+        console.log('this.props.permissionKey', this.props.permissionKey)
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
             {!status.contains('ClosedInvestigation') && <React.Fragment>
-                <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit" title="Re-Assign Investigator(s)"/>
-                <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit" title="Investigate"/>
-                {!status.contains('ApprovedInvestigation') && <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check" title="Approve Investigation"/>}
+                <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit"
+                         title="Re-Assign Investigator(s)"/>
+                <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
+                         title="Investigate"/>
+                {!status.contains('ApprovedInvestigation') &&
+                    <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check"
+                             title="Approve Investigation"/>}
             </React.Fragment>}
-                
-            {!status.contains('ClosedInvestigation') && <NavItem action="writable" idx={idx} onClick={this.onCloseInvestigation} faIconLeft="ban" title="Close Investigation"/>}
-            {status.contains('ClosedInvestigation') && <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit" title="Re-Open Investigation"/>}
+
+            {!status.contains('ClosedInvestigation') &&
+                <NavItem action="writable" idx={idx} onClick={this.onCloseInvestigation} faIconLeft="ban"
+                         title="Close Investigation"/>}
+            {status.contains('ClosedInvestigation') &&
+                <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
+                         title="Re-Open Investigation"/>}
             <hr action="writable"/>
             <NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>
             <NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
         </Options>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
@@ -271,6 +319,7 @@ class InvestigationsTab extends React.Component {
                             placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
@@ -289,104 +338,20 @@ class InvestigationsTab extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        let {id, data: {
-                created_at, status,
-                classification,
-                investigation,
-                sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data, 
-                sec9_data, sec10_data, sec11_data, sec12_data, sec13_data, sec14_data, sec15_data, 
-//                sec1_data: {category_list, sector_list, group, short_desc},//1
-//                sec2_data: {sub_category_list, activity_list},//2
-//                sec3_data: {type},//3
-//                sec4_data: {secondary_type_list},//4
-//                sec5_data: {person_involved_list},//5
-//                sec6_data: {person_reporting},//6
-//                sec7_data: {person_reported_to, date_reported},//7
-//                sec8_data: {witness_list},//8
-//                sec9_data: {investigation_date, investigation_time, exact_location},//9
-//                sec10_data: {document_list, desc},//10
-//                sec11_data: {person_injured, injured_person_dob, injured_person_gender, nature_of_injury_list, bodily_injury_location_list, injury_mechanism_list},//11
-//                sec12_data: {test_undertaken, test_type_list, test_type_drug_undertaken, test_type_alcohol_undertaken, test_type_mobile_device_undertaken},//12
-//                sec13_data: {is_vehicle_investigation, is_infringement_issued, did_police_attend_scene, collision_reported_to_police_station, have_charges_been_laid},//13
-//                sec14_data: {consequence, frequency, risk_rating},//15
-//                sec15_data: {distribution_list}//16
-            }
-        } = item;
-        console.log('Investigations', item)
-        if(!status) {
-            extendObservable(item.data, {status: []});
-        } else {
-            status = isArray(status) || isObservableArray(status) ? status : [];
-        }
-        
-        const AssignedInvestigator = !!classification && !!classification.sec5_data && !!classification.sec5_data.investigation_team_list;
-        const isInvestigating = !!investigation;
-        
-        const Status = ({status}) => {
-            const statusVal = () => {
-                if(!status.contains('ApprovedIncident')) {
-                    return ['Awaiting Approval'];
-                } else if(status.contains('ClosedIncident')) {
-                    return ['Closed Incident'];
-                } else if(isInvestigating) {
-                    return ['Investigating'];
-                } else {
-                    return status.map(v => {
-                        if(v === 'ApprovedIncident') {
-                            return 'Approved Incident';
-                        } else if(AssignedInvestigator) {
-                            return 'Assigned Investigator';
-                        } else if(v === 'ApprovedInvestigation') {
-                            return 'Approved Investigation';
-                        } else {
-                            return v;
-                        }
-                    });
-                }
-            };
-            return <div key={new Date().getTime()} className="td fixed-flex min-w-120">{statusVal().map(v => <span>{v}</span>)}</div>; 
-        };
-        
-        if(classification) {
-            sec1_data = classification.sec1_data || sec1_data;
-            sec2_data = classification.sec2_data || sec2_data;
-            sec3_data = classification.sec3_data || sec3_data;
-            sec4_data = classification.sec4_data || sec4_data;
-        }
-        
-        let investigation_due_date = null;
-        if(investigation && investigation.sec1_data && investigation.sec1_data.investigation_due_date) {
-            investigation_due_date = investigation.sec1_data.investigation_due_date;
-        } else if(classification && classification.sec5_data && classification.sec5_data.investigation_due_date) {
-            investigation_due_date = classification.sec5_data.investigation_due_date;
-        }
-        
-        return <TRow key={id}>
-            <div className="td fixed-flex min-w-120">{sec9_data && sec9_data.incident_date ? Dates.formatDate(sec9_data.incident_date) : 'N/A'}</div>
-            <div className="td fixed-flex min-w-140">{investigation_due_date ? Dates.formatDate(investigation_due_date) : 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.group || 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.category_list ? sec1_data.category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.sector_list ? sec1_data.sector_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec2_data && sec2_data.activity_list ? sec2_data.activity_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.short_desc ? sec1_data.short_desc : 'N/A'}</div>
-            <div className="td">{sec9_data && sec9_data.exact_location ? sec9_data.exact_location : 'N/A'}</div>
-            <Status key={new Date().getTime()} status={item.data.status}/>
-            <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-            </div>
-        </TRow>;
+        return <IncidentInvestigationTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -394,17 +359,18 @@ class InvestigationsTab extends React.Component {
             pageId={this.pageKey + "-tab"}
             pageTitle="Investigations"
             pageTitleSingular="investigation"
-            path={this.path}
+            onLoadList={this.onLoadList}
             noAnimation={true}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <NewIncidentAssignInvestigatorsDialog  ref="newIncidentAssignInvestigatorsDialog"/>
-            <NewIncidentInvestigationDialog  ref="newInvestigationDialog"/>
+            <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>
+            <NewIncidentInvestigationDialog ref="newInvestigationDialog"/>
             <ProfilePDFReader ref="pdfReader"/>
         </APageListReadWrite>;
     }
+
     // </editor-fold>
 }
 

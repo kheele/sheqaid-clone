@@ -45,6 +45,46 @@ export default (
 	        offset: ${offset},
 	        limit: ${limit}
         ) {
+        	group
+            incidnt_date
+            short_desc
+            location
+            exact_location
+            #
+            category_list{
+				category{
+				  id
+				  name
+				}
+			}
+            sub_category_list{
+				sub_category{
+				  id
+				  name
+				  category{
+					id
+					name
+				  }
+				}
+			}
+            sector_list{
+				id
+				sector{
+				  id
+				  name
+				}
+			}
+            activity_list{
+            	id
+				activity{
+				  id
+				  name
+				  sector{
+					id
+					name
+				  }
+				}
+            }
         	investigation{
             	${incident_investigation_details_fragment}
             }

@@ -883,6 +883,64 @@ class IncidentStatus extends React.Component {
 
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="IncidentInvestigationStatus">
+@observer
+class IncidentInvestigationStatus extends React.Component {
+
+    @computed get status() {
+        let {
+            data: {
+                status_closed,
+                status_approved,
+                status_approved_investigation,
+                status_awaiting_approval,
+                status_investigating,
+                status_awaiting_investigation_approval,
+                investigation,
+            },
+        } = this.props.item;
+
+        const {
+            investigation_team_list = [],
+        } = investigation || {};
+
+        const AssignedInvestigator = !!investigation_team_list && investigation_team_list.isNotEmpty();
+        const isInvestigating = !!investigation;
+
+        if (status_closed) {
+            return ['Closed Incident'];
+        } else if (status_investigating) {
+            return ['Investigating'];
+        } else if (status_awaiting_approval) {
+            return ['Awaiting Approval'];
+        } else {
+            const status = [];
+            if (status_awaiting_investigation_approval) {
+                status.push('Awaiting Investigation Approval');
+            }
+            if (status_approved_investigation) {
+                status.push('Approved Investigation');
+            }
+            if (AssignedInvestigator) {
+                status.push('Assigned Investigator');
+            }
+            return status;
+        }
+    }
+
+    render() {
+        const {item} = this.props;
+        const {status} = this;
+
+        return <div key={new Date().getTime()} className="td fixed-flex min-w-140">
+            <h6 className="xs-shown font-size-13">Status</h6>
+            {status.map(v => <span>{v}</span>)}
+        </div>;
+    }
+}
+
+// </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="IncidentTableRow">
 @observer
 class IncidentTableRow extends React.Component {
@@ -957,8 +1015,121 @@ class IncidentTableRow extends React.Component {
 
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="IncidentInvestigationTableRow">
+@observer
+class IncidentInvestigationTableRow extends React.Component {
+
+    render() {
+        const {item, idx, onRenderActionCell, className, onClick} = this.props;
+
+        let {
+            id,
+            data: {
+                created_at,
+                client, project, site,
+                investigation: {
+                    //1
+
+                    //2
+                    investigation_team_list,//
+                    due_date,//
+                    //3
+                    investigation_details,//
+                    investigation_findings_list,//
+                    investigation_findings_further_desc,//
+                    document_list,//
+                    //4
+                    severity,//{consequence, likelihood}
+                    //5
+                    cause_analysis,//
+                    //6
+                    corrective_actions,//
+                    //7
+                    distribution_list,//
+                    //8
+                    weather_condition_list,//
+                    //9
+                    protective_equipment_worn_list,//
+                    //10
+                    class_list,//
+                    //11
+                    environment_list,//
+                    //12
+                    estimated_costs_damages,//
+                    estimated_costs_medical,//
+                    estimated_costs_salaries_wages,//
+                    estimated_costs_investigations,//
+                    estimated_costs_others,//
+                },
+                //
+                group,
+                incident_date,
+                short_desc,
+                location,
+                exact_location,
+                //
+                category_list,
+                sub_category_list,
+                sector_list,
+                activity_list,
+                //
+            }
+        } = item;
+
+        console.log('Investigations', item)
+
+        const __className = (className || "") + " w-full";
+
+        return <TRow key={id} className={__className}>
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Incident Date</h6>
+                {Dates.formatDate(incident_date) || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Incident Date</h6>
+                {Dates.formatDate(due_date) || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Group</h6>
+                {group || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Category</h6>
+                {category_list ? category_list.map(({category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Sub-Category</h6>
+                {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Sector(s)</h6>
+                {sector_list ? sector_list.map(({sector: {name}}) => (<span>{name}</span>)) : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Activities</h6>
+                {activity_list ? activity_list.map(({activity: {name}}) => (<span>{name}</span>)) : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Description</h6>
+                {short_desc || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Location</h6>
+                {exact_location || 'N/A'}
+            </div>
+            <IncidentInvestigationStatus key={new Date().getTime()} item={item}/>
+            {onRenderActionCell && onRenderActionCell(item, idx)}
+            {!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+                <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+            </div>}
+        </TRow>;
+    }
+}
+
+// </editor-fold>
+
 export {
     CauseAnalysisPanel, RemedialOrCorrectiveActionPanel,
     InvestigationFindingsTable, IncidentStatus,
-    IncidentTableRow
+    IncidentTableRow, IncidentInvestigationTableRow,
 };

@@ -13,10 +13,10 @@ import {Table, TBody, THead, TRow} from 'components/tables';
 //import ProfileFormDialog from './dialogs/ProfileFormDialog.js';
 import style from "./CorrectiveActionsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
+import byLogged from "./Query/List/listAllIncidentCorrectiveActionByLogged";
 
 @observer
 class CorrectiveActionsTab extends React.Component {
-    path;
     pageKey = "CorrectiveActionsTab";
     
     @observable
@@ -24,15 +24,18 @@ class CorrectiveActionsTab extends React.Component {
         lists: StateLists,
     }
 
+    //<editor-fold desc="constructor">
     constructor(props) {
         super(props);
 
-        this.path = props.path + 'corrective-actions/';
+        this.onLoadList = this.onLoadList.bind(this);
 
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="componentWillMount, componentWillUnmount">
     componentWillMount() {
         style.use();
     }
@@ -40,11 +43,45 @@ class CorrectiveActionsTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
-    
+    //</editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            // name,
+        } = filterData || {};
+
+        const limit = 50;
+
+        const args = {
+            // name,
+            removed: false,
+            //
+            limit,
+            //
+            exact_orgs: true,
+        };
+
+        if (!isNew) {
+            args.offset = this.refs.root.list.length;
+        } else {
+            args.offset = 0;
+        }
+
+        return byLogged(args).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    //</editor-fold>
+
     onClick(e, btn) {
         $(btn.getDOMNode()).closest('.tr-table').find('.table').toggleClass("active");
     }
-    
+
+    //<editor-fold desc="renderPopoverOptions">
     renderPopoverOptions(_idx, _actions, e, btn) {
         const {idx, corrective_actions} = btn.props;
         const item = corrective_actions[idx];
@@ -122,7 +159,9 @@ class CorrectiveActionsTab extends React.Component {
             {status.contains('ClosedCorrectiveAction') && <NavItem action="writable" idx={idx} onClick={onReOpen} faIconLeft="edit" title="Re-Open Corrective Action"/>}
         </Options>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             {/*<ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
@@ -130,7 +169,9 @@ class CorrectiveActionsTab extends React.Component {
             <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>*/}
         </div>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderTHead">
     renderTHead() {
         return <THead>
             <div className="td fixed-flex min-w-120">Incident Date</div>
@@ -145,7 +186,9 @@ class CorrectiveActionsTab extends React.Component {
             <div className="td fixed-flex min-w-170 padding-l-0 padding-r-0"></div>
         </THead>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
         let {id, data: {
@@ -234,7 +277,9 @@ class CorrectiveActionsTab extends React.Component {
             </TRow>
         </React.Fragment>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="render">
     render() {
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        const permissions_other_ContractorForms = (permissions_other || []).find(v => v.key === "Contractor Forms");
@@ -246,7 +291,7 @@ class CorrectiveActionsTab extends React.Component {
             pageId={this.pageKey + "-tab"}
             pageTitle="Corrective Actions"
             pageTitleSingular="corrective action"
-            path={this.path}
+            onLoadList={this.onLoadList}
             noAnimation={true}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
@@ -261,6 +306,7 @@ class CorrectiveActionsTab extends React.Component {
             <ProfileFormDialog ref="profileDialog"/>*/}
         </APageListReadWrite>;
     }
+    //</editor-fold>
 }
 
 export default CorrectiveActionsTab;
