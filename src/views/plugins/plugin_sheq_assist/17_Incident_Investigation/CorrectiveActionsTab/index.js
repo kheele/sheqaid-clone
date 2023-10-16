@@ -14,6 +14,7 @@ import {Table, TBody, THead, TRow} from 'components/tables';
 import style from "./CorrectiveActionsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import byLogged from "./Query/List/listAllIncidentCorrectiveActionByLogged";
+import {IncidentCorrectiveActionsTableRow} from "../dialogs/IncidentComponentRows";
 
 @observer
 class CorrectiveActionsTab extends React.Component {
@@ -191,91 +192,7 @@ class CorrectiveActionsTab extends React.Component {
     //<editor-fold desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        let {id, data: {
-                created_at, status,
-                classification,
-                investigation, investigation: {sec5_data: {corrective_actions}},
-                sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data, 
-                sec9_data, sec10_data, sec11_data, sec12_data, sec13_data, sec14_data, sec15_data, 
-//                sec1_data: {category_list, sector_list, group, short_desc},//1
-//                sec2_data: {sub_category_list, activity_list},//2
-//                sec3_data: {type},//3
-//                sec4_data: {secondary_type_list},//4
-//                sec5_data: {person_involved_list},//5
-//                sec6_data: {person_reporting},//6
-//                sec7_data: {person_reported_to, date_reported},//7
-//                sec8_data: {witness_list},//8
-//                sec9_data: {investigation_date, investigation_time, exact_location},//9
-//                sec10_data: {document_list, desc},//10
-//                sec11_data: {person_injured, injured_person_dob, injured_person_gender, nature_of_injury_list, bodily_injury_location_list, injury_mechanism_list},//11
-//                sec12_data: {test_undertaken, test_type_list, test_type_drug_undertaken, test_type_alcohol_undertaken, test_type_mobile_device_undertaken},//12
-//                sec13_data: {is_vehicle_investigation, is_infringement_issued, did_police_attend_scene, collision_reported_to_police_station, have_charges_been_laid},//13
-//                sec14_data: {consequence, frequency, risk_rating},//15
-//                sec15_data: {distribution_list}//16
-            }
-        } = item;
-        
-        if(classification) {
-            sec1_data = classification.sec1_data || sec1_data;
-            sec2_data = classification.sec2_data || sec2_data;
-            sec3_data = classification.sec3_data || sec3_data;
-            sec4_data = classification.sec4_data || sec4_data;
-        }
-        
-        let investigation_due_date = null;
-        if(investigation && investigation.sec1_data && investigation.sec1_data.investigation_due_date) {
-            investigation_due_date = investigation.sec1_data.investigation_due_date;
-        } else if(classification && classification.sec5_data && classification.sec5_data.investigation_due_date) {
-            investigation_due_date = classification.sec5_data.investigation_due_date;
-        }
-        
-        const onLoadSubList = () => Promise.resolve();
-        const renderSubItem = (n1, onClick) => {
-            const {group, sub_group, cause_name, text, cost, responsible_person, date_completed} = corrective_actions[n1];
-            return <TRow key={"item-" + n + '-' + n1}>
-                <div className="td fixed-flex min-w-120"><span>{group}</span></div>
-                <div className="td"><span>{sub_group}</span></div>
-                <div className="td"><span>{cause_name}</span></div>
-                <div className="td"><span>{text}</span></div>
-                <div className="td fixed-flex min-w-80"><span>R {cost || 0}</span></div>
-                <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-                    <ActionsButton idx={n} corrective_actions={corrective_actions} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                </div>
-            </TRow>;
-        };
-        
-        console.log('CorrectiveActions', item)
-        return <React.Fragment>
-            <TRow key={"item-" + n} className="tr-table">
-                <TRow key={"item-" + n}>
-                    <div className="td fixed-flex min-w-120">{sec9_data && sec9_data.incident_date ? Dates.formatDate(sec9_data.incident_date) : 'N/A'}</div>
-                    <div className="td fixed-flex min-w-140">{investigation_due_date ? Dates.formatDate(investigation_due_date) : 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.group || 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.category_list ? sec1_data.category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-                    <div className="td">{sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.sector_list ? sec1_data.sector_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-                    <div className="td">{sec2_data && sec2_data.activity_list ? sec2_data.activity_list.filter(v => !!v).map(v => <span>{v}</span>) : 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.short_desc ? sec1_data.short_desc : 'N/A'}</div>
-                    <div className="td">{sec9_data && sec9_data.exact_location ? sec9_data.exact_location : 'N/A'}</div>
-                    <div className="td fixed-flex padding-l-0 padding-r-0 min-w-160">
-                        <Button idx={n} className="btn btn-primary pull-right w-150" onClick={this.onClick}>
-                            Corrective Actions<i className="fa icon-right fa-angle-down"/>
-                        </Button>
-                    </div>
-                </TRow>
-                <Table>
-                    <THead>
-                        <div className="td fixed-flex min-w-120">Cause Type</div>
-                        <div className="td">Cause Sub-Type</div>
-                        <div className="td">Cause</div>
-                        <div className="td">Corrective Action</div>
-                        <div className="td fixed-flex min-w-80">Cost</div>
-                        <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
-                    </THead>
-                    <TBody renderItem={renderSubItem} list={corrective_actions} onLoadList={onLoadSubList} onClick={onClick}/>
-                </Table>
-            </TRow>
-        </React.Fragment>;
+        return <IncidentCorrectiveActionsTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
     //</editor-fold>
 

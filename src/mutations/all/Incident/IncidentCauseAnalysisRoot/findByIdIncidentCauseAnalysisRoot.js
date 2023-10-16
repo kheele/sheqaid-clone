@@ -3,7 +3,7 @@
 import GQLClient from "graphql/GQLClient";
 import {
     incident_investigation_cause_analysis_root_fragment
-} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/CorrectiveActionsTab/Query/Fragments";
+} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/InvestigationsTab/Query/Fragments";
 
 export default async (input: number) => GQLClient
     .query({

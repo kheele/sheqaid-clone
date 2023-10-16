@@ -125,7 +125,7 @@ class ReadonlyListTable extends React.Component {
                 return val && <div className="td padding-l-0 padding-r-0"><span>{val}</span></div>;
             }
         };
-        return <TRow key={"item-" + n} className="tr-readonly">
+        return <TRow key={"item-" + n} className="tr-readonly w-full">
             {getVal()}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-0"></div>
         </TRow>;

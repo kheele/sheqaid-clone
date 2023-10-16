@@ -10,7 +10,7 @@ import {Dates} from "../../utils/Dates";
 import {TRow} from "../tables";
 import {
     IncidentStatus
-} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponents";
+} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows";
 
 @observer
 class SelectInput extends ASelectInput {

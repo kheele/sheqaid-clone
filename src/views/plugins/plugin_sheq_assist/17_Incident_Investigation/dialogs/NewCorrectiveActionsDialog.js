@@ -29,13 +29,13 @@ class NewCorrectiveActionsDialog extends ANewDialog {
     }
 
     @computed get topButtons() {
-        return <React.Fragment>
+        return <>
             <Button ref={ref => this.refs.cancel = ref} className="btn btn-primary cancel"
                     onClick={this.onCancel}>Cancel</Button>
             <Button ref={ref => this.refs.submit = ref} className="btn btn-primary save" onClick={this.onSubmit}>
                 <i className="fa fa-check icon-left"/>Done
             </Button>
-        </React.Fragment>;
+        </>;
     }
 }
 
@@ -45,6 +45,7 @@ class NewCorrectiveActionsDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 
+    //<editor-fold desc="fields">
     @observable
     state = {
         lists: {
@@ -75,7 +76,9 @@ class Controls extends React.Component {
             })
         }
     };
+    //</editor-fold>
 
+    //<editor-fold desc="constructor">
     constructor() {
         super();
 
@@ -87,11 +90,13 @@ class Controls extends React.Component {
 
         this.form = new Form();
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onClickPredefined">
     async onClickPredefined(list, selectedList, corrective_action, action, tbl) {
         const checkedItem = selectedList.find(v => v.text === corrective_action.text);
-        if (action === "add") {newCorrectiveActionsItemDialog
-            const {} = this.refs;
+        if (action === "add") {
+            const {newCorrectiveActionsItemDialog} = this.refs;
             await newCorrectiveActionsItemDialog.extraProp('corrective_action_desc', true).open(checkedItem || corrective_action).then(corrective_action_updated => {
                 selectedList.push(corrective_action_updated);
 
@@ -108,7 +113,9 @@ class Controls extends React.Component {
         }
         tbl.props.onChange && tbl.props.onChange(toJS(selectedList), tbl.props.name, tbl);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onEditPredefined">
     onEditPredefined(e, btn) {
         const {newCorrectiveActionsItemDialog} = this.refs;
         const {name, idx, item: corrective_action} = btn.props;
@@ -128,30 +135,38 @@ class Controls extends React.Component {
             });
         });
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onEditCustom">
     onEditCustom(corrective_action) {
         const {newCorrectiveActionsItemDialog} = this.refs;
         return newCorrectiveActionsItemDialog.open(corrective_action);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onAdd">
     onAdd() {
         const {newCorrectiveActionsItemDialog} = this.refs;
         return newCorrectiveActionsItemDialog.open();
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderTHead">
     renderTHead(props) {
         const {desc} = props;
         return <THead className="align-left">
             <div className="td fixed-flex min-w-20">#</div>
             <div className="td">{desc}</div>
-            <div className="td fixed-flex min-w-185">Responsible Person</div>
-            <div className="td fixed-flex min-w-85">Cost</div>
-            <div className="td fixed-flex min-w-85">Due Date</div>
+            <div className="td fixed-flex min-w-200">Responsible Person</div>
+            <div className="td fixed-flex min-w-110">Cost</div>
+            <div className="td fixed-flex min-w-115">Due Date</div>
             <div className="td fixed-flex min-w-60"></div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="renderItem">
     renderItem(key) {
         return (item, n, onClick) => {
             const {state: {selectedList}} = this.refs[key];
@@ -160,7 +175,9 @@ class Controls extends React.Component {
                             onEditPredefined={this.onEditPredefined}/>;
         };
     }
+    //</editor-fold>
 
+    //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form} = this;
 
@@ -196,11 +213,13 @@ class Controls extends React.Component {
         infoDialog.close(1500);
         this.props.close();
     }
+    //</editor-fold>
 
     get cause() {
         return this.props.state.item;
     }
 
+    //<editor-fold desc="render">
     render() {
         if (!this.cause)
             return null;
@@ -291,6 +310,7 @@ class Controls extends React.Component {
             <NewCorrectiveActionsItemDialog ref="newCorrectiveActionsItemDialog"/>
         </div>);
     }
+    //</editor-fold>
 }
 
 //</editor-fold>
@@ -326,9 +346,9 @@ class ItemRow extends React.Component {
         return <React.Fragment key={new Date().getTime()}>
             <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
             <div className="td"><span>{text}</span></div>
-            <div className="td fixed-flex min-w-185"><span>{lname && (lname + ' ' + fname)}</span></div>
-            <div className="td fixed-flex min-w-85">{isNumber(cost) && <span>R {cost}</span>}</div>
-            <div className="td fixed-flex min-w-85"><span>{Dates.formatDate(date_completed)}</span></div>
+            <div className="td fixed-flex min-w-200"><span>{lname && (lname + ' ' + fname)}</span></div>
+            <div className="td fixed-flex min-w-110">{isNumber(cost) && <span>R {cost}</span>}</div>
+            <div className="td fixed-flex min-w-120"><span>{Dates.formatDate(date_completed)}</span></div>
             <div className="td fixed-flex min-w-60">
                 {checkedItem && <Button name={name} item={item} idx={n} action="edit"
                                         className="btn btn-primary pull-right w-40 margin-l-10"
@@ -357,13 +377,13 @@ class NewCorrectiveActionsItemDialog extends ANewDialog {
     }
 
     @computed get topButtons() {
-        return <React.Fragment>
+        return <>
             <Button ref={ref => this.refs.cancel = ref} className="btn btn-primary cancel"
                     onClick={this.onCancel}>Cancel</Button>
             <Button ref={ref => this.refs.submit = ref} className="btn btn-primary save" onClick={this.onSubmit}>
                 <i className="fa fa-check icon-left"/>Done
             </Button>
-        </React.Fragment>;
+        </>;
     }
 }
 
@@ -425,11 +445,6 @@ class Controls2 extends React.Component {
                 text, responsible_person, date_completed, cost
             }
         } = this;
-        let responsible_personDefault = null;
-        if (responsible_person) {
-            const {id, data: {fname, lname}} = responsible_person;
-            responsible_personDefault = {label: lname + ' ' + fname, value: responsible_person};
-        }
 
         const corrective_action_desc = this.props.dialog.extraProp('corrective_action_desc');
 
@@ -442,7 +457,7 @@ class Controls2 extends React.Component {
                                         defaultValue={text} isEditable={!corrective_action_desc}
                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." required
-                                             defaultValue={responsible_personDefault} className="col-lg-12 form-control"
+                                             defaultValue={responsible_person} className="col-lg-12 form-control"
                                              onChange={this.form.onChange}/>
                         <ClearableInput name="date_completed" type="date" placeholder="Due Date..." required
                                         defaultValue={date_completed} className="col-lg-12 form-control"

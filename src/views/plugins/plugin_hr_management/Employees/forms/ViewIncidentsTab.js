@@ -5,7 +5,7 @@ import {observable} from 'mobx';
 import {Dates} from "utils/Utils";
 import {ActionsButton} from 'components/inputs';
 import {Row} from 'components/FormComponents';
-import {IncidentStatus} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponents';
+import {IncidentStatus} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
 import {SelectTable, THead, TRow} from 'components/tables';
 
 // </editor-fold>

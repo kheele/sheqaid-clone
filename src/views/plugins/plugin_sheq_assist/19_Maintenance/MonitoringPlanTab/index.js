@@ -180,7 +180,7 @@ class MonitoringPlanTab extends React.Component {
 		return <THead>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
-			<div className="td">Registration No.</div>
+			<div className="td fixed-flex min-w-280">Registration No.</div>
 			<div className="td fixed-flex min-w-280">Last Fuel & Mileage Usage</div>
 			<div className="td fixed-flex min-w-160">Next Monitoring Date</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -261,10 +261,10 @@ class MonitoringPlanTab extends React.Component {
 		const fuel_usage = fuel_usage_list.filter(v => !!v.refilled_fuel).map(v => v.refilled_fuel).reduce((a, b) => a + b, 0);
 
 		const isHours = !['Vehicles', 'Small Plant'].contains(asset_type);
-		return <TRow key={"item-" + n}>
+		return <TRow key={"item-" + n} className="w-full">
 			<div className="td">{asset_type}</div>
 			<div className="td">{name}</div>
-			<div className="td">{reg_num}</div>
+			<div className="td fixed-flex min-w-280">{reg_num}</div>
 			<div className="td fixed-flex min-w-280 flex padding-t-5 padding-b-5 padding-r-10">
 				{monitoring_plan_list.isEmpty() && 'N/A'}
 				{fuelDate && <span className="text-center">Date<br/>{Dates.formatDate(fuelDate)}</span>}

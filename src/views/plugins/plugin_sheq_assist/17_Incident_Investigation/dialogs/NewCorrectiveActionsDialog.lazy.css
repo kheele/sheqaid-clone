@@ -3,7 +3,7 @@
 
 #dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 860px;
+    width: 1000px;
     max-width: 100%;
 }
 #dialog-overlay.NewCorrectiveActionsItemDialog-new-dialog .dialog-container{
@@ -20,12 +20,12 @@
     margin: 0;
     font-size: 16px;
     padding: 0 0;
+    font-weight: bold;
 }
 #dialog-overlay.NewCorrectiveActionsDialog-new-dialog .dialog-content .row-title .title > label{
-    background: rgb(2, 168, 168);
-    color: #fff;
-    margin: -5px 10px -10px -10px;
+    margin: 0px -5px 0px 0px;
     padding: 10px;
+    font-weight: normal;
 }
 
 #dialog-overlay.NewCorrectiveActionsDialog-new-dialog .table {

@@ -9,7 +9,7 @@ import {THead, TRow} from '../tables';
 import style from "./NewIncidentListTable.lazy.css";
 import {
     IncidentTableRow
-} from "../../views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponents";
+} from "../../views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows";
 import {TransferEmployeesDialog} from "../../views/plugins/plugin_hr_management/Employees/dialogs";
 import ExportIncidentsDialog
     from "../../views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ExportIncidentsDialog";

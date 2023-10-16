@@ -14,6 +14,7 @@ import updateIncidentCauseAnalysisRoot
     from "mutations/all/Incident/IncidentCauseAnalysisRoot/updateIncidentCauseAnalysisRoot";
 import updateIncidentCauseAnalysisImmediate
     from "mutations/all/Incident/IncidentCauseAnalysisImmediate/updateIncidentCauseAnalysisImmediate";
+import {execWhen} from "../../../../../utils/UtilsFuns";
 //</editor-fold>
 
 //<editor-fold desc="NewCauseAnalysisRootDialog">
@@ -96,7 +97,7 @@ class ControlsImmediate extends React.Component {
                 'Servicing Equipment In Operation',
                 'Under The Influence Of Alcohol Or Drugs',
                 'Improper Resource Use Or Disposal'
-            ],
+            ].map(text => ({text})),
             sub_standard_practices_or_unsafe_conditions: [
                 'Inadequate Guards Or Barriers',
                 'Inadequate Protective/Control Equipment',
@@ -114,7 +115,7 @@ class ControlsImmediate extends React.Component {
                 'Inadequate/Excessive Illumination',
                 'Inadequate/Inappropriate Ventilation',
                 'Inappropriate/Unsafe Design/Construction'
-            ]
+            ].map(text => ({text})),
         }
     };
 
@@ -122,7 +123,44 @@ class ControlsImmediate extends React.Component {
         super();
 
         this.form = new Form();
+        this.form.addChangeMany([
+            "sub_standard_practices_or_unsafe_acts",
+            "sub_standard_practices_or_unsafe_conditions",
+        ], this.on_change_sub_standard_practices_or_unsafe_any.bind(this));
+        // this.form.addChangeOne("custom_sub_standard_practices_or_unsafe_acts", this.on_change_custom_sub_standard_practices_or_unsafe_acts.bind(this));
+        // this.form.addChangeOne("custom_sub_standard_practices_or_unsafe_conditions", this.on_change_custom_sub_standard_practices_or_unsafe_conditions.bind(this));
     }
+
+    // <editor-fold defaultstate="collapsed" desc="onChange">
+    on_change_sub_standard_practices_or_unsafe_any(el, name, val) {
+        if (val) {
+            if (name === 'sub_standard_practices_or_unsafe_acts') {
+
+            } else if (name === 'sub_standard_practices_or_unsafe_conditions') {
+
+            }
+
+            if (val.id) {
+
+            } else {
+                val.type = name;
+            }
+        }
+    }
+
+    on_change_custom_sub_standard_practices_or_unsafe_acts(el, val) {
+        if (val) {
+
+        }
+    }
+
+    on_change_custom_sub_standard_practices_or_unsafe_conditions(el, val) {
+        if (val) {
+
+        }
+    }
+
+    // </editor-fold>
 
     async onSubmit(e, btn, onSaved) {
         const {form, investigation, cause_analysis} = this;
@@ -138,32 +176,33 @@ class ControlsImmediate extends React.Component {
             custom_sub_standard_practices_or_unsafe_acts, custom_sub_standard_practices_or_unsafe_conditions
         } = form.data;
 
-        const data = {};
-
-        if (sub_standard_practices_or_unsafe_acts) {
-            data.sub_standard_practices_or_unsafe_acts = sub_standard_practices_or_unsafe_acts.map(text => {
-                return {text};
-            });
-        }
-        if (sub_standard_practices_or_unsafe_conditions) {
-            data.sub_standard_practices_or_unsafe_conditions = sub_standard_practices_or_unsafe_conditions.map(text => {
-                return {text};
-            });
-        }
-        if (custom_sub_standard_practices_or_unsafe_acts) {
-            data.custom_sub_standard_practices_or_unsafe_acts = custom_sub_standard_practices_or_unsafe_acts;
-        }
-        if (custom_sub_standard_practices_or_unsafe_conditions) {
-            data.custom_sub_standard_practices_or_unsafe_conditions = custom_sub_standard_practices_or_unsafe_conditions;
-        }
-
-        console.log(data)
-
         if (this.isNew) {
+            const data = {
+                cause_analysis_cause_list: {
+                    data: [
+                        ...(sub_standard_practices_or_unsafe_acts || []).filter(v => !!v).map(v => ({type: 'sub_standard_practices_or_unsafe_acts', ...v})),
+                        ...(sub_standard_practices_or_unsafe_conditions || []).filter(v => !!v).map(v => ({type: 'sub_standard_practices_or_unsafe_conditions', ...v})),
+                        ...(custom_sub_standard_practices_or_unsafe_acts || []).filter(v => !!v).map(v => ({type: 'custom_sub_standard_practices_or_unsafe_acts', ...v})),
+                        ...(custom_sub_standard_practices_or_unsafe_conditions || []).filter(v => !!v).map(v => ({type: 'custom_sub_standard_practices_or_unsafe_conditions', ...v})),
+                    ],
+                },
+            };
+
+            console.log(data)
+
             onSaved && onSaved(data);
         } else {
             progressDialog.open();
             try {
+                const data = {
+                    cause_analysis_cause_list: [
+                        ...(sub_standard_practices_or_unsafe_acts || []).filter(v => !!v).map(v => ({type: 'sub_standard_practices_or_unsafe_acts', ...v})),
+                        ...(sub_standard_practices_or_unsafe_conditions || []).filter(v => !!v).map(v => ({type: 'sub_standard_practices_or_unsafe_conditions', ...v})),
+                        ...(custom_sub_standard_practices_or_unsafe_acts || []).filter(v => !!v).map(v => ({type: 'custom_sub_standard_practices_or_unsafe_acts', ...v})),
+                        ...(custom_sub_standard_practices_or_unsafe_conditions || []).filter(v => !!v).map(v => ({type: 'custom_sub_standard_practices_or_unsafe_conditions', ...v})),
+                    ],
+                };
+
                 const savedCauseAnalysisImmediate = await updateIncidentCauseAnalysisImmediate({id: this.immediate_analysis.id, ...data});
                 if (savedCauseAnalysisImmediate) {
                     onSaved && onSaved(savedCauseAnalysisImmediate.data);
@@ -197,6 +236,11 @@ class ControlsImmediate extends React.Component {
         return this.props.state.item || {};
     }
 
+    renderItem(item, n) {
+        return item.text;
+    }
+
+    //<editor-fold desc="render">
     render() {
         if (!this.immediate_analysis)
             return null;
@@ -210,12 +254,12 @@ class ControlsImmediate extends React.Component {
             }
         } = this;
         const {sub_standard_practices_or_unsafe_acts, sub_standard_practices_or_unsafe_conditions} = this.state.lists;
-        if (default_sub_standard_practices_or_unsafe_acts) {
-            default_sub_standard_practices_or_unsafe_acts = default_sub_standard_practices_or_unsafe_acts.map(({text}) => text);
-        }
-        if (default_sub_standard_practices_or_unsafe_conditions) {
-            default_sub_standard_practices_or_unsafe_conditions = default_sub_standard_practices_or_unsafe_conditions.map(({text}) => text);
-        }
+        // if (default_sub_standard_practices_or_unsafe_acts) {
+        //     default_sub_standard_practices_or_unsafe_acts = default_sub_standard_practices_or_unsafe_acts.map(({text}) => text);
+        // }
+        // if (default_sub_standard_practices_or_unsafe_conditions) {
+        //     default_sub_standard_practices_or_unsafe_conditions = default_sub_standard_practices_or_unsafe_conditions.map(({text}) => text);
+        // }
         if (default_custom_sub_standard_practices_or_unsafe_acts) {
             default_custom_sub_standard_practices_or_unsafe_acts = [...default_custom_sub_standard_practices_or_unsafe_acts, null];
         }
@@ -227,16 +271,24 @@ class ControlsImmediate extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <SelectTable name="sub_standard_practices_or_unsafe_acts"
-                                     desc="Sub-Standard Practices / Unsafe Acts" className="col-lg-6 no-padding"
-                                     list={sub_standard_practices_or_unsafe_acts}
-                                     defaultValue={default_sub_standard_practices_or_unsafe_acts}
-                                     onChange={this.form.onChange}/>
-                        <SelectTable name="sub_standard_practices_or_unsafe_conditions"
-                                     desc="Sub-Standard Conditions / Unsafe Conditions" className="col-lg-6 no-padding"
-                                     list={sub_standard_practices_or_unsafe_conditions}
-                                     defaultValue={default_sub_standard_practices_or_unsafe_conditions}
-                                     onChange={this.form.onChange}/>
+                        <SelectTable
+                            name="sub_standard_practices_or_unsafe_acts"
+                            desc="Sub-Standard Practices / Unsafe Acts" className="col-lg-6 no-padding"
+                            list={sub_standard_practices_or_unsafe_acts}
+                            defaultValue={default_sub_standard_practices_or_unsafe_acts}
+                            renderItem={this.renderItem}
+                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                            onChange={this.form.onChange}
+                        />
+                        <SelectTable
+                            name="sub_standard_practices_or_unsafe_conditions"
+                            desc="Sub-Standard Conditions / Unsafe Conditions" className="col-lg-6 no-padding"
+                            list={sub_standard_practices_or_unsafe_conditions}
+                            defaultValue={default_sub_standard_practices_or_unsafe_conditions}
+                            renderItem={this.renderItem}
+                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                            onChange={this.form.onChange}
+                        />
                         <CustomCauseTable name="custom_sub_standard_practices_or_unsafe_acts"
                                           desc="Sub-Standard Practices / Unsafe Acts" className="col-lg-6 no-padding"
                                           defaultValue={default_custom_sub_standard_practices_or_unsafe_acts}
@@ -251,6 +303,8 @@ class ControlsImmediate extends React.Component {
             </div>
         </div>);
     }
+
+    //</editor-fold>
 }
 
 //</editor-fold>
@@ -270,7 +324,7 @@ class ControlsRoot extends React.Component {
                 'Lack Of Skill',
                 'Improper Motivation',
                 'Task Rarely Performed'
-            ],
+            ].map(text => ({text})),
             job_factors: [
                 'Inadequate Leadership And/Or Supervision',
                 'Inadequate Engineering Or Planning',
@@ -280,7 +334,7 @@ class ControlsRoot extends React.Component {
                 'Inadequate Work Standards/Procedures',
                 'Wear And Tear',
                 'Abuse Or Misuse'
-            ]
+            ].map(text => ({text})),
         }
     };
 
@@ -303,32 +357,34 @@ class ControlsRoot extends React.Component {
             personal_factors, job_factors,
             custom_personal_factors, custom_job_factors
         } = form.data;
-        const data = {};
-
-        if (personal_factors) {
-            data.personal_factors = personal_factors.map(text => {
-                return {text};
-            });
-        }
-        if (job_factors) {
-            data.job_factors = job_factors.map(text => {
-                return {text};
-            });
-        }
-        if (custom_personal_factors) {
-            data.custom_personal_factors = custom_personal_factors;
-        }
-        if (custom_job_factors) {
-            data.custom_job_factors = custom_job_factors;
-        }
-
-        console.log(data)
 
         if (this.isNew) {
+            const data = {
+                cause_analysis_cause_list: {
+                    data: [
+                        ...(personal_factors || []).filter(v => !!v).map(v => ({type: 'personal_factors', ...v})),
+                        ...(job_factors || []).filter(v => !!v).map(v => ({type: 'job_factors', ...v})),
+                        ...(custom_personal_factors || []).filter(v => !!v).map(v => ({type: 'custom_personal_factors', ...v})),
+                        ...(custom_job_factors || []).filter(v => !!v).map(v => ({type: 'custom_job_factors', ...v})),
+                    ],
+                },
+            };
+
+            console.log(data)
+
             onSaved && onSaved(data);
         } else {
             progressDialog.open();
             try {
+                const data = {
+                    cause_analysis_cause_list: [
+                        ...(personal_factors || []).filter(v => !!v).map(v => ({type: 'personal_factors', ...v})),
+                        ...(job_factors || []).filter(v => !!v).map(v => ({type: 'job_factors', ...v})),
+                        ...(custom_personal_factors || []).filter(v => !!v).map(v => ({type: 'custom_personal_factors', ...v})),
+                        ...(custom_job_factors || []).filter(v => !!v).map(v => ({type: 'custom_job_factors', ...v})),
+                    ],
+                };
+
                 const savedCauseAnalysisRoot = await updateIncidentCauseAnalysisRoot({id: this.root_analysis.id, ...data});
                 if (savedCauseAnalysisRoot) {
                     onSaved && onSaved(savedCauseAnalysisRoot.data);
@@ -363,6 +419,10 @@ class ControlsRoot extends React.Component {
         return this.props.state.item || {};
     }
 
+    renderItem(item, n) {
+        return item.text;
+    }
+
     render() {
         if (!this.root_analysis)
             return null;
@@ -375,12 +435,12 @@ class ControlsRoot extends React.Component {
             }
         } = this;
         const {personal_factors, job_factors} = this.state.lists;
-        if (default_personal_factors) {
-            default_personal_factors = default_personal_factors.map(({text}) => text);
-        }
-        if (default_job_factors) {
-            default_job_factors = default_job_factors.map(({text}) => text);
-        }
+        // if (default_personal_factors) {
+        //     default_personal_factors = default_personal_factors;//.map(({text}) => text);
+        // }
+        // if (default_job_factors) {
+        //     default_job_factors = default_job_factors;//.map(({text}) => text);
+        // }
         if (default_custom_personal_factors) {
             default_custom_personal_factors = [...default_custom_personal_factors, null];
         }
@@ -393,12 +453,20 @@ class ControlsRoot extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <SelectTable name="personal_factors" desc="Personal Factors" className="col-lg-6 no-padding"
-                                     list={personal_factors} defaultValue={default_personal_factors}
-                                     onChange={this.form.onChange}/>
-                        <SelectTable name="job_factors" desc="Job Factors" className="col-lg-6 no-padding"
-                                     list={job_factors} defaultValue={default_job_factors}
-                                     onChange={this.form.onChange}/>
+                        <SelectTable
+                            name="personal_factors" desc="Personal Factors" className="col-lg-6 no-padding"
+                            list={personal_factors} defaultValue={default_personal_factors}
+                            renderItem={this.renderItem}
+                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                            onChange={this.form.onChange}
+                        />
+                        <SelectTable
+                            name="job_factors" desc="Job Factors" className="col-lg-6 no-padding"
+                            list={job_factors} defaultValue={default_job_factors}
+                            renderItem={this.renderItem}
+                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                            onChange={this.form.onChange}
+                        />
                         <CustomCauseTable name="custom_personal_factors" desc="Personal Factors"
                                           className="col-lg-6 no-padding" defaultValue={default_custom_personal_factors}
                                           onChange={this.form.onChange}/>
@@ -437,7 +505,7 @@ class CustomCauseTable extends ATableSavable {
     renderItem(n, onClick) {
         const item = this.state.list[n];
         if (item && item.text) {
-            return <TRow key={"item-" + n} className="tr-readonly">
+            return <TRow key={"item-" + n} className="tr-readonly w-full">
                 <div className="td fixed-flex min-w-20"><span>{n + 1}.</span></div>
                 <div className="td"><span>{item.text}</span></div>
                 <div className="td fixed-flex min-w-60">
@@ -447,13 +515,13 @@ class CustomCauseTable extends ATableSavable {
                 </div>
             </TRow>;
         } else {
-            return <TRow key="item-new">
+            return <TRow key="item-new" className="w-full">
                 <div className="td">
                     <ClearableInput ref={this.onSetRef} name="text" type="text" placeholder="Type here" required
                                     className="form-control" onChange={this.onChange}/>
                 </div>
                 <div className="td fixed-flex min-w-60">
-                    <Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10"
+                    <Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-v-15"
                             onClick={onClick}>
                         <i className="fa fa-check"/>
                     </Button>

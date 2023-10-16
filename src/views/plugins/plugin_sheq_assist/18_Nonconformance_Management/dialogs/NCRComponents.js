@@ -7,7 +7,7 @@ import {Dates} from 'utils/Utils';
 import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
 
-import {IncidentTableRow} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponents';
+import {IncidentTableRow} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
 
 import AuditItemTable from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/AuditItemTable';
 

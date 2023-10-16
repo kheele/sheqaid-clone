@@ -190,7 +190,7 @@ class MaintanancePlanTab extends React.Component {
 		return <THead>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
-			<div className="td">Registration No.</div>
+			<div className="td fixed-flex min-w-280">Registration No.</div>
 			<div className="td fixed-flex min-w-220">Last Service</div>
 			<div className="td fixed-flex min-w-220">Next Service</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -261,10 +261,10 @@ class MaintanancePlanTab extends React.Component {
 		} = plan_list.getLastElement() || {};
 		
 		const isHours = !['Vehicles', 'Small Plant'].contains(asset_type);
-		return <TRow key={"item-" + n}>
+		return <TRow key={"item-" + n} className="w-full">
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
-			<div className="td">{reg_num}</div>
+			<div className="td fixed-flex min-w-280">{reg_num}</div>
 			<div className="td fixed-flex min-w-220 flex flex padding-t-5 padding-b-5 padding-r-10">
 				{plan_list.isEmpty() && 'N/A'}
 				{service_date && <span className="text-center">Date<br/>{Dates.formatDate(service_date)}</span>}

@@ -10,7 +10,7 @@ import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'co
 import {SelectTable, THead} from 'components/tables';
 import {ANewDialog} from 'components/dialogs';
 
-import {IncidentStatus} from './IncidentComponents';
+import {IncidentStatus} from './IncidentComponentRows';
 
 // </editor-fold>
 import style from "./ExportIncidentsDialog.lazy.css";

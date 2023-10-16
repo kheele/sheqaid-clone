@@ -3592,7 +3592,10 @@ type coida_claims_wcl_4 implements Node {
     totalFieldMax: Int
     x_rays_conducting_person: String
     x_rays_date: date
-    x_rays_report: String
+    x_rays_report(
+        "JSON select path"
+        path: String
+    ): json
 }
 
 "A Relay connection object on \"coida_claims_wcl_4\""
@@ -34561,6 +34564,27 @@ type mutation_root {
     ): sheq_incident_investigation_cause_analysis_mutation_response
     "delete single row from the table: \"sheq_incident_investigation_cause_analysis\""
     delete_sheq_incident_investigation_cause_analysis_by_pk(id: bigint!): sheq_incident_investigation_cause_analysis
+    "delete data from the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    delete_sheq_incident_investigation_cause_analysis_causes(
+        "filter the rows which have to be deleted"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_causes_mutation_response
+    "delete single row from the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    delete_sheq_incident_investigation_cause_analysis_causes_by_pk(id: bigint!): sheq_incident_investigation_cause_analysis_causes
+    "delete data from the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    delete_sheq_incident_investigation_cause_analysis_immediate(
+        "filter the rows which have to be deleted"
+        where: sheq_incident_investigation_cause_analysis_immediate_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_immediate_mutation_response
+    "delete single row from the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    delete_sheq_incident_investigation_cause_analysis_immediate_by_pk(id: bigint!): sheq_incident_investigation_cause_analysis_immediate
+    "delete data from the table: \"sheq_incident_investigation_cause_analysis_root\""
+    delete_sheq_incident_investigation_cause_analysis_root(
+        "filter the rows which have to be deleted"
+        where: sheq_incident_investigation_cause_analysis_root_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_root_mutation_response
+    "delete single row from the table: \"sheq_incident_investigation_cause_analysis_root\""
+    delete_sheq_incident_investigation_cause_analysis_root_by_pk(id: bigint!): sheq_incident_investigation_cause_analysis_root
     "delete data from the table: \"sheq_incident_investigation_corrective_actions\""
     delete_sheq_incident_investigation_corrective_actions(
         "filter the rows which have to be deleted"
@@ -37198,6 +37222,34 @@ type mutation_root {
         "upsert condition"
         on_conflict: sheq_incident_investigation_cause_analysis_on_conflict
     ): sheq_incident_investigation_cause_analysis_mutation_response
+    "insert data into the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    insert_sheq_incident_investigation_cause_analysis_causes(
+        "the rows to be inserted"
+        objects: [sheq_incident_investigation_cause_analysis_causes_insert_input!]!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_causes_on_conflict
+    ): sheq_incident_investigation_cause_analysis_causes_mutation_response
+    "insert a single row into the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    insert_sheq_incident_investigation_cause_analysis_causes_one(
+        "the row to be inserted"
+        object: sheq_incident_investigation_cause_analysis_causes_insert_input!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_causes_on_conflict
+    ): sheq_incident_investigation_cause_analysis_causes
+    "insert data into the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    insert_sheq_incident_investigation_cause_analysis_immediate(
+        "the rows to be inserted"
+        objects: [sheq_incident_investigation_cause_analysis_immediate_insert_input!]!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_immediate_on_conflict
+    ): sheq_incident_investigation_cause_analysis_immediate_mutation_response
+    "insert a single row into the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    insert_sheq_incident_investigation_cause_analysis_immediate_one(
+        "the row to be inserted"
+        object: sheq_incident_investigation_cause_analysis_immediate_insert_input!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_immediate_on_conflict
+    ): sheq_incident_investigation_cause_analysis_immediate
     "insert a single row into the table: \"sheq_incident_investigation_cause_analysis\""
     insert_sheq_incident_investigation_cause_analysis_one(
         "the row to be inserted"
@@ -37205,6 +37257,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: sheq_incident_investigation_cause_analysis_on_conflict
     ): sheq_incident_investigation_cause_analysis
+    "insert data into the table: \"sheq_incident_investigation_cause_analysis_root\""
+    insert_sheq_incident_investigation_cause_analysis_root(
+        "the rows to be inserted"
+        objects: [sheq_incident_investigation_cause_analysis_root_insert_input!]!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_root_on_conflict
+    ): sheq_incident_investigation_cause_analysis_root_mutation_response
+    "insert a single row into the table: \"sheq_incident_investigation_cause_analysis_root\""
+    insert_sheq_incident_investigation_cause_analysis_root_one(
+        "the row to be inserted"
+        object: sheq_incident_investigation_cause_analysis_root_insert_input!,
+        "upsert condition"
+        on_conflict: sheq_incident_investigation_cause_analysis_root_on_conflict
+    ): sheq_incident_investigation_cause_analysis_root
     "insert data into the table: \"sheq_incident_investigation_corrective_actions\""
     insert_sheq_incident_investigation_corrective_actions(
         "the rows to be inserted"
@@ -41680,11 +41746,77 @@ type mutation_root {
         _set: sheq_incident_investigation_cause_analysis_set_input,
         pk_columns: sheq_incident_investigation_cause_analysis_pk_columns_input!
     ): sheq_incident_investigation_cause_analysis
+    "update data of the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    update_sheq_incident_investigation_cause_analysis_causes(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_causes_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_causes_set_input,
+        "filter the rows which have to be updated"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_causes_mutation_response
+    "update single row of the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    update_sheq_incident_investigation_cause_analysis_causes_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_causes_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_causes_set_input,
+        pk_columns: sheq_incident_investigation_cause_analysis_causes_pk_columns_input!
+    ): sheq_incident_investigation_cause_analysis_causes
+    "update multiples rows of table: \"sheq_incident_investigation_cause_analysis_causes\""
+    update_sheq_incident_investigation_cause_analysis_causes_many(
+        "updates to execute, in order"
+        updates: [sheq_incident_investigation_cause_analysis_causes_updates!]!
+    ): [sheq_incident_investigation_cause_analysis_causes_mutation_response]
+    "update data of the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    update_sheq_incident_investigation_cause_analysis_immediate(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_immediate_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_immediate_set_input,
+        "filter the rows which have to be updated"
+        where: sheq_incident_investigation_cause_analysis_immediate_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_immediate_mutation_response
+    "update single row of the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    update_sheq_incident_investigation_cause_analysis_immediate_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_immediate_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_immediate_set_input,
+        pk_columns: sheq_incident_investigation_cause_analysis_immediate_pk_columns_input!
+    ): sheq_incident_investigation_cause_analysis_immediate
+    "update multiples rows of table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    update_sheq_incident_investigation_cause_analysis_immediate_many(
+        "updates to execute, in order"
+        updates: [sheq_incident_investigation_cause_analysis_immediate_updates!]!
+    ): [sheq_incident_investigation_cause_analysis_immediate_mutation_response]
     "update multiples rows of table: \"sheq_incident_investigation_cause_analysis\""
     update_sheq_incident_investigation_cause_analysis_many(
         "updates to execute, in order"
         updates: [sheq_incident_investigation_cause_analysis_updates!]!
     ): [sheq_incident_investigation_cause_analysis_mutation_response]
+    "update data of the table: \"sheq_incident_investigation_cause_analysis_root\""
+    update_sheq_incident_investigation_cause_analysis_root(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_root_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_root_set_input,
+        "filter the rows which have to be updated"
+        where: sheq_incident_investigation_cause_analysis_root_bool_exp!
+    ): sheq_incident_investigation_cause_analysis_root_mutation_response
+    "update single row of the table: \"sheq_incident_investigation_cause_analysis_root\""
+    update_sheq_incident_investigation_cause_analysis_root_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: sheq_incident_investigation_cause_analysis_root_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: sheq_incident_investigation_cause_analysis_root_set_input,
+        pk_columns: sheq_incident_investigation_cause_analysis_root_pk_columns_input!
+    ): sheq_incident_investigation_cause_analysis_root
+    "update multiples rows of table: \"sheq_incident_investigation_cause_analysis_root\""
+    update_sheq_incident_investigation_cause_analysis_root_many(
+        "updates to execute, in order"
+        updates: [sheq_incident_investigation_cause_analysis_root_updates!]!
+    ): [sheq_incident_investigation_cause_analysis_root_mutation_response]
     "update data of the table: \"sheq_incident_investigation_corrective_actions\""
     update_sheq_incident_investigation_corrective_actions(
         "increments the numeric columns with given value of the filtered values"
@@ -51170,6 +51302,19 @@ type query_root {
         "filter the rows returned"
         where: sheq_incident_investigation_categories_bool_exp
     ): sheq_incident_investigation_categoriesConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    sheq_incident_investigation_cause_analysis_causes_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causesConnection!
     "fetch data from the table: \"sheq_incident_investigation_cause_analysis\""
     sheq_incident_investigation_cause_analysis_connection(
         after: String,
@@ -51183,6 +51328,32 @@ type query_root {
         "filter the rows returned"
         where: sheq_incident_investigation_cause_analysis_bool_exp
     ): sheq_incident_investigation_cause_analysisConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    sheq_incident_investigation_cause_analysis_immediate_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_immediate_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_immediate_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+    ): sheq_incident_investigation_cause_analysis_immediateConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_root\""
+    sheq_incident_investigation_cause_analysis_root_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_root_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_root_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_root_bool_exp
+    ): sheq_incident_investigation_cause_analysis_rootConnection!
     "fetch data from the table: \"sheq_incident_investigation\""
     sheq_incident_investigation_connection(
         after: String,
@@ -55642,6 +55813,12 @@ type sheq_incident_investigation_categories_mutation_response {
 "columns and relationships of \"sheq_incident_investigation_cause_analysis\""
 type sheq_incident_investigation_cause_analysis implements Node {
     id: ID!
+    "An object relationship"
+    immediate_analysis: sheq_incident_investigation_cause_analysis_immediate
+    immediate_analysis_id: bigint
+    "An object relationship"
+    root_analysis: sheq_incident_investigation_cause_analysis_root
+    root_analysis_id: bigint
 }
 
 "A Relay connection object on \"sheq_incident_investigation_cause_analysis\""
@@ -55655,18 +55832,16 @@ type sheq_incident_investigation_cause_analysisEdge {
     node: sheq_incident_investigation_cause_analysis!
 }
 
-"response of any mutation on the table \"sheq_incident_investigation_cause_analysis\""
-type sheq_incident_investigation_cause_analysis_mutation_response {
-    "number of rows affected by the mutation"
-    affected_rows: Int!
-    "data from the rows affected by the mutation"
-    returning: [sheq_incident_investigation_cause_analysis!]!
-}
-
-"columns and relationships of \"sheq_incident_investigation_corrective_actions\""
-type sheq_incident_investigation_corrective_actions implements Node {
+"columns and relationships of \"sheq_incident_investigation_cause_analysis_causes\""
+type sheq_incident_investigation_cause_analysis_causes implements Node {
+    "An object relationship"
+    cause_analysis_immediate: sheq_incident_investigation_cause_analysis_immediate
+    cause_analysis_immediate_id: bigint
+    "An object relationship"
+    cause_analysis_root: sheq_incident_investigation_cause_analysis_root
+    cause_analysis_root_id: bigint
     "An array relationship"
-    custom_job_factors(
+    corrective_action_list(
         "distinct select on columns"
         distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
         "limit the number of rows returned"
@@ -55679,7 +55854,7 @@ type sheq_incident_investigation_corrective_actions implements Node {
         where: sheq_incident_investigation_corrective_actions_factors_bool_exp
     ): [sheq_incident_investigation_corrective_actions_factors!]!
     "An aggregate relationship"
-    custom_job_factors_aggregate(
+    corrective_action_list_aggregate(
         "distinct select on columns"
         distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
         "limit the number of rows returned"
@@ -55692,46 +55867,7 @@ type sheq_incident_investigation_corrective_actions implements Node {
         where: sheq_incident_investigation_corrective_actions_factors_bool_exp
     ): sheq_incident_investigation_corrective_actions_factors_aggregate!
     "An array relationship connection"
-    custom_job_factors_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factorsConnection!
-    "An array relationship"
-    custom_personal_factors(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): [sheq_incident_investigation_corrective_actions_factors!]!
-    "An aggregate relationship"
-    custom_personal_factors_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factors_aggregate!
-    "An array relationship connection"
-    custom_personal_factors_connection(
+    corrective_action_list_connection(
         after: String,
         before: String,
         "distinct select on columns"
@@ -55744,84 +55880,301 @@ type sheq_incident_investigation_corrective_actions implements Node {
         where: sheq_incident_investigation_corrective_actions_factors_bool_exp
     ): sheq_incident_investigation_corrective_actions_factorsConnection!
     id: ID!
+    text: String!
+    type: String!
+}
+
+"A Relay connection object on \"sheq_incident_investigation_cause_analysis_causes\""
+type sheq_incident_investigation_cause_analysis_causesConnection {
+    edges: [sheq_incident_investigation_cause_analysis_causesEdge!]!
+    pageInfo: PageInfo!
+}
+
+type sheq_incident_investigation_cause_analysis_causesEdge {
+    cursor: String!
+    node: sheq_incident_investigation_cause_analysis_causes!
+}
+
+"aggregated selection of \"sheq_incident_investigation_cause_analysis_causes\""
+type sheq_incident_investigation_cause_analysis_causes_aggregate {
+    aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_fields
+    nodes: [sheq_incident_investigation_cause_analysis_causes!]!
+}
+
+"aggregate fields of \"sheq_incident_investigation_cause_analysis_causes\""
+type sheq_incident_investigation_cause_analysis_causes_aggregate_fields {
+    avg: sheq_incident_investigation_cause_analysis_causes_avg_fields
+    count(columns: [sheq_incident_investigation_cause_analysis_causes_select_column!], distinct: Boolean): Int!
+    max: sheq_incident_investigation_cause_analysis_causes_max_fields
+    min: sheq_incident_investigation_cause_analysis_causes_min_fields
+    stddev: sheq_incident_investigation_cause_analysis_causes_stddev_fields
+    stddev_pop: sheq_incident_investigation_cause_analysis_causes_stddev_pop_fields
+    stddev_samp: sheq_incident_investigation_cause_analysis_causes_stddev_samp_fields
+    sum: sheq_incident_investigation_cause_analysis_causes_sum_fields
+    var_pop: sheq_incident_investigation_cause_analysis_causes_var_pop_fields
+    var_samp: sheq_incident_investigation_cause_analysis_causes_var_samp_fields
+    variance: sheq_incident_investigation_cause_analysis_causes_variance_fields
+}
+
+"aggregate avg on columns"
+type sheq_incident_investigation_cause_analysis_causes_avg_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate max on columns"
+type sheq_incident_investigation_cause_analysis_causes_max_fields {
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root_id: bigint
+    id: bigint
+    text: String
+    type: String
+}
+
+"aggregate min on columns"
+type sheq_incident_investigation_cause_analysis_causes_min_fields {
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root_id: bigint
+    id: bigint
+    text: String
+    type: String
+}
+
+"response of any mutation on the table \"sheq_incident_investigation_cause_analysis_causes\""
+type sheq_incident_investigation_cause_analysis_causes_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_incident_investigation_cause_analysis_causes!]!
+}
+
+"aggregate stddev on columns"
+type sheq_incident_investigation_cause_analysis_causes_stddev_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate stddev_pop on columns"
+type sheq_incident_investigation_cause_analysis_causes_stddev_pop_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate stddev_samp on columns"
+type sheq_incident_investigation_cause_analysis_causes_stddev_samp_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate sum on columns"
+type sheq_incident_investigation_cause_analysis_causes_sum_fields {
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root_id: bigint
+    id: bigint
+}
+
+"aggregate var_pop on columns"
+type sheq_incident_investigation_cause_analysis_causes_var_pop_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate var_samp on columns"
+type sheq_incident_investigation_cause_analysis_causes_var_samp_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"aggregate variance on columns"
+type sheq_incident_investigation_cause_analysis_causes_variance_fields {
+    cause_analysis_immediate_id: Float
+    cause_analysis_root_id: Float
+    id: Float
+}
+
+"columns and relationships of \"sheq_incident_investigation_cause_analysis_immediate\""
+type sheq_incident_investigation_cause_analysis_immediate implements Node {
     "An array relationship"
+    cause_analysis_cause_list(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): [sheq_incident_investigation_cause_analysis_causes!]!
+    "An aggregate relationship"
+    cause_analysis_cause_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causes_aggregate!
+    "An array relationship connection"
+    cause_analysis_cause_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causesConnection!
+    "A computed field, executes function \"cause_analysis_immediate_cust_sub_standard_practices_or_unsafea\""
+    custom_sub_standard_practices_or_unsafe_acts(
+        "JSON select path"
+        path: String
+    ): json
+    "A computed field, executes function \"cause_analysis_immediate_cust_sub_standard_practices_or_unsafco\""
+    custom_sub_standard_practices_or_unsafe_conditions(
+        "JSON select path"
+        path: String
+    ): json
+    id: ID!
+    "A computed field, executes function \"cause_analysis_immediate_sub_standard_practices_or_unsafe_acts\""
+    sub_standard_practices_or_unsafe_acts(
+        "JSON select path"
+        path: String
+    ): json
+    "A computed field, executes function \"cause_analysis_immediate_sub_standard_practices_or_unsafe_condi\""
+    sub_standard_practices_or_unsafe_conditions(
+        "JSON select path"
+        path: String
+    ): json
+}
+
+"A Relay connection object on \"sheq_incident_investigation_cause_analysis_immediate\""
+type sheq_incident_investigation_cause_analysis_immediateConnection {
+    edges: [sheq_incident_investigation_cause_analysis_immediateEdge!]!
+    pageInfo: PageInfo!
+}
+
+type sheq_incident_investigation_cause_analysis_immediateEdge {
+    cursor: String!
+    node: sheq_incident_investigation_cause_analysis_immediate!
+}
+
+"response of any mutation on the table \"sheq_incident_investigation_cause_analysis_immediate\""
+type sheq_incident_investigation_cause_analysis_immediate_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_incident_investigation_cause_analysis_immediate!]!
+}
+
+"response of any mutation on the table \"sheq_incident_investigation_cause_analysis\""
+type sheq_incident_investigation_cause_analysis_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_incident_investigation_cause_analysis!]!
+}
+
+"columns and relationships of \"sheq_incident_investigation_cause_analysis_root\""
+type sheq_incident_investigation_cause_analysis_root implements Node {
+    "An array relationship"
+    cause_analysis_cause_list(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): [sheq_incident_investigation_cause_analysis_causes!]!
+    "An aggregate relationship"
+    cause_analysis_cause_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causes_aggregate!
+    "An array relationship connection"
+    cause_analysis_cause_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causesConnection!
+    "A computed field, executes function \"cause_analysis_root_custom_job_factors\""
+    custom_job_factors(
+        "JSON select path"
+        path: String
+    ): json
+    "A computed field, executes function \"cause_analysis_root_custom_personal_factors\""
+    custom_personal_factors(
+        "JSON select path"
+        path: String
+    ): json
+    id: ID!
+    "A computed field, executes function \"cause_analysis_root_job_factors\""
     job_factors(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): [sheq_incident_investigation_corrective_actions_factors!]!
-    "An aggregate relationship"
-    job_factors_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factors_aggregate!
-    "An array relationship connection"
-    job_factors_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factorsConnection!
-    "An array relationship"
+        "JSON select path"
+        path: String
+    ): json
+    "A computed field, executes function \"cause_analysis_root_personal_factors\""
     personal_factors(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): [sheq_incident_investigation_corrective_actions_factors!]!
-    "An aggregate relationship"
-    personal_factors_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factors_aggregate!
-    "An array relationship connection"
-    personal_factors_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_incident_investigation_corrective_actions_factors_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_incident_investigation_corrective_actions_factors_order_by!],
-        "filter the rows returned"
-        where: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    ): sheq_incident_investigation_corrective_actions_factorsConnection!
+        "JSON select path"
+        path: String
+    ): json
+}
+
+"A Relay connection object on \"sheq_incident_investigation_cause_analysis_root\""
+type sheq_incident_investigation_cause_analysis_rootConnection {
+    edges: [sheq_incident_investigation_cause_analysis_rootEdge!]!
+    pageInfo: PageInfo!
+}
+
+type sheq_incident_investigation_cause_analysis_rootEdge {
+    cursor: String!
+    node: sheq_incident_investigation_cause_analysis_root!
+}
+
+"response of any mutation on the table \"sheq_incident_investigation_cause_analysis_root\""
+type sheq_incident_investigation_cause_analysis_root_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [sheq_incident_investigation_cause_analysis_root!]!
+}
+
+"columns and relationships of \"sheq_incident_investigation_corrective_actions\""
+type sheq_incident_investigation_corrective_actions implements Node {
+    id: ID!
 }
 
 "A Relay connection object on \"sheq_incident_investigation_corrective_actions\""
@@ -55837,25 +56190,17 @@ type sheq_incident_investigation_corrective_actionsEdge {
 
 "columns and relationships of \"sheq_incident_investigation_corrective_actions_factors\""
 type sheq_incident_investigation_corrective_actions_factors implements Node {
+    "An object relationship"
+    cause_analysis_cause: sheq_incident_investigation_cause_analysis_causes!
+    cause_analysis_cause_id: bigint!
     cost: money
-    "An object relationship"
-    custom_job_factor_corrective_action: sheq_incident_investigation_corrective_actions
-    custom_job_factor_corrective_action_id: bigint
-    "An object relationship"
-    custom_personal_factor_corrective_action: sheq_incident_investigation_corrective_actions
-    custom_personal_factor_corrective_action_id: bigint
     date_completed: date
     id: ID!
-    "An object relationship"
-    job_factor_corrective_action: sheq_incident_investigation_corrective_actions
-    job_factor_corrective_action_id: bigint
-    "An object relationship"
-    personal_factor_corrective_action: sheq_incident_investigation_corrective_actions
-    personal_factor_corrective_action_id: bigint
     "An object relationship"
     responsible_person: hr_employees
     responsible_person_id: bigint
     text: String!
+    type: String!
 }
 
 "A Relay connection object on \"sheq_incident_investigation_corrective_actions_factors\""
@@ -55892,39 +56237,32 @@ type sheq_incident_investigation_corrective_actions_factors_aggregate_fields {
 
 "aggregate avg on columns"
 type sheq_incident_investigation_corrective_actions_factors_avg_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate max on columns"
 type sheq_incident_investigation_corrective_actions_factors_max_fields {
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action_id: bigint
     date_completed: date
     id: bigint
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action_id: bigint
     responsible_person_id: bigint
     text: String
+    type: String
 }
 
 "aggregate min on columns"
 type sheq_incident_investigation_corrective_actions_factors_min_fields {
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action_id: bigint
     date_completed: date
     id: bigint
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action_id: bigint
     responsible_person_id: bigint
     text: String
+    type: String
 }
 
 "response of any mutation on the table \"sheq_incident_investigation_corrective_actions_factors\""
@@ -55937,78 +56275,57 @@ type sheq_incident_investigation_corrective_actions_factors_mutation_response {
 
 "aggregate stddev on columns"
 type sheq_incident_investigation_corrective_actions_factors_stddev_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate stddev_pop on columns"
 type sheq_incident_investigation_corrective_actions_factors_stddev_pop_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate stddev_samp on columns"
 type sheq_incident_investigation_corrective_actions_factors_stddev_samp_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate sum on columns"
 type sheq_incident_investigation_corrective_actions_factors_sum_fields {
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action_id: bigint
     id: bigint
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action_id: bigint
     responsible_person_id: bigint
 }
 
 "aggregate var_pop on columns"
 type sheq_incident_investigation_corrective_actions_factors_var_pop_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate var_samp on columns"
 type sheq_incident_investigation_corrective_actions_factors_var_samp_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
 "aggregate variance on columns"
 type sheq_incident_investigation_corrective_actions_factors_variance_fields {
+    cause_analysis_cause_id: Float
     cost: Float
-    custom_job_factor_corrective_action_id: Float
-    custom_personal_factor_corrective_action_id: Float
     id: Float
-    job_factor_corrective_action_id: Float
-    personal_factor_corrective_action_id: Float
     responsible_person_id: Float
 }
 
@@ -56259,9 +56576,11 @@ type sheq_incident_investigation_investigations implements Node {
         "JSON select path"
         path: String
     ): json
-    "An object relationship"
-    corrective_actions: sheq_incident_investigation_corrective_actions
-    corrective_actions_id: bigint
+    "A computed field, executes function \"investigations_corrective_actions\""
+    corrective_actions(
+        "JSON select path"
+        path: String
+    ): json
     created_at: date!
     "An array relationship"
     distribution_list(
@@ -66206,6 +66525,19 @@ type subscription_root {
         "filter the rows returned"
         where: sheq_incident_investigation_categories_bool_exp
     ): sheq_incident_investigation_categoriesConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_causes\""
+    sheq_incident_investigation_cause_analysis_causes_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_causes_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_causes_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    ): sheq_incident_investigation_cause_analysis_causesConnection!
     "fetch data from the table: \"sheq_incident_investigation_cause_analysis\""
     sheq_incident_investigation_cause_analysis_connection(
         after: String,
@@ -66219,6 +66551,32 @@ type subscription_root {
         "filter the rows returned"
         where: sheq_incident_investigation_cause_analysis_bool_exp
     ): sheq_incident_investigation_cause_analysisConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_immediate\""
+    sheq_incident_investigation_cause_analysis_immediate_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_immediate_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_immediate_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+    ): sheq_incident_investigation_cause_analysis_immediateConnection!
+    "fetch data from the table: \"sheq_incident_investigation_cause_analysis_root\""
+    sheq_incident_investigation_cause_analysis_root_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_incident_investigation_cause_analysis_root_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_incident_investigation_cause_analysis_root_order_by!],
+        "filter the rows returned"
+        where: sheq_incident_investigation_cause_analysis_root_bool_exp
+    ): sheq_incident_investigation_cause_analysis_rootConnection!
     "fetch data from the table: \"sheq_incident_investigation\""
     sheq_incident_investigation_connection(
         after: String,
@@ -81914,22 +82272,100 @@ enum sheq_incident_investigation_categories_update_column {
     name
 }
 
+"unique or primary key constraints on table \"sheq_incident_investigation_cause_analysis_causes\""
+enum sheq_incident_investigation_cause_analysis_causes_constraint {
+    "unique or primary key constraint on columns \"id\""
+    sheq_incident_investigation_cause_analysis_list_pkey
+}
+
+"select columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+enum sheq_incident_investigation_cause_analysis_causes_select_column {
+    "column name"
+    cause_analysis_immediate_id
+    "column name"
+    cause_analysis_root_id
+    "column name"
+    id
+    "column name"
+    text
+    "column name"
+    type
+}
+
+"update columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+enum sheq_incident_investigation_cause_analysis_causes_update_column {
+    "column name"
+    cause_analysis_immediate_id
+    "column name"
+    cause_analysis_root_id
+    "column name"
+    id
+    "column name"
+    text
+    "column name"
+    type
+}
+
 "unique or primary key constraints on table \"sheq_incident_investigation_cause_analysis\""
 enum sheq_incident_investigation_cause_analysis_constraint {
     "unique or primary key constraint on columns \"id\""
     sheq_incident_investigation_cause_analysis_pkey
 }
 
+"unique or primary key constraints on table \"sheq_incident_investigation_cause_analysis_immediate\""
+enum sheq_incident_investigation_cause_analysis_immediate_constraint {
+    "unique or primary key constraint on columns \"id\""
+    sheq_incident_investigation_cause_analysis_immediate_pkey
+}
+
+"select columns of table \"sheq_incident_investigation_cause_analysis_immediate\""
+enum sheq_incident_investigation_cause_analysis_immediate_select_column {
+    "column name"
+    id
+}
+
+"update columns of table \"sheq_incident_investigation_cause_analysis_immediate\""
+enum sheq_incident_investigation_cause_analysis_immediate_update_column {
+    "column name"
+    id
+}
+
+"unique or primary key constraints on table \"sheq_incident_investigation_cause_analysis_root\""
+enum sheq_incident_investigation_cause_analysis_root_constraint {
+    "unique or primary key constraint on columns \"id\""
+    sheq_incident_investigation_cause_analysis_root_pkey
+}
+
+"select columns of table \"sheq_incident_investigation_cause_analysis_root\""
+enum sheq_incident_investigation_cause_analysis_root_select_column {
+    "column name"
+    id
+}
+
+"update columns of table \"sheq_incident_investigation_cause_analysis_root\""
+enum sheq_incident_investigation_cause_analysis_root_update_column {
+    "column name"
+    id
+}
+
 "select columns of table \"sheq_incident_investigation_cause_analysis\""
 enum sheq_incident_investigation_cause_analysis_select_column {
     "column name"
     id
+    "column name"
+    immediate_analysis_id
+    "column name"
+    root_analysis_id
 }
 
 "update columns of table \"sheq_incident_investigation_cause_analysis\""
 enum sheq_incident_investigation_cause_analysis_update_column {
     "column name"
     id
+    "column name"
+    immediate_analysis_id
+    "column name"
+    root_analysis_id
 }
 
 "unique or primary key constraints on table \"sheq_incident_investigation\""
@@ -81955,45 +82391,37 @@ enum sheq_incident_investigation_corrective_actions_factors_constraint {
 "select columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 enum sheq_incident_investigation_corrective_actions_factors_select_column {
     "column name"
+    cause_analysis_cause_id
+    "column name"
     cost
-    "column name"
-    custom_job_factor_corrective_action_id
-    "column name"
-    custom_personal_factor_corrective_action_id
     "column name"
     date_completed
     "column name"
     id
     "column name"
-    job_factor_corrective_action_id
-    "column name"
-    personal_factor_corrective_action_id
-    "column name"
     responsible_person_id
     "column name"
     text
+    "column name"
+    type
 }
 
 "update columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 enum sheq_incident_investigation_corrective_actions_factors_update_column {
     "column name"
+    cause_analysis_cause_id
+    "column name"
     cost
-    "column name"
-    custom_job_factor_corrective_action_id
-    "column name"
-    custom_personal_factor_corrective_action_id
     "column name"
     date_completed
     "column name"
     id
     "column name"
-    job_factor_corrective_action_id
-    "column name"
-    personal_factor_corrective_action_id
-    "column name"
     responsible_person_id
     "column name"
     text
+    "column name"
+    type
 }
 
 "select columns of table \"sheq_incident_investigation_corrective_actions\""
@@ -82135,8 +82563,6 @@ enum sheq_incident_investigation_investigations_select_column {
     "column name"
     class_list
     "column name"
-    corrective_actions_id
-    "column name"
     created_at
     "column name"
     due_date
@@ -82174,8 +82600,6 @@ enum sheq_incident_investigation_investigations_update_column {
     cause_analysis_id
     "column name"
     class_list
-    "column name"
-    corrective_actions_id
     "column name"
     created_at
     "column name"
@@ -91446,7 +91870,7 @@ input coida_claims_wcl_4_bool_exp {
     totalFieldMax: Int_comparison_exp
     x_rays_conducting_person: String_comparison_exp
     x_rays_date: date_comparison_exp
-    x_rays_report: String_comparison_exp
+    x_rays_report: json_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"coida_claims_wcl_4\""
@@ -91493,7 +91917,7 @@ input coida_claims_wcl_4_insert_input {
     totalFieldMax: Int
     x_rays_conducting_person: String
     x_rays_date: date
-    x_rays_report: String
+    x_rays_report: json
 }
 
 "input type for inserting object relation for remote table \"coida_claims_wcl_4\""
@@ -91592,7 +92016,7 @@ input coida_claims_wcl_4_set_input {
     totalFieldMax: Int
     x_rays_conducting_person: String
     x_rays_date: date
-    x_rays_report: String
+    x_rays_report: json
 }
 
 input coida_claims_wcl_4_updates {
@@ -122761,16 +123185,283 @@ input sheq_incident_investigation_cause_analysis_bool_exp {
     _not: sheq_incident_investigation_cause_analysis_bool_exp
     _or: [sheq_incident_investigation_cause_analysis_bool_exp!]
     id: bigint_comparison_exp
+    immediate_analysis: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+    immediate_analysis_id: bigint_comparison_exp
+    root_analysis: sheq_incident_investigation_cause_analysis_root_bool_exp
+    root_analysis_id: bigint_comparison_exp
+}
+
+input sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp {
+    count: sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp_count
+}
+
+input sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp_count {
+    arguments: [sheq_incident_investigation_cause_analysis_causes_select_column!]
+    distinct: Boolean
+    filter: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_aggregate_order_by {
+    avg: sheq_incident_investigation_cause_analysis_causes_avg_order_by
+    count: order_by
+    max: sheq_incident_investigation_cause_analysis_causes_max_order_by
+    min: sheq_incident_investigation_cause_analysis_causes_min_order_by
+    stddev: sheq_incident_investigation_cause_analysis_causes_stddev_order_by
+    stddev_pop: sheq_incident_investigation_cause_analysis_causes_stddev_pop_order_by
+    stddev_samp: sheq_incident_investigation_cause_analysis_causes_stddev_samp_order_by
+    sum: sheq_incident_investigation_cause_analysis_causes_sum_order_by
+    var_pop: sheq_incident_investigation_cause_analysis_causes_var_pop_order_by
+    var_samp: sheq_incident_investigation_cause_analysis_causes_var_samp_order_by
+    variance: sheq_incident_investigation_cause_analysis_causes_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_arr_rel_insert_input {
+    data: [sheq_incident_investigation_cause_analysis_causes_insert_input!]!
+    "upsert condition"
+    on_conflict: sheq_incident_investigation_cause_analysis_causes_on_conflict
+}
+
+"order by avg() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_avg_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"Boolean expression to filter rows from the table \"sheq_incident_investigation_cause_analysis_causes\". All fields are combined with a logical 'AND'."
+input sheq_incident_investigation_cause_analysis_causes_bool_exp {
+    _and: [sheq_incident_investigation_cause_analysis_causes_bool_exp!]
+    _not: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    _or: [sheq_incident_investigation_cause_analysis_causes_bool_exp!]
+    cause_analysis_immediate: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+    cause_analysis_immediate_id: bigint_comparison_exp
+    cause_analysis_root: sheq_incident_investigation_cause_analysis_root_bool_exp
+    cause_analysis_root_id: bigint_comparison_exp
+    corrective_action_list: sheq_incident_investigation_corrective_actions_factors_bool_exp
+    corrective_action_list_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp
+    id: bigint_comparison_exp
+    text: String_comparison_exp
+    type: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_inc_input {
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root_id: bigint
+    id: bigint
+}
+
+"input type for inserting data into table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_insert_input {
+    cause_analysis_immediate: sheq_incident_investigation_cause_analysis_immediate_obj_rel_insert_input
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root: sheq_incident_investigation_cause_analysis_root_obj_rel_insert_input
+    cause_analysis_root_id: bigint
+    corrective_action_list: sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_input
+    id: bigint
+    text: String
+    type: String
+}
+
+"order by max() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_max_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+    text: order_by
+    type: order_by
+}
+
+"order by min() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_min_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+    text: order_by
+    type: order_by
+}
+
+"input type for inserting object relation for remote table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_obj_rel_insert_input {
+    data: sheq_incident_investigation_cause_analysis_causes_insert_input!
+    "upsert condition"
+    on_conflict: sheq_incident_investigation_cause_analysis_causes_on_conflict
+}
+
+"on_conflict condition type for table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_on_conflict {
+    constraint: sheq_incident_investigation_cause_analysis_causes_constraint!
+    update_columns: [sheq_incident_investigation_cause_analysis_causes_update_column!]! = []
+    where: sheq_incident_investigation_cause_analysis_causes_bool_exp
+}
+
+"Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis_causes\"."
+input sheq_incident_investigation_cause_analysis_causes_order_by {
+    cause_analysis_immediate: sheq_incident_investigation_cause_analysis_immediate_order_by
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root: sheq_incident_investigation_cause_analysis_root_order_by
+    cause_analysis_root_id: order_by
+    corrective_action_list_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_order_by
+    id: order_by
+    text: order_by
+    type: order_by
+}
+
+"primary key columns input for table: sheq_incident_investigation_cause_analysis_causes"
+input sheq_incident_investigation_cause_analysis_causes_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_set_input {
+    cause_analysis_immediate_id: bigint
+    cause_analysis_root_id: bigint
+    id: bigint
+    text: String
+    type: String
+}
+
+"order by stddev() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_stddev_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"order by stddev_pop() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_stddev_pop_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"order by stddev_samp() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_stddev_samp_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"order by sum() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_sum_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+input sheq_incident_investigation_cause_analysis_causes_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: sheq_incident_investigation_cause_analysis_causes_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: sheq_incident_investigation_cause_analysis_causes_set_input
+    where: sheq_incident_investigation_cause_analysis_causes_bool_exp!
+}
+
+"order by var_pop() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_var_pop_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"order by var_samp() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_var_samp_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"order by variance() on columns of table \"sheq_incident_investigation_cause_analysis_causes\""
+input sheq_incident_investigation_cause_analysis_causes_variance_order_by {
+    cause_analysis_immediate_id: order_by
+    cause_analysis_root_id: order_by
+    id: order_by
+}
+
+"Boolean expression to filter rows from the table \"sheq_incident_investigation_cause_analysis_immediate\". All fields are combined with a logical 'AND'."
+input sheq_incident_investigation_cause_analysis_immediate_bool_exp {
+    _and: [sheq_incident_investigation_cause_analysis_immediate_bool_exp!]
+    _not: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+    _or: [sheq_incident_investigation_cause_analysis_immediate_bool_exp!]
+    cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp
+    custom_sub_standard_practices_or_unsafe_acts: json_comparison_exp
+    custom_sub_standard_practices_or_unsafe_conditions: json_comparison_exp
+    id: bigint_comparison_exp
+    sub_standard_practices_or_unsafe_acts: json_comparison_exp
+    sub_standard_practices_or_unsafe_conditions: json_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis_immediate\""
+input sheq_incident_investigation_cause_analysis_immediate_inc_input {
+    id: bigint
+}
+
+"input type for inserting data into table \"sheq_incident_investigation_cause_analysis_immediate\""
+input sheq_incident_investigation_cause_analysis_immediate_insert_input {
+    cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_arr_rel_insert_input
+    id: bigint
+}
+
+"input type for inserting object relation for remote table \"sheq_incident_investigation_cause_analysis_immediate\""
+input sheq_incident_investigation_cause_analysis_immediate_obj_rel_insert_input {
+    data: sheq_incident_investigation_cause_analysis_immediate_insert_input!
+    "upsert condition"
+    on_conflict: sheq_incident_investigation_cause_analysis_immediate_on_conflict
+}
+
+"on_conflict condition type for table \"sheq_incident_investigation_cause_analysis_immediate\""
+input sheq_incident_investigation_cause_analysis_immediate_on_conflict {
+    constraint: sheq_incident_investigation_cause_analysis_immediate_constraint!
+    update_columns: [sheq_incident_investigation_cause_analysis_immediate_update_column!]! = []
+    where: sheq_incident_investigation_cause_analysis_immediate_bool_exp
+}
+
+"Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis_immediate\"."
+input sheq_incident_investigation_cause_analysis_immediate_order_by {
+    cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_order_by
+    custom_sub_standard_practices_or_unsafe_acts: order_by
+    custom_sub_standard_practices_or_unsafe_conditions: order_by
+    id: order_by
+    sub_standard_practices_or_unsafe_acts: order_by
+    sub_standard_practices_or_unsafe_conditions: order_by
+}
+
+"primary key columns input for table: sheq_incident_investigation_cause_analysis_immediate"
+input sheq_incident_investigation_cause_analysis_immediate_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"sheq_incident_investigation_cause_analysis_immediate\""
+input sheq_incident_investigation_cause_analysis_immediate_set_input {
+    id: bigint
+}
+
+input sheq_incident_investigation_cause_analysis_immediate_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: sheq_incident_investigation_cause_analysis_immediate_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: sheq_incident_investigation_cause_analysis_immediate_set_input
+    where: sheq_incident_investigation_cause_analysis_immediate_bool_exp!
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis\""
 input sheq_incident_investigation_cause_analysis_inc_input {
     id: bigint
+    immediate_analysis_id: bigint
+    root_analysis_id: bigint
 }
 
 "input type for inserting data into table \"sheq_incident_investigation_cause_analysis\""
 input sheq_incident_investigation_cause_analysis_insert_input {
     id: bigint
+    immediate_analysis: sheq_incident_investigation_cause_analysis_immediate_obj_rel_insert_input
+    immediate_analysis_id: bigint
+    root_analysis: sheq_incident_investigation_cause_analysis_root_obj_rel_insert_input
+    root_analysis_id: bigint
 }
 
 "input type for inserting object relation for remote table \"sheq_incident_investigation_cause_analysis\""
@@ -122790,6 +123481,10 @@ input sheq_incident_investigation_cause_analysis_on_conflict {
 "Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis\"."
 input sheq_incident_investigation_cause_analysis_order_by {
     id: order_by
+    immediate_analysis: sheq_incident_investigation_cause_analysis_immediate_order_by
+    immediate_analysis_id: order_by
+    root_analysis: sheq_incident_investigation_cause_analysis_root_order_by
+    root_analysis_id: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_cause_analysis"
@@ -122797,9 +123492,78 @@ input sheq_incident_investigation_cause_analysis_pk_columns_input {
     id: bigint!
 }
 
+"Boolean expression to filter rows from the table \"sheq_incident_investigation_cause_analysis_root\". All fields are combined with a logical 'AND'."
+input sheq_incident_investigation_cause_analysis_root_bool_exp {
+    _and: [sheq_incident_investigation_cause_analysis_root_bool_exp!]
+    _not: sheq_incident_investigation_cause_analysis_root_bool_exp
+    _or: [sheq_incident_investigation_cause_analysis_root_bool_exp!]
+    cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp
+    custom_job_factors: json_comparison_exp
+    custom_personal_factors: json_comparison_exp
+    id: bigint_comparison_exp
+    job_factors: json_comparison_exp
+    personal_factors: json_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis_root\""
+input sheq_incident_investigation_cause_analysis_root_inc_input {
+    id: bigint
+}
+
+"input type for inserting data into table \"sheq_incident_investigation_cause_analysis_root\""
+input sheq_incident_investigation_cause_analysis_root_insert_input {
+    cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_arr_rel_insert_input
+    id: bigint
+}
+
+"input type for inserting object relation for remote table \"sheq_incident_investigation_cause_analysis_root\""
+input sheq_incident_investigation_cause_analysis_root_obj_rel_insert_input {
+    data: sheq_incident_investigation_cause_analysis_root_insert_input!
+    "upsert condition"
+    on_conflict: sheq_incident_investigation_cause_analysis_root_on_conflict
+}
+
+"on_conflict condition type for table \"sheq_incident_investigation_cause_analysis_root\""
+input sheq_incident_investigation_cause_analysis_root_on_conflict {
+    constraint: sheq_incident_investigation_cause_analysis_root_constraint!
+    update_columns: [sheq_incident_investigation_cause_analysis_root_update_column!]! = []
+    where: sheq_incident_investigation_cause_analysis_root_bool_exp
+}
+
+"Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis_root\"."
+input sheq_incident_investigation_cause_analysis_root_order_by {
+    cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_order_by
+    custom_job_factors: order_by
+    custom_personal_factors: order_by
+    id: order_by
+    job_factors: order_by
+    personal_factors: order_by
+}
+
+"primary key columns input for table: sheq_incident_investigation_cause_analysis_root"
+input sheq_incident_investigation_cause_analysis_root_pk_columns_input {
+    id: bigint!
+}
+
+"input type for updating data in table \"sheq_incident_investigation_cause_analysis_root\""
+input sheq_incident_investigation_cause_analysis_root_set_input {
+    id: bigint
+}
+
+input sheq_incident_investigation_cause_analysis_root_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: sheq_incident_investigation_cause_analysis_root_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: sheq_incident_investigation_cause_analysis_root_set_input
+    where: sheq_incident_investigation_cause_analysis_root_bool_exp!
+}
+
 "input type for updating data in table \"sheq_incident_investigation_cause_analysis\""
 input sheq_incident_investigation_cause_analysis_set_input {
     id: bigint
+    immediate_analysis_id: bigint
+    root_analysis_id: bigint
 }
 
 input sheq_incident_investigation_cause_analysis_updates {
@@ -122815,15 +123579,7 @@ input sheq_incident_investigation_corrective_actions_bool_exp {
     _and: [sheq_incident_investigation_corrective_actions_bool_exp!]
     _not: sheq_incident_investigation_corrective_actions_bool_exp
     _or: [sheq_incident_investigation_corrective_actions_bool_exp!]
-    custom_job_factors: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    custom_job_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp
-    custom_personal_factors: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    custom_personal_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp
     id: bigint_comparison_exp
-    job_factors: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    job_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp
-    personal_factors: sheq_incident_investigation_corrective_actions_factors_bool_exp
-    personal_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp
 }
 
 input sheq_incident_investigation_corrective_actions_factors_aggregate_bool_exp {
@@ -122861,12 +123617,9 @@ input sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_inpu
 
 "order by avg() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_avg_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
@@ -122875,75 +123628,58 @@ input sheq_incident_investigation_corrective_actions_factors_bool_exp {
     _and: [sheq_incident_investigation_corrective_actions_factors_bool_exp!]
     _not: sheq_incident_investigation_corrective_actions_factors_bool_exp
     _or: [sheq_incident_investigation_corrective_actions_factors_bool_exp!]
+    cause_analysis_cause: sheq_incident_investigation_cause_analysis_causes_bool_exp
+    cause_analysis_cause_id: bigint_comparison_exp
     cost: money_comparison_exp
-    custom_job_factor_corrective_action: sheq_incident_investigation_corrective_actions_bool_exp
-    custom_job_factor_corrective_action_id: bigint_comparison_exp
-    custom_personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_bool_exp
-    custom_personal_factor_corrective_action_id: bigint_comparison_exp
     date_completed: date_comparison_exp
     id: bigint_comparison_exp
-    job_factor_corrective_action: sheq_incident_investigation_corrective_actions_bool_exp
-    job_factor_corrective_action_id: bigint_comparison_exp
-    personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_bool_exp
-    personal_factor_corrective_action_id: bigint_comparison_exp
     responsible_person: hr_employees_bool_exp
     responsible_person_id: bigint_comparison_exp
     text: String_comparison_exp
+    type: String_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_inc_input {
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action_id: bigint
     id: bigint
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action_id: bigint
     responsible_person_id: bigint
 }
 
 "input type for inserting data into table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_insert_input {
+    cause_analysis_cause: sheq_incident_investigation_cause_analysis_causes_obj_rel_insert_input
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action: sheq_incident_investigation_corrective_actions_obj_rel_insert_input
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_obj_rel_insert_input
-    custom_personal_factor_corrective_action_id: bigint
     date_completed: date
     id: bigint
-    job_factor_corrective_action: sheq_incident_investigation_corrective_actions_obj_rel_insert_input
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_obj_rel_insert_input
-    personal_factor_corrective_action_id: bigint
     responsible_person: hr_employees_obj_rel_insert_input
     responsible_person_id: bigint
     text: String
+    type: String
 }
 
 "order by max() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_max_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     date_completed: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
     text: order_by
+    type: order_by
 }
 
 "order by min() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_min_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     date_completed: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
     text: order_by
+    type: order_by
 }
 
 "on_conflict condition type for table \"sheq_incident_investigation_corrective_actions_factors\""
@@ -122955,20 +123691,15 @@ input sheq_incident_investigation_corrective_actions_factors_on_conflict {
 
 "Ordering options when selecting data from \"sheq_incident_investigation_corrective_actions_factors\"."
 input sheq_incident_investigation_corrective_actions_factors_order_by {
+    cause_analysis_cause: sheq_incident_investigation_cause_analysis_causes_order_by
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action: sheq_incident_investigation_corrective_actions_order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_order_by
-    custom_personal_factor_corrective_action_id: order_by
     date_completed: order_by
     id: order_by
-    job_factor_corrective_action: sheq_incident_investigation_corrective_actions_order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action: sheq_incident_investigation_corrective_actions_order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person: hr_employees_order_by
     responsible_person_id: order_by
     text: order_by
+    type: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_corrective_actions_factors"
@@ -122978,58 +123709,44 @@ input sheq_incident_investigation_corrective_actions_factors_pk_columns_input {
 
 "input type for updating data in table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_set_input {
+    cause_analysis_cause_id: bigint
     cost: money
-    custom_job_factor_corrective_action_id: bigint
-    custom_personal_factor_corrective_action_id: bigint
     date_completed: date
     id: bigint
-    job_factor_corrective_action_id: bigint
-    personal_factor_corrective_action_id: bigint
     responsible_person_id: bigint
     text: String
+    type: String
 }
 
 "order by stddev() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_stddev_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_stddev_pop_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_stddev_samp_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
 "order by sum() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_sum_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
@@ -123043,34 +123760,25 @@ input sheq_incident_investigation_corrective_actions_factors_updates {
 
 "order by var_pop() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_var_pop_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
 "order by var_samp() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_var_samp_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
 "order by variance() on columns of table \"sheq_incident_investigation_corrective_actions_factors\""
 input sheq_incident_investigation_corrective_actions_factors_variance_order_by {
+    cause_analysis_cause_id: order_by
     cost: order_by
-    custom_job_factor_corrective_action_id: order_by
-    custom_personal_factor_corrective_action_id: order_by
     id: order_by
-    job_factor_corrective_action_id: order_by
-    personal_factor_corrective_action_id: order_by
     responsible_person_id: order_by
 }
 
@@ -123081,18 +123789,7 @@ input sheq_incident_investigation_corrective_actions_inc_input {
 
 "input type for inserting data into table \"sheq_incident_investigation_corrective_actions\""
 input sheq_incident_investigation_corrective_actions_insert_input {
-    custom_job_factors: sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_input
-    custom_personal_factors: sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_input
     id: bigint
-    job_factors: sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_input
-    personal_factors: sheq_incident_investigation_corrective_actions_factors_arr_rel_insert_input
-}
-
-"input type for inserting object relation for remote table \"sheq_incident_investigation_corrective_actions\""
-input sheq_incident_investigation_corrective_actions_obj_rel_insert_input {
-    data: sheq_incident_investigation_corrective_actions_insert_input!
-    "upsert condition"
-    on_conflict: sheq_incident_investigation_corrective_actions_on_conflict
 }
 
 "on_conflict condition type for table \"sheq_incident_investigation_corrective_actions\""
@@ -123104,11 +123801,7 @@ input sheq_incident_investigation_corrective_actions_on_conflict {
 
 "Ordering options when selecting data from \"sheq_incident_investigation_corrective_actions\"."
 input sheq_incident_investigation_corrective_actions_order_by {
-    custom_job_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_order_by
-    custom_personal_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_order_by
     id: order_by
-    job_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_order_by
-    personal_factors_aggregate: sheq_incident_investigation_corrective_actions_factors_aggregate_order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_corrective_actions"
@@ -123478,8 +124171,7 @@ input sheq_incident_investigation_investigations_bool_exp {
     cause_analysis: sheq_incident_investigation_cause_analysis_bool_exp
     cause_analysis_id: bigint_comparison_exp
     class_list: json_comparison_exp
-    corrective_actions: sheq_incident_investigation_corrective_actions_bool_exp
-    corrective_actions_id: bigint_comparison_exp
+    corrective_actions: json_comparison_exp
     created_at: date_comparison_exp
     distribution_list: proxy_incident__distribution_bool_exp
     distribution_list_aggregate: proxy_incident__distribution_aggregate_bool_exp
@@ -123819,7 +124511,6 @@ input sheq_incident_investigation_investigations_findings_variance_order_by {
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_investigations\""
 input sheq_incident_investigation_investigations_inc_input {
     cause_analysis_id: bigint
-    corrective_actions_id: bigint
     estimated_costs_damages: money
     estimated_costs_investigations: money
     estimated_costs_medical: money
@@ -123834,8 +124525,6 @@ input sheq_incident_investigation_investigations_insert_input {
     cause_analysis: sheq_incident_investigation_cause_analysis_obj_rel_insert_input
     cause_analysis_id: bigint
     class_list: json
-    corrective_actions: sheq_incident_investigation_corrective_actions_obj_rel_insert_input
-    corrective_actions_id: bigint
     created_at: date
     distribution_list: proxy_incident__distribution_arr_rel_insert_input
     document_list: sheq_incident_investigation_investigations_docs_arr_rel_insert_input
@@ -123878,8 +124567,7 @@ input sheq_incident_investigation_investigations_order_by {
     cause_analysis: sheq_incident_investigation_cause_analysis_order_by
     cause_analysis_id: order_by
     class_list: order_by
-    corrective_actions: sheq_incident_investigation_corrective_actions_order_by
-    corrective_actions_id: order_by
+    corrective_actions: order_by
     created_at: order_by
     distribution_list_aggregate: proxy_incident__distribution_aggregate_order_by
     document_list_aggregate: sheq_incident_investigation_investigations_docs_aggregate_order_by
@@ -123912,7 +124600,6 @@ input sheq_incident_investigation_investigations_pk_columns_input {
 input sheq_incident_investigation_investigations_set_input {
     cause_analysis_id: bigint
     class_list: json
-    corrective_actions_id: bigint
     created_at: date
     due_date: date
     environment_list: json

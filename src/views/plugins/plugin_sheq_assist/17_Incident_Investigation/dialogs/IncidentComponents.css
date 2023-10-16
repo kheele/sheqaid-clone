@@ -49,11 +49,18 @@
     cursor: pointer;
     font-weight: 600;
 }
+.controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable .results-none {
+    margin-top: 10px;
+}
+.controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable .results-none + .stats {
+    margin-top: 60px;
+}
 .controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable,
 .controls .RemedialOrCorrectiveActionPanel .CauseAnalysisTable {
     position: relative;
     box-shadow: 0 0 3px #ddd; 
 }
+
 .controls .RemedialOrCorrectiveActionPanelListCover > .CorrectiveActionListByCauseTable:not(:last-of-type),
 .controls .RemedialOrCorrectiveActionPanelListCover > .CauseAnalysisTable:not(:last-of-type) {
     margin-bottom: 10px !important;
@@ -96,6 +103,7 @@
     margin: 4px;
     font-size: 20px;
     min-width: 46px;
+    width: 100px;
     height: 38px;
     border-radius: 5px;
     float: right;

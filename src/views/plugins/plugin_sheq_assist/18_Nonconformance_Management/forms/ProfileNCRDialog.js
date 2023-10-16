@@ -17,7 +17,7 @@ import {FormControls, NavButtons, Row} from 'components/FormComponents';
 import InspectionTableRow from '../../Inspections/InspectionTab/InspectionTableRow';
 
 import AuditTableRow from '../../21_Internal_Audit/AuditTab/AuditTableRow';
-import {IncidentTableRow} from '../../17_Incident_Investigation/dialogs/IncidentComponents';
+import {IncidentTableRow} from '../../17_Incident_Investigation/dialogs/IncidentComponentRows';
 
 import ProfileSiteDialog from 'views/plugins/plugin_general/Sites/ProfileDialog.js';
 import ProfileAuditDialog from '../../21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';

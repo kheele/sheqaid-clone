@@ -10,7 +10,8 @@ import {AddFilesGridViewInput, ClearableInput, Clickable, ProfileField, RowOrgs}
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import {mapIncidentCorrectiveActions, mapIncidentPersonDetails} from 'utils/ArrayMapperUtils';
-import {CauseAnalysisPanel, InvestigationFindingsTable, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
+import {CauseAnalysisPanel, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
+import {InvestigationFindingsTable} from './IncidentComponentTables';
 import {FormControls, NavButtons, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 import style from "./NewIncidentInvestigationDialog.lazy.css";
@@ -168,7 +169,6 @@ class Controls extends React.Component {
                 data: {
                     severity: old_severity = {},
                     cause_analysis: old_cause_analysis = {},
-                    corrective_actions: old_corrective_actions = {},
                 }
             }
         } = this;
@@ -196,8 +196,6 @@ class Controls extends React.Component {
             likelihood,
             //5
             cause_analysis,//saved internally
-            //6
-            corrective_actions,//saved internally
             //7
             distribution_list,//saved internally
             //8
@@ -262,15 +260,6 @@ class Controls extends React.Component {
             }
         }
 
-        //6
-        if(corrective_actions) {
-            if(corrective_actions.id) {
-
-            } else {
-                // data.corrective_actions_id = ;
-            }
-        }
-
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -323,8 +312,6 @@ class Controls extends React.Component {
                     severity,//{consequence, likelihood}
                     //5
                     cause_analysis,//
-                    //6
-                    corrective_actions,//
                     //7
                     distribution_list,//
                     //8
@@ -582,7 +569,6 @@ class Controls extends React.Component {
                     ref="corrective_actions"
                     name="corrective_actions"
                     investigation={item}
-                    defaultValue={corrective_actions}
                     onChange={this.form.onChange}
                     onBack={onFormBack}
                 />

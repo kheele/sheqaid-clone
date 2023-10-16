@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e9cba8acc8d8d7acc42ed101294b068b>>
+ * @generated SignedSource<<1d7d419171905037b83c03b452352706>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,9 +34,9 @@ v2 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "sheq_incident_investigation_corrective_actions",
+    "concreteType": "sheq_incident_investigation_corrective_actions_factors",
     "kind": "LinkedField",
-    "name": "update_sheq_incident_investigation_corrective_actions_by_pk",
+    "name": "update_sheq_incident_investigation_corrective_actions_factors_by_pk",
     "plural": false,
     "selections": [
       {
@@ -74,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "de0326239fd02a1ed78b1e5589e697d5",
+    "cacheID": "6d37ef7566c16ae3003717f3d76f1514",
     "id": null,
     "metadata": {},
     "name": "updateIncidentCorrectiveActionMutation",
     "operationKind": "mutation",
-    "text": "mutation updateIncidentCorrectiveActionMutation(\n  $id: sheq_incident_investigation_corrective_actions_pk_columns_input!\n  $_set: sheq_incident_investigation_corrective_actions_set_input!\n) {\n  update_sheq_incident_investigation_corrective_actions_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateIncidentCorrectiveActionMutation(\n  $id: sheq_incident_investigation_corrective_actions_factors_pk_columns_input!\n  $_set: sheq_incident_investigation_corrective_actions_factors_set_input!\n) {\n  update_sheq_incident_investigation_corrective_actions_factors_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "50403392ca1544dff8b769342c25bae6";
+node.hash = "37599cefa401a9ee7fa3c333f3656c68";
 
 module.exports = node;

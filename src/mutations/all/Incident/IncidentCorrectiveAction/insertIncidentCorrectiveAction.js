@@ -12,8 +12,8 @@ import findByIdIncident from "../findByIdIncident";
 
 // 2
 const mutation = graphql`
-  mutation insertIncidentCorrectiveActionMutation($object: sheq_incident_investigation_corrective_actions_insert_input!) {
-    insert_sheq_incident_investigation_corrective_actions_one(
+  mutation insertIncidentCorrectiveActionMutation($object: sheq_incident_investigation_corrective_actions_factors_insert_input!) {
+    insert_sheq_incident_investigation_corrective_actions_factors_one(
       object: $object
     ) {
       id

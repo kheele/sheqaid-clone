@@ -13,7 +13,7 @@ import {
     SelectIncidentSubCategoryList
 } from 'components/inputs';
 import {THead} from 'components/tables';
-import {IncidentTableRow} from '../dialogs/IncidentComponents';
+import {IncidentTableRow} from '../dialogs/IncidentComponentRows';
 
 import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
 import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';

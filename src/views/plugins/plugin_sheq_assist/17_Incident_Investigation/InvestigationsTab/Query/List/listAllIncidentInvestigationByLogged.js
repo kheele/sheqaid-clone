@@ -39,6 +39,7 @@ export default (
 	        offset: ${offset},
 	        limit: ${limit}
         ) {
+            id
         	group
             incident_date
             short_desc

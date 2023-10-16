@@ -196,7 +196,7 @@ class CalibrationRecordTab extends React.Component {
 			<div className="td fixed-flex min-w-120">Date Created</div>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
-			<div className="td">Registration No.</div>
+			<div className="td fixed-flex min-w-280">Registration No.</div>
 			<div className="td fixed-flex min-w-120">Last Date</div>
 			<div className="td fixed-flex min-w-190">Next Date</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -261,11 +261,11 @@ class CalibrationRecordTab extends React.Component {
 		const {calibrating_company, reference_standard, certificate_num, calibration_date} = calibration_list.getLastElement() || {};
 
 		//const isHours = asset_type.contains('Plant');
-		return <TRow key={"item-" + n}>
+		return <TRow key={"item-" + n} className="w-full">
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
-			<div className="td">{reg_num}</div>
+			<div className="td fixed-flex min-w-280">{reg_num}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(calibration_date) || 'N/A'}</div>
 			<div className="td fixed-flex min-w-190">{Dates.formatDate(next_calibration_date)} ({next_calibration_interval})
 			</div>

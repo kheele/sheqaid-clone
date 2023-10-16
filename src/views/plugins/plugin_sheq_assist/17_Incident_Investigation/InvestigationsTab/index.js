@@ -23,7 +23,7 @@ import ProfilePDFReader from '../printers/ProfilePDFReader';
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
-import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponents";
+import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
 
 // </editor-fold>
 
