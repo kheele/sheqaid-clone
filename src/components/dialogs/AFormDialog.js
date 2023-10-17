@@ -105,7 +105,9 @@ class AFormDialog extends React.Component {
 			this.refs.dialog.setTitle(title);
 			
 			const controls = await execWhen(() => this.refs.controls);
+
 			createGetter.call(controls, "dialog", () => this);
+
 			// createGetter.call(controls, "item", () => this.state.item);
 			if(item && controls.state) {
 				controls.state.item = item;

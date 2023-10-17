@@ -90,7 +90,6 @@ class ShouldUpdate {
 			}
 		}
 	}
-
 	//</editor-fold>
 
 	//<editor-fold desc="Objects">
@@ -1333,7 +1332,6 @@ class ShouldUpdate {
 			}
 		}
 	}
-
 	//</editor-fold>
 
 }

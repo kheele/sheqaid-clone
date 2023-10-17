@@ -50,6 +50,8 @@ import insertIncidentDocument from "../../../../../../mutations/all/Incident/Inc
 import insertAssetPhoto from "../../../../../../mutations/all/Asset/insertAssetPhoto";
 import updateAssetPhoto from "../../../../../../mutations/all/Asset/updateAssetPhoto";
 import ImageSection from "components/FormComponents/ImageSection";
+import updateAssetDoc from "../../../../../../mutations/all/Asset/updateAssetDoc";
+import insertAssetDoc from "../../../../../../mutations/all/Asset/insertAssetDoc";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -142,7 +144,7 @@ class Controls extends AControls {
 			}
 			return updateAsset({id: this.item.id, ...data}).then(res => {
 				console.log("res", res)
-				onSaved && onSaved(res);
+				// onSaved && onSaved(res);
 				infoDialog.open("Record successfully updated.");
 				infoDialog.close(2000);
 				// this.props.close();
@@ -375,10 +377,52 @@ class Controls extends AControls {
 			} = form.data;
 			
 			const data = {};
-			
+			console.log('doc_list', doc_list)
 			ShouldUpdate.checkFileList(data, old_data, doc_list, 'doc_list');
-			
-			onSubmit(data);
+			console.log('doc_list data', data)
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			console.log(data)
+
+			let onProgress;
+			if (data.doc_list) {
+				onProgress = true;
+				const {doc_list} = data;
+				delete data.doc_list;
+
+				btn.text("Saving...").disabled();
+				progressDialog.open();
+
+				const res = await Promise.all(doc_list.map(async item => {
+					if (item.id) {
+						if (item.doc.path) {
+							return await updateAssetDoc({id: item.id, doc: item.doc.path});
+						}
+					} else {
+						return await insertAssetDoc({asset_id: this.item.id, doc: {path: await toDataURI(item.path)}});
+					}
+				}));
+
+				console.log("res", res)
+				// onSaved && onSaved(res);
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+				return;
+			}
+
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+
+			onSubmit(data, onProgress);
 			return;
 		}
 		

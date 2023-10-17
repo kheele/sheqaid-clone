@@ -1,17 +1,20 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {isObservableArray, computed, observable, toJS} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
-import {Dates, execWhen, ShouldUpdate} from 'utils/Utils';
-import {AddFilesGridViewInput, ClearableInput, Clickable, ProfileField, RowOrgs} from 'components/inputs';
+import {Dates, execWhen, ShouldUpdate, toDataURI} from 'utils/Utils';
+import {ClearableInput, Clickable, ProfileField, RowOrgs} from 'components/inputs';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
-import {mapIncidentCorrectiveActions, mapIncidentPersonDetails} from 'utils/ArrayMapperUtils';
 import {CauseAnalysisPanel, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
-import {InvestigationFindingsTable} from './IncidentComponentTables';
+import {
+    CorrectiveActionListByCauseTable,
+    InvestigationFindingsTable,
+    NewDocumentTable
+} from './IncidentComponentTables';
 import {FormControls, NavButtons, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 import style from "./NewIncidentInvestigationDialog.lazy.css";
@@ -23,6 +26,8 @@ import findByIdIncidentInvestigation
     from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
 import updateIncidentInvestigation
     from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
+import insertIncidentSeverity from "../../../../../mutations/all/Incident/IncidentSeverity/insertIncidentSeverity";
+import updateIncidentSeverity from "../../../../../mutations/all/Incident/IncidentSeverity/updateIncidentSeverity";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -83,7 +88,7 @@ class Controls extends React.Component {
     constructor() {
         super();
 
-        this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
         this.form.addChangeOne("consequence", this.onChangeConsequence.bind(this));
@@ -140,11 +145,47 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="onNext">
-    onNext(e, btn) {
-        const {form} = this;
+    //<editor-fold desc="onFormSave">
+    async onFormSave(e, btn) {
+        let {
+            form,
+            item: {
+                data: old_data,
+                data: {
+                    severity: old_severity = {},
+                    cause_analysis: old_cause_analysis = {},
+                }
+            }
+        } = this;
         const {idx} = btn.props;
-        if (idx === 1) {
+
+        const onSubmit = (data, onProgress) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            if (!onProgress) {
+                btn.text("Saving...").disabled();
+                progressDialog.open();
+            }
+            return updateIncidentInvestigation({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                // onSaved && onSaved(res);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+                return true;
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        //2 test
+        if (idx === 2) {
             if (!form.isValid('investigation_team_list') || form.get('investigation_team_list').isEmpty()) {
                 infoDialog.open('Investigation Team is required');
                 return;
@@ -153,6 +194,194 @@ class Controls extends React.Component {
                 infoDialog.open('Investigation Due Date is required');
                 return;
             }
+
+            const {
+                //2
+                investigation_team_list,//saved internally
+                due_date,//
+            } = form.data;
+
+            const data = {};
+
+            //2
+            ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        //3 test
+        if (idx === 3) {
+            const {
+                investigation_details,//
+                investigation_findings_list,//saved internally
+                investigation_findings_further_desc,//
+                document_list,//saved internally
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, investigation_details, 'investigation_details');
+            ShouldUpdate.check(data, old_data, investigation_findings_further_desc, 'investigation_findings_further_desc');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            onSubmit(data);
+            return;
+        }
+
+        //4 test
+        if (idx === 4) {
+            const {
+                //4
+                // severity,//{consequence, likelihood}
+                consequence,
+                likelihood,
+            } = form.data;
+
+            if (!old_severity) {
+                old_severity = {};
+            }
+            const severity_data = {};
+            ShouldUpdate.check(severity_data, old_severity, consequence, 'consequence');
+            ShouldUpdate.check(severity_data, old_severity, likelihood, 'likelihood');
+
+            if (Object.keys(severity_data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            if (old_severity.id) {
+                await updateIncidentSeverity({id: old_severity.id, ...severity_data});
+            } else {
+                const savedSeverity = await insertIncidentSeverity(severity_data);
+                if (savedSeverity) {
+                    const data = {
+                        severity_id: savedSeverity.id,
+                    };
+                    onSubmit(data);
+                }
+            }
+
+            return;
+        }
+
+        //8 test
+        if (idx === 8) {
+            const {
+                //8
+                weather_condition_list,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkJson(data, old_data, weather_condition_list, 'weather_condition_list');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        //9 test
+        if (idx === 9) {
+            const {
+                //9
+                protective_equipment_worn_list,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkJson(data, old_data, protective_equipment_worn_list, 'protective_equipment_worn_list');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        //10 test
+        if (idx === 10) {
+            const {
+                //10
+                class_list,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkJson(data, old_data, class_list, 'class_list');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        //11 test
+        if (idx === 11) {
+            const {
+                //11
+                environment_list,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkJson(data, old_data, environment_list, 'environment_list');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        //12 test
+        if (idx === 12) {
+            const {
+                //12
+                estimated_costs_damages,
+                estimated_costs_medical,
+                estimated_costs_salaries_wages,
+                estimated_costs_investigations,
+                estimated_costs_others,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, estimated_costs_damages, 'estimated_costs_damages');
+            ShouldUpdate.check(data, old_data, estimated_costs_medical, 'estimated_costs_medical');
+            ShouldUpdate.check(data, old_data, estimated_costs_salaries_wages, 'estimated_costs_salaries_wages');
+            ShouldUpdate.check(data, old_data, estimated_costs_investigations, 'estimated_costs_investigations');
+            ShouldUpdate.check(data, old_data, estimated_costs_others, 'estimated_costs_others');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            onSubmit(data);
+            return;
         }
 
         return true;
@@ -238,7 +467,7 @@ class Controls extends React.Component {
 
         //4
         {
-            if(!old_severity) {
+            if (!old_severity) {
                 old_severity = {};
             }
             const severity_data = {};
@@ -248,12 +477,12 @@ class Controls extends React.Component {
             // consequence,
             // likelihood,
 
-            if(Object.values(severity_data).isNotEmpty()) {
-                if(old_severity.id) {
+            if (Object.values(severity_data).isNotEmpty()) {
+                if (old_severity.id) {
                     await updateIncidentInvestigationSeverity({id: old_severity.id, ...severity_data});
                 } else {
                     const savedSeverity = await insertIncidentInvestigationSeverity(severity_data);
-                    if(savedSeverity) {
+                    if (savedSeverity) {
                         data.severity_id = savedSeverity.id;
                     }
                 }
@@ -264,7 +493,7 @@ class Controls extends React.Component {
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        updateIncidentInvestigation({id: this.id, ...data}).then(res => {
+        updateIncidentInvestigation({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
             onSaved && onSaved(data);
             infoDialog.open("Record successfully updated.");
@@ -481,6 +710,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <NewEmployeeListTable
                     name="investigation_team_list"
@@ -508,21 +738,46 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="investigation_details" type="textarea" defaultValue={investigation_details}
                                 placeholder="Details Of Investigation" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <label className="margin-t-10 w-full">Investigation Findings</label>
-                <InvestigationFindingsTable name="investigation_findings_list"
-                                            defaultValue={investigation_findings_list}
-                                            onChange={this.form.onChange}/>
-                <ClearableInput name="investigation_findings_further_desc" type="textarea"
-                                defaultValue={investigation_findings_further_desc}
-                                placeholder="Further Incident Investigation Findings" className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
-                <label className="margin-t-25 margin-l-20 w-full">Evidence Documents/Files</label>
-                <AddFilesGridViewInput name="document_list" title="Add Document/File" defaultValue={document_list}
-                                       onChange={this.form.onChange}/>
+                <FormControls>
+                    <Row
+                        rendered
+                        activeAlways
+                        title={`Investigation Findings`}
+                        sectionClassName="min-h-350"
+                    >
+                        <InvestigationFindingsTable
+                            name="investigation_findings_list"
+                            defaultValue={[...(investigation_findings_list || []), null]}
+                            savable
+                            targetItem={item}
+                            onChange={this.form.onChange}
+                        />
+                        <ClearableInput name="investigation_findings_further_desc" type="textarea"
+                                        defaultValue={investigation_findings_further_desc}
+                                        placeholder="Further Incident Investigation Findings" className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                    </Row>
+                    <Row
+                        rendered
+                        activeAlways
+                        title={`Evidence Documents/Files`}
+                        sectionClassName="min-h-350"
+                    >
+                        <NewDocumentTable
+                            ref="document_list"
+                            name="document_list"
+                            defaultValue={[...(document_list || []), null]}
+                            savable
+                            targetItem={item}
+                            onChange={this.form.onChange}
+                        />
+                    </Row>
+                </FormControls>
             </Row>
             <Row
                 rendered
@@ -531,6 +786,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput ref="consequence" name="consequence" type="radio" defaultValue={consequence}
                                 placeholder="Consequence / Severity" className="col-lg-6 form-control" vertical
@@ -570,7 +826,9 @@ class Controls extends React.Component {
                     name="corrective_actions"
                     investigation={item}
                     onChange={this.form.onChange}
-                    onBack={onFormBack}
+                    onFormOpen={onFormOpen}
+                    onFormBack={onFormBack}
+                    onFormNext={onFormNext}
                 />
             </Row>
             <Row
@@ -604,6 +862,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="weather_condition_list" type="checkbox" placeholder="Weather Conditions"
                                 defaultValue={weather_condition_list} vertical={3} className="col-lg-12 form-control"
@@ -617,6 +876,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="protective_equipment_worn_list" type="checkbox"
                                 placeholder="Protective Equipment Worn"
@@ -632,6 +892,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="class_list" type="checkbox" placeholder="Class" defaultValue={class_list}
                                 vertical={3}
@@ -645,6 +906,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="environment_list" type="checkbox" placeholder="Environment"
                                 defaultValue={environment_list} vertical={3} className="col-lg-12 form-control"
@@ -656,6 +918,7 @@ class Controls extends React.Component {
                 title="12. Estimated Costs"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="estimated_costs_damages" type="number" isCurrency placeholder="Damages"
                                 defaultValue={estimated_costs_damages} className="col-lg-12 form-control"

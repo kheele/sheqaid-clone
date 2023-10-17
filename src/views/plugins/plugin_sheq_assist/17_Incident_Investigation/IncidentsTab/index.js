@@ -32,8 +32,6 @@ import byLogged from "./Query/List/listAllIncidentsByLogged";
 import updateIncident from "mutations/all/Incident/updateIncident";
 // </editor-fold>
 
-//SHE Rep., Safety Officer, Safety Manager, Manager, Executive, Safety Committee 
-
 @observer
 class IncidentsTab extends React.Component {
     path;
@@ -397,7 +395,6 @@ class IncidentsTab extends React.Component {
             <div className="td">Group</div>
             <div className="td">Category</div>
             <div className="td">Sub-Category</div>
-            <div className="td">Sector(s)</div>
             <div className="td">Activities</div>
             <div className="td">Description</div>
             <div className="td">Location</div>

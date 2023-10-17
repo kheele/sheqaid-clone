@@ -180,7 +180,6 @@ class CorrectiveActionsTab extends React.Component {
             <div className="td">Group</div>
             <div className="td">Category</div>
             <div className="td">Sub-Category</div>
-            <div className="td">Sector(s)</div>
             <div className="td">Activities</div>
             <div className="td">Description</div>
             <div className="td">Location</div>

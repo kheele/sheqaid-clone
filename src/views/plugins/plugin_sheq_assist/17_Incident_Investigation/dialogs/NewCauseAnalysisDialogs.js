@@ -14,7 +14,7 @@ import updateIncidentCauseAnalysisRoot
     from "mutations/all/Incident/IncidentCauseAnalysisRoot/updateIncidentCauseAnalysisRoot";
 import updateIncidentCauseAnalysisImmediate
     from "mutations/all/Incident/IncidentCauseAnalysisImmediate/updateIncidentCauseAnalysisImmediate";
-import {execWhen} from "../../../../../utils/UtilsFuns";
+import {FormControls, Row} from "components/FormComponents";
 //</editor-fold>
 
 //<editor-fold desc="NewCauseAnalysisRootDialog">
@@ -162,6 +162,7 @@ class ControlsImmediate extends React.Component {
 
     // </editor-fold>
 
+    //<editor-fold desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
         const {form, investigation, cause_analysis} = this;
 
@@ -219,6 +220,7 @@ class ControlsImmediate extends React.Component {
             }
         }
     }
+    //</editor-fold>
 
     get isNew() {
         return !this.immediate_analysis.id;
@@ -246,6 +248,7 @@ class ControlsImmediate extends React.Component {
             return null;
 
         let {
+            props: {onFormOpen, onFormBack, onFormNext,},
             immediate_analysis, immediate_analysis: {
                 sub_standard_practices_or_unsafe_acts: default_sub_standard_practices_or_unsafe_acts,
                 sub_standard_practices_or_unsafe_conditions: default_sub_standard_practices_or_unsafe_conditions,
@@ -267,46 +270,80 @@ class ControlsImmediate extends React.Component {
             default_custom_sub_standard_practices_or_unsafe_conditions = [...default_custom_sub_standard_practices_or_unsafe_conditions, null];
         }
         console.log('immediate_analysis', immediate_analysis)
-        return (<div className="controls-wrapper">
-            <div className="controls">
-                <div className="row">
-                    <div className="row sec-group">
-                        <SelectTable
-                            name="sub_standard_practices_or_unsafe_acts"
-                            desc="Sub-Standard Practices / Unsafe Acts" className="col-lg-6 no-padding"
-                            list={sub_standard_practices_or_unsafe_acts}
-                            defaultValue={default_sub_standard_practices_or_unsafe_acts}
-                            renderItem={this.renderItem}
-                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
-                            onChange={this.form.onChange}
-                        />
-                        <SelectTable
-                            name="sub_standard_practices_or_unsafe_conditions"
-                            desc="Sub-Standard Conditions / Unsafe Conditions" className="col-lg-6 no-padding"
-                            list={sub_standard_practices_or_unsafe_conditions}
-                            defaultValue={default_sub_standard_practices_or_unsafe_conditions}
-                            renderItem={this.renderItem}
-                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
-                            onChange={this.form.onChange}
-                        />
-                        <CustomCauseTable name="custom_sub_standard_practices_or_unsafe_acts"
-                                          desc="Sub-Standard Practices / Unsafe Acts" className="col-lg-6 no-padding"
-                                          defaultValue={default_custom_sub_standard_practices_or_unsafe_acts}
-                                          onChange={this.form.onChange}/>
-                        <CustomCauseTable name="custom_sub_standard_practices_or_unsafe_conditions"
-                                          desc="Sub-Standard Conditions / Unsafe Conditions"
-                                          className="col-lg-6 no-padding"
-                                          defaultValue={default_custom_sub_standard_practices_or_unsafe_conditions}
-                                          onChange={this.form.onChange}/>
-                    </div>
-                </div>
-            </div>
-        </div>);
+        return <FormControls>
+            <Row
+                rendered
+                idx={1}
+                title="1. Sub-Standard Practices / Unsafe Acts"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                <SelectTable
+                    name="sub_standard_practices_or_unsafe_acts"
+                    desc="Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_acts}
+                    defaultValue={default_sub_standard_practices_or_unsafe_acts}
+                    renderItem={this.renderItem}
+                    isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={2}
+                title="2. Sub-Standard Conditions / Unsafe Conditions"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <SelectTable
+                    name="sub_standard_practices_or_unsafe_conditions"
+                    desc="Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    list={sub_standard_practices_or_unsafe_conditions}
+                    defaultValue={default_sub_standard_practices_or_unsafe_conditions}
+                    renderItem={this.renderItem}
+                    isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={3}
+                title="3. Sub-Standard Practices / Unsafe Acts"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <CustomCauseTable
+                    name="custom_sub_standard_practices_or_unsafe_acts"
+                    desc="Sub-Standard Practices / Unsafe Acts"
+                    className="col-lg-12 no-padding"
+                    defaultValue={default_custom_sub_standard_practices_or_unsafe_acts}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={4}
+                title="4. Sub-Standard Conditions / Unsafe Conditions"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+            >
+                <CustomCauseTable
+                    name="custom_sub_standard_practices_or_unsafe_conditions"
+                    desc="Sub-Standard Conditions / Unsafe Conditions"
+                    className="col-lg-12 no-padding"
+                    defaultValue={default_custom_sub_standard_practices_or_unsafe_conditions}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+        </FormControls>;
     }
 
     //</editor-fold>
 }
-
 //</editor-fold>
 
 //<editor-fold desc="ControlsRoot">
@@ -344,6 +381,7 @@ class ControlsRoot extends React.Component {
         this.form = new Form();
     }
 
+    //<editor-fold desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
         const {form, investigation, cause_analysis} = this;
 
@@ -402,6 +440,7 @@ class ControlsRoot extends React.Component {
             }
         }
     }
+    //</editor-fold>
 
     get isNew() {
         return !this.root_analysis.id;
@@ -423,10 +462,12 @@ class ControlsRoot extends React.Component {
         return item.text;
     }
 
+    //<editor-fold desc="render">
     render() {
         if (!this.root_analysis)
             return null;
         let {
+            props:{onFormOpen, onFormBack, onFormNext,},
             root_analysis, root_analysis: {
                 personal_factors: default_personal_factors,
                 job_factors: default_job_factors,
@@ -434,13 +475,9 @@ class ControlsRoot extends React.Component {
                 custom_job_factors: default_custom_job_factors
             }
         } = this;
+
         const {personal_factors, job_factors} = this.state.lists;
-        // if (default_personal_factors) {
-        //     default_personal_factors = default_personal_factors;//.map(({text}) => text);
-        // }
-        // if (default_job_factors) {
-        //     default_job_factors = default_job_factors;//.map(({text}) => text);
-        // }
+
         if (default_custom_personal_factors) {
             default_custom_personal_factors = [...default_custom_personal_factors, null];
         }
@@ -449,36 +486,64 @@ class ControlsRoot extends React.Component {
         }
 
         console.log('root_analysis', root_analysis)
-        return (<div className="controls-wrapper">
-            <div className="controls">
-                <div className="row">
-                    <div className="row sec-group">
-                        <SelectTable
-                            name="personal_factors" desc="Personal Factors" className="col-lg-6 no-padding"
-                            list={personal_factors} defaultValue={default_personal_factors}
-                            renderItem={this.renderItem}
-                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
-                            onChange={this.form.onChange}
-                        />
-                        <SelectTable
-                            name="job_factors" desc="Job Factors" className="col-lg-6 no-padding"
-                            list={job_factors} defaultValue={default_job_factors}
-                            renderItem={this.renderItem}
-                            isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
-                            onChange={this.form.onChange}
-                        />
-                        <CustomCauseTable name="custom_personal_factors" desc="Personal Factors"
-                                          className="col-lg-6 no-padding" defaultValue={default_custom_personal_factors}
-                                          onChange={this.form.onChange}/>
-                        <CustomCauseTable name="custom_job_factors" desc="Job Factors" className="col-lg-6 no-padding"
-                                          defaultValue={default_custom_job_factors} onChange={this.form.onChange}/>
-                    </div>
-                </div>
-            </div>
-        </div>);
+        return <FormControls>
+            <Row
+                rendered
+                idx={1}
+                title="1. Personal Factors"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                <SelectTable
+                    name="personal_factors" desc="Personal Factors" className="col-lg-6 no-padding"
+                    list={personal_factors} defaultValue={default_personal_factors}
+                    renderItem={this.renderItem}
+                    isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={2}
+                title="2. Job Factors"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <SelectTable
+                    name="job_factors" desc="Job Factors" className="col-lg-6 no-padding"
+                    list={job_factors} defaultValue={default_job_factors}
+                    renderItem={this.renderItem}
+                    isChecked={(item, selectedList) => selectedList.anyMatch(v => v.text === item.text)}
+                    onChange={this.form.onChange}
+                />
+            </Row>
+            <Row
+                rendered
+                idx={3}
+                title="3. Custom Personal Factors"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            >
+                <CustomCauseTable name="custom_personal_factors" desc="Personal Factors"
+                                  className="col-lg-12 no-padding" defaultValue={default_custom_personal_factors}
+                                  onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={4}
+                title="4. Custom Job Factors"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+            >
+                <CustomCauseTable name="custom_job_factors" desc="Job Factors" className="col-lg-12 no-padding"
+                                  defaultValue={default_custom_job_factors} onChange={this.form.onChange}/>
+            </Row>
+        </FormControls>;
     }
+    //</editor-fold>
 }
-
 //</editor-fold>
 
 //<editor-fold desc="CustomCauseTable">
@@ -543,7 +608,6 @@ class CustomCauseTable extends ATableSavable {
         </Table>);
     }
 }
-
 //</editor-fold>
 
 export {NewCauseAnalysisRootDialog, NewCauseAnalysisImmediateDialog};

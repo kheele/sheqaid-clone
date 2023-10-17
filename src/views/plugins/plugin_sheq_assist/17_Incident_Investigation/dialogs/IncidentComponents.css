@@ -5,13 +5,15 @@
     font-size: 15px;
 }*/
 
-.controls .CauseAnalysisPanel > div,
-.controls .RemedialOrCorrectiveActionPanel > div {
+.controls .CauseAnalysisPanel > div{
     background: #fafafa;
     border: 2px dotted #eeeeee;
     margin-top: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+.controls .RemedialOrCorrectiveActionPanel > div {
+    margin: -5px -10px -10px;
 }
 .controls .CauseAnalysisPanel > div > label,
 .controls .RemedialOrCorrectiveActionPanel > div > label {
@@ -55,10 +57,14 @@
 .controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable .results-none + .stats {
     margin-top: 60px;
 }
+.controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable .tbody + .stats {
+    margin-top: -100px;
+}
 .controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable,
 .controls .RemedialOrCorrectiveActionPanel .CauseAnalysisTable {
     position: relative;
-    box-shadow: 0 0 3px #ddd; 
+    margin: -5px -10px;
+    width: calc(100% + 10px);
 }
 
 .controls .RemedialOrCorrectiveActionPanelListCover > .CorrectiveActionListByCauseTable:not(:last-of-type),
@@ -97,16 +103,17 @@
 .NewCorrectiveActionsDialog .controls .CustomCorrectiveActionTable .stats .flex > div > span,
 .controls .RemedialOrCorrectiveActionPanel .CorrectiveActionListByCauseTable .stats .flex > div > span,
 .controls .RemedialOrCorrectiveActionPanel .CauseAnalysisTable .stats .flex > div > span {
-    background: rgb(76, 177, 154);
+    background: rgb(237 237 237);
     color: #eee;
-    padding: 4px 9px;
-    margin: 4px;
-    font-size: 20px;
+    padding: 2px 9px;
+    margin: 2px 0 12px;
+    font-size: 18px;
     min-width: 46px;
     width: 100px;
-    height: 38px;
-    border-radius: 5px;
+    height: 34px;
+    border-radius: 40%;
     float: right;
+    color: #888;
 }
 
 .NewCorrectiveActionsDialog .controls .SelectTable .tbody .tr > .td:last-of-type > button {
@@ -126,4 +133,8 @@
 }
 .NewCorrectiveActionsDialog .controls .CustomCorrectiveActionTable .results-none + .stats > .flex {
     display: none;
+}
+
+.RemedialOrCorrectiveActionPanel-Immediate {
+    margin: -2px 0px 0 -10px;
 }

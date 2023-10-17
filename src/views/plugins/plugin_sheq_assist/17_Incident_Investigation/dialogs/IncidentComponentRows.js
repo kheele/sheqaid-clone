@@ -175,10 +175,6 @@ class IncidentTableRow extends React.Component {
                 {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (<span>{name}</span>)) : 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Sector(s)</h6>
-                {sector_list ? sector_list.map(({sector: {name}}) => (<span>{name}</span>)) : 'N/A'}
-            </div>
-            <div className="td">
                 <h6 className="xs-shown font-size-13">Activities</h6>
                 {activity_list ? activity_list.map(({activity: {name}}) => (<span>{name}</span>)) : 'N/A'}
             </div>
@@ -284,10 +280,6 @@ class IncidentInvestigationTableRow extends React.Component {
             <div className="td">
                 <h6 className="xs-shown font-size-13">Sub-Category</h6>
                 {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (<span>{name}</span>)) : 'N/A'}
-            </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Sector(s)</h6>
-                {sector_list ? sector_list.map(({sector: {name}}) => (<span>{name}</span>)) : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Activities</h6>
@@ -405,7 +397,7 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
             personal_factors,
         );
 
-        console.log('CorrectiveActions', item)
+        console.log('CorrectiveActions', item, corrective_actions.slice())
 
         const __className = (className || "") + " w-full";
 
@@ -456,10 +448,6 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
                         <h6 className="xs-shown font-size-13">Sub-Category</h6>
                         {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (
                             <span>{name}</span>)) : 'N/A'}
-                    </div>
-                    <div className="td">
-                        <h6 className="xs-shown font-size-13">Sector(s)</h6>
-                        {sector_list ? sector_list.map(({sector: {name}}) => (<span>{name}</span>)) : 'N/A'}
                     </div>
                     <div className="td">
                         <h6 className="xs-shown font-size-13">Activities</h6>

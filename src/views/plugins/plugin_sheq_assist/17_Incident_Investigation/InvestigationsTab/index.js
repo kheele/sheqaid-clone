@@ -1,19 +1,18 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {isObservableArray, observable} from 'mobx';
+import {observable, extendObservable} from 'mobx';
 
-import {Dates, execWhen} from "utils/Utils";
+import {execWhen} from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {
-    ActionsButton,
     ClearableInput,
     DateRangeInput,
     SelectIncidentActivityList,
     SelectIncidentSubCategoryList
 } from 'components/inputs';
-import {THead, TRow} from 'components/tables';
+import {THead} from 'components/tables';
 
 import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
 import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';
@@ -24,6 +23,7 @@ import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
 import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
+import updateIncident from "mutations/all/Incident/updateIncident";
 
 // </editor-fold>
 
@@ -65,7 +65,7 @@ class InvestigationsTab extends React.Component {
         this.onApproveInvestigation = this.onApproveInvestigation.bind(this);
         this.onAssignInvestigator = this.onAssignInvestigator.bind(this);
         this.onInvestigate = this.onInvestigate.bind(this);
-        this.onCloseInvestigation = this.onCloseInvestigation.bind(this);
+        this.onCloseIncident = this.onCloseIncident.bind(this);
         this.onReOpen = this.onReOpen.bind(this);
 
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
@@ -127,21 +127,26 @@ class InvestigationsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="actions">
     onApproveInvestigation(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        const {investigation} = item.data;
+        const {list} = this.refs.root;
+        const item = list[idx];
         confirmDialog.open("Are you sure you want to approve the investigation?").then(res => {
             if (res === 1) {
                 progressDialog.open("Approving the investigation...");
-                neonBinding.events.emit(this.path + "add-status", item.id, "ApprovedInvestigation").then(res => {
-                    progressDialog.close();
+                updateIncident({id: item.id, status_approved_investigation: true}).then(res => {
                     console.log("res", res)
-                    if (!investigation.status) {
-                        setTimeout(() => {
-                            extendObservable(investigation, {status: ['ApprovedInvestigation']});
-                        });
+                    if (!('status_approved_investigation' in item.data)) {
+                        extendObservable(item.data, {status_approved_investigation: true});
+                    } else {
+                        item.data.status_approved_investigation = true;
                     }
-                    infoDialog.open("Investigation successfully approved.");
+                    setTimeout(() => {
+                        list.removeIf(v => v.id === item.id);
+                        list.insertAt(idx, item);
+                    });
+                    infoDialog.open("Incident Investigation successfully approved.");
                     infoDialog.close(2000);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
                 });
             }
         })
@@ -156,47 +161,59 @@ class InvestigationsTab extends React.Component {
     onInvestigate(e, el) {
         const {idx} = el.props;
         const item = this.refs.root.list[idx];
-        this.refs.newInvestigationDialog.open(item);
+        this.refs.newInvestigationDialog.extraProp('incident', item).open(item.data.investigation);
     }
 
-    onCloseInvestigation(e, el) {
+    onCloseIncident(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        const {investigation} = item.data;
-        confirmDialog.open("Are you sure you want to close the investigation?").then(res => {
+        const {list} = this.refs.root;
+        const item = list[idx];
+        confirmDialog.open("Are you sure you want to close the incident?").then(res => {
             if (res === 1) {
-                progressDialog.open("Closing the investigation...");
-                neonBinding.events.emit(this.path + "add-status", item.id, "ClosedInvestigation").then(res => {
-                    progressDialog.close();
+                progressDialog.open("Closing the incident...");
+                updateIncident({id: item.id, status_closed: true}).then(res => {
                     console.log("res", res)
-                    if (!investigation.status) {
-                        extendObservable(investigation, {status: ['ClosedInvestigation']});
+                    if (!('status_closed' in item.data)) {
+                        extendObservable(item.data, {status_closed: true});
+                    } else {
+                        item.data.status_closed = true;
                     }
                     setTimeout(() => {
-                        investigation.status.push('ClosedInvestigation');
-                    }, 2000);
-                    infoDialog.open("Investigation successfully closed.");
+                        list.removeIf(v => v.id === item.id);
+                        list.insertAt(idx, item);
+                    });
+                    infoDialog.open("Incident successfully closed.");
                     infoDialog.close(2000);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
                 });
             }
-        })
+        });
     }
 
     onReOpen(e, el) {
         const {idx} = el.props;
-        const item = this.refs.root.list[idx];
+        const {list} = this.refs.root;
+        const item = list[idx];
         const {investigation} = item.data;
-        confirmDialog.open("Are you sure you want to re-open the investigation?").then(res => {
+        confirmDialog.open("Are you sure you want to re-open the incident?").then(res => {
             if (res === 1) {
-                progressDialog.open("Re-opening the investigation...");
-                neonBinding.events.emit(this.path + "remove-status", item.id, "ClosedInvestigation").then(res => {
-                    progressDialog.close();
+                progressDialog.open("Re-opening the incident...");
+                updateIncident({id: item.id, status_closed: false}).then(res => {
                     console.log("res", res)
+                    if (!('status_closed' in item.data)) {
+                        extendObservable(item.data, {status_closed: false});
+                    } else {
+                        item.data.status_closed = false;
+                    }
                     setTimeout(() => {
-                        investigation.status.remove('ClosedInvestigation');
+                        list.removeIf(v => v.id === item.id);
+                        list.insertAt(idx, item);
                     });
-                    infoDialog.open("Investigation successfully re-opened.");
+                    infoDialog.open("Incident successfully re-opened.");
                     infoDialog.close(2000);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
                 });
             }
         })
@@ -244,30 +261,42 @@ class InvestigationsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const item = this.refs.root.list[idx];
-        let {id, data: {investigation, investigation: {status = []}}} = item;
-        status = isArray(status) || isObservableArray(status) ? status : [];
+
+        const {
+            id,
+            data: {
+                investigation,
+                //
+                status_closed,
+                status_approved,
+                status_approved_investigation,
+                status_awaiting_approval,
+                status_investigating,
+                status_awaiting_investigation_approval,
+            },
+        } = item;
 
         console.log('this.props.permissionKey', this.props.permissionKey)
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
-            {!status.contains('ClosedInvestigation') && <React.Fragment>
+            {!status_closed && <>
                 <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit"
                          title="Re-Assign Investigator(s)"/>
                 <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
                          title="Investigate"/>
-                {!status.contains('ApprovedInvestigation') &&
+                {!status_approved_investigation &&
                     <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check"
                              title="Approve Investigation"/>}
-            </React.Fragment>}
-
-            {!status.contains('ClosedInvestigation') &&
-                <NavItem action="writable" idx={idx} onClick={this.onCloseInvestigation} faIconLeft="ban"
-                         title="Close Investigation"/>}
-            {status.contains('ClosedInvestigation') &&
+                {status_approved_investigation &&
+                    <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
+                             title="Close Incident"/>}
+            </>}
+            {status_closed &&
                 <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
-                         title="Re-Open Investigation"/>}
+                         title="Re-Open Incident"/>}
+
             <hr action="writable"/>
             <NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>
             <NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
@@ -330,7 +359,6 @@ class InvestigationsTab extends React.Component {
             <div className="td">Group</div>
             <div className="td">Category</div>
             <div className="td">Sub-Category</div>
-            <div className="td">Sector(s)</div>
             <div className="td">Activities</div>
             <div className="td">Description</div>
             <div className="td">Location</div>

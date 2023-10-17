@@ -6,6 +6,10 @@ import {graphql} from "react-relay";
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityAudit} from "mutations/types.d.ts";
 import findByIdIncidentInvestigation from "./findByIdIncidentInvestigation";
+import updateAssetPhoto from "../../Asset/updateAssetPhoto";
+import insertAssetPhoto from "../../Asset/insertAssetPhoto";
+import updateAssetDoc from "../../Asset/updateAssetDoc";
+import insertAssetDoc from "../../Asset/insertAssetDoc";
 
 // 2
 const mutation = graphql`
