@@ -77,7 +77,6 @@ class Controls extends React.Component {
             loading: false,
             username: null
         },
-        item: null,
     };
     // </editor-fold>
 
@@ -161,7 +160,7 @@ class Controls extends React.Component {
     }
 
     onUploaded(path) {
-        this.item.data.profile_pic = path;
+        extendObservable(this.item.data, {profile_pic: path});
         if (this.isLoggedUser) {
             const {user} = storage.loggedUser;
             user.data.profile_pic = path;
@@ -406,7 +405,7 @@ class Controls extends React.Component {
     }
 
     @computed get item() {
-        return this.state.item;
+        return this.props.state.item;
     }
 
     get isLoggedUser() {
@@ -447,8 +446,7 @@ class Controls extends React.Component {
             }
         } = this;
 
-        const {data = {}} = contractor;
-        const {name: contractorName} = data;
+        const {name: contractorName} = contractor || {};
 
         console.log(this.item)
 
@@ -479,9 +477,9 @@ class Controls extends React.Component {
                     onFormNext={onFormNext}
                     onFormBack={onFormBack}
                 >
-                    <ProfileField title="Company" value={client} renderer={v => v.name || v.data.name}
+                    <ProfileField title="Company" value={client} renderer={v => v.name}
                                   className="col-lg-12"/>
-                    <ProfileField title="Project" value={project} renderer={v => v.name || v.data.name}
+                    <ProfileField title="Site" value={site} renderer={v => v.name}
                                   className="col-lg-12"/>
                 </Row>
                 <Row

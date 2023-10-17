@@ -8,10 +8,12 @@ router.post('/User', async (req, res) => {
     const {session} = req;
 
     const data = await onSetCustomUserClaims({
-        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
-            res.cookie('session', sessionCookie, options);
-        }
+        session, data: {idToken, csrfToken}, access_type,
     });
+    if(data) {
+        const {sessionCookie, options} = data;
+        res.cookie('session', sessionCookie, options);
+    }
     res.json(data);
 });
 
@@ -22,10 +24,12 @@ router.post('/ContractorUser', async (req, res) => {
     const {session} = req;
 
     const data = await onSetCustomUserClaims({
-        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
-            res.cookie('session', sessionCookie, options);
-        }
+        session, data: {idToken, csrfToken}, access_type,
     });
+    if(data) {
+        const {sessionCookie, options} = data;
+        res.cookie('session', sessionCookie, options);
+    }
     res.json(data);
 });
 
@@ -36,10 +40,12 @@ router.post('/Staff', async (req, res) => {
     const {session} = req;
 
     const data = await onSetCustomUserClaims({
-        session, data: {idToken, csrfToken}, access_type, onSetCookie: (sessionCookie, options) => {
-            res.cookie('session', sessionCookie, options);
-        }
+        session, data: {idToken, csrfToken}, access_type,
     });
+    if(data) {
+        const {sessionCookie, options} = data;
+        res.cookie('session', sessionCookie, options);
+    }
     res.json(data);
 });
 

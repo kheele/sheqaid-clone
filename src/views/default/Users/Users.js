@@ -17,7 +17,8 @@ import EditDialog from './EditDialog';
 
 import style from "./Users.lazy.css";
 
-import byLogged from "./Query/List/listAllUserByLogged";
+import listAllUserByLogged from "./Query/List/listAllUserByLogged";
+import listAllContractorUserByLogged from "./Query/List/listAllContractorUserByLogged";
 import MKBox from "components/MK/MKBox";
 
 @observer
@@ -56,6 +57,7 @@ class Users extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {isContractor} = storage.is;
         // const {list} = this.props;
         // if(list) {
         //     return this.findByIdsEmployees(list.map(({id}) => id));
@@ -84,6 +86,8 @@ class Users extends React.Component {
         } else {
             args.offset = 0;
         }
+
+        const byLogged = isContractor ? listAllContractorUserByLogged : listAllUserByLogged;
 
         return byLogged(args).then((res) => {
             console.log('onLoadList res', res)

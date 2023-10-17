@@ -204,8 +204,6 @@ exports.onCreatedQuestionnaire = async (body) => {
 		}
 	} = new_item;
 
-	// await getDecodedIdTokenFromSession({req, access_type});
-
 	const ccList = [username, ...contractor_user_list.map(v => v.username)];
 	if(user) {
 		ccList.push(user.username);

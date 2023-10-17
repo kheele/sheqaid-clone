@@ -618,7 +618,7 @@ class Controls extends AControls {
 	}
 	
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 	
 	//<editor-fold desc="render">

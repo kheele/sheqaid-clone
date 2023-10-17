@@ -784,7 +784,7 @@ class Controls extends React.Component {
 		const showBlacklisting = !isClientBlacklisted(client) && !isProjectBlacklisted(project) && !isSiteBlacklisted(site);
 
 		let idx = 0;
-		let idx_1 = 0.1;
+		let idx_1 = 1;
 		return (<FormControls>
 			{!shouldSetupPermissions && <>
 				{!isNoProjects && <Row

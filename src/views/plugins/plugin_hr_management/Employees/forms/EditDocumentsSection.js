@@ -34,7 +34,7 @@ class EditDocumentsSection extends React.Component {
 
 	//<editor-fold desc="formData">
 	get formData() {
-		const {data} = this.form;
+		const {form, form:{data}} = this;
 		let {
 			'document_list__ID/Passport': document_list__id_or_passport,
 			'document_list__PrDP': document_list__prdp,

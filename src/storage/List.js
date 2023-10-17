@@ -86,7 +86,11 @@ class List {
             console.log('clients my_client', my_client)
             if (isLoggedProject) {
                 setTimeout(() => {
-                    my_client.data.project_list = projects;
+                    if(my_client.data) {
+                        my_client.data.project_list = projects;
+                    } else {
+                        my_client.project_list = projects;
+                    }
                 });
             }
             return [my_client];
@@ -112,7 +116,11 @@ class List {
             console.log('projects my_project', my_project)
             if (isLoggedSite) {
                 setTimeout(() => {
-                    my_project.data.site_list = sites;
+                    if(my_project.data) {
+                        my_project.data.site_list = sites;
+                    } else {
+                        my_project.site_list = sites;
+                    }
                 });
             }
             return [my_project];

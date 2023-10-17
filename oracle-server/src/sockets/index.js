@@ -1,3 +1,5 @@
+require('./client-sockets');
+
 const {Server} = require("socket.io");
 // const {createShardedAdapter } = require("@socket.io/redis-adapter");
 // const {createClient} = require("redis");

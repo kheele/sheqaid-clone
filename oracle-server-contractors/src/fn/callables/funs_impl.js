@@ -22,13 +22,18 @@ global.setCustomUserClaims = (uid, claims) => {
 }
 //</editor-fold>
 
+//<editor-fold desc="createCustomToken">
+global.createCustomToken = (uid) => {
+    return admin.auth().createCustomToken(uid, {access_type: "ContractorUser"});
+}
+//</editor-fold>
+
 //<editor-fold desc="sendRelay">
 global.sendRelay = async (args) => {
     if(!args) return null;
     const {query, variables, operationName} = args;
 
-    const API_URL = "http://cloud.sheqaid.com:8080/v1beta1/relay";
-    const result = await fetch(API_URL, {
+    const result = await fetch(process.env.HASURA_RELAY_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -53,6 +58,34 @@ global.sendRelay = async (args) => {
     // console.log('sendRelay res', data);
 
     return data;
+};
+//</editor-fold>
+
+//<editor-fold desc="listRelay">
+global.listRelay = async ({query, operationName, variables}) => {
+    const query_res = await sendRelay({
+        query,
+        operationName,
+        variables,
+    });
+    if (!query_res) {
+        return;
+    }
+
+    const key = Object.keys(query_res)[0];
+    const connection = query_res[key];
+    // console.log('connection', connection)
+    const {edges = []} = connection;
+    const nodes = edges.map(({cursor, node}) => {
+        node = convertMutations(node);
+        if (node.id) {
+            return {data: node, id: node.id, cursor};
+        } else {
+            return node;
+        }
+    });
+    // console.log("onCompleted nodes", nodes);
+    return nodes;
 };
 //</editor-fold>
 
@@ -96,5 +129,31 @@ global.getRelayOne = async ({query, operationName, variables, multi_queries = fa
         }
         return convertMutations(node);
     }
+};
+//</editor-fold>
+
+//<editor-fold desc="insertRelay">
+global.insertRelay = async ({query, operationName, input}) => {
+    return await sendRelay({
+        query,
+        operationName,
+        variables: {object: input}
+    });
+};
+//</editor-fold>
+
+//<editor-fold desc="updateRelay">
+global.updateRelay = async ({mutation, operationName, id, attrs}) => {
+    if(attrs.id) {
+        delete attrs.id;
+    }
+    return await sendRelay({
+        query: mutation,
+        operationName,
+        variables: {
+            id: { id },
+            _set: attrs,
+        },
+    });
 };
 //</editor-fold>

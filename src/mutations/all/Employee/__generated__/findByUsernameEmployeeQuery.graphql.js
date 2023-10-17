@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6d7305289c58877a34f6847706ada3da>>
+ * @generated SignedSource<<032b99534ee356253dc44108eb1c8f33>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,20 +30,32 @@ v2 = [
       {
         "fields": [
           {
-            "fields": [
+            "items": [
               {
-                "fields": (v1/*: any*/),
+                "fields": [
+                  {
+                    "fields": (v1/*: any*/),
+                    "kind": "ObjectValue",
+                    "name": "email"
+                  }
+                ],
                 "kind": "ObjectValue",
-                "name": "email"
+                "name": "_or.0"
+              },
+              {
+                "fields": [
+                  {
+                    "fields": (v1/*: any*/),
+                    "kind": "ObjectValue",
+                    "name": "phone"
+                  }
+                ],
+                "kind": "ObjectValue",
+                "name": "_or.1"
               }
             ],
-            "kind": "ObjectValue",
+            "kind": "ListValue",
             "name": "_or"
-          },
-          {
-            "fields": (v1/*: any*/),
-            "kind": "ObjectValue",
-            "name": "phone"
           }
         ],
         "kind": "ObjectValue",
@@ -77,6 +89,13 @@ v2 = [
                 "kind": "ScalarField",
                 "name": "id",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "auth_id",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -106,16 +125,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "4f3079f24414cbb842b3bc931c85545b",
+    "cacheID": "8c171631fa5772aa7ceeed5ebaeee3a8",
     "id": null,
     "metadata": {},
     "name": "findByUsernameEmployeeQuery",
     "operationKind": "query",
-    "text": "query findByUsernameEmployeeQuery(\n  $username: String\n) {\n  hr_employees_connection(where: {_or: {email: {_eq: $username}}, phone: {_eq: $username}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query findByUsernameEmployeeQuery(\n  $username: String\n) {\n  hr_employees_connection(where: {_or: [{email: {_eq: $username}}, {phone: {_eq: $username}}]}) {\n    edges {\n      node {\n        id\n        auth_id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "b238d98127d8fa63c185ea02eea3b494";
+node.hash = "28c36375628cd7fdd992237a0963c3b2";
 
 module.exports = node;

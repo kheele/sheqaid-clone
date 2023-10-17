@@ -20,6 +20,27 @@ export const orgs_fragment = `
 `;
 //</editor-fold>
 
+//<editor-fold desc="orgs_contractor_fragment">
+export const orgs_contractor_fragment = `
+    company {
+        id
+        name
+    }
+    contractor {
+        id
+        name
+    }
+    client {
+        id
+        name
+    }
+    site {
+        id
+        name
+    }
+`;
+//</editor-fold>
+
 //<editor-fold desc="orgs_no_site_fragment">
 export const orgs_no_site_fragment = `
     company {

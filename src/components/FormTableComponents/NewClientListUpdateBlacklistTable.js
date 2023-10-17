@@ -20,19 +20,17 @@ class ListTable extends ANewListTable {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
         if (item && (item.company || item.id)) {
+            console.log(item.company || item)
             const {
-                id, data: {
-                    name,
-                    email,
-                    address
-                }
+                id,
+                name,
+                email,
+                address,
             } = item.company || item;
 
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
                 <div className="td">{name}</div>
-                <div className="td">{email}</div>
-                <div className="td">{address}</div>
                 {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
@@ -46,14 +44,14 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="padding-10 w-full">
-                <div className="td flex padding-0 margin-0">
+            return <TRow key="item-new" className="padding-10 min-h-105 w-full">
+                <div className="td grid-1 grid-gap-10 padding-0 margin-0">
                     <SelectClientInput
                         ref={this.onSetRef}
                         name="company"
                         placeholder="Add Company..."
                         required
-                        className="no-border-radius-r form-control"
+                        className="form-control"
                         onChange={this.onChange}
                         isBlacklisting
                         add={false}
@@ -61,10 +59,10 @@ class ListTable extends ANewListTable {
                     <Button
                         idx={n}
                         action="save"
-                        className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l"
+                        className="btn btn-primary fixed-flex hor-center w-200 margin-0 border-radius-20"
                         onClick={onClick}
                     >
-                        <i className="fa fa-check"/>
+                        <i className="fa fa-check"/> ADD
                     </Button>
                 </div>
             </TRow>;
@@ -76,8 +74,6 @@ class ListTable extends ANewListTable {
         return <THead className="align-left">
             <div className="td fixed-flex min-w-30">#</div>
             <div className="td">Company Name</div>
-            <div className="td">Email Address</div>
-            <div className="td">Address</div>
             {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
             {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
         </THead>;

@@ -111,16 +111,16 @@ class AFormDialog extends React.Component {
 			// createGetter.call(controls, "item", () => this.state.item);
 			if(item && controls.state) {
 				controls.state.item = item;
-				createGetter.call(controls, "item", () => {
-					const {$mobx} = this;
-					console.log('createGetter', this, $mobx)
-					if ($mobx && $mobx.values) {
-						const {values} = $mobx;
-						if (values['item']) {
-							return values['item'].get();
-						}
-					}
-				});
+				// createGetter.call(controls, "item", () => {
+				// 	const {$mobx} = this;
+				// 	console.log('createGetter', this, $mobx)
+				// 	if ($mobx && $mobx.values) {
+				// 		const {values} = $mobx;
+				// 		if (values['item']) {
+				// 			return values['item'].get();
+				// 		}
+				// 	}
+				// });
 			// 	// createGetter.call(controls, "item", computed(() => this.state.item));
 			// 	// createGetter.call(controls, "item", () => this.state.item);
 			// 	// extendObservable(controls, {item: computed(() => this.state.item)});

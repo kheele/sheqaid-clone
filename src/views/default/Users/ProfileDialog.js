@@ -103,7 +103,6 @@ class Controls extends React.Component {
                 checked: true
             }, {text: "Biometric Authentication (Face)", value: "Biometric", checked: false}],
         },
-        item: null,
     };
     // </editor-fold>
 
@@ -120,7 +119,7 @@ class Controls extends React.Component {
     // </editor-fold>
 
     onUploaded(path) {
-        this.item.profile_pic = path;
+        extendObservable(this.item.data, {profile_pic: path});
         if (this.isLoggedUser) {
             const {user} = storage.loggedUser;
             user.profile_pic = path;
@@ -140,7 +139,7 @@ class Controls extends React.Component {
     }
 
     @computed get item() {
-        return this.state.item;
+        return this.props.state.item;
     }
 
     get isLoggedUser() {
@@ -189,8 +188,7 @@ class Controls extends React.Component {
             }
         } = this;
 
-        const {data = {}} = contractor;
-        const {name: contractorName} = data;
+        const {name: contractorName} = contractor || {};
 
         const {
             receive_asset_management_notifs,
@@ -243,14 +241,14 @@ class Controls extends React.Component {
             {isContractor && <Row
                 rendered
                 idx={idx += 0.1}
-                title="Company / Project"
+                title="Company / Site"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
                 <ProfileField title="Company" value={client} renderer={v => v.name}
                               className="col-lg-12"/>
-                <ProfileField title="Project" value={project} renderer={v => v.name}
+                <ProfileField title="Site" value={site} renderer={v => v.name}
                               className="col-lg-12"/>
             </Row>}
             {!isContractor && !isNoProjects && <Row
@@ -277,7 +275,7 @@ class Controls extends React.Component {
                 onFormBack={!isNoProjects && onFormBack}
             >
                 <FormControls>
-                    {isConsultant && !isClientBlacklisted(client) && <Row
+                    {(isConsultant || isContractor) && !isClientBlacklisted(client) && <Row
                         rendered
                         idx={'BlacklistedCompanies'}
                         title={(idx + "." + idx_1) + ". Blacklisted Companies"}
@@ -290,7 +288,7 @@ class Controls extends React.Component {
                             readonly
                         />
                     </Row>}
-                    {!isProjectBlacklisted(project) && <Row
+                    {!isContractor && !isProjectBlacklisted(project) && <Row
                         rendered
                         idx={'BlacklistedProjects'}
                         title={(idx + "." + (idx_1++)) + ". Blacklisted Projects"}

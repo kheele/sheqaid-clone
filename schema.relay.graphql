@@ -10667,6 +10667,9 @@ type default_contractor_users implements Node {
     auth_id: String
     auth_type: auth_type!
     "An object relationship"
+    client: default_clients
+    client_id: bigint
+    "An object relationship"
     company: default_companies
     company_id: bigint
     "An object relationship"
@@ -12449,6 +12452,7 @@ type default_contractor_users_aggregate_fields {
 
 "aggregate avg on columns"
 type default_contractor_users_avg_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12462,6 +12466,7 @@ type default_contractor_users_avg_fields {
 type default_contractor_users_max_fields {
     auth_id: String
     auth_type: auth_type
+    client_id: bigint
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
@@ -12483,6 +12488,7 @@ type default_contractor_users_max_fields {
 type default_contractor_users_min_fields {
     auth_id: String
     auth_type: auth_type
+    client_id: bigint
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
@@ -12510,6 +12516,7 @@ type default_contractor_users_mutation_response {
 
 "aggregate stddev on columns"
 type default_contractor_users_stddev_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12521,6 +12528,7 @@ type default_contractor_users_stddev_fields {
 
 "aggregate stddev_pop on columns"
 type default_contractor_users_stddev_pop_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12532,6 +12540,7 @@ type default_contractor_users_stddev_pop_fields {
 
 "aggregate stddev_samp on columns"
 type default_contractor_users_stddev_samp_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12543,6 +12552,7 @@ type default_contractor_users_stddev_samp_fields {
 
 "aggregate sum on columns"
 type default_contractor_users_sum_fields {
+    client_id: bigint
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
@@ -12554,6 +12564,7 @@ type default_contractor_users_sum_fields {
 
 "aggregate var_pop on columns"
 type default_contractor_users_var_pop_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12565,6 +12576,7 @@ type default_contractor_users_var_pop_fields {
 
 "aggregate var_samp on columns"
 type default_contractor_users_var_samp_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -12576,6 +12588,7 @@ type default_contractor_users_var_samp_fields {
 
 "aggregate variance on columns"
 type default_contractor_users_variance_fields {
+    client_id: Float
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
@@ -56039,27 +56052,7 @@ type sheq_incident_investigation_cause_analysis_immediate implements Node {
         "filter the rows returned"
         where: sheq_incident_investigation_cause_analysis_causes_bool_exp
     ): sheq_incident_investigation_cause_analysis_causesConnection!
-    "A computed field, executes function \"cause_analysis_immediate_cust_sub_standard_practices_or_unsafea\""
-    custom_sub_standard_practices_or_unsafe_acts(
-        "JSON select path"
-        path: String
-    ): json
-    "A computed field, executes function \"cause_analysis_immediate_cust_sub_standard_practices_or_unsafco\""
-    custom_sub_standard_practices_or_unsafe_conditions(
-        "JSON select path"
-        path: String
-    ): json
     id: ID!
-    "A computed field, executes function \"cause_analysis_immediate_sub_standard_practices_or_unsafe_acts\""
-    sub_standard_practices_or_unsafe_acts(
-        "JSON select path"
-        path: String
-    ): json
-    "A computed field, executes function \"cause_analysis_immediate_sub_standard_practices_or_unsafe_condi\""
-    sub_standard_practices_or_unsafe_conditions(
-        "JSON select path"
-        path: String
-    ): json
 }
 
 "A Relay connection object on \"sheq_incident_investigation_cause_analysis_immediate\""
@@ -56130,27 +56123,7 @@ type sheq_incident_investigation_cause_analysis_root implements Node {
         "filter the rows returned"
         where: sheq_incident_investigation_cause_analysis_causes_bool_exp
     ): sheq_incident_investigation_cause_analysis_causesConnection!
-    "A computed field, executes function \"cause_analysis_root_custom_job_factors\""
-    custom_job_factors(
-        "JSON select path"
-        path: String
-    ): json
-    "A computed field, executes function \"cause_analysis_root_custom_personal_factors\""
-    custom_personal_factors(
-        "JSON select path"
-        path: String
-    ): json
     id: ID!
-    "A computed field, executes function \"cause_analysis_root_job_factors\""
-    job_factors(
-        "JSON select path"
-        path: String
-    ): json
-    "A computed field, executes function \"cause_analysis_root_personal_factors\""
-    personal_factors(
-        "JSON select path"
-        path: String
-    ): json
 }
 
 "A Relay connection object on \"sheq_incident_investigation_cause_analysis_root\""
@@ -56576,11 +56549,6 @@ type sheq_incident_investigation_investigations implements Node {
         "JSON select path"
         path: String
     ): json
-    "A computed field, executes function \"investigations_corrective_actions\""
-    corrective_actions(
-        "JSON select path"
-        path: String
-    ): json
     created_at: date!
     "An array relationship"
     distribution_list(
@@ -56825,6 +56793,7 @@ type sheq_incident_investigation_investigations_docs implements Node {
     "An object relationship"
     investigation: sheq_incident_investigation_investigations!
     investigation_id: bigint!
+    removed: Boolean!
 }
 
 "A Relay connection object on \"sheq_incident_investigation_investigations_docs\""
@@ -56934,6 +56903,7 @@ type sheq_incident_investigation_investigations_findings implements Node {
     "An object relationship"
     investigation: sheq_incident_investigation_investigations!
     investigation_id: bigint!
+    removed: Boolean!
 }
 
 "A Relay connection object on \"sheq_incident_investigation_investigations_findings\""
@@ -75763,6 +75733,8 @@ enum default_contractor_users_select_column {
     "column name"
     auth_type
     "column name"
+    client_id
+    "column name"
     company_id
     "column name"
     contractor_id
@@ -75820,6 +75792,8 @@ enum default_contractor_users_update_column {
     auth_id
     "column name"
     auth_type
+    "column name"
+    client_id
     "column name"
     company_id
     "column name"
@@ -82518,6 +82492,20 @@ enum sheq_incident_investigation_investigations_docs_select_column {
     id
     "column name"
     investigation_id
+    "column name"
+    removed
+}
+
+"select \"sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_incident_investigation_investigations_docs\""
+enum sheq_incident_investigation_investigations_docs_select_column_sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    removed
+}
+
+"select \"sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_incident_investigation_investigations_docs\""
+enum sheq_incident_investigation_investigations_docs_select_column_sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_incident_investigation_investigations_docs\""
@@ -82528,6 +82516,8 @@ enum sheq_incident_investigation_investigations_docs_update_column {
     id
     "column name"
     investigation_id
+    "column name"
+    removed
 }
 
 "unique or primary key constraints on table \"sheq_incident_investigation_investigations_findings\""
@@ -82544,6 +82534,20 @@ enum sheq_incident_investigation_investigations_findings_select_column {
     id
     "column name"
     investigation_id
+    "column name"
+    removed
+}
+
+"select \"sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_incident_investigation_investigations_findings\""
+enum sheq_incident_investigation_investigations_findings_select_column_sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_and_arguments_columns {
+    "column name"
+    removed
+}
+
+"select \"sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_incident_investigation_investigations_findings\""
+enum sheq_incident_investigation_investigations_findings_select_column_sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    removed
 }
 
 "update columns of table \"sheq_incident_investigation_investigations_findings\""
@@ -82554,6 +82558,8 @@ enum sheq_incident_investigation_investigations_findings_update_column {
     id
     "column name"
     investigation_id
+    "column name"
+    removed
 }
 
 "select columns of table \"sheq_incident_investigation_investigations\""
@@ -96155,6 +96161,7 @@ input default_contractor_users_arr_rel_insert_input {
 
 "order by avg() on columns of table \"default_contractor_users\""
 input default_contractor_users_avg_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96175,6 +96182,8 @@ input default_contractor_users_bool_exp {
     audit_trail_list_aggregate: default_audit_trails_aggregate_bool_exp
     auth_id: String_comparison_exp
     auth_type: auth_type_comparison_exp
+    client: default_clients_bool_exp
+    client_id: bigint_comparison_exp
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     contractor: default_contractors_bool_exp
@@ -96291,6 +96300,7 @@ input default_contractor_users_bool_exp {
 
 "input type for incrementing numeric columns in table \"default_contractor_users\""
 input default_contractor_users_inc_input {
+    client_id: bigint
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
@@ -96306,6 +96316,8 @@ input default_contractor_users_insert_input {
     audit_trail_list: default_audit_trails_arr_rel_insert_input
     auth_id: String
     auth_type: auth_type
+    client: default_clients_obj_rel_insert_input
+    client_id: bigint
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     contractor: default_contractors_obj_rel_insert_input
@@ -96379,6 +96391,7 @@ input default_contractor_users_insert_input {
 input default_contractor_users_max_order_by {
     auth_id: order_by
     auth_type: order_by
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96400,6 +96413,7 @@ input default_contractor_users_max_order_by {
 input default_contractor_users_min_order_by {
     auth_id: order_by
     auth_type: order_by
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96437,6 +96451,8 @@ input default_contractor_users_order_by {
     audit_trail_list_aggregate: default_audit_trails_aggregate_order_by
     auth_id: order_by
     auth_type: order_by
+    client: default_clients_order_by
+    client_id: order_by
     company: default_companies_order_by
     company_id: order_by
     contractor: default_contractors_order_by
@@ -96516,6 +96532,7 @@ input default_contractor_users_pk_columns_input {
 input default_contractor_users_set_input {
     auth_id: String
     auth_type: auth_type
+    client_id: bigint
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
@@ -96537,6 +96554,7 @@ input default_contractor_users_set_input {
 
 "order by stddev() on columns of table \"default_contractor_users\""
 input default_contractor_users_stddev_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96548,6 +96566,7 @@ input default_contractor_users_stddev_order_by {
 
 "order by stddev_pop() on columns of table \"default_contractor_users\""
 input default_contractor_users_stddev_pop_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96559,6 +96578,7 @@ input default_contractor_users_stddev_pop_order_by {
 
 "order by stddev_samp() on columns of table \"default_contractor_users\""
 input default_contractor_users_stddev_samp_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96570,6 +96590,7 @@ input default_contractor_users_stddev_samp_order_by {
 
 "order by sum() on columns of table \"default_contractor_users\""
 input default_contractor_users_sum_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96589,6 +96610,7 @@ input default_contractor_users_updates {
 
 "order by var_pop() on columns of table \"default_contractor_users\""
 input default_contractor_users_var_pop_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96600,6 +96622,7 @@ input default_contractor_users_var_pop_order_by {
 
 "order by var_samp() on columns of table \"default_contractor_users\""
 input default_contractor_users_var_samp_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -96611,6 +96634,7 @@ input default_contractor_users_var_samp_order_by {
 
 "order by variance() on columns of table \"default_contractor_users\""
 input default_contractor_users_variance_order_by {
+    client_id: order_by
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
@@ -123388,11 +123412,7 @@ input sheq_incident_investigation_cause_analysis_immediate_bool_exp {
     _or: [sheq_incident_investigation_cause_analysis_immediate_bool_exp!]
     cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_bool_exp
     cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp
-    custom_sub_standard_practices_or_unsafe_acts: json_comparison_exp
-    custom_sub_standard_practices_or_unsafe_conditions: json_comparison_exp
     id: bigint_comparison_exp
-    sub_standard_practices_or_unsafe_acts: json_comparison_exp
-    sub_standard_practices_or_unsafe_conditions: json_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis_immediate\""
@@ -123423,11 +123443,7 @@ input sheq_incident_investigation_cause_analysis_immediate_on_conflict {
 "Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis_immediate\"."
 input sheq_incident_investigation_cause_analysis_immediate_order_by {
     cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_order_by
-    custom_sub_standard_practices_or_unsafe_acts: order_by
-    custom_sub_standard_practices_or_unsafe_conditions: order_by
     id: order_by
-    sub_standard_practices_or_unsafe_acts: order_by
-    sub_standard_practices_or_unsafe_conditions: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_cause_analysis_immediate"
@@ -123499,11 +123515,7 @@ input sheq_incident_investigation_cause_analysis_root_bool_exp {
     _or: [sheq_incident_investigation_cause_analysis_root_bool_exp!]
     cause_analysis_cause_list: sheq_incident_investigation_cause_analysis_causes_bool_exp
     cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_bool_exp
-    custom_job_factors: json_comparison_exp
-    custom_personal_factors: json_comparison_exp
     id: bigint_comparison_exp
-    job_factors: json_comparison_exp
-    personal_factors: json_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_cause_analysis_root\""
@@ -123534,11 +123546,7 @@ input sheq_incident_investigation_cause_analysis_root_on_conflict {
 "Ordering options when selecting data from \"sheq_incident_investigation_cause_analysis_root\"."
 input sheq_incident_investigation_cause_analysis_root_order_by {
     cause_analysis_cause_list_aggregate: sheq_incident_investigation_cause_analysis_causes_aggregate_order_by
-    custom_job_factors: order_by
-    custom_personal_factors: order_by
     id: order_by
-    job_factors: order_by
-    personal_factors: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_cause_analysis_root"
@@ -124171,7 +124179,6 @@ input sheq_incident_investigation_investigations_bool_exp {
     cause_analysis: sheq_incident_investigation_cause_analysis_bool_exp
     cause_analysis_id: bigint_comparison_exp
     class_list: json_comparison_exp
-    corrective_actions: json_comparison_exp
     created_at: date_comparison_exp
     distribution_list: proxy_incident__distribution_bool_exp
     distribution_list_aggregate: proxy_incident__distribution_aggregate_bool_exp
@@ -124201,7 +124208,23 @@ input sheq_incident_investigation_investigations_bool_exp {
 }
 
 input sheq_incident_investigation_investigations_docs_aggregate_bool_exp {
+    bool_and: sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_and
+    bool_or: sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_or
     count: sheq_incident_investigation_investigations_docs_aggregate_bool_exp_count
+}
+
+input sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_and {
+    arguments: sheq_incident_investigation_investigations_docs_select_column_sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_investigations_docs_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_or {
+    arguments: sheq_incident_investigation_investigations_docs_select_column_sheq_incident_investigation_investigations_docs_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_investigations_docs_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input sheq_incident_investigation_investigations_docs_aggregate_bool_exp_count {
@@ -124248,6 +124271,7 @@ input sheq_incident_investigation_investigations_docs_bool_exp {
     id: bigint_comparison_exp
     investigation: sheq_incident_investigation_investigations_bool_exp
     investigation_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_investigations_docs\""
@@ -124262,6 +124286,7 @@ input sheq_incident_investigation_investigations_docs_insert_input {
     id: bigint
     investigation: sheq_incident_investigation_investigations_obj_rel_insert_input
     investigation_id: bigint
+    removed: Boolean
 }
 
 "order by max() on columns of table \"sheq_incident_investigation_investigations_docs\""
@@ -124289,6 +124314,7 @@ input sheq_incident_investigation_investigations_docs_order_by {
     id: order_by
     investigation: sheq_incident_investigation_investigations_order_by
     investigation_id: order_by
+    removed: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_investigations_docs"
@@ -124301,6 +124327,7 @@ input sheq_incident_investigation_investigations_docs_set_input {
     doc: json
     id: bigint
     investigation_id: bigint
+    removed: Boolean
 }
 
 "order by stddev() on columns of table \"sheq_incident_investigation_investigations_docs\""
@@ -124354,7 +124381,23 @@ input sheq_incident_investigation_investigations_docs_variance_order_by {
 }
 
 input sheq_incident_investigation_investigations_findings_aggregate_bool_exp {
+    bool_and: sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_and
+    bool_or: sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_or
     count: sheq_incident_investigation_investigations_findings_aggregate_bool_exp_count
+}
+
+input sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_and {
+    arguments: sheq_incident_investigation_investigations_findings_select_column_sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_and_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_investigations_findings_bool_exp
+    predicate: Boolean_comparison_exp!
+}
+
+input sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_or {
+    arguments: sheq_incident_investigation_investigations_findings_select_column_sheq_incident_investigation_investigations_findings_aggregate_bool_exp_bool_or_arguments_columns!
+    distinct: Boolean
+    filter: sheq_incident_investigation_investigations_findings_bool_exp
+    predicate: Boolean_comparison_exp!
 }
 
 input sheq_incident_investigation_investigations_findings_aggregate_bool_exp_count {
@@ -124401,6 +124444,7 @@ input sheq_incident_investigation_investigations_findings_bool_exp {
     id: bigint_comparison_exp
     investigation: sheq_incident_investigation_investigations_bool_exp
     investigation_id: bigint_comparison_exp
+    removed: Boolean_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_incident_investigation_investigations_findings\""
@@ -124415,6 +124459,7 @@ input sheq_incident_investigation_investigations_findings_insert_input {
     id: bigint
     investigation: sheq_incident_investigation_investigations_obj_rel_insert_input
     investigation_id: bigint
+    removed: Boolean
 }
 
 "order by max() on columns of table \"sheq_incident_investigation_investigations_findings\""
@@ -124444,6 +124489,7 @@ input sheq_incident_investigation_investigations_findings_order_by {
     id: order_by
     investigation: sheq_incident_investigation_investigations_order_by
     investigation_id: order_by
+    removed: order_by
 }
 
 "primary key columns input for table: sheq_incident_investigation_investigations_findings"
@@ -124456,6 +124502,7 @@ input sheq_incident_investigation_investigations_findings_set_input {
     desc: String
     id: bigint
     investigation_id: bigint
+    removed: Boolean
 }
 
 "order by stddev() on columns of table \"sheq_incident_investigation_investigations_findings\""
@@ -124567,7 +124614,6 @@ input sheq_incident_investigation_investigations_order_by {
     cause_analysis: sheq_incident_investigation_cause_analysis_order_by
     cause_analysis_id: order_by
     class_list: order_by
-    corrective_actions: order_by
     created_at: order_by
     distribution_list_aggregate: proxy_incident__distribution_aggregate_order_by
     document_list_aggregate: sheq_incident_investigation_investigations_docs_aggregate_order_by

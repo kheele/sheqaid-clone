@@ -9,11 +9,11 @@ import {EntityUser} from "mutations/types.d.ts";
 // 2
 const query = graphql`
   query findByUsernameEmployeeQuery($username: String) {
-    hr_employees_connection(where: {_or: {email: {_eq: $username}}, phone: {_eq: $username}}) {
+    hr_employees_connection(where: {_or: [{email: {_eq: $username}}, {phone: {_eq: $username}}]}) {
       edges {
         node {
           id
-#          auth_id
+          auth_id
         }
       }
     }

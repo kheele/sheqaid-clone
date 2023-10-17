@@ -1,64 +1,52 @@
-const fs = require('fs');
+const path = require('path');
 const express = require('express');
-const https = require('https');
-const {Server} = require('socket.io');
 const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const csrf = require('csurf');
+const helmet = require('helmet');
 const cookieParser = require("cookie-parser");
-const api = require('./api');
-const {relay, general, views} = require('./graphql');
+const sockets = require('./sockets');
+const appRoutes = require('./app-routes');
 
 const app = express();
+
+const corsOptions = {origin: "*", credentials: true};
+const secret = "&6%^#-=!!!=+A+`;\"[[`bRHPD8*&~";
+const sessionMiddleware = session({
+	secret,
+	cookieName: 'sheqaid',
+	cookie: {},
+	resave: true,
+	saveUninitialized: true,
+});
 
 // Middleware function to log requests
 app.use((req, res, next) => {
 	console.log(`${req.method} request received for ${req.url}`, req.body)
 	res.header({"Access-Control-Allow-Origin": "*"});
 	next()
-})
+});
 
+app.use('/', express.static(path.join(__dirname,'static')));
 app.use(express.text({limit: "200mb"}), express.json({strict: false, limit: "200mb"}));
-app.use(cors({origin: true, credentials: true}));
+app.use(cors(corsOptions));
 app.use(cookieParser());
-
-const secret = "&6%^#-=!!!=+A+`;\"[[`bRHPD8*&~";
-app.use(
-	session({
-		secret,
-		cookieName: 'sheqaid',
-		cookie: {},
-		resave: false,
-		saveUninitialized: false,
-	}),
-);
+app.use(helmet());
+app.use(sessionMiddleware);
 // app.use(csrf({ sessionKey: 'sheqaid' }));
-
-const morganMiddleware = morgan(
+app.use(morgan(
 	':method :url :status :res[content-length] - :response-time ms',
 	{
 		stream: {
 			write: (message) => console.log(message.trim()),
 		},
 	}
-);
-
-app.use(morganMiddleware);
-
-app.use('/api', api);
-app.use('/v1beta1/relay', relay);
-app.use('/v1/graphql', general);
-app.use('/api/rest/views', views);
+));
 
 const server = app.listen(process.env.PORT, () => {
 	console.log(`server started on port: ${server.address().port}`);
 });
 
-const io = new Server(server);
-io.on('connection', (socket) => {
-	console.log('a user connected');
-	socket.on('disconnect', () => {
-		console.log('user disconnected');
-	});
-});
+appRoutes.start(app);
+sockets.start({server, corsOptions, sessionMiddleware});

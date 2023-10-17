@@ -325,18 +325,24 @@ class InvestigationFindingsTable extends ATableSavable {
                 </div>
             </TRow>;
         } else {
-            return <TRow key="item-new">
-                <div className="td">
-                    <ClearableInput ref={this.onSetRef} name="desc" type="textarea"
-                                    placeholder="Type investigation finding here"
-                                    required className="form-control" onChange={this.onChange}/>
-                </div>
-                <div className="td fixed-flex min-w-60">
-                    <Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10"
-                            onClick={onClick}>
-                        <i className="fa fa-check"/>
-                    </Button>
-                </div>
+            return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-t-10 padding-b-10">
+                <ClearableInput
+                    ref={this.onSetRef}
+                    name="desc"
+                    type="textarea"
+                    placeholder="Type investigation finding here"
+                    required className="form-control col-lg-12 w-full margin-t-10"
+                    onChange={this.onChange}
+                />
+
+                <Button
+                    idx={n}
+                    action="save"
+                    className="btn btn-primary hor-center w-100  border-radius-20"
+                    onClick={onClick}
+                >
+                    <i className="fa fa-check"/> Add
+                </Button>
             </TRow>;
         }
     }
@@ -355,7 +361,7 @@ class InvestigationFindingsTable extends ATableSavable {
                 onClick={this.onClick}
                 state={this.state}
                 onLoadList={this.onLoadList}
-                disablePullToRefresh={true}
+                disablePullToRefresh={false}
             />
         </Table>);
     }
@@ -397,6 +403,8 @@ class NewDocumentTable extends ATableSavable {
             } = investigationItem;
 
             const {id, doc} = item;
+
+            alert(action)
 
             if (action === "save" || action === "saveEdit") {
                 progressDialog.open();
@@ -485,7 +493,6 @@ class NewDocumentTable extends ATableSavable {
                 <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
                 <div className="td">
                     <UploadButton
-                        ref={this.onSetRef}
                         name="doc"
                         buttonTitle="Upload Document"
                         type={['PDF', 'Word']}
@@ -515,8 +522,13 @@ class NewDocumentTable extends ATableSavable {
                     className="col-lg-12 w-full margin-t-10"
                     onChange={this.onChange}
                 />
-                <Button idx={n} action="save" className="btn btn-primary hor-center w-40" onClick={onClick}>
-                    <i className="fa fa-check"/>
+                <Button
+                    idx={n}
+                    action="save"
+                    className="btn btn-primary hor-center w-100  border-radius-20"
+                    onClick={onClick}
+                >
+                    <i className="fa fa-check"/> Add
                 </Button>
             </TRow>;
         }

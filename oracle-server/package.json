@@ -11,8 +11,9 @@
     "docker:push": "docker push rhespo/sheqaid-server",
     "docker:build & push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm i express-socket.io-session helmet --save",
-    "install:all": "rm -rf node_modules package-lock.json"
+    "install:mod": "npm i socket.io-client --save",
+    "install:remove": "rm -rf node_modules package-lock.json",
+    "install:all": "npm install"
   },
   "engines": {
     "node": "16"
@@ -49,6 +50,7 @@
     "nodemailer": "^6.4.16",
     "redis": "^4.6.9",
     "socket.io": "^4.6.0",
+    "socket.io-client": "^4.7.2",
     "thumbsupply": "^0.4.0",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5"

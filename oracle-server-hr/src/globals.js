@@ -26,6 +26,7 @@ global.isProduction = process.env.ENVIRONMENT === 'production';
 global.isDevelopment = !isProduction;
 
 //
+
 global.admin = require('firebase-admin');
 admin.initializeApp();
 
@@ -34,7 +35,9 @@ require('./libs/date-utils');
 global.EmailUtils = require('./libs/email.util');
 global.DriveUtils = require('./libs/drive.utils');
 
+require('./graphql/convertMutations');
 require('./libs/face.util');
+require('./fn/callables/funs_impl');
 
 global.execWhen = (test, max) => {
 	return new Promise((resolve, reject) => {
@@ -100,6 +103,8 @@ global.onDriver = () => {
 };
 
 global.getTriggeredEventsData = (body, name) => {
+	// await authorize();
+
 	if (!body || !body.data || !body.data.table) {
 		return;
 	}
@@ -124,4 +129,30 @@ global.getTriggeredEventsData = (body, name) => {
 	}
 
 	return {table_name, old_item, new_item};
+};
+
+global.uploadFilesUpdate = async ({id, doc, key, new_name, onUpdate}) => {
+	if (!doc || !new_name) {
+		return;
+	}
+
+	const attrs = {};
+
+	if (doc.path || doc.data) {
+		const {path, data} = doc;
+
+		key = key || 'doc';
+
+		if(data) {
+			console.log('uploadFilesUpdate doc data', data)
+			attrs[key] = await uploadDataUri(data, new_name);
+		} else {
+			console.log('uploadFilesUpdate doc path', path)
+			attrs[key] = await uploadDataUri(path, new_name);
+		}
+	}
+
+	if (Object.keys(attrs).isNotEmpty()) {
+		await onUpdate({id, ...attrs});
+	}
 };

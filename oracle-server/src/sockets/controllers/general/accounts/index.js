@@ -69,18 +69,12 @@ class Cntr extends ACntr {
         return onSetCustomUserClaims({
             data: {idToken, csrfToken},
             access_type,
-            onSetCookie: (sessionCookie, options) => {
-                // res.cookie('session', sessionCookie, options);
-                // const serializedCookie = cookie.serialize('session', sessionCookie, options);
-                // socket.handshake.headers.cookie = serializedCookie;
-
-                session.sessionCookie = sessionCookie;
-                session.save();
-            },
         }).then(res => {
             console.log('onSetCustomUserClaims user logged', socket.id, session.auth_id);
             if (res && res.token) {
-                const {loggedUser, token, customClaims} = res;
+                const {loggedUser, token, customClaims, sessionCookie, options} = res;
+
+                session.sessionCookie = sessionCookie;
 
                 session.auth_id = customClaims.loggedUser.user.auth_id;
                 session.access_type = access_type;

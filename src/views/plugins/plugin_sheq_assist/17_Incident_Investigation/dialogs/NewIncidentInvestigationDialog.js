@@ -740,10 +740,16 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormSave={this.onFormSave}
             >
-                <ClearableInput name="investigation_details" type="textarea" defaultValue={investigation_details}
-                                placeholder="Details Of Investigation" className="col-lg-12 form-control"
-                                onChange={this.form.onChange}/>
                 <FormControls>
+                    <Row
+                        rendered
+                        activeAlways
+                        title={`Details Of Investigation`}
+                    >
+                        <ClearableInput name="investigation_details" type="textarea" defaultValue={investigation_details}
+                                        placeholder="Details Of Investigation" className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                    </Row>
                     <Row
                         rendered
                         activeAlways

@@ -26,7 +26,8 @@ app.use((req, res, next) => {
 	console.log(`${req.method} request received for ${req.url}`, req.session && req.session.id)
 	res.header({"Access-Control-Allow-Origin": "*"});
 	next()
-})
+});
+
 app.use('/', express.static(path.join(__dirname,'static')));
 app.use(express.text({limit: "200mb"}), express.json({strict: false, limit: "200mb"}));
 app.use(cors(corsOptions));

@@ -1,9 +1,4 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const mime = require('mime');
-
 const {convertMutations} = require("../../graphql/convertMutations");
 // </editor-fold>
 
@@ -27,116 +22,11 @@ global.setCustomUserClaims = (uid, claims) => {
 }
 //</editor-fold>
 
-global.isValidAccessType = (access_type) => access_type === "User" || access_type === "ContractorUser" || access_type === "Staff";
-
-global.adminApp = (access_type) => {
-    return {
-        "User": admin,
-        "ContractorUser": admin2,
-        "Staff": admin_hr
-    }[access_type];
+//<editor-fold desc="createCustomToken">
+global.createCustomToken = (uid) => {
+    return admin.auth().createCustomToken(uid, {access_type: "Staff"});
 }
-
-global.adminAuth = (access_type) => {
-    return {
-        "User": admin,
-        "ContractorUser": admin2,
-        "Staff": admin_hr
-    }[access_type].auth();
-}
-
-exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
-
-//<editor-fold desc="uploadDataUri">
-global.uploadDataUri = async (datauri, filePath) => {
-    const parts = datauri.split(',');
-    const contentType = parts[0].replace('data:', '').split(';')[0];
-    const base64 = parts[1];
-    const buffer = Buffer.from(base64, 'base64');
-
-    const ext = mime.getExtension(contentType);
-    const newName = `${filePath}.${ext}`;
-
-    const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);
-    let bucketFile = await storageBucket.file(newName);
-    const stream = bucketFile.createWriteStream({
-        metadata: {
-            contentType, // Set the content type according to your dataURI
-        },
-    });
-
-    // Pipe buffer to write stream
-    stream.end(buffer);
-
-    return new Promise((resolve, reject) => {
-        stream.on('error', reject);
-        stream.on('finish', async () => {
-            const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
-            const dlUrls = await bucketFile.getSignedUrl({
-                action: 'read',
-                expires: '03-17-2099'
-            });
-            resolve({gcsUri, dlUrls});
-        });
-    });
-};
 //</editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="loadFaceModels">
-exports.loadFaceModels = () => {
-    return Promise.all([
-        faceapi.nets.faceRecognitionNet.loadFromDisk('./models'),
-        faceapi.nets.faceLandmark68Net.loadFromDisk('./models'),
-        //detectors
-        faceapi.nets.ssdMobilenetv1.loadFromDisk('./models'),
-        faceapi.nets.tinyFaceDetector.loadFromDisk('./models'),
-        faceapi.nets.mtcnn.loadFromDisk('./models'),
-                //others
-//        faceapi.nets.faceLandmark.loadFromDisk('./models'),
-//        faceapi.nets.faceLandmarkTinyModel.loadFromDisk('./models'),
-//        faceapi.nets.faceRecognition.loadFromDisk('./models'),
-//        faceapi.nets.faceExpression.loadFromDisk('./models')
-
-//        faceapi.nets.faceRecognitionNet.loadFromDisk('./models'),
-//        faceapi.nets.faceLandmark68Net.loadFromDisk('./models'),
-//        faceapi.nets.ssdMobilenetv1.loadFromDisk('./models')
-    ]);
-};
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="loadImage">
-exports.loadImage = async (bucketFile, uid) => {
-    const tempFile = path.join(os.tmpdir(), `faces-${uid}-face.png`);
-    await new Promise((resolve, reject) => {
-        bucketFile.createReadStream().on('error', (err) => {
-            reject(err);
-        }).on('response', (res) => {
-            // Server connected and responded with the specified status and headers.
-        }).on('end', () => {
-            // The file is fully downloaded.
-            resolve();
-        }).pipe(fs.createWriteStream(tempFile));
-    });
-
-    const userImage = await canvas.loadImage(tempFile);
-    return userImage;
-};
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="deleteTmpImage">
-exports.deleteTmpImage = (uid) => {
-    const tempFile = path.join(os.tmpdir(), `faces-${uid}-face.png`);
-    fs.stat(tempFile, (err, stats) => {
-        if (err) {
-            return console.error(err);
-        }
-        fs.unlink(tempFile, (err) => {
-            if (err)
-                return console.error(err);
-        });
-    });
-};
-// </editor-fold>
 
 //<editor-fold desc="sendRelay">
 global.sendRelay = async (args) => {
