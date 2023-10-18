@@ -10,6 +10,11 @@
       ],
       "redirects": [
         {
+          "source": "/privacy-policy.html",
+          "destination": "https://app.sheqaid.com/privacy-policy.html",
+          "type": 301
+        },
+        {
           "source": "/accounts/pass-recovery.html",
           "destination": "https://app.sheqaid.com/accounts/pass-recovery.html",
           "type": 301

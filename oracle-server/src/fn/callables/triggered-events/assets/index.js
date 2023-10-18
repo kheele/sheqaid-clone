@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const automate = require('./automate');
+
 const {
 	uploadAssetPhotoFilesUpdate,
 	uploadAssetDocFilesUpdate,
@@ -31,5 +33,7 @@ router.put('/uploadAssetMonitoringPlanFuelUsageFilesUpdate', async (req, res) =>
 	const data = await uploadAssetMonitoringPlanFuelUsageFilesUpdate(req.body);
 	res.json(data);
 });
+
+// automate.run();
 
 module.exports = router;

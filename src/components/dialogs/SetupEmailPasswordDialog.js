@@ -102,8 +102,6 @@ class Controls extends ALoginControls {
         const {auth} = this;
         const {id, username, type} = this.item;
 
-        alert(id);
-
         progressDialog.open();
 
         return auth.createUserWithEmailAndPassword(username, password).then(newUserCredential => {
@@ -166,7 +164,7 @@ class Controls extends ALoginControls {
                                         return auth.signInWithEmailAndPassword(username, password);
                                     }).finally(() => {
                                         this.authListener();
-                                        setTimeout(authenticate);
+                                        setTimeout(authenticate, 1500);
                                     });
 
                                 }
