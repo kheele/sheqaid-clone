@@ -1,7 +1,5 @@
 const path = require("path");
 const fs = require("fs-extra");
-const mime = require("mime");
-const {onReadAsJson} = require("../../excel/api");
 
 exports.run = async () => {
 	fs.readdir(path.join(__dirname, 'docs/3. COF_Brake Test'), (err, files) => {
@@ -11,8 +9,41 @@ exports.run = async () => {
 		}
 
 		files.map(file => path.basename(file));
-		files.forEach(name => {
-			console.log(name);
+		files.map(async name => {
+			const reg = name.split(' ')[0];
+			console.log(reg);
+			const res = await getRelayOne({
+				query: `
+					query findQuery {
+					  asset_details_connection(where:{reg_num:{_eq: "${reg}"}}) {
+						edges {
+						  node {
+							id
+							reg_num
+							asset_list{
+							  id
+							}
+						  }
+						}
+					  }
+					}
+				`,
+				operationName: 'findQuery',
+			});
+			if(res) {
+				const {id, data: {reg_num, asset_list}} = res;
+				const [asset] = asset_list;
+				await updateRelay({
+					mutation: `
+					
+					`,
+					operationName: '',
+					id: asset.id,
+					attrs,
+				});
+			} else {
+
+			}
 		});
 
 		// console.log('data', data);
@@ -121,7 +152,7 @@ exports.run = async () => {
 	// 	};
 	//
 	// 	console.log(data)
-		return v;
+	// 	return v;
 	// });
 
 	// console.log('data', data)
