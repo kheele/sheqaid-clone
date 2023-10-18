@@ -7,11 +7,8 @@ import {execWhen} from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {
-<<<<<<< Updated upstream
-=======
     Button,
     ActionsButton,
->>>>>>> Stashed changes
     ClearableInput,
     DateRangeInput,
     SelectIncidentActivityList,
@@ -24,16 +21,12 @@ import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationD
 
 import ProfilePDFReader from '../printers/ProfilePDFReader';
 
-
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
 import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
-<<<<<<< Updated upstream
 import updateIncident from "mutations/all/Incident/updateIncident";
-=======
 import ExportInvestigationsDialog from "../dialogs/ExportInvestigationsDialog";
->>>>>>> Stashed changes
 
 // </editor-fold>
 
