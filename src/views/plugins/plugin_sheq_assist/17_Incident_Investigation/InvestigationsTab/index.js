@@ -7,6 +7,11 @@ import {execWhen} from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {
+<<<<<<< Updated upstream
+=======
+    Button,
+    ActionsButton,
+>>>>>>> Stashed changes
     ClearableInput,
     DateRangeInput,
     SelectIncidentActivityList,
@@ -19,11 +24,16 @@ import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationD
 
 import ProfilePDFReader from '../printers/ProfilePDFReader';
 
+
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
 import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
+<<<<<<< Updated upstream
 import updateIncident from "mutations/all/Incident/updateIncident";
+=======
+import ExportInvestigationsDialog from "../dialogs/ExportInvestigationsDialog";
+>>>>>>> Stashed changes
 
 // </editor-fold>
 
@@ -74,6 +84,9 @@ class InvestigationsTab extends React.Component {
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
+        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        
+        this.onExport = this.onExport.bind(this);
     }
 
     componentWillMount() {
@@ -230,6 +243,10 @@ class InvestigationsTab extends React.Component {
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
+    
+    onExport(e, btn) {
+        this.refs.exportInvestigationsDialog.open();
+    }
 
     // </editor-fold>
 
@@ -256,6 +273,19 @@ class InvestigationsTab extends React.Component {
         });
     }
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
+    renderLeftButtons() {
+        const {isEmployee, isContractorView} = storage.is;
+        const isReadonly = isEmployee || isContractorView;
+        return !isReadonly && <div className="left-buttons pull-left">
+            <Button className="btn btn-primary pull-right" onClick={this.onExport}>
+                Export
+            </Button>
+        </div>;
+    }
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
@@ -389,6 +419,7 @@ class InvestigationsTab extends React.Component {
             pageTitleSingular="investigation"
             onLoadList={this.onLoadList}
             noAnimation={true}
+            renderLeftButtons={this.renderLeftButtons}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
@@ -396,6 +427,7 @@ class InvestigationsTab extends React.Component {
             <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>
             <NewIncidentInvestigationDialog ref="newInvestigationDialog"/>
             <ProfilePDFReader ref="pdfReader"/>
+            <ExportInvestigationsDialog ref="exportInvestigationsDialog"/>
         </APageListReadWrite>;
     }
 
