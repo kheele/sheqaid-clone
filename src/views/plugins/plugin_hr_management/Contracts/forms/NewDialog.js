@@ -170,7 +170,7 @@ class Controls extends React.Component {
 		} = form.data;
 
 		if (isNewEmployee) {
-			data = {
+			const data = {
 				contractDetailsTab,
 				salaryInfoTab,
 				employee,

@@ -285,6 +285,8 @@ class Controls extends React.Component {
             calibration_list,
         } = calibration_record_list || {};
 
+        console.log('doc_list', doc_list && doc_list.slice());
+
         return <>
             <FormControls>
                 <RowOrgs

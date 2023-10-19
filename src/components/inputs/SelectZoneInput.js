@@ -22,6 +22,24 @@ class SelectInput extends ASelectInput {
         super(props);
     }
 
+    componentDidMount() {
+        let {className = ''} = this.props;
+        className += ` SelectZoneInput`;
+
+        this.state.props = {
+            ref: "input",
+            key: new Date().getTime(),
+            name: "zone",
+            type: "select",
+            placeholder: "Province...",
+            add: false,
+            ...this.props,
+            isClearable: false,
+            readonly: true,
+            className,
+        };
+    }
+
     set country(country) {
         let {className = ''} = this.props;
         className += ` SelectZoneInput`;

@@ -23,6 +23,24 @@ class SelectInput extends ASelectInput {
         super(props);
     }
 
+    componentDidMount() {
+        let {className = ''} = this.props;
+        className += ` SelectCityInput`;
+
+        this.state.props = {
+            ref: "input",
+            key: new Date().getTime(),
+            name: "city",
+            type: "select",
+            placeholder: "City...",
+            add: false,
+            ...this.props,
+            isClearable: false,
+            readonly: true,
+            className,
+        };
+    }
+
     //<editor-fold desc="setLoad">
     setLoad(props, res) {
         this.state.lists.list = res.distinct();

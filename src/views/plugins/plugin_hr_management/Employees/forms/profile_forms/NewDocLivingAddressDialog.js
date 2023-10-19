@@ -38,9 +38,23 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.form = new Form();
+        this.form.addChangeOne('country', this.onChangeCountry.bind(this));
+        this.form.addChangeOne('province', this.onChangeProvince.bind(this));
     }
 
     //</editor-fold>
+
+    onChangeCountry(el, val) {
+        this.props.execWhen(() => this.refs.province).then(ref => {
+            ref.country = val;
+        });
+    }
+
+    onChangeProvince(el, val) {
+        this.props.execWhen(() => this.refs.city).then(ref => {
+            ref.zone = val;
+        });
+    }
 
     //<editor-fold desc="onNext">
     onNext(e, btn) {

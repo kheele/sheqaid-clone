@@ -1143,7 +1143,7 @@ class NewDocumentTable extends ATableSavable {
 
 		const {defaultValue} = this.props;
 		if (defaultValue) {
-			this.state.list = toJS(defaultValue);
+			this.state.list = defaultValue;
 		}
 
 		const {onChange, name} = this.props;

@@ -24,10 +24,10 @@ class LivingAddressSection extends ASectionSection {
 
 	get itemRenderer() {
 		return [
-			<ProfileField name="country" placeholder="Country" valKey="country" renderer={v => v.name}
+			<ProfileField name="country" placeholder="Country" valKey="country" renderer={v => v.name || v.data.name}
 			              className="col-lg-12"/>,
-			<ProfileField name="zone" placeholder="Province" valKey="zone" renderer={v => v.name} className="col-lg-6"/>,
-			<ProfileField name="city" placeholder="City" valKey="city" renderer={v => v.name} className="col-lg-6"/>,
+			<ProfileField name="zone" placeholder="Province" valKey="zone" renderer={v => v.name || v.data.name} className="col-lg-6"/>,
+			<ProfileField name="city" placeholder="City" valKey="city" renderer={v => v.name || v.data.name} className="col-lg-6"/>,
 			<ProfileField name="local_address" placeholder="Local Area" valKey="local_address" className="col-lg-6"/>,
 			<ProfileField name="street_address" placeholder="Street Address" valKey="street_address" className="col-lg-6"/>,
 			<UploadButton

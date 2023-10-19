@@ -39,8 +39,12 @@ exports.run = async () => {
 
 		const filenameProof = path.join(__dirname, `ECO-NCR/Feb 2023 Ecco Aggregates/proof-${idx}.jpg`);
 		const filenameIncident = path.join(__dirname, `ECO-NCR/Feb 2023 Ecco Aggregates/${idx}.jpg`);
-		const docProof = filenameProof && fs.readFileSync(filenameProof, {encoding: 'base64url'});
-		const docIncident = filenameIncident && fs.readFileSync(filenameIncident, {encoding: 'base64url'});
+
+		let docProof, docIncident;
+		try{
+			docProof = filenameProof && fs.readFileSync(filenameProof, {encoding: 'base64url'});
+			docIncident = filenameIncident && fs.readFileSync(filenameIncident, {encoding: 'base64url'});
+		} catch (e) {}
 
 		const assigned_job_position_list = assigned_person_list ? {
 			data: []
@@ -50,11 +54,14 @@ exports.run = async () => {
 			data: []
 		} : null;
 
+		console.log('progress_list', progress_list)
+
 		const data = {
 			//0
-			site_id: site && site.id,
-			project_id: project && project.id,
-			client_id: client && client.id,
+			site_id: 82,
+			project_id: 10,
+			client_id: 4,
+			company_id: 1,
 			//1
 			// type,
 			priority: priority === 'Important' ? 'High' : priority,
@@ -93,9 +100,9 @@ exports.run = async () => {
 			// remarks,
 			//6
 			progress_list: {
-				data: (progress_list || []).map(({date, ...others}) => ({
+				data: (isArray(progress_list) ? progress_list : isString(progress_list) ? [{'status_progress': progress_list}] : []).map(({date, ...others}) => ({
 					...others,
-					date: Dates.formatTimestampSQL(date),
+					date: Dates.formatDateSQL(date),
 				})),
 			},
 			//7

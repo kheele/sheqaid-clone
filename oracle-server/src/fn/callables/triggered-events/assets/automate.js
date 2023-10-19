@@ -10,7 +10,7 @@ exports.run = async () => {
 
         files = files.map(file => path.basename(file));
 
-        return;
+        // return;
 
         await Promise.all(files.map(async filename => {
             let [reg, type] = filename.split('.')[0].split(' ');
@@ -52,6 +52,7 @@ exports.run = async () => {
                 				edges {
 						            node {
 						                id
+						                doc
 						            }
 						        }
                 			}
@@ -90,7 +91,14 @@ exports.run = async () => {
                     });
                 }
 
-                if (res) {
+                console.log('res', res.id, 'dlUrls' in res.data.doc);
+                if(!res.data.doc.dlUrls) {
+
+                    console.log('res', res.id, res.data.doc.dlUrls);
+                }
+                return;
+
+                if (res && !res.data.doc.dlUrls) {
                     const path = `assets/${asset.id}/docs`;
                     const name = `document-${res.id}-${Dates.formatTimestamp(new Date())}`;
                     const gcsUri = await upload(path + '/' + name, buffer);
