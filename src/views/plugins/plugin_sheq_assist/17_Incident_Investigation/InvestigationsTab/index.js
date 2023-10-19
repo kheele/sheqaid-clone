@@ -320,9 +320,9 @@ class InvestigationsTab extends React.Component {
                 <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
                          title="Re-Open Incident"/>}
 
-            <hr action="writable"/>
-            <NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>
-            <NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+            {/*<hr action="writable"/>*/}
+            {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
+            {/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
         </Options>;
     }
 
