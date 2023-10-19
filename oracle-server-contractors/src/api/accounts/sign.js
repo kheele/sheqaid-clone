@@ -18,7 +18,7 @@ global.signOut = async ({session, sessionCookie}) => {
         });
 };
 
-global.onReAuthUser = async ({uid, access_type}) => {
+global.onReAuthUser = async ({uid}) => {
     if (!uid) {
         return;
     }
@@ -46,7 +46,7 @@ global.onReAuthUser = async ({uid, access_type}) => {
         const {uid, email, phoneNumber} = userRecord;
 
         try {
-            const token = await _auth.createCustomToken(uid, {access_type});
+            const token = await _auth.createCustomToken(uid, {access_type: "ContractorUser"});
             return token;
         } catch (err) {
             console.error(err)
@@ -95,8 +95,8 @@ global.loginSession = async ({data}) => {
     });
 };
 
-global.verifySession = ({req, res, access_type}) => {
-    const sessionCookie = req.cookies.session || '';
+global.verifySession = ({sessionCookie}) => {
+    // const sessionCookie = req.cookies.session || '';
     // Verify the session cookie. In this case an additional check is added to detect
     // if the user's Firebase session was revoked, user deleted/disabled, etc.
 
@@ -104,9 +104,9 @@ global.verifySession = ({req, res, access_type}) => {
     return admin.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */);
 };
 
-global.getDecodedIdTokenFromSession = async ({req, access_type}) => {
+global.getDecodedIdTokenFromSession = async ({sessionCookie}) => {
     const _auth = admin.auth();
-    const sessionCookie = req.cookies.session || '';
+    // const sessionCookie = req.cookies.session || '';
 
     const decodedClaims = await _auth.verifySessionCookie(sessionCookie);
     return decodedClaims;

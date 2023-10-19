@@ -23,17 +23,13 @@ class Cntr extends ACntr {
         addAction('onResetPassword', this.onResetPassword.bind(this));
     }
 
-    async signOut(socket, data = {}) {
-        // console.log('data', data)
-
-        let {access_type} = data;
+    async signOut(socket) {
         const {session, session: {auth_id}} = socket.handshake;
 
         return signOut({
             session,
             sessionCookie: session.sessionCookie || '',
             // sessionCookie: socket.request.cookies.session || '',
-            access_type,
         })
             .then((res) => {
                 if (res) {
@@ -50,10 +46,9 @@ class Cntr extends ACntr {
     async onReAuthUser(socket, data = {}) {
         // console.log('data', data)
 
-        const {access_type, uid} = data;
+        const {uid} = data;
 
         return onReAuthUser({
-            access_type,
             uid,
         });
     }
@@ -61,14 +56,13 @@ class Cntr extends ACntr {
     async onSetCustomUserClaims(socket, data = {}) {
         // console.log('data', data)
 
-        const {access_type, idToken, csrfToken} = data;
+        const {idToken, csrfToken} = data;
         const {session} = socket.handshake;
 
-        console.log('onSetCustomUserClaims', access_type, idToken, csrfToken);
+        console.log('onSetCustomUserClaims', idToken, csrfToken);
 
         return onSetCustomUserClaims({
             data: {idToken, csrfToken},
-            access_type,
         }).then(res => {
             console.log('onSetCustomUserClaims user logged', socket.id, session.auth_id);
             if (res && res.token) {
@@ -77,7 +71,7 @@ class Cntr extends ACntr {
                 session.sessionCookie = sessionCookie;
 
                 session.auth_id = customClaims.loggedUser.user.auth_id;
-                session.access_type = access_type;
+                session.access_type = "ContractorUser";
                 session.customClaims = customClaims;
                 session.save();
 
@@ -124,11 +118,7 @@ class Cntr extends ACntr {
     async onResetPassword(socket, data = {}) {
         // console.log('data', data)
 
-        const {access_type} = data;
-
-        if (isValidAccessType(access_type)) {
-            return onResetPassword(data, access_type);
-        }
+        return onResetPassword(data);
     }
 
 }
