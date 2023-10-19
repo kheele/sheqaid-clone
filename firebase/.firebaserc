@@ -31,8 +31,12 @@
         ],
         "forms": [
           "forms-sheqaid"
+        ],
+        "contractors-2023": [
+          "contractors-2023"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }
