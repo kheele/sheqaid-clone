@@ -30,35 +30,87 @@ export default (
 		return v;
 	});
 
+	const answeredFilter = (level = 3) => {
+		return `
+			_or:[
+				{
+				  question_list_aggregate: {
+					count: {
+					  predicate: {_gt: 0}
+					  filter:{
+						answer: {_is_null: false}
+					  }
+					}
+				  }
+				},
+				{
+				  question_list_aggregate: {
+					count: {
+					  predicate: {_gt: 0}
+					  filter:{
+						answer_employee_id: {_is_null: false}
+					  }
+					}
+				  }
+				},
+				{
+				  question_list_aggregate: {
+					count: {
+					  predicate: {_gt: 0}
+					  filter:{
+						answer_asset_id: {_is_null: false}
+					  }
+					}
+				  }
+				},
+				{
+				  question_list_aggregate: {
+					count: {
+					  predicate: {_gt: 0}
+					  filter:{
+						options: {answer: {_is_null: false}}
+					  }
+					}
+				  }
+				}
+				${level > 1 ? `,
+				{
+          		  question_list_aggregate: {
+            	    count: {
+              		  predicate: {_gt: 0}
+					  filter:{
+						question_list: {
+						  ${answeredFilter(level - 1)},
+						}
+					  }
+					}
+ 			      }
+                }` : ""
+				}
+			]
+		`;
+	};
+
 	//<editor-fold desc="ByEach">
 	return GQLClient
 	.query({
 		query: `
       query listAllInspectionCompletedQuestionnaireByLoggedQuery {
-        default_contractor_questionnaires_schedules(
+      	default_contractor_questionnaires(
           where: {
-            completed: {_neq: true},
-            questionnaire: {
-	            removed: {_eq: ${removed}},
-	            group: {_eq: "Inspections"},
-	            is_template: {_eq: false},
-	            ${filter}
-            }
+            removed: {_eq: ${removed}},
+            group: {_eq: "Inspections"},
+            is_template: {_eq: false},
+            status: {_neq: "CompleteAccepted"},
+            ${answeredFilter(3)},
+            ${filter}
           },
-	        order_by: {date: asc, time: asc, date_completed: asc, time_completed: asc},
+	        order_by: {name: asc},
 	        offset: ${offset},
 	        ${limit > 0 ? `limit: ${limit}` : ''}
         ) {
-          interval
-          completed
-          date
-          time
-          date_completed
-          time_completed
-          questionnaire {
             ${inspection_details_fragment}
             ${orgs_fragment}
-          }
         }
       }
     `,

@@ -30,6 +30,7 @@ class InspectionTableRow extends React.Component {
 				//
 				interval,
 				start_date,
+				schedule_date,
 				responsible_person,
 				responsible_department,
 				asset_type,
@@ -40,50 +41,33 @@ class InspectionTableRow extends React.Component {
 			}
 		} = item;
 
-		const _start_date = Dates.parse(start_date);
+		const _schedule_date = Dates.parse(schedule_date);
 
-		const incomplete = schedule_list.filter(v => !v.completed).length;
-		const completed = schedule_list.filter(v => v.completed).length;
-		let nextSchedule, notConducted;
+		let nextSchedule;
+
 		switch (interval) {
 			case 'Daily': {
-				nextSchedule = new Date().addDays(1);
-				notConducted = _start_date.durationNextDays(nextSchedule);
+				nextSchedule = _schedule_date.addDays(1);
 				break;
 			}
 			case 'Weekly': {
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addWeeks(1);
-				notConducted = _start_date.durationNextWeeks(nextSchedule);
+				nextSchedule = _schedule_date.addWeeks(1);
 				break;
 			}
 			case 'Monthly': {
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(1);
-				notConducted = _start_date.durationNextMonths(nextSchedule);
+				nextSchedule = _schedule_date.addMonths(1);
 				break;
 			}
 			case 'Quarterly': {
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(3);
-				notConducted = _start_date.durationNextMonths(nextSchedule) / 3;
+				nextSchedule = _schedule_date.addMonths(3);
 				break;
 			}
 			case 'Bi-Annually': {
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(6);
-				notConducted = _start_date.durationNextMonths(nextSchedule) / 6;
+				nextSchedule = _schedule_date.addMonths(6);
 				break;
 			}
 			case 'Annually': {
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addYears(1);
-				notConducted = _start_date.durationNextYears(nextSchedule);
+				nextSchedule = _schedule_date.addYears(1);
 				break;
 			}
 		}
@@ -97,10 +81,8 @@ class InspectionTableRow extends React.Component {
 			<div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{interval}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
+			<div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(nextSchedule)}</div>
-			<div className="td fixed-flex min-w-120">{notConducted ? parseFloat(notConducted - schedule_list.length, 10).toFixed(0) : 'N/A'}</div>
-			<div className="td fixed-flex min-w-120">{incomplete}</div>
-			<div className="td fixed-flex min-w-120">{completed}</div>
 			{onRenderActionCell && onRenderActionCell(item, idx)}
 			{!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
 				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

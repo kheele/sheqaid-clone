@@ -2,6 +2,7 @@ import GQLClient from "graphql/GQLClient";
 import {getVariablesAndQueryConfig} from "../Utils";
 import {orgs_fragment} from "graphql/Fragments";
 import {inspection_details_fragment} from "../Fragments";
+import {Dates} from "../../../../../../../utils/Dates";
 
 export default (
 	{
@@ -30,6 +31,8 @@ export default (
 		return v;
 	});
 
+	const today = Dates.formatDateSQL(new Date());
+
 	//<editor-fold desc="ByEach">
 	return GQLClient
 	.query({
@@ -40,6 +43,7 @@ export default (
             removed: {_eq: ${removed}},
             group: {_eq: "Inspections"},
             is_template: {_eq: false},
+            schedule_date: {_eq: "${today}"},
             ${filter}
           },
 	        order_by: {name: asc},

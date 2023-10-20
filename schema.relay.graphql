@@ -9163,6 +9163,9 @@ type default_contractor_questionnaires implements Node {
     company_id: bigint
     "An object relationship"
     contractor: default_contractors
+    "An object relationship"
+    contractor_client: default_clients
+    contractor_client_id: bigint
     contractor_id: bigint
     "An object relationship"
     contractor_site: default_sites
@@ -9190,6 +9193,12 @@ type default_contractor_questionnaires implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
+    "An object relationship"
+    ques_next: default_contractor_questionnaires
+    ques_next_id: bigint
+    "An object relationship"
+    ques_prev: default_contractor_questionnaires
+    ques_prev_id: bigint
     "An array relationship"
     question_list(
         "distinct select on columns"
@@ -9236,6 +9245,7 @@ type default_contractor_questionnaires implements Node {
     "An object relationship"
     responsible_person: hr_employees
     responsible_person_id: bigint
+    schedule_date: date
     "An array relationship"
     schedule_list(
         "distinct select on columns"
@@ -9367,6 +9377,7 @@ type default_contractor_questionnaires_avg_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -9375,6 +9386,8 @@ type default_contractor_questionnaires_avg_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -9389,6 +9402,7 @@ type default_contractor_questionnaires_max_fields {
     asset_type: String
     client_id: bigint
     company_id: bigint
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
     contractor_user_id: bigint
@@ -9403,8 +9417,11 @@ type default_contractor_questionnaires_max_fields {
     job_position_id: bigint
     name: String
     project_id: bigint
+    ques_next_id: bigint
+    ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    schedule_date: date
     site_id: bigint
     start_date: date
     status: questionnaires_status
@@ -9602,6 +9619,7 @@ type default_contractor_questionnaires_min_fields {
     asset_type: String
     client_id: bigint
     company_id: bigint
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
     contractor_user_id: bigint
@@ -9616,8 +9634,11 @@ type default_contractor_questionnaires_min_fields {
     job_position_id: bigint
     name: String
     project_id: bigint
+    ques_next_id: bigint
+    ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    schedule_date: date
     site_id: bigint
     start_date: date
     status: questionnaires_status
@@ -10449,6 +10470,7 @@ type default_contractor_questionnaires_stddev_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10457,6 +10479,8 @@ type default_contractor_questionnaires_stddev_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -10469,6 +10493,7 @@ type default_contractor_questionnaires_stddev_pop_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10477,6 +10502,8 @@ type default_contractor_questionnaires_stddev_pop_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -10489,6 +10516,7 @@ type default_contractor_questionnaires_stddev_samp_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10497,6 +10525,8 @@ type default_contractor_questionnaires_stddev_samp_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -10509,6 +10539,7 @@ type default_contractor_questionnaires_sum_fields {
     asset_id: bigint
     client_id: bigint
     company_id: bigint
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
     contractor_user_id: bigint
@@ -10517,6 +10548,8 @@ type default_contractor_questionnaires_sum_fields {
     id: bigint
     job_position_id: bigint
     project_id: bigint
+    ques_next_id: bigint
+    ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
     site_id: bigint
@@ -10529,6 +10562,7 @@ type default_contractor_questionnaires_var_pop_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10537,6 +10571,8 @@ type default_contractor_questionnaires_var_pop_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -10549,6 +10585,7 @@ type default_contractor_questionnaires_var_samp_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10557,6 +10594,8 @@ type default_contractor_questionnaires_var_samp_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -10569,6 +10608,7 @@ type default_contractor_questionnaires_variance_fields {
     asset_id: Float
     client_id: Float
     company_id: Float
+    contractor_client_id: Float
     contractor_id: Float
     contractor_site_id: Float
     contractor_user_id: Float
@@ -10577,6 +10617,8 @@ type default_contractor_questionnaires_variance_fields {
     id: Float
     job_position_id: Float
     project_id: Float
+    ques_next_id: Float
+    ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
     site_id: Float
@@ -75579,6 +75621,8 @@ enum default_contractor_questionnaires_select_column {
     "column name"
     company_id
     "column name"
+    contractor_client_id
+    "column name"
     contractor_id
     "column name"
     contractor_site_id
@@ -75609,11 +75653,17 @@ enum default_contractor_questionnaires_select_column {
     "column name"
     project_id
     "column name"
+    ques_next_id
+    "column name"
+    ques_prev_id
+    "column name"
     removed
     "column name"
     responsible_department_id
     "column name"
     responsible_person_id
+    "column name"
+    schedule_date
     "column name"
     site_id
     "column name"
@@ -75661,6 +75711,8 @@ enum default_contractor_questionnaires_update_column {
     "column name"
     company_id
     "column name"
+    contractor_client_id
+    "column name"
     contractor_id
     "column name"
     contractor_site_id
@@ -75691,11 +75743,17 @@ enum default_contractor_questionnaires_update_column {
     "column name"
     project_id
     "column name"
+    ques_next_id
+    "column name"
+    ques_prev_id
+    "column name"
     removed
     "column name"
     responsible_department_id
     "column name"
     responsible_person_id
+    "column name"
+    schedule_date
     "column name"
     site_id
     "column name"
@@ -94476,6 +94534,7 @@ input default_contractor_questionnaires_avg_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -94484,6 +94543,8 @@ input default_contractor_questionnaires_avg_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -94505,6 +94566,8 @@ input default_contractor_questionnaires_bool_exp {
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     contractor: default_contractors_bool_exp
+    contractor_client: default_clients_bool_exp
+    contractor_client_id: bigint_comparison_exp
     contractor_id: bigint_comparison_exp
     contractor_site: default_sites_bool_exp
     contractor_site_id: bigint_comparison_exp
@@ -94526,6 +94589,10 @@ input default_contractor_questionnaires_bool_exp {
     name: String_comparison_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
+    ques_next: default_contractor_questionnaires_bool_exp
+    ques_next_id: bigint_comparison_exp
+    ques_prev: default_contractor_questionnaires_bool_exp
+    ques_prev_id: bigint_comparison_exp
     question_list: default_contractor_questionnaires_ques_bool_exp
     question_list_aggregate: default_contractor_questionnaires_ques_aggregate_bool_exp
     removed: Boolean_comparison_exp
@@ -94533,6 +94600,7 @@ input default_contractor_questionnaires_bool_exp {
     responsible_department_id: bigint_comparison_exp
     responsible_person: hr_employees_bool_exp
     responsible_person_id: bigint_comparison_exp
+    schedule_date: date_comparison_exp
     schedule_list: default_contractor_questionnaires_schedules_bool_exp
     schedule_list_aggregate: default_contractor_questionnaires_schedules_aggregate_bool_exp
     site: default_sites_bool_exp
@@ -94555,6 +94623,7 @@ input default_contractor_questionnaires_inc_input {
     asset_id: bigint
     client_id: bigint
     company_id: bigint
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
     contractor_user_id: bigint
@@ -94563,6 +94632,8 @@ input default_contractor_questionnaires_inc_input {
     id: bigint
     job_position_id: bigint
     project_id: bigint
+    ques_next_id: bigint
+    ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
     site_id: bigint
@@ -94581,6 +94652,8 @@ input default_contractor_questionnaires_insert_input {
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     contractor: default_contractors_obj_rel_insert_input
+    contractor_client: default_clients_obj_rel_insert_input
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site: default_sites_obj_rel_insert_input
     contractor_site_id: bigint
@@ -94602,12 +94675,17 @@ input default_contractor_questionnaires_insert_input {
     name: String
     project: default_projects_obj_rel_insert_input
     project_id: bigint
+    ques_next: default_contractor_questionnaires_obj_rel_insert_input
+    ques_next_id: bigint
+    ques_prev: default_contractor_questionnaires_obj_rel_insert_input
+    ques_prev_id: bigint
     question_list: default_contractor_questionnaires_ques_arr_rel_insert_input
     removed: Boolean
     responsible_department: default_departments_obj_rel_insert_input
     responsible_department_id: bigint
     responsible_person: hr_employees_obj_rel_insert_input
     responsible_person_id: bigint
+    schedule_date: date
     schedule_list: default_contractor_questionnaires_schedules_arr_rel_insert_input
     site: default_sites_obj_rel_insert_input
     site_id: bigint
@@ -94630,6 +94708,7 @@ input default_contractor_questionnaires_max_order_by {
     asset_type: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -94644,8 +94723,11 @@ input default_contractor_questionnaires_max_order_by {
     job_position_id: order_by
     name: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    schedule_date: order_by
     site_id: order_by
     start_date: order_by
     status: order_by
@@ -94934,6 +95016,7 @@ input default_contractor_questionnaires_min_order_by {
     asset_type: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -94948,8 +95031,11 @@ input default_contractor_questionnaires_min_order_by {
     job_position_id: order_by
     name: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    schedule_date: order_by
     site_id: order_by
     start_date: order_by
     status: order_by
@@ -94985,6 +95071,8 @@ input default_contractor_questionnaires_order_by {
     company: default_companies_order_by
     company_id: order_by
     contractor: default_contractors_order_by
+    contractor_client: default_clients_order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site: default_sites_order_by
     contractor_site_id: order_by
@@ -95006,12 +95094,17 @@ input default_contractor_questionnaires_order_by {
     name: order_by
     project: default_projects_order_by
     project_id: order_by
+    ques_next: default_contractor_questionnaires_order_by
+    ques_next_id: order_by
+    ques_prev: default_contractor_questionnaires_order_by
+    ques_prev_id: order_by
     question_list_aggregate: default_contractor_questionnaires_ques_aggregate_order_by
     removed: order_by
     responsible_department: default_departments_order_by
     responsible_department_id: order_by
     responsible_person: hr_employees_order_by
     responsible_person_id: order_by
+    schedule_date: order_by
     schedule_list_aggregate: default_contractor_questionnaires_schedules_aggregate_order_by
     site: default_sites_order_by
     site_id: order_by
@@ -95934,6 +96027,7 @@ input default_contractor_questionnaires_set_input {
     asset_type: String
     client_id: bigint
     company_id: bigint
+    contractor_client_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
     contractor_user_id: bigint
@@ -95949,9 +96043,12 @@ input default_contractor_questionnaires_set_input {
     job_position_id: bigint
     name: String
     project_id: bigint
+    ques_next_id: bigint
+    ques_prev_id: bigint
     removed: Boolean
     responsible_department_id: bigint
     responsible_person_id: bigint
+    schedule_date: date
     site_id: bigint
     start_date: date
     status: questionnaires_status
@@ -95967,6 +96064,7 @@ input default_contractor_questionnaires_stddev_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -95975,6 +96073,8 @@ input default_contractor_questionnaires_stddev_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -95987,6 +96087,7 @@ input default_contractor_questionnaires_stddev_pop_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -95995,6 +96096,8 @@ input default_contractor_questionnaires_stddev_pop_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -96007,6 +96110,7 @@ input default_contractor_questionnaires_stddev_samp_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -96015,6 +96119,8 @@ input default_contractor_questionnaires_stddev_samp_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -96027,6 +96133,7 @@ input default_contractor_questionnaires_sum_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -96035,6 +96142,8 @@ input default_contractor_questionnaires_sum_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -96055,6 +96164,7 @@ input default_contractor_questionnaires_var_pop_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -96063,6 +96173,8 @@ input default_contractor_questionnaires_var_pop_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -96075,6 +96187,7 @@ input default_contractor_questionnaires_var_samp_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -96083,6 +96196,8 @@ input default_contractor_questionnaires_var_samp_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by
@@ -96095,6 +96210,7 @@ input default_contractor_questionnaires_variance_order_by {
     asset_id: order_by
     client_id: order_by
     company_id: order_by
+    contractor_client_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
     contractor_user_id: order_by
@@ -96103,6 +96219,8 @@ input default_contractor_questionnaires_variance_order_by {
     id: order_by
     job_position_id: order_by
     project_id: order_by
+    ques_next_id: order_by
+    ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
     site_id: order_by

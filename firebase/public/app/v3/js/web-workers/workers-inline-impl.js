@@ -96,14 +96,12 @@ class Utils {
             // if ('sectionText' in v) {
                 v.question_list = {data: v.question_list.map(mapQuestions)};
             } else {
-                const {questionType, answer} = v;
-                if (questionType === 'Person' && answer) {
-                    const {id: employee_id} = answer;
-                    v.answer = {employee_id};
+                const {questionType, answer, answer_employee, answer_asset} = v;
+                if (questionType === 'Person' && answer_employee) {
+                    v.answer_employee_id = answer_employee.id;
                 }
-                if (questionType === 'Asset' && answer) {
-                    const {id: asset_id} = answer;
-                    v.answer = {asset_id};
+                if (questionType === 'Asset' && answer_asset) {
+                    v.answer_asset_id = answer_asset.id;
                 }
                 if (questionType === 'Signature' && answer) {
                     v.answer = answer;
@@ -198,7 +196,12 @@ class Utils {
                     } else {
                         delete v.ques_path_list;
                     }
+
                     v.answer = null;
+                    v.answer_employee_id = null;
+                    v.answer_asset_id = null;
+                    v.score = null;
+                    v.responseAttachment = null;
                 }
             }
             return v;

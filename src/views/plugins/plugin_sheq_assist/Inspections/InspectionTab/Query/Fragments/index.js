@@ -7,6 +7,12 @@ export const inspection_question_list_fragment = (deep = 3) => {
   return `
     id
     answer
+    answer_employee{
+      id
+    } 
+    answer_asset{
+      id
+    }
     responseAttachment
     hasResponseAttachment
     responseAttachmentRequired
@@ -112,6 +118,8 @@ export const inspection_question_list_fragment = (deep = 3) => {
 //<editor-fold desc="inspection_details_fragment">
 export const inspection_details_fragment = `
     id
+    ques_next_id
+    ques_prev_id
     created_at
     name
     desc
@@ -123,6 +131,10 @@ export const inspection_details_fragment = `
     
     interval
     start_date
+    time
+    schedule_date
+    date_completed
+    time_completed
     asset_type
     asset{
       id

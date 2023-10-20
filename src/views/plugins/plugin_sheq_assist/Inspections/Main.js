@@ -7,11 +7,13 @@ import style from "./Main.lazy.css";
 import APage from "views/APage";
 import DashboardTab from './DashboardTab';
 import TemplatesTab from './TemplatesTab';
-import InspectionTab from './InspectionTab';
+import InspectionTodayTab from './InspectionTodayTab';
+import InspectionUpcomingTab from './InspectionUpcomingTab';
 import InspectionsActiveTab from './InspectionsActiveTab';
 import InspectionsCompletedTab from './InspectionsCompletedTab';
 
 import Tabs from 'components/tabs/Tabs';
+import InspectionUnansweredTab from "./InspectionUnansweredTab";
 
 @observer
 class Main extends APage {
@@ -57,9 +59,11 @@ class Main extends APage {
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardTab ref="dashboard" title="Dashboard"/>
                 {!isEmployee && <TemplatesTab ref="forms" title="Templates" path={this.path}/>}
-                <InspectionTab ref="inspectionTab" title="Inspection Schedules" path={this.path}/>
-                <InspectionsActiveTab ref="inspectionsActiveTab" title="Active Schedules" path={this.path}/>
-                <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed Schedules" path={this.path}/>
+                <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>
+                <InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>
+                <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>
+                <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>
+                <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
             </Tabs>
         </div>);
     }

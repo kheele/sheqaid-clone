@@ -83,10 +83,8 @@ class ATab extends React.Component {
             <div className="td fixed-flex min-w-180">Responsible Person</div>
             <div className="td fixed-flex min-w-80">Interval</div>
             <div className="td fixed-flex min-w-100">Start Date</div>
+            <div className="td fixed-flex min-w-120">Date Scheduled</div>
             <div className="td fixed-flex min-w-120">Next Schedule</div>
-            <div className="td fixed-flex min-w-120">Not Conducted</div>
-            <div className="td fixed-flex min-w-120">Incomplete</div>
-            <div className="td fixed-flex min-w-120">Completed</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }

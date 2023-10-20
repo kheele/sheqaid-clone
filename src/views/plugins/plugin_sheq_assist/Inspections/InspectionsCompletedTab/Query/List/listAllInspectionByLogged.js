@@ -34,31 +34,21 @@ export default (
 	return GQLClient
 	.query({
 		query: `
-      query listAllInspectionCompletedQuestionnaireByLoggedQuery {
-        default_contractor_questionnaires_schedules(
+	  query listAllInspectionCompletedQuestionnaireByLoggedQuery {
+      	default_contractor_questionnaires(
           where: {
-            completed: {_eq: true},
-            questionnaire: {
-	            removed: {_eq: ${removed}},
-	            group: {_eq: "Inspections"},
-	            is_template: {_eq: false},
-	            ${filter}
-            }
+            removed: {_eq: ${removed}},
+            group: {_eq: "Inspections"},
+            is_template: {_eq: false},
+            status: {_eq: "CompleteAccepted"},
+            ${filter}
           },
-	        order_by: {date: asc, time: asc, date_completed: asc, time_completed: asc},
+	        order_by: {name: asc},
 	        offset: ${offset},
 	        ${limit > 0 ? `limit: ${limit}` : ''}
         ) {
-          interval
-          completed
-          date
-          time
-          date_completed
-          time_completed
-          questionnaire {
             ${inspection_details_fragment}
             ${orgs_fragment}
-          }
         }
       }
     `,
