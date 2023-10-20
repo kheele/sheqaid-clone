@@ -57,7 +57,7 @@ class ExportIncidentsDialog extends ANewDialog {
         };
         return <React.Fragment>
             <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-            <Button className="btn btn-primary save" onClick={this.onSubmit}>
+    <Button className="btn btn-primary save" onClick={this.onSubmit}>
                 <i className="fa fa-check icon-left"/>{title()}
             </Button>
         </React.Fragment>;
