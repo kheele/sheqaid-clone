@@ -114,11 +114,12 @@ class InspectionTab extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
             <div className="td">Name</div>
+            <div className="td fixed-flex min-w-140">Asset Type</div>
             <div className="td fixed-flex min-w-140">Asset</div>
             <div className="td fixed-flex min-w-180">Responsible Person</div>
             <div className="td fixed-flex min-w-80">Interval</div>
             <div className="td fixed-flex min-w-100">Start Date</div>
-            <div className="td fixed-flex min-w-160">Date & Time</div>
+            <div className="td fixed-flex min-w-120">Date Scheduled</div>
             <div className="td fixed-flex min-w-160">Conducted On</div>
             <div className="td fixed-flex min-w-120">Next Schedule</div>
             <div className="td fixed-flex min-w-270">Progress</div>

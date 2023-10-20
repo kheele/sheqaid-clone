@@ -18,76 +18,63 @@ class InspectionTableRow extends React.Component {
 		// const {id, data: {created_at, name, template: {name: template_name}, score, conducted, completed}} = item;
 		const {
 			id, data: {
+				created_at,
+				name,
+				desc,
+				status,
+				status_answered_by_sender,
+				is_template,
+				type,
+				visibility,
+				scheduled,
+				page_title_list,
+				question_list,
+				//
 				interval,
-				completed,
-				date,
-				time,
+				start_date,
 				date_completed,
 				time_completed,
-				questionnaire: {
-					name,
-					desc,
-					status,
-					status_answered_by_sender,
-					is_template,
-					type,
-					visibility,
-					scheduled,
-					page_title_list,
-					question_list,
-					//
-					// interval,
-					start_date,
-					responsible_person,
-					responsible_department,
-					asset_type,
-					asset,
-					//
-					template
-				}
+				schedule_date,
+				responsible_person,
+				responsible_department,
+				asset_type,
+				asset,
+				schedule_list = [],
+				//
+				template
 			}
 		} = item;
 
+		const _schedule_date = Dates.parse(schedule_date);
+
 		let nextSchedule;
-		switch (interval) {
-			case 'Daily': {
-				nextSchedule = new Date().addDays(1);
-				break;
-			}
-			case 'Weekly': {
-				const _start_date = Dates.parse(start_date);
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addWeeks(1);
-				break;
-			}
-			case 'Monthly': {
-				const _start_date = Dates.parse(start_date);
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(1);
-				break;
-			}
-			case 'Quarterly': {
-				const _start_date = Dates.parse(start_date);
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(3);
-				break;
-			}
-			case 'Bi-Annually': {
-				const _start_date = Dates.parse(start_date);
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addMonths(6);
-				break;
-			}
-			case 'Annually': {
-				const _start_date = Dates.parse(start_date);
-				const d = new Date();
-				d.setDate(_start_date.getDate());
-				nextSchedule = d.addYears(1);
-				break;
+
+		if(_schedule_date) {
+			switch (interval) {
+				case 'Daily': {
+					nextSchedule = _schedule_date.addDays(1);
+					break;
+				}
+				case 'Weekly': {
+					nextSchedule = _schedule_date.addWeeks(1);
+					break;
+				}
+				case 'Monthly': {
+					nextSchedule = _schedule_date.addMonths(1);
+					break;
+				}
+				case 'Quarterly': {
+					nextSchedule = _schedule_date.addMonths(3);
+					break;
+				}
+				case 'Bi-Annually': {
+					nextSchedule = _schedule_date.addMonths(6);
+					break;
+				}
+				case 'Annually': {
+					nextSchedule = _schedule_date.addYears(1);
+					break;
+				}
 			}
 		}
 
@@ -138,7 +125,7 @@ class InspectionTableRow extends React.Component {
 			<div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{interval}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
-			<div className="td fixed-flex min-w-160">{Dates.formatDate(date)} {time}</div>
+			<div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
 			<div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {time_completed}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(nextSchedule)}</div>
 			<AsyncTD

@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 
 import ATab from '../ATab';
 
-import style from "./InspectionTab.lazy.css";
+import style from "../InspectionTab/InspectionTab.lazy.css";
 import byLogged from "./Query/List/listAllInspectionByLogged";
 
 @observer

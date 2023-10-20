@@ -28,6 +28,7 @@ class ATab extends React.Component {
         this.onStart = this.onStart.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -74,6 +75,7 @@ class ATab extends React.Component {
     }
 
     renderTHead() {
+        const {isUpcoming, unanswered} = this.props;
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
             <div className="td">Name</div>
@@ -84,14 +86,16 @@ class ATab extends React.Component {
             <div className="td fixed-flex min-w-80">Interval</div>
             <div className="td fixed-flex min-w-100">Start Date</div>
             <div className="td fixed-flex min-w-120">Date Scheduled</div>
-            <div className="td fixed-flex min-w-120">Next Schedule</div>
+            {!isUpcoming && <div className="td fixed-flex min-w-120">Next Schedule</div>}
+            {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-270">Progress</div>}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
+        const {isUpcoming, unanswered} = this.props;
         let item = this.refs.root.list[n];
-        return <InspectionTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <InspectionTableRow key={item.id} idx={n} item={item} isUpcoming={isUpcoming} unanswered={unanswered} onClick={onClick}/>;
     }
 
     render() {

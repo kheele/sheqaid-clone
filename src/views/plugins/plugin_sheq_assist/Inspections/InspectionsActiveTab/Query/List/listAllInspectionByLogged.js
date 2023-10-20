@@ -32,7 +32,8 @@ export default (
 
 	const answeredFilter = (level = 3) => {
 		return `
-			_or:[
+		_and: [
+			{_or:[
 				{
 				  question_list_aggregate: {
 					count: {
@@ -87,7 +88,8 @@ export default (
  			      }
                 }` : ""
 				}
-			]
+			]}
+		]
 		`;
 	};
 

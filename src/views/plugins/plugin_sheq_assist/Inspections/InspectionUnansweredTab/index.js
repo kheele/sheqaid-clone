@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 
 import ATab from '../ATab';
 
-import style from "./InspectionTab.lazy.css";
+import style from "../InspectionTab/InspectionTab.lazy.css";
 import byLogged from "./Query/List/listAllInspectionByLogged";
 
 @observer
@@ -64,7 +64,8 @@ class InspectionTab extends React.Component {
             pageTitleSingular: "inspection",
             onLoadList: this.onLoadList,
             type: "Inspection",
-            permissionKey
+            permissionKey,
+            unanswered: true,
         };
         return <ATab {...props}/>;
     }

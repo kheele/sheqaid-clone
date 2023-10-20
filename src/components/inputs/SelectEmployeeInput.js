@@ -125,7 +125,15 @@ class SelectInput extends ASelectInput {
 
 	onFilter(option) {
 		if (!option) return false;
-		const {label, value} = option;
+
+		let value;
+		if(option.value) {
+			value = option.value;
+		} else {
+			value = option;
+		}
+
+		console.log('option value', value);
 		let {id, data, fname, lname, contractor} = value;
 		contractor = contractor || data && data.contractor;
 		const contractorName = contractor ? ` ${contractor.name}` : '';
@@ -134,7 +142,14 @@ class SelectInput extends ASelectInput {
 
 	renderItem(option, n) {
 		if (!option) return null;
-		const {label, value} = option;
+
+		let value;
+		if(option.value) {
+			value = option.value;
+		} else {
+			value = option;
+		}
+
 		let {id, data, fname, lname, contractor} = value;
 		contractor = contractor || data && data.contractor;
 		return {
