@@ -133,8 +133,6 @@ exports.onScheduleNextDate = async (data) => {
 
     console.log('onScheduleNextDate', list)
 
-    const today = Dates.formatDateSQL(new Date());
-
     await Promise.all(list.map(async ({id, data}) => {
         let {
             //
@@ -173,27 +171,110 @@ exports.onScheduleNextDate = async (data) => {
             question_list,
         } = data;
 
-        if (interval === "Daily") {
-            if (!schedule_date) {
-                schedule_date = today;
-            } else {
-                schedule_date = today;
+        //start_date
+
+        const create_schedule_date = ({interval, schedule_date}) => {
+            if (interval === "Daily") {
+                if (schedule_date) {
+                    return Dates.formatDateSQL(schedule_date.addDays(1));
+                } else {
+                    return Dates.formatDateSQL(new Date());
+                }
+            } else if(interval === "Weekly") {
+                if (schedule_date) {
+                    let days = schedule_date.durationNextDays(new Date());
+                    if(days === 7) {
+                        return Dates.formatDateSQL(schedule_date.addWeeks(1));
+                    }
+                    const lastDate = Dates.getWeeksStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    days = lastDate.durationNextDays(new Date());
+                    if(days === 0) {
+                        return Dates.formatDateSQL(lastDate);
+                    }
+                    return Dates.formatDateSQL(lastDate.addWeeks(1));
+                } else {
+                    const lastDate = Dates.getWeeksStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
+                    return Dates.formatDateSQL(lastDate.addWeeks(1));
+                }
+            } else if(interval === "Monthly") {
+                if (schedule_date) {
+                    let days = schedule_date.durationNextMonths(new Date());
+                    if(days === 1) {
+                        return Dates.formatDateSQL(schedule_date.addMonths(1));
+                    }
+                    const lastDate = Dates.getMonthsStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    days = lastDate.durationNextMonths(new Date());
+                    if(days === 0) {
+                        return Dates.formatDateSQL(lastDate);
+                    }
+                    return Dates.formatDateSQL(lastDate.addMonths(1));
+                } else {
+                    const lastDate = Dates.getMonthsStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
+                    return Dates.formatDateSQL(lastDate.addMonths(1));
+                }
+            } else if(interval === "Quarterly") {
+                if (schedule_date) {
+                    let days = schedule_date.durationNextMonths(new Date());
+                    if(days === 3) {
+                        return Dates.formatDateSQL(schedule_date.addMonths(3));
+                    }
+                    const lastDate = Dates.getQuartersStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    days = lastDate.durationNextMonths(new Date());
+                    if(days === 0) {
+                        return Dates.formatDateSQL(lastDate);
+                    }
+                    return Dates.formatDateSQL(lastDate.addMonths(3));
+                } else {
+                    const lastDate = Dates.getQuartersStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
+                    return Dates.formatDateSQL(lastDate.addMonths(3));
+                }
+            } else if(interval === "Bi-Annually") {
+                if (schedule_date) {
+                    let days = schedule_date.durationNextMonths(new Date());
+                    if(days === 6) {
+                        return Dates.formatDateSQL(schedule_date.addMonths(6));
+                    }
+                    const lastDate = Dates.getHalvesStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    days = lastDate.durationNextMonths(new Date());
+                    if(days === 0) {
+                        return Dates.formatDateSQL(lastDate);
+                    }
+                    return Dates.formatDateSQL(lastDate.addMonths(6));
+                } else {
+                    const lastDate = Dates.getHalvesStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
+                    return Dates.formatDateSQL(lastDate.addMonths(6));
+                }
+            } else if(interval === "Annually") {
+                if (schedule_date) {
+                    let days = schedule_date.durationNextYears(new Date());
+                    if(days === 1) {
+                        return Dates.formatDateSQL(schedule_date.addYears(1));
+                    }
+                    const lastDate = Dates.getYearsStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    days = lastDate.durationNextYears(new Date());
+                    if(days === 0) {
+                        return Dates.formatDateSQL(lastDate);
+                    }
+                    return Dates.formatDateSQL(lastDate.addYears(1));
+                } else {
+                    const lastDate = Dates.getYearsStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
+                    return Dates.formatDateSQL(lastDate.addYears(1));
+                }
             }
-        } else if(interval === "Weekly") {
+        };
 
-        } else if(interval === "Monthly") {
-
-        } else if(interval === "Quarterly") {
-
-        } else if(interval === "Bi-Annually") {
-
-        } else if(interval === "Annually") {
-
-        }
+        schedule_date = create_schedule_date({interval, schedule_date});
 
         question_list = getQuestionnaireTemplateForm(question_list);
 
-        const scheduledItem = await insertInspectionsQuestionnaire({
+        const save = async (input) => {
+            const scheduledItem = await insertInspectionsQuestionnaire(input);
+            if (scheduledItem) {
+                return await updateInspectionsQuestionnaire({id, ques_next_id: scheduledItem.id});
+            }
+        };
+
+        const input = {
             company_id,
             client_id,
             project_id,
@@ -224,11 +305,13 @@ exports.onScheduleNextDate = async (data) => {
             name,
             desc,
             question_list: {data: question_list},
-        });
+        };
 
-        if(scheduledItem) {
-            return await updateInspectionsQuestionnaire({id, ques_next_id: scheduledItem.id});
-        }
+        await save(input);
+
+        schedule_date = create_schedule_date({interval, schedule_date});
+
+        await save({...input, schedule_date});
     }));
 };
 // </editor-fold>
@@ -261,7 +344,7 @@ const updateInspectionsQuestionnaire = async (attrs) => {
     const {id} = attrs;
     delete attrs.id;
 
-    return updateMutationImpl({
+    return updateRelay({
         mutation: `
             mutation updateInspectionsQuestionnaireMutation($id: default_contractor_questionnaires_pk_columns_input!, $_set: default_contractor_questionnaires_set_input!) {
                 update_default_contractor_questionnaires_by_pk(pk_columns: $id, _set: $_set) {
@@ -269,6 +352,7 @@ const updateInspectionsQuestionnaire = async (attrs) => {
                 }
             }
         `,
+        operationName: 'updateInspectionsQuestionnaireMutation',
         id,
         attrs,
     });

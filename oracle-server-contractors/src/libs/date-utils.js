@@ -172,6 +172,50 @@ const moment = require('moment');
             return dd + "-" + mon + "-" + yr + " " + Dates.formatTime(date);
         }
 
+        static formatTimestampSQL(date) {
+            if (!date)
+                return null;
+
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+
+            return Dates.formatDateSQL(date) + " " + Dates.formatTime(date);//+date;
+        }
+
+        static formatDateSQL(date) {
+            if (!date)
+                return null;
+
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+            const d = date.getDate();
+            const dd = (d < 10) ? ("0" + d) : d;
+            const mon = monthsDoubleNumStr.get(date.getMonth());
+            const yr = date.getFullYear();
+
+            return yr + "-" + mon + "-" + dd;
+        }
+
         static formatDateTime(date) {
             if(!date) return null;
 
@@ -228,6 +272,283 @@ const moment = require('moment');
             const min = (minutes < 10) ? ("0" + minutes) : minutes;
 
             return dd + "-" + mon + " " + hrs + ":" + min;
+        }
+
+        static getWeeksStartAndEndDateRange(startDate, endDate) {
+            const dates = [];
+            let currDate = startDate;
+            if(!endDate) {
+                endDate = startDate;
+            }
+            while (currDate <= endDate) {
+                const year = currDate.getFullYear();
+                const month = currDate.getMonthsStr();
+                const start = currDate.toMonthStartDate();
+                const end = currDate.toMonthEndDate();
+                dates.push({
+                    year,
+                    month,
+                    start,
+                    end,
+                    currDate
+                });
+
+                currDate = currDate.addWeeks(1);
+            }
+            return dates;
+        }
+
+        static getWeeksStartAndEndDateRangeSQL(startDate, endDate) {
+            return Dates.getWeeksStartAndEndDateRange(startDate, endDate).map(({year, month, start, end, currDate}) => ({
+                year,
+                month,
+                start: Dates.formatDateSQL(start),
+                end: Dates.formatDateSQL(end),
+                currDate: Dates.formatDateSQL(currDate)
+            }));
+        }
+
+        static getMonthsStartAndEndDateRange(startDate, endDate) {
+            const dates = [];
+            let currDate = startDate;
+            if(!endDate) {
+                endDate = startDate;
+            }
+            while (currDate <= endDate) {
+                const year = currDate.getFullYear();
+                const month = currDate.getMonthsStr();
+                const start = currDate.toMonthStartDate();
+                const end = currDate.toMonthEndDate();
+                dates.push({
+                    year,
+                    month,
+                    start,
+                    end,
+                    currDate
+                });
+
+                currDate = currDate.addMonths(1);
+            }
+            return dates;
+        }
+
+        static getMonthsStartAndEndDateRangeSQL(startDate, endDate) {
+            return Dates.getMonthsStartAndEndDateRange(startDate, endDate).map(({year, month, start, end, currDate}) => ({
+                year,
+                month,
+                start: Dates.formatDateSQL(start),
+                end: Dates.formatDateSQL(end),
+                currDate: Dates.formatDateSQL(currDate)
+            }));
+        }
+
+        static getQuartersStartAndEndDateRange(startDate, endDate) {
+            const dates = [];
+            let currDate = startDate;
+            if(!endDate) {
+                endDate = startDate;
+            }
+            while (currDate <= endDate) {
+                const year = currDate.getFullYear();
+                const month = currDate.getMonthsStr();
+                const start = currDate.toQuarterStartDate();
+                const end = currDate.toQuarterEndDate();
+                dates.push({
+                    year,
+                    month,
+                    start,
+                    end,
+                    currDate
+                });
+
+                currDate = currDate.addMonths(3);
+            }
+            return dates;
+
+            // let {startYear, endYear, includeAllQuartersInCurrYear = false} = args || {};
+            // const currentYear = startYear || new Date().getFullYear();
+            // endYear = endYear || 2000;
+            //
+            // const quarters = [];
+            //
+            // if(includeAllQuartersInCurrYear) {
+            //     for (let year = currentYear; year >= endYear; year--) {
+            //         for (let quarter = 4; quarter >= 1; quarter--) {
+            //             const startMonth = (quarter - 1) * 3;
+            //             const endMonth = quarter * 3 - 1;
+            //
+            //             const start = new Date(year, startMonth, 1);
+            //             const end = new Date(year, endMonth, 1).toMonthEndDate();
+            //
+            //             quarters.push({
+            //                 year,
+            //                 quarter,
+            //                 start,
+            //                 end,
+            //             });
+            //         }
+            //     }
+            //     return quarters;
+            // }
+            //
+            // const currentMonth = new Date().getMonth();
+            // let currDate = Math.floor(currentMonth / 3) + 1;
+            //
+            // for (let year = currentYear; year >= endYear; year--) {
+            //     for (let quarter = currDate; quarter >= 1; quarter--) {
+            //         if (year === currentYear && quarter < currDate) {
+            //             break;
+            //         }
+            //         const startMonth = (quarter - 1) * 3;
+            //         const endMonth = quarter * 3 - 1;
+            //
+            //         const start = new Date(year, startMonth, 1);
+            //         const end = new Date(year, endMonth, 1).toMonthEndDate();
+            //
+            //         quarters.push({
+            //             year,
+            //             quarter,
+            //             start,
+            //             end,
+            //             currDate
+            //         });
+            //     }
+            //     currDate = 4;
+            // }
+            // return quarters;
+        }
+
+        static getQuartersStartAndEndDateRangeSQL(startDate, endDate) {
+            let {startYear, endYear, includeAllQuartersInCurrYear = false} = args || {};
+            return Dates.getQuartersStartAndEndDateRange({startYear, endYear, includeAllQuartersInCurrYear}).map(({year, quarter, start, end, currDate}) => ({
+                year,
+                quarter,
+                start: Dates.formatDateSQL(start),
+                end: Dates.formatDateSQL(end),
+                currDate: Dates.formatDateSQL(currDate)
+            }));
+        }
+
+        static getHalvesStartAndEndDateRange(startDate, endDate) {
+            const dates = [];
+            let currDate = startDate;
+            if(!endDate) {
+                endDate = startDate;
+            }
+            while (currDate <= endDate) {
+                const year = currDate.getFullYear();
+                const month = currDate.getMonthsStr();
+                const start = currDate.toHalfStartDate();
+                const end = currDate.toHalfEndDate();
+                dates.push({
+                    year,
+                    month,
+                    start,
+                    end,
+                    currDate
+                });
+
+                currDate = currDate.addMonths(6);
+            }
+            return dates;
+
+            // let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
+            // const currentYear = startYear || new Date().getFullYear();
+            // endYear = endYear || 2000;
+            //
+            // const halves = [];
+            //
+            // if(includeAllHalvesInCurrYear) {
+            //     for (let year = currentYear; year >= endYear; year--) {
+            //         for (let half = 2; half >= 1; half--) {
+            //             const startMonth = (half - 1) * 6;
+            //             const endMonth = half * 6 - 1;
+            //
+            //             const start = new Date(year, startMonth, 1);
+            //             const end = new Date(year, endMonth, 1).toMonthEndDate();
+            //
+            //             halves.push({
+            //                 year,
+            //                 half,
+            //                 start,
+            //                 end,
+            //             });
+            //         }
+            //     }
+            //     return halves;
+            // }
+            //
+            // const currentMonth = new Date().getMonth();
+            // let currentHalf = Math.floor(currentMonth / 6) + 1;
+            //
+            // for (let year = currentYear; year >= endYear; year--) {
+            //     for (let half = currentHalf; half >= 1; half--) {
+            //         if (year === currentYear && half < currentHalf) {
+            //             break;
+            //         }
+            //         const startMonth = (half - 1) * 6;
+            //         const endMonth = half * 6 - 1;
+            //
+            //         const start = new Date(year, startMonth, 1);
+            //         const end = new Date(year, endMonth, 1).toMonthEndDate();
+            //
+            //         halves.push({
+            //             year,
+            //             half,
+            //             start,
+            //             end,
+            //             currDate
+            //         });
+            //     }
+            //     currentHalf = 2;
+            // }
+            // return halves;
+        }
+
+        static getHalvesStartAndEndDateRangeSQL(startDate, endDate) {
+            let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
+            return Dates.getHalvesStartAndEndDateRange({startYear, endYear, includeAllHalvesInCurrYear}).map(({year, half, start, end, currDate}) => ({
+                year,
+                half,
+                start: Dates.formatDateSQL(start),
+                end: Dates.formatDateSQL(end),
+                currDate: Dates.formatDateSQL(currDate)
+            }));
+        }
+
+        static getYearsStartAndEndDateRange(startDate, endDate) {
+            const dates = [];
+            let currDate = startDate;
+            if(!endDate) {
+                endDate = startDate;
+            }
+            while (currDate <= endDate) {
+                const year = currDate.getFullYear();
+                const month = currDate.getMonthsStr();
+                const start = currDate.toYearStartDate();
+                const end = currDate.toYearEndDate();
+                dates.push({
+                    year,
+                    month,
+                    start,
+                    end,
+                    currDate
+                });
+
+                currDate = currDate.addYears(1);
+            }
+            return dates;
+        }
+
+        static getYearsStartAndEndDateRangeSQL(args) {
+            let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
+            return Dates.getHalvesStartAndEndDateRange({startYear, endYear, includeAllHalvesInCurrYear}).map(({year, half, start, end, currDate}) => ({
+                year,
+                half,
+                start: Dates.formatDateSQL(start),
+                end: Dates.formatDateSQL(end),
+                currDate: Dates.formatDateSQL(currDate)
+            }));
         }
 
         static getMonthsStr(date) {
@@ -518,6 +839,46 @@ const moment = require('moment');
     };
     Date.prototype.toYearEndDate = function () {
         return moment(this).endOf('year').toDate();
+    };
+    Date.prototype.toHalfStartDate = function () {
+        const month = moment(this).month();
+        if (month < 6) {
+            return moment(this).startOf('year').toDate();
+        } else {
+            return moment(this).startOf('year').month(6).toDate();
+        }
+    };
+    Date.prototype.toHalfEndDate = function () {
+        const month = moment(this).month();
+        if (month < 6) {
+            return moment(this).startOf('year').month(5).endOf('month').toDate();
+        } else {
+            return moment(this).endOf('year').toDate();
+        }
+    };
+    Date.prototype.toQuarterStartDate = function () {
+        const month = moment(this).month();
+        if (month < 3) {
+            return moment(this).startOf('year').toDate();
+        } else if (month < 6) {
+            return moment(this).startOf('year').month(3).toDate();
+        } else if (month < 9) {
+            return moment(this).startOf('year').month(6).toDate();
+        } else {
+            return moment(this).startOf('year').month(9).toDate();
+        }
+    };
+    Date.prototype.toQuarterEndDate = function () {
+        const month = moment(this).month();
+        if (month < 3) {
+            return moment(this).startOf('year').month(2).endOf('month').toDate();
+        } else if (month < 6) {
+            return moment(this).startOf('year').month(5).endOf('month').toDate();
+        } else if (month < 9) {
+            return moment(this).startOf('year').month(8).endOf('month').toDate();
+        } else {
+            return moment(this).endOf('year').toDate();
+        }
     };
     Date.prototype.toMonthStartDate = function () {
         return moment(this).startOf('month').toDate();
