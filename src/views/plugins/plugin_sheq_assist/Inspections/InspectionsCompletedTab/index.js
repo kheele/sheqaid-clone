@@ -2,7 +2,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import style from "./InspectionTab.lazy.css";
-import byLogged from "./Query/List/listAllInspectionByLogged";
 import APageListReadWrite from "views/APageListReadWrite";
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
 import {EditResponseDialog, NewQuestionnaireDialog, ProfileResponseDialog} from "../InspectionTab/forms";
@@ -46,23 +45,15 @@ class InspectionTab extends React.Component {
             name,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('inspections').fn('listCompletedByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

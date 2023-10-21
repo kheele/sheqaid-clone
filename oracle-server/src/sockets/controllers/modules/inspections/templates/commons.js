@@ -1,18 +1,32 @@
 
-//<editor-fold desc="inspection_question_list_fragment">
-export const inspection_question_list_fragment = (deep = 3) => {
-  if(deep === 0) {
-     return `id`;
-  }
-  return `
+//<editor-fold desc="getVariablesAndQueryConfig">
+exports.getVariablesAndQueryConfig = (
+    {
+        orgs_filter = [],
+        //
+        site_id, project_id, client_id,
+        //
+        exact_orgs = false,
+    }
+) => {
+    //<editor-fold desc="variables, filters">
+    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+
+    filter = filter.map(v => `{${v}}`).join(',');
+    //</editor-fold>
+
+    return {filter};
+};
+//</editor-fold>
+
+//<editor-fold desc="inspection_template_question_list_fragment">
+const inspection_template_question_list_fragment = (deep = 3) => {
+    if(deep === 0) {
+        return `id`;
+    }
+    return `
     id
     answer
-    answer_employee{
-      id
-    } 
-    answer_asset{
-      id
-    }
     responseAttachment
     hasResponseAttachment
     responseAttachmentRequired
@@ -41,13 +55,12 @@ export const inspection_question_list_fragment = (deep = 3) => {
     idx
     is_page_title
     question_list:question_list{
-        ${inspection_question_list_fragment(deep - 1)}
+        ${inspection_template_question_list_fragment(deep - 1)}
     }
     options{
       optionImage
       optionText
       optionType
-      answer
     }
     message_list{
         ques{
@@ -115,8 +128,8 @@ export const inspection_question_list_fragment = (deep = 3) => {
 };
 //</editor-fold>
 
-//<editor-fold desc="inspection_details_fragment">
-export const inspection_details_fragment = `
+//<editor-fold desc="inspection_template_details_fragment">
+exports.inspection_template_details_fragment = `
     id
     ques_next_id
     ques_prev_id

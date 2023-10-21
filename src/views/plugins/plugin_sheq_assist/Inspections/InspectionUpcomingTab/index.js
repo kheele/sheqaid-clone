@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import ATab from '../ATab';
 
 import style from "../InspectionTab/InspectionTab.lazy.css";
-import byLogged from "./Query/List/listAllInspectionByLogged";
+import {Dates} from "utils/Dates";
 
 @observer
 class InspectionTab extends React.Component {
@@ -30,24 +30,19 @@ class InspectionTab extends React.Component {
         const {
             name,
         } = filterData || {};
+        const listByLogged = sockets.of('inspections').fn('listUpcomingByLogged');
 
-        const limit = 50;
+        const today = Dates.formatDateSQL(new Date());
 
-        const args = {
+        return listByLogged({
+            today,
+            //
             name,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

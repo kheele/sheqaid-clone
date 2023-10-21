@@ -1,10 +1,43 @@
 
+//<editor-fold desc="getVariablesAndQueryConfig">
+exports.getVariablesAndQueryConfig = (
+    {
+        orgs_filter = [],
+        status,
+        //
+        site_id, project_id, client_id,
+        //
+        exact_orgs = false,
+    }
+) => {
+    //<editor-fold desc="variables, filters">
+    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+
+    if (status) {
+        let comp;
+        if (status.startsWith('!')) {
+            status = status.replace('!', '');
+            comp = '_neq';
+        } else {
+            comp = '_eq';
+        }
+
+        filter.push(`status: {${comp}: "${status}"}`);
+    }
+
+    filter = filter.join(',');
+    //</editor-fold>
+
+    return {filter};
+};
+//</editor-fold>
+
 //<editor-fold desc="inspection_question_list_fragment">
-export const inspection_question_list_fragment = (deep = 3) => {
-  if(deep === 0) {
-     return `id`;
-  }
-  return `
+const inspection_question_list_fragment = (deep = 3) => {
+    if (deep === 0) {
+        return `id`;
+    }
+    return `
     id
     answer
     answer_employee{
@@ -116,7 +149,7 @@ export const inspection_question_list_fragment = (deep = 3) => {
 //</editor-fold>
 
 //<editor-fold desc="inspection_details_fragment">
-export const inspection_details_fragment = `
+exports.inspection_details_fragment = `
     id
     ques_next_id
     ques_prev_id

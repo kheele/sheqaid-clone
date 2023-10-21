@@ -17,4 +17,5 @@ module.exports = path => [
 	"files/index.js",
 	"send-msg/index.js",
 	"graphql/index.js",
+	"socket/index.js",
 ].map(v => path + '/default/' + v);

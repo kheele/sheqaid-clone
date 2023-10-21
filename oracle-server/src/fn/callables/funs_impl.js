@@ -17,7 +17,7 @@ const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 
 //<editor-fold desc="addCustomUserClaims">
 global.addCustomUserClaims = (uid, claims, access_type) => {
-    if(access_type === 'ContractorUser') {
+    if (access_type === 'ContractorUser') {
         return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/addCustomUserClaims`, {
             method: "POST",
             headers: {
@@ -26,7 +26,7 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
             body: JSON.stringify({uid, claims}),
         }).then(res => res.text());
     }
-    if(access_type === 'Staff') {
+    if (access_type === 'Staff') {
         return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/addCustomUserClaims`, {
             method: "POST",
             headers: {
@@ -45,7 +45,7 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
 
 //<editor-fold desc="setCustomUserClaims">
 global.setCustomUserClaims = (uid, claims, access_type) => {
-    if(access_type === 'ContractorUser') {
+    if (access_type === 'ContractorUser') {
         return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/setCustomUserClaims`, {
             method: "POST",
             headers: {
@@ -54,7 +54,7 @@ global.setCustomUserClaims = (uid, claims, access_type) => {
             body: JSON.stringify({uid, claims}),
         }).then(res => res.text());
     }
-    if(access_type === 'Staff') {
+    if (access_type === 'Staff') {
         return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/setCustomUserClaims`, {
             method: "POST",
             headers: {
@@ -66,14 +66,14 @@ global.setCustomUserClaims = (uid, claims, access_type) => {
 
     const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims}) =>
-      _auth.setCustomUserClaims(uid, claims));
+        _auth.setCustomUserClaims(uid, claims));
 }
 //</editor-fold>
 
 //<editor-fold desc="createCustomToken">
 global.createCustomToken = (uid, data) => {
     const {access_type} = data;
-    if(access_type === 'ContractorUser') {
+    if (access_type === 'ContractorUser') {
         return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/createCustomToken`, {
             method: "POST",
             headers: {
@@ -82,7 +82,7 @@ global.createCustomToken = (uid, data) => {
             body: JSON.stringify({uid}),
         }).then(res => res.text());
     }
-    if(access_type === 'Staff') {
+    if (access_type === 'Staff') {
         return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/createCustomToken`, {
             method: "POST",
             headers: {
@@ -112,7 +112,7 @@ exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
 global.uploadDataUri = async (datauri_or_buffer, filePath) => {
     let buffer, contentType, ext;
     console.log('uploadDataUri is string', typeof datauri_or_buffer, typeof datauri_or_buffer === 'string')
-    if(typeof datauri_or_buffer === 'string') {
+    if (typeof datauri_or_buffer === 'string') {
         const parts = datauri_or_buffer.split(',');
         contentType = parts[0].replace('data:', '').split(';')[0];
         const base64 = parts[1];
@@ -170,7 +170,7 @@ exports.loadFaceModels = () => {
         faceapi.nets.ssdMobilenetv1.loadFromDisk('./models'),
         faceapi.nets.tinyFaceDetector.loadFromDisk('./models'),
         faceapi.nets.mtcnn.loadFromDisk('./models'),
-                //others
+        //others
 //        faceapi.nets.faceLandmark.loadFromDisk('./models'),
 //        faceapi.nets.faceLandmarkTinyModel.loadFromDisk('./models'),
 //        faceapi.nets.faceRecognition.loadFromDisk('./models'),
@@ -241,7 +241,7 @@ global.excelPreviewUrl = async (dataUrl) => {
 
 //<editor-fold desc="sendRelay">
 global.sendRelay = async (args) => {
-    if(!args) return null;
+    if (!args) return null;
     const {query, variables, operationName} = args;
 
     const result = await fetch(process.env.HASURA_RELAY_ENDPOINT, {
@@ -269,6 +269,107 @@ global.sendRelay = async (args) => {
     // console.log('sendRelay res', data);
 
     return data;
+};
+//</editor-fold>
+
+//<editor-fold desc="sendGraphQL">
+global.sendGraphQL = async (args) => {
+    if (!args) return null;
+    let {headers, mutation, query, variables, operationName, multi_queries, count, token} = args;
+
+    if (!headers) {
+        headers = {};
+    }
+
+    if (mutation) {
+        return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-hasura-access-key": "rhespo-g",
+                ...headers,
+            },
+            body: JSON.stringify({query: mutation, operationName, variables}),
+        }).then(res => res.json()).then(res => {
+            console.log(res); // { data: ... }
+
+            const {errors, data} = res;
+
+            if (errors) {
+                throw new Error(JSON.stringify(errors));
+            }
+
+            const key = Object.keys(data)[0];
+            const item = data[key];
+            if (item) {
+                const node = convertMutations(item);
+                // console.log("onCompleted node", node);
+                if (node.id) {
+                    return {data: node, id: node.id};
+                } else {
+                    return node;
+                }
+            }
+        }).catch(err => {
+            console.error("response err", err, 'query', query)
+            throw err;
+        });
+    }
+
+    return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-hasura-access-key": "rhespo-g",
+            ...headers,
+        },
+        body: JSON.stringify({query, variables}),
+    }).then(res => res.json()).then(res => {
+        // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+        const {errors, data} = res;
+
+        if (errors) {
+            throw new Error(JSON.stringify(errors));
+        }
+
+        if (multi_queries) {
+            if (!count) {
+                Object.keys(data).forEach(key => {
+                    const list = data[key];
+                    list.forEach(node => {
+                        convertMutations(node);
+                    });
+                });
+            }
+            return data;
+        } else {
+            const key = Object.keys(data)[0];
+            const list = data[key];
+            // console.log('connection', connection)
+            if (isArray(list)) {
+                const nodes = list.map(node => {
+                    node = convertMutations(node);
+                    if (node.id) {
+                        return {data: node, id: node.id};
+                    } else {
+                        return node;
+                    }
+                });
+                // console.log("onCompleted nodes", nodes);
+                return nodes;
+            } else {
+                const node = convertMutations(list);
+                if (node.id) {
+                    return {data: node, id: node.id};
+                } else {
+                    return node;
+                }
+            }
+        }
+    }).catch(err => {
+        console.error("response err", err, 'query', query)
+        throw err;
+    });
 };
 //</editor-fold>
 
@@ -300,6 +401,16 @@ global.listRelay = async ({query, operationName, variables}) => {
 };
 //</editor-fold>
 
+//<editor-fold desc="listGraphQL">
+global.listGraphQL = async ({query, operationName, variables}) => {
+    return await sendGraphQL({
+        query,
+        operationName,
+        variables,
+    });
+};
+//</editor-fold>
+
 //<editor-fold desc="getRelayOne">
 global.getRelayOne = async ({query, operationName, variables, multi_queries = false}) => {
     const query_res = await sendRelay({
@@ -311,7 +422,7 @@ global.getRelayOne = async ({query, operationName, variables, multi_queries = fa
         return;
     }
 
-    if(multi_queries) {
+    if (multi_queries) {
         Object.keys(query_res).forEach(key => {
             const connection = query_res[key];
             const {edges = []} = connection;
@@ -343,6 +454,16 @@ global.getRelayOne = async ({query, operationName, variables, multi_queries = fa
 };
 //</editor-fold>
 
+//<editor-fold desc="getGraphQLOne">
+global.getGraphQLOne = async ({query, operationName, variables, multi_queries = false}) => {
+    return await sendGraphQL({
+        query,
+        operationName,
+        variables,
+    });
+};
+//</editor-fold>
+
 //<editor-fold desc="insertRelay">
 global.insertRelay = async ({query, operationName, input}) => {
     return await sendRelay({
@@ -353,16 +474,42 @@ global.insertRelay = async ({query, operationName, input}) => {
 };
 //</editor-fold>
 
+//<editor-fold desc="insertGraphQL">
+global.insertGraphQL = async ({query, operationName, input}) => {
+    return await sendGraphQL({
+        query,
+        operationName,
+        variables: {object: input}
+    });
+};
+//</editor-fold>
+
 //<editor-fold desc="updateRelay">
 global.updateRelay = async ({mutation, operationName, id, attrs}) => {
-    if(attrs.id) {
+    if (attrs.id) {
         delete attrs.id;
     }
     return await sendRelay({
         query: mutation,
         operationName,
         variables: {
-            id: { id },
+            id: {id},
+            _set: attrs,
+        },
+    });
+};
+//</editor-fold>
+
+//<editor-fold desc="updateGraphQL">
+global.updateGraphQL = async ({mutation, operationName, id, attrs}) => {
+    if (attrs.id) {
+        delete attrs.id;
+    }
+    return await sendGraphQL({
+        query: mutation,
+        operationName,
+        variables: {
+            id: {id},
             _set: attrs,
         },
     });

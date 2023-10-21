@@ -1,4 +1,3 @@
-
 (function () {
 	class Controller extends AControllerRead {
 		constructor(events) {
