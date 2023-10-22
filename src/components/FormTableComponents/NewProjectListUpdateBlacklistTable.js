@@ -20,12 +20,29 @@ class ListTable extends ANewListTable {
         const {is: {isConsultant}} = storage;
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
+        //
+        // if (item && (item.site || item.id)) {
+        //     const {
+        //         id, data = {}
+        //     } = item.site || item;
+        //     const {
+        //         name,
+        //         client = {},
+        //         project = {}
+        //     } = data;
+        //     const {name: c_name, data: c_data = {}} = client;
+        //     const {name: p_name, data: p_data = {}} = project;
+        //     const clientName = c_name || c_data.name;
+        //     const projectName = p_name || p_data.name;
+        //
+        
         if (item && (item.project || item.id)) {
             console.log(item.project || item)
             const {
                 id,
                 name,
                 client,
+                data: {}
             } = item.project || item;
 
             const tr = <React.Fragment>

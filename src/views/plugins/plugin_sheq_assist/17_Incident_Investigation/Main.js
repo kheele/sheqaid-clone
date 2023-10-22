@@ -13,6 +13,7 @@ import ManHoursTab from './ManHoursTab';
 import Tabs from 'components/tabs/Tabs';
 
 import style from "./Main.lazy.css";
+import QuickIncidentsTab from "./QuickIncidentsTab";
 
 @observer
 class Main extends APage {
@@ -60,6 +61,7 @@ class Main extends APage {
 			      onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
 				{!isEmployee && <DashboardTab ref="dashboard" title="Dashboard" path={this.path}/>}
 				<IncidentsTab ref="incidents" title="Incidents" path={this.path}/>
+				<QuickIncidentsTab ref="quickIncidents" title="Quick Incidents" path={this.path}/>
 				<InvestigationsTab ref="investigations" title="Investigations" path={this.path}/>
 				{!isEmployee && <CorrectiveActionsTab ref="correctiveActions" title="Corrective Actions" path={this.path}/>}
 				<ManHoursTab ref="manHoursTab" title="Man Hours" path={this.path}/>
