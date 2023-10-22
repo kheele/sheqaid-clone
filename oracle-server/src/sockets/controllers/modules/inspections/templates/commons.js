@@ -200,10 +200,10 @@ exports.inspection_template_details_fragment = `
     }
     
     page_title_list:question_list(where: {is_page_title: {_eq: true}}){
-        ${inspection_question_list_fragment(3)}
+        ${inspection_template_question_list_fragment(3)}
     }
     question_list:question_list(where: {is_page_title: {_eq: false}}){
-        ${inspection_question_list_fragment(3)}
+        ${inspection_template_question_list_fragment(3)}
     }
     contractor_site{
         id

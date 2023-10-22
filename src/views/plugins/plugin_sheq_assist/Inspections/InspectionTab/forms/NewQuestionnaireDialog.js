@@ -21,7 +21,6 @@ import {TemplateQuestions} from 'components/templates';
 import style from "./NewQuestionnaireDialog.lazy.css";
 import insertInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/insertInspectionsQuestionnaire";
-import byLogged from "../../TemplatesTab/Query/List/listAllInspectionTemplatesByLogged";
 import {Dates} from "utils/Dates";
 import Divider from "@mui/material/Divider";
 // </editor-fold>
@@ -323,5 +322,7 @@ class Controls extends React.Component {
 
 	// </editor-fold>
 }
+
+const byLogged = sockets.of('inspections').fn('listTemplatesByLogged');
 
 export default NewQuestionnaireDialog;
