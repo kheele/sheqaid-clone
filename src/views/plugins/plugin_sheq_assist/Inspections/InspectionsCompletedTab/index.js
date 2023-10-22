@@ -22,7 +22,6 @@ class InspectionTab extends React.Component {
         this.onLoadList = this.onLoadList.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
-        this.onStart = this.onStart.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderItem = this.renderItem.bind(this);
@@ -68,12 +67,6 @@ class InspectionTab extends React.Component {
         const copy = toJS(list[idx]);
         onNew(evt, elem, copy);
     }
-
-    onStart(evt, elem) {
-        const {idx, action} = elem.props;
-        const item = this.refs.root.list[idx];
-        this.refs.editDialog.open(item);
-    }
     //</editor-fold>
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -90,7 +83,6 @@ class InspectionTab extends React.Component {
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-            <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Inspection"}/>
         </Options>;
     }
 

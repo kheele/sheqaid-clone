@@ -50,7 +50,7 @@ class ATab extends React.Component {
     //</editor-fold>
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-        const {renderPopoverOptions, permissionKey} = this.props;
+        const {renderPopoverOptions, permissionKey, isUpcoming, unanswered} = this.props;
         if(renderPopoverOptions) {
             return renderPopoverOptions(idx, {onView, onEdit, onRemove, Options});
         }
@@ -63,7 +63,7 @@ class ATab extends React.Component {
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-            <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Inspection"}/>
+            {!isUpcoming && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
         </Options>;
     }
 

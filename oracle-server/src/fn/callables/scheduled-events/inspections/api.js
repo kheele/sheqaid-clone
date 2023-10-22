@@ -94,6 +94,8 @@ const query = `
 query onScheduleNextDateQuery($schedule_date: date) {
   default_contractor_questionnaires_connection(
     where: {
+      company_id: {_eq: 18},
+      
 	  removed: {_eq: false}, 
       is_template: {_eq: false},
       group: {_eq: "Inspections"},
