@@ -2,7 +2,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import style from "./InspectionTab.lazy.css";
-import byLogged from "./Query/List/listAllInspectionByLogged";
 import APageListReadWrite from "views/APageListReadWrite";
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
 import {EditResponseDialog, NewQuestionnaireDialog, ProfileResponseDialog} from "../InspectionTab/forms";
@@ -23,7 +22,6 @@ class InspectionTab extends React.Component {
         this.onLoadList = this.onLoadList.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
-        this.onStart = this.onStart.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderItem = this.renderItem.bind(this);
@@ -46,23 +44,15 @@ class InspectionTab extends React.Component {
             name,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('inspections').fn('listCompletedByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -76,12 +66,6 @@ class InspectionTab extends React.Component {
         const {list, onNew} = this.refs.root;
         const copy = toJS(list[idx]);
         onNew(evt, elem, copy);
-    }
-
-    onStart(evt, elem) {
-        const {idx, action} = elem.props;
-        const item = this.refs.root.list[idx];
-        this.refs.editDialog.open(item);
     }
     //</editor-fold>
 
@@ -99,7 +83,6 @@ class InspectionTab extends React.Component {
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-            <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Inspection"}/>
         </Options>;
     }
 
@@ -114,11 +97,12 @@ class InspectionTab extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
             <div className="td">Name</div>
+            <div className="td fixed-flex min-w-140">Asset Type</div>
             <div className="td fixed-flex min-w-140">Asset</div>
             <div className="td fixed-flex min-w-180">Responsible Person</div>
             <div className="td fixed-flex min-w-80">Interval</div>
             <div className="td fixed-flex min-w-100">Start Date</div>
-            <div className="td fixed-flex min-w-160">Date & Time</div>
+            <div className="td fixed-flex min-w-120">Date Scheduled</div>
             <div className="td fixed-flex min-w-160">Conducted On</div>
             <div className="td fixed-flex min-w-120">Next Schedule</div>
             <div className="td fixed-flex min-w-270">Progress</div>

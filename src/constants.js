@@ -1,9 +1,8 @@
-import workers from "workers/Workers";
+import "workers/Workers";
+import "sockets/Sockets";
 
 window.DATA_LOAD_STATUS = {
     LOADING: "loading",
     ERROR: "error",
     LOADED: "loaded",
 };
-
-window.workers = workers;

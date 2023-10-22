@@ -75,97 +75,10 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
     if (token) {
         headers.Authorization = `Bearer ${token}`;
     }
-    
-    if (mutation) {
-        return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-hasura-access-key": "rhespo-g",
-                ...headers,
-            },
-            body: JSON.stringify({query: mutation, operationName, variables}),
-        }).then(res => res.json()).then(res => {
-            console.log(res); // { data: ... }
-            
-            const {errors, data} = res;
-            
-            if (errors) {
-                throw new Error(JSON.stringify(errors));
-            }
-            
-            const key = Object.keys(data)[0];
-            const item = data[key];
-            if (item) {
-                const node = convertMutations(item);
-                // console.log("onCompleted node", node);
-                if (node.id) {
-                    return {data: node, id: node.id};
-                } else {
-                    return node;
-                }
-            }
-        })
-          .catch(err => {
-              console.error("response err", err, 'query', query)
-              throw err;
-          });
-    }
-    
-    return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
-            ...headers,
-        },
-        body: JSON.stringify({query, variables}),
-    }).then(res => res.json()).then(res => {
-        // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
-        const {errors, data} = res;
-        
-        if (errors) {
-            throw new Error(JSON.stringify(errors));
-        }
-        
-        if (multi_queries) {
-            if (!count) {
-                Object.keys(data).forEach(key => {
-                    const list = data[key];
-                    list.forEach(node => {
-                        convertMutations(node);
-                    });
-                });
-            }
-            return data;
-        } else {
-            const key = Object.keys(data)[0];
-            const list = data[key];
-            // console.log('connection', connection)
-            if (isArray(list)) {
-                const nodes = list.map(node => {
-                    node = convertMutations(node);
-                    if (node.id) {
-                        return {data: node, id: node.id};
-                    } else {
-                        return node;
-                    }
-                });
-                // console.log("onCompleted nodes", nodes);
-                return nodes;
-            } else {
-                const node = convertMutations(list);
-                if (node.id) {
-                    return {data: node, id: node.id};
-                } else {
-                    return node;
-                }
-            }
-        }
-    }).catch(err => {
-        console.error("response err", err, 'query', query)
-        throw err;
-    });
+
+    data.headers = headers;
+
+    return sendGraphQL(data);
 });
 
 eventManager.on("graphql/api/rest/views", (socket, path) => {

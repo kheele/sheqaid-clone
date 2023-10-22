@@ -209,3 +209,153 @@ exports.onUpdateCOIDClaim = async (body) => {
 	}
 };
 // </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="uploadCOIDClaimWCI2">
+exports.uploadCOIDClaimWCI2 = async (body) => {
+	const data = getTriggeredEventsData(body, "coida_claims_wcl_2");
+	if (!data) {
+		return;
+	}
+
+	const {new_item} = data;
+	let {id, doc_certified_id, doc_salary_slip} = new_item;
+
+	console.log('uploadCOIDClaimWCI2', new_item)
+
+	{
+		const new_name = `coid-claims/wcl2/${id}/doc-certified-id-docs`;
+		await uploadFilesUpdate({
+			id, doc_certified_id, key: "doc_certified_id", new_name, onUpdate: async ({id, ...attrs}) => {
+				delete attrs.id;
+
+				await updateRelay({
+					mutation: `
+			    mutation updateCOIDClaimWCI2DocMutation($id: coida_claims_wcl_2_pk_columns_input!, $_set: coida_claims_wcl_2_set_input!) {
+			      update_coida_claims_wcl_2_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+					operationName: "updateCOIDClaimWCI2DocMutation",
+					id,
+					attrs,
+				});
+			}
+		});
+	}
+
+	{
+		const new_name = `coid-claims/wcl2/${id}/doc-salary-slip-docs`;
+		await uploadFilesUpdate({
+			id, doc_salary_slip, key: "doc_salary_slip", new_name, onUpdate: async ({id, ...attrs}) => {
+				delete attrs.id;
+
+				await updateRelay({
+					mutation: `
+			    mutation updateCOIDClaimWCI2DocMutation($id: coida_claims_wcl_2_pk_columns_input!, $_set: coida_claims_wcl_2_set_input!) {
+			      update_coida_claims_wcl_2_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+					operationName: "updateCOIDClaimWCI2DocMutation",
+					id,
+					attrs,
+				});
+			}
+		});
+	}
+};
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="uploadCOIDClaimWCI4">
+exports.uploadCOIDClaimWCI4 = async (body) => {
+	const data = getTriggeredEventsData(body, "coida_claims_wcl_4");
+	if (!data) {
+		return;
+	}
+
+	const {new_item} = data;
+	let {id, x_rays_report, external_doc} = new_item;
+
+	console.log('uploadCOIDClaimWCI4', new_item)
+
+	{
+		const new_name = `coid-claims/wcl4/${id}/external-docs`;
+		await uploadFilesUpdate({
+			id, external_doc, key: "external_doc", new_name, onUpdate: async ({id, ...attrs}) => {
+				delete attrs.id;
+
+				await updateRelay({
+					mutation: `
+			    mutation updateCOIDClaimWCI4DocMutation($id: coida_claims_wcl_4_pk_columns_input!, $_set: coida_claims_wcl_4_set_input!) {
+			      update_coida_claims_wcl_4_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+					operationName: "updateCOIDClaimWCI4DocMutation",
+					id,
+					attrs,
+				});
+			}
+		});
+	}
+
+	{
+		const new_name = `coid-claims/wcl4/${id}/x-rays-report-docs`;
+		await uploadFilesUpdate({
+			id, x_rays_report, key: "x_rays_report", new_name, onUpdate: async ({id, ...attrs}) => {
+				delete attrs.id;
+
+				await updateRelay({
+					mutation: `
+			    mutation updateCOIDClaimWCI4DocMutation($id: coida_claims_wcl_4_pk_columns_input!, $_set: coida_claims_wcl_4_set_input!) {
+			      update_coida_claims_wcl_4_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+					operationName: "updateCOIDClaimWCI4DocMutation",
+					id,
+					attrs,
+				});
+			}
+		});
+	}
+};
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="uploadCOIDClaimWCI5">
+exports.uploadCOIDClaimWCI5 = async (body) => {
+	const data = getTriggeredEventsData(body, "coida_claims_wcl_5");
+	if (!data) {
+		return;
+	}
+
+	const {new_item} = data;
+	let {id, external_doc} = new_item;
+
+	console.log('uploadCOIDClaimWCI5', new_item)
+
+	const new_name = `coid-claims/wcl5/${id}/external-docs`;
+	await uploadFilesUpdate({
+		id, external_doc, key: "external_doc", new_name, onUpdate: async ({id, ...attrs}) => {
+			delete attrs.id;
+
+			await updateRelay({
+				mutation: `
+			    mutation updateCOIDClaimWCI5DocMutation($id: coida_claims_wcl_5_pk_columns_input!, $_set: coida_claims_wcl_5_set_input!) {
+			      update_coida_claims_wcl_5_by_pk(pk_columns: $id, _set: $_set) {
+			        id
+			      }
+			    }
+			  `,
+				operationName: "updateCOIDClaimWCI5DocMutation",
+				id,
+				attrs,
+			});
+		}
+	});
+};
+// </editor-fold>

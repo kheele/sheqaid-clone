@@ -13,10 +13,6 @@ import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './f
 import {NewScheduleDialog, NewQuestionnaireDialog} from '../InspectionTab/forms';
 
 import style from "./TemplatesTab.lazy.css";
-import byLogged from "./Query/List/listAllInspectionTemplatesByLogged";
-import {AsyncTD} from "views/plugins/components";
-import {all_question_list} from "components/questionnaires/AResponseUtils";
-import InspectionTableRow from "../InspectionTab/InspectionTableRow";
 import TemplateTableRow from "./TemplateTableRow";
 
 @observer
@@ -64,23 +60,15 @@ class TemplatesTab extends React.Component {
             name,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('inspections').fn('listTemplatesByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

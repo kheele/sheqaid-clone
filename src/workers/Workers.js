@@ -159,9 +159,8 @@ const workers = {
 };
 // </editor-fold>
 
+window.workers = workers;
 window.firebaseBinding  = {
     events: workers
 };
 window.neonBinding = window.firebaseBinding;
-
-export default workers;
