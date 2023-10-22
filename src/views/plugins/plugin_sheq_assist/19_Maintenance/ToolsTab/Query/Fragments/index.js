@@ -278,7 +278,7 @@ export const asset_export_details_fragment = `
     }
 `;
 //</editor-fold>
-
+//
 //<editor-fold desc="asset_details_fragment">
 export const asset_details_fragment = `
     ${asset_basic_details_fragment}
