@@ -133,7 +133,7 @@ exports.onScheduleNextDate = async (data) => {
         return;
     }
 
-    console.log('onScheduleNextDate', list)
+    // console.log('onScheduleNextDate', list)
 
     await Promise.all(list.map(async ({id, data}) => {
         let {
@@ -176,100 +176,159 @@ exports.onScheduleNextDate = async (data) => {
         //start_date
 
         const create_schedule_date = ({interval, schedule_date}) => {
+            if (schedule_date) {
+                schedule_date = Dates.parse(schedule_date);
+            }
+
             if (interval === "Daily") {
                 if (schedule_date) {
                     return Dates.formatDateSQL(schedule_date.addDays(1));
                 } else {
-                    return Dates.formatDateSQL(new Date());
+                    const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)//
+                    if(lastDate) {
+                        const days = lastDate.durationNextDays(new Date());
+                        console.log('lastDate', interval, lastDate, days)
+                        if (days === 0) {
+                            return Dates.formatDateSQL(lastDate);
+                        }
+                        return Dates.formatDateSQL(lastDate.addDays(1));
+                    }
+                    return Dates.formatDateSQL(start_date);
                 }
-            } else if(interval === "Weekly") {
+            } else if (interval === "Weekly") {
                 if (schedule_date) {
                     let days = schedule_date.durationNextDays(new Date());
-                    if(days === 7) {
+                    if (days === 7) {
                         return Dates.formatDateSQL(schedule_date.addWeeks(1));
                     }
-                    const lastDate = Dates.getWeeksStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
+                    const lastDate = Dates.getWeeksStartAndEndDateRange(schedule_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)
+
+                    if (!lastDate) return;
+
                     days = lastDate.durationNextDays(new Date());
-                    if(days === 0) {
+                    console.log('lastDate', interval, lastDate, days)
+                    if (days === 0) {
                         return Dates.formatDateSQL(lastDate);
                     }
-                    return Dates.formatDateSQL(lastDate.addWeeks(1));
+                    // return Dates.formatDateSQL(lastDate.addWeeks(1));
+                    return Dates.formatDateSQL(lastDate.addDays(7));
                 } else {
-                    const lastDate = Dates.getWeeksStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
-                    return Dates.formatDateSQL(lastDate.addWeeks(1));
+                    const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    // return Dates.formatDateSQL(lastDate.addWeeks(1));
+                    return lastDate && Dates.formatDateSQL(lastDate.addDays(7));
                 }
-            } else if(interval === "Monthly") {
+            } else if (interval === "Monthly") {
                 if (schedule_date) {
-                    let days = schedule_date.durationNextMonths(new Date());
-                    if(days === 1) {
+                    let months = schedule_date.durationNextMonths(new Date());
+                    if (months === 1) {
                         return Dates.formatDateSQL(schedule_date.addMonths(1));
                     }
-                    const lastDate = Dates.getMonthsStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
-                    days = lastDate.durationNextMonths(new Date());
-                    if(days === 0) {
-                        return Dates.formatDateSQL(lastDate);
+                    const lastDate = Dates.getMonthsStartAndEndDateRange(schedule_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)//
+
+                    if (!lastDate) return;
+
+                    months = lastDate.durationNextMonths(new Date());
+                    const days = lastDate.durationNextDays(new Date());
+                    console.log('lastDate', interval, lastDate, months, days)
+                    if (months === 0) {
+                        if (days === 0) {
+                            return Dates.formatDateSQL(lastDate);
+                        }
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(1));
                 } else {
-                    const lastDate = Dates.getMonthsStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
-                    return Dates.formatDateSQL(lastDate.addMonths(1));
+                    const lastDate = Dates.getMonthsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(1));
                 }
-            } else if(interval === "Quarterly") {
+            } else if (interval === "Quarterly") {
                 if (schedule_date) {
-                    let days = schedule_date.durationNextMonths(new Date());
-                    if(days === 3) {
+                    let months = schedule_date.durationNextMonths(new Date());
+                    if (months === 3) {
                         return Dates.formatDateSQL(schedule_date.addMonths(3));
                     }
-                    const lastDate = Dates.getQuartersStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
-                    days = lastDate.durationNextMonths(new Date());
-                    if(days === 0) {
-                        return Dates.formatDateSQL(lastDate);
+                    const lastDate = Dates.getQuartersStartAndEndDateRange(schedule_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)//
+
+                    if (!lastDate) return;
+
+                    months = lastDate.durationNextMonths(new Date());
+                    const days = lastDate.durationNextDays(new Date());
+                    console.log('lastDate', interval, lastDate, months, days)
+                    if (months === 0) {
+                        if (days === 0) {
+                            return Dates.formatDateSQL(lastDate);
+                        }
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(3));
                 } else {
-                    const lastDate = Dates.getQuartersStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
-                    return Dates.formatDateSQL(lastDate.addMonths(3));
+                    const lastDate = Dates.getQuartersStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(3));
                 }
-            } else if(interval === "Bi-Annually") {
+            } else if (interval === "Bi-Annually") {
                 if (schedule_date) {
-                    let days = schedule_date.durationNextMonths(new Date());
-                    if(days === 6) {
+                    let months = schedule_date.durationNextMonths(new Date());
+                    if (months === 6) {
                         return Dates.formatDateSQL(schedule_date.addMonths(6));
                     }
-                    const lastDate = Dates.getHalvesStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
-                    days = lastDate.durationNextMonths(new Date());
-                    if(days === 0) {
-                        return Dates.formatDateSQL(lastDate);
+                    const lastDate = Dates.getHalvesStartAndEndDateRange(schedule_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)
+
+                    if (!lastDate) return;
+
+                    months = lastDate.durationNextMonths(new Date());
+                    const days = lastDate.durationNextDays(new Date());
+                    console.log('lastDate', interval, lastDate, months, days)
+                    if (months === 0) {
+                        if (days === 0) {
+                            return Dates.formatDateSQL(lastDate);
+                        }
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(6));
                 } else {
-                    const lastDate = Dates.getHalvesStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
-                    return Dates.formatDateSQL(lastDate.addMonths(6));
+                    const lastDate = Dates.getHalvesStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(6));
                 }
-            } else if(interval === "Annually") {
+            } else if (interval === "Annually") {
                 if (schedule_date) {
-                    let days = schedule_date.durationNextYears(new Date());
-                    if(days === 1) {
+                    let years = schedule_date.durationNextYears(new Date());
+                    if (years === 1) {
                         return Dates.formatDateSQL(schedule_date.addYears(1));
                     }
-                    const lastDate = Dates.getYearsStartAndEndDateRangeSQL(schedule_date, new Date()).map(({currDate}) => currDate);
-                    days = lastDate.durationNextYears(new Date());
-                    if(days === 0) {
-                        return Dates.formatDateSQL(lastDate);
+                    const lastDate = Dates.getYearsStartAndEndDateRange(schedule_date, new Date()).map(({currDate}) => currDate).pop();
+                    console.log('lastDate', interval, lastDate)
+
+                    if (!lastDate) return;
+
+                    years = lastDate.durationNextYears(new Date());
+                    const days = lastDate.durationNextDays(new Date());
+                    console.log('lastDate', interval, lastDate, years, days)
+                    if (years === 0) {
+                        if (days === 0) {
+                            return Dates.formatDateSQL(lastDate);
+                        }
                     }
                     return Dates.formatDateSQL(lastDate.addYears(1));
                 } else {
-                    const lastDate = Dates.getYearsStartAndEndDateRangeSQL(start_date, new Date()).map(({currDate}) => currDate);
-                    return Dates.formatDateSQL(lastDate.addYears(1));
+                    const lastDate = Dates.getYearsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                    return lastDate && Dates.formatDateSQL(lastDate.addYears(1));
                 }
             }
         };
 
         schedule_date = create_schedule_date({interval, schedule_date});
 
+        if(!schedule_date) {
+            return;
+        }
+
         question_list = getQuestionnaireTemplateForm(question_list);
 
         const save = async (input) => {
+            console.log('input', input);
+
             const scheduledItem = await insertInspectionsQuestionnaire(input);
             if (scheduledItem) {
                 return await updateInspectionsQuestionnaire({id, ques_next_id: scheduledItem.id});
@@ -312,8 +371,9 @@ exports.onScheduleNextDate = async (data) => {
         await save(input);
 
         schedule_date = create_schedule_date({interval, schedule_date});
-
-        await save({...input, schedule_date});
+        if (schedule_date) {
+            await save({...input, schedule_date});
+        }
     }));
 };
 // </editor-fold>
