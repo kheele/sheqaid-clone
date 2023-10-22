@@ -4,13 +4,17 @@ import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen, setDefaultVal} from 'utils/Utils';
+import {Dates, execWhen, setDefaultVal, ShouldUpdate} from 'utils/Utils';
 
 import {ClearableInput, PDFUploadButton, SelectEmployeeInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewWCL4Dialog.lazy.css";
+import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import updateWCL4 from "../../../../../mutations/all/COIDA/WCL4/updateWCL4";
+import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
+import insertWCL4 from "../../../../../mutations/all/COIDA/WCL4/insertWCL4";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -22,6 +26,109 @@ class NewWCL4Dialog extends ANewDialog {
     constructor(props) {
         super(props, style);
     }
+
+    //<editor-fold desc="convert_data">
+    convert_data(formData) {
+        const {
+            //
+            totalFieldCount,
+            totalFieldMax,
+
+            //1. General Details
+            claim_number,
+            accident_date,
+
+            //2. Employer Details
+            company_name,
+            company_str_addr,
+            company_str_addr_code,
+
+            //3. Employee Details
+//            employee,
+            id_num,
+            employee_str_addr,
+            employee_str_addr_code,
+
+            //4. Medical Practitioner/Chiropractor Consultation Details
+            first_consultation_date,
+            how_accident_happen,
+            injury_clinical_desc,
+            pre_existing_defect_disease,
+            x_rays_date,
+            x_rays_conducting_person,
+            x_rays_report,
+            surgical_procedure_date,
+            surgical_procedure_conducting_person,
+            surgical_procedure_desc,
+            anaesthetics_general_or_local,
+            anaesthetics_dur,
+            consultation_yes_or_no,
+            consultation_date,
+            consultation_conducting_person,
+            physiotherapy_employee_referred_yes_or_no,
+            physiotherapy_conducting_person,
+            employee_fitness_yes_or_no,
+            employee_fitness_light_duty_date,
+            employee_fitness_normal_duty_date,
+
+            //5. Medical Practitioner/Chiropractor Declaration
+            practioner_signature,
+            practioner_signature_name,
+            practioner_signature_date,
+            practioner_addr,
+            practioner_practice_num
+        } = formData;
+
+        return {
+            totalFieldCount,
+            totalFieldMax,
+
+            //1. General Details
+            claim_number,
+            accident_date: Dates.formatDateSQL(accident_date),
+
+            //2. Employer Details
+            company_name,
+            company_str_addr,
+            company_str_addr_code,
+
+            //3. Employee Details
+//            employee,
+            id_num,
+            employee_str_addr,
+            employee_str_addr_code,
+
+            //4. Medical Practitioner/Chiropractor Consultation Details
+            first_consultation_date: Dates.formatDateSQL(first_consultation_date),
+            how_accident_happen,
+            injury_clinical_desc,
+            pre_existing_defect_disease,
+            x_rays_date: Dates.formatDateSQL(x_rays_date),
+            x_rays_conducting_person,
+            x_rays_report:x_rays_report && {path:x_rays_report.path},
+            surgical_procedure_date: Dates.formatDateSQL(surgical_procedure_date),
+            surgical_procedure_conducting_person,
+            surgical_procedure_desc,
+            anaesthetics_general_or_local,
+            anaesthetics_dur,
+            consultation_yes_or_no,
+            consultation_date: Dates.formatDateSQL(consultation_date),
+            consultation_conducting_person,
+            physiotherapy_employee_referred_yes_or_no,
+            physiotherapy_conducting_person,
+            employee_fitness_yes_or_no,
+            employee_fitness_light_duty_date: Dates.formatDateSQL(employee_fitness_light_duty_date),
+            employee_fitness_normal_duty_date: Dates.formatDateSQL(employee_fitness_normal_duty_date),
+
+            //5. Medical Practitioner/Chiropractor Declaration
+            practioner_signature: practioner_signature && toJS(practioner_signature),
+            practioner_signature_name,
+            practioner_signature_date: Dates.formatDateSQL(practioner_signature_date),
+            practioner_addr,
+            practioner_practice_num,
+        };
+    }
+    //</editor-fold>
 
     get controls() {
         return  Controls;
@@ -230,7 +337,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form, totalFieldCount, totalFieldMax} = this;
+        const {form, isNew, claim, convert_data, totalFieldCount, totalFieldMax} = this;
           
         const {
             //1. General Details
@@ -277,58 +384,109 @@ class Controls extends React.Component {
             practioner_addr,
             practioner_practice_num
         } = form.data;
-        
-        const data = {
-            totalFieldCount,
-            totalFieldMax,
+
+        if (isNew) {
+            const data = {...form.data, totalFieldCount, totalFieldMax};
+            console.log("res", data)
+
+            if(claim && claim.id) {
+                btn.text("Saving...").disabled();
+                progressDialog.open();
+                insertWCL4(convert_data(data)).then(res => {
+                    if(res) {
+                        return updateClaimsClient({id: claim.id, wcl_4_id: res.id})
+                    }
+                }).then(res => {
+                    console.log("res", res)
+                    if(!res) {
+                        return infoDialog.open("Record couldn't be updated. Please try again.");
+                    }
+
+                    onSaved && onSaved(res);
+                    infoDialog.open("Record successfully updated.");
+                    infoDialog.close(2000);
+                    this.props.close();
+                }).finally(() => {
+                    btn.text("Save").enabled();
+                    setTimeout(() => progressDialog.close())
+                });
+            } else {
+                onSaved(data);
+                this.props.close();
+            }
+        } else {
+            const {data: old_data} = this.item;
+            const data = {};
+
             //1. General Details
-            claim_number,
-            accident_date: Dates.formatDateSQL(accident_date),
-            
+            ShouldUpdate.check(data, old_data, claim_number, 'claim_number');
+            ShouldUpdate.checkDate(data, old_data, accident_date, 'accident_date');
+
             //2. Employer Details
-            company_name,
-            company_str_addr,
-            company_str_addr_code,
-            
+            ShouldUpdate.check(data, old_data, company_name, 'company_name');
+            ShouldUpdate.check(data, old_data, company_str_addr, 'company_str_addr');
+            ShouldUpdate.check(data, old_data, company_str_addr_code, 'company_str_addr_code');
+
             //3. Employee Details
-//            employee,
-            id_num,
-            employee_str_addr,
-            employee_str_addr_code,
-            
+            //employee,
+            ShouldUpdate.check(data, old_data, id_num, 'id_num');
+            ShouldUpdate.check(data, old_data, employee_str_addr, 'employee_str_addr');
+            ShouldUpdate.check(data, old_data, employee_str_addr_code, 'employee_str_addr_code');
+
             //4. Medical Practitioner/Chiropractor Consultation Details
-            first_consultation_date: Dates.formatDateSQL(first_consultation_date),
-            how_accident_happen,
-            injury_clinical_desc,
-            pre_existing_defect_disease,
-            x_rays_date: Dates.formatDateSQL(x_rays_date),
-            x_rays_conducting_person,
-            x_rays_report:x_rays_report && {path:x_rays_report.path},
-            surgical_procedure_date: Dates.formatDateSQL(surgical_procedure_date),
-            surgical_procedure_conducting_person,
-            surgical_procedure_desc,
-            anaesthetics_general_or_local,
-            anaesthetics_dur,
-            consultation_yes_or_no,
-            consultation_date: Dates.formatDateSQL(consultation_date),
-            consultation_conducting_person,
-            physiotherapy_employee_referred_yes_or_no,
-            physiotherapy_conducting_person,
-            employee_fitness_yes_or_no,
-            employee_fitness_light_duty_date: Dates.formatDateSQL(employee_fitness_light_duty_date),
-            employee_fitness_normal_duty_date: Dates.formatDateSQL(employee_fitness_normal_duty_date),
-            
+            ShouldUpdate.checkDate(data, old_data, first_consultation_date, 'first_consultation_date');
+            ShouldUpdate.check(data, old_data, how_accident_happen, 'how_accident_happen');
+            ShouldUpdate.check(data, old_data, injury_clinical_desc, 'injury_clinical_desc');
+            ShouldUpdate.check(data, old_data, pre_existing_defect_disease, 'pre_existing_defect_disease');
+            ShouldUpdate.checkDate(data, old_data, x_rays_date, 'x_rays_date');
+            ShouldUpdate.check(data, old_data, x_rays_conducting_person, 'x_rays_conducting_person');
+            ShouldUpdate.checkFile(data, old_data, x_rays_report, 'x_rays_report');
+            ShouldUpdate.checkDate(data, old_data, surgical_procedure_date, 'surgical_procedure_date');
+            ShouldUpdate.check(data, old_data, surgical_procedure_conducting_person, 'surgical_procedure_conducting_person');
+            ShouldUpdate.check(data, old_data, surgical_procedure_desc, 'surgical_procedure_desc');
+            ShouldUpdate.check(data, old_data, anaesthetics_general_or_local, 'anaesthetics_general_or_local');
+            ShouldUpdate.check(data, old_data, anaesthetics_dur, 'anaesthetics_dur');
+            ShouldUpdate.check(data, old_data, consultation_yes_or_no, 'consultation_yes_or_no');
+            ShouldUpdate.checkDate(data, old_data, consultation_date, 'consultation_date');
+            ShouldUpdate.check(data, old_data, consultation_conducting_person, 'consultation_conducting_person');
+            ShouldUpdate.check(data, old_data, physiotherapy_employee_referred_yes_or_no, 'physiotherapy_employee_referred_yes_or_no');
+            ShouldUpdate.check(data, old_data, physiotherapy_conducting_person, 'physiotherapy_conducting_person');
+            ShouldUpdate.check(data, old_data, employee_fitness_yes_or_no, 'employee_fitness_yes_or_no');
+            ShouldUpdate.checkDate(data, old_data, employee_fitness_light_duty_date, 'employee_fitness_light_duty_date');
+            ShouldUpdate.checkDate(data, old_data, employee_fitness_normal_duty_date, 'employee_fitness_normal_duty_date');
+
             //5. Medical Practitioner/Chiropractor Declaration
-            practioner_signature: practioner_signature && toJS(practioner_signature),
-            practioner_signature_name,
-            practioner_signature_date: Dates.formatDateSQL(practioner_signature_date),
-            practioner_addr,
-            practioner_practice_num,
-        };
-        
-        console.log("res", data)
-        onSaved(data);
-        this.props.close();
+            ShouldUpdate.checkSignature(data, old_data, practioner_signature, 'practioner_signature');
+            ShouldUpdate.check(data, old_data, practioner_signature_name, 'practioner_signature_name');
+            ShouldUpdate.checkDate(data, old_data, practioner_signature_date, 'practioner_signature_date');
+            ShouldUpdate.check(data, old_data, practioner_addr, 'practioner_addr');
+            ShouldUpdate.check(data, old_data, practioner_practice_num, 'practioner_practice_num');
+
+            //external file
+            ShouldUpdate.checkFile(data, old_data, wcl_4_external_doc, 'external_doc');
+
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            //count fields
+            ShouldUpdate.check(data, old_data, totalFieldCount, 'wcl_4_field_count');
+            ShouldUpdate.check(data, old_data, totalFieldMax, 'wcl_4_field_max');
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateWCL4({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                onSaved && onSaved(res);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                this.props.close();
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close())
+            });
+        }
     }
     // </editor-fold>
 
@@ -343,7 +501,22 @@ class Controls extends React.Component {
         const totalMax = Object.values(countFields).map(({count, max}) => max).reduce((n1, n2) => n1 + n2, 0);
         return totalMax;
     }
-    
+
+    get convert_data() {
+        const {dialog} = this.props;
+        return dialog.convert_data;
+    }
+
+    get claim() {
+        const {dialog} = this.props;
+        return dialog.extraProp('item');
+    }
+
+    get isNew() {
+        const {item} = this;
+        return item && item.id;
+    }
+
     get item() {
         return this.props.state.item;
     }
