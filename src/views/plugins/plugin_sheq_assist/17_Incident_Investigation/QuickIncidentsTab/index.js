@@ -13,23 +13,24 @@ import {
     SelectIncidentSubCategoryList
 } from 'components/inputs';
 import {THead} from 'components/tables';
-import {IncidentTableRow} from '../dialogs/IncidentComponentRows';
 
-import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
-import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';
-import NewIncidentDialog from '../dialogs/NewIncidentDialog.js';
-import EditIncidentDialog from '../dialogs/EditIncidentDialog.js';
-import ProfileIncidentDialog from '../dialogs/ProfileIncidentDialog.js';
+import {IncidentQuickTableRow} from '../dialogs/IncidentComponentRows';
 
-import ExportIncidentsDialog from '../dialogs/ExportIncidentsDialog.js';
-
-import ProfilePDFReader from '../printers/ProfilePDFReader';
+// import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
+// import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';
+// import NewIncidentDialog from '../dialogs/NewIncidentDialog.js';
+// import EditIncidentDialog from '../dialogs/EditIncidentDialog.js';
+// import ProfileIncidentDialog from '../dialogs/ProfileIncidentDialog.js';
+//
+// import ExportIncidentsDialog from '../dialogs/ExportIncidentsDialog.js';
+//
+// import ProfilePDFReader from '../printers/ProfilePDFReader';
 
 import style from "./QuickIncidentsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import {execWhen} from "utils/UtilsFuns";
-import byLogged from "./Query/List/listAllQuickIncidentsByLogged";
 import updateIncident from "mutations/all/Incident/updateIncident";
+import {Dates} from "../../../../../utils/Dates";
 // </editor-fold>
 
 @observer
@@ -107,24 +108,17 @@ class QuickIncidentsTab extends React.Component {
             // name,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
 
-        const args = {
+        const today = Dates.formatDateSQL(new Date());
+
+        return listByLogged({
             // name,
-            removed: false,
-            //
-            limit,
             //
             exact_orgs: true,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -289,54 +283,66 @@ class QuickIncidentsTab extends React.Component {
         const {
             id,
             data: {
-                investigation,
                 //
-                status_closed,
-                status_approved,
-                status_approved_investigation,
-                status_awaiting_approval,
-                status_investigating,
-                status_awaiting_investigation_approval,
+                company,
+                client,
+                project,
+                site,
+                //
+                logged_user,
+                logged_employee,
+                //Step 2 (Incident Details)
+                latitude,
+                longitude,
+                exact_location,
+                short_desc,
+                //Step 3 (Date & Time)
+                incident_date,
+                incident_time,
+                date_reported,
+                time_reported,
+                time_shift,
+                //Step 4 (Incident Category)
+                category_list,
+                //Step 5 (Injury Report)
+                person_reporting,
+                //Step 6 (Injury Details)
+                person_injured,
+                nature_of_injury_list,
+                bodily_injury_location_list,
+                injury_mechanism_list,
+                //6.2 Motor Vehicle
+                is_vehicle_incident,
+                driver,
+                driver_email,
+                driver_phone,
+                vehicle_make,
+                vehicle_reg_num,
+                //6.3 Incident Severity
+                severity,
+                //Step 7 (Media Details)
+                image_list,
+                video_list,
             },
         } = item;
 
-        const AssignedInvestigator = !!investigation && !!investigation.investigation_team_list;
-
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            {!AssignedInvestigator && <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>}
-            <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-            <hr action="writable"/>
-            {!status_approved &&
-                <NavItem
-                    action="writable"
-                    idx={idx}
-                    onClick={this.onApproveIncident}
-                    faIconLeft="check"
-                    title="Approve Incident"
-                />
-            }
-            {status_approved && <>
-                {!status_closed && AssignedInvestigator && <>
-                    <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit"
-                             title="Re-Assign Investigator(s)"/>
-                    <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
-                             title="Investigate"/>
-                </>}
-                {!status_closed && !AssignedInvestigator &&
-                    <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit"
-                             title="Assign Investigator(s)"/>}
-
-                {!status_closed &&
-                    <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
-                             title="Close Incident"/>}
-                {status_closed &&
-                    <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
-                             title="Re-Open Incident"/>}
-            </>}
-            <hr action="writable"/>
-            <NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>
-            <NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+            {/*<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>*/}
+            {/*<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>*/}
+            {/*<hr action="writable"/>*/}
+            {/*{!status_approved &&*/}
+            {/*    <NavItem*/}
+            {/*        action="writable"*/}
+            {/*        idx={idx}*/}
+            {/*        onClick={this.onApproveIncident}*/}
+            {/*        faIconLeft="check"*/}
+            {/*        title="Approve Incident"*/}
+            {/*    />*/}
+            {/*}*/}
+            {/*<hr action="writable"/>*/}
+            {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
+            {/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
         </Options>;
     }
 
@@ -391,14 +397,19 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
-            <div className="td fixed-flex min-w-120">Incident Date</div>
-            <div className="td">Group</div>
+            <div className="td fixed-flex min-w-160">Incident Date && Time</div>
+            <div className="td fixed-flex min-w-160">Reported Date && Time</div>
+            <div className="td fixed-flex min-w-80">Time Shift</div>
+            <div className="td fixed-flex min-w-120">Severity</div>
             <div className="td">Category</div>
-            <div className="td">Sub-Category</div>
-            <div className="td">Activities</div>
+            <div className="td">Reported By</div>
+            <div className="td">Person Injured</div>
+            <div className="td fixed-flex min-w-160">Asset</div>
+            <div className="td">Driver</div>
             <div className="td">Description</div>
             <div className="td">Location</div>
-            <div className="td fixed-flex min-w-140">Status</div>
+            <div className="td fixed-flex min-w-120">GPS Location</div>
+            {/*<div className="td fixed-flex min-w-140">Status</div>*/}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -408,7 +419,7 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        return <IncidentTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <IncidentQuickTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
 
     // </editor-fold>
@@ -423,8 +434,8 @@ class QuickIncidentsTab extends React.Component {
             page={this}
             createBtnTitle="Create"
             pageId={this.pageKey + "-tab"}
-            pageTitle="Incidents"
-            pageTitleSingular="incident"
+            pageTitle="Quick Incidents"
+            pageTitleSingular="quick incident"
             onLoadList={this.onLoadList}
             noAnimation={true}
             renderLeftButtons={this.renderLeftButtons}
@@ -434,14 +445,14 @@ class QuickIncidentsTab extends React.Component {
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
 
-            <NewIncidentDialog ref="newDialog"/>
-            <EditIncidentDialog ref="editDialog"/>
-            <ProfileIncidentDialog ref="profileDialog"/>
+            {/*<NewIncidentDialog ref="newDialog"/>*/}
+            {/*<EditIncidentDialog ref="editDialog"/>*/}
+            {/*<ProfileIncidentDialog ref="profileDialog"/>*/}
 
-            <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>
-            <NewIncidentInvestigationDialog ref="newInvestigationDialog"/>
-            <ProfilePDFReader ref="pdfReader"/>
-            <ExportIncidentsDialog ref="exportIncidentsDialog"/>
+            {/*<NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>*/}
+            {/*<NewIncidentInvestigationDialog ref="newInvestigationDialog"/>*/}
+            {/*<ProfilePDFReader ref="pdfReader"/>*/}
+            {/*<ExportIncidentsDialog ref="exportIncidentsDialog"/>*/}
         </APageListReadWrite>;
     }
 

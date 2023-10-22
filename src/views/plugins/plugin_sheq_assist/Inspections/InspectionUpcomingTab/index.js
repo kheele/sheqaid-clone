@@ -30,6 +30,7 @@ class InspectionTab extends React.Component {
         const {
             name,
         } = filterData || {};
+
         const listByLogged = sockets.of('inspections').fn('listUpcomingByLogged');
 
         const today = Dates.formatDateSQL(new Date());

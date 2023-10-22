@@ -197,6 +197,124 @@ class IncidentTableRow extends React.Component {
 
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="IncidentQuickTableRow">
+@observer
+class IncidentQuickTableRow extends React.Component {
+
+    render() {
+        const {item, idx, onRenderActionCell, className, onClick} = this.props;
+
+        let {
+            id,
+            data: {
+                created_at,
+                //
+                company,
+                client,
+                project,
+                site,
+                //
+                logged_user,
+                logged_employee,
+                //Step 2 (Incident Details)
+                latitude,
+                longitude,
+                exact_location,
+                short_desc,
+                //Step 3 (Date & Time)
+                incident_date,
+                incident_time,
+                date_reported,
+                time_reported,
+                time_shift,
+                //Step 4 (Incident Category)
+                category_list,
+                //Step 5 (Injury Report)
+                person_reporting,
+                //Step 6 (Injury Details)
+                person_injured,
+                nature_of_injury_list,
+                bodily_injury_location_list,
+                injury_mechanism_list,
+                //6.2 Motor Vehicle
+                is_vehicle_incident,
+                driver,
+                driver_email,
+                driver_phone,
+                vehicle_make,
+                vehicle_reg_num,
+                //6.3 Incident Severity
+                severity,
+                //Step 7 (Media Details)
+                image_list,
+                video_list,
+            }
+        } = item;
+
+        const __className = (className || "") + " w-full";
+
+        return <TRow key={id} className={__className}>
+            <div className="td fixed-flex min-w-160">
+                <h6 className="xs-shown font-size-13">Incident Date && Time</h6>
+                {'Date: ' + (Dates.formatDate(incident_date) || 'N/A')}
+                {'Time: ' + (incident_time || 'N/A')}
+            </div>
+            <div className="td fixed-flex min-w-160">
+                <h6 className="xs-shown font-size-13">Reported Date && Time</h6>
+                {'Date: ' + (Dates.formatDate(date_reported) || 'N/A')}
+                {'Time: ' + (time_reported || 'N/A')}
+            </div>
+            <div className="td fixed-flex min-w-80">
+                <h6 className="xs-shown font-size-13">Time Shift</h6>
+                {time_shift || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Severity</h6>
+                {severity || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Category</h6>
+                {category_list ? category_list.map(({category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Reported By</h6>
+                {person_reporting && person_reporting.full_name || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Person Injured</h6>
+                {person_injured && person_injured.full_name || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-160">
+                <h6 className="xs-shown font-size-13">Asset</h6>
+                {is_vehicle_incident ? `${vehicle_make ? `${vehicle_make}${vehicle_reg_num ? `(${vehicle_reg_num})`:''}` : vehicle_reg_num}` : 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Driver</h6>
+                {driver && driver.full_name || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Description</h6>
+                {short_desc || 'N/A'}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Location</h6>
+                {exact_location || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">GPS Location</h6>
+                {latitude && longitude && `${latitude}, ${longitude}` || 'N/A'}
+            </div>
+            {/*<IncidentStatus key={new Date().getTime()} item={item}/>*/}
+            {onRenderActionCell && onRenderActionCell(item, idx)}
+            {!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+                <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+            </div>}
+        </TRow>;
+    }
+}
+
+// </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="IncidentInvestigationTableRow">
 @observer
 class IncidentInvestigationTableRow extends React.Component {
@@ -493,5 +611,5 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
 
 export {
     IncidentStatus,
-    IncidentTableRow, IncidentInvestigationTableRow, IncidentCorrectiveActionsTableRow,
+    IncidentTableRow, IncidentQuickTableRow, IncidentInvestigationTableRow, IncidentCorrectiveActionsTableRow,
 };
