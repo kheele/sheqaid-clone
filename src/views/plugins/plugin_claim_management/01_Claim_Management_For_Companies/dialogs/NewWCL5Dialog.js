@@ -17,6 +17,9 @@ import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/
 import updateWCL5 from "../../../../../mutations/all/COIDA/WCL5/updateWCL5";
 import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
 import insertWCL5 from "../../../../../mutations/all/COIDA/WCL5/insertWCL5";
+import updateWCL5Proxy from "../../../../../mutations/all/COIDA/WCL5Proxy/updateWCL5Proxy";
+import insertWCL5Proxy from "../../../../../mutations/all/COIDA/WCL5Proxy/insertWCL5Proxy";
+import findByIdWCL5 from "../../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -345,15 +348,17 @@ class Controls extends React.Component {
                 progressDialog.open();
                 insertWCL5(convert_data(data)).then(res => {
                     if (res) {
-                        return updateClaimsClient({id: claim.id, _id: res.id})
+                        return insertWCL5Proxy({claim_id: claim.id, wcl_5_id: res.id}).then(_ => res);
                     }
-                }).then(res => {
+                }).
+                then(res => res && findByIdWCL5(res.id)).
+                then(res => {
                     console.log("res", res)
                     if (!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
                     }
 
-                    onSaved && onSaved(res);
+                    onSaved && onSaved(res.data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     this.props.close();
@@ -452,7 +457,8 @@ class Controls extends React.Component {
 
     get isNew() {
         const {item} = this;
-        return item && item.id;
+        if(!item) return true;
+        return !item.id;
     }
 
     get item() {

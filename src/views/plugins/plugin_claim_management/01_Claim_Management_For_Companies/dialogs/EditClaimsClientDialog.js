@@ -500,7 +500,7 @@ class Controls extends React.Component {
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
                 >
-                    <WCl5Table ref="wcl_5_list" name="wcl_5_list" defaultValue={[...(wcl_5_list || []), null]} onNewDialog={this.onNewDialog} onPrintDialog={this.onPrintDialog}/>
+                    <WCl5Table ref="wcl_5_list" name="wcl_5_list" defaultValue={[...(wcl_5_list || []), null]} onNewDialog={this.onNewDialog} onPrintDialog={this.onPrintDialog} onChange={this.form.onChange}/>
                 </Row>
                 <Row 
                     rendered 

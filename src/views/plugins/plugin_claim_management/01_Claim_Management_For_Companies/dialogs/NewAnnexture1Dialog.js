@@ -14,6 +14,8 @@ import style from "./NewAnnexture1Dialog.lazy.css";
 import updateAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/updateAnnexture1";
 import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
 import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
+import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
+import findByIdAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/findByIdAnnexture1";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -178,7 +180,7 @@ class Controls extends React.Component {
 
         //A. Recording Of Incident
         if (employer_details) {
-            const {data: {name}} = employer_details;
+            const {data: {company_name}} = employer_details;
             setDefaultValue('company_name', (v) => v || company_name);
         } else {
             setDefaultValue('company_name');
@@ -351,15 +353,17 @@ class Controls extends React.Component {
                 progressDialog.open();
                 insertAnnexture1(convert_data(data)).then(res => {
                     if(res) {
-                        return updateClaimsClient({id: claim.id, annexture_1_id: res.id})
+                        return updateClaimsClient({id: claim.id, annexture_1_id: res.id}).then(_ => res)
                     }
-                }).then(res => {
+                }).
+                then(res => res && findByIdAnnexture1(res.id)).
+                then(res => {
                     console.log("res", res)
                     if(!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
                     }
 
-                    onSaved && onSaved(res);
+                    onSaved && onSaved(res.data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     this.props.close();
@@ -462,7 +466,8 @@ class Controls extends React.Component {
 
     get isNew() {
         const {item} = this;
-        return item && item.id;
+        if(!item) return true;
+        return !item.id;
     }
 
     get item() {
@@ -528,8 +533,7 @@ class Controls extends React.Component {
                                 placeholder="b) the police?*" vertical className="col-lg-12 form-control"
                                 onChange={this.form.onChange} values={this.state.lists.incident_reported_police}
                                 returnValue/>
-                <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and
-                    reference</label>
+                <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and reference</label>
                 <ClearableInput ref="saps_office" name="saps_office" type="text" placeholder="SAPS office"
                                 className="col-lg-6 col-xs-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput ref="saps_reference" name="saps_reference" type="text" placeholder="Reference"

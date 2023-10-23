@@ -6,6 +6,7 @@ import {Dates} from 'utils/Utils';
 
 import {ActionsButton, Button,} from 'components/inputs';
 import {Table, TBody, THead, TRow} from 'components/tables';
+import MKBox from "../../../../../components/MK/MKBox";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="IncidentStatus">
@@ -254,21 +255,17 @@ class IncidentQuickTableRow extends React.Component {
         const __className = (className || "") + " w-full";
 
         return <TRow key={id} className={__className}>
-            <div className="td fixed-flex min-w-160">
-                <h6 className="xs-shown font-size-13">Incident Date && Time</h6>
+            <div className="td fixed-flex min-w-180">
+                <h6 className="xs-shown font-size-13">Date && Time</h6>
                 {'Date: ' + (Dates.formatDate(incident_date) || 'N/A')}
                 {'Time: ' + (incident_time || 'N/A')}
             </div>
-            <div className="td fixed-flex min-w-160">
-                <h6 className="xs-shown font-size-13">Reported Date && Time</h6>
-                {'Date: ' + (Dates.formatDate(date_reported) || 'N/A')}
-                {'Time: ' + (time_reported || 'N/A')}
-            </div>
-            <div className="td fixed-flex min-w-80">
-                <h6 className="xs-shown font-size-13">Time Shift</h6>
-                {time_shift || 'N/A'}
-            </div>
-            <div className="td fixed-flex min-w-120">
+            {/*<div className="td fixed-flex min-w-160">*/}
+            {/*    <h6 className="xs-shown font-size-13">Reported Date && Time</h6>*/}
+            {/*    {'Date: ' + (Dates.formatDate(date_reported) || 'N/A')}*/}
+            {/*    {'Time: ' + (time_reported || 'N/A')}*/}
+            {/*</div>*/}
+            <div className="td fixed-flex min-w-140">
                 <h6 className="xs-shown font-size-13">Severity</h6>
                 {severity || 'N/A'}
             </div>
@@ -298,11 +295,8 @@ class IncidentQuickTableRow extends React.Component {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Location</h6>
+                {latitude && longitude && <MKBox>GPS Coordinates: {latitude}, {longitude}</MKBox>}
                 {exact_location || 'N/A'}
-            </div>
-            <div className="td fixed-flex min-w-120">
-                <h6 className="xs-shown font-size-13">GPS Location</h6>
-                {latitude && longitude && `${latitude}, ${longitude}` || 'N/A'}
             </div>
             {/*<IncidentStatus key={new Date().getTime()} item={item}/>*/}
             {onRenderActionCell && onRenderActionCell(item, idx)}

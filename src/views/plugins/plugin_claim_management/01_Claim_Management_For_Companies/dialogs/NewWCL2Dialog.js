@@ -24,6 +24,8 @@ import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/
 import updateWCL2 from "../../../../../mutations/all/COIDA/WCL2/updateWCL2";
 import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
 import insertWCL2 from "../../../../../mutations/all/COIDA/WCL2/insertWCL2";
+import findByIdWCL5 from "../../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
+import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -757,15 +759,17 @@ class Controls extends React.Component {
                 progressDialog.open();
                 insertWCL2(convert_data(data)).then(res => {
                     if(res) {
-                        return updateClaimsClient({id: claim.id, wcl_2_id: res.id})
+                        return updateClaimsClient({id: claim.id, wcl_2_id: res.id}).then(_ => res)
                     }
-                }).then(res => {
+                }).
+                then(res => res && findByIdWCL2(res.id)).
+                then(res => {
                     console.log("res", res)
                     if(!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
                     }
 
-                    onSaved && onSaved(res);
+                    onSaved && onSaved(res.data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     this.props.close();
@@ -938,7 +942,8 @@ class Controls extends React.Component {
 
     get isNew() {
         const {item} = this;
-        return item && item.id;
+        if(!item) return true;
+        return !item.id;
     }
 
     get item() {

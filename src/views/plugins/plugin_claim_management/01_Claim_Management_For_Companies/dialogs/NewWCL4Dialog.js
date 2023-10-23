@@ -15,6 +15,7 @@ import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/
 import updateWCL4 from "../../../../../mutations/all/COIDA/WCL4/updateWCL4";
 import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
 import insertWCL4 from "../../../../../mutations/all/COIDA/WCL4/insertWCL4";
+import findByIdWCL4 from "../../../../../mutations/all/COIDA/WCL4/findByIdWCL4";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -394,15 +395,17 @@ class Controls extends React.Component {
                 progressDialog.open();
                 insertWCL4(convert_data(data)).then(res => {
                     if(res) {
-                        return updateClaimsClient({id: claim.id, wcl_4_id: res.id})
+                        return updateClaimsClient({id: claim.id, wcl_4_id: res.id}).then(_ => res)
                     }
-                }).then(res => {
+                }).
+                then(res => res && findByIdWCL4(res.id)).
+                then(res => {
                     console.log("res", res)
                     if(!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
                     }
 
-                    onSaved && onSaved(res);
+                    onSaved && onSaved(res.data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     this.props.close();
@@ -463,7 +466,7 @@ class Controls extends React.Component {
             ShouldUpdate.check(data, old_data, practioner_practice_num, 'practioner_practice_num');
 
             //external file
-            ShouldUpdate.checkFile(data, old_data, wcl_4_external_doc, 'external_doc');
+            // ShouldUpdate.checkFile(data, old_data, external_doc, 'external_doc');
 
             if (Object.keys(data).isEmpty()) {
                 infoDialog.open("Nothing changed!");
@@ -514,7 +517,8 @@ class Controls extends React.Component {
 
     get isNew() {
         const {item} = this;
-        return item && item.id;
+        if(!item) return true;
+        return !item.id;
     }
 
     get item() {

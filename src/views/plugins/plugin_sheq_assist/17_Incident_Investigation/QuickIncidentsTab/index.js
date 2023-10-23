@@ -367,7 +367,7 @@ class QuickIncidentsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
+        // const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
         return <div className="col-lg-12 controls -margin-b-35">
             {/*<ClearableInput name="category" type="select" placeholder="Category..." className="col-lg-6 form-control"*/}
             {/*                onChange={onChange} values={category_list} returnValue/>*/}
@@ -419,10 +419,8 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
-            <div className="td fixed-flex min-w-160">Incident Date && Time</div>
-            <div className="td fixed-flex min-w-160">Reported Date && Time</div>
-            <div className="td fixed-flex min-w-80">Time Shift</div>
-            <div className="td fixed-flex min-w-120">Severity</div>
+            <div className="td fixed-flex min-w-180">Date & Time</div>
+            <div className="td fixed-flex min-w-140">Severity</div>
             <div className="td">Category</div>
             <div className="td">Reported By</div>
             <div className="td">Person Injured</div>
@@ -430,7 +428,6 @@ class QuickIncidentsTab extends React.Component {
             <div className="td">Driver</div>
             <div className="td">Description</div>
             <div className="td">Location</div>
-            <div className="td fixed-flex min-w-120">GPS Location</div>
             {/*<div className="td fixed-flex min-w-140">Status</div>*/}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
