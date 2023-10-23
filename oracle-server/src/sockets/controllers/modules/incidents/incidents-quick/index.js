@@ -9,3 +9,10 @@ eventManager.on("incidents-quick/listByLogged", async (socket, data) => {
     // data.client_filter = `schedule_date: {_eq: "${today}"},`;
     return listImpl(socket, data);
 });
+
+eventManager.on("incidents-quick/dashboard", async (socket, data) => {
+    // const {today} = data;
+    //
+    // data.client_filter = `schedule_date: {_eq: "${today}"},`;
+    return listImpl(socket, data);
+});

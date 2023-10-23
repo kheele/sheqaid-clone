@@ -37,5 +37,5 @@
     margin: 0;
 }
 #QuickIncidentsTab-tab > .filter-wrapper + .table{
-    height: calc(100% - (20px + 115px)) !important;
+    height: calc(100% - (20px + 202px)) !important;
 }

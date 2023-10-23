@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {extendObservable, observable} from 'mobx';
+import {observable} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
@@ -9,42 +9,33 @@ import {
     Button,
     ClearableInput,
     DateRangeInput, SelectEmployeeInput,
-    SelectIncidentActivityList,
-    SelectIncidentSubCategoryList
+    SelectIncidentCategoryList,
 } from 'components/inputs';
 import {THead} from 'components/tables';
 
 import {IncidentQuickTableRow} from '../dialogs/IncidentComponentRows';
 
-// import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
-// import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';
-// import NewIncidentDialog from '../dialogs/NewIncidentDialog.js';
-// import EditIncidentDialog from '../dialogs/EditIncidentDialog.js';
-// import ProfileIncidentDialog from '../dialogs/ProfileIncidentDialog.js';
-//
-// import ExportIncidentsDialog from '../dialogs/ExportIncidentsDialog.js';
-//
-// import ProfilePDFReader from '../printers/ProfilePDFReader';
-
 import style from "./QuickIncidentsTab.lazy.css";
-import StateLists from "../dialogs/IncidentForms/StateLists";
 import {execWhen} from "utils/UtilsFuns";
-import updateIncident from "mutations/all/Incident/updateIncident";
-import {Dates} from "../../../../../utils/Dates";
+import {Dates} from "utils/Dates";
+import ExportQuickIncidentsDialog from "./ExportQuickIncidentsDialog";
+
 // </editor-fold>
 
 @observer
 class QuickIncidentsTab extends React.Component {
-    path;
     pageKey = "QuickIncidentsTab";
 
     // <editor-fold defaultstate="collapsed" desc="state">
     @observable
     state = {
         lists: {
-            ...StateLists,
             is_vehicle_incident: ['Yes', 'No'].map(value => ({label: value, value: value === "Yes", checked: false})),
-            severity: ['Medical Examination', 'At Work / Working'].map(value => ({label: value, value, checked: false})),
+            severity: ['Medical Examination', 'Working / At Work'].map(value => ({
+                label: value,
+                value,
+                checked: false
+            })),
             time_shift: ['Day', 'Night'].map(value => ({label: value, value, checked: false})),
         }
     }
@@ -57,18 +48,7 @@ class QuickIncidentsTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
 
-        this.onSetCategoryRef = this.onSetCategoryRef.bind(this);
-
         this.onExport = this.onExport.bind(this);
-
-        this.onApproveIncident = this.onApproveIncident.bind(this);
-        this.onAssignInvestigator = this.onAssignInvestigator.bind(this);
-        this.onInvestigate = this.onInvestigate.bind(this);
-        this.onCloseIncident = this.onCloseIncident.bind(this);
-        this.onReOpen = this.onReOpen.bind(this);
-
-        this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
-        this.onViewReport = this.onViewReport.bind(this);
 
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -78,12 +58,6 @@ class QuickIncidentsTab extends React.Component {
 
     componentWillMount() {
         style.use();
-    }
-
-    componentDidMount() {
-        execWhen(() => this.refs.root && this.refs.root.refs.filterWrapper).then(filterWrapper => {
-            filterWrapper.form.addChangeOne("category", this.onChangeCategory.bind(this));
-        });
     }
 
     componentWillUnmount() {
@@ -98,6 +72,7 @@ class QuickIncidentsTab extends React.Component {
         const {
             incident_date_range,
             date_reported_range,
+            category_id,
             time_shift,
             person_reporting_id,
             person_reporting_other_id,
@@ -119,6 +94,7 @@ class QuickIncidentsTab extends React.Component {
         return listByLogged({
             incident_date_range,
             date_reported_range,
+            category_id,
             time_shift,
             person_reporting_id,
             person_reporting_other_id,
@@ -145,121 +121,8 @@ class QuickIncidentsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="actions">
     onExport(e, btn) {
-        this.refs.exportIncidentsDialog.open();
+        this.refs.exportDialog.open();
     }
-
-    onApproveIncident(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
-        const item = list[idx];
-        confirmDialog.open("Are you sure you want to approve the incident?").then(res => {
-            if (res === 1) {
-                progressDialog.open("Approving the incident...");
-                updateIncident({id: item.id, status_approved: true}).then(res => {
-                    console.log("res", res)
-                    if (!('status_approved' in item.data)) {
-                        extendObservable(item.data, {status_approved: true});
-                    } else {
-                        item.data.status_approved = true;
-                    }
-                    setTimeout(() => {
-                        list.removeIf(v => v.id === item.id);
-                        list.insertAt(idx, item);
-                    });
-                    infoDialog.open("Incident successfully approved.");
-                    infoDialog.close(2000);
-                }).finally(() => {
-                    setTimeout(() => progressDialog.close());
-                });
-            }
-        });
-    }
-
-    onAssignInvestigator(e, el) {
-        const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        this.refs.newIncidentAssignInvestigatorsDialog.open(item);
-    }
-
-    onInvestigate(e, el) {
-        const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        this.refs.newInvestigationDialog.extraProp('incident', item).open(item.data.investigation);
-    }
-
-    onCloseIncident(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
-        const item = list[idx];
-        confirmDialog.open("Are you sure you want to close the incident?").then(res => {
-            if (res === 1) {
-                progressDialog.open("Closing the incident...");
-                updateIncident({id: item.id, status_closed: true}).then(res => {
-                    console.log("res", res)
-                    if (!('status_closed' in item.data)) {
-                        extendObservable(item.data, {status_closed: true});
-                    } else {
-                        item.data.status_closed = true;
-                    }
-                    setTimeout(() => {
-                        list.removeIf(v => v.id === item.id);
-                        list.insertAt(idx, item);
-                    });
-                    infoDialog.open("Incident successfully closed.");
-                    infoDialog.close(2000);
-                }).finally(() => {
-                    setTimeout(() => progressDialog.close());
-                });
-            }
-        });
-    }
-
-    onReOpen(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
-        const item = list[idx];
-        confirmDialog.open("Are you sure you want to re-open the incident?").then(res => {
-            if (res === 1) {
-                progressDialog.open("Re-opening the incident...");
-                updateIncident({id: item.id, status_closed: false}).then(res => {
-                    console.log("res", res)
-                    if (!('status_closed' in item.data)) {
-                        extendObservable(item.data, {status_closed: false});
-                    } else {
-                        item.data.status_closed = false;
-                    }
-                    setTimeout(() => {
-                        list.removeIf(v => v.id === item.id);
-                        list.insertAt(idx, item);
-                    });
-                    infoDialog.open("Incident successfully re-opened.");
-                    infoDialog.close(2000);
-                }).finally(() => {
-                    setTimeout(() => progressDialog.close());
-                });
-            }
-        });
-    }
-
-    async onSaveAsPDF(e, btn) {
-        const {idx} = btn.props;
-        const item = this.refs.root.list[idx];
-        this.refs.pdfReader.open(item);
-    }
-
-    onViewReport(e, el) {
-        const {idx} = el.props;
-        const item = this.refs.root.list[idx];
-        this.refs.pdfReader.open(item);
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onSetCategoryRef">
-    onSetCategoryRef(ref) {
-        this.innerRefs.sub_category = ref;
-    }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
@@ -347,19 +210,6 @@ class QuickIncidentsTab extends React.Component {
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             {/*<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>*/}
             {/*<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>*/}
-            {/*<hr action="writable"/>*/}
-            {/*{!status_approved &&*/}
-            {/*    <NavItem*/}
-            {/*        action="writable"*/}
-            {/*        idx={idx}*/}
-            {/*        onClick={this.onApproveIncident}*/}
-            {/*        faIconLeft="check"*/}
-            {/*        title="Approve Incident"*/}
-            {/*    />*/}
-            {/*}*/}
-            {/*<hr action="writable"/>*/}
-            {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
-            {/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
         </Options>;
     }
 
@@ -368,48 +218,63 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         // const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
-        return <div className="col-lg-12 controls -margin-b-35">
-            {/*<ClearableInput name="category" type="select" placeholder="Category..." className="col-lg-6 form-control"*/}
-            {/*                onChange={onChange} values={category_list} returnValue/>*/}
-            <ClearableInput name="exact_location" type="text" placeholder="Exact Location" className="col-lg-6 form-control"
-                            onChange={onChange}/>
-
+        return <div className="col-lg-12 controls -margin-b-15">
             <SelectEmployeeInput
                 name="person_reporting"
-                placeholder="Person Reporting..."
-                className="col-lg-3 form-control"
+                placeholder="Reported By..."
+                className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />
             <SelectEmployeeInput
                 name="person_injured"
                 placeholder="Person Injured..."
-                className="col-lg-3 form-control"
+                className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />
             <SelectEmployeeInput
                 name="driver"
                 placeholder="Driver..."
-                className="col-lg-3 form-control"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+
+            <SelectIncidentCategoryList
+                name="category"
+                type="select"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <ClearableInput
+                name="severity"
+                type="radio"
+                placeholder="Severity"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+                values={this.state.lists.severity}
+                returnValue
+            />
+            <ClearableInput
+                name="exact_location"
+                type="text"
+                placeholder="Exact Location"
+                className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />
 
             <ClearableInput name="is_vehicle_incident" type="radio" placeholder="Vehicle Incident"
-                            className="col-lg-4 form-control" onChange={onChange}
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.is_vehicle_incident} returnValue/>
             <ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
-                            className="col-lg-4 form-control" onChange={onChange}/>
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}/>
             <ClearableInput name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
-                            className="col-lg-4 form-control" onChange={onChange}/>
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}/>
 
-            <ClearableInput name="severity" type="radio" placeholder="Severity"
-                            className="col-lg-3 form-control" onChange={onChange}
-                            values={this.state.lists.severity} returnValue/>
             <ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
-                            className="col-lg-3 form-control" onChange={onChange}
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.time_shift} returnValue/>
-            <DateRangeInput name="incident_date_range" className="col-lg-6 margin-t-10 form-control"
+            <DateRangeInput name="incident_date_range" className="col-lg-3 margin-b-10 form-control"
                             placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
-            <DateRangeInput name="date_reported_range" className="col-lg-6 margin-t-10 form-control"
+            <DateRangeInput name="date_reported_range" className="col-lg-3 margin-b-10 form-control"
                             placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
@@ -471,7 +336,7 @@ class QuickIncidentsTab extends React.Component {
             {/*<NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>*/}
             {/*<NewIncidentInvestigationDialog ref="newInvestigationDialog"/>*/}
             {/*<ProfilePDFReader ref="pdfReader"/>*/}
-            {/*<ExportIncidentsDialog ref="exportIncidentsDialog"/>*/}
+            <ExportQuickIncidentsDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
 

@@ -12,7 +12,7 @@ import {
     ClearableInput,
     DateRangeInput,
     SelectIncidentActivityList,
-    SelectIncidentSubCategoryList
+    SelectIncidentSubCategoryList, SelectIncidentCategoryList
 } from 'components/inputs';
 import {THead} from 'components/tables';
 
@@ -330,44 +330,32 @@ class InvestigationsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
-        const sector_list = this.state.lists.sector_list.map(({value, text, checked}) => ({value, label: text}));
         return <div className="col-lg-12 controls -margin-b-35">
-            <ClearableInput name="category" type="select" placeholder="Category..." className="col-lg-3 form-control"
-                            onChange={onChange} values={category_list} returnValue/>
-            <SelectIncidentSubCategoryList
-                ref={this.onSetCategoryRef}
-                refName="sub_category"
-                name="sub_category"
+            <SelectIncidentCategoryList
+                name="category"
                 type="select"
-                placeholder="Sub-Category..."
-                className="col-lg-3 form-control"
-                vertical={false}
+                className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
-                values={this.state.lists.sub_category_list}
-                add={false}
             />
-            <ClearableInput name="sector" type="select" placeholder="Sector..." className="col-lg-3 form-control"
-                            onChange={onChange} values={sector_list} returnValue/>
             <SelectIncidentActivityList
                 ref={this.onSetCategoryRef}
                 refName="activity"
                 name="activity"
                 type="select"
                 placeholder="Activity..."
-                className="col-lg-3 form-control"
+                className="col-lg-3 margin-b-10 form-control"
                 vertical={false}
                 onChange={onChange}
                 values={this.state.lists.activity_list}
                 add={false}
             />
             <ClearableInput name="incident_status" type="select" placeholder="Incident Status..."
-                            className="col-lg-3 form-control" onChange={onChange}
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.incident_status} returnValue/>
             <ClearableInput name="investigation_status" type="select" placeholder="Investigation Status..."
-                            className="col-lg-3 form-control" onChange={onChange}
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.investigation_status} returnValue/>
-            <DateRangeInput name="incident_date_range" className="col-lg-6 margin-t-10 form-control"
+            <DateRangeInput name="incident_date_range" className="col-lg-6 margin-b-10 form-control"
                             placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
