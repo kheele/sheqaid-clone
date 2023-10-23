@@ -10,8 +10,8 @@ exports.getVariablesAndQueryConfig = (
     {
         orgs_filter = [],
         //
-        incident_date,
-        date_reported,
+        incident_date_range,
+        date_reported_range,
         time_shift,
         person_reporting_id,
         person_reporting_other_id,
@@ -24,6 +24,7 @@ exports.getVariablesAndQueryConfig = (
         is_vehicle_incident,
         vehicle_make,
         vehicle_reg_num,
+
         //
         site_id, project_id, client_id,
         //
@@ -53,12 +54,12 @@ exports.getVariablesAndQueryConfig = (
         filter.push(`driver_id: {_eq: ${driver_id}}`);
     }
 
-    if(incident_date) {
-        const {start, end} = incident_date;
+    if(incident_date_range) {
+        const {start, end} = incident_date_range;
         filter.push(`incident_date: {_lte: "${start}", _gte: "${end}"}`);
     }
-    if(date_reported) {
-        const {start, end} = date_reported;
+    if(date_reported_range) {
+        const {start, end} = date_reported_range;
         filter.push(`date_reported: {_lte: "${start}", _gte: "${end}"}`);
     }
 

@@ -8,7 +8,7 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     Button,
     ClearableInput,
-    DateRangeInput,
+    DateRangeInput, SelectEmployeeInput,
     SelectIncidentActivityList,
     SelectIncidentSubCategoryList
 } from 'components/inputs';
@@ -43,18 +43,9 @@ class QuickIncidentsTab extends React.Component {
     state = {
         lists: {
             ...StateLists,
-            incident_status: [
-//                {label: 'Awaiting Approval', value: 'AwaitingApproval', checked: false},//x
-                {label: 'Approved Incident', value: 'ApprovedIncident', checked: false},
-                {label: 'Assigned Investigator', value: 'AssignedInvestigator', checked: false},//x
-//                {label: 'Investigating', value: 'Investigating', checked: false},//x
-                {label: 'Closed Incident', value: 'ClosedIncident', checked: false}
-            ],
-            investigation_status: [
-                {label: 'Approved Investigation', value: 'ApprovedInvestigation', checked: false},
-//                {label: 'Investigating', value: 'Investigating', checked: false},//x
-                {label: 'Closed Investigation', value: 'ClosedInvestigation', checked: false}//inv
-            ]
+            is_vehicle_incident: ['Yes', 'No'].map(value => ({label: value, value: value === "Yes", checked: false})),
+            severity: ['Medical Examination', 'At Work / Working'].map(value => ({label: value, value, checked: false})),
+            time_shift: ['Day', 'Night'].map(value => ({label: value, value, checked: false})),
         }
     }
     // </editor-fold>
@@ -105,7 +96,20 @@ class QuickIncidentsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            // name,
+            incident_date_range,
+            date_reported_range,
+            time_shift,
+            person_reporting_id,
+            person_reporting_other_id,
+            person_injured_id,
+            person_injured_other_id,
+            driver_id,
+            driver_other_id,
+            severity,
+            exact_location,
+            is_vehicle_incident,
+            vehicle_make,
+            vehicle_reg_num,
         } = filterData || {};
 
         const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
@@ -113,7 +117,20 @@ class QuickIncidentsTab extends React.Component {
         const today = Dates.formatDateSQL(new Date());
 
         return listByLogged({
-            // name,
+            incident_date_range,
+            date_reported_range,
+            time_shift,
+            person_reporting_id,
+            person_reporting_other_id,
+            person_injured_id,
+            person_injured_other_id,
+            driver_id,
+            driver_other_id,
+            severity,
+            exact_location,
+            is_vehicle_incident,
+            vehicle_make,
+            vehicle_reg_num,
             //
             exact_orgs: true,
             //
@@ -351,44 +368,49 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
-        const sector_list = this.state.lists.sector_list.map(({value, text, checked}) => ({value, label: text}));
         return <div className="col-lg-12 controls -margin-b-35">
-            <ClearableInput name="category" type="select" placeholder="Category..." className="col-lg-3 form-control"
-                            onChange={onChange} values={category_list} returnValue/>
-            <SelectIncidentSubCategoryList
-                ref={this.onSetCategoryRef}
-                refName="sub_category"
-                name="sub_category"
-                type="select"
-                placeholder="Sub-Category..."
+            {/*<ClearableInput name="category" type="select" placeholder="Category..." className="col-lg-6 form-control"*/}
+            {/*                onChange={onChange} values={category_list} returnValue/>*/}
+            <ClearableInput name="exact_location" type="text" placeholder="Exact Location" className="col-lg-6 form-control"
+                            onChange={onChange}/>
+
+            <SelectEmployeeInput
+                name="person_reporting"
+                placeholder="Person Reporting..."
                 className="col-lg-3 form-control"
-                vertical={false}
                 onChange={onChange}
-                values={this.state.lists.sub_category_list}
-                add={false}
             />
-            <ClearableInput name="sector" type="select" placeholder="Sector..." className="col-lg-3 form-control"
-                            onChange={onChange} values={sector_list} returnValue/>
-            <SelectIncidentActivityList
-                ref={this.onSetCategoryRef}
-                refName="activity"
-                name="activity"
-                type="select"
-                placeholder="Activity..."
+            <SelectEmployeeInput
+                name="person_injured"
+                placeholder="Person Injured..."
                 className="col-lg-3 form-control"
-                vertical={false}
                 onChange={onChange}
-                values={this.state.lists.activity_list}
-                add={false}
             />
-            <ClearableInput name="incident_status" type="select" placeholder="Incident Status..."
+            <SelectEmployeeInput
+                name="driver"
+                placeholder="Driver..."
+                className="col-lg-3 form-control"
+                onChange={onChange}
+            />
+
+            <ClearableInput name="is_vehicle_incident" type="radio" placeholder="Vehicle Incident"
+                            className="col-lg-4 form-control" onChange={onChange}
+                            values={this.state.lists.is_vehicle_incident} returnValue/>
+            <ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
+                            className="col-lg-4 form-control" onChange={onChange}/>
+            <ClearableInput name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
+                            className="col-lg-4 form-control" onChange={onChange}/>
+
+            <ClearableInput name="severity" type="radio" placeholder="Severity"
                             className="col-lg-3 form-control" onChange={onChange}
-                            values={this.state.lists.incident_status} returnValue/>
-            <ClearableInput name="investigation_status" type="select" placeholder="Investigation Status..."
+                            values={this.state.lists.severity} returnValue/>
+            <ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
                             className="col-lg-3 form-control" onChange={onChange}
-                            values={this.state.lists.investigation_status} returnValue/>
+                            values={this.state.lists.time_shift} returnValue/>
             <DateRangeInput name="incident_date_range" className="col-lg-6 margin-t-10 form-control"
                             placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
+            <DateRangeInput name="date_reported_range" className="col-lg-6 margin-t-10 form-control"
+                            placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
 
