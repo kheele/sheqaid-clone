@@ -1,18 +1,9 @@
 const findByIdImpl = require('./findByIdImpl');
 const listImpl = require('./listImpl');
+const findByIdDashboardImpl = require('./findByIdDashboardImpl');
 
 eventManager.on("incidents-quick/findById", findByIdImpl);
 
-eventManager.on("incidents-quick/listByLogged", async (socket, data) => {
-    // const {today} = data;
-    //
-    // data.client_filter = `schedule_date: {_eq: "${today}"},`;
-    return listImpl(socket, data);
-});
+eventManager.on("incidents-quick/listByLogged", listImpl);
 
-eventManager.on("incidents-quick/dashboard", async (socket, data) => {
-    // const {today} = data;
-    //
-    // data.client_filter = `schedule_date: {_eq: "${today}"},`;
-    return listImpl(socket, data);
-});
+eventManager.on("incidents-quick/dashboard", findByIdDashboardImpl);
