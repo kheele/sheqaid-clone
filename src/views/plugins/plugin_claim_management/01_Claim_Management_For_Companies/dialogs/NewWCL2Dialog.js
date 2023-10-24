@@ -828,7 +828,7 @@ class Controls extends React.Component {
             ShouldUpdate.checkDate(data, old_data, accident_date, 'accident_date');
             ShouldUpdate.check(data, old_data, accident_time, 'accident_time');
             ShouldUpdate.check(data, old_data, incident_place, 'incident_place');
-            ShouldUpdate.check(data, old_data, incident_place_province, 'incident_place_province');
+            ShouldUpdate.checkZone(data, old_data, incident_place_province, 'incident_place_province_id');
             ShouldUpdate.check(data, old_data, incident_place_district, 'incident_place_district');
             ShouldUpdate.checkDate(data, old_data, accident_date_reported, 'accident_date_reported');
             ShouldUpdate.check(data, old_data, accident_time_reported, 'accident_time_reported');
