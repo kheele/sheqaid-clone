@@ -494,10 +494,10 @@ class Controls extends React.Component {
 
             getGeocode().then(res => {
                 const {city, district, region, country} = res;
-                setDefaultValue('incident_place_province', value => {
-                    value = value || region;
-                    return {label: value, value};
-                });
+                // setDefaultValue('incident_place_province', value => {
+                //     value = value || region;
+                //     return {label: value, value};
+                // });
                 if (district) {
                     setDefaultValue('incident_place_district', value => {
                         value = value || region;
