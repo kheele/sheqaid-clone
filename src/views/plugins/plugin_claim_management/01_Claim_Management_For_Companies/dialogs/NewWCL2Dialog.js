@@ -422,8 +422,8 @@ class Controls extends React.Component {
             setDefaultValue('company_contact_person', (v) => {
                 v = v || company_contact_person;
                 if (!v) return false;
-                const {full_name} = v;
-                return {label: full_name, value: v};
+                const {lname, fname, data} = v;
+                return {label: `${lname || data.lname} ${fname || data.fname}`, value: v};
             });
             setDefaultValue('company_str_addr', (v) => v || company_str_addr);
             setDefaultValue('company_str_addr_code', (v) => v || company_str_addr_code);
@@ -448,7 +448,7 @@ class Controls extends React.Component {
                 setDefaultValue('company_contact_person', (v) => {
                     if (!v) return false;
                     const {lname, fname, data} = v;
-                    return {label: `${lname || data.lname} ${fname || data.fname}`, value: employee};
+                    return {label: `${lname || data.lname} ${fname || data.fname}`, value: v};
                 });
                 setDefaultValue('company_str_addr');
                 setDefaultValue('company_str_addr_code');
