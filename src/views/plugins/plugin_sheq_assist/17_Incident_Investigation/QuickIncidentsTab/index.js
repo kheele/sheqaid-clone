@@ -72,7 +72,7 @@ class QuickIncidentsTab extends React.Component {
         const {
             incident_date_range,
             date_reported_range,
-            category_id,
+            category_list,
             time_shift,
             person_reporting_id,
             person_reporting_other_id,
@@ -89,12 +89,10 @@ class QuickIncidentsTab extends React.Component {
 
         const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
 
-        const today = Dates.formatDateSQL(new Date());
-
         return listByLogged({
             incident_date_range,
             date_reported_range,
-            category_id,
+            category_list,
             time_shift,
             person_reporting_id,
             person_reporting_other_id,
@@ -239,8 +237,8 @@ class QuickIncidentsTab extends React.Component {
             />
 
             <SelectIncidentCategoryList
-                name="category"
-                type="select"
+                name="category_list"
+                type="select_multi"
                 className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />

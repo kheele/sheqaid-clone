@@ -13,6 +13,7 @@ exports.getVariablesAndQueryConfig = (
         incident_date_range,
         date_reported_range,
         time_shift,
+        category_list,
         person_reporting_id,
         person_reporting_other_id,
         person_injured_id,
@@ -63,6 +64,9 @@ exports.getVariablesAndQueryConfig = (
         filter.push(`date_reported: {_lte: "${start}", _gte: "${end}"}`);
     }
 
+    if(category_list && category_list.isNotEmpty()) {
+        filter.push(`category_list: {category_id: {_in: ${category_list.map(v => v.id)}}}`);
+    }
     if(time_shift) {
         filter.push(`time_shift: {_eq: "${time_shift}"}`);
     }

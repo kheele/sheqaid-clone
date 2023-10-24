@@ -898,8 +898,8 @@ class Controls extends React.Component {
             }
 
             //count fields
-            ShouldUpdate.check(data, old_data, totalFieldCount, 'wcl_2_field_count');
-            ShouldUpdate.check(data, old_data, totalFieldMax, 'wcl_2_field_max');
+            ShouldUpdate.check(data, old_data, totalFieldCount, 'totalFieldCount');
+            ShouldUpdate.check(data, old_data, totalFieldMax, 'totalFieldMax');
 
             btn.text("Saving...").disabled();
             progressDialog.open();

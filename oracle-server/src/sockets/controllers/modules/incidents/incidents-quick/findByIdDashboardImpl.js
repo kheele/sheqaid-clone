@@ -58,6 +58,11 @@ module.exports = async (socket, data) => {
                         count
                       }
                     }   
+                    is_unclassified_vehicle_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, is_vehicle_incident: {_is_null: true}}) {
+                      aggregate {
+                        count
+                      }
+                    }   
                     
                     #
                     person_injured_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, _or: [{person_injured_other_id: {_is_null: false}}, {person_injured_id: {_is_null: false}}]}) {
@@ -70,6 +75,24 @@ module.exports = async (socket, data) => {
                         count
                       }
                     }
+                    
+                    #
+                    severity_medical_exam_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, severity: {_eq: "Medical Examination"}}) {
+                      aggregate {
+                        count
+                      }
+                    } 
+                    severity_working_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, severity: {_eq: "Working / At Work"}}) {
+                      aggregate {
+                        count
+                      }
+                    } 
+                    severity_unclassified_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, severity: {_is_null: true}}) {
+                      aggregate {
+                        count
+                      }
+                    } 
+                    
                     #
                     distinct_vehicle_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, vehicle_reg_num: {_is_null: false}}) {
                       aggregate {
@@ -91,18 +114,6 @@ module.exports = async (socket, data) => {
                         count
                       }
                     }
-                    
-                    #
-                    severity_medical_exam_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, severity: {_eq: "Medical Examination"}}) {
-                      aggregate {
-                        count
-                      }
-                    } 
-                    severity_working_quick_incident_list_aggregate: quick_incident_list_aggregate(where: {removed: {_eq: false}, severity: {_eq: "Working / At Work"}}) {
-                      aggregate {
-                        count
-                      }
-                    } 
                 }
             }
         `,
