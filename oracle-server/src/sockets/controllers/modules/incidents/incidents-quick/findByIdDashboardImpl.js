@@ -17,6 +17,7 @@ module.exports = async (socket, data) => {
 
     return getGraphQLOne({
         multi_queries: true,
+        count: true,
         query: `
             query findByIdOrgQuickIncidentsDashboardQuery {
                 ${tbl}(

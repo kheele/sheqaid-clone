@@ -340,8 +340,11 @@ global.sendGraphQL = async (args) => {
                         convertMutations(node);
                     });
                 });
+                return data;
             }
-            return data;
+            const key = Object.keys(data)[0];
+            const list = data[key];
+            return list[0];
         } else {
             const key = Object.keys(data)[0];
             const list = data[key];
@@ -455,11 +458,13 @@ global.getRelayOne = async ({query, operationName, variables, multi_queries = fa
 //</editor-fold>
 
 //<editor-fold desc="getGraphQLOne">
-global.getGraphQLOne = async ({query, operationName, variables, multi_queries = false}) => {
+global.getGraphQLOne = async ({query, operationName, variables, multi_queries = false, count = false}) => {
     return await sendGraphQL({
         query,
         operationName,
         variables,
+        multi_queries,
+        count,
     });
 };
 //</editor-fold>
