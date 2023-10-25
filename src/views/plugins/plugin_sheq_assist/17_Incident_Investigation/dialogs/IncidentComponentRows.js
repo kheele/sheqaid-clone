@@ -2,11 +2,12 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
+import Chip from "@material-ui/core/Chip";
 import {Dates} from 'utils/Utils';
 
 import {ActionsButton, Button,} from 'components/inputs';
 import {Table, TBody, THead, TRow} from 'components/tables';
-import MKBox from "../../../../../components/MK/MKBox";
+import MKBox from "components/MK/MKBox";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="IncidentStatus">
@@ -257,14 +258,17 @@ class IncidentQuickTableRow extends React.Component {
         return <TRow key={id} className={__className}>
             <div className="td fixed-flex min-w-180">
                 <h6 className="xs-shown font-size-13">Date && Time</h6>
-                {'Date: ' + (Dates.formatDate(incident_date) || 'N/A')}
-                {'Time: ' + (incident_time || 'N/A')}
+                <span className="grid-1">
+                    <span className="flex">
+                        <Chip label={`Date: ${Dates.formatDate(incident_date) || 'N/A'}`} size="small"/>
+                        <Chip label={`Time: ${incident_time || 'N/A'}`} size="small"/>
+                    </span>
+                    <span className="flex">
+                        <Chip label={`Date: ${Dates.formatDate(date_reported) || 'N/A'}`} size="small"/>
+                        <Chip label={`Time: ${time_reported || 'N/A'}`} size="small"/>
+                    </span>
+                </span>
             </div>
-            {/*<div className="td fixed-flex min-w-160">*/}
-            {/*    <h6 className="xs-shown font-size-13">Reported Date && Time</h6>*/}
-            {/*    {'Date: ' + (Dates.formatDate(date_reported) || 'N/A')}*/}
-            {/*    {'Time: ' + (time_reported || 'N/A')}*/}
-            {/*</div>*/}
             <div className="td fixed-flex min-w-140">
                 <h6 className="xs-shown font-size-13">Severity</h6>
                 {severity || 'N/A'}
@@ -283,7 +287,7 @@ class IncidentQuickTableRow extends React.Component {
             </div>
             <div className="td fixed-flex min-w-160">
                 <h6 className="xs-shown font-size-13">Asset</h6>
-                {is_vehicle_incident ? `${vehicle_make ? `${vehicle_make}${vehicle_reg_num ? `(${vehicle_reg_num})`:''}` : vehicle_reg_num}` : 'N/A'}
+                {is_vehicle_incident ? `${vehicle_make ? `${vehicle_make}${vehicle_reg_num ? `(${vehicle_reg_num})` : ''}` : vehicle_reg_num || 'N/A'}` : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Driver</h6>
@@ -490,15 +494,12 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
             personal_factors,
         } = root_analysis || {};
 
-        const corrective_actions = ((...args) => args.
-        filter(v => !!v).
-        map(v => ((...args) => args.filter(v => !!v))(
+        const corrective_actions = ((...args) => args.filter(v => !!v).map(v => ((...args) => args.filter(v => !!v))(
             v.corrective_action_list_job_factors,
             v.corrective_action_list_personal_factors,
             v.corrective_action_list_custom_job_factors,
             v.corrective_action_list_custom_personal_factors,
-        )).
-        reduce((a1, a2) => [...a1, ...a2], []))(
+        )).reduce((a1, a2) => [...a1, ...a2], []))(
             sub_standard_practices_or_unsafe_acts,
             sub_standard_practices_or_unsafe_conditions,
             custom_sub_standard_practices_or_unsafe_acts,

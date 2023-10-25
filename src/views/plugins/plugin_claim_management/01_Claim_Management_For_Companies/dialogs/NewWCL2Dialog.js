@@ -901,6 +901,8 @@ class Controls extends React.Component {
             ShouldUpdate.check(data, old_data, totalFieldCount, 'totalFieldCount');
             ShouldUpdate.check(data, old_data, totalFieldMax, 'totalFieldMax');
 
+            console.log('update wcl2', data)
+
             btn.text("Saving...").disabled();
             progressDialog.open();
             updateWCL2({id: this.item.id, ...data}).then(res => {

@@ -172,52 +172,53 @@ class ShouldUpdate {
 	}
 
 	static checkEmployee(data, old_data, employee, key) {
+		const key_id = key.endsWith('_id') ? key : `${key}_id`;
 		if (employee) {
 			let email;
 			if (!old_data) {
 				if (isNumber(employee)) {
-					data[key] = employee;
+					data[key_id] = employee;
 				} else if (employee.id) {
-					data[key] = convertIdToBigint(employee.id);
+					data[key_id] = convertIdToBigint(employee.id);
 				} else {
 					const {id = null, data: _data, fname, lname, _email = null} = employee;
 					email = _email || (_data && _data.email);
-					data[key] = {id, fname: fname || _data.fname, lname: lname || _data.lname};
+					data[key] = employee;
 				}
 			} else {
 				if (isNumber(employee)) {
 					if (!old_data[key]) {
-						data[key] = employee;
+						data[key_id] = employee;
 					} else {
 						if (isNumber(old_data[key])) {
 							if (old_data[key] !== employee) {
-								data[key] = employee;
+								data[key_id] = employee;
 							}
 						} else {
 							if (old_data[key].id !== employee) {
-								data[key] = employee;
+								data[key_id] = employee;
 							}
 						}
 					}
 				} else {
 					if (employee.id) {
 						if (!old_data[key]) {
-							data[key] = employee.id;
+							data[key_id] = employee.id;
 						} else {
 							if (isNumber(old_data[key])) {
 								if (old_data[key] !== employee.id) {
-									data[key] = employee.id;
+									data[key_id] = employee.id;
 								}
 							} else {
 								if (old_data[key].id !== employee.id) {
-									data[key] = employee.id;
+									data[key_id] = employee.id;
 								}
 							}
 						}
 					} else {
 						const {data: _data, fname, lname, _email = null} = employee;
 						email = _email || (_data && _data.email);
-						data[key] = {fname: fname || _data.fname, lname: lname || _data.lname};
+						data[key] = employee;
 					}
 				}
 
