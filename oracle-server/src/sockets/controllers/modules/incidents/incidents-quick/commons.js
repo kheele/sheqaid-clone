@@ -65,7 +65,7 @@ exports.getVariablesAndQueryConfig = (
     }
 
     if(category_list && category_list.isNotEmpty()) {
-        filter.push(`category_list: {category_id: {_in: ${category_list.map(v => v.id)}}}`);
+        filter.push(`category_list: {category_id: {_in: [${category_list.map(v => v.id)}]}}`);
     }
     if(time_shift) {
         filter.push(`time_shift: {_eq: "${time_shift}"}`);
@@ -75,7 +75,7 @@ exports.getVariablesAndQueryConfig = (
         filter.push(`severity: {_eq: "${severity}"}`);
     }
     if(exact_location) {
-        filter.push(`exact_location: {_ilike: %"${exact_location}"%}`);
+        filter.push(`exact_location: {_ilike: "%${exact_location}%"}`);
     }
 
     if(isBoolean(is_vehicle_incident)) {
@@ -83,10 +83,10 @@ exports.getVariablesAndQueryConfig = (
     }
 
     if(vehicle_make) {
-        filter.push(`vehicle_make: {_ilike: %"${vehicle_make}"%}`);
+        filter.push(`vehicle_make: {_ilike: "%${vehicle_make}%"}`);
     }
     if(vehicle_reg_num) {
-        filter.push(`vehicle_reg_num: {_ilike: %"${vehicle_reg_num}"%}`);
+        filter.push(`vehicle_reg_num: {_ilike: "%${vehicle_reg_num}%"}`);
     }
 
     filter = filter.join(',');

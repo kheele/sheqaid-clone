@@ -215,7 +215,6 @@ class QuickIncidentsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        // const category_list = this.state.lists.category_list.map(({value, text, checked}) => ({value, label: text}));
         return <div className="col-lg-12 controls -margin-b-15">
             <SelectEmployeeInput
                 name="person_reporting"
