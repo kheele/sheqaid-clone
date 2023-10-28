@@ -160,7 +160,7 @@ class AControls extends React.Component {
 
 	// </editor-fold>
 
-	get item() {//form
+	@computed get item() {//form
 		return this.props.state.item;
 	}
 

@@ -1,27 +1,10 @@
 /* eslint-disable camelcase */
 
-import GQLClient from "graphql/GQLClient";
-import {
-  inspection_details_fragment
-} from "views/plugins/plugin_sheq_assist/Inspections/InspectionTab/Query/Fragments";
-import {orgs_fragment} from "graphql/Fragments";
-
-// 3
 export default async (input: number) => {
+    const findById = sockets.of('inspections').fn('findById');
 
-  //<editor-fold desc="ByEach">
-  return GQLClient
-  .query({
-    query: `
-      query findOneInspectionQuestionnaireQuery {
-        default_contractor_questionnaires(
-          where: {id: {_eq: ${input}},},
-        ) {
-            ${inspection_details_fragment}
-            ${orgs_fragment}
-        }
-      }
-    `,
-  }).then(res => res[0]);//.then(fillNullLists);
-  //</editor-fold>
+    return findById(input).then((res) => {
+        console.log('findById res', res)
+        return res;
+    });
 }

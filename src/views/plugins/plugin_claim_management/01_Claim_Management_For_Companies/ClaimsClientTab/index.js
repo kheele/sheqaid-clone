@@ -19,8 +19,6 @@ import {THead, TRow} from 'components/tables';
 
 import {getDocsStatus, getWClStatus} from '../../ClaimFuns';
 
-import {AsyncTD} from '../../../components';
-
 import ChatBtn from '../../dialogs/ChatBtn';
 import AClaimsTab from '../AClaimsTab';
 
@@ -32,15 +30,14 @@ import NewDialog from '../dialogs/ClaimsEmployerDetailsDialog/NewDialog';
 import ClaimsEmployerDetailsDialog from '../dialogs/ClaimsEmployerDetailsDialog';
 
 import ExportClaimsDialog from '../dialogs/ExportClaimsDialog.js';
-import byLogged from "./Query/List/listAllClaimsClientByLogged";
 
 import style from "./ClaimsClientTab.lazy.css";
 import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import findByIdClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/findByIdClaimsClient";
+import findByIdClaimsClient from "mutations/all/COIDA/ClaimsClient/findByIdClaimsClient";
 import findBySenderIdClaimsProviderRequest
-	from "../../../../../mutations/all/COIDA/ClaimsProviderRequest/findBySenderIdClaimsProviderRequest";
+	from "mutations/all/COIDA/ClaimsProviderRequest/findBySenderIdClaimsProviderRequest";
 import insertClaimsProviderMessage
-	from "../../../../../mutations/all/COIDA/ClaimsProviderMessage/insertClaimsProviderMessage";
+	from "mutations/all/COIDA/ClaimsProviderMessage/insertClaimsProviderMessage";
 
 // </editor-fold>
 
@@ -94,29 +91,36 @@ class ClaimsClientTab extends AClaimsTab {
 			occupation,
 			status,
 			claim_status,
+			//
+			accident_date_range,
+			resume_date_range,
+			// year,
+			mcr_ref_num,
+			claim_number,
+			// injury_disease,
+			// injury_type,
 		} = filterData || {};
-		
-		const limit = 50;
-		
-		const args = {
+
+		const listByLogged = sockets.of('claims/clients').fn('listByLogged');
+
+		return listByLogged({
 			employee,
 			occupation,
 			status,
 			claim_status,
-			removed: false,
 			//
-			limit,
+			accident_date_range,
+			resume_date_range,
+			// year,
+			mcr_ref_num,
+			claim_number,
+			// injury_disease,
+			// injury_type,
 			//
 			exact_orgs: true,
-		};
-		
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-		
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
@@ -383,14 +387,14 @@ class ClaimsClientTab extends AClaimsTab {
 	renderFilterNodeFirst(onChange) {
 		return <>
 			<SelectEmployeeInput name="employee" placeholder="Employee..." required
-			                     className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+			                     className="col-lg-3 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
 			<SelectJobPositionInput name="occupation" placeholder="Occupation..." required
-			                        className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+			                        className="col-lg-3 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
 			<ClearableInput name="status" type="select" placeholder="Status..."
-			                className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
+			                className="col-lg-3 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
 			                values={this.state.lists.status} returnValue/>
 			<ClearableInput name="claim_status" type="select" placeholder="Claim Status..."
-			                className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
+			                className="col-lg-3 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
 			                values={this.state.lists.claim_status} returnValue/>
 		</>;
 	}

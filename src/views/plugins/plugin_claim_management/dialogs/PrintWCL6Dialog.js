@@ -102,9 +102,12 @@ class Controls extends React.Component {
     render() {
         if (!this.item)
             return null;
+
+        const employee = this.props.dialog.extraProp('employee');
+
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                <PDFWCl6Form ref="pdfForm" item={this.item}/>
+                <PDFWCl6Form ref="pdfForm" employee={employee} item={this.item}/>
             </div>
         </div>);
     }

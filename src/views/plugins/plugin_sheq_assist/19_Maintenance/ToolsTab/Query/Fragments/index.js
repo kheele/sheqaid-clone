@@ -301,28 +301,28 @@ export const asset_details_fragment = `
         desc
         type
     }
-    #asset_children_list_aggregate{
-    #  aggregate{
-    #    count
-    #  }
+    asset_children_list_aggregate{
+      aggregate{
+        count
+      }
+    }
+    asset_parent_list_aggregate{
+      aggregate{
+        count
+      }
+    }
+    #inspection_template_list: inspection_and_template_list(where: {is_template: {_eq: true}}){
+      #\${/*inspection_fragment()*/}
     #}
-    #asset_parent_list_aggregate{
-    #  aggregate{
-    #    count
-    #  }
+    #inspection_list: inspection_and_template_list(where: {is_template: {_eq: false}}){
+      #\${/*inspection_fragment()*/}
     #}
-    inspection_template_list: inspection_and_template_list(where: {is_template: {_eq: true}}){
-      ${inspection_fragment()}
-    }
-    inspection_list: inspection_and_template_list(where: {is_template: {_eq: false}}){
-      ${inspection_fragment()}
-    }
-    inspection_scheduled_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: false}}}){
-      ${inspection_fragment()}
-    }
-    inspection_history_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: true}}}){
-      ${inspection_fragment()}
-    }
+    #inspection_scheduled_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: false}}}){
+      #\${/*inspection_fragment()*/}
+    #}
+    #inspection_history_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: true}}}){
+      #\${/*inspection_fragment()*/}
+    #}
     depreciation{
         id
         depreciation_method

@@ -14,16 +14,18 @@ class PDFWCl2Form extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor() {
         super();
-        
+
         this.onCreateTextField = this.onCreateTextField.bind(this);
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="download">
     async download(evt) {
         const {claimDocument} = this.refs;
         claimDocument.download(evt);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="print">
@@ -31,12 +33,13 @@ class PDFWCl2Form extends React.Component {
         const {claimDocument} = this.refs;
         claimDocument.print(evt);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onCreateTextField">
     onCreateTextField() {
         const {item} = this.props;
-        
+
         const onCreateTextFieldPage1 = () => {
             return [
                 //General Details
@@ -52,28 +55,27 @@ class PDFWCl2Form extends React.Component {
             // <editor-fold defaultstate="collapsed" desc="item">
             let {
                 data: {
-                    wcl_2: {
-                        //2. Employee Details
-                        company_employee_association,
-                        gender,
-                        marital_status,
-                        expected_disablement_period,
-                        //3. Accident Details
-                        employee_action_connected_business,
-                        traffic_accident_on_public_road,
-                        nature_of_injury_options,
-                        employee_injured_explanation_satisfactory,
-                    }
+                    //2. Employee Details
+                    company_employee_association,
+                    gender,
+                    marital_status,
+                    expected_disablement_period,
+
+                    //3. Accident Details
+                    employee_action_connected_business,
+                    traffic_accident_on_public_road,
+                    nature_of_injury_options,
+                    employee_injured_explanation_satisfactory,
                 }
             } = item;
             // </editor-fold>
-            
-            if(company_employee_association) {
+
+            if (company_employee_association) {
                 company_employee_association = company_employee_association.toLowerCase();
             }
-            
+
             nature_of_injury_options = nature_of_injury_options || [];
-            
+
             // <editor-fold defaultstate="collapsed" desc="return">
             return [
                 //General Details
@@ -107,20 +109,20 @@ class PDFWCl2Form extends React.Component {
                 async (page, form) => company_employee_association === 'owner of' && createTimesSVG(page, 354, 336, 20, 0.06),
                 async (page, form) => company_employee_association === 'partner in the business' && createTimesSVG(page, 424, 336, 20, 0.06),
                 async (page, form) => company_employee_association === 'not applicable' && createTimesSVG(page, 505, 336, 20, 0.06),
-                
+
                 async (page, form) => createTextField(page, form, `${pageNum}_employee_lname`, 168, 373.3, 126),
                 async (page, form) => createTextField(page, form, `${pageNum}_employee_fname`, 422, 373.3, 237),
                 async (page, form) => createTextField(page, form, `${pageNum}_id_num`, 163, 390.3, 137),
                 async (page, form) => createTextField(page, form, `${pageNum}_dob_d`, 314, 390.3, 16).setAlignment(TextAlignment.Center),
                 async (page, form) => createTextField(page, form, `${pageNum}_dob_m`, 337, 390.3, 15).setAlignment(TextAlignment.Center),
-                async (page, form) => createTextField(page, form, `${pageNum}_dob_y`, 361, 390.3, 19).setAlignment(TextAlignment.Center),
+                async (page, form) => createTextField(page, form, `${pageNum}_dob_y`, 361, 390.3, 22).setAlignment(TextAlignment.Center),
                 //gender
                 async (page, form) => gender === 'Male' && createTimesSVG(page, 453, 370, 20, 0.06),
                 async (page, form) => gender === 'Female' && createTimesSVG(page, 510, 370, 20, 0.06),
                 //marital_status
                 async (page, form) => marital_status === 'Married' && createTimesSVG(page, 141, 387.5, 20, 0.06),
                 async (page, form) => marital_status === 'Single' && createTimesSVG(page, 197, 387.5, 20, 0.06),
-                
+
                 async (page, form) => createTextField(page, form, `${pageNum}_citizen_of`, 418, 407, 245),
                 async (page, form) => createTextField(page, form, `${pageNum}_personnel_num`, 176, 424.3, 107),
                 async (page, form) => createTextField(page, form, `${pageNum}_occupation`, 422, 424.3, 238),
@@ -135,18 +137,18 @@ class PDFWCl2Form extends React.Component {
                 //expected_disablement_period
                 async (page, form) => expected_disablement_period === '0-13 days' && createTimesSVG(page, 453, 472, 20, 0.06),
                 async (page, form) => expected_disablement_period === '14 & more' && createTimesSVG(page, 510, 472, 20, 0.06),
-                
+
                 //3. Accident Details
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_date_d`, 139, 529, 16).setAlignment(TextAlignment.Center),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_date_m`, 158, 529, 13).setAlignment(TextAlignment.Center),
-                async (page, form) => createTextField(page, form, `${pageNum}_accident_date_y`, 179, 529, 19).setAlignment(TextAlignment.Center),
+                async (page, form) => createTextField(page, form, `${pageNum}_accident_date_y`, 179, 529, 22).setAlignment(TextAlignment.Center),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_time`, 476.5, 529, 128),
                 async (page, form) => createTextField(page, form, `${pageNum}_incident_place`, 249, 546.5, 231),
                 async (page, form) => createTextField(page, form, `${pageNum}_incident_place_district`, 480.6, 546.5, 123.8),
                 async (page, form) => createTextField(page, form, `${pageNum}_incident_place_province`, 233.4, 564, 259.5),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_date_reported_d`, 197.6, 580, 13.7).setAlignment(TextAlignment.Center),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_date_reported_m`, 218, 580, 15).setAlignment(TextAlignment.Center),
-                async (page, form) => createTextField(page, form, `${pageNum}_accident_date_reported_y`, 241.5, 580, 18).setAlignment(TextAlignment.Center),
+                async (page, form) => createTextField(page, form, `${pageNum}_accident_date_reported_y`, 241.5, 580, 22).setAlignment(TextAlignment.Center),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_time_reported`, 478, 580, 130),
                 async (page, form) => createTextField(page, form, `${pageNum}_task_employee_performing_during_accident`, 428, 597.5, 228),
                 async (page, form) => createTextField(page, form, `${pageNum}_period_experience_task_performed_years`, 291, 615, 24).setAlignment(TextAlignment.Center),
@@ -154,14 +156,14 @@ class PDFWCl2Form extends React.Component {
                 //employee_action_connected_business
                 async (page, form) => employee_action_connected_business === "Yes" && createTimesSVG(page, 453, 611.5, 20, 0.06),
                 async (page, form) => employee_action_connected_business === "No" && createTimesSVG(page, 507, 611.5, 20, 0.06),
-                
+
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_desc_1`, 342.5, 672, 395),
                 async (page, form) => createTextField(page, form, `${pageNum}_accident_desc_2`, 305, 687, 470.6),
 //        async (page, form) => createTextField(page, form, `${pageNum}_accident_desc_2`, 304, 687, 470),
                 //traffic_accident_on_public_road
                 async (page, form) => traffic_accident_on_public_road === "Yes" && createTimesSVG(page, 453, 689, 20, 0.06),
                 async (page, form) => traffic_accident_on_public_road === "No" && createTimesSVG(page, 507, 689, 20, 0.06),
-                
+
                 async (page, form) => createTextField(page, form, `${pageNum}_nature_of_injury_list`, 424, 724, 237),
                 //nature_of_injury_options
                 async (page, form) => nature_of_injury_options.contains("Killed") && createTimesSVG(page, 331, 722.6, 20, 0.06),
@@ -170,7 +172,7 @@ class PDFWCl2Form extends React.Component {
                 //employee_injured_explanation_satisfactory
                 async (page, form) => employee_injured_explanation_satisfactory === "Yes" && createTimesSVG(page, 376, 739.5, 20, 0.06),
                 async (page, form) => employee_injured_explanation_satisfactory === "No" && createTimesSVG(page, 417, 739.5, 20, 0.06),
-                
+
                 async (page, form) => createTextField(page, form, `${pageNum}_employee_injured_explanation_satisfactory_nope_desc`, 305.5, 779, 470.6),
             ].map(onDraw => {
                 return {pageNum, onDraw};
@@ -182,46 +184,19 @@ class PDFWCl2Form extends React.Component {
             // <editor-fold defaultstate="collapsed" desc="item">
             let {
                 data: {
-                    wcl_2: {
-                        //4. Further Particulars Of Employee
-                        doc_salary_slip,
-                        earning_list,
-                        prepared_further_payments_after_3_months_4rm_accident_date,
-                        total_amount_already_paid,
-                        period_payments_made_range,
-                        num_of_week_days_worked_by_employee,
-                        date_ceased_work,
-                        time_ceased_work,
-                        did_employee_complete_shift_on_date_work_ceased,
-                        date_resumed_work,
-                        time_resumed_work,
-                        dependant_name,
-                        dependant_address,
-                        
-                        //5. Further Particulars
-                        previously_received_compensation_full_names,
-                        was_1st_aid_given,
-                        medical_practitioner_or_chiropractor_who_treated_employee,
-                        hospital_which_treated_employee,
-                        was_accidnt_caused_by_employee_options_1,
-                        was_accidnt_caused_by_employee_options_2,
-                        was_accidnt_caused_by_employee_options_3,
-                        accident_witness,
-                        accident_aware_person,
-                        num_of_employees_involved_in_accident,
-                        accident_police_station,
-                        accident_docket_num,
-                        involved_vehicle_reg_numbers,
-                        contributing_factor_list_A,
-                        contributing_factor_list_B,
-                        other_machinery_list,
-                        other_contributing_factor_list,
-                        additional_details_or_comments,
-                    }
+                    //4. Further Particulars Of Employee
+                    prepared_further_payments_after_3_months_4rm_accident_date,
+                    did_employee_complete_shift_on_date_work_ceased,
+
+                    //5. Further Particulars
+                    was_1st_aid_given,
+                    was_accidnt_caused_by_employee_options_1,
+                    was_accidnt_caused_by_employee_options_2,
+                    was_accidnt_caused_by_employee_options_3,
                 }
             } = item;
             // </editor-fold>
-            
+
             // <editor-fold defaultstate="collapsed" desc="return">
             return [
                 async (page, form) => createTextField(page, form, 'page_3_header_company_name', 218.5, 74.2, 252),
@@ -274,31 +249,16 @@ class PDFWCl2Form extends React.Component {
             // <editor-fold defaultstate="collapsed" desc="item">
             let {
                 data: {
-                    wcl_2: {
-                        //5. Further Particulars
-                        previously_received_compensation_full_names,
-                        was_1st_aid_given,
-                        medical_practitioner_or_chiropractor_who_treated_employee,
-                        hospital_which_treated_employee,
-                        accident_witness,
-                        accident_aware_person,
-                        num_of_employees_involved_in_accident,
-                        accident_police_station,
-                        accident_docket_num,
-                        involved_vehicle_reg_numbers,
-                        contributing_factor_list_A,
-                        contributing_factor_list_B,
-                        other_machinery_list,
-                        other_contributing_factor_list,
-                        additional_details_or_comments,
-                    }
+                    //5. Further Particulars
+                    contributing_factor_list_A,
+                    contributing_factor_list_B,
                 }
             } = item;
             // </editor-fold>
-            
+
             contributing_factor_list_A = (contributing_factor_list_A || []).filter(v => !!v);
             contributing_factor_list_B = (contributing_factor_list_B || []).filter(v => !!v);
-            
+
             // <editor-fold defaultstate="collapsed" desc="return">
             return [
                 async (page, form) => createTextField(page, form, 'page_4_header_company_name', 218.5, 74.2, 252),
@@ -359,6 +319,7 @@ class PDFWCl2Form extends React.Component {
             ...onCreateTextFieldPage2(5)
         ];
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="get data">
@@ -367,132 +328,140 @@ class PDFWCl2Form extends React.Component {
         if (!item) {
             return null;
         }
+
+        console.log('item', item)
+
         // <editor-fold defaultstate="collapsed" desc="item">
         let {
             data: {
                 claim_number,
                 provincial_office,
+
+                // employee,
+                //1. Employer Details
+                company_name,
+                company_reg_num,
+                company_contact_person,
+                company_str_addr,
+                company_str_addr_code,
+                company_postal_addr,
+                company_postal_addr_code,
+                company_tel_code,
+                company_tel_num,
+                company_fax_code,
+                company_fax_num,
+                company_email,
+                company_location,
+                company_nature,
+
+                //2. Employee Details
+                company_employee_association,
+//            employee,
+                doc_certified_id,
+                id_num,
+                dob,
+                gender,
+                marital_status,
+                citizen_of,
+                personnel_num,
+                occupation,
+                employee_str_addr,
+                employee_str_addr_code,
+                employee_postal_addr,
+                employee_postal_addr_code,
+                employee_tel_code,
+                employee_tel_num,
+                period_employ_years,
+                period_employ_months,
+                expected_disablement_period,
+
+                //3. Accident Details
+//            incident_source,
+//            incident,
                 accident_date,
-                employee,
-                wcl_2: {
-                    //1. Employer Details
-                    company_name,
-                    company_reg_num,
-                    company_contact_person,
-                    company_str_addr,
-                    company_str_addr_code,
-                    company_postal_addr,
-                    company_postal_addr_code,
-                    company_tel_code,
-                    company_tel_num,
-                    company_fax_code,
-                    company_fax_num,
-                    company_email,
-                    company_location,
-                    company_nature,
+                accident_time,
+                incident_place,
+                incident_place_province,
+                incident_place_district,
+                accident_date_reported,
+                accident_time_reported,
+                task_employee_performing_during_accident,
+                period_experience_task_performed_years,
+                period_experience_task_performed_months,
+                employee_action_connected_business,
+                accident_desc,
+                traffic_accident_on_public_road,
+                nature_of_injury_list,
+                nature_of_injury_options,
+                employee_injured_explanation_satisfactory,
+                employee_injured_explanation_satisfactory_nope_desc,
 
-                    //2. Employee Details
-                    company_employee_association,
-                    doc_certified_id,
-                    id_num,
-                    dob,
-                    gender,
-                    marital_status,
-                    citizen_of,
-                    personnel_num,
-                    occupation,
-                    employee_str_addr,
-                    employee_str_addr_code,
-                    employee_postal_addr,
-                    employee_postal_addr_code,
-                    employee_tel_code,
-                    employee_tel_num,
-                    period_employ_years,
-                    period_employ_months,
-                    expected_disablement_period,
+                //4. Further Particulars Of Employee
+                doc_salary_slip,
+                earning_list,
+                prepared_further_payments_after_3_months_4rm_accident_date,
+                total_amount_already_paid,
+                period_payments_made_range,
+                num_of_week_days_worked_by_employee,
+                date_ceased_work,
+                time_ceased_work,
+                did_employee_complete_shift_on_date_work_ceased,
+                date_resumed_work,
+                time_resumed_work,
+                dependant_name,
+                dependant_address,
 
-                    //3. Accident Details
-                    accident_time,
-                    incident_place,
-                    incident_place_province,
-                    incident_place_district,
-                    accident_date_reported,
-                    accident_time_reported,
-                    task_employee_performing_during_accident,
-                    period_experience_task_performed_years,
-                    period_experience_task_performed_months,
-                    employee_action_connected_business,
-                    accident_desc,
-                    traffic_accident_on_public_road,
-                    nature_of_injury_list = [],
-                    nature_of_injury_options = [],
-                    employee_injured_explanation_satisfactory,
-                    employee_injured_explanation_satisfactory_nope_desc,
-                    
-                    //4. Further Particulars Of Employee
-                    doc_salary_slip,
-                    earning_list,
-                    prepared_further_payments_after_3_months_4rm_accident_date,
-                    total_amount_already_paid,
-                    period_payments_made_range,
-                    num_of_week_days_worked_by_employee,
-                    date_ceased_work,
-                    time_ceased_work,
-                    did_employee_complete_shift_on_date_work_ceased,
-                    date_resumed_work,
-                    time_resumed_work,
-                    dependant_name,
-                    dependant_address,
+                //5. Further Particulars
+                previously_received_compensation_full_names,
+                was_1st_aid_given,
+                medical_practitioner_or_chiropractor_who_treated_employee,
+                hospital_which_treated_employee,
+                was_accidnt_caused_by_employee_options_1,
+                was_accidnt_caused_by_employee_options_2,
+                was_accidnt_caused_by_employee_options_3,
+                accident_witness,
+                accident_aware_person,
+                num_of_employees_involved_in_accident,
+                accident_police_station,
+                accident_docket_num,
+                involved_vehicle_reg_numbers,
+                contributing_factor_list_A,
+                contributing_factor_list_B,
+                other_machinery_list,
+                other_contributing_factor_list,
+                additional_details_or_comments,
 
-                    //5. Further Particulars
-                    previously_received_compensation_full_names,
-                    was_1st_aid_given,
-                    medical_practitioner_or_chiropractor_who_treated_employee,
-                    hospital_which_treated_employee,
-                    accident_witness,
-                    accident_aware_person,
-                    num_of_employees_involved_in_accident,
-                    accident_police_station,
-                    accident_docket_num,
-                    involved_vehicle_reg_numbers,
-                    contributing_factor_list_A,
-                    contributing_factor_list_B,
-                    other_machinery_list,
-                    other_contributing_factor_list,
-                    additional_details_or_comments,
-
-                    //6. Employer's Declaration
-                    employer_signature,
-                    employer_signature_name,
-                    employer_signature_date
-                }
+                //6. Employer's Declaration
+                employer_signature,
+                employer_signature_name,
+                employer_signature_date,
             }
         } = item;
         // </editor-fold>
-        
-        console.log('item', item)
-        
-        if(occupation) {
-            const {name, data: _data} = occupation;
-            occupation = name || _data.name;
+
+        const employee = this.props.employee;
+
+        if (occupation) {
+            const {name} = occupation;
+            occupation = name;
         }
-        
+
         nature_of_injury_list = (nature_of_injury_list || []).filter(v => !!v);
         nature_of_injury_options = (nature_of_injury_options || []).filter(v => !!v);
 
         const createEmployeeFName = (v) => {
             if (!v) return null;
-            const {lname, fname, data} = v;
-            return `${fname || data.fname}`;
+            const {fname} = v;
+            return `${fname}`;
         };
         const createEmployeeLName = (v) => {
             if (!v) return null;
-            const {lname, fname, data} = v;
-            return `${lname || data.lname}`;
+            const {lname} = v;
+            return `${lname}`;
         };
         const createEmployeeName = (v) => {
             if (!v) return null;
-            return `${createEmployeeFName(v)} ${createEmployeeLName(v)}`;
+            return v.full_name;
         };
 
         let accident_date_d, accident_date_m, accident_date_y;
@@ -504,7 +473,7 @@ class PDFWCl2Form extends React.Component {
                 accident_date_y = `${__accident_date.getFullYear()}`;
             }
         }
-        
+
         let accident_date_reported_d, accident_date_reported_m, accident_date_reported_y;
         if (accident_date_reported) {
             const __accident_date_reported = Dates.parse(accident_date_reported);
@@ -514,7 +483,7 @@ class PDFWCl2Form extends React.Component {
                 accident_date_reported_y = `${__accident_date_reported.getFullYear()}`;
             }
         }
-        
+
         let declaring_person_signature_date_d, declaring_person_signature_date_m, declaring_person_signature_date_y;
         if (employer_signature_date) {
             const __employer_signature_date = Dates.parse(employer_signature_date);
@@ -524,7 +493,7 @@ class PDFWCl2Form extends React.Component {
                 declaring_person_signature_date_y = `${__employer_signature_date.getFullYear()}`;
             }
         }
-        
+
         let dob_d, dob_m, dob_y;
         if (dob) {
             const __dob = Dates.parse(dob);
@@ -534,7 +503,7 @@ class PDFWCl2Form extends React.Component {
                 dob_y = `${__dob.getFullYear()}`;
             }
         }
-        
+
         const onCreatePage1 = () => {
             //onCreateTextFieldPage1
             return {
@@ -543,7 +512,7 @@ class PDFWCl2Form extends React.Component {
                 page_1_accident_date: Dates.formatDate(accident_date)
             };
         };
-        
+
         const onCreatePage2 = (pageNum = 2) => {
             //onCreateTextFieldPage2
             // <editor-fold defaultstate="collapsed" desc="return">
@@ -552,13 +521,13 @@ class PDFWCl2Form extends React.Component {
                 [`${pageNum}_page_2_claim_num`]: claim_number,
                 [`${pageNum}_page_2_provincial_office`]: provincial_office,
                 [`${pageNum}_page_2_accident_date`]: Dates.formatDate(accident_date),
-                
+
                 //6. Employer's Declaration            
                 [`${pageNum}_declaring_person_signature_date_d`]: declaring_person_signature_date_d,
                 [`${pageNum}_declaring_person_signature_date_m`]: declaring_person_signature_date_m,
                 [`${pageNum}_declaring_person_signature_date_y`]: declaring_person_signature_date_y,
 //                [`${pageNum}_declaring_person_signature`]: employer_signature,
-                
+
                 //1. Employer Details
                 [`${pageNum}_company_name`]: company_name,
                 [`${pageNum}_company_reg_num`]: company_reg_num,
@@ -574,7 +543,7 @@ class PDFWCl2Form extends React.Component {
                 [`${pageNum}_company_email`]: company_email,
                 [`${pageNum}_company_location`]: company_location,
                 [`${pageNum}_company_nature`]: company_nature,
-                                
+
                 //2. Employee Details
                 [`${pageNum}_employee_lname`]: createEmployeeLName(employee),
                 [`${pageNum}_employee_fname`]: createEmployeeFName(employee),
@@ -594,7 +563,7 @@ class PDFWCl2Form extends React.Component {
                 [`${pageNum}_employee_tel_num`]: employee_tel_num,
                 [`${pageNum}_period_employ_years`]: isNumber(period_employ_years) && `${period_employ_years}`,
                 [`${pageNum}_period_employ_months`]: isNumber(period_employ_months) && `${period_employ_months}`,
-                
+
                 //3. Accident Details
                 [`${pageNum}_accident_date_d`]: accident_date_d,
                 [`${pageNum}_accident_date_m`]: accident_date_m,
@@ -609,7 +578,7 @@ class PDFWCl2Form extends React.Component {
                 [`${pageNum}_accident_time_reported`]: accident_time_reported,
                 [`${pageNum}_task_employee_performing_during_accident`]: task_employee_performing_during_accident,
                 [`${pageNum}_period_experience_task_performed_years`]: isNumber(period_experience_task_performed_years) && `${period_experience_task_performed_years}`,
-                [`${pageNum}_period_experience_task_performed_months`]: isNumber(period_experience_task_performed_months) && `${period_experience_task_performed_months}`,                
+                [`${pageNum}_period_experience_task_performed_months`]: isNumber(period_experience_task_performed_months) && `${period_experience_task_performed_months}`,
                 [`${pageNum}_accident_desc_1`]: accident_desc,
                 [`${pageNum}_accident_desc_2`]: accident_desc,
                 [`${pageNum}_nature_of_injury_list`]: nature_of_injury_list && nature_of_injury_list.filter(v => !!v).join(', '),
@@ -617,7 +586,7 @@ class PDFWCl2Form extends React.Component {
             };
             // </editor-fold>
         };
-        
+
         const onCreatePage3 = () => {
             let date_ceased_work_d, date_ceased_work_m, date_ceased_work_y;
             if (date_ceased_work) {
@@ -628,7 +597,7 @@ class PDFWCl2Form extends React.Component {
                     date_ceased_work_y = `${__date_ceased_work.getFullYear()}`;
                 }
             }
-            
+
             let date_resumed_work_d, date_resumed_work_m, date_resumed_work_y;
             if (date_resumed_work) {
                 const __date_resumed_work = Dates.parse(date_resumed_work);
@@ -646,7 +615,7 @@ class PDFWCl2Form extends React.Component {
                 page_3_header_incident_date: Dates.formatDate(accident_date),
                 page_3_header_employee_name: createEmployeeName(employee),
                 page_3_header_employee_id_num: id_num,
-                
+
                 //4. Further Particulars Of Employee
                 total_amount_already_paid: isNumber(total_amount_already_paid) && `${total_amount_already_paid}`,
                 num_of_week_days_worked_by_employee: isNumber(num_of_week_days_worked_by_employee) && `${num_of_week_days_worked_by_employee}`,
@@ -660,7 +629,7 @@ class PDFWCl2Form extends React.Component {
                 time_resumed_work,
                 dependant_name_and_address_1: dependant_name,
                 dependant_name_and_address_2: dependant_address,
-            
+
                 //5. Further Particulars
                 previously_received_compensation_full_names,
                 medical_practitioner_or_chiropractor_who_treated_employee,
@@ -674,10 +643,10 @@ class PDFWCl2Form extends React.Component {
             };
             // </editor-fold>
         };
-        
+
         const onCreatePage4 = () => {
             //onCreateTextFieldPage4
-            
+
             const get_additional_details_or_comments = (v) => {
 //                async (page, form) => createTextField(page, form, 'additional_details_or_comments_1', 300, 375.2, 499),
 //                async (page, form) => createTextField(page, form, 'additional_details_or_comments_2', 300, 391, 499),
@@ -699,17 +668,17 @@ class PDFWCl2Form extends React.Component {
 //                async (page, form) => createTextField(page, form, 'additional_details_or_comments_18', 300, 640.0, 499),
 //                async (page, form) => createTextField(page, form, 'additional_details_or_comments_19', 300, 655.8, 499),
                 const res = {};
-                
+
                 return res;
             };
-            
+
             // <editor-fold defaultstate="collapsed" desc="return">
             return {
                 page_4_header_company_name: company_name,
                 page_4_header_incident_date: Dates.formatDate(accident_date),
                 page_4_header_employee_name: createEmployeeName(employee),
                 page_4_header_employee_id_num: id_num,
-                
+
                 //5. Further Particulars: continued                
                 other_machinery_list: other_machinery_list && other_machinery_list.filter(v => !!v).join(', '),
                 other_contributing_factor_list: other_contributing_factor_list && other_contributing_factor_list.filter(v => !!v).join(', '),
@@ -717,27 +686,29 @@ class PDFWCl2Form extends React.Component {
             };
             // </editor-fold>
         };
-        
+
         return {
             ...onCreatePage1(),
             ...onCreatePage2(),
             ...onCreatePage3(),
             ...onCreatePage4(),
-            ...onCreatePage2(5)       
+            ...onCreatePage2(5)
         };
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {data, onCreateTextField} = this;
-        return <ClaimDocument 
+        return <ClaimDocument
             ref="claimDocument"
-            fileName='W.Cl.2.pdf' 
+            fileName='W.Cl.2.pdf'
             data={data}
             onCreateTextField={onCreateTextField}
-            />;
+        />;
     }
+
     // </editor-fold>
 }
 

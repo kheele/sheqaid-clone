@@ -19,12 +19,15 @@ import Divider from "@mui/material/Divider";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 import subscribeByIdContractorQuestionnaire
 	from "../../../../plugin_extra/__B_Contractors/AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
+import findByIdInspectionsQuestionnaire
+	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditDialog extends ANewDialog {
 	pageKey = "EditResponseDialog";
+	findById = findByIdInspectionsQuestionnaire;
 
 	constructor(props) {
 		super(props, style);

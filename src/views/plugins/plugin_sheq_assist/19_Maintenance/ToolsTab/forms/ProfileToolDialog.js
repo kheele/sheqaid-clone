@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import {autorun, observable, computed} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen} from 'utils/Utils';
+import {execWhen} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
 import {Button, ProfileField, RowOrgs, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -15,7 +15,7 @@ import EditToolDialog from './EditToolDialog.js';
 
 import ProfilePDFReader from '../../printers/ProfilePDFReader';
 import style from "./ProfileToolDialog.lazy.css";
-import {Sign} from "../../../17_Incident_Investigation/dialogs/ManHourComponents";
+import {Sign} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ManHourComponents";
 import {MonitoringPlanStats} from "./AssetStats";
 import {
     NewCalibrationRecordTable, NewDocumentTable,
@@ -526,6 +526,7 @@ class Controls extends React.Component {
                     title="10. Linked Assets"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
+                    onFormNext={onFormNext}
                 >
                     <FormControls>
                         <Row
@@ -550,17 +551,16 @@ class Controls extends React.Component {
                         </Row>
                     </FormControls>
                 </Row>
-                {/*<Row*/}
-                {/*	rendered*/}
-                {/*	idx={11}*/}
-                {/*	title="11. Inspections"*/}
-                {/*	className="min-h-600"*/}
-                {/*	onFormOpen={onFormOpen}*/}
-                {/*	onFormBack={onFormBack}*/}
-                {/*	onFormNext={onFormNext}*/}
-                {/*>*/}
-                {/*	<InspectionTabs item={item}/>*/}
-                {/*</Row>*/}
+                <Row
+                	rendered
+                	idx={11}
+                	title="11. Inspections"
+                	sectionClassName="min-h-600"
+                	onFormOpen={onFormOpen}
+                	onFormBack={onFormBack}
+                >
+                	<InspectionTabs item={item}/>
+                </Row>
                 {/*<Row*/}
                 {/*	rendered*/}
                 {/*	idx={12}*/}

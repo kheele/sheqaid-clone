@@ -13,16 +13,18 @@ class PDFWCl4Form extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor() {
         super();
-        
+
         this.onCreateTextField = this.onCreateTextField.bind(this);
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="download">
     async download(evt) {
         const {claimDocument} = this.refs;
         claimDocument.download(evt);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="print">
@@ -30,12 +32,13 @@ class PDFWCl4Form extends React.Component {
         const {claimDocument} = this.refs;
         claimDocument.print(evt);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onCreateTextField">
     onCreateTextField() {
         const {item} = this.props;
-        
+
         const onCreateTextFieldPage1 = () => {
             return [
                 //General Details
@@ -227,6 +230,7 @@ class PDFWCl4Form extends React.Component {
 
         return [...onCreateTextFieldPage1(), ...onCreateTextFieldPage2(), ...onCreateTextFieldPage3()];
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="get data">
@@ -235,62 +239,65 @@ class PDFWCl4Form extends React.Component {
         if (!item) {
             return null;
         }
+
+        console.log('item', item)
+
         const {
             data: {
-                claim_number,
                 provincial_office,
+                // employee,
+
+                // employee,
+                claim_number,
                 accident_date,
-                employee,
-                wcl_4: {
-                    //2. Employer Details
-                    company_name,
-                    company_str_addr,
-                    company_str_addr_code,
 
-                    //3. Employee Details
-//                    employee,
-                    id_num,
-                    employee_str_addr,
-                    employee_str_addr_code,
+                //2. Employer Details
+                company_name,
+                company_str_addr,
+                company_str_addr_code,
 
-                    //4. Medical Practitioner/Chiropractor Consultation Details
-                    first_consultation_date,
-                    how_accident_happen,
-                    injury_clinical_desc,
-                    pre_existing_defect_disease,
-                    x_rays_date,
-                    x_rays_conducting_person,
-                    x_rays_report,
-                    surgical_procedure_date,
-                    surgical_procedure_conducting_person,
-                    surgical_procedure_desc,
-                    anaesthetics_general_or_local,
-                    anaesthetics_dur,
-                    consultation_yes_or_no,
-                    consultation_date,
-                    consultation_conducting_person,
-                    physiotherapy_employee_referred_yes_or_no,
-                    physiotherapy_conducting_person,
-                    employee_fitness_yes_or_no,
-                    employee_fitness_light_duty_date,
-                    employee_fitness_normal_duty_date,
+                //3. Employee Details
+//            employee,
+                id_num,
+                employee_str_addr,
+                employee_str_addr_code,
 
-                    //5. Medical Practitioner/Chiropractor Declaration
-                    practioner_signature,
-                    practioner_signature_name,
-                    practioner_signature_date,
-                    practioner_addr,
-                    practioner_practice_num
-                }
+                //4. Medical Practitioner/Chiropractor Consultation Details
+                first_consultation_date,
+                how_accident_happen,
+                injury_clinical_desc,
+                pre_existing_defect_disease,
+                x_rays_date,
+                x_rays_conducting_person,
+                x_rays_report,
+                surgical_procedure_date,
+                surgical_procedure_conducting_person,
+                surgical_procedure_desc,
+                anaesthetics_general_or_local,
+                anaesthetics_dur,
+                consultation_yes_or_no,
+                consultation_date,
+                consultation_conducting_person,
+                physiotherapy_employee_referred_yes_or_no,
+                physiotherapy_conducting_person,
+                employee_fitness_yes_or_no,
+                employee_fitness_light_duty_date,
+                employee_fitness_normal_duty_date,
+
+                //5. Medical Practitioner/Chiropractor Declaration
+                practioner_signature,
+                practioner_signature_name,
+                practioner_signature_date,
+                practioner_addr,
+                practioner_practice_num,
             }
         } = item;
-        
+
         const createEmployeeName = (v) => {
             if (!v) return null;
-            const {lname, fname, data} = v;
-            return `${fname || data.fname} ${lname || data.lname}`;
+            return v.full_name;
         };
-        
+
         return {
             company_name,
             'company_reg_num': 'Company',
@@ -309,18 +316,20 @@ class PDFWCl4Form extends React.Component {
             'company_nature': 'Company',
         };
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {data, onCreateTextField} = this;
-        return <ClaimDocument 
+        return <ClaimDocument
             ref="claimDocument"
-            fileName='W.Cl.4.pdf' 
+            fileName='W.Cl.4.pdf'
             data={data}
             onCreateTextField={onCreateTextField}
-            />;
+        />;
     }
+
     // </editor-fold>
 }
 

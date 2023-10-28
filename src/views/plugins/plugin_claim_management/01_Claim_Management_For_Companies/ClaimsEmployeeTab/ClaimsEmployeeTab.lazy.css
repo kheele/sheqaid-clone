@@ -24,5 +24,5 @@
     color: red;
 }
 #ClaimsEmployeeTab-tab > .filter-wrapper + .table{
-    height: calc(100% - (10px + 125px)) !important;
+    height: calc(100% - (10px + 213px)) !important;
 }

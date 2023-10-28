@@ -14,11 +14,14 @@ import EditTemplateDialog from "./EditTemplateDialog";
 import NewQuestionnaireDialog from "../../InspectionTab/forms/NewQuestionnaireDialog";
 import ProfilePDFReader from "../printers/ProfileTemplatePDFReader";
 import NavItem from "components/navs/NavItem";
+import findByIdInspectionsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
 
 //<editor-fold desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileTemplateDialog";
+	findById = findByIdInspectionsQuestionnaireTemplate;
 
 	constructor(props) {
 		super(props, style);
@@ -163,7 +166,7 @@ class Controls extends React.Component {
 		return dialog.getDOMNode();
 	}
 
-	get item() {
+	@computed get item() {
 		return this.props.state.item;
 	}
 
@@ -171,6 +174,7 @@ class Controls extends React.Component {
 	render() {
 		if (!this.item)
 			return null;
+
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen

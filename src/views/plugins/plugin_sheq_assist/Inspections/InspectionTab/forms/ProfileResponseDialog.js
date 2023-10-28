@@ -18,12 +18,15 @@ import style from "./ProfileResponseDialog.lazy.css";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 import subscribeByIdContractorQuestionnaire
 	from "../../../../plugin_extra/__B_Contractors/AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
+import findByIdInspectionsQuestionnaire
+	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AEditDialog {
 	pageKey = "ProfileResponseDialog";
+	findById = findByIdInspectionsQuestionnaire;
 
 	constructor(props) {
 		super(props, style);

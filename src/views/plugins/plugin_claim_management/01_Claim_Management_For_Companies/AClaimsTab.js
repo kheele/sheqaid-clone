@@ -75,23 +75,17 @@ class AClaimsTab extends React.Component {
     renderFilterNode(onChange) {
         const firstChildren = this.renderFilterNodeFirst && this.renderFilterNodeFirst(onChange);
         const lastChildren = this.renderFilterNodeLast && this.renderFilterNodeLast(onChange);
-        
+        //
         const marginB = lastChildren ? " margin-b-10" : "";
-        return <div className="col-lg-12 controls">
+        return <div className="col-lg-12 controls -margin-b-45">
             {firstChildren}
-            
-            <DateRangeInput name="accident_date_range" vertical className="col-lg-6 col-md-12 form-control margin-b-10" placeholder="Accident Date" onChange={onChange}>
+            <ClearableInput name="mcr_ref_num" type="text" placeholder="MCR Ref #" className="col-lg-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+            <ClearableInput name="claim_number" type="text" placeholder="Claim #" className="col-lg-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+
+            <DateRangeInput name="accident_date_range" vertical className="col-lg-5 col-md-5 form-control margin-b-10" placeholder="Accident Date" onChange={onChange}>
             </DateRangeInput>
-            <DateRangeInput name="resume_date_range" vertical className="col-lg-6 col-md-12 form-control margin-b-10" placeholder="Resume Date" onChange={onChange}>
+            <DateRangeInput name="resume_date_range" vertical className="col-lg-5 col-md-5 form-control margin-b-10" placeholder="Resume Date" onChange={onChange}>
             </DateRangeInput>
-            
-            <ClearableInput name="year" type="number" placeholder="Year" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            <ClearableInput name="mcr_ref_num" type="text" placeholder="MCR Ref #" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            <ClearableInput name="claim_num" type="text" placeholder="Claim #" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            
-            <ClearableInput name="injury_disease" type="select" placeholder="Injury/Disease..." className={"col-lg-6 col-xs-12 form-control" + marginB} onChange={onChange} values={this.state.lists.injury_disease} returnValue/>
-            <ClearableInput name="injury_type" type="select" placeholder="Injury Type..." className={"col-lg-6 col-xs-12 form-control" + marginB} onChange={onChange} values={this.state.lists.injury_type} returnValue/>
-            
             {lastChildren}
         </div>;
     }

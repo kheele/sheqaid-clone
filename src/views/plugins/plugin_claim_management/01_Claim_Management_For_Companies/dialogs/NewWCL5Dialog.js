@@ -336,7 +336,7 @@ class Controls extends React.Component {
             practioner_signature_name,
             practioner_signature_date,
             practioner_addr,
-            practioner_practice_num
+            practioner_practice_num,
         } = form.data;
 
         if (isNew) {
@@ -350,9 +350,7 @@ class Controls extends React.Component {
                     if (res) {
                         return insertWCL5Proxy({claim_id: claim.id, wcl_5_id: res.id}).then(_ => res);
                     }
-                }).
-                then(res => res && findByIdWCL5(res.id)).
-                then(res => {
+                }).then(res => res && findByIdWCL5(res.id)).then(res => {
                     console.log("res", res)
                     if (!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
@@ -457,7 +455,7 @@ class Controls extends React.Component {
 
     get isNew() {
         const {item} = this;
-        if(!item) return true;
+        if (!item) return true;
         return !item.id;
     }
 

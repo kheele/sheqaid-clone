@@ -26,6 +26,7 @@ class InspectionTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {item: asset} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
@@ -36,6 +37,8 @@ class InspectionTab extends React.Component {
         const listByLogged = sockets.of('inspections').fn('listTodayByLogged');
 
         return listByLogged({
+            asset_id: asset && asset.id,
+            //
             today,
             //
             name,
@@ -52,7 +55,7 @@ class InspectionTab extends React.Component {
     //</editor-fold>
 
     render() {
-        const {permissionKey} = this.props;
+        const {item, permissionKey} = this.props;
         const props = {
             ref: "root",
             pageId: this.pageKey + "-tab",
@@ -60,6 +63,7 @@ class InspectionTab extends React.Component {
             pageTitleSingular: "inspection",
             onLoadList: this.onLoadList,
             type: "Inspection",
+            item,
             permissionKey
         };
         return <ATab {...props}/>;

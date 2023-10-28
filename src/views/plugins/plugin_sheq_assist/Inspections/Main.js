@@ -58,12 +58,12 @@ class Main extends APage {
             </div>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardTab ref="dashboard" title="Dashboard"/>
-                {!isEmployee && <TemplatesTab ref="forms" title="Templates" path={this.path}/>}
                 <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>
-                <InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>
-                <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>
                 <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>
+                <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>
                 <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
+                <InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>
+                {!isEmployee && <TemplatesTab ref="forms" title="Templates" path={this.path}/>}
             </Tabs>
         </div>);
     }

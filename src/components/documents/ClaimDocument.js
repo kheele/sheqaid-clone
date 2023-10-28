@@ -47,6 +47,7 @@ class Document extends React.Component {
 
         await this.save();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="createTextFieldImpl">
@@ -55,15 +56,22 @@ class Document extends React.Component {
         if (onCreateTextField && isFunction(onCreateTextField)) {
             let list = onCreateTextField();
             if (isArray(list)) {
-                await Promise.all(list.map(async ({pageNum = 1, onDraw}) => {
-                    const page = await this.mainPdfDoc.getPage(pageNum - 1);
-                    if (onDraw) {
-                        await onDraw(page, this.form);
-                }
-                }));
+                await Promise.all(
+                    list.map(async ({pageNum = 1, onDraw}) => {
+                        try {
+                            const page = await this.mainPdfDoc.getPage(pageNum - 1);
+                            if (onDraw) {
+                                await onDraw(page, this.form);
+                            }
+                        } catch (err) {
+                            console.error('ClaimDocument', err);
+                        }
+                    })
+                );
             }
+        }
     }
-    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="createShapeImpl">
@@ -76,11 +84,12 @@ class Document extends React.Component {
                     const page = await this.mainPdfDoc.getPage(pageNum - 1);
                     if (onDraw) {
                         await onDraw(page);
-                }
+                    }
                 }));
             }
         }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="setValues">
@@ -117,11 +126,12 @@ class Document extends React.Component {
                     } else {
 //                        console.error('err', err)
                     }
-            }
+                }
             };
             await exec();
         }));
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="save">
@@ -132,17 +142,19 @@ class Document extends React.Component {
         const url = dataUriToUrl(newBase64Src);
         this.state.previewPath = createPDFPreviewUrlFromRemote(url);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="download">
     async download(evt) {
         const {previewPath} = this.state;
-        
+
         const jqEl = $(evt.target);
         const src = decodeURIComponent(previewPath.substring(previewPath.indexOf('file=blob') + 5, previewPath.length));
-        
+
         jqEl.attr('href', src).click();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="print">
@@ -152,6 +164,7 @@ class Document extends React.Component {
         frame.focus();
 //        frame.print();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -165,6 +178,7 @@ class Document extends React.Component {
         }
         return <PDFViewer backend={PDFJSBackend} previewPath={previewPath}/>;
     }
+
     // </editor-fold>
 }
 
@@ -177,7 +191,14 @@ const createTextField = (page, form, id, x, y, w) => {
     let newField;
     try {
         newField = form.createTextField(id);
-        newField.addToPage(page, {x: calcX(x, w), y: calcY(page, y), width: w, height: 11, textColor: rgb(0, 0, 0), borderWidth: 0});
+        newField.addToPage(page, {
+            x: calcX(x, w),
+            y: calcY(page, y),
+            width: w,
+            height: 11,
+            textColor: rgb(0, 0, 0),
+            borderWidth: 0
+        });
     } catch (err) {
 
     }

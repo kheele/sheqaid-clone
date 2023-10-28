@@ -1,16 +1,26 @@
 require('./templates');
 
+const findByIdImpl = require("./findByIdImpl");
 const listImpl = require('./listImpl');
 
-eventManager.on("inspections/listTodayByLogged", async (socket, data) => {
-    const {today} = data;
+eventManager.on("inspections/findById", findByIdImpl);
 
-    data.client_filter = `schedule_date: {_eq: "${today}"},`;
+eventManager.on("inspections/listTodayByLogged", async (socket, data) => {
+    const {asset_id, today} = data;
+
+    data.client_filter = [`schedule_date: {_eq: "${today}"}`];
+
+    if(asset_id) {
+        data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    }
+
+    data.client_filter = data.client_filter.join(',\n')
+
     return listImpl(socket, data);
 });
 
 eventManager.on("inspections/listUnansweredByLogged", async (socket, data) => {
-    const {today} = data;
+    const {asset_id, today} = data;
 
     const unansweredFilter = (level = 3) => {
         return `
@@ -76,24 +86,46 @@ eventManager.on("inspections/listUnansweredByLogged", async (socket, data) => {
     data.client_filter = [
         `schedule_date: {_lt: "${today}"}`,
         unansweredFilter(3)
-    ].join(',\n');
+    ];
+
+    if(asset_id) {
+        data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    }
+
+    data.client_filter = data.client_filter.join(',\n')
 
     return listImpl(socket, data);
 });
 
 eventManager.on("inspections/listUpcomingByLogged", async (socket, data) => {
-    const {today} = data;
+    const {asset_id, today} = data;
 
-    data.client_filter = `schedule_date: {_gt: "${today}"},`;
+    data.client_filter = [`schedule_date: {_gt: "${today}"}`];
+
+    if(asset_id) {
+        data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    }
+
+    data.client_filter = data.client_filter.join(',\n')
+
     return listImpl(socket, data);
 });
 
 eventManager.on("inspections/listCompletedByLogged", async (socket, data) => {
-    data.client_filter = `status: {_eq: "CompleteAccepted"},`;
+    const {asset_id} = data;
+    data.client_filter = [`status: {_eq: "CompleteAccepted"}`];
+
+    if(asset_id) {
+        data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    }
+
+    data.client_filter = data.client_filter.join(',\n')
+
     return listImpl(socket, data);
 });
 
 eventManager.on("inspections/listActiveByLogged", async (socket, data) => {
+    const {asset_id} = data;
 
     const answeredFilter = (level = 3) => {
         return `
@@ -161,7 +193,13 @@ eventManager.on("inspections/listActiveByLogged", async (socket, data) => {
     data.client_filter = [
         `status: {_neq: "CompleteAccepted"}`,
         answeredFilter(3)
-    ].join(',\n');
+    ];
+
+    if(asset_id) {
+        data.client_filter.push(`,\nasset_id: {_eq: ${asset_id}}`);
+    }
+
+    data.client_filter = data.client_filter.join(',\n')
 
     return listImpl(socket, data);
 });

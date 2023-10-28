@@ -57,11 +57,23 @@ exports.getVariablesAndQueryConfig = (
 
     if(incident_date_range) {
         const {start, end} = incident_date_range;
-        filter.push(`incident_date: {_lte: "${start}", _gte: "${end}"}`);
+        if(start && end) {
+            filter.push(`incident_date: {_gte: "${start}", _lte: "${end}"}`);
+        } else if(start) {
+            filter.push(`incident_date: {_gte: "${start}"}`);
+        } else if(end) {
+            filter.push(`incident_date: {_lte: "${end}"}`);
+        }
     }
     if(date_reported_range) {
         const {start, end} = date_reported_range;
-        filter.push(`date_reported: {_lte: "${start}", _gte: "${end}"}`);
+        if(start && end) {
+            filter.push(`date_reported: {_gte: "${start}", _lte: "${end}"}`);
+        } else if(start) {
+            filter.push(`date_reported: {_gte: "${start}"}`);
+        } else if(end) {
+            filter.push(`date_reported: {_lte: "${end}"}`);
+        }
     }
 
     if(category_list && category_list.isNotEmpty()) {

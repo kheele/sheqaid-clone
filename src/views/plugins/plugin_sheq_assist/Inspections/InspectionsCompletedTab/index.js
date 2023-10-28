@@ -24,6 +24,7 @@ class InspectionTab extends React.Component {
         this.onCopy = this.onCopy.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -39,6 +40,7 @@ class InspectionTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {item: asset} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
@@ -47,6 +49,8 @@ class InspectionTab extends React.Component {
         const listByLogged = sockets.of('inspections').fn('listCompletedByLogged');
 
         return listByLogged({
+            asset_id: asset && asset.id,
+            //
             name,
             //
             exact_orgs: true,
@@ -62,10 +66,14 @@ class InspectionTab extends React.Component {
 
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
+        const {item: asset} = this.props;
         const {idx, action} = elem.props;
-        const {list, onNew} = this.refs.root;
+        const {list} = this.refs.root;
         const copy = toJS(list[idx]);
-        onNew(evt, elem, copy);
+
+        this.refs.newDialog.
+        extraProp('asset', asset).
+        open(copy);
     }
     //</editor-fold>
 
@@ -94,25 +102,28 @@ class InspectionTab extends React.Component {
     }
 
     renderTHead() {
+        const {item: asset} = this.props;
+        const w = asset ? 170 : 270;
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
             <div className="td">Name</div>
-            <div className="td fixed-flex min-w-140">Asset Type</div>
-            <div className="td fixed-flex min-w-140">Asset</div>
+            {!asset && <div className="td fixed-flex min-w-140">Asset Type</div>}
+            {!asset && <div className="td fixed-flex min-w-140">Asset</div>}
             <div className="td fixed-flex min-w-180">Responsible Person</div>
             <div className="td fixed-flex min-w-80">Interval</div>
             <div className="td fixed-flex min-w-100">Start Date</div>
             <div className="td fixed-flex min-w-120">Date Scheduled</div>
             <div className="td fixed-flex min-w-160">Conducted On</div>
             <div className="td fixed-flex min-w-120">Next Schedule</div>
-            <div className="td fixed-flex min-w-270">Progress</div>
+            <div className={`td fixed-flex min-w-${w}`}>Progress</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
+        const {item: asset} = this.props;
         let item = this.refs.root.list[n];
-        return <InspectionTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <InspectionTableRow key={item.id} idx={n} item={item} asset={asset} onClick={onClick}/>;
     }
 
     render() {

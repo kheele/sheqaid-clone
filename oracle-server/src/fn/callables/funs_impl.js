@@ -465,7 +465,7 @@ global.getGraphQLOne = async ({query, operationName, variables, multi_queries = 
         variables,
         multi_queries,
         count,
-    });
+    }).then(res => res && res[0]);
 };
 //</editor-fold>
 

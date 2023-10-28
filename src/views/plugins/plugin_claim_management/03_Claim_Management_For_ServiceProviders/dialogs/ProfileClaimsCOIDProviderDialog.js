@@ -36,7 +36,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "ClaimsClient";
+        return "Claims";
     }
     
     get topButtonsHiddenDelete() {

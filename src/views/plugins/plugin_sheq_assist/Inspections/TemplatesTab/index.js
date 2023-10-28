@@ -2,12 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, toJS} from 'mobx';
 
-import {Dates} from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
-import {THead, TRow} from 'components/tables';
+import {ClearableInput} from 'components/inputs';
+import {THead} from 'components/tables';
 
 import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
 import {NewScheduleDialog, NewQuestionnaireDialog} from '../InspectionTab/forms';
@@ -55,6 +54,7 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {item: asset} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
@@ -63,6 +63,8 @@ class TemplatesTab extends React.Component {
         const listByLogged = sockets.of('inspections').fn('listTemplatesByLogged');
 
         return listByLogged({
+            asset_id: asset && asset.id,
+            //
             name,
             //
             exact_orgs: true,
@@ -78,16 +80,25 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
+        const {item: asset} = this.props;
         const {idx, action} = elem.props;
-        const {list, onNew} = this.refs.root;
+        const {list} = this.refs.root;
         const copy = toJS(list[idx]);
-        onNew(evt, elem, copy);
+
+        this.refs.newDialog.
+        extraProp('asset', asset).
+        open(copy);
     }
 
     onCreateQuestionnaire(evt, elem) {
+        const {item: asset} = this.props;
         const {idx, action} = elem.props;
         const item = this.refs.root.list[idx];
-        this.refs.newQuestionnaireDialog.extraProp('template', item).open(item);
+
+        this.refs.newQuestionnaireDialog.
+        extraProp('template', item).
+        extraProp('asset', asset).
+        open(item);
     }
 
     // onSchedule(evt, elem) {

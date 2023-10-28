@@ -75,3 +75,9 @@
 #dialog-overlay.ProfileToolDialog-profile-dialog .EmbeddedBtnBar + .Carousel .Slider > h1{
     padding: 0;
 }
+#dialog-overlay.ProfileToolDialog-profile-dialog #InspectionTab-tab .tabled-top-panel .buttons,
+#dialog-overlay.ProfileToolDialog-profile-dialog #TemplatesTab-tab .tabled-top-panel .buttons {
+    position: absolute !important;
+    top: -40px !important;;
+    right: 10px !important;;
+}

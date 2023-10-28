@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import Form from 'utils/Form';
 import AEditDialog from 'components/dialogs/AEditDialog';
@@ -14,12 +14,15 @@ import updateInspectionsQuestionnaireTemplate
     from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/updateInspectionsQuestionnaireTemplate";
 import {FormControls, Row} from "components/FormComponents";
 import {ClearableInput, SelectAssetInput, SelectAssetTypeInput} from "components/inputs";
+import findByIdInspectionsQuestionnaireTemplate
+    from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
 
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditTemplateDialog";
+    findById = findByIdInspectionsQuestionnaireTemplate;
 
-    constructor(props) {
+        constructor(props) {
         super(props, style);
     }
 
@@ -164,7 +167,7 @@ class Controls extends React.Component {
         return dialog.getDOMNode();
     }
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
@@ -172,6 +175,7 @@ class Controls extends React.Component {
     render() {
         if (!this.item)
             return null;
+
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,

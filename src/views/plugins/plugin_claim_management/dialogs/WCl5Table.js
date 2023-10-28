@@ -77,7 +77,7 @@ class WCl5Table extends ANewListTable {
     }
     
     renderItem(n, onClick) {
-        const {readonly, onNewDialog, onViewDialog, onPrintDialog} = this.props;
+        const {readonly, onNewDialog, onViewDialog, onPrintDialog, findById} = this.props;
         const {list, edits} = this.state;
         const isEditting = edits[n];
         const item = list[n];
@@ -173,7 +173,15 @@ class WCl5Table extends ANewListTable {
                                 {employee_condition_became_stabilised_yes_or_no}
                             </span>
                             <span className="td flex-column flex-left flex-justify-top">
-                                <ButtonGeneratePDF value={item} name="wcl_5" dialogName="printWCL5Dialog" overrideText text="Generate PDF" onClick={onPrintDialog}/>
+                                <ButtonGeneratePDF
+                                    value={item}
+                                    name="wcl_5"
+                                    dialogName="printWCL5Dialog"
+                                    overrideText
+                                    text="Generate PDF"
+                                    onClick={onPrintDialog}
+                                    findById={findById}
+                                />
                             </span>
                         </div>
                         <div className="td fixed-flex flex flex-align-top min-w-100">Fill Form</div>

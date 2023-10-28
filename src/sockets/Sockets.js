@@ -7,12 +7,16 @@ class Socket {
 
     fn(name) {
         return async (data) => {
-            const {site_id, project_id, client_id, exact_orgs} = data;
-            const orgs_filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
+            if(!isNumber(data)) {
+                const {site_id, project_id, client_id, exact_orgs} = data;
+                const orgs_filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
+
+                data = {...data, orgs_filter};
+            }
 
             const path = `${this.name}/${name}`;
 
-            return workers.emit('socket/emit', path, {...data, orgs_filter});
+            return workers.emit('socket/emit', path, data);
         };
     }
 }

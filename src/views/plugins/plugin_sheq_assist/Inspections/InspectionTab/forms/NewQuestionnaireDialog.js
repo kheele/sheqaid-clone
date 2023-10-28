@@ -227,19 +227,31 @@ class Controls extends React.Component {
 		return selectedTemplate || this.props.state.item;
 	}
 
+	get asset() {
+		return this.props.dialog.extraProp('asset');
+	}
+
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		const {
+		let {
 			item, props: {
 				onFormNext, onFormBack, onFormOpen
-			}
+			},
+			asset,
 		} = this;
 
-		const data = item ? item.data : {};
-		const {
-			asset_type, asset,
-			responsible_person, responsible_department, interval, start_date,
-		} = data;
+		let asset_type;
+		if(asset) {
+			asset_type = asset.asset_detail.asset_type;
+		} else {
+			const data = item ? item.data : {};
+			const {
+				asset_type: _asset_type, asset: _asset,
+				responsible_person, responsible_department, interval, start_date,
+			} = data;
+			asset = _asset;
+			asset_type = _asset_type;
+		}
 
 		return <FormControls>
 			<RowOrgs

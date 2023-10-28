@@ -1,19 +1,21 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import {PDFUploadButton, ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileWCL4Dialog.lazy.css";
+import findByIdWCL4 from "mutations/all/COIDA/WCL4/findByIdWCL4";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileWCL4Dialog extends AProfileDialog {
     pageKey = "ProfileWCL4Dialog";
+    findById = findByIdWCL4;
 
     constructor(props) {
         super(props, style);
@@ -48,10 +50,10 @@ class Controls extends React.Component {
     }
     // </editor-fold>
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -63,64 +65,55 @@ class Controls extends React.Component {
             },
             item: {
                 id, data: {
-                    created_at,
-                    client, project, site, 
-                    employee, 
-                    claim_number, 
-                    provincial_office,
+                    // employee,
+                    claim_number,
                     accident_date,
-                    wcl_2, wcl_4, wcl_5_list, wcl_6, 
-                    annexture_1
+
+                    //2. Employer Details
+                    company_name,
+                    company_str_addr,
+                    company_str_addr_code,
+
+                    //3. Employee Details
+//            employee,
+                    id_num,
+                    employee_str_addr,
+                    employee_str_addr_code,
+
+                    //4. Medical Practitioner/Chiropractor Consultation Details
+                    first_consultation_date,
+                    how_accident_happen,
+                    injury_clinical_desc,
+                    pre_existing_defect_disease,
+                    x_rays_date,
+                    x_rays_conducting_person,
+                    x_rays_report,
+                    surgical_procedure_date,
+                    surgical_procedure_conducting_person,
+                    surgical_procedure_desc,
+                    anaesthetics_general_or_local,
+                    anaesthetics_dur,
+                    consultation_yes_or_no,
+                    consultation_date,
+                    consultation_conducting_person,
+                    physiotherapy_employee_referred_yes_or_no,
+                    physiotherapy_conducting_person,
+                    employee_fitness_yes_or_no,
+                    employee_fitness_light_duty_date,
+                    employee_fitness_normal_duty_date,
+
+                    //5. Medical Practitioner/Chiropractor Declaration
+                    practioner_signature,
+                    practioner_signature_name,
+                    practioner_signature_date,
+                    practioner_addr,
+                    practioner_practice_num
                 }
             }
         } = this;
-        
-        const {
-            //1. General Details
-//            claim_number, 
-//            accident_date,
 
-            //2. Employer Details
-            company_name,
-            company_str_addr,
-            company_str_addr_code,
+        const employee = this.props.dialog.extraProp('employee');
 
-            //3. Employee Details
-    //            employee,
-            id_num,
-            employee_str_addr,
-            employee_str_addr_code,
-
-            //4. Medical Practitioner/Chiropractor Consultation Details
-            first_consultation_date,
-            how_accident_happen,
-            injury_clinical_desc,
-            pre_existing_defect_disease,
-            x_rays_date,
-            x_rays_conducting_person,
-            x_rays_report,
-            surgical_procedure_date,
-            surgical_procedure_conducting_person,
-            surgical_procedure_desc,
-            anaesthetics_general_or_local,
-            anaesthetics_dur,
-            consultation_yes_or_no,
-            consultation_date,
-            consultation_conducting_person,
-            physiotherapy_employee_referred_yes_or_no,
-            physiotherapy_conducting_person,
-            employee_fitness_yes_or_no,
-            employee_fitness_light_duty_date,
-            employee_fitness_normal_duty_date,
-
-            //5. Medical Practitioner/Chiropractor Declaration
-            practioner_signature,
-            practioner_signature_name,
-            practioner_signature_date,
-            practioner_addr,
-            practioner_practice_num
-        } = wcl_4 || {};
-        
         const {isContractor, isConsultant} = storage.is;
         return <FormControls>
                 <Row 
@@ -156,7 +149,7 @@ class Controls extends React.Component {
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
                 >
-                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-12"/>
+                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => v.full_name} className="col-lg-12"/>
                     <ProfileField name="id_num" title="Identity Number" value={id_num} className="col-lg-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Street Address & Postal Code</label>

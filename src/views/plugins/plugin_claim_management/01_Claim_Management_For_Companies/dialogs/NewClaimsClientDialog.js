@@ -184,7 +184,12 @@ class Controls extends React.Component {
             return;
         }
 
-        dialog && dialog.extraProp('employer_details', employer_details).extraProp('employee', employee).extraProp('claim_number', claim_number).extraProp('accident_date', accident_date).open(value).then(value => {
+        dialog && dialog.
+        extraProp('employer_details', employer_details).
+        extraProp('employee', employee).
+        extraProp('claim_number', claim_number).
+        extraProp('accident_date', accident_date).
+        open(value).then(value => {
             if (onComplete) {
                 onComplete(value, btn);
             } else {
@@ -207,7 +212,12 @@ class Controls extends React.Component {
             infoDialog.open(`${title} is not available`);
             return;
         }
-        dialog && dialog.open(this.item);
+        dialog && dialog.
+        extraProp('employer_details', employer_details).
+        extraProp('employee', employee).
+        extraProp('claim_number', claim_number).
+        extraProp('accident_date', accident_date).
+        open(this.item);
     }
 
     // </editor-fold>

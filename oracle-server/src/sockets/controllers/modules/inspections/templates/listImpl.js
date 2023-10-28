@@ -1,5 +1,5 @@
 const {orgs_no_project_and_site_fragment} = require("../../../../../graphql/Fragments");
-const {inspection_template_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {inspection_template_details_list_fragment, getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -10,6 +10,8 @@ module.exports = async (socket, data) => {
         limit = 50,
         //
         removed = false,
+        //
+        asset_id,
         status,
         //
         site_id, project_id, client_id,
@@ -38,6 +40,7 @@ module.exports = async (socket, data) => {
                       {removed: {_eq: ${removed}}},
                       {group: {_eq: "Inspections"}},
                       {is_template: {_eq: true}},
+                      ${asset_id ? `{asset_id: {_eq: ${asset_id}}},` : ''}
                       {_or: [
                         {visibility: {_eq: "Public"}},
                         {_and: [
@@ -51,7 +54,7 @@ module.exports = async (socket, data) => {
 					offset: ${offset},
 					${limit > 0 ? `limit: ${limit}` : ''}
 				) {
-				    ${inspection_template_details_fragment}
+				    ${inspection_template_details_list_fragment}
                     ${orgs_no_project_and_site_fragment}
 				}
 			  }

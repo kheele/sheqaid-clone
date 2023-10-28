@@ -1,5 +1,5 @@
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
-import {convertMobx} from "./Utils";
+import {convertMobx, Dates} from "./Utils";
 
 class Form {
 
@@ -178,13 +178,13 @@ const setFilterDataValues = (filterData, key, val) => {
 const processObject = (filterData, val, key) => {
 	if (isDate(val.start) || isDate(val.end)) {
 		if (isDate(val.start)) {
-			filterData[key] = {start: val.start.getTime()};
+			filterData[key] = {start: Dates.formatDateSQL(val.start)};
 		}
 		if (isDate(val.end)) {
 			if (!filterData[key]) {
 				filterData[key] = {};
 			}
-			filterData[key].end = val.end.getTime();
+			filterData[key].end = Dates.formatDateSQL(val.end);
 		}
 	} else if (val.path) {
 		filterData[key] = val.path;

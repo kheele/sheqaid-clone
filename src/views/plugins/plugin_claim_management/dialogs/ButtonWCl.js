@@ -17,12 +17,10 @@ class ButtonIcon extends React.Component {
     }
 
     render()  {
-        const {isChecked} = this;
+        const {isChecked, props: {readonly}} = this;
         const icon = isChecked ? "check" : "times";
-        const text = isChecked ? "Edit" : "Add";
-        return <React.Fragment>
-            <i className={"fa fa-" + icon}/> {text}
-        </React.Fragment>;
+        const text = readonly ? "View" : isChecked ? "Edit" : "Add";
+        return <><i className={"fa fa-" + icon}/> {text}</>;
     }
 }
 // </editor-fold>
@@ -32,9 +30,9 @@ class ButtonIcon extends React.Component {
 class ButtonWCl extends React.Component {
 
     render() {
-        const {value, state, name, dialogName, text, onComplete, onClick} = this.props;
-        return <Button name={name} dialogName={dialogName} value={value} onComplete={onComplete} className="btn btn-primary hor-center min-w-200 border-radius-20 margin-t-5" onClick={onClick}>
-            <ButtonIcon value={value} state={state} name={name}/> {text}
+        const {readonly, value, state, name, dialogName, text, onComplete, onClick} = this.props;
+        return <Button name={name} dialogName={dialogName} title={text} value={value} onComplete={onComplete} className="btn btn-primary hor-center min-w-200 border-radius-20 margin-t-5" onClick={onClick}>
+            <ButtonIcon readonly={readonly} value={value} state={state} name={name}/> {text}
         </Button>;
     }
 }

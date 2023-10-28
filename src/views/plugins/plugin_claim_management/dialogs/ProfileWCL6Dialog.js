@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -10,12 +10,14 @@ import {AProfileDialog} from 'components/dialogs';
 import {OffAndLightDutyPeriodTable} from './ClaimForms';
 
 import style from "./ProfileWCL6Dialog.lazy.css";
+import findByIdWCL6 from "mutations/all/COIDA/WCL6/findByIdWCL6";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileWCL6Dialog extends AProfileDialog {
     pageKey = "ProfileWCL6Dialog";
+    findById = findByIdWCL6;
 
     constructor(props) {
         super(props, style);
@@ -50,10 +52,10 @@ class Controls extends React.Component {
     }
     // </editor-fold>
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -65,54 +67,47 @@ class Controls extends React.Component {
             },
             item: {
                 id, data: {
-                    created_at,
-                    client, project, site, 
-                    employee, 
-                    claim_number, 
-                    provincial_office,
+                    // employee,
+
+                    //1. General Details
+                    claim_number,
                     accident_date,
-                    wcl_2, wcl_4, wcl_5_list, wcl_6, 
-                    annexture_1
+
+                    //2. Employer Details
+                    company_name,
+                    company_str_addr,
+                    company_str_addr_code,
+
+                    //3. Employee Details
+//            employee,
+                    id_num,
+                    employee_str_addr,
+                    employee_str_addr_code,
+
+                    //4. Accident Details
+                    periods_employee_off_duty,
+                    periods_employee_light_duty,
+                    employee_light_duty_available_and_offered,
+                    employee_perform_recommended_light_duty,
+                    employee_perform_recommended_light_duty_not_performed_reason,
+                    employee_perform_recommended_light_duty_performed_percentage,
+                    employee_still_in_your_employment,
+                    employee_left_my_service_date,
+                    employee_present_address,
+                    employee_receive_free_food_range,
+                    employee_receive_free_quarters_range,
+                    period_detained_in_hospital_range,
+
+                    //5. Employer's Declaration
+                    employer_signature,
+                    employer_signature_name,
+                    employer_signature_date
                 }
             }
         } = this;
-        
-        const {
-            //1. General Details
-//            claim_number, 
-//            accident_date,
 
-            //2. Employer Details
-            company_name,
-            company_str_addr,
-            company_str_addr_code,
+        const employee = this.props.dialog.extraProp('employee');
 
-            //3. Employee Details
-    //            employee,
-            id_num,
-            employee_str_addr,
-            employee_str_addr_code,
-
-            //4. Accident Details
-            periods_employee_off_duty, 
-            periods_employee_light_duty,
-            employee_light_duty_available_and_offered, 
-            employee_perform_recommended_light_duty,
-            employee_perform_recommended_light_duty_not_performed_reason,
-            employee_perform_recommended_light_duty_performed_percentage,
-            employee_still_in_your_employment,
-            employee_left_my_service_date, 
-            employee_present_address, 
-            employee_receive_free_food_range, 
-            employee_receive_free_quarters_range,
-            period_detained_in_hospital_range,
-
-            //5. Employer's Declaration
-            employer_signature,
-            employer_signature_name,
-            employer_signature_date
-        } = wcl_6 || {};
-        
         const {isContractor, isConsultant} = storage.is;
         return <FormControls>
                 <Row 
@@ -148,7 +143,7 @@ class Controls extends React.Component {
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
                 >
-                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-12"/>
+                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => v.full_name} className="col-lg-12"/>
                     <ProfileField name="id_num" title="Identity Number" value={id_num} className="col-lg-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Street Address & Postal Code</label>

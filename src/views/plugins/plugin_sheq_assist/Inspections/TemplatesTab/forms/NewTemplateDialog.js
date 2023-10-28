@@ -153,6 +153,10 @@ class Controls extends React.Component {
         return [{questionText: "Completed By", questionType: "Short Answer"}];
     }
 
+    get asset() {
+        return this.props.dialog.extraProp('asset');
+    }
+
     get item() {
         return this.props.state.item;
     }
@@ -162,9 +166,15 @@ class Controls extends React.Component {
         const {
             item, props: {
                 onFormNext, onFormBack, onFormOpen
-            }
+            },
+            asset,
         } = this;
-        const visibility = item ? item.data.visibility : null;
+
+        let visibility = item ? item.data.visibility : null;
+
+        if(asset) {
+            visibility = 'Private';
+        }
 
         return <FormControls>
             <Row
@@ -175,9 +185,9 @@ class Controls extends React.Component {
               onFormOpen={onFormOpen}
               onFormNext={onFormNext}
             >
-                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
-                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectAssetInput name="asset" placeholder="Asset..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
+                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset && asset.asset_detail && asset.asset_detail.asset_type} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
               rendered

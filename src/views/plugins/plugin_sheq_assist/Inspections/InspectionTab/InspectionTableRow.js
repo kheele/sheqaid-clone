@@ -14,7 +14,7 @@ import {all_question_list} from "../../../../../components/questionnaires/ARespo
 @observer
 class InspectionTableRow extends React.Component {
     render() {
-        const {item, idx, onRenderActionCell, isUpcoming, unanswered, onClick} = this.props;
+        const {asset: mainAsset, item, idx, onRenderActionCell, isUpcoming, unanswered, onClick} = this.props;
         // const {id, data: {created_at, name, template: {name: template_name}, score, conducted, completed}} = item;
         const {
             id, data: {
@@ -29,6 +29,8 @@ class InspectionTableRow extends React.Component {
                 scheduled,
                 page_title_list,
                 question_list,
+                progress,
+                total_questions,
                 //
                 interval,
                 start_date,
@@ -78,35 +80,33 @@ class InspectionTableRow extends React.Component {
             }
         }
 
-        const getQuestions = async (question_list) => {
-            return all_question_list(question_list);
-        };
-
-        const renderProgress = (v) => {
-            const answerCount = v.filter(v => !!v.answer).length;
-            const perc = (answerCount / v.length) * 100;
-            const progress = perc.toFixed(1) + '% Complete';
-            return progress;
-        };
+        // const getQuestions = async (question_list) => {
+        //     return all_question_list(question_list);
+        // };
+        //
+        // const renderProgress = (v) => {
+        //     //expiry, hasResponseAttachment, responseAttachmentRequired, responseAttachment, options{answer}
+        //     const answerCount = v.filter(v => !!v.answer).length;
+        //     const perc = (answerCount / v.length) * 100;
+        //     const progress = perc.toFixed(1) + '% Complete';
+        //     return progress;
+        // };
 
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-40">{id}</div>
             <div className="td">{name}</div>
             {/*<div className="td fixed-flex min-w-140">/!*score*!/</div>*/}
-            <div className="td fixed-flex min-w-140">{asset_type || 'N/A'}</div>
-            <div
-                className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}</div>
+            {!mainAsset && <div className="td fixed-flex min-w-140">{asset_type || 'N/A'}</div>}
+            {!mainAsset && <div
+                className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}</div>}
             <div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
             <div className="td fixed-flex min-w-80">{interval}</div>
             <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
             {!isUpcoming && <div className="td fixed-flex min-w-120">{Dates.formatDate(nextSchedule)}</div>}
-            {!isUpcoming && !unanswered && <AsyncTD
-                title="Progress"
-                defaultValue={getQuestions(question_list)}
-                renderer={renderProgress}
-                className="td fixed-flex min-w-270 flex-center progress-bar"
-            />}
+            {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-270 flex-center progress-bar">
+                {progress.toFixed(1) + '% Complete'}
+            </div>}
             {onRenderActionCell && onRenderActionCell(item, idx)}
             {!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

@@ -1,7 +1,7 @@
 //<editor-fold desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, extendObservable} from "mobx";
+import {computed} from "mobx";
 
 import {Dates, ShouldUpdate, toDataURI} from 'utils/Utils';
 
@@ -34,24 +34,15 @@ import updateAsset from "mutations/all/Asset/updateAsset";
 import findByIdAsset from "mutations/all/Asset/findByIdAsset";
 import InspectionTabs from "./InspectionTabs";
 import upsertAssetDetails from "mutations/all/Asset/upsertAssetDetails";
-import upsertAssetPurchaseInfo from "../../../../../../mutations/all/Asset/upsertAssetPurchaseInfo";
-import upsertAssetDepreciation from "../../../../../../mutations/all/Asset/upsertAssetDepreciation";
-import insertAssetCalibrationRecordListItem
-	from "../../../../../../mutations/all/Asset/insertAssetCalibrationRecordListItem";
-import upsertAssetCalibrationRecordListItem
-	from "../../../../../../mutations/all/Asset/upsertAssetCalibrationRecordListItem";
-import deleteAssetCalibrationRecordListItem
-	from "../../../../../../mutations/all/Asset/deleteAssetCalibrationRecordListItem";
+import upsertAssetPurchaseInfo from "mutations/all/Asset/upsertAssetPurchaseInfo";
+import upsertAssetDepreciation from "mutations/all/Asset/upsertAssetDepreciation";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import {CircularProgress} from "@mui/material";
-import updateEmployeeDependant from "../../../../../../mutations/all/EmployeeDependant/updateEmployeeDependant";
-import updateIncidentDocument from "../../../../../../mutations/all/Incident/IncidentDocument/updateIncidentDocument";
-import insertIncidentDocument from "../../../../../../mutations/all/Incident/IncidentDocument/insertIncidentDocument";
-import insertAssetPhoto from "../../../../../../mutations/all/Asset/insertAssetPhoto";
-import updateAssetPhoto from "../../../../../../mutations/all/Asset/updateAssetPhoto";
+import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
+import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
 import ImageSection from "components/FormComponents/ImageSection";
-import updateAssetDoc from "../../../../../../mutations/all/Asset/updateAssetDoc";
-import insertAssetDoc from "../../../../../../mutations/all/Asset/insertAssetDoc";
+import updateAssetDoc from "mutations/all/Asset/updateAssetDoc";
+import insertAssetDoc from "mutations/all/Asset/insertAssetDoc";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -1002,6 +993,7 @@ class Controls extends AControls {
 				title="10. Linked Assets"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormNext={onFormNext}
 			>
 				<FormControls>
 					<Row
@@ -1028,18 +1020,16 @@ class Controls extends AControls {
 					</Row>
 				</FormControls>
 			</Row>
-			{/*<Row*/}
-			{/*	rendered*/}
-			{/*	idx={11}*/}
-			{/*	title="11. Inspections"*/}
-			{/*	className="min-h-600"*/}
-			{/*	onFormOpen={onFormOpen}*/}
-			{/*	onFormBack={onFormBack}*/}
-			{/*	onFormNext={onFormNext}*/}
-			{/*	onFormSave={this.onFormSave}*/}
-			{/*>*/}
-			{/*	<InspectionTabs item={item}/>*/}
-			{/*</Row>*/}
+			<Row
+				rendered
+				idx={11}
+				title="11. Inspections"
+				sectionClassName="min-h-600"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+			>
+				<InspectionTabs item={item}/>
+			</Row>
 			{/*<Row*/}
 			{/*	rendered*/}
 			{/*	idx={12}*/}

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import {PDFUploadButton, ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -10,12 +10,14 @@ import {AProfileDialog} from 'components/dialogs';
 import {EarningsTable} from './ClaimForms';
 
 import style from "./ProfileWCL2Dialog.lazy.css";
+import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileWCL2Dialog extends AProfileDialog {
     pageKey = "ProfileWCL2Dialog";
+    findById = findByIdWCL2;
 
     constructor(props) {
         super(props, style);
@@ -50,10 +52,10 @@ class Controls extends React.Component {
     }
     // </editor-fold>
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -65,118 +67,110 @@ class Controls extends React.Component {
             },
             item: {
                 id, data: {
-                    created_at,
-                    client, project, site, 
-                    employee, 
-                    claim_number, 
-                    provincial_office,
+                    // employee,
+                    //1. Employer Details
+                    company_name,
+                    company_reg_num,
+                    company_contact_person,
+                    company_str_addr,
+                    company_str_addr_code,
+                    company_postal_addr,
+                    company_postal_addr_code,
+                    company_tel_code,
+                    company_tel_num,
+                    company_fax_code,
+                    company_fax_num,
+                    company_email,
+                    company_location,
+                    company_nature,
+
+                    //2. Employee Details
+                    company_employee_association,
+//            employee,
+                    doc_certified_id,
+                    id_num,
+                    dob,
+                    gender,
+                    marital_status,
+                    citizen_of,
+                    personnel_num,
+                    occupation,
+                    employee_str_addr,
+                    employee_str_addr_code,
+                    employee_postal_addr,
+                    employee_postal_addr_code,
+                    employee_tel_code,
+                    employee_tel_num,
+                    period_employ_years,
+                    period_employ_months,
+                    expected_disablement_period,
+
+                    //3. Accident Details
+//            incident_source,
+//            incident,
                     accident_date,
-                    wcl_2, wcl_4, wcl_5_list, wcl_6, 
-                    annexture_1
+                    accident_time,
+                    incident_place,
+                    incident_place_province,
+                    incident_place_district,
+                    accident_date_reported,
+                    accident_time_reported,
+                    task_employee_performing_during_accident,
+                    period_experience_task_performed_years,
+                    period_experience_task_performed_months,
+                    employee_action_connected_business,
+                    accident_desc,
+                    traffic_accident_on_public_road,
+                    nature_of_injury_list,
+                    nature_of_injury_options,
+                    employee_injured_explanation_satisfactory,
+                    employee_injured_explanation_satisfactory_nope_desc,
+
+                    //4. Further Particulars Of Employee
+                    doc_salary_slip,
+                    earning_list,
+                    prepared_further_payments_after_3_months_4rm_accident_date,
+                    total_amount_already_paid,
+                    period_payments_made_range,
+                    num_of_week_days_worked_by_employee,
+                    date_ceased_work,
+                    time_ceased_work,
+                    did_employee_complete_shift_on_date_work_ceased,
+                    date_resumed_work,
+                    time_resumed_work,
+                    dependant_name,
+                    dependant_address,
+
+                    //5. Further Particulars
+                    previously_received_compensation_full_names,
+                    was_1st_aid_given,
+                    medical_practitioner_or_chiropractor_who_treated_employee,
+                    hospital_which_treated_employee,
+                    was_accidnt_caused_by_employee_options_1,
+                    was_accidnt_caused_by_employee_options_2,
+                    was_accidnt_caused_by_employee_options_3,
+                    accident_witness,
+                    accident_aware_person,
+                    num_of_employees_involved_in_accident,
+                    accident_police_station,
+                    accident_docket_num,
+                    involved_vehicle_reg_numbers,
+                    contributing_factor_list_A,
+                    contributing_factor_list_B,
+                    other_machinery_list,
+                    other_contributing_factor_list,
+                    additional_details_or_comments,
+
+                    //6. Employer's Declaration
+                    employer_signature,
+                    employer_signature_name,
+                    employer_signature_date
                 }
             }
         } = this;
-        
-        const {
-            //1. Employer Details
-            company_name,
-            company_reg_num,
-            company_contact_person,
-            company_str_addr,
-            company_str_addr_code,
-            company_postal_addr,
-            company_postal_addr_code,
-            company_tel_code,
-            company_tel_num,
-            company_fax_code,
-            company_fax_num,
-            company_email,
-            company_location,
-            company_nature,
 
-            //2. Employee Details
-            company_employee_association,
-//            employee,
-            doc_certified_id,
-            id_num,
-            dob,
-            gender,
-            marital_status,
-            citizen_of,
-            personnel_num,
-            occupation,
-            employee_str_addr,
-            employee_str_addr_code,
-            employee_postal_addr,
-            employee_postal_addr_code,
-            employee_tel_code,
-            employee_tel_num,
-            period_employ_years,
-            period_employ_months,
-            expected_disablement_period,
+        const employee = this.props.dialog.extraProp('employee');
 
-            //3. Accident Details
-    //            incident_source,
-    //            incident,
-//            accident_date,
-            accident_time,
-            incident_place,
-            incident_place_province,
-            incident_place_district,
-            accident_date_reported,
-            accident_time_reported,
-            task_employee_performing_during_accident,
-            period_experience_task_performed_years,
-            period_experience_task_performed_months,
-            employee_action_connected_business,
-            accident_desc,
-            traffic_accident_on_public_road,
-            nature_of_injury_list,
-            nature_of_injury_options,
-            employee_injured_explanation_satisfactory,
-            employee_injured_explanation_satisfactory_nope_desc,
-
-            //4. Further Particulars Of Employee
-            doc_salary_slip,
-            earning_list,
-            prepared_further_payments_after_3_months_4rm_accident_date,
-            total_amount_already_paid,
-            period_payments_made_range,
-            num_of_week_days_worked_by_employee,
-            date_ceased_work,
-            time_ceased_work,
-            did_employee_complete_shift_on_date_work_ceased,
-            date_resumed_work,
-            time_resumed_work,
-            dependant_name,
-            dependant_address,
-
-            //5. Further Particulars
-            previously_received_compensation_full_names,
-            was_1st_aid_given,
-            medical_practitioner_or_chiropractor_who_treated_employee,
-            hospital_which_treated_employee,
-            was_accidnt_caused_by_employee_options_1,
-            was_accidnt_caused_by_employee_options_2,
-            was_accidnt_caused_by_employee_options_3,
-            accident_witness,
-            accident_aware_person,
-            num_of_employees_involved_in_accident,
-            accident_police_station,
-            accident_docket_num,
-            involved_vehicle_reg_numbers,
-            contributing_factor_list_A,
-            contributing_factor_list_B,
-            other_machinery_list,
-            other_contributing_factor_list,
-            additional_details_or_comments,
-
-            //6. Employer's Declaration
-            employer_signature,
-            employer_signature_name,
-            employer_signature_date
-        } = wcl_2 || {};
-        
         const {isContractor, isConsultant} = storage.is;
         return <FormControls>
                 <Row 
@@ -189,7 +183,7 @@ class Controls extends React.Component {
                 >
                     <ProfileField name="company_name" title="Compensation Commissioner Registered Name" value={company_name} className="col-lg-12"/>
                     <ProfileField name="company_reg_num" title="Compensation Commissioner Registration Number" value={company_reg_num} className="col-lg-12"/>
-                    <ProfileField name="company_contact_person" title="Contact Person" value={company_contact_person} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-12"/>
+                    <ProfileField name="company_contact_person" title="Contact Person" value={company_contact_person} renderer={v => v.full_name} className="col-lg-12"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Street Address & Postal Code</label>
                     <ProfileField name="company_str_addr_code" title="Postal Code" footerDesc="For Street Address" value={company_str_addr_code} className="col-lg-4"/>
                     <ProfileField name="company_str_addr" title="Street Address" value={company_str_addr} className="col-lg-8"/>
@@ -214,7 +208,7 @@ class Controls extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <ProfileField name="company_employee_association" title="Is The Injured Person A" value={company_employee_association} className="col-lg-12"/>
-                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-12"/>
+                    <ProfileField name="employee" title="Employee" value={employee} renderer={v => v.full_name} className="col-lg-12"/>
                     
                     <hr />
                     
@@ -228,7 +222,7 @@ class Controls extends React.Component {
                     <ProfileField name="marital_status" title="Marital Status" value={marital_status} className="col-lg-4 col-xs-12"/>
                     <ProfileField name="citizen_of" title="Citizen Of" value={citizen_of} className="col-lg-8 col-xs-12"/>
                     <ProfileField name="personnel_num" title="Personnel No." value={personnel_num} className="col-lg-4 col-xs-12"/>
-                    <ProfileField name="occupation" title="Occupation" value={occupation} renderer={v => `${v.name || v.data.name}`} className="col-lg-8 col-xs-12"/>
+                    <ProfileField name="occupation" title="Occupation" value={occupation} renderer={v => v.name} className="col-lg-8 col-xs-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Street Address & Postal Code</label>
                     <ProfileField name="employee_str_addr_code" title="Postal Code" footerDesc="For Street Address" value={employee_str_addr_code} className="col-lg-4"/>
@@ -287,8 +281,8 @@ class Controls extends React.Component {
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
                         Nature Of Injury Sustained
                     </label>
-                    <ProfileField name="nature_of_injury_list" title="Nature Of Injury Sustained" footerDesc="E.g. Index Finger, Right Hand Crushed" value={nature_of_injury_list} renderer={v => v.join(',')} className="col-lg-12"/>
-                    <ProfileField name="nature_of_injury_options" title="Nature Of Injury Sustained" value={nature_of_injury_options} renderer={v => v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="nature_of_injury_list" title="Nature Of Injury Sustained" footerDesc="E.g. Index Finger, Right Hand Crushed" value={nature_of_injury_list} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="nature_of_injury_options" title="Nature Of Injury Sustained" value={nature_of_injury_options} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
                     <hr className="margin-v-5"/>
                     <ProfileField name="employee_injured_explanation_satisfactory" title="Are you satisfied that the employee was injured in the manner alleged by him/her?" footerDesc='(If "no" state reasons on section 5 Part A)' value={employee_injured_explanation_satisfactory} className="col-lg-12"/>
                     <ProfileField name="employee_injured_explanation_satisfactory_nope_desc" title="If not, give reasons" footerDesc='If the answer is "No" from the previous answer, give reasons' value={employee_injured_explanation_satisfactory_nope_desc} className="col-lg-12"/>
@@ -320,7 +314,7 @@ class Controls extends React.Component {
                     </label>
                     <ProfileField name="total_amount_already_paid" title="Total Amount (R)" value={total_amount_already_paid} className="col-lg-12"/>
                     
-                    <ProfileField name="period_payments_made_range" type="date" title="For what period were such payments made?" value={period_payments_made_range} className="col-lg-12"/>
+                    <ProfileField name="period_payments_made_range" title="For what period were such payments made?" value={period_payments_made_range} renderer={v => `${v.start} - ${v.end}`} className="col-lg-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">
                         No. Of Days Per Week Worked By The Employee
@@ -384,15 +378,15 @@ class Controls extends React.Component {
                     <ProfileField name="accident_docket_num" title="Docket Number" value={accident_docket_num} className="col-lg-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">If vehicles were involved, furnish registration number(s)</label>
-                    <ProfileField name="involved_vehicle_reg_numbers" title="Registration number(s)" value={involved_vehicle_reg_numbers} renderer={v => v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="involved_vehicle_reg_numbers" title="Registration number(s)" value={involved_vehicle_reg_numbers} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
                     
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Contributing Factors/Causes Applicable</label>
-                    <ProfileField name="contributing_factor_list_A" title="Part A" value={contributing_factor_list_A} renderer={v => v.join(',')} className="col-lg-12"/>
-                    <ProfileField name="contributing_factor_list_B" title="Part B" value={contributing_factor_list_B} renderer={v => v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="contributing_factor_list_A" title="Part A" value={contributing_factor_list_A} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="contributing_factor_list_B" title="Part B" value={contributing_factor_list_B} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
                     
                     <hr className="margin-v-5"/>
-                    <ProfileField name="other_machinery_list" title="Other Machinery (Specify)" value={other_machinery_list} renderer={v => v.join(',')} className="col-lg-12"/>
-                    <ProfileField name="other_contributing_factor_list" title="Any Other Contributing Factors (Specify)" footerDesc="Not Mentioned Above" value={other_contributing_factor_list} renderer={v => v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="other_machinery_list" title="Other Machinery (Specify)" value={other_machinery_list} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
+                    <ProfileField name="other_contributing_factor_list" title="Any Other Contributing Factors (Specify)" footerDesc="Not Mentioned Above" value={other_contributing_factor_list} renderer={v => v.isEmpty() ? 'N/A' : v.join(',')} className="col-lg-12"/>
                 
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">The rest of this page may be used for any additional details or comments regarding the accident</label>
                     <ProfileField name="additional_details_or_comments" title="Additional Details / Comments" value={additional_details_or_comments} className="col-lg-12"/>

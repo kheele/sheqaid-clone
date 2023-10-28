@@ -1,19 +1,21 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileAnnexture1Dialog.lazy.css";
+import findByIdAnnexture1 from "../../../../mutations/all/COIDA/Annexture1/findByIdAnnexture1";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileAnnexture1Dialog extends AProfileDialog {
     pageKey = "ProfileAnnexture1Dialog";
+    findById = findByIdAnnexture1;
 
     constructor(props) {
         super(props, style);
@@ -47,11 +49,11 @@ class Controls extends React.Component {
         super();
     }
     // </editor-fold>
-    
-    get item() {
+
+    @computed get item() {
         return this.props.state.item;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -63,57 +65,50 @@ class Controls extends React.Component {
             },
             item: {
                 id, data: {
-                    created_at,
-                    client, project, site, 
-                    employee, 
-                    claim_number, 
-                    provincial_office,
+                    // employee,
+
+                    //A. Recording Of Incident
+                    company_name,
+//            affected_person,
+                    id_num,
                     accident_date,
-                    wcl_2, wcl_4, wcl_5_list, wcl_6, 
-                    annexture_1
+                    accident_time,
+                    part_of_body_affected,
+                    effect_on_person,
+                    expected_period_of_disablement,
+                    disease_desc,
+                    process,
+                    incident_reported_compensationcommissioner__provincial_director,
+                    incident_reported_police,
+                    saps_office,
+                    saps_reference,
+                    substance_exposed_to,
+
+                    //B. Incident Investigation
+                    investigator,
+                    investigation_date,
+                    investigator_designation,
+                    incident_desc,
+                    incident_cause,
+                    steps_to_prevent_recurrence,
+                    investigator_signature,
+                    investigator_signature_date,
+
+                    //C. Action Taken By Employer To Prevent The Recurrence Of Similar Incident
+                    employer_preventative_action_for_recurrence_of_similar_incident,
+                    employer_signature,
+                    employer_signature_date,
+
+                    //D. Remarks By Health & Safety Committee
+                    health_and_safety_committee_remarks,
+                    chairperson_of_health_and_safety_committee_signature,
+                    chairperson_of_health_and_safety_committee_signature_date
                 }
             }
         } = this;
-        
-        const {
-            //A. Recording Of Incident
-            company_name,
-//            affected_person,
-            id_num,
-//            accident_date,
-            accident_time,
-            part_of_body_affected,
-            effect_on_person, 
-            expected_period_of_disablement, 
-            disease_desc, 
-            process,
-            incident_reported_compensationcommissioner__provincial_director,
-            incident_reported_police,
-            saps_office,
-            saps_reference,
-            substance_exposed_to,
-            
-            //B. Incident Investigation
-            investigator,
-            investigation_date,
-            investigator_designation,
-            incident_desc,
-            incident_cause,
-            steps_to_prevent_recurrence,
-            investigator_signature,
-            investigator_signature_date,
-            
-            //C. Action Taken By Employer To Prevent The Recurrence Of Similar Incident
-            employer_preventative_action_for_recurrence_of_similar_incident,
-            employer_signature,
-            employer_signature_date,
-            
-            //D. Remarks By Health & Safety Committee
-            health_and_safety_committee_remarks,
-            chairperson_of_health_and_safety_committee_signature,
-            chairperson_of_health_and_safety_committee_signature_date
-        } = annexture_1 || {};
-        
+
+        const employee = this.props.dialog.extraProp('employee');
+
         const {isContractor, isConsultant} = storage.is;
         return <FormControls>
                 <Row 
@@ -126,7 +121,7 @@ class Controls extends React.Component {
                 >
                     <ProfileField name="company_name" title="Name of employer" value={company_name} className="col-lg-12"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Affected Person</label>
-                    <ProfileField name="affected_person" title="Affected Person" value={employee} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-6 col-xs-12"/>
+                    <ProfileField name="affected_person" title="Affected Person" value={employee} renderer={v => v.full_name} className="col-lg-6 col-xs-12"/>
                     <ProfileField name="id_num" title="Affected Person ID No." value={id_num} className="col-lg-6 col-xs-12"/>
                     <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">Accident Date & Time</label>
                     <ProfileField name="accident_date" type="date" title="Accident Date" value={accident_date} className="col-lg-6 col-xs-12"/>
@@ -158,7 +153,7 @@ class Controls extends React.Component {
                     onFormBack={onFormBack} 
                     onFormNext={onFormNext}
                 >
-                    <ProfileField name="investigator" title="Investigator" value={investigator} renderer={v => `${v.fname || v.data.fname} ${v.lname || v.data.lname}`} className="col-lg-12"/>
+                    <ProfileField name="investigator" title="Investigator" value={investigator} renderer={v => v.full_name} className="col-lg-12"/>
                     <ProfileField name="investigation_date" type="date" title="Investigation Date" value={investigation_date} className="col-lg-12"/>
                     <ProfileField name="investigator_designation" title="Investigator Designation" value={investigator_designation} className="col-lg-12"/>
                     

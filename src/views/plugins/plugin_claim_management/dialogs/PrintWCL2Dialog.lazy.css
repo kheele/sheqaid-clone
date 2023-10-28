@@ -20,4 +20,5 @@
 }
 #dialog-overlay.PrintWCL2Dialog-profile-dialog .dialog-content .controls #PDFViewer {
     height: 100%;
+    overflow: hidden;
 }

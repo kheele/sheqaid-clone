@@ -90,3 +90,10 @@
     bottom: 0;
     right: 0;
 }
+
+#dialog-overlay.EditToolDialog-profile-dialog #InspectionTab-tab .tabled-top-panel .buttons,
+#dialog-overlay.EditToolDialog-profile-dialog #TemplatesTab-tab .tabled-top-panel .buttons {
+    position: absolute !important;
+    top: -40px !important;;
+    right: 10px !important;;
+}

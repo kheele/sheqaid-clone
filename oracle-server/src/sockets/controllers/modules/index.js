@@ -1,3 +1,4 @@
 require("./assets");
-require("./inspections");
+require("./claims");
 require("./incidents");
+require("./inspections");
