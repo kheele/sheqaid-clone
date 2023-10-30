@@ -234,24 +234,41 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		let {
-			item, props: {
+			selectedTemplate,
+			props: {
 				onFormNext, onFormBack, onFormOpen
 			},
 			asset,
 		} = this;
 
-		let asset_type;
+		let asset_type,
+			responsible_person, responsible_department, interval, start_date, time;
+
 		if(asset) {
-			asset_type = asset.asset_detail.asset_type;
+			asset_type = asset.data.asset_detail.asset_type;
 		} else {
-			const data = item ? item.data : {};
+			const data = selectedTemplate ? selectedTemplate.data : {};
 			const {
-				asset_type: _asset_type, asset: _asset,
-				responsible_person, responsible_department, interval, start_date,
+				asset_type: _asset_type,
+				asset: _asset,
+				responsible_person: _responsible_person,
+				responsible_department: _responsible_department,
+				interval: _interval,
+				start_date: _start_date,
+				time: _time,
 			} = data;
+			//
 			asset = _asset;
 			asset_type = _asset_type;
+			//
+			responsible_person = _responsible_person;
+			responsible_department = _responsible_department;
+			interval = _interval;
+			start_date = _start_date;
+			time = _time;
 		}
+
+		alert(asset)
 
 		return <FormControls>
 			<RowOrgs
@@ -291,15 +308,20 @@ class Controls extends React.Component {
 				onFormBack={onFormBack}
 			>
 				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
+									 defaultValue={responsible_person}
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<SelectDepartmentInput name="responsible_department" placeholder="Responsible Department..."
+									   defaultValue={responsible_department}
 				                       className="col-lg-12 form-control" onChange={this.form.onChange}/>
 
 				<ClearableInput name="interval" type="select" placeholder="Interval..." className="col-lg-4 form-control"
+								defaultValue={interval}
 				                onChange={this.form.onChange} values={this.state.lists.interval} returnValue/>
 				<ClearableInput name="start_date" type="date" placeholder="Start Date..." className="col-lg-4 form-control"
+								defaultValue={start_date}
 				                onChange={this.form.onChange}/>
 				<ClearableInput name="time" type="time" placeholder="Time..." className="col-lg-4 form-control"
+								defaultValue={time}
 				                onChange={this.form.onChange}/>
 			</Row>
 			<Row

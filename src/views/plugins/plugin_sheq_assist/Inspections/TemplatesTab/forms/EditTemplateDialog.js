@@ -211,8 +211,8 @@ class Controls extends React.Component {
               onFormOpen={onFormOpen}
               onFormNext={onFormNext}
             >
-                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
-                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset_type} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} isEditable={!asset} readonly={!!asset} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
+                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset_type} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row

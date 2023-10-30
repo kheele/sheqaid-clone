@@ -71,7 +71,8 @@ class InspectionTab extends React.Component {
         const {list} = this.refs.root;
         const copy = toJS(list[idx]);
 
-        this.refs.newDialog.
+        const newDialog = this.refs.root.getDialogByRef("newDialog");
+        newDialog.
         extraProp('asset', asset).
         open(copy);
     }

@@ -83,30 +83,16 @@ export default (
 			      count
 			    }
 			  }
-			  all_non_compliant_questionnaire_list: default_contractor_questionnaires_ques(
-			    where: {
-			      questionnaire: {group: {_eq: "Inspections"}, ${where}}, 
-			      #_or: [
-			      #  {_and: [{questionType: {_eq: "Good,Fair,Poor,N/A"}}, {answer: {_eq: "Poor"}}]},
-			      #  {_and: [{questionType: {_eq: "Safe,At Risk,N/A"}}, {answer: {_eq: "At Risk"}}]},
-			      #  {_and: [{questionType: {_eq: "Pass,Fail,N/A"}}, {answer: {_eq: "Fail"}}]},
-			      #  {_and: [{questionType: {_eq: "Yes,No,N/A"}}, {answer: {_eq: "No"}}]},
-			      #  {_and: [{questionType: {_eq: "Compliant,Non-Compliant,N/A"}}, {answer: {_eq: "Non-Compliant"}}]}
-			      #]
-			    }
-			  ) {
-			    id
-			    questionType
-			    answer
-			    responseAttachment
-			    hasResponseAttachment
-    			responseAttachmentRequired
+			  all_non_compliant_questionnaire_list_aggregate: default_contractor_questionnaires_ques_aggregate(where: {is_deviation: {_eq: true}}) {
+			  	aggregate {
+					count
+				}
 			  }
-			  all_asset_list_aggregate: assets_aggregate(where: {inspection_and_template_list:{is_template:{_eq: false},schedule_list:{id:{_is_null: false}}},}) {
-		      aggregate {
-		        count
-		      }
-		    }
+			  all_asset_list_aggregate: assets_aggregate(where: {inspection_and_template_list:{is_template:{_eq: false}}}) {
+				  aggregate {
+					count
+				  }
+			  }
 			  
 			  #
 			  list_interval_unclassified_questionnaire_list_aggregate: default_contractor_questionnaires_aggregate(where: {group: {_eq: "Inspections"}, ${where}, interval: {_is_null: true}}) {

@@ -327,11 +327,13 @@ exports.onScheduleNextDate = async (data) => {
         question_list = getQuestionnaireTemplateForm(question_list);
 
         const save = async (input) => {
-            console.log('input', input);
+            // console.log('input', input);
 
             const scheduledItem = await insertInspectionsQuestionnaire(input);
+            console.log('scheduledItem', scheduledItem);
             if (scheduledItem) {
-                return await updateInspectionsQuestionnaire({id, ques_next_id: scheduledItem.id});
+                return updateInspectionsQuestionnaire({id: input.ques_prev_id, ques_next_id: scheduledItem.id}).
+                then(_ => scheduledItem);
             }
         };
 
@@ -361,18 +363,19 @@ exports.onScheduleNextDate = async (data) => {
             schedule_date,
             //
             template_id,
-            ques_prev_id: id,
             //
             name,
             desc,
             question_list: {data: question_list},
         };
 
-        await save(input);
+        const savedItem = await save({...input, ques_prev_id: id});
 
-        schedule_date = create_schedule_date({interval, schedule_date});
-        if (schedule_date) {
-            await save({...input, schedule_date});
+        if(savedItem){
+            schedule_date = create_schedule_date({interval, schedule_date});
+            if (schedule_date) {
+                await save({...input, ques_prev_id: savedItem.id, schedule_date});
+            }
         }
     }));
 };
@@ -380,8 +383,8 @@ exports.onScheduleNextDate = async (data) => {
 
 // <editor-fold defaultstate="collapsed" desc="insertInspectionsQuestionnaire">
 const insertInspectionsQuestionnaire = async (input) => {
-    return await insertRelay({
-        query: `
+    return await insertGraphQL({
+        mutation: `
             mutation insertInspectionsQuestionnaireMutation($object: default_contractor_questionnaires_insert_input!) {
                 insert_default_contractor_questionnaires_one(
                     object: $object
@@ -406,7 +409,7 @@ const updateInspectionsQuestionnaire = async (attrs) => {
     const {id} = attrs;
     delete attrs.id;
 
-    return updateRelay({
+    return updateGraphQL({
         mutation: `
             mutation updateInspectionsQuestionnaireMutation($id: default_contractor_questionnaires_pk_columns_input!, $_set: default_contractor_questionnaires_set_input!) {
                 update_default_contractor_questionnaires_by_pk(pk_columns: $id, _set: $_set) {

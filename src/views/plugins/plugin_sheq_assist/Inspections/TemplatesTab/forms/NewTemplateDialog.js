@@ -170,10 +170,12 @@ class Controls extends React.Component {
             asset,
         } = this;
 
-        let visibility = item ? item.data.visibility : null;
+        let visibility;
 
         if(asset) {
             visibility = 'Private';
+        } else {
+            visibility = item ? item.data.visibility : null;
         }
 
         return <FormControls>
@@ -186,7 +188,7 @@ class Controls extends React.Component {
               onFormNext={onFormNext}
             >
                 <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
-                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset && asset.asset_detail && asset.asset_detail.asset_type} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset && asset.asset_detail && asset.asset_detail.asset_type} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row

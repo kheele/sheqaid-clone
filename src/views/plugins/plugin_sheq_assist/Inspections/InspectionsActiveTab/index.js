@@ -72,7 +72,8 @@ class InspectionTab extends React.Component {
         const {list} = this.refs.root;
         const copy = toJS(list[idx]);
 
-        this.refs.newDialog.
+        const newDialog = this.refs.root.getDialogByRef("newDialog");
+        newDialog.
         extraProp('asset', asset).
         open(copy);
     }
@@ -80,7 +81,9 @@ class InspectionTab extends React.Component {
     onStart(evt, elem) {
         const {idx, action} = elem.props;
         const item = this.refs.root.list[idx];
-        this.refs.editDialog.open(item);
+
+        const editDialog = this.refs.root.getDialogByRef("editDialog");
+        editDialog.open(item);
     }
     //</editor-fold>
 

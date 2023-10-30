@@ -103,7 +103,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		all_template_list_aggregate = defaults,
 		all_questionnaire_list_aggregate = defaults,
 		all_asset_list_aggregate = defaults,
-		all_non_compliant_questionnaire_list = defaults,
+		all_non_compliant_questionnaire_list_aggregate = defaults,
 		//
 		active_questionnaire_list_aggregate = defaults,
 		completed_questionnaire_list_aggregate = defaults,
@@ -112,24 +112,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		//
 		questionnaire_list = defaults,
 	} = item;
-
-	const all_non_compliant_questionnaire_list_aggregate = {
-		aggregate: {
-			count: all_non_compliant_questionnaire_list.filter(({questionType}) => {
-				return questionType === "Good,Fair,Poor,N/A" ||
-					questionType === "Safe,At Risk,N/A" ||
-					questionType === "Pass,Fail,N/A" ||
-					questionType === "Yes,No,N/A" ||
-					questionType === "Compliant,Non-Compliant,N/A";
-			}).filter(({answer}) => {
-				return answer === "Poor" ||
-					answer === "At Risk" ||
-					answer === "Fail" ||
-					answer === "No" ||
-					answer === "Non-Compliant";
-			}).length,
-		}
-	};
 
 	const chartCompliance = {
 		labels: ['Lowest Compliance', 'Average Compliance', 'Highest Compliance'],

@@ -85,7 +85,8 @@ class TemplatesTab extends React.Component {
         const {list} = this.refs.root;
         const copy = toJS(list[idx]);
 
-        this.refs.newDialog.
+        const newDialog = this.refs.root.getDialogByRef("newDialog");
+        newDialog.
         extraProp('asset', asset).
         open(copy);
     }
@@ -95,7 +96,8 @@ class TemplatesTab extends React.Component {
         const {idx, action} = elem.props;
         const item = this.refs.root.list[idx];
 
-        this.refs.newQuestionnaireDialog.
+        const newQuestionnaireDialog = this.refs.root.getDialogByRef("newQuestionnaireDialog");
+        newQuestionnaireDialog.
         extraProp('template', item).
         extraProp('asset', asset).
         open(item);

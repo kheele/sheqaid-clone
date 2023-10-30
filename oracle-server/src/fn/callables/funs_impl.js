@@ -480,9 +480,9 @@ global.insertRelay = async ({query, operationName, input}) => {
 //</editor-fold>
 
 //<editor-fold desc="insertGraphQL">
-global.insertGraphQL = async ({query, operationName, input}) => {
+global.insertGraphQL = async ({mutation, operationName, input}) => {
     return await sendGraphQL({
-        query,
+        mutation,
         operationName,
         variables: {object: input}
     });
@@ -511,7 +511,7 @@ global.updateGraphQL = async ({mutation, operationName, id, attrs}) => {
         delete attrs.id;
     }
     return await sendGraphQL({
-        query: mutation,
+        mutation,
         operationName,
         variables: {
             id: {id},
