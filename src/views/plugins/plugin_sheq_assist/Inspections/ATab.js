@@ -95,6 +95,7 @@ class ATab extends React.Component {
             <div className="td fixed-flex min-w-100">Start Date</div>
             <div className="td fixed-flex min-w-120">Date Scheduled</div>
             {!isUpcoming && <div className="td fixed-flex min-w-120">Next Schedule</div>}
+            <div className="td fixed-flex min-w-120">Questions</div>
             {!isUpcoming && !unanswered && <div className={`td fixed-flex min-w-${w}`}>Progress</div>}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;

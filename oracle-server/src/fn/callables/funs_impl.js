@@ -342,6 +342,7 @@ global.sendGraphQL = async (args) => {
                 });
                 return data;
             }
+
             const key = Object.keys(data)[0];
             const list = data[key];
             return list[0];
@@ -465,7 +466,7 @@ global.getGraphQLOne = async ({query, operationName, variables, multi_queries = 
         variables,
         multi_queries,
         count,
-    }).then(res => res && res[0]);
+    }).then(res => res && (isArray(res) && res[0]) || res);
 };
 //</editor-fold>
 

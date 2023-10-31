@@ -104,6 +104,7 @@ class InspectionTableRow extends React.Component {
             <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
             {!isUpcoming && <div className="td fixed-flex min-w-120">{Dates.formatDate(nextSchedule)}</div>}
+            <div className="td fixed-flex min-w-120">{total_questions}</div>
             {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-270 flex-center progress-bar">
                 {progress.toFixed(1) + '% Complete'}
             </div>}

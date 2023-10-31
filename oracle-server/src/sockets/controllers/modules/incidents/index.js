@@ -94,7 +94,6 @@ eventManager.on("incidents/listCompletedByLogged", async (socket, data) => {
 });
 
 eventManager.on("incidents/listActiveByLogged", async (socket, data) => {
-
     const answeredFilter = (level = 3) => {
         return `
 		_and: [

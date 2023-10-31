@@ -57,8 +57,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 	const {
 		all_template_list_aggregate = defaults,
@@ -72,7 +70,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		declined_requests_questionnaire_list_aggregate = defaults,
 		//
 		inspections_compliance,
-	} = item;
+	} = data;
 
 	const {min, avg, max,} = inspections_compliance || {};
 

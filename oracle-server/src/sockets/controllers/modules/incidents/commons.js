@@ -214,11 +214,6 @@ exports.inspection_details_fragment = `
       name
     }
     
-    schedule_list{
-      date
-      completed
-    }
-    
     page_title_list:question_list(where: {is_page_title: {_eq: true}}){
         ${inspection_question_list_fragment(3)}
     }

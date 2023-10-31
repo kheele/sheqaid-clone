@@ -169,8 +169,8 @@ exports.inspection_details_find_fragment = `
     status
     status_answered_by_sender
     answered_by
-    is_template
-    visibility
+    #is_template
+    #visibility
     
     progress #computed
     total_questions #computed
@@ -255,11 +255,16 @@ exports.inspection_details_list_fragment = `
     status
     status_answered_by_sender
     answered_by
-    is_template
-    visibility
+    #is_template
+    #visibility
     
     progress #computed
     total_questions #computed
+    total_answered #computed
+    total_compliance #computed
+    total_deviations #computed
+    total_non_deviations #computed
+    total_unanswered #computed
     
     interval
     start_date

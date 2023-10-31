@@ -60,8 +60,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 	const {
 		list_interval_unclassified_questionnaire_list_aggregate = defaults,
@@ -71,7 +69,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		list_interval_quarterly_questionnaire_list_aggregate = defaults,
 		list_interval_biannually_questionnaire_list_aggregate = defaults,
 		list_interval_annually_questionnaire_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	const total = list_interval_unclassified_questionnaire_list_aggregate.aggregate.count +
 		list_interval_daily_questionnaire_list_aggregate.aggregate.count +

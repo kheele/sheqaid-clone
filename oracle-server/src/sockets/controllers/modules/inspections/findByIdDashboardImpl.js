@@ -16,17 +16,6 @@ module.exports = async (socket, data) => {
         tbl = "default_companies";
     }
 
-    // let where = '';
-    // if (site_id) {
-    //     where = `site:{id: {_eq: ${id}}}`;
-    // } else if (project_id) {
-    //     where = `project:{id: {_eq: ${id}}}`;
-    // } else if (client_id) {
-    //     where = `client:{id: {_eq: ${id}}}`;
-    // } else {
-    //     where = `company:{id: {_eq: ${id}}}`;
-    // }
-
     // const {start, end} = date_range;
     // const monStart = start || new Date().addMonths(-12);
     // const monEnd = end || new Date().addMonths(6);

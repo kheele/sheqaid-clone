@@ -28,8 +28,6 @@ export default async (attrs: EntityQuestion) => {
 		answer_employee,
 	} = attrs;
 
-	//https://31ff-197-189-181-96.eu.ngrok.io/api/callables/triggered-events/questionnaires/uploadQuestionnaireFilesUpdate
-
 	const _attrs = {...attrs};
 	delete _attrs.open;
 	delete _attrs.notified_list;
@@ -38,14 +36,14 @@ export default async (attrs: EntityQuestion) => {
 	delete _attrs.options;
 	delete _attrs.questionnaire;
 	delete _attrs.linkDoc;
+	delete _attrs.answer_asset;
+	delete _attrs.answer_employee;
 
 	if(answer_asset) {
 		_attrs.answer_asset_id = answer_asset.id;
-		delete _attrs.answer_asset;
 	}
 	if(answer_employee) {
 		_attrs.answer_employee_id = answer_employee.id;
-		delete _attrs.answer_employee;
 	}
 
 	return updateMutationImpl({
