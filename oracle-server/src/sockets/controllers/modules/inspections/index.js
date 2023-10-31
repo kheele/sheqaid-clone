@@ -2,6 +2,7 @@ require('./templates');
 
 const findByIdImpl = require("./findByIdImpl");
 const listImpl = require('./listImpl');
+const findByIdDashboardImpl = require("./findByIdDashboardImpl");
 
 eventManager.on("inspections/findById", findByIdImpl);
 
@@ -111,3 +112,5 @@ eventManager.on("inspections/listActiveByLogged", async (socket, data) => {
 
     return listImpl(socket, data);
 });
+
+eventManager.on("inspections/dashboard", findByIdDashboardImpl);

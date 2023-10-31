@@ -1,7 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import listBy from "./Stats/Query/List/listAllDashboardByLogged";
 import Dashboard from "components/dashboards/Dashboard";
 import {execWhen} from "utils/UtilsFuns";
 import * as Grids from "./Stats";
@@ -22,6 +21,7 @@ class DashboardAll extends React.Component {
 	}
 
 	render() {
+		const listBy = sockets.of('inspections').fn('dashboard');
 		return <Dashboard ref="dashboard" listBy={listBy} {...Grids} noEmployees/>;
 	}
 
