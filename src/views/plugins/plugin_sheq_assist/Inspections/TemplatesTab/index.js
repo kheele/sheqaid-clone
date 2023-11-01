@@ -185,6 +185,7 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="render">
     render() {
+        const {asset} = this.props;
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        const permissions_other_ContractorForms = (permissions_other || []).find(v => v.key === "Contractor Forms");
         return <APageListReadWrite 
@@ -203,11 +204,11 @@ class TemplatesTab extends React.Component {
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
             
-            <NewTemplateDialog ref="newDialog"/>
+            <NewTemplateDialog ref="newDialog" asset={asset}/>
             <EditTemplateDialog ref="editDialog"/>
             <ProfileTemplateDialog ref="profileDialog"/>
             
-            <NewQuestionnaireDialog ref="newQuestionnaireDialog"/>
+            <NewQuestionnaireDialog ref="newQuestionnaireDialog" asset={asset}/>
         </APageListReadWrite>;
     }
     //</editor-fold>

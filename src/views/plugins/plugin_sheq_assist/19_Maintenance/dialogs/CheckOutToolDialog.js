@@ -40,8 +40,8 @@ class Controls extends React.Component {
             vendors: [],
             statuses: ['Checked Out', 'Loaned Out', 'Out For Repair']
         },
-        item: null,
-        items: null,
+        asset: null,
+        assets: null,
         status: false,
         showBarcode: false,
         showQRCode: false
@@ -49,24 +49,21 @@ class Controls extends React.Component {
 
     constructor(props) {
         super(props);
-        
-        this.onChangeBarcodeOrQRCode = this.onChangeBarcodeOrQRCode.bind(this);
-        this.onChangeStatus = this.onChangeStatus.bind(this);
-        
+
         this.onChangeAsset = this.onChangeAsset.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
         this.renderTHead = renderTHead.bind(this);
         this.renderItem = renderItem.bind(this);
 
         this.form = new Form();
-        this.form.addChangeOne("barcode_or_qr_code_type", this.onChangeBarcodeOrQRCode);
-        this.form.addChangeOne("status", this.onChangeStatus);
+        this.form.addChangeOne("barcode_or_qr_code_type", this.onChangeBarcodeOrQRCode.bind(this));
+        this.form.addChangeOne("status", this.onChangeStatus.bind(this));
     }
-    
-    componentWillMount() {
+
+    componentDidMount() {
         const {dialog} = this.props;
-        this.state.item = dialog.extraProp('item');
-        this.state.items = dialog.extraProp('items');
+        this.state.asset = dialog.extraProp('item');
+        this.state.assets = dialog.extraProp('items');
         this.state.status = dialog.extraProp('status');
     }
     
@@ -77,11 +74,11 @@ class Controls extends React.Component {
     onChangeAsset(){
         this.refs.selectTable.open().then(list => {
             if(list.length === 1) {
-                this.state.item = list[0];
-                this.state.items = null;
+                this.state.asset = list[0];
+                this.state.assets = null;
             } else if(list.length > 1) {
-                this.state.items = list;
-                this.state.item = null;
+                this.state.assets = list;
+                this.state.asset = null;
             }
         });
     }
@@ -103,7 +100,7 @@ class Controls extends React.Component {
             return;
         }
 
-        const {item, items} = this.state;
+        const {asset, assets} = this.state;
         const {
             employee, due_return_date, comments
         } = form.data;
@@ -116,10 +113,10 @@ class Controls extends React.Component {
         if (due_return_date) {
             data.due_return_date = due_return_date.getTime();
         }
-        if (item) {
-            data.list = [item.id];
-        } else if (items) {
-            data.list = items.map(v => v.id);
+        if (asset) {
+            data.list = [asset.id];
+        } else if (assets) {
+            data.list = assets.map(v => v.id);
         }
         console.log(data)
 
@@ -161,7 +158,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen} 
                 onFormBack={onFormBack}
             >
-                <SelectTable ref="selectTable" isDialog replaceCols name="asset" desc="Assests" title="Select Asset(s) To Check Out" className="col-lg-12 no-padding SelectAssetTable" renderTHead={this.renderTHead} defaultValue={this.state.items ? this.state.items : (this.state.item ? [this.state.item] : null)} renderItem={this.renderItem} onLoadList={this.onLoadList}/>
+                <SelectTable ref="selectTable" isDialog replaceCols name="asset" desc="Assests" title="Select Asset(s) To Check Out" className="col-lg-12 no-padding SelectAssetTable" renderTHead={this.renderTHead} defaultValue={this.state.assets ? this.state.assets : (this.state.asset ? [this.state.asset] : null)} renderItem={this.renderItem} onLoadList={this.onLoadList}/>
                 <SelectedAssets state={this.state} onChangeAsset={this.onChangeAsset} title="Select Asset(s) To Check Out"/>
             </Row>
         </FormControls>;
@@ -184,9 +181,9 @@ class TitleWrapper extends React.Component {
 class SelectStatusWrapper extends React.Component {
     
     render() {
-        const {state, state: {item, items, status}, onChange} = this.props;
-        console.log('item', item)
-        const statuses = item ? state.lists.statuses.filter(v => v!== item.data.status) : state.lists.statuses;
+        const {state, state: {asset, assets, status}, onChange} = this.props;
+        console.log('asset', asset)
+        const statuses = asset ? state.lists.statuses.filter(v => v!== asset.data.status) : state.lists.statuses;
         const defaultValue = status ? {label: status, value: status} : null;
         return <ClearableInput name="status" type="select" placeholder="Set Status To..." defaultValue={defaultValue} required className="col-lg-12 form-control" onChange={onChange} values={statuses} returnValue/>;
     }

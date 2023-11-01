@@ -188,6 +188,7 @@ class Controls extends AControls {
 					interval,
 					start_date,
 					time,
+					schedule_date,
 					responsible_person,
 					responsible_department,
 					asset_type,
@@ -241,6 +242,8 @@ class Controls extends AControls {
 				<ProfileField name="interval" placeholder="Interval" value={interval} className="col-lg-4"/>
 				<ProfileField name="start_date" placeholder="Start Date" type="date" value={start_date} className="col-lg-4"/>
 				<ProfileField name="time" placeholder="Time" value={time} className="col-lg-4"/>
+
+				<ProfileField name="schedule_date" placeholder="Scheduled Date" type="date" value={schedule_date} className="col-lg-12"/>
 			</Row>
 			<Row
 				rendered

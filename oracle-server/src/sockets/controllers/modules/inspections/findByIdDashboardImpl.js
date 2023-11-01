@@ -171,7 +171,7 @@ module.exports = async (socket, data) => {
                 }
             }
         `,
-        operationName: "findByIdOrgQuickIncidentsDashboardQuery",
+        operationName: "findByIdOrgInspectionsDashboardQuery",
     });
 }
 //</editor-fold>

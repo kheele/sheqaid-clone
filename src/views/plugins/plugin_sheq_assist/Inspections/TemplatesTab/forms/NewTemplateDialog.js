@@ -154,7 +154,7 @@ class Controls extends React.Component {
     }
 
     get asset() {
-        return this.props.dialog.extraProp('asset');
+        return this.props.dialog.props.asset;
     }
 
     get item() {
@@ -189,7 +189,7 @@ class Controls extends React.Component {
             >
                 <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
                 <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." defaultValue={asset && asset.asset_detail && asset.asset_detail.asset_type} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
               rendered

@@ -66,15 +66,12 @@ class InspectionTab extends React.Component {
 
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
-        const {item: asset} = this.props;
         const {idx, action} = elem.props;
         const {list} = this.refs.root;
         const copy = toJS(list[idx]);
 
         const newDialog = this.refs.root.getDialogByRef("newDialog");
-        newDialog.
-        extraProp('asset', asset).
-        open(copy);
+        newDialog.open(copy);
     }
     //</editor-fold>
 
@@ -128,6 +125,7 @@ class InspectionTab extends React.Component {
     }
 
     render() {
+        const {item: asset} = this.props;
         return <APageListReadWrite
           hasBackBtn={false}
           ref="root"
@@ -145,7 +143,7 @@ class InspectionTab extends React.Component {
           renderTHead={this.renderTHead}
           renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
-            <NewQuestionnaireDialog ref="newDialog"/>
+            <NewQuestionnaireDialog ref="newDialog" asset={asset}/>
             <EditResponseDialog ref="editDialog"/>
             <ProfileResponseDialog ref="profileDialog"/>
             <Popover key="popover" ref="popover"/>

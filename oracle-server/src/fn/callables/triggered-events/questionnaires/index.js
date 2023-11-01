@@ -25,7 +25,7 @@ router.put('/uploadQuestionOptionFilesUpdate', async (req, res) => {
 
 router.put('/createScheduleQuestionnaireUpdate', async (req, res) => {
 	// console.log(req.path, req.body)
-	const data = await createScheduleQuestionnaireUpdate(req.body);
+	// const data = await createScheduleQuestionnaireUpdate(req.body);
 	res.json();
 });
 

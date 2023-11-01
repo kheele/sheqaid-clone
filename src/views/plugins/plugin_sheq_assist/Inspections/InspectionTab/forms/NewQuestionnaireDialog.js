@@ -228,7 +228,7 @@ class Controls extends React.Component {
 	}
 
 	get asset() {
-		return this.props.dialog.extraProp('asset');
+		return this.props.dialog.props.asset;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
@@ -268,8 +268,6 @@ class Controls extends React.Component {
 			time = _time;
 		}
 
-		alert(asset)
-
 		return <FormControls>
 			<RowOrgs
 				onChange={this.form.onChange}
@@ -286,6 +284,8 @@ class Controls extends React.Component {
 						ref="asset_type"
 						name="asset_type" placeholder="Asset Type..."
 						defaultValue={asset_type}
+						readonly={!!asset}
+						isEditable={!asset}
 						className="col-lg-12 form-control"
 						onChange={this.form.onChange}
 					/>
@@ -293,6 +293,8 @@ class Controls extends React.Component {
 						name="asset"
 						placeholder="Asset..."
 						defaultValue={asset}
+						readonly={!!asset}
+						isEditable={!asset}
 						className="col-lg-12 form-control"
 						onChange={this.form.onChange}
 						onLoadFilter={this.onFilterAsset}
