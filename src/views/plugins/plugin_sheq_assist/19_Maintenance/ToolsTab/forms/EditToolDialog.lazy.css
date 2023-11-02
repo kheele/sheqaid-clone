@@ -34,10 +34,14 @@
 #dialog-overlay.EditToolDialog-profile-dialog .PDFUploadButton{
     height: 260px;
 }
-#dialog-overlay.EditToolDialog-profile-dialog .UploadButton {
+#dialog-overlay.EditToolDialog-profile-dialog  .tr.tr-readonly .UploadButton {
     height: 33px;
     padding: 0;
     margin: 0 10px 0 0;
+}
+#dialog-overlay.EditToolDialog-profile-dialog  .tr:not(.tr-readonly) .UploadButton {
+    padding: 0 !important;
+    margin-top: 0 !important;
 }
 #dialog-overlay.EditToolDialog-profile-dialog .UploadButton > i.fa {
     height: 100%;
@@ -50,7 +54,7 @@
 #dialog-overlay.EditToolDialog-profile-dialog .UploadButton > i.fa button {
     padding: 4px 8px;
 }
-#dialog-overlay.EditToolDialog-profile-dialog .UploadButton i:not(.fa-file-upload):not(.fa-spinner) > span {
+#dialog-overlay.EditToolDialog-profile-dialog .tr.tr-readonly .UploadButton i:not(.fa-file-upload):not(.fa-spinner) > span {
     display: none;
 }
 .td-CostAndReceipt > .grid-2 > button{

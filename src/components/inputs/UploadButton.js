@@ -26,13 +26,28 @@ class UploadButton extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
+    reset() {
+        const {
+            refs: {
+                showOnlyIcon: showOnlyIconRef, showFile: showFileRef
+            },
+            props: {showOnlyIcon},
+        } = this;
+        if(showOnlyIcon) {
+            showOnlyIconRef.reset();
+        } else {
+            showFileRef.reset();
+        }
+    }
     
     render() {
 //        let {props: {readonly, className, buttonTitle, showOnlyIcon}, fileIcon, isPDF, isWord} = this;
         let {props: {name, type, defaultValue, onChange, readonly, showDownload, fileName, className, buttonTitle, showOnlyIcon}} = this;
 //        let {state, state: {base64, docState, path}, props: {className, buttonTitle}} = this;
         return <>
-            <ShowOnlyIcon 
+            <ShowOnlyIcon
+                ref="showOnlyIcon"
                 name={name}
                 type={type}
                 defaultValue={defaultValue}
@@ -44,7 +59,8 @@ class UploadButton extends React.Component {
                 buttonTitle={buttonTitle} 
                 showOnlyIcon={showOnlyIcon}
                 />
-            <ShowFile 
+            <ShowFile
+                ref="showFile"
                 name={name}
                 type={type}
                 defaultValue={defaultValue}

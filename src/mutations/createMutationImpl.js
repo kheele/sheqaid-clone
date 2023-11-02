@@ -11,7 +11,7 @@ export default async ({checkLogin = true, mutation, input, optimisticUpdater, up
 	new Promise((resolve, reject) => {
 		const {is} = storage;
 		if (checkLogin && !is.isLoggedInAuth) {
-			// return;//TODO: Uncomment. it was commented for data transfer
+			return;//TODO: Uncomment. it was commented for data transfer
 		}
 
 		// 4

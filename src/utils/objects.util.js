@@ -671,6 +671,10 @@ window.isSetter = function (obj, prop) {
         return (charFound && numFound);
     };
 
+    String.prototype.isDate = function () {
+        return !!Dates.parse(this);
+    };
+
     String.prototype.toDate = function () {
         return Dates.parse(this);
     };

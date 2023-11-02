@@ -46,7 +46,7 @@ exports.uploadAssetDocFilesUpdate = async (body) => {
 	console.log('uploadAssetDocFilesUpdate', new_item)
 
 	const new_name = `assets/${asset_id}/${id}/docs`;
-	await uploadFilesUpdate({
+	return await uploadFilesUpdate({
 		id, doc, new_name, onUpdate: async ({id, ...attrs}) => {
 			delete attrs.id;
 

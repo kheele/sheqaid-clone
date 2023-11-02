@@ -34,6 +34,9 @@ function convertMobx(arg) {
     if (isObservable(arg)) {
         return toJS(arg);
     }
+    if(arg && isString(arg) && arg.isDate()) {
+        return Dates.formatDateSQL(arg);
+    }
     return arg;
 }
 

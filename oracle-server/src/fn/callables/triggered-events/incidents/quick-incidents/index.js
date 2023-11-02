@@ -16,7 +16,7 @@ router.post('/sendNewQuickIncidentNotification', async (req, res) => {
 
 	}
 
-	res.end();
+	res.json();
 });
 
 module.exports = router;

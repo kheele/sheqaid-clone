@@ -77,6 +77,7 @@ export default class WebWorker {
         this.emit("connect", name);
         return inner;
     }
+
 //    connect(file) {
 //        const blob = new Blob(["(" + file + ")();"], {type: 'text/javascript'});
 //        const url = URL.createObjectURL(blob);
@@ -126,7 +127,11 @@ export default class WebWorker {
 
         return this;
     }
-    
+
+    once(evt, callback) {
+        return this.on(evt, callback);
+    }
+
     off(evt, callback) {
         if (this.events[evt]) {
             console.log('off start', evt, this.events[evt].length)

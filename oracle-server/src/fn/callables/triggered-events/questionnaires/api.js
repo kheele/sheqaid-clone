@@ -226,7 +226,7 @@ exports.onCreatedQuestionnaire = async (body) => {
     console.log('questionsArray', questionsArray.length)
 
     await Promise.all(
-        questionsArray.filter(v => id !== v.questionnaire_id && (v.questionnaire && id !== v.questionnaire.id)).map(async v => {
+        questionsArray.map(async v => {
             console.log('questionsArray update', JSON.stringify(v));
             return await updateRelay({
                 mutation: `

@@ -86,7 +86,7 @@ class Controls extends AControls {
 
 	componentWillUnmount() {
 		if (this.unsubscribe && isFunction(this.unsubscribe)) {
-			this.unsubscribe();
+			// this.unsubscribe();
 		}
 		this.unsubscribe = null;
 	}
@@ -96,15 +96,15 @@ class Controls extends AControls {
 			return;
 		}
 
-		const {item} = this;
-		this.unsubscribe = subscribeByIdContractorQuestionnaire({
-			id: item.id,
-			onEvent: res => {
-				console.log(`subscription`, res)
-//            alert('ProfileResponseDialog')
-// 				questionnairesOnUpdate(item, {updateVal, data});
-			},
-		});
+// 		const {item} = this;
+// 		this.unsubscribe = subscribeByIdContractorQuestionnaire({
+// 			id: item.id,
+// 			onEvent: res => {
+// 				console.log(`subscription`, res)
+// //            alert('ProfileResponseDialog')
+// // 				questionnairesOnUpdate(item, {updateVal, data});
+// 			},
+// 		});
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="onActionAsComplete">

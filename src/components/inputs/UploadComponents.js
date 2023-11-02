@@ -73,7 +73,7 @@ class AShowFile extends React.Component {
 					path: defaultValue
 				});
 
-				onChange && onChange(this.state, name, this);
+				onChange && onChange(toJS(this.state), name, this);
 			}
 		}
 		this.setLoaded();
@@ -102,7 +102,7 @@ class AShowFile extends React.Component {
 				});
 
 				const {onChange} = this.props;
-				onChange && onChange(this.state, this.props.name, this);
+				onChange && onChange(toJS(this.state), this.props.name, this);
 			}
 		}).catch(err => {
 			this.setLoadedError(err);
@@ -116,13 +116,20 @@ class AShowFile extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="onClear">
 	onClear() {
 		const {onChange, name} = this.props;
+		this.reset();
+		onChange && onChange(null, name, this);
+	}
+
+	// </editor-fold>
+
+	// <editor-fold defaultstate="collapsed" desc="reset">
+	reset() {
 		extendObservable(this.state, {
 			isPDF: false, isWord: false, isExcel: false, isPic: false, isVideo: false,
 			previewPath: null, path: null,
 			rotating: false,
 			loadStatus: null
 		});
-		onChange && onChange(null, name, this);
 	}
 
 	// </editor-fold>
@@ -564,7 +571,7 @@ function rotateImpl() {
 			this.state.previewPath = dataURL;
 			this.state.path = dataURL;
 			const {onChange} = this.props;
-			onChange && onChange(this.state, this.props.name, this);
+			onChange && onChange(toJS(this.state), this.props.name, this);
 			this.state.rotating = false;
 		});
 	};

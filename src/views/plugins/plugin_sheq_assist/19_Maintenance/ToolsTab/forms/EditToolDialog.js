@@ -359,64 +359,7 @@ class Controls extends AControls {
 			onSubmit(data);
 			return;
 		}
-		
-		//test
-		if (idx === 4) {
-			const {
-				//4
-				doc_list,
-			} = form.data;
-			
-			const data = {};
-			console.log('doc_list', doc_list)
-			ShouldUpdate.checkFileList(data, old_data, doc_list, 'doc_list');
-			console.log('doc_list data', data)
-			if (Object.keys(data).isEmpty()) {
-				infoDialog.open("Nothing changed!");
-				return;
-			}
 
-			console.log(data)
-
-			let onProgress;
-			if (data.doc_list) {
-				onProgress = true;
-				const {doc_list} = data;
-				delete data.doc_list;
-
-				btn.text("Saving...").disabled();
-				progressDialog.open();
-
-				const res = await Promise.all(doc_list.map(async item => {
-					if (item.id) {
-						if (item.doc.path) {
-							return await updateAssetDoc({id: item.id, doc: item.doc.path});
-						}
-					} else {
-						return await insertAssetDoc({asset_id: this.item.id, doc: {path: await toDataURI(item.path)}});
-					}
-				}));
-
-				console.log("res", res)
-				// onSaved && onSaved(res);
-				infoDialog.open("Record successfully updated.");
-				infoDialog.close(2000);
-				// this.props.close();
-
-				btn.text("Save").enabled();
-				setTimeout(() => progressDialog.close());
-				return;
-			}
-
-			if (Object.keys(data).isEmpty()) {
-				infoDialog.open("Nothing changed!");
-				return;
-			}
-
-			onSubmit(data, onProgress);
-			return;
-		}
-		
 		//test
 		if (idx === 5) {
 			const {
@@ -812,9 +755,14 @@ class Controls extends AControls {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
-				onFormSave={this.onFormSave}
 			>
-				<NewDocumentTable ref="doc_list" name="doc_list" defaultValue={[...(doc_list || []), null]}/>
+				<NewDocumentTable
+					ref="doc_list"
+					name="doc_list"
+					defaultValue={[...(doc_list || []), null]}
+					savable
+					item={item}
+				/>
 			</Row>
 			<Row
 				rendered

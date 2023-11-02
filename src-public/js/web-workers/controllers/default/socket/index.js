@@ -5,6 +5,8 @@
 
             const {addAction} = this;
             addAction('emit', this.emit.bind(this));
+            addAction('on', this.on.bind(this));
+            addAction('once', this.once.bind(this));
         }
 
         // <editor-fold defaultstate="collapsed" desc="emit">
@@ -29,6 +31,36 @@
                 });
             });
         }
+
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="on">
+        // eslint-disable-next-line class-methods-use-this
+        async on(_, evt) {
+            if (!path) return null;
+
+            // return new Promise((resolve, reject) => {
+            socket.on(evt, (...res) => {
+                console.log('on res', res)
+                Events.emit.apply(Events, [evt, ...res]);
+                // resolve(res);
+            });
+            // });
+        }
+
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="once">
+        // eslint-disable-next-line class-methods-use-this
+        async once(_, evt) {
+            if (!path) return null;
+
+            socket.once(evt, (...res) => {
+                console.log('once res', res)
+                Events.emit.apply(Events, [evt, ...res]);
+            });
+        }
+
         // </editor-fold>
 
     }
