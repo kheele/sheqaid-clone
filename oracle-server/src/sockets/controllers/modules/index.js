@@ -1,3 +1,4 @@
+require("./dashboard");
 require("./assets");
 require("./claims");
 require("./incidents");

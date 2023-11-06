@@ -37,7 +37,7 @@
         // <editor-fold defaultstate="collapsed" desc="on">
         // eslint-disable-next-line class-methods-use-this
         async on(_, evt) {
-            if (!path) return null;
+            if (!evt) return null;
 
             // return new Promise((resolve, reject) => {
             socket.on(evt, (...res) => {
@@ -53,11 +53,13 @@
         // <editor-fold defaultstate="collapsed" desc="once">
         // eslint-disable-next-line class-methods-use-this
         async once(_, evt) {
-            if (!path) return null;
+            if (!evt) return null;
 
-            socket.once(evt, (...res) => {
+            let fn;
+            socket.on(evt, fn = (...res) => {
                 console.log('once res', res)
-                Events.emit.apply(Events, [evt, ...res]);
+                Events.emit.call(null, [evt, ...res]);
+                socket.off(evt, fn);
             });
         }
 

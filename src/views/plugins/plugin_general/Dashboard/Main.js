@@ -1,18 +1,14 @@
 import React from "react";
-import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
-import {computed, extendObservable, observable, when} from 'mobx';
+import {computed, observable,} from 'mobx';
 
-import APage from "../../../APage";
-import {Clickable} from 'components/inputs';
-import {Chart} from 'components/FormComponents';
+import {CircularProgress} from "@mui/material";
+import APage from "views/APage";
 
-import {execWhen} from 'utils/Utils';
-import {renderLeftButtonsForExpiryOnly_firebase} from 'utils/ComponentUtils';
-
-import WebWorker from "../../../../web-worker/WebWorker";
+import {Dates, getRandomRolor} from 'utils/Utils';
 
 import style from "./Main.lazy.css";
+import MKBox from "components/MK/MKBox";
 
 @observer
 class Main extends APage {
@@ -20,7 +16,6 @@ class Main extends APage {
 
     constructor(props) {
         super(props);
-        this.classNames += " LeftButtonsForExpiryOnlyPage";
     }
 
     componentWillMount() {
@@ -28,28 +23,15 @@ class Main extends APage {
         style.use();
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-
-        setTimeout(function () {
-            $(findDOMNode(this).querySelector('.nice-scrollbars')).showScrollbars(0.8, "rgb(2,168,168)");
-            when(() => this.refs.stats.dataLoaded, () => {
-                //app.onPageComplete();
-            });
-        }.bind(this), 0);
-    }
-
     componentWillUnmount() {
         super.componentWillUnmount();
         style.unuse();
-        $(findDOMNode(this).querySelector('.nice-scrollbars')).removeScrollbars();
     }
 
     render() {
         return (<div id="dashboard-page" className={this.classNames + " dashboard-page"}>
             <div className="page-title">
                 {this.renderBackBtn()}<h3>Dashboard</h3>
-                {renderLeftButtonsForExpiryOnly_firebase.call(this)}
             </div>
             <div className="page-content nice-scrollbars">
                 <Stats ref="stats"/>
@@ -61,66 +43,9 @@ class Main extends APage {
 @observer
 class Stats extends React.Component {
 
-    @observable
-    state = {
-        dataLoaded: false
-    };
-
-    componentDidMount() {
-        neonBinding.events.emit("plugin_sheq_assist/dashboard/stats").then(async res => {
-            this.refs.statsCount.update(res.top_counts);
-
-            const worker = new WebWorker(() => {
-                self.on("process", async (db, charts) => {
-                    const mapper = k => {
-                        return v => {
-                            v.dataPoints = v.dataPoints.map(v => {
-                                let d = new Date(v.x);
-                                if (k === "indexLabel") {
-                                    let s = d.toString();
-                                    s = s.substring(3, s.indexOf('01') - 1);
-                                    v[k] = s + '-' + Math.round(v.y);
-                                } else {
-                                    v[k] = d;
-                                }
-                                //v.y = Math.random() * 100;
-                                return v;
-                            });
-                            return v;
-                        };
-                    };
-
-                    const {pie_charts, line_charts} = charts;
-
-                    ["assets", "incidents", "sites"].map(k => pie_charts[k]).forEach(chartType => {
-                        chartType.data = chartType.data.map(mapper('indexLabel'));
-                    });
-                    ["assets", "incidents", "sites"].map(k => line_charts[k]).forEach(chartType => {
-                        chartType.data = chartType.data.map(mapper('x'));
-                    });
-
-                    return charts;
-                });
-            });
-            const charts = await worker.emit("process", res.charts);
-            worker.terminate();
-            const statsGraph = await execWhen(() => this.refs.statsGraph);
-            statsGraph.update(charts);
-            this.state.dataLoaded = true;
-        }).catch(e => {
-            console.log(e)
-        });
-    }
-
-    @computed
-    get dataLoaded() {
-        return this.state.dataLoaded;
-    }
-
     render() {
         return <div className="stats">
             <StatsCount ref="statsCount"/>
-            <StatsGraph ref="statsGraph"/>
         </div>;
     }
 }
@@ -130,107 +55,135 @@ class StatsCount extends React.Component {
 
     @observable
     state = {
-        //events: null,
-        assets: null,
-        incidents: null,
-        sites: null
+        aggregates: null,
+        dataLoaded: false,
     };
 
     constructor() {
         super();
     }
 
-    update(count) {
-        extendObservable(this.state, count);
+    componentDidMount() {
+        this.update();
     }
-            
-    Tile = ({className, plugin, module, count}) => {
-        return <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}>
-            <div className={className}>
-                <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}><h4>{module}</h4></Clickable>
-                <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}><div>{count}</div></Clickable>
-            </div>
-        </Clickable>;
+
+    update() {
+        const date = Dates.formatDateSQL(new Date().addDays(-30));
+
+        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
+        const {selectedClient, selectedProject, selectedSite, selectedContractorSite} = storage.selected;
+        const {loggedContractor} = storage;
+        const {hasProjects, isConsultant} = storage.is;
+
+        const company_id = sess_company_id;
+        const client_id = isConsultant ? selectedClient && selectedClient.id : undefined;
+        const project_id = selectedProject && selectedProject.id;
+        const site_id = selectedSite && selectedSite.id;
+
+        const listBy = sockets.of('dashboard').fn();
+        listBy({
+            company_id,
+            client_id,
+            project_id,
+            site_id,
+            //
+            date,
+        }).then(async res => {
+            this.state.aggregates = res;
+        }).catch(e => {
+            console.error(e);
+        }).finally(() => {
+            this.state.dataLoaded = true;
+        });
+    }
+
+    @computed
+    get dataLoaded() {
+        return this.state.dataLoaded;
     }
 
     render() {
-        const {Tile} = this;
-        return <div className="stats-count">
-            <Tile className="green" plugin="plugin2" module="Assets" count={this.state.assets} onClick={appBody.onOpenPage}/>
-            <Tile className="red" plugin="plugin2" module="Incidents" count={this.state.incidents} onClick={appBody.onOpenPage}/>
-            <Tile className="blue" plugin="plugin2" module="Sites" count={this.state.sites} onClick={appBody.onOpenPage}/>
+        const {dataLoaded} = this;
+        const {aggregates} = this.state;
+        // if (!dataLoaded)
+            return <CircularProgress/>;
+        if (!aggregates) return null;
+
+        const {
+            new_employee_list_aggregate,
+            new_asset_list_aggregate,
+            new_claim_list_aggregate,
+
+            nearmiss_incident_list_aggregate,
+            lti_incident_list_aggregate,
+            vehicle_incident_list_aggregate,
+
+            open_incident_list_aggregate,
+            open_ncr_list_aggregate,
+            open_claim_list_aggregate,
+
+            active_questionnaire_list_aggregate,
+            active_inspection_list_aggregate,
+            expired_document_list_aggregate,
+
+            all_compliance_audit_list,
+        } = aggregates;
+
+        return <div className="stats-count grid-3 grid-gap-10">
+            <Tile className="green" plugin="plugin2" module="New Employees" stat={new_employee_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="green" plugin="plugin2" module="New Assets" stat={new_asset_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="red" plugin="plugin2" module="New Claims" stat={new_claim_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+
+            <Tile className="green" plugin="plugin2" module="Nearmisses" stat={nearmiss_incident_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="green" plugin="plugin2" module="Lost Time Injuries" stat={lti_incident_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="red" plugin="plugin2" module="Vehicles Involved"
+                  stat={vehicle_incident_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+
+            <Tile className="red" plugin="plugin2" module="Open Incidents" stat={open_incident_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="red" plugin="plugin2" module="Open Non-Conformances" stat={open_ncr_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="red" plugin="plugin2" module="Open Claims" stat={open_claim_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+
+            <Tile className="red" plugin="plugin2" module="Active Contractor Questionnaires"
+                  stat={active_questionnaire_list_aggregate} onClick={appBody.onOpenPage}/>
+            <Tile className="red" plugin="plugin2" module="Active Inspections"
+                  stat={active_inspection_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+            <Tile className="blue" plugin="plugin2" module="Expired Documents"
+                  stat={expired_document_list_aggregate}
+                  onClick={appBody.onOpenPage}/>
+
+            <Tile className="blue" plugin="plugin2" module="Audits" stat={all_compliance_audit_list}
+                  onClick={appBody.onOpenPage}/>
         </div>;
     }
 }
 
 @observer
-class StatsGraph extends React.Component {
-
-    @observable
-    state = {
-        dataLoaded: false,
-        line_charts: {
-            assets: null,
-            incidents: null,
-            sites: null
-        },
-        pie_charts: {
-            assets: null,
-            incidents: null,
-            sites: null
-        }
-    };
-
-    update(charts) {
-        extendObservable(this.state, charts);
-        this.state.dataLoaded = true;
-
-        setTimeout(function () {
-            if (this.refs.assets_pie && this.refs.assets_line &&
-                    this.refs.incidents_pie && this.refs.incidents_line &&
-                    this.refs.sites_pie && this.refs.sites_line) {
-                this.refs.assets_pie.update();
-                this.refs.assets_line.update();
-
-                this.refs.incidents_pie.update();
-                this.refs.incidents_line.update();
-
-                this.refs.sites_pie.update();
-                this.refs.sites_line.update();
-            }
-        }.bind(this), 0);
-    }
+class Tile extends React.Component {
 
     render() {
-        if (!this.state.dataLoaded) {
-            return null;
-        }
-        const yr = new Date().getFullYear();
-        return <div className="stats-graph">
-            <div className="red">
-                <h4>Assets Summary ({yr})</h4>
-                <div>
-                    <Chart ref="assets_pie" options={this.state.pie_charts.assets}/>
-                    <Chart ref="assets_line" options={this.state.line_charts.assets}/>
-                </div>
-            </div>
-            <div className="blue">
-                <h4>Incidents Summary ({yr})</h4>
-                <div>
-                    <Chart ref="incidents_pie" options={this.state.pie_charts.incidents}/>
-                    <Chart ref="incidents_line" options={this.state.line_charts.incidents}/>
-                </div>
-            </div>
-            <div className="green">
-                <h4>Sites Summary ({yr})</h4>
-                <div>
-                    <Chart ref="sites_pie" options={this.state.pie_charts.sites}/>
-                    <Chart ref="sites_line" options={this.state.line_charts.sites}/>
-                </div>
-            </div>
-        </div>;
+        const {className, plugin, module, stat: {aggregate}} = this.props;
+        const color = getRandomRolor();
+        return <MKBox className={className} sx={{background: color}}>
+            <h4>{module}</h4>
+            <span className="counter">{aggregate.count}</span>
+        </MKBox>;
+        // return <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}>
+        //     <MKBox className={className} sx={{background: color}}>
+        //         <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}><h4>{module}</h4></Clickable>
+        //         <Clickable plugin={plugin} module={module} onClick={appBody.onOpenPage}><div>{aggregate.count}</div></Clickable>
+        //     </MKBox>
+        // </Clickable>;
     }
-
 }
 
 export default Main;

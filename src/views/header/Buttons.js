@@ -81,7 +81,7 @@ class DashboardBtn extends React.Component {
     render() {
         if (!loggedInApp.defaultView)
             return null;
-        return null;//<Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard" onClick={defaultView.onOpenPage}/>;
+        return <Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard" onClick={defaultView.onOpenPage}/>;
     }
 }
 

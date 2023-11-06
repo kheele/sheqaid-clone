@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
+const mmm = require('mmmagic');
+const Magic = mmm.Magic;
 const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 // const faceapi = require('face-api.js');
 
@@ -11,8 +13,6 @@ const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 // HTMLCanvasElement and HTMLImageElement
 // const {Canvas, Image, ImageData} = canvas;
 // faceapi.env.monkeyPatch({Canvas, Image, ImageData});
-
-// import {fileTypeFromBuffer} from 'file-type';
 // </editor-fold>
 
 //<editor-fold desc="addCustomUserClaims">
@@ -117,15 +117,23 @@ global.uploadDataUri = async (datauri_or_buffer, filePath) => {
         contentType = parts[0].replace('data:', '').split(';')[0];
         const base64 = parts[1];
         buffer = Buffer.from(base64, 'base64');
-        ext = mime.getExtension(contentType);
-        console.log('uploadDataUri datauri', contentType, ext)
+        console.log('uploadDataUri datauri', contentType)
     } else {
-        const res = await fileTypeFromBuffer(datauri_or_buffer);//=> {ext: 'png', mime: 'image/png'}
-        contentType = res.mime;
-        ext = res.ext;
-        console.log('uploadDataUri buffer', contentType, ext)
+        const magic = new Magic(mmm.MAGIC_MIME_TYPE);
+        contentType = await new Promise((resolve, reject) => {
+            datauri_or_buffer = Buffer.from(datauri_or_buffer.data || datauri_or_buffer);
+            magic.detect(datauri_or_buffer, function(err, res) {
+                if (err) throw err;
+                console.log(res);
+                resolve(res);
+                // output on Windows with 32-bit node:
+                //    application/x-dosexec
+            });
+        });
+        console.log('uploadDataUri buffer', contentType)
     }
 
+    ext = mime.getExtension(contentType);
     const newName = `${filePath}.${ext}`;
 
     const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);

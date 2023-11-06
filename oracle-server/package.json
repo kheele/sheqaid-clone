@@ -11,7 +11,7 @@
     "docker:push": "docker push rhespo/sheqaid-server",
     "docker:build & push": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm i socket.io-client --save",
+    "install:mod": "npm i mmmagic --save",
     "install:remove": "rm -rf node_modules package-lock.json",
     "install:all": "npm install"
   },
@@ -42,6 +42,7 @@
     "helmet": "^7.0.0",
     "js-excel-template": "^3.0.2",
     "mime": "^3.0.0",
+    "mmmagic": "^0.5.3",
     "moment": "2.24.0",
     "moment-timezone": "0.5.13",
     "morgan": "^1.10.0",

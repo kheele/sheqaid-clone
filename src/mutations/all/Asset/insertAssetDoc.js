@@ -46,10 +46,11 @@ export default async (input) => {
 	}
 
 	const res = await createMutationImpl({mutation, input});
-    return Promise((resolve, reject) => {
-        sockets.on('insertAssetDoc', () => {
-            console.log('insertAssetDoc');
-            resolve(findByIdAssetDoc(res.id));
-        });
-    });
+    // return new Promise((resolve, reject) => {
+    //     sockets.once('insertAssetDoc', () => {
+    //         console.log('insertAssetDoc');
+    //         resolve(findByIdAssetDoc(res.id));
+    //     });
+    // });
+    return res;
 };

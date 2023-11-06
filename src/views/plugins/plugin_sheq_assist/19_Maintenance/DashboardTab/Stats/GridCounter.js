@@ -120,7 +120,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	};
 
 	const chartNextServiceReason = {
-		labels: ['New Condition', 'Good Condition', 'Fair Condition', 'Poor Condition'],
+		labels: ['Due Date', 'Mechanical Failure', 'Wear & Tear', 'Unclassified'],
 		datasets: [{
 			label: 'Total',
 			color: 'white',
@@ -134,7 +134,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	};
 
 	const chartNextServiceDate = {
-		labels: ['New Condition', 'Good Condition', 'Fair Condition', 'Poor Condition', 'Scrap Condition', 'Unclassified Condition'],
+		labels: ['Expired', '25% Expired', '50% Expired', '75% Expired', '100% Expired', 'Unclassified'],
 		datasets: [{
 			label: 'Total',
 			color: 'white',
@@ -150,7 +150,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	};
 
 	const chartNextCalibrationDate = {
-		labels: ['New Condition', 'Good Condition', 'Fair Condition', 'Poor Condition', 'Scrap Condition', 'Unclassified Condition'],
+		labels: ['Expired', '1 Month', '2 Months', '3 Months', '4 Months', 'Unclassified'],
 		datasets: [{
 			label: 'Total',
 			color: 'white',
@@ -166,7 +166,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	};
 
 	const chartDocumentExpiry = {
-		labels: ['New Condition', 'Good Condition', 'Fair Condition', 'Poor Condition', 'Scrap Condition', 'Unclassified Condition'],
+		labels: ['Expired', '1 Month', '2 Months', '3 Months', '4 Months', 'Unclassified'],
 		datasets: [{
 			label: 'Total',
 			color: 'white',
@@ -267,11 +267,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '0 !important', p: '0 !important', justifyItems: 'center', background: "#fff", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart
-				height="398px"
+				height="250px"
 				title="Reason For Next Service"
 				color="#fff"
 				tickColor="white"
@@ -283,11 +283,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		<MDBox
 			className="w-full grid-gap-10"
 			sx={{
-				m: '0 !important', mb: '15px !important', justifyItems: 'center', background: "#fff", padding: "10px 0", borderRadius: "20%",
+				m: '25px 0 0 !important', p: '0 !important', justifyItems: 'center', background: "#fff", borderRadius: "20%",
 			}}
 		>
 			<VerticalBarChart
-				height="398px"
+				height="250px"
 				title="Document Expiry"
 				color="#fff"
 				tickColor="white"

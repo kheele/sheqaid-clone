@@ -14,7 +14,7 @@ class Socket {
                 data = {...data, orgs_filter};
             }
 
-            const path = `${this.name}/${name}`;
+            const path = `${this.name}${name ? ('/' + name) : ''}`;
 
             return workers.emit('socket/emit', path, data);
         };

@@ -21,8 +21,12 @@ router.put('/uploadAssetDocFilesUpdate', async (req, res) => {
 	const data = await uploadAssetDocFilesUpdate(req.body);
 	res.json();
 
-	const session = req.session;
-	io.to(session.id).emit("insertAssetDoc");
+	// const session = req.session;
+	const userId = req.get('x-hasura-user-id');
+	// const userId = session['x-hasura-user-id'];
+	console.log('userId', userId)//
+
+	io.to(userId).emit("insertAssetDoc");
 });
 
 router.put('/uploadAssetPurchaseInfoFilesUpdate', async (req, res) => {

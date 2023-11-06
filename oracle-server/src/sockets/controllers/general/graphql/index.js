@@ -6,7 +6,7 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
     let {query, variables, token} = data;
     
     let headers = {};
-    console.log('v1beta1/relay', token, auth_id);
+    console.log('v1beta1/relay', auth_id);
     if (auth_id) {
         // const currentUser = await admin.auth().getUser(auth_id);
         // console.log("relay variables", currentUser, auth_id, variables)
@@ -52,7 +52,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
     const {mutation, query, variables, operationName, multi_queries, count, token} = data;
     
     let headers = {};
-    console.log('v1/graphql', token, auth_id);
+    console.log('v1/graphql', auth_id);
     if (auth_id) {
         // const currentUser = await admin.auth().getUser(auth_id);
         // console.log("graphql variables", currentUser, auth_id, variables)
