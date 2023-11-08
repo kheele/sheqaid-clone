@@ -10,20 +10,6 @@ exports.sendNewQuickIncidentNotification = async (body) => {
         id,
     } = new_item;
 
-    const orgs_fragment = `
-        id
-        name
-        user_list(where: {
-            removed: {_eq: false},
-            notifications_settings: {receive_incident_management_notifs: {_eq: true}},
-        }){
-            id
-            full_name
-            username
-            phone
-        }
-    `;
-
     const injury_fragment = `
         injury{
           id
@@ -65,16 +51,62 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                             email
                         }
                         company{
-                            ${orgs_fragment}
+                            id
+                            name
+                            user_list(where: {
+                                removed: {_eq: false},
+                                notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                                client_id: {_is_null: true},
+                                project_id: {_is_null: true},
+                                site_id: {_is_null: true}
+                            }){
+                                id
+                                full_name
+                                username
+                                phone
+                            }
                         }
                         client{
-                            ${orgs_fragment}
+                            id
+                            name
+                            user_list(where: {
+                                removed: {_eq: false},
+                                notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                                project_id: {_is_null: true},
+                                site_id: {_is_null: true}
+                            }){
+                                id
+                                full_name
+                                username
+                                phone
+                            }
                         }
                         project{
-                            ${orgs_fragment}
+                            id
+                            name
+                            user_list(where: {
+                                removed: {_eq: false},
+                                notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                                site_id: {_is_null: true}
+                            }){
+                                id
+                                full_name
+                                username
+                                phone
+                            }
                         }
                         site{
-                            ${orgs_fragment}
+                            id
+                            name
+                            user_list(where: {
+                                removed: {_eq: false},
+                                notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                            }){
+                                id
+                                full_name
+                                username
+                                phone
+                            }
                         }
                         person_injured{
                             ${person_fragment}
@@ -197,6 +229,7 @@ exports.sendNewQuickIncidentNotification = async (body) => {
     if(driver_email) {
         emails.push(driver_email);
     }
+
     if(site && site.user_list) {
         emails.push(...site.user_list.map(v => v.username));
     }
@@ -290,8 +323,8 @@ exports.sendNewQuickIncidentNotification = async (body) => {
                     ${createTR("Time Shift", time_shift)}
                     ${createTR("Incident Severity", severity)}
                     
-                    ${createTR("Reported By", (person_reporting || person_reporting_other) && (person_reporting || person_reporting_other).full_name)}
-                    ${createTR("Person Injured", (person_injured || person_injured_other) && (person_injured || person_injured_other).full_name)}
+                    ${createTR("Reported By", (person_reporting || person_reporting_other) ? (person_reporting || person_reporting_other).full_name : null)}
+                    ${createTR("Person Injured", (person_injured || person_injured_other) ? (person_injured || person_injured_other).full_name : null)}
                     
                     <tr style="background: #eee">
                         <td style="width: 240px; padding: 10px;; text-align: right;">
