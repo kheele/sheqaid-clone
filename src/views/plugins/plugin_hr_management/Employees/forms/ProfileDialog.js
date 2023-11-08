@@ -201,7 +201,7 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		if (!this.item) {
-			return null;
+			return <CircularProgress className="fixed-center"/>;
 		}
 
 		const {

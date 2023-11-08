@@ -28,7 +28,7 @@ class ViewOptionalInfoSection extends React.Component {
             id,
             data: {
                 department, job_position, supervisor,
-                employment_date, employee_num,
+                employment_date, employment_num,
             }
         } = item;
         
@@ -44,7 +44,7 @@ class ViewOptionalInfoSection extends React.Component {
                         onFormNext={onFormNext}
                     >
                         <ProfileField name="employment_date" type="date" placeholder="Date of Employment" value={employment_date} className="col-lg-6"/>
-                        <ProfileField name="employee_num" placeholder="Company No. / Employee ID" value={employee_num} className="col-lg-6"/>
+                        <ProfileField name="employment_num" placeholder="Company No. / Employee ID" value={employment_num} className="col-lg-6"/>
                         <ProfileField name="department" type="select" placeholder="Department" value={department} renderer={val => val.name} className="col-lg-6"/>
                         <ProfileField name="job_position" type="select" placeholder="Job Position" value={job_position} renderer={val => val.name} className="col-lg-6"/>
                     </Row>
