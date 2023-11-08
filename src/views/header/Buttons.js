@@ -53,11 +53,11 @@ class PluginsBtn extends React.Component {
 class CalendarBtn extends React.Component {
 
     render() {
-//        const {isEmployee, isContractor, isContractorViewVisited, isContractorViewIncContractorPack} = storage.is;
-//        if (!loggedInApp.defaultView || isEmployee || isContractor || isContractorViewVisited)
+        const {isEmployee, isContractor, isContractorViewVisited, isContractorViewIncContractorPack} = storage.is;
+        // if (!loggedInApp.defaultView || isEmployee || isContractor || isContractorViewVisited)
             return null;
-        /*return <Button ref="calendar" className="fa fa-calendar-alt btn" module="Calendar" hoverText="Calendar"
-                       onClick={defaultView.onOpenPage}/>;*/
+        // return <Button ref="calendar" className="fa fa-calendar-alt btn" module="Calendar" hoverText="Calendar"
+        //                onClick={defaultView.onOpenPage}/>;
     }
 }
 
@@ -81,7 +81,8 @@ class DashboardBtn extends React.Component {
     render() {
         if (!loggedInApp.defaultView)
             return null;
-        return <Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard" onClick={defaultView.onOpenPage}/>;
+        return <Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard"
+                       onClick={defaultView.onOpenPage}/>;
     }
 }
 
@@ -101,9 +102,9 @@ class AuditTrailBtn extends React.Component {
         if (Permissions.disallowOther("Audit Logs"))
 //            return null;
 
-        if (storage.is.isEmployee) {
-            return null;
-        }
+            if (storage.is.isEmployee) {
+                return null;
+            }
 
         return <Button className="fa fa-file-text btn" module="AuditTrail" hoverText="Audit Log"
                        onClick={defaultView.onOpenPage}/>;
@@ -131,7 +132,7 @@ class SelectOrgsBtn extends React.Component {
                 {Permissions.allowOther("Sectors") &&
                     <NavItem module="Sectors" onClick={defaultView.onOpenPage} faIconLeft="project-diagram"
                              title="Sectors"/>}
-                <Divider />
+                <Divider/>
                 {isConsultant && Permissions.allowOther("Clients") &&
                     <NavItem module="Clients" onClick={defaultView.onOpenPage} faIconLeft="building" title="Clients"/>}
                 {Permissions.allowOther("Projects") &&
@@ -154,7 +155,7 @@ class SelectOrgsBtn extends React.Component {
         }
 
         let hoverText = 'Sectors, ';
-        if(isConsultant) {
+        if (isConsultant) {
             hoverText += 'Companies, ';
         }
         hoverText += 'Projects & Sites';
@@ -316,7 +317,7 @@ class UsersBtn extends React.Component {
         if (isContractorViewVisited || !loggedInApp.defaultView || isEmployee)
             return null;
 
-        if(!isContractor) {
+        if (!isContractor) {
             if (Permissions.disallowOther("Users"))
                 return null;
         }

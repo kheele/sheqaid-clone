@@ -59,7 +59,7 @@ class Main extends APage {
         if(isEmployee || isContractorView || Permissions.allow(permEmployees)) {
             tabs.push(...[
                 <TabExpiredEmployeeDocs ref="tabExpiredEmployeeDocs" title="Employees Documents" path={this.path}/>,
-                <TabCOVID ref="tabCOVID" title="COVID Management" path={this.path}/>
+                // <TabCOVID ref="tabCOVID" title="COVID Management" path={this.path}/>
             ]);
         }
         if(!isContractor) {

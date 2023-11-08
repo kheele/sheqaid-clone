@@ -105,8 +105,7 @@ class StatsCount extends React.Component {
     render() {
         const {dataLoaded} = this;
         const {aggregates} = this.state;
-        // if (!dataLoaded)
-            return <CircularProgress/>;
+        if (!dataLoaded) return <CircularProgress className="fixed-center"/>;
         if (!aggregates) return null;
 
         const {
