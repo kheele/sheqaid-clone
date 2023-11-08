@@ -27,7 +27,7 @@ import insertTrainingToolboxTalk from "mutations/all/TrainingToolboxTalk/insertT
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
-class NewToolboxTalkDialog extends ANewDialog {
+class   NewToolboxTalkDialog extends ANewDialog {
 	pageKey = "ToolboxTalk";
 	title = "Create Toolbox Talk / Training Meeting";
 	

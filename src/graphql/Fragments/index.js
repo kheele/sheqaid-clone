@@ -137,7 +137,7 @@ export const employee_personal_details_fragment = `
     }
 `;
 //</editor-fold>
-
+//
 //<editor-fold desc="user_personal_details_fragment">
 export const user_personal_details_fragment = `
     id
