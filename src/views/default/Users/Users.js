@@ -235,6 +235,7 @@ class Users extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Name</div>
+            <div className="td">Username</div>
             {hasProjects && <React.Fragment>
                 {isConsultant && <div className="td">Company Name</div>}
                 <div className="td">Project Name</div>
@@ -270,7 +271,11 @@ class Users extends React.Component {
                 <h6 className="xs-shown font-size-13">Name</h6>
                 {lname + ' ' + fname}
             </div>
-            {hasProjects && <React.Fragment>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Username</h6>
+                {username}
+            </div>
+            {hasProjects && <>
                 {isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name')}
                 {RenderUtils.renderOrgTD(project, null, 'Project Name')}
                 {!isContractor && RenderUtils.renderOrgTD(site, null, 'Site Name')}
@@ -278,7 +283,7 @@ class Users extends React.Component {
                     <h6 className="xs-shown font-size-13">Sites</h6>
                     {getSitesLength(contractor)}
                 </div>}
-            </React.Fragment>}
+            </>}
 
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
