@@ -3,8 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
-const mmm = require('mmmagic');
-const Magic = mmm.Magic;
+// const mmm = require('file-type');
+// const mmm = require('mmmagic');
+// const Magic = mmm.Magic;
 const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 // const faceapi = require('face-api.js');
 
