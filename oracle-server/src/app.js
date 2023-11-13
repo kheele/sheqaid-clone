@@ -6,6 +6,7 @@ const session = require('express-session');
 const csrf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require("cookie-parser");
+// const redis = require('redis');
 const sockets = require('./sockets');
 const appRoutes = require('./app-routes');
 

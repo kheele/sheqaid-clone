@@ -8,7 +8,7 @@ import {convertMutations} from "./convertMutations";
 
 // 2
 export default async ({checkLogin = true, mutation, input, optimisticUpdater, updater}) =>
-	new Promise((resolve, reject) => {
+	new Promise(async (resolve, reject) => {
 		const {is} = storage;
 		if (checkLogin && !is.isLoggedInAuth) {
 			return;//TODO: Uncomment. it was commented for data transfer
@@ -16,7 +16,7 @@ export default async ({checkLogin = true, mutation, input, optimisticUpdater, up
 
 		// 4
 		const variables = {
-			object: convertMobx(input),
+			object: await convertMobx(input),
 		};
 
 		console.log('createMutationImpl input object', variables.object);

@@ -170,7 +170,7 @@ class Controls extends React.Component {
 	}
 
 	//<editor-fold desc="onFormSave">
-	onFormSave(e, btn) {
+	async onFormSave(e, btn) {
 		const {
 			form,
 			item: {id, data: old_data},

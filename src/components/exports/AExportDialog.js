@@ -83,14 +83,14 @@ class AControls extends React.Component {
 
 	// </editor-fold>
 
-	onChangeFields(el, name, val) {
+	async onChangeFields(el, name, val) {
 		const {_reactInternals: {ref}, parentWrapper} = el;
 
 		const refName = parentWrapper ? parentWrapper.refName : ref._stringRef;
 
 		if (Form.hasVal(val)) {
 			console.log('onChangeFields1', refName, val)
-			val = this.form.getFormData(refName, val);
+			val = await this.form.getFormData(refName, val);
 			console.log('onChangeFields2', refName, val)
 			if (val) {
 				val = Object.values(val).pop();

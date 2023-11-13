@@ -25,6 +25,12 @@ async function toDataURI(filePath) {
 }
 
 function convertMobx(arg) {
+    // if(arg && isFile(arg)) {
+    //     return toDataURI(arg);
+    // }
+    if(arg && isString(arg) && arg.isDate()) {
+        return Dates.formatDateSQL(arg);
+    }
     if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
         return convertMobx(toJS(arg));
     }
@@ -33,9 +39,6 @@ function convertMobx(arg) {
     }
     if (isObservable(arg)) {
         return toJS(arg);
-    }
-    if(arg && isString(arg) && arg.isDate()) {
-        return Dates.formatDateSQL(arg);
     }
     return arg;
 }

@@ -39,7 +39,7 @@ class NewWCL2Dialog extends ANewDialog {
     }
 
     //<editor-fold desc="convert_data">
-    convert_data(formData) {
+    convert_data(_formData) {
         const {
             //
             totalFieldCount,
@@ -142,7 +142,7 @@ class NewWCL2Dialog extends ANewDialog {
             employer_signature,
             employer_signature_name,
             employer_signature_date
-        } = formData;
+        } = _formData;
 
         return {
             totalFieldCount,

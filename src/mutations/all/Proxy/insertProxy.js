@@ -27,7 +27,7 @@ const insertProxy = async ({input, name, tbl, findById}) => {
 	    }
 		`,
     variables: {
-      object: convertMobx(input),
+      object: await convertMobx(input),
     },
   }).then(res => res && findById(res.id));
 };
@@ -55,7 +55,7 @@ export const insertProxyIncidentCategory = async (input) => {
 	    }
 		`,
     variables: {
-      object: convertMobx(input),
+      object: await convertMobx(input),
     },
   }).then(res => res && findByIdProxyIncidentCategory(res));
 };
@@ -83,7 +83,7 @@ export const insertProxyIncidentInjuryList = async (input) => {
 	    }
 		`,
     variables: {
-      object: convertMobx(input),
+      object: await convertMobx(input),
     },
   }).then(res => res && findByIdProxyIncidentInjuryList(res));
 };
@@ -129,7 +129,7 @@ export const insertProxyIncidentSubCategory = async (input) => {
 	    }
 		`,
     variables: {
-      object: convertMobx(input),
+      object: await convertMobx(input),
     },
   }).then(res => res && findByIdProxyIncidentSubCategory(res));
 };

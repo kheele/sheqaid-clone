@@ -41,6 +41,15 @@
 #dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .results-none{
     margin-top: 100px !important;
 }
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .UploadButton{
+    background: none !important;
+    height: 36px;
+    padding: 0;
+    margin: 4px 0 3px;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .UploadButton > i.fa {
+    height: 30px;
+}
 #dialog-overlay.ProfileToolDialog-profile-dialog .row .AddFilesGridViewInput {
     min-height: 200px !important;
 }

@@ -15,7 +15,7 @@ router.put('/uploadAssetPhotoFilesUpdate', async (req, res) => {
 	const data = await uploadAssetPhotoFilesUpdate(req.body);
 	res.json();
 });
-
+//x-hasura-user-id: {{$session_variables['x-hasura-user-id']}}
 router.put('/uploadAssetDocFilesUpdate', async (req, res) => {
 	// console.log(req.path, req.body)
 	const data = await uploadAssetDocFilesUpdate(req.body);
@@ -24,7 +24,7 @@ router.put('/uploadAssetDocFilesUpdate', async (req, res) => {
 	// const session = req.session;
 	const userId = req.get('x-hasura-user-id');
 	// const userId = session['x-hasura-user-id'];
-	console.log('userId', userId)//
+	console.log('userId', userId);
 
 	io.to(userId).emit("insertAssetDoc");
 });

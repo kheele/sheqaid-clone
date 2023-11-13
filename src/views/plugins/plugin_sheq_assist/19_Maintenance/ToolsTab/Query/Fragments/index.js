@@ -215,7 +215,7 @@ export const asset_export_details_fragment = `
         reference_num
         warranty_certificate
     }
-    doc_list(where: {type: {_neq: "Image"}}){
+    doc_list{
         id
         created_at
         doc    
@@ -292,7 +292,7 @@ export const asset_details_fragment = `
         reference_num
         warranty_certificate
     }
-    doc_list(where: {type: {_neq: "Image"}}){
+    doc_list{
         id
         created_at
         doc

@@ -37,7 +37,7 @@ class FilterWrapper extends React.Component {
         style.unuse();
     }
 
-    onSearch() {
+    async onSearch() {
         // let {page: {refs: {body}, props: {onLoadList}}} = this;
         let {page: {refs: {body}, onLoadList}} = this;
         body.state.dataLoaded = false;

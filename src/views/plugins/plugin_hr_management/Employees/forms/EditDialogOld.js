@@ -186,7 +186,7 @@ class Controls extends React.Component {
         this.item.data.profile_pic = path;
     }
 
-    onSave(e, btn) {
+    async onSave(e, btn) {
         const {
             form,
             item: {data: old_data},

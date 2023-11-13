@@ -33,7 +33,7 @@ class NewWCL5Dialog extends ANewDialog {
     }
 
     //<editor-fold desc="convert_data">
-    convert_data(formData) {
+    convert_data(_formData) {
         const {
             //
             totalFieldCount,
@@ -68,7 +68,7 @@ class NewWCL5Dialog extends ANewDialog {
             practioner_signature_date,
             practioner_addr,
             practioner_practice_num
-        } = formData;
+        } = _formData;
 
         return {
             totalFieldCount,

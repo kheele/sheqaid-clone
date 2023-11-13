@@ -1,6 +1,6 @@
 
 //<editor-fold desc="orgs_fragment">
-exports.orgs_fragment = orgs_fragment = `
+const orgs_fragment = `
     company {
         id
         name
@@ -18,10 +18,11 @@ exports.orgs_fragment = orgs_fragment = `
         name
     }
 `;
+exports.orgs_fragment = orgs_fragment;
 //</editor-fold>
 
 //<editor-fold desc="orgs_contractor_fragment">
-exports.orgs_contractor_fragment = orgs_contractor_fragment = `
+const orgs_contractor_fragment = `
     company {
         id
         name
@@ -39,10 +40,11 @@ exports.orgs_contractor_fragment = orgs_contractor_fragment = `
         name
     }
 `;
+exports.orgs_contractor_fragment = orgs_contractor_fragment;
 //</editor-fold>
 
 //<editor-fold desc="orgs_no_site_fragment">
-exports.orgs_no_site_fragment = orgs_no_site_fragment = `
+const orgs_no_site_fragment = `
     company {
         id
         name
@@ -56,10 +58,11 @@ exports.orgs_no_site_fragment = orgs_no_site_fragment = `
         name
     }
 `;
+exports.orgs_no_site_fragment = orgs_no_site_fragment;
 //</editor-fold>
 
 //<editor-fold desc="orgs_no_project_and_site_fragment">
-exports.orgs_no_project_and_site_fragment = orgs_no_project_and_site_fragment = `
+const orgs_no_project_and_site_fragment = `
     company {
         id
         name
@@ -69,19 +72,21 @@ exports.orgs_no_project_and_site_fragment = orgs_no_project_and_site_fragment = 
         name
     }
 `;
+exports.orgs_no_project_and_site_fragment = orgs_no_project_and_site_fragment;
 //</editor-fold>
 
 //<editor-fold desc="orgs_id_fragment">
-exports.orgs_id_fragment = orgs_id_fragment = `
+const orgs_id_fragment = `
     company_id
     client_id
     project_id
     site_id
 `;
+exports.orgs_id_fragment = orgs_id_fragment;
 //</editor-fold>
 
 //<editor-fold desc="personal_details_other_fragment">
-exports.personal_details_other_fragment = personal_details_other_fragment = `
+const personal_details_other_fragment = `
     id
     created_at
     fname
@@ -96,10 +101,11 @@ exports.personal_details_other_fragment = personal_details_other_fragment = `
       name
     }
 `;
+exports.personal_details_other_fragment = personal_details_other_fragment;
 //</editor-fold>
 
 //<editor-fold desc="employee_personal_details_fragment">
-exports.employee_personal_details_fragment = employee_personal_details_fragment = `
+const employee_personal_details_fragment = `
     id
     created_at
     profile_pic
@@ -136,10 +142,11 @@ exports.employee_personal_details_fragment = employee_personal_details_fragment 
       username
     }
 `;
+exports.employee_personal_details_fragment = employee_personal_details_fragment;
 //</editor-fold>
 
 //<editor-fold desc="user_personal_details_fragment">
-exports.user_personal_details_fragment = user_personal_details_fragment = `
+const user_personal_details_fragment = `
     id
     auth_id
     created_at
@@ -155,4 +162,5 @@ exports.user_personal_details_fragment = user_personal_details_fragment = `
       ${employee_personal_details_fragment}
     }
 `;
+exports.user_personal_details_fragment = user_personal_details_fragment;
 //</editor-fold>

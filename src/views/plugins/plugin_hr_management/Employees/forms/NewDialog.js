@@ -251,7 +251,7 @@ class Controls extends React.Component {
 			});
 		}
 
-		const documentsFormData = await documentsSection.formData;
+		const documentsFormData = documentsSection.formData;
 		if (documentsFormData) {
 			Object.keys(documentsFormData).forEach(key => {
 				data[key] = documentsFormData[key];

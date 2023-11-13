@@ -32,7 +32,7 @@ const updateProxy = async ({attrs, name, tbl, findById}) => {
 		`,
 		variables: {
 			id: { id },
-			_set: convertMobx(attrs),
+			_set: await convertMobx(attrs),
 		},
 	}).then(res => res && findById(id));
 };
@@ -77,7 +77,7 @@ export const updateProxyIncidentCategory = async (attrs) => {
 		`,
 		variables: {
 			id: { id },
-			_set: convertMobx(attrs),
+			_set: await convertMobx(attrs),
 		},
 	}).then(res => res && findByIdProxyIncidentCategory(res));
 };
@@ -122,7 +122,7 @@ export const updateProxyIncidentInjuryList = async (attrs) => {
 		`,
 		variables: {
 			id: { id },
-			_set: convertMobx(attrs),
+			_set: await convertMobx(attrs),
 		},
 	}).then(res => res && findByIdProxyIncidentInjuryList(res));
 };
@@ -185,7 +185,7 @@ export const updateProxyIncidentSubCategory = async (attrs) => {
 		`,
 		variables: {
 			id: { id },
-			_set: convertMobx(attrs),
+			_set: await convertMobx(attrs),
 		},
 	}).then(res => res && findByIdProxyIncidentSubCategory(res));
 };

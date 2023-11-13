@@ -29,7 +29,7 @@ class NewAnnexture1Dialog extends ANewDialog {
     }
 
     //<editor-fold desc="convert_data">
-    convert_data(formData) {
+    convert_data(_formData) {
         const {
             //
             totalFieldCount,
@@ -71,7 +71,7 @@ class NewAnnexture1Dialog extends ANewDialog {
             health_and_safety_committee_remarks,
             chairperson_of_health_and_safety_committee_signature,
             chairperson_of_health_and_safety_committee_signature_date
-        } = formData;
+        } = _formData;
 
         return {
             totalFieldCount,

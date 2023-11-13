@@ -7,8 +7,8 @@ import {convertMobx} from "../utils/Utils";
 import {convertMutations} from "./convertMutations";
 
 // 2
-export default ({checkLogin = true, mutation, id, attrs, optimisticUpdater, updater}) =>
-	new Promise((resolve, reject) => {
+export default async ({checkLogin = true, mutation, id, attrs, optimisticUpdater, updater}) =>
+	new Promise(async (resolve, reject) => {
 		// eslint-disable-next-line no-unused-vars
 		const {is} = storage;
 		if (checkLogin && !is.isLoggedInAuth) {
@@ -20,7 +20,7 @@ export default ({checkLogin = true, mutation, id, attrs, optimisticUpdater, upda
 		// 4
 		const variables = {
 			id: {id},
-			_set: convertMobx(attrs),
+			_set: await convertMobx(attrs),
 		};
 
 		// 5

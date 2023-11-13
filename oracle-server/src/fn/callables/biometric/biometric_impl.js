@@ -2,7 +2,7 @@
 // const faceapi = require('face-api.js');
 // </editor-fold>
 
-const {loadFaceModels, loadImage, createFaceUrl, deleteTmpImage} = require('../funs_impl');
+const {loadFaceModels, loadImage, createFaceUrl, deleteTmpImage} = require('../../../libs/funs_impl');
 const CustomUserClaims = require("../graphql/CustomUserClaims");
 const updateUser = require("../queries/updateUser");
 

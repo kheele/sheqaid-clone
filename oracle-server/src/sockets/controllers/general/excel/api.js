@@ -4,7 +4,7 @@ const path = require('path');
 const os = require('os');
 const Excel = require('exceljs');
 
-exports.createExcelFileSheets = createExcelFileSheets = async (data) => {
+const createExcelFileSheets = async (data) => {
 	if (!data) {
 		return null;
 	}
@@ -77,8 +77,9 @@ exports.createExcelFileSheets = createExcelFileSheets = async (data) => {
 
 	return dataUri;
 };
+exports.createExcelFileSheets = createExcelFileSheets;
 
-exports.createExcelFile = createExcelFile = async (data) => {
+const createExcelFile = async (data) => {
 	if (!data) {
 		return null;
 	}
@@ -148,6 +149,7 @@ exports.createExcelFile = createExcelFile = async (data) => {
 	//
 	// return dataUri;
 };
+exports.createExcelFile = createExcelFile;
 
 exports.onReadAsJson = async (data) => {
 	if (!data) {
