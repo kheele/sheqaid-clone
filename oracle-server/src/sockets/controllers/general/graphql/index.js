@@ -39,7 +39,14 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then(res => res.json()).catch(err => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).catch(err => {
         console.error("response err", err, 'query', query)
         throw err;
     });
@@ -108,7 +115,14 @@ eventManager.on("graphql/api/rest/views", (socket, path) => {
             "x-hasura-access-key": "rhespo-g",
             ...headers,
         },
-    }).then(res => res.json()).catch(err => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).catch(err => {
         console.log("response err", err.message)
         throw err;
     });

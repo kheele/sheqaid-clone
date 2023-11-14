@@ -49,7 +49,14 @@ global.sendGraphQL = async (args) => {
                 ...headers,
             },
             body: JSON.stringify({query: mutation, operationName, variables}),
-        }).then(res => res.json()).then(res => {
+        }).then(res => {
+            try {
+                return res.json();
+            } catch (err) {
+                console.error(err);
+                throw err;
+            }
+        }).then(res => {
             console.log(res); // { data: ... }
 
             const {errors, data} = res;
@@ -83,7 +90,14 @@ global.sendGraphQL = async (args) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then(res => res.json()).then(res => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).then(res => {
         // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
         const {errors, data} = res;
 

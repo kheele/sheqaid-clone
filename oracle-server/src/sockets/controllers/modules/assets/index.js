@@ -1,3 +1,4 @@
+require('./vehicle-forms');
 
 class Cntr extends ACntr {
 	constructor() {

@@ -39,7 +39,14 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then(res => res.json()).catch(err => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).catch(err => {
         console.error("response err", err, 'query', query)
         throw err;
     });
@@ -85,7 +92,14 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
                 ...headers,
             },
             body: JSON.stringify({query: mutation, operationName, variables}),
-        }).then(res => res.json()).then(res => {
+        }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).then(res => {
             console.log(res); // { data: ... }
             
             const {errors, data} = res;
@@ -120,7 +134,14 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then(res => res.json()).then(res => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).then(res => {
         // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
         const {errors, data} = res;
         
@@ -195,7 +216,14 @@ eventManager.on("graphql/api/rest/views", (socket, path) => {
             "x-hasura-access-key": "rhespo-g",
             ...headers,
         },
-    }).then(res => res.json()).catch(err => {
+    }).then(res => {
+        try {
+            return res.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }).catch(err => {
         console.log("response err", err.message)
         throw err;
     });
