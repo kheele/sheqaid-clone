@@ -26,7 +26,8 @@ global.uploadDataUri = async (datauri_or_buffer, filePath) => {
         buffer = Buffer.from(base64, 'base64');
         console.log('uploadDataUri datauri', contentType)
     } else {
-        const res = fileTypeFromBuffer(datauri_or_buffer);//=> {ext: 'png', mime: 'image/png'}
+        buffer = datauri_or_buffer;
+        const res = fileTypeFromBuffer(buffer);//=> {ext: 'png', mime: 'image/png'}
         contentType = res.contentType;
         console.log('uploadDataUri buffer', contentType)
     }
