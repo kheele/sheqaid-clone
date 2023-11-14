@@ -44,6 +44,7 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
             return res.json();
         } catch (err) {
             console.error(err);
+            console.error(res.text());
             throw err;
         }
     }).catch(err => {
@@ -120,6 +121,7 @@ eventManager.on("graphql/api/rest/views", (socket, path) => {
             return res.json();
         } catch (err) {
             console.error(err);
+            console.error(res.text());
             throw err;
         }
     }).catch(err => {

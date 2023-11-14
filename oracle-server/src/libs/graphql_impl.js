@@ -54,6 +54,7 @@ global.sendGraphQL = async (args) => {
                 return res.json();
             } catch (err) {
                 console.error(err);
+                console.error(res.text());
                 throw err;
             }
         }).then(res => {
@@ -95,6 +96,7 @@ global.sendGraphQL = async (args) => {
             return res.json();
         } catch (err) {
             console.error(err);
+            console.error(res.text());
             throw err;
         }
     }).then(res => {
