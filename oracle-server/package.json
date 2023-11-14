@@ -13,7 +13,8 @@
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
     "install:mod": "npm i esm --save",
     "install:remove": "rm -rf node_modules package-lock.json",
-    "install:all": "npm install"
+    "install:all": "npm install",
+    "neon:build": "npm run build"
   },
   "engines": {
     "node": "16"
