@@ -1221,7 +1221,7 @@ class NewDocumentTable extends ATableSavable {
                     });
                 } else {
                     promise = insertAssetDoc({
-                        asset_id: assetItem.id, ...item,
+                        asset_id: assetItem.id, ...item, expiry: Dates.formatDateSQL(item.expiry)
                     }).then(savedItem => {
                         if (!savedItem) {
                             infoDialog.open("Sorry! Record couldn't be added.");

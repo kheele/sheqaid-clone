@@ -108,7 +108,7 @@ class EditOptionalInfoSection extends React.Component {
 			//
 			banking_detail_list,
 		} = data;
-
+		
 		return {
 			//
 			employment_date: Dates.formatDateSQL(employment_date),
@@ -117,7 +117,7 @@ class EditOptionalInfoSection extends React.Component {
 			department_id: department && department.id,
 			//
 			supervisor_id: supervisor && supervisor.id,
-			//
+			
 			living_address_list: {
 				data: (living_address_list || []).map(({country, province, city, local_address, street_address, doc}) => ({
 					is_default: true,

@@ -39,16 +39,9 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then(res => {
-        try {
-            return res.json();
-        } catch (err) {
-            console.error(err);
-            console.error(res.text());
-            throw err;
-        }
-    }).catch(err => {
-        console.error("response err", err, 'query', query)
+    }).then( res => res.json()
+    ).catch(err => {
+        // console.error("response err", err, 'query', query)
         throw err;
     });
 });
