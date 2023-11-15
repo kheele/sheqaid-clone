@@ -1324,7 +1324,7 @@ class NewDocumentTable extends ATableSavable {
             // alert(this.list.length)
             return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-t-10 padding-b-10">
                 <ClearableInput ref={this.onSetRef} name="type" type="select" placeholder="Document Type"
-                                required className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}
+                                className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}
                                 values={this.selfState.lists.type} returnValue/>
                 <ClearableInput ref={this.onSetRef} name="title" type="text" placeholder="Title"
                                 className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/>
@@ -1340,7 +1340,7 @@ class NewDocumentTable extends ATableSavable {
                     onChange={this.onChange}
                 />
                 <ClearableInput ref={this.onSetRef} name="expiry" type="date" placeholder="Expiry Date"
-                                required className="col-lg-12 w-full form-control" onChange={this.onChange}/>
+                                className="col-lg-12 w-full form-control" onChange={this.onChange}/>
                 <Button idx={n} action="save" className="btn btn-primary hor-center border-radius-20 w-100"
                         onClick={onClick}>
                     <i className="fa fa-check"/> ADD
