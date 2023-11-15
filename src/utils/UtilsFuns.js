@@ -3,6 +3,7 @@ import {findDOMNode} from "react-dom";
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
 import WebWorker from "../web-worker/WebWorker";
 import {Dates} from "./Dates";
+import findByIdAssetDoc from "../mutations/all/Asset/findByIdAssetDoc";
 
 function findReactComponent(el) {
     for (const key in el) {
@@ -116,6 +117,20 @@ const execWhen = (test) => {
             }
         };
         exec();
+    });
+};
+
+const whenFileReady = async (res, findById, key = 'doc') => {
+    if(!res) return;
+
+    return execWhen(async () => {
+        const item = await findById(res.id);
+        if(item) {
+            const {id, data: {[key]: doc}} = item;
+            if(doc && doc.dlUrls) {
+                return item;
+            }
+        }
     });
 };
 
@@ -317,6 +332,7 @@ export {
     calculateRightPos,
     randomNumber,
     execWhen,
+    whenFileReady,
     //
     getPhoneNumberNew,
     scrollTo,

@@ -3,7 +3,7 @@
 // 1
 import {graphql} from "react-relay";
 // @ts-ignore
-import {Dates} from "utils/Dates";
+import {whenFileReady} from "utils/Utils";
 import createMutationImpl from "mutations/createMutationImpl";
 import updateAssetDoc from "./updateAssetDoc";
 import findByIdAssetDoc from "./findByIdAssetDoc";
@@ -45,12 +45,6 @@ export default async (input) => {
 		input.doc = {path: doc.path};
 	}
 
-	const res = await createMutationImpl({mutation, input});
-    // return new Promise((resolve, reject) => {
-    //     sockets.once('insertAssetDoc', () => {
-    //         console.log('insertAssetDoc');
-    //         resolve(findByIdAssetDoc(res.id));
-    //     });
-    // });
-    return res;
+	const item = await createMutationImpl({mutation, input});
+    return whenFileReady(item, findByIdAssetDoc);
 };

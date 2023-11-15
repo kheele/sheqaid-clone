@@ -20,6 +20,7 @@ import {
     toDataURI,
     convertMobx,
     execWhen,
+    whenFileReady,
     findReactComponent,
     getRandomRolor,
     isInView,
@@ -47,6 +48,7 @@ export {
     calculateRightPos,
     randomNumber,
     execWhen,
+    whenFileReady,
     Permissions,
     //
     SAIdUtils,
