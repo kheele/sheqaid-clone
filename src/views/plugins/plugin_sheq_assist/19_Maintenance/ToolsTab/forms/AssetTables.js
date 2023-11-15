@@ -1165,7 +1165,7 @@ class NewDocumentTable extends ATableSavable {
                 'Work Manual',
                 'Work Procedure',
                 'Break Test Report',
-                'Certificate of Fitness(C.O.F)',
+                'Certificate of Fitness (C.O.F)',
                 'Invoice',
                 'Vehicle License',
                 'LUX Test Report',
