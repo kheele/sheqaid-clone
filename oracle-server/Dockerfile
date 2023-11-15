@@ -1,5 +1,5 @@
 # Use Node 16 alpine as parent image
-FROM --platform=linux/arm64/v8 node:20-alpine
+FROM --platform=linux/arm64/v8 node:18-slim
 #FROM --platform=linux/arm64/v8 oven/bun
 
 # Change the working directory on the Docker image to /app
