@@ -1159,7 +1159,16 @@ class NewDocumentTable extends ATableSavable {
     @observable
     selfState = {
         lists: {
-            type: ['Clearance Certificate', 'Vehicle Registration Certificate', 'Work Manual', 'Work Procedure']
+            type: [
+                'Clearance Certificate',
+                'Vehicle Registration Certificate',
+                'Work Manual',
+                'Work Procedure',
+                'Break Test Report',
+                'Certificate of Fitness(C.O.F)',
+                'Invoice',
+                'Vehicle License',
+            ]
         }
     };
 
