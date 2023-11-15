@@ -292,7 +292,7 @@ export const asset_details_fragment = `
         reference_num
         warranty_certificate
     }
-    doc_list{
+    doc_list(where: {removed: {_eq: false}}){
         id
         created_at
         doc
