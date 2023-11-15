@@ -34,7 +34,7 @@ global.uploadDataUri = async (datauri_or_buffer, filePath) => {
 
     ext = mime.getExtension(contentType);
 
-    const newName = `${filePath}.${ext}`;
+    const newName = `${filePath}/doc.${ext}`;
 
     const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);
     let bucketFile = await storageBucket.file(newName);
