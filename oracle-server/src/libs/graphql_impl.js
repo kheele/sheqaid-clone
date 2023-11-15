@@ -241,7 +241,12 @@ global.getGraphQLOne = async ({query, operationName, variables, multi_queries = 
         variables,
         multi_queries,
         count,
-    }).then(res => res && (isArray(res) && res[0]) || res);
+    }).then(res => {
+        // console.log('getGraphQLOne res', res);
+        if(res) {
+            return isArray(res) ? res[0] : res;
+        }
+    });
 };
 //</editor-fold>
 
