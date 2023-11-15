@@ -1168,6 +1168,7 @@ class NewDocumentTable extends ATableSavable {
                 'Certificate of Fitness(C.O.F)',
                 'Invoice',
                 'Vehicle License',
+                'LUX Test Report',
             ]
         }
     };
