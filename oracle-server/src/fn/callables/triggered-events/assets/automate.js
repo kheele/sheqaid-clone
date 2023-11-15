@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs-extra");
 
 exports.run = async () => {
-    fs.readdir(path.join(__dirname, 'docs/3. COF_Brake Test'), async (err, files) => {
+    fs.readdir(path.join(__dirname, 'docs/2. COF_Brake Test'), async (err, files) => {
         if (err) {
             console.error('Error reading directory:', err);
             return;
