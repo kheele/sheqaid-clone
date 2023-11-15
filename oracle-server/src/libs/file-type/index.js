@@ -7,8 +7,9 @@ try {
     } else {
         mod = require('./linux');
     }
-} catch (e) {
+} catch (err) {
     mod = {};
+    console.error(`Can't load .node module`, err);
 }
 
 module.exports = mod;
