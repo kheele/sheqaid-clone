@@ -15,33 +15,47 @@ const mime = require('mime');
 exports.createFaceUrl = (uid) => `faces/${uid}/face.png`;
 
 //<editor-fold desc="uploadDataUri">
-global.uploadDataUri = async (datauri_or_buffer, filePath) => {
-    let buffer, contentType, ext;
-    // console.log('uploadDataUri is string', typeof datauri_or_buffer, typeof datauri_or_buffer === 'string')
-    console.log('uploadDataUri', datauri_or_buffer)
+const createBuffer = (datauri_or_buffer) => {
     if (typeof datauri_or_buffer === 'string') {
         const parts = datauri_or_buffer.split(',');
-        contentType = parts[0].replace('data:', '').split(';')[0];
         const base64 = parts[1];
-        buffer = Buffer.from(base64, 'base64');
-        console.log('uploadDataUri datauri contentType', contentType)
+        return Buffer.from(base64, 'base64');
     } else {
-        buffer = datauri_or_buffer;
-        const res = fileTypeFromBuffer(buffer);//=> {ext: 'png', mime: 'image/png'}
-        contentType = res.contentType;
-        console.log('uploadDataUri buffer contentType', contentType)
+        return Buffer.from(datauri_or_buffer);
+    }
+};
 
-        buffer = Buffer.from(buffer);
-        console.log('uploadDataUri buffer', buffer);
+const getContentType = (datauri_or_buffer) => {
+    if (typeof datauri_or_buffer === 'string') {
+        const parts = datauri_or_buffer.split(',');
+        return parts[0].replace('data:', '').split(';')[0];
+    } else {
+        try {
+            const res = fileTypeFromBuffer(datauri_or_buffer);
+            return res.contentType;
+        } catch (err) {
+
+        }
+    }
+};
+
+global.uploadDataUri = async (datauri_or_buffer, filePath) => {
+    const contentType = getContentType(datauri_or_buffer);
+    const buffer = createBuffer(datauri_or_buffer);
+    console.log('uploadDataUri', contentType, buffer);
+
+    const options = {};
+    if (contentType) {
+        options.contentType = contentType;
     }
 
-    ext = mime.getExtension(contentType);
+    const ext = mime.getExtension(options.contentType);
 
     const newName = `${filePath}/doc.${ext}`;
 
     const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);
     let bucketFile = await storageBucket.file(newName);
-    return bucketFile.save(buffer, {contentType}).then(async () => {
+    return bucketFile.save(buffer, options).then(async () => {
         const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
         const dlUrls = await bucketFile.getSignedUrl({
             action: 'read',

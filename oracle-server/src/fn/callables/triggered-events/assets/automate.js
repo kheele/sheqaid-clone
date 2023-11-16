@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs-extra");
 
 exports.run = async () => {
-    fs.readdir(path.join(__dirname, 'docs/2. License Disc'), async (err, files) => {
+    fs.readdir(path.join(__dirname, 'docs/3. COF'), async (err, files) => {
         if (err) {
             console.error('Error reading directory:', err);
             return;
@@ -14,7 +14,7 @@ exports.run = async () => {
 
         await Promise.all(files.map(async filename => {
             let [reg, type] = filename.split('.')[0].split(' ');
-            type = "Vehicle License";
+            type = "Certificate of Fitness (C.O.F)";//
             // console.log(reg);
             let res = await getGraphQLOne({
                 query: `
@@ -34,10 +34,12 @@ exports.run = async () => {
             // console.log('getGraphQLOne res', res);
 
             if (res) {
+                // return;
+
                 const {id, data: {reg_num, asset_list}} = res;
                 const [asset] = asset_list;
 
-                const buffer = fs.readFileSync(path.join(__dirname, 'docs/2. License Disc/' + filename));
+                const buffer = fs.readFileSync(path.join(__dirname, 'docs/3. COF/' + filename));
                 // console.log('buffer', type, id, reg, reg_num, !!buffer)
 
                 // return;
@@ -47,7 +49,7 @@ exports.run = async () => {
                 		query findAssetDocQuery {
                 			asset_docs(
                 				where: {
-                				    type: {_eq: "Vehicle License"}, 
+                				    type: {_eq: "${type}"}, 
                 				    asset: {asset_detail: {reg_num: {_eq: "${reg_num}"}}}
                 				}
                 			) {
@@ -92,22 +94,21 @@ exports.run = async () => {
                         },
                     });
 
-                    console.log('insertRelay res', res);
-                    return;
+                    // console.log('insertGraphQL res', res);
+                    // return;
                 }
 
-                if (!res) {
-                    console.log('res not found', reg_num);
-                    return;
-                }
+                // if (!res) {
+                //     console.log('res not found', reg_num);
+                //     return;
+                // }
 
-                return;
+                // console.log('res', res.id, 'dlUrls' in res.data.doc);
+                // if(res && !res.data.doc.dlUrls) {
+                //
+                //     console.log('res', res.id, res.data.doc.dlUrls);
+                // }
 
-                console.log('res', res.id, 'dlUrls' in res.data.doc);
-                if(res && !res.data.doc.dlUrls) {
-
-                    console.log('res', res.id, res.data.doc.dlUrls);
-                }
                 // return;
 
                 if (res && !res.data.doc.dlUrls) {
@@ -142,6 +143,11 @@ exports.run = async () => {
                     });
                 }
             } else {
+                fs.rename(
+                    path.join(__dirname, 'docs/3. COF/' + filename),
+                    path.join(__dirname, 'docs/3. COF/Missing/' + filename)
+                );
+                // const buffer = fs.readFileSync(path.join(__dirname, 'docs/2. License Disc/' + filename));
                 console.log('asset not found reg', reg, type)
             }
         }));
