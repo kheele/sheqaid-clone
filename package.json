@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha",
     "start:dev:new": "webpack-dev-server --env.ENVIRONMENT=development --content-base src/ --mode development --watch --watch-poll",
-    "start:dev": "node --max-old-space-size=8192 scripts/start.js",
+    "start:dev": "node --max-old-space-size=12192 scripts/start.js",
     "build:prod": "node --max-old-space-size=8192 scripts/build.js",
     "build:prod-admin": "node --max-old-space-size=8192 scripts/build-admin.js",
     "build:prod-forms": "node --max-old-space-size=8192 scripts/build-forms.js",
