@@ -808,531 +808,531 @@
     };
     //</editor-fold>
 
-//     // <editor-fold defaultstate="collapsed" desc="Array Functions. Click on the + sign on the left to edit the code.">
-//     Array.prototype.getValue = function (key) {
-//         let self = this;
-//         let val = null;
-//         self.forEach(function ($this, n, array) {
-//             if ($this[key]) {
-//                 val = $this[key];
-//                 return false;
-//             }
-//         });
-//         return val;
-//     };
-//
-//     Array.prototype.getEntry = function (key) {
-//         let self = this;
-//         let obj = null;
-//         self.forEach(function ($this, n, array) {
-//             if ($this[key]) {
-//                 obj = $this;
-//                 return false;
-//             }
-//         });
-//         return obj;
-//     };
-//
-//     Array.prototype.getFirstElement = function () {
-//         return this[0];
-//     };
-//
-//     Array.prototype.getLastElement = function () {
-//         return this[this.length - 1];
-//     };
-//
-//     Array.prototype.find = Array.prototype.find || function (test) {
-//         if (test === undefined || test === null) {
-//             return null;
-//         }
-//         let self = this;
-//         for (let n = 0; n < self.length; n++) {
-//             if (test(self[n], n)) {
-//                 return self[n];
-//             }
-//         }
-//         return null;
-//     };
-//
-//     Array.prototype.splitAt = function (chunkLen) {
-//         if (chunkLen === undefined || chunkLen === null) {
-//             return this;
-//         }
-//         let self = this;
-//         let newList = [];
-//
-//         let idx = 0;
-//         let list = [];
-//         for (let n = 1; n <= self.length; n++) {
-//             let item = self[n - 1];
-//             if (item) {
-//                 if (n % chunkLen !== 0) {
-//                     list.push(item);
-//                 } else {
-//                     list.push(item);
-//                     newList[idx++] = list;
-//                     list = [];
-//                 }
-//             }
-//         }
-//         if (!list.isEmpty())
-//             newList[idx] = list;
-//         return newList;
-//     };
-//
-//     Array.prototype.isEmpty = function () {
-//         return this.length === 0;
-//     };
-//
-//     Array.prototype.isNotEmpty = function () {
-//         return !this.isEmpty();
-//     };
-//
-//     Array.prototype.indexOf = Array.prototype.indexOf || function (elt) {
-//         if (elt === undefined || elt === null) {
-//             return -1;
-//         }
-//         let self = this;
-//         let len = self.length;
-//
-//         let from = Number(arguments[1]) || 0;
-//         from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-//         if (from < 0)
-//             from += len;
-//
-//         for (; from < len; from++) {
-//             if (from in self && self[from] === elt)
-//                 return from;
-//         }
-//         return -1;
-//     };
-//
-//     Array.prototype.indexOfWithPredicate = function (test) {
-//         if (test === undefined || test === null) {
-//             return -1;
-//         }
-//         let self = this;
-//         let n = self.length - 1;
-//
-//         do {
-//             if (test(self[n], n))
-//                 return n;
-//             n--;
-//         } while (n >= 0)
-//
-//         return -1;
-//     };
-//
-//     Array.prototype.contains = function (val) {
-//         if (val === undefined || val === null) {
-//             return false;
-//         }
-//         let self = this;
-//         for (let n = 0; n < self.length; n++) {
-//             if (self[n] === val) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     };
-//
-//     Array.prototype.containsAll = function (val) {
-//         if (val === undefined || val === null) {
-//             return false;
-//         }
-//         let self = this;
-//         if (isArray(val)) {
-//             if (val.isEmpty()) {
-//                 return false;
-//             }
-//             let found = true;
-//
-//             for (let n = 0; n < val.length; n++) {
-//                 if (!self.contains(val[n])) {
-//                     return false;
-//                 }
-//             }
-//             return found;
-//         } else {
-//             for (let n = 0; n < self.length; n++) {
-//                 if (self[n] === val) {
-//                     return true;
-//                 }
-//             }
-//         }
-//         return false;
-//     };
-//
-//     Array.prototype.remove = function (val) {
-// //        console.log('rem2-test1', val.id)
-//         if (val === undefined || val === null) {
-//             return false;
-//         }
-// //        console.log('rem2-test2', val.id)
-//         let self = this;
-//         let found = false;
-//         if (isArray(val)) {
-//             for (let n = 0; n < val.length; n++) {
-//                 if (!(found = self.remove(val[n]))) {
-//                     break;
-//                 }
-//             }
-//         } else {
-// //            console.log('rem2-test3', val.id)
-//             for (let n = 0; n < self.length; n++) {
-// //                console.log('rem2-test' + (4 + n), val.id)
-//                 if (self[n] === val) {
-// //                    console.log('rem2-', n, val.id)
-//                     found = self.splice(n, 1);
-//                     break;
-//                 }
-//             }
-//         }
-//         return found;
-//     };
-//
-//     Array.prototype.removeFirst = function () {
-//         return this.splice(0, 1)[0];
-//     };
-//     Array.prototype.removeLast = function () {
-//         return this.splice(this.length - 1, 1)[0];
-//     };
-//     Array.prototype.removeAt = function (idx) {
-//         if (idx === undefined || idx === null || !isNumber(idx)) {
-//             return false;
-//         }
-//         return this.splice(idx, 1);
-//     };
-//     Array.prototype.removeIf = function (test) {
-//         if (test === undefined || test === null) {
-//             return false;
-//         }
-//         let self = this;
-//         for (let n = 0; n < self.length; n++) {
-//             if (test(self[n], n)) {
-//                 return self.splice(n, 1);
-//             }
-//         }
-//         return false;
-//     };
-//     Array.prototype.removeAllIf = function (test) {
-//         if (test === undefined || test === null) {
-//             return false;
-//         }
-//         const self = this;
-//         const removed = [];
-//         for (let n = 0; n < self.length; n++) {
-//             const val = self[n];
-//             if (test(val, n)) {
-//                 removed.push(val);
-//                 self.splice(n, 1);
-//             }
-//         }
-//         return removed;
-//     };
-//     Array.prototype.replace = function (val, supplier) {
-//         if (supplier === undefined || supplier === null) {
-//             return null;
-//         }
-//         let self = this;
-//         for (let n = 0; n < self.length; n++) {
-//             if (self[n] === val) {
-//                 self[n] = supplier(self[n]);
-//                 return self[n];
-//             }
-//         }
-//         return null;
-//     };
-//
-//     Array.prototype.replaceIf = function (val, test) {
-//         if (test === undefined || test === null) {
-//             return null;
-//         }
-//         let self = this;
-//         for (let n = 0; n < self.length; n++) {
-//             if (test(self[n])) {
-//                 self[n] = val;
-//                 return self[n];
-//             }
-//         }
-//         return null;
-//     };
-//
-//     Array.prototype.clear = function () {
-//         let self = this;
-//         self.splice(0, self.length);
-//     };
-//
-//     Array.prototype.pushFirst = function (val) {
-//         this.insertAt(0, val);
-//     };
-//
-//     Array.prototype.pushAllFirst = function (val) {
-//         let n = val.length - 1;
-//
-//         do {
-//             this.insertAt(0, val[n]);
-//             n--;
-//         } while (n >= 0);
-//
-//     };
-//
-//     Array.prototype.insertAt = function (index, val) {
-//         if (val === undefined || val === null) {
-//             return this;
-//         }
-//         let self = this;
-//         if (self.isEmpty()) {
-//             self.push(val);
-//         } else {
-//             self.splice(index, 0, val);
-//         }
-//     };
-//
-//     Array.prototype.pushAll = function (val) {
-//         if (val === undefined || val === null) {
-//             return this;
-//         }
-//         let self = this;
-//         if (isArray(val)) {
-//             if (!val.isEmpty()) {
-//                 for (let n = 0; n < val.length; n++) {
-//                     let $this;
-//                     if (!self.contains($this = val[n])) {
-//                         self.push($this);
-//                     }
-//                 }
-//             }
-//         } else {
-//             self.push(val);
-//         }
-//         return self;
-//     };
-//
-//     Array.prototype.spliceAll = function (index, n, val) {
-//         if (!val || !isArray(val)) {
-//             return this;
-//         }
-//         return this.splice.apply(this, val.unshift(index, n));
-//     };
-//
-//     Array.prototype.retainAll = function (val, test) {
-//         if (val === undefined || val === null) {
-//             return this;
-//         }
-//         let self = this;
-//         if (isArray(val)) {
-//             if (!val.isEmpty()) {
-//                 for (let n = 0; n < self.length; n++) {
-//                     let $this;
-//                     if (test !== undefined && test !== null) {
-//                         if (test($this = self[n])) {
-//                             self.remove($this);
-//                         }
-//                     } else {
-//                         if (!val.contains($this = self[n])) {
-//                             self.remove($this);
-//                         }
-//                     }
-//                 }
-//                 self.pushAll(val);
-//             }
-//         } else {
-//             self.push(val);
-//         }
-//         return self;
-//     };
-//
-//     Array.prototype.every = Array.prototype.every || function (test) {
-//         if (test === undefined || test === null) {
-//             throw new Error('argument is required in every function');
-//         }
-//         let self = this;
-//         if (self.isEmpty()) {
-//             return false;
-//         }
-//         for (let n = 0; n < self.length; n++) {
-//             if (!test(self[n], n)) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     };
-//     Array.prototype.anyMatch = Array.prototype.some = Array.prototype.some || function (test) {
-//         if (test === undefined || test === null) {
-//             throw new Error('argument is required in anyMatch function');
-//         }
-//         let self = this;
-//         if (self.isEmpty()) {
-//             return false;
-//         }
-//         for (let n = 0; n < self.length; n++) {
-//             if (test(self[n], n)) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     };
-//     Array.prototype.noneMatch = function (test) {
-//         if (test === undefined || test === null) {
-//             throw new Error('argument is required in noneMatch function');
-//         }
-//         let self = this;
-//         if (self.isEmpty()) {
-//             return true;
-//         }
-//         for (let n = 0; n < self.length; n++) {
-//             if (test(self[n], n)) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     };
-//     Array.prototype.allMatch = function (test) {
-//         if (test === undefined || test === null) {
-//             throw new Error('argument is required in allMatch function');
-//         }
-//         let self = this;
-//         if (self.isEmpty()) {
-//             return false;
-//         }
-//         for (let n = 0; n < self.length; n++) {
-//             if (!test(self[n], n)) {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     };
-//
-//     Array.prototype.groupBy = function (prop) {
-//         const accumulate = (acc, key, val) => {
-//             if (!acc[key]) {
-//                 acc[key] = [];
-//             }
-//             acc[key].push(val);
-//         };
-//
-//         if (isFunction(prop)) {
-//             const supplier = prop;
-//             const acc = {};
-//             this.forEach(v => {
-//                 const key = supplier(v);
-//                 if (isArray(key)) {
-//                     key.forEach(key => {
-//                         accumulate(acc, key, v);
-//                     });
-//                 } else {
-//                     accumulate(acc, key, v);
-//                 }
-//             });
-//             return acc;
-//         } else {
-//             const props = prop.split('.');
-//             return this.reduce((acc, obj) => {
-//                 if (props.length === 1) {
-//                     const key = obj[prop];
-//                     accumulate(acc, key, obj);
-//                 } else {
-//                     const prop1 = props[0];
-//                     if (prop1 in obj) {
-//                         const prop2 = props[1];
-//                         const obj2 = obj[prop1];
-//                         if (prop2 in obj2) {
-//                             const key = obj2[prop2];
-//                             accumulate(acc, key, obj);
-//                         }
-//                     }
-//                 }
-//                 return acc;
-//             }, {});
-//         }
-//     };
-//
-//     Array.prototype.sortBy = function (prop, dir) {
-//         this.sort((a, b) => {
-//             const v1 = Object.getValueByPath(a, prop);
-//             const v2 = Object.getValueByPath(b, prop);
-//             if (v1 === v2 || (isNullable(v1) && isNullable(v2))) {
-//                 return 0;
-//             }
-//
-//             if (v1 > v2)
-//                 return dir === 'desc' ? -1 : 1;
-//             if (v1 < v2)
-//                 return dir === 'desc' ? 1 : -1;
-//             return 0;
-//         });
-//     };
-//
-//     Array.prototype.distinct = function (test) {
-//         let array;
-//         if (isFunction(test)) {
-//             array = this.filter(test);
-//         } else if (isString(test)) {
-//             const key = test;
-//             array = this.filter(function (value, index, self) {
-//                 return self.indexOfWithPredicate((v, n) => v[key] === value[key]) === index;
-//             });
-//         } else {
-//             array = this.filter(function (value, index, self) {
-//                 return self.indexOf(value) === index;
-//             });
-//         }
-//         return Array.from(new Set(array.map(JSON.stringify))).map(JSON.parse);
-//     };
-//
-//     Array.prototype.min = function (supplier) {
-//         if(supplier) {
-//             return Math.min(...this.map(supplier));
-//         }
-//         return Math.min(...this);
-//     };
-//
-//     Array.prototype.max = function (supplier) {
-//         if(supplier) {
-//             return Math.max(...this.map(supplier));
-//         }
-//         return Math.max(...this);
-//     };
-//
-//     Array.range = function (min, max, step = 1){
-//         return Array.from({length: (max - min) / step + 1}, (_, n) => min + (n * step));
-//     };
-//
-//     Array.prototype.fromArgs = Array.prototype.fromArguments = function (...args) {
-//         return args;
-//     };
-//
-//     Array.fromArgs = Array.fromArguments = function (...args) {
-//         return args;
-//     };
-//
-//     Array.prototype.toObject = function () {
-//         return {...this};
-//     };
-//
-//     Array.prototype.jsonArrayString = function (param) {
-//         let self = this;
-//         let source = '[';
-//         self.forEach(function (self, n, array) {
-//             if (isString(self)) {
-//                 source += '"' + self + '",';
-//             } else if (isNumber(self) || isBoolean(self)) {
-//                 source += self + ',';
-//             } else if (isFunction(self) && param && param.includeFunction) {
-//                 source += self.toString() + ',';
-//             } else if (isArray(self)) {
-//                 source += self.jsonArrayString(param) + ',';
-//             } else if (isObject(self)) {
-//                 source += jsonObjectString(self, param) + ',';
-//             }
-//         });
-//
-//         if (self !== null && source !== "[") {
-//             source = source.substring(0, source.length - 1);
-//         }
-//         source += ']';
-//         return source;
-//     };
+    // <editor-fold defaultstate="collapsed" desc="Array Functions. Click on the + sign on the left to edit the code.">
+    Array.prototype.getValue = function (key) {
+        let self = this;
+        let val = null;
+        self.forEach(function ($this, n, array) {
+            if ($this[key]) {
+                val = $this[key];
+                return false;
+            }
+        });
+        return val;
+    };
+
+    Array.prototype.getEntry = function (key) {
+        let self = this;
+        let obj = null;
+        self.forEach(function ($this, n, array) {
+            if ($this[key]) {
+                obj = $this;
+                return false;
+            }
+        });
+        return obj;
+    };
+
+    Array.prototype.getFirstElement = function () {
+        return this[0];
+    };
+
+    Array.prototype.getLastElement = function () {
+        return this[this.length - 1];
+    };
+
+    Array.prototype.find = Array.prototype.find || function (test) {
+        if (test === undefined || test === null) {
+            return null;
+        }
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
+            if (test(self[n], n)) {
+                return self[n];
+            }
+        }
+        return null;
+    };
+
+    Array.prototype.splitAt = function (chunkLen) {
+        if (chunkLen === undefined || chunkLen === null) {
+            return this;
+        }
+        let self = this;
+        let newList = [];
+
+        let idx = 0;
+        let list = [];
+        for (let n = 1; n <= self.length; n++) {
+            let item = self[n - 1];
+            if (item) {
+                if (n % chunkLen !== 0) {
+                    list.push(item);
+                } else {
+                    list.push(item);
+                    newList[idx++] = list;
+                    list = [];
+                }
+            }
+        }
+        if (!list.isEmpty())
+            newList[idx] = list;
+        return newList;
+    };
+
+    Array.prototype.isEmpty = function () {
+        return this.length === 0;
+    };
+
+    Array.prototype.isNotEmpty = function () {
+        return !this.isEmpty();
+    };
+
+    Array.prototype.indexOf = Array.prototype.indexOf || function (elt) {
+        if (elt === undefined || elt === null) {
+            return -1;
+        }
+        let self = this;
+        let len = self.length;
+
+        let from = Number(arguments[1]) || 0;
+        from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+        if (from < 0)
+            from += len;
+
+        for (; from < len; from++) {
+            if (from in self && self[from] === elt)
+                return from;
+        }
+        return -1;
+    };
+
+    Array.prototype.indexOfWithPredicate = function (test) {
+        if (test === undefined || test === null) {
+            return -1;
+        }
+        let self = this;
+        let n = self.length - 1;
+
+        do {
+            if (test(self[n], n))
+                return n;
+            n--;
+        } while (n >= 0)
+
+        return -1;
+    };
+
+    Array.prototype.contains = function (val) {
+        if (val === undefined || val === null) {
+            return false;
+        }
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
+            if (self[n] === val) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    Array.prototype.containsAll = function (val) {
+        if (val === undefined || val === null) {
+            return false;
+        }
+        let self = this;
+        if (isArray(val)) {
+            if (val.isEmpty()) {
+                return false;
+            }
+            let found = true;
+
+            for (let n = 0; n < val.length; n++) {
+                if (!self.contains(val[n])) {
+                    return false;
+                }
+            }
+            return found;
+        } else {
+            for (let n = 0; n < self.length; n++) {
+                if (self[n] === val) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    Array.prototype.remove = function (val) {
+//        console.log('rem2-test1', val.id)
+        if (val === undefined || val === null) {
+            return false;
+        }
+//        console.log('rem2-test2', val.id)
+        let self = this;
+        let found = false;
+        if (isArray(val)) {
+            for (let n = 0; n < val.length; n++) {
+                if (!(found = self.remove(val[n]))) {
+                    break;
+                }
+            }
+        } else {
+//            console.log('rem2-test3', val.id)
+            for (let n = 0; n < self.length; n++) {
+//                console.log('rem2-test' + (4 + n), val.id)
+                if (self[n] === val) {
+//                    console.log('rem2-', n, val.id)
+                    found = self.splice(n, 1);
+                    break;
+                }
+            }
+        }
+        return found;
+    };
+
+    Array.prototype.removeFirst = function () {
+        return this.splice(0, 1)[0];
+    };
+    Array.prototype.removeLast = function () {
+        return this.splice(this.length - 1, 1)[0];
+    };
+    Array.prototype.removeAt = function (idx) {
+        if (idx === undefined || idx === null || !isNumber(idx)) {
+            return false;
+        }
+        return this.splice(idx, 1);
+    };
+    Array.prototype.removeIf = function (test) {
+        if (test === undefined || test === null) {
+            return false;
+        }
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
+            if (test(self[n], n)) {
+                return self.splice(n, 1);
+            }
+        }
+        return false;
+    };
+    Array.prototype.removeAllIf = function (test) {
+        if (test === undefined || test === null) {
+            return false;
+        }
+        const self = this;
+        const removed = [];
+        for (let n = 0; n < self.length; n++) {
+            const val = self[n];
+            if (test(val, n)) {
+                removed.push(val);
+                self.splice(n, 1);
+            }
+        }
+        return removed;
+    };
+    Array.prototype.replace = function (val, supplier) {
+        if (supplier === undefined || supplier === null) {
+            return null;
+        }
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
+            if (self[n] === val) {
+                self[n] = supplier(self[n]);
+                return self[n];
+            }
+        }
+        return null;
+    };
+
+    Array.prototype.replaceIf = function (val, test) {
+        if (test === undefined || test === null) {
+            return null;
+        }
+        let self = this;
+        for (let n = 0; n < self.length; n++) {
+            if (test(self[n])) {
+                self[n] = val;
+                return self[n];
+            }
+        }
+        return null;
+    };
+
+    Array.prototype.clear = function () {
+        let self = this;
+        self.splice(0, self.length);
+    };
+
+    Array.prototype.pushFirst = function (val) {
+        this.insertAt(0, val);
+    };
+
+    Array.prototype.pushAllFirst = function (val) {
+        let n = val.length - 1;
+
+        do {
+            this.insertAt(0, val[n]);
+            n--;
+        } while (n >= 0);
+
+    };
+
+    Array.prototype.insertAt = function (index, val) {
+        if (val === undefined || val === null) {
+            return this;
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            self.push(val);
+        } else {
+            self.splice(index, 0, val);
+        }
+    };
+
+    Array.prototype.pushAll = function (val) {
+        if (val === undefined || val === null) {
+            return this;
+        }
+        let self = this;
+        if (isArray(val)) {
+            if (!val.isEmpty()) {
+                for (let n = 0; n < val.length; n++) {
+                    let $this;
+                    if (!self.contains($this = val[n])) {
+                        self.push($this);
+                    }
+                }
+            }
+        } else {
+            self.push(val);
+        }
+        return self;
+    };
+
+    Array.prototype.spliceAll = function (index, n, val) {
+        if (!val || !isArray(val)) {
+            return this;
+        }
+        return this.splice.apply(this, val.unshift(index, n));
+    };
+
+    Array.prototype.retainAll = function (val, test) {
+        if (val === undefined || val === null) {
+            return this;
+        }
+        let self = this;
+        if (isArray(val)) {
+            if (!val.isEmpty()) {
+                for (let n = 0; n < self.length; n++) {
+                    let $this;
+                    if (test !== undefined && test !== null) {
+                        if (test($this = self[n])) {
+                            self.remove($this);
+                        }
+                    } else {
+                        if (!val.contains($this = self[n])) {
+                            self.remove($this);
+                        }
+                    }
+                }
+                self.pushAll(val);
+            }
+        } else {
+            self.push(val);
+        }
+        return self;
+    };
+
+    Array.prototype.every = Array.prototype.every || function (test) {
+        if (test === undefined || test === null) {
+            throw new Error('argument is required in every function');
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            return false;
+        }
+        for (let n = 0; n < self.length; n++) {
+            if (!test(self[n], n)) {
+                return false;
+            }
+        }
+        return true;
+    };
+    Array.prototype.anyMatch = Array.prototype.some = Array.prototype.some || function (test) {
+        if (test === undefined || test === null) {
+            throw new Error('argument is required in anyMatch function');
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            return false;
+        }
+        for (let n = 0; n < self.length; n++) {
+            if (test(self[n], n)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    Array.prototype.noneMatch = function (test) {
+        if (test === undefined || test === null) {
+            throw new Error('argument is required in noneMatch function');
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            return true;
+        }
+        for (let n = 0; n < self.length; n++) {
+            if (test(self[n], n)) {
+                return false;
+            }
+        }
+        return true;
+    };
+    Array.prototype.allMatch = function (test) {
+        if (test === undefined || test === null) {
+            throw new Error('argument is required in allMatch function');
+        }
+        let self = this;
+        if (self.isEmpty()) {
+            return false;
+        }
+        for (let n = 0; n < self.length; n++) {
+            if (!test(self[n], n)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    Array.prototype.groupBy = function (prop) {
+        const accumulate = (acc, key, val) => {
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(val);
+        };
+
+        if (isFunction(prop)) {
+            const supplier = prop;
+            const acc = {};
+            this.forEach(v => {
+                const key = supplier(v);
+                if (isArray(key)) {
+                    key.forEach(key => {
+                        accumulate(acc, key, v);
+                    });
+                } else {
+                    accumulate(acc, key, v);
+                }
+            });
+            return acc;
+        } else {
+            const props = prop.split('.');
+            return this.reduce((acc, obj) => {
+                if (props.length === 1) {
+                    const key = obj[prop];
+                    accumulate(acc, key, obj);
+                } else {
+                    const prop1 = props[0];
+                    if (prop1 in obj) {
+                        const prop2 = props[1];
+                        const obj2 = obj[prop1];
+                        if (prop2 in obj2) {
+                            const key = obj2[prop2];
+                            accumulate(acc, key, obj);
+                        }
+                    }
+                }
+                return acc;
+            }, {});
+        }
+    };
+
+    Array.prototype.sortBy = function (prop, dir) {
+        this.sort((a, b) => {
+            const v1 = Object.getValueByPath(a, prop);
+            const v2 = Object.getValueByPath(b, prop);
+            if (v1 === v2 || (isNullable(v1) && isNullable(v2))) {
+                return 0;
+            }
+
+            if (v1 > v2)
+                return dir === 'desc' ? -1 : 1;
+            if (v1 < v2)
+                return dir === 'desc' ? 1 : -1;
+            return 0;
+        });
+    };
+
+    Array.prototype.distinct = function (test) {
+        let array;
+        if (isFunction(test)) {
+            array = this.filter(test);
+        } else if (isString(test)) {
+            const key = test;
+            array = this.filter(function (value, index, self) {
+                return self.indexOfWithPredicate((v, n) => v[key] === value[key]) === index;
+            });
+        } else {
+            array = this.filter(function (value, index, self) {
+                return self.indexOf(value) === index;
+            });
+        }
+        return Array.from(new Set(array.map(JSON.stringify))).map(JSON.parse);
+    };
+
+    Array.prototype.min = function (supplier) {
+        if(supplier) {
+            return Math.min(...this.map(supplier));
+        }
+        return Math.min(...this);
+    };
+
+    Array.prototype.max = function (supplier) {
+        if(supplier) {
+            return Math.max(...this.map(supplier));
+        }
+        return Math.max(...this);
+    };
+
+    Array.range = function (min, max, step = 1){
+        return Array.from({length: (max - min) / step + 1}, (_, n) => min + (n * step));
+    };
+
+    Array.prototype.fromArgs = Array.prototype.fromArguments = function (...args) {
+        return args;
+    };
+
+    Array.fromArgs = Array.fromArguments = function (...args) {
+        return args;
+    };
+
+    Array.prototype.toObject = function () {
+        return {...this};
+    };
+
+    Array.prototype.jsonArrayString = function (param) {
+        let self = this;
+        let source = '[';
+        self.forEach(function (self, n, array) {
+            if (isString(self)) {
+                source += '"' + self + '",';
+            } else if (isNumber(self) || isBoolean(self)) {
+                source += self + ',';
+            } else if (isFunction(self) && param && param.includeFunction) {
+                source += self.toString() + ',';
+            } else if (isArray(self)) {
+                source += self.jsonArrayString(param) + ',';
+            } else if (isObject(self)) {
+                source += jsonObjectString(self, param) + ',';
+            }
+        });
+
+        if (self !== null && source !== "[") {
+            source = source.substring(0, source.length - 1);
+        }
+        source += ']';
+        return source;
+    };
     //</editor-fold>
 })(typeof self === 'object' && self.self === self && self || typeof global === 'object' && global.global === global && global || this);

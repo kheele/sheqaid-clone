@@ -3,7 +3,7 @@
 // 1
 import { graphql } from "react-relay";
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import Company from "models/orgs/Company";
+// import Company from "models/orgs/Company";
 
 // 2
 const query = graphql`
@@ -70,5 +70,4 @@ const query = graphql`
 //firestore_id
 // 3
 export default async (input: number) =>
-    findOneMutationImpl({ query, variables: {id: input} }).
-    then((data: any) => new Company(data));
+    findOneMutationImpl({ query, variables: {id: input} });
