@@ -17,6 +17,7 @@ const mutation = graphql`
             id
             created_at
             doc
+            date
             expiry
             title
             desc
@@ -33,6 +34,7 @@ const mutation = graphql`
 export default async (input) => {
 	const {
 		doc,
+        date,
 		expiry,
 		title,
 		desc,

@@ -17,6 +17,7 @@ export default async (input: number) => {
             id
             created_at
             doc
+            date
             expiry
             title
             desc

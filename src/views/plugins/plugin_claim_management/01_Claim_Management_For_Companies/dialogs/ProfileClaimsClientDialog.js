@@ -141,10 +141,9 @@ class Controls extends React.Component {
             console.error(err);
             infoDialog.open(`${title} couldn't be printed. Please try again.`);
         }).finally(() => {
-            setTimeout(() => progressDialog.close())
+            setTimeout(() => progressDialog.close());
         });
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onClickChat">

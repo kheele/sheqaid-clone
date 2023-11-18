@@ -40,38 +40,3 @@ if (module.hot) {
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 //serviceWorker.register();
-
-//Testing purpses
-// Polyfill instantiateStreaming for browsers missing it
-if (!WebAssembly.instantiateStreaming) {
-    WebAssembly.instantiateStreaming = async (fetchPromise, importObject) => {
-        const bytes = await fetchPromise.then(res => res.arrayBuffer());
-        return await WebAssembly.instantiate(bytes, importObject);
-    };
-}
-
-//const questions = {
-//    1: 1,
-//    2: {
-//        a: [1,2,3]
-//    }
-//};
-//const ser = serialize(questions);
-//console.log('serialize questions', ser)
-//console.log('deserialize questions', deserialize(ser))
-//
-//console.time('WebAssembly.instantiateStreaming');
-//WebAssembly.instantiateStreaming(fetch("wasm/sheq_aid_wasm.wasm"), {}).then(instantiatedModule => {
-//    const {exports} = instantiatedModule.instance;
-//
-//    const questions = {
-//        1: 1,
-////        2: 1
-//    };
-//    console.log('quesPath', serialize(questions))
-//    const res = exports.value_path(serialize(questions), serialize(1));
-//    const quesPath = deserialize(res);
-//    console.log('quesPath', quesPath)
-//    console.log('exports', exports)
-//    console.timeEnd('WebAssembly.instantiateStreaming');
-//});

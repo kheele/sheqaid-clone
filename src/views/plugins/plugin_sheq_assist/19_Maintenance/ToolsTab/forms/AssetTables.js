@@ -1290,7 +1290,7 @@ class NewDocumentTable extends ATableSavable {
         const {readonly} = this.props;
         const item = this.state.list[n];
         if (item) {
-            const {type, title, expiry, desc, doc} = item;
+            const {type, title, date, expiry, desc, doc} = item;
             return <TRow key={"item-" + n} className="tr-readonly w-full">
                 <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
                 <div className="td fixed-flex min-w-140">{type}</div>
@@ -1309,6 +1309,7 @@ class NewDocumentTable extends ATableSavable {
                         onChange={this.onChange}
                     />
                 </div>
+                <div className="td fixed-flex min-w-140">{Dates.formatDate(date)}</div>
                 <div className="td fixed-flex min-w-140">{Dates.formatDate(expiry)}</div>
                 {!readonly ? <div className="td fixed-flex min-w-100 padding-l-0">
                     <Button idx={n} action="edit" className="btn btn-primary margin-r-10 pull-right w-40"
@@ -1340,6 +1341,8 @@ class NewDocumentTable extends ATableSavable {
                     className="col-lg-12 w-full"
                     onChange={this.onChange}
                 />
+                <ClearableInput ref={this.onSetRef} name="date" type="date" placeholder="Date"
+                                className="col-lg-12 w-full form-control" onChange={this.onChange}/>
                 <ClearableInput ref={this.onSetRef} name="expiry" type="date" placeholder="Expiry Date"
                                 className="col-lg-12 w-full form-control" onChange={this.onChange}/>
                 <Button idx={n} action="save" className="btn btn-primary hor-center border-radius-20 w-100"
@@ -1360,6 +1363,7 @@ class NewDocumentTable extends ATableSavable {
                 <div className="td font-size-14">Title</div>
                 <div className="td font-size-14">Description</div>
                 <div className="td fixed-flex min-w-200 font-size-14">Document</div>
+                <div className="td fixed-flex min-w-150 font-size-14">Date</div>
                 <div className="td fixed-flex min-w-150 font-size-14">Expiry</div>
                 <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
             </THead>

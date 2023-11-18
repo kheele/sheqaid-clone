@@ -252,12 +252,12 @@ exports.uploadCOIDClaimWCI2 = async (body) => {
 
 				await updateRelay({
 					mutation: `
-			    mutation updateCOIDClaimWCI2DocMutation($id: coida_claims_wcl_2_pk_columns_input!, $_set: coida_claims_wcl_2_set_input!) {
-			      update_coida_claims_wcl_2_by_pk(pk_columns: $id, _set: $_set) {
-			        id
-			      }
-			    }
-			  `,
+						mutation updateCOIDClaimWCI2DocMutation($id: coida_claims_wcl_2_pk_columns_input!, $_set: coida_claims_wcl_2_set_input!) {
+						  update_coida_claims_wcl_2_by_pk(pk_columns: $id, _set: $_set) {
+							id
+						  }
+						}
+					`,
 					operationName: "updateCOIDClaimWCI2DocMutation",
 					id,
 					attrs,

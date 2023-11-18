@@ -42,5 +42,23 @@ router.put('/uploadAssetMonitoringPlanFuelUsageFilesUpdate', async (req, res) =>
 });
 
 // automate.run();
+automate.loadFiles('2. License Disc', (data) => {
+	const lines = data.text_pages[0].split('\n').filter(v => v.isNotEmpty());
+	const reg_num = lines.find(v => v.contains('Licence number')).split('Licence number')[1].trim().split(' ')[0].replaceAll(' ', '');
+	const date = lines.find(v => v.contains('Datum')).trim().split('Datum')[0].trim().substring(2).trim().replace(' ', '-');//.trim().split('Vervaldatum')[0].replaceAll(' ', '').replaceAll('--', '-');
+	const expiry = lines.find(v => v.contains('Date of expiry')).split('Date of expiry')[1].trim().split('Vervaldatum')[0].replaceAll(' ', '').replaceAll('--', '-');
+
+	data = {reg_num, date: date ? `20${date}`: null, expiry};
+	return data;
+});
+automate.loadFiles('2. License Disc', (data) => {
+	const lines = data.text_pages[0].split('\n').filter(v => v.isNotEmpty());
+	const reg_num = lines.find(v => v.contains('Licence number')).split('Licence number')[1].trim().split(' ')[0].replaceAll(' ', '');
+	const date = lines.find(v => v.contains('Datum')).trim().split('Datum')[0].trim().substring(2).trim().replace(' ', '-');//.trim().split('Vervaldatum')[0].replaceAll(' ', '').replaceAll('--', '-');
+	const expiry = lines.find(v => v.contains('Date of expiry')).split('Date of expiry')[1].trim().split('Vervaldatum')[0].replaceAll(' ', '').replaceAll('--', '-');
+
+	data = {reg_num, date: date ? `20${date}`: null, expiry};
+	return data;
+});
 
 module.exports = router;

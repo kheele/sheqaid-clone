@@ -2,16 +2,7 @@ const path = require("path");
 const fs = require("fs-extra");
 
 exports.run = async () => {
-    fs.readdir(path.join(__dirname, 'docs/3. COF'), async (err, files) => {
-        if (err) {
-            console.error('Error reading directory:', err);
-            return;
-        }
-
-        files = files.map(file => path.basename(file));
-
-        // return;
-
+    readFiles(path.join(__dirname, 'docs/3. COF')).then(async files => {
         await Promise.all(files.map(async filename => {
             let [reg, type] = filename.split('.')[0].split(' ');
             type = "Certificate of Fitness (C.O.F)";//
@@ -171,6 +162,51 @@ const upload = async (filePath, buffer) => {
     });
 };
 
+const readFiles = async (_path) => {
+    return new Promise((resolve, reject) => {
+        fs.readdir(_path, (err, files) => {
+            if (err) {
+                console.error('Error reading directory:', err);
+                return reject(err);
+            }
+
+            resolve(files.map(file => path.basename(file)));
+        });
+    });
+};
+
+exports.loadFiles = async (dir, extract) => {
+    const pdf_extract = require('pdf-extract');
+    readFiles(path.join(__dirname, `docs/${dir}`)).then(async files => {
+        await Promise.all(files.filter(filename => !filename.contains('Missing')).slice(0, 1).map(async filename => {
+            const options = {
+                type: 'ocr', // perform ocr to get the text within the scanned image
+                ocr_flags: ['--psm 1'], // automatically detect page orientation
+            };
+            // const options = {
+            //     type: 'text', // extract searchable text from PDF
+            //     ocr_flags: ['--psm 1'], // automatically detect page orientation
+            //     enc: 'UTF-8',  // optional, encoding to use for the text output
+            //     mode: 'layout' // optional, mode to use when reading the pdf
+            // }
+            const file = `docs/${dir}/${filename}`;
+            const processor = pdf_extract(path.join(__dirname, file), options, () => console.log("Starting…"));
+
+            return new Promise((resolve, reject) => {
+                processor.on('complete', data => {
+                    data = extract(data);
+                    console.log(file, 'data', data);
+                    // console.log(file, lines);
+                    resolve(data);
+                });
+                processor.on('error', err => {
+                    reject(err);
+                    console.error(err);
+                });
+            });
+        }));
+    });
+};
 
 // Licenses
 // asset not found reg
