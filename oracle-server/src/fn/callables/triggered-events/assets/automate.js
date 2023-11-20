@@ -175,11 +175,12 @@ const readFiles = async (_path) => {
     });
 };
 
-exports.loadFiles = async (dir, extract) => {
+exports.loadFiles = async (dir, extract, options) => {
     const pdf_extract = require('pdf-extract');
     readFiles(path.join(__dirname, `docs/${dir}`)).then(async files => {
-        await Promise.all(files.filter(filename => !filename.contains('Missing')).slice(0, 1).map(async filename => {
-            const options = {
+        files = files.filter(filename => !filename.contains('Missing'));//.slice(0, 1);
+        files = await Promise.all(files.map(async filename => {
+            options = options || {
                 type: 'ocr', // perform ocr to get the text within the scanned image
                 ocr_flags: ['--psm 1'], // automatically detect page orientation
             };
@@ -190,11 +191,19 @@ exports.loadFiles = async (dir, extract) => {
             //     mode: 'layout' // optional, mode to use when reading the pdf
             // }
             const file = `docs/${dir}/${filename}`;
+            return file;
+        }));
+
+        const dataList = [];
+
+        for (let n = 0; n < files.length; n++) {
+            const file = files[n];
+
             const processor = pdf_extract(path.join(__dirname, file), options, () => console.log("Starting…"));
 
-            return new Promise((resolve, reject) => {
+            const data = await new Promise((resolve, reject) => {
                 processor.on('complete', data => {
-                    data = extract(data);
+                    data = extract(data, path.join(__dirname, file));
                     console.log(file, 'data', data);
                     // console.log(file, lines);
                     resolve(data);
@@ -204,7 +213,11 @@ exports.loadFiles = async (dir, extract) => {
                     console.error(err);
                 });
             });
-        }));
+
+            dataList.push(data);
+        }
+
+        console.log(dir, 'dataList', dataList);
     });
 };
 

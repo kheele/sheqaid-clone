@@ -1,11 +1,12 @@
 const io = require('socket.io-client');
 
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
+const {CONTRACTORS_ENDPOINT, HR_ENDPOINT, CONVERT_BINARY_ENDPOINT} = process.env;
 
 const connectSocket = (key, domain) => {
     global[key] = io(domain, {
         withCredentials: true,
         transports: ['websocket'], // Only allow WebSocket transport
+
         // auth: (cb) => {
         // 	const {session} = self;
         // 	if (session.isLoggedIn) {
@@ -52,3 +53,4 @@ const connectSocket = (key, domain) => {
 
 connectSocket('socketClientContractor', CONTRACTORS_ENDPOINT);
 connectSocket('socketClientHR', HR_ENDPOINT);
+connectSocket('socketConvertBinary', CONVERT_BINARY_ENDPOINT);

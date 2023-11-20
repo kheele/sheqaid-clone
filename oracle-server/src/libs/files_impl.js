@@ -25,13 +25,13 @@ const createBuffer = (datauri_or_buffer) => {
     }
 };
 
-const getContentType = (datauri_or_buffer) => {
+const getContentType = async (datauri_or_buffer) => {
     if (typeof datauri_or_buffer === 'string') {
         const parts = datauri_or_buffer.split(',');
         return parts[0].replace('data:', '').split(';')[0];
     } else {
         try {
-            const res = fileTypeFromBuffer(datauri_or_buffer);
+            const res = await fileTypeFromBuffer(datauri_or_buffer);
             return res.contentType;
         } catch (err) {
 
@@ -40,7 +40,7 @@ const getContentType = (datauri_or_buffer) => {
 };
 
 global.uploadDataUri = async (datauri_or_buffer, filePath) => {
-    const contentType = getContentType(datauri_or_buffer);
+    const contentType = await getContentType(datauri_or_buffer);
     const buffer = createBuffer(datauri_or_buffer);
     console.log('uploadDataUri', contentType, buffer);
 
