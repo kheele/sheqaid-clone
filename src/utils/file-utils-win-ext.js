@@ -191,18 +191,14 @@ window.createPDFPreviewUrlFromRemote = filePath => {
 	if (loc.contains('#')) {
 		loc = loc.replace(document.location.hash, "").replace("#", "");
 	}
-	if (filePath.startsWith('blob')) {
-//        filePath = loc + filePath;
-//        alert(filePath)
-	}
 	return `${loc}js/lib/pdfjs-2.3.200-dist/web/viewer.html?file=${encodeURIComponent(filePath)}`;
 };
 window.createReactPDFPreviewUrl = createPDFPreviewUrlFromRemote;
 window.createPDFPreviewUrl = async filePath => {
 	if (!filePath)
 		return null;
-	
-	if (filePath.contains('.docx') || filePath.contains('.doc')) {
+
+	if (FileTypes.isWord(filePath)) {
 		filePath = await neonBinding.events.emit('wordToPDFOnline', filePath);
 		return createPDFPreviewUrlFromRemote(filePath);
 	} else {

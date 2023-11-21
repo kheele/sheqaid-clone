@@ -53,4 +53,4 @@ const connectSocket = (key, domain) => {
 
 connectSocket('socketClientContractor', CONTRACTORS_ENDPOINT);
 connectSocket('socketClientHR', HR_ENDPOINT);
-connectSocket('socketConvertBinary', CONVERT_BINARY_ENDPOINT);
+// connectSocket('socketConvertBinary', CONVERT_BINARY_ENDPOINT);

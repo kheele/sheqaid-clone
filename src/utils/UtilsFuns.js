@@ -25,18 +25,37 @@ async function toDataURI(filePath) {
     return res;
 }
 
-function convertMobx(arg) {
-    // if(arg && isFile(arg)) {
-    //     return toDataURI(arg);
+async function convertMobx(arg) {
+    if(arg && (isFile(arg) || isFile(arg.path))) {
+        return await toDataURI(arg);
+    }
+    if(arg && isDate(arg)) {
+        return Dates.formatDateSQL(arg);
+    }
+    if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
+        return await convertMobx(toJS(arg));
+    }
+    if (isArray(arg)) {
+        return await Promise.all(arg.map(convertMobx));
+    }
+    if (isObservable(arg)) {
+        return toJS(arg);
+    }
+    return arg;
+}
+
+function convertMobxForFilter(arg) {
+    // if(arg && (isFile(arg) || isFile(arg.path))) {
+    //     return await toDataURI(arg);
     // }
     if(arg && isString(arg) && arg.isDate()) {
         return Dates.formatDateSQL(arg);
     }
     if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
-        return convertMobx(toJS(arg));
+        return convertMobxForFilter(toJS(arg));
     }
     if (isArray(arg)) {
-        return arg.map(convertMobx);
+        return arg.map(convertMobxForFilter);
     }
     if (isObservable(arg)) {
         return toJS(arg);
@@ -327,6 +346,7 @@ export {
     findReactComponent,
     toDataURI,
     convertMobx,
+    convertMobxForFilter,
     debounce,
     isInView,
     calculateRightPos,

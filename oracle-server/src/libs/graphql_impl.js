@@ -303,7 +303,7 @@ global.updateGraphQL = async ({mutation, operationName, id, attrs}) => {
 //</editor-fold>
 
 // const {fileTypeFromBuffer} = require('./file-type');
-
+//
 // listGraphQL({
 //     query: `
 // 	    query listAllAssetDocsQuery {
