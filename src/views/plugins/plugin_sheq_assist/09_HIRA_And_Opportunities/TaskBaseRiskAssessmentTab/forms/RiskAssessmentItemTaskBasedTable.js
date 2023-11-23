@@ -44,11 +44,27 @@ class RiskAssessmentItemTable extends React.Component {
     
     render() {
         const {name, readonly, isNew, defaultValue, item, onChange} = this.props;
-        return (<Table className="ARiskAssessmentItemTable RiskAssessmentItemTable w-full min-h-380 padding-0 margin-0">
+        // return (<>
+        //     <iframe
+        //         src="https://view.officeapps.live.com/op/embed.aspx?src=http://localhost:4000//templates/xlsx/risk-assessments/Template-List-BaselineRA.xlsx"
+        //         frameborder="0"
+        //         width="100%"
+        //         style={{
+        //             margin: "-5px 0 0 -10px",
+        //             width: "calc(100% + 10px)",
+        //             minHeight: "360px",
+        //         }}>
+        //     </iframe>
+        //     {!readonly && <NewRiskAssessmentItemTaskBasedDialog ref="newDialog" mainItem={item}/>}
+        //     {!readonly && <Button className="btn btn-primary add-item-b" onClick={this.onNew}>
+        //         <i className="fa fa-plus"/> Add Item
+        //     </Button>}
+        // </>);
+        return (<Table className="ARiskAssessmentItemTable RiskAssessmentItemTable overflow-hidden w-full min-h-380 padding-0 margin-0">
             {!readonly && <NewRiskAssessmentItemTaskBasedDialog ref="newDialog" mainItem={item}/>}
-            <RiskAssessmentItemTHead/>  
+            <RiskAssessmentItemTHead className="h-165"/>
             <RiskAssessmentItemTBody ref="tbody" name={name} readonly={readonly} isNew={isNew} onEditItem={this.onEditItem} defaultValue={defaultValue} onChange={onChange}/>
-            
+
             {!readonly && <Button className="btn btn-primary add-item-b" onClick={this.onNew}>
                 <i className="fa fa-plus"/> Add Item
             </Button>}

@@ -198,7 +198,7 @@ class Controls extends React.Component {
 				rendered
 				idx={2}
 				title="2. Assessed Items"
-				className="row-photos"
+				sectionClassName="overflow-auto"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>

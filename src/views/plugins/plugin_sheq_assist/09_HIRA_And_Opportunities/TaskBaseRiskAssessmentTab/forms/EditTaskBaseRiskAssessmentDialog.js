@@ -299,6 +299,7 @@ class Controls extends React.Component {
               rendered
               idx={2}
               title="2. Assessed Items"
+              sectionClassName="overflow-auto"
               onFormOpen={onFormOpen}
               onFormBack={onFormBack}
               onFormSave={this.onFormSave}

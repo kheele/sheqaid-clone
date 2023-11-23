@@ -30,8 +30,8 @@ class RiskAssessmentItemTHead extends React.Component {
     }
 
     render() {
-        const {hasFrequency} = this.props;
-        return (<THead className="h-140">
+        const {hasFrequency, className} = this.props;
+        return (<THead className={className}>
             <div className="td text-center">Basic Task Step</div>
             <div className="td text-center">Hazard</div>
             <div className="td text-center">Potential Risk</div>

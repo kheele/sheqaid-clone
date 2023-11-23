@@ -178,7 +178,7 @@ class Controls extends React.Component {
 				rendered
 				idx={2}
 				title="2. Assessed Items"
-				className="row-photos"
+				sectionClassName="overflow-auto"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
@@ -189,7 +189,3 @@ class Controls extends React.Component {
 }
 
 export default NewTaskBaseRiskAssessmentDialog;
-//1. sheqaid-hasura
-//2. sheqaid-server
-//3. sheqaid-server-contractors
-//4. sheqaid-general

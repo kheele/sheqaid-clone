@@ -72,6 +72,12 @@
     border-radius: 20px 0 0 20px !important;
 }
 
+.overflow-auto {
+    overflow: auto !important;
+}
+.overflow-hidden {
+    overflow: hidden !important;
+}
 .overflow-x-auto {
     overflow-x: auto !important;
 }
