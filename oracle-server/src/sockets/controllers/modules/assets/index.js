@@ -1,4 +1,5 @@
 require('./vehicle-forms');
+require('./docs');
 
 class Cntr extends ACntr {
 	constructor() {

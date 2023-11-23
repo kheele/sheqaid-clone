@@ -577,14 +577,12 @@ class NewRiskControlMeasureListTable extends ATableSavable {
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0">
-				<div className="td">
+			return <TRow key="item-new" className="w-full padding-10 grid-1 grid-gap-10">
+				<div className="td w-full grid-1 grid-gap-10">
 					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder="Type here" required
 					                className="form-control" onChange={this.onChange}/>
-				</div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10" onClick={onClick}>
-						<i className="fa fa-check"/>
+					<Button idx={n} action="save" className="btn btn-primary hor-center w-100 border-radius-20" onClick={onClick}>
+						<i className="fa fa-check"/> ADD
 					</Button>
 				</div>
 			</TRow>;
@@ -592,7 +590,7 @@ class NewRiskControlMeasureListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full h-auto padding-0 margin-0">
 			<THead>
 				<div className="td">Risk Control Measure</div>
 				<div className="td fixed-flex text-center padding-l-0 padding-r-0 min-w-60"></div>

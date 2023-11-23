@@ -8,7 +8,7 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     Button,
     ClearableInput,
-    DateRangeInput,
+    DateRangeInput, SelectEmployeeInput,
     SelectIncidentActivityList, SelectIncidentCategoryList,
     SelectIncidentSubCategoryList
 } from 'components/inputs';
@@ -43,20 +43,21 @@ class IncidentsTab extends React.Component {
         lists: {
             ...StateLists,
             incident_status: [
-//                {label: 'Awaiting Approval', value: 'AwaitingApproval', checked: false},//x
+               {label: 'Awaiting Approval', value: 'AwaitingApproval', checked: false},
                 {label: 'Approved Incident', value: 'ApprovedIncident', checked: false},
-                {label: 'Assigned Investigator', value: 'AssignedInvestigator', checked: false},//x
-//                {label: 'Investigating', value: 'Investigating', checked: false},//x
+                {label: 'Assigned Investigator', value: 'AssignedInvestigator', checked: false},
+               {label: 'Investigating', value: 'Investigating', checked: false},
                 {label: 'Closed Incident', value: 'ClosedIncident', checked: false}
             ],
             investigation_status: [
+                {label: 'Awaiting Investigation Approval', value: 'AwaitingInvestigationApproval', checked: false},
                 {label: 'Approved Investigation', value: 'ApprovedInvestigation', checked: false},
-//                {label: 'Investigating', value: 'Investigating', checked: false},//x
-                {label: 'Closed Investigation', value: 'ClosedInvestigation', checked: false}//inv
+                {label: 'Closed Investigation', value: 'ClosedInvestigation', checked: false},
             ]
         }
     }
     // </editor-fold>
+
     innerRefs = {};
 
     // <editor-fold defaultstate="collapsed" desc="constructor, componentMount">
@@ -104,27 +105,76 @@ class IncidentsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            // name,
+            id,
+            //
+            person_reporting_id,
+            person_reported_to_id,
+            person_involved_id,
+            person_injured_id,
+            witness_id,
+            person_distributed_to_id,
+            driver_id,
+            //
+            category_list,
+            sub_category_list,
+            activity_list,
+            //
+            exact_location,
+            is_vehicle_incident,
+            vehicle_make,
+            vehicle_reg_num,
+            incident_status,
+            investigation_status,
+            //
+            group,
+            consequence,
+            likelihood,
+            risk_rating,
+            //
+            day_group,
+            time_shift,
+            incident_date_range,
+            date_reported_range,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('incidents').fn('listByLogged');
 
-        const args = {
-            // name,
-            removed: false,
+        return listByLogged({
+            id,
             //
-            limit,
+            person_reporting_id,
+            person_reported_to_id,
+            person_involved_id,
+            person_injured_id,
+            witness_id,
+            person_distributed_to_id,
+            driver_id,
+            //
+            category_list,
+            sub_category_list,
+            activity_list,
+            //
+            exact_location,
+            is_vehicle_incident,
+            vehicle_make,
+            vehicle_reg_num,
+            incident_status,
+            investigation_status,
+            //
+            group,
+            consequence,
+            likelihood,
+            risk_rating,
+            //
+            day_group,
+            time_shift,
+            incident_date_range,
+            date_reported_range,
             //
             exact_orgs: true,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -344,48 +394,161 @@ class IncidentsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls -margin-b-35">
-            <SelectIncidentCategoryList
-                name="category"
-                type="select"
+        return <div className="col-lg-12 controls -margin-b-15">
+            <ClearableInput
+                name="id"
+                type="number"
+                placeholder="ID"
                 className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="person_reporting"
+                placeholder="Reported By..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="person_reported_to"
+                placeholder="Reported To..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="person_involved"
+                placeholder="Person Involved..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+
+            <SelectEmployeeInput
+                name="person_injured"
+                placeholder="Person Injured..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="witness"
+                placeholder="Witness..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="person_distributed_to"
+                placeholder="Person Distributed To..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="driver"
+                placeholder="Driver..."
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+            />
+
+            <SelectIncidentCategoryList
+                name="category_list"
+                type="select_multi"
+                className="col-lg-4 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <SelectIncidentSubCategoryList
+                name="sub_category_list"
+                type="select_multi"
+                className="col-lg-4 margin-b-10 form-control"
                 onChange={onChange}
             />
             <SelectIncidentActivityList
-                ref={this.onSetCategoryRef}
-                refName="activity"
-                name="activity"
-                type="select"
-                placeholder="Activity..."
-                className="col-lg-3 margin-b-10 form-control"
-                vertical={false}
+                name="activity_list"
+                type="select_multi"
+                placeholder="Activities..."
+                className="col-lg-4 margin-b-10 form-control"
                 onChange={onChange}
-                values={this.state.lists.activity_list}
                 add={false}
             />
+
+            <ClearableInput
+                name="exact_location"
+                type="text"
+                placeholder="Exact Location"
+                className="col-lg-2 margin-b-10 form-control"
+                onChange={onChange}
+            />
+            <ClearableInput name="is_vehicle_incident" type="select" placeholder="Vehicle Incident?"
+                            className="col-lg-2 margin-b-10 form-control" onChange={onChange}
+                            values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({label, value}))} returnValue/>
+            <ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
+                            className="col-lg-2 margin-b-10 form-control" onChange={onChange}/>
+            <ClearableInput name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
+                            className="col-lg-2 margin-b-10 form-control" onChange={onChange}/>
             <ClearableInput name="incident_status" type="select" placeholder="Incident Status..."
-                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
+                            className="col-lg-2 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.incident_status} returnValue/>
             <ClearableInput name="investigation_status" type="select" placeholder="Investigation Status..."
-                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
+                            className="col-lg-2 margin-b-10 form-control" onChange={onChange}
                             values={this.state.lists.investigation_status} returnValue/>
-            <DateRangeInput name="incident_date_range" className="col-lg-6 margin-b-10 form-control"
+
+            <ClearableInput
+                name="group"
+                type="select"
+                placeholder="Incident Group"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+                values={this.state.lists.group.map(({text: label, value}) => ({label, value}))}
+                returnValue
+            />
+            <ClearableInput
+                name="consequence"
+                type="select"
+                placeholder="Consequence / Severity"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+                values={this.state.lists.consequence.map(({text: label, value}) => ({label, value}))}
+                returnValue
+            />
+            <ClearableInput
+                name="likelihood"
+                type="select"
+                placeholder="Likelihood / Probability"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+                values={this.state.lists.likelihood.map(({text: label, value}) => ({label, value}))}
+                returnValue
+            />
+            <ClearableInput
+                name="risk_rating"
+                type="select"
+                placeholder="Risk Rating"
+                className="col-lg-3 margin-b-10 form-control"
+                onChange={onChange}
+                values={[...this.state.lists.risk_rating.map(({text: label, value}) => ({label, value})), {label: 'N/A', value: 'N/A'}]}
+                returnValue
+            />
+
+            <ClearableInput name="day_group" type="radio" placeholder="Morning / Afternoon"
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
+                            values={this.state.lists.day_group} returnValue/>
+            <ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
+                            className="col-lg-3 margin-b-10 form-control" onChange={onChange}
+                            values={this.state.lists.time_shift} returnValue/>
+            <DateRangeInput name="incident_date_range" className="col-lg-3 margin-b-10 form-control"
                             placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
+            <DateRangeInput name="date_reported_range" className="col-lg-3 margin-b-10 form-control"
+                            placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
+            <div className="td fixed-flex min-w-50">ID</div>
             <div className="td fixed-flex min-w-120">Incident Date</div>
-            <div className="td">Group</div>
+            <div className="td fixed-flex min-w-120">Risk Rating</div>
             <div className="td">Category</div>
             <div className="td">Sub-Category</div>
-            <div className="td">Activities</div>
-            <div className="td">Description</div>
-            <div className="td">Location</div>
+            <div className="td">Short Description</div>
+            <div className="td">Exact Location</div>
             <div className="td fixed-flex min-w-140">Status</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;

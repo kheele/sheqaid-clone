@@ -405,7 +405,8 @@ class ClaimsClientTab extends AClaimsTab {
 	renderTHead() {
 		return <THead>
 			<div className="td fixed-flex min-w-30"></div>
-			<div className="td fixed-flex min-w-55">Ref #</div>
+			<div className="td fixed-flex min-w-55">ID #</div>
+			<div className="td fixed-flex min-w-100">Ref #</div>
 			<div className="td fixed-flex min-w-100">Claim #</div>
 			<div className="td fixed-flex min-w-100">Accident Date</div>
 			<div className="td fixed-flex min-w-100">Resume Date</div>
@@ -455,7 +456,8 @@ class ClaimsClientTab extends AClaimsTab {
 			<div className="td fixed-flex min-w-30 padding-0">
 				<ChatBtn idx={n} item={item} onClick={this.onClickChat}/>
 			</div>
-			<div className="td fixed-flex min-w-55 padding-0">
+			<div className="td fixed-flex min-w-55 padding-0">{id}</div>
+			<div className="td fixed-flex min-w-100 padding-0">
 				{ref_num || 'N/A'}
 			</div>
 			<div className="td fixed-flex min-w-100">{claim_number || 'N/A'}</div>

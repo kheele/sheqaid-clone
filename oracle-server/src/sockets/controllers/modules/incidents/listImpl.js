@@ -1,5 +1,5 @@
 const {orgs_fragment} = require("../../../../graphql/Fragments");
-const {inspection_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {incident_details_fragment, getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -10,7 +10,36 @@ module.exports = async (socket, data) => {
         limit = 50,
         //
         removed = false,
-        status,
+        id,
+        //
+        person_reporting_id,
+        person_reported_to_id,
+        person_involved_id,
+        person_injured_id,
+        witness_id,
+        person_distributed_to_id,
+        driver_id,
+        //
+        category_list,
+        sub_category_list,
+        activity_list,
+        //
+        exact_location,
+        is_vehicle_incident,
+        vehicle_make,
+        vehicle_reg_num,
+        incident_status,
+        investigation_status,
+        //
+        group,
+        consequence,
+        likelihood,
+        risk_rating,
+        //
+        day_group,
+        time_shift,
+        incident_date_range,
+        date_reported_range,
         //
         site_id, project_id, client_id,
         //
@@ -22,7 +51,36 @@ module.exports = async (socket, data) => {
 
     const {filter} = getVariablesAndQueryConfig({
         orgs_filter,
-        status,
+        id,
+        //
+        person_reporting_id,
+        person_reported_to_id,
+        person_involved_id,
+        person_injured_id,
+        witness_id,
+        person_distributed_to_id,
+        driver_id,
+        //
+        category_list,
+        sub_category_list,
+        activity_list,
+        //
+        exact_location,
+        is_vehicle_incident,
+        vehicle_make,
+        vehicle_reg_num,
+        incident_status,
+        investigation_status,
+        //
+        group,
+        consequence,
+        likelihood,
+        risk_rating,
+        //
+        day_group,
+        time_shift,
+        incident_date_range,
+        date_reported_range,
         //
         site_id, project_id, client_id,
         //
@@ -31,25 +89,22 @@ module.exports = async (socket, data) => {
 
     return listGraphQL({
         query: `
-			  query listAllInspectionQuestionnaireByLoggedQuery {
-				default_contractor_questionnaires(
+			  query listAllIncidentsByLoggedQuery {
+				sheq_incident_investigation(
 				  where: {
 					removed: {_eq: ${removed}},
-					group: {_eq: "Inspections"},
-					is_template: {_eq: false},
-					${client_filter}
 					${filter}
 				  },
-					order_by: {name: asc},
+	                order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
 					offset: ${offset},
 					${limit > 0 ? `limit: ${limit}` : ''}
 				) {
-				    ${inspection_details_fragment}
+				    ${incident_details_fragment}
                     ${orgs_fragment}
 				}
 			  }
 			`,
-        operationName: "listAllInspectionQuestionnaireByLoggedQuery",
+        operationName: "listAllIncidentsByLoggedQuery",
     });
 }
 //</editor-fold>

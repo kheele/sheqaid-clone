@@ -84,6 +84,11 @@ export default {
     focus: "#2c3c58",
   },
 
+  brown: {
+    main: "#784b25",
+    focus: "#57381c",
+  },
+
   grey: {
     100: "#f8f9fa",
     200: "#f0f2f5",

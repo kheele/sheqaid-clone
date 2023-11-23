@@ -92,6 +92,7 @@ class AClaimsTab extends React.Component {
 
     renderTHead() {
         return <THead>
+            <div className="td fixed-flex min-w-100">ID #</div>
             <div className="td fixed-flex min-w-100">Ref #</div>
             <div className="td fixed-flex min-w-120">Claim #</div>
             <div className="td fixed-flex min-w-120">Accident Date</div>

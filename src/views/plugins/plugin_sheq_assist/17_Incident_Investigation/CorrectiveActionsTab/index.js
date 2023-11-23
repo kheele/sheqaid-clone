@@ -50,27 +50,17 @@ class CorrectiveActionsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            // name,
+
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('corrective-actions').fn('listByLogged');
 
-        const args = {
-            // name,
-            removed: false,
-            //
-            limit,
+        return listByLogged({
             //
             exact_orgs: true,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

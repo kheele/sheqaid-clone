@@ -15,6 +15,8 @@ import {
 import {THead, TRow} from '../../../../../components/tables';
 
 import AClaimsTab from '../AClaimsTab';
+import ChatBtn from "../../dialogs/ChatBtn";
+import {getDocsStatus, getWClStatus} from "../../ClaimFuns";
 
 //import NewClaimsContractorDialog from './dialogs/NewClaimsContractorDialog';
 //import ProfileClaimsContractorDialog from './dialogs/ProfileClaimsContractorDialog';
@@ -43,32 +45,71 @@ class ClaimsContractorTab extends AClaimsTab {
 
     renderTHead() {
         return <THead>
-            <div className="td fixed-flex min-w-100">MCR Ref #</div>
-            <div className="td fixed-flex min-w-120">Claim #</div>
-            <div className="td fixed-flex min-w-120">Accident Date</div>
-            <div className="td fixed-flex min-w-120">Resume Date</div>
-            <div className="td fixed-flex min-w-120">Status</div>
-            <div className="td fixed-flex min-w-120">Claim Status</div>
-            <div className="td">Employee Name</div>
-            <div className="td fixed-flex min-w-120">Injury/Disease</div>
+            <div className="td fixed-flex min-w-30"></div>
+            <div className="td fixed-flex min-w-55">ID #</div>
+            <div className="td fixed-flex min-w-100">Ref #</div>
+            <div className="td fixed-flex min-w-100">Claim #</div>
+            <div className="td fixed-flex min-w-100">Accident Date</div>
+            <div className="td fixed-flex min-w-100">Resume Date</div>
+            <div className="td fixed-flex min-w-110">Status</div>
+            <div className="td fixed-flex min-w-140">Claim Status</div>
+            <div className="td w-auto">Company</div>
+            <div className="td w-auto">Employee</div>
+            <div className="td fixed-flex min-w-110">Injury/Disease</div>
+            <div className="td fixed-flex min-w-150">Documents</div>
+            <div className="td fixed-flex min-w-160">W.Cl Status</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        const {id, data: {created_at, _target, client, project, site, type, doc, list}} = item;
-//        console.log('ClaimsContractor', item)
-        return <TRow key={"item-" + n}>
-            <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-            <div className="td">{_target === "Client" ? "Company" : _target}</div>
-            
-            {RenderUtils.renderOrgTD(client, null, 'Company')}
-            {RenderUtils.renderOrgTD(project, null, 'Project')}
-            {RenderUtils.renderOrgTD(site, null, 'Site')}
-            
+        const {
+            id,
+            data: {
+                created_at,
+                company, client, project, site,
+                //
+                employee, employee_id,
+                claim_number,
+                accident_date,
+                //
+                wcl_2 = {},
+                wcl_4 = {},
+                wcl_5_list = [],
+                wcl_6 = {},
+                annexture_1 = {},
+                //
+                ref_num,
+                status,
+                claim_status,
+                message_list_provider = []
+            }
+        } = item;
+
+        const {date_resumed_work} = wcl_2 || {};
+        console.log('Claim', toJS(item))
+
+        return <TRow key={"item-" + n} className="w-full">
+            <div className="td fixed-flex min-w-30 padding-0">
+                <ChatBtn idx={n} item={item} onClick={this.onClickChat}/>
+            </div>
+            <div className="td fixed-flex min-w-55 padding-0">{id}</div>
+            <div className="td fixed-flex min-w-100 padding-0">
+                {ref_num || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-100">{claim_number || 'N/A'}</div>
+            <div className="td fixed-flex min-w-100">{Dates.formatDate(accident_date) || 'N/A'}</div>
+            <div className="td fixed-flex min-w-100">{Dates.formatDate(date_resumed_work) || 'N/A'}</div>
+            <div className="td fixed-flex min-w-110">{status || 'N/A'}</div>
+            <div className="td fixed-flex min-w-140">{claim_status || 'N/A'}</div>
+            <div className="td w-auto">{(client || company) ? (client || company).name : "N/A"}</div>
+            <div className="td w-auto">{employee ? employee.full_name : "N/A"}</div>
+            <div className="td fixed-flex min-w-110">Injury</div>
+            <div className="td fixed-flex grid-1 min-w-150 padding-t-3">{getDocsStatus(item)}</div>
+            <div className="td fixed-flex grid-2 min-w-160 padding-t-3">{getWClStatus(item)}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }

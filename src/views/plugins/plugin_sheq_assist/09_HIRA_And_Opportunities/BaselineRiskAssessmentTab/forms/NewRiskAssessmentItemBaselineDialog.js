@@ -646,7 +646,7 @@ class Controls extends React.Component {
 				<ClearableInput ref="frequency_2" name="frequency_2" type="radio" placeholder="Frequency / Exposure"
 				                defaultValue={item && item.frequency_2} required vertical className="col-lg-4 form-control"
 				                onChange={this.form.onChange} values={this.state.lists.frequency_2}/>
-				<label className="margin-t-10 hor-center w-full">Risk Rating Index</label>
+				<label className="margin-t-10 w-full">Risk Rating Index</label>
 				<RiskRating selected={this.state.riskRatingSelected_2} ref="risk_rating_2" name="risk_rating_2" hasFrequency
 				            readonly onChange={this.form.onChange}/>
 			</Row>
@@ -672,7 +672,7 @@ class Controls extends React.Component {
 				<ClearableInput ref="frequency_3" name="frequency_3" type="radio" placeholder="Frequency / Exposure"
 				                defaultValue={item && item.frequency_3} required vertical className="col-lg-4 form-control"
 				                onChange={this.form.onChange} values={this.state.lists.frequency_3}/>
-				<label className="margin-t-10 hor-center w-full">Risk Rating Index</label>
+				<label className="margin-t-10 w-full">Risk Rating Index</label>
 				<RiskRating selected={this.state.riskRatingSelected_3} ref="risk_rating_3" name="risk_rating_3" hasFrequency
 				            readonly onChange={this.form.onChange}/>
 			</Row>
@@ -728,7 +728,7 @@ class NewRiskControlMeasureListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full h-auto padding-0 margin-0">
 			<THead>
 				<div className="td">Risk Control Measure</div>
 				<div className="td fixed-flex text-center padding-l-0 padding-r-0 min-w-60"></div>
@@ -777,8 +777,8 @@ class NewRiskControlMeasureListAdditionalTable extends ATableSavable {
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0 grid-1 grid-gap-10">
-				<div className="td grid-1 grid-gap-10">
+			return <TRow key="item-new" className="w-full padding-10 grid-1 grid-gap-10">
+				<div className="td w-full grid-1 grid-gap-10">
 					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder="Risk Control Measure" required
 					                className="form-control" onChange={this.onChange}/>
 					<SelectEmployeeInput ref={this.onSetRef} name="responsible_person" placeholder="Responsible Person..."
@@ -787,8 +787,6 @@ class NewRiskControlMeasureListAdditionalTable extends ATableSavable {
 					                onChange={this.onChange}/>
 					<ClearableInput name="date_completed" type="date" placeholder="Due Date..." required className="form-control"
 					                onChange={this.onChange}/>
-				</div>
-				<div className="td fixed-flex flex flex-center">
 					<Button idx={n} action="save" className="btn btn-primary hor-center w-100 border-radius-20" onClick={onClick}>
 						<i className="fa fa-plus"/> ADD
 					</Button>
@@ -798,7 +796,7 @@ class NewRiskControlMeasureListAdditionalTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full h-auto padding-0 margin-0">
 			<THead>
 				<div className="td">Additional Risk Control Measure</div>
 				<div className="td">Responsible Person</div>

@@ -57,7 +57,13 @@ export default {
         return {value, text: value, checked: false}
     }),
     location: [],
+    day_group: ['Morning', 'Afternoon'].map(value => {
+        return {value, text: value, checked: false}
+    }),
     time_shift: ['Day', 'Night'].map(value => {
+        return {value, text: value, checked: false}
+    }),
+    risk_rating: ['Extreme', 'High', 'Moderate', 'Low'].map(value => {
         return {value, text: value, checked: false}
     }),
     consequence: getRiskRatingConsequenceList(),

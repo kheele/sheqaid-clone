@@ -2,76 +2,115 @@ import GQLClient from "graphql/GQLClient";
 import {Dates} from "utils/Dates";
 
 export default (
-	{
-		removed = false,
-		//
-		date_range = {},
-		//
-		site_id, project_id, client_id, company_id,
-	}
+    {
+        removed = false,
+        //
+        date_range = {},
+        //
+        site_id, project_id, client_id, company_id,
+    }
 ) => {
-	const id = site_id || project_id || client_id || company_id;
-	let tbl;
-	if(site_id) {
-		tbl = "default_sites";
-	} else if(project_id) {
-		tbl = "default_projects";
-	} else if(client_id) {
-		tbl = "default_clients";
-	} else {
-		tbl = "default_companies";
-	}
+    const id = site_id || project_id || client_id || company_id;
+    let tbl;
+    if (site_id) {
+        tbl = "default_sites";
+    } else if (project_id) {
+        tbl = "default_projects";
+    } else if (client_id) {
+        tbl = "default_clients";
+    } else {
+        tbl = "default_companies";
+    }
 
-	const {start, end} = date_range;
-	const monStart = start || new Date().addMonths(-12);
-	const monEnd = end || new Date();
+    const {start, end} = date_range;
+    const monStart = start || new Date().addMonths(-12);
+    const monEnd = end || new Date();
 
-	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
-	const dateRangeQueries = dates.map(date => {
-		const {year, month, start, end} = date;
-		return `
-			_${year}_${month}__all_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}}) {
-				aggregate {
-				  count
-				} 
+    const createWorkplaceViolenceStats = (key, value, year, month, start, end) => {
+        return `
+			_${year}_${month}__${key}${value.replaceAll(' ', '')}_incident_list_aggregate: incident_list_aggregate(
+				where: {
+					incident_date: {_gte: "${start}", _lte: "${end}"}, 
+					removed: {_eq: false}, 
+					category_list: {category:{name: {_eq: "Workplace Violence"}}}, 
+					sub_category_list: {sub_category:{name: {_eq: "${value}"}}}
+				}
+			) {
+			    aggregate {
+			    	count
+			    }
 			}
-			_${year}_${month}__person_injured_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, _or: [{person_injured_other_id: {_is_null: false}}, {person_injured_id: {_is_null: false}}]}) {
-				aggregate {
-				  count
-				} 
-			}
-			_${year}_${month}__group_lti_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, group: {_eq: "Reportable (LTI)"}}) {
-			  aggregate {
-				  count
-				} 
-			} 
-			_${year}_${month}__firstaid_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category:{name: {_eq: "First Aid"}}}}) {
-			  aggregate {
-			    count
-			  }
-			}  
-			_${year}_${month}__nearmiss_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category:{name: {_eq: "Near miss"}}}}) {
-			  aggregate {
-			    count
-			  }
-			} 
-			_${year}_${month}__fatality_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category: {name: {_eq: "Fatality"}}}}) {
-			  aggregate {
-				  count
-				} 
-			} 
-			_${year}_${month}__vehicle_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, is_vehicle_incident: {_eq: true}}) {
-			  aggregate {
-				  count
-				} 
-			} 
 		`;
-	}).join('\n');
+    };
 
-	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
-		query: `
+    const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+    const dateRangeQueries = dates.map(async date => {
+        const {year, month, start, end} = date;
+        return GQLClient
+            .query({
+                query: `
+				query findByIdOrgAssetDashboardQuery_dateRange_${year}_${month} {
+                    ${tbl}(
+                      where: {
+                        id: {_eq: ${id}}
+                      }
+                    ) {
+                         _${year}_${month}__all_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}}) {
+                        aggregate {
+                          count
+                        } 
+                    }
+                        _${year}_${month}__person_injured_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, _or: [{person_injured_other_id: {_is_null: false}}, {person_injured_id: {_is_null: false}}]}) {
+                            aggregate {
+                              count
+                            } 
+                        }
+                        _${year}_${month}__group_lti_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, group: {_eq: "Reportable (LTI)"}}) {
+                          aggregate {
+                              count
+                            } 
+                        } 
+                        _${year}_${month}__firstaid_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category:{name: {_eq: "First Aid"}}}}) {
+                          aggregate {
+                            count
+                          }
+                        }  
+                        _${year}_${month}__nearmiss_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category:{name: {_eq: "Near miss"}}}}) {
+                          aggregate {
+                            count
+                          }
+                        } 
+                        _${year}_${month}__fatality_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, sub_category_list: {sub_category: {name: {_eq: "Fatality"}}}}) {
+                          aggregate {
+                              count
+                            } 
+                        } 
+                        _${year}_${month}__vehicle_incident_list_aggregate: incident_list_aggregate(where: {incident_date: {_gte: "${start}", _lte: "${end}"}, removed: {_eq: false}, is_vehicle_incident: {_eq: true}}) {
+                          aggregate {
+                              count
+                            } 
+                        } 
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Homicide', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Physical Assault', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Verbal Abuse', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Intimidation', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Threats', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Cyberbullying', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Sexual Harassment', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Discrimination', year, month, start, end)}
+                        ${createWorkplaceViolenceStats('WorkplaceViolence', 'Stalking', year, month, start, end)}		
+                      }
+                  }
+                `,
+            });
+    });
+
+    //<editor-fold desc="ByEach">
+    return Promise.all([
+        GQLClient
+            .query({
+                query: `
       query findByIdOrgIncidentsDashboardQuery {
         ${tbl}(
           where: {
@@ -164,6 +203,11 @@ export default (
 			        count
 			      }
 			    }   
+			    workplaceViolence_incident_list_aggregate: incident_list_aggregate(where: {removed: {_eq: false}, category_list: {category:{name: {_eq: "Workplace Violence"}}}}) {
+			      aggregate {
+			        count
+			      }
+			    }
 			    group_non_incident_list_aggregate: incident_list_aggregate(where: {removed: {_eq: false}, group: {_is_null: true}}) {
 			      aggregate {
 			        count
@@ -234,10 +278,11 @@ export default (
 			        count
 			      }
 			    } 
-			    ${dateRangeQueries}
 			  }
-      }
-    `,
-	});//.then(fillNullLists);
-	//</editor-fold>
+		  }
+		`,
+        }),
+        ...dateRangeQueries,
+    ]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
+    //</editor-fold>
 };

@@ -3,6 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 import Chip from "@material-ui/core/Chip";
+import Grid from "@material-ui/core/Grid";
 import {Dates} from 'utils/Utils';
 
 import {ActionsButton, Button,} from 'components/inputs';
@@ -143,7 +144,7 @@ class IncidentTableRow extends React.Component {
                 client, project, site,
                 investigation,
                 //
-                group,
+                severity,//{consequence, likelihood}
                 incident_date,
                 short_desc,
                 location,
@@ -160,32 +161,33 @@ class IncidentTableRow extends React.Component {
         const __className = (className || "") + " w-full";
 
         return <TRow key={id} className={__className}>
+            <div className="td fixed-flex min-w-50">{id}</div>
             <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Incident Date</h6>
                 {Dates.formatDate(incident_date) || 'N/A'}
             </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Group</h6>
-                {group || 'N/A'}
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Risk Rating</h6>
+                {severity ? severity.risk_rating : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Category</h6>
-                {category_list ? category_list.map(({category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+                {category_list ? <Grid container spacing={1} columns={4}>{
+                    category_list.map(({category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                </Grid> : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Sub-Category</h6>
-                {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+                {sub_category_list ? <Grid container spacing={1} columns={4}>{
+                    sub_category_list.map(({sub_category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                </Grid> : 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Activities</h6>
-                {activity_list ? activity_list.map(({activity: {name}}) => (<span>{name}</span>)) : 'N/A'}
-            </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Description</h6>
+                <h6 className="xs-shown font-size-13">Short Description</h6>
                 {short_desc || 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Location</h6>
+                <h6 className="xs-shown font-size-13">Exact Location</h6>
                 {exact_location || 'N/A'}
             </div>
             <IncidentStatus key={new Date().getTime()} item={item}/>
@@ -275,7 +277,9 @@ class IncidentQuickTableRow extends React.Component {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Category</h6>
-                {category_list ? category_list.map(({category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+                {category_list ? <Grid container spacing={1} columns={4}>{
+                    category_list.map(({category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                </Grid> : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Reported By</h6>
@@ -325,7 +329,7 @@ class IncidentInvestigationTableRow extends React.Component {
             data: {
                 created_at,
                 client, project, site,
-                investigation: {
+                investigation, investigation: {
                     //1
 
                     //2
@@ -377,36 +381,37 @@ class IncidentInvestigationTableRow extends React.Component {
         const __className = (className || "") + " w-full";
 
         return <TRow key={id} className={__className}>
+            <div className="td fixed-flex min-w-50">{id}</div>
             <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Incident Date</h6>
                 {Dates.formatDate(incident_date) || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-120">
-                <h6 className="xs-shown font-size-13">Incident Date</h6>
+                <h6 className="xs-shown font-size-13">Due Date</h6>
                 {Dates.formatDate(due_date) || 'N/A'}
             </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Group</h6>
-                {group || 'N/A'}
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Risk Rating</h6>
+                {severity ? severity.risk_rating : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Category</h6>
-                {category_list ? category_list.map(({category: {name}}) => (<span>{name}</span>)) : 'N/A'}
+                {category_list ? <Grid container spacing={1} columns={4}>{
+                    category_list.map(({category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                </Grid> : 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Sub-Category</h6>
-                {sub_category_list ? sub_category_list.map(({sub_category: {name}}) => (<span>{name}</span>)) : 'N/A'}
-            </div>
+                {sub_category_list ? <Grid container spacing={1} columns={4}>{
+                    sub_category_list.map(({sub_category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                </Grid> : 'N/A'}
+           </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Activities</h6>
-                {activity_list ? activity_list.map(({activity: {name}}) => (<span>{name}</span>)) : 'N/A'}
-            </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Description</h6>
+                <h6 className="xs-shown font-size-13">Short Description</h6>
                 {short_desc || 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Location</h6>
+                <h6 className="xs-shown font-size-13">Exact Location</h6>
                 {exact_location || 'N/A'}
             </div>
             <IncidentInvestigationStatus key={new Date().getTime()} item={item}/>
