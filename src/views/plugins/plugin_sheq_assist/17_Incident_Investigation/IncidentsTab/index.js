@@ -28,7 +28,6 @@ import ProfilePDFReader from '../printers/ProfilePDFReader';
 import style from "./IncidentsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import {execWhen} from "utils/UtilsFuns";
-import byLogged from "./Query/List/listAllIncidentsByLogged";
 import updateIncident from "mutations/all/Incident/updateIncident";
 // </editor-fold>
 
@@ -398,7 +397,7 @@ class IncidentsTab extends React.Component {
             <ClearableInput
                 name="id"
                 type="number"
-                placeholder="ID"
+                placeholder="ID #"
                 className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />

@@ -23,7 +23,6 @@ import ProfilePDFReader from '../printers/ProfilePDFReader';
 
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
-import byLogged from "./Query/List/listAllIncidentInvestigationByLogged";
 import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
 import updateIncident from "mutations/all/Incident/updateIncident";
 import ExportInvestigationsDialog from "../dialogs/ExportInvestigationsDialog";
@@ -383,7 +382,7 @@ class InvestigationsTab extends React.Component {
             <ClearableInput
                 name="id"
                 type="number"
-                placeholder="ID"
+                placeholder="ID #"
                 className="col-lg-3 margin-b-10 form-control"
                 onChange={onChange}
             />

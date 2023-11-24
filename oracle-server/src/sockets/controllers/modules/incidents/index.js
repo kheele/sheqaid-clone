@@ -1,4 +1,5 @@
 require('./incidents-quick');
+require('./cause-analysis');
 require('./corrective-actions');
 require('./investigations');
 

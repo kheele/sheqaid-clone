@@ -70,6 +70,7 @@ class QuickIncidentsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
+            id,
             incident_date_range,
             date_reported_range,
             category_list,
@@ -90,6 +91,7 @@ class QuickIncidentsTab extends React.Component {
         const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
 
         return listByLogged({
+            id,
             incident_date_range,
             date_reported_range,
             category_list,
@@ -281,6 +283,7 @@ class QuickIncidentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
+            <div className="td fixed-flex min-w-50">ID</div>
             <div className="td fixed-flex min-w-180">Date & Time</div>
             <div className="td fixed-flex min-w-140">Severity</div>
             <div className="td">Category</div>

@@ -258,18 +258,15 @@ class IncidentQuickTableRow extends React.Component {
         const __className = (className || "") + " w-full";
 
         return <TRow key={id} className={__className}>
+            <div className="td fixed-flex min-w-50">
+                <h6 className="xs-shown font-size-13">ID</h6>
+                {id}
+            </div>
             <div className="td fixed-flex min-w-180">
                 <h6 className="xs-shown font-size-13">Date && Time</h6>
-                <span className="grid-1">
-                    <span className="flex">
-                        <Chip label={`Date: ${Dates.formatDate(incident_date) || 'N/A'}`} size="small"/>
-                        <Chip label={`Time: ${incident_time || 'N/A'}`} size="small"/>
-                    </span>
-                    <span className="flex">
-                        <Chip label={`Date: ${Dates.formatDate(date_reported) || 'N/A'}`} size="small"/>
-                        <Chip label={`Time: ${time_reported || 'N/A'}`} size="small"/>
-                    </span>
-                </span>
+                {(incident_date || incident_time) ? <Chip
+                    label={<>{Dates.formatDate(incident_date)}<br/>{incident_time}</>} size="medium"
+                /> : 'N/A'}
             </div>
             <div className="td fixed-flex min-w-140">
                 <h6 className="xs-shown font-size-13">Severity</h6>
@@ -303,8 +300,14 @@ class IncidentQuickTableRow extends React.Component {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Location</h6>
-                {latitude && longitude && <MKBox>GPS Coordinates: {latitude}, {longitude}</MKBox>}
-                {exact_location || 'N/A'}
+                {(latitude && longitude) || exact_location ? <Grid container spacing={1} columns={4}>
+                    {latitude && longitude && <Grid item>
+                        <Chip label={latitude + ', ' + longitude} size="small"/>
+                    </Grid>}
+                    {exact_location && <Grid item>
+                        <Chip label={exact_location} size="small"/>
+                    </Grid>}
+                </Grid> : 'N/A'}
             </div>
             {/*<IncidentStatus key={new Date().getTime()} item={item}/>*/}
             {onRenderActionCell && onRenderActionCell(item, idx)}

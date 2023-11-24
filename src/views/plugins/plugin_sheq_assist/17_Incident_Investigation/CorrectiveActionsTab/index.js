@@ -13,7 +13,6 @@ import {Table, TBody, THead, TRow} from 'components/tables';
 //import ProfileFormDialog from './dialogs/ProfileFormDialog.js';
 import style from "./CorrectiveActionsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
-import byLogged from "./Query/List/listAllIncidentCorrectiveActionByLogged";
 import {IncidentCorrectiveActionsTableRow} from "../dialogs/IncidentComponentRows";
 
 @observer

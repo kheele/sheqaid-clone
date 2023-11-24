@@ -79,8 +79,9 @@ class AClaimsTab extends React.Component {
         const marginB = lastChildren ? " margin-b-10" : "";
         return <div className="col-lg-12 controls -margin-b-45">
             {firstChildren}
-            <ClearableInput name="mcr_ref_num" type="text" placeholder="MCR Ref #" className="col-lg-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            <ClearableInput name="claim_number" type="text" placeholder="Claim #" className="col-lg-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+            <ClearableInput name="id" type="text" placeholder="ID #" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+            <ClearableInput name="mcr_ref_num" type="text" placeholder="MCR Ref #" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+            <ClearableInput name="claim_number" type="text" placeholder="Claim #" className="col-lg-4 col-xs-12 form-control margin-b-10" onChange={onChange}/>
 
             <DateRangeInput name="accident_date_range" vertical className="col-lg-5 col-md-5 form-control margin-b-10" placeholder="Accident Date" onChange={onChange}>
             </DateRangeInput>
