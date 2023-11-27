@@ -14,6 +14,7 @@ import findByIdProjectHRLicensesDashboardStats from "./findByIdProjectHRLicenses
 import findByIdProjectHRMedicalsDashboardStats from "./findByIdProjectHRMedicalsDashboardStats";
 import findByIdProjectHRWarningsDashboardStats from "./findByIdProjectHRWarningsDashboardStats";
 import findByIdProjectHRWorkPermitsDashboardStats from "./findByIdProjectHRWorkPermitsDashboardStats";
+import findByIdProjectHRPrDPDashboardStats from "./findByIdProjectHRPrDPDashboardStats";
 import findByIdProjectHRCompetenciesDateRangeDashboardStats
     from "./findByIdProjectHRCompetenciesDateRangeDashboardStats";
 import findByIdProjectHRContractsDateRangeDashboardStats from "./findByIdProjectHRContractsDateRangeDashboardStats";
@@ -23,6 +24,7 @@ import findByIdProjectHRLicensesDateRangeDashboardStats from "./findByIdProjectH
 import findByIdProjectHRMedicalsDateRangeDashboardStats from "./findByIdProjectHRMedicalsDateRangeDashboardStats";
 import findByIdProjectHRWarningsDateRangeDashboardStats from "./findByIdProjectHRWarningsDateRangeDashboardStats";
 import findByIdProjectHRWorkPermitsDateRangeDashboardStats from "./findByIdProjectHRWorkPermitsDateRangeDashboardStats";
+import findByIdProjectHRPrDPDateRangeDashboardStats from "./findByIdProjectHRPrDPDateRangeDashboardStats";
 import findByIdProjectHRJobAppointmentsDashboardStats from "./findByIdProjectHRJobAppointmentsDashboardStats";
 import findByIdProjectHRJobAppointmentsDateRangeDashboardStats
     from "./findByIdProjectHRJobAppointmentsDateRangeDashboardStats";
@@ -218,6 +220,22 @@ class Store extends AStore{
         return findByIdProjectHRWorkPermitsDashboardStats({input: selectedProject.id, mon, mon2, mon3});
     }
     //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDashboardStatsByLogged">
+    async findByIdHRPrDPDashboardStatsByLogged(selectedProject) {
+        const {sess_my_project_id} = this;
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        if (sess_my_project_id) {
+            return findByIdProjectHRPrDPDashboardStats({input: sess_my_project_id, mon, mon2, mon3});
+        }
+
+        return findByIdProjectHRPrDPDashboardStats({input: selectedProject.id, mon, mon2, mon3});
+    }
+    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="findByIdHRDocsDateRangeDashboardStatsByLogged">
@@ -371,6 +389,23 @@ class Store extends AStore{
         }
 
         return findByIdProjectHRWorkPermitsDateRangeDashboardStats({input: selectedProject.id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDateRangeDashboardStatsByLogged">
+    async findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedProject) {
+        const {sess_my_project_id} = this;
+
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        if (sess_my_project_id) {
+            return findByIdProjectHRPrDPDateRangeDashboardStats({input: sess_my_project_id, dates});
+        }
+
+        return findByIdProjectHRPrDPDateRangeDashboardStats({input: selectedProject.id, dates});
     }
     //</editor-fold>
     //</editor-fold>

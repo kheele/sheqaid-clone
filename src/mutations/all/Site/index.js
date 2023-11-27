@@ -14,6 +14,8 @@ import findByIdSiteHRLicensesDashboardStats from "./findByIdSiteHRLicensesDashbo
 import findByIdSiteHRMedicalsDashboardStats from "./findByIdSiteHRMedicalsDashboardStats";
 import findByIdSiteHRWarningsDashboardStats from "./findByIdSiteHRWarningsDashboardStats";
 import findByIdSiteHRWorkPermitsDashboardStats from "./findByIdSiteHRWorkPermitsDashboardStats";
+import findByIdSiteHRPrDPDashboardStats from "./findByIdSiteHRPrDPDashboardStats";
+
 import findByIdSiteHRCompetenciesDateRangeDashboardStats from "./findByIdSiteHRCompetenciesDateRangeDashboardStats";
 import findByIdSiteHRContractsDateRangeDashboardStats from "./findByIdSiteHRContractsDateRangeDashboardStats";
 import findByIdSiteHRCounselingsDateRangeDashboardStats from "./findByIdSiteHRCounselingsDateRangeDashboardStats";
@@ -22,6 +24,7 @@ import findByIdSiteHRLicensesDateRangeDashboardStats from "./findByIdSiteHRLicen
 import findByIdSiteHRMedicalsDateRangeDashboardStats from "./findByIdSiteHRMedicalsDateRangeDashboardStats";
 import findByIdSiteHRWarningsDateRangeDashboardStats from "./findByIdSiteHRWarningsDateRangeDashboardStats";
 import findByIdSiteHRWorkPermitsDateRangeDashboardStats from "./findByIdSiteHRWorkPermitsDateRangeDashboardStats";
+import findByIdSiteHRPrDPDateRangeDashboardStats from "./findByIdSiteHRPrDPDateRangeDashboardStats";
 
 class Store extends AStore{
 
@@ -205,6 +208,22 @@ class Store extends AStore{
         return findByIdSiteHRWorkPermitsDashboardStats({input: selectedSite.id, mon, mon2, mon3});
     }
     //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDashboardStatsByLogged">
+    async findByIdHRPrDPDashboardStatsByLogged(selectedSite) {
+        const {sess_my_site_id} = this;
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        if (sess_my_site_id) {
+            return findByIdSiteHRPrDPDashboardStats({input: sess_my_site_id, mon, mon2, mon3});
+        }
+
+        return findByIdSiteHRPrDPDashboardStats({input: selectedSite.id, mon, mon2, mon3});
+    }
+    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="findByIdHRDocsDateRangeDashboardStatsByLogged">
@@ -341,6 +360,23 @@ class Store extends AStore{
         }
 
         return findByIdSiteHRWorkPermitsDateRangeDashboardStats({input: selectedSite.id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDateRangeDashboardStatsByLogged">
+    async findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedSite) {
+        const {sess_my_site_id} = this;
+
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        if (sess_my_site_id) {
+            return findByIdSiteHRPrDPDateRangeDashboardStats({input: sess_my_site_id, dates});
+        }
+
+        return findByIdSiteHRPrDPDateRangeDashboardStats({input: selectedSite.id, dates});
     }
     //</editor-fold>
     //</editor-fold>

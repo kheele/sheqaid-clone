@@ -10,6 +10,7 @@ import findByIdCompanyHRLicensesDashboardStats from "./findByIdCompanyHRLicenses
 import findByIdCompanyHRWarningsDashboardStats from "./findByIdCompanyHRWarningsDashboardStats";
 import findByIdCompanyHRMedicalsDashboardStats from "./findByIdCompanyHRMedicalsDashboardStats";
 import findByIdCompanyHRWorkPermitsDashboardStats from "./findByIdCompanyHRWorkPermitsDashboardStats";
+import findByIdCompanyHRPrDPDashboardStats from "./findByIdCompanyHRPrDPDashboardStats";
 import findByIdCompanyHRCompetenciesDateRangeDashboardStats
     from "./findByIdCompanyHRCompetenciesDateRangeDashboardStats";
 import findByIdCompanyHRContractsDateRangeDashboardStats from "./findByIdCompanyHRContractsDateRangeDashboardStats";
@@ -19,6 +20,7 @@ import findByIdCompanyHRLicensesDateRangeDashboardStats from "./findByIdCompanyH
 import findByIdCompanyHRMedicalsDateRangeDashboardStats from "./findByIdCompanyHRMedicalsDateRangeDashboardStats";
 import findByIdCompanyHRWarningsDateRangeDashboardStats from "./findByIdCompanyHRWarningsDateRangeDashboardStats";
 import findByIdCompanyHRWorkPermitsDateRangeDashboardStats from "./findByIdCompanyHRWorkPermitsDateRangeDashboardStats";
+import findByIdCompanyHRPrDPDateRangeDashboardStats from "./findByIdCompanyHRPrDPDateRangeDashboardStats";
 import findByIdCompanyHRJobAppointmentsDateRangeDashboardStats
     from "./findByIdCompanyHRJobAppointmentsDateRangeDashboardStats";
 import findByIdCompanyHRJobAppointmentsDashboardStats from "./findByIdCompanyHRJobAppointmentsDashboardStats";
@@ -143,6 +145,18 @@ class Store extends AStore{
         const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 
         return findByIdCompanyHRWorkPermitsDashboardStats({input: sess_company_id, mon, mon2, mon3});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDashboardStatsByLogged">
+    async findByIdHRPrDPDashboardStatsByLogged() {
+        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = this;
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        return findByIdCompanyHRPrDPDashboardStats({input: sess_company_id, mon, mon2, mon3});
     }
     //</editor-fold>
     //</editor-fold>
@@ -271,6 +285,20 @@ class Store extends AStore{
 
         //[{id, month_year: date.formatMonthYear(), count}]
         return findByIdCompanyHRWorkPermitsDateRangeDashboardStats({input: sess_company_id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDateRangeDashboardStatsByLogged">
+    async findByIdHRPrDPDateRangeDashboardStatsByLogged() {
+        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = this;
+
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        //[{id, month_year: date.formatMonthYear(), count}]
+        return findByIdCompanyHRPrDPDateRangeDashboardStats({input: sess_company_id, dates});
     }
     //</editor-fold>
     //</editor-fold>
