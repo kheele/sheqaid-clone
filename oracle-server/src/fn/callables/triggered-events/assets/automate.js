@@ -229,6 +229,8 @@ exports.loadFiles = async (dir, extract, options) => {
 };
 
 readFiles(path.join(__dirname, 'docs/1. Lux Tests February 2021')).then(async files => {
+    return;
+
     await Promise.all(files.filter(v => v !== 'Missing').map(async filename => {
         const [reg_num, date] = filename.replace('.pdf', '').split(' ');
         let res = await getGraphQLOne({

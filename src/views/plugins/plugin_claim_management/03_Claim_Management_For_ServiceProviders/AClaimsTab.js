@@ -28,9 +28,9 @@ class AClaimsTab extends React.Component {
                 'Liability Accepted', 
                 'Liability Repudiated', 
                 'Not Employed', 
-                'Old ClaimsClient - No Data On CompEasy',
+                'Old Claim - No Data On CompEasy',
                 'Reject', 
-                'Request ClaimsClient No',
+                'Request Claim No',
                 'Wait On Info'
             ].map(label => {
                 return {label, value: label};

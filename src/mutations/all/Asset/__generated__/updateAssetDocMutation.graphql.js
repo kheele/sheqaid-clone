@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<08cb2c05aafa9ab85b3b3e611b93129a>>
+ * @generated SignedSource<<da42d684b7f5d451c28291fdbaf2563e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -59,6 +59,13 @@ v3 = [
         "args": null,
         "kind": "ScalarField",
         "name": "doc",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "date",
         "storageKey": null
       },
       {
@@ -136,16 +143,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "b8547fc4342bc27d1aff0b8f6311a694",
+    "cacheID": "16a36d3ee17bc19600afe142d8dceccd",
     "id": null,
     "metadata": {},
     "name": "updateAssetDocMutation",
     "operationKind": "mutation",
-    "text": "mutation updateAssetDocMutation(\n  $id: asset_docs_pk_columns_input!\n  $_set: asset_docs_set_input!\n) {\n  update_asset_docs_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    doc\n    expiry\n    title\n    desc\n    type\n    asset_id\n    asset {\n      id\n    }\n  }\n}\n"
+    "text": "mutation updateAssetDocMutation(\n  $id: asset_docs_pk_columns_input!\n  $_set: asset_docs_set_input!\n) {\n  update_asset_docs_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    doc\n    date\n    expiry\n    title\n    desc\n    type\n    asset_id\n    asset {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "70f255239aeb8968387b16515f41e1f0";
+node.hash = "60e4d3d3279f42a45ddd6cac0c4cb69d";
 
 module.exports = node;

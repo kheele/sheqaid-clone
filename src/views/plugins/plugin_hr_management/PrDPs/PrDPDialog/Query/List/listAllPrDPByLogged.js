@@ -28,10 +28,9 @@ export default (
     mon, mon2, mon3,
     expiry_date = 'ALL',
     date_range,
-    date,
     removed = false,
     //
-    notes,
+    desc,
     //
     department_id,
     job_position_id,
@@ -49,7 +48,6 @@ export default (
     mon, mon2, mon3,
     expiry_date,
     date_range,
-    date,
     //
     department_id,
     job_position_id,
@@ -57,7 +55,7 @@ export default (
     supervisor_id,
     employee_id,
     //
-    notes,
+    desc,
     //
     site_id, project_id, client_id,
     //
@@ -69,67 +67,72 @@ export default (
     return GQLClient
     .query({
       query: `
-                    query listAllByGroupPrDPByLoggedQuery {
-                        hr_employees(
-                            where: {
-                                doc_list_aggregate: {count: {predicate: {_gt: 0}}}, 
-                                doc_list: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}${filter}}
-                                ${filterEmployee}
-                            }
-                            order_by: {lname: asc},
-                            offset: ${offset},
-                            ${limit > 0 ? `,limit: ${limit}` : ''}
-                        ) {
-                            ${employee_personal_details_fragment}
-                            doc_list(where: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}}, order_by: {expiry_date: desc_nulls_last}){
-                                ${doc_inc_fragment}
-                            }
-                            doc_list_no_expiry_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_is_null: true}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            doc_list_expired_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_lte: "now()"}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            doc_list_mon_expiry_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_gt: "now()", _lte: "${mon}"}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            doc_list_2mon_expiry_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon}", _lte: "${mon2}"}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            doc_list_3mon_expiry_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            doc_list_4mon_expiry_aggregate:doc_list_aggregate(where: {
-                                removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon3}"}, type: {_eq: "PrDP"}
-                            }){
-                                aggregate{
-                                    count
-                                }
-                            }
-                            ${orgs_fragment}
-                        }
-                    }
-                `,
+        query listAllByGroupPrDPByLoggedQuery {
+          hr_employees(
+            where: {
+              document_list_aggregate: {
+                count: {
+                  predicate: {_gt: 0},
+                  filter: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}${filter}}
+                }
+              }, 
+              document_list: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}${filter}}
+              ${filterEmployee}
+            }
+            order_by: {lname: asc},
+            offset: ${offset},
+            ${limit > 0 ? `,limit: ${limit}` : ''}
+          ) {
+            ${employee_personal_details_fragment}
+            prdp_list:document_list(where: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}}, order_by: {expiry_date: desc_nulls_last}){
+              ${doc_inc_fragment}
+            }
+            prdp_list_no_expiry_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_is_null: true}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            prdp_list_expired_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_lte: "now()"}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            prdp_list_mon_expiry_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_gt: "now()", _lte: "${mon}"}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            prdp_list_2mon_expiry_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon}", _lte: "${mon2}"}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            prdp_list_3mon_expiry_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            prdp_list_4mon_expiry_aggregate:document_list_aggregate(where: {
+              removed: {_eq: ${removed}}, expiry_date: {_gt: "${mon3}"}, type: {_eq: "PrDP"}
+            }){
+              aggregate{
+                count
+              }
+            }
+            ${orgs_fragment}
+          }
+        }
+      `,
     });
     //</editor-fold>
   } else {
@@ -137,38 +140,38 @@ export default (
     return GQLClient
     .query({
       query: `
-                    query listAllByEachPrDPByLoggedQuery {
-                        hr_employees_documents(
-                            where: {
-                                removed: {_eq: ${removed}},
-                                type: {_eq: "PrDP"},
-                                ${filter}
-                                ${filterEmployee}
-                            },
-                            order_by: {employee: {lname: asc}},
-                            offset: ${offset},
-                            ${limit > 0 ? `,limit: ${limit}` : ''}
-                        ) {
-                            id
-                            created_at
-                            removed
-                            notes
-                            doc
-                            date
-                            expiry_date
-                            expiry_updated
-                            
-                            employee{
-                                ${employee_personal_details_fragment}
-                                doc_list(where: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}}){
-                                    id
-                                    expiry_date
-                                }
-                            }
-                            ${orgs_fragment}
-                        }
-                    }
-                `,
+        query listAllByEachPrDPByLoggedQuery {
+          hr_employees_documents(
+            where: {
+              removed: {_eq: ${removed}},
+              type: {_eq: "PrDP"},
+              ${filter}
+              ${filterEmployee}
+            },
+            order_by: {employee: {lname: asc}},
+            offset: ${offset},
+            ${limit > 0 ? `,limit: ${limit}` : ''}
+          ) {
+            id
+            created_at
+            removed
+            desc
+            doc
+            type
+            is_default
+            expiry_date
+            
+            employee{
+              ${employee_personal_details_fragment}
+              prdp_list:document_list(where: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}}){
+                id
+                expiry_date
+              }
+              ${orgs_fragment}
+            }
+          }
+        }
+      `,
     });
     //</editor-fold>
   }

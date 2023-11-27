@@ -56,7 +56,7 @@ class EditClaimsClientDialog extends AEditDialog {
     }
     
     title() {
-        return "Edit ClaimsClient";
+        return "Edit Claim";
     }
 
     get controls() {

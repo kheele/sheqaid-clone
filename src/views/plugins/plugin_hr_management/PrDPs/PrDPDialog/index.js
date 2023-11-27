@@ -169,14 +169,13 @@ class Dialog extends AEmployeeDocDialog {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
-                <div className="td">Notes</div>
-                <div className="td fixed-flex min-w-105">Date</div>
+                <div className="td">Description</div>
+                <div className="td fixed-flex min-w-105">Type</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         }
     }
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItemAll">

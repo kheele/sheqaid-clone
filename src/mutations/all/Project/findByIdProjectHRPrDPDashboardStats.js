@@ -1,17 +1,14 @@
 /* eslint-disable camelcase */
 
-// 1
-import { graphql } from "react-relay";
-// @ts-ignore
-import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityProject} from "mutations/types.d.ts";
+import GQLClient from "graphql/GQLClient";
 
 // 2
-const query = graphql`
+const query = `
     query findByIdProjectHRPrDPDashboardStatsQuery($id: bigint, $mon: date, $mon2: date, $mon3: date) {
         #hr_employees_documents
         list_active_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}
         }){
             aggregate{
@@ -20,6 +17,7 @@ const query = graphql`
         }
         list_removed_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}
         }){
             aggregate{
@@ -28,6 +26,7 @@ const query = graphql`
         }
         list_no_expiry_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_is_null: true}
         }){
             aggregate{
@@ -36,6 +35,7 @@ const query = graphql`
         }
         list_expired_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_lte: "now()"}
         }){
             aggregate{
@@ -44,6 +44,7 @@ const query = graphql`
         }
         list_mon_expiry_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_gt: "now()", _lte: $mon}
         }){
             aggregate{
@@ -52,6 +53,7 @@ const query = graphql`
         }
         list_2mon_expiry_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_gt: $mon, _lte: $mon2}
         }){
             aggregate{
@@ -60,6 +62,7 @@ const query = graphql`
         }
         list_3mon_expiry_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_gt: $mon2, _lte: $mon3}
         }){
             aggregate{
@@ -68,6 +71,7 @@ const query = graphql`
         }
         list_4mon_expiry_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
+            type: {_eq: "PrDP"},
             removed: {_eq: false}, expiry_date: {_gt: $mon3}
         }){
             aggregate{
@@ -79,4 +83,4 @@ const query = graphql`
 
 // 3
 export default async ({input, mon, mon2, mon3}) =>
-    findOneMutationImpl({query, variables: {id: input, mon, mon2, mon3}});
+    GQLClient.query({query, variables: {id: input, mon, mon2, mon3}});

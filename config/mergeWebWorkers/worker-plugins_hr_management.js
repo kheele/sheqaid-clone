@@ -21,6 +21,8 @@ module.exports = path => [
         'licences/licences.js',
         'work_permits/work_permits.js',
         'counselling/counselling.js',
+        'id-or-passports/id-or-passports.js',
+        'prdp/prdp.js',
         // 'appointments/appointments.js',
         // 'attendance/attendance.js',
         // 'ppe/ppe.js'

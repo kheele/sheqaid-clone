@@ -1,4 +1,5 @@
 import {orgsFilter} from "graphql/Filters";
+import {Dates} from "utils/Utils";
 
 export const getVariablesAndQueryConfig = (
 	{
@@ -33,6 +34,8 @@ export const getVariablesAndQueryConfig = (
 		contract_type,
 		payment_type,
 		salary_interval,
+		//
+		desc,
 		//
 		department_id,
 		job_position_id,
@@ -157,6 +160,11 @@ export const getVariablesAndQueryConfig = (
 	//
 	if (notes) {
 		filter.push(`notes: {_ilike: "%${notes}%"}`);
+	}
+
+	//
+	if (desc) {
+		filter.push(`desc: {_ilike: "%${desc}%"}`);
 	}
 
 	if (!filter.isEmpty()) {

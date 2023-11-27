@@ -15,6 +15,7 @@ import findByIdProjectHRMedicalsDashboardStats from "./findByIdProjectHRMedicals
 import findByIdProjectHRWarningsDashboardStats from "./findByIdProjectHRWarningsDashboardStats";
 import findByIdProjectHRWorkPermitsDashboardStats from "./findByIdProjectHRWorkPermitsDashboardStats";
 import findByIdProjectHRPrDPDashboardStats from "./findByIdProjectHRPrDPDashboardStats";
+import findByIdProjectHRIDOrPassportDashboardStats from "./findByIdProjectHRIDOrPassportDashboardStats";
 import findByIdProjectHRCompetenciesDateRangeDashboardStats
     from "./findByIdProjectHRCompetenciesDateRangeDashboardStats";
 import findByIdProjectHRContractsDateRangeDashboardStats from "./findByIdProjectHRContractsDateRangeDashboardStats";
@@ -25,6 +26,7 @@ import findByIdProjectHRMedicalsDateRangeDashboardStats from "./findByIdProjectH
 import findByIdProjectHRWarningsDateRangeDashboardStats from "./findByIdProjectHRWarningsDateRangeDashboardStats";
 import findByIdProjectHRWorkPermitsDateRangeDashboardStats from "./findByIdProjectHRWorkPermitsDateRangeDashboardStats";
 import findByIdProjectHRPrDPDateRangeDashboardStats from "./findByIdProjectHRPrDPDateRangeDashboardStats";
+import findByIdProjectHRIDOrPassportDateRangeDashboardStats from "./findByIdProjectHRIDOrPassportDateRangeDashboardStats";
 import findByIdProjectHRJobAppointmentsDashboardStats from "./findByIdProjectHRJobAppointmentsDashboardStats";
 import findByIdProjectHRJobAppointmentsDateRangeDashboardStats
     from "./findByIdProjectHRJobAppointmentsDateRangeDashboardStats";
@@ -236,6 +238,22 @@ class Store extends AStore{
         return findByIdProjectHRPrDPDashboardStats({input: selectedProject.id, mon, mon2, mon3});
     }
     //</editor-fold>
+
+    //<editor-fold desc="findByIdHRIDOrPassportDashboardStatsByLogged">
+    async findByIdHRIDOrPassportDashboardStatsByLogged(selectedProject) {
+        const {sess_my_project_id} = this;
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        if (sess_my_project_id) {
+            return findByIdProjectHRIDOrPassportDashboardStats({input: sess_my_project_id, mon, mon2, mon3});
+        }
+
+        return findByIdProjectHRIDOrPassportDashboardStats({input: selectedProject.id, mon, mon2, mon3});
+    }
+    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="findByIdHRDocsDateRangeDashboardStatsByLogged">
@@ -406,6 +424,23 @@ class Store extends AStore{
         }
 
         return findByIdProjectHRPrDPDateRangeDashboardStats({input: selectedProject.id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRIDOrPassportDateRangeDashboardStatsByLogged">
+    async findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedProject) {
+        const {sess_my_project_id} = this;
+
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        if (sess_my_project_id) {
+            return findByIdProjectHRIDOrPassportDateRangeDashboardStats({input: sess_my_project_id, dates});
+        }
+
+        return findByIdProjectHRIDOrPassportDateRangeDashboardStats({input: selectedProject.id, dates});
     }
     //</editor-fold>
     //</editor-fold>

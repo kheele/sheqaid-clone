@@ -44,7 +44,7 @@ import insertClaimsClient from "mutations/all/COIDA/ClaimsClient/insertClaimsCli
 @observer
 class NewClaimsClientDialog extends ANewDialog {
     pageKey = "NewClaimsClientDialog";
-    title = "Create ClaimsClient";
+    title = "Create Claim";
 
     constructor(props) {
         super(props, style);

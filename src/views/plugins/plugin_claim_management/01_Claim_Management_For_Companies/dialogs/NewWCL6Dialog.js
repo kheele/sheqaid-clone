@@ -305,7 +305,7 @@ class Controls extends React.Component {
         const {idx} = btn.props;
         if (idx === 1) {
             if (!form.isValid('claim_number')) {
-                infoDialog.open('ClaimsClient Number is required');
+                infoDialog.open('Claim Number is required');
                 return;
             }
             if (!form.isValid('accident_date')) {

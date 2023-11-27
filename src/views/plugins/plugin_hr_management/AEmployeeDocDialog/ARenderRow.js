@@ -20,7 +20,7 @@ class ARenderRow extends React.Component {
 
     render() {
         const {item, idx, view, onClick, renderActionsCol} = this.props;
-        console.log('CompetenciesRenderRow', item)
+        console.log('ARenderRow', item)
         if (view === 'Employee') {
             return <RenderRowByGroup {...this.props} listName={this.listName}/>;
         } else {

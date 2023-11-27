@@ -17,14 +17,14 @@ import {THead} from 'components/tables';
 import ListPDFReader from './printers/ListPDFReader';
 
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
-import byLogged from "./LicensesDialog/Query/List/listAllLicenseByLogged";
+import byLogged from "./PrDPDialog/Query/List/listAllPrDPByLogged";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ExportDialog extends AExportDialog {
-	titleSingular = 'License';
-	titlePlural = 'Licenses';
+	titleSingular = 'PrDP';
+	titlePlural = 'PrDP';
 	excludePDF = true;//TODO: Include later
 
 	get controls() {
@@ -38,7 +38,7 @@ class ExportDialog extends AExportDialog {
 class Controls extends AControls {
 
 	// <editor-fold defaultstate="collapsed" desc="fields">
-	path = "plugin_sheq_assist/employees/licenses/";//Used for exporting only
+	path = "plugin_sheq_assist/employees/prdp/";//Used for exporting only
 
 	@observable
 	state = {
@@ -62,9 +62,6 @@ class Controls extends AControls {
 		supervisor_id: null,
 		employee_id: null,
 		//
-		notes: null,
-		//
-		date: null,
 		expiry_date: null,
 		date_range: null
 	};
@@ -90,9 +87,6 @@ class Controls extends AControls {
 			supervisor_id,
 			employee_id,
 			//
-			notes,
-			//
-			date,
 			expiry_date,
 			date_range,
 		} = filterData || {};
@@ -115,9 +109,6 @@ class Controls extends AControls {
 			supervisor_id,
 			employee_id,
 			//
-			notes,
-			//
-			date,
 			expiry_date,
 			date_range,
 			//
@@ -157,8 +148,7 @@ class Controls extends AControls {
 		return <THead>
 			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td">Employee</div>
-			<div className="td">Notes</div>
-			<div className="td fixed-flex min-w-120">Date</div>
+			<div className="td fixed-flex min-w-120">Type</div>
 			<div className="td fixed-flex min-w-105">Expiry Date</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
 		</THead>;
@@ -171,10 +161,8 @@ class Controls extends AControls {
 		let {
 			id, data: {
 				created_at,
-				date,
 				expiry_date,
-				expiry_updated,
-				notes,
+				type,
 				doc,
 				employee: {lname, fname},
 			}
@@ -183,8 +171,7 @@ class Controls extends AControls {
 		return <React.Fragment key={id}>
 			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td">{lname + ' ' + fname}</div>
-			<div className="td">{notes}</div>
-			<div className="td fixed-flex min-w-120">{Dates.formatDate(date) || 'N/A'}</div>
+			<div className="td fixed-flex min-w-120">{type}</div>
 			<div className="td fixed-flex min-w-105">{renderExpiryDateSpan(expiry_date)}</div>
 		</React.Fragment>;
 	}
@@ -201,11 +188,6 @@ class Controls extends AControls {
 			<SelectEmployeeInput ref="employee_id" name="employee" placeholder="Employee..."
 			                     className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
-			<ClearableInput ref="notes" name="notes" type="text" placeholder="Notes"
-			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
-			<hr className="pull-left no-border bg-ddd h-2"/>
-			<ClearableInput ref="date" name="date" type="date" placeholder="Date..."
-			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
 			<ClearableInput ref="expiry_date" name="expiry_date" type="select" placeholder="Expiry..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
 			                values={this.state.lists.expiry_date} returnValue/>

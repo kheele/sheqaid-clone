@@ -41,7 +41,7 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
     selfState = {
         lists: {
             claim_status: [
-                'Old ClaimsClient - No Data On CompEasy',
+                'Old Claim - No Data On CompEasy',
                 'Not Employed',
                 'Reject',
                 'Liability Repudiated',
@@ -49,7 +49,7 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
                 'Liability Accepted',
                 'Wait on info',
                 'Adjudication still Pending',
-                'Request ClaimsClient no'
+                'Request Claim no'
             ],
             status: [
                 'Submit - CF',
@@ -116,10 +116,10 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             return;
         }
         
-        inputDialog.open("Add ClaimsClient Number").then(text => {
+        inputDialog.open("Add Claim Number").then(text => {
             if(!text) return;
             if(text.replaceAll(' ', '').isEmpty()) {
-                infoDialog.open('ClaimsClient Number is required');
+                infoDialog.open('Claim Number is required');
                 return;
             }
             
@@ -138,7 +138,7 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
                         list.removeIf(v => v.id === item.id);
                         list.insertAt(idx, item);
                     });
-                    infoDialog.open("ClaimsClient number successfully added/updated.");
+                    infoDialog.open("Claim number successfully added/updated.");
                 } else {
                     infoDialog.open("An error occurred. Please try again.");
                 }
@@ -204,7 +204,7 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
                     list.insertAt(this.selectedClaimIdx, item);
                     delete this.selectedClaimIdx;
                 });
-                infoDialog.open("ClaimsClient Status successfully added/updated.");
+                infoDialog.open("Claim Status successfully added/updated.");
             } else {
                 infoDialog.open("An error occurred. Please try again.");
             }

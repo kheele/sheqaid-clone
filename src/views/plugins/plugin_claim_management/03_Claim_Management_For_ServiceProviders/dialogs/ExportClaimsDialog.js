@@ -117,7 +117,7 @@ class Controls extends React.Component {
         const {form, state: {claimList}} = this;
         
         if(claimList.isEmpty()) {
-            infoDialog.open('Please select at least one ClaimsClient');
+            infoDialog.open('Please select at least one Claim');
             return;
         }
         
@@ -203,7 +203,7 @@ class Controls extends React.Component {
         } = item;
         
         const {date_resumed_work} = wcl_2;
-        console.log('ClaimsClient', toJS(item))
+        console.log('Claim', toJS(item))
         
         return <React.Fragment key={id}>
             <div className="td fixed-flex min-w-85">{ref_num || 'N/A'}</div>

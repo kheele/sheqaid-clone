@@ -44,6 +44,7 @@ import JobCategoriesDialog from "./dialogs/JobCategoriesDialog";
 import {JobAppointmentsDialog} from "../../plugin_extra/__C_Structure_And_Responsibility/JobAppointments";
 import {PlannedJobObservationsDialog} from "../PlannedJobObservations";
 import {PrDPDialog} from "../PrDPs";
+import {IDOrPassportDialog} from "../IDOrPassports";
 
 // </editor-fold>
 
@@ -307,7 +308,8 @@ class Main extends APage {
 			},
 			{key: 'Leaves', listName: 'leave_list', text: 'Leaves', Comp: LeavesDialog, path},
 			{key: 'Licenses', listName: 'license_list', text: 'Licenses', Comp: LicensesDialog, path},
-			{key: 'PrDP', listName: 'doc_list', text: 'PrDP', Comp: PrDPDialog, path},
+			{key: 'PrDP', listName: 'prdp_list', text: 'PrDP', Comp: PrDPDialog, path},
+			{key: 'IDOrPassports', listName: 'id_or_passport_list', text: 'ID/Passports', Comp: IDOrPassportDialog, path},
 			{key: 'Medicals', listName: 'medical_list', text: 'Medicals', Comp: MedicalsDialog, path},
 			{key: 'Warnings', listName: 'warning_list', text: 'Warnings', Comp: WarningsDialog, path},
 			{key: 'WorkPermits', listName: 'work_permit_list', text: 'Work Permits', Comp: WorkPermitsDialog, path},

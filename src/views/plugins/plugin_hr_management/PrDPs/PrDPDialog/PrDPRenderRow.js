@@ -12,7 +12,7 @@ import ARenderRow from "../../AEmployeeDocDialog/ARenderRow";
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
 @observer
 class RenderRow extends ARenderRow {
-    listName = 'license_list';
+    listName = 'prdp_list';
 
     getRenderRowByEach() {
         const {item, idx, view, onClick, renderActionsCol} = this.props;
@@ -24,7 +24,8 @@ class RenderRow extends ARenderRow {
                 date,
                 expiry_date,
                 expiry_updated,
-                notes,
+                desc,
+                type,
                 doc,
                 employee: {lname, fname},
             },
@@ -40,12 +41,12 @@ class RenderRow extends ARenderRow {
                 {lname + ' ' + fname}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Notes</h6>
-                {notes}
+                <h6 className="xs-shown font-size-13">Description</h6>
+                {desc}
             </div>
             <div className="td fixed-flex min-w-105">
-                <h6 className="xs-shown font-size-13">Date</h6>
-                {Dates.formatDate(date) || 'N/A'}
+                <h6 className="xs-shown font-size-13">Type</h6>
+                {type}
             </div>
             <div className="td fixed-flex min-w-105">
                 <h6 className="xs-shown font-size-13">Expiry Date</h6>

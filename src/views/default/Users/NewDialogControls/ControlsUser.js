@@ -617,7 +617,7 @@ class Controls extends React.Component {
                     <Row
                         rendered
                         idx={idx + 0.3}
-                        title={idx + ".3. ClaimsClient Management Module Permissions"}
+                        title={idx + ".3. Claims Management Module Permissions"}
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                         onFormBack={onFormBack}
