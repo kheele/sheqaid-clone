@@ -105,30 +105,98 @@ exports.getNCOVariablesAndQueryConfig = (
 //</editor-fold>
 
 //<editor-fold desc="personal_details_fragment">
+//todo: include isoCode2 in country
 const personal_details_fragment = `
   id
-  
+  identification_type
+  country{
+    id
+    name
+  }
+  name
+  fname
+  initials
+  email
+  tel_num
+  tel_num_home
+  facsimile_num
+  cell_num
+  gender_or_org_nature
+  dob
+  person_or_organization_type
+  id_num
 `;
 //</editor-fold>
 
 //<editor-fold desc="address_details_fragment">
 const address_details_fragment = `
   id
-  
+  address_type
+  postal_address
+  postal_suburb
+  postal_city{
+    id
+    name
+  }
+  postal_code
+  street_address
+  street_suburb
+  street_city{
+    id
+    name
+  }
+  street_code
 `;
+
+
 //</editor-fold>
 
 //<editor-fold desc="vehicle_details_fragment">
 const vehicle_details_fragment = `
   id
-  
+  steering_wheel_position
+  owner_change_reason
+  series_name
+  licence_num
+  reg_num
+  chassis_num
+  make
+  no_odometer
+  date_of_change
 `;
 //</editor-fold>
 
 //<editor-fold desc="declaration_details_fragment">
 const declaration_details_fragment = `
   id
-  
+  declaration_type
+  signature
+  place
+  date
+`;
+//</editor-fold>
+
+//<editor-fold desc="vehicle_detail_extend_fragment">
+const vehicle_detail_extend = `
+	id
+  NaTIS_model_number,
+  engine_number,
+  main_color,
+  used_for_transportation_of,
+  net_power,
+  engine_capacity,
+  tare,
+  gross_vehicle_mass,
+  economic_sector_used_in,
+  used_on_public_road,
+  vehicle_category,
+  driven,
+  vehicle_description,
+  fuel_type,
+  transmission_type,
+  nature_of_ownership,
+  reason_for_registration,
+  date_liable_for_registration_or_licensing
 `;
 //</editor-fold>
 
@@ -168,53 +236,45 @@ exports.rlv_details_fragment = `
   
   
   #a
-  particulars_of_title_holder_personal_details{
+  a_particulars_of_title_holder_personal_details{
     ${personal_details_fragment}
   }
-  particulars_of_title_holder_address{
+  a_particulars_of_title_holder_address{
     ${address_details_fragment}
   }
-  
-  #b
-  organisation_proxy{
-    ${address_details_fragment}
+  a_organisation_representative{
+    ${personal_details_fragment}
   }
-  
-  #c
-  organisation_representative{
-    ${address_details_fragment}
-  }
-  organisation_representative_declaration{
-    ${declaration_details_fragment}
-  }
-  buyer_executor{
+  a_organisation_representative_declaration{
     ${declaration_details_fragment}
   }
   
-  
-  
-  
-  particulars_of_owner_personal_details{
+  #b
+  b_particulars_of_owner_personal_details{
     ${personal_details_fragment}
   }
-  particulars_of_owner_address{
+  b_particulars_of_owner_address{
     ${address_details_fragment}
   }
-  #b
-  organisation_proxy{
+  b_organisation_proxy{
     ${personal_details_fragment}
   }
+  b_organisation_representative{
+    ${personal_details_fragment}
+  }
+  b_organisation_representative_declaration{
+    ${declaration_details_fragment}
+  }
+  
   #c
-  organisation_representative{
-    ${personal_details_fragment}
-  }
-  #d
-  vehicle_identification{
+  c_particulars_of_motor_vehicle{
     ${vehicle_details_fragment}
   }
-  #e
-  vehicle_declaration{
-    ${declaration_details_fragment}
+  c_particulars_of_motor_vehicle_extend{
+    ${vehicle_detail_extend}
+  }
+  c_vehicle_kept_address{
+    ${address_details_fragment}
   }
 `;
 //</editor-fold>

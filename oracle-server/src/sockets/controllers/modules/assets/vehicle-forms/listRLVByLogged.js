@@ -36,7 +36,7 @@ module.exports = async (socket, data) => {
                     removed: {_eq: ${removed}},
                     ${filter}
                   },
-                    order_by: {vehicle_identification: {reg_num: desc}},
+                    order_by: {c_particulars_of_motor_vehicle: {reg_num: desc}},
                     offset: ${offset},
                     ${limit > 0 ? `limit: ${limit}` : ''}
                 ) {
