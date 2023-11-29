@@ -70,19 +70,40 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		status_loaned_out_list_aggregate = defaults,
 		status_out_for_repair_list_aggregate = defaults,
 		status_non_list_aggregate = defaults,
+		//
+		doc_non_expiry_list_aggregate = defaults,
+		doc_expired_list_aggregate = defaults,
+		doc_mon_expiry_list_aggregate = defaults,
+		doc_2mon_expiry_list_aggregate = defaults,
+		doc_3mon_expiry_list_aggregate = defaults,
+		doc_4mon_expiry_list_aggregate = defaults,
 	} = item;
 
-	const total = status_in_storage_list_aggregate.aggregate.count +
+	const total1 = status_in_storage_list_aggregate.aggregate.count +
 		status_checked_out_list_aggregate.aggregate.count +
 		status_loaned_out_list_aggregate.aggregate.count +
 		status_out_for_repair_list_aggregate.aggregate.count +
 		status_non_list_aggregate.aggregate.count;
 
-	const status_in_storage_list_aggregate_perc = ((status_in_storage_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const status_checked_out_list_aggregate_perc = ((status_checked_out_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const status_loaned_out_list_aggregate_perc = ((status_loaned_out_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const status_out_for_repair_list_aggregate_perc = ((status_out_for_repair_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const status_non_list_aggregate_perc = ((status_non_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	const status_in_storage_list_aggregate_perc = ((status_in_storage_list_aggregate.aggregate.count / total1) * 100).toFixed(1);
+	const status_checked_out_list_aggregate_perc = ((status_checked_out_list_aggregate.aggregate.count / total1) * 100).toFixed(1);
+	const status_loaned_out_list_aggregate_perc = ((status_loaned_out_list_aggregate.aggregate.count / total1) * 100).toFixed(1);
+	const status_out_for_repair_list_aggregate_perc = ((status_out_for_repair_list_aggregate.aggregate.count / total1) * 100).toFixed(1);
+	const status_non_list_aggregate_perc = ((status_non_list_aggregate.aggregate.count / total1) * 100).toFixed(1);
+
+	const total2 = doc_non_expiry_list_aggregate.aggregate.count +
+		doc_expired_list_aggregate.aggregate.count +
+		doc_mon_expiry_list_aggregate.aggregate.count +
+		doc_2mon_expiry_list_aggregate.aggregate.count +
+		doc_3mon_expiry_list_aggregate.aggregate.count +
+		doc_4mon_expiry_list_aggregate.aggregate.count;
+
+	const doc_non_expiry_list_aggregate_perc = ((doc_non_expiry_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
+	const doc_expired_list_aggregate_perc = ((doc_expired_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
+	const doc_mon_expiry_list_aggregate_perc = ((doc_mon_expiry_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
+	const doc_2mon_expiry_list_aggregate_perc = ((doc_2mon_expiry_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
+	const doc_3mon_expiry_list_aggregate_perc = ((doc_3mon_expiry_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
+	const doc_4mon_expiry_list_aggregate_perc = ((doc_4mon_expiry_list_aggregate.aggregate.count / total2) * 100).toFixed(1);
 
 	console.log('data', data)
 
@@ -222,6 +243,169 @@ const Comp = forwardRef(({data: __data}, ref) => {
 					         value={`${getDashboardCounter(status_out_for_repair_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
 					         count={getDashboardCounter(status_out_for_repair_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+		</Grid>
+
+		<Grid
+			container
+			columns={1}
+			spacing={6}
+			className="grid-1 w-full grid-gap-10 padding-15"
+			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
+		>
+			<DefaultDoughnutChart
+				title="Asset Status"
+				width="calc(100% - 10px)"
+				height="260px"
+				chart={{
+					labels: ['No Expiry', 'Expired', '1 Month Expiry', '2 Months Expiry', '3 Months Expiry', '+4 Months Expiry'],
+					datasets: {
+						label: "Asset Status",
+						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'error', 'info'],
+						data: [
+							getDashboardCounter(doc_non_expiry_list_aggregate),
+							getDashboardCounter(doc_expired_list_aggregate),
+							getDashboardCounter(doc_mon_expiry_list_aggregate),
+							getDashboardCounter(doc_2mon_expiry_list_aggregate),
+							getDashboardCounter(doc_3mon_expiry_list_aggregate),
+							getDashboardCounter(doc_4mon_expiry_list_aggregate),
+						],
+					},
+					cutout: 60
+				}}
+			/>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					No Expiry
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_non_expiry_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_non_expiry_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					Expired
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_expired_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_expired_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					1 Month Expiry
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_mon_expiry_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_mon_expiry_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					2 Months Expiry
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_2mon_expiry_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_2mon_expiry_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					3 Months Expiry
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_3mon_expiry_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_3mon_expiry_list_aggregate)}/>
+				</MKBox>
+			</MKBox>
+			<Divider sx={{m: '0'}}/>
+			<MKBox
+				className="flex w-full grid-gap-10 border-radius-20"
+				sx={{
+					background: "rgba(25, 25, 25, 0.5)",
+				}}
+			>
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+					color: "rgb(217, 217, 217)",
+					textTransform: "uppercase",
+				}}>
+					4 Months Expiry
+				</MKBox>
+				<MKBox
+					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
+				>
+					<Counter background="transparent"
+					         value={`${getDashboardCounter(doc_4mon_expiry_list_aggregate_perc)}%`}/>
+					<Counter background="#66BB6A"
+					         count={getDashboardCounter(doc_4mon_expiry_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
 			<Divider sx={{m: '0'}}/>

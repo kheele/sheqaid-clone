@@ -58,7 +58,7 @@ global.sendGraphQL = async (args) => {
                 throw err;
             }
         }).then(res => {
-            console.log(res); // { data: ... }
+            // console.log(res); // { data: ... }
 
             const {errors, data} = res;
 

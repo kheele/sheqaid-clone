@@ -228,48 +228,80 @@ exports.loadFiles = async (dir, extract, options) => {
     });
 };
 
-// readFiles(path.join(__dirname, 'docs/1. Lux Tests February 2021')).then(async files => {
-//     // return;
-//
-//     await Promise.all(files.filter(v => v !== 'Missing').map(async filename => {
-//         let [reg_num, date] = filename.replace('.pdf', '').split(' ');
-//         reg_num = reg_num.replace(' ', '');
-//         let res = await getGraphQLOne({
-//             query: `
-//             		query findQuery {
-//             		  asset_details(where:{reg_num:{_eq: "${reg_num}"}}) {
-//             				id
-//             				reg_num
-//             				asset_list{
-//             				  id
-//             				  doc_list(
-//             				    where: {type: {_eq: "Lux Test"}}
-//             				  ){
-//             				    id
-//             				    doc
-//             				  }
-//             				}
-//             		  }
-//             		}
-//             	`,
-//             operationName: 'findQuery',
-//         });
-//         if (res) {
-//             const {id, data: {reg_num, asset_list}} = res;
-//             const [asset] = asset_list;
-//
-//             console.log(reg_num, date, asset.id, asset.doc_list)
-//             // if (res && !res.data.doc.dlUrls) {
-//             //
-//             // }
-//         } else {
-//             fs.rename(
-//                 path.join(__dirname, 'docs/1. Lux Tests February 2021/' + filename),
-//                 path.join(__dirname, 'docs/1. Lux Tests February 2021/Missing/' + filename)
-//             );
-//             console.log('asset not found reg', reg_num, date);
-//         }
-//     }));
-//
-//     // console.log('data', data);
-// });
+readFiles(path.join(__dirname, 'docs/3. COF')).then(async files => {
+    // return;
+
+    await Promise.all(files.filter(v => v !== 'Missing').map(async filename => {
+        let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
+
+        reg_num = reg_num.replace(' ', '');
+        let res = await getGraphQLOne({
+            query: `
+            		query findQuery {
+            		  asset_details(where:{reg_num:{_eq: "${reg_num}"}}) {
+            				id
+            				reg_num
+            				asset_list{
+            				  id
+            				  doc_list(
+            				    where: {type: {_eq: "Certificate of Fitness (C.O.F)"}}
+            				  ){
+            				    id
+            				    doc
+            				    type
+            				  }
+            				}
+            		  }
+            		}
+            	`,
+            operationName: 'findQuery',
+        });
+        if (res) {
+            const {id, data: {reg_num, asset_list}} = res;
+            const [asset] = asset_list;
+            const [docItem] = asset.doc_list;
+
+            const len = asset.doc_list.length;
+            if(len === 1) {
+                const [docItem1, docItem2] = asset.doc_list;
+                console.log(reg_num, date, expiry, asset.id, asset.doc_list.map(v => ({...v, doc: v.doc.dlUrls[0]})));
+                // return;
+
+                if (docItem) {
+                    return await updateGraphQL({
+                        mutation: `
+                           mutation updateAssetDocMutation($id: asset_docs_pk_columns_input!, $_set: asset_docs_set_input!) {
+                              update_asset_docs_by_pk(pk_columns: $id, _set: $_set) {
+                                  id
+                                  created_at
+                                  doc
+                                  expiry
+                                  title
+                                  desc
+                                  type
+                                  asset_id
+                                  asset{
+                                      id
+                                  }
+                              }
+                           }
+                        `,
+                        operationName: 'updateAssetDocMutation',
+                        id: docItem.id,
+                        attrs: {
+                            date,// expiry,
+                        },
+                    });
+                }
+            }
+        } else {
+            fs.rename(
+                path.join(__dirname, 'docs/3. COF/' + filename),
+                path.join(__dirname, 'docs/3. COF/Missing/' + filename)
+            );
+            console.log('asset not found reg', reg_num, date);
+        }
+    }));
+
+    // console.log('data', data);
+});

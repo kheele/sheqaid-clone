@@ -121,7 +121,6 @@ class Controls extends React.Component {
 			username: null
 		},
 		savingPermissions: [],
-		item: null,
 	};
 	// </editor-fold>
 
@@ -286,7 +285,7 @@ class Controls extends React.Component {
 
 	onChangePassword() {
 		this.refs.editPasswordDialog.open(this.item).then(newPass => {
-			this.item.data.password = newPass;
+			this.item.data.password = newPass;//TODO: remove password
 		});
 	}
 
@@ -686,7 +685,7 @@ class Controls extends React.Component {
 	//</editor-fold>
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	get isLoggedUser() {
@@ -936,35 +935,35 @@ class Controls extends React.Component {
 				<ClearableInput name="receive_asset_management_notifs" type="checkbox"
 				                defaultValue={receive_asset_management_notifs} required
 				                className="col-lg-12 form-control margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_asset_management_notifs}/>
+				                values={this.state.lists.receive_asset_management_notifs} returnValue/>
 				<ClearableInput name="receive_chemicals_management_notifs" type="checkbox"
 				                defaultValue={receive_chemicals_management_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_chemicals_management_notifs}/>
+				                values={this.state.lists.receive_chemicals_management_notifs} returnValue/>
 				<ClearableInput name="receive_contractor_management_notifs" type="checkbox"
 				                defaultValue={receive_contractor_management_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_contractor_management_notifs}/>
+				                values={this.state.lists.receive_contractor_management_notifs} returnValue/>
 				<ClearableInput name="receive_employees_expired_docs_medicals" type="checkbox"
 				                defaultValue={receive_employees_expired_docs_medicals} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_employees_expired_docs_medicals}/>
+				                values={this.state.lists.receive_employees_expired_docs_medicals} returnValue/>
 				<ClearableInput name="receive_employees_profile_notifs" type="checkbox"
 				                defaultValue={receive_employees_profile_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_employees_profile_notifs}/>
+				                values={this.state.lists.receive_employees_profile_notifs} returnValue/>
 				<ClearableInput name="receive_incident_management_notifs" type="checkbox"
 				                defaultValue={receive_incident_management_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_incident_management_notifs}/>
+				                values={this.state.lists.receive_incident_management_notifs} returnValue/>
 				<ClearableInput name="receive_non_conformance_management_notifs" type="checkbox"
 				                defaultValue={receive_non_conformance_management_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_non_conformance_management_notifs}/>
+				                values={this.state.lists.receive_non_conformance_management_notifs} returnValue/>
 				<ClearableInput name="receive_training_management_notifs" type="checkbox"
 				                defaultValue={receive_training_management_notifs} required
 				                className="col-lg-12 form-control margin-t-5 margin-b-10" vertical onChange={this.form.onChange}
-				                values={this.state.lists.receive_training_management_notifs}/>
+				                values={this.state.lists.receive_training_management_notifs} returnValue/>
 
 				<hr className="margin-v-10"/>
 
