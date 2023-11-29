@@ -3,9 +3,9 @@ import * as React from "react";
 // import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 import {forwardRef, useImperativeHandle, useState} from "react";
-import {Button} from "components/inputs";
+import {Button} from "./inputs";
 
-const Comp = forwardRef(({expiry_date, value, name, onChange}, ref) => {
+const Comp = forwardRef(({expiry_date, value, text, name, onChange}, ref) => {
     const [view, setView] = useState(value);
 
     // <editor-fold desc="useImperativeHandle funs">
@@ -18,7 +18,7 @@ const Comp = forwardRef(({expiry_date, value, name, onChange}, ref) => {
 
     return (
         <ButtonGroup variant="contained" color="white" ariaLabel="elevation buttons" className="border-radius-20">
-            <ViewBtn expiry_date={expiry_date} text="Employee" value={view} onChange={onChange} className="no-border border-radius-l-20 bg-white color-888"/>
+            <ViewBtn expiry_date={expiry_date} text={text} value={view} onChange={onChange} className="no-border border-radius-l-20 bg-white color-888"/>
             <ViewBtn expiry_date={expiry_date} text={name} value={view} onChange={onChange} className="no-border border-l-1 border-radius-r-20 bg-white color-888"/>
         </ButtonGroup>
     );

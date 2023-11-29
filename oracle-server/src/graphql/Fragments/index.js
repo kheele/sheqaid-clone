@@ -164,3 +164,53 @@ const user_personal_details_fragment = `
 `;
 exports.user_personal_details_fragment = user_personal_details_fragment;
 //</editor-fold>
+
+//<editor-fold desc="asset_basic_details_fragment">
+const asset_basic_details_fragment = `
+    id
+    created_at
+    status
+    written_off
+    profile_pic:photo_list(where: {removed: {_eq: false}, is_default: {_eq: true}}){
+        id
+        doc    
+        is_default
+        removed
+    }
+    photo_list(where: {removed: {_eq: false}}){
+        id
+        doc    
+        is_default
+        removed
+    }
+    responsible_person{
+        id
+        fname
+        lname
+        full_name
+        email
+        phone
+        job_position{
+            id
+            name
+        }
+    }
+    asset_detail{
+        owning_company
+        name
+        asset_type
+        desc
+        manufacturer
+        model
+        reg_num
+        serial_num
+        location
+        toolkit
+        condition
+        barcode
+        qr_code
+        notes
+    }
+`;
+exports.asset_basic_details_fragment = asset_basic_details_fragment;
+//</editor-fold>

@@ -54,8 +54,6 @@
             }
 
             const firebase_fn = getParam('type') === 'contractor' ? window.functions2 : window.functions;
-            alert(firebase_fn)
-            alert(getParam('type'))
             
             function submit() {
                 var password = document.querySelector('input[name=password]');
@@ -84,12 +82,20 @@
                 var msg = document.querySelector('#msg');
 
                 msg.innerHTML = 'Please wait...';
-                const onResetPassword = firebase_fn.httpsCallable('callables-onResetPassword');
-                onResetPassword({
-                    id: getParam('id'),
-                    type: getParam('type'),
-                    password: password.value
-                }).then(res => {
+
+                //https://server.cloud.sheqaid.com/api/callables/
+                fetch(`https://server.cloud.sheqaid.com/api/callables/accounts/onResetPassword/${getParam('type')}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: getParam('id'),
+                        password: password.value
+                    }),
+                }).
+                then(res => res.json()).
+                then(res => {
                     console.log('res', res)
                     if (!res) {
                         msg.innerHTML = 'You are not authorized to update the password.';

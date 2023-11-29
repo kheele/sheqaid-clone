@@ -21,10 +21,7 @@ class RenderRow extends ARenderRow {
             id,
             data: {
                 created_at,
-                date,
                 expiry_date,
-                expiry_updated,
-                desc,
                 type,
                 doc,
                 employee: {lname, fname},
@@ -39,10 +36,6 @@ class RenderRow extends ARenderRow {
             <div className="td">
                 <h6 className="xs-shown font-size-13">Employee</h6>
                 {lname + ' ' + fname}
-            </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Description</h6>
-                {desc}
             </div>
             <div className="td fixed-flex min-w-105">
                 <h6 className="xs-shown font-size-13">Type</h6>

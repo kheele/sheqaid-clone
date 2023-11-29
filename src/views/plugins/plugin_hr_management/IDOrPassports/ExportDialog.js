@@ -24,7 +24,7 @@ import byLogged from "./IDOrPassportDialog/Query/List/listAllIDOrPassportByLogge
 @observer
 class ExportDialog extends AExportDialog {
 	titleSingular = 'ID/Passport';
-	titlePlural = 'ID/Passport';
+	titlePlural = 'ID/Passports';
 	excludePDF = true;//TODO: Include later
 
 	get controls() {

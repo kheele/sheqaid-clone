@@ -12,6 +12,7 @@ import ToolsWrittenOffTab from './ToolsTab/ToolsWrittenOffTab';
 import MonitoringPlanTab from './MonitoringPlanTab';
 import MaintanancePlanTab from './MaintanancePlanTab';
 import CalibrationRecordTab from './CalibrationRecordTab';
+import DocsTab from './DocsTab';
 
 import Tabs from 'components/tabs/Tabs';
 import PartsTab from "./PartsTab";
@@ -78,6 +79,7 @@ class Main extends APage {
                 <MonitoringPlanTab ref="monitoringPlan" title="Monitoring Plan" path={this.path}/>
                 <MaintanancePlanTab ref="maintanancePlan" title="Maintanance Plan" path={this.path}/>
                 <CalibrationRecordTab ref="calibrationRecord" title="Calibration Record" path={this.path}/>
+                <DocsTab ref="docsTab" title="Documents" path={this.path}/>
             </Tabs>
         </div>);
     }

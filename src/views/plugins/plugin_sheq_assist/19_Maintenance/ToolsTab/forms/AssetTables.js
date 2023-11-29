@@ -1287,14 +1287,14 @@ class NewDocumentTable extends ATableSavable {
     }
 
     renderItem(n, onClick) {
-        const {readonly} = this.props;
+        const {readonly, docActiveId} = this.props;
         const item = this.state.list[n];
         if (item) {
             const {type, title, date, expiry, desc, doc} = item;
             return <TRow key={"item-" + n} className="tr-readonly w-full">
                 <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
-                <div className="td fixed-flex min-w-140">{type}</div>
-                <div className="td">{title}</div>
+                <div className="td fixed-flex min-w-160">{type}</div>
+                <div className="td fixed-flex min-w-190">{title}</div>
                 <div className="td">{desc}</div>
                 <div className="td fixed-flex min-w-200">
                     <UploadButton
@@ -1309,8 +1309,8 @@ class NewDocumentTable extends ATableSavable {
                         onChange={this.onChange}
                     />
                 </div>
-                <div className="td fixed-flex min-w-140">{Dates.formatDate(date)}</div>
-                <div className="td fixed-flex min-w-140">{Dates.formatDate(expiry)}</div>
+                <div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
+                <div className={`td fixed-flex min-w-${readonly ? 100 : 110}`}>{Dates.formatDate(expiry)}</div>
                 {!readonly ? <div className="td fixed-flex min-w-100 padding-l-0">
                     <Button idx={n} action="edit" className="btn btn-primary margin-r-10 pull-right w-40"
                             onClick={onClick}>
@@ -1356,16 +1356,16 @@ class NewDocumentTable extends ATableSavable {
     render() {
         const {readonly} = this.props;
         return (<Table
-            className="NewDocumentTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0">
+            className={`NewDocumentTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0`}>
             <THead className="align-left">
                 <div className="td fixed-flex min-w-20">#</div>
-                <div className="td fixed-flex min-w-140 font-size-14">Document Type</div>
-                <div className="td font-size-14">Title</div>
+                <div className="td fixed-flex min-w-160 font-size-14">Document Type</div>
+                <div className="td fixed-flex min-w-190 font-size-14">Title</div>
                 <div className="td font-size-14">Description</div>
                 <div className="td fixed-flex min-w-200 font-size-14">Document</div>
-                <div className="td fixed-flex min-w-150 font-size-14">Date</div>
-                <div className="td fixed-flex min-w-150 font-size-14">Expiry</div>
-                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
+                <div className="td fixed-flex min-w-110 font-size-14">Date</div>
+                <div className="td fixed-flex min-w-110 font-size-14">Expiry</div>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "110" : "0")}/>
             </THead>
             <TBody
                 ref="body"

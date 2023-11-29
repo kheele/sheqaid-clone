@@ -308,8 +308,8 @@ class Main extends APage {
 			},
 			{key: 'Leaves', listName: 'leave_list', text: 'Leaves', Comp: LeavesDialog, path},
 			{key: 'Licenses', listName: 'license_list', text: 'Licenses', Comp: LicensesDialog, path},
-			{key: 'PrDP', listName: 'prdp_list', text: 'PrDP', Comp: PrDPDialog, path},
-			{key: 'IDOrPassports', listName: 'id_or_passport_list', text: 'ID/Passports', Comp: IDOrPassportDialog, path},
+			{key: 'PrDP', listName: 'prdp_list', onFilter: k => k.startsWith('document_prdp_list'), text: 'PrDPs', Comp: PrDPDialog, path},
+			{key: 'IDOrPassports', listName: 'id_or_passport_list', onFilter: k => k.startsWith('document_id_passport_list'), text: 'ID/Passports', Comp: IDOrPassportDialog, path},
 			{key: 'Medicals', listName: 'medical_list', text: 'Medicals', Comp: MedicalsDialog, path},
 			{key: 'Warnings', listName: 'warning_list', text: 'Warnings', Comp: WarningsDialog, path},
 			{key: 'WorkPermits', listName: 'work_permit_list', text: 'Work Permits', Comp: WorkPermitsDialog, path},
@@ -321,7 +321,7 @@ class Main extends APage {
 			{key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true}, //no path
 			// {key: 'Tasks', listName: '', text: 'Tasks', Comp: TasksDialog, noExpiry: true}, //no path///
 			// {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true} //no path///
-		].map(({key, text, listName, Comp, titleBG, noExpiry, path}) => {
+		].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, path}) => {
 			const c = Permissions.allowMod(key) ? "allowed" : "disallowed";
 			const className = fontSizeClass + c + " btn btn-primary pull-right _888";
 			const compRef = `ref${key.replaceAll(" ", "")}Dialog`;
@@ -329,7 +329,7 @@ class Main extends APage {
 				btn: <Button compRef={compRef} text={text} className={className} onClick={this.onViewDialog}/>,
 				navItem: <NavItem compRef={compRef} className={c} onClick={this.onViewDialog} title={text}/>,
 				key, c, compRef, titleBG, text, Comp, noExpiry, path,
-				listName
+				listName, onFilter
 			};
 		});
 	}

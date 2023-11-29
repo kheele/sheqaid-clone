@@ -15,6 +15,7 @@
     "build:prod-forms": "node --max-old-space-size=8192 scripts/build-forms.js",
     "build:prod-alpha-dev": "node --max-old-space-size=8192 scripts/build-alpha-dev.js",
     "build:prod-beta-dev": "node --max-old-space-size=8192 scripts/build-beta-dev.js",
+    "deploy:hosting-prod-beta-dev": "node --max-old-space-size=8192 scripts/build-beta-dev.js && cd firebase/ && firebase deploy --only hosting:beta-dev",
     "deploy:hosting:web,desktop,mobile,main,contractors,hr": "node --max-old-space-size=8192 scripts/build.js && cd firebase/ && firebase deploy --only hosting:web && firebase deploy --only hosting:desktop && firebase deploy --only hosting:mobile && firebase deploy --only hosting:main && firebase deploy --only hosting:contractors-2023 && firebase deploy --only hosting:hr-2023",
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch",

@@ -22,11 +22,15 @@ const query = `
 export default async ({input, dates}) => await Promise.all(
     dates.map(async date => {
         const {start: dateStart, end: dateEnd} = date;
-        const stats = await GQLClient.query({query, variables: {id: input, dateStart, dateEnd}});
+        const stats = await GQLClient.query({
+            multi_queries: true,
+            query,
+            variables: {id: input, dateStart, dateEnd},
+        });
         if (!stats) return {id: input, month_year: Dates.parse(dateStart).formatMonthYear(), count: 0};
 
-        const {id, data: {list_aggregate: {aggregate: {count}}}} = stats;
-        return {id, month_year: Dates.parse(dateStart).formatMonthYear(), count};
+        const {data: {list_aggregate: {aggregate: {count}}}} = stats;
+        return {id: input, month_year: Dates.parse(dateStart).formatMonthYear(), count};
     })
 );
 

@@ -81,6 +81,7 @@ module.exports = path => [
         // '_19_Maintenance/calibration_record.js',
         // '_19_Maintenance/maintanance_plan.js',
         // '_19_Maintenance/monitoring_plan.js',
+        '_19_Maintenance/docs.js',
 
         // '_21_Internal_Audit/audit_questionnaire_funs.js',
         // '_21_Internal_Audit/checkable_templates.js',

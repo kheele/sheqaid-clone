@@ -109,14 +109,22 @@ global.sendGraphQL = async (args) => {
 
         if (multi_queries) {
             if (!count) {
+                // console.log('data', data)
                 Object.keys(data).forEach(key => {
                     const list = data[key];
-                    list.forEach(node => {
-                        convertMutations(node);
-                    });
+                    // console.log('data list', key, list)
+                    if(isArray(list)) {
+                        list.forEach(node => {
+                            convertMutations(node);
+                        });
+                    } else {
+                        convertMutations(list);
+                    }
                 });
-                return data;
+                return {data};
             }
+
+            // console.log('data', data)
 
             const key = Object.keys(data)[0];
             const list = data[key];
@@ -303,7 +311,7 @@ global.updateGraphQL = async ({mutation, operationName, id, attrs}) => {
 //</editor-fold>
 
 // const {fileTypeFromBuffer} = require('./file-type');
-//
+
 // listGraphQL({
 //     query: `
 // 	    query listAllAssetDocsQuery {

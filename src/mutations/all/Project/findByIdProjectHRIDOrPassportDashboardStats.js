@@ -18,7 +18,7 @@ const query = `
         list_removed_aggregate:hr_employees_documents_aggregate(where: {
             employee: {project_id: {_eq: $id}},
             type: {_eq: "ID/Passport"},
-            removed: {_eq: false}
+            removed: {_eq: true}
         }){
             aggregate{
                 count
@@ -83,4 +83,4 @@ const query = `
 
 // 3
 export default async ({input, mon, mon2, mon3}) =>
-    GQLClient.query({query, variables: {id: input, mon, mon2, mon3}});
+    GQLClient.query({multi_queries: true, query, variables: {id: input, mon, mon2, mon3}});

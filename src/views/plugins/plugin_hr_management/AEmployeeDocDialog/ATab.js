@@ -14,7 +14,7 @@ import {renderLeftButtonsForExpiryOnly} from "utils/ComponentUtils";
 import {computed, observable} from "mobx";
 import {execWhen} from "utils/UtilsFuns";
 import MKBox from "components/MK/MKBox";
-import ViewByButtons from "./ViewByButtons";
+import ViewByButtons from "components/ViewByButtons";
 import SignatureDialog from "components/dialogs/SignatureDialog";
 import {Dates} from "utils/Dates";
 // </editor-fold>
@@ -175,10 +175,6 @@ class ATab extends React.Component {
 
 	//</editor-fold>
 
-	get isEmployee() {
-		return this.state.view === "Employee";
-	}
-
 	// <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
 	// <editor-fold defaultstate="collapsed" desc="renderDefaultLeftButtons">
 	renderDefaultLeftButtons() {
@@ -308,7 +304,7 @@ class ViewByButtonsBox extends React.Component {
 		>
 			<ViewByButtons ref={ref => {
 				this.viewButtonsRef = ref;
-			}} expiry_date={expiry_date} value={view} name={titleSingular} onChange={onChange}/>
+			}} text="Employee" expiry_date={expiry_date} value={view} name={titleSingular} onChange={onChange}/>
 		</MKBox>
 	}
 }

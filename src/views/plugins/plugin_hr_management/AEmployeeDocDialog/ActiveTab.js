@@ -96,11 +96,11 @@ class ActiveTab extends ATab {
                                     title={`Add ${titleSingular}`}/>}
             {isEditable && <NavItem action="edit" btn={btn} onClick={this.onEdit} faIconLeft="edit" title="Edit"/>}
             {isEditable && <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>}
-            <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
-                     title="Save As PDF"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsExcel} faIconLeft="file-excel-o"
-                     title="Save As Excel"/>
+            {/*<hr action="writable"/>*/}
+            {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
+            {/*         title="Save As PDF"/>*/}
+            {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsExcel} faIconLeft="file-excel-o"*/}
+            {/*         title="Save As Excel"/>*/}
         </Options>;
     }
 

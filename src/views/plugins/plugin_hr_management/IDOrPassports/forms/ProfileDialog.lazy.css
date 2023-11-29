@@ -1,11 +1,11 @@
 @import '../../AProfileEmployeeDocDialog.css';
 
-#dialog-overlay.ProfileLicenseDialog-profile-dialog .dialog-container{
+#dialog-overlay.ProfileIDOrPassportDialog-profile-dialog .dialog-container{
     height: calc(100% - 35px);
     width: 1200px;
     max-width: 100%;
 }
-#dialog-overlay.ProfileLicenseDialog-profile-dialog .dialog-content{
+#dialog-overlay.ProfileIDOrPassportDialog-profile-dialog .dialog-content{
     padding: 0;
     height: calc(100% - 50px);
 }

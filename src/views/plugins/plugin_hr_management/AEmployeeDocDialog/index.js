@@ -11,7 +11,7 @@ import RemovedTab from "./RemovedTab";
 import Popover from "components/popovers/Popover";
 import ADialogTab from "../../../ADialogTab";
 import {Tabs} from "components/tabs";
-import {execWhen} from "utils/Utils";
+import {execWhen, Permissions} from "utils/Utils";
 import SignatureDialog from "components/dialogs/SignatureDialog";
 
 // </editor-fold>
@@ -191,6 +191,13 @@ class TabWrapper extends React.Component {
 	}
 
 	onNewDialog(evt, elem, item) {
+		const {permissionKey} = this.props;
+		if (permissionKey) {
+			if (Permissions.disallowCreateMod(permissionKey)) {
+				return infoDialog.open(<p className='action-prohibited'>The action is prohibited</p>);
+			}
+		}
+
 		this.refs.newDialog.open().then(item => {
 			const {state: {index}, refs: {mainTabs: {refs: {tabContent: {activeTab}}}}} = this;
 			if (index === 1) {
@@ -336,6 +343,7 @@ class TabWrapper extends React.Component {
 					onExport={this.onExport}
 					ProfileDialog={ProfileDialog}
 					EditDialog={EditDialog}
+					permissionKey={permissionKey}
 					module={module}
 					onBuildQuery={onBuildQuery}
 				/>
@@ -352,6 +360,7 @@ class TabWrapper extends React.Component {
 					onSignatures={this.onSignatures}
 					onExport={this.onExport}
 					ProfileDialog={ProfileDialog}
+					permissionKey={permissionKey}
 					module={module}
 					onBuildQuery={onBuildQuery}
 				/>

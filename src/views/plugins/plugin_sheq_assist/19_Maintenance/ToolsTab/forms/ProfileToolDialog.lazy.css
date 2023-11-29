@@ -2,7 +2,7 @@
 
 #dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container{
     height: 100%;
-    width: 1060px;
+    width: 1100px;
     max-width: calc(100% - 30px);
 }
 #dialog-overlay.ProfileToolDialog-profile-dialog .NewMonitoringPlanTable > label {

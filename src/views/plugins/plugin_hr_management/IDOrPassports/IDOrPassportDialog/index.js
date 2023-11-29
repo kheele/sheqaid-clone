@@ -32,10 +32,10 @@ import findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged
 @observer
 class Dialog extends AEmployeeDocDialog {
     pageKey = "IDOrPassportDialog";
-    title = "ID/Passport";
+    title = "ID/Passports";
     titleSingular = "ID/Passport";
-    permissionKey = "IDOrPassport";
-    module = "IDOrPassport";
+    permissionKey = "IDOrPassports";
+    module = "IDOrPassports";
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -169,7 +169,6 @@ class Dialog extends AEmployeeDocDialog {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
-                <div className="td">Description</div>
                 <div className="td fixed-flex min-w-105">Type</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

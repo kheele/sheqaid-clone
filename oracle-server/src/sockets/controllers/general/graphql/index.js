@@ -1,10 +1,9 @@
-
-eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
+eventManager.on("graphql/v1beta1/relay", async (socket, data = {}) => {
     // console.log('data', data)
     const {auth_id} = socket.handshake.session;
-    
+
     let {query, variables, token} = data;
-    
+
     let headers = {};
     console.log('v1beta1/relay', auth_id);
     if (auth_id) {
@@ -16,22 +15,22 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
         // 	headers["X-Hasura-User-Id"] = currentUser.uid;
         // 	headers["X-Hasura-Role"] = "user";
         // }
-        
+
         headers["X-Hasura-User-Id"] = auth_id;
         headers["X-Hasura-Role"] = "user";
     }
-    
+
     if (token) {
         headers.Authorization = `Bearer ${token}`;
     }
-    
+
     if (variables && "headers" in variables) {
         headers = {...headers, ...variables.headers};
         // eslint-disable-next-line no-param-reassign
         delete variables.headers;
     }
-    
-    return fetch(process.env.HASURA_RELAY_ENDPOINT, {
+
+    return await fetch(process.env.HASURA_RELAY_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -39,19 +38,20 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
             ...headers,
         },
         body: JSON.stringify({query, variables}),
-    }).then( res => res.json()
-    ).catch(err => {
-        // console.error("response err", err, 'query', query)
+    }).
+    then(res => res.json()).
+    catch(err => {
+        console.error("response err", err, 'query', query)
         throw err;
     });
 });
 
-eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
+eventManager.on("graphql/v1/graphql", async (socket, data = {}) => {
     // console.log('data', data)
     const {auth_id} = socket.handshake.session;
-    
+
     const {mutation, query, variables, operationName, multi_queries, count, token} = data;
-    
+
     let headers = {};
     console.log('v1/graphql', auth_id);
     if (auth_id) {
@@ -62,17 +62,17 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
         // headers.Authorization = `Bearer ${token}`;
         // headers["X-Hasura-User-Id"] = currentUser.uid;
         // }
-        
+
         headers["X-Hasura-User-Id"] = auth_id;
         headers["X-Hasura-Role"] = "user";
-        
+
         if (variables && "headers" in variables) {
             headers = {...headers, ...variables.headers};
             // eslint-disable-next-line no-param-reassign
             delete variables.headers;
         }
     }
-    
+
     if (token) {
         headers.Authorization = `Bearer ${token}`;
     }
@@ -82,12 +82,12 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
     return sendGraphQL(data);
 });
 
-eventManager.on("graphql/api/rest/views", (socket, path) => {
+eventManager.on("graphql/api/rest/views", async (socket, path) => {
     // console.log('data', path)
     const {auth_id} = socket.handshake.session;
-    
+
     let headers = {};
-    
+
     if (auth_id) {
         // const currentUser = await admin.auth().getUser(auth_id);
         // console.log("relay variables", currentUser, auth_id)
@@ -97,11 +97,11 @@ eventManager.on("graphql/api/rest/views", (socket, path) => {
         // 	headers["X-Hasura-User-Id"] = currentUser.uid;
         // 	headers["X-Hasura-Role"] = "user";
         // }
-        
+
         headers["X-Hasura-User-Id"] = auth_id;
         headers["X-Hasura-Role"] = "user";
     }
-    
+
     return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
         method: "GET",
         headers: {

@@ -4,7 +4,7 @@
 }
 #_19_Maintenance-page > .tabs {
     margin: 0 10px 0 0px;
-    height: calc(100% - 20px);
+    height: calc(100% - 30px);
 }
 #_19_Maintenance-page .tab-content .page-title{
     height: 0;

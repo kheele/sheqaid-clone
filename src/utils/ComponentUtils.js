@@ -343,7 +343,7 @@ class ExpiryButtons extends React.Component {
                 <ExpiryBtn count={list_no_expiry_aggregate.aggregate.count} title='No Expiry' expiry_date={null} className="bg-white color_black"/>
             </>;
         }
-        return <React.Fragment>
+        return <>
             <ExpiryBtn list={list} title='Total' expiry_date='ALL'/>
             <ExpiryBtn list={list} title='+4 Month Expiry' expiry_date={4} className="bg-green"/>
             <ExpiryBtn list={list} title='3 Month Expiry' expiry_date={3} className="bg-yellow color_black"/>
@@ -351,7 +351,7 @@ class ExpiryButtons extends React.Component {
             <ExpiryBtn list={list} title='1 Month Expiry' expiry_date={1} className="bg-red"/>
             <ExpiryBtn list={list} title='Expired' expiry_date={-1} className="bg-grey"/>
             <ExpiryBtn list={list} title='No Expiry' expiry_date={null} className="bg-white color_black"/>
-        </React.Fragment>;
+        </>;
     }
 }
 // </editor-fold>

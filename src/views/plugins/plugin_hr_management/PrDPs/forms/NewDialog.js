@@ -14,14 +14,14 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeLicense from "mutations/all/EmployeeLicense/insertEmployeeLicense";
+import insertEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
 import {SignatureListRow} from "components/SignatureComponents";
 
 @observer
 class NewDialog extends ANewDialog {
-    pageKey = "NewLicenseDialog";
+    pageKey = "NewPrDPDialog";
     className = "ANewEmployeeDocDialog";
-    title = "Create License";
+    title = "Create PrDP";
 
     constructor(props) {
         super(props, style);
@@ -34,7 +34,6 @@ class NewDialog extends ANewDialog {
 
 @observer
 class Controls extends React.Component {
-    path = "plugin_sheq_assist/employees/licenses/";
     @observable
     state = {
     };
@@ -62,7 +61,7 @@ class Controls extends React.Component {
         }
         if(idx === 2) {
             if (!form.isValid('doc')) {
-                infoDialog.open('Please Upload License');
+                infoDialog.open('Please Upload PrDP');
                 return;
             }
         }
@@ -82,13 +81,13 @@ class Controls extends React.Component {
             return;
         }
         if (!form.isValid('doc')) {
-            infoDialog.open('Please Upload License');
+            infoDialog.open('Please Upload PrDP');
             return;
         }
 
         if(isNewEmployee) {
             console.log("res", form.data)
-            onSaved && onSaved(form.data);
+            onSaved && onSaved({...form.data, type: "PrDP"});
             infoDialog.open("Record added.");
             infoDialog.close(2000);
             this.props.close();
@@ -97,22 +96,21 @@ class Controls extends React.Component {
 
         const {
             employee,//
-            date, expiry_date, notes, doc
+            expiry_date, doc
         } = form.data;
         const data = {
             employee_id: (embeddedEmployee || employee).id,
             doc: doc && doc.path,
 
-            date: Dates.formatTimestampSQL(date),
+            type: "PrDP",
             expiry_date: Dates.formatTimestampSQL(expiry_date),
-            notes,
         };
 
         console.log(data)
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        insertEmployeeLicense(data).then(employee_res => {
+        insertEmployeeDocDocument(data).then(employee_res => {
             console.log("res", employee_res)
             onSaved && onSaved(employee_res);
             infoDialog.open("Record successfully saved.");
@@ -151,14 +149,12 @@ class Controls extends React.Component {
                 rendered
                 active
                 idx={1}
-                title="1. License Details "
+                title="1. PrDP Details "
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
                 {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <ClearableInput name="date" type="date" placeholder="Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -180,7 +176,7 @@ class Controls extends React.Component {
             <SignatureListRow
               idx={3}
               pluginKey="HR"
-              module="Licenses"
+              module="PrDPs"
               onSetSignatureSettings={onSetSignatureSettings}
               onFormOpen={onFormOpen}
               onFormBack={onFormBack}

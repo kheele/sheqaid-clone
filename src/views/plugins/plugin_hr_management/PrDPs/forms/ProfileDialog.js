@@ -1,5 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
 import {ProfileField, UploadButton} from 'components/inputs';
 
@@ -12,12 +13,12 @@ import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
 import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeLicense";
+import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-    pageKey = "ProfileLicenseDialog";
+    pageKey = "ProfilePrDPDialog";
     className = "AProfileEmployeeDocDialog";
     findById = findByIdEmployee;
   
@@ -26,7 +27,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "Licenses";
+        return "PrDPs";
     }
     
     onSaveAsPDF(e, btn) {
@@ -46,8 +47,10 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-    listName = "license_list";
-    onUpdate = updateEmployeeLicense;
+    type = 'PrDP';
+    listName = "document_list";
+    // listName = "prdp_list";
+    onUpdate = updateEmployeeDocDocument;
     NewDialog = NewDialog;
     EditDialog = EditDialog;
     ProfilePDFReader = ProfilePDFReader;
@@ -56,15 +59,26 @@ class Controls extends AEmployeeDocControls {
         super(props);
     }
 
+    //<editor-fold desc="list">
+    @computed get list() {
+        if(!this.item) return this.state.list;
+
+        console.log('PrDP', this.item)
+        const {item: {data: {[this.listName]: list = []}}} = this;
+        return (list || []).filter(v => !v || v.type === "PrDP");
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats(id) {
-        return employeeStore.findByIdHRLicensesDashboardStats(id);
+        return employeeStore.findByIdHRPrDPDashboardStats(id);
     }
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats(id) {
-        return employeeStore.findByIdHRLicensesDateRangeDashboardStats(id);
+        return employeeStore.findByIdHRPrDPDateRangeDashboardStats(id);
     }
     //</editor-fold>
 
@@ -74,14 +88,13 @@ class Controls extends AEmployeeDocControls {
                 onFormNext, onFormBack, onFormOpen
             }
         } = this;
-        const {created_at, date, expiry_date, notes, doc} = item.data || item;
+        const {created_at, type, expiry_date, doc} = item.data || item;
         
         return <div className="row item-wrapper margin-l-20 margin-r-20 padding-t-10 h-full">
-            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">License Details</label>
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">PrDP Details</label>
             <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Date" name="date" type="date" value={date} className="col-lg-6"/>
+                <ProfileField title="Type" name="type" value={type} className="col-lg-6"/>
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date} className="col-lg-6"/>
-                <ProfileField title="Notes" name="notes" value={notes} className="col-lg-12"/>
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
             <label className="w-full margin-0 text-center">Document</label>
@@ -89,7 +102,7 @@ class Controls extends AEmployeeDocControls {
                 <UploadButton 
                     name="doc" 
                     defaultValue={doc}
-                    buttonTitle="License Attachment" 
+                    buttonTitle="PrDP Attachment"
                     type={['PDF', 'Word', 'Image']}
                     showOnlyIcon 
                     readonly
@@ -101,5 +114,5 @@ class Controls extends AEmployeeDocControls {
 
 }
 
-export {Controls as LicenseControls};
+export {Controls as PrDPControls};
 export default ProfileDialog;

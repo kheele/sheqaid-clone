@@ -33,6 +33,7 @@ export default async () => {
 
 			const stats = await GQLClient
 			.query({
+				multi_queries: true,
 				query: `
 					query findByIdContractorHRIDOrPassportDateRangeDashboardStatsQuery($dateStart: date, $dateEnd: date) {
 						list_aggregate:hr_employees_documents_aggregate(where: {
@@ -49,8 +50,8 @@ export default async () => {
 
 			if (!stats) return {id: loggedContractor.id, month_year: Dates.parse(dateStart).formatMonthYear(), count: 0};
 
-			const {id, data: {list_aggregate: {aggregate: {count}}}} = stats;
-			return {id, month_year: Dates.parse(dateStart).formatMonthYear(), count};
+			const {data: {list_aggregate: {aggregate: {count}}}} = stats;
+			return {id: loggedContractor.id, month_year: Dates.parse(dateStart).formatMonthYear(), count};
 		})
 	);
 };

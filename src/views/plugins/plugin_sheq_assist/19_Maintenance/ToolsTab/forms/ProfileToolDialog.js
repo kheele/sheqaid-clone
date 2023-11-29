@@ -193,7 +193,7 @@ class Controls extends React.Component {
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,
-                dialog: {renderProfileCover}
+                dialog, dialog: {renderProfileCover}
             },
             item, item: {
                 id, data: {
@@ -285,6 +285,9 @@ class Controls extends React.Component {
             calibration_list,
         } = calibration_record_list || {};
 
+        const rowIdx = dialog.extraProp('rowIdx');
+        const docActiveId = dialog.extraProp('docActiveId');
+
         console.log('doc_list', doc_list && doc_list.slice());
 
         return <>
@@ -294,6 +297,7 @@ class Controls extends React.Component {
                     client={client}
                     project={project}
                     site={site}
+                    active={rowIdx === 0 || !rowIdx}
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -365,13 +369,14 @@ class Controls extends React.Component {
                 </Row>
                 <Row
                     rendered
+                    active={rowIdx === 4}
                     idx={4}
                     title="4. Documents"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <NewDocumentTable ref="doc_list" name="doc_list" defaultValue={doc_list || []} readonly/>
+                    <NewDocumentTable ref="doc_list" name="doc_list" defaultValue={doc_list || []} docActiveId={docActiveId} readonly/>
                 </Row>
                 <Row
                     rendered

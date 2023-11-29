@@ -1,5 +1,23 @@
-const {orgs_no_project_and_site_fragment} = require("../../../../../graphql/Fragments");
-const {inspection_template_details_list_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {orgs_fragment, asset_basic_details_fragment} = require("../../../../../graphql/Fragments");
+const {getVariablesAndQueryConfig} = require('./commons');
+
+//<editor-fold desc="doc_inc_fragment">
+const doc_inc_fragment = `
+    id
+    created_at
+    date
+    expiry
+    removed
+    title
+    desc
+    type
+    doc
+    asset{
+        id
+        ${orgs_fragment}
+    }
+`;
+//</editor-fold>
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -9,9 +27,23 @@ module.exports = async (socket, data) => {
         offset = 0,
         limit = 50,
         //
+        view = 'Asset',
+        mon, mon2, mon3,
+        expiry_date = 'ALL',
+        date_range,
+        date,
         removed = false,
         //
+        type,
+        title,
         asset_id,
+        responsible_person_list,
+        //
+        reg_num,
+        manufacturer,
+        location,
+        asset_type,
+        condition,
         status,
         //
         site_id, project_id, client_id,
@@ -22,8 +54,25 @@ module.exports = async (socket, data) => {
         orgs_filter = [],
     } = data;
 
-    const {filter} = getVariablesAndQueryConfig({
+    const {filter, filterAsset} = getVariablesAndQueryConfig({
         orgs_filter,
+        //
+        view,
+        mon, mon2, mon3,
+        expiry_date,
+        date_range,
+        date,
+        //
+        type,
+        title,
+        asset_id,
+        responsible_person_list,
+        //
+        reg_num,
+        manufacturer,
+        location,
+        asset_type,
+        condition,
         status,
         //
         site_id, project_id, client_id,
@@ -31,35 +80,117 @@ module.exports = async (socket, data) => {
         exact_orgs
     });
 
-    return listGraphQL({
-        query: `
-			  query listAllInspectionTemplateByLoggedQuery {
-				default_contractor_questionnaires(
-				  where: {
-					_and: [
-                      {removed: {_eq: ${removed}}},
-                      {group: {_eq: "Inspections"}},
-                      {is_template: {_eq: true}},
-                      ${asset_id ? `{asset_id: {_eq: ${asset_id}}},` : ''}
-                      {_or: [
-                        {visibility: {_eq: "Public"}},
-                        {_and: [
-                          {visibility: {_eq: "Private"}}, 
-                          ${filter}
-                        ]}
-                      ]}
-                    ]
-				  },
-					order_by: {name: asc},
-					offset: ${offset},
-					${limit > 0 ? `limit: ${limit}` : ''}
-				) {
-				    ${inspection_template_details_list_fragment}
-                    ${orgs_no_project_and_site_fragment}
-				}
-			  }
-			`,
-        operationName: "listAllInspectionTemplateByLoggedQuery",
-    });
+
+    if (view === 'Asset') {
+        //<editor-fold desc="ByGroup">
+        return listGraphQL({
+            query: `
+                query listAllByGroupAssetDocByLoggedQuery {
+                  assets(
+                    where: {
+                      doc_list_aggregate: {
+                        count: {
+                          predicate: {_gt: 0},
+                          filter: {removed: {_eq: ${removed}}${filter}}
+                        }
+                      }, 
+                      doc_list: {removed: {_eq: ${removed}}${filter}}
+                      ${filterAsset}
+                    }
+                    order_by: {asset_detail:{name: asc}},
+                    offset: ${offset},
+                    ${limit > 0 ? `,limit: ${limit}` : ''}
+                  ) {
+                    ${asset_basic_details_fragment}
+                    doc_list(where: {removed: {_eq: ${removed}}}, order_by: {expiry: desc_nulls_last}){
+                      ${doc_inc_fragment}
+                    }
+                    doc_list_no_expiry_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_is_null: true}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    doc_list_expired_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_lte: "now()"}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    doc_list_mon_expiry_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_gt: "now()", _lte: "${mon}"}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    doc_list_2mon_expiry_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_gt: "${mon}", _lte: "${mon2}"}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    doc_list_3mon_expiry_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_gt: "${mon2}", _lte: "${mon3}"}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    doc_list_4mon_expiry_aggregate:doc_list_aggregate(where: {
+                      removed: {_eq: ${removed}}, expiry: {_gt: "${mon3}"}
+                    }){
+                      aggregate{
+                        count
+                      }
+                    }
+                    ${orgs_fragment}
+                  }
+                }
+            `,
+        });
+        //</editor-fold>
+    } else {
+        //<editor-fold desc="ByEach">
+        return listGraphQL({
+            query: `
+                query listAllByEachAssetDocByLoggedQuery {
+                  asset_docs(
+                    where: {
+                      removed: {_eq: ${removed}},
+                      ${filter},
+                      ${filterAsset}
+                    },
+                    order_by: {asset: {asset_detail:{name: asc}}},
+                    offset: ${offset},
+                    ${limit > 0 ? `,limit: ${limit}` : ''}
+                  ) {
+                    id
+                    created_at
+                    date
+                    expiry
+                    removed
+                    title
+                    desc
+                    type
+                    doc
+                    
+                    asset{
+                      ${asset_basic_details_fragment}
+                      doc_list(where: {removed: {_eq: ${removed}}}){
+                        id
+                        expiry
+                      }
+                      ${orgs_fragment}
+                    }
+                  }
+                }
+            `,
+        });
+        //</editor-fold>
+    }
 }
 //</editor-fold>

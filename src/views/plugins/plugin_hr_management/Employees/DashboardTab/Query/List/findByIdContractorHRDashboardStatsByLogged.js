@@ -489,6 +489,104 @@ export default () => {
                             count
                         }
                     }
+
+#                    prdp_list
+                    prdp_list_active_aggregate:document_list_aggregate(where: {removed: {_eq: false}, type: {_eq: "PrDP"}}){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_no_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_is_null: true}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_expired_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_lte: "now()"}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "now()", _lte: "${mon}"}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_2mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon}", _lte: "${mon2}"}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_3mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    prdp_list_4mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon3}"}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+
+#                    id_or_passport_list
+                    id_or_passport_list_active_aggregate:document_list_aggregate(where: {removed: {_eq: false}, type: {_eq: "ID/Passport"}}){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_no_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_is_null: true}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_expired_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_lte: "now()"}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "now()", _lte: "${mon}"}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_2mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon}", _lte: "${mon2}"}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_3mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                    id_or_passport_list_4mon_expiry_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gt: "${mon3}"}, type: {_eq: "ID/Passport"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
                     
                     team_list_aggregate{
                         aggregate{

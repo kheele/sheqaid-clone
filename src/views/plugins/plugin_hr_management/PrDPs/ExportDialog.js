@@ -24,7 +24,7 @@ import byLogged from "./PrDPDialog/Query/List/listAllPrDPByLogged";
 @observer
 class ExportDialog extends AExportDialog {
 	titleSingular = 'PrDP';
-	titlePlural = 'PrDP';
+	titlePlural = 'PrDPs';
 	excludePDF = true;//TODO: Include later
 
 	get controls() {

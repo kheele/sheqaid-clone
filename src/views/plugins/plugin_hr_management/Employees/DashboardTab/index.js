@@ -114,6 +114,8 @@ class DashboardTab extends React.Component {
 			onViewTeams, onViewDepartments, onViewJobPositions, onViewJobCategories, onViewSupervisors
 		} = this.props;
 
+		console.log('this.tiles', this.tiles);
+
 		return <div className="DashboardTab row margin-0 h-full">
 			<TopGridCounter
 				ref="topStats"

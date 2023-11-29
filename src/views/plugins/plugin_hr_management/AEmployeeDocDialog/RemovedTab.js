@@ -71,11 +71,11 @@ class RemovedTab extends ATab {
         return <Options idx={idx} permissionModKey={permissionKey}>
             <NavItem action="view" isEmployee={isEmployee} onClick={this.onView} faIconLeft="eye" title="View"/>
             {isEditable && <NavItem action="remove" idx={idx} onClick={this.onRestore} faIconLeft="ban" title="Restore"/>}
-            <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
-                     title="Save As PDF"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsExcel} faIconLeft="file-excel-o"
-                     title="Save As Excel"/>
+            {/*<hr action="writable"/>*/}
+            {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
+            {/*         title="Save As PDF"/>*/}
+            {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsExcel} faIconLeft="file-excel-o"*/}
+            {/*         title="Save As Excel"/>*/}
         </Options>;
     }
 

@@ -10,13 +10,13 @@ import {NavButtons} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeLicense";
+import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 @observer
 class EditDialog extends AEditDialog {
-	pageKey = "EditLicenseDialog";
+	pageKey = "EditPrDPDialog";
 	className = "AEditEmployeeDocDialog";
-	title = "Edit License";
+	title = "Edit PrDP";
 
 	constructor(props) {
 		super(props, style);
@@ -29,7 +29,6 @@ class EditDialog extends AEditDialog {
 
 @observer
 class Controls extends React.Component {
-	path = "plugin_sheq_assist/employees/licenses/";
 	@observable
 	state = {};
 
@@ -56,7 +55,7 @@ class Controls extends React.Component {
 		}
 		if (idx === 2) {
 			if (!form.isValid('doc')) {
-				infoDialog.open('Please Upload License');
+				infoDialog.open('Please Upload PrDP');
 				return;
 			}
 		}
@@ -76,20 +75,18 @@ class Controls extends React.Component {
 			return;
 		}
 		if (!form.isValid('doc')) {
-			infoDialog.open('Please Upload License');
+			infoDialog.open('Please Upload PrDP');
 			return;
 		}
 
-		const {employee, date, expiry_date, notes, doc} = form.data;
+		const {employee, expiry_date, doc} = form.data;
 
 		const data = {};
 
 		if(!embeddedEmployee) {
 			ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
 		}
-		ShouldUpdate.checkDate(data, old_data, date, 'date');
 		ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
-		ShouldUpdate.check(data, old_data, notes, 'notes');
 		ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
 		if (Object.keys(data).isEmpty()) {
@@ -100,7 +97,7 @@ class Controls extends React.Component {
 		console.log(data)
 
 		btn.text("Saving...").disabled();
-		updateEmployeeLicense({id: this.item.id, ...data}).then(res => {
+		updateEmployeeDocDocument({id: this.item.id, ...data}).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully updated.");
@@ -110,19 +107,6 @@ class Controls extends React.Component {
 			btn.text("Save").enabled();
 			setTimeout(() => progressDialog.close());
 		});
-		// neonBinding.events.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
-		//     console.log("res", res)
-		//     if(res === "ERROR") {
-		//         infoDialog.open("An error occurred. Please try again.");
-		//     } else {
-		//         onSaved && onSaved(res);
-		//         infoDialog.open("Record successfully updated.");
-		//         this.props.close();
-		//     }
-		//     infoDialog.close(2000);
-		// }).finally(() => {
-		//     btn.text("Save").enabled();
-		// });
 	}
 
 	get isNewEmployee() {
@@ -144,7 +128,7 @@ class Controls extends React.Component {
 			},
 			item, item: {
 				id, data: {
-					created_at, date, expiry_date, notes, doc, employee
+					created_at, expiry_date, doc, employee
 				}
 			}
 		} = this;
@@ -152,19 +136,15 @@ class Controls extends React.Component {
 			<div className="controls">
 				<div className="row active">
 					<label>
-						1. License Details
+						1. PrDP Details
 						<Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
 					</label>
 					<div className="row sec-group">
 						{!isNewEmployee && !embeddedEmployee &&
 							<SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
 						                     className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-						<ClearableInput name="date" type="date" placeholder="Date..." defaultValue={date}
-						                className="col-lg-6 form-control" onChange={this.form.onChange}/>
 						<ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date}
-						                required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-						<ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes}
-						                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+						                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
 					</div>
 					<NavButtons idx={1} onNext={onFormNext}/>
 				</div>

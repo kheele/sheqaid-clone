@@ -167,11 +167,28 @@ const Comp = forwardRef((
         work_permit_list_2mon_expiry_aggregate,
         work_permit_list_3mon_expiry_aggregate,
         work_permit_list_4mon_expiry_aggregate,
+
+        prdp_list_active_aggregate,
+        prdp_list_no_expiry_aggregate,
+        prdp_list_expired_aggregate,
+        prdp_list_mon_expiry_aggregate,
+        prdp_list_2mon_expiry_aggregate,
+        prdp_list_3mon_expiry_aggregate,
+        prdp_list_4mon_expiry_aggregate,
+
+        id_or_passport_list_active_aggregate,
+        id_or_passport_list_no_expiry_aggregate,
+        id_or_passport_list_expired_aggregate,
+        id_or_passport_list_mon_expiry_aggregate,
+        id_or_passport_list_2mon_expiry_aggregate,
+        id_or_passport_list_3mon_expiry_aggregate,
+        id_or_passport_list_4mon_expiry_aggregate,
     },
     }, ref) => {
 
     const keys = Object.keys(data);
-    list = list.filter(({listName}) => {
+    list = list.filter(({listName, onFilter}) => {
+        // if(onFilter) return keys.anyMatch(onFilter);
         return keys.anyMatch(k => k.startsWith(listName));
     });
     const list_docs = list.filter(({noExpiry}) => !noExpiry);

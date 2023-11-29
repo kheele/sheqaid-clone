@@ -69,7 +69,7 @@ class Controls extends AControls {
         project_id: null,
         site_id: null,
         //
-        responsible_person_list: null,
+        // responsible_person_list: null,
         asset_type: null,
         manufacturer: null,
         location: null,
@@ -266,9 +266,9 @@ class Controls extends AControls {
         const {onChange} = this.form;
 
         return <>
-            <SelectEmployeeInput ref="responsible_person_list" name="responsible_person_list"
-                                 placeholder="Responsible Person..." type="select_multi"
-                                 className="col-lg-12 form-control" onChange={onChange}/>
+            {/*<SelectEmployeeInput ref="responsible_person_list" name="responsible_person_list"*/}
+            {/*                     placeholder="Responsible Person..." type="select_multi"*/}
+            {/*                     className="col-lg-12 form-control" onChange={onChange}/>*/}
             <SelectAssetTypeInput ref="asset_type" name="asset_type" placeholder="Asset Type..."
                                   className="col-lg-12 form-control"
                                   onChange={onChange}/>

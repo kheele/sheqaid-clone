@@ -1,20 +1,35 @@
-const {orgs_no_project_and_site_fragment} = require("../../../../../graphql/Fragments");
-const {inspection_template_details_find_fragment} = require('./commons');
+const {asset_basic_details_fragment, orgs_fragment, } = require("../../../../../graphql/Fragments");
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, id) => {
     return getGraphQLOne({
         query: `
-            query findOneInspectionTemplateQuery {
-                default_contractor_questionnaires(
+            query findOneAssetDocQuery {
+                asset_docs(
                   where: {id: {_eq: ${id}},},
                 ) {
-                    ${inspection_template_details_find_fragment}
-                    ${orgs_no_project_and_site_fragment}
+                    id
+                    created_at
+                    date
+                    expiry
+                    removed
+                    title
+                    desc
+                    type
+                    doc
+                    
+                    asset{
+                      ${asset_basic_details_fragment}
+                      doc_list(where: {removed: {_eq: false}}){
+                        id
+                        expiry
+                      }
+                      ${orgs_fragment}
+                    }
                 }
             }
         `,
-        operationName: "findOneInspectionTemplateQuery",
+        operationName: "findOneAssetDocQuery",
     });
 }
 //</editor-fold>

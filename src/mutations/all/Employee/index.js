@@ -12,6 +12,8 @@ import findByIdEmployeeHRLicensesDashboardStats from "./findByIdEmployeeHRLicens
 import findByIdEmployeeHRMedicalsDashboardStats from "./findByIdEmployeeHRMedicalsDashboardStats";
 import findByIdEmployeeHRWarningsDashboardStats from "./findByIdEmployeeHRWarningsDashboardStats";
 import findByIdEmployeeHRWorkPermitsDashboardStats from "./findByIdEmployeeHRWorkPermitsDashboardStats";
+import findByIdEmployeeHRPrDPDashboardStats from "./findByIdEmployeeHRPrDPDashboardStats";
+import findByIdEmployeeHRIDOrPassportDashboardStats from "./findByIdEmployeeHRIDOrPassportDashboardStats";
 import findByIdEmployeeHRCompetenciesDateRangeDashboardStats
     from "./findByIdEmployeeHRCompetenciesDateRangeDashboardStats";
 import findByIdEmployeeHRContractsDateRangeDashboardStats from "./findByIdEmployeeHRContractsDateRangeDashboardStats";
@@ -21,6 +23,8 @@ import findByIdEmployeeHRLicensesDateRangeDashboardStats from "./findByIdEmploye
 import findByIdEmployeeHRMedicalsDateRangeDashboardStats from "./findByIdEmployeeHRMedicalsDateRangeDashboardStats";
 import findByIdEmployeeHRWarningsDateRangeDashboardStats from "./findByIdEmployeeHRWarningsDateRangeDashboardStats";
 import findByIdEmployeeHRWorkPermitsDateRangeDashboardStats from "./findByIdEmployeeHRWorkPermitsDateRangeDashboardStats";
+import findByIdEmployeeHRPrDPDateRangeDashboardStats from "./findByIdEmployeeHRPrDPDateRangeDashboardStats";
+import findByIdEmployeeHRIDOrPassportDateRangeDashboardStats from "./findByIdEmployeeHRIDOrPassportDateRangeDashboardStats";
 import findByIdEmployeeHRJobAppointmentsDashboardStats from "./findByIdEmployeeHRJobAppointmentsDashboardStats";
 import findByIdEmployeeHRJobAppointmentsDateRangeDashboardStats
     from "./findByIdEmployeeHRJobAppointmentsDateRangeDashboardStats";
@@ -128,6 +132,26 @@ class Store extends AStore {
         return findByIdEmployeeHRWorkPermitsDashboardStats({input: id, mon, mon2, mon3});
     }
     //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDashboardStats">
+    async findByIdHRPrDPDashboardStats(id) {
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        return findByIdEmployeeHRPrDPDashboardStats({input: id, mon, mon2, mon3});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRIDOrPassportDashboardStats">
+    async findByIdHRIDOrPassportDashboardStats(id) {
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        return findByIdEmployeeHRIDOrPassportDashboardStats({input: id, mon, mon2, mon3});
+    }
+    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="findByIdHRDocsDateRangeDashboardStats">
@@ -227,6 +251,28 @@ class Store extends AStore {
         const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 
         return findByIdEmployeeHRWorkPermitsDateRangeDashboardStats({input: id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRPrDPDateRangeDashboardStats">
+    async findByIdHRPrDPDateRangeDashboardStats(id) {
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        return findByIdEmployeeHRPrDPDateRangeDashboardStats({input: id, dates});
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="findByIdHRIDOrPassportDateRangeDashboardStats">
+    async findByIdHRIDOrPassportDateRangeDashboardStats(id) {
+        const monStart = new Date().addMonths(-4);
+        const monEnd = new Date().addMonths(12);
+
+        const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+        return findByIdEmployeeHRIDOrPassportDateRangeDashboardStats({input: id, dates});
     }
     //</editor-fold>
     //</editor-fold>

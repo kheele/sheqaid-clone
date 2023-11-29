@@ -27,6 +27,7 @@ export default () => {
 
 	return GQLClient
 	.query({
+		multi_queries: true,
 		query: `
       query findByIdContractorHRIDOrPassportDashboardStatsByLoggedQuery {
           #doc_list
@@ -96,5 +97,5 @@ export default () => {
           }         
       }
     `,
-	}).then(res => res && res[0]);
+	});
 };
