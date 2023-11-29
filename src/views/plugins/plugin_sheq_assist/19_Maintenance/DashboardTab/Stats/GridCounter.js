@@ -6,8 +6,20 @@ import DefaultCounterCard from "containers/Cards/CounterCards/DefaultCounterCard
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import Divider from "@mui/material/Divider";
 import {CircularProgress} from "@mui/material";
-import MDBox from "../../../../../../components/MD/MDBox";
-import VerticalBarChart from "../../../../../../containers/Charts/BarCharts/VerticalBarChart";
+import MDBox from "components/MD/MDBox";
+import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
+import DefaultLineChart from "containers/Charts/LineCharts/DefaultLineChart";
+//</editor-fold>
+
+//<editor-fold desc="labels">
+const labels = {
+	Day: "yesterday",
+	Week: "last week",
+	Month: "last month",
+	Quarter: "last 3 months",
+	"Bi-Annual": "last 6 months",
+	Annual: "last year",
+};
 //</editor-fold>
 
 //<editor-fold desc="Counter">
@@ -35,14 +47,48 @@ function Counter({background, title, count, label, color, sx}) {
 
 //</editor-fold>
 
+//<editor-fold desc="DefaultLineChartWrapper">
+function DefaultLineChartWrapper({desc, data: _data, color, percColor, title, percLabel}) {
+	const [data, setData] = useState(null);
+	useEffect(() => {
+		(async () => {
+			if (_data instanceof Promise) {
+				_data = await _data;
+			}
+			setData(_data);
+		})();
+	}, [_data]);
+
+	if (data === null) {
+		return <CircularProgress size='1em'/>;
+	}
+
+	const {chart, count, percAmount} = data;
+
+	return <MDBox mb={3}>
+		<DefaultLineChart
+			color={color}
+			description={desc}
+			chart={chart}
+			height={337}
+		/>
+	</MDBox>;
+}
+
+//</editor-fold>
+
 //<editor-fold desc="GridCounter">
-const Comp = forwardRef(({data: __data}, ref) => {
+const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
+	const [interval, setInterval] = useState(__interval);
 
 	// <editor-fold desc="useImperativeHandle funs">
 	useImperativeHandle(ref, () => ({
 		setData: (value) => {
 			setData(value);
+		},
+		setInterval: (value) => {
+			setInterval(value);
 		},
 	}));
 	// </editor-fold>
@@ -92,14 +138,24 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		next_calibration_3mon_expiry_list_aggregate = defaults,
 		next_calibration_4mon_expiry_list_aggregate = defaults,
 		//
-		doc_non_expiry_list_aggregate = defaults,
-		doc_expired_list_aggregate = defaults,
-		doc_mon_expiry_list_aggregate = defaults,
-		doc_2mon_expiry_list_aggregate = defaults,
-		doc_3mon_expiry_list_aggregate = defaults,
-		doc_4mon_expiry_list_aggregate = defaults,
+		// doc_non_expiry_list_aggregate = defaults,
+		// doc_expired_list_aggregate = defaults,
+		// doc_mon_expiry_list_aggregate = defaults,
+		// doc_2mon_expiry_list_aggregate = defaults,
+		// doc_3mon_expiry_list_aggregate = defaults,
+		// doc_4mon_expiry_list_aggregate = defaults,
 		//
+		// _2022__doc_expiry_list_aggregate,
 	} = item;
+
+	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
+		const parts = key.split('__');
+		const year = parts[0].split('_')[1];
+		const month = parts[0].split('_')[2];
+		return {key: parts[1].split('_')[0], year, month, count: item[key].aggregate.count};
+	});
+
+	const list_all = list.filter(({key}) => key === 'doc');
 
 	console.log('data', data)
 
@@ -165,21 +221,38 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		}],
 	};
 
-	const chartDocumentExpiry = {
-		labels: ['Expired', '1 Month', '2 Months', '3 Months', '4 Months', 'Unclassified'],
-		datasets: [{
-			label: 'Total',
-			color: 'white',
-			data: [
-				doc_expired_list_aggregate.aggregate.count,
-				doc_mon_expiry_list_aggregate.aggregate.count,
-				doc_2mon_expiry_list_aggregate.aggregate.count,
-				doc_3mon_expiry_list_aggregate.aggregate.count,
-				doc_4mon_expiry_list_aggregate.aggregate.count,
-				doc_non_expiry_list_aggregate.aggregate.count,
+	const chartDocumentExpiryByDateRange = {
+		count: "+91",
+		percAmount: "+4%",
+		chart: {
+			labels: list_all.map(({year, month}) => `${year}-${month}`),
+			datasets: [
+				{
+					label: 'Assets Documents Expiry',
+					color: 'primary',
+					data: list_all.map(({count}) => count)
+				},
 			],
-		}],
+		}
 	};
+
+	// const chartDocumentExpiry = {
+	// 	labels: ['Expired', '1 Month', '2 Months', '3 Months', '4 Months', 'Unclassified'],
+	// 	datasets: [{
+	// 		label: 'Total',
+	// 		color: 'white',
+	// 		data: [
+	// 			doc_expired_list_aggregate.aggregate.count,
+	// 			doc_mon_expiry_list_aggregate.aggregate.count,
+	// 			doc_2mon_expiry_list_aggregate.aggregate.count,
+	// 			doc_3mon_expiry_list_aggregate.aggregate.count,
+	// 			doc_4mon_expiry_list_aggregate.aggregate.count,
+	// 			doc_non_expiry_list_aggregate.aggregate.count,
+	// 		],
+	// 	}],
+	// };
+
+	const percLabel = `than ${labels[interval]}`;
 
 	return <>
 		<Grid
@@ -208,7 +281,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			}}
 		>
 			<VerticalBarChart
-				height="166px"
+				height="215px"
 				title="Asset Condition"
 				color="#fff"
 				tickColor="white"
@@ -235,7 +308,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 				}}
 			>
 				<VerticalBarChart
-					height="166px"
+					height="215px"
 					title="Next Service Date"
 					color="#fff"
 					tickColor="white"
@@ -255,7 +328,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 				}}
 			>
 				<VerticalBarChart
-					height="166px"
+					height="215px"
 					title="Next Calibration Date"
 					color="#fff"
 					tickColor="white"
@@ -280,22 +353,31 @@ const Comp = forwardRef(({data: __data}, ref) => {
 				chart={chartNextServiceReason}
 			/>
 		</MDBox>
-		<MDBox
-			className="w-full grid-gap-10"
-			sx={{
-				m: '25px 0 0 !important', p: '0 !important', justifyItems: 'center', background: "#fff", borderRadius: "20%",
-			}}
-		>
-			<VerticalBarChart
-				height="250px"
-				title="Document Expiry"
-				color="#fff"
-				tickColor="white"
-				background="#344767"
-				displayLegend={true}
-				chart={chartDocumentExpiry}
+		{/*<MDBox*/}
+		{/*	className="w-full grid-gap-10"*/}
+		{/*	sx={{*/}
+		{/*		m: '25px 0 0 !important', p: '0 !important', justifyItems: 'center', background: "#fff", borderRadius: "20%",*/}
+		{/*	}}*/}
+		{/*>*/}
+		{/*	<VerticalBarChart*/}
+		{/*		height="250px"*/}
+		{/*		title="Document Expiry"*/}
+		{/*		color="#fff"*/}
+		{/*		tickColor="white"*/}
+		{/*		background="#344767"*/}
+		{/*		displayLegend={true}*/}
+		{/*		chart={chartDocumentExpiry}*/}
+		{/*	/>*/}
+		{/*</MDBox>*/}
+		<Grid item sx={{padding: "0 !important", mt: '25px !important', mb: "-20px !important"}}>
+			<DefaultLineChartWrapper
+				data={chartDocumentExpiryByDateRange}
+				color="black"
+				percColor="info"
+				desc="Assets Documents Expiry by Time"
+				percLabel={percLabel}
 			/>
-		</MDBox>
+		</Grid>
 	</>;
 });
 //</editor-fold>

@@ -9,14 +9,18 @@ export default (
 	}
 ) => {
 	const id = site_id || project_id || client_id || company_id;
-	let tbl;
+	let tbl, org_key;
 	if (site_id) {
+		org_key = "site_id";
 		tbl = "default_sites";
 	} else if (project_id) {
+		org_key = "project_id";
 		tbl = "default_projects";
 	} else if (client_id) {
+		org_key = "client_id";
 		tbl = "default_clients";
 	} else {
+		org_key = "company_id";
 		tbl = "default_companies";
 	}
 
@@ -25,7 +29,10 @@ export default (
 	const monEnd = end || new Date();
 
 	const datesOnlyPrev = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
-	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+
+	const monStartNext = start || new Date().addMonths(-3);
+	const monEndNext = end || new Date().addMonths(8);
+	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStartNext, monEndNext);
 
 	const dateRangeOnlyPrevQueries = datesOnlyPrev.map(async date => {
 		const {year, month, start, end} = date;
@@ -73,27 +80,29 @@ export default (
 		const {year, month, start, end} = date;
 		return GQLClient
 		.query({
+			multi_queries: true,
 			query: `
 				query findByIdOrgAssetDashboardQuery_dateRange_${year}_${month} {
-	        ${tbl}(
-	          where: {
-	            id: {_eq: ${id}}
-	          }
-	        ) {
-				    _${year}_${month}__next_calibration_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, calibration_record_list: {next_calibration_date: {_gte: "${start}", _lte: "${end}"}}}) {
-							aggregate {
-							  count
-							}
+					_${year}_${month}__next_calibration_list_aggregate: asset_calibration_record_aggregate(where: {
+						asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, 
+						next_calibration_date: {_gte: "${start}", _lte: "${end}"}
+					}) {
+						aggregate {
+							count
 						}
-						_${year}_${month}__doc_expiry_list_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, doc_list: {expiry: {_gte: "${start}", _lte: "${end}"}}}) {
-							aggregate {
-							  count
-							}
+					}
+					_${year}_${month}__doc_expiry_list_aggregate: asset_docs_aggregate(where: {
+						removed: {_eq: false},
+						asset:{written_off: {_eq: false}, }, 
+						expiry: {_gte: "${start}", _lte: "${end}"},
+					}) {
+						aggregate {
+							count
 						}
-				  }
-	      }
-	    `,
-		});
+					}
+				}
+	    	`,
+		}).then(res => res && res.data && [res.data]);
 	});
 
 	const mon = Dates.formatDateSQL(new Date().addMonths(1));
@@ -300,16 +309,19 @@ export default (
 			    
 			    #
 			    maintenance_plan_cost_aggregate: asset_list_aggregate(where: {written_off: {_eq: false}, maintenance_plan_cost: {_is_null: false}}) {
-      			nodes{
-              maintenance_plan_cost
-            }
-			    }
-			  }
-      }
-    `,
+					nodes{
+					  maintenance_plan_cost
+					}
+				}
+			}
+		  }
+    	`,
 		}),
 		...dateRangeOnlyPrevQueries,
 		...dateRangeQueries,
-	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
+	// ]).then(res => console.log(res));
+	]).
+	then(res => res.reduce((a1, a2) => [...a1, ...a2], []).reduce((a1, a2) => ({...a1, ...a2}), {})).
+	then(res => [res]);
 	//</editor-fold>
 };
