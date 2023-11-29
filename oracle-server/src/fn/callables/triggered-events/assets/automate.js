@@ -259,7 +259,7 @@ readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
         });
 
         if (res) {
-            console.log('asset', res);
+            console.log('asset', res);//
             return;
 
             const {id, data: {reg_num, asset_list}} = res;
