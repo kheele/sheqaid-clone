@@ -1,5 +1,5 @@
 process.on('uncaughtException', async (err) => {
-    // console.error('Caught exception: ', err);
+    console.error('Caught exception: ', err);
     console.error('Caught exception stringify: ', JSON.stringify(err));
 
     const opts = {
