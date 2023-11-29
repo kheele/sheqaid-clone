@@ -204,7 +204,7 @@ class DocsTab extends React.Component {
 		const {idx} = el.props;
 		const {list} = this.refs.root;
 		const item = list[idx];
-		// console.log("list", this.isAsset, list.slice())
+		console.log("list", this.isAsset, list.slice())
 		const dialog = this.refs.root.getDialogByRef('profileDialog');
 		if (dialog) {
 			if (this.isAsset) {

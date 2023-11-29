@@ -228,14 +228,13 @@ exports.loadFiles = async (dir, extract, options) => {
     });
 };
 
-readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
+readFiles(path.join(__dirname, 'docs/3. COF')).then(async files => {
     // return;
 
-    await Promise.all(files.filter(v => v !== '-').filter(v => v !== 'Missing').map(async filename => {
-        let reg_num = filename;
-        // let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
+    await Promise.all(files.filter(v => v !== 'Missing').map(async filename => {
+        let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
 
-        // reg_num = reg_num.replace(' ', '');
+        reg_num = reg_num.replace(' ', '');
         let res = await getGraphQLOne({
             query: `
             		query findQuery {
@@ -244,30 +243,26 @@ readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
             				reg_num
             				asset_list{
             				  id
-            				  #doc_list(
-            				    #where: {type: {_eq: "Certificate of Fitness (C.O.F)"}}
-            				  #){
-            				  #  id
-            				  #  doc
-            				  #  type
-            				  #}
+            				  doc_list(
+            				    where: {type: {_eq: "Certificate of Fitness (C.O.F)"}}
+            				  ){
+            				    id
+            				    doc
+            				    type
+            				  }
             				}
             		  }
             		}
             	`,
             operationName: 'findQuery',
         });
-
         if (res) {
-            console.log('asset', res);
-            return;
-
             const {id, data: {reg_num, asset_list}} = res;
             const [asset] = asset_list;
             const [docItem] = asset.doc_list;
 
             const len = asset.doc_list.length;
-            if (len === 1) {
+            if(len === 1) {
                 const [docItem1, docItem2] = asset.doc_list;
                 console.log(reg_num, date, expiry, asset.id, asset.doc_list.map(v => ({...v, doc: v.doc.dlUrls[0]})));
                 // return;
@@ -300,23 +295,11 @@ readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
                 }
             }
         } else {
-            // fs.rename(
-            //     path.join(__dirname, 'docs/202305/' + filename),
-            //     path.join(__dirname, 'docs/202305/Missing/' + filename)
-            // );
-            fs.move(
-                path.join(__dirname, 'docs/202305/' + filename),
-                path.join(__dirname, 'docs/202305/Missing/' + filename),
-                {overwrite: true},
-                (err) => {
-                    if (err) {
-                        console.error('Error moving folder:', err);
-                    } else {
-                        console.log('Folder moved successfully!');
-                    }
-                },
+            fs.rename(
+                path.join(__dirname, 'docs/3. COF/' + filename),
+                path.join(__dirname, 'docs/3. COF/Missing/' + filename)
             );
-            console.log('asset not found reg', reg_num);
+            console.log('asset not found reg', reg_num, date);
         }
     }));
 
