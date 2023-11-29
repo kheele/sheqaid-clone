@@ -38,6 +38,13 @@ class Cntr extends ACntr {
             .then((res) => {
                 if (res) {
                     socket.leave(auth_id);
+
+                    delete session.sessionCookie;
+                    delete session.auth_id;
+                    delete session.access_type;
+                    delete session.customClaims;
+                    session.save();
+
                     return res;
                 }
             });

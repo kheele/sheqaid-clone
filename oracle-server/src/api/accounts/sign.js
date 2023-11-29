@@ -25,14 +25,16 @@ global.signOut = async ({session, sessionCookie, access_type}) => {
         .verifySessionCookie(sessionCookie)
         .then((decodedClaims) => {
             return _auth.revokeRefreshTokens(decodedClaims.sub);
-        }).then(() => {
-            return new Promise((resolve, reject) => {
-                session.destroy(() => {
-                    // res.status(204).end();
-                    resolve(true);
-                });
-            });
-        });
+        }).
+        // then(() => {
+        //     return new Promise((resolve, reject) => {
+        //         session.destroy(() => {
+        //             // res.status(204).end();
+        //             resolve(true);
+        //         });
+        //     });
+        // }).
+        then(() => true);
 };
 
 global.onReAuthUser = async ({uid, access_type}) => {
