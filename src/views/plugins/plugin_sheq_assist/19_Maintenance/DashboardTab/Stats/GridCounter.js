@@ -11,17 +11,6 @@ import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
 import DefaultLineChart from "containers/Charts/LineCharts/DefaultLineChart";
 //</editor-fold>
 
-//<editor-fold desc="labels">
-const labels = {
-	Day: "yesterday",
-	Week: "last week",
-	Month: "last month",
-	Quarter: "last 3 months",
-	"Bi-Annual": "last 6 months",
-	Annual: "last year",
-};
-//</editor-fold>
-
 //<editor-fold desc="Counter">
 function Counter({background, title, count, label, color, sx}) {
 	return <DefaultCounterCard
@@ -110,6 +99,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	const {
 		all_asset_list_aggregate = defaults,
 		removed_asset_list_aggregate = defaults,
+		all_doc_list_aggregate = defaults,
 		maintenance_plan_cost_aggregate = {nodes: []},
 		//
 		condition_new_aggregate = defaults,
@@ -138,24 +128,30 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		next_calibration_3mon_expiry_list_aggregate = defaults,
 		next_calibration_4mon_expiry_list_aggregate = defaults,
 		//
+		type_Bill_of_Sale_doc_list_aggregate = defaults,
+		type_Brake_Test_Report_doc_list_aggregate = defaults,
+		type_Certificate_of_Fitness_doc_list_aggregate = defaults,
+		type_Clearance_Certificate_doc_list_aggregate = defaults,
+		type_Inspection_Reports_doc_list_aggregate = defaults,
+		type_Insurance_Certificate_doc_list_aggregate = defaults,
+		type_Invoice_doc_list_aggregate = defaults,
+		type_LUX_Test_Report_doc_list_aggregate = defaults,
+		type_Maintenance_Records_doc_list_aggregate = defaults,
+		type_Work_Manual_doc_list_aggregate = defaults,
+		type_Work_Procedure_doc_list_aggregate = defaults,
+		type_Owners_Manual_doc_list_aggregate = defaults,
+		type_Vehicle_History_Report_doc_list_aggregate = defaults,
+		type_Vehicle_License_doc_list_aggregate = defaults,
+		type_Vehicle_Registration_Certificate_doc_list_aggregate = defaults,
+		type_Vehicle_Title_doc_list_aggregate = defaults,
+		//
 		// doc_non_expiry_list_aggregate = defaults,
 		// doc_expired_list_aggregate = defaults,
 		// doc_mon_expiry_list_aggregate = defaults,
 		// doc_2mon_expiry_list_aggregate = defaults,
 		// doc_3mon_expiry_list_aggregate = defaults,
 		// doc_4mon_expiry_list_aggregate = defaults,
-		//
-		// _2022__doc_expiry_list_aggregate,
 	} = item;
-
-	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
-		const parts = key.split('__');
-		const year = parts[0].split('_')[1];
-		const month = parts[0].split('_')[2];
-		return {key: parts[1].split('_')[0], year, month, count: item[key].aggregate.count};
-	});
-
-	const list_all = list.filter(({key}) => key === 'doc');
 
 	console.log('data', data)
 
@@ -221,19 +217,47 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		}],
 	};
 
-	const chartDocumentExpiryByDateRange = {
-		count: "+91",
-		percAmount: "+4%",
-		chart: {
-			labels: list_all.map(({year, month}) => `${year}-${month}`),
-			datasets: [
-				{
-					label: 'Assets Documents Expiry',
-					color: 'primary',
-					data: list_all.map(({count}) => count)
-				},
+	const chartDocType = {
+		labels: [
+			'Bill of Sale',
+			'Brake Test Report',
+			'Certificate of Fitness (COF)',
+			'Clearance Certificate',
+			'Inspection Reports',
+			'Insurance Certificate',
+			'Invoice',
+			'LUX Test Report',
+			'Maintenance Records',
+			'Work Manual',
+			'Work Procedure',
+			'Owners Manual',
+			'Vehicle History Report',
+			'Vehicle License',
+			'Vehicle Registration Certificate',
+			'Vehicle Title',
+		],
+		datasets: [{
+			label: 'Total',
+			color: 'white',
+			data: [
+				type_Bill_of_Sale_doc_list_aggregate.aggregate.count,
+				type_Brake_Test_Report_doc_list_aggregate.aggregate.count,
+				type_Certificate_of_Fitness_doc_list_aggregate.aggregate.count,
+				type_Clearance_Certificate_doc_list_aggregate.aggregate.count,
+				type_Inspection_Reports_doc_list_aggregate.aggregate.count,
+				type_Insurance_Certificate_doc_list_aggregate.aggregate.count,
+				type_Invoice_doc_list_aggregate.aggregate.count,
+				type_LUX_Test_Report_doc_list_aggregate.aggregate.count,
+				type_Maintenance_Records_doc_list_aggregate.aggregate.count,
+				type_Work_Manual_doc_list_aggregate.aggregate.count,
+				type_Work_Procedure_doc_list_aggregate.aggregate.count,
+				type_Owners_Manual_doc_list_aggregate.aggregate.count,
+				type_Vehicle_History_Report_doc_list_aggregate.aggregate.count,
+				type_Vehicle_License_doc_list_aggregate.aggregate.count,
+				type_Vehicle_Registration_Certificate_doc_list_aggregate.aggregate.count,
+				type_Vehicle_Title_doc_list_aggregate.aggregate.count,
 			],
-		}
+		}],
 	};
 
 	// const chartDocumentExpiry = {
@@ -252,21 +276,21 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	// 	}],
 	// };
 
-	const percLabel = `than ${labels[interval]}`;
-
 	return <>
 		<Grid
 			container
 			columns={1}
 			spacing={6}
-			className="grid-3 w-full grid-gap-10"
+			className="grid-4 w-full grid-gap-10"
 			sx={{m: '0 !important', mt: '10px !important', mb: '15px !important', justifyItems: 'center',}}
 		>
-			<Counter background="#933333" title={<b className="color-white font-size-14">Total Assets</b>}
+			<Counter background="#75732c" title={<b className="color-white font-size-14">Total Assets</b>}
 			         count={all_asset_list_aggregate.aggregate.count}/>
-			<Counter background="#2a5d1e" title={<b className="color-white font-size-14">Assets Written-Off</b>}
+			<Counter background="#933333" title={<b className="color-white font-size-14">Assets Written-Off</b>}
 			         count={removed_asset_list_aggregate.aggregate.count}/>
-			<Counter background="#2a5d1e" title={<b className="color-white font-size-14">Maintenance Cost</b>}
+			<Counter background="#788389" title={<b className="color-white font-size-14">Total Assets Documents</b>}
+			         count={all_doc_list_aggregate.aggregate.count}/>
+			<Counter background="#3c763d" title={<b className="color-white font-size-14">Maintenance Cost</b>}
 			         count={maintenance_plan_cost_aggregate.nodes.map(({maintenance_plan_cost}) => maintenance_plan_cost).reduce((a1, a2) => a1 + a2, 0)}/>
 		</Grid>
 		<MDBox
@@ -353,6 +377,22 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 				chart={chartNextServiceReason}
 			/>
 		</MDBox>
+		<MDBox
+			className="w-full grid-gap-10"
+			sx={{
+				m: '25px 0 0 !important', p: '0 !important', justifyItems: 'center', background: "#fff", borderRadius: "20%",
+			}}
+		>
+			<VerticalBarChart
+				height="250px"
+				title="Assets Document Type"
+				color="#fff"
+				tickColor="white"
+				background="#344767"
+				displayLegend={true}
+				chart={chartDocType}
+			/>
+		</MDBox>
 		{/*<MDBox*/}
 		{/*	className="w-full grid-gap-10"*/}
 		{/*	sx={{*/}
@@ -369,15 +409,15 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		{/*		chart={chartDocumentExpiry}*/}
 		{/*	/>*/}
 		{/*</MDBox>*/}
-		<Grid item sx={{padding: "0 !important", mt: '25px !important', mb: "-20px !important"}}>
-			<DefaultLineChartWrapper
-				data={chartDocumentExpiryByDateRange}
-				color="black"
-				percColor="info"
-				desc="Assets Documents Expiry by Time"
-				percLabel={percLabel}
-			/>
-		</Grid>
+		{/*<Grid item sx={{padding: "0 !important", mt: '25px !important', mb: "-20px !important"}}>*/}
+		{/*	<DefaultLineChartWrapper*/}
+		{/*		data={chartDocumentExpiryByDateRange}*/}
+		{/*		color="black"*/}
+		{/*		percColor="info"*/}
+		{/*		desc="Assets Documents Expiry by Time"*/}
+		{/*		percLabel={percLabel}*/}
+		{/*	/>*/}
+		{/*</Grid>*/}
 	</>;
 });
 //</editor-fold>

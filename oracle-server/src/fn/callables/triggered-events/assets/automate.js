@@ -228,12 +228,11 @@ exports.loadFiles = async (dir, extract, options) => {
     });
 };
 
-readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
-    // return;
+readFiles(path.join(__dirname, 'docs/202305/Brake Test')).then(async files => {
+    return;
 
-    await Promise.all(files.filter(v => v !== '-').filter(v => v !== 'Missing').map(async filename => {
-        let reg_num = filename;
-        // let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
+    await Promise.all(files.filter(v => !v.startsWith('-DONE-') && !v.startsWith('-MISSING-')).map(async filename => {
+        let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
 
         // reg_num = reg_num.replace(' ', '');
         let res = await getGraphQLOne({
@@ -259,27 +258,24 @@ readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
         });
 
         if (res) {
-            console.log('asset', res);//
-            return;
+            // console.log('asset', res);
 
             const {id, data: {reg_num, asset_list}} = res;
             const [asset] = asset_list;
-            const [docItem] = asset.doc_list;
 
-            const len = asset.doc_list.length;
-            if (len === 1) {
-                const [docItem1, docItem2] = asset.doc_list;
-                console.log(reg_num, date, expiry, asset.id, asset.doc_list.map(v => ({...v, doc: v.doc.dlUrls[0]})));
-                // return;
+            const base64 = fs.readFileSync(path.join(__dirname, 'docs/202305/Brake Test/' + filename), {encoding: 'base64'});
+            const datauri = 'data:application/pdf;base64,' + base64;
+            console.log(reg_num, date, expiry, asset.id, !!datauri);
+            // return;//
 
-                if (docItem) {
-                    return await updateGraphQL({
-                        mutation: `
-                           mutation updateAssetDocMutation($id: asset_docs_pk_columns_input!, $_set: asset_docs_set_input!) {
-                              update_asset_docs_by_pk(pk_columns: $id, _set: $_set) {
+            await insertGraphQL({
+                mutation: `
+                           mutation insertAssetDocMutation($object: asset_docs_insert_input!) {
+                              insert_asset_docs_one(object: $object) {
                                   id
                                   created_at
                                   doc
+                                  date
                                   expiry
                                   title
                                   desc
@@ -291,22 +287,33 @@ readFiles(path.join(__dirname, 'docs/202305')).then(async files => {
                               }
                            }
                         `,
-                        operationName: 'updateAssetDocMutation',
-                        id: docItem.id,
-                        attrs: {
-                            date,// expiry,
-                        },
-                    });
-                }
-            }
-        } else {
-            // fs.rename(
-            //     path.join(__dirname, 'docs/202305/' + filename),
-            //     path.join(__dirname, 'docs/202305/Missing/' + filename)
-            // );
+                operationName: 'insertAssetDocMutation',
+                input: {
+                    asset_id: asset.id,
+                    doc: {path: datauri},
+                    date: Dates.formatDateSQL(date),
+                    // expiry: Dates.formatDateSQL(expiry),
+                    title: "Brake Test Report",
+                    type: "Brake Test Report",
+                },
+            });
+
             fs.move(
-                path.join(__dirname, 'docs/202305/' + filename),
-                path.join(__dirname, 'docs/202305/Missing/' + filename),
+                path.join(__dirname, 'docs/202305/Brake Test/' + filename),
+                path.join(__dirname, 'docs/202305/Brake Test/-DONE-' + filename),
+                {overwrite: true},
+                (err) => {
+                    if (err) {
+                        console.error('Error moving folder:', err);
+                    } else {
+                        console.log('Folder moved successfully!');
+                    }
+                },
+            );
+        } else {
+            fs.move(
+                path.join(__dirname, 'docs/202305/Brake Test/' + filename),
+                path.join(__dirname, 'docs/202305/Brake Test/-MISSING-' + filename),
                 {overwrite: true},
                 (err) => {
                     if (err) {

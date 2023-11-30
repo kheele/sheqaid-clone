@@ -235,8 +235,14 @@ class AEmployeeDocControls extends React.Component {
 
     //</editor-fold>
 
+    @computed get isEmbedded() {
+        const {isEmbedded, item} = this.props;
+        return isEmbedded || !!item;
+    }
+
     @computed get item() {
-        return this.props.state.item;
+        const {item, state} = this.props;
+        return this.isEmbedded ? item : state.item;
     }
 
     @computed get list() {
@@ -252,12 +258,11 @@ class AEmployeeDocControls extends React.Component {
             NewDialog,
             EditDialog,
             listName,
-            props: {tabsHeight, isEmbedded: __isEmbedded, isNewEmployee}
+            props: {tabsHeight, isNewEmployee},
+            isEmbedded,
         } = this;
 
         const {isEmployee} = storage.is;
-
-        const isEmbedded = __isEmbedded || !!this.props.item;
 
         if (!isEmbedded && !this.item) {
             return <CircularProgress className="fixed-center"/>;

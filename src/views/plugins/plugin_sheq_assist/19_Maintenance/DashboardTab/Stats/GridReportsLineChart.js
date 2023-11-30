@@ -75,7 +75,7 @@ function VerticalBarChartWrapper({background, color, tickColor, title, chart: _c
 
 	return <VerticalBarChart
 		title={title}
-		height="300px"
+		height="340px"
 		color={color}
 		tickColor={tickColor}
 		background={background}
@@ -93,8 +93,6 @@ function VerticalBarChartWrapper({background, color, tickColor, title, chart: _c
 const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
 	const [interval, setInterval] = useState(__interval);
-
-	return null;
 
 	// <editor-fold desc="useImperativeHandle funs">
 	useImperativeHandle(ref, () => ({
@@ -120,35 +118,31 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	const [item = {}] = data;
 	// _2022__doc_expiry_list_aggregate,
 
-	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
+	const doc_expiry_list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
 		const parts = key.split('__');
 		const year = parts[0].split('_')[1];
 		const month = parts[0].split('_')[2];
 		return {key: parts[1].split('_')[0], year, month, count: item[key].aggregate.count};
 	});
 
-	const list_all = list.filter(({key}) => key === 'doc');
+	const doc_expiry_list_all = doc_expiry_list.filter(({key}) => key === 'doc');
 
-	console.log('data', data)
+	// console.log('data', data)
 
-	const totals = {
-		lists: Promise.resolve({
-			count: "+91",
-			percAmount: "+4%",
-			chart: {
-				labels: list_all.map(({year, month}) => `${year}-${month}`),
-				datasets: [
-					{
-						label: 'All',
-						color: 'primary',
-						data: list_all.map(({count}) => count)
-					},
-				],
-			}
-		}),
+	const chartDocumentExpiryByDateRange = {
+		count: "+91",
+		percAmount: "+4%",
+		chart: {
+			labels: doc_expiry_list_all.map(({year, month}) => `${year}-${month}`),
+			datasets: [
+				{
+					label: 'Assets Documents Expiry',
+					color: 'primary',
+					data: doc_expiry_list_all.map(({count}) => count)
+				},
+			],
+		}
 	};
-
-	const {lists} = totals;
 
 	const percLabel = `than ${labels[interval]}`;
 
@@ -158,15 +152,15 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		spacing={6}
 		className="grid-1 w-full grid-gap-10"
 		sx={{
-			m: '0 !important', mt: '0px !important',
+			m: '0 !important', mt: '25px !important', mb: "-32px !important",
 		}}
 	>
-		<Grid item sx={{padding: "0 !important", mb: "-10px !important"}}>
+		<Grid item sx={{padding: "0 !important"}}>
 			<DefaultLineChartWrapper
-				data={lists}
+				data={chartDocumentExpiryByDateRange}
 				color="black"
 				percColor="info"
-				desc="Total Document Expiry"
+				desc="Assets Documents Expiry by Time"
 				percLabel={percLabel}
 			/>
 		</Grid>
