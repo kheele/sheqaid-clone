@@ -406,7 +406,7 @@ class Controls extends React.Component {
             risk_assessment_date: Dates.formatDateSQL(risk_assessment_date),
             //11
             ppe_list: {
-                data: (ppe_list || []).map(v => {
+                data: (ppe_list || []).filter(v => v && (v.id || (v.ppe && v.ppe.id))).map(v => {
                     if (v.ppe) {
                         return {ppe_id: v.ppe.id};
                     } else {
