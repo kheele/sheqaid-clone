@@ -7,8 +7,8 @@ import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
 import {
-    ClearableInput,
-    SelectClientInput,
+    ClearableInput, ProfilePic, RowOrgs,
+    SelectClientInput, SelectGenderInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
@@ -18,7 +18,7 @@ import {
     NewJobPositionListTable,
     NewTeamListTable
 } from 'components/FormTableComponents';
-import {Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewPPEDialog.lazy.css";
 import insertPPE from "mutations/all/PPE/insertPPE";
@@ -35,9 +35,10 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -49,7 +50,7 @@ class Controls extends React.Component {
     state = {
         lists: {
             duration_type: [
-                {text: "Years", value: "Years", checked: false}, 
+                {text: "Years", value: "Years", checked: false},
                 {text: "Months", value: "Months", checked: false},
                 {text: 'Weeks', value: 'Weeks', checked: false},
                 {text: 'Days', value: 'Days', checked: false}
@@ -64,12 +65,13 @@ class Controls extends React.Component {
         super();
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
         this.form.addChangeOne("qty_received", this.onChangeQtyReceived.bind(this));
         this.form.addChangeOne("qty_issued", this.onChangeQtyIssued.bind(this));
         this.form.addChangeOne("duration_type", this.onChangeDurationType.bind(this));
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
@@ -84,7 +86,7 @@ class Controls extends React.Component {
             qty_in_stock.setEditable(false);
         });
     }
-    
+
     onChangeQtyIssued(el, val) {
         const {execWhen} = this.props;
         execWhen(() => this.refs.qty_received && this.refs.qty_issued && this.refs.qty_in_stock).then(list_ref => {
@@ -96,17 +98,18 @@ class Controls extends React.Component {
             qty_in_stock.setEditable(false);
         });
     }
-    
+
     onChangeDurationType(el, val) {
         this.state.duration_type = val;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 0) {
+        if (idx === 0) {
             if (!form.isValid('client')) {
                 infoDialog.open('Company is required');
                 return;
@@ -120,7 +123,7 @@ class Controls extends React.Component {
             //     return;
             // }
         }
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('name')) {
                 infoDialog.open('Item Description is required');
                 return;
@@ -134,9 +137,10 @@ class Controls extends React.Component {
                 return;
             }
         }
-        
+
         return true;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
@@ -156,7 +160,7 @@ class Controls extends React.Component {
         //     infoDialog.open('Site is required');
         //     return;
         // }
-        
+
         //2
         if (!form.isValid('name')) {
             infoDialog.open('Item Description is required');
@@ -170,7 +174,7 @@ class Controls extends React.Component {
             infoDialog.open('Duration Value is required');
             return;
         }
-        
+
         const {
             site,
             project,
@@ -207,7 +211,7 @@ class Controls extends React.Component {
 
             team_list: {
                 data: (team_list || []).map(v => {
-                    if(v.team) {
+                    if (v.team) {
                         return {team_id: v.team.id};
                     } else {
                         return {team_id: v.id};
@@ -216,7 +220,7 @@ class Controls extends React.Component {
             },
             department_list: {
                 data: (department_list || []).map(v => {
-                    if(v.department) {
+                    if (v.department) {
                         return {department_id: v.department.id};
                     } else {
                         return {department_id: v.id};
@@ -225,7 +229,7 @@ class Controls extends React.Component {
             },
             job_position_list: {
                 data: (job_position_list || []).map(v => {
-                    if(v.job_position) {
+                    if (v.job_position) {
                         return {job_position_id: v.job_position.id};
                     } else {
                         return {job_position_id: v.id};
@@ -233,7 +237,7 @@ class Controls extends React.Component {
                 }),
             },
         };
-        
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -249,79 +253,86 @@ class Controls extends React.Component {
             setTimeout(() => progressDialog.close());
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
-        return (<div className="controls-wrapper controls-sectioned">
-            <div className="controls">
-                <Row 
-                    active
-                    rendered 
-                    idx={0}
-                    title="Company / Project / Site" 
-                    onFormOpen={onFormOpen} 
-                    onFormNext={onFormNext}
-                >
-                    <SelectClientInput name="client" placeholder="Company..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                </Row>
-                <Row 
-                    rendered 
+        return (<FormControls>
+            <RowOrgs
+                onChange={this.form.onChange}
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+                showAll
+            >
+                <Row
+                    rendered
                     idx={1}
-                    title="1. Item Details" 
-                    onFormOpen={onFormOpen} 
-                    onFormNext={onFormNext} 
-                    onFormBack={onFormBack} 
+                    title="1. Item Details"
                 >
-                    <ClearableInput name="name" type="text" placeholder="Item Description" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="unit" type="text" placeholder="Item Unit" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received" defaultValue={0} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued" defaultValue={0} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock" defaultValue={0} isClearable={false} isEditable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.duration_type} returnValue/>
+                    <ClearableInput name="name" type="text" placeholder="Item Description"
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="unit" type="text" placeholder="Item Unit" className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
+                    <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received"
+                                    defaultValue={0} isClearable={false} className="col-lg-4 form-control"
+                                    onChange={this.form.onChange}/>
+                    <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued"
+                                    defaultValue={0} isClearable={false} className="col-lg-4 form-control"
+                                    onChange={this.form.onChange}/>
+                    <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock"
+                                    defaultValue={0} isClearable={false} isEditable={false}
+                                    className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                    <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" vertical
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.duration_type} returnValue/>
                     <DurationValueWrapper state={this.state} onChange={this.form.onChange}/>
-                    <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <UploadButton 
-                        name="profile_pic" 
-                        buttonTitle="PPE Item Photo" 
+                    <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
+                    <UploadButton
+                        name="profile_pic"
+                        buttonTitle="PPE Item Photo"
                         type={['Photo']}
-                        showOnlyIcon 
+                        showOnlyIcon
                         className="col-lg-6 col-xs-12 hor-center"
                         onChange={this.form.onChange}
                     />
                 </Row>
-                <Row 
-                    rendered 
-                    idx={2}
-                    title="2. Teams / Departments / Job Positions" 
-                    onFormOpen={onFormOpen}  
-                    onFormBack={onFormBack} 
-                >
-                    <NewTeamListTable name="team_list" title="Team(s)" onChange={this.form.onChange}/>
-                    <hr className="pull-left margin-t-5 margin-b-15"/>
-                    <NewDepartmentListTable name="department_list" title="Department(s)" onChange={this.form.onChange}/>
-                    <hr className="pull-left margin-t-5 margin-b-15"/>
-                    <NewJobPositionListTable name="job_position_list" title="Job Position(s)" onChange={this.form.onChange}/>
-                </Row>
-            </div>
-        </div>);
+            </RowOrgs>
+            <Row
+                rendered
+                idx={2}
+                title="2. Teams / Departments / Job Positions"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+            >
+                <NewTeamListTable name="team_list" title="Team(s)" onChange={this.form.onChange}/>
+                <hr className="pull-left margin-t-5 margin-b-15"/>
+                <NewDepartmentListTable name="department_list" title="Department(s)" onChange={this.form.onChange}/>
+                <hr className="pull-left margin-t-5 margin-b-15"/>
+                <NewJobPositionListTable name="job_position_list" title="Job Position(s)"
+                                         onChange={this.form.onChange}/>
+            </Row>
+        </FormControls>);
     }
+
     // </editor-fold>
 }
 
 // <editor-fold defaultstate="collapsed" desc="DurationValueWrapper">
 @observer
 class DurationValueWrapper extends React.Component {
-    
+
     render() {
         const {state, onChange} = this.props;
-        if(!state.duration_type) return null;
-        return <ClearableInput name="duration_value" type="number" placeholder="Duration Value" required className="col-lg-12 form-control" onChange={onChange}/>;
+        if (!state.duration_type) return null;
+        return <ClearableInput name="duration_value" type="number" placeholder="Duration Value" required
+                               className="col-lg-12 form-control" onChange={onChange}/>;
     }
 }
+
 // </editor-fold>
 
 export default NewDialog;

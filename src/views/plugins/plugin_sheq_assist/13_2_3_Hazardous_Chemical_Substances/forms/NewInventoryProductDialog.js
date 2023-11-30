@@ -424,8 +424,8 @@ class Controls extends React.Component {
                     is_clearly_labeled,
                     storage_location,
                     unit,
-                    qty,
-                    date_received,
+                    qty: qty ? parseInt(qty) : null,
+                    date_received: Dates.formatDateSQL(date_received),
                     expiry_date: Dates.formatDateSQL(expiry_date)
                 }))
             }

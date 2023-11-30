@@ -8,8 +8,8 @@ import {ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog} from 'components/dialogs';
 import {
-    ClearableInput,
-    SelectClientInput,
+    ClearableInput, ProfilePic, RowOrgs,
+    SelectClientInput, SelectGenderInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
@@ -19,7 +19,7 @@ import {
     NewJobPositionListTable,
     NewTeamListTable
 } from 'components/FormTableComponents';
-import {Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditPPEDialog.lazy.css";
 // </editor-fold>
@@ -250,46 +250,38 @@ class Controls extends React.Component {
             }
         } = this;
         
-        return (<div className="controls-wrapper controls-sectioned">
-            <div className="controls">
-                <Row 
-                    active
-                    rendered 
-                    idx={0}
-                    title="Company / Project / Site" 
-                    onFormOpen={onFormOpen} 
+        return (<FormControls>
+                <RowOrgs
+                    onChange={this.form.onChange}
+                    onFormOpen={onFormOpen}
+                    onFormBack={onFormBack}
                     onFormNext={onFormNext}
+                    showAll
                 >
-                    <SelectClientInput name="client" placeholder="Company..." defaultValue={RenderUtils.selectedClient.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectProjectInput name="project" placeholder="Project..." defaultValue={RenderUtils.selectedProject.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                </Row>
-                <Row 
-                    rendered 
-                    idx={1}
-                    title="1. Item Details" 
-                    onFormOpen={onFormOpen}  
-                    onFormNext={onFormNext}
-                    onFormBack={onFormBack} 
-                >
-                    <ClearableInput name="name" type="text" placeholder="Item Description" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="unit" type="text" placeholder="Item Unit" defaultValue={unit} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received" defaultValue={qty_received} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued" defaultValue={qty_issued} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock" defaultValue={qty_in_stock} isClearable={false} isEditable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" defaultValue={duration_type} vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.duration_type} returnValue/>
-                    <DurationValueWrapper state={this.state} defaultValue={duration_value} onChange={this.form.onChange}/>
-                    <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <UploadButton 
-                        name="profile_pic" 
-                        defaultValue={profile_pic}
-                        buttonTitle="PPE Item Photo" 
-                        type={['Photo']}
-                        showOnlyIcon 
-                        className="col-lg-6 col-xs-12 hor-center"
-                        onChange={this.form.onChange}
-                    />
-                </Row>
+                    <Row
+                        rendered
+                        idx={1}
+                        title="1. Item Details"
+                    >
+                        <ClearableInput name="name" type="text" placeholder="Item Description" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="unit" type="text" placeholder="Item Unit" defaultValue={unit} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received" defaultValue={qty_received} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued" defaultValue={qty_issued} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock" defaultValue={qty_in_stock} isClearable={false} isEditable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" defaultValue={duration_type} vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.duration_type} returnValue/>
+                        <DurationValueWrapper state={this.state} defaultValue={duration_value} onChange={this.form.onChange}/>
+                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <UploadButton
+                            name="profile_pic"
+                            defaultValue={profile_pic}
+                            buttonTitle="PPE Item Photo"
+                            type={['Photo']}
+                            showOnlyIcon
+                            className="col-lg-6 col-xs-12 hor-center"
+                            onChange={this.form.onChange}
+                        />
+                    </Row>
+                </RowOrgs>
                 <Row 
                     rendered 
                     idx={2}
@@ -303,8 +295,7 @@ class Controls extends React.Component {
                     <hr className="pull-left margin-t-5 margin-b-15"/>
                     <NewJobPositionListTable name="job_position_list" defaultValue={[...job_position_list, null]} title="Job Position(s)" onChange={this.form.onChange}/>
                 </Row>
-            </div>
-        </div>);
+            </FormControls>);
     }
     // </editor-fold>
 }

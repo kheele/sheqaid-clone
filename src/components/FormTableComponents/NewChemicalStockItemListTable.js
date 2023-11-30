@@ -25,7 +25,7 @@ class ListTable extends ANewListTable {
         extendObservable(this.selfState, {
             lists: {
                 is_clearly_labeled: ['Yes', 'No'].map(text => {
-                    return {text, value: text};
+                    return {text, value: text === 'Yes'};
                 }),
                 storage_location: [],
                 unit: ['g', 'kg', 'ml', 'l']
@@ -48,7 +48,7 @@ class ListTable extends ANewListTable {
 
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
-                <div className="td fixed-flex min-w-120">{is_clearly_labeled}</div>
+                <div className="td fixed-flex min-w-120">{isBoolean(is_clearly_labeled) ? is_clearly_labeled ? 'Yes' : 'No' : 'N/A'}</div>
                 <div className="td">{storage_location}</div>
                 <div className="td fixed-flex min-w-50">{unit}</div>
                 <div className="td fixed-flex min-w-70">{qty}</div>
