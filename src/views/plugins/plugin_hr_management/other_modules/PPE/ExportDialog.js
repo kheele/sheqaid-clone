@@ -14,6 +14,7 @@ import {THead} from 'components/tables';
 
 import ListPDFReader from './printers/ListPDFReader';
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
+import {Dates} from "utils/Dates";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -47,13 +48,8 @@ class Controls extends AControls {
         site_id: null,
         //
         department_id: null, 
-        job_position_id: null, 
-        employee: null,
-        //
-        type: null, 
-        competency_type: null, 
-        course_or_module: null, 
-        job_title: null,
+        job_position_id: null,
+        employee_id: null,
         //
         issued_date: null,
         expiry_date: null, 
@@ -66,6 +62,51 @@ class Controls extends AControls {
         super(props);
     }
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            department_id,
+            job_position_id,
+            employee_id,
+            //
+            issued_date,
+            expiry_date,
+            date_range,
+        } = filterData || {};
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        const limit = 50;
+
+        const args = {
+            client_id,
+            project_id,
+            site_id,
+            //
+            department_id,
+            job_position_id,
+            employee_id,
+            //
+            issued_date,
+            expiry_date,
+            date_range,
+            //
+            // limit,
+            //
+            exact_orgs: true,
+        };
+
+        return byLogged(args);
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

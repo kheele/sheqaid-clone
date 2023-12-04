@@ -119,11 +119,11 @@ class Controls extends React.Component {
         const {form} = this;
         const {idx} = btn.props;
         if (idx === 0) {
-            const {isConsultant} = storage.is;
-            if (isConsultant && !form.isValid('client')) {
-                infoDialog.open('Company is required');
-                return;
-            }
+            // const {isConsultant} = storage.is;
+            // if (isConsultant && !form.isValid('client')) {
+            //     infoDialog.open('Company is required');
+            //     return;
+            // }
         }
         if (idx === 1) {
             if (!form.isValid('name')) {
@@ -142,10 +142,10 @@ class Controls extends React.Component {
         const {form} = this;
         const {isConsultant, isNoProjects} = storage.is;
 
-        if (isConsultant && !form.isValid('client')) {
-            infoDialog.open('Company is required');
-            return;
-        }
+        // if (isConsultant && !form.isValid('client')) {
+        //     infoDialog.open('Company is required');
+        //     return;
+        // }
 
         if (!form.isValid('name')) {
             infoDialog.open('Course is required');
@@ -191,7 +191,7 @@ class Controls extends React.Component {
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
             infoDialog.close(2000);
-            // this.props.close();
+            this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());

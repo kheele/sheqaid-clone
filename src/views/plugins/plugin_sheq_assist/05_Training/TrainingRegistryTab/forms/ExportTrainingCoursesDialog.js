@@ -3,17 +3,17 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates, getRandomRolor} from '../../../../../../utils/Utils';
+import {Dates, getRandomRolor} from 'utils/Utils';
 import {
     ActionsButton,
     ClearableInput,
     DateRangeInput,
     SelectEmployeeInput,
     SelectJobPositionInput
-} from '../../../../../../components/inputs';
-import {THead, TRow} from '../../../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import {AControls, AExportDialog} from '../../../../../../components/exports/AExportDialog';
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -68,6 +68,47 @@ class Controls extends AControls {
         super(props);
     }
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            name,
+            frequency,
+            provider,
+            job_position_id,
+            sector,
+        } = filterData || {};
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        const limit = 50;
+
+        const args = {
+            client_id,
+            project_id,
+            site_id,
+            //
+            name,
+            frequency,
+            provider,
+            job_position_id,
+            sector,
+            //
+            // limit,
+            //
+            exact_orgs: true,
+        };
+
+        return byLogged(args);
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

@@ -89,6 +89,7 @@ class RenderEmployee extends React.Component {
         </TRow>;
     }
 }
+
 //</editor-fold>
 
 //<editor-fold desc="RenderJobPosition">
@@ -101,54 +102,64 @@ class RenderJobPosition extends React.Component {
     }
 
     render() {
-        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget, onViewEmployeeList, onViewCourseList} = this.props;
+        const {
+            item,
+            view,
+            target_view,
+            idx,
+            onShowWarningMsg,
+            onClick,
+            onViewTarget,
+            onViewEmployeeList,
+            onViewCourseList
+        } = this.props;
 
         const {
-            group,
-            group: {data: {name}},
-            list,
-            cost,
-            results,
-            status,
-            employee_list,
-            course_list,
+            // group,
+            // group: {data: {name}},
+            // list,
+            // cost,
+            // results,
+            // status,
+            // employee_list,
+            // course_list,
+            // year_list,
+            // status_outstanding,
+            // status_completed,
+            // status_not_started,
+            // results_failed,
+            // results_passed,
+            // results_average,
+
+            id,
+            name,
+            course_list_count,
+            training_cost,
+            employee_list_count,
             year_list,
-            status_outstanding,
-            status_completed,
-            status_not_started,
-            results_failed,
-            results_passed,
-            results_average,
         } = item;
-        console.log('RenderJobPosition', group)
-        return <TRow key={group.id} className="w-full">
+        console.log('RenderJobPosition', name)
+        return <TRow key={id} className="w-full">
             {!this.isViewTargetJobPosition && <div className="td">
-                <Clickable id={group.id} item={group} target="job_position" onClick={onViewTarget}>
+                <Clickable id={id} item={item} target="job_position" onClick={onViewTarget}>
                     <Chip label={name} size="small"/>
                 </Clickable>
             </div>}
             <div className="td padding-t-5 padding-b-5">
-                <Clickable item={item} target="course" onClick={onViewCourseList}>
-                    <Chip label={course_list.length || 'N/A'} size="medium"/>
+                <Clickable item={item} target="job_position" onClick={onViewCourseList}>
+                    <Chip label={course_list_count.aggregate.count || 'N/A'} size="medium"/>
                 </Clickable>
-                {/*<Grid container spacing={1} columns={4}>*/}
-                {/*    {course_list.map((item) => <Grid item>*/}
-                {/*        <Clickable id={item.id} item={item} target="course" onClick={onViewTarget}>*/}
-                {/*            <Chip label={item.name} size="small"/>*/}
-                {/*        </Clickable>*/}
-                {/*    </Grid>)}*/}
-                {/*</Grid>*/}
             </div>
             <div className="td fixed-flex min-w-120">
                 <Clickable item={item} target="job_position" onClick={onViewEmployeeList}>
-                    <Chip label={employee_list.length} size="medium"/>
+                    <Chip label={employee_list_count.aggregate.count || 'N/A'} size="medium"/>
                 </Clickable>
             </div>
             <YearsTD value={year_list} onViewTarget={onViewTarget}/>
             <StatusTD item={item} isViewJobPosition={true}/>
             <ResultsTD item={item} isViewJobPosition={true}/>
             <div className="td fixed-flex min-w-140">
-                <CostBtn cost={cost}/>
+                <CostBtn cost={training_cost}/>
             </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
@@ -157,6 +168,7 @@ class RenderJobPosition extends React.Component {
         </TRow>;
     }
 }
+
 //</editor-fold>
 
 //<editor-fold desc="RenderCourse">
@@ -169,7 +181,17 @@ class RenderCourse extends React.Component {
     }
 
     render() {
-        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget, onViewEmployeeList, onViewJobPositionList} = this.props;
+        const {
+            item,
+            view,
+            target_view,
+            idx,
+            onShowWarningMsg,
+            onClick,
+            onViewTarget,
+            onViewEmployeeList,
+            onViewJobPositionList
+        } = this.props;
 
         const {
             // group,
@@ -188,14 +210,21 @@ class RenderCourse extends React.Component {
             // results_passed,
             // results_average,
 
-          id,
-          data: {
-              name,
-              job_position_list_count,
-              training_cost,
-              employee_list_count,
-              year_list,
-          }
+            id,
+            data: {
+                name,
+                job_position_list_count,
+                training_cost,
+                employee_list_count,
+                year_list,
+                results_failed,
+                results_passed,
+                status_not_started,
+                status_in_progress,
+                status_outstanding,
+                status_completed,
+                results_average,
+            }
         } = item;
         // console.log('RenderCourse', item)
         return <TRow key={id} className="w-full">
@@ -208,13 +237,6 @@ class RenderCourse extends React.Component {
                 <Clickable item={item} target="course" onClick={onViewJobPositionList}>
                     <Chip label={job_position_list_count.aggregate.count || 'N/A'} size="medium"/>
                 </Clickable>
-                {/*<Grid container spacing={1} columns={4}>*/}
-                {/*    {job_position_list.map((item) => <Grid item>*/}
-                {/*        <Clickable id={item.id} item={item} target="job_position" onClick={onViewTarget}>*/}
-                {/*            <Chip label={item.name} size="small"/>*/}
-                {/*        </Clickable>*/}
-                {/*    </Grid>)}*/}
-                {/*</Grid>*/}
             </div>
             <div className="td fixed-flex min-w-120">
                 <Clickable item={item} target="course" onClick={onViewEmployeeList}>
@@ -234,6 +256,7 @@ class RenderCourse extends React.Component {
         </TRow>;
     }
 }
+
 //</editor-fold>
 
 //<editor-fold desc="RenderYear">
@@ -246,17 +269,25 @@ class RenderYear extends React.Component {
     }
 
     render() {
-        const {item, view, target_view, idx, onShowWarningMsg, onClick, onViewTarget, onViewEmployeeList, onViewCourseList, onViewJobPositionList} = this.props;
+        const {
+            item,
+            view,
+            target_view,
+            idx,
+            onShowWarningMsg,
+            onClick,
+            onViewTarget,
+            onViewEmployeeList,
+            onViewCourseList,
+            onViewJobPositionList
+        } = this.props;
 
         const {
-            group,
-            list,
-            cost,
-            results,
-            status,
-            employee_list,
-            job_position_list,
-            course_list,
+            year,
+            training_cost,
+            course_list_count,
+            job_position_list_count,
+            employee_list_count,
             status_outstanding,
             status_completed,
             status_not_started,
@@ -265,45 +296,31 @@ class RenderYear extends React.Component {
             results_average,
         } = item;
         // console.log('RenderYear', group)
-        return <TRow key={group} className="w-full">
+        return <TRow key={year} className="w-full">
             {!this.isViewTargetYear && <div className="td fixed-flex min-w-120">
-                <Clickable id={group} item={group} target="year" onClick={onViewTarget}>
-                    <Chip label={group} size="small"/>
+                <Clickable id={year} item={year} target="year" onClick={onViewTarget}>
+                    <Chip label={year} size="small"/>
                 </Clickable>
             </div>}
             <div className="td padding-t-5 padding-b-5">
-                <Clickable item={item} target="course" onClick={onViewCourseList}>
-                    <Chip label={course_list.length || 'N/A'} size="medium"/>
+                <Clickable item={item} target="year" onClick={onViewCourseList}>
+                    <Chip label={course_list_count || 'N/A'} size="medium"/>
                 </Clickable>
-                {/*<Grid container spacing={1} columns={4}>*/}
-                {/*    {course_list.map((item) => <Grid item>*/}
-                {/*        <Clickable id={item.id} item={item} target="course" onClick={onViewTarget}>*/}
-                {/*            <Chip label={item.name} size="small"/>*/}
-                {/*        </Clickable>*/}
-                {/*    </Grid>)}*/}
-                {/*</Grid>*/}
             </div>
             <div className="td padding-t-5 padding-b-5">
-                <Clickable item={item} target="course" onClick={onViewJobPositionList}>
-                    <Chip label={job_position_list.length || 'N/A'} size="medium"/>
+                <Clickable item={item} target="year" onClick={onViewJobPositionList}>
+                    <Chip label={job_position_list_count || 'N/A'} size="medium"/>
                 </Clickable>
-                {/*<Grid container spacing={1} columns={4}>*/}
-                {/*    {job_position_list.map((item) => <Grid item>*/}
-                {/*        <Clickable id={item.id} item={item} target="job_position" onClick={onViewTarget}>*/}
-                {/*            <Chip label={item.name} size="small"/>*/}
-                {/*        </Clickable>*/}
-                {/*    </Grid>)}*/}
-                {/*</Grid>*/}
             </div>
             <div className="td fixed-flex min-w-120">
                 <Clickable item={item} target="year" onClick={onViewEmployeeList}>
-                    <Chip label={employee_list.length} size="medium"/>
+                    <Chip label={employee_list_count || 'N/A'} size="medium"/>
                 </Clickable>
             </div>
             <StatusTD item={item} isViewYear={true}/>
             <ResultsTD item={item} isViewYear={true}/>
             <div className="td fixed-flex min-w-140">
-                <CostBtn cost={cost}/>
+                <CostBtn cost={training_cost}/>
             </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
@@ -312,6 +329,7 @@ class RenderYear extends React.Component {
         </TRow>;
     }
 }
+
 //</editor-fold>
 
 export {RenderEmployee, RenderJobPosition, RenderCourse, RenderYear};

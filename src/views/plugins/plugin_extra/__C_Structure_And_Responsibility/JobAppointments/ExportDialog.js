@@ -57,7 +57,7 @@ class Controls extends AControls {
         //
         department_id: null,
         job_position_id: null,
-        employee: null,
+        employee_id: null,
         //
         date: null,
         expiry_date: null,
@@ -71,6 +71,49 @@ class Controls extends AControls {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            department_id,
+            job_position_id,
+            employee_id,
+            //
+            date,
+            expiry_date,
+            date_range,
+        } = filterData || {};
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        const args = {
+            client_id,
+            project_id,
+            site_id,
+            //
+            department_id,
+            job_position_id,
+            employee_id,
+            //
+            date,
+            expiry_date,
+            date_range,
+            //
+            // limit,
+            //
+            exact_orgs: true,
+        };
+
+        return byLogged(args);
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

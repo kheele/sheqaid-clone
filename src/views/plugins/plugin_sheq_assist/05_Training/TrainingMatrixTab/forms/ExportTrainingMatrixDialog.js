@@ -15,6 +15,8 @@ import {
 import {THead, TRow} from '../../../../../../components/tables';
 
 import {AControls, AExportDialog} from '../../../../../../components/exports/AExportDialog';
+import byLogged
+    from "../../../../plugin_hr_management/Competencies/CompetenciesDialog/Query/List/listAllCompetencyByLogged";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -76,6 +78,53 @@ class Controls extends AControls {
         super(props);
     }
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            hr_id,
+            job_title_id,
+            //
+            course_or_module_id,
+            //
+            training_provider_requirement,
+            requirement,
+            status,
+        } = filterData || {};
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        const limit = 50;
+
+        const args = {
+            client_id,
+            project_id,
+            site_id,
+            //
+            hr_id,
+            job_title_id,
+            //
+            course_or_module_id,
+            //
+            training_provider_requirement,
+            requirement,
+            status,
+            //
+            // limit,
+            //
+            exact_orgs: true,
+        };
+
+        return byLogged(args);
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

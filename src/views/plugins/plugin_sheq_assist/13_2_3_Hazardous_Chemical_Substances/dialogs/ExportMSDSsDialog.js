@@ -14,6 +14,7 @@ import MSDSRenderRow from "../MSDSTab/MSDSRenderRow";
 import ListPDFReader from '../printers/ListMSDSPDFReader';
 
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
+import {Dates} from "utils/Dates";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -62,6 +63,76 @@ class Controls extends AControls {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            category,
+            manufacturer,
+            //
+            risk_level,
+            //
+            date_range,
+        } = filterData || {};
+
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
+        const limit = 50;
+
+        const args = {
+            client_id,
+            project_id,
+            site_id,
+            //
+            category,
+            manufacturer,
+            //
+            risk_level,
+            //
+            date_range,
+            //
+            // limit,
+            //
+            exact_orgs: true,
+        };
+
+        const listByLogged = sockets.of('chemicals/products').fn('listByLogged');
+
+        return listByLogged({
+            client_id,
+            project_id,
+            site_id,
+            //
+            manufacturer,
+            type,
+            category,
+            physical_state,
+            risk_level,
+            is_stable,
+            is_hazardous,
+            is_combustible,
+            is_flammable,
+            //
+            date_range,
+            //
+            exact_orgs: true,
+            data_export: true,
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

@@ -121,7 +121,7 @@ global.sendGraphQL = async (args) => {
                         convertMutations(list);
                     }
                 });
-                return {data};
+                return data;
             }
 
             // console.log('data', data)

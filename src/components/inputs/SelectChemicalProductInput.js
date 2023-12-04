@@ -5,7 +5,6 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import byLogged from "views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/InventoryProductTab/Query/List/listAllInventoryProductsByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -74,15 +73,15 @@ class SelectInput extends ASelectInput {
 }
 
 function onAsyncSelectLoad() {
-    const args = {
+    const listByLogged = sockets.of('chemicals/products').fn('listByLogged');
+
+    return listByLogged({
         removed: false,
         //
         limit: 0,
         //
         exact_orgs: true,
-    };
-
-    return byLogged(args).then(list => {
+    }).then(list => {
         console.log('listForSelectionByLogged', list)
         return list.map((value) => {
             const {id, data: {name}} = value;

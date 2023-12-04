@@ -26,7 +26,7 @@ const Comp = forwardRef(({value, target_view, onChange}, ref) => {
         <ButtonGroup variant="contained" color="white" ariaLabel="elevation buttons" className="border-radius-20">
             <ViewBtn text="Year" value={view} onChange={onChange} className="no-border border-radius-l-20 bg-white color-888"/>
             <ViewBtn text="Course" value={view} onChange={onChange} className="no-border border-l-1 border-radius-0 bg-white color-888"/>
-            <ViewBtn text="Job Position" value={view} onChange={onChange} className="no-border border-l-1 border-radius-0 bg-white color-888"/>
+            {/*<ViewBtn text="Job Position" value={view} onChange={onChange} className="no-border border-l-1 border-radius-0 bg-white color-888"/>*/}
             <ViewBtn text="Employee" value={view} onChange={onChange} className="no-border border-l-1 border-radius-r-20 bg-white color-888"/>
         </ButtonGroup>
     );

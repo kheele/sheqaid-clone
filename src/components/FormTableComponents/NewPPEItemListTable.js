@@ -19,6 +19,10 @@ class ListTable extends ANewListTable {
 	renderItem(n, onClick) {
 		const {readonly, renderTable} = this.props;
 		const item = this.state.list[n];
+		if(item && isString(item.ppe)) {
+			return null;
+		}
+
 		if (item && (item.ppe || item.id)) {
 			const {
 				id, data: {

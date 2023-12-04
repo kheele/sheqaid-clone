@@ -102,7 +102,7 @@ export default (
 					}
 				}
 	    	`,
-            }).then(res => res && res.data && [res.data]);
+            }).then(res => res && [res]);
     });
 
     const mon = Dates.formatDateSQL(new Date().addMonths(1));
@@ -410,7 +410,7 @@ export default (
                         }
 			        }
     	        `,
-            }).then(res => res && res.data && [res.data]),
+            }).then(res => res && [res]),
         ...dateRangeOnlyPrevQueries,
         ...dateRangeQueries,
         // ]).then(res => console.log(res));

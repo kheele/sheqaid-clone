@@ -113,5 +113,20 @@ export default async (input: EntityTrainingCourse) => {
 
   crudUtils.injectCreate(input);
 
+  if(!client_id) {
+    const {selectedClient} = storage.selected;
+    const {isConsultant} = storage.is;
+    if(isConsultant) {
+      const {clients} = storage.list;
+      const list = await Promise.all(clients.map(async (v) => {
+        const _input = {...input, client_id: v.id};
+        return await createMutationImpl({mutation, input: _input});
+      }));
+
+      const item = list.find(v => v.data.client.id === selectedClient.id);
+      return item;
+    }
+  }
+
   return await createMutationImpl({mutation, input});
 };

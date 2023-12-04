@@ -165,18 +165,18 @@ class Index extends React.Component {
         let title, node;
         if (view === 'Employee') {
             const {
-                group: {data: {fname, lname, job_position}},
+                fname, lname, job_position,
                 list,
-                cost,
+                training_cost,
                 results_failed,
                 results_passed,
                 results_average,
                 status_outstanding,
                 status_completed,
                 status_not_started,
-                course_list,
+                course_list_count,
                 year_list
-            } = item;
+            } = item.data;
 
             const status = status_outstanding || status_completed || status_not_started;
 
@@ -186,25 +186,25 @@ class Index extends React.Component {
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
-                {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
+                {!training_cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
                 {!job_position && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position"/>}
             </div>;
         } else if (view === 'Job Position') {
             const {
-                group,
+                name,
                 list,
-                cost,
+                training_cost,
                 results_failed,
                 results_passed,
                 results_average,
                 status_outstanding,
                 status_completed,
                 status_not_started,
-                employee_list,
-                course_list,
+                employee_list_count,
+                course_list_count,
                 year_list,
             } = item;
-            title = `${group.data.name}`;
+            title = name;
 
             const status = status_outstanding || status_completed || status_not_started;
 
@@ -213,68 +213,68 @@ class Index extends React.Component {
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
-                {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {employee_list.isEmpty() &&
+                {!training_cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
+                {employee_list_count &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         } else if (view === 'Course') {
             const {
-                group,
+                name,
                 list,
-                cost,
+                training_cost,
                 results_failed,
                 results_passed,
                 results_average,
                 status_outstanding,
                 status_completed,
                 status_not_started,
-                employee_list,
-                job_position_list,
+                employee_list_count,
+                job_position_list_count,
                 year_list,
-            } = item;
+            } = item.data;
 
             const status = status_outstanding || status_completed || status_not_started;
 
             const results = results_failed || results_passed || results_average;
 
-            title = `${group.data.name}`;
+            title = name;
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
-                {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {job_position_list.isEmpty() &&
+                {!training_cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
+                {job_position_list_count &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position(s)"/>}
-                {employee_list.isEmpty() &&
+                {employee_list_count &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         } else if (view === 'Year') {
             const {
-                group,
+                year,
                 list,
-                cost,
+                training_cost,
                 results_failed,
                 results_passed,
                 results_average,
                 status_outstanding,
                 status_completed,
                 status_not_started,
-                employee_list,
-                job_position_list,
-                course_list
+                employee_list_count,
+                job_position_list_count,
+                course_list_count
             } = item;
 
             const status = status_outstanding || status_completed || status_not_started;
 
             const results = results_failed || results_passed || results_average;
 
-            title = `${group}`;
+            title = year;
             node = <div>
                 {!status && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Statuses"/>}
                 {!results && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Results"/>}
-                {!cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
-                {job_position_list.isEmpty() &&
+                {!training_cost && <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Cost"/>}
+                {job_position_list_count &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Job Position(s)"/>}
-                {employee_list.isEmpty() &&
+                {employee_list_count &&
                     <NavItem item={item} onClick={this.onUpdateEmployee} title="Add Employee(s)"/>}
             </div>;
         }
@@ -365,7 +365,7 @@ class Index extends React.Component {
     //<editor-fold desc="onViewTarget">
     onViewTarget(evt, el) {
         const {id, target, item} = el.props;
-        this.setTargetView(null, {id, target, item});
+        // this.setTargetView(null, {id, target, item});
     }
 
     //</editor-fold>

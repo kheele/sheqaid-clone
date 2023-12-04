@@ -22,10 +22,14 @@ const Comp = forwardRef(({value, onChange}, ref) => {
     if(target === 'employee') {
         const {data: {fname, lname}} = item;
         text = `${lname} ${fname}`;
+    } else if(target === 'job_position') {
+        const {name} = item;
+        text = name;
+    } else if(target === 'course') {
+        const {data:{name}} = item;
+        text = name;
     } else if(target === 'year') {
-        text = item;
-    } else if(item.data) {
-        text = item.data.name;
+        text = item.year;
     }
 
     return (

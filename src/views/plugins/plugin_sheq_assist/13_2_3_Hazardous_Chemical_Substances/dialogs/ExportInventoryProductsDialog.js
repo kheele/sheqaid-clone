@@ -16,6 +16,7 @@ import InventoryProductRenderRow from "../InventoryProductTab/InventoryProductRe
 import ListPDFReader from '../printers/ListInventoryProductPDFReader';
 
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
+import {Dates} from "utils/Dates";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -74,6 +75,59 @@ class Controls extends AControls {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList({isNew, filterData}) {
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            category,
+            manufacturer,
+            //
+            physical_state,
+            type,
+            risk_level,
+            is_stable,
+            is_hazardous,
+            is_combustible,
+            is_flammable,
+            //
+            date_range,
+        } = filterData || {};
+
+        const listByLogged = sockets.of('chemicals/products').fn('listByLogged');
+
+        return listByLogged({
+            client_id,
+            project_id,
+            site_id,
+            //
+            manufacturer,
+            type,
+            category,
+            physical_state,
+            risk_level,
+            is_stable,
+            is_hazardous,
+            is_combustible,
+            is_flammable,
+            //
+            date_range,
+            //
+            exact_orgs: true,
+            data_export: true,
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {

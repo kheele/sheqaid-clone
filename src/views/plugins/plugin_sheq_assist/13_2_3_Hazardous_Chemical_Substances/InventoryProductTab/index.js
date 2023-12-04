@@ -28,8 +28,6 @@ import ExportInventoryProductsDialog from '../dialogs/ExportInventoryProductsDia
 
 import InventoryProductRenderRow from "./InventoryProductRenderRow";
 import ProfilePDFReader from '../printers/ProfileInventoryProductPDFReader';
-
-import byLogged from "./Query/List/listAllInventoryProductsByLogged";
 // </editor-fold>
 
 @observer
@@ -97,10 +95,9 @@ class InventoryProductTab extends React.Component {
             is_flammable,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('chemicals/products').fn('listByLogged');
 
-        const args = {
-            //
+        return listByLogged({
             name,
             manufacturer,
             type,
@@ -112,18 +109,10 @@ class InventoryProductTab extends React.Component {
             is_combustible,
             is_flammable,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
