@@ -97,14 +97,14 @@ class Controls extends React.Component {
                 infoDialog.open('Company is required');
                 return;
             }
-            if (!form.isValid('project')) {
-                infoDialog.open('Project is required');
-                return;
-            }
-            if (!form.isValid('site')) {
-                infoDialog.open('Site is required');
-                return;
-            }
+            // if (!form.isValid('project')) {
+            //     infoDialog.open('Project is required');
+            //     return;
+            // }
+            // if (!form.isValid('site')) {
+            //     infoDialog.open('Site is required');
+            //     return;
+            // }
         }
         if (idx === 1) {
             if (!form.isValid('supervisor')) {
@@ -131,14 +131,14 @@ class Controls extends React.Component {
             infoDialog.open('Company is required');
             return;
         }
-        if (!form.isValid('project')) {
-            infoDialog.open('Project is required');
-            return;
-        }
-        if (!form.isValid('site')) {
-            infoDialog.open('Site is required');
-            return;
-        }
+        // if (!form.isValid('project')) {
+        //     infoDialog.open('Project is required');
+        //     return;
+        // }
+        // if (!form.isValid('site')) {
+        //     infoDialog.open('Site is required');
+        //     return;
+        // }
 
         //2
         if (!form.isValid('supervisor')) {
@@ -176,7 +176,7 @@ class Controls extends React.Component {
 
             supervisor_id: supervisor && supervisor.id,
             employee_list: {
-                data: employee_list.map(v => {
+                data: (employee_list || []).map(v => {
                     if (v.employee) {
                         return {id: v.employee.id};
                     } else {
@@ -185,7 +185,7 @@ class Controls extends React.Component {
                 })
             },
             ppe_list: {
-                data: ppe_list.map(v => {
+                data: (ppe_list || []).map(v => {
                     if (v.ppe) {
                         return {ppe_id: v.ppe.id};
                     } else {

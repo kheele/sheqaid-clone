@@ -30,13 +30,13 @@ export default (
 	.query({
 		query: `
 			query listAllTeamByLoggedClientQuery {
-		    default_teams(
-		      where: {
-            ${filter}
-          }, 
-		      order_by: {name: asc},
-          offset: ${offset}
-          ${limit > 0 ? `,limit: ${limit}` : ''}
+				default_teams(
+				  where: {
+					${filter}
+				  }, 
+				  order_by: {name: asc},
+				  offset: ${offset}
+				  ${limit > 0 ? `,limit: ${limit}` : ''}
 		    ) {
 		          id
 		          created_at

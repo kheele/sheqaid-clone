@@ -199,7 +199,7 @@
 #dialog-overlay.Employee-profile-dialog .dialog-content .TrainingsTab-tab .sec-group > .table{
     height: calc(100% - 31px) !important;
 }
-#dialog-overlay.Employees-profile-dialog .Carousel > .carousel > .carousel-inner-no-results{
+#dialog-overlay.Employee-profile-dialog .Carousel > .carousel > .carousel-inner-no-results{
     height: calc(100% - 50px);
 }
 

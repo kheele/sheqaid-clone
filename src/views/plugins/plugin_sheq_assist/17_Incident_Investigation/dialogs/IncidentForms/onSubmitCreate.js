@@ -289,7 +289,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
             })
         },
         distribution_list: {
-            data: (distribution_list || []).map(({other_person, employee}) => {
+            data: (distribution_list || []).filter(v => !!v).map(({other_person, employee}) => {
                 if (other_person) {
                     delete other_person.id;
                     if (other_person.job_position) {

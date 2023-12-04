@@ -27,20 +27,20 @@ export default (
 	return GQLClient
 	.query({
 		query: `
-      query listAllPPEByLoggedQuery {
-        ppe(
-          where: {
-            ${filter}
-          },
-	        order_by: {name: asc},
-	        offset: ${offset},
-	        limit: ${limit}
-        ) {
-          ${ppe_details_fragment}
-          ${orgs_fragment}
-          }
-      }
-    `,
+		  query listAllPPEByLoggedQuery {
+			ppe(
+			  where: {
+				${filter}
+			  },
+				order_by: {name: asc},
+				offset: ${offset}
+          		${limit > 0 ? `,limit: ${limit}` : ''}
+			) {
+				  ${ppe_details_fragment}
+				  ${orgs_fragment}
+			  }
+		  }
+    	`,
 	});//.then(fillNullLists);
 	//</editor-fold>
 };

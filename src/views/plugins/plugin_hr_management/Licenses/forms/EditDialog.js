@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
@@ -11,12 +12,14 @@ import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeLicense";
+import findByIdEmployeeLicense from "mutations/all/EmployeeLicense/findByIdEmployeeLicense";
 
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "EditLicenseDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit License";
+	findById = findByIdEmployeeLicense;
 
 	constructor(props) {
 		super(props, style);
@@ -130,13 +133,16 @@ class Controls extends React.Component {
 		return isNewEmployee;
 	}
 
+	@computed
 	get item() {
 		return this.props.state.item;
 	}
 
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,

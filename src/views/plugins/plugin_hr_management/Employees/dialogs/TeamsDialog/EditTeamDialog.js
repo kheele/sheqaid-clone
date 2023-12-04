@@ -103,14 +103,14 @@ class Controls extends React.Component {
 				infoDialog.open('Company is required');
 				return;
 			}
-			if (!form.isValid('project')) {
-				infoDialog.open('Project is required');
-				return;
-			}
-			if (!form.isValid('site')) {
-				infoDialog.open('Site is required');
-				return;
-			}
+			// if (!form.isValid('project')) {
+			// 	infoDialog.open('Project is required');
+			// 	return;
+			// }
+			// if (!form.isValid('site')) {
+			// 	infoDialog.open('Site is required');
+			// 	return;
+			// }
 		}
 		if (idx === 1) {
 			if (!form.isValid('supervisor')) {
@@ -137,14 +137,14 @@ class Controls extends React.Component {
 			infoDialog.open('Company is required');
 			return;
 		}
-		if (!form.isValid('project')) {
-			infoDialog.open('Project is required');
-			return;
-		}
-		if (!form.isValid('site')) {
-			infoDialog.open('Site is required');
-			return;
-		}
+		// if (!form.isValid('project')) {
+		// 	infoDialog.open('Project is required');
+		// 	return;
+		// }
+		// if (!form.isValid('site')) {
+		// 	infoDialog.open('Site is required');
+		// 	return;
+		// }
 
 		//2
 		if (!form.isValid('supervisor')) {

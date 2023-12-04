@@ -31,7 +31,7 @@ import updateEmployee from "mutations/all/Employee/updateEmployee";
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditDialog extends AEditDialog {
-	pageKey = "Employees";
+	pageKey = "Employee";
 	// className = 'ANewTableFormDialog';
 	className = "AEditEmployeeDocDialog";
 	findById = findByIdEmployee;

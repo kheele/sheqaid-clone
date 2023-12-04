@@ -1,7 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
@@ -18,6 +19,7 @@ import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeCompetency from "mutations/all/EmployeeCompetency/updateEmployeeCompetency";
+import findByIdEmployeeCompetency from "mutations/all/EmployeeCompetency/findByIdEmployeeCompetency";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -26,6 +28,7 @@ class EditCompetencyCertificateDialog extends AEditDialog {
 	pageKey = "EditCompetencyCertificateDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Competency Certificate";
+	findById = findByIdEmployeeCompetency;
 
 	constructor(props) {
 		super(props, style);
@@ -174,14 +177,17 @@ class Controls extends React.Component {
 		return isNewEmployee;
 	}
 
+	@computed
 	get item() {
 		return this.props.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,

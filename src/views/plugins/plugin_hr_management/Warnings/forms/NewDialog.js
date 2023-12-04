@@ -138,17 +138,21 @@ class Controls extends React.Component {
             notes,
             type,
             witness_list: {
-                data: witness_list ? witness_list.map(v => {
-                    if(v.id) {
-                        return {witness_id: v.id};
+                data: (witness_list || []).filter(v => !!v).map(({other_person, employee}) => {
+                    if (other_person) {
+                        delete other_person.id;
+                        if (other_person.job_position) {
+                            other_person.job_position_id = other_person.job_position.id;
+                            delete other_person.job_position;
+                        }
                     }
-                    const {job_position} = v;
-                    if(job_position) {
-                        delete v.job_position;
-                        v.job_position_id = job_position.id;
-                    }
-                    return {witness_external: {data: v}};
-                }) : []
+                    return {
+                        witness_id: employee && employee.id,
+                        witness_external: other_person && {
+                            data: other_person
+                        } || null,
+                    };
+                }),
             },
         };
 

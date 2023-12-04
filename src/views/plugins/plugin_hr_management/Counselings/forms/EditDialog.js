@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
@@ -13,12 +14,14 @@ import {Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
+import findByIdEmployeeCounselling from "mutations/all/EmployeeCounselling/findByIdEmployeeCounselling";
 
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "EditCounselingDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Counseling";
+	findById = findByIdEmployeeCounselling;
 
 	constructor(props) {
 		super(props, style);
@@ -152,13 +155,16 @@ class Controls extends React.Component {
 		return isNewEmployee;
 	}
 
+	@computed
 	get item() {
 		return this.props.state.item;
 	}
 
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,

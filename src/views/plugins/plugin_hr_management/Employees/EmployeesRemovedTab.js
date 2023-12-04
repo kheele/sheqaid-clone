@@ -24,6 +24,7 @@ import Chip from "@material-ui/core/Chip";
 import employeeInactiveStore from "mutations/all/EmployeeInactive";
 import findByIdsInactiveEmployee from "mutations/all/EmployeeInactive/findByIdsInactiveEmployee";
 import AEmployeeListTab, {StatsPanel} from "./AEmployeeListTab";
+import updateEmployee from "mutations/all/Employee/updateEmployee";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RemovedMain">
@@ -66,7 +67,7 @@ class Main extends AEmployeeListTab {
                 const {list} = this.refs.root;
                 const item = list[idx];
                 progressDialog.open("Re-insteading the employee...");
-                neonBinding.events.emit(this.path + "re-instead", item.id).then(res => {
+                updateEmployee({id: item.id, removed: false}).then(res => {
                     setTimeout(() => {
                         list.removeIf((item, _idx) => _idx === idx);
                     });
