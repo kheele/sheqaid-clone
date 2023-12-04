@@ -58,5 +58,5 @@ export default async (
         mutation,
         id: attrs.id,
         attrs,
-    });
+    }).then(res => res && findByIdEmployeeFn(res.id));
 };

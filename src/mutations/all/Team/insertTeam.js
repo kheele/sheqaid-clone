@@ -6,6 +6,8 @@ import {graphql} from "react-relay";
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityTeam} from "mutations/types.d.ts";
 import crudUtils from "../CRUDUtils/CRUDUtils";
+import updateEmployee from "../Employee/updateEmployee";
+import findByIdTeam from "./findByIdTeam";
 
 // 2
 const mutation = graphql`
@@ -73,5 +75,16 @@ export default async (input: EntityTeam) => {
 
     crudUtils.injectCreate(input);
 
-    return await createMutationImpl({mutation, input});
+    delete input.employee_list;
+
+    const savedItem = await createMutationImpl({mutation, input});
+    if(savedItem) {
+        if(employee_list) {
+            await Promise.all(employee_list.map(async ({id}) => {
+                return updateEmployee(({id, team_id: savedItem.id}));
+            }));
+        }
+
+        return findByIdTeam(savedItem.id);
+    }
 };

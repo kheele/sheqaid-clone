@@ -176,21 +176,13 @@ class Controls extends React.Component {
 
             supervisor_id: supervisor && supervisor.id,
             employee_list: {
-                data: (employee_list || []).map(v => {
-                    if (v.employee) {
-                        return {id: v.employee.id};
-                    } else {
-                        return {id: v.id};
-                    }
+                data: (employee_list || []).filter(v => !!v).map(({employee: {id}}) => {
+                    return {id};
                 })
             },
             ppe_list: {
-                data: (ppe_list || []).map(v => {
-                    if (v.ppe) {
-                        return {ppe_id: v.ppe.id};
-                    } else {
-                        return {ppe_id: v.id};
-                    }
+                data: (ppe_list || []).filter(v => !!v).map(({ppe: {id: ppe_id}}) => {
+                    return {ppe_id};
                 })
             }
         };

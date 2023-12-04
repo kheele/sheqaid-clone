@@ -175,11 +175,13 @@ class AEmployeeDocControls extends React.Component {
             const {[this.listName]: list = []} = this.item.data;
 
             const sliderIndex = tabWrapper.sliderIndex || 0;
-            let updateItem = list[sliderIndex];
-            updateItem = {id: updateItem.id, data: updateItem};
+            let updateData = list[sliderIndex];
+            const updateItem = {id: updateData.id, data: updateData};
 
             this.refs.editDialog.open(updateItem).then(editedItem => {
-                extendObservable(updateItem, editedItem);
+                if(editedItem) {
+                    extendObservable(updateData, editedItem.data);
+                }
                 // const editData = editItem.data;
                 // list.push(newData);
 

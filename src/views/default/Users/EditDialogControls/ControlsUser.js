@@ -986,7 +986,6 @@ class Controls extends React.Component {
 						title={idx + ".1. SHEQ Management Module Permissions"}
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
-						onFormSave={this.onFormSave}
 					>
 						<Button className="btn btn-primary pull-right margin-l-10 margin-r-10 padding-5"
 						        text="Select All"
@@ -1008,7 +1007,6 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 						onFormBack={onFormBack}
-						onFormSave={this.onFormSave}
 					>
 						<Button className="btn btn-primary pull-right margin-l-10 margin-r-10 padding-5"
 						        text="Select All"
@@ -1026,7 +1024,6 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 						onFormBack={onFormBack}
-						onFormSave={this.onFormSave}
 					>
 						<Button className="btn btn-primary pull-right margin-l-10 margin-r-10 padding-5"
 						        text="Select All"
@@ -1047,7 +1044,6 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 						onFormBack={onFormBack}
-						onFormSave={this.onFormSave}
 					>
 						<Button className="btn btn-primary pull-right margin-l-10 margin-r-10 padding-5"
 						        text="Select All"
@@ -1067,7 +1063,6 @@ class Controls extends React.Component {
 						title={idx + ".5. Other Permissions"}
 						onFormOpen={onFormOpen}
 						onFormBack={onFormBack}
-						onFormSave={this.onFormSave}
 					>
 						<Button className="btn btn-primary pull-right margin-l-10 margin-r-10 padding-5"
 						        text="Select All"
