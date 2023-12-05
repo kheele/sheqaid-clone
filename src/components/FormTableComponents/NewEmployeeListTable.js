@@ -137,6 +137,10 @@ class ListTable extends ANewListTable {
 				fname = v.fname;
 				email = v.email;
 			}
+
+			if(!lname && !fname) {
+				return null;
+			}
 			
 			const tr = <React.Fragment>
 				<div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>

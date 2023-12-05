@@ -1,7 +1,6 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
@@ -15,12 +14,6 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import LicensesRenderRow from "./LicensesRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput, SelectDepartmentInput,
-    SelectEmployeeInput,
-    SelectJobPositionInput, SelectTeamInput,
-    SelectTrainingCourseInput
-} from "components/inputs";
 
 import byLogged from "./Query/List/listAllLicenseByLogged";
 import findByIdContractorHRLicensesDashboardStatsByLogged
@@ -41,15 +34,6 @@ class Dialog extends AEmployeeDocDialog {
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
     };
-
-    // <editor-fold defaultstate="collapsed" desc="selfState">
-    @observable
-    selfState = {
-        lists: {
-            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {label: '1 month', value: 1}, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
-        }
-    };
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
@@ -136,20 +120,6 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
-    //</editor-fold>
-
-    //<editor-fold desc="renderFilterNodeAll">
-    renderFilterNodeAll(onChange) {
-        return <div className="controls grid-4 grid-gap-5 padding-r-10 -margin-b-35">
-            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange} add={false}/>
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange} add={false}/>
-            <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-
-            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control" onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
-        </div>;
-    }
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">

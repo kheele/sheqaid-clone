@@ -65,8 +65,6 @@ class Controls extends AControls {
 		//
 		department_id: null,
 		job_position_id: null,
-		team_id: null,
-		supervisor_id: null,
 		employee_id: null,
 		//
 		type: null,
@@ -95,8 +93,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			type,
@@ -122,8 +118,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			type,

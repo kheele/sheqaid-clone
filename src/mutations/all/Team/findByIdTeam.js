@@ -52,6 +52,21 @@ const query = graphql`
               count
             }
           }
+          employee_list{
+            id
+            fname
+            lname
+            full_name
+            email
+            phone
+          }
+          ppe_list{
+            id
+            ppe{
+                name
+                profile_pic
+            }
+          }
         }
       }
     }

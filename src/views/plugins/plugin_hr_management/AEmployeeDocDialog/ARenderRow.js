@@ -101,7 +101,12 @@ class RenderRowByEach extends React.Component {
             return null;
         }
 
-        return getRenderRowByEach();
+        try {
+            return getRenderRowByEach();
+        } catch (err) {
+            console.error('RenderRowByEach', err);
+            return null;
+        }
     }
 }
 

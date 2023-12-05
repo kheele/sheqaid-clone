@@ -12,7 +12,6 @@ import {
 	Button,
 	ClearableInput,
 	SelectJobPositionInput,
-	SelectUserInput
 } from 'components/inputs';
 import {TData, THead, TRow} from 'components/tables';
 
@@ -25,7 +24,10 @@ import ExportToolboxTalksDialog from "./forms/ExportToolboxTalksDialog";
 
 import style from "./ToolboxTalksTab.lazy.css";
 import ToolboxTalkAttendanceRegisterDialog from "./forms/ToolboxTalkDialogs/ToolboxTalkAttendanceRegisterDialog";
-
+import SelectToolboxTalkSubjectInput from "../../../../../components/inputs/SelectToolboxTalkSubjectInput";
+import SelectToolboxTalkSubjectCategoryInput
+	from "../../../../../components/inputs/SelectToolboxTalkSubjectCategoryInput";
+import SelectEmployeeInput from "../../../../../components/inputs/SelectEmployeeInput";
 //</editor-fold>
 
 @observer
@@ -36,16 +38,7 @@ class ToolboxTalksTab extends React.Component {
 	@observable
 	state = {
 		lists: {
-			status: [{text: "Outstanding", value: "Outstanding", checked: false}, {
-				text: "Completed",
-				value: "Completed",
-				checked: false
-			}],
-			requirement: [{text: "Compulsory", value: "Compulsory"}, {text: "Optional", value: "Optional"}],
-			training_provider_requirement: [{text: "Accredited", value: "Accredited"}, {
-				text: "Non-Accredited",
-				value: "Non-Accredited"
-			}]
+			frequency: ['5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
 		},
 		loadedSelectLists: false
 	};
@@ -54,7 +47,9 @@ class ToolboxTalksTab extends React.Component {
 	//<editor-fold desc="constructor">
 	constructor(props) {
 		super(props);
-		
+
+		this.onLoadList = this.onLoadList.bind(this);
+
 		this.onExportAll = this.onExportAll.bind(this);
 		this.onViewSubjects = this.onViewSubjects.bind(this);
 		this.onCreateAttendanceRegister = this.onCreateAttendanceRegister.bind(this);
@@ -74,7 +69,42 @@ class ToolboxTalksTab extends React.Component {
 	componentWillUnmount() {
 		style.unuse();
 	}
-	
+
+	//<editor-fold desc="onLoadList">
+	onLoadList(params = {}) {
+		const {page, lastItem, filterData, filtered, isNew} = params;
+		const {
+			training_frequency,
+			date,
+			subject_list,
+			subject_category_list,
+			trainer_list,
+			job_position_list,
+			employee_list,
+		} = filterData || {};
+
+		const listByLogged = sockets.of('trainings/toolbox-talks').fn('listByLogged');
+
+		return listByLogged({
+			training_frequency,
+			date,
+			subject_list,
+			subject_category_list,
+			trainer_list,
+			job_position_list,
+			employee_list,
+			//
+			exact_orgs: true,
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
+			console.log('onLoadList res', res)
+			return res;
+		});
+	}
+
+	//</editor-fold>
+
 	// <editor-fold defaultstate="collapsed" desc="onExportAll">
 	onExportAll(e, btn) {
 		const {getDialogByRef} = this.refs.root;
@@ -131,13 +161,21 @@ class ToolboxTalksTab extends React.Component {
 	}
 	
 	renderFilterNode(onChange) {
-		return <div className="col-lg-12 controls flex">
-			<div className="controls fixed-flex min-w-400">
-				<SelectUserInput name="hr" placeholder="Training Conductor..." defaultUser required
-				                 className="col-lg-12 form-control" onChange={onChange}/>
-				<SelectJobPositionInput name="job_title" placeholder="Job Position For Training..." required
-				                        className="col-lg-12 margin-t-10 form-control" onChange={onChange}/>
-			</div>
+		return <div className="col-lg-12 controls grid-4 grid-gap-5 -margin-b-35">
+			<SelectEmployeeInput name="trainer_list" type="select_multi" placeholder="Trainer(s)..."
+									className="form-control" onChange={onChange}/>
+			<SelectEmployeeInput name="employee_list" type="select_multi" placeholder="Employee(s)..."
+									className="form-control" onChange={onChange}/>
+			<SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Toolbox Talk Job Position(s)..."
+									className="form-control" onChange={onChange}/>
+			<SelectToolboxTalkSubjectInput name="subject_list" type="select_multi" placeholder="Subject(s)..."
+										   className="form-control" onChange={onChange}/>
+			<SelectToolboxTalkSubjectCategoryInput name="subject_category_list" type="select_multi" placeholder="Subject Categories..."
+												   className="form-control" onChange={onChange}/>
+			<ClearableInput name="training_frequency" type="select" placeholder="Frequency..." className="form-control"
+							onChange={onChange} values={this.state.lists.frequency} returnValue/>
+			<ClearableInput name="date" type="date" placeholder="Date..."
+							className="form-control fixed-flex min-w-185" onChange={onChange}/>
 		</div>;
 	}
 	
@@ -195,7 +233,7 @@ class ToolboxTalksTab extends React.Component {
 			pageId={this.pageKey + "-tab"}
 			pageTitle="Toolbox Talks"
 			pageTitleSingular="toolbox talk"
-			path={this.path}
+			onLoadList={this.onLoadList}
 			noAnimation={true}
 			renderLeftButtons={this.renderLeftButtons}
 			renderPopoverOptions={this.renderPopoverOptions}

@@ -1,7 +1,6 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
@@ -16,9 +15,7 @@ import companyStore from "mutations/all/Company";
 import CompetenciesRenderRow from "./CompetenciesRenderRow";
 import {THead} from "components/tables";
 import {
-	ClearableInput, SelectDepartmentInput,
-	SelectEmployeeInput,
-	SelectJobPositionInput, SelectTeamInput,
+	ClearableInput,
 	SelectTrainingCourseInput
 } from "components/inputs";
 
@@ -37,27 +34,11 @@ class Dialog extends AEmployeeDocDialog {
 	titleSingular = "Competency";
 	permissionKey = "Competencies";
 	module = "Competencies";
+	filterNodeGrid = 5;
 
 	dialogs = {
 		NewDialog, EditDialog, ProfileDialog, ExportDialog,
 	};
-
-	// <editor-fold defaultstate="collapsed" desc="selfState">
-	@observable
-	selfState = {
-		lists: {
-			type: [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}],
-			competency_type: [{label: 'Behavioural', value: 'Behavioural'}, {
-				label: 'Technical / Functional',
-				value: 'Technical / Functional'
-			}, {label: 'Leadership', value: 'Leadership'}],
-			expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {
-				label: '1 month',
-				value: 1
-			}, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
-		}
-	};
-	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
@@ -152,26 +133,20 @@ class Dialog extends AEmployeeDocDialog {
 
 	//<editor-fold desc="renderFilterNodeAll">
 	renderFilterNodeAll(onChange) {
-		return <div className="controls grid-5 grid-gap-5 padding-r-10 -margin-b-35">
-			<SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange}
-			                       add={false}/>
-			<SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control"
-			                        onChange={onChange} add={false}/>
-			<SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-			<SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-			<SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-
+		const type = [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}];
+		const competency_type = [{label: 'Behavioural', value: 'Behavioural'}, {
+			label: 'Technical / Functional',
+			value: 'Technical / Functional'
+		}, {label: 'Leadership', value: 'Leadership'}];
+		return <>
 			<SelectTrainingCourseInput name="course" placeholder="Course..." className="form-control" onChange={onChange}
 			                           add={false}/>
-			<ClearableInput name="type" type="radio" className="form-control" onChange={onChange}
-			                values={this.selfState.lists.type} returnValue/>
+			<ClearableInput name="type" type="radio" className="form-control" onChange={onChange} values={type} returnValue/>
 			<ClearableInput name="competency_type" type="select" placeholder="Competency Type..." className="form-control"
-			                onChange={onChange} values={this.selfState.lists.competency_type} returnValue/>
+			                onChange={onChange} values={competency_type} returnValue/>
 			<ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." className="form-control"
 			                onChange={onChange}/>
-			<ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="col-lg-7 form-control"
-			                onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
-		</div>;
+		</>;
 	}
 
 	//</editor-fold>

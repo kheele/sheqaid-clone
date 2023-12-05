@@ -69,7 +69,7 @@ class ATab extends React.Component {
 
 	//<editor-fold desc="onLoadList">
 	onLoadList(params = {}) {
-		const {removed, state: {view, expiry_date}} = this;
+		const {removed, state: {view, expiry_date: expiry_date_top_filter}} = this;
 
 		const {onBuildQuery} = this.props;
 
@@ -77,9 +77,12 @@ class ATab extends React.Component {
 		const {
 			department_id,
 			job_position_id,
+			employee_id,
 			team_id,
 			supervisor_id,
 			name,
+			//
+			expiry_date,
 		} = filterData || {};
 
 		const mon = Dates.formatDateSQL(new Date().addMonths(1));
@@ -90,11 +93,13 @@ class ATab extends React.Component {
 
 		const args = {
 			removed,
-			view, expiry_date,
+			view,
+			expiry_date: expiry_date || expiry_date_top_filter,
 			mon, mon2, mon3,
 			//
 			department_id,
 			job_position_id,
+			employee_id,
 			team_id,
 			supervisor_id,
 			name,
@@ -127,9 +132,24 @@ class ATab extends React.Component {
 			ref = await execWhen(() => this.refs.viewButtonsRefBox);
 		}
 
+		const {view: old_view, expiry_date: old_expiry_date, } = this.state;
+
+		console.log('setView', this);
+		console.log('setView view', old_view, view);
+		console.log('setView expiry_date', old_expiry_date, expiry_date);
+
+		if(old_view !== view || old_expiry_date !== expiry_date) {
+			const filterWrapper = await execWhen(() => this.refs.root.refs.filterWrapper);
+			if (filterWrapper.isOpen) {
+				await filterWrapper.close();
+			}
+		}
+
 		ref.setView(view);
 		this.state.view = view;
 		this.state.expiry_date = expiry_date;
+
+		this.props.onChangeViewExpiryDate(expiry_date);
 
 		if (load) {
 			this.refs.root.load();

@@ -82,8 +82,6 @@ class Controls extends AControls {
 		//
 		department_id: null,
 		job_position_id: null,
-		team_id: null,
-		supervisor_id: null,
 		employee_id: null,
 		//
 		responsible_person: null,
@@ -111,8 +109,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			responsible_person,
@@ -137,8 +133,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			responsible_person,

@@ -1,5 +1,5 @@
 const {orgs_fragment} = require("../../../../../graphql/Fragments");
-const {incident_investigation_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {training_course_details_fragment, getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -12,34 +12,12 @@ module.exports = async (socket, data) => {
         removed = false,
         id,
         //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        name,
+        unit_standard,
+        frequency,
+        provider,
+        job_position_id,
+        sector_id,
         //
         site_id, project_id, client_id,
         //
@@ -54,34 +32,12 @@ module.exports = async (socket, data) => {
         //
         id,
         //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        name,
+        unit_standard,
+        frequency,
+        provider,
+        job_position_id,
+        sector_id,
         //
         site_id, project_id, client_id,
         //
@@ -90,66 +46,22 @@ module.exports = async (socket, data) => {
 
     return listGraphQL({
         query: `
-			query listAllIncidentInvestigationByLoggedQuery {
-                sheq_incident_investigation(
+			query listAllCourseByLoggedQuery {
+                sheq_training_courses(
                   where: {
                     removed: {_eq: ${removed}},
-                    ${filter},
-                    investigation_id: {_is_null: false},
+                    ${filter}
                   },
-	                order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
+                    order_by: {name: asc_nulls_last, unit_standard: asc_nulls_last, unit_standard_desc: asc_nulls_last},
                     offset: ${offset},
                     ${limit > 0 ? `limit: ${limit}` : ''}
                 ) {
-                    id
-                    group
-                    incident_date
-                    short_desc
-                    location
-                    exact_location
-                    #
-                    category_list{
-                        category{
-                          id
-                          name
-                        }
-                    }
-                    sub_category_list{
-                        sub_category{
-                          id
-                          name
-                          category{
-                            id
-                            name
-                          }
-                        }
-                    }
-                    sector_list{
-                        id
-                        sector{
-                          id
-                          name
-                        }
-                    }
-                    activity_list{
-                        id
-                        activity{
-                          id
-                          name
-                          sector{
-                            id
-                            name
-                          }
-                        }
-                    }
-                    investigation{
-                        ${incident_investigation_details_fragment}
-                    }
+                    ${training_course_details_fragment}
                     ${orgs_fragment}
                 }
             }
 		`,
-        operationName: "listAllIncidentInvestigationByLoggedQuery",
+        operationName: "listAllCourseByLoggedQuery",
     });
 }
 //</editor-fold>

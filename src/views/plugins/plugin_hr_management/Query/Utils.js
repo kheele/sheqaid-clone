@@ -71,8 +71,7 @@ export const getVariablesAndQueryConfig = (
 		filterEmployee = `,${filterEmployee.join(',')}`;
 	} else {
 		if (employee_id) {
-			filterEmployee.push(`employee_id: {_eq: ${employee_id}}`);
-			filterEmployee = `,${filterEmployee.join(',')}`;
+			filterEmployee = `,employee_id: {_eq: ${employee_id}}`;
 		} else {
 			filterEmployee = `,employee: {${filterEmployee.join(',')}}`;
 		}
@@ -82,9 +81,19 @@ export const getVariablesAndQueryConfig = (
 
 	if (date_range) {
 		const {start, end} = date_range;
-		filter.push(`expiry_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
+		if(start && end) {
+			filter.push(`expiry_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
+		} else if(start) {
+			filter.push(`expiry_date: {_gte: "${Dates.formatDateSQL(start)}"}`);
+		} else if(end) {
+			filter.push(`expiry_date: {_lte: "${Dates.formatDateSQL(end)}"}`);
+		}
 	} else {
-		if (expiry_date === null) {//expiry_no
+		mon = mon || Dates.formatDateSQL(new Date().addMonths(1));
+		mon2 = mon2 || Dates.formatDateSQL(new Date().addMonths(2));
+		mon3 = mon3 || Dates.formatDateSQL(new Date().addMonths(3));
+
+		if (expiry_date === null || expiry_date === 'null') {//expiry_no
 			filter.push(`expiry_date: {_is_null: true}`);
 		} else if (expiry_date === -1) {//expired
 			filter.push(`expiry_date: {_lte: "now()"}`);

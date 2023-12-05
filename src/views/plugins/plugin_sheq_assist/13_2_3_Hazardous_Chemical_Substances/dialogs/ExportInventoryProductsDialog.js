@@ -25,6 +25,10 @@ class ExportDialog extends AExportDialog {
     titleSingular = 'Chemical Product';
     titlePlural = 'Chemical Products';
 
+    get excludePDF() {
+        return true;
+    }
+
     get controls() {
         return Controls;
     }
@@ -132,6 +136,7 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {
         return <THead>
+            <div className="td fixed-flex min-w-40">ID</div>
             <div className="td fixed-flex min-w-120">Date Created</div>
             <div className="td">Product Name</div>
             <div className="td fixed-flex min-w-110">Physical State</div>

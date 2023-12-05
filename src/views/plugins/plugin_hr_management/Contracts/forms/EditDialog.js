@@ -234,7 +234,8 @@ class Controls extends React.Component {
 
 		if (contract_details) {
 			const new_contract_details = {};
-			const {contract_details: old_contract_details} = old_data;
+			const {contract_details_list} = old_data;
+            const [old_contract_details] = contract_details_list || [];
 
 			ShouldUpdate.check(new_contract_details, old_contract_details, contract_details.contract_type, 'contract_type');
 			ShouldUpdate.checkDate(new_contract_details, old_contract_details, contract_details.start_date, 'start_date');
@@ -256,7 +257,8 @@ class Controls extends React.Component {
 
 		if (salary_info) {
 			const new_salary_info = {};
-			const {salary_info: old_salary_info} = old_data;
+			const {salary_info_list} = old_data;
+            const [old_salary_info] = salary_info_list || [];
 
 			ShouldUpdate.check(new_salary_info, old_salary_info, salary_info.payment_type, 'payment_type');
 			ShouldUpdate.check(new_salary_info, old_salary_info, salary_info.salary_interval, 'salary_interval');
@@ -300,19 +302,6 @@ class Controls extends React.Component {
 			btn.text("Save").enabled();
 			setTimeout(() => progressDialog.close());
 		});
-		// neonBinding.events.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
-		//     console.log("res", res)
-		//     if(res === "ERROR") {
-		//         infoDialog.open("An error occurred. Please try again.");
-		//     } else {
-		//         onSaved && onSaved(res);
-		//         infoDialog.open("Record successfully updated.");
-		//         this.props.close();
-		//     }
-		//     infoDialog.close(2000);
-		// }).finally(() => {
-		//     btn.text("Save").enabled();
-		// });
 	}
 
 	get isNewEmployee() {
@@ -337,10 +326,15 @@ class Controls extends React.Component {
 			},
 			item, item: {
 				id, data: {
-					created_at, employee, contract_details, salary_info, doc, job_profile_doc
+					created_at, employee, contract_details_list, salary_info_list, doc, job_profile_doc
 				}
 			}
 		} = this;
+
+		console.log('Contract', item);
+
+		const [contract_details] = contract_details_list || [];
+		const [salary_info] = salary_info_list || [];
 
 		let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
 		return (<div className="controls-wrapper controls-sectioned">

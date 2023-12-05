@@ -80,7 +80,7 @@ export default async (input: EntityTeam) => {
     const savedItem = await createMutationImpl({mutation, input});
     if(savedItem) {
         if(employee_list) {
-            await Promise.all(employee_list.map(async ({id}) => {
+            await Promise.all(employee_list.data.map(async ({id}) => {
                 return updateEmployee(({id, team_id: savedItem.id}));
             }));
         }

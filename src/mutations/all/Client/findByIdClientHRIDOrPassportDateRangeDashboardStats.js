@@ -34,7 +34,7 @@ export default async ({input, dates}) => await Promise.all(
         });
         if (!stats) return {id: input, month_year: Dates.parse(dateStart).formatMonthYear(), count: 0};
 
-        const {data: {list_aggregate: {aggregate: {count}}}} = stats;
+        const {list_aggregate: {aggregate: {count}}} = stats;
         return {id: input, month_year: Dates.parse(dateStart).formatMonthYear(), count};
     })
 );

@@ -40,16 +40,6 @@ class Dialog extends AEmployeeDocDialog {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
     };
 
-    // <editor-fold defaultstate="collapsed" desc="selfState">
-    @observable
-    selfState = {
-        lists: {
-            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}],
-            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {label: '1 month', value: 1}, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
-        }
-    };
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
@@ -139,16 +129,10 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
-        return <div className="controls grid-4 grid-gap-5 padding-r-10 -margin-b-35">
-            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange} add={false}/>
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange} add={false}/>
-            <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-
-            <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" className="form-control" onChange={onChange} values={this.selfState.lists.annexture_3} returnValue/>
-            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control" onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
-        </div>;
+        const annexture_3 = [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}];
+        return <>
+            <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" className="form-control" onChange={onChange} values={annexture_3} returnValue/>
+        </>;
     }
     //</editor-fold>
 

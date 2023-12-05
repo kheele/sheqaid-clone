@@ -23,6 +23,10 @@ class ExportDialog extends AExportDialog {
     titleSingular = 'Safety Data Sheet';
     titlePlural = 'Safety Data Sheets';
 
+    get excludePDF() {
+        return true;
+    }
+
     get controls() {
         return Controls;
     }

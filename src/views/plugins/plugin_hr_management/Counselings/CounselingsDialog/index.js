@@ -1,7 +1,6 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
@@ -16,8 +15,8 @@ import companyStore from "mutations/all/Company";
 import CounselingsRenderRow from "./CounselingsRenderRow";
 import {THead} from "components/tables";
 import {
-	ClearableInput, SelectDepartmentInput,
-	SelectEmployeeInput, SelectJobPositionInput, SelectTeamInput,
+	ClearableInput,
+	SelectEmployeeInput,
 } from "components/inputs";
 
 import byLogged from "./Query/List/listAllCounselingByLogged";
@@ -35,45 +34,11 @@ class Dialog extends AEmployeeDocDialog {
 	titleSingular = "Counseling";
 	permissionKey = "Counselings";
 	module = "Counselings";
+	filterNodeGrid = 5;
+
 	dialogs = {
 		NewDialog, EditDialog, ProfileDialog, ExportDialog,
 	};
-
-	// <editor-fold defaultstate="collapsed" desc="selfState">
-	@observable
-	selfState = {
-		lists: {
-			types: [
-				'Directive Counseling',
-				'Nondirective Counseling',
-				'Cooperative Counseling',
-				'Participative Counseling',
-				'Desensitization',
-				'Catharsis',
-				'Insight',
-				'Developing the new patterns'
-			].map(label => {
-				return {label, value: label};
-			}),
-			reasons: [
-				'Attendance',
-				'Behaviour / Teamwork',
-				'Inappropriate Conduct',
-				'Inappropriate Dress',
-				'Safety Violation',
-				'Sleeping On The Job',
-				'Substandard Work',
-				'Violence'
-			].map(label => {
-				return {label, value: label};
-			}),
-			expiry_date: [{label: 'Expired', value: -1}, {label: '1 month', value: 1}, {
-				label: '2 months',
-				value: 2
-			}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
-		}
-	};
-	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
@@ -168,25 +133,39 @@ class Dialog extends AEmployeeDocDialog {
 
 	//<editor-fold desc="renderFilterNodeAll">
 	renderFilterNodeAll(onChange) {
-		return <div className="controls grid-5 grid-gap-5 padding-r-10 -margin-b-35">
-			<SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange}
-			                       add={false}/>
-			<SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control"
-			                        onChange={onChange} add={false}/>
-			<SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-			<SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-			<SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-
+		const types = [
+			'Directive Counseling',
+			'Nondirective Counseling',
+			'Cooperative Counseling',
+			'Participative Counseling',
+			'Desensitization',
+			'Catharsis',
+			'Insight',
+			'Developing the new patterns'
+		].map(label => {
+			return {label, value: label};
+		});
+		const reasons = [
+			'Attendance',
+			'Behaviour / Teamwork',
+			'Inappropriate Conduct',
+			'Inappropriate Dress',
+			'Safety Violation',
+			'Sleeping On The Job',
+			'Substandard Work',
+			'Violence'
+		].map(label => {
+			return {label, value: label};
+		});
+		return <>
 			<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." className="form-control"
 			                     onChange={onChange}/>
 			<ClearableInput name="types" type="select_multi" placeholder="Counseling Types..." className="form-control"
-			                onChange={onChange} values={this.selfState.lists.types} returnValue add/>
+			                onChange={onChange} values={types} returnValue add/>
 			<ClearableInput name="reasons" type="select_multi" placeholder="Reasons For Counseling..."
-			                className="form-control" onChange={onChange} values={this.selfState.lists.reasons} returnValue
+			                className="form-control" onChange={onChange} values={reasons} returnValue
 			                add/>
-			<ClearableInput name="expiry_date" type="select" placeholder="Completion Date..." className="form-control"
-			                onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
-		</div>;
+		</>;
 	}
 
 	//</editor-fold>

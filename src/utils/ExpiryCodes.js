@@ -6,7 +6,7 @@ class ExpiryCodes {
         if (!expiry_date) return null;
         const d = new Date();
         const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
-        console.log('ExpiryCodes.daysPrev', d.durationPrevDays(otherD))
+        // console.log('ExpiryCodes.daysPrev', d.durationPrevDays(otherD))
         return d.durationPrevDays(otherD);
     }
     
@@ -14,7 +14,7 @@ class ExpiryCodes {
         if (!expiry_date) return null;
         const d = new Date();
         const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
-        console.log('ExpiryCodes.daysNext', d.durationNextDays(otherD))
+        // console.log('ExpiryCodes.daysNext', d.durationNextDays(otherD))
         return d.durationNextDays(otherD);
     }
     
@@ -23,7 +23,7 @@ class ExpiryCodes {
         const d = new Date();
         const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
         const {_data: {years, months, days, hours, minutes, seconds}} = d.durationNext(otherD);
-        console.log('ExpiryCodes.color', years, months, days, hours, minutes, seconds)
+        // console.log('ExpiryCodes.color', years, months, days, hours, minutes, seconds)
 //        console.log('ExpiryCodes.color2', d.durationNextDays(otherD))
         let color;
         if (years === 0) {
@@ -51,7 +51,7 @@ class ExpiryCodes {
         const d = new Date();
         const otherD = expiry_date instanceof Date ? expiry_date : Dates.parse(expiry_date);
         const {_data: {years, months, days, hours, minutes, seconds}} = d.durationNext(otherD);
-        console.log('ExpiryCodes.greyOrGreenColor', years, months, days, hours, minutes, seconds)
+        // console.log('ExpiryCodes.greyOrGreenColor', years, months, days, hours, minutes, seconds)
 //        console.log('ExpiryCodes.color2', d.durationNextDays(otherD))
         let color;
         if (years === 0) {

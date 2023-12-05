@@ -65,6 +65,10 @@ export default (
     exact_orgs
   });
 
+  console.log('expiry_date', expiry_date);
+  console.log('filter', filter);
+  console.log('filterEmployee', filterEmployee);
+
   if (view === 'Employee') {
     //<editor-fold desc="ByGroup">
     return GQLClient

@@ -155,7 +155,7 @@ class Form {
 
 const setFilterDataValues = (filterData, key, val) => {
     if (isDate(val)) {
-        filterData[key] = val.getTime();
+        filterData[key] = Dates.formatDateSQL(val);
     } else if (isObservableArray(val) ||
         isArray(val)) {
         val = val.map(convertMobxForFilter);
@@ -166,6 +166,7 @@ const setFilterDataValues = (filterData, key, val) => {
         isObservableObject(val) ||
         isObservableMap(val) ||
         isObject(val)) {
+
         val = convertMobxForFilter(val);
         if (!!val) {
             processObject(filterData, val, key);
@@ -191,50 +192,35 @@ const processObject = (filterData, val, key) => {
     } else if (val.id) {
         const {id, data} = val;
         if (id) {
-            filterData[key + '_id'] = id;
+            if (key.endsWith('_id')) {
+                filterData[key] = id;
+                key = key.replace('_id', '');
+            } else {
+                filterData[key + '_id'] = id;
+            }
         }
-        if (data) {
-            const {fname, lname, name, email, username, is_external} = data;
-            filterData[key] = {is_external};
-            if (id) {
-                filterData[key]['id'] = id;
-            }
-            if (fname) {
-                filterData[key]['fname'] = fname;
-            }
-            if (lname) {
-                filterData[key]['lname'] = lname;
-            }
-            if (name) {
-                filterData[key]['name'] = name;
-            }
-            if (email) {
-                filterData[key]['email'] = email;
-            }
-            if (username) {
-                filterData[key]['username'] = username;
-            }
-        } else {
-            const {fname, lname, name, email, username, is_external} = val;
-            filterData[key] = {is_external};
-            if (id) {
-                filterData[key]['id'] = id;
-            }
-            if (fname) {
-                filterData[key]['fname'] = fname;
-            }
-            if (lname) {
-                filterData[key]['lname'] = lname;
-            }
-            if (name) {
-                filterData[key]['name'] = name;
-            }
-            if (email) {
-                filterData[key]['email'] = email;
-            }
-            if (username) {
-                filterData[key]['username'] = username;
-            }
+
+        // console.log('processObject', key, val);
+
+        const {fname, lname, name, email, username, is_external} = data || val;
+        filterData[key] = {is_external};
+        if (id) {
+            filterData[key]['id'] = id;
+        }
+        if (fname) {
+            filterData[key]['fname'] = fname;
+        }
+        if (lname) {
+            filterData[key]['lname'] = lname;
+        }
+        if (name) {
+            filterData[key]['name'] = name;
+        }
+        if (email) {
+            filterData[key]['email'] = email;
+        }
+        if (username) {
+            filterData[key]['username'] = username;
         }
     } else {
         filterData[key] = val;

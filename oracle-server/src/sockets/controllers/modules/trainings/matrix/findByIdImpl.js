@@ -1,18 +1,20 @@
-const {incident_investigation_details_fragment} = require('./commons');
+const {orgs_fragment} = require("../../../../../graphql/Fragments");
+const {training_matrix_details_fragment} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, id) => {
     return getGraphQLOne({
         query: `
-            query findByIdIncidentInvestigationQuery {
-                sheq_incident_investigation_investigations(
+            query findByIdTrainingMatrixQuery {
+                sheq_training_matrices(
                   where: {id: {_eq: ${id}},},
                 ) {
-                    ${incident_investigation_details_fragment}
+                    ${training_matrix_details_fragment}
+                    ${orgs_fragment}
                 }
             }
         `,
-        operationName: "findByIdIncidentInvestigationQuery",
+        operationName: "findByIdTrainingMatrixQuery",
     });
 }
 //</editor-fold>

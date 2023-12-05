@@ -42,13 +42,6 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends React.Component {
 
-	// <editor-fold defaultstate="collapsed" desc="fields">
-	@observable
-	state = {
-		item: null,
-	};
-	// </editor-fold>
-
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
@@ -57,7 +50,7 @@ class Controls extends React.Component {
 	// </editor-fold>
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">

@@ -58,8 +58,6 @@ class Controls extends AControls {
 		//
 		department_id: null,
 		job_position_id: null,
-		team_id: null,
-		supervisor_id: null,
 		employee_id: null,
 		//
 		notes: null,
@@ -86,8 +84,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			notes,
@@ -97,12 +93,6 @@ class Controls extends AControls {
 			date_range,
 		} = filterData || {};
 
-		const mon = Dates.formatDateSQL(new Date().addMonths(1));
-		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-		const limit = 50;
-
 		const args = {
 			view: 'EACH',
 			client_id,
@@ -111,8 +101,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			notes,
@@ -121,31 +109,10 @@ class Controls extends AControls {
 			expiry_date,
 			date_range,
 			//
-			// limit,
+			limit: 0,
 			//
 			exact_orgs: true,
 		};
-		// const args = {
-		// 	// removed,
-		// 	// view, expiry_date,
-		// 	mon, mon2, mon3,
-		// 	//
-		// 	department_id,
-		// 	job_position_id,
-		// 	team_id,
-		// 	supervisor_id,
-		// 	name,
-		// 	//
-		// 	limit,
-		// 	//
-		// 	exact_orgs: true,
-		// };
-
-		// if(!isNew) {
-		// 	args.offset = this.refs.root.list.length;
-		// } else {
-		// 	args.offset = 0;
-		// }
 
 		return byLogged(args);
 	}

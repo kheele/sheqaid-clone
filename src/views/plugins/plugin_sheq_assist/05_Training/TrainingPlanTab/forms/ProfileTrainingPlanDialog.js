@@ -83,7 +83,6 @@ class Controls extends React.Component {
         const {id, target} = target_view || {};
         return view === 'Employee';
     }
-
     //</editor-fold>
 
     //<editor-fold desc="renderByCourse">
@@ -92,21 +91,29 @@ class Controls extends React.Component {
 
         const {
             item, item: {
-                group,
-                group: {data: {name}},
-                list,
-                cost,
-                results,
-                status,
-                employee_list,
-                job_position_list,
-                year_list,
-                status_outstanding,
-                status_completed,
-                status_not_started,
-                results_failed,
-                results_passed,
-                results_average,
+                // group,
+                // group: {data: {name}},
+                // list,
+                // results,
+                // status,
+                // employee_list,
+                // job_position_list,
+
+                id,
+                data: {
+                    name,
+                    job_position_list_count,
+                    training_cost,
+                    employee_list_count,
+                    year_list,
+                    results_failed,
+                    results_passed,
+                    status_not_started,
+                    status_in_progress,
+                    status_outstanding,
+                    status_completed,
+                    results_average,
+                }
             }
         } = this;
 
@@ -114,7 +121,6 @@ class Controls extends React.Component {
             <ProfileField title="Course" value={name} className="col-lg-12"/>
         </>
     }
-
     //</editor-fold>
 
     //<editor-fold desc="renderByYear">
@@ -123,14 +129,19 @@ class Controls extends React.Component {
 
         const {
             item, item: {
-                group,
-                list,
-                cost,
-                results,
-                status,
-                employee_list,
-                job_position_list,
-                course_list,
+                // group,
+                // list,
+                // results,
+                // status,
+                // employee_list,
+                // job_position_list,
+                // course_list,
+
+                year,
+                training_cost,
+                course_list_count,
+                job_position_list_count,
+                employee_list_count,
                 status_outstanding,
                 status_completed,
                 status_not_started,
@@ -141,10 +152,9 @@ class Controls extends React.Component {
         } = this;
 
         return <>
-            <ProfileField title="Year" value={group} className="col-lg-12"/>
+            <ProfileField title="Year" value={year} className="col-lg-12"/>
         </>
     }
-
     //</editor-fold>
 
     //<editor-fold desc="renderByJobPosition">
@@ -153,21 +163,24 @@ class Controls extends React.Component {
 
         const {
             item, item: {
-                group,
-                group: {data: {name}},
-                list,
-                cost,
-                results,
-                status,
-                employee_list,
-                course_list,
+                // list,
+                // results,
+                // status,
+                // employee_list,
+                // course_list,
+                // status_outstanding,
+                // status_completed,
+                // status_not_started,
+                // results_failed,
+                // results_passed,
+                // results_average,
+
+                id,
+                name,
+                course_list_count,
+                training_cost,
+                employee_list_count,
                 year_list,
-                status_outstanding,
-                status_completed,
-                status_not_started,
-                results_failed,
-                results_passed,
-                results_average,
             }
         } = this;
 
@@ -175,7 +188,6 @@ class Controls extends React.Component {
             <ProfileField title="Job Position" value={name} className="col-lg-12"/>
         </>
     }
-
     //</editor-fold>
 
     //<editor-fold desc="renderByEmployee">
@@ -184,20 +196,24 @@ class Controls extends React.Component {
 
         const {
             item, item: {
-                group,
-                group: {data: {lname, fname, profile_pic}},
-                list,
-                cost,
-                results,
-                status,
-                course_list,
+                // list,
+                // results,
+                // status,
+                // course_list,
+                // status_outstanding,
+                // status_completed,
+                // status_not_started,
+                // results_failed,
+                // results_passed,
+                // results_average,
+
+                lname,
+                fname,
+                profile_pic,
+                job_position,
+                course_list_count,
+                training_cost,
                 year_list,
-                status_outstanding,
-                status_completed,
-                status_not_started,
-                results_failed,
-                results_passed,
-                results_average,
             }
         } = this;
 
@@ -205,32 +221,29 @@ class Controls extends React.Component {
             <ProfileField title="Employee" value={`${lname} ${fname}`} className="col-lg-12"/>
         </>
     }
-
     //</editor-fold>
 
     //<editor-fold desc="orgs">
     get orgs() {
-        const {
-            item: {
-                list,
-            }
-        } = this;
-
-        const {client_id, project_id, site_id} = list[0];
-        return {client_id, project_id, site_id};
+        const {item, item: {data}} = this;
+        const {client, project, site, client_id, project_id, site_id} = data || item;
+        return {
+            client_id: client_id || client ? client.id : null,
+            project_id: project_id || project ? project.id : null,
+            site_id: site_id || site ? site.id : null,
+        };
     }
 
     //</editor-fold>
 
     //<editor-fold desc="render">
     render() {
-        if (!this.item)
+        if (!this.item) {
             return null;
+        }
+
         const {
-            props: {
-                onFormNext, onFormBack, onFormOpen,
-                dialog: {renderProfileCover}
-            },
+            props: {onFormNext, onFormBack, onFormOpen},
             renderByCourse, renderByYear, renderByJobPosition, renderByEmployee
         } = this;
 
@@ -310,13 +323,14 @@ class ProfileFieldLoader extends React.Component {
 
     render() {
         const {value, state: {loaded}} = this;
-        if(!loaded) return null;
+        if (!loaded) return null;
 
         return <>
             {this.children}
         </>
     }
 }
+
 //</editor-fold>
 
 export default ProfileDialog;

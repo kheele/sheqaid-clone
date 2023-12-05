@@ -169,7 +169,7 @@ class Controls extends React.Component {
         } = form.data;
         const data = {
             name,
-            status,
+            status: status || 'Active',
             client_id: client && client.id,
             project_id: project && project.id,
             site_id: site && site.id,

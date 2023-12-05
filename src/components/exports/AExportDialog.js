@@ -83,23 +83,24 @@ class AControls extends React.Component {
 
 	// </editor-fold>
 
-	async onChangeFields(el, name, val) {
+	onChangeFields(el, name, val) {
 		const {_reactInternals: {ref}, parentWrapper} = el;
 
 		const refName = parentWrapper ? parentWrapper.refName : ref._stringRef;
 
 		if (Form.hasVal(val)) {
-			console.log('onChangeFields1', refName, val)
-			val = await this.form.getFormData(refName, val);
-			console.log('onChangeFields2', refName, val)
+			// console.log('onChangeFields1', refName, val)
+			val = this.form.getFormData(refName, val);
+			// console.log('onChangeFields2', refName, val)
 			if (val) {
-				val = Object.values(val).pop();
+				// val = Object.values(val).pop();
+				val = val[refName];
 				this.filterData[refName] = val;
 			}
 		} else {
 			this.filterData[refName] = null;
 		}
-		console.log('onChangeFields', refName, val)
+		// console.log('onChangeFields', refName, val)
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="reset">

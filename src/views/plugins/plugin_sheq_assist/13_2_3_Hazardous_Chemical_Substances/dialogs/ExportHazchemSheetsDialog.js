@@ -25,6 +25,10 @@ class ExportDialog extends AExportDialog {
     titleSingular = 'Hazchem Sheet';
     titlePlural = 'Hazchem Sheets';
 
+    get excludePDF() {
+        return true;
+    }
+
     get controls() {
         return Controls;
     }

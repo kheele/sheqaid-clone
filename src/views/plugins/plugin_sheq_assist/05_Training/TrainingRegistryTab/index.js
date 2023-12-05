@@ -21,8 +21,6 @@ import Chip from "@material-ui/core/Chip";
 import {Stack} from "@mui/material";
 import {Grid} from "@material-ui/core";
 import {CostBtn} from "../TrainingPlanTab/Components";
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllCourseByLogged";
-
 // </editor-fold>
 
 @observer
@@ -71,55 +69,30 @@ class TrainingRegistryTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
-        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
             unit_standard,
             frequency,
             provider,
-            job_position_id,
-            sector_id,
+            job_position_list,
+            sector_list,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('trainings/courses').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             unit_standard,
             frequency,
             provider,
-            job_position_id,
-            sector_id,
+            job_position_list,
+            sector_list,
             //
-            limit,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        let fn;
-
-        if (selectedSite) {
-            args.site_id = selectedSite.id;
-            fn = bySite;
-        } else if (selectedProject) {
-            args.project_id = selectedProject.id;
-            fn = byProject;
-        } else if (selectedClient) {
-            args.client_id = selectedClient.id;
-            fn = byClient;
-        } else {
-            args.company_id = sess_company_id;
-            fn = byCompany;
-        }
-
-        return fn(args).then((res) => {
+            exact_orgs: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -171,9 +144,9 @@ class TrainingRegistryTab extends React.Component {
                             onChange={onChange} values={this.state.lists.frequency} returnValue/>
             <ClearableInput name="provider" type="select" placeholder="Provider..." className="form-control"
                             onChange={onChange} values={this.state.lists.provider} returnValue/>
-            <SelectJobPositionInput name="job_position" type="select" placeholder="Job Position..."
+            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
                                     className="form-control" onChange={onChange}/>
-            <ClearableInput name="sector" type="select" placeholder="Sector..." className="form-control"
+            <ClearableInput name="sector_list" type="select_multi" placeholder="Sector(s)..." className="form-control"
                             onChange={onChange} values={this.state.lists.sector_list} returnValue/>
         </div>;
     }

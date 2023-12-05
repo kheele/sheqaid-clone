@@ -19,7 +19,7 @@
 		}) {
 			return AEmployeeDocsController.prototype.export_excel(
 				evt,
-				'Counselings',
+				'Counsellings',
 				({
 					 id,
 					 data: {

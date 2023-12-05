@@ -1,0 +1,90 @@
+
+//<editor-fold desc="getVariablesAndQueryConfig">
+exports.getVariablesAndQueryConfig = (
+    {
+        orgs_filter = [],
+        //
+        id,
+        //
+        job_position_list,
+        trainer_list,
+        course_list,
+        unit_standard,
+        date,
+        //
+        site_id, project_id, client_id,
+        //
+        exact_orgs = false,
+    }
+) => {
+    //<editor-fold desc="variables, filters">
+    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+
+    if(id) {
+        filter.push(`id: {_eq: ${id}}`);
+    } else {
+        if (job_position_list) {
+            filter.push(`training:{job_position_list:{job_position_id: {_in: ${job_position_list}}}}`);
+        }
+        if(trainer_list) {
+            filter.push(`trainer_id: {_in: ${trainer_list}}`);
+        }
+        if(course_list) {
+            filter.push(`training:{course_id: {_in: ${course_list}}}`);
+        }
+        if(unit_standard) {
+            filter.push(`training:{unit_standard: {_ilike: "%${unit_standard}%"}}`);
+        }
+        if(date) {
+            filter.push(`date: {_eq: ${date}}`);
+        }
+    }
+
+    filter = filter.join(',');
+    //</editor-fold>
+
+    return {filter};
+};
+//</editor-fold>
+
+//<editor-fold desc="training_register_details_fragment">
+exports.training_register_details_fragment = `
+  id
+                          created_at
+                          date
+                          institution_conducting_training
+                          time_or_duration
+                          list_proof
+                          trainer{
+                            id
+                            fname
+                            lname
+                            email
+                            phone
+                          }
+                          trainer_external{
+                            id
+                            fname
+                            lname
+                            email
+                            phone
+                          }
+                          training{
+                            id
+                            course {
+                              id
+                              name
+                            }
+                          }
+                          employee_list{
+                            id
+                            employee{
+                              id
+                              fname
+                              lname
+                              email
+                              phone
+                            }
+                          }
+`;
+//</editor-fold>

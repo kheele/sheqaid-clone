@@ -1,7 +1,6 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
@@ -16,8 +15,8 @@ import companyStore from "mutations/all/Company";
 import WarningsRenderRow from "./WarningsRenderRow";
 import {THead} from "components/tables";
 import {
-    ClearableInput, SelectDepartmentInput,
-    SelectEmployeeInput, SelectJobPositionInput, SelectTeamInput,
+    ClearableInput,
+    SelectEmployeeInput,
 } from "components/inputs";
 
 import byLogged from "./Query/List/listAllWarningByLogged";
@@ -35,20 +34,11 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Warning";
     permissionKey = "Warnings";
     module = "Warnings";
+    filterNodeGrid = 5;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
     };
-
-    // <editor-fold defaultstate="collapsed" desc="selfState">
-    @observable
-    selfState = {
-        lists: {
-            warning_types: ['Verbal', 'Written', 'Final'],
-            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {label: '1 month', value: 1}, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
-        }
-    };
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
@@ -139,18 +129,12 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
-        return <div className="controls grid-5 grid-gap-5 padding-r-10 -margin-b-35">
-            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange} add={false}/>
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange} add={false}/>
-            <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-
+        const warning_types = ['Verbal', 'Written', 'Final'];
+        return <>
             <SelectEmployeeInput ref="issued_by" name="issued_by" placeholder="Issued By..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="type" type="select" placeholder="Warning Type..." className="form-control" onChange={onChange} values={this.selfState.lists.warning_types} returnValue/>
+            <ClearableInput name="type" type="select" placeholder="Warning Type..." className="form-control" onChange={onChange} values={warning_types} returnValue/>
             <ClearableInput name="date" type="date" placeholder="Warning Date..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control" onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
-        </div>;
+        </>;
     }
     //</editor-fold>
 

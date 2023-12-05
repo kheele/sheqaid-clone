@@ -60,8 +60,6 @@ class Controls extends AControls {
 		//
 		department_id: null,
 		job_position_id: null,
-		team_id: null,
-		supervisor_id: null,
 		employee_id: null,
 		//
 		type: null,
@@ -89,8 +87,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			type,
@@ -115,8 +111,6 @@ class Controls extends AControls {
 			//
 			department_id,
 			job_position_id,
-			team_id,
-			supervisor_id,
 			employee_id,
 			//
 			type,
@@ -160,6 +154,7 @@ class Controls extends AControls {
 	// <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
 	renderTHeadFrom() {
 		return <THead>
+			<div className="td fixed-flex min-w-40">ID</div>
 			<div className="td fixed-flex min-w-120">Date Created</div>
 			<div className="td">Employee</div>
 			<div className="td fixed-flex min-w-180">Leave Type</div>

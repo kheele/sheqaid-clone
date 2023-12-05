@@ -13,7 +13,11 @@ export default async (
         plural,
     }
 ) => {
-    const {id, doc, job_profile_doc} = attrs;
+    const {
+        id,
+        doc,
+        job_profile_doc,
+    } = attrs;
 
     const has_doc = doc && !doc.dlUrls;
     const has_job_profile_doc = name === "Contract" && (job_profile_doc && !job_profile_doc.dlUrls);

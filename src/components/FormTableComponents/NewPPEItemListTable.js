@@ -24,11 +24,10 @@ class ListTable extends ANewListTable {
 		}
 
 		if (item && (item.ppe || item.id)) {
+			const _item = item.ppe || item;
 			const {
-				id, data: {
-					created_at, name, profile_pic, client, project, site
-				}
-			} = item.ppe || item;
+				id, created_at, name, profile_pic, client, project, site,
+			} = _item.data || _item;
 
 			const tr = <React.Fragment>
 				<div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
