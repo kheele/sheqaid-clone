@@ -207,13 +207,15 @@ class Controls extends React.Component {
                 // results_passed,
                 // results_average,
 
-                lname,
-                fname,
-                profile_pic,
-                job_position,
-                course_list_count,
-                training_cost,
-                year_list,
+                data: {
+                    lname,
+                    fname,
+                    profile_pic,
+                    job_position,
+                    course_list_count,
+                    training_cost,
+                    year_list,
+                }
             }
         } = this;
 
@@ -227,10 +229,11 @@ class Controls extends React.Component {
     get orgs() {
         const {item, item: {data}} = this;
         const {client, project, site, client_id, project_id, site_id} = data || item;
+        console.log('orgs', data || item);
         return {
-            client_id: client_id || client ? client.id : null,
-            project_id: project_id || project ? project.id : null,
-            site_id: site_id || site ? site.id : null,
+            client_id: client_id || (client ? client.id : null),
+            project_id: project_id || (project ? project.id : null),
+            site_id: site_id || (site ? site.id : null),
         };
     }
 

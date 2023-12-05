@@ -62,6 +62,8 @@ class Controls extends React.Component {
 
         this.onNext = this.onNext.bind(this);
 
+        this.onUpdateJobPosition = this.onUpdateJobPosition.bind(this);
+
         this.form = new Form();
         this.form.addChangeOne("client", this.onChangeClient.bind(this));
     }
@@ -115,6 +117,10 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    onUpdateJobPosition(val, action) {//ADDED / REMOVED
+        console.log('onUpdateJobPosition', val, action);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -276,7 +282,9 @@ class Controls extends React.Component {
                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     <SelectJobPositionInput name="job_position_list" type="select_multi"
                                             placeholder="Job Position(s)..." defaultValue={job_position_listDefault}
-                                            className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                                            className="col-lg-12 form-control" onChange={this.form.onChange}
+                                            onUpdate={this.onUpdateJobPosition}
+                    />
                     <SelectWrapper state={this.state} name="frequency" placeholder="Training Frequency..."
                                    defaultValue={frequencyDefault} className="col-lg-12 form-control"
                                    onChange={this.form.onChange} values="frequency"/>

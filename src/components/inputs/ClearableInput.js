@@ -110,7 +110,7 @@ class ClearableInput extends ASelectInput {
         }
         if ("defaultValue" in this.props) {
             if (type === 'date' || type === 'time') {
-                if(type === "date") {
+                if (type === "date") {
                     defaultValue = Dates.parse(defaultValue);
                 }
                 this.onChange(defaultValue, this, true);
@@ -718,9 +718,10 @@ class ClearableInput extends ASelectInput {
             return null;
         }
         const inputProps = {
-            onChange: this.setValue, className: "text-input--underbar2"
+            onChange: this.setValue,
+            className: "text-input--underbar2"
         };
-        const {type, desc, footerDesc, renderer, onFilter, onSubmit} = this.props;
+        const {type, desc, footerDesc, renderer, onFilter, onUpdate, onSubmit} = this.props;
 
         const {placeholder} = this.state;
 
@@ -778,6 +779,7 @@ class ClearableInput extends ASelectInput {
                 if (this.isSelectMultiple) {
                     this.className += " select_multiple";
                     inputProps.multiple = true;
+                    inputProps.onUpdate = onUpdate;
                 }
 
                 inputProps.onFilter = onFilter;
@@ -834,6 +836,7 @@ class ClearableInput extends ASelectInput {
                 }
                 const ref = this.refName = this.props.ref || "checkboxField";
                 inputProps.name = this.props.name;
+                inputProps.onUpdate = onUpdate;
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;
                     inputProps.disabled = true;
@@ -854,9 +857,9 @@ class ClearableInput extends ASelectInput {
                 inputProps.label = inputProps.placeholder;
 
                 let onEnterSubmit;
-                if(isFunction(onSubmit)) {
+                if (isFunction(onSubmit)) {
                     onEnterSubmit = (e) => {
-                        if(e.keyCode === 13) {
+                        if (e.keyCode === 13) {
                             onSubmit(e);
                         }
                     };

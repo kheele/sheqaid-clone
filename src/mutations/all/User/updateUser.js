@@ -112,7 +112,7 @@ export default async (attrs: EntityUser) => {
         id,
         username,
         phone,
-        notifications_settings,
+        // notifications_settings,
         // permissions_modules,
         // permissions_other,
         //
@@ -195,18 +195,18 @@ export default async (attrs: EntityUser) => {
         }
     }
 
-    if (notifications_settings) {
-        delete attrs.notifications_settings;
-
-        let item = notifications_settings.data || notifications_settings;
-        if (item.id) {
-            item = await updateNotificationSetting(item);
-        } else {
-            item = await insertNotificationSetting(item);
-        }
-
-        attrs.notifications_settings_id = item.id;
-    }
+    // if (notifications_settings) {
+    //     delete attrs.notifications_settings;
+    //
+    //     let item = notifications_settings.data || notifications_settings;
+    //     if (item.id) {
+    //         item = await updateNotificationSetting(item);
+    //     } else {
+    //         item = await insertNotificationSetting(item);
+    //     }
+    //
+    //     attrs.notifications_settings_id = item.id;
+    // }
 
     return updateMutationImpl({
         mutation,

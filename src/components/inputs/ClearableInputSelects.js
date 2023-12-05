@@ -40,7 +40,20 @@ class ClearableInputSelects extends React.Component {
     }
 
     componentWillMount() {
-
+        let {inputProps: {multiple}, state: {value}} = this.props;
+        if(multiple) {
+            if(!isArray(value) && !isObservableArray(value)) {
+                if(isNullable(value) || value.isEmpty()) {
+                    value = [];
+                } else {
+                    value = [value];
+                }
+                this.state.selected = value;
+            } else {
+                this.state.selected = [...value];
+            }
+            console.log('this.state.selected', this.state.selected)
+        }
     }
     
     open() {
@@ -98,6 +111,7 @@ class ClearableInputSelects extends React.Component {
                 id, style,//used//inputProps
                 className,//
                 placeholder, onChange, onInputChange,//used
+                onUpdate,
                 isMulti, multiple,//used
                 onFilter,
 //                isSearchable,// unused,
@@ -156,6 +170,9 @@ class ClearableInputSelects extends React.Component {
                     selected.removeIf(v1 => {
                         return JSON.stringify(v1) === JSON.stringify(value.option);
                     });
+                    const removedVal = value.option.value;
+                    onUpdate && onUpdate(removedVal, 'REMOVED');
+                    console.log('ClearableInputSelects onRemoved', removedVal);
                 } else {
                     newValue = newValue.filter(({label, value, create}, n) => {
                         return !!label || create;
@@ -179,6 +196,10 @@ class ClearableInputSelects extends React.Component {
                     });
 
                     selected.push(...newValue);
+
+                    const addedVal = newValue[0];
+                    onUpdate && onUpdate(addedVal && addedVal.value, 'ADDED');
+                    console.log('ClearableInputSelects onAdded', addedVal && addedVal.value);
                 }
 
                 onChange(selected);
@@ -331,16 +352,10 @@ class AutocompleteWrapper extends React.Component {
     }
 
     render() {
-        let {props, props: {multiple}, options, state: {loading}, valueState: {value}} = this.props;
+        let {props, props: {multiple}, options, state: {selected, loading}, valueState: {value}} = this.props;
         // console.log('AutocompleteWrapper', options)
         if(multiple) {
-            if(!isArray(value) && !isObservableArray(value)) {
-                if(isNullable(value) || value.isEmpty()) {
-                    value = [];
-                } else {
-                    value = [value];
-                }
-            }
+            value = selected;
         }
         return <Autocomplete
             {...props}

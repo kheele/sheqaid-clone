@@ -164,9 +164,9 @@ class Controls extends AControls {
             <hr className="pull-left no-border bg-ddd h-2"/>
             <SelectTrainingCourseInput ref="course_or_module_id" name="course_or_module" placeholder="Course..." className="col-lg-12 form-control" onChange={this.form.onChange} add={false} returnValue/>
             <hr className="pull-left no-border bg-ddd h-2"/>
-            <ClearableInput ref="training_provider_requirement" name="training_provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.training_provider_requirement}/>
-            <ClearableInput ref="requirement" name="requirement" type="radio" placeholder="Requirement" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.requirement}/>
-            <ClearableInput ref="status" name="status" type="radio" placeholder="Status" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.status}/>
+            <ClearableInput ref="training_provider_requirement" name="training_provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.training_provider_requirement}/>
+            <ClearableInput ref="requirement" name="requirement" type="radio" placeholder="Requirement" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.requirement}/>
+            <ClearableInput ref="status" name="status" type="radio" placeholder="Status" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.status}/>
         </React.Fragment>;
     }
     // </editor-fold>

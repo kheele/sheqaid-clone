@@ -99,7 +99,7 @@ exports.training_toolbox_talks_details_fragment = `
         id
         date
         signature
-        register{
+        toolbox_talk_list{
             id
         }
         employee{

@@ -24,7 +24,7 @@
     margin: 0;
 }
 #TrainingMatrixTab-tab > .filter-wrapper + .table{
-    height: calc(100% - (50px + 177px)) !important;
+    height: calc(100% - (50px + 138px)) !important;
 }
 
 #TrainingMatrixTab-tab > .table > .thead > .td.td-hr,

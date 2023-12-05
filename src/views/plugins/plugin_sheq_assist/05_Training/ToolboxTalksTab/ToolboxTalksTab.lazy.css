@@ -24,7 +24,7 @@
     margin: 0;
 }
 #ToolboxTalksTab-tab > .filter-wrapper + .table{
-    height: calc(100% - (50px + 177px)) !important;
+    height: calc(100% - (50px + 93px)) !important;
 }
 
 #ToolboxTalksTab-tab > .table > .thead > .td.td-hr,

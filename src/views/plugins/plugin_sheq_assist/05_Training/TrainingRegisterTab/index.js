@@ -102,15 +102,15 @@ class TrainingRegisterTab extends React.Component {
     }
 
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls grid-3 grid-gap-5 -margin-b-35">
+        return <div className="col-lg-12 controls grid-5 grid-gap-5">
             <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s) For Training..."
-                                    className="col-lg-3 margin-t-10 form-control" onChange={onChange}/>
+                                    className="form-control" onChange={onChange}/>
             <SelectEmployeeInput name="trainer_list" type="select_multi" placeholder="Training Conductor(s)..."
-                                 className="col-lg-3 form-control" onChange={onChange}/>
+                                 className="form-control" onChange={onChange}/>
             <SelectTrainingCourseInput name="course_list" type="select_multi" placeholder="Course(s)..."
-                                       className="col-lg-3 margin-t-10 form-control" onChange={onChange}/>
+                                       className="form-control" onChange={onChange}/>
             <ClearableInput name="unit_standard" type="text" placeholder="Unit Standard"
-                            className="col-lg-3 margin-t-10 form-control" onChange={onChange}/>
+                            className="form-control" onChange={onChange}/>
             <ClearableInput name="date" type="date" placeholder="Register Date..."
                             className="form-control fixed-flex min-w-185" onChange={onChange}/>
         </div>;

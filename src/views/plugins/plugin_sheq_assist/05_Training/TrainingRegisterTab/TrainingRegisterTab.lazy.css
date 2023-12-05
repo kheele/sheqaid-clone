@@ -25,7 +25,7 @@
     margin: 0;
 }
 #TrainingRegisterTab-tab > .filter-wrapper + .table{
-    height: calc(100% - (50px + 85px)) !important;
+    height: calc(100% - (50px + 87px)) !important;
 }
 
 #TrainingRegisterTab-tab > .filter-wrapper > .status{

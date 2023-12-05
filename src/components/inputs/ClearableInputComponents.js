@@ -137,8 +137,21 @@ class RadioGroupImpl extends React.Component {
 @observer
 class CheckboxItemImpl extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.onChange = this.onChange.bind(this);
+	}
+
+	onChange(evt) {
+		const {groups, groupKey, item, idx, name, className, inputProps: {onChange, onUpdate}} = this.props;
+		console.log('CheckboxItemImpl onChange', item);
+		onUpdate && onUpdate(evt, item, item.checked ? 'REMOVED' : 'ADDED');
+		onChange && onChange(evt, groups, groupKey, idx);
+	}
+
 	render() {
-		const {groups, groupKey, item, idx, name, className, inputProps = {}} = this.props;
+		const {groups, groupKey, item, idx, name, className, onUpdate, inputProps = {}} = this.props;
 //        console.log('CheckboxItemImpl', item)
 		const key = (groupKey || '') + idx;
 		return <FormControlLabel
@@ -150,7 +163,7 @@ class CheckboxItemImpl extends React.Component {
 				name={name + "-" + key}
 				value={item.value}
 				{...inputProps}
-				onChange={(evt) => inputProps.onChange(evt, groups, groupKey, idx)}
+				onChange={this.onChange}
 			/>}
 			label={item.text || item.label}
 		/>;
