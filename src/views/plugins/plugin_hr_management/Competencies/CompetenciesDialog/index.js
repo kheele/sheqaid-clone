@@ -53,12 +53,14 @@ class Dialog extends AEmployeeDocDialog {
 			type,
 			competency_type,
 			course_id,
+			issued_date,
 		} = filterData || {};
 		return {
 			path: 'employees/docs/competencies',
 			type,
 			competency_type,
 			course_id,
+			issued_date,
 		};
 	}
 	//</editor-fold>
