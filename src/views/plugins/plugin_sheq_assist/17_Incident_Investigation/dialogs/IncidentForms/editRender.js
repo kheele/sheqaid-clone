@@ -18,9 +18,6 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 // <editor-fold defaultstate="collapsed" desc="editRender">
 const editRender = function () {
-	if (!this.item)
-		return null;
-
 	console.log('editRender', this.item)
 
 	let {
@@ -145,7 +142,7 @@ const editRender = function () {
 		who_were_nature_charges_laid_against,
 	} = (vehicle_list || [])[0] || {};
 	//7.4
-	const {consequence, likelihood, risk_rating} = severity || {};
+	const {consequence, likelihood, risk_rating, risk_rating_score} = severity || {};
 
 	return (<FormControls>
 		<RowOrgs

@@ -10,7 +10,7 @@ export default async ({checkLogin = true, query, variables}) => {
 	// eslint-disable-next-line no-unused-vars
 	const {is} = storage;
 	if (checkLogin && !is.isLoggedInAuth) {
-		// return Promise.reject(new Error('Unauthorized request'));
+		return Promise.reject(new Error('Unauthorized request'));
 	}
 
 	// 4

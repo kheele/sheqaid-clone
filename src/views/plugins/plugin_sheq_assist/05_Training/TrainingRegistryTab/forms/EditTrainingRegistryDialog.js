@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, extendObservable} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
 import {onSelectLoadTrainingFrequencies} from '../../../../utils';
 
 import {
@@ -13,15 +13,25 @@ import {
     SelectJobPositionInput,
     SelectProjectInput, SelectSectorInput,
     SelectSiteInput
-} from '../../../../../../components/inputs';
-import {Row} from '../../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingRegistryDialog.lazy.css";
 import TrainingCourseGridCounter from "../../dialogs/ProfileStats/TrainingCourseGridCounter";
 import TrainingCourseGridReportsLineChart from "../../dialogs/ProfileStats/TrainingCourseGridReportsLineChart";
-import findByIdClient from "../../../../../../mutations/all/Client/findByIdClient";
-import updateTrainingCourse from "../../../../../../mutations/all/TrainingCourse/updateTrainingCourse";
+import findByIdClient from "mutations/all/Client/findByIdClient";
+import updateTrainingCourse from "mutations/all/TrainingCourse/updateTrainingCourse";
+import updateProxyJobPositionTrainingCourse
+    from "mutations/all/ProxyJobPositionTrainingCourse/updateProxyJobPositionTrainingCourse";
+import insertProxyJobPositionTrainingCourse
+    from "mutations/all/ProxyJobPositionTrainingCourse/insertProxyJobPositionTrainingCourse";
+import deleteProxyJobPositionTrainingCourse
+    from "mutations/all/ProxyJobPositionTrainingCourse/deleteProxyJobPositionTrainingCourse";
+import insertProxySectorTrainingCourse
+    from "mutations/all/ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
+import deleteProxySectorTrainingCourse
+    from "mutations/all/ProxySectorTrainingCourse/deleteProxySectorTrainingCourse";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -63,6 +73,7 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.onUpdateJobPosition = this.onUpdateJobPosition.bind(this);
+        this.onUpdateSector = this.onUpdateSector.bind(this);
 
         this.form = new Form();
         this.form.addChangeOne("client", this.onChangeClient.bind(this));
@@ -100,11 +111,11 @@ class Controls extends React.Component {
                     }
                 };
 
-                if(data) {
+                if (data) {
                     set(data);
                 } else {
                     findByIdClient(id).then(val => {
-                        if(val) {
+                        if (val) {
                             const {id, data} = val;
                             set(data);
                         }
@@ -118,9 +129,125 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
-    onUpdateJobPosition(val, action) {//ADDED / REMOVED
-        console.log('onUpdateJobPosition', val, action);
+    //<editor-fold desc="onUpdate">
+    //<editor-fold desc="onUpdateJobPosition">
+    onUpdateJobPosition(el, val, action) {//ADDED / REMOVED
+        const {
+            item: {
+                id, data: old_data, data: {
+                    job_position_list,
+                }
+            }
+        } = this;
+        console.log('onUpdateJobPosition', el, val, action);
+        // return;
+
+        if (val) {
+            el.setReadonly(true);
+            if (action === 'ADDED') {
+                insertProxyJobPositionTrainingCourse({job_position_id: val.id, course_id: id}).then(res => {
+                    console.log("res", res)
+                    if (res) {
+                        if(job_position_list) {
+                            job_position_list.push(res.data);
+                        } else {
+                            extendObservable(old_data, {job_position_list: [res.data]});
+                        }
+                        infoDialog.open("Record successfully updated.");
+                        infoDialog.close(2000);
+                        return true;
+                    } else {
+                        infoDialog.open("Record couldn't be updated. Please try again later.");
+                    }
+                }).catch(err  => {
+                    console.error(err);
+                    infoDialog.open("Record couldn't be updated. Please try again later.");
+                }).finally(() => {
+                    el.setReadonly(false);
+                });
+            } else {
+                deleteProxyJobPositionTrainingCourse({job_position_id: val.id, course_id: id}).then(res => {
+                    console.log("res", res)
+                    if (res) {
+                        job_position_list.removeIf(v => v.id === res.id);
+                        infoDialog.open("Record successfully updated.");
+                        infoDialog.close(2000);
+                        return true;
+                    } else {
+                        infoDialog.open("Record couldn't be updated. Please try again later.");
+                    }
+                }).catch(err  => {
+                    console.error(err);
+                    infoDialog.open("Record couldn't be updated. Please try again later.");
+                }).finally(() => {
+                    el.setReadonly(false);
+                });
+            }
+        } else {
+
+        }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="onUpdateSector">
+    onUpdateSector(el, val, action) {//ADDED / REMOVED
+        const {
+            item: {
+                id, data: old_data, data: {
+                    sector_list,
+                }
+            }
+        } = this;
+        console.log('onUpdateSector', el, val, action);
+        // return;
+
+        if (val) {
+            el.setReadonly(true);
+            if (action === 'ADDED') {
+                insertProxySectorTrainingCourse({sector_id: val.id, course_id: id}).then(res => {
+                    console.log("res", res)
+                    if (res) {
+                        if(sector_list) {
+                            sector_list.push(res.data);
+                        } else {
+                            extendObservable(old_data, {sector_list: [res.data]});
+                        }
+                        infoDialog.open("Record successfully updated.");
+                        infoDialog.close(2000);
+                        return true;
+                    } else {
+                        infoDialog.open("Record couldn't be updated. Please try again later.");
+                    }
+                }).catch(err  => {
+                    console.error(err);
+                    infoDialog.open("Record couldn't be updated. Please try again later.");
+                }).finally(() => {
+                    el.setReadonly(false);
+                });
+            } else {
+                deleteProxySectorTrainingCourse({sector_id: val.id, course_id: id}).then(res => {
+                    console.log("res", res)
+                    if (res) {
+                        sector_list.removeIf(v => v.id === res.id);
+                        infoDialog.open("Record successfully updated.");
+                        infoDialog.close(2000);
+                        return true;
+                    } else {
+                        infoDialog.open("Record couldn't be updated. Please try again later.");
+                    }
+                }).catch(err  => {
+                    console.error(err);
+                    infoDialog.open("Record couldn't be updated. Please try again later.");
+                }).finally(() => {
+                    el.setReadonly(false);
+                });
+            }
+        } else {
+
+        }
+    }
+    //</editor-fold>
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -164,9 +291,9 @@ class Controls extends React.Component {
             client, project, site,
             name,
             frequency,
-            sector_list,
+            // sector_list,
             provider,
-            job_position_list,
+            // job_position_list,
             unit_standard, unit_standard_desc
         } = form.data;
         const data = {};
@@ -177,9 +304,9 @@ class Controls extends React.Component {
 
         ShouldUpdate.check(data, old_data, name, 'name');
         ShouldUpdate.check(data, old_data, frequency, 'frequency');
-        ShouldUpdate.checkSectorList(data, old_data, sector_list, 'sector_list');
+        // ShouldUpdate.checkSectorList(data, old_data, sector_list, 'sector_list');
         ShouldUpdate.check(data, old_data, provider, 'provider');
-        ShouldUpdate.checkJobPositionList(data, old_data, job_position_list, 'job_position_list');
+        // ShouldUpdate.checkJobPositionList(data, old_data, job_position_list, 'job_position_list');
         ShouldUpdate.check(data, old_data, unit_standard, 'unit_standard');
         ShouldUpdate.check(data, old_data, unit_standard_desc, 'unit_standard_desc');
 
@@ -194,7 +321,7 @@ class Controls extends React.Component {
         progressDialog.open();
         updateTrainingCourse({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            if(res) {
+            if (res) {
                 onSaved && onSaved(res.data);
                 infoDialog.open("Record successfully updated.");
                 infoDialog.close(2000);
@@ -290,7 +417,9 @@ class Controls extends React.Component {
                                    onChange={this.form.onChange} values="frequency"/>
                     <SelectSectorInput ref="sector_list" name="sector_list" type="select_multi"
                                        placeholder="Sector(s)..." defaultValue={sector_listDefault}
-                                       className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                                       className="col-lg-12 form-control" onChange={this.form.onChange}
+                                       onUpdate={this.onUpdateSector}
+                    />
                     <ClearableInput name="provider" type="radio" placeholder="Provider" defaultValue={provider}
                                     className="col-lg-12 form-control" onChange={this.form.onChange}
                                     values={this.state.lists.provider}/>

@@ -70,10 +70,10 @@ class ClearableInputSelects extends React.Component {
     }
     
     renderTags(tagValue, getTagProps) {
-        const {state, inputProps: {onChange}} = this.props;
+        const {state, inputProps: {readonly, onChange}} = this.props;
        // console.log('renderTags', tagValue)
         return tagValue.map((option, index) => {
-            return <Tag index={index} option={option} getTagProps={getTagProps} state={this.state} valueState={state} onChange={onChange}/>;
+            return <Tag index={index} readonly={readonly} option={option} getTagProps={getTagProps} state={this.state} valueState={state} onChange={onChange}/>;
         });                        
     }
     
@@ -162,7 +162,7 @@ class ClearableInputSelects extends React.Component {
         if(isMulti || multiple) {
             props.multiple = true;
             props.renderTags = this.renderTags;
-            props.onChange = (e, newValue, action, value) => {
+            props.onChange = (evt, newValue, action, value) => {
                 // console.log('onChange', newValue, action, value)
 
                 const {selected} = this.state;
@@ -171,7 +171,7 @@ class ClearableInputSelects extends React.Component {
                         return JSON.stringify(v1) === JSON.stringify(value.option);
                     });
                     const removedVal = value.option.value;
-                    onUpdate && onUpdate(removedVal, 'REMOVED');
+                    onUpdate && onUpdate(evt, removedVal, 'REMOVED');
                     console.log('ClearableInputSelects onRemoved', removedVal);
                 } else {
                     newValue = newValue.filter(({label, value, create}, n) => {
@@ -198,14 +198,14 @@ class ClearableInputSelects extends React.Component {
                     selected.push(...newValue);
 
                     const addedVal = newValue[0];
-                    onUpdate && onUpdate(addedVal && addedVal.value, 'ADDED');
+                    onUpdate && onUpdate(evt, addedVal && addedVal.value, 'ADDED');
                     console.log('ClearableInputSelects onAdded', addedVal && addedVal.value);
                 }
 
                 onChange(selected);
             };
         } else {
-            props.onChange = (e, newValue) => {
+            props.onChange = (evt, newValue) => {
                 if((onShowAddInput || add || create || save) && newValue && newValue.create) {
                     newValue = newValue.value;
                 }
@@ -215,11 +215,11 @@ class ClearableInputSelects extends React.Component {
             };
         }
         
-        props.onInputChange = async (e, value) => {
+        props.onInputChange = async (evt, value) => {
             if(onAsyncSelectLoad) {
                 await this.onLoadList(onAsyncSelectLoad(value));
             }
-            onInputChange(e, value);
+            onInputChange(evt, value);
         };
         
         const hasNew = onShowAddInput || add || create || save;
@@ -319,7 +319,9 @@ class Tag extends React.Component {
     }
 
     onDelete() {
-        const {index, option, getTagProps, state, valueState, onChange} = this.props;
+        const {index, readonly, option, getTagProps, state, valueState, onChange} = this.props;
+        if(readonly) return;
+
         const {selected} = state;
         selected.removeIf(v1 => {
             return JSON.stringify(v1) === JSON.stringify(option);

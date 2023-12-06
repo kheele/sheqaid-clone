@@ -18,8 +18,8 @@ import ProfilePDFReader from '../../printers/ProfilePDFReader';
 
 // <editor-fold defaultstate="collapsed" desc="profileRender">
 const profileRender = function () {
-    if (!this.item)
-        return null;
+    console.log('profileRender', this.item)
+
     let {
         props: {
             onFormNext, onFormBack, onFormOpen,
@@ -147,7 +147,7 @@ const profileRender = function () {
         who_were_nature_charges_laid_against,
     } = (vehicle_list || [])[0] || {};
     //7.4
-    const {consequence, likelihood, risk_rating} = severity || {};
+    const {consequence, likelihood, risk_rating, risk_rating_score} = severity || {};
 
     let {
         //7
@@ -597,7 +597,7 @@ const profileRender = function () {
                         <ProfileField name="likelihood" title="Likelihood / Probability" value={likelihood}
                                       renderer={v => (isNumber(v) ? v : 'ABCDE'.indexOf(v) + 1)} className="col-lg-6"/>
                         <label className="margin-t-10 hor-center col-lg-12">Incident Risk Rating</label>
-                        <RiskRating selected={risk_rating} readonly ref="risk_rating" name="risk_rating"/>
+                        <RiskRating selected={severity} readonly ref="risk_rating" name="risk_rating"/>
                     </Row>
                 </FormControls>
             </Row>

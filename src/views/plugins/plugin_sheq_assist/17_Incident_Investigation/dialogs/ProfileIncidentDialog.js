@@ -1,18 +1,21 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
 
 import {AProfileDialog} from 'components/dialogs';
 import {profileRender} from './IncidentForms';
-// </editor-fold>
 import style from "./ProfileIncidentDialog.lazy.css";
+import findByIdIncident from "mutations/all/Incident/findByIdIncident";
+// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileIncidentDialog";
+    findById = findByIdIncident;
 
     constructor(props) {
         super(props, style);
@@ -187,12 +190,15 @@ class Controls extends React.Component {
     }
     // </editor-fold>
     
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
     
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
         return profileRender.call(this);
     }
     // </editor-fold>

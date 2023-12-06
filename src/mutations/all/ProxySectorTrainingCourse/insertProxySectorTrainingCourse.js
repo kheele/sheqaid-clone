@@ -13,6 +13,14 @@ const mutation = graphql`
       object: $object
     ) {
       id
+      course{
+        id
+        name
+      }
+      sector{
+        id
+        name
+      }
     }
   }
 `;

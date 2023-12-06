@@ -2,6 +2,8 @@
 import React from "react";
 import style from "./EditIncidentDialog.lazy.css";
 import {observer} from 'mobx-react';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {ShouldUpdate, toDataURI} from 'utils/Utils';
 
@@ -35,6 +37,7 @@ import {
 import updateIncidentTestType from "mutations/all/Incident/IncidentTestType/updateIncidentTestType";
 import insertIncidentTestType from "mutations/all/Incident/IncidentTestType/insertIncidentTestType";
 import AIncidentWritableForm from "./IncidentForms/AIncidentWritableForm";
+import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -42,6 +45,7 @@ import AIncidentWritableForm from "./IncidentForms/AIncidentWritableForm";
 class EditDialog extends AEditDialog {
 	pageKey = "EditIncidentDialog";
 	title = "Incident";
+	findById = findByIdIncident;
 
 	constructor(props) {
 		super(props, style);
@@ -1002,12 +1006,15 @@ class Controls extends AIncidentWritableForm {
 
 	// </editor-fold>
 
-	get item() {
+	@computed get item() {
 		return this.props.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
 		return editRender.call(this);
 	}
 

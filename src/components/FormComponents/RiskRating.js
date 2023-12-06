@@ -27,9 +27,13 @@ class RiskRating extends React.Component {
 	}
 
 	render() {
-		let {hasFrequency, selected, consequence, likelihood, frequency, readonly, name, onChange} = this.props;
-		if (!selected && (consequence && likelihood)) {
-			selected = {consequence, likelihood};
+		let {hasFrequency, selected, severity, consequence, likelihood, frequency, readonly, name, onChange} = this.props;
+		if(severity) {
+			selected = severity;
+		} else {
+			if (!selected && (consequence && likelihood)) {
+				selected = {consequence, likelihood};
+			}
 		}
 		return <div className="RiskRating">
 			<div className="RiskRatingInfo flex margin-0">

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c1945f1dcdb4a3a6fcfaae246279c8b9>>
+ * @generated SignedSource<<201ab7042cc0901ecdc18f3e900f354d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,24 @@ var v0 = [
     "name": "object"
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
+  (v1/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "name",
+    "storageKey": null
+  }
+],
+v3 = [
   {
     "alias": null,
     "args": [
@@ -31,11 +48,25 @@ v1 = [
     "name": "insert_proxy_sector__training_course_one",
     "plural": false,
     "selections": [
+      (v1/*: any*/),
       {
         "alias": null,
         "args": null,
-        "kind": "ScalarField",
-        "name": "id",
+        "concreteType": "sheq_training_courses",
+        "kind": "LinkedField",
+        "name": "course",
+        "plural": false,
+        "selections": (v2/*: any*/),
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "default_sectors",
+        "kind": "LinkedField",
+        "name": "sector",
+        "plural": false,
+        "selections": (v2/*: any*/),
         "storageKey": null
       }
     ],
@@ -48,7 +79,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "insertProxySectorTrainingCourseMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v3/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -57,19 +88,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "insertProxySectorTrainingCourseMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "efe7f0a348803e31c2a1ab6d9a3ab8e9",
+    "cacheID": "709d641d5832cdb1d6c24282ab3260c1",
     "id": null,
     "metadata": {},
     "name": "insertProxySectorTrainingCourseMutation",
     "operationKind": "mutation",
-    "text": "mutation insertProxySectorTrainingCourseMutation(\n  $object: proxy_sector__training_course_insert_input!\n) {\n  insert_proxy_sector__training_course_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertProxySectorTrainingCourseMutation(\n  $object: proxy_sector__training_course_insert_input!\n) {\n  insert_proxy_sector__training_course_one(object: $object) {\n    id\n    course {\n      id\n      name\n    }\n    sector {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "d04000dfabba5b27a1134c12678d6598";
+node.hash = "88afefec6db6b5d2bfe2e82dbef72a94";
 
 module.exports = node;

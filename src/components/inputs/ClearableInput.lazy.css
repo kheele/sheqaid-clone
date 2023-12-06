@@ -353,6 +353,13 @@
     right: 12px;
     bottom: 8px;
 }
+.clearable-field-control.select_input.select_multiple.readonly > .fa-close{
+    right: 15px;
+    bottom: unset;
+    top: 12px;
+    opacity: 0.2;
+    cursor: default;
+}
 .clearable-field-control.date_input.readonly > .fa-calendar,
 .clearable-field-control.time_input.readonly > .fa-clock,
 .clearable-field-control.select_input.readonly > .fa-chevron-down,
@@ -410,6 +417,13 @@
 }
 .clearable-field-control.select_input > .MuiAutocomplete-root .MuiAutocomplete-tag > .MuiChip-deleteIcon{
     margin: 0 -2px 0 -2px;
+    width: 25px;
+    height: 25px;
+}
+.clearable-field-control.select_input.readonly > .MuiAutocomplete-root .MuiAutocomplete-tag > .MuiChip-deleteIcon{
+    cursor: default !important;
+    opacity: 0.2 !important;
+    pointer-events: none !important;
 }
 .clearable-field-control .react-time-picker {
     width: calc(100% - 30px);

@@ -2,6 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
@@ -26,8 +27,8 @@ import findByIdIncidentInvestigation
     from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
 import updateIncidentInvestigation
     from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
-import insertIncidentSeverity from "../../../../../mutations/all/Incident/IncidentSeverity/insertIncidentSeverity";
-import updateIncidentSeverity from "../../../../../mutations/all/Incident/IncidentSeverity/updateIncidentSeverity";
+import insertIncidentSeverity from "mutations/all/Incident/IncidentSeverity/insertIncidentSeverity";
+import updateIncidentSeverity from "mutations/all/Incident/IncidentSeverity/updateIncidentSeverity";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -517,8 +518,9 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
 
         let {
             props: {
@@ -592,7 +594,7 @@ class Controls extends React.Component {
             },
         } = incident;
 
-        console.log('=', item)
+        console.log('NewIncidentInvestigationDialog item', item)
 
         const {
             consequence: incident_consequence,

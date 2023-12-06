@@ -112,9 +112,9 @@ export default async (attrs: EntityTrainingCourse) => {
         id,
         name,
         frequency,
-        sector_list,
+        // sector_list,
         provider,
-        job_position_list,
+        // job_position_list,
         unit_standard,
         unit_standard_desc,
         client_id, project_id, site_id,
@@ -122,31 +122,6 @@ export default async (attrs: EntityTrainingCourse) => {
 
     const item = await findByIdTrainingCourse(id);
     if (!item) return;
-
-    const promises = [];
-
-    if(sector_list) {
-        delete attrs.sector_list;
-        promises.push(Promise.all(sector_list.map(async (v, n) => {
-            if(v.id) {
-                return updateProxySectorTrainingCourse(v);
-            } else {
-                return insertProxySectorTrainingCourse({...v, course_id: id});
-            }
-        })));
-    }
-    if(job_position_list) {
-        delete attrs.job_position_list;
-        promises.push(Promise.all(job_position_list.map(async (v, n) => {
-            if(v.id) {
-                return updateProxyJobPositionTrainingCourse(v);
-            } else {
-                return insertProxyJobPositionTrainingCourse({...v, course_id: id});
-            }
-        })));
-    }
-
-    await Promise.all(promises);
 
     return updateMutationImpl({
         mutation,

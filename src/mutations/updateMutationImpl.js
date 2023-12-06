@@ -12,16 +12,18 @@ export default async ({checkLogin = true, mutation, id, attrs, optimisticUpdater
 		// eslint-disable-next-line no-unused-vars
 		const {is} = storage;
 		if (checkLogin && !is.isLoggedInAuth) {
-			// return;
+			return;
 		}
 
-		delete attrs.id;
-
 		// 4
-		const variables = {
-			id: {id},
-			_set: await convertMobx(attrs),
-		};
+		const variables = {};
+		if(attrs) {
+			delete attrs.id;
+			variables.id = {id};
+			variables._set = await convertMobx(attrs);
+		} else {
+			variables.id = id;
+		}
 
 		// 5
 		commitMutation(environment, {

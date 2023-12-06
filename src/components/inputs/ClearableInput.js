@@ -62,6 +62,7 @@ class ClearableInput extends ASelectInput {
         this.reset = this.reset.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
         this.onAsyncSelectLoad = this.onAsyncSelectLoad.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSelectInputChange = this.onSelectInputChange.bind(this);
         this.onClickSelectInput = this.onClickSelectInput.bind(this);
@@ -370,6 +371,10 @@ class ClearableInput extends ASelectInput {
     // <editor-fold defaultstate="collapsed" desc="reset">
     reset(evt) {
         const {type} = this.props;
+        if(this.state.readonly) {
+            return this;
+        }
+
         this.clearError();
         if (type === 'radio' || type === 'checkbox') {
             const values = this.props.values || [];
@@ -397,7 +402,12 @@ class ClearableInput extends ASelectInput {
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="onChange, onSelectInputChange">
+    // <editor-fold defaultstate="collapsed" desc="onUpdate, onChange, onSelectInputChange">
+    onUpdate(evt, val, action) {
+        const {type, onUpdate} = this.props;
+        onUpdate && onUpdate(this, val, action);
+    }
+
     async onChange(value, el, isDefault) {
         if (!isDefault && !this.state.isEditable)
             return;
@@ -407,7 +417,7 @@ class ClearableInput extends ASelectInput {
         if (type === 'date') {
 //            console.log('date', value)
             if (!!value) {
-                if (isNumber(value)) {
+                if (isNumber(value) || isString(value)) {
                     value = Utils.Dates.parse(value);
                 }
             } else {
@@ -721,9 +731,13 @@ class ClearableInput extends ASelectInput {
             onChange: this.setValue,
             className: "text-input--underbar2"
         };
-        const {type, desc, footerDesc, renderer, onFilter, onUpdate, onSubmit} = this.props;
+        const {type, desc, footerDesc, renderer, onFilter, onSubmit} = this.props;
 
-        const {placeholder} = this.state;
+        const {placeholder, readonly} = this.state;
+
+        if(readonly) {
+            this.className += " readonly";
+        }
 
         try {
             if (footerDesc) {
@@ -768,6 +782,8 @@ class ClearableInput extends ASelectInput {
                 inputProps.label = inputProps.placeholder;
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;
+                } else {
+                    inputProps.readonly = readonly;
                 }
                 inputProps.disableClock = true;
                 inputProps.onChange = this.onChange;
@@ -779,13 +795,21 @@ class ClearableInput extends ASelectInput {
                 if (this.isSelectMultiple) {
                     this.className += " select_multiple";
                     inputProps.multiple = true;
-                    inputProps.onUpdate = onUpdate;
+                    inputProps.onUpdate = this.onUpdate;
                 }
 
                 inputProps.onFilter = onFilter;
                 inputProps.onInputChange = this.onSelectInputChange;
                 inputProps.isSearchable = 'isSearchable' in this.props ? this.props.isSearchable : true;
                 !!this.defaultValue && (inputProps.defaultValue = this.defaultValue);
+
+                if (!this.state.isEditable) {
+                    inputProps.readonly = true;
+                    inputProps.disabled = true;
+                } else {
+                    inputProps.readonly = readonly;
+                    inputProps.disabled = !!readonly;
+                }
 
                 const ref = this.refName = this.props.ref || "selectField";
                 input = <ClearableInputSelects
@@ -813,6 +837,9 @@ class ClearableInput extends ASelectInput {
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;
                     inputProps.disabled = true;
+                } else {
+                    inputProps.readonly = readonly;
+                    inputProps.disabled = !!readonly;
                 }
 
                 input = <div className="radio--input" ref={ref}>
@@ -836,10 +863,13 @@ class ClearableInput extends ASelectInput {
                 }
                 const ref = this.refName = this.props.ref || "checkboxField";
                 inputProps.name = this.props.name;
-                inputProps.onUpdate = onUpdate;
+                inputProps.onUpdate = this.onUpdate;
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;
                     inputProps.disabled = true;
+                } else {
+                    inputProps.readonly = readonly;
+                    inputProps.disabled = !!readonly;
                 }
                 input = <div className="checkbox--input" ref={ref}>
                     {placeholder && <label>{placeholder}</label>}
@@ -908,6 +938,9 @@ class ClearableInput extends ASelectInput {
                 }
                 if (!this.state.isEditable) {
                     inputProps.readonly = true;
+                } else {
+                    inputProps.readonly = readonly;
+                    inputProps.disabled = !!readonly;
                 }
                 input = <TextField {...inputProps} inputProps={innerInputProps}/>;
             }
