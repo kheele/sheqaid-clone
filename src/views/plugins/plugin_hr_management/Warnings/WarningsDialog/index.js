@@ -35,7 +35,6 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Warnings";
     module = "Warnings";
     filterNodeGrid = 5;
-    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -54,12 +53,14 @@ class Dialog extends AEmployeeDocDialog {
             issued_by_id,
             witness_id,
             type,
+            date,
         } = filterData || {};
         return {
             path: 'employees/docs/warnings',
             issued_by_id,
             witness_id,
             type,
+            date,
         };
     }
     //</editor-fold>
@@ -144,6 +145,7 @@ class Dialog extends AEmployeeDocDialog {
         const warning_types = ['Verbal', 'Written', 'Final'];
         return <>
             <SelectEmployeeInput ref="issued_by" name="issued_by" placeholder="Issued By..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput ref="witness" name="witness" placeholder="Witness..." className="form-control" onChange={onChange}/>
             <ClearableInput name="type" type="select" placeholder="Warning Type..." className="form-control" onChange={onChange} values={warning_types} returnValue/>
             <ClearableInput name="date" type="date" placeholder="Warning Date..." className="form-control" onChange={onChange}/>
         </>;

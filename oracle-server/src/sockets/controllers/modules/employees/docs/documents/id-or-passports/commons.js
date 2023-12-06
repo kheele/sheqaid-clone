@@ -19,7 +19,7 @@ exports.inc_fragment = ({removed, inc_employee = false, }) => `
                     id
                     expiry_date
                 }` : ``
-}
+            }
         ` : `
             id
         `}

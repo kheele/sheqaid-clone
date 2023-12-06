@@ -7,6 +7,7 @@ module.exports = async (socket, data) => {
         issued_by_id,
         witness_id,
         type,
+        date,
     } = data;
     return listImpl({
         socket,
@@ -19,6 +20,7 @@ module.exports = async (socket, data) => {
             issued_by_id,
             witness_id,
             type,
+            date,
         },
     });
     // console.log('data', data)

@@ -54,11 +54,13 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
         isContract,
     });
 
+    const singularQueryName = singular.replace('/','_');
+
     if (view === 'Employee') {
         //<editor-fold desc="ByGroup">
         return listGraphQL({
             query: `
-                query listAllByGroup${singular}ByLoggedQuery {
+                query listAllByGroup${singularQueryName}ByLoggedQuery {
                   hr_employees(
                       where: {
                           ${listName}_aggregate: {
@@ -202,14 +204,14 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
                   }
                 }
 			`,
-            operationName: `listAllByGroup${singular}ByLoggedQuery`,
+            operationName: `listAllByGroup${singularQueryName}ByLoggedQuery`,
         });
         //</editor-fold>
     } else {
         //<editor-fold desc="ByEach">
         return listGraphQL({
             query: `
-                query listAllByEach${singular}ByLoggedQuery {
+                query listAllByEach${singularQueryName}ByLoggedQuery {
                   ${tbl}(
                       where: {
                          removed: {_eq: ${removed}}, 
@@ -223,11 +225,11 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
                       ${limit > 0 ? `limit: ${limit}` : ''}
                   ) {
                       ${inc_fragment({removed, inc_employee: true})}
-                      ${orgs_fragment}
+                      ${(singular === 'PrDP' || singular === 'ID/Passport') ? '' : orgs_fragment}
                   }
                 }
 			`,
-            operationName: `listAllByEach${singular}ByLoggedQuery`,
+            operationName: `listAllByEach${singularQueryName}ByLoggedQuery`,
         });
         //</editor-fold>
     }
