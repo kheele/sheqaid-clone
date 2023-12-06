@@ -3,7 +3,11 @@ const {inc_fragment} = require("./commons");
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    const {type, due_to} = data;
+    const {
+        type,
+        due_to,
+        date,
+    } = data;
     return listImpl({
         socket,
         data,
@@ -14,6 +18,7 @@ module.exports = async (socket, data) => {
         attrs: {
             type,
             due_to,
+            date,
         },
     });
     // console.log('data', data)

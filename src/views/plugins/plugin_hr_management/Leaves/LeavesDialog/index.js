@@ -51,11 +51,13 @@ class Dialog extends AEmployeeDocDialog {
         const {
             type,
             due_to,
+            date,
         } = filterData || {};
         return {
             path: 'employees/docs/leaves',
             type,
             due_to,
+            date,
         };
     }
     //</editor-fold>
