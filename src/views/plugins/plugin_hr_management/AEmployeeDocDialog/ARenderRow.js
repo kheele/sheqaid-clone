@@ -20,7 +20,7 @@ class ARenderRow extends React.Component {
 
     render() {
         const {item, idx, view, onClick, renderActionsCol} = this.props;
-        console.log('ARenderRow', item)
+        // console.log('ARenderRow', item)
         if (view === 'Employee') {
             return <RenderRowByGroup {...this.props} listName={this.listName}/>;
         } else {
@@ -37,7 +37,7 @@ class RenderRowByGroup extends React.Component {
 
     render() {
         const {item, idx, view, onClick, renderActionsCol, listName} = this.props;
-        console.log('RenderRowByGroup', item)
+        // console.log('RenderRowByGroup', item)
         if (view !== 'Employee') {
             return null;
         }

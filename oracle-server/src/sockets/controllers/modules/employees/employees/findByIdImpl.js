@@ -1,4 +1,4 @@
-const {orgs_fragment} = require("../../../../graphql/Fragments");
+const {orgs_fragment} = require("../../../../../graphql/Fragments");
 const {incident_details_fragment} = require('./commons');
 
 //<editor-fold desc="listImpl">

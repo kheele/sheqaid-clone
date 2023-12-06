@@ -19,7 +19,6 @@ import {
 	SelectTrainingCourseInput
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllCompetencyByLogged";
 import findByIdContractorHRCompetenciesDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCompetenciesDashboardStatsByLogged";
 import findByIdContractorHRCompetenciesDateRangeDashboardStatsByLogged
@@ -48,10 +47,20 @@ class Dialog extends AEmployeeDocDialog {
 	// </editor-fold>
 
 	//<editor-fold desc="onBuildQuery">
-	onBuildQuery(args) {
-		return byLogged(args);
+	onBuildQuery(params) {
+		const {page, lastItem, filterData, filtered, isNew} = params;
+		const {
+			type,
+			competency_type,
+			course_id,
+		} = filterData || {};
+		return {
+			path: 'employees/docs/competencies',
+			type,
+			competency_type,
+			course_id,
+		};
 	}
-
 	//</editor-fold>
 
 	//<editor-fold desc="loadDashboardTopStats">

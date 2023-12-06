@@ -18,7 +18,6 @@ import {
     ClearableInput
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllLeaveByLogged";
 import findByIdContractorHRLeavesDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLeavesDashboardStatsByLogged";
 import findByIdContractorHRLeavesDateRangeDashboardStatsByLogged
@@ -34,6 +33,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Leaves";
     module = "Leaves";
     filterNodeGrid = 5;
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -46,8 +46,17 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            type,
+            due_to,
+        } = filterData || {};
+        return {
+            path: 'employees/docs/leaves',
+            type,
+            due_to,
+        };
     }
     //</editor-fold>
 

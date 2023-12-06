@@ -5,4 +5,4 @@ require("./chemicals");
 require("./incidents");
 require("./inspections");
 require("./trainings");
-// require("./employees");
+require("./employees");

@@ -19,12 +19,10 @@ import {
 	SelectEmployeeInput,
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllCounselingByLogged";
 import findByIdContractorHRCounselingsDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCounselingsDashboardStatsByLogged";
 import findByIdContractorHRCounselingsDateRangeDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCounselingsDateRangeDashboardStatsByLogged";
-
 // </editor-fold>
 
 @observer
@@ -35,6 +33,7 @@ class Dialog extends AEmployeeDocDialog {
 	permissionKey = "Counselings";
 	module = "Counselings";
 	filterNodeGrid = 5;
+	filterNodeMarginB = 35;
 
 	dialogs = {
 		NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -48,10 +47,20 @@ class Dialog extends AEmployeeDocDialog {
 	// </editor-fold>
 
 	//<editor-fold desc="onBuildQuery">
-	onBuildQuery(args) {
-		return byLogged(args);
+	onBuildQuery(params) {
+		const {page, lastItem, filterData, filtered, isNew} = params;
+		const {
+			responsible_person_id,
+			types,
+			reasons,
+		} = filterData || {};
+		return {
+			path: 'employees/docs/counsellings',
+			responsible_person_id,
+			types,
+			reasons,
+		};
 	}
-
 	//</editor-fold>
 
 	//<editor-fold desc="loadDashboardTopStats">

@@ -1,20 +1,19 @@
-const {orgs_no_project_and_site_fragment} = require("../../../../../graphql/Fragments");
-const {inspection_template_details_find_fragment} = require('./commons');
+const {orgs_fragment} = require("../../../../../graphql/Fragments");
 
-//<editor-fold desc="listImpl">
-module.exports = async (socket, id) => {
+//<editor-fold desc="findByIdImpl">
+module.exports = async ({socket, id, tbl, inc_fragment, singular}) => {
     return getGraphQLOne({
         query: `
-            query findOneInspectionTemplateQuery {
-                default_contractor_questionnaires(
+            query findByIdEmployee${singular}Query {
+                ${tbl}(
                   where: {id: {_eq: ${id}},},
                 ) {
-                    ${inspection_template_details_find_fragment}
-                    ${orgs_no_project_and_site_fragment}
+                    ${inc_fragment({inc_employee: true})}
+                    ${orgs_fragment}
                 }
             }
         `,
-        operationName: "findOneInspectionTemplateQuery",
+        operationName: `findByIdEmployee${singular}Query`,
     });
 }
 //</editor-fold>

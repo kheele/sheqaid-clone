@@ -145,6 +145,31 @@ const employee_personal_details_fragment = `
 exports.employee_personal_details_fragment = employee_personal_details_fragment;
 //</editor-fold>
 
+//<editor-fold desc="employee_basic_personal_details_fragment">
+const employee_basic_personal_details_fragment = `
+    id
+    profile_pic
+    fname
+    lname
+    full_name
+    phone
+    email
+    id_num
+    passport_num
+    employment_num
+    removed
+    job_position{
+      id
+      name
+    }
+    department{
+      id
+      name
+    }
+`;
+exports.employee_basic_personal_details_fragment = employee_basic_personal_details_fragment;
+//</editor-fold>
+
 //<editor-fold desc="user_personal_details_fragment">
 const user_personal_details_fragment = `
     id

@@ -35,6 +35,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Warnings";
     module = "Warnings";
     filterNodeGrid = 5;
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -47,8 +48,19 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            issued_by_id,
+            witness_id,
+            type,
+        } = filterData || {};
+        return {
+            path: 'employees/docs/warnings',
+            issued_by_id,
+            witness_id,
+            type,
+        };
     }
     //</editor-fold>
 

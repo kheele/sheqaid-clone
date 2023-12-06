@@ -229,10 +229,10 @@ window.FileTypes = {
 					let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
 					return mime.getExtension(mimeType) === ext.substring(1) || mime.getType(ext) === mimeType;
 				} else {
-					return filePath.endsWith(ext) || filePath.contains(ext);
+					return filePath.toLowerCase().endsWith(ext) || filePath.toLowerCase().contains(ext);
 				}
 			} else if (filePath.dlUrls && filePath.dlUrls[0]) {
-				return filePath.dlUrls[0].contains(ext);
+				return filePath.dlUrls[0].toLowerCase().contains(ext);
 			} else if (filePath instanceof File) {
 				return mime.getExtension(filePath.type) === ext.substring(1) || mime.getType(ext) === filePath.type;
 			} else if (filePath.path) {
@@ -244,7 +244,7 @@ window.FileTypes = {
 					let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
 					return mime.getExtension(mimeType) === ext.substring(1) || mime.getType(ext) === mimeType;
 				} else {
-					return path.endsWith(ext) || path.contains(ext);
+					return path.toLowerCase().endsWith(ext) || path.toLowerCase().contains(ext);
 				}
 			}
 		});

@@ -15,7 +15,6 @@ import companyStore from "mutations/all/Company";
 import LicensesRenderRow from "./LicensesRenderRow";
 import {THead} from "components/tables";
 
-import byLogged from "./Query/List/listAllLicenseByLogged";
 import findByIdContractorHRLicensesDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLicensesDashboardStatsByLogged";
 import findByIdContractorHRLicensesDateRangeDashboardStatsByLogged
@@ -30,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "License";
     permissionKey = "Licenses";
     module = "Licenses";
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -42,8 +42,15 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            notes,
+        } = filterData || {};
+        return {
+            path: 'employees/docs/licenses',
+            notes,
+        };
     }
     //</editor-fold>
 

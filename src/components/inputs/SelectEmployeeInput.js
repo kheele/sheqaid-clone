@@ -133,7 +133,7 @@ class SelectInput extends ASelectInput {
 			value = option;
 		}
 
-		console.log('option value', value);
+		// console.log('option value', value);
 		let {id, data, fname, lname, contractor} = value;
 		contractor = contractor || data && data.contractor;
 		const contractorName = contractor ? ` ${contractor.name}` : '';

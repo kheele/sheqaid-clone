@@ -15,7 +15,6 @@ import companyStore from "mutations/all/Company";
 import IDOrPassportRenderRow from "./IDOrPassportRenderRow";
 import {THead} from "components/tables";
 
-import byLogged from "./Query/List/listAllIDOrPassportByLogged";
 import findByIdContractorHRIDOrPassportDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRIDOrPassportDashboardStatsByLogged";
 import findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged
@@ -30,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "ID/Passport";
     permissionKey = "IDOrPassports";
     module = "IDOrPassports";
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -42,8 +42,15 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            desc,
+        } = filterData || {};
+        return {
+            path: 'employees/documents/id-or-passports',
+            desc,
+        };
     }
     //</editor-fold>
 

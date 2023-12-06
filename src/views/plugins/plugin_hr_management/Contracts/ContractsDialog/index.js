@@ -16,11 +16,9 @@ import companyStore from "mutations/all/Company";
 import ContractsRenderRow from "./ContractsRenderRow";
 import {THead} from "components/tables";
 import {
-    ClearableInput, SelectDepartmentInput,
-    SelectEmployeeInput, SelectJobPositionInput, SelectTeamInput,
+    ClearableInput,
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllContractByLogged";
 import findByIdContractorHRContractsDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRContractsDashboardStatsByLogged";
 import findByIdContractorHRContractsDateRangeDashboardStatsByLogged
@@ -36,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Contracts";
     module = "Contracts";
     filterNodeGrid = 5;
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -49,10 +48,20 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            contract_type,
+            payment_type,
+            salary_interval,
+        } = filterData || {};
+        return {
+            path: 'employees/docs/contracts',
+            contract_type,
+            payment_type,
+            salary_interval,
+        };
     }
-
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">

@@ -1,6 +1,9 @@
-const findByIdImpl = require('./findByIdImpl');
-const listImpl = require('./listImpl');
-
-eventManager.on("assets/docs/findById", findByIdImpl);
-
-eventManager.on("assets/docs/listByLogged", listImpl);
+require('./competencies');
+require('./contracts');
+require('./counsellings');
+require('./documents');//IDOrPassports, PrDPs
+require('./leaves');
+require('./licenses');
+require('./medicals');
+require('./warnings');
+require('./work-permits');

@@ -74,6 +74,13 @@ class ATab extends React.Component {
 		const {onBuildQuery} = this.props;
 
 		const {page, lastItem, filterData, filtered, isNew} = params;
+
+		const attrs = onBuildQuery ? onBuildQuery(params) : {};
+
+		const mon = Dates.formatDateSQL(new Date().addMonths(1));
+		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+
 		const {
 			department_id,
 			job_position_id,
@@ -85,13 +92,10 @@ class ATab extends React.Component {
 			expiry_date,
 		} = filterData || {};
 
-		const mon = Dates.formatDateSQL(new Date().addMonths(1));
-		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+		const listByLogged = sockets.of(attrs.path).fn('listByLogged');
+		delete attrs.path;
 
-		const limit = 50;
-
-		const args = {
+		return listByLogged({
 			removed,
 			view,
 			expiry_date: expiry_date || expiry_date_top_filter,
@@ -104,18 +108,12 @@ class ATab extends React.Component {
 			supervisor_id,
 			name,
 			//
-			limit,
+			...attrs,
 			//
 			exact_orgs: true,
-		};
-
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return onBuildQuery(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});

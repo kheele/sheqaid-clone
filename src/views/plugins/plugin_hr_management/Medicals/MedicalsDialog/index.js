@@ -16,11 +16,9 @@ import companyStore from "mutations/all/Company";
 import MedicalsRenderRow from "./MedicalsRenderRow";
 import {THead} from "components/tables";
 import {
-    ClearableInput, SelectDepartmentInput,
-    SelectEmployeeInput, SelectJobPositionInput, SelectTeamInput,
+    ClearableInput,
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllMedicalByLogged";
 import findByIdContractorHRMedicalsDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRMedicalsDashboardStatsByLogged";
 import findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged
@@ -35,6 +33,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Medical";
     permissionKey = "Medicals";
     module = "Medicals";
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -47,8 +46,15 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            annexture_3,
+        } = filterData || {};
+        return {
+            path: 'employees/docs/medicals',
+            annexture_3,
+        };
     }
     //</editor-fold>
 

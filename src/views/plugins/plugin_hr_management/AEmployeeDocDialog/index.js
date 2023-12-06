@@ -99,7 +99,8 @@ class Dialog extends ADialogTab {
 
     //<editor-fold desc="renderFilterNodeActive">
     renderFilterNodeActive(onChange) {
-        return <div className={`controls grid-${this.filterNodeGrid || 4} grid-gap-5 padding-r-10 -margin-b-35`}>
+        const filterNodeMarginBClass = this.filterNodeMarginB ? ` -margin-b-${this.filterNodeMarginB}` : '';
+        return <div className={`controls grid-${this.filterNodeGrid || 4} grid-gap-5 padding-r-10${filterNodeMarginBClass}`}>
             <SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange} add={false}/>
             <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange} add={false}/>
             <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>

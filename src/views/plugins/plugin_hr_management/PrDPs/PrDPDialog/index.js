@@ -15,7 +15,6 @@ import companyStore from "mutations/all/Company";
 import PrDPRenderRow from "./PrDPRenderRow";
 import {THead} from "components/tables";
 
-import byLogged from "./Query/List/listAllPrDPByLogged";
 import findByIdContractorHRPrDPDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRPrDPDashboardStatsByLogged";
 import findByIdContractorHRPrDPDateRangeDashboardStatsByLogged
@@ -30,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "PrDP";
     permissionKey = "PrDP";
     module = "PrDP";
+    filterNodeMarginB = 35;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,
@@ -42,8 +42,15 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery(args) {
-        return byLogged(args);
+    onBuildQuery(params) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            desc,
+        } = filterData || {};
+        return {
+            path: 'employees/documents/prdp',
+            desc,
+        };
     }
     //</editor-fold>
 

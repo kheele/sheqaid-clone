@@ -1,2 +1,2 @@
 require('./employees');
-require('./documents');
+require('./docs');

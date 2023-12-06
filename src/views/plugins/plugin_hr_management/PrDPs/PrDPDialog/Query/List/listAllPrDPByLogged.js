@@ -76,7 +76,10 @@ export default (
                   filter: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}${filter}}
                 }
               }, 
-              document_list: {removed: {_eq: ${removed}}, type: {_eq: "PrDP"}${filter}}
+              document_list: {
+                removed: {_eq: ${removed}}, 
+                type: {_eq: "PrDP"}${filter}
+              }
               ${filterEmployee}
             }
             order_by: {lname: asc},

@@ -1,7 +1,7 @@
 const {
     employee_personal_details_fragment,
     personal_details_other_fragment,
-} = require("../../../../graphql/Fragments");
+} = require("../../../../../graphql/Fragments");
 
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
