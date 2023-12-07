@@ -16,6 +16,7 @@ exports.getVariablesAndQueryConfig = (
         responsible_person_list,
         //
         reg_num,
+        serial_num,
         manufacturer,
         location,
         asset_type,
@@ -32,6 +33,9 @@ exports.getVariablesAndQueryConfig = (
 
     if(reg_num) {
         filterAsset.push(`asset_detail:{reg_num: {_eq: "${reg_num}"}}`);
+    }
+    if(serial_num) {
+        filterAsset.push(`asset_detail:{serial_num: {_eq: "${serial_num}"}}`);
     }
     if(manufacturer) {
         filterAsset.push(`asset_detail:{manufacturer: {_ilike: "%${manufacturer}%"}}`);

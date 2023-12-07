@@ -26,40 +26,59 @@ async function toDataURI(filePath) {
 }
 
 async function convertMobx(arg) {
+    if(arg === null || arg === undefined) return arg;
+
     if(arg && (isFile(arg) || isFile(arg.path))) {
         return await toDataURI(arg);
     }
-    if(arg && isDate(arg)) {
+    if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);
     }
-    if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
-        return await convertMobx(toJS(arg));
-    }
-    if (isArray(arg)) {
+    if (isObservableArray(arg) || isArray(arg)) {
         return await Promise.all(arg.map(convertMobx));
+    }
+    if (isObservableObject(arg) || isObservableMap(arg)) {
+        return await convertMobx(toJS(arg));
     }
     if (isObservable(arg)) {
         return toJS(arg);
+    }
+
+    if (isObject(arg)) {
+        await Promise.all(Object.keys(arg).map(async key => {
+            const val = arg[key];
+            arg[key] = await convertMobx(val);
+        }));
     }
     return arg;
 }
 
 function convertMobxForFilter(arg) {
+    if(arg === null || arg === undefined) return arg;
+
     // if(arg && (isFile(arg) || isFile(arg.path))) {
     //     return await toDataURI(arg);
     // }
-    if(arg && isString(arg) && arg.isDate()) {
+    if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);
     }
-    if (isObservableArray(arg) || isObservableObject(arg) || isObservableMap(arg)) {
-        return convertMobxForFilter(toJS(arg));
-    }
-    if (isArray(arg)) {
+    if (isObservableArray(arg) || isArray(arg)) {
         return arg.map(convertMobxForFilter);
+    }
+    if (isObservableObject(arg) || isObservableMap(arg)) {
+        return convertMobxForFilter(toJS(arg));
     }
     if (isObservable(arg)) {
         return toJS(arg);
     }
+
+    if (isObject(arg)) {
+        Object.keys(arg).forEach(key => {
+            const val = arg[key];
+            arg[key] = convertMobxForFilter(val);
+        });
+    }
+
     return arg;
 }
 

@@ -1,4 +1,4 @@
-const {employee_basic_personal_details_fragment, orgs_fragment} = require("../../../../../../graphql/Fragments");
+const {employee_basic_personal_details_fragment, orgs_fragment, personal_details_other_fragment} = require("../../../../../../graphql/Fragments");
 
 //<editor-fold desc="inc_fragment">
 exports.inc_fragment = ({removed, inc_employee = false, }) => `
@@ -18,6 +18,9 @@ exports.inc_fragment = ({removed, inc_employee = false, }) => `
         id
         witness{
             ${employee_basic_personal_details_fragment}
+        }
+        witness_external{
+            ${personal_details_other_fragment}
         }
     }
     issued_by{

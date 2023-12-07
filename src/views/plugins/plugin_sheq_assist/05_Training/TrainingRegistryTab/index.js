@@ -21,6 +21,8 @@ import Chip from "@material-ui/core/Chip";
 import {Stack} from "@mui/material";
 import {Grid} from "@material-ui/core";
 import {CostBtn} from "../TrainingPlanTab/Components";
+import SelectSectorInput from "../../../../../components/inputs/SelectSectorInput";
+
 // </editor-fold>
 
 @observer
@@ -97,6 +99,7 @@ class TrainingRegistryTab extends React.Component {
             return res;
         });
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onExportAll">
@@ -146,8 +149,8 @@ class TrainingRegistryTab extends React.Component {
                             onChange={onChange} values={this.state.lists.provider} returnValue/>
             <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
                                     className="form-control" onChange={onChange}/>
-            <ClearableInput name="sector_list" type="select_multi" placeholder="Sector(s)..." className="form-control"
-                            onChange={onChange} values={this.state.lists.sector_list} returnValue/>
+            <SelectSectorInput name="sector_list" type="select_multi" placeholder="Sector(s)..."
+                               className="form-control" onChange={onChange}/>
         </div>;
     }
 
@@ -193,10 +196,7 @@ class TrainingRegistryTab extends React.Component {
             }
         } = item;
 
-        const cost = training_matrix_list.
-        filter(({cost}) => !!cost).
-        map(({cost}) => parseFloat(cost.replace("$", "").replace(",", ""))).
-        reduce((n1, n2) => n1 + n2, 0);
+        const cost = training_matrix_list.filter(({cost}) => !!cost).map(({cost}) => parseFloat(cost.replace("$", "").replace(",", ""))).reduce((n1, n2) => n1 + n2, 0);
 
         console.log('item', item)
 
@@ -205,12 +205,14 @@ class TrainingRegistryTab extends React.Component {
             <div className="td">{name}</div>
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
-                    {job_position_list.map(({id, job_position: {name}}) => <Grid key={id} item><Chip label={name} size="small"/></Grid>)}
+                    {job_position_list.map(({id, job_position: {name}}) => <Grid key={id} item><Chip label={name}
+                                                                                                     size="small"/></Grid>)}
                 </Grid>
             </div>
             <div className="td padding-t-5 padding-b-5">
                 <Grid container spacing={1} columns={4}>
-                    {sector_list.map(({id, sector: {name}}) => <Grid key={id} item><Chip label={name} size="small"/></Grid>)}
+                    {sector_list.map(({id, sector: {name}}) => <Grid key={id} item><Chip label={name}
+                                                                                         size="small"/></Grid>)}
                 </Grid>
             </div>
             <div className="td fixed-flex min-w-90">{frequency}</div>

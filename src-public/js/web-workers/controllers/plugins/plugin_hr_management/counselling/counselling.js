@@ -41,7 +41,7 @@
 						incident_desc,
 						corrective_actions,
 						counselling_hrs_to_complete,
-						witness_list: witness_list && witness_list.map(v => (v.witness || v.witness_other).full_name).join(', '),
+						witness_list: witness_list && witness_list.map(v => (v.witness || v.witness_external).full_name).join(', '),
 					};
 				},
 				{

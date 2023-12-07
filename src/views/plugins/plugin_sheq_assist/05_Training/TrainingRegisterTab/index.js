@@ -118,7 +118,7 @@ class TrainingRegisterTab extends React.Component {
 
     renderTHead() {
         return <THead>
-            <div className="td fixed-flex min-w-110">Date Created</div>
+            <div className="td fixed-flex min-w-30">ID</div>
             <div className="td fixed-flex min-w-110">Register Date</div>
             <div className="td">Training</div>
             <div className="td">Job Positions</div>
@@ -160,7 +160,7 @@ class TrainingRegisterTab extends React.Component {
         const year = training_plan_list.map(({data: {year}}) => year)[0];
         console.log('training_plan_list', training_plan_list.slice().map(({data: {year}}) => year))
         return <TRow key={"item-" + n}>
-            <div className="td fixed-flex min-w-110">{Dates.formatDate(created_at)}</div>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
             <div className="td">{course_or_module}</div>
             <div className="td">

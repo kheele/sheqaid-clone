@@ -316,7 +316,13 @@ class SelectInput extends ASelectInput {
 		this.onChange(null, value);
 		console.log(`set value: ${value}`)
 	}
-	
+
+	@computed
+	get value() {
+		const {selectedSite} = this;
+		return selectedSite && selectedSite.value;
+	}
+
 	@computed get selectedVal() {
 		return this.state.selectedVal;
 	}

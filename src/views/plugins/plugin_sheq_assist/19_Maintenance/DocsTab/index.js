@@ -117,6 +117,7 @@ class DocsTab extends React.Component {
 			asset_id,
 			//
 			reg_num,
+			serial_num,
 			manufacturer,
 			location,
 			asset_type,
@@ -143,6 +144,7 @@ class DocsTab extends React.Component {
 			asset_id,
 			//
 			reg_num,
+			serial_num,
 			manufacturer,
 			location,
 			asset_type,

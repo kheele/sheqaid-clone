@@ -16,8 +16,8 @@ module.exports = async (socket, data) => {
         unit_standard,
         frequency,
         provider,
-        job_position_id,
-        sector_id,
+        job_position_list,
+        sector_list,
         //
         site_id, project_id, client_id,
         //
@@ -36,8 +36,8 @@ module.exports = async (socket, data) => {
         unit_standard,
         frequency,
         provider,
-        job_position_id,
-        sector_id,
+        job_position_list,
+        sector_list,
         //
         site_id, project_id, client_id,
         //

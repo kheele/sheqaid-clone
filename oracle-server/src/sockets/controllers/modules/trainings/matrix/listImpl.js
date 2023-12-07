@@ -3,7 +3,7 @@ const {training_matrix_details_fragment, getVariablesAndQueryConfig} = require('
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    // console.log('data', data)
+    console.log('data', data)
 
     let {
         offset = 0,
@@ -15,6 +15,7 @@ module.exports = async (socket, data) => {
         job_position_list,
         trainer_list,
         course_list,
+        training_frequency,
         unit_standard,
         provider_requirement,
         requirement,
@@ -36,6 +37,7 @@ module.exports = async (socket, data) => {
         job_position_list,
         trainer_list,
         course_list,
+        training_frequency,
         unit_standard,
         provider_requirement,
         requirement,

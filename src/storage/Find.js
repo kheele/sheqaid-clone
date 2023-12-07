@@ -63,7 +63,7 @@ class Find {
 		const {clients} = list;
 		for (let n = 0; n < clients.length; n++) {
 			const client = clients[n];
-			console.log('findClientById client', client)
+			// console.log('findClientById client', client)
 			if (client.id === id) {
 				return client;
 			}
@@ -84,7 +84,7 @@ class Find {
 		const {clients} = list;
 		for (let n = 0; n < clients.length; n++) {
 			const client = clients[n];
-			console.log('findProjectById client', client)
+			// console.log('findProjectById client', client)
 			const {project_list = []} = client.data || client;
 			for (let n2 = 0; n2 < project_list.length; n2++) {
 				const project = project_list[n2];

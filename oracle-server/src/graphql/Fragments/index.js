@@ -85,25 +85,6 @@ const orgs_id_fragment = `
 exports.orgs_id_fragment = orgs_id_fragment;
 //</editor-fold>
 
-//<editor-fold desc="personal_details_other_fragment">
-const personal_details_other_fragment = `
-    id
-    created_at
-    fname
-    lname
-    #full_name
-    id_num
-    passport_num
-    email
-    phone
-    job_position{
-      id
-      name
-    }
-`;
-exports.personal_details_other_fragment = personal_details_other_fragment;
-//</editor-fold>
-
 //<editor-fold desc="employee_personal_details_fragment">
 const employee_personal_details_fragment = `
     id
@@ -168,6 +149,25 @@ const employee_basic_personal_details_fragment = `
     }
 `;
 exports.employee_basic_personal_details_fragment = employee_basic_personal_details_fragment;
+//</editor-fold>
+
+//<editor-fold desc="personal_details_other_fragment">
+const personal_details_other_fragment = `
+    id
+    created_at
+    fname
+    lname
+    #full_name
+    id_num
+    passport_num
+    email
+    phone
+    job_position{
+      id
+      name
+    }
+`;
+exports.personal_details_other_fragment = personal_details_other_fragment;
 //</editor-fold>
 
 //<editor-fold desc="user_personal_details_fragment">

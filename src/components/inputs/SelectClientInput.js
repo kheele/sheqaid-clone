@@ -144,6 +144,12 @@ class SelectInput extends ASelectInput {
     }
 
     @computed
+    get value() {
+        const {selectedClient} = this;
+        return selectedClient && selectedClient.value;
+    }
+
+    @computed
     get clients() {
         const {showAll, isBlacklisting} = this.props;
         const all = [];

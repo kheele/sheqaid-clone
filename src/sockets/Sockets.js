@@ -1,4 +1,5 @@
 import {orgsFilter} from "graphql/Filters";
+import {convertMobx} from "utils/Utils";
 
 class Socket {
     constructor(name) {
@@ -8,6 +9,8 @@ class Socket {
     fn(name) {
         return async (data) => {
             if (!isNumber(data)) {
+                data = await convertMobx(data);
+
                 const {site_id, project_id, client_id, exact_orgs} = data;
                 const orgs_filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
 

@@ -36,9 +36,9 @@
 					witness_list = (witness_list || []).map((
 						{
 							witness,
-							witness_other,
+							witness_external,
 						}
-					) => witness ? witness.full_name : witness_other.full_name).join(', ');
+					) => witness ? witness.full_name : witness_external.full_name).join(', ');
 
 					return {
 						date: Dates.formatDate(date),

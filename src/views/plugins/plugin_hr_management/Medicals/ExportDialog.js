@@ -107,7 +107,7 @@ class Controls extends AControls {
 		return <>
 			<ClearableInput ref="annexture_3" name="annexture_3" type="radio" placeholder="Annexture 3?" vertical
 			                className="col-lg-12 h-110 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.annexture_3} returnValue/>
+			                values={this.selfState.lists.annexture_3} returnValue/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
 		</>;
 	}

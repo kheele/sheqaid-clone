@@ -129,10 +129,10 @@ class Controls extends AControls {
 		return <>
 			<ClearableInput ref="type" name="type" type="select" placeholder="Leave Type..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.types} returnValue/>
+			                values={this.selfState.lists.types} returnValue/>
 			<ClearableInput ref="due_to" name="due_to" type="select" placeholder="Leave Due To..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.due_to} returnValue/>
+			                values={this.selfState.lists.due_to} returnValue/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
 			<ClearableInput ref="date" name="date" type="date" placeholder="Start Date..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>

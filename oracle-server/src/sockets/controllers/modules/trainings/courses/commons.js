@@ -37,10 +37,10 @@ exports.getVariablesAndQueryConfig = (
             filter.push(`provider: {_eq: "${provider}"}`);
         }
         if (job_position_list) {
-            filter.push(`job_position_list:{job_position_id: {_in: ${job_position_list}}}`);
+            filter.push(`job_position_list:{job_position_id: {_in: [${job_position_list.map(v => v.id)}]}}`);
         }
         if (sector_list) {
-            filter.push(`sector_list:{sector_id: {_in: ${sector_list}}}`);
+            filter.push(`sector_list:{sector_id: {_in: [${sector_list.map(v => v.id)}]}}`);
         }
     }
 

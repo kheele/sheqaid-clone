@@ -178,13 +178,11 @@ const setFilterDataValues = (filterData, key, val) => {
 
 const processObject = (filterData, val, key) => {
     if (isDate(val.start) || isDate(val.end)) {
+        filterData[key] = {};
         if (isDate(val.start)) {
-            filterData[key] = {start: Dates.formatDateSQL(val.start)};
+            filterData[key].start = Dates.formatDateSQL(val.start);
         }
         if (isDate(val.end)) {
-            if (!filterData[key]) {
-                filterData[key] = {};
-            }
             filterData[key].end = Dates.formatDateSQL(val.end);
         }
     } else if (val.path) {

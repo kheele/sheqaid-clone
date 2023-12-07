@@ -56,6 +56,7 @@ class AControls extends React.Component {
 
 		this.reset = this.reset.bind(this);
 
+		this.onListenChanges = this.onListenChanges.bind(this);
 		this.onGetRef = this.onGetRef.bind(this);
 
 		this.onPrepareSearchOrgs = this.onPrepareSearchOrgs.bind(this);
@@ -70,18 +71,20 @@ class AControls extends React.Component {
 
 		this.form = new Form();
 
-		(async () => {
-			const fieldNames = (await Promise.all(Object.keys(this.filterData).filter(key => key !== 'onGetRef').map(async key => {
-				const ref = await execWhen(() => this.onGetRef(key));
-				return {key, ref};
-			}))).map(({key, ref}) => {
-				return ref.props.name;
-			});
-			this.form.addChangeMany(fieldNames, this.onChangeFields.bind(this));
-		})();
+		execWhen(() => this.filterData).then(this.onListenChanges);
 	}
 
 	// </editor-fold>
+
+	async onListenChanges(filterData) {
+		const fieldNames = (await Promise.all(Object.keys(filterData).filter(key => key !== 'onGetRef').map(async key => {
+			const ref = await execWhen(() => this.onGetRef(key));
+			return {key, ref};
+		}))).map(({key, ref}) => {
+			return ref.props.name;
+		});
+		this.form.addChangeMany(fieldNames, this.onChangeFields.bind(this));
+	}
 
 	onChangeFields(el, name, val) {
 		const {_reactInternals: {ref}, parentWrapper} = el;

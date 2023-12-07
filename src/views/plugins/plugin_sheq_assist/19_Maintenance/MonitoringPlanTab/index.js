@@ -178,6 +178,7 @@ class MonitoringPlanTab extends React.Component {
 
 	renderTHead() {
 		return <THead>
+			<div className="td fixed-flex min-w-30">ID</div>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
 			<div className="td fixed-flex min-w-280">Registration No.</div>
@@ -261,7 +262,8 @@ class MonitoringPlanTab extends React.Component {
 		const fuel_usage = fuel_usage_list.filter(v => !!v.refilled_fuel).map(v => v.refilled_fuel).reduce((a, b) => a + b, 0);
 
 		const isHours = !['Vehicles', 'Small Plant'].contains(asset_type);
-		return <TRow key={"item-" + n} className="w-full">
+		return <TRow key={"item-" + n}>
+			<div className="td fixed-flex min-w-30">{id}</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name}</div>
 			<div className="td fixed-flex min-w-280">{reg_num}</div>

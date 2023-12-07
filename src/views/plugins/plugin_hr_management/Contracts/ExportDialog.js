@@ -151,13 +151,13 @@ class Controls extends AControls {
 		return <>
 			<ClearableInput ref="contract_type" name="contract_type" type="select" placeholder="Contract Type..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.contract_type} returnValue/>
+			                values={this.selfState.lists.contract_type} returnValue/>
 			<ClearableInput ref="payment_type" name="payment_type" type="select" placeholder="Payment Type..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.payment_types} returnValue/>
+			                values={this.selfState.lists.payment_types} returnValue/>
 			<ClearableInput ref="salary_interval" name="salary_interval" type="select" placeholder="Salary Interval..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.salary_intervals} returnValue/>
+			                values={this.selfState.lists.salary_intervals} returnValue/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
 		</>;
 	}

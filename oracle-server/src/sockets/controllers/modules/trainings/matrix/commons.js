@@ -9,6 +9,7 @@ exports.getVariablesAndQueryConfig = (
         job_position_list,
         trainer_list,
         course_list,
+        training_frequency,
         unit_standard,
         provider_requirement,
         requirement,
@@ -27,13 +28,16 @@ exports.getVariablesAndQueryConfig = (
     } else {
         //
         if (job_position_list) {
-            filter.push(`job_position_list:{job_position_id: {_in: ${job_position_list}}}`);
+            filter.push(`job_position_list:{job_position_id: {_in: [${job_position_list.map(v => v.id)}]}}`);
         }
         if(trainer_list) {
-            filter.push(`trainer_id: {_in: ${trainer_list}}`);
+            filter.push(`trainer_id: {_in: [${trainer_list.map(v => v.id)}]}`);
         }
         if(course_list) {
-            filter.push(`course_id: {_in: ${course_list}}`);
+            filter.push(`course_id: {_in: [${course_list.map(v => v.id)}]}`);
+        }
+        if(training_frequency) {
+            filter.push(`training_frequency: {_eq: "${training_frequency}"}`);
         }
         if(unit_standard) {
             filter.push(`unit_standard: {_ilike: "%${unit_standard}%"}`);

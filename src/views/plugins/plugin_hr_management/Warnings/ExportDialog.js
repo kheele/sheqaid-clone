@@ -136,7 +136,7 @@ class Controls extends AControls {
 			                     className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
 			<ClearableInput ref="type" name="type" type="select" placeholder="Warning Type..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.warning_types} returnValue/>
+			                values={this.selfState.lists.warning_types} returnValue/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
 			<ClearableInput ref="date" name="date" type="date" placeholder="Warning Date..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>

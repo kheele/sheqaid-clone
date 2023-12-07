@@ -81,6 +81,7 @@ class TrainingMatrixTab extends React.Component {
             job_position_list,
             trainer_list,
             course_list,
+            training_frequency,
             unit_standard,
             provider_requirement,
             requirement,
@@ -93,6 +94,7 @@ class TrainingMatrixTab extends React.Component {
             job_position_list,
             trainer_list,
             course_list,
+            training_frequency,
             unit_standard,
             provider_requirement,
             requirement,
@@ -154,7 +156,7 @@ class TrainingMatrixTab extends React.Component {
                                        className="form-control" onChange={onChange}/>
             <ClearableInput name="training_frequency" type="select" placeholder="Training Frequency..."
                             className="form-control" onChange={onChange}
-                            values={this.state.lists.training_frequency}/>
+                            values={this.state.lists.training_frequency} returnValue/>
 
             <ClearableInput name="provider_requirement" type="radio" placeholder="Accreditation"
                             className="margin-t-10 form-control" onChange={onChange}

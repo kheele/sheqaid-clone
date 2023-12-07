@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {observer} from 'mobx-react';
-import {computed, observable, toJS} from 'mobx';
+import {computed, observable, toJS, isObservableArray} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -48,6 +48,19 @@ class FilterWrapper extends React.Component {
             classList && classList.add('filter-wrapper-large');
 
             if (onLoadList) {
+                const keys = Object.keys(filterData);
+                for (let n = 0; n < keys.length; n++) {
+                    const key = keys[n];
+                    const val = filterData[key];
+                    if ((isArray(val) || isObservableArray(val)) && val.isNotEmpty()) {
+                        filterData[key] = val.map(v => {
+                            if (v && v.id) {
+                                return {id: v.id};
+                            }
+                            return v;
+                        }).slice();
+                    }
+                }
                 onLoadList({filterData, isNew: true});
             } else {
                 if (this.page.state.list.isEmpty()) {

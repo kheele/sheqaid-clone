@@ -55,7 +55,6 @@ class Controls extends AControls {
 	constructor(props) {
 		super(props);
 	}
-
 	// </editor-fold>
 
 	//<editor-fold desc="onBuildQuery">
@@ -133,12 +132,12 @@ class Controls extends AControls {
 	// <editor-fold defaultstate="collapsed" desc="renderFieldsExtra">
 	get renderFieldsExtra() {
 		return <>
-			<ClearableInput ref="type" name="type" type="radio" placeholder="Type" vertical
+			<ClearableInput ref="type" name="type" type="radio" placeholder="Certificate Type" vertical
 			                className="col-lg-12 h-110 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.type} returnValue/>
+			                values={this.selfState.lists.type} returnValue/>
 			<ClearableInput ref="competency_type" name="competency_type" type="select" placeholder="Competency Type..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.competency_type} returnValue/>
+			                values={this.selfState.lists.competency_type} returnValue/>
 			<SelectTrainingCourseInput ref="course_id" name="course" placeholder="Course..."
 			                           className="col-lg-12 margin-0 form-control" onChange={this.form.onChange} add={false}/>
 			<hr className="pull-left no-border bg-ddd h-2"/>

@@ -155,10 +155,10 @@ class Controls extends AControls {
 			                     className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
 			<ClearableInput ref="types" name="types" type="select_multi" placeholder="Counseling Types..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.types} returnValue add/>
+			                values={this.selfState.lists.types} returnValue add/>
 			<ClearableInput ref="reasons" name="reasons" type="select_multi" placeholder="Reasons For Counseling..."
 			                className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
-			                values={this.state.lists.reasons} returnValue/>
+			                values={this.selfState.lists.reasons} returnValue/>
 			<hr className="pull-left no-border bg-ddd h-2"/>
 		</>;
 	}
