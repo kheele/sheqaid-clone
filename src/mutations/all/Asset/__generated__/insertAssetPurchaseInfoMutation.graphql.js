@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<18be31f2a91fc366f066bca612c6fff4>>
+ * @generated SignedSource<<98a1f397de30a0472675bfd445f5fdc9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,48 +37,6 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "acquisition_date",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "vendor",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "acquisition_value",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "warranty_expiry",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "reference_num",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "warranty_certificate",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -102,16 +60,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "ad87779b0c5fafd1e2ba5c908899cdeb",
+    "cacheID": "ee78b3184b65573b4877f0bba1c1f56c",
     "id": null,
     "metadata": {},
     "name": "insertAssetPurchaseInfoMutation",
     "operationKind": "mutation",
-    "text": "mutation insertAssetPurchaseInfoMutation(\n  $object: asset_purchase_info_insert_input!\n) {\n  insert_asset_purchase_info_one(object: $object) {\n    id\n    acquisition_date\n    vendor\n    acquisition_value\n    warranty_expiry\n    reference_num\n    warranty_certificate\n  }\n}\n"
+    "text": "mutation insertAssetPurchaseInfoMutation(\n  $object: asset_purchase_info_insert_input!\n) {\n  insert_asset_purchase_info_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "b93c17ba03269d46d7d68e4468aa0ca2";
+node.hash = "69200d5899b8eb9eb71909a517028adb";
 
 module.exports = node;

@@ -11,20 +11,6 @@ const mutation = graphql`
     mutation updateAssetDetailsMutation($id: asset_details_pk_columns_input!, $_set: asset_details_set_input!) {
         update_asset_details_by_pk(pk_columns: $id, _set: $_set) {
             id
-            owning_company
-            name
-            asset_type
-            desc
-            manufacturer
-            model
-            reg_num
-            serial_num
-            location
-            toolkit
-            condition
-            barcode
-            qr_code
-            notes
         }
     }
 `;
@@ -58,5 +44,5 @@ export default async (attrs, exists = false) => {
 		mutation,
 		id: attrs.id,
 		attrs,
-	});
+	}).then(res => res && findByIdAssetDetails(res.id));
 };

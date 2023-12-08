@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fcd7e8ead63b09f02ee6aefd97b7aee6>>
+ * @generated SignedSource<<a434ac277bf4f8cd97d00b725694a6f8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -37,48 +37,6 @@ v1 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_method",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "asset_cost",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "salvage_value",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_years",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_factor",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "partial_year_depreciation",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -102,16 +60,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "96b63342f916de0f6c2154a2d3722388",
+    "cacheID": "6769ca19fb4c9d85e9e7dc9dfd416054",
     "id": null,
     "metadata": {},
     "name": "insertAssetDepreciationMutation",
     "operationKind": "mutation",
-    "text": "mutation insertAssetDepreciationMutation(\n  $object: asset_depreciation_insert_input!\n) {\n  insert_asset_depreciation_one(object: $object) {\n    id\n    depreciation_method\n    asset_cost\n    salvage_value\n    depreciation_years\n    depreciation_factor\n    partial_year_depreciation\n  }\n}\n"
+    "text": "mutation insertAssetDepreciationMutation(\n  $object: asset_depreciation_insert_input!\n) {\n  insert_asset_depreciation_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "9305440456269a6f4fb81878edd406a7";
+node.hash = "a611bde00c3ff0924a9db67af0021f61";
 
 module.exports = node;

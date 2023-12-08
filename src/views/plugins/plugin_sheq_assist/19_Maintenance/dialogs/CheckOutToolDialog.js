@@ -42,7 +42,7 @@ class Controls extends React.Component {
         },
         asset: null,
         assets: null,
-        status: false,
+        status: null,
         showBarcode: false,
         showQRCode: false
     };
@@ -184,8 +184,7 @@ class SelectStatusWrapper extends React.Component {
         const {state, state: {asset, assets, status}, onChange} = this.props;
         console.log('asset', asset)
         const statuses = asset ? state.lists.statuses.filter(v => v!== asset.data.status) : state.lists.statuses;
-        const defaultValue = status ? {label: status, value: status} : null;
-        return <ClearableInput name="status" type="select" placeholder="Set Status To..." defaultValue={defaultValue} required className="col-lg-12 form-control" onChange={onChange} values={statuses} returnValue/>;
+        return <ClearableInput name="status" type="select" placeholder="Set Status To..." defaultValue={status} required className="col-lg-12 form-control" onChange={onChange} values={statuses} returnValue/>;
     }
 }
   

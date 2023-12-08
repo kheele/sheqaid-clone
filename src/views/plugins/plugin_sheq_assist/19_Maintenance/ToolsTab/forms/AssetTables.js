@@ -35,6 +35,7 @@ import insertAssetMaintenancePlan from "../../../../../../mutations/all/Asset/in
 import insertAssetMonitoringPlan from "../../../../../../mutations/all/Asset/insertAssetMonitoringPlan";
 import insertAssetDoc from "../../../../../../mutations/all/Asset/insertAssetDoc";
 import updateAssetDoc from "../../../../../../mutations/all/Asset/updateAssetDoc";
+import Divider from "../../../../../../assets/theme/components/divider";
 //</editor-fold>
 
 const unitsShort = {
@@ -53,9 +54,14 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
     constructor(props) {
         super(props);
 
-        const {defaultValue} = this.props;
+        const {defaultValue, asset} = this.props;
         if (defaultValue) {
             this.state.list = toJS(defaultValue);
+        }
+        if (asset) {
+            const {asset_type} = asset.data.asset_detail;
+            const units = ['Vehicles', 'Small Plant'].contains(asset_type) ? 'Distance' : 'Time';
+            this.selfState.units = units;
         }
 
         const {onChange, name} = this.props;
@@ -211,7 +217,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
         if (item) {
             const {id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date} = item;
             const unit = unitsShort[this.selfState.units] || 'h/km';
-            return <TRow key={"item-" + n} className="tr-readonly w-full">
+            return <TRow key={"item-" + n} className="tr-readonly min-h-40 w-full">
                 <div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
                 <div className="td">{working_hrs_or_km_opening}{unit}</div>
                 <div className="td">{working_hrs_or_km_closing}{unit}</div>
@@ -297,7 +303,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
                 <div className="td font-size-14">Closing {this.selfState.units || 'Time/Distance'}</div>
                 <div className="td font-size-14">Total {this.selfState.units || 'Time/Distance'} Used</div>
                 <div className="td fixed-flex min-w-165 font-size-14">Date</div>
-                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "10")}/>
             </THead>
             <TBody ref="body" title="Asset Monitoring Plan" renderItem={this.renderItem}
                    onClick={this.onClick}
@@ -320,9 +326,14 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
     constructor(props) {
         super(props);
 
-        const {defaultValue} = this.props;
+        const {defaultValue, asset} = this.props;
         if (defaultValue) {
             this.state.list = toJS(defaultValue);
+        }
+        if (asset) {
+            const {asset_type} = asset.data.asset_detail;
+            const units = ['Vehicles', 'Small Plant'].contains(asset_type) ? 'Distance' : 'Time';
+            this.selfState.units = units;
         }
 
         const {onChange, name} = this.props;
@@ -518,14 +529,14 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
 
         if (item) {
             const {id, refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost} = item;
-            return <TRow key={"item-" + n} className="tr-readonly w-full">
+            return <TRow key={"item-" + n} className="tr-readonly min-h-40 w-full">
                 <div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
                 <div className="td">{refilled_fuel}l</div>
                 <div className="td">{current_hrs_or_km}{unitsShort[this.selfState.units] || 'h/km'}</div>
                 <div className="td">{working_hrs_or_km}{unitsShort[this.selfState.units] || 'h/km'}</div>
                 <div className="td fixed-flex min-w-165">{Dates.formatDate(date)}</div>
                 <div className="td fixed-flex min-w-190">{receipt ? 'Yes' : 'N/A'}</div>
-                <div className="td fixed-flex min-w-100">{cost || 'N/A'}</div>
+                <div className="td fixed-flex min-w-100">{cost ? cost.replace('$', '').toCurrency('R') : 'N/A'}</div>
                 {!readonly && <div className="td fixed-flex min-w-50 padding-l-0">
                     <Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
@@ -603,7 +614,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
                 <div className="td fixed-flex min-w-165 font-size-14">Date</div>
                 <div className="td fixed-flex min-w-190 font-size-14">Receipt</div>
                 <div className="td fixed-flex min-w-100 font-size-14">Cost</div>
-                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "10")}/>
             </THead>
             <TBody ref="body" title="Asset Monitoring Plan" renderItem={this.renderItem} onClick={this.onClick}
                    state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}/>
@@ -635,9 +646,14 @@ class NewMaintenancePlanTable extends ATableSavable {
     constructor(props) {
         super(props);
 
-        const {defaultValue} = this.props;
+        const {defaultValue, asset} = this.props;
         if (defaultValue) {
             this.state.list = toJS(defaultValue);
+        }
+        if (asset) {
+            const {asset_type} = asset.data.asset_detail;
+            const units = ['Vehicles', 'Small Plant'].contains(asset_type) ? 'Distance' : 'Time';
+            this.selfState.units = units;
         }
 
         const {onChange, name} = this.props;
@@ -888,23 +904,28 @@ class NewMaintenancePlanTable extends ATableSavable {
                             onChange={this.onChange}
                         />
                     </div>
-                    <div className="td td-CostAndReceipt fixed-flex grid-1 grid-gap-10 min-w-135">
-                        <CostAndReceipt
-                            ref={this.onSetRef}
-                            name='cost_and_receipt'
-                            onEdit={this.onNewPartCostAndReceiptDialog}
-                            state={this.selfState}
-                            onChange={this.onChange}
-                        />
-                        {/*<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange} required*/}
-                        {/*              type={['Photo', 'Word', 'Excel', 'PDF']}*/}
-                        {/*              buttonTitle='Receipt'*/}
-                        {/*              showOnlyIcon*/}
-                        {/*              className="form-control"/>*/}
+                    <div className="td td-CostAndReceipt fixed-flex grid-1 grid-gap-10 padding-10 min-w-135">
+                        <div className="grid-1 flex-center h-90 bg-white padding-10">
+                            <label className="text-center padding-b-5">Cost & Receipt</label>
+                            <Divider sx={{m: 0, mb: '10px'}}/>
+                            <CostAndReceipt
+                                ref={this.onSetRef}
+                                name='cost_and_receipt'
+                                onEdit={this.onNewPartCostAndReceiptDialog}
+                                state={this.selfState}
+                                onChange={this.onChange}
+                            />
+                            {/*<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange} required*/}
+                            {/*              type={['Photo', 'Word', 'Excel', 'PDF']}*/}
+                            {/*              buttonTitle='Receipt'*/}
+                            {/*              showOnlyIcon*/}
+                            {/*              className="form-control"/>*/}
+                        </div>
                     </div>
                 </div>
                 <div className="td w-full flex-center">
-                    <Button idx={n} action="save" className="btn btn-primary hor-center w-100" onClick={onClick}>
+                    <Button idx={n} action="save" className="btn btn-primary hor-center padding-0 w-100"
+                            onClick={onClick}>
                         <i className="fa fa-plus"/> ADD
                     </Button>
                 </div>
@@ -913,7 +934,7 @@ class NewMaintenancePlanTable extends ATableSavable {
     }
 
     render() {
-        const {readonly} = this.props;
+        const {readonly, asset} = this.props;
         return (<Table
             className="NewMaintenancePlanTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0">
             <THead className="align-left">
@@ -925,11 +946,11 @@ class NewMaintenancePlanTable extends ATableSavable {
                 <div className="td fixed-flex min-w-165 font-size-14">Service Date</div>
                 <div className="td fixed-flex min-w-140 font-size-14">Parts Used</div>
                 <div className="td fixed-flex min-w-135 font-size-14">Cost & Receipt</div>
-                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "10")}/>
             </THead>
             <TBody ref="body" title="Asset Maintenance Plan" renderItem={this.renderItem} onClick={this.onClick}
                    state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}>
-                <MaintenancePlanStats state={this.state} selfState={this.selfState}/>
+                <MaintenancePlanStats asset={asset} state={this.state} selfState={this.selfState}/>
             </TBody>
 
             <NewPartCostAndReceiptDialog ref='newPartCostAndReceiptDialog'/>
@@ -1094,7 +1115,7 @@ class NewCalibrationRecordTable extends ATableSavable {
         const item = this.state.list[n];
         if (item) {
             const {id, calibrating_company, reference_standard, certificate_num, calibration_date} = item;
-            return <TRow key={"item-" + n} className="tr-readonly w-full">
+            return <TRow key={"item-" + n} className="tr-readonly min-h-40 w-full">
                 <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
                 <div className="td">{calibrating_company}</div>
                 <div className="td fixed-flex min-w-160">{reference_standard}</div>
@@ -1142,7 +1163,7 @@ class NewCalibrationRecordTable extends ATableSavable {
                 <div className="td fixed-flex min-w-160 font-size-14">Reference Standard</div>
                 <div className="td fixed-flex min-w-160 font-size-14">Certificate No.</div>
                 <div className="td fixed-flex min-w-175 font-size-14">Calibration Date</div>
-                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "0")}/>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "10")}/>
             </THead>
             <TBody ref="body" title="Asset Calibration Record" renderItem={this.renderItem} onClick={this.onClick}
                    state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}/>

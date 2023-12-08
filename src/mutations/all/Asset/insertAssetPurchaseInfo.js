@@ -4,6 +4,7 @@
 import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
+import findByIdAssetPurchaseInfo from "./findByIdAssetPurchaseInfo";
 
 // 2
 const mutation = graphql`
@@ -12,13 +13,6 @@ const mutation = graphql`
             object: $object
         ) {
             id
-            id
-            acquisition_date
-            vendor
-            acquisition_value
-            warranty_expiry
-            reference_num
-            warranty_certificate
         }
     }
 `;
@@ -34,5 +28,6 @@ export default async (input) => {
 		warranty_certificate,
 	} = input;
 
-	return await createMutationImpl({mutation, input});
+	return await createMutationImpl({mutation, input}).
+    then(res => res && findByIdAssetPurchaseInfo(res.id));
 };

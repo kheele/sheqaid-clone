@@ -478,7 +478,7 @@ class ToolsTab extends React.Component {
 			<div className="td fixed-flex min-w-80">{condition || 'N/A'}</div>
 			<div className="td fixed-flex min-w-100">{status}</div>
 			<div className="td fixed-flex min-w-170 flex-center padding-l-0 padding-r-0">
-				<Button idx={n} className="btn btn-primary pull-right w-100 margin-r-5"
+				<Button idx={n} action="Checked Out" className="btn btn-primary pull-right w-100 margin-r-5"
 				        onClick={this.onChangeStatus}>{statusValFinal}</Button>
 				<Button idx={n} className="btn btn-primary pull-right w-40" onClick={onClick}>
 					<i className="fa fa-bars"/>

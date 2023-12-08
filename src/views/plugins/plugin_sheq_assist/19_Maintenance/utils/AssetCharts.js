@@ -8,9 +8,18 @@ const unitsShort = {
 //</editor-fold>
 
 //<editor-fold desc="createMonitoringPlanWorkingHrsOrKmStats">
-const createMonitoringPlanWorkingHrsOrKmStats = ({working_distance_or_time_list, units, view = 'Annually', date = new Date()}) => {
+const createMonitoringPlanWorkingHrsOrKmStats = (
+    {
+        working_distance_or_time_list,
+        units,
+        view = 'Annually',
+        date = new Date()
+    }
+) => {
     if (!working_distance_or_time_list || working_distance_or_time_list.isEmpty())
         return;
+
+    //id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date
 
     const unitsS = unitsShort[units] || 'hrs/km';
 
@@ -25,12 +34,12 @@ const createMonitoringPlanWorkingHrsOrKmStats = ({working_distance_or_time_list,
     const isAnnualView = view === 'Annually';
     const isMonthView = view === 'Monthly';
     const isWeekView = view === 'Weekly';
-    if(isAnnualView) {
+    if (isAnnualView) {
         data_points = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
             const list = working_distance_or_time_list.filter(({date}) => Dates.parse(date).getMonth() === month);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.monthsStr.get(month);
-            return {label, y: sum, legendText: units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     } else if (isWeekView) {
         currM = date.getMonth();
@@ -43,7 +52,7 @@ const createMonitoringPlanWorkingHrsOrKmStats = ({working_distance_or_time_list,
             const list = working_distance_or_time_list.filter(({date}) => Dates.parse(date).getWeekNumberOfMonth() === n);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = `Week ${n}`;
-            return {label, y: sum, legendText: units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     } else {
         currM = date.getMonth();
@@ -57,36 +66,31 @@ const createMonitoringPlanWorkingHrsOrKmStats = ({working_distance_or_time_list,
             const list = working_distance_or_time_list.filter(({date}) => Dates.parse(date).getDate() === n);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.daysDoubleNumStr.get(n);
-            return {label, y: sum, legendText: units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     }
 
-    const title = `Monitoring Plan Summary (${isAnnualView ? currY : currMStr})`;
-    const title_axis_y = `${units || 'Time/Distance'} Usage`;
-    const title_axis_x = isAnnualView ? `Month (${currY})` : isWeekView ? `Week (${currMStr}-${currY})` : `Date (${currMStr}-${currY})`;
-    const y_value_format_string = `###0${unitsS}`;
-    const valueFormatString = isAnnualView ? 'MMM' : null;
-    const intervalType = isAnnualView ? 'month' : null;
-    const charts = createColumnChart({
-        title,
-        title_axis_y,
-        title_axis_x,
-        y_value_format_string,
-        valueFormatString,
-        intervalType,
-        data_points
-    });
-
-    return charts;
+    return {
+        labels: data_points.map(v => v.label),
+        datasets: [{
+            label: 'Total',
+            color: 'white',
+            data: data_points.map(v => v.y),
+        }],
+    };
 };
 //</editor-fold>
 
 //<editor-fold desc="createMonitoringPlanFuelUsageStats">
-const createMonitoringPlanFuelUsageStats = ({fuel_usage_list, units, view = 'Annually', date = new Date()}) => {
+const createMonitoringPlanFuelUsageStats = (
+    {
+        fuel_usage_list, units, view = 'Annually', date = new Date()
+    }
+) => {
     if (!fuel_usage_list || fuel_usage_list.isEmpty())
         return;
 
-    const unitsS = unitsShort[units] || 'hrs/km';
+    //id, refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost
 
     let data_points_1, data_points_2;
 
@@ -95,22 +99,25 @@ const createMonitoringPlanFuelUsageStats = ({fuel_usage_list, units, view = 'Ann
     let currW, currWStr;
 
     fuel_usage_list = fuel_usage_list.filter(v => !!v).filter(({date}) => date && Dates.parse(date).getFullYear() === currY);
+    console.log('fuel_usage_list', fuel_usage_list.slice());
 
     const isAnnualView = view === 'Annually';
     const isMonthView = view === 'Monthly';
     const isWeekView = view === 'Weekly';
-    if(isAnnualView) {
+    if (isAnnualView) {
+        //refilled_fuel
         data_points_1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getMonth() === month);
             const sum = list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.monthsStr.get(month);
-            return {label, y: sum, legendText: "Refilled Fuel(l)"};
+            return {label, y: sum};
         });
+        //working_hrs_or_km
         data_points_2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getMonth() === month);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.monthsStr.get(month);
-            return {label, y: sum, legendText: "Used " + units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     } else if (isWeekView) {
         currM = date.getMonth();
@@ -119,17 +126,19 @@ const createMonitoringPlanFuelUsageStats = ({fuel_usage_list, units, view = 'Ann
 
         fuel_usage_list = fuel_usage_list.filter(({date}) => Dates.parse(date).getMonth() === currM);
 
+        //refilled_fuel
         data_points_1 = date.getWeeksOfMonthInMonth().map(n => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getWeekNumberOfMonth() === n);
             const sum = list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
             const label = `Week ${n}`;
-            return {label, y: sum, legendText: "Refilled Fuel(l)"};
+            return {label, y: sum};
         });
+        //working_hrs_or_km
         data_points_2 = date.getWeeksOfMonthInMonth().map(n => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getWeekNumberOfMonth() === n);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = `Week ${n}`;
-            return {label, y: sum, legendText: "Used " + units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     } else {
         currM = date.getMonth();
@@ -139,38 +148,35 @@ const createMonitoringPlanFuelUsageStats = ({fuel_usage_list, units, view = 'Ann
         const firstMonDate = date.toMonthStartDate().getDate();
         const lastMonDate = date.toMonthEndDate().getDate();
 
+        //refilled_fuel
         data_points_1 = Array.range(firstMonDate, lastMonDate).map(n => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getDate() === n);
             const sum = list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.daysDoubleNumStr.get(n);
-            return {label, y: sum, legendText: "Refilled Fuel(l)"};
+            return {label, y: sum};
         });
+        //working_hrs_or_km
         data_points_2 = Array.range(firstMonDate, lastMonDate).map(n => {
             const list = fuel_usage_list.filter(({date}) => Dates.parse(date).getDate() === n);
             const sum = list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.daysDoubleNumStr.get(n);
-            return {label, y: sum, legendText: "Used " + units + "(" + unitsS + ")"};
+            return {label, y: sum};
         });
     }
 
-    const title = `Monitoring Plan Summary (${isAnnualView ? currY : currMStr})`;
-    const title_axis_y = `Fuel & ${units || 'Time/Distance'} Usage`;
-    const title_axis_x = isAnnualView ? `Month (${currY})` : isWeekView ? `Week (${currMStr}-${currY})` : `Date (${currMStr}-${currY})`;
-    const y_value_format_string = ["###0l", `###0${unitsS}`];
-    const valueFormatString = isAnnualView ? 'MMM' : null;
-    const intervalType = isAnnualView ? 'month' : null;
-    const charts = createColumnChart2({
-        title,
-        title_axis_y,
-        title_axis_x,
-        y_value_format_string,
-        valueFormatString,
-        intervalType,
-        data_points: [data_points_1, data_points_2]
-    });
-
     // console.log('createColumnChart3', charts);
-    return charts;
+    return {
+        labels: data_points_1.map(v => v.label),
+        datasets: [{
+            label: 'Fuel Usage',
+            color: 'white',
+            data: data_points_1.map(v => v.y),
+        }, {
+            label: `Working ${units ? units : 'Time/Distance'} Usage`,
+            color: 'white',
+            data: data_points_2.map(v => v.y),
+        }],
+    };
 };
 //</editor-fold>
 
@@ -178,6 +184,9 @@ const createMonitoringPlanFuelUsageStats = ({fuel_usage_list, units, view = 'Ann
 const createMaintenancePlanStats = (__list, units) => {
     if (!__list || __list.isEmpty())
         return;
+
+    //id, reason_for_service, service, service_hrs_or_km, service_date, parts_used, cost_and_receipt
+    console.log('createMaintenancePlanStats', __list.slice());
 
     const currY = new Date().getFullYear();
     let list = __list.filter(v => !!v).filter(({service_date}) => service_date && Dates.parse(service_date).getFullYear() === currY);
@@ -188,14 +197,14 @@ const createMaintenancePlanStats = (__list, units) => {
         return {label, y: sum};
     });
 
-    const unitsS = unitsShort[units] || 'hrs/km';
-    const title = "Maintenance Plan Summary (" + currY + ")";
-    const title_axis_y = (units || 'Time/Distance');
-    const title_axis_x = "Month (" + currY + ")";
-    const y_value_format_string = "###0 " + unitsS;
-    const charts = createColumnChart({title, title_axis_y, title_axis_x, y_value_format_string, data_points});
-
-    return charts;
+    return {
+        labels: data_points.map(v => v.label),
+        datasets: [{
+            label: 'Total',
+            color: 'white',
+            data: data_points.map(v => v.y),
+        }],
+    };
 };
 //</editor-fold>
 

@@ -4,6 +4,7 @@
 import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
+import findByIdAssetDetails from "./findByIdAssetDetails";
 
 // 2
 const mutation = graphql`
@@ -12,20 +13,6 @@ const mutation = graphql`
             object: $object
         ) {
             id
-            owning_company
-            name
-            asset_type
-            desc
-            manufacturer
-            model
-            reg_num
-            serial_num
-            location
-            toolkit
-            condition
-            barcode
-            qr_code
-            notes
         }
     }
 `;
@@ -49,5 +36,6 @@ export default async (input) => {
 		notes,
 	} = input;
 
-	return await createMutationImpl({mutation, input});
+	return await createMutationImpl({mutation, input}).
+    then(res => res && findByIdAssetDetails(res.id));
 };

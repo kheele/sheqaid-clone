@@ -4,6 +4,7 @@
 import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
+import findByIdAssetDepreciation from "./findByIdAssetDepreciation";
 
 // 2
 const mutation = graphql`
@@ -12,12 +13,6 @@ const mutation = graphql`
             object: $object
         ) {
             id
-            depreciation_method
-            asset_cost
-            salvage_value
-            depreciation_years
-            depreciation_factor
-            partial_year_depreciation
         }
     }
 `;
@@ -33,5 +28,6 @@ export default async (input) => {
 		partial_year_depreciation,
 	} = input;
 
-	return await createMutationImpl({mutation, input});
+	return await createMutationImpl({mutation, input}).
+    then(res => res && findByIdAssetDepreciation(res.id));
 };

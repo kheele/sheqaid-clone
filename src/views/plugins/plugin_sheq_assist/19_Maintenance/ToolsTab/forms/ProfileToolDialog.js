@@ -264,31 +264,38 @@ class Controls extends React.Component {
         } = depreciation || {};
 
         //7 done
+        const [monitoring_plan_item] = monitoring_plan_list || [];
         const {
             // id,
             fuel_usage_list,
             working_distance_or_time_list,
-        } = monitoring_plan_list || {};
+        } = monitoring_plan_item || {};
 
         //8 done
+        const [maintenance_plan_item] = maintenance_plan_list || [];
         const {
             // id,
             next_service_hrs_or_km,
             plan_list,
-        } = maintenance_plan_list || {};
+        } = maintenance_plan_item || {};
 
         //9 done
+        const [calibration_record_item] = calibration_record_list || [];
         const {
             // id,
             next_calibration_interval,
             next_calibration_date,
             calibration_list,
-        } = calibration_record_list || {};
+        } = calibration_record_item || {};
 
         const rowIdx = dialog.extraProp('rowIdx');
         const docActiveId = dialog.extraProp('docActiveId');
 
+        console.log('asset', item);
         console.log('doc_list', doc_list && doc_list.slice());
+        console.log('monitoring_plan_item', monitoring_plan_item);
+        console.log('maintenance_plan_item', maintenance_plan_item);
+        console.log('calibration_record_item', calibration_record_item);
 
         return <>
             <FormControls>
@@ -445,26 +452,28 @@ class Controls extends React.Component {
                         ref="monitoring_plan_working_distance_or_time_list"
                         name="monitoring_plan_working_distance_or_time_list"
                         state={this.state}
+                        asset={item}
                         defaultValue={working_distance_or_time_list || []}
                         readonly
                     />
                     <MonitoringPlanStats
                         ref="monitoring_plan_stats_working_distance_or_time"
                         name='working_distance_or_time_list'
-                        state={this.state}
+                        item={item}
                     />
 
                     <NewMonitoringPlanFuelUsageTable
                         ref="monitoring_plan_fuel_usage_list"
                         name="monitoring_plan_fuel_usage_list"
                         state={this.state}
+                        asset={item}
                         defaultValue={fuel_usage_list || []}
                         readonly
                     />
                     <MonitoringPlanStats
                         ref="monitoring_plan_stats_fuel_usage"
                         name='fuel_usage_list'
-                        state={this.state}
+                        item={item}
                     />
                     <br/>
                     <Button className="btn btn-primary hor-center margin-b-10" text="Add Monitoring Service"

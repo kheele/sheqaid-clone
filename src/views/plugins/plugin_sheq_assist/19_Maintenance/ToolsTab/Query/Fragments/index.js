@@ -112,7 +112,7 @@ export const inspection_question_list_fragment = (deep = 3) => {
 //<editor-fold desc="inspection_fragment">
 export const inspection_fragment = () => {
 	return `
-    id
+    	id
 		status
 		status_answered_by_sender
 		answered_by
@@ -138,17 +138,17 @@ export const inspection_fragment = () => {
 	  question_list:question_list(where: {is_page_title: {_eq: false}}){
 		  ${inspection_question_list_fragment(3)}
 	  }
-		schedule_list{
+	  schedule_list{
 		  questionnaire{
-		    id
-		  }
-			date
-			time
-			interval
-			completed
-			date_completed
-			time_completed
-		}
+		  	id
+	      }
+		  date
+		  time
+		  interval
+		  completed
+		  ate_completed
+		  time_completed
+	  }
 `;
 };
 //</editor-fold>
@@ -184,6 +184,7 @@ export const asset_basic_details_fragment = `
         }
     }
     asset_detail{
+    	id
         owning_company
         name
         asset_type
@@ -242,38 +243,42 @@ export const asset_export_details_fragment = `
     calibration_record_list{
         id
         next_calibration_interval
-				next_calibration_date
+		next_calibration_date
         calibration_list{
+          id
           calibrating_company
-					reference_standard
-					certificate_num
-					calibration_date
+		  reference_standard
+		  certificate_num
+		  calibration_date
         }
     }
     maintenance_plan_list{
         id
         next_service_hrs_or_km
         plan_list{
-          reason_for_service
-					service_date
-					service_hrs_or_km
+        	id
+          	reason_for_service
+			service_date
+			service_hrs_or_km
         }
     }
     monitoring_plan_list{
         id
         fuel_usage_list{
+        	id
 	        refilled_fuel
-					current_hrs_or_km
-					working_hrs_or_km
-					date
-					receipt
-					cost
+			current_hrs_or_km
+			working_hrs_or_km
+			date
+			receipt
+			cost
         }
         working_distance_or_time_list{
+        	id
 	        working_hrs_or_km_opening
-					working_hrs_or_km_closing
-					working_hrs_or_km
-					date
+			working_hrs_or_km_closing
+			working_hrs_or_km
+			date
         }
     }
 `;
@@ -341,38 +346,42 @@ export const asset_details_fragment = `
     calibration_record_list{
         id
         next_calibration_interval
-				next_calibration_date
+		next_calibration_date
         calibration_list{
-          calibrating_company
-					reference_standard
-					certificate_num
-					calibration_date
+        	id
+          	calibrating_company
+			reference_standard
+			certificate_num
+			calibration_date
         }
     }
     maintenance_plan_list{
         id
         next_service_hrs_or_km
         plan_list{
-          reason_for_service
-					service_date
-					service_hrs_or_km
+        	id
+          	reason_for_service
+			service_date
+			service_hrs_or_km
         }
     }
     monitoring_plan_list{
         id
         fuel_usage_list{
+        	id
 	        refilled_fuel
-					current_hrs_or_km
-					working_hrs_or_km
-					date
-					receipt
-					cost
+			current_hrs_or_km
+			working_hrs_or_km
+			date
+			receipt
+			cost
         }
         working_distance_or_time_list{
+        	id
 	        working_hrs_or_km_opening
-					working_hrs_or_km_closing
-					working_hrs_or_km
-					date
+			working_hrs_or_km_closing
+			working_hrs_or_km
+			date
         }
     }
 `;

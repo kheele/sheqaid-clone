@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a65d58728e75162e4eeee7403fff5393>>
+ * @generated SignedSource<<7a2bdb55f396b66b7c7e684bb847dcc2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -45,48 +45,6 @@ v2 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_method",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "asset_cost",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "salvage_value",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_years",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "depreciation_factor",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "partial_year_depreciation",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -116,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "515125e9e6efd714b68e5d72321a2cb7",
+    "cacheID": "e2cfeafdeaf0909d8ffca7f26d17b9dc",
     "id": null,
     "metadata": {},
     "name": "updateAssetDepreciationMutation",
     "operationKind": "mutation",
-    "text": "mutation updateAssetDepreciationMutation(\n  $id: asset_depreciation_pk_columns_input!\n  $_set: asset_depreciation_set_input!\n) {\n  update_asset_depreciation_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    depreciation_method\n    asset_cost\n    salvage_value\n    depreciation_years\n    depreciation_factor\n    partial_year_depreciation\n  }\n}\n"
+    "text": "mutation updateAssetDepreciationMutation(\n  $id: asset_depreciation_pk_columns_input!\n  $_set: asset_depreciation_set_input!\n) {\n  update_asset_depreciation_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "e05f0ab7fb7b529e48eac0657a514b6d";
+node.hash = "d6f96648db5a22c960ab6a383ea52b81";
 
 module.exports = node;

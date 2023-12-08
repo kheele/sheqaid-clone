@@ -81,8 +81,9 @@ class Controls extends AControls {
 			return;
 		}
 
-		const onProcessFormData = async (formData) => {
+		const onProcessFormData = async (formData, company_id) => {
 			const {
+				company_id,
 				site,
 				project,
 				client,
@@ -309,20 +310,21 @@ class Controls extends AControls {
 					data: [{parent_asset_id: assetItem.id}],
 				} : isChild ? null : {
 					data: await Promise.all((asset_parent_list || []).map(async v => ({
-						parent_asset: {data: await onProcessFormData(v)},
+						parent_asset: {data: await onProcessFormData(v, company_id)},
 					}))),
 				},
 				asset_children_list: isChild ? {
 					data: [{child_asset_id: assetItem.id}],
 				} : isParent ? null : {
 					data: await Promise.all((asset_children_list || []).map(async v => ({
-						child_asset: {data: await onProcessFormData(v)},
+						child_asset: {data: await onProcessFormData(v, company_id)},
 					}))),
 				},
 			};
 		};
 
-		const data = await onProcessFormData(form.data);
+		const {id: company_id} = storage.loggedUser.company;
+		const data = await onProcessFormData(form.data, company_id);
 		console.log(data)
 
 		btn.text("Saving...").disabled();
@@ -554,7 +556,7 @@ class Controls extends AControls {
 					<Sign className='Sign margin-t-0' value='+'/>
 					<ClearableInput ref="next_service_hrs_or_km" name="next_service_hrs_or_km" type="number"
 					                placeholder="Next Service Hours/Kilometres" required
-					                className="next_service_hrs_or_km w-260 form-control"
+					                className="next_service_hrs_or_km min-w-300 w-300 form-control"
 					                onChange={this.form.onChange}/>
 					<Sign className='Sign margin-t-0' value='='/>
 					<FutureMaintenanceDistanceOrTime state={this.state}/>

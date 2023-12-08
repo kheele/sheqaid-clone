@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f0cc07300cf5b87377e983abb867d094>>
+ * @generated SignedSource<<9b312179ece8bb5e730b9a087f4fe8f7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -45,48 +45,6 @@ v2 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "acquisition_date",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "vendor",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "acquisition_value",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "warranty_expiry",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "reference_num",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "warranty_certificate",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -116,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "e66eba30546e8a1d56d07977cc8b7aae",
+    "cacheID": "db0f50d3ac23e7dfbba5d21e4473832e",
     "id": null,
     "metadata": {},
     "name": "updateAssetPurchaseInfoMutation",
     "operationKind": "mutation",
-    "text": "mutation updateAssetPurchaseInfoMutation(\n  $id: asset_purchase_info_pk_columns_input!\n  $_set: asset_purchase_info_set_input!\n) {\n  update_asset_purchase_info_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    acquisition_date\n    vendor\n    acquisition_value\n    warranty_expiry\n    reference_num\n    warranty_certificate\n  }\n}\n"
+    "text": "mutation updateAssetPurchaseInfoMutation(\n  $id: asset_purchase_info_pk_columns_input!\n  $_set: asset_purchase_info_set_input!\n) {\n  update_asset_purchase_info_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "5ee9444a424c99bce5de75fd0ce47b18";
+node.hash = "81aeea700c32d16653f9b2a8b0b17fb8";
 
 module.exports = node;

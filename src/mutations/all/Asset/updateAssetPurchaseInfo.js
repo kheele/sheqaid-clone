@@ -11,13 +11,6 @@ const mutation = graphql`
     mutation updateAssetPurchaseInfoMutation($id: asset_purchase_info_pk_columns_input!, $_set: asset_purchase_info_set_input!) {
         update_asset_purchase_info_by_pk(pk_columns: $id, _set: $_set) {
             id
-            id
-            acquisition_date
-            vendor
-            acquisition_value
-            warranty_expiry
-            reference_num
-            warranty_certificate
         }
     }
 `;
@@ -43,5 +36,5 @@ export default async (attrs, exists = false) => {
 		mutation,
 		id: attrs.id,
 		attrs,
-	});
+	}).then(res => res && findByIdAssetPurchaseInfo(res.id));
 };

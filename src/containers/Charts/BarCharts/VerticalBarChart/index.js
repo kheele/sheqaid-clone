@@ -32,7 +32,8 @@ function VerticalBarChart(
 		color,
 		background,
 		displayLegend,
-		chart: chartInput
+		chart: chartInput,
+		sx = {}
 	}
 ) {
 	const [chartData, setChartData] = useState(null);
@@ -109,7 +110,7 @@ function VerticalBarChart(
 		<BarMemo chart={chart} height={height} data={data} options={options}/>
 	</MDBox>);
 
-	return title || description ? <Card sx={{background}}>{renderChart}</Card> : renderChart;
+	return title || description ? <Card sx={{...sx, background}}>{renderChart}</Card> : renderChart;
 }
 
 

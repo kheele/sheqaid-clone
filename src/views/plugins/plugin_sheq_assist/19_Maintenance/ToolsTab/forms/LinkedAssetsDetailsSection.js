@@ -27,8 +27,8 @@ class LinkedAssetsDetailsSection extends ASectionSection {
     //</editor-fold>
     
     async componentDidMount() {
-        const {readonly} =  this.props;
-        if(readonly) {
+        const {readonly, isEditing} =  this.props;
+        if(readonly || isEditing) {
             const {item, itemData, listName} = this;
             
             let promise;
@@ -61,7 +61,11 @@ class LinkedAssetsDetailsSection extends ASectionSection {
 
         const {itemData, listName} = this;
         const {[listName]: list} = itemData || {};
-        if(this.props.readonly) {
+
+        console.log('LinkedAssetsDetailsSection', listName, list.slice());
+
+        const {readonly, isEditing} = this.props;
+        if(readonly || isEditing) {
             return (list || []).map((
               {
                   id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off

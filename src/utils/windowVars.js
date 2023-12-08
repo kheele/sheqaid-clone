@@ -4,7 +4,7 @@ import {AsyncSpan, AsyncTD} from '../views/plugins/components';
 
 window.RenderUtils = {
     renderImage: (f, w, h, defaultPic) => {
-        console.log(f)
+        // console.log(f)
         if (f) {
             if (f.dlUrls) {
                 return <img src={f.dlUrls[0]} width={w} height={h}/>;

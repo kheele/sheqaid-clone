@@ -11,12 +11,6 @@ const mutation = graphql`
     mutation updateAssetDepreciationMutation($id: asset_depreciation_pk_columns_input!, $_set: asset_depreciation_set_input!) {
         update_asset_depreciation_by_pk(pk_columns: $id, _set: $_set) {
             id
-            depreciation_method
-            asset_cost
-            salvage_value
-            depreciation_years
-            depreciation_factor
-            partial_year_depreciation
         }
     }
 `;
@@ -42,5 +36,5 @@ export default async (attrs, exists = false) => {
 		mutation,
 		id: attrs.id,
 		attrs,
-	});
+	}).then(res => res && findByIdAssetDepreciation(res.id));
 };

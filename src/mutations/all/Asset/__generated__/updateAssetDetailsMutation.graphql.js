@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1e42cf1264db6f7364cabf28900bc57b>>
+ * @generated SignedSource<<abdff3b7c8c8ea1cbe13b5aa3b0c9fc7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -45,104 +45,6 @@ v2 = [
         "kind": "ScalarField",
         "name": "id",
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "owning_company",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "name",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "asset_type",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "desc",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "manufacturer",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "model",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "reg_num",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "serial_num",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "location",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "toolkit",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "condition",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "barcode",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qr_code",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "notes",
-        "storageKey": null
       }
     ],
     "storageKey": null
@@ -172,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "09ce5272493a436cb2f69990e85a0c34",
+    "cacheID": "b4e5dbe0b3e8c1b68ffaca5669efc886",
     "id": null,
     "metadata": {},
     "name": "updateAssetDetailsMutation",
     "operationKind": "mutation",
-    "text": "mutation updateAssetDetailsMutation(\n  $id: asset_details_pk_columns_input!\n  $_set: asset_details_set_input!\n) {\n  update_asset_details_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    owning_company\n    name\n    asset_type\n    desc\n    manufacturer\n    model\n    reg_num\n    serial_num\n    location\n    toolkit\n    condition\n    barcode\n    qr_code\n    notes\n  }\n}\n"
+    "text": "mutation updateAssetDetailsMutation(\n  $id: asset_details_pk_columns_input!\n  $_set: asset_details_set_input!\n) {\n  update_asset_details_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "436b5819dd2bd7f46d46809c378e091e";
+node.hash = "7c70e6329edae8f1d491798595b0b81e";
 
 module.exports = node;
