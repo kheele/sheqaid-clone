@@ -7,6 +7,8 @@ export default (
 		offset = 0,
 		limit = 50,
 		//
+		removed = false,
+		//
 		name,
 		job_category_id,
 		//
@@ -26,47 +28,14 @@ export default (
 			query listAllJobPositionByLoggedClientQuery {
 		    default_job_positions(
 		      where: {
-            ${filter}
-          }, 
+		      	removed: {_eq: ${removed}},
+				${filter}
+			  }, 
 		      order_by: {name: asc},
-          offset: ${offset}
-          ${limit > 0 ? `,limit: ${limit}` : ''}
+			  offset: ${offset}
+			  ${limit > 0 ? `,limit: ${limit}` : ''}
 		    ) {
-		          id
-		          created_at
-		          name
-		          desc
-		          doc
-		          job_position_owner
-		          employee_list_aggregate{
-		            aggregate{
-		              count
-		            }
-		          }
-		          employee_external_list_aggregate{
-		            aggregate{
-		              count
-		            }
-		          }
-		          ppe_list_aggregate{
-		            aggregate{
-		              count
-		            }
-		          }
-		          toolbox_talk_list_aggregate{
-		            aggregate{
-		              count
-		            }
-		          }
-		          training_plan_list_aggregate{
-		            aggregate{
-		              count
-		            }
-		          }
-		          job_category {
-		            id
-		            name
-		          }
+		          
 		          ${orgs_fragment}
 		        }
 		  }
