@@ -19,29 +19,29 @@ import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmploye
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-	pageKey = "ProfileContractDialog";
-	className = "AProfileEmployeeDocDialog";
-	findById = findByIdEmployee;
+    pageKey = "ProfileContractDialog";
+    className = "AProfileEmployeeDocDialog";
+    findById = findByIdEmployee;
 
-	constructor(props) {
-		super(props, style);
-	}
+    constructor(props) {
+        super(props, style);
+    }
 
-	title() {
-		return "Contracts";
-	}
+    title() {
+        return "Contracts";
+    }
 
-	onSaveAsPDF(e, btn) {
-		this.refs.controls.onSaveAsPDF(e, btn);
-	}
+    onSaveAsPDF(e, btn) {
+        this.refs.controls.onSaveAsPDF(e, btn);
+    }
 
-	get topButtonsHiddenDelete() {
-		return true;
-	}
+    get topButtonsHiddenDelete() {
+        return true;
+    }
 
-	get controls() {
-		return Controls;
-	}
+    get controls() {
+        return Controls;
+    }
 }
 
 //</editor-fold>
@@ -49,71 +49,89 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-	listName = "contract_list";
-	onUpdate = updateEmployeeContract;
-	NewDialog = NewDialog;
-	EditDialog = EditDialog;
-	ProfilePDFReader = ProfilePDFReader;
+    listName = "contract_list";
+    onUpdate = updateEmployeeContract;
+    NewDialog = NewDialog;
+    EditDialog = EditDialog;
+    ProfilePDFReader = ProfilePDFReader;
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	//<editor-fold desc="loadDashboardTopStats">
-	async loadDashboardTopStats(id) {
-		return employeeStore.findByIdHRContractsDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats(id) {
+        return employeeStore.findByIdHRContractsDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="loadDashboardBottomStats">
-	async loadDashboardBottomStats(id) {
-		return employeeStore.findByIdHRContractsDateRangeDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats(id) {
+        return employeeStore.findByIdHRContractsDateRangeDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	renderItem(item, n, onClick) {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			}
-		} = this;
-		const {created_at, salary_info, contract_details, doc, job_profile_doc} = item.data || item;
+    //<editor-fold desc="renderItem">
+    renderItem(item, n, onClick) {
+        const {props: {onFormNext, onFormBack, onFormOpen}} = this;
 
-		return <div className="row item-wrapper padding-t-10 h-full">
-			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center font-size-20">Contract Details</label>
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<ContractDetails ref="contractDetailsTab" defaultValue={contract_details && contract_details[0]}/>
-			</div>
-			<hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-15"/>
-			<label className="w-full margin-l-10 margin-r-10 text-center">Salary Information</label>
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<SalaryInfo ref="salaryInfoTab" defaultValue={salary_info && salary_info[0]}/>
-			</div>
-			<hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-10"/>
-			<div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">
-				<UploadButton
-					name="doc"
-					defaultValue={doc}
-					buttonTitle="Contract Attachment"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-6"
-				/>
-				<UploadButton
-					name="doc"
-					defaultValue={job_profile_doc}
-					buttonTitle="Job Profile Attachment"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-6"
-				/>
-			</div>
-		</div>;
-	}
+        let {
+            created_at,
+            salary_info, salaryInfoTab,
+            contract_details, contractDetailsTab,
+            doc,
+            job_profile_doc,
+        } = item.data || item;
+
+        if(salaryInfoTab) {
+            salary_info = salaryInfoTab.form.data;
+        } else if(salary_info) {
+            salary_info = salary_info[0];
+        }
+
+        if(contractDetailsTab) {
+            contract_details = contractDetailsTab.form.data;
+        } else if(contract_details) {
+            contract_details = contract_details[0];
+        }
+
+        return <div className="row item-wrapper padding-t-10 h-full">
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center font-size-20">Contract
+                Details</label>
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <ContractDetails ref="contractDetailsTab" defaultValue={contract_details}/>
+            </div>
+            <hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-15"/>
+            <label className="w-full margin-l-10 margin-r-10 text-center">Salary Information</label>
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <SalaryInfo ref="salaryInfoTab" defaultValue={salary_info}/>
+            </div>
+            <hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-10"/>
+            <div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">
+                <UploadButton
+                    name="doc"
+                    defaultValue={doc}
+                    buttonTitle="Contract Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
+                />
+                <UploadButton
+                    name="doc"
+                    defaultValue={job_profile_doc}
+                    buttonTitle="Job Profile Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
+                />
+            </div>
+        </div>;
+    }
+    //</editor-fold>
 }
 
 export {Controls as ContractControls};

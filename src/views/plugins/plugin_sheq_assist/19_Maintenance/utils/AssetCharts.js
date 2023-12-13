@@ -19,6 +19,8 @@ const createMonitoringPlanWorkingHrsOrKmStats = (
     if (!working_distance_or_time_list || working_distance_or_time_list.isEmpty())
         return;
 
+    console.log('createMonitoringPlanWorkingHrsOrKmStats', units, view, date, working_distance_or_time_list.slice());
+
     //id, working_hrs_or_km_opening, working_hrs_or_km_closing, working_hrs_or_km, date
 
     const unitsS = unitsShort[units] || 'hrs/km';
@@ -29,7 +31,10 @@ const createMonitoringPlanWorkingHrsOrKmStats = (
     let currM, currMStr;
     let currW, currWStr;
 
-    working_distance_or_time_list = working_distance_or_time_list.filter(v => !!v).filter(({date}) => date && Dates.parse(date).getFullYear() === currY);
+    working_distance_or_time_list = working_distance_or_time_list.
+    filter(v => !!v && !!v.date).
+    filter(({date}) => Dates.parse(date).getFullYear() === currY);
+    console.log('working_distance_or_time_list', working_distance_or_time_list.slice());
 
     const isAnnualView = view === 'Annually';
     const isMonthView = view === 'Monthly';
@@ -90,6 +95,8 @@ const createMonitoringPlanFuelUsageStats = (
     if (!fuel_usage_list || fuel_usage_list.isEmpty())
         return;
 
+    console.log('createMonitoringPlanFuelUsageStats', units, view, date, fuel_usage_list.slice());
+
     //id, refilled_fuel, current_hrs_or_km, working_hrs_or_km, date, receipt, cost
 
     let data_points_1, data_points_2;
@@ -98,8 +105,9 @@ const createMonitoringPlanFuelUsageStats = (
     let currM, currMStr;
     let currW, currWStr;
 
-    fuel_usage_list = fuel_usage_list.filter(v => !!v).filter(({date}) => date && Dates.parse(date).getFullYear() === currY);
-    console.log('fuel_usage_list', fuel_usage_list.slice());
+    fuel_usage_list = fuel_usage_list.filter(v => v && v.date).
+    filter(({date}) => Dates.parse(date).getFullYear() === currY);
+    console.log('fuel_usage_list', fuel_usage_list.slice(), currY);
 
     const isAnnualView = view === 'Annually';
     const isMonthView = view === 'Monthly';

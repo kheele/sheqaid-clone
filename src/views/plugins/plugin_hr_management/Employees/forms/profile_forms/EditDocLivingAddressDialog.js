@@ -57,18 +57,18 @@ class Controls extends React.Component {
                 infoDialog.open('Country is required');
                 return;
             }
-            if (!form.isValid('province')) {
-                infoDialog.open('Province is required');
-                return;
-            }
-            if (!form.isValid('city')) {
-                infoDialog.open("City Code is required");
-                return;
-            }
-            if (!form.isValid('local_address')) {
-                infoDialog.open("Local Area is required");
-                return;
-            }
+            // if (!form.isValid('zone')) {
+            //     infoDialog.open('Province is required');
+            //     return;
+            // }
+            // if (!form.isValid('city')) {
+            //     infoDialog.open("City Code is required");
+            //     return;
+            // }
+            // if (!form.isValid('local_address')) {
+            //     infoDialog.open("Local Area is required");
+            //     return;
+            // }
             // if (!form.isValid('street_address')) {
             //     infoDialog.open("Street Address is required");
             //     return;
@@ -88,18 +88,18 @@ class Controls extends React.Component {
             infoDialog.open('Country is required');
             return;
         }
-        if (!form.isValid('province')) {
-            infoDialog.open('Province is required');
-            return;
-        }
-        if (!form.isValid('city')) {
-            infoDialog.open("City Code is required");
-            return;
-        }
-        if (!form.isValid('local_address')) {
-            infoDialog.open("Local Area is required");
-            return;
-        }
+        // if (!form.isValid('zone')) {
+        //     infoDialog.open('Province is required');
+        //     return;
+        // }
+        // if (!form.isValid('city')) {
+        //     infoDialog.open("City Code is required");
+        //     return;
+        // }
+        // if (!form.isValid('local_address')) {
+        //     infoDialog.open("Local Area is required");
+        //     return;
+        // }
         // if (!form.isValid('street_address')) {
         //     infoDialog.open("Street Address is required");
         //     return;
@@ -111,7 +111,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -123,7 +123,7 @@ class Controls extends React.Component {
         const {
             //1
             country,
-            province,
+            zone,
             city,
             local_address,
             street_address,
@@ -133,7 +133,7 @@ class Controls extends React.Component {
         const data = {};
 
         ShouldUpdate.checkCountry(data, old_data, country, 'country');
-        ShouldUpdate.checkZone(data, old_data, province, 'province');
+        ShouldUpdate.checkZone(data, old_data, zone, 'zone');
         ShouldUpdate.checkCity(data, old_data, city, 'city');
 
         ShouldUpdate.check(data, old_data, local_address, 'local_address');
@@ -170,6 +170,13 @@ class Controls extends React.Component {
         return this.props.state.item;
     }
 
+    get itemData() {
+        if (this.isNewEmployee) {
+            return this.item;
+        }
+        return this.item.data;
+    }
+
     render() {
         if (!this.item)
             return null;
@@ -178,18 +185,18 @@ class Controls extends React.Component {
                 onFormNext, onFormBack, onFormOpen,
                 dialog: {renderProfileCover}
             },
-            item, item: {
-                id, data: {
-                    created_at,
-                    //1
-                    country,
-                    province,
-                    city,
-                    local_address,
-                    street_address,
-                    //2
-                    doc,
-                }
+            item,
+            itemData: {
+                id,
+                created_at,
+                //1
+                country,
+                zone,
+                city,
+                local_address,
+                street_address,
+                //2
+                doc,
             }
         } = this;
 
@@ -207,8 +214,8 @@ class Controls extends React.Component {
                 <SelectCountryInput ref="country" name="country"
                                     placeholder="Country..." defaultValue={country}
                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectZoneInput ref="province" name="province"
-                                 placeholder="Province..." defaultValue={province}
+                <SelectZoneInput ref="zone" name="zone"
+                                 placeholder="State/Province/District..." defaultValue={zone}
                                  className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <SelectCityInput ref="city" name="city" placeholder="City"
                                  defaultValue={city} className="col-lg-6 form-control"

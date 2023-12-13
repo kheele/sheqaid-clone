@@ -5,7 +5,6 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import byLogged from "views/plugins/plugin_hr_management/Employees/dialogs/TeamsDialog/Query/List/listAllTeamByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -67,12 +66,14 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    const args = {
+    const listByLogged = sockets.of('teams').fn('listByLogged');
+
+    return listByLogged({
+        exact_orgs: true,
         //
         limit: 0,
         offset: 0,
-    };
-    return byLogged(args).then(res => {
+    }).then(res => {
         return res.map(value => {
             const {name, supervisor, site, project, client} = value.data;
             let label = name;

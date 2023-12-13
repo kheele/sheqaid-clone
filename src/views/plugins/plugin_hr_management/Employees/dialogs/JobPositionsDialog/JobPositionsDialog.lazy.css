@@ -1,7 +1,7 @@
 #dialog-overlay.JobPositionsDialog-dialog .dialog-container{
     height: 100%;
     max-height: calc(100% - 35px);
-    width: 100%;
+    width: 1600px;
     max-width: calc(100% - 30px);
 }
 #dialog-overlay.JobPositionsDialog-dialog .dialog-content,
@@ -24,11 +24,4 @@
 }
 #JobPositionsDialog-page > .filter-wrapper + .table{
     height: calc(100% - (50px + 122px)) !important;
-}
-#JobPositionsDialog-page .SelectionActions {
-    top: 270px;
-    right: 20px;
-    left: unset;
-    background: #fff;
-    box-shadow: 0 0 4px #ddd;
 }

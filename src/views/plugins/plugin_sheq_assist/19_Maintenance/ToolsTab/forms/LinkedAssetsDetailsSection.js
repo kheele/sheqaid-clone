@@ -1,4 +1,5 @@
 import {observer} from "mobx-react";
+import {observable} from "mobx";
 import React from "react";
 import {ProfileField} from "components/inputs";
 import {ASectionSection} from "components/FormComponents";
@@ -19,30 +20,36 @@ class LinkedAssetsDetailsSection extends ASectionSection {
     EditDialog = EditToolDialog;
     ProfileDialog = ProfileToolDialog;
 
+    @observable
+    selfState = {
+        list: [],
+    };
+
     //<editor-fold desc="constructor">
     constructor(props) {
         super(props);
     }
 
     //</editor-fold>
-    
+
     async componentDidMount() {
-        const {readonly, isEditing} =  this.props;
-        if(readonly || isEditing) {
+        const {readonly, isEditing} = this.props;
+        if (readonly || isEditing) {
             const {item, itemData, listName} = this;
-            
+
             let promise;
             if (listName === 'asset_parent_list') {
                 promise = listByIdLinkedParentTools({id: item.id});
             } else if (listName === 'asset_children_list') {
                 promise = listByIdLinkedChildTools({id: item.id});
             }
-            
-            if(promise) {
+
+            if (promise) {
                 promise.then(list => {
-                    if(list) {
+                    if (list) {
                         list = list.map(({data}) => data);
-                        extendObservable(itemData, {[listName]: list});
+                        this.selfState.list = list;
+                        extendObservable(itemData, {[listName]: this.selfState.list});
                     }
                 });
             }
@@ -59,47 +66,17 @@ class LinkedAssetsDetailsSection extends ASectionSection {
             return this.state.newList;
         }
 
-        const {itemData, listName} = this;
-        const {[listName]: list} = itemData || {};
+        const {listName, selfState: {list}} = this;
 
-        console.log('LinkedAssetsDetailsSection', listName, list.slice());
+        // console.log('LinkedAssetsDetailsSection has list', listName, list.slice());
 
-        const {readonly, isEditing} = this.props;
-        if(readonly || isEditing) {
-            return (list || []).map((
-              {
-                  id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off
-              }
-            ) => ({
-                ...asset_detail,
-                id, //Asset ID must override spread asset_detail
-                photo_list, profile_pic, responsible_person, status, written_off
-            }));
-        }
-        
-        if (listName === 'asset_parent_list') {
-            return (list || []).map((
-                {
-                    parent_asset: {id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off}
-                }
-            ) => ({
-                ...asset_detail,
-                id, //Asset ID must override spread asset_detail
-                photo_list, profile_pic, responsible_person, status, written_off
-            }));
-        }
-        if (listName === 'asset_children_list') {
-            return (list || []).map((
-                {
-                    child_asset: {id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off}
-                }
-            ) => ({
-                ...asset_detail,
-                id, //Asset ID must override spread asset_detail
-                photo_list, profile_pic, responsible_person, status, written_off
-            }));
-        }
-        return [];
+        return list.map((
+            {id, asset_detail, photo_list, profile_pic, responsible_person, status, written_off,}
+        ) => ({
+            ...asset_detail,
+            id, //Asset ID must override spread asset_detail
+            photo_list, profile_pic, responsible_person, status, written_off
+        }));
     }
 
     //</editor-fold>
@@ -124,6 +101,7 @@ class LinkedAssetsDetailsSection extends ASectionSection {
                 id="slider"
                 name="asset-images"
                 title="Asset Images"
+                className="h-160"
                 rowClassName="padding-l-10 padding-v-10"
                 renderer={v => <img src={v.doc.dlUrls[0]}/>}
                 list={this.imageList}

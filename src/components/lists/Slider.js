@@ -68,7 +68,7 @@ class Slider extends React.Component {
     }
 
     render() {
-        const {
+        let {
             id,
             title,
             name,
@@ -79,6 +79,7 @@ class Slider extends React.Component {
             colSize,
             disableNavs,
             onClick,
+            className,
             onBeforeChange,
             onAfterChange
         } = this.props;
@@ -86,7 +87,9 @@ class Slider extends React.Component {
         if (!!id) {
             props.id = id;
         }
-        return (<div {...props} className="row Slider">
+
+        className = `${className ? `${className} ` : ''}row Slider`;
+        return (<div {...props} className={className}>
             {!!title && <h1>{title}</h1>}
             <CarouselInner ref="inner" state={this.state} list={this.list} dataInterval={dataInterval} name={name}
                            index={index} hasViewBtn={hasViewBtn} disableNavs={disableNavs} renderer={renderer}

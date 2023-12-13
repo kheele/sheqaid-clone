@@ -11,7 +11,8 @@ exports.getVariablesAndQueryConfig = (
         //
         site_id, project_id, client_id,
         //
-        exact_orgs = false,
+        exact_orgs = true,
+        exact_orgs_company = true,
     }
 ) => {
     //<editor-fold desc="variables, filters">

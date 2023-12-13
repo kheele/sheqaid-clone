@@ -98,9 +98,9 @@ class Main extends AEmployeeListTab {
         return <Options idx={idx} permissionModKey={permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="remove" idx={idx} onClick={this.onReInstead} faIconLeft="ban" title="Re-Instead"/>
-            <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
-                     title="Save As PDF"/>
+            {/*<hr action="writable"/>*/}
+            {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
+            {/*         title="Save As PDF"/>*/}
         </Options>;
     }
 

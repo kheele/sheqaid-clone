@@ -28,10 +28,15 @@ class EditCompetencyCertificateDialog extends AEditDialog {
 	pageKey = "EditCompetencyCertificateDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Competency Certificate";
-	findById = findByIdEmployeeCompetency;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeCompetency;
 	}
 
 	get controls() {

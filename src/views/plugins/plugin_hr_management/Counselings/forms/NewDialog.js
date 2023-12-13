@@ -231,7 +231,7 @@ class Controls extends React.Component {
             <SignatureListRow
                 idx={4}
                 pluginKey="HR"
-                module="Counselings"
+                module="Counseling"
                 onSetSignatureSettings={onSetSignatureSettings}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}

@@ -17,7 +17,8 @@ module.exports = async (socket, data) => {
         //
         site_id, project_id, client_id,
         //
-        exact_orgs = false,
+        exact_orgs = true,
+        exact_orgs_company = true,
         //
         client_filter,
         orgs_filter = [],
@@ -32,7 +33,8 @@ module.exports = async (socket, data) => {
         //
         site_id, project_id, client_id,
         //
-        exact_orgs
+        exact_orgs,
+        exact_orgs_company,
     });
 
     return listGraphQL({

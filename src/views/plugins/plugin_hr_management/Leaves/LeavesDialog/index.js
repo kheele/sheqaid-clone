@@ -22,6 +22,7 @@ import findByIdContractorHRLeavesDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLeavesDashboardStatsByLogged";
 import findByIdContractorHRLeavesDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLeavesDateRangeDashboardStatsByLogged";
+import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
 
 // </editor-fold>
 
@@ -32,6 +33,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Leave";
     permissionKey = "Leaves";
     module = "Leaves";
+    onUpdate = updateEmployeeLeave;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
 

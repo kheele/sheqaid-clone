@@ -39,13 +39,13 @@ class Controls extends React.Component {
 
         this.form = new Form();
         this.form.addChangeOne('country', this.onChangeCountry.bind(this));
-        this.form.addChangeOne('province', this.onChangeProvince.bind(this));
+        this.form.addChangeOne('zone', this.onChangeProvince.bind(this));
     }
 
     //</editor-fold>
 
     onChangeCountry(el, val) {
-        this.props.execWhen(() => this.refs.province).then(ref => {
+        this.props.execWhen(() => this.refs.zone).then(ref => {
             ref.country = val;
         });
     }
@@ -65,18 +65,18 @@ class Controls extends React.Component {
                 infoDialog.open('Country is required');
                 return;
             }
-            if (!form.isValid('province')) {
-                infoDialog.open('Province is required');
-                return;
-            }
-            if (!form.isValid('city')) {
-                infoDialog.open("City Code is required");
-                return;
-            }
-            if (!form.isValid('local_address')) {
-                infoDialog.open("Local Area is required");
-                return;
-            }
+            // if (!form.isValid('zone')) {
+            //     infoDialog.open('Province is required');
+            //     return;
+            // }
+            // if (!form.isValid('city')) {
+            //     infoDialog.open("City Code is required");
+            //     return;
+            // }
+            // if (!form.isValid('local_address')) {
+            //     infoDialog.open("Local Area is required");
+            //     return;
+            // }
             // if (!form.isValid('street_address')) {
             //     infoDialog.open("Street Address is required");
             //     return;
@@ -97,18 +97,18 @@ class Controls extends React.Component {
             infoDialog.open('Country is required');
             return;
         }
-        if (!form.isValid('province')) {
-            infoDialog.open('Province is required');
-            return;
-        }
-        if (!form.isValid('city')) {
-            infoDialog.open("City Code is required");
-            return;
-        }
-        if (!form.isValid('local_address')) {
-            infoDialog.open("Local Area is required");
-            return;
-        }
+        // if (!form.isValid('zone')) {
+        //     infoDialog.open('Province is required');
+        //     return;
+        // }
+        // if (!form.isValid('city')) {
+        //     infoDialog.open("City Code is required");
+        //     return;
+        // }
+        // if (!form.isValid('local_address')) {
+        //     infoDialog.open("Local Area is required");
+        //     return;
+        // }
         // if (!form.isValid('street_address')) {
         //     infoDialog.open("Street Address is required");
         //     return;
@@ -132,7 +132,7 @@ class Controls extends React.Component {
         const {
             //1
             country,
-            province,
+            zone,
             city,
             local_address,
             street_address,
@@ -144,8 +144,8 @@ class Controls extends React.Component {
             is_default: true,
             //1
             country_id: country.id,
-            province_id: province.id,
-            city_id: city.id,
+            zone_id: zone && zone.id,
+            city_id: city && city.id,
             local_address,
             street_address,
             //2
@@ -195,7 +195,7 @@ class Controls extends React.Component {
                 <SelectCountryInput ref="country" name="country" placeholder="Country..."
                                     className="col-lg-12 form-control"
                                     onChange={this.form.onChange}/>
-                <SelectZoneInput ref="province" name="province" placeholder="Province..."
+                <SelectZoneInput ref="zone" name="zone" placeholder="State/Province/District..."
                                  className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <SelectCityInput ref="city" name="city" placeholder="City" className="col-lg-6 form-control"
                                  onChange={this.form.onChange}/>

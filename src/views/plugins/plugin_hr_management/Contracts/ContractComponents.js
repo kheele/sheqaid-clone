@@ -19,28 +19,39 @@ class ContractDetails extends React.Component {
 
     render() {
         const {defaultValue} = this.props;
-        return <React.Fragment>
+        const {
+            contract_type,
+            start_date,
+            expiry_date,
+            end_of_trial_period,
+            start_time,
+            end_time,
+            daily_working_hours,
+            notes,
+        } = defaultValue || {};
+
+        return <>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
                 <label className="margin-b-0 w-full text-center">Contract Terms</label>
-                <ProfileField title="Contract Type" name="contract_type" value={defaultValue && defaultValue.contract_type} className="col-lg-6 pull-left-3"/>
-                <ProfileField title="Start Date" name="start_date" value={defaultValue && defaultValue.start_date} type="date" className="col-lg-4"/>
-                <ProfileField title="End Date" name="expiry_date" value={defaultValue && defaultValue.expiry_date} type="date" className="col-lg-4"/>
-                <ProfileField title="End Of Trial Period" name="end_of_trial_period" value={defaultValue && defaultValue.end_of_trial_period} type="date" className="col-lg-4"/>
+                <ProfileField title="Contract Type" name="contract_type" value={contract_type} className="col-lg-6 pull-left-3"/>
+                <ProfileField title="Start Date" name="start_date" value={start_date} type="date" className="col-lg-4"/>
+                <ProfileField title="End Date" name="expiry_date" value={expiry_date} type="date" className="col-lg-4"/>
+                <ProfileField title="End Of Trial Period" name="end_of_trial_period" value={end_of_trial_period} type="date" className="col-lg-4"/>
             </div>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
                 <label className="margin-b-0 w-full text-center">Working Schedule</label>
-                <ProfileField name="start_time" type="time" placeholder="Start Time" value={defaultValue && defaultValue.start_time} className="col-lg-4"/>
-                <ProfileField name="end_time" type="time" placeholder="End Time" value={defaultValue && defaultValue.end_time} className="col-lg-4"/>
-                <ProfileField name="daily_working_hours" type="number" placeholder="Daily Working Hours" value={defaultValue && defaultValue.daily_working_hours} className="col-lg-4"/>
+                <ProfileField name="start_time" type="time" placeholder="Start Time" value={start_time} className="col-lg-4"/>
+                <ProfileField name="end_time" type="time" placeholder="End Time" value={end_time} className="col-lg-4"/>
+                <ProfileField name="daily_working_hours" type="number" placeholder="Daily Working Hours" value={daily_working_hours} className="col-lg-4"/>
             </div>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
                 <label className="margin-b-0 w-full text-center">Notes</label>
-                <ProfileField title="Notes" name="notes" value={defaultValue && defaultValue.notes} type="textarea" className="col-lg-12"/>
+                <ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
             </div>
-        </React.Fragment>;
+        </>;
     }
 }
 
@@ -70,20 +81,25 @@ class SalaryInfo extends React.Component {
 
     render() {
         const {defaultValue} = this.props;
-        const payment_type = defaultValue && defaultValue.payment_type;
-        const salary_interval = defaultValue && defaultValue.salary_interval;
-        const salary = defaultValue && (defaultValue.salary && defaultValue.salary.toCurrency('R')) || "N/A";
-        
-        const wage = defaultValue && defaultValue.wage;
-        return <React.Fragment>
+        let {
+            payment_type,
+            salary_interval,
+            salary,
+            wage,
+            deductible,
+        } = defaultValue || {};
+
+        salary = salary ? salary.toCurrency('R') : "N/A";
+
+        return <>
             <div className="row sec-group margin-0">
                 <ProfileField title="Payment Type" name="payment_type" value={payment_type} className={"col-lg-" + (payment_type==="Salary" ? "4" : "6")}/>
                 {payment_type==="Salary" && <ProfileField title="Salary Interval" name="salary_interval" value={salary_interval} className="col-lg-4"/>}
                 {payment_type==="Salary" && <ProfileField title="Salary" name="salary" value={salary} className="col-lg-4"/>}
                 {payment_type==="Wage" && <ProfileField title="Wage" name="wage" value={wage} className="col-lg-6"/>}
             </div>
-            <Deductibles defaultValue={defaultValue && defaultValue.deductible && defaultValue.deductible.list}/>
-        </React.Fragment>;
+            <Deductibles defaultValue={deductible && deductible.list}/>
+        </>;
     }
 }
 

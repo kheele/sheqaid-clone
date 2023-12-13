@@ -249,7 +249,7 @@ class ATab extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
-		const {ProfileDialog, EditDialog, onNewDialog, onSignatures, titleSingular} = this.props;
+		const {NewDialog, ProfileDialog, EditDialog, onUpdate, onSignatures, titleSingular} = this.props;
 		const {state, state: {expiry_date}} = this;
 		return <>
 			<ViewByButtonsBox
@@ -264,8 +264,8 @@ class ATab extends React.Component {
 				page={this}
 				pageId={this.pageKey + "-tab"}
 				onLoadList={this.onLoadList}
-				hasCreateBtn={() => !this.removed && !!onNewDialog}
-				createBtnRendered={!this.removed && !!onNewDialog}
+				hasCreateBtn={() => !this.removed && !!NewDialog}
+				createBtnRendered={!this.removed && !!NewDialog}
 				noAnimation={true}
 				renderDefaultLeftButtons={this.renderDefaultLeftButtons}
 				renderLeftButtons={renderLeftButtonsForExpiryOnly.bind(this)}
@@ -275,8 +275,9 @@ class ATab extends React.Component {
 				renderTHead={this.renderTHead}
 				renderItem={this.renderItem}
 			>
-				<ConfirmDialog ref="removeDialog"/>
+				<ConfirmDialog ref="removeDialog" onSoftDelete={onUpdate}/>
 
+				{NewDialog && <NewDialog ref="newDialog" onSetSignatureSettings={onSignatures}/>}
 				{ProfileDialog && <ProfileDialog ref="profileDialog"/>}
 				{EditDialog && <EditDialog ref="editDialog" onSetSignatureSettings={onSignatures}/>}
 

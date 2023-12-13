@@ -19,10 +19,15 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditLicenseDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit License";
-	findById = findByIdEmployeeLicense;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeLicense;
 	}
 
 	get controls() {

@@ -23,15 +23,17 @@ import findByIdContractorHRCounselingsDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCounselingsDashboardStatsByLogged";
 import findByIdContractorHRCounselingsDateRangeDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCounselingsDateRangeDashboardStatsByLogged";
+import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
 // </editor-fold>
 
 @observer
 class Dialog extends AEmployeeDocDialog {
-	pageKey = "CounselingsDialog";
-	title = "Counselings";
-	titleSingular = "Counseling";
-	permissionKey = "Counselings";
-	module = "Counselings";
+	pageKey = "CounsellingsDialog";
+	title = "Counsellings";
+	titleSingular = "Counselling";
+	permissionKey = "Counseling";
+	module = "Counseling";
+	onUpdate = updateEmployeeCounselling;
 	filterNodeGrid = 5;
 	filterNodeMarginB = 35;
 

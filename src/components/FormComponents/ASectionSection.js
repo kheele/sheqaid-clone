@@ -19,6 +19,11 @@ class ASectionSection extends React.Component {
     constructor(props) {
         super(props);
 
+        const {defaultValue} = props;
+        if(this.isNewEmployee && defaultValue) {
+            this.state.newList = defaultValue;
+        }
+
         this.onView = this.onView.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onEdit = this.onEdit.bind(this);

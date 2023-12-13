@@ -51,8 +51,13 @@ class SelectInput extends ASelectInput {
             if(defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            const defCountry = this.list.find(({value: {data: {iso2, name, phone_code}}}) => {
-                return (defaultValue === iso2 || defaultValue === name || defaultValue === phone_code || defaultValue === `+${phone_code}`);
+            const defCountry = this.list.find(({value: {id, data: {iso2, name, phone_code}}}) => {
+                if (defaultValue === iso2 || defaultValue === name || defaultValue === phone_code || defaultValue === `+${phone_code}`){
+                    return true;
+                }
+                if (defaultValue.id === id){
+                    return true;
+                }
             });
             if(defCountry) {
                 defaultValue = defCountry.value;

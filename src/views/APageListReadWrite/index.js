@@ -151,7 +151,7 @@ class APageListReadWrite extends APageList {
 	onRemove(evt, elem) {
 		const removeDialog = this.getDialogByRef("removeDialog");
 		if (removeDialog) {
-			const {onSoftDelete} = removeDialog.props;
+			const {onSoftDelete, onSoftDeleteProhibit, softDeleteAttrs} = removeDialog.props;
 			let {idx} = elem.props;
 			if (!('idx' in elem.props)) {
 				idx = parseInt(elem._reactInternals.key.replace("item-remove-", ""));
@@ -159,13 +159,30 @@ class APageListReadWrite extends APageList {
 				idx = elem.props.idx;
 			}
 
-			removeDialog.open("Are you sure you want to remove the " + this.props.pageTitleSingular + "?").then(res => {
+			removeDialog.open("Are you sure you want to remove the " + (this.props.pageTitleSingular || "item") + "?").then(async res => {
 				if (res === 1) {
 					const item = this.list[idx];
 
 					if (onSoftDelete) {
+						if(onSoftDeleteProhibit) {
+							let prohibit = onSoftDeleteProhibit(item);
+							if(prohibit instanceof Promise) {
+								prohibit = await prohibit;
+							}
+							if(prohibit) {
+								return;
+							}
+						}
+
 						progressDialog.open("Removing the " + this.props.pageTitleSingular);
-						onSoftDelete({id: item.id, removed: true}).then(res => {
+						let args = {id: item.id};
+						if(softDeleteAttrs) {
+							args = {...args, ...softDeleteAttrs};
+						} else {
+							args.removed = true;
+						}
+
+						onSoftDelete(args).then(res => {
 							setTimeout(function () {
 								this.list.removeIf((item, _idx) => _idx === idx);
 							}.bind(this), 0);

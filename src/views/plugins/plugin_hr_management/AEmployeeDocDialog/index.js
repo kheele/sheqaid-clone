@@ -187,7 +187,7 @@ class Dialog extends ADialogTab {
         return (<>
             <TabWrapper
                 ref="tabWrapper"
-                store={this.store}
+                onUpdate={this.onUpdate}
                 title={this.title}
                 titleSingular={this.titleSingular}
                 permissionKey={permissionKey}
@@ -350,7 +350,7 @@ class TabWrapper extends React.Component {
     //<editor-fold desc="render">
     render() {
         const {
-            store,
+            onUpdate,
             title,
             titleSingular,
             permissionKey,
@@ -395,7 +395,7 @@ class TabWrapper extends React.Component {
                 />
                 <ActiveTab
                     ref="employeesActiveTab"
-                    store={store}
+                    onUpdate={onUpdate}
                     title="Active"
                     titleSingular={titleSingular}
                     titlePlural={title}
@@ -403,9 +403,9 @@ class TabWrapper extends React.Component {
                     renderTHead={renderTHeadActive}
                     renderItem={renderItemActive}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
-                    onNewDialog={this.onNewDialog}
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
+                    NewDialog={NewDialog}
                     ProfileDialog={ProfileDialog}
                     EditDialog={EditDialog}
                     permissionKey={permissionKey}
@@ -414,7 +414,7 @@ class TabWrapper extends React.Component {
                 />
                 <RemovedTab
                     ref="employeesRemovedTab"
-                    store={store}
+                    onUpdate={onUpdate}
                     title="Removed"
                     titleSingular={titleSingular}
                     titlePlural={title}
@@ -422,7 +422,6 @@ class TabWrapper extends React.Component {
                     renderTHead={renderTHeadRemoved}
                     renderItem={renderItemRemoved}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
-                    onNewDialog={this.onNewDialog}
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
                     ProfileDialog={ProfileDialog}

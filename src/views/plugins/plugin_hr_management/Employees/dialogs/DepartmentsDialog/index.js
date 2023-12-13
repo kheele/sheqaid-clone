@@ -16,8 +16,6 @@ import EditDepartmentDialog from "./EditDepartmentDialog";
 
 import style from "./DepartmentsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
-import byLogged from "./Query/List/listAllDepartmentByLogged";
-import updateJobPosition from "mutations/all/JobPosition/updateJobPosition";
 import updateDepartment from "mutations/all/Department/updateDepartment";
 
 @observer
@@ -53,21 +51,16 @@ class DepartmentsDialog extends ADialogList {
             name,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('departments').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             //
-            limit,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            exact_orgs: true,
+            exact_orgs_company: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -113,7 +106,7 @@ class DepartmentsDialog extends ADialogList {
     renderTHead() {
         const {isConsultant} = storage.is;
         return <THead>
-            <div className="td">Date Created</div>
+            <div className="td fixed-flex min-w-50">ID</div>
             <div className="td">Name</div>
             {isConsultant && <div className="td">Company</div>}
             <div className="td fixed-flex min-w-300">Stats</div>
@@ -135,7 +128,7 @@ class DepartmentsDialog extends ADialogList {
         const {isConsultant} = storage.is;
 
         return <TRow key={id}>
-            <div className="td">{Dates.formatDate(created_at)}</div>
+            <div className="td fixed-flex min-w-50">{id}</div>
             <div className="td">{name}</div>
             {isConsultant && <div className="td">
                 {client ? (client.name || client.data.name) : 'All'}
@@ -165,15 +158,30 @@ class DepartmentsDialog extends ADialogList {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDelete={updateDepartment}/>
+            <ConfirmDialog ref="removeDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateDepartment}/>
 
             <ImportDepartmentsDialog ref="importDialog" path={this.path}/>
             <NewDepartmentDialog ref="newDialog" path={this.path}/>
-            <ProfileDepartmentDialog ref="profileDialog" path={this.path}/>
+            <ProfileDepartmentDialog ref="profileDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateDepartment}/>
             <EditDepartmentDialog ref="editDialog" path={this.path}/>
         </APageListReadWrite>;
     }
 
+}
+
+function onSoftDeleteProhibit(item) {
+    const {id, data: {employee_list_aggregate}} = item;
+    const prohibit = employee_list_aggregate.aggregate.count > 0;
+    if(prohibit) {
+        infoDialog.open(<p>
+            The Department can't be removed while<br />
+            there are employees attached to it.<br /><br />
+            Please first remove the employees or assign<br />
+            them to other Department(s) before removing<br />
+            this Department.
+        </p>);
+    }
+    return prohibit;
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">
@@ -188,9 +196,9 @@ class StatsPanel extends React.Component {
         } = this.props.item;
 
         return <>
-            <AggregateStat title="Employees" value={employee_list_aggregate}/>
-            <AggregateStat title="PPE" value={ppe_list_aggregate}/>
-            <AggregateStat title="Documents Responsible" value={responsible_document_list_aggregate}/>
+            <AggregateStat title="Employees" className="h-70" value={employee_list_aggregate}/>
+            <AggregateStat title="PPE" className="h-70" value={ppe_list_aggregate}/>
+            <AggregateStat title="Documents Responsible" className="h-70" value={responsible_document_list_aggregate}/>
         </>;
     }
 }

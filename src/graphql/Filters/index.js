@@ -6,9 +6,9 @@ export const orgsFilter = (orgs) => {
 	const {hasProjects, isConsultant, isContractor} = storage.is;
 
 	let {
-		// site_id,
-		// project_id,
-		// client_id,
+		site_id,
+		project_id,
+		client_id,
 		incContractors = false,
 		excContractors = false,
 		exact_orgs = false,
@@ -16,9 +16,9 @@ export const orgsFilter = (orgs) => {
 	} = orgs || {};
 
 	const company_id = sess_company_id;
-	const client_id = selectedClient && selectedClient.id;
-	const project_id = selectedProject && selectedProject.id;
-	const site_id = selectedSite && selectedSite.id;
+	client_id = client_id ? client_id : selectedClient && selectedClient.id;
+	project_id = project_id ? project_id : selectedProject && selectedProject.id;
+	site_id = site_id ? site_id : selectedSite && selectedSite.id;
 
 	//<editor-fold desc="variables, filters">
 	const filter = [];

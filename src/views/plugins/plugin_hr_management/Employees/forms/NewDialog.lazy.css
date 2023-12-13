@@ -1,4 +1,5 @@
 @import '../../../../../css/ANewTableFormDialog.css';
+@import '../../ANewEmployeeDocDialog.css';
 @import '../../../../../css/ANewDialog.css';
 
 #dialog-overlay.Employees-new-dialog .dialog-container{

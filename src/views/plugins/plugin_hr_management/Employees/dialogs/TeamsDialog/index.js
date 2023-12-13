@@ -16,9 +16,7 @@ import EditTeamDialog from "./EditTeamDialog";
 
 import style from "./TeamsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
-import byLogged from "./Query/List/listAllTeamByLogged";
-import updateJobPosition from "../../../../../../mutations/all/JobPosition/updateJobPosition";
-import updateTeam from "../../../../../../mutations/all/Team/updateTeam";
+import updateTeam from "mutations/all/Team/updateTeam";
 
 // </editor-fold>
 
@@ -59,25 +57,17 @@ class TeamsDialog extends ADialogList {
             employee_id,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('teams').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             name,
             supervisor_id,
             employee_id,
             //
-            limit,
+            exact_orgs: true,
             //
-            exact_orgs: false,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -106,11 +96,11 @@ class TeamsDialog extends ADialogList {
     renderTHead() {
         const {isConsultant} = storage.is;
         return <THead>
-            <div className="td">Date Created</div>
+            <div className="td fixed-flex min-w-50">ID</div>
             <div className="td">Supervisor</div>
             <div className="td">Team Name</div>
             {isConsultant && <div className="td">Company</div>}
-            <div className="td fixed-flex min-w-400">Stats</div>
+            <div className="td fixed-flex min-w-200">Stats</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -130,13 +120,13 @@ class TeamsDialog extends ADialogList {
 
 //        console.log(item)
         return <TRow key={id}>
-            <div className="td">{Dates.formatDate(created_at)}</div>
+            <div className="td fixed-flex min-w-50">{id}</div>
             <div className="td">{supervisor ? `${supervisor.lname} ${supervisor.fname}` : 'N/A'}</div>
             <div className="td">{name}</div>
             {isConsultant && <div className="td">
                 {client ? client.name : 'All'}
             </div>}
-            <div className="td fixed-flex min-w-400 flex td-stats">
+            <div className="td fixed-flex min-w-200 flex td-stats">
                 <StatsPanel item={item}/>
             </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
@@ -162,10 +152,10 @@ class TeamsDialog extends ADialogList {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDelete={updateTeam}/>
+            <ConfirmDialog ref="removeDialog" softDeleteAttrs={{status: "Inactive"}} onSoftDelete={updateTeam}/>
             
             <NewTeamDialog ref="newDialog" path={this.path}/>
-            <ProfileTeamDialog ref="profileDialog" path={this.path}/>
+            <ProfileTeamDialog ref="profileDialog" softDeleteAttrs={{status: "Inactive"}} onSoftDelete={updateTeam}/>
             <EditTeamDialog ref="editDialog" path={this.path}/>
         </APageListReadWrite>;
     }

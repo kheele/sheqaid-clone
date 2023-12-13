@@ -15,11 +15,11 @@ import companyStore from "mutations/all/Company";
 import WorkPermitsRenderRow from "./WorkPermitsRenderRow";
 import {THead} from "components/tables";
 
-import byLogged from "./Query/List/listAllWorkPermitByLogged";
 import findByIdContractorHRWorkPermitsDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRWorkPermitsDashboardStatsByLogged";
 import findByIdContractorHRWorkPermitsDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRWorkPermitsDateRangeDashboardStatsByLogged";
+import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
 // </editor-fold>
 
 @observer
@@ -29,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Work Permit";
     permissionKey = "WorkPermits";
     module = "WorkPermits";
+    onUpdate = updateEmployeeWorkPermit;
     filterNodeMarginB = 35;
 
     dialogs = {

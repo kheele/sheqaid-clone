@@ -19,11 +19,11 @@ import {
     SelectEmployeeInput,
 } from "components/inputs";
 
-import byLogged from "./Query/List/listAllWarningByLogged";
 import findByIdContractorHRWarningsDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRWarningsDashboardStatsByLogged";
 import findByIdContractorHRWarningsDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRWarningsDateRangeDashboardStatsByLogged";
+import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
 
 // </editor-fold>
 
@@ -34,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Warning";
     permissionKey = "Warnings";
     module = "Warnings";
+    onUpdate = updateEmployeeWarning;
     filterNodeGrid = 5;
 
     dialogs = {

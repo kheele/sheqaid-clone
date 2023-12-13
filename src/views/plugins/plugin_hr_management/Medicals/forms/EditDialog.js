@@ -19,10 +19,15 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditMedicalFitnessCertificateDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Medical Fitness Certificate";
-	findById = findByIdEmployeeMedical;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeMedical;
 	}
 
 	get controls() {

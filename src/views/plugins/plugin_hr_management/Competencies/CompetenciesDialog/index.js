@@ -23,6 +23,7 @@ import findByIdContractorHRCompetenciesDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCompetenciesDashboardStatsByLogged";
 import findByIdContractorHRCompetenciesDateRangeDashboardStatsByLogged
 	from "./Query/List/findByIdContractorHRCompetenciesDateRangeDashboardStatsByLogged";
+import updateEmployeeCompetency from "mutations/all/EmployeeCompetency/updateEmployeeCompetency";
 
 // </editor-fold>
 
@@ -33,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
 	titleSingular = "Competency";
 	permissionKey = "Competencies";
 	module = "Competencies";
+	onUpdate = updateEmployeeCompetency;
 	filterNodeGrid = 5;
 
 	dialogs = {

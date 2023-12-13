@@ -9,7 +9,6 @@ import {ShouldUpdate} from 'utils/Utils';
 import {AEditDialog} from 'components/dialogs';
 import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
-import {mapPersonDetails} from 'utils/ArrayMapperUtils';
 import {Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
@@ -21,10 +20,15 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditCounselingDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Counseling";
-	findById = findByIdEmployeeCounselling;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeCounselling;
 	}
 
 	get controls() {

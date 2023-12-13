@@ -17,8 +17,8 @@ import AControls from '../AEmployeeDocDialog/AEmployeeDocExportControls';
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ExportDialog extends AExportDialog {
-	titleSingular = 'Counseling';
-	titlePlural = 'Counselings';
+	titleSingular = 'Counselling';
+	titlePlural = 'Counsellings';
 	excludePDF = true;//TODO: Include later
 
 	get controls() {

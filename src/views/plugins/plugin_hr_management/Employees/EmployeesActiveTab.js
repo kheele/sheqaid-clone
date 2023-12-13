@@ -155,14 +155,14 @@ class Main extends AEmployeeListTab {
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
 			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-			<hr action="writable"/>
-			<NavItem action="writable" idx={idx} onClick={this.onSendApplicationLink} faIconLeft="paper-plane"
-			         title="Send Application Link"/>
-			<hr action="writable"/>
-			<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
-			         title="Save As PDF"/>
-			<NavItem action="writable" idx={idx} onClick={this.onSubmitPrintCards} faIconLeft="print"
-			         title="Print Card"/>
+			{/*<hr action="writable"/>*/}
+			{/*<NavItem action="writable" idx={idx} onClick={this.onSendApplicationLink} faIconLeft="paper-plane"*/}
+			{/*         title="Send Application Link"/>*/}
+			{/*<hr action="writable"/>*/}
+			{/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
+			{/*         title="Save As PDF"/>*/}
+			{/*<NavItem action="writable" idx={idx} onClick={this.onSubmitPrintCards} faIconLeft="print"*/}
+			{/*         title="Print Card"/>*/}
 		</Options>;
 	}
 

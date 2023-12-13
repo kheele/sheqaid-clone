@@ -29,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "PrDP";
     permissionKey = "PrDP";
     module = "PrDP";
+    // onUpdate = updateEmployeeCompetency;
     filterNodeMarginB = 35;
 
     dialogs = {

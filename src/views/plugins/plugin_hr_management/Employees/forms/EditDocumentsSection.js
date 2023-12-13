@@ -327,7 +327,26 @@ class EditDocumentsSection extends React.Component {
 
 		let {
 			id,
-			document_list,
+			// document_list,
+			//
+			// competency_list,
+			// contract_list,
+			// counselling_list,
+			// leave_list,
+			// license_list,
+			// medical_list,
+			// warning_list,
+			// work_permit_list,
+			// job_appointment_list,
+
+			// ppe_list,
+			// trainer_training_list,
+		} = (item && item.data) || {};
+
+		const {form, form:{data}} = this;
+		const {
+			'document_list__ID/Passport': document_list__id_or_passport,
+			'document_list__PrDP': document_list__prdp,
 
 			competency_list,
 			contract_list,
@@ -338,10 +357,7 @@ class EditDocumentsSection extends React.Component {
 			warning_list,
 			work_permit_list,
 			job_appointment_list,
-
-			ppe_list,
-			trainer_training_list,
-		} = (item && item.data) || {};
+		} = data;
 
 		const isNewEmployee = !id;
 
@@ -358,7 +374,7 @@ class EditDocumentsSection extends React.Component {
 					onFormNext={onFormNext}
 					onFormSave={onFormSave}
 				>
-					<IDOrPassportSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
+					<IDOrPassportSection item={item} defaultValue={document_list__id_or_passport} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
 				</Row>
 				<Row
 					rendered
@@ -369,7 +385,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<CompetencyControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<CompetencyControls item={item} defaultValue={competency_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                    onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -381,7 +397,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<ContractControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<ContractControls item={item} defaultValue={contract_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                  onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -393,7 +409,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<JobAppointmentControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<JobAppointmentControls item={item} defaultValue={job_appointment_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                        onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -405,7 +421,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<CounselingControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<CounselingControls item={item} defaultValue={counselling_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                    onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -417,7 +433,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<LeaveControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<LeaveControls item={item} defaultValue={leave_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					               onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -437,7 +453,7 @@ class EditDocumentsSection extends React.Component {
 							onFormOpen={onFormOpen}
 							onFormNext={onFormNext}
 						>
-							<LicenseControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+							<LicenseControls item={item} defaultValue={license_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 							                 onChange={this.form.onChange}/>
 						</Row>
 						<Row
@@ -448,7 +464,7 @@ class EditDocumentsSection extends React.Component {
 							onFormOpen={onFormOpen}
 							onFormBack={onFormBack}
 						>
-							<PrDPSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
+							<PrDPSection item={item} defaultValue={document_list__prdp} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
 						</Row>
 					</FormControls>
 				</Row>
@@ -461,7 +477,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<MedicalControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<MedicalControls item={item} defaultValue={medical_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                 onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -473,7 +489,7 @@ class EditDocumentsSection extends React.Component {
 					onFormBack={onFormBack}
 					onFormNext={onFormNext}
 				>
-					<WarningControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<WarningControls item={item} defaultValue={warning_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                 onChange={this.form.onChange}/>
 				</Row>
 				<Row
@@ -484,7 +500,7 @@ class EditDocumentsSection extends React.Component {
 					onFormOpen={onFormOpen}
 					onFormBack={onFormBack}
 				>
-					<WorkPermitControls item={item} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+					<WorkPermitControls item={item} defaultValue={work_permit_list} isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
 					                    onChange={this.form.onChange}/>
 				</Row>
 			</FormControls>

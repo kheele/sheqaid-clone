@@ -54,10 +54,13 @@ class MonitoringPlanStats extends React.Component {
         this.form.addChangeOne('date_m', this.onDateMChange.bind(this));
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const date = new Date();
-        extendObservable(this.state, {date_y: date.getFullYear(), date_m: date.getMonth()});
+        this.state.date_y = date.getFullYear();
+        this.state.date_m = date.getMonth();
+    }
 
+    componentDidMount() {
         this.load();
     }
 
@@ -95,8 +98,12 @@ class MonitoringPlanStats extends React.Component {
         const {units, view, date_y, date_m} = this.state;
 
         const date = new Date();
-        date.setUTCFullYear(date_y);
-        date.setMonth(Dates.getMonthsNum(date_m));
+        if(date_y) {
+            date.setUTCFullYear(date_y);
+        }
+        if(date_m) {
+            date.setMonth(Dates.getMonthsNum(date_m));
+        }
 
         const fn = fns[name];
         const chart = fn({[name]: list, units, view, date});
@@ -128,7 +135,8 @@ class MonitoringPlanStats extends React.Component {
                 // working_distance_or_time_list,
                 [name]: list,
             } = monitoring_plan_item || {};
-            return list;
+            // console.log('MonitoringPlanStats monitoring_plan_list', name, monitoring_plan_item, (list || []).slice());
+            return list || [];
         } else {
             return (state[`monitoring_plan_${name}`] || []).filter(v => !!v);
         }

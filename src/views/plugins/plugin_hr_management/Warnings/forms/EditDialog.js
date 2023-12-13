@@ -10,7 +10,6 @@ import {AEditDialog} from 'components/dialogs';
 import {ClearableInput, Clickable, ProofUploadButton, SelectEmployeeInput} from 'components/inputs';
 import {NavButtons} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
-import {mapPersonDetails} from 'utils/ArrayMapperUtils';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
@@ -21,10 +20,15 @@ class EditDialog extends AEditDialog {
     pageKey = "EditWarningDialog";
     className = "AEditEmployeeDocDialog";
     title = "Edit Warning";
-    findById = findByIdEmployeeWarning;
 
     constructor(props) {
         super(props, style);
+    }
+
+    get findById() {
+        const {props: {isNewEmployee}} = this;
+        if(isNewEmployee) return;
+        return findByIdEmployeeWarning;
     }
 
     get controls() {

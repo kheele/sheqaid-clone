@@ -22,8 +22,12 @@ class CertificatesTab extends React.Component {
     }
 
     renderItem(item, n, onClick) {
-        const {data: {created_at, title, training, trainer, type, competency_type, issued_date, expiry_date, accreditation_num, doc}} = item;
-        
+        const {data: {created_at, title, training, type, competency_type, issued_date, expiry_date, accreditation_num, doc}} = item;
+
+        let {data: training_data, course, trainer} = training || {};
+        course = course ? course : (training_data ? training_data.course : null);
+        trainer = trainer ? trainer : (training_data ? training_data.trainer : null);
+
         return <div className="row item-wrapper padding-t-10 h-full">
             <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Competency Details</label>
             <div className="row margin-l-10 margin-r-10 row-details">
@@ -35,7 +39,7 @@ class CertificatesTab extends React.Component {
             </div>
             <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Training Details</label>
             <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Training" name="training" className="col-lg-6" value={training && training.course_or_module} renderer={v => isString(v) ? v : (v.name || v.data.name)}/>
+                <ProfileField title="Training" name="training" className="col-lg-6" value={course} renderer={v => v.name}/>
                 <ProfileField title="Trainer" className="col-lg-6" value={trainer} renderer={v => v.lname + " " + v.fname}/>
             </div>
             <hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-10"/>

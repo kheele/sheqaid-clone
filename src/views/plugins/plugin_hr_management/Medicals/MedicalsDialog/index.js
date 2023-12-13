@@ -23,6 +23,7 @@ import findByIdContractorHRMedicalsDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRMedicalsDashboardStatsByLogged";
 import findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged";
+import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeMedical";
 
 // </editor-fold>
 
@@ -33,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Medical";
     permissionKey = "Medicals";
     module = "Medicals";
+    onUpdate = updateEmployeeMedical;
     filterNodeMarginB = 35;
 
     dialogs = {

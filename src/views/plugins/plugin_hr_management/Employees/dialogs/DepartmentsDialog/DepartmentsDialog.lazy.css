@@ -1,7 +1,7 @@
 #dialog-overlay.DepartmentsDialog-dialog .dialog-container{
     height: 100%;
     max-height: calc(100% - 35px);
-    width: 100%;
+    width: 1200px;
     max-width: calc(100% - 30px);
 }
 #dialog-overlay.DepartmentsDialog-dialog .dialog-content,

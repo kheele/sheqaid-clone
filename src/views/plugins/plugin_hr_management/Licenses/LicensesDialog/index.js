@@ -19,6 +19,7 @@ import findByIdContractorHRLicensesDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLicensesDashboardStatsByLogged";
 import findByIdContractorHRLicensesDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLicensesDateRangeDashboardStatsByLogged";
+import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeLicense";
 
 // </editor-fold>
 
@@ -29,6 +30,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "License";
     permissionKey = "Licenses";
     module = "Licenses";
+    onUpdate = updateEmployeeLicense;
     filterNodeMarginB = 35;
 
     dialogs = {

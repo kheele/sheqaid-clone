@@ -42,12 +42,12 @@ class RemovedTab extends ATab {
     onRestore(evt, btn) {
         confirmDialog.open("Are you sure you want to restore the item?").then(res => {
             if (res === 1) {
-                const {store} = this.props;
+                const {onUpdate} = this.props;
                 const {idx} = btn.props;
                 const {list} = this.refs.root;
                 const item = list[idx];
                 progressDialog.open("Restoring the item...");
-                store.restore(item).then(res => {
+                onUpdate({id: item.id, removed: false}).then(res => {
                     setTimeout(() => {
                         list.removeIf((item, _idx) => _idx === idx);
                     });

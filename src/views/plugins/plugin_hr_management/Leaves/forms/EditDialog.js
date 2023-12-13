@@ -19,10 +19,15 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditLeaveDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Leave";
-	findById = findByIdEmployeeLeave;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeLeave;
 	}
 
 	get controls() {

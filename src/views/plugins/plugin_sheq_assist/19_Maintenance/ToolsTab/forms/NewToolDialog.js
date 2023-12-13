@@ -83,7 +83,6 @@ class Controls extends AControls {
 
 		const onProcessFormData = async (formData, company_id) => {
 			const {
-				company_id,
 				site,
 				project,
 				client,
@@ -139,6 +138,7 @@ class Controls extends AControls {
 
 			return {
 				//0
+				company_id,
 				client_id: client && client.id,
 				project_id: project && project.id,
 				site_id: site && site.id,
@@ -228,7 +228,6 @@ class Controls extends AControls {
 								{
 									refilled_fuel,
 									current_hrs_or_km,
-									working_hrs_or_km,
 									date: Dates.formatDateSQL(date),
 									receipt: receipt ? {path: await toDataURI(receipt.path)} : null,
 									cost,
@@ -247,7 +246,6 @@ class Controls extends AControls {
 								{
 									working_hrs_or_km_opening,
 									working_hrs_or_km_closing,
-									working_hrs_or_km,
 									date: Dates.formatDateSQL(date),
 								}
 							)).filter(v => !!v)
