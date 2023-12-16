@@ -545,6 +545,10 @@ const query = graphql`
           job_position {
             id
             name
+            job_category{
+              id
+              name
+            }
           }
           company {
             id

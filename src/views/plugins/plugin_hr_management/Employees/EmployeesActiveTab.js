@@ -28,8 +28,7 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
 import findByIdsActiveEmployee from "mutations/all/EmployeeActive/findByIdsActiveEmployee";
 import AEmployeeListTab, {StatsPanel} from "./AEmployeeListTab";
-import updateJobPosition from "../../../../mutations/all/JobPosition/updateJobPosition";
-import updateEmployee from "../../../../mutations/all/Employee/updateEmployee";
+import updateEmployee from "mutations/all/Employee/updateEmployee";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Main">
@@ -191,12 +190,14 @@ class Main extends AEmployeeListTab {
 	renderTHead() {
 		const {isConsultant, hasProjects, isContractorView} = storage.is;
 		const {filterData} = this.props.params || {};
-		const {department_id, job_position_id} = filterData || {};
+		const {department_id, job_position_id, job_category_id, team_id} = filterData || {};
 		return <THead>
 			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td">Name</div>
 			{!department_id && <div className="td">Department</div>}
 			{!job_position_id && <div className="td">Job Position</div>}
+			{/*{!job_category_id && <div className="td">Job Category</div>}*/}
+			{/*{!team_id && <div className="td">Team</div>}*/}
 			{(hasProjects || isContractorView) && <>
 				{/*isConsultant && <div className="td sm-hidden">Company Name</div>*/}
 				{isContractorView && <div className="td">Company Name</div>}
@@ -215,14 +216,14 @@ class Main extends AEmployeeListTab {
 		const {isConsultant, hasProjects, isContractorView} = storage.is;
 
 		const {filterData} = this.props.params || {};
-		const {department_id, job_position_id} = filterData || {};
+		const {department_id, job_position_id, job_category_id, team_id} = filterData || {};
 
 		const item = this.refs.root.list[n];
 		let {
 			id,
 			data: {
 				created_at, fname, lname, profile_pic,
-				department, job_position, supervisor,
+				department, job_position, team, supervisor,
 				client, project, site,
 				medical_list_aggregate, leave_list_aggregate, ppe_list_aggregate,
 				trainer_training_list_aggregate, warning_list_aggregate,
@@ -250,6 +251,10 @@ class Main extends AEmployeeListTab {
 			                            renderer={v => v.name}/>}
 			{!job_position_id && <AsyncTD title="Job Position" defaultValue={job_position}
 			                              renderer={v => v.name}/>}
+			{/*{!job_category_id && <AsyncTD title="Job Category" defaultValue={job_position && job_position.job_category}*/}
+			{/*                              renderer={v => v.name}/>}*/}
+			{/*{!team_id && <AsyncTD title="Team" defaultValue={team}*/}
+			{/*                              renderer={v => v.name}/>}*/}
 
 			{(hasProjects || isContractorView) && <>
 				{/*isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')*/}

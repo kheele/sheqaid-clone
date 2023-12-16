@@ -5,6 +5,7 @@ export const getVariablesAndQueryConfig = (
 		incContractors = false,
 		department_id,
 		job_position_id,
+		job_category_id,
 		team_id,
 		supervisor_id,
 		name,
@@ -23,6 +24,9 @@ export const getVariablesAndQueryConfig = (
 	}
 	if (job_position_id) {
 		filter.push(`job_position_id: {_eq: ${job_position_id}}`);
+	}
+	if (job_category_id) {
+		filter.push(`job_position: {job_category_id: {_eq: ${job_category_id}}}`);
 	}
 	if (team_id) {
 		filter.push(`team_id: {_eq: ${team_id}}`);

@@ -33,6 +33,7 @@ class AListTab extends React.Component {
         const {
             department_id,
             job_position_id,
+            job_category_id,
             team_id,
             supervisor_id,
             name,
@@ -46,6 +47,7 @@ class AListTab extends React.Component {
             //
             department_id,
             job_position_id,
+            job_category_id,
             team_id,
             supervisor_id,
             name,

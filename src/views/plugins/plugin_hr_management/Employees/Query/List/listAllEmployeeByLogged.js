@@ -11,6 +11,7 @@ export default (
 		incContractors = false,
 		department_id,
 		job_position_id,
+		job_category_id,
 		team_id,
 		supervisor_id,
 		name,
@@ -25,6 +26,7 @@ export default (
 		incContractors,
 		department_id,
 		job_position_id,
+		job_category_id,
 		team_id,
 		supervisor_id,
 		name,
@@ -110,6 +112,10 @@ export default (
           job_position {
             id
             name
+            job_category{
+              id
+              name
+            }
           }
           ${incContractors ? `
           contractor {
