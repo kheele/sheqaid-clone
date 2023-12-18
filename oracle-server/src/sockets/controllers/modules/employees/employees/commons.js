@@ -1,7 +1,3 @@
-const {
-    employee_personal_details_fragment,
-    personal_details_other_fragment,
-} = require("../../../../../graphql/Fragments");
 
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
@@ -10,34 +6,14 @@ exports.getVariablesAndQueryConfig = (
         //
         id,
         //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        incContractors = false,
+        department_id,
+        job_position_id,
+        job_category_id,
+        team_id,
+        supervisor_id,
+        name,
+        id_or_pass_num,
         //
         site_id, project_id, client_id,
         //
@@ -51,119 +27,59 @@ exports.getVariablesAndQueryConfig = (
         filter.push(`id: {_eq: ${id}}`);
     } else {
         //
-        if (person_reporting_id) {
-            filter.push(`person_reporting_id: {_eq: ${person_reporting_id}}`);
+        if (department_id) {
+            filter.push(`department_id: {_eq: ${department_id}}`);
         }
-        if (person_reported_to_id) {
-            filter.push(`person_reported_to_id: {_eq: ${person_reported_to_id}}`);
+        if (job_position_id) {
+            filter.push(`job_position_id: {_eq: ${job_position_id}}`);
         }
-        if (person_involved_id) {
-            filter.push(`person_involved_list:{person_involved_id: {_eq: ${person_involved_id}}}`);
+        if (job_category_id) {
+            filter.push(`job_position: {job_category_id: {_eq: ${job_category_id}}}`);
         }
-        if (person_injured_id) {
-            filter.push(`person_injured_id: {_eq: ${person_injured_id}}`);
+        if (team_id) {
+            filter.push(`team_id: {_eq: ${team_id}}`);
         }
-        if (person_distributed_to_id) {
-            filter.push(`distribution_list:{employee_id: {_eq: ${person_distributed_to_id}}}`);
-        }
-        if (witness_id) {
-            filter.push(`witness_list:{witness_id: {_eq: ${witness_id}}}`);
-        }
-        if (driver_id) {
-            filter.push(`vehicle_list:{driver_id: {_eq: ${driver_id}}}`);
+        if (supervisor_id) {
+            filter.push(`supervisor_id: {_eq: ${supervisor_id}}`);
         }
 
-        //
-        if (category_list && category_list.isNotEmpty()) {
-            filter.push(`category_list: {category_id: {_in: [${category_list.map(v => v.id)}]}}`);
-        }
-        if (sub_category_list && sub_category_list.isNotEmpty()) {
-            filter.push(`sub_category_list: {sub_category_id: {_in: [${sub_category_list.map(v => v.id)}]}}`);
-        }
-        if (activity_list && activity_list.isNotEmpty()) {
-            filter.push(`activity_list: {activity_id: {_in: [${activity_list.map(v => v.id)}]}}`);
-        }
-
-        //
-        if (exact_location) {
-            filter.push(`exact_location: {_ilike: "%${exact_location}%"}`);
-        }
-        if (isBoolean(is_vehicle_incident)) {
-            filter.push(`is_vehicle_incident: {_eq: ${is_vehicle_incident}}`);
-        }
-        if (vehicle_make) {
-            filter.push(`vehicle_list:{vehicle_make: {_ilike: "%${vehicle_make}%"}}`);
-        }
-        if (vehicle_reg_num) {
-            filter.push(`vehicle_list:{vehicle_reg_num: {_ilike: "%${vehicle_reg_num}%"}}`);
-        }
-
-        if (incident_status) {
-            if (incident_status === 'ClosedIncident') {
-                filter.push(`status_closed: {_eq: true}`);
-            } else if (incident_status === 'AwaitingApproval') {
-                filter.push(`status_awaiting_approval: {_eq: true}`);
-            } else if (incident_status === 'ApprovedIncident') {
-                filter.push(`status_approved: {_eq: true}`);
-            } else if (incident_status === 'AssignedInvestigator') {
-                filter.push(`status_investigating: {_eq: true}`);
-            } else if (incident_status === 'Investigating') {
-                filter.push(`status_investigating: {_eq: true}`);
-            }
-        }
-        if (investigation_status) {
-            if (investigation_status === 'ClosedInvestigation') {
-                filter.push(`status_closed_investigation: {_eq: true}`);
-            } else if (investigation_status === 'AwaitingInvestigationApproval') {
-                filter.push(`status_awaiting_investigation_approval: {_eq: true}`);
-            } else if (investigation_status === 'ApprovedInvestigation') {
-                filter.push(`status_approved_investigation: {_eq: true}`);
-            }
-        }
-
-        //
-        if (group) {
-            filter.push(`group: {_eq: "${group}"}`);
-        }
-        if (consequence) {
-            filter.push(`severity: {consequence: {_eq: ${consequence}}}`);
-        }
-        if (likelihood) {
-            filter.push(`severity: {likelihood: {_eq: ${likelihood}}}`);
-        }
-        if (risk_rating) {
-            filter.push(`severity: {risk_rating: {_eq: "${risk_rating}"}}`);
-        }
-
-        //
-        if (day_group) {
-            if (day_group === 'Morning') {
-                filter.push(`incident_time: {_gte: "00:00",_lt: "12:00"}`);
-            } else if (day_group === 'Afternoon') {
-                filter.push(`incident_time: {_gte: "12:00", _lt: "23:59"}`);
-            }
-        }
-        if (time_shift) {
-            filter.push(`time_shift: {_eq: "${time_shift}"}`);
-        }
-        if (incident_date_range) {
-            const {start, end} = incident_date_range;
-            if (start && end) {
-                filter.push(`incident_date: {_gte: "${start}", _lte: "${end}"}`);
-            } else if (start) {
-                filter.push(`incident_date: {_gte: "${start}"}`);
-            } else if (end) {
-                filter.push(`incident_date: {_lte: "${end}"}`);
-            }
-        }
-        if (date_reported_range) {
-            const {start, end} = date_reported_range;
-            if (start && end) {
-                filter.push(`date_reported: {_gte: "${start}", _lte: "${end}"}`);
-            } else if (start) {
-                filter.push(`date_reported: {_gte: "${start}"}`);
-            } else if (end) {
-                filter.push(`date_reported: {_lte: "${end}"}`);
+        if (name || id_or_pass_num) {
+            if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+                if (name && id_or_pass_num) {
+                    filter.push(`_and: {
+					_or: [
+						{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}},
+						{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+					]
+				}`);
+                } else if(name) {
+                    filter.push(`_and: {
+					_or: [
+						{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}}
+					]
+				}`);
+                } else if (id_or_pass_num) {
+                    filter.push(`_and: {
+					_or: [
+						{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+					]
+				}`);
+                }
+            } else {
+                if (name && id_or_pass_num) {
+                    filter.push(`_or: [
+					{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}},
+					{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+				]`);
+                } else if(name) {
+                    filter.push(`_or: [
+					{fname: {_ilike: "%${name}%"}}, {lname: {_ilike: "%${name}%"}}
+				]`);
+                } else if (id_or_pass_num) {
+                    filter.push(`_or: [
+					{id_num: {_eq: "${id_or_pass_num}"}}, {passport_num: {_ilike: "${id_or_pass_num}"}}
+				]`);
+                }
             }
         }
     }
@@ -175,253 +91,544 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="incident_details_fragment">
-exports.incident_details_fragment = `
+//<editor-fold desc="employee_details_fragment">
+exports.employee_details_fragment = `
   id
-  removed
-  group
-  short_desc
-  desc
-  location
-  exact_location
-  incident_date
-  incident_time
-  date_reported
-  time_reported
-  time_shift
-  injury_desc
-  severity{
+  created_at,
+  fname
+  lname
+  full_name
+  email
+  phone
+  dob
+  sex
+  id_num
+  passport_num
+  profile_pic
+  employment_num
+  employment_date
+
+  job_observation_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  job_observation_list{
     id
-    consequence
-    likelihood
-    risk_rating
-    risk_rating_score
+    name
   }
-  person_reporting{
-    ${employee_personal_details_fragment}
+  
+  banking_detail_list_aggregate{
+    aggregate{
+      count
+    }
   }
-  person_reporting_other{
-    ${personal_details_other_fragment}
-  }
-  person_reported_to{
-    ${employee_personal_details_fragment}
-  }
-  person_reported_to_other{
-    ${personal_details_other_fragment}
-  }
-  person_injured{
-    ${employee_personal_details_fragment}
-  }
-  person_injured_other{
-    ${personal_details_other_fragment}
-  }
-  injured_person_dob
-  injured_person_gender
-  test_type_drug_undertaken
-  test_type_alcohol_undertaken
-  test_type_mobile_device_undertaken
-  is_vehicle_incident
-  test_undertaken
-  status_closed
-  status_approved
-  status_approved_investigation
-  status_awaiting_approval
-  status_investigating
-  status_awaiting_investigation_approval
-  investigation{
+  banking_detail_list{
     id
-    due_date
-    severity{
-        id
-        consequence
-        likelihood
-        risk_rating
-        risk_rating_score
-    }
-    document_list{
-      id
-      doc
-      investigation_id
-    }
-    investigation_finding_list{
-      id
-      desc
-      investigation_id
-    }
-    investigation_team_list{
-      id
-      investigator{
-        ${employee_personal_details_fragment}
-      }
-      investigator_other{
-        ${personal_details_other_fragment}
-      }
-      investigation_id
+    created_at
+    name
+    account_num
+    code
+    branch
+    doc
+    is_default
+  }
+  living_address_list_aggregate{
+    aggregate{
+      count
     }
   }
-  activity_list{
+  living_address_list{
     id
-    activity{
+    created_at
+    local_address
+    street_address
+    doc
+    is_default
+    country{
       id
       name
-      sector{
+    }
+    zone{
+      id
+      name
+    }
+    city{
+      id
+      name
+    }
+  }
+  dependent_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  dependent_list{
+    id
+    fname
+    lname
+    dob
+    gender
+  }
+  next_of_kin_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  next_of_kin_list{
+    id
+    fname
+    lname
+    phone1
+    phone2
+    relationship
+    
+  }
+
+  training_course_list_aggregate: training_plan_list_aggregate {
+    aggregate {
+      count(distinct: true, columns: course_id)
+    }
+  }
+  training_course_list: training_plan_list(distinct_on: [course_id]) {
+    #id
+    course{
+      id
+      name
+      unit_standard
+      unit_standard_desc
+    }
+  }
+  training_plan_list_aggregate: training_plan_list_aggregate {
+    aggregate {
+      count
+    }
+  }
+  training_plan_list{
+    #id
+    created_at
+    completion_status
+    result_status
+    result
+
+    year
+    course {
+      id
+      name
+    }
+    training {
+      id
+      course {
         id
         name
       }
     }
   }
-  category_list{
-    category{
-      id
-      name
+
+  training_matrix_list_aggregate: training_plan_list_aggregate {
+    aggregate {
+      count(distinct: true, columns: training_id)
     }
   }
-  distribution_list{
-    id
-    employee{
-      ${employee_personal_details_fragment}
+  training_matrix_list: training_plan_list(distinct_on: [training_id]) {
+    #id
+    training {
+      id
+      date_range_start
+      date_range_end
+      training_standard
+      unit_standard
+      unit_standard_desc
+      credits
+      nqf_level
+      requirement
+      provider_requirement
+      requirement_legal
+      training_frequency
+      cost
+      course {
+        id
+        name
+        unit_standard
+        unit_standard_desc
+      }
     }
-    other_person{
-      ${personal_details_other_fragment}
+  }
+
+  competency_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  competency_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    accreditation_num
+    competency_type
+    type
+    doc
+    issued_date
+    expiry_date
+    expiry_updated
+    employee{
+      id
+    }
+    training{
+      id
+      course{
+        id
+        name
+      }
+    }
+  }
+  contract_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  contract_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    doc
+    job_profile_doc
+    expiry_updated
+    removed
+    employee{
+      id
+    }
+    contract_details{
+      id
+      contract_type
+      daily_working_hours
+      end_of_trial_period
+      end_time
+      expiry_date
+      notes
+      start_date
+      start_time
+    }
+    salary_info{
+      id
+      deductible_list{
+        id
+        created_at
+        text
+        value
+      }
+      payment_type
+      salary
+      salary_interval
+      wage
+    }
+  }
+  counselling_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  counselling_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    doc
+    corrective_actions
+    counselling_hrs_to_complete
+    expiry_date
+    expiry_updated
+    removed
+    incident_desc
+    reasons
+    types
+    responsible_person{
+      id
+      fname
+      lname
+      email
+      phone
+      id_num
+      passport_num
+      profile_pic
+      employment_num
+    }
+    witness_list{
+      id
+      witness{
+        id
+        fname
+        lname
+        email
+        phone
+        id_num
+        passport_num
+        profile_pic
+        employment_num
+      }
+    }
+  }
+  job_appointment_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  job_appointment_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    removed
+    notes
+    doc
+    date
+    expiry_date
+    expiry_updated
+  }
+  leave_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  leave_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    days_booked
+    due_to
+    removed
+    type
+    employee_comments
+    reason
+    notes
+    doc
+    date
+    expiry_date
+    expiry_updated
+  }
+  license_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  license_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    removed
+    notes
+    doc
+    date
+    expiry_date
+    expiry_updated
+  }
+  medical_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  medical_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    removed
+    annexture_3
+    restrictions
+    doc
+    expiry_date
+    expiry_updated
+  }
+  warning_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  warning_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    removed
+    type
+    details
+    employee_comments
+    notes
+    doc
+    date
+    expiry_date
+    expiry_updated
+    witness_list{
+      id
+      witness{
+        id
+        fname
+        lname
+        email
+        phone
+        id_num
+        passport_num
+        profile_pic
+        employment_num
+      }
+    }
+    issued_by{
+      id
+      fname
+      lname
+      email
+      phone
+      id_num
+      passport_num
+      profile_pic
+      employment_num
+    }
+  }
+  work_permit_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  work_permit_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    removed
+    notes
+    doc
+    date
+    expiry_date
+    expiry_updated
+  }
+
+  document_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  document_id_passport_list_aggregate:document_list_aggregate(where: {type: {_eq: "ID/Passport"}}){
+    aggregate{
+      count
+    }
+  }
+  document_prdp_list_aggregate:document_list_aggregate(where: {type: {_eq: "PrDP"}}){
+    aggregate{
+      count
     }
   }
   document_list{
     id
-    doc
-    incident_id
-  }
-  nature_of_injury_list:injury_list(where: {injury:{type: {_eq: "Nature"}}}){
-    injury{
-      id
-      type
-      name
-    }
-  }
-  bodily_injury_location_list:injury_list(where: {injury:{type: {_eq: "Bodily Parts"}}}){
-    injury{
-      id
-      type
-      name
-    }
-  }
-  injury_mechanism_list:injury_list(where: {injury:{type: {_eq: "Direct Cause"}}}){
-    injury{
-      id
-      type
-      name
-    }
-  }
-  ncr_list{
-    id
-    removed
-    approving_person{
-      ${employee_personal_details_fragment}
-    }
-    responsible_person{
-      ${employee_personal_details_fragment}
-    }
     created_at
-    comments
-    completed_date
-    desc
-    due_date
-    process
-    remarks
+    expiry_date
     type
+    desc
+    doc
   }
-  person_involved_list{
-    id
-    person_involved{
-      ${employee_personal_details_fragment}
-    }
-    person_involved_other{
-      ${personal_details_other_fragment}
+  ppe_list_aggregate{
+    aggregate{
+      count
     }
   }
-  sector_list{
+  ppe_list{
     id
-    sector{
+    created_at
+    assignment_status
+    date_assigned
+    ppe_condition
+    ppe {
+      id
+      created_at
+      name
+      unit
+      qty_received
+      qty_issued
+      qty_in_stock
+      duration_type
+      duration_value
+      notes
+      profile_pic
+    }
+  }
+  trainer_training_list_aggregate:trainer_training_matrix_list_aggregate{
+    aggregate{
+      count
+    }
+  }
+  trainer_training_list:trainer_training_matrix_list{
+    id
+    created_at
+    competency_evaluation
+    cost
+    credits
+    date_range_start
+    date_range_end
+    institution_conducting_training
+    max_participants_per_course
+    nqf_level
+    provider_requirement
+    requirement
+    requirement_legal
+    status
+    training_frequency
+    training_standard
+    unit_standard
+    unit_standard_desc
+
+    trainer{
+      id
+      fname
+      lname
+      email
+      phone
+    }
+    trainer_external{
+      id
+      fname
+      lname
+      email
+      phone
+    }
+    trainer_job_position{
+      id
+      name
+    }
+    course{
       id
       name
     }
   }
-  sub_category_list{
-    sub_category{
-      id
-      name
-      category{
-        id
-        name
-      }
+  supervisor_employee_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
     }
   }
-  test_type_list{
+  supervisor_employee_list(where: {removed: {_eq: false}}){
+    id
+    fname
+    lname
+    email
+    phone
+    id_num
+    passport_num
+    profile_pic
+    employment_num
+  }
+  
+  supervisor{
+    id
+    fname
+    lname
+    email
+    phone
+    id_num
+    passport_num
+    profile_pic
+    employment_num
+  }
+  linked_user {
+    id
+    fname
+    lname
+    username
+    phone
+  }
+  department {
     id
     name
   }
-  vehicle_list{
+  job_position {
     id
-    driver{
-      ${employee_personal_details_fragment}
-    }
-    driver_other{
-      ${personal_details_other_fragment}
-    }
-    driver_dob
-    driver_gender
-    address
-    email
-    phone
-    licence_num
-    licence_expiry
-    licence_years
-    vehicle_make
-    vehicle_model
-    vehicle_year
-    vehicle_color
-    vehicle_reg_num
-    vehicle_fleet_num
-    vehicle_reg_date
-    vehicle_trip_type
-    vehicle_load_type
-    was_3rd_party_involved
-    are_3rd_party_details_available
-    third_party_fname
-    third_party_lname
-    third_party_address
-    third_party_email
-    third_party_phone
-    did_driver_admit_liability
-    did_someone_else_admit_liability
-    someone_else_admit_liability_name
-    liability_admitted_to_name
-    third_party_opinion
-    is_infringement_issued
-    penalty_num
-    issuing_authority
-    issuing_officer
-    type_of_breach
-    addressee_issued_to_name
-    addressee_name_or_entity
-    addressee_amount
-    addressee_due_date
-    did_police_attend_scene
-    ref_or_report_num
-    officer_name
-    officer_station
-    collision_reported_to_police_station
-    have_charges_been_laid
-    nature_of_charges
-    who_laid_charges
-    who_were_nature_charges_laid_against
-  }
-  witness_list{
-    id
-    witness{
-      ${employee_personal_details_fragment}
-    }
-    witness_other{
-      ${personal_details_other_fragment}
+    name
+    job_category{
+      id
+      name
     }
   }
   

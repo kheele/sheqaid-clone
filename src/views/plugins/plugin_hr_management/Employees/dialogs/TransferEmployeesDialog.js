@@ -21,8 +21,6 @@ import PrintCardsPDFReader from '../printers/PrintCardsPDFReader';
 import style from "./TransferEmployeesDialog.lazy.css";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
 
-import byLogged from "../Query/List/listAllEmployeeByLogged";
-
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -137,29 +135,56 @@ class Controls extends React.Component {
     onLoadListEmployees(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
 
+        // const {
+        //     site_id, project_id, client_id,
+        //     department_id, job_position_id,
+        //     supervisor_id
+        // } = this.filterData;
+        //
+        // const args = {
+        //     department_id,
+        //     job_position_id,
+        //     supervisor_id,
+        //     //
+        //     site_id, project_id, client_id,
+        //     //
+        //     exact_orgs: true,
+        // };
+        //
+        // if(!isNew) {
+        //     args.offset = this.refs.root.list.length;
+        // } else {
+        //     args.offset = 0;
+        // }
+        //
+        // return byLogged(args).then((res) => {
+        //     console.log('onLoadList res', res)
+        //     return res;
+        // });
+
         const {
             site_id, project_id, client_id,
             department_id, job_position_id,
-            supervisor_id
+            supervisor_id, team_id
         } = this.filterData;
 
-        const args = {
+        const listByLogged = sockets.of('employees').fn('listByLogged');
+
+        return listByLogged({
+            removed: false,
+            //
             department_id,
             job_position_id,
             supervisor_id,
+            team_id,
             //
             site_id, project_id, client_id,
             //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

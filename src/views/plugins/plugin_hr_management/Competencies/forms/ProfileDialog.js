@@ -85,6 +85,8 @@ class Controls extends AEmployeeDocControls {
 			doc
 		} = item.data || item;
 
+		const _training = training ? training.data || training : null;
+
 		return <div className="row item-wrapper padding-t-10 h-full">
 			<div className="row margin-l-10 margin-r-10 row-details">
 				<ProfileField title="Certificate Type" name="type" className="col-lg-4" value={type}/>
@@ -99,7 +101,7 @@ class Controls extends AEmployeeDocControls {
 			</div>
 			<div className="row margin-l-10 margin-r-10 row-details">
 				<ProfileField title="Training" name="training" className="col-lg-6"
-				              value={training && training.course}
+				              value={_training && _training.course}
 				              renderer={v => v.name}/>
 				<ProfileField title="Trainer" className="col-lg-6" value={trainer}
 				              renderer={v => v.lname + " " + v.fname}/>

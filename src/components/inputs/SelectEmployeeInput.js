@@ -8,7 +8,6 @@ import CustomPersonalInfoDialog from '../dialogs/CustomPersonalInfoDialog';
 
 import ASelectInput from './ASelectInput';
 import findByIdEmployee from "../../mutations/all/Employee/findByIdEmployee";
-import byLogged from "views/plugins/plugin_hr_management/Employees/Query/List/listAllEmployeeByLogged";
 import MKBox from "../MK/MKBox";
 import Chip from "@mui/material/Chip";
 import {execWhen} from "../../utils/UtilsFuns";
@@ -366,16 +365,18 @@ class SelectInput extends ASelectInput {
 }
 
 function onAsyncSelectLoad(incContractors = false) {
-	const args = {
+	const listByLogged = sockets.of('employees').fn('listByLogged');
+
+	return listByLogged({
 		removed: false,
+		//
 		incContractors,
 		//
-		limit: 0,
-		//
 		exact_orgs: true,
-	};
-
-	return byLogged(args).then(list => {
+		//
+		limit: 0,
+		offset: 0,
+	}).then(list => {
 		// console.log('listForSelectionByLogged', list)
 		return list.map((value) => {
 			const {id, data: {fname, lname, contractor}} = value;

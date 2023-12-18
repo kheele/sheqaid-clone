@@ -1,20 +1,20 @@
 const {orgs_fragment} = require("../../../../../graphql/Fragments");
-const {incident_details_fragment} = require('./commons');
+const {employee_details_fragment} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, id) => {
     return getGraphQLOne({
         query: `
-            query findByIdIncidentQuery {
-                sheq_incident_investigation(
+            query findByIdEmployeeQuery {
+                hr_employees(
                   where: {id: {_eq: ${id}},},
                 ) {
-                    ${incident_details_fragment}
+                    ${employee_details_fragment}
                     ${orgs_fragment}
                 }
             }
         `,
-        operationName: "findByIdIncidentQuery",
+        operationName: "findByIdEmployeeQuery",
     });
 }
 //</editor-fold>

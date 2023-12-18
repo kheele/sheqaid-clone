@@ -79,4 +79,10 @@ export default async (input: EntityEmployeeContract) => insertEmployeeDocImpl({
   updateEmployeeDocFn: updateEmployeeContract,
   name: 'Contract',
   plural: 'contracts',
+}).then(res => {
+  if(res) {
+    res.data.contract_details = res.data.contract_details_list;
+    res.data.salary_info = res.data.salary_info_list;
+  }
+  return res;
 });

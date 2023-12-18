@@ -8,12 +8,21 @@ import Form from 'utils/Form';
 import {Dates, ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog, InputDialog} from 'components/dialogs';
-import {Button, ClearableInput, Clickable, ProofUploadButton, SelectEmployeeInput} from 'components/inputs';
+import {
+    Button,
+    ClearableInput,
+    Clickable,
+    ProofUploadButton,
+    SelectEmployeeInput,
+    UploadButton
+} from 'components/inputs';
 import {FormControls, NavButtons, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
 import findByIdEmployeeContract from "mutations/all/EmployeeContract/findByIdEmployeeContract";
+import updateEmployeeContractDetails from "mutations/all/EmployeeContract/updateEmployeeContractDetails";
+import updateEmployeeContractSalaryInfo from "mutations/all/EmployeeContract/updateEmployeeContractSalaryInfo";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -27,11 +36,13 @@ class EditDialog extends AEditDialog {
 
     get findById() {
         const {props: {isNewEmployee}} = this;
-        if(isNewEmployee) return;
+        if (isNewEmployee) return;
         return findByIdEmployeeContract;
     }
 
     get topButtonsHiddenSave() {
+        const {props: {isNewEmployee}} = this;
+        if (isNewEmployee) return false;
         return true;
     }
 
@@ -177,15 +188,13 @@ class Controls extends React.Component {
 
             btn.text("Saving...").disabled();
             progressDialog.open();
-            updateEmployeeContract({id: this.item.id, ...data}).then(res => {
+            updateEmployeeContractDetails({id: this.item.id, ...data}).then(res => {
                 console.log("res", res)
                 if (res === "EMAIL_DUP") {
                     infoDialog.open("An Employee with this email address already exist.");
                 } else if (res === "PHONE_DUP") {
                     infoDialog.open("An Employee with this phone number address already exist.");
                 } else {
-                    const res_data = res;
-                    onSaved && onSaved(res_data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     // this.props.close();
@@ -206,15 +215,13 @@ class Controls extends React.Component {
 
             btn.text("Saving...").disabled();
             progressDialog.open();
-            updateEmployeeContract({id: this.item.id, ...data}).then(res => {
+            updateEmployeeContractSalaryInfo({id: this.item.id, ...data}).then(res => {
                 console.log("res", res)
                 if (res === "EMAIL_DUP") {
                     infoDialog.open("An Employee with this email address already exist.");
                 } else if (res === "PHONE_DUP") {
                     infoDialog.open("An Employee with this phone number address already exist.");
                 } else {
-                    const res_data = res;
-                    onSaved && onSaved(res_data);
                     infoDialog.open("Record successfully updated.");
                     infoDialog.close(2000);
                     // this.props.close();
@@ -281,7 +288,7 @@ class Controls extends React.Component {
                 const {contract_details_list} = old_data;
                 const [old_contract_details] = contract_details_list || [];
 
-                if(old_contract_details) {
+                if (old_contract_details) {
                     ShouldUpdate.check(data, old_contract_details, contract_type, 'contract_type');
                     ShouldUpdate.checkDate(data, old_contract_details, start_date, 'start_date');
                     ShouldUpdate.checkDate(data, old_contract_details, expiry_date, 'expiry_date');
@@ -341,7 +348,7 @@ class Controls extends React.Component {
                 const {salary_info_list} = old_data;
                 let [old_salary_info] = salary_info_list || [];
 
-                if(old_salary_info) {
+                if (old_salary_info) {
                     ShouldUpdate.check(data, old_salary_info, payment_type, 'payment_type');
                     ShouldUpdate.check(data, old_salary_info, salary_interval, 'salary_interval');
                     ShouldUpdate.check(data, old_salary_info, salary, 'salary');
@@ -402,6 +409,67 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="onSubmit">
+    onSubmit(e, btn, onSaved) {
+        const {
+            form,
+            isNewEmployee,
+            item: old_data,
+            props: {dialog: {props: {embeddedEmployee}}},
+            refs: {contractDetailsTab, salaryInfoTab},
+        } = this;
+
+        {
+            const {form} = contractDetailsTab;
+            const contract_details = toNoneNullObject(form.data);
+            if (contract_details) {
+                if (form.isValid('expiry_date') && !form.isValid('start_date')) {
+                    infoDialog.open('Start Date is required');
+                    return;
+                }
+
+                if (form.isValid('start_time') && !form.isValid('end_time')) {
+                    infoDialog.open('Working End Time is required');
+                    return;
+                }
+                if (form.isValid('end_time') && !form.isValid('start_time')) {
+                    infoDialog.open('Working Start Time is required');
+                    return;
+                }
+            }
+        }
+
+        {
+            const {form} = salaryInfoTab;
+            const salary_info = toNoneNullObject(form.data);
+            if (salary_info) {//payment_type,
+                if (!form.isValid('payment_type')) {
+                    infoDialog.open('Payment Type is required');
+                    return;
+                }
+                if (form.get('payment_type') === 'Salary') {
+                    if (!form.isValid('salary_interval')) {
+                        infoDialog.open('Salary Interval is required');
+                        return;
+                    }
+                } else {//Wage
+                    //                if (!form.isValid('wage')) {
+                    //                    infoDialog.open('Wage Type is required');
+                    //                    return;
+                    //                }
+                }
+            }
+        }
+
+        console.log("res", form.data)
+        onSaved && onSaved(form.data);
+        infoDialog.open("Record added.");
+        infoDialog.close(2000);
+        this.props.close();
+    }
+
+    // </editor-fold>
+
     get isNewEmployee() {
         const {props: {dialog: {props: {isNewEmployee}}}} = this;
         return isNewEmployee;
@@ -444,7 +512,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
-                onFormSave={this.onFormSave}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SelectEmployeeInput
                     name="employee"
@@ -462,7 +530,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
-                onFormSave={this.onFormSave}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <ContractDetails ref="contractDetailsTab" defaultValue={contract_details}/>
             </Row>
@@ -473,7 +541,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
-                onFormSave={this.onFormSave}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SalaryInfo ref="salaryInfoTab" defaultValue={salary_info}/>
             </Row>
@@ -485,12 +553,20 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
-                onFormSave={this.onFormSave}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
-                {doc && <Button className="btn btn-primary btn-add-pages" onClick={this.onAddContractPDFPages}>
-                    Add Page(s)
-                </Button>}
-                <ProofUploadButton name="doc" defaultValue={doc} className="col-lg-12" onChange={this.form.onChange}/>
+                {/*{doc && <Button className="btn btn-primary btn-add-pages" onClick={this.onAddContractPDFPages}>*/}
+                {/*    Add Page(s)*/}
+                {/*</Button>}*/}
+                <UploadButton
+                    name="doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    defaultValue={doc}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 rendered
@@ -499,11 +575,14 @@ class Controls extends React.Component {
                 className="row-doc"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormSave={this.onFormSave}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <ProofUploadButton
+                <UploadButton
                     name="job_profile_doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
                     defaultValue={job_profile_doc}
+                    showOnlyIcon
                     className="col-lg-12"
                     onChange={this.form.onChange}
                 />

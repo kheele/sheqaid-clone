@@ -14,7 +14,6 @@ import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewJobPositionDialog.lazy.css";
 import {FormControls, Row} from "components/FormComponents";
-import insertDepartment from "mutations/all/Department/insertDepartment";
 import insertJobPosition from "mutations/all/JobPosition/insertJobPosition";
 
 @observer

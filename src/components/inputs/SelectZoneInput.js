@@ -49,7 +49,7 @@ class SelectInput extends ASelectInput {
             key: new Date().getTime(),
             name: "zone",
             type: "select",
-            placeholder: "Province...",
+            placeholder: "State/Province/District...",
             add: false,
             ...this.props,
             className,
@@ -67,6 +67,7 @@ class SelectInput extends ASelectInput {
         (async () => {
             const res = await onSelectLoad(country);
             this.state.lists.list = res.distinct();
+            console.log('SelectZoneInput', this.list.length);
 
             this.state.props = {
                 isClearable: true,
@@ -86,8 +87,9 @@ class SelectInput extends ASelectInput {
             if(defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            let {data: {name: label}} = defaultValue;
-            console.log('selectedVal', label)
+            const {name, data} = defaultValue;
+            const label = name || data.name;
+            console.log('selectedVal', label);
             return {value: defaultValue, label};
         }
         return null;

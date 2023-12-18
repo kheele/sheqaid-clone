@@ -44,6 +44,7 @@ class SelectInput extends ASelectInput {
     //<editor-fold desc="setLoad">
     setLoad(props, res) {
         this.state.lists.list = res.distinct();
+        console.log('SelectCityInput', this.list.length);
 
         this.state.props = {
             isClearable: true,
@@ -127,7 +128,8 @@ class SelectInput extends ASelectInput {
             if (defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            let {data: {name: label}} = defaultValue;
+            const {name, data} = defaultValue;
+            const label = name || data.name;
             console.log('selectedVal', label)
             return {value: defaultValue, label};
         }

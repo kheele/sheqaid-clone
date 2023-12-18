@@ -3,8 +3,6 @@ import {observer} from 'mobx-react';
 
 import AggregateStat from "components/AggregateStat";
 
-import byLogged from "./Query/List/listAllEmployeeByLogged";
-
 @observer
 class AListTab extends React.Component {
     constructor(props) {
@@ -40,9 +38,9 @@ class AListTab extends React.Component {
             id_or_pass_num,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('employees').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             removed: this.removed,
             //
             department_id,
@@ -53,18 +51,10 @@ class AListTab extends React.Component {
             name,
             id_or_pass_num,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

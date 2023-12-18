@@ -1,5 +1,5 @@
-const {orgs_fragment} = require("../../../../../graphql/Fragments");
-const {incident_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {orgs_fragment, employee_personal_details_fragment} = require("../../../../../graphql/Fragments");
+const {getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -11,35 +11,14 @@ module.exports = async (socket, data) => {
         //
         removed = false,
         id,
-        //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        incContractors = false,
+        department_id,
+        job_position_id,
+        job_category_id,
+        team_id,
+        supervisor_id,
+        name,
+        id_or_pass_num,
         //
         site_id, project_id, client_id,
         //
@@ -53,34 +32,14 @@ module.exports = async (socket, data) => {
         orgs_filter,
         id,
         //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        incContractors,
+        department_id,
+        job_position_id,
+        job_category_id,
+        team_id,
+        supervisor_id,
+        name,
+        id_or_pass_num,
         //
         site_id, project_id, client_id,
         //
@@ -89,22 +48,93 @@ module.exports = async (socket, data) => {
 
     return listGraphQL({
         query: `
-			  query listAllIncidentsByLoggedQuery {
-				sheq_incident_investigation(
+			  query listAllEmployeesByLoggedQuery {
+				hr_employees(
 				  where: {
 					removed: {_eq: ${removed}},
 					${filter}
 				  },
-	                order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
+	                order_by: {lname: asc},
 					offset: ${offset},
 					${limit > 0 ? `limit: ${limit}` : ''}
 				) {
-				    ${incident_details_fragment}
+                    ${employee_personal_details_fragment}
+                    employment_num
+                    employment_date
+                    removed
+                  
+                    job_observation_list_aggregate(where: {removed: {_eq: false}}){
+                        aggregate{
+                            count
+                        }
+                    }
+			        job_observation_list{
+			            id
+			            name
+			        }
+			    
+                    medical_list_aggregate(where: {removed: {_eq: false}}){
+                        aggregate{
+                        count
+                        }
+                    }
+                    leave_list_aggregate(where: {removed: {_eq: false}}){
+                      aggregate{
+                        count
+                      }
+                    }
+                    ppe_list_aggregate{
+                      aggregate{
+                        count
+                      }
+                    }
+                    trainer_training_list_aggregate:trainer_training_matrix_list_aggregate{
+                      aggregate{
+                        count
+                      }
+                    }
+                    warning_list_aggregate(where: {removed: {_eq: false}}){
+                      aggregate{
+                        count
+                      }
+                    }
+                    supervisor_employee_list_aggregate(where: {removed: {_eq: false}}){
+                      aggregate{
+                        count
+                      }
+                    }
+                    supervisor{
+                      ${employee_personal_details_fragment}
+                    }
+                    linked_user {
+                      id
+                      fname
+                      lname
+                      username
+                      phone
+                    }
+                    department {
+                      id
+                      name
+                    }
+                    job_position {
+                      id
+                      name
+                      job_category{
+                        id
+                        name
+                      }
+                    }
+                    ${incContractors ? `
+                    contractor {
+                      id
+                      name
+                    }` : ''}
                     ${orgs_fragment}
 				}
 			  }
-			`,
-        operationName: "listAllIncidentsByLoggedQuery",
+		`,
+        operationName: "listAllEmployeesByLoggedQuery",
     });
 }
 //</editor-fold>

@@ -79,6 +79,15 @@ class Controls extends React.Component {
 			return;
 		}
 
+		if(isNewEmployee) {
+			console.log("res", form.data)
+			onSaved && onSaved(form.data);
+			infoDialog.open("Record added.");
+			infoDialog.close(2000);
+			this.props.close();
+			return;
+		}
+
 		const {employee, expiry_date, doc} = form.data;
 
 		const data = {};
