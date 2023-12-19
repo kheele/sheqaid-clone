@@ -29,7 +29,6 @@ import Popover from "components/popovers/Popover";
 import {RenderCourse, RenderEmployee, RenderJobPosition, RenderYear} from "./RenderItems";
 import TrainingPlanTargetViewButtons from "components/Omni/TrainingPlanTargetViewButtons";
 import EmployeesDialog from "views/plugins/plugin_hr_management/Employees/dialogs/EmployeesDialog";
-import byLogged from "./Query/List/listAllTrainingPlanByLogged";
 
 // </editor-fold>
 
@@ -115,9 +114,9 @@ class Index extends React.Component {
             year,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('trainings/plans').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             completion_status,
             result_status,
             result,
@@ -133,18 +132,10 @@ class Index extends React.Component {
             employee_view,
             target_view,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-	        args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

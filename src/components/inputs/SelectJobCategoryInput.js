@@ -46,7 +46,7 @@ class SelectInput extends ASelectInput {
             returnValue: true,
             add: true,
             renderer: this.renderer,
-            // onProcessValue: this.onProcessValue,
+            onProcessValue: this.onProcessValue,
             ...this.props,
             defaultValue: this.selectedItem,
             className

@@ -353,7 +353,11 @@ class Controls extends React.Component {
                     //3
                     job_category_list, job_position_list, sector_list,
                     //4
-                    status, date_range, cost,
+                    status,
+                    date_range,
+                    date_range_start,
+                    date_range_end,
+                    cost,
                     //5
                     institution_conducting_training, trainer, trainer_job_position,
                     //6
