@@ -79,7 +79,7 @@ class Controls extends AEmployeeDocControls {
 		const {created_at, doc, employee, date, expiry_date, notes} = item.data || item;
 
 		return <div className="row item-wrapper padding-t-10 h-full">
-			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">JobAppointment Details</label>
+			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Job Appointment Details</label>
 			<div className="row margin-l-10 margin-r-10 row-details">
 				<ProfileField title="Start Date" name="date" type="date" value={date} className="col-lg-6"/>
 				<ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date} className="col-lg-6"/>
@@ -87,11 +87,10 @@ class Controls extends AEmployeeDocControls {
 				<UploadButton
 					name="doc"
 					defaultValue={doc}
-					buttonTitle="Document"
 					type={['PDF', 'Word', 'Image']}
 					showOnlyIcon
 					readonly
-					className="col-lg-6 pull-left-3"
+					className="col-lg-6 margin-v-10"
 				/>
 			</div>
 		</div>;

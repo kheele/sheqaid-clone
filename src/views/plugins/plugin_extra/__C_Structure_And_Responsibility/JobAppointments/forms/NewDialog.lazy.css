@@ -1,18 +1,18 @@
 @import '../../../../../../css/ANewDialog.css';
 
-#dialog-overlay.NewLeaveDialog-new-dialog .dialog-container{
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
     width: 800px;
     max-width: 100%;
 }
-#dialog-overlay.NewLeaveDialog-new-dialog .dialog-content{
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content{
     padding: 0;
     height: calc(100% - 50px);
 }
-#dialog-overlay.NewLeaveDialog-new-dialog .dialog-content .controls > .row:last-of-type{
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .controls > .row:last-of-type{
     position: relative;
 }
-#dialog-overlay.NewLeaveDialog-new-dialog .dialog-content .row.sec-group{
+#dialog-overlay.NewJobAppointmentDialog-new-dialog .dialog-content .row.sec-group{
     height: calc(100% - 87px);
     margin-bottom: -5px !important;    
 }

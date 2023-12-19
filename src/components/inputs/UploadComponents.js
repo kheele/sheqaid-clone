@@ -238,7 +238,7 @@ class ShowOnlyIcon extends AShowFile {
 	@computed
 	get fileIcon() {
 		const {
-			props: {onUpload, showOnlyIcon, readonly, buttonTitle, defaultValue},
+			props: {onUpload, showOnlyIcon, readonly, title, buttonTitle, defaultValue},
 			isPDF, isWord, isExcel, isPic, isVideo,
 			isLoading, isLoadedError
 		} = this;
@@ -256,37 +256,39 @@ class ShowOnlyIcon extends AShowFile {
 			</i>;
 		}
 
+		const hasTitle = title || buttonTitle;
+
 		if (isPDF) {
 			return <i className={"fa fa-file-pdf-o fixed-flex flex"}>
-				<span>PDF Document</span>
+				{!hasTitle && <span>PDF Document</span>}
 				{this.showTrashIcon}
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
 			</i>;
 		} else if (isWord) {
 			return <i className={"fa fa-file-word-o fixed-flex flex"}>
-				<span>Word Document</span>
+				{!hasTitle && <span>Word Document</span>}
 				{this.showTrashIcon}
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
 			</i>;
 		} else if (isExcel) {
 			return <i className={"fa fa-file-excel-o fixed-flex flex"}>
-				<span>Spreadsheet Document</span>
+				{!hasTitle && <span>Spreadsheet Document</span>}
 				{this.showTrashIcon}
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
 			</i>;
 		} else if (isPic) {
 			return <i className={"fa fa-file-image fixed-flex flex"}>
-				<span>Photo Document</span>
+				{!hasTitle && <span>Photo Document</span>}
 				{this.showTrashIcon}
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
 			</i>;
 		} else if (isVideo) {
 			return <i className={"fa fa-file-video fixed-flex flex"}>
-				<span>Video Document</span>
+				{!hasTitle && <span>Video Document</span>}
 				{this.showTrashIcon}
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}

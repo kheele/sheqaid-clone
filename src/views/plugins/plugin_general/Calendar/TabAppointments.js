@@ -10,8 +10,7 @@ import ATab from './ATab';
 import BigCalendarWrapper from './BigCalendarWrapper';
 import DataSource from './data';
 
-import ProfileAppointmentDialog
-    from 'views/plugins/plugin_extra/__C_Structure_And_Responsibility/dialogs/ProfileAppointmentDialog';
+import ProfileAppointmentDialog from 'views/plugins/plugin_general/Calendar/ProfileAppointmentDialog';
 
 import style from "./TabAppointments.lazy.css";
 

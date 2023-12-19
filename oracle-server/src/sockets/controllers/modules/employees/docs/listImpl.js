@@ -54,7 +54,7 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
         isContract,
     });
 
-    const singularQueryName = singular.replace('/','_');
+    const singularQueryName = singular.replace('/','_').replace(' ','');
 
     if (view === 'Employee') {
         //<editor-fold desc="ByGroup">

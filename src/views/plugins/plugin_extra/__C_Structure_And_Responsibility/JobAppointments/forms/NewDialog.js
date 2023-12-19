@@ -29,7 +29,6 @@ class NewDialog extends ANewDialog {
 
 @observer
 class Controls extends React.Component {
-    path = "plugin_sheq_assist/employees/job_appointments/";
 
     @observable
     state = {

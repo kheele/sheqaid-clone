@@ -18,8 +18,6 @@ import {THead} from "components/tables";
 import {
     ClearableInput,
     SelectEmployeeInput,
-    SelectJobPositionInput,
-    SelectTrainingCourseInput
 } from "components/inputs";
 
 import * as listAllJobAppointmentByLogged from "./Query/List/listAllJobAppointmentByLogged";
@@ -54,7 +52,16 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="onBuildQuery">
     onBuildQuery() {
-        return listAllJobAppointmentByLogged;
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            notes,
+            date,
+        } = filterData || {};
+        return {
+            path: 'structure-and-responsibility/job-appointments',
+            notes,
+            date,
+        };
     }
     //</editor-fold>
 

@@ -413,7 +413,8 @@ class EditDocumentsSection extends React.Component {
                         onFormBack={onFormBack}
                         onFormNext={onFormNext}
                     >
-                        <ContractControls item={item} defaultValue={contract_list} isNewEmployee={isNewEmployee}
+                        <ContractControls item={item} defaultValue={contract_list}
+                                          isNewEmployee={isNewEmployee}
                                           tabsHeight="530px" isEmbedded
                                           onChange={this.form.onChange}/>
                     </Row>
@@ -427,7 +428,8 @@ class EditDocumentsSection extends React.Component {
                         onFormNext={onFormNext}
                     >
                         <JobAppointmentControls item={item} defaultValue={job_appointment_list}
-                                                isNewEmployee={isNewEmployee} tabsHeight="530px" isEmbedded
+                                                isNewEmployee={isNewEmployee}
+                                                tabsHeight="530px" isEmbedded
                                                 onChange={this.form.onChange}/>
                     </Row>
                     <Row

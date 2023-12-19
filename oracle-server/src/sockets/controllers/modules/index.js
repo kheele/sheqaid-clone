@@ -1,8 +1,9 @@
-require("./dashboard");
 require("./assets");
-require("./claims");
 require("./chemicals");
+require("./claims");
+require("./dashboard");
+require("./employees");
 require("./incidents");
 require("./inspections");
+require("./structure-and-responsibility");
 require("./trainings");
-require("./employees");

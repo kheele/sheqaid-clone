@@ -36,11 +36,10 @@ class ATab extends React.Component {
 		this.onLoadList = this.onLoadList.bind(this);
 
 		this.setView = this.setView.bind(this);
+		this.onView && (this.onView = this.onView.bind(this));
 
 		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
 		this.onSaveAsExcel = this.onSaveAsExcel.bind(this);
-
-		this.onView && (this.onView = this.onView.bind(this));
 
 		this.renderDefaultLeftButtons = this.renderDefaultLeftButtons.bind(this);
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -214,7 +213,6 @@ class ATab extends React.Component {
 			</Button>
 		</>;
 	}
-
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
