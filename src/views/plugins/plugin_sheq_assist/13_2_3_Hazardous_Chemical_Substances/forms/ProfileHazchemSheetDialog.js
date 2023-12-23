@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
 import {ProfileField, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -27,12 +27,15 @@ import {
 import {changeColors} from '../dialogs/Utils';
 
 import style from "./ProfileHazchemSheetDialog.lazy.css";
+import findByIdChemicalHazchemsheet
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileHazchemSheetDialog";
+    findById = findByIdChemicalHazchemsheet;
 
     constructor(props) {
         super(props, style);
@@ -56,11 +59,6 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends React.Component {
 
-    // <editor-fold defaultstate="collapsed" desc="state">
-    @observable
-    state = {};
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
@@ -73,9 +71,9 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
         const {state, props: {dialog, execWhen}} = this;
-        execWhen(() => this.item).then(({data: {product}}) => {
+        execWhen(() => this.item && this.item.data).then(({product}) => {
             execWhen(() => !!dialog && dialog.getDOMNode()).then(() => {
-                changeColors(dialog, product.risk_level || product.data.risk_level);
+                changeColors(dialog, product.risk_level);
             });
         });
     }
@@ -100,6 +98,7 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed
     get item() {
         return this.props.state.item;
     }
@@ -108,6 +107,7 @@ class Controls extends React.Component {
     render() {
         if (!this.item)
             return null;
+
         let {
             props: {
                 onFormNext, onFormBack, onFormOpen,

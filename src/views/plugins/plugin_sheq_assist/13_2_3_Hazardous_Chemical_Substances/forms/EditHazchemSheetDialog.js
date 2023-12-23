@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {autorun, observable, toJS} from 'mobx';
+import {autorun, observable, toJS, computed} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -41,15 +41,16 @@ import {
 import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onChangeSDS} from '../dialogs/Utils';
 
 import style from "./EditHazchemSheetDialog.lazy.css";
-import updateChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
 import updateChemicalHazchemsheet
-    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
+import findByIdChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditHazchemSheetDialog extends AEditDialog {
     pageKey = "EditHazchemSheetDialog";
+    findById = findByIdChemicalHazchemsheet;
 
     constructor(props) {
         super(props, style);
@@ -466,6 +467,7 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed
     get item() {
         return this.props.state.item;
     }

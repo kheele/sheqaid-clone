@@ -40,7 +40,7 @@ class SelectInput extends ASelectInput {
             placeholder: "Module...",
             values,
             returnValue: true,
-            add: true,
+            add: false,
             ...this.props,
             defaultValue: this.selectedItem,
             className

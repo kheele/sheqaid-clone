@@ -107,8 +107,8 @@ class Controls extends React.Component {
 
         if(signature_settings_list) {
             data.signature_settings_list = signature_settings_list.map(({job_position, employee,}) => ({
-                job_position: job_position ? (isString(job_position) ? job_position : (job_position.name || job_position.data.name)) : null,
-                employee: employee ? {id: employee.id, fname: employee.data.fname, lname: employee.data.lname, email: employee.data.email} : null,
+                job_position_id: job_position && job_position.id,
+                employee_id: employee && employee.id,
             }));
         }
 

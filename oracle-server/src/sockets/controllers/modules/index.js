@@ -5,5 +5,6 @@ require("./dashboard");
 require("./employees");
 require("./incidents");
 require("./inspections");
+require("./signature-settings");
 require("./structure-and-responsibility");
 require("./trainings");
