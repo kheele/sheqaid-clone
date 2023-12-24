@@ -20,9 +20,11 @@ const query = graphql`
             type
             product{
                 id
+                name
             }
             sds{
                 id
+                name
             }
 
             contacts_emergency_name

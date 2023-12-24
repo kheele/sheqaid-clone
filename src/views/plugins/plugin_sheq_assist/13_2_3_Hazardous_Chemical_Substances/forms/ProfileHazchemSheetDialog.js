@@ -89,9 +89,9 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderPhotographItem">
     renderPhotographItem(item, n) {
-        return <div key={"item-" + n} className="col-lg-6" idx={n}>
-            <div>
-                {RenderUtils.renderImage(item)}
+        return <div key={"item-" + n} idx={n}>
+            <div className="h-180 padding-0 margin-0">
+                {RenderUtils.renderImage(item.doc)}
             </div>
         </div>;
     }
@@ -147,6 +147,8 @@ class Controls extends React.Component {
 
         const {isConsultant, isNoProjects} = storage.is;
 
+        console.log('item', item);
+
         return <FormControls>
             {!isNoProjects && <Row
                 rendered
@@ -177,12 +179,12 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
             >
                 <label className="col-lg-12 padding-0 pull-left">Link With Chemical Product If Available</label>
-                <ProfileField name="product" placeholder="Product" value={product} renderer={v => v.data.name}
+                <ProfileField name="product" placeholder="Product" value={product} renderer={v => v.name}
                               className="col-lg-12"/>
                 <SelectedProduct product={product}/>
                 
                 <label className="col-lg-12 padding-0 pull-left">Link With SDS If Available</label>
-                <ProfileField name="sds" placeholder="Safety Data Sheet (SDS)" value={sds} renderer={v => v.data.name}
+                <ProfileField name="sds" placeholder="Safety Data Sheet (SDS)" value={sds} renderer={v => v.name}
                               className="col-lg-12"/>
                               
                 <label className="col-lg-12 padding-0 pull-left">Other Basic Info</label>
@@ -209,7 +211,7 @@ class Controls extends React.Component {
                         onFormNext={onFormNext}
                     >
                         <GridView title="Picture(s)" renderItem={this.renderPhotographItem}
-                                  list={precaution_photo_concentrate_list}/>
+                                  list={precaution_photo_concentrate_list} className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
                     </Row>
                     <Row
                         rendered
@@ -220,7 +222,7 @@ class Controls extends React.Component {
                         onFormBack={onFormBack}
                     >
                         <GridView title="Picture(s)" renderItem={this.renderPhotographItem}
-                                  list={precaution_photo_application_list}/>
+                                  list={precaution_photo_application_list} className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
                     </Row>
                 </FormControls>
             </Row>

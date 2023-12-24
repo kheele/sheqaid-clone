@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d6dcbaf0476420dee9c92185daa7dc1b>>
+ * @generated SignedSource<<9a84ca2082258e818c7d1063edec4c71>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -71,7 +71,8 @@ v6 = {
   "storageKey": null
 },
 v7 = [
-  (v2/*: any*/)
+  (v2/*: any*/),
+  (v4/*: any*/)
 ],
 v8 = {
   "alias": null,
@@ -347,41 +348,37 @@ v36 = [
     }
   }
 ],
-v37 = [
-  (v2/*: any*/),
-  (v4/*: any*/)
-],
-v38 = {
+v37 = {
   "alias": null,
   "args": null,
   "concreteType": "default_clients",
   "kind": "LinkedField",
   "name": "client",
   "plural": false,
-  "selections": (v37/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
-v39 = {
+v38 = {
   "alias": null,
   "args": null,
   "concreteType": "default_projects",
   "kind": "LinkedField",
   "name": "project",
   "plural": false,
-  "selections": (v37/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
-v40 = {
+v39 = {
   "alias": null,
   "args": null,
   "concreteType": "default_sites",
   "kind": "LinkedField",
   "name": "site",
   "plural": false,
-  "selections": (v37/*: any*/),
+  "selections": (v7/*: any*/),
   "storageKey": null
 },
-v41 = [
+v40 = [
   (v19/*: any*/),
   (v20/*: any*/),
   (v6/*: any*/),
@@ -555,9 +552,9 @@ return {
                     "selections": (v23/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Disposal\"},\"type\":{\"_eq\":\"Unused Product\"}})"
                   },
+                  (v37/*: any*/),
                   (v38/*: any*/),
-                  (v39/*: any*/),
-                  (v40/*: any*/)
+                  (v39/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -636,7 +633,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Hazard Identification\"},\"type\":{\"_eq\":\"Physical\"}})"
                   },
                   {
@@ -646,7 +643,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Hazard Identification\"},\"type\":{\"_eq\":\"Reproductive\"}})"
                   },
                   {
@@ -656,7 +653,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Hazard Identification\"},\"type\":{\"_eq\":\"Biological\"}})"
                   },
                   {
@@ -666,7 +663,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"First Aid Procedure\"},\"type\":{\"_eq\":\"Splashes In Eyes\"}})"
                   },
                   {
@@ -676,7 +673,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"First Aid Procedure\"},\"type\":{\"_eq\":\"Contact with Skin\"}})"
                   },
                   {
@@ -686,7 +683,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"First Aid Procedure\"},\"type\":{\"_eq\":\"Mouth Contact or Eaten\"}})"
                   },
                   {
@@ -696,7 +693,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"First Aid Procedure\"},\"type\":{\"_eq\":\"Fumes Breathed In\"}})"
                   },
                   {
@@ -706,7 +703,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Emergency Action For Spills\"},\"type\":{\"_eq\":\"Small Spills\"}})"
                   },
                   {
@@ -716,7 +713,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Emergency Action For Spills\"},\"type\":{\"_eq\":\"Large Spills\"}})"
                   },
                   {
@@ -726,7 +723,7 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Disposal\"},\"type\":{\"_eq\":\"Used Containers\"}})"
                   },
                   {
@@ -736,12 +733,12 @@ return {
                     "kind": "LinkedField",
                     "name": "list",
                     "plural": true,
-                    "selections": (v41/*: any*/),
+                    "selections": (v40/*: any*/),
                     "storageKey": "list(where:{\"group\":{\"_eq\":\"Disposal\"},\"type\":{\"_eq\":\"Unused Product\"}})"
                   },
+                  (v37/*: any*/),
                   (v38/*: any*/),
-                  (v39/*: any*/),
-                  (v40/*: any*/)
+                  (v39/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -754,16 +751,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "26c461d11258ccc68a1938b2ea9c2b08",
+    "cacheID": "629170f1ab7b2312818bfd36257a45c0",
     "id": null,
     "metadata": {},
     "name": "findByIdChemicalHazchemsheetQuery",
     "operationKind": "query",
-    "text": "query findByIdChemicalHazchemsheetQuery(\n  $id: bigint\n) {\n  sheq_chemical_hazchem_sheets_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        physical_state\n        type\n        product {\n          id\n        }\n        sds {\n          id\n        }\n        contacts_emergency_name\n        contacts_emergency_num\n        contacts_manufacturer_name\n        contacts_manufacturer_num\n        doc\n        precaution_photo_concentrate_list: precaution_photo_list(where: {type: {_eq: \"Concentrate\"}}) {\n          id\n          doc\n          type\n        }\n        precaution_photo_application_list: precaution_photo_list(where: {type: {_eq: \"Application\"}}) {\n          id\n          doc\n          type\n        }\n        active_ingredient_list: list(where: {group: {_eq: \"Active Ingredient\"}}) {\n          value\n          group\n          id\n        }\n        hazard_identification_physical_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Physical\"}}) {\n          value\n          group\n          type\n          id\n        }\n        hazard_identification_reproductive_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Reproductive\"}}) {\n          value\n          group\n          type\n          id\n        }\n        hazard_identification_biological_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Biological\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_splashes_in_eyes_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Splashes In Eyes\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_contact_with_skin_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Contact with Skin\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_mouth_contact_or_eaten_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Mouth Contact or Eaten\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_fumes_breathed_in_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Fumes Breathed In\"}}) {\n          value\n          group\n          type\n          id\n        }\n        emergency_action_for_spills_small_list: list(where: {group: {_eq: \"Emergency Action For Spills\"}, type: {_eq: \"Small Spills\"}}) {\n          value\n          group\n          type\n          id\n        }\n        emergency_action_for_spills_large_list: list(where: {group: {_eq: \"Emergency Action For Spills\"}, type: {_eq: \"Large Spills\"}}) {\n          value\n          group\n          type\n          id\n        }\n        disposal_used_container_list: list(where: {group: {_eq: \"Disposal\"}, type: {_eq: \"Used Containers\"}}) {\n          value\n          group\n          type\n          id\n        }\n        disposal_unused_product_list: list(where: {group: {_eq: \"Disposal\"}, type: {_eq: \"Unused Product\"}}) {\n          value\n          group\n          type\n          id\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdChemicalHazchemsheetQuery(\n  $id: bigint\n) {\n  sheq_chemical_hazchem_sheets_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        physical_state\n        type\n        product {\n          id\n          name\n        }\n        sds {\n          id\n          name\n        }\n        contacts_emergency_name\n        contacts_emergency_num\n        contacts_manufacturer_name\n        contacts_manufacturer_num\n        doc\n        precaution_photo_concentrate_list: precaution_photo_list(where: {type: {_eq: \"Concentrate\"}}) {\n          id\n          doc\n          type\n        }\n        precaution_photo_application_list: precaution_photo_list(where: {type: {_eq: \"Application\"}}) {\n          id\n          doc\n          type\n        }\n        active_ingredient_list: list(where: {group: {_eq: \"Active Ingredient\"}}) {\n          value\n          group\n          id\n        }\n        hazard_identification_physical_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Physical\"}}) {\n          value\n          group\n          type\n          id\n        }\n        hazard_identification_reproductive_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Reproductive\"}}) {\n          value\n          group\n          type\n          id\n        }\n        hazard_identification_biological_list: list(where: {group: {_eq: \"Hazard Identification\"}, type: {_eq: \"Biological\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_splashes_in_eyes_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Splashes In Eyes\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_contact_with_skin_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Contact with Skin\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_mouth_contact_or_eaten_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Mouth Contact or Eaten\"}}) {\n          value\n          group\n          type\n          id\n        }\n        first_aid_procedure_fumes_breathed_in_list: list(where: {group: {_eq: \"First Aid Procedure\"}, type: {_eq: \"Fumes Breathed In\"}}) {\n          value\n          group\n          type\n          id\n        }\n        emergency_action_for_spills_small_list: list(where: {group: {_eq: \"Emergency Action For Spills\"}, type: {_eq: \"Small Spills\"}}) {\n          value\n          group\n          type\n          id\n        }\n        emergency_action_for_spills_large_list: list(where: {group: {_eq: \"Emergency Action For Spills\"}, type: {_eq: \"Large Spills\"}}) {\n          value\n          group\n          type\n          id\n        }\n        disposal_used_container_list: list(where: {group: {_eq: \"Disposal\"}, type: {_eq: \"Used Containers\"}}) {\n          value\n          group\n          type\n          id\n        }\n        disposal_unused_product_list: list(where: {group: {_eq: \"Disposal\"}, type: {_eq: \"Unused Product\"}}) {\n          value\n          group\n          type\n          id\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "848039a6799ffbc908811907cf3d15b0";
+node.hash = "145446bd930234d7be8d06f1d44887b3";
 
 module.exports = node;

@@ -215,14 +215,15 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderPhotographItem">
     renderPhotographItem(refName) {
         return (item, n) => {
-            return <div key={"item-" + n} className="col-lg-6">
-                {!!item && <div>
-                    <img src={item.previewPath ? item.previewPath : item.dlUrls[0]}/>
+            return <div key={"item-" + n}>
+                {!!item && <div className="h-180 padding-0 margin-0">
+                    {item.doc && <img src={item.doc.dlUrls[0]}/>}
+                    {!item.doc && <img src={item.previewPath ? item.previewPath : item.dlUrls[0]}/>}
                     <Clickable idx={n} refName={refName} onClick={this.onRemovePhotograph}><i
                         className="fa fa-times"></i></Clickable>
                 </div>}
                 {!item && <Clickable idx={n} refName={refName} action="self" onClick={this.onAddPhotograph}>
-                    <div>
+                    <div className="h-180 padding-0 margin-0">
                         <h3>Add Photo</h3>
                         <i className="fa fa-images"></i>
                     </div>
@@ -363,24 +364,10 @@ class Controls extends React.Component {
         
         if(product && old_data.product) {
             if(product.id !== old_data.product.id) {
-                const {id, name, risk_level, category, manufacturer, data: _data} = product;
-                data.product = {
-                    id, 
-                    name: name || _data.name, 
-                    risk_level: risk_level || _data.risk_level,
-                    category: category || _data.category, 
-                    manufacturer: manufacturer || _data.manufacturer
-                };
+                data.product_id = product.id;
             }
         } else if(product) {
-            const {id, name, risk_level, category, manufacturer, data: _data} = product;
-            data.product = {
-                id, 
-                name: name || _data.name, 
-                risk_level: risk_level || _data.risk_level,
-                category: category || _data.category, 
-                manufacturer: manufacturer || _data.manufacturer
-            };
+            data.product_id = product.id;
         }
         //[path]
 
@@ -487,7 +474,8 @@ class Controls extends React.Component {
                     //
                     client, project, site,
                     //
-                    product, sds,
+                    product,
+                    sds,
                     physical_state,
                     type,
                     precaution_photo_concentrate_list,
@@ -513,8 +501,6 @@ class Controls extends React.Component {
             }
         } = this;
 
-        const chemicalSelected = {label: product.data.name, value: product};
-        
         const {isConsultant, isNoProjects} = storage.is;
 
         return <FormControls>
@@ -542,7 +528,7 @@ class Controls extends React.Component {
                 <ClearableInput name="has_product" type="radio" placeholder="Has Chemical Product?" vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_product} returnValue/>
                 <Fragment ref="product_details_sec" rendered={false}>
                     <label className="col-lg-6 hor-center text-center padding-0">Link With Chemical Product If Available</label>
-                    <SelectChemicalProductInput name="product" placeholder="Chemical Product..." defaultValue={chemicalSelected} className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
+                    <SelectChemicalProductInput name="product" placeholder="Chemical Product..." defaultValue={product} className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
                     <SelectedProduct state={this.state}/>
                 </Fragment>
                 
@@ -585,7 +571,9 @@ class Controls extends React.Component {
                     >
                         <GridView ref="precaution_photo_concentrateGridView" title="Add Photo"
                                   renderItem={this.renderPhotographItem("precaution_photo_concentrateGridView")}
-                                  onLoadList={this.onLoadPhotographPlaceholderList(precaution_photo_concentrate_list)}/>
+                                  onLoadList={this.onLoadPhotographPlaceholderList(precaution_photo_concentrate_list)}
+                                  className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"
+                        />
                         <Button className="btn btn-primary hor-center" refName="precaution_photo_concentrateGridView"
                                 onClick={this.onAddPhotograph}>Add Photo</Button>
                     </Row>
@@ -599,7 +587,9 @@ class Controls extends React.Component {
                     >
                         <GridView ref="precaution_photo_applicationGridView" title="Add Photo"
                                   renderItem={this.renderPhotographItem("precaution_photo_applicationGridView")}
-                                  onLoadList={this.onLoadPhotographPlaceholderList(precaution_photo_application_list)}/>
+                                  onLoadList={this.onLoadPhotographPlaceholderList(precaution_photo_application_list)}
+                                  className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"
+                        />
                         <Button className="btn btn-primary hor-center" refName="precaution_photo_applicationGridView"
                                 onClick={this.onAddPhotograph}>Add Photo</Button>
                     </Row>
