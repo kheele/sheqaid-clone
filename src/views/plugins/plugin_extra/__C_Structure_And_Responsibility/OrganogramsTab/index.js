@@ -14,6 +14,7 @@ import {THead, TRow} from 'components/tables';
 import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 import byLogged from "./Query/List/listAllOrganogramByLogged";
+import updateOrganogram from "mutations/all/StructureAndResponsibility/Organogram/updateOrganogram";
 
 @observer
 class OrganogramsTab extends React.Component {
@@ -157,7 +158,7 @@ class OrganogramsTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateOrganogram}/>
             
             <ProfileDialog ref="profileDialog"/>
             <NewDialog ref="newDialog"/>

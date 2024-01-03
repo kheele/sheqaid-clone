@@ -43,6 +43,7 @@ class SelectInput extends ASelectInput {
             name: "job_category",
             type: type || "select",
             placeholder: "Job Category...",
+            values: this.list,
             returnValue: true,
             add: true,
             renderer: this.renderer,

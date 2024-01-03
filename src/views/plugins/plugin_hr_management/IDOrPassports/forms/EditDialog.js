@@ -1,25 +1,40 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, Clickable, ProofUploadButton, SelectEmployeeInput} from 'components/inputs';
-import {NavButtons} from 'components/FormComponents';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import findByIdEmployeeDocDocument
+	from "mutations/all/EmployeeDocument/EmployeeDocDocument/findByIdEmployeeDocDocument";
 
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "EditIDOrPassportDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit ID/Passport";
+	removeById = updateEmployeeDocDocument;
 
 	constructor(props) {
 		super(props, style);
+	}
+
+	get findById() {
+		const {props: {isNewEmployee}} = this;
+		if(isNewEmployee) return;
+		return findByIdEmployeeDocDocument;
+	}
+
+	get topButtonsHiddenDelete() {
+		const {props: {isNewEmployee}} = this;
+		if (isNewEmployee) return true;
 	}
 
 	get controls() {
@@ -123,13 +138,16 @@ class Controls extends React.Component {
 		return isNewEmployee;
 	}
 
+	@computed
 	get item() {
 		return this.props.state.item;
 	}
 
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
+
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -141,34 +159,57 @@ class Controls extends React.Component {
 				}
 			}
 		} = this;
-		return (<div className="controls-wrapper controls-sectioned">
-			<div className="controls">
-				<div className="row active">
-					<label>
-						1. ID/Passport Details
-						<Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						{!isNewEmployee && !embeddedEmployee &&
-							<SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
-						                     className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-						<ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date}
-						                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-					</div>
-					<NavButtons idx={1} onNext={onFormNext}/>
-				</div>
-				<div className="row row-doc">
-					<label>
-						2. Document
-						<Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						<ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc} onChange={this.form.onChange}/>
-					</div>
-					<NavButtons idx={2} onBack={onFormBack}/>
-				</div>
-			</div>
-		</div>);
+		console.log('item', item)
+
+		let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
+		return (<FormControls>
+			<Row
+				rendered
+				active={!isNewEmployee && !embeddedEmployee}
+				idx={1}
+				title="1. Employee"
+				onFormOpen={onFormOpen}
+				onFormNext={onFormNext}
+				onFormBack={onFormBack}
+			>
+				<SelectEmployeeInput
+					name="employee"
+					placeholder="Employee..."
+					defaultValue={employee}
+					className="col-lg-12 form-control"
+					onChange={this.form.onChange}
+				/>
+			</Row>
+			<Row
+				rendered
+				active={isNewEmployee || embeddedEmployee}
+				idx={2}
+				title={`${++idx}. ID/Passport Details`}
+				onFormOpen={onFormOpen}
+				onFormNext={onFormNext}
+				onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
+			>
+				<ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+			</Row>
+			<Row
+				rendered
+				idx={3}
+				title={`${++idx}. Document`}
+				className="row-doc"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+			>
+				<UploadButton
+					name="doc"
+					defaultValue={doc}
+					buttonTitle="Upload File (PDF, Word or Photo)"
+					type={['PDF', 'Word', 'Image']}
+					showOnlyIcon
+					className="col-lg-12"
+					onChange={this.form.onChange}
+				/>
+			</Row>
+		</FormControls>);
 	}
 }
 

@@ -19,6 +19,7 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditLeaveDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Leave";
+	removeById = updateEmployeeLeave;
 
 	constructor(props) {
 		super(props, style);
@@ -28,6 +29,11 @@ class EditDialog extends AEditDialog {
 		const {props: {isNewEmployee}} = this;
 		if(isNewEmployee) return;
 		return findByIdEmployeeLeave;
+	}
+
+	get topButtonsHiddenDelete() {
+		const {props: {isNewEmployee}} = this;
+		if (isNewEmployee) return true;
 	}
 
 	get controls() {

@@ -4,19 +4,25 @@
 import {graphql} from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntityCompany} from "mutations/types.d.ts";
-import {Dates} from "../../../utils/Dates";
+import {Dates} from "utils/Dates";
 
 // 2
-const query = `
+const query = graphql`
     query findByIdEmployeeHRPrDPDateRangeDashboardStatsQuery($id: bigint, $dateStart: date, $dateEnd: date) {
-        #doc_list
-        list_aggregate:hr_employees_documents_aggregate(where: {
-            employee_id: {_eq: $id},
-            removed: {_eq: false}, expiry_date: {_gte: $dateStart, _lte: $dateEnd}, type: {_eq: "PrDP"}
-        }){
-            aggregate{
-                count
+        #document_list
+        hr_employees_connection(where: {id: {_eq: $id}}) {
+            edges {
+                node {
+                    id
+                    #document_list
+                    list_aggregate:document_list_aggregate(where: {
+                        removed: {_eq: false}, expiry_date: {_gte: $dateStart, _lte: $dateEnd}, type: {_eq: "PrDP"}
+                    }){
+                        aggregate{
+                            count
+                        }
+                    }
+                }
             }
         }
     }

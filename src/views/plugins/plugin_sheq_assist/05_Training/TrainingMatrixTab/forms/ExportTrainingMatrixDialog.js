@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {Dates, getRandomRolor} from '../../../../../../utils/Utils';
+import {Dates, getRandomRolor} from 'utils/Utils';
 import {
     ActionsButton,
     ClearableInput,
@@ -11,12 +11,10 @@ import {
     SelectEmployeeInput,
     SelectJobPositionInput, SelectTrainingCourseInput,
     SelectUserInput
-} from '../../../../../../components/inputs';
-import {THead, TRow} from '../../../../../../components/tables';
+} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
 
-import {AControls, AExportDialog} from '../../../../../../components/exports/AExportDialog';
-import byLogged
-    from "../../../../plugin_hr_management/Competencies/CompetenciesDialog/Query/List/listAllCompetencyByLogged";
+import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -50,7 +48,7 @@ class Controls extends AControls {
             requirement: [{text: "Compulsory", value: "Compulsory"}, {text: "Optional", value: "Optional"}],
             requirement_legal: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
             training_frequency: ['Non-Expiry', '5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
-            training_provider_requirement: [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}],
+            provider_requirement: [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}],
             competency_evaluation: [{text: "On Day Of Evaluation", value: "OnDayOfEvaluation"}, {text: "Last Day Of Evaluation", value: "LastDayOfEvaluation"}]
         },
         searchList: []
@@ -62,12 +60,12 @@ class Controls extends AControls {
         project_id: null,
         site_id: null,
         //
-        hr_id: null,
-        job_title_id: null,
+        trainer_id: null,
+        job_position_id: null,
         //
-        course_or_module_id: null,
+        course_id: null,
         //
-        training_provider_requirement: null,
+        provider_requirement: null,
         requirement: null,
         status: null,
     };
@@ -80,48 +78,48 @@ class Controls extends AControls {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList({isNew, filterData}) {
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+
         const {
             client_id,
             project_id,
             site_id,
             //
-            hr_id,
-            job_title_id,
+            trainer_id,
+            job_position_id,
             //
-            course_or_module_id,
+            course_id,
             //
-            training_provider_requirement,
+            provider_requirement,
             requirement,
             status,
         } = filterData || {};
 
-        const mon = Dates.formatDateSQL(new Date().addMonths(1));
-        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        const listByLogged = sockets.of('trainings/matrix').fn('listByLogged');
 
-        const limit = 50;
-
-        const args = {
+        return listByLogged({
             client_id,
             project_id,
             site_id,
             //
-            hr_id,
-            job_title_id,
+            trainer_id,
+            job_position_id,
             //
-            course_or_module_id,
+            course_id,
             //
-            training_provider_requirement,
+            provider_requirement,
             requirement,
             status,
             //
-            // limit,
-            //
             exact_orgs: true,
-        };
-
-        return byLogged(args);
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
 
     //</editor-fold>
@@ -142,14 +140,14 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
-        const {id, data:{created_at, status, training_provider_requirement, institution_conducting_training, hr, job_title, course_or_module, requirement, certificate_expiration}} = item;
-        console.log('job_title', job_title);
+        const {id, data:{created_at, status, provider_requirement, institution_conducting_training, trainer, job_position_list, course, requirement, certificate_expiration}} = item;
+        console.log('job_position_list', job_position_list.slice());
         return <TRow key={"item-" + n} className="w-full">
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
-            <div className="td fixed-flex min-w-120">{training_provider_requirement || 'N/A'}</div>
-            <div className="td">{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</div>
-            <div className="td">{job_title ? job_title.filter(v => !!v).map(({name}) => name).join(', ') : 'N/A'}</div>
-            <div className="td">{isObject(course_or_module) ? (course_or_module.name || course_or_module.data.name) : (course_or_module || 'N/A')}</div>
+            <div className="td fixed-flex min-w-120">{provider_requirement || 'N/A'}</div>
+            <div className="td">{trainer ? trainer.full_name : 'N/A'}</div>
+            <div className="td">{job_position_list ? job_position_list.filter(v => !!v).map(({name}) => name).join(', ') : 'N/A'}</div>
+            <div className="td">{course ? course.name : 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
         </TRow>;
@@ -158,16 +156,16 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderFields">
     get renderFields() {
-        return <React.Fragment>
-            <SelectUserInput ref="hr_id" name="hr" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            <SelectJobPositionInput ref="job_title_id" name="job_title" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+        return <>
+            <SelectUserInput ref="trainer_id" name="trainer" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            <SelectJobPositionInput ref="job_position_id" name="job_position" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
-            <SelectTrainingCourseInput ref="course_or_module_id" name="course_or_module" placeholder="Course..." className="col-lg-12 form-control" onChange={this.form.onChange} add={false} returnValue/>
+            <SelectTrainingCourseInput ref="course_id" name="course" placeholder="Course..." className="col-lg-12 form-control" onChange={this.form.onChange} add={false} returnValue/>
             <hr className="pull-left no-border bg-ddd h-2"/>
-            <ClearableInput ref="training_provider_requirement" name="training_provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.training_provider_requirement}/>
+            <ClearableInput ref="provider_requirement" name="provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.provider_requirement}/>
             <ClearableInput ref="requirement" name="requirement" type="radio" placeholder="Requirement" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.requirement}/>
             <ClearableInput ref="status" name="status" type="radio" placeholder="Status" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.status}/>
-        </React.Fragment>;
+        </>;
     }
     // </editor-fold>
 }

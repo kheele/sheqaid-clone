@@ -354,7 +354,7 @@ class Controls extends React.Component {
         } = form.data;
         const data = {
         };
-        
+        //
         ShouldUpdate.checkClient(data, old_data, client);
         ShouldUpdate.checkProject(data, old_data, project);
         ShouldUpdate.checkSite(data, old_data, site);

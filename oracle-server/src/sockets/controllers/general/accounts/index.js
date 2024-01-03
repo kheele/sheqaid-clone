@@ -15,7 +15,7 @@ class Cntr extends ACntr {
         const {addAction} = this;
         addAction('sign/out', this.signOut.bind(this));
         addAction('sign/onReAuthUser', this.onReAuthUser.bind(this));
-        addAction('onSetCustomUserClaims', this.onSetCustomUserClaims.bind(this));
+        addAction('onSetCustomUserClaims', this._onSetCustomUserClaims.bind(this));
         addAction('sendWelcomeEmail', this.sendWelcomeEmail.bind(this));
         addAction('sendWelcomeOTP', this.sendWelcomeOTP.bind(this));
         addAction('sendNewContractorSiteEmail', this.sendNewContractorSiteEmail.bind(this));
@@ -34,24 +34,23 @@ class Cntr extends ACntr {
             sessionCookie: session.sessionCookie || '',
             // sessionCookie: socket.request.cookies.session || '',
             access_type,
-        })
-            .then((res) => {
-                if (res) {
-                    socket.leave(auth_id);
+        }).then((res) => {
+            if (res) {
+                socket.leave(auth_id);
 
-                    delete session.sessionCookie;
-                    delete session.auth_id;
-                    delete session.access_type;
-                    delete session.customClaims;
-                    session.save();
+                delete session.sessionCookie;
+                delete session.auth_id;
+                delete session.access_type;
+                delete session.customClaims;
+                session.save();
 
-                    return res;
-                }
-            });
-            // .catch((error) => {
-            //     socket.handshake.headers.cookie = `session=`;
-            //     return true;
-            // });
+                return res;
+            }
+        });
+        // .catch((error) => {
+        //     socket.handshake.headers.cookie = `session=`;
+        //     return true;
+        // });
     }
 
     async onReAuthUser(socket, data = {}) {
@@ -65,19 +64,19 @@ class Cntr extends ACntr {
         });
     }
 
-    async onSetCustomUserClaims(socket, data = {}) {
+    async _onSetCustomUserClaims(socket, data = {}) {
         // console.log('data', data)
 
         const {access_type, idToken, csrfToken} = data;
         const {session} = socket.handshake;
 
-        console.log('onSetCustomUserClaims', access_type, idToken, csrfToken);
+        console.log('_onSetCustomUserClaims', access_type, idToken, csrfToken);
 
         return onSetCustomUserClaims({
             data: {idToken, csrfToken},
             access_type,
         }).then(res => {
-            console.log('onSetCustomUserClaims user logged', socket.id, session.auth_id);
+            console.log('_onSetCustomUserClaims user logged', socket.id, session.auth_id);
             if (res && res.token) {
                 const {loggedUser, token, customClaims, sessionCookie, options} = res;
 

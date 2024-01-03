@@ -61,7 +61,7 @@ class AProfileDialog extends AFormDialog {
 		confirmDialog.open("Are you sure you want to remove the record?").then(async res => {
 			if (res === 1) {
 				const {item} = this.state;
-				let {removeById, props:{softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
+				let {removeById, props:{onRemoved, softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
 				const onDelete = onSoftDelete || removeById;
 				if (onDelete) {
 					if(onSoftDeleteProhibit) {
@@ -83,7 +83,7 @@ class AProfileDialog extends AFormDialog {
 					}
 
 					onDelete(args).then(res => {
-						this.props.onRemoved(item);
+						onRemoved && onRemoved(item);
 						infoDialog.open("Record successfully removed.");
 						setTimeout(function () {
 							infoDialog.close();

@@ -195,7 +195,7 @@ class ATab extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
 	// <editor-fold defaultstate="collapsed" desc="renderDefaultLeftButtons">
 	renderDefaultLeftButtons() {
-		const {onExport, onSignatures} = this.props;
+		const {hasSignatures, onExport, onSignatures} = this.props;
 		const {isContractorView} = storage.is;
 
 //        const {permissions_other} = storage.loggedUser.user.data;
@@ -208,9 +208,9 @@ class ATab extends React.Component {
 			<Button className="btn btn-primary pull-right" onClick={onExport}>
 				Export
 			</Button>
-			<Button className="btn btn-primary pull-right" onClick={onSignatures}>
+			{hasSignatures && <Button className="btn btn-primary pull-right" onClick={onSignatures}>
 				Signatures
-			</Button>
+			</Button>}
 		</>;
 	}
 	// </editor-fold>

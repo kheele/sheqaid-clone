@@ -189,9 +189,7 @@ global.getDecodedIdTokenFromSession = async ({sessionCookie, access_type}) => {
         });
     }
 
-    const _auth = admin.auth();
     // const sessionCookie = req.cookies.session || '';
 
-    const decodedClaims = await _auth.verifySessionCookie(sessionCookie);
-    return decodedClaims;
+    return admin.auth().verifySessionCookie(sessionCookie);
 };

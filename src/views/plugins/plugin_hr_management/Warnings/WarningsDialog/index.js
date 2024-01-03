@@ -34,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Warning";
     permissionKey = "Warnings";
     module = "Warnings";
+    hasSignatures = true;
     onUpdate = updateEmployeeWarning;
     filterNodeGrid = 5;
 

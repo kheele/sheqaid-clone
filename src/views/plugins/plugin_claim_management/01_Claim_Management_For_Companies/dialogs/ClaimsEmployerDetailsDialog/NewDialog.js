@@ -18,7 +18,7 @@ import insertClaimsEmployerDetails
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class NewDialog extends ANewDialog {
-    pageKey = "NewDialog";
+    pageKey = "NewClaimsEmployerDetailsDialog";
     title = "Create Employer Details";
 
     constructor(props) {

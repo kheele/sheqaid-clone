@@ -33,12 +33,12 @@ global.sendRelay = async (args) => {
     if(!args) return null;
     const {query, variables, operationName} = args;
 
-    const API_URL = "http://cloud.sheqaid.com:8080/v1beta1/relay";
+    const API_URL = process.env.HASURA_RELAY_ENDPOINT;
     const result = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             "X-Hasura-Role": "admin",
             // ...headers,
         },

@@ -34,6 +34,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Leaves";
     module = "Leaves";
     onUpdate = updateEmployeeLeave;
+    hasSignatures = true;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
 

@@ -6,7 +6,7 @@ import { graphql } from "react-relay";
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityClaimsEmployerDetails} from "mutations/types.d.ts";
 import crudUtils from "../../CRUDUtils/CRUDUtils";
-import {Dates} from "../../../../utils/Dates";
+import findByIdClaimsEmployerDetails from "./findByIdClaimsEmployerDetails";
 
 // 2
 const mutation = graphql`
@@ -90,5 +90,6 @@ export default async (input: EntityClaimsEmployerDetails) => {
 
   crudUtils.injectCreate(input);
 
-  return await createMutationImpl({mutation, input});
+  return await createMutationImpl({mutation, input}).
+  then(res => res && findByIdClaimsEmployerDetails(res.id));
 };

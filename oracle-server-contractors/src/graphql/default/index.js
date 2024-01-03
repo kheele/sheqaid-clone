@@ -19,11 +19,11 @@ router.post('/', (req, res) => {
         headers["Authorization"] = Authorization;
     }
 
-    fetch(`http://cloud.sheqaid.com:8080/v1/graphql`, {
+    fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
         body: JSON.stringify(req.body),

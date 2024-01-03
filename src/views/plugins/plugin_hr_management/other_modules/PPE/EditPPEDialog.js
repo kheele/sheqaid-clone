@@ -1,7 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
@@ -9,7 +10,7 @@ import {ShouldUpdate} from 'utils/Utils';
 import {AEditDialog} from 'components/dialogs';
 import {
     ClearableInput, ProfilePic, RowOrgs,
-    SelectClientInput, SelectGenderInput,
+    SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
@@ -22,6 +23,8 @@ import {
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditPPEDialog.lazy.css";
+import findByIdPPE from "mutations/all/PPE/findByIdPPE";
+import updatePPE from "mutations/all/PPE/updatePPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -29,6 +32,8 @@ import style from "./EditPPEDialog.lazy.css";
 class EditDialog extends AEditDialog {
     pageKey = "EditPPEDialog";
     title = "Edit PPE";
+    findById = findByIdPPE;
+    removeById = updatePPE;
 
     constructor(props) {
         super(props, style);
@@ -209,7 +214,7 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, data).then(res => {
+        updatePPE({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
             if(res === "ERROR") {
                 infoDialog.open("An error occurred. Please try again.");
@@ -225,14 +230,16 @@ class Controls extends React.Component {
     }
     // </editor-fold>
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+
         let {
             props: {
                 onFormNext, onFormBack, onFormOpen, 

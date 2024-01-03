@@ -5,6 +5,7 @@ import { graphql } from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntitySignatureSetting} from "mutations/types.d.ts";
+import findByIdSignatureSetting from "./findByIdSignatureSetting";
 
 // 2
 const mutation = graphql`
@@ -21,4 +22,5 @@ export default async (attrs: EntitySignatureSetting) =>
     mutation,
     id: attrs.id,
     attrs,
-  });
+  }).
+  then(res => res && findByIdSignatureSetting(res.id));

@@ -21,23 +21,23 @@ class ListTable extends ANewListTable {
         const item = this.state.list[n];
         if (item && (item.job_position || item.id)) {
             console.log('renderItem', item)
-            const {
-                id, data: {
-                    created_at, job_category, name, desc, doc, client
-                }
-            } = item.job_position || item;
+            const {id, data} = item.job_position || item;
 
-            const tr = <React.Fragment>
+            const {
+                created_at, name, job_category, desc, doc,
+            } = data || (item.job_position || item);
+
+            const tr = <>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
                 <div className="td">{name || 'N/A'}</div>
-                <div className="td">{job_category || 'N/A'}</div>
+                <div className="td">{job_category ? job_category.name : 'N/A'}</div>
                 {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
                     </Button>
                 </div>}
                 {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
-            </React.Fragment>;
+            </>;
 
             return <TRow key={id} className={"tr-readonly w-full margin-r-0" + (renderTable ? " tr-table" : "")}>
                 {renderTable ? <TRow>{tr}</TRow> : tr}

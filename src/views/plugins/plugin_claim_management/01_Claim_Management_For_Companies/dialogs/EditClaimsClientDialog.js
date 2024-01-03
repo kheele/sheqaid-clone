@@ -42,8 +42,8 @@ import findByClientIdClaimsEmployerDetails
 import insertClaimsProviderMessage
     from "mutations/all/COIDA/ClaimsProviderMessage/insertClaimsProviderMessage";
 import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import updateWCL4 from "../../../../../mutations/all/COIDA/WCL4/updateWCL4";
-import insertWCL4 from "../../../../../mutations/all/COIDA/WCL4/insertWCL4";
+import updateWCL4 from "mutations/all/COIDA/WCL4/updateWCL4";
+import insertWCL4 from "mutations/all/COIDA/WCL4/insertWCL4";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

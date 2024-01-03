@@ -1,0 +1,21 @@
+projects:
+  relay:
+    schema: schema.relay.graphql
+    extensions:
+      endpoints:
+        Default GraphQL Endpoint:
+          url: https://hasura.cloud.sheqaid.com/v1beta1/relay
+          headers:
+            user-agent: JS GraphQL
+            x-hasura-access-key: Rhespo-G-13011511
+          introspect: false
+  default:
+    schema: schema.default.graphql
+    extensions:
+      endpoints:
+        Default GraphQL Endpoint:
+          url: https://hasura.cloud.sheqaid.com/v1/graphql
+          headers:
+            user-agent: JS GraphQL
+            x-hasura-access-key: Rhespo-G-13011511
+          introspect: false

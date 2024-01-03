@@ -9,6 +9,7 @@ import {AProfileDialog} from 'components/dialogs';
 import {profileRender} from './IncidentForms';
 import style from "./ProfileIncidentDialog.lazy.css";
 import findByIdIncident from "mutations/all/Incident/findByIdIncident";
+import updateIncident from "mutations/all/Incident/updateIncident";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -16,6 +17,7 @@ import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileIncidentDialog";
     findById = findByIdIncident;
+    removeById = updateIncident;
 
     constructor(props) {
         super(props, style);

@@ -4,25 +4,6 @@ const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 
 //<editor-fold desc="addCustomUserClaims">
 global.addCustomUserClaims = (uid, claims, access_type) => {
-    if (access_type === 'ContractorUser') {
-        return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/addCustomUserClaims`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid, claims}),
-        }).then(res => res.text());
-    }
-    if (access_type === 'Staff') {
-        return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/addCustomUserClaims`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid, claims}),
-        }).then(res => res.text());
-    }
-
     const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims = {}}) => {
         return _auth.setCustomUserClaims(uid, {...customClaims, ...claims});
@@ -32,25 +13,6 @@ global.addCustomUserClaims = (uid, claims, access_type) => {
 
 //<editor-fold desc="setCustomUserClaims">
 global.setCustomUserClaims = (uid, claims, access_type) => {
-    if (access_type === 'ContractorUser') {
-        return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/setCustomUserClaims`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid, claims}),
-        }).then(res => res.text());
-    }
-    if (access_type === 'Staff') {
-        return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/setCustomUserClaims`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid, claims}),
-        }).then(res => res.text());
-    }
-
     const _auth = admin.auth();
     return _auth.getUser(uid).then(({customClaims}) =>
         _auth.setCustomUserClaims(uid, claims));
@@ -58,28 +20,8 @@ global.setCustomUserClaims = (uid, claims, access_type) => {
 //</editor-fold>
 
 //<editor-fold desc="createCustomToken">
-global.createCustomToken = (uid, data) => {
-    const {access_type} = data;
-    if (access_type === 'ContractorUser') {
-        return fetch(`${CONTRACTORS_ENDPOINT}api/callables/accounts/sign/createCustomToken`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid}),
-        }).then(res => res.text());
-    }
-    if (access_type === 'Staff') {
-        return fetch(`${HR_ENDPOINT}api/callables/accounts/sign/createCustomToken`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({uid}),
-        }).then(res => res.text());
-    }
-
-    return admin.auth().createCustomToken(uid, {access_type});
+global.createCustomToken = (uid, claims) => {
+    return admin.auth().createCustomToken(uid, claims);
 }
 //</editor-fold>
 

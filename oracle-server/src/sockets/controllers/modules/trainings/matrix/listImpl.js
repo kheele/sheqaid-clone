@@ -13,8 +13,11 @@ module.exports = async (socket, data) => {
         id,
         //
         job_position_list,
+        job_position_id,
         trainer_list,
+        trainer_id,
         course_list,
+        course_id,
         training_frequency,
         unit_standard,
         provider_requirement,
@@ -35,8 +38,11 @@ module.exports = async (socket, data) => {
         id,
         //
         job_position_list,
+        job_position_id,
         trainer_list,
+        trainer_id,
         course_list,
+        course_id,
         training_frequency,
         unit_standard,
         provider_requirement,

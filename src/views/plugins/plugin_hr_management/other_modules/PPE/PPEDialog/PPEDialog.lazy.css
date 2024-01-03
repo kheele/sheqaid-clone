@@ -1,6 +1,6 @@
 #dialog-overlay.PPEDialog-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 1200px;
+    width: 1400px;
     max-width: 100%;
 }
 #dialog-overlay.PPEDialog-dialog .dialog-content,
@@ -14,6 +14,17 @@
     float: right;
     margin-top: -50px;
     border: none;
+}
+
+
+#PPEDialog-page .table .tbody .td img {
+    width: 60px;
+    height: 60px;
+    margin: 5px 0;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
 }
 
 #PPEDialog-page > .table{

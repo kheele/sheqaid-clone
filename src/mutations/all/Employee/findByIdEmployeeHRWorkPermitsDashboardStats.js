@@ -4,7 +4,6 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntitySite} from "mutations/types.d.ts";
 
 // 2
 const query = graphql`
@@ -14,7 +13,7 @@ const query = graphql`
           node {
               id
 
-              #                    work_permit_list
+              #work_permit_list
               list_active_aggregate:work_permit_list_aggregate(where: {removed: {_eq: false}}){
                   aggregate{
                       count

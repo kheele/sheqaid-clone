@@ -22,10 +22,14 @@ import {THead, TRow} from 'components/tables';
 import NewDialog from './JobAppointments/forms/NewDialog';
 import EditDialog from './JobAppointments/forms/EditDialog';
 import ProfileDialog from './JobAppointments/forms/ProfileDialog';
+import ExportDialog from './JobAppointments/ExportDialog';
+import SignatureDialog from "components/dialogs/SignatureDialog";
 
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "components/ViewByButtons";
 import JobAppointmentsRenderRow from "./JobAppointments/JobAppointmentsDialog/JobAppointmentsRenderRow";
+import updateEmployeeJobAppointment
+    from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
 // </editor-fold>
 
 @observer
@@ -54,6 +58,8 @@ class AppointmentsTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
 
+        this.onRemoved = this.onRemoved.bind(this);
+
         this.onChangeViewExpiryDate = this.onChangeViewExpiryDate.bind(this);
 
         this.setView = this.setView.bind(this);
@@ -62,6 +68,9 @@ class AppointmentsTab extends React.Component {
         this.onNewItem = this.onNewItem.bind(this);
         this.onAdd = this.onAdd.bind(this);
         this.onEdit = this.onEdit.bind(this);
+
+        this.onSignatures = this.onSignatures.bind(this);
+        this.onExport = this.onExport.bind(this);
 
         this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
@@ -245,9 +254,26 @@ class AppointmentsTab extends React.Component {
 
     //</editor-fold>
 
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="onSignatures">
+    onSignatures(e, btn) {
+        this.refs.signaturesDialog.open();
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onExport">
+    onExport(e, btn) {
+        this.refs.exportDialog.open();
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="renderDefaultLeftButtons">
     renderDefaultLeftButtons() {
-        const {onExport, onSignatures} = this.props;
         const {isContractorView} = storage.is;
 
 //        const {permissions_other} = storage.loggedUser.user.data;
@@ -257,10 +283,10 @@ class AppointmentsTab extends React.Component {
 
 //        const writable = storage.is.isContractor || !isContractorView;
         return <>
-            <Button className="btn btn-primary pull-right" onClick={onExport}>
+            <Button className="btn btn-primary pull-right" onClick={this.onExport}>
                 Export
             </Button>
-            <Button className="btn btn-primary pull-right" onClick={onSignatures}>
+            <Button className="btn btn-primary pull-right" onClick={this.onSignatures}>
                 Signatures
             </Button>
         </>;
@@ -381,11 +407,14 @@ class AppointmentsTab extends React.Component {
                 renderFilterNode={this.renderFilterNode}
                 renderTHead={this.renderTHead}
                 renderItem={this.renderItem}>
-                <ConfirmDialog ref="removeDialog"/>
+                <ConfirmDialog ref="removeDialog" onSoftDelete={updateEmployeeJobAppointment}/>
 
-                <ProfileDialog ref="profileDialog"/>
-                <NewDialog ref="newDialog"/>
-                <EditDialog ref="editDialog"/>
+                <ProfileDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+                <NewDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>
+                <EditDialog ref="editDialog" onRemoved={this.onRemoved}/>
+
+                <SignatureDialog ref="signaturesDialog" plugin="plugin_extra" module="Job Appointments"/>
+                <ExportDialog ref="exportDialog"/>
             </APageListReadWrite>
         </>;
     }

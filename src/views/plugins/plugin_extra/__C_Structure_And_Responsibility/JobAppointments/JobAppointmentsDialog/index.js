@@ -19,8 +19,7 @@ import {
     ClearableInput,
     SelectEmployeeInput,
 } from "components/inputs";
-
-import * as listAllJobAppointmentByLogged from "./Query/List/listAllJobAppointmentByLogged";
+import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
 // </editor-fold>
 
 @observer
@@ -30,6 +29,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Job Appointment";
     permissionKey = "Job Appointments";
     module = "JobAppointments";
+    onUpdate = updateEmployeeJobAppointment;
 
     dialogs = {
         NewDialog, EditDialog, ProfileDialog, ExportDialog,

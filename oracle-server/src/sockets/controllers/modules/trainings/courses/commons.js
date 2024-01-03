@@ -11,7 +11,9 @@ exports.getVariablesAndQueryConfig = (
         frequency,
         provider,
         job_position_list,
+        job_position_id,
         sector_list,
+        sector_id,
         //
         site_id, project_id, client_id,
         //
@@ -39,8 +41,14 @@ exports.getVariablesAndQueryConfig = (
         if (job_position_list) {
             filter.push(`job_position_list:{job_position_id: {_in: [${job_position_list.map(v => v.id)}]}}`);
         }
+        if (job_position_id) {
+            filter.push(`job_position_list:{job_position_id: {_eq: ${job_position_id}}}`);
+        }
         if (sector_list) {
             filter.push(`sector_list:{sector_id: {_in: [${sector_list.map(v => v.id)}]}}`);
+        }
+        if (sector_id) {
+            filter.push(`sector_list:{sector_id: {_eq: ${sector_id}}}`);
         }
     }
 

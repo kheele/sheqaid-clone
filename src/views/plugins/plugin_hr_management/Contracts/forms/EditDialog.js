@@ -11,12 +11,10 @@ import {AEditDialog, InputDialog} from 'components/dialogs';
 import {
     Button,
     ClearableInput,
-    Clickable,
-    ProofUploadButton,
     SelectEmployeeInput,
     UploadButton
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
 import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
@@ -29,6 +27,7 @@ class EditDialog extends AEditDialog {
     pageKey = "EditContractDialog";
     className = "AEditEmployeeDocDialog";
     title = "Edit Contract";
+    removeById = updateEmployeeContract;
 
     constructor(props) {
         super(props, style);
@@ -44,6 +43,11 @@ class EditDialog extends AEditDialog {
         const {props: {isNewEmployee}} = this;
         if (isNewEmployee) return false;
         return true;
+    }
+
+    get topButtonsHiddenDelete() {
+        const {props: {isNewEmployee}} = this;
+        if (isNewEmployee) return true;
     }
 
     get controls() {
@@ -161,17 +165,11 @@ class Controls extends React.Component {
             progressDialog.open();
             updateEmployeeContract({id: this.item.id, ...data}).then(res => {
                 console.log("res", res)
-                if (res === "EMAIL_DUP") {
-                    infoDialog.open("An Employee with this email address already exist.");
-                } else if (res === "PHONE_DUP") {
-                    infoDialog.open("An Employee with this phone number address already exist.");
-                } else {
-                    const res_data = res;
-                    onSaved && onSaved(res_data);
-                    infoDialog.open("Record successfully updated.");
-                    infoDialog.close(2000);
-                    // this.props.close();
-                }
+                const res_data = res;
+                onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
             }).finally(() => {
                 btn.text("Save").enabled();
                 setTimeout(() => progressDialog.close());

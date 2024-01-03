@@ -1,6 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {Dates} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
@@ -13,12 +15,16 @@ import {
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfilePPEDialog.lazy.css";
+import findByIdPPE from "mutations/all/PPE/findByIdPPE";
+import updatePPE from "mutations/all/PPE/updatePPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfilePPEDialog";
+    findById = findByIdPPE;
+    removeById = updatePPE;
 
     constructor(props) {
         super(props, style);
@@ -26,10 +32,6 @@ class ProfileDialog extends AProfileDialog {
 
     title() {
         return "PPE Item";
-    }
-
-    get topButtonsHiddenDelete() {
-        return true;
     }
 
     get controls() {
@@ -49,14 +51,16 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,

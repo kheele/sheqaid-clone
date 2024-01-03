@@ -2,15 +2,15 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ADialogList from "../../../../../ADialogList";
-import APageListReadWrite from "../../../../../APageListReadWrite";
+import ADialogList from "views/ADialogList";
+import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     ActionsButton,
     Button,
     ClearableInput,
-    SelectDepartmentInput,
+    SelectDepartmentInput, SelectEmployeeInput,
     SelectJobPositionInput,
     SelectTeamInput
 } from 'components/inputs';
@@ -25,7 +25,7 @@ import PPEIssueDialog from '../PPEIssueDialog';
 import style from "./PPEDialog.lazy.css";
 import SignatureDialog from "components/dialogs/SignatureDialog";
 import PPERenderRow from "./PPERenderRow";
-import byLogged from "./Query/List/listAllPPEByLogged";
+import updatePPE from "mutations/all/PPE/updatePPE";
 
 // </editor-fold>
 
@@ -42,6 +42,8 @@ class PPEDialog extends ADialogList {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onViewPPEIssue = this.onViewPPEIssue.bind(this);
         this.onSignatures = this.onSignatures.bind(this);
@@ -68,32 +70,37 @@ class PPEDialog extends ADialogList {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
+            unit,
+            team_id,
+            department_id,
+            job_position_id,
+            employee_id,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('ppe').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             name,
-            // written_off: false,
-            //
-            limit,
+            unit,
+            team_id,
+            department_id,
+            job_position_id,
+            employee_id,
             //
             exact_orgs: true,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
 
     //</editor-fold>
+
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onSignatures">
     onSignatures(e, btn) {
@@ -133,7 +140,7 @@ class PPEDialog extends ADialogList {
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const permissionKey = "PPE";
-        return <Options idx={idx} permissionOtherKey={permissionKey}>
+        return <Options idx={idx} permissionModKey={permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
@@ -141,9 +148,12 @@ class PPEDialog extends ADialogList {
     }
 
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls flex">
+        return <div className="col-lg-12 controls grid-3 grid-gap-10">
             <ClearableInput name="name" type="text" placeholder="Item Description" className="form-control"
                             onChange={onChange}/>
+            <ClearableInput name="unit" type="text" placeholder="Item Unit" className="form-control"
+                            onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
             <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
             <SelectDepartmentInput name="department" placeholder="Department..." className="form-control"
                                    onChange={onChange}/>
@@ -170,7 +180,7 @@ class PPEDialog extends ADialogList {
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        return <PPERenderRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <PPERenderRow key={item.id} idx={n} item={item} onView={this.refs.root.onView} onClick={onClick}/>;
     }
 
     renderPage() {
@@ -189,11 +199,11 @@ class PPEDialog extends ADialogList {
           renderFilterNode={this.renderFilterNode}
           renderTHead={this.renderTHead}
           renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updatePPE}/>
 
-            <NewPPEDialog ref="newDialog"/>
-            <ProfilePPEDialog ref="profileDialog"/>
-            <EditPPEDialog ref="editDialog"/>
+            <NewPPEDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>
+            <ProfilePPEDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+            <EditPPEDialog ref="editDialog" onRemoved={this.onRemoved}/>
 
             <PPEIssueDialog ref="ppeIssueDialog"/>
 

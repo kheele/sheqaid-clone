@@ -17,6 +17,8 @@ import ProfileDialog from './ProfileDialog';
 
 import style from "./ClaimsEmployerDetailsDialog.lazy.css";
 import byLogged from "./Query/List/listAllClaimsEmployerDetailsByLogged";
+import updateClaimsEmployerDetails
+	from "mutations/all/COIDA/ClaimsEmployerDetails/updateClaimsEmployerDetails";
 
 @observer
 class ClaimsEmployerDetailsDialog extends ADialogList {
@@ -28,6 +30,8 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 		
 		this.onLoadList = this.onLoadList.bind(this);
 		
+		this.onRemoved = this.onRemoved.bind(this);
+
 		this.renderFilterNode = this.renderFilterNode.bind(this);
 	}
 	
@@ -70,7 +74,11 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 	}
 	
 	//</editor-fold>
-	
+
+	onRemoved(item) {
+		this.refs.root.list.removeIf((v, n) => v.id === item.id);
+	}
+
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
 		// const permissionKey = "_01_Claim_Management_For_Companies";
 		// return <Options idx={idx} permissionOtherKey={permissionKey}>
@@ -148,11 +156,11 @@ class ClaimsEmployerDetailsDialog extends ADialogList {
 			renderFilterNode={this.renderFilterNode}
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
-			<ConfirmDialog ref="removeDialog"/>
+			<ConfirmDialog ref="removeDialog" onSoftDelete={updateClaimsEmployerDetails}/>
 			
 			<NewDialog ref="newDialog"/>
-			<ProfileDialog ref="profileDialog"/>
-			<EditDialog ref="editDialog"/>
+			<ProfileDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+			<EditDialog ref="editDialog" onRemoved={this.onRemoved}/>
 		</APageListReadWrite>;
 	}
 	

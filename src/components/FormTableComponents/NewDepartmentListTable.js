@@ -15,54 +15,59 @@ class ListTable extends ANewListTable {
     className = "NewDepartmentListTable";
     title = "Departments";
     style = style;
-    
+
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
-	if(item && (item.department || item.id)) {
+        if (item && (item.department || item.id)) {
+            console.log('renderItem', item)
+            const {id, data} = item.department || item;
+
             const {
-                id, data: {
-                    name
-                }
-            } = item.department || item;
-            
-            const tr = <React.Fragment>
-		<div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
-		<div className="td">{name}</div>
-		{!readonly && <div className="td fixed-flex min-w-50">
+                name,
+            } = data || (item.department || item);
+
+            const tr = <>
+                <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
+                <div className="td">{name}</div>
+                {!readonly && <div className="td fixed-flex min-w-50">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
-			<i className="fa fa-times-circle"/>
+                        <i className="fa fa-times-circle"/>
                     </Button>
-		</div>}
+                </div>}
                 {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
-            </React.Fragment>;
-                
-            return <TRow key={id} className={"tr-readonly w-full margin-r-0" + (renderTable? " tr-table" : "")}>
+            </>;
+
+            return <TRow key={id} className={"tr-readonly w-full margin-r-0" + (renderTable ? " tr-table" : "")}>
                 {renderTable ? <TRow>{tr}</TRow> : tr}
                 {renderTable && renderTable(item, n)}
             </TRow>;
-	} else {
+        } else {
             return <TRow key="item-new" className="w-full padding-10">
-		<div className="td flex padding-0 margin-0">
-                    <SelectDepartmentInput ref={this.onSetRef} name="department" placeholder="Add Department..." required className="no-border-radius-r form-control" onChange={this.onChange}/>
-                    <Button idx={n} action="save" className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
-			<i className="fa fa-check"/>
+                <div className="td flex padding-0 margin-0">
+                    <SelectDepartmentInput ref={this.onSetRef} name="department" placeholder="Add Department..."
+                                           required className="no-border-radius-r form-control"
+                                           onChange={this.onChange}/>
+                    <Button idx={n} action="save"
+                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
+                        <i className="fa fa-check"/>
                     </Button>
                 </div>
             </TRow>;
-	}
+        }
     }
 
     renderTHead() {
         const {readonly} = this.props;
         return <THead className="align-left">
-                <div className="td fixed-flex min-w-30">#</div>
-                <div className="td">Name</div>
-                {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
-                {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
-            </THead>;
+            <div className="td fixed-flex min-w-30">#</div>
+            <div className="td">Name</div>
+            {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
+            {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
+        </THead>;
     }
 }
+
 // </editor-fold>
 
 export default ListTable;

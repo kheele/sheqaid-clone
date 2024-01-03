@@ -21,16 +21,14 @@ class SelectInput extends ASelectInput {
         super(props);
     }
 
-    componentWillMount() {
-        const {selectedClientModules: {[this.key]: list}} = storage.selected;
-        this.state.lists.list = list;
-    }
-
     componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectModuleInput form-control clearable-form-control`;
 
-        const {values} = this;
+        const {selectedClientModules: {[this.key]: list}} = storage.selected;
+        this.state.lists.list = list.filter(({module:{key}}) => this.includedList.contains(key)).map(value => ({label: value.module.title, value}));
+
+        console.log('list', this.list.slice())
 
         this.state.props = {
             ref: "input",
@@ -38,17 +36,13 @@ class SelectInput extends ASelectInput {
             name: "module",
             type: "select",
             placeholder: "Module...",
-            values,
+            values: this.list,
             returnValue: true,
             add: false,
             ...this.props,
             defaultValue: this.selectedItem,
             className
         };
-    }
-
-    get values() {
-        return this.list.filter(({key}) => this.includedList.contains(key)).map(value => ({label: value.title, value}));
     }
 
     @computed
@@ -59,9 +53,9 @@ class SelectInput extends ASelectInput {
                 return defaultValue;
             }
             if(isString(defaultValue)) {
-                return {value: defaultValue, label: defaultValue};
+                return this.list.find(({label, value: {module: {key}}}) => key === defaultValue);
             }
-            let {title} = defaultValue;
+            let {title} = defaultValue.module;
             const label = title;
             console.log('selectedVal', label)
             return {value: defaultValue, label};

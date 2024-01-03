@@ -12,7 +12,7 @@ class SelectInput extends ASelectModuleInput {
         'Contracts',
         //Non-Templates
         'Warnings',
-        'Counselings',
+        'Counsellings',
         'Leaves',
         'PPE',
         'Meetings',

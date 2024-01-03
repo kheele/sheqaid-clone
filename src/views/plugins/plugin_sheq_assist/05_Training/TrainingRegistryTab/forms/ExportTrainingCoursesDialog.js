@@ -9,7 +9,7 @@ import {
     ClearableInput,
     DateRangeInput,
     SelectEmployeeInput,
-    SelectJobPositionInput
+    SelectJobPositionInput, SelectSectorInput
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
@@ -59,7 +59,7 @@ class Controls extends AControls {
         frequency: null,
         provider: null,
         job_position_id: null,
-        sector: null,
+        sector_id: null,
     };
     // </editor-fold>
 
@@ -70,7 +70,9 @@ class Controls extends AControls {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList({isNew, filterData}) {
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+
         const {
             client_id,
             project_id,
@@ -80,16 +82,12 @@ class Controls extends AControls {
             frequency,
             provider,
             job_position_id,
-            sector,
+            sector_id,
         } = filterData || {};
 
-        const mon = Dates.formatDateSQL(new Date().addMonths(1));
-        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        const listByLogged = sockets.of('trainings/courses').fn('listByLogged');
 
-        const limit = 50;
-
-        const args = {
+        return listByLogged({
             client_id,
             project_id,
             site_id,
@@ -98,16 +96,17 @@ class Controls extends AControls {
             frequency,
             provider,
             job_position_id,
-            sector,
-            //
-            // limit,
+            sector_id,
             //
             exact_orgs: true,
-        };
-
-        return byLogged(args);
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
-
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
@@ -147,7 +146,7 @@ class Controls extends AControls {
             <ClearableInput ref="frequency" name="frequency" type="select" placeholder="Frequency..." className="col-lg-12 margin-0 form-control" onChange={this.form.onChange} values={this.state.lists.frequency} returnValue/>
             <ClearableInput ref="provider" name="provider" type="radio" placeholder="Provider" vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.provider} returnValue/>
             <SelectJobPositionInput ref="job_position_id" name="job_position" type="select" placeholder="Job Position..." required className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
-            <ClearableInput ref="sector" name="sector" type="select" placeholder="Sector..." className="col-lg-12 margin-0 form-control" onChange={this.form.onChange} values={this.state.lists.sector_list} returnValue/>
+            <SelectSectorInput ref="sector_id" name="sector" type="select" placeholder="Sector..." className="col-lg-12 margin-0 form-control" onChange={this.form.onChange} returnValue/>
         </React.Fragment>;
     }
     // </editor-fold>

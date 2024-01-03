@@ -2,8 +2,9 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {ActionsButton} from 'components/inputs';
+import {ActionsButton, Clickable} from 'components/inputs';
 import {TRow} from 'components/tables';
+import assetProfilePic from "../../../../../../assets/images/vehicle-image-loading.png";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -11,7 +12,7 @@ import {TRow} from 'components/tables';
 class RenderRow extends React.Component {
 
     render() {
-        const {item, idx, view, onClick, renderActionsCol} = this.props;
+        const {item, idx, view, onClick, onView, renderActionsCol} = this.props;
         console.log(item)
         const {
             id,
@@ -27,9 +28,13 @@ class RenderRow extends React.Component {
                 job_position_list_aggregate
             }
         } = item;
-        return <TRow key={id}>
+        return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-30">{id}</div>
-            <div className="td fixed-flex min-w-80">{RenderUtils.renderImage(profile_pic, '100%')}</div>
+            <div className="td fixed-flex min-w-80">
+                <Clickable idx={idx} onClick={onView}>
+                    {RenderUtils.renderImage(profile_pic, null, '100%')}
+                </Clickable>
+            </div>
             <div className="td">{name}</div>
             <div className="td fixed-flex min-w-120">{unit}</div>
             <div className="td fixed-flex min-w-120">{qty_received}</div>

@@ -497,7 +497,7 @@ class ClaimsClientTab extends AClaimsTab {
 			renderFilterNode={this.renderFilterNode}
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
-			<ConfirmDialog ref="removeDialog"/>
+			<ConfirmDialog ref="removeDialog" onSoftDelete={updateClaimsClient}/>
 			<Popover key="popover" ref="popover"/>
 			
 			<NewClaimsClientDialog ref="newDialog"/>

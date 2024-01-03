@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
     }).then(res => res.json()).then(data => {

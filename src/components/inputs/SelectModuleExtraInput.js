@@ -9,7 +9,7 @@ class SelectInput extends ASelectModuleInput {
     key = 'listExtra';
     includedList = [
         //Templates
-        '__C_Structure_And_Responsibility',//Job Appointments
+        'Job Appointments',//Job Appointments
         //Non-Templates
         // '__B_Contractors',Later
     ];

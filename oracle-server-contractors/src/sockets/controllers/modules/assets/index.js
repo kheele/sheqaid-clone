@@ -36,7 +36,7 @@ class Cntr extends ACntr {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"x-hasura-access-key": "rhespo-g",
+				"x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
 				...headers,
 			},
 			body: JSON.stringify({query, variables}),
@@ -75,7 +75,7 @@ class Cntr extends ACntr {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"x-hasura-access-key": "rhespo-g",
+					"x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
 					...headers,
 				},
 				body: JSON.stringify({mutation, variables}),
@@ -112,7 +112,7 @@ class Cntr extends ACntr {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"x-hasura-access-key": "rhespo-g",
+				"x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
 				...headers,
 			},
 			body: JSON.stringify({query, variables}),
@@ -175,7 +175,7 @@ class Cntr extends ACntr {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"x-hasura-access-key": "rhespo-g",
+				"x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
 				...headers,
 			},
 		}).then(res => res.json()).catch(err => {

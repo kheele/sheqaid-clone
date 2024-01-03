@@ -1,6 +1,6 @@
 const io = require('socket.io-client');
 
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT, CONVERT_BINARY_ENDPOINT} = process.env;
+const {CONTRACTORS_ENDPOINT, HR_ENDPOINT, CONVERT_BINARY_ENDPOINT, RUST_TEST_ENDPOINT} = process.env;
 
 const connectSocket = (key, domain) => {
     global[key] = io(domain, {
@@ -54,3 +54,25 @@ const connectSocket = (key, domain) => {
 connectSocket('socketClientContractor', CONTRACTORS_ENDPOINT);
 connectSocket('socketClientHR', HR_ENDPOINT);
 // connectSocket('socketConvertBinary', CONVERT_BINARY_ENDPOINT);
+// connectSocket('socketRustTest', RUST_TEST_ENDPOINT);
+//
+// setInterval(async function fn() {
+//     console.log('fn run');
+//     let data = {
+//         access_type: "Doctor",
+//         idToken: "sdspo09sd088jkljjkhk",
+//     };
+//
+//     try {
+//         const res = await socketRustTest.emit('emit', {
+//             path: 'accounts/onSetCustomUserClaims',
+//             data,
+//         });
+//         console.log('socketRustTest res', res);
+//     } catch (err) {
+//         console.error('socketRustTest err', err);
+//         throw err;
+//     } finally {
+//         console.error('socketRustTest finally');
+//     }
+// }, 2000);

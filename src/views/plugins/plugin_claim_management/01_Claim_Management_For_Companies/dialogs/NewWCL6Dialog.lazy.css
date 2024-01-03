@@ -2,7 +2,7 @@
 
 #dialog-overlay.NewWCL6Dialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 800px;
+    width: 1000px;
     max-width: calc(100% - 30px);
 }
 #dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content{
@@ -11,6 +11,12 @@
 }
 #dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .controls-wrapper > .controls > .row .sec-group > hr{
     border-width: 2px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .ANewListTable .tbody .tr{
+    padding-top: 7px;
+}
+#dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .ANewListTable .tbody .tr{
+    padding-bottom: 7px;
 }
 #dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .text-input--material__selectable,
 #dialog-overlay.NewWCL6Dialog-new-dialog .dialog-content .OffAndLightDutyPeriodTable .clearable-field-control.date_input .text-input--material__selectable{

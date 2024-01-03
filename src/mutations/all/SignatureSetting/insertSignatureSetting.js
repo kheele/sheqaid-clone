@@ -5,6 +5,8 @@ import { graphql } from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntitySignatureSetting} from "mutations/types.d.ts";
+import findByIdSignatureSetting from "./findByIdSignatureSetting";
+import crudUtils from "../CRUDUtils/CRUDUtils";
 
 // 2
 const mutation = graphql`
@@ -18,5 +20,15 @@ const mutation = graphql`
 `;
 
 // 3
-export default (input: EntitySignatureSetting) =>
-  createMutationImpl({ mutation, input });
+export default async (input: EntitySignatureSetting) => {
+  const {
+    is_employee_owning,
+    plugin_id,
+    module_id,
+    signature_settings_list,
+  } = input;
+
+  crudUtils.injectCreate(input);
+
+  return createMutationImpl({mutation, input}).then(res => res && findByIdSignatureSetting(res.id));
+}

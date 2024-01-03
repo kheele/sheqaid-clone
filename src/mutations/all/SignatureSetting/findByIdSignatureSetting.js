@@ -13,6 +13,71 @@ const query = graphql`
       edges {
         node {
           id
+          created_at
+          is_employee_owning
+          
+          signature_settings_list_connection{
+            edges {
+              node{
+                id
+                signature_setting{
+                  id
+                }
+                employee{
+                  id
+                  fname
+                  lname
+                  full_name
+                  email
+                  phone
+                  job_position{
+                    id
+                    name
+                  }
+                }
+                job_position{
+                  id
+                  name
+                }
+              }
+            }
+            
+          }
+          
+          plugin{
+            id
+            key
+            title
+          }
+          module{
+            id
+            key
+            title
+          }
+          company {
+            id
+            name
+          }
+          client {
+            id
+            name
+          }
+          project {
+            id
+            name
+          }
+          site {
+            id
+            name
+          }
+          contractor {
+            id
+            name
+          }
+          contractor_site {
+            id
+            name
+          }
         }
       }
     }

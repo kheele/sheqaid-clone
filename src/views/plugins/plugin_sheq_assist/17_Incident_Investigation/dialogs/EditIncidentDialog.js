@@ -46,6 +46,7 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditIncidentDialog";
 	title = "Incident";
 	findById = findByIdIncident;
+	removeById = updateIncident;
 
 	constructor(props) {
 		super(props, style);

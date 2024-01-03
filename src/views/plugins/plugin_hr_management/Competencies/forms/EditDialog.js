@@ -28,6 +28,7 @@ class EditCompetencyCertificateDialog extends AEditDialog {
 	pageKey = "EditCompetencyCertificateDialog";
 	className = "AEditEmployeeDocDialog";
 	title = "Edit Competency Certificate";
+	removeById = updateEmployeeCompetency;
 
 	constructor(props) {
 		super(props, style);
@@ -37,6 +38,11 @@ class EditCompetencyCertificateDialog extends AEditDialog {
 		const {props: {isNewEmployee}} = this;
 		if(isNewEmployee) return;
 		return findByIdEmployeeCompetency;
+	}
+
+	get topButtonsHiddenDelete() {
+		const {props: {isNewEmployee}} = this;
+		if (isNewEmployee) return true;
 	}
 
 	get controls() {

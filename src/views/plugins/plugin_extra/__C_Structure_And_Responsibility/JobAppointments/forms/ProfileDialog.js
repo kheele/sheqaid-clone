@@ -13,12 +13,14 @@ import AEmployeeDocControls from "views/plugins/plugin_hr_management/AEmployeeDo
 import employeeStore from "mutations/all/Employee";
 import updateEmployeeJobAppointment
 	from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
+import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileJobAppointmentDialog";
 	className = "AProfileEmployeeDocDialog";
+	findById = findByIdEmployee;
 
 	constructor(props) {
 		super(props, style);
@@ -70,6 +72,7 @@ class Controls extends AEmployeeDocControls {
 
 	//</editor-fold>
 
+	//<editor-fold desc="renderItem">
 	renderItem(item, n, onClick) {
 		const {
 			props: {
@@ -95,6 +98,7 @@ class Controls extends AEmployeeDocControls {
 			</div>
 		</div>;
 	}
+	//</editor-fold>
 
 }
 

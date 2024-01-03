@@ -24,6 +24,7 @@ import {CircularProgress} from "@mui/material";
 class EditOrganogramDialog extends AEditDialog {
     pageKey = "EditOrganogramDialog";
     findById = findByIdOrganogram;
+    removeById = updateOrganogram;
 
     constructor(props) {
         super(props, style);

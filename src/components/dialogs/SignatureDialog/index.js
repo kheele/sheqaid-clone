@@ -1,9 +1,10 @@
 //<editor-fold desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
-import Form from '../../../utils/Form';
+import Form from 'utils/Form';
 
 import {ANewDialog} from '../../dialogs';
 
@@ -17,8 +18,8 @@ import {
     SelectModuleHRInput,
     SelectModuleSHEQInput
 } from "../../inputs";
-import {execWhen} from "../../../utils/Utils";
-
+import pluginManager from "app/PluginManager";
+import insertSignatureSetting from "mutations/all/SignatureSetting/insertSignatureSetting";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -44,12 +45,7 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            plugin: [
-                {text: 'SHEQ Management', value: 'plugin_sheq_assist', checked: false},
-                {text: 'Human Resource Management', value: 'plugin_hr_management', checked: false},
-                {text: 'Claims Management', value: 'plugin_claim_management', checked: false},
-                {text: 'Extra Modules', value: 'plugin_extra', checked: false},
-            ],
+            plugin: [],
             is_employee_owning: [
                 {text: 'Yes', value: true, checked: false},
                 {text: 'No', value: false, checked: false},
@@ -66,6 +62,18 @@ class Controls extends React.Component {
         this.form.addChangeOne("plugin", this.onChangePlugin.bind(this));
     }
     //</editor-fold>
+
+    componentWillMount() {
+        const {plugin, module} = this.props.dialog.props;
+
+        this.state.lists.plugin = pluginManager.listAll.
+        filter(({data:{status}}) => status === "Installed").
+        map((value) => ({
+            label: value.data.title, value,
+        }));
+
+        console.log('plugins', plugin, this.state.lists.plugin.slice())
+    }
 
     //<editor-fold desc="onChanges">
     onChangePlugin(el, val) {
@@ -99,23 +107,23 @@ class Controls extends React.Component {
             is_employee_owning,
             signature_settings_list
         } = form.data;
-        const data = {
-            plugin,
-            module,
-            is_employee_owning,
-        };
 
-        if(signature_settings_list) {
-            data.signature_settings_list = signature_settings_list.map(({job_position, employee,}) => ({
-                job_position_id: job_position && job_position.id,
-                employee_id: employee && employee.id,
-            }));
-        }
+        const data = {
+            is_employee_owning,
+            plugin_id: plugin.id,
+            module_id: module.module.id,
+            signature_settings_list: {
+                data: (signature_settings_list || []).map(({job_position, employee,}) => ({
+                    job_position_id: job_position && job_position.id,
+                    employee_id: employee && employee.id,
+                })),
+            }
+        };
 
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        insertSignatureSetting(data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -127,8 +135,32 @@ class Controls extends React.Component {
     }
     //</editor-fold>
 
+    //<editor-fold desc="defaultValue">
+    @computed
+    get defaultValue() {
+        let value;
+        if(this.state.plugin) {
+            value = this.state.plugin;
+        } else {
+            const {plugin, module} = this.props.dialog.props;
+            const p = this.state.lists.plugin.find(({value:{data: {key}}}) => key === plugin);
+            if(p) {
+                value = p.value;
+            }
+        }
+
+        if(value) {
+            return {label: value.data.title, value};
+        }
+    }
+    //</editor-fold>
+
     //<editor-fold desc="render">
     render() {
+        if(this.state.lists.plugin.isEmpty()) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+
         const {plugin, module} = this.props.dialog.props;
         return <FormControls>
             <Row
@@ -137,7 +169,7 @@ class Controls extends React.Component {
                 idx={0}
                 title="Plugin & Module"
             >
-                <ClearableInput name="plugin" type="radio" placeholder="Plugin" defaultValue={plugin} vertical
+                <ClearableInput name="plugin" type="select" placeholder="Plugin" defaultValue={this.defaultValue} vertical
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.plugin} returnValue/>
                 <SelectModule state={this.state} defaultValue={module} onChange={this.form.onChange}/>
@@ -170,17 +202,21 @@ class SelectModule extends React.Component {
             return null;
         }
 
+        const {data:{key}} = plugin;
+
+        console.log('plugin', plugin, defaultValue)
+
         let node = [<hr/>];
-        if (plugin === 'plugin_sheq_assist') {
+        if (key === 'plugin_sheq_assist') {
             node.push(<SelectModuleSHEQInput name="module" defaultValue={defaultValue} className="col-lg-12"
                                              onChange={onChange}/>);
-        } else if (plugin === 'plugin_hr_management') {
+        } else if (key === 'plugin_hr_management') {
             node.push(<SelectModuleHRInput name="module" defaultValue={defaultValue} className="col-lg-12"
                                            onChange={onChange}/>);
-        } else if (plugin === 'plugin_extra') {
+        } else if (key === 'plugin_extra') {
             node.push(<SelectModuleExtraInput name="module" defaultValue={defaultValue} className="col-lg-12"
                                               onChange={onChange}/>);
-        } else if (plugin === 'plugin_claim_management') {
+        } else if (key === 'plugin_claim_management') {
             node.push(<SelectModuleClaimsInput name="module" defaultValue={defaultValue} className="col-lg-12"
                                                onChange={onChange}/>);
         } else {

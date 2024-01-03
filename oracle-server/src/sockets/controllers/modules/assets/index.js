@@ -36,7 +36,7 @@ class Cntr extends ACntr {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"x-hasura-access-key": "rhespo-g",
+				"x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
 				...headers,
 			},
 			body: JSON.stringify({query, variables}),

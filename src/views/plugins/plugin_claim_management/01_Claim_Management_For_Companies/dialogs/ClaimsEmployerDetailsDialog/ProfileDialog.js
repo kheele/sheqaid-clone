@@ -11,6 +11,8 @@ import {FormControls, Row} from 'components/FormComponents';
 import style from "./ProfileDialog.lazy.css";
 import findByIdClaimsEmployerDetails
     from "mutations/all/COIDA/ClaimsEmployerDetails/findByIdClaimsEmployerDetails";
+import updateClaimsEmployerDetails
+    from "mutations/all/COIDA/ClaimsEmployerDetails/updateClaimsEmployerDetails";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -18,6 +20,7 @@ import findByIdClaimsEmployerDetails
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileClaimsEmployerDetailsDialog";
     findById = findByIdClaimsEmployerDetails;
+    removeById = updateClaimsEmployerDetails;
   
     constructor(props) {
         super(props, style);
@@ -25,10 +28,6 @@ class ProfileDialog extends AProfileDialog {
 
     title() {
         return "Employer Details";
-    }
-    
-    get topButtonsHiddenDelete() {
-        return true;
     }
 
     get controls() {

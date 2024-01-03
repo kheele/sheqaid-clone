@@ -7,7 +7,7 @@ global.sendRelay = async (args) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             "X-Hasura-Role": "admin",
             // ...headers,
         },
@@ -45,7 +45,7 @@ global.sendGraphQL = async (args) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-hasura-access-key": "rhespo-g",
+                "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
                 ...headers,
             },
             body: JSON.stringify({query: mutation, operationName, variables}),
@@ -87,7 +87,7 @@ global.sendGraphQL = async (args) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
         body: JSON.stringify({query, variables}),

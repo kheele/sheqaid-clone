@@ -4,7 +4,6 @@
 import { graphql } from "react-relay";
 // @ts-ignore
 import findOneMutationImpl from "mutations/findOneMutationImpl";
-import {EntitySite} from "mutations/types.d.ts";
 
 // 2
 const query = graphql`

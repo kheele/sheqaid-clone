@@ -21,11 +21,11 @@ router.get('/', (req, res) => {
 
     const {body: path} = req;
 
-    fetch(`http://cloud.sheqaid.com:8080/api/rest/${path}`, {
+    fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
     }).then(res => res.json()).then(data => {

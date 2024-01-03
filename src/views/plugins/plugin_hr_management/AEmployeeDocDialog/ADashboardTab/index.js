@@ -86,6 +86,7 @@ class DashboardTab extends React.Component {
 		const {
 			titlePlural,
 			topStatsSize,
+			hasSignatures,
 			onViewDialog,
 			onNewDialog,
 			onSignatures,
@@ -112,9 +113,9 @@ class DashboardTab extends React.Component {
 					<Button className="btn btn-primary pull-right" onClick={onExport}>
 						Export
 					</Button>
-					<Button className="btn btn-primary pull-right" onClick={onSignatures}>
+					{hasSignatures && <Button className="btn btn-primary pull-right" onClick={onSignatures}>
 						Signatures
-					</Button>
+					</Button>}
 				</TabledTopPanel>
 			</MKBox>
 			<TopGridCounter

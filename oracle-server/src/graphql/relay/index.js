@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
         body: JSON.stringify(req.body),

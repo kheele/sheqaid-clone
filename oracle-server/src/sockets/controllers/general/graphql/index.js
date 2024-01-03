@@ -34,7 +34,7 @@ eventManager.on("graphql/v1beta1/relay", async (socket, data = {}) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
         body: JSON.stringify({query, variables}),
@@ -106,7 +106,7 @@ eventManager.on("graphql/api/rest/views", async (socket, path) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "x-hasura-access-key": "rhespo-g",
+            "x-hasura-access-key": process.env.HASURA_ADMIN_SECRET,
             ...headers,
         },
     }).then(res => {

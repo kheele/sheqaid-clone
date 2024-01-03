@@ -11,6 +11,7 @@ import ProfilePDFReader from '../../printers/ProfileOrganogramPDFReader';
 import style from "./ProfileOrganogramDialog.lazy.css";
 import findByIdOrganogram from "../Query/List/findByIdOrganogram";
 import {CircularProgress} from "@mui/material";
+import updateOrganogram from "mutations/all/StructureAndResponsibility/Organogram/updateOrganogram";
 
 // </editor-fold>
 
@@ -18,6 +19,7 @@ import {CircularProgress} from "@mui/material";
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileOrganogramDialog";
     findById = findByIdOrganogram;
+    removeById = updateOrganogram;
 
     constructor(props) {
         super(props, style);

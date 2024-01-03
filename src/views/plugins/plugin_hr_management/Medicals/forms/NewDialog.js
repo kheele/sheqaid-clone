@@ -134,11 +134,6 @@ class Controls extends React.Component {
         });
     }
 
-    get onSetSignatureSettings() {
-        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
-        return onSetSignatureSettings;
-    }
-
     get embeddedEmployee() {
         const {props: {dialog: {props: {embeddedEmployee}}}} = this;
         return embeddedEmployee;
@@ -154,7 +149,7 @@ class Controls extends React.Component {
     }
 
     render() {
-        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
+        const {isNewEmployee, embeddedEmployee, props:{onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
             <Row
@@ -176,7 +171,6 @@ class Controls extends React.Component {
                 title="2. Document"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}
             >
                 <UploadButton
                     name="doc"
@@ -187,16 +181,6 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
             </Row>
-            <SignatureListRow
-              idx={3}
-              pluginKey="HR"
-              module="Medicals"
-              onSetSignatureSettings={onSetSignatureSettings}
-              onFormOpen={onFormOpen}
-              onFormBack={onFormBack}
-            >
-
-            </SignatureListRow>
         </FormControls>;
     }
 }

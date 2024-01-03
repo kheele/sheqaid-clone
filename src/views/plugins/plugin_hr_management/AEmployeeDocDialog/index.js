@@ -19,7 +19,7 @@ import {
     SelectEmployeeInput,
     SelectJobPositionInput,
     SelectTeamInput
-} from "../../../../components/inputs";
+} from "components/inputs";
 
 // </editor-fold>
 
@@ -180,7 +180,7 @@ class Dialog extends ADialogTab {
 
     // <editor-fold defaultstate="collapsed" desc="renderPage">
     renderPage() {
-        const {permissionKey, module} = this;
+        const {hasSignatures, permissionKey, module} = this;
         const {isRemoved} = this.props;
         const {NewDialog, ProfileDialog, EditDialog, ExportDialog,} = this.dialogs;
 
@@ -199,6 +199,7 @@ class Dialog extends ADialogTab {
                 module={module}
 
                 loadDashboard={this.loadDashboard}
+                hasSignatures={hasSignatures}
                 onBuildQuery={this.onBuildQuery}
                 renderFilterNodeActive={this.renderFilterNodeActive}
                 renderFilterNodeRemoved={this.renderFilterNodeRemoved}
@@ -357,6 +358,7 @@ class TabWrapper extends React.Component {
             isRemoved,
             NewDialog, ProfileDialog, EditDialog, ExportDialog, module,
             loadDashboard,
+            hasSignatures,
             onBuildQuery,
             onChangeViewExpiryDate,
             renderFilterNodeActive, renderFilterNodeRemoved,
@@ -377,6 +379,7 @@ class TabWrapper extends React.Component {
                     ref="dashboard"
                     title="Dashboard"
                     loadDashboard={loadDashboard}
+                    hasSignatures={hasSignatures}
 
                     onViewActiveTab={this.onViewActiveTab}
                     onViewRemovedTab={this.onViewRemovedTab}
@@ -403,6 +406,7 @@ class TabWrapper extends React.Component {
                     renderTHead={renderTHeadActive}
                     renderItem={renderItemActive}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
+                    hasSignatures={hasSignatures}
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
                     NewDialog={NewDialog}
@@ -422,6 +426,7 @@ class TabWrapper extends React.Component {
                     renderTHead={renderTHeadRemoved}
                     renderItem={renderItemRemoved}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
+                    hasSignatures={hasSignatures}
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
                     ProfileDialog={ProfileDialog}
@@ -432,7 +437,7 @@ class TabWrapper extends React.Component {
             </Tabs>
 
             {NewDialog && <NewDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>}
-            <SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module={module}/>
+            {hasSignatures && <SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module={module}/>}
             {ExportDialog && <ExportDialog ref="exportDialog"/>}
         </>);
     }
