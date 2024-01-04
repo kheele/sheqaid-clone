@@ -228,104 +228,104 @@ exports.loadFiles = async (dir, extract, options) => {
     });
 };
 
-readFiles(path.join(__dirname, 'docs/202305/Brake Test')).then(async files => {
-    return;
-
-    await Promise.all(files.filter(v => !v.startsWith('-DONE-') && !v.startsWith('-MISSING-')).map(async filename => {
-        let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
-
-        // reg_num = reg_num.replace(' ', '');
-        let res = await getGraphQLOne({
-            query: `
-            		query findQuery {
-            		  asset_details(where:{reg_num:{_eq: "${reg_num}"}}) {
-            				id
-            				reg_num
-            				asset_list{
-            				  id
-            				  #doc_list(
-            				    #where: {type: {_eq: "Certificate of Fitness (C.O.F)"}}
-            				  #){
-            				  #  id
-            				  #  doc
-            				  #  type
-            				  #}
-            				}
-            		  }
-            		}
-            	`,
-            operationName: 'findQuery',
-        });
-
-        if (res) {
-            // console.log('asset', res);
-
-            const {id, data: {reg_num, asset_list}} = res;
-            const [asset] = asset_list;
-
-            const base64 = fs.readFileSync(path.join(__dirname, 'docs/202305/Brake Test/' + filename), {encoding: 'base64'});
-            const datauri = 'data:application/pdf;base64,' + base64;
-            console.log(reg_num, date, expiry, asset.id, !!datauri);
-            // return;//
-
-            await insertGraphQL({
-                mutation: `
-                           mutation insertAssetDocMutation($object: asset_docs_insert_input!) {
-                              insert_asset_docs_one(object: $object) {
-                                  id
-                                  created_at
-                                  doc
-                                  date
-                                  expiry
-                                  title
-                                  desc
-                                  type
-                                  asset_id
-                                  asset{
-                                      id
-                                  }
-                              }
-                           }
-                        `,
-                operationName: 'insertAssetDocMutation',
-                input: {
-                    asset_id: asset.id,
-                    doc: {path: datauri},
-                    date: Dates.formatDateSQL(date),
-                    // expiry: Dates.formatDateSQL(expiry),
-                    title: "Brake Test Report",
-                    type: "Brake Test Report",
-                },
-            });
-
-            fs.move(
-                path.join(__dirname, 'docs/202305/Brake Test/' + filename),
-                path.join(__dirname, 'docs/202305/Brake Test/-DONE-' + filename),
-                {overwrite: true},
-                (err) => {
-                    if (err) {
-                        console.error('Error moving folder:', err);
-                    } else {
-                        console.log('Folder moved successfully!');
-                    }
-                },
-            );
-        } else {
-            fs.move(
-                path.join(__dirname, 'docs/202305/Brake Test/' + filename),
-                path.join(__dirname, 'docs/202305/Brake Test/-MISSING-' + filename),
-                {overwrite: true},
-                (err) => {
-                    if (err) {
-                        console.error('Error moving folder:', err);
-                    } else {
-                        console.log('Folder moved successfully!');
-                    }
-                },
-            );
-            console.log('asset not found reg', reg_num);
-        }
-    }));
-
-    // console.log('data', data);
-});
+// readFiles(path.join(__dirname, 'docs/202305/Brake Test')).then(async files => {
+//     return;
+//
+//     await Promise.all(files.filter(v => !v.startsWith('-DONE-') && !v.startsWith('-MISSING-')).map(async filename => {
+//         let [reg_num, date, expiry] = filename.replace('.pdf', '').split(' ');
+//
+//         // reg_num = reg_num.replace(' ', '');
+//         let res = await getGraphQLOne({
+//             query: `
+//             		query findQuery {
+//             		  asset_details(where:{reg_num:{_eq: "${reg_num}"}}) {
+//             				id
+//             				reg_num
+//             				asset_list{
+//             				  id
+//             				  #doc_list(
+//             				    #where: {type: {_eq: "Certificate of Fitness (C.O.F)"}}
+//             				  #){
+//             				  #  id
+//             				  #  doc
+//             				  #  type
+//             				  #}
+//             				}
+//             		  }
+//             		}
+//             	`,
+//             operationName: 'findQuery',
+//         });
+//
+//         if (res) {
+//             // console.log('asset', res);
+//
+//             const {id, data: {reg_num, asset_list}} = res;
+//             const [asset] = asset_list;
+//
+//             const base64 = fs.readFileSync(path.join(__dirname, 'docs/202305/Brake Test/' + filename), {encoding: 'base64'});
+//             const datauri = 'data:application/pdf;base64,' + base64;
+//             console.log(reg_num, date, expiry, asset.id, !!datauri);
+//             // return;//
+//
+//             await insertGraphQL({
+//                 mutation: `
+//                            mutation insertAssetDocMutation($object: asset_docs_insert_input!) {
+//                               insert_asset_docs_one(object: $object) {
+//                                   id
+//                                   created_at
+//                                   doc
+//                                   date
+//                                   expiry
+//                                   title
+//                                   desc
+//                                   type
+//                                   asset_id
+//                                   asset{
+//                                       id
+//                                   }
+//                               }
+//                            }
+//                         `,
+//                 operationName: 'insertAssetDocMutation',
+//                 input: {
+//                     asset_id: asset.id,
+//                     doc: {path: datauri},
+//                     date: Dates.formatDateSQL(date),
+//                     // expiry: Dates.formatDateSQL(expiry),
+//                     title: "Brake Test Report",
+//                     type: "Brake Test Report",
+//                 },
+//             });
+//
+//             fs.move(
+//                 path.join(__dirname, 'docs/202305/Brake Test/' + filename),
+//                 path.join(__dirname, 'docs/202305/Brake Test/-DONE-' + filename),
+//                 {overwrite: true},
+//                 (err) => {
+//                     if (err) {
+//                         console.error('Error moving folder:', err);
+//                     } else {
+//                         console.log('Folder moved successfully!');
+//                     }
+//                 },
+//             );
+//         } else {
+//             fs.move(
+//                 path.join(__dirname, 'docs/202305/Brake Test/' + filename),
+//                 path.join(__dirname, 'docs/202305/Brake Test/-MISSING-' + filename),
+//                 {overwrite: true},
+//                 (err) => {
+//                     if (err) {
+//                         console.error('Error moving folder:', err);
+//                     } else {
+//                         console.log('Folder moved successfully!');
+//                     }
+//                 },
+//             );
+//             console.log('asset not found reg', reg_num);
+//         }
+//     }));
+//
+//     // console.log('data', data);
+// });

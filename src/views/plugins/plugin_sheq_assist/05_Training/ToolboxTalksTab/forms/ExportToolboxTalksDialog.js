@@ -15,8 +15,6 @@ import {
 import {THead, TRow} from 'components/tables';
 
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
-import byLogged
-    from "../../../../plugin_hr_management/Competencies/CompetenciesDialog/Query/List/listAllCompetencyByLogged";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -50,7 +48,6 @@ class Controls extends AControls {
             requirement: [{text: "Compulsory", value: "Compulsory"}, {text: "Optional", value: "Optional"}],
             requirement_legal: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
             training_frequency: ['Non-Expiry', '5 Years', '4 Years', '3 Years', '2 Years', 'Annually', 'Bi-Annually', 'Quarterly'],
-            training_provider_requirement: [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}],
             competency_evaluation: [{text: "On Day Of Evaluation", value: "OnDayOfEvaluation"}, {text: "Last Day Of Evaluation", value: "LastDayOfEvaluation"}]
         },
         searchList: []
@@ -62,14 +59,14 @@ class Controls extends AControls {
         project_id: null,
         site_id: null,
         //
-        hr_id: null,
-        job_title_id: null,
+        trainer_id: null,
+        job_position_id: null,
         //
-        subject: null,
+        subject_id: null,
+        subject_category: null,
         //
-        training_provider_requirement: null,
-        requirement: null,
-        status: null,
+        training_frequency: null,
+        date: null,
     };
     // </editor-fold>
 
@@ -80,80 +77,46 @@ class Controls extends AControls {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    onLoadList({isNew, filterData}) {
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+
         const {
             client_id,
             project_id,
             site_id,
             //
-            department_id,
-            job_position_id,
-            team_id,
-            supervisor_id,
-            employee_id,
-            //
-            type,
-            competency_type,
-            course_or_module,
-            //
-            issued_date,
-            expiry_date,
-            date_range,
+            training_frequency,
+            date,
+            subject_list,
+            subject_category_list,
+            trainer_list,
+            job_position_list,
+            employee_list,
         } = filterData || {};
 
-        const mon = Dates.formatDateSQL(new Date().addMonths(1));
-        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        const listByLogged = sockets.of('trainings/courses').fn('listByLogged');
 
-        const limit = 50;
-
-        const args = {
-            view: 'EACH',
+        return listByLogged({
             client_id,
             project_id,
             site_id,
             //
-            department_id,
-            job_position_id,
-            team_id,
-            supervisor_id,
-            employee_id,
-            //
-            type,
-            competency_type,
-            course_or_module,
-            //
-            issued_date,
-            expiry_date,
-            date_range,
-            //
-            // limit,
+            training_frequency,
+            date,
+            subject_list,
+            subject_category_list,
+            trainer_list,
+            job_position_list,
+            employee_list,
             //
             exact_orgs: true,
-        };
-        // const args = {
-        // 	// removed,
-        // 	// view, expiry_date,
-        // 	mon, mon2, mon3,
-        // 	//
-        // 	department_id,
-        // 	job_position_id,
-        // 	team_id,
-        // 	supervisor_id,
-        // 	name,
-        // 	//
-        // 	limit,
-        // 	//
-        // 	exact_orgs: true,
-        // };
-
-        // if(!isNew) {
-        // 	args.offset = this.refs.root.list.length;
-        // } else {
-        // 	args.offset = 0;
-        // }
-
-        return byLogged(args);
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
 
     //</editor-fold>
@@ -189,16 +152,16 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderFields">
     get renderFields() {
-        return <React.Fragment>
-            <SelectUserInput ref="hr_id" name="hr" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            <SelectJobPositionInput ref="job_title_id" name="job_title" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+        return <>
+            <SelectUserInput ref="trainer_id" name="hr" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            <SelectJobPositionInput ref="job_position_id" name="job_title" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
             <SelectToolboxTalkSubjectInput ref="subject" name="subject" placeholder="Subject..." className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
             <ClearableInput ref="training_provider_requirement" name="training_provider_requirement" type="radio" placeholder="Accreditation" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.training_provider_requirement}/>
             <ClearableInput ref="requirement" name="requirement" type="radio" placeholder="Requirement" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.requirement}/>
             <ClearableInput ref="status" name="status" type="radio" placeholder="Status" vertical className="col-lg-12 h-105 form-control" onChange={this.form.onChange} values={this.state.lists.status}/>
-        </React.Fragment>;
+        </>;
     }
     // </editor-fold>
 }

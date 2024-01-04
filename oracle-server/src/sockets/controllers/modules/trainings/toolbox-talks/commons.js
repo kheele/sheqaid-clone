@@ -9,9 +9,13 @@ exports.getVariablesAndQueryConfig = (
         training_frequency,
         date,
         subject_list,
+        subject_id,
         subject_category_list,
+        subject_category,
         trainer_list,
+        trainer_id,
         job_position_list,
+        job_position_id,
         employee_list,
         //
         site_id, project_id, client_id,
@@ -35,14 +39,26 @@ exports.getVariablesAndQueryConfig = (
         if (subject_list) {
             filter.push(`subject_id: {_in: ${subject_list}}`);
         }
+        if (subject_id) {
+            filter.push(`subject_id: {_eq: ${subject_id}}`);
+        }
         if (subject_category_list) {
             filter.push(`subject_category: {_in: ${subject_category_list.map(v => `"${v}"`)}}`);
+        }
+        if (subject_category) {
+            filter.push(`subject_category: {_eq: "${subject_category}"}`);
         }
         if (trainer_list) {
             filter.push(`toolbox_talk_list{trainer_id: {_in: ${trainer_list}}}`);
         }
+        if (trainer_id) {
+            filter.push(`toolbox_talk_list{trainer_id: {_eq: ${trainer_id}}}`);
+        }
         if (job_position_list) {
             filter.push(`toolbox_talk_list{job_position_list{job_position_id: {_in: ${job_position_list}}}}`);
+        }
+        if (job_position_id) {
+            filter.push(`toolbox_talk_list{job_position_list{job_position_id: {_eq: ${job_position_id}}}}`);
         }
         if (employee_list) {
             filter.push(`toolbox_talk_list{register_list{employee_id: {_in: ${employee_list}}}}`);

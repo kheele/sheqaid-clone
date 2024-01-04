@@ -15,9 +15,13 @@ module.exports = async (socket, data) => {
         training_frequency,
         date,
         subject_list,
+        subject_id,
         subject_category_list,
+        subject_category,
         trainer_list,
+        trainer_id,
         job_position_list,
+        job_position_id,
         employee_list,
         //
         site_id, project_id, client_id,
@@ -33,12 +37,14 @@ module.exports = async (socket, data) => {
         //
         id,
         //
-        training_frequency,
-        date,
         subject_list,
+        subject_id,
         subject_category_list,
+        subject_category,
         trainer_list,
+        trainer_id,
         job_position_list,
+        job_position_id,
         employee_list,
         //
         site_id, project_id, client_id,
