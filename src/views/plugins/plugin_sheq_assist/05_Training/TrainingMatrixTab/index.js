@@ -179,11 +179,12 @@ class TrainingMatrixTab extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Course</div>
-            <div className="td fixed-flex min-w-120">Status</div>
-            <div className="td fixed-flex min-w-140">Accreditation</div>
             <div className="td">Training Conductor</div>
+            <div className="td">Institution Conducting Training</div>
             <div className="td">Job Position(s)</div>
             <div className="td fixed-flex min-w-150">Requirement</div>
+            <div className="td fixed-flex min-w-140">Accreditation</div>
+            <div className="td fixed-flex min-w-120">Training Status</div>
             <div className="td fixed-flex min-w-140">Total Cost</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
@@ -216,16 +217,17 @@ class TrainingMatrixTab extends React.Component {
         return <TRow key={"item-" + id}>
             <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{course && course.name || 'N/A'}</div>
-            <div className="td fixed-flex min-w-120">{status || 'N/A'}</div>
-            <div className="td fixed-flex min-w-140">{provider_requirement || 'N/A'}</div>
             <div className="td">{trainer ? (trainer.fname + ' ' + trainer.lname) : 'N/A'}</div>
+            <div className="td">{institution_conducting_training || 'N/A'}</div>
             <div className="td">
                 {
                     job_position_list ? job_position_list.map(({id, job_position: {name}}) => <Grid key={id} item><Chip
-                        label={name} size="small"/></Grid>) : 'N/A'
+                      label={name} size="small"/></Grid>) : 'N/A'
                 }
             </div>
             <div className="td fixed-flex min-w-150">{requirement || 'N/A'}</div>
+            <div className="td fixed-flex min-w-140">{provider_requirement || 'N/A'}</div>
+            <div className="td fixed-flex min-w-120">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-140">
                 <CostBtn cost={cost}/>
             </div>

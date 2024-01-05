@@ -10,7 +10,6 @@ import {
     DateRangeInput,
     SelectEmployeeInput,
     SelectJobPositionInput, SelectTrainingCourseInput,
-    SelectUserInput
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
@@ -127,12 +126,14 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {
         return <THead>
-            <div className="td fixed-flex min-w-100">Status</div>
-            <div className="td fixed-flex min-w-120">Accreditation</div>
-            <div className="td">Training Conductor</div>
-            <div className="td">Job Title</div>
+            <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Course</div>
+            <div className="td">Training Conductor</div>
+            <div className="td">Institution Conducting Training</div>
+            <div className="td">Job Position(s)</div>
             <div className="td fixed-flex min-w-100">Requirement</div>
+            <div className="td fixed-flex min-w-120">Accreditation</div>
+            <div className="td fixed-flex min-w-100">Training Status</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
         </THead>;
     }
@@ -143,12 +144,14 @@ class Controls extends AControls {
         const {id, data:{created_at, status, provider_requirement, institution_conducting_training, trainer, job_position_list, course, requirement, certificate_expiration}} = item;
         console.log('job_position_list', job_position_list.slice());
         return <>
-            <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
-            <div className="td fixed-flex min-w-120">{provider_requirement || 'N/A'}</div>
-            <div className="td">{trainer ? trainer.full_name : 'N/A'}</div>
-            <div className="td">{job_position_list ? job_position_list.filter(v => !!v).map(({name}) => name).join(', ') : 'N/A'}</div>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{course ? course.name : 'N/A'}</div>
+            <div className="td">{trainer ? trainer.full_name : 'N/A'}</div>
+            <div className="td">{institution_conducting_training || 'N/A'}</div>
+            <div className="td">{job_position_list ? job_position_list.filter(v => !!v).map(({name}) => name).join(', ') : 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
+            <div className="td fixed-flex min-w-120">{provider_requirement || 'N/A'}</div>
+            <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
         </>;
     }
@@ -157,7 +160,7 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderFields">
     get renderFields() {
         return <>
-            <SelectUserInput ref="trainer_id" name="trainer" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            <SelectEmployeeInput ref="trainer_id" name="trainer" placeholder="Training Conductor..." defaultUser required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <SelectJobPositionInput ref="job_position_id" name="job_position" placeholder="Job Position For Training..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
             <SelectTrainingCourseInput ref="course_id" name="course" placeholder="Course..." className="col-lg-12 form-control" onChange={this.form.onChange} add={false} returnValue/>

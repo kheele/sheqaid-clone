@@ -94,7 +94,7 @@ class Controls extends AControls {
             employee_list,
         } = filterData || {};
 
-        const listByLogged = sockets.of('trainings/courses').fn('listByLogged');
+        const listByLogged = sockets.of('trainings/toolbox-talks').fn('listByLogged');
 
         return listByLogged({
             client_id,
@@ -127,7 +127,7 @@ class Controls extends AControls {
             <div className="td fixed-flex min-w-100">Status</div>
             <div className="td fixed-flex min-w-120">Accreditation</div>
             <div className="td">Training Conductor</div>
-            <div className="td">Job Title</div>
+            <div className="td">Job Position</div>
             <div className="td">Subject</div>
             <div className="td fixed-flex min-w-100">Requirement</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>

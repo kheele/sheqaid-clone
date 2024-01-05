@@ -392,7 +392,6 @@
         // <editor-fold defaultstate="collapsed" desc="export_excel">
         async export_excel(evt,{
             client: _client, project: _project, site: _site,
-            department: _department, job_position: _job_position, supervisor: _supervisor,
             list,
         }) {
             return Events.whenLoggedIn(async loggedUser => {
@@ -404,22 +403,32 @@
                               created_at,
                               company, client, project, site,
                               
-                              profile_pic,
-                              fname,
-                              lname,
-                              id_num,
-                              passport_num,
-                              dob,
-                              sex,
-                              phone,
-                              email,
+                              status,
+                              cost,
+                              institution_conducting_training,
+                              trainer,
+                              trainer_job_position,
+                              job_category_list,
+                              job_position_list,
+                              sector_list,
+                              course,
+                              requirement_legal,
+                              requirement,
+                              max_participants_per_course,
+                              training_standard,
+                              training_frequency,
+                              provider_requirement,
+                              certificate_expiration,
                               
-                              job_position,
-                              department,
-                              supervisor,
+                              competency_evaluation,
+                              unit_standard,
+                              unit_standard_desc,
+                              credits,
+                              nqf_level,
+                            
+                              training_plan_list,
                               
-                              employee_num,
-                              employment_date,
+                              date_range,
                               
                               removed,
                           }
@@ -435,23 +444,33 @@
                             project: project && project.name,
                             site: site && site.name,
                             
-                            job_position: job_position && job_position.name,
-                            department: department && department.name,
-                            supervisor: supervisor && supervisor.full_name,
-                            
                             id,
-                            fname,
-                            lname,
-                            id_or_passport: id_num || passport_num,
-                            dob: Dates.formatDateSQL(dob),
-                            sex,
-                            phone,
-                            email,
                             
-                            employee_num,
-                            employment_date: Dates.formatDateSQL(employment_date),
+                            course: course && course.name,
+                            trainer: trainer && trainer.full_name,
+                            trainer_job_position: trainer_job_position && trainer_job_position.name,
+                            institution_conducting_training,
                             
-                            status: removed ? "Inactive" : "Active",
+                            job_category_list: job_category_list ? job_category_list.map(v => v.name).join(', ') : "",
+                            job_position_list: job_position_list ? job_position_list.map(v => v.name).join(', ') : "",
+                            sector_list: sector_list ? sector_list.map(v => v.name).join(', ') : "",
+                            
+                            requirement_legal,
+                            requirement,
+                            provider_requirement,
+                            max_participants_per_course,
+                            training_standard,
+                            training_frequency,
+                            competency_evaluation,
+                            unit_standard,
+                            unit_standard_desc,
+                            credits,
+                            nqf_level,
+                            date_range_start: date_range && Dates.formatDateSQL(date_range.start),
+                            date_range_end: date_range && Dates.formatDateSQL(date_range.end),
+                            
+                            status,
+                            activeness: removed ? "Inactive" : "Active",
                         };
                     });
                     
@@ -467,10 +486,6 @@
                     data.set('project', _project ? _project.name || _project.data.name : "ANY");
                     data.set('site', _site ? _site.name || _site.data.name : "ANY");
                     
-                    data.set('department', _department ? _department.name || _department.data.name : "ANY");
-                    data.set('job_position', _job_position ? _job_position.name || _job_position.data.name : "ANY");
-                    data.set('supervisor', _supervisor ? _supervisor.full_name || _supervisor.data.full_name : "ANY");
-                    
                     data.set("rows", rows);
                     return await Events.emit("excelTemplate", {arrayBuffer, data});
                     // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
@@ -479,103 +494,7 @@
             });
         }
         // </editor-fold>
-        //
-        // async export_excel(evt, list) {
-        //     return Events.whenLoggedIn(async loggedUser => {
-        //         const cols = [
-        //             {header: 'Company', key: 'Company', width: 25},
-        //             {header: 'Project', key: 'Project', width: 25},
-        //             {header: 'Site', key: 'Site', width: 25},
-        //
-        //             //2
-        //             {header: 'Allocation / Job Category', key: 'Allocation / Job Category', width: 28},
-        //             {header: 'Job Title', key: 'Job Title', width: 23},
-        //
-        //             //1
-        //             {header: 'Course / Module', key: 'Course / Module', width: 23},
-        //
-        //             //5
-        //             {header: 'Requirement', key: 'Requirement', width: 20},
-        //             {header: 'Max. Participants Per Course', key: 'Max. Participants Per Course', width: 30},
-        //             {header: 'Training Standard (Minimum Days)', key: 'Training Standard (Minimum Days)', width: 35},
-        //             {header: 'Training Frequency', key: 'Training Frequency', width: 22},
-        //             {header: 'Training Provider Requirement', key: 'Training Provider Requirement', width: 33},
-        //
-        //             //6
-        //             {header: 'Competency Evaluation', key: 'Competency Evaluation', width: 27},
-        //             {header: 'Unit Standard', key: 'Unit Standard', width: 20},
-        //             {header: 'Unit Standard Description', key: 'Unit Standard Description', width: 35},
-        //             {header: 'Credits', key: 'Credits', width: 15},
-        //             {header: 'NQF Level', key: 'NQF Level', width: 15},
-        //         ];
-        //
-        //         const rows = list.map((
-        //             {
-        //                 id, data: {
-        //                 created_at,
-        //                 //1
-        //                 client, project, site,
-        //                 //2
-        //                 course_or_module,
-        //                 //3
-        //                 allocation, job_title, sector_list,
-        //                 //4
-        //                 status, date_range, cost,
-        //                 //5
-        //                 institution_conducting_training, hr, job_desc,
-        //                 //6
-        //                 requirement_legal,
-        //                 requirement,
-        //                 max_participants_per_course,
-        //                 training_standard,
-        //                 training_frequency,
-        //                 training_provider_requirement,
-        //                 //7
-        //                 competency_evaluation,
-        //                 unit_standard,
-        //                 unit_standard_desc,
-        //                 credits,
-        //                 nqf_level
-        //             }
-        //             }
-        //         ) => {
-        //
-        //             const res = {
-        //                 Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-        //                 Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-        //                 Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
-        //
-        //                 //2
-        //                 "Allocation / Job Category": allocation && allocation.filter(v => !!v).map(v => v).join(', ') || '',
-        //                 "Job Title": job_title && job_title.filter(v => !!v).map(({name}) => name).join(', ') || '',
-        //
-        //                 //1
-        //                 "Course / Module": course_or_module && (isObject(course_or_module) ? course_or_module.name : course_or_module) || "",
-        //
-        //                 //5
-        //                 "Requirement": requirement || "",
-        //                 'Max. Participants Per Course': max_participants_per_course || '',
-        //                 "Training Standard (Minimum Days)": training_standard || "",
-        //                 "Training Frequency": training_frequency || "",
-        //                 "Training Provider Requirement": training_provider_requirement || "",
-        //
-        //                 //6
-        //                 "Competency Evaluation": competency_evaluation || "",
-        //                 "Unit Standard": unit_standard || "",
-        //                 "Unit Standard Description": unit_standard_desc || "",
-        //                 "Credits": credits || "",
-        //                 "NQF Level": nqf_level || "",
-        //             };
-        //
-        //             return res;
-        //         });
-        //
-        //         return await this.export_excel_impl(loggedUser, "Training-Matrix-Docs", "Training-Matrix", "Training-Matrix Data", cols, rows);
-        //     });
-        // }
-
-        // </editor-fold>
-
+        
         // <editor-fold defaultstate="collapsed" desc="list">
         async list(evt, opts = {}) {
             return Events.whenLoggedIn(async loggedUser => {
