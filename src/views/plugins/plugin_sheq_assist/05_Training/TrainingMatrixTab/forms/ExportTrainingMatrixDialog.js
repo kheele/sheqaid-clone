@@ -21,7 +21,7 @@ import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 @observer
 class ExportDialog extends AExportDialog {
     titleSingular = 'Training Matrix';
-    titlePlural = 'Training Matrixes';
+    titlePlural = 'Training Matrices';
     
     get excludePDF() {
         return true;
@@ -142,7 +142,7 @@ class Controls extends AControls {
     renderItemFrom(item, n, onClick, renderActionsCol) {
         const {id, data:{created_at, status, provider_requirement, institution_conducting_training, trainer, job_position_list, course, requirement, certificate_expiration}} = item;
         console.log('job_position_list', job_position_list.slice());
-        return <TRow key={"item-" + n} className="w-full">
+        return <>
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{provider_requirement || 'N/A'}</div>
             <div className="td">{trainer ? trainer.full_name : 'N/A'}</div>
@@ -150,7 +150,7 @@ class Controls extends AControls {
             <div className="td">{course ? course.name : 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
-        </TRow>;
+        </>;
     }
     // </editor-fold>
 

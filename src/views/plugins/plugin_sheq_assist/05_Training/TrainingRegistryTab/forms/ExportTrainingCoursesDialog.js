@@ -126,7 +126,7 @@ class Controls extends AControls {
         const {
             id, data: {created_at, name, job_position_list, frequency, sector_list, provider, client, project, site}
         } = item;
-        return <TRow key={id} className="w-full">
+        return <>
             <div className="td">{name}</div>
             <div className="td">{job_position_list.map(({id, name}) => <span className="block-inline">
                     {name}
@@ -135,7 +135,7 @@ class Controls extends AControls {
             <div className="td fixed-flex min-w-90">{frequency}</div>
             <div className="td fixed-flex min-w-90">{provider}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
-        </TRow>;
+        </>;
     }
     // </editor-fold>
 

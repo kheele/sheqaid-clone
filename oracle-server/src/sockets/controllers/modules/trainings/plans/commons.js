@@ -34,10 +34,138 @@ exports.getVariablesAndQueryConfig = (
         // filter.push(`employee: {removed: {_eq: ${employee_view === 'active'}}}`);
     }
 
-    if (view === "Course" && course_id) {
-        filter.push(`id: {_eq: ${course_id}}`);
-    } else if (view === "Job Position" && job_position_id) {
-        filter.push(`id: {_eq: ${job_position_id}}`);
+    if (view === 'Employee') {
+        if (employee_id) {
+            filter.push(`id: {_eq: ${employee_id}}`);
+        } else {
+            if (year) {
+                filter.push(`training_plan_list:{year: {_eq: ${year}}}`);
+            }
+            if (course_id) {
+                filter.push(`training_plan_list:{course_id: {_eq: ${course_id}}}`);
+            }
+            if (training_id) {
+                filter.push(`training_plan_list:{training_id: {_eq: ${training_id}}}`);
+            }
+            if (trainer_id) {
+                filter.push(`training_plan_list:{training: {trainer_id: {_eq: ${trainer_id}}}}`);
+            }
+            if (job_position_id) {
+                filter.push(`job_position_id: {_eq: ${job_position_id}}`);
+            }
+
+            if (completion_status) {
+                filter.push(`training_plan_list:{completion_status: {_eq: "${completion_status}"}}`);
+            }
+            if (result_status) {
+                filter.push(`training_plan_list:{result_status: {_eq: "${result_status}"}}`);
+            }
+            if (result) {
+                filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
+            }
+            if (date_range) {
+                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+            }
+        }
+    } else if (view === 'Job Position') {
+        if (job_position_id) {
+            filter.push(`id: {_eq: ${job_position_id}}`);
+        } else {
+            if (year) {
+                filter.push(`training_plan_list:{year: {_eq: ${year}}}`);
+            }
+            if (course_id) {
+                filter.push(`training_plan_list:{course_id: {_eq: ${course_id}}}`);
+            }
+            if (training_id) {
+                filter.push(`training_plan_list:{training_id: {_eq: ${training_id}}}`);
+            }
+            if (trainer_id) {
+                filter.push(`training_plan_list:{training:{trainer_id: {_eq: ${trainer_id}}}}`);
+            }
+            if (employee_id) {
+                filter.push(`employee_list:{id: {_eq: ${employee_id}}}`);
+            }
+
+            if (completion_status) {
+                filter.push(`completion_status: {_eq: "${completion_status}"}`);
+            }
+            if (result_status) {
+                filter.push(`result_status: {_eq: "${result_status}"}`);
+            }
+            if (result) {
+                filter.push(`result: {_eq: ${result}}`);
+            }
+            if (date_range) {
+                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+            }
+        }
+    } else if (view === 'Course') {
+        if (course_id) {
+            filter.push(`id: {_eq: ${course_id}}`);
+        } else {
+            if (year) {
+                filter.push(`training_plan_list:{year: {_eq: ${year}}}`);
+            }
+            if (training_id) {
+                filter.push(`training_matrix_list:{id: {_eq: ${training_id}}}`);
+            }
+            if (trainer_id) {
+                filter.push(`training_matrix_list:{trainer_id: {_eq: ${trainer_id}}}`);
+            }
+            if (job_position_id) {
+                filter.push(`training_plan_job_position_list:{job_position_id: {_eq: ${job_position_id}}}`);
+            }
+            if (employee_id) {
+                filter.push(`training_plan_list:{employee_id: {_eq: ${employee_id}}}`);
+            }
+
+            if (completion_status) {
+                filter.push(`training_plan_list:{completion_status: {_eq: "${completion_status}"}}`);
+            }
+            if (result_status) {
+                filter.push(`training_plan_list:{result_status: {_eq: "${result_status}"}}`);
+            }
+            if (result) {
+                filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
+            }
+            if (date_range) {
+                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+            }
+        }
+    } else if (view === 'Year') {
+        if (year) {
+            filter.push(`year: {_eq: ${year}}`);
+        } else {
+            if (course_id) {
+                filter.push(`course_list:{id: {_eq: ${course_id}}}`);
+            }
+            if (training_id) {
+                filter.push(`training_list:{id: {_eq: ${training_id}}}`);
+            }
+            if (trainer_id) {
+                filter.push(`training_list:{trainer_id: {_eq: ${trainer_id}}}`);
+            }
+            if (job_position_id) {
+                filter.push(`employee_list:{job_position_id: {_eq: ${job_position_id}}}`);
+            }
+            if (employee_id) {
+                filter.push(`employee_list:{id: {_eq: ${employee_id}}}`);
+            }
+
+            if (completion_status) {
+                filter.push(`completion_status: {_eq: "${completion_status}"}`);
+            }
+            if (result_status) {
+                filter.push(`training_plan_list:{result_status: {_eq: "${result_status}"}}`);
+            }
+            if (result) {
+                filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
+            }
+            if (date_range) {
+                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+            }
+        }
     } else {
         if (year) {
             filter.push(`year: {_eq: ${year}}`);

@@ -138,7 +138,7 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
         const {id, data:{created_at, status, training_provider_requirement, institution_conducting_training, hr, job_title, subject, requirement, certificate_expiration}} = item;
-        return <TRow key={"item-" + n} className="w-full">
+        return <>
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{training_provider_requirement || 'N/A'}</div>
             <div className="td">{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</div>
@@ -146,7 +146,7 @@ class Controls extends AControls {
             <div className="td">{isObject(subject) ? (subject.name || subject.data.name) : (subject || 'N/A')}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
-        </TRow>;
+        </>;
     }
     // </editor-fold>
 
