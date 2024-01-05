@@ -14,6 +14,8 @@ import {EditResponseDialog, NewQuestionnaireDialog} from '../ObservationsTab/for
 import style from "./TemplatesTab.lazy.css";
 import byLogged from "./Query/List/listAllJobObservationTemplatesByLogged";
 import TemplateTableRow from "./TemplateTableRow";
+import updateJobObservationsQuestionnaireTemplate
+    from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
 
 @observer
 class TemplatesTab extends React.Component {
@@ -197,7 +199,7 @@ class TemplatesTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateJobObservationsQuestionnaireTemplate}/>
             
             <NewTemplateDialog ref="newDialog"/>
             <EditTemplateDialog ref="editDialog"/>
