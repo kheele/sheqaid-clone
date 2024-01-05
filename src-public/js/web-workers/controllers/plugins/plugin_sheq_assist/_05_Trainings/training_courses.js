@@ -75,71 +75,84 @@
             });
         }
         // </editor-fold>
-
+        
         // <editor-fold defaultstate="collapsed" desc="export_excel">
-        async export_excel(evt, list) {
+        async export_excel(evt,{
+            client: _client, project: _project, site: _site,
+            list,
+        }) {
             return Events.whenLoggedIn(async loggedUser => {
-                const cols = [
-                    {header: 'Company', key: 'Company', width: 25},
-                    {header: 'Project', key: 'Project', width: 25},
-                    {header: 'Site', key: 'Site', width: 25},
-
-                    //1
-                    {header: 'Course / Module', key: 'Course / Module', width: 25},
-                    {header: 'Job Position(s)', key: 'Job Position(s)', width: 35},
-                    {header: 'Sector(s)', key: 'Sector(s)', width: 35},
-                    {header: 'Training Frequency', key: 'Training Frequency', width: 22},
-                    {header: 'Training Provider', key: 'Training Provider', width: 22},
-
-                    //2
-                    {header: 'Unit Standard', key: 'Unit Standard', width: 15},
-                    {header: 'Unit Standard Description', key: 'Unit Standard Description', width: 35},
-                ];
-
-                const rows = list.map((
-                    {
-                        id, data: {
-                            created_at,
-                            client, project, site,
-                            //1
+                if (isArray(list)) {
+                    const rows = list.map((
+                      {
+                          id,
+                          data: {
+                              created_at,
+                              company, client, project, site,
+                              
+                              status,
+                              //1
+                              name,
+                              job_position_list,
+                              sector_list,
+                              frequency,
+                              provider,
+                              //2
+                              unit_standard,
+                              unit_standard_desc,
+                            
+                              removed,
+                          }
+                      },
+                      idx
+                    ) => {
+                        
+                        client = client || company;
+                        
+                        return {
+                            idx: idx + 1,
+                            
+                            project: project && project.name,
+                            site: site && site.name,
+                            
+                            id,
+                            
                             name,
-                            job_position_list,
-                            sector_list,
-                            frequency,
+                            
+                            job_position_list: job_position_list ? job_position_list.map(v => v.name).join(', ') : "",
+                            sector_list: sector_list ? sector_list.map(v => v.name).join(', ') : "",
+                            
                             provider,
-                            //2
+                            frequency,
+                            
                             unit_standard,
-                            unit_standard_desc
-                        }
-                    }
-                ) => {
-
-                    const res = {
-                        Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-                        Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-                        Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
-
-                        //1
-                        "Course / Module": name || "",
-                        "Job Position(s)": job_position_list && job_position_list.map(val => val.name || val.data.name).join(', ') || "",
-                        "Sector(s)": sector_list && sector_list.join(', ') || "",
-                        "Training Frequency": frequency || "",
-                        "Training Provider": provider || "",
-
-                        //2
-                        "Unit Standard": unit_standard || "",
-                        "Unit Standard Description": unit_standard_desc || "",
-                    };
-
-                    return res;
-                });
-
-                return await this.export_excel_impl(loggedUser, "Training-Courses-Docs", "Training-Courses", "Training-Courses Data", cols, rows);
+                            unit_standard_desc,
+                            
+                            status: removed ? "Inactive" : "Active",
+                        };
+                    });
+                    
+                    const response = await fetch(
+                      `${self.locationRoot}/templates/xlsx/trainings/Template-List-Training-Course.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+                    
+                    data.set('date', new Date().formatDate());
+                    
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+                    
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+                }
+                return list;
             });
         }
-
         // </editor-fold>
-
+        
         // <editor-fold defaultstate="collapsed" desc="list">
         async list(evt, opts = {}) {
             return Events.whenLoggedIn(async loggedUser => {

@@ -112,10 +112,12 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {
         return <THead>
+            <div className="td fixed-flex min-w-30">ID</div>
             <div className="td">Course</div>
             <div className="td">Job Position(s)</div>
             <div className="td fixed-flex min-w-90">Frequency</div>
             <div className="td fixed-flex min-w-90">Provider</div>
+            <div className="td fixed-flex min-w-120">Unit Standard</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
         </THead>;
     }
@@ -124,9 +126,24 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
         const {
-            id, data: {created_at, name, job_position_list, frequency, sector_list, provider, client, project, site}
+            id,
+            data: {
+                created_at,
+                client, project, site,
+                //1
+                name,
+                job_position_list,
+                sector_list,
+                frequency,
+                provider,
+                //2
+                unit_standard,
+                unit_standard_desc,
+                training_matrix_list = [],//[{id, cost, institution_conducting_training, trainer}]
+            }
         } = item;
         return <>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{name}</div>
             <div className="td">{job_position_list.map(({id, name}) => <span className="block-inline">
                     {name}
@@ -134,6 +151,7 @@ class Controls extends AControls {
             )}</div>
             <div className="td fixed-flex min-w-90">{frequency}</div>
             <div className="td fixed-flex min-w-90">{provider}</div>
+            <div className="td fixed-flex min-w-120">{unit_standard}</div>
             {renderActionsCol && renderActionsCol(item, n, onClick)}
         </>;
     }
