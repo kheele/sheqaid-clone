@@ -13,13 +13,16 @@ import {AEditDialog} from 'components/dialogs';
 import AuditItemTable from './AuditItemTable';
 
 import style from "./EditAuditDialog.lazy.css";
-import updateAudit from "../../../../../../mutations/all/AuditsAndInspections/Audit/updateAudit";
+import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+
 
 @observer
 class EditAuditDialog extends AEditDialog {
 	pageKey = "EditAuditDialog";
 	title = "Edit Audit";
 	className = 'ANewTableFormDialog';
+	
+	removeById = updateAudit;
 
 	constructor(props) {
 		super(props, style);

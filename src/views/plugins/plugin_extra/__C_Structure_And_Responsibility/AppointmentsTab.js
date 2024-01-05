@@ -150,6 +150,10 @@ class AppointmentsTab extends React.Component {
     }
 
     //</editor-fold>
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     //<editor-fold desc="setView">
     async setView({view = 'Employee', expiry_date = 'ALL', load = true}) {
@@ -253,10 +257,6 @@ class AppointmentsTab extends React.Component {
     }
 
     //</editor-fold>
-
-    onRemoved(item) {
-        this.refs.root.list.removeIf((v, n) => v.id === item.id);
-    }
 
     // <editor-fold defaultstate="collapsed" desc="onSignatures">
     onSignatures(e, btn) {

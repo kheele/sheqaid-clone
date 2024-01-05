@@ -15,10 +15,14 @@ import NewQuestionnaireDialog from "../../ObservationsTab/forms/NewQuestionnaire
 import ProfilePDFReader from "../printers/ProfileTemplatePDFReader";
 import NavItem from "components/navs/NavItem";
 
+import updateJobObservationsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
+
 //<editor-fold desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileTemplateDialog";
+	removeById = updateJobObservationsQuestionnaireTemplate;
 
 	constructor(props) {
 		super(props, style);

@@ -55,7 +55,8 @@ class EditCompetencyCertificateDialog extends AEditDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/employees/competencies/";
-
+	removeById = updateEmployeeCompetency;
+	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable
 	state = {

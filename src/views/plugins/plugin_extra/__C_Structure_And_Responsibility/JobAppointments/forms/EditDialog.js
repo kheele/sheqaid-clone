@@ -14,12 +14,15 @@ import style from "./EditDialog.lazy.css";
 import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
 import findByIdEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/findByIdEmployeeJobAppointment";
 
+
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditJobAppointmentDialog";
     className = "AEditEmployeeDocDialog";
     title = "Edit Job Appointment";
     removeById = updateEmployeeJobAppointment;
+    removeById = updateEmployeeJobAppointment ;
+    
 
     constructor(props) {
         super(props, style);

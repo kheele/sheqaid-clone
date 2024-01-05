@@ -11,6 +11,7 @@ import InspectionTableRow from './InspectionTab/InspectionTableRow';
 
 import {NewQuestionnaireDialog, EditResponseDialog, ProfileResponseDialog} from './InspectionTab/forms';
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 @observer
 class ATab extends React.Component {
@@ -23,6 +24,8 @@ class ATab extends React.Component {
 
     constructor(props) {
         super(props);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onStart = this.onStart.bind(this);
@@ -32,6 +35,10 @@ class ATab extends React.Component {
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
+    }
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
 
     //<editor-fold desc="actions">
@@ -122,10 +129,11 @@ class ATab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateQuestionnaire}/>
+            
             <NewQuestionnaireDialog ref="newDialog" asset={asset}/>
-            <EditResponseDialog ref="editDialog"/>
-            <ProfileResponseDialog ref="profileDialog"/>
+            <EditResponseDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileResponseDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <Popover key="popover" ref="popover"/>
         </APageListReadWrite>;
     }

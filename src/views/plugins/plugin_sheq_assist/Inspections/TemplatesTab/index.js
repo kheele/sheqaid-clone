@@ -13,6 +13,8 @@ import {NewScheduleDialog, NewQuestionnaireDialog} from '../InspectionTab/forms'
 
 import style from "./TemplatesTab.lazy.css";
 import TemplateTableRow from "./TemplateTableRow";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+
 
 @observer
 class TemplatesTab extends React.Component {
@@ -30,6 +32,8 @@ class TemplatesTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onCreateQuestionnaire = this.onCreateQuestionnaire.bind(this);
@@ -77,6 +81,9 @@ class TemplatesTab extends React.Component {
     }
 
     //</editor-fold>
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
@@ -202,11 +209,11 @@ class TemplatesTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateQuestionnaire}/>
             
             <NewTemplateDialog ref="newDialog" asset={asset}/>
-            <EditTemplateDialog ref="editDialog"/>
-            <ProfileTemplateDialog ref="profileDialog"/>
+            <EditTemplateDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileTemplateDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             
             <NewQuestionnaireDialog ref="newQuestionnaireDialog" asset={asset}/>
         </APageListReadWrite>;

@@ -21,6 +21,7 @@ class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileJobAppointmentDialog";
 	className = "AProfileEmployeeDocDialog";
 	findById = findByIdEmployee;
+	removeById = updateEmployeeJobAppointment ;
 
 	constructor(props) {
 		super(props, style);

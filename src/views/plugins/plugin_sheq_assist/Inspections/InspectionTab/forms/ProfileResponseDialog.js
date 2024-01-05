@@ -27,6 +27,7 @@ import findByIdInspectionsQuestionnaire
 class ProfileDialog extends AEditDialog {
 	pageKey = "ProfileResponseDialog";
 	findById = findByIdInspectionsQuestionnaire;
+	removeById = updateQuestionnaire ;
 
 	constructor(props) {
 		super(props, style);

@@ -20,6 +20,7 @@ class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileCompetencyCertificateDialog";
 	className = "AProfileEmployeeDocDialog";
 	findById = findByIdEmployee;
+	removeById = updateEmployeeCompetency ;
 
 	constructor(props) {
 		super(props, style);

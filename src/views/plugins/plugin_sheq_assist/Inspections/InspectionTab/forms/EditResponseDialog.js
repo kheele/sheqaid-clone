@@ -17,10 +17,10 @@ import {AControls, Compliance, questionnairesOnUpdate, Stats} from 'components/q
 import style from "./EditResponseDialog.lazy.css";
 import Divider from "@mui/material/Divider";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
-import subscribeByIdContractorQuestionnaire
-	from "../../../../plugin_extra/__B_Contractors/AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
+
 import findByIdInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -28,6 +28,7 @@ import findByIdInspectionsQuestionnaire
 class EditDialog extends ANewDialog {
 	pageKey = "EditResponseDialog";
 	findById = findByIdInspectionsQuestionnaire;
+	removeById = updateQuestionnaire ;
 
 	constructor(props) {
 		super(props, style);

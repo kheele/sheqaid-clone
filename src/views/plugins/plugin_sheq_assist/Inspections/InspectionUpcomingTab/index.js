@@ -14,6 +14,8 @@ class InspectionTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        
     }
 
     componentWillMount() {

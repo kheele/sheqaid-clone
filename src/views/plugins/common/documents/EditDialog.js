@@ -30,6 +30,7 @@ import {CircularProgress} from "@mui/material";
 class EditDialog extends AEditDialog {
 	pageKey = "ADocumentEdit";
 	findById = findByIdDocument;
+	removeById = updateDocument;
 
 	constructor(props) {
 		super(props, style);

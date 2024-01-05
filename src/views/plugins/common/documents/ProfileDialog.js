@@ -16,6 +16,8 @@ import ProfilePDFReader from './printers/ProfilePDFReader';
 import style from "./ProfileDialog.lazy.css";
 import {computed, observable} from "mobx";
 import {CircularProgress} from "@mui/material";
+
+import updateDocument from "mutations/all/Document/updateDocument";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -23,6 +25,7 @@ import {CircularProgress} from "@mui/material";
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ADocumentProfile";
 	findById = findByIdDocument;
+	removeById = updateDocument;
 
 	constructor(props) {
 		super(props, style);

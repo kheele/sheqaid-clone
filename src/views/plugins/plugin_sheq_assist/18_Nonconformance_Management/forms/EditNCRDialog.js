@@ -34,6 +34,7 @@ class EditDialog extends AEditDialog {
 	title = "Edit NCR";
 	className = 'ANewTableFormDialog';
 	findById = findByIdNCR;
+	removeById = updateNCR ;
 
 	constructor(props) {
 		super(props, style);

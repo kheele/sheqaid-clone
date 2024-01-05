@@ -17,6 +17,7 @@ import {NewNCRDialog, EditNCRDialog, ProfileNCRDialog} from '../forms';
 
 import style from "./NCRTab.lazy.css";
 import byLogged from "./Query/List/listAllNCRByLogged";
+import updateNCR from "mutations/all/NCR/updateNCR";
 
 // </editor-fold>
 
@@ -29,6 +30,8 @@ class NCRTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onNew = this.onNew.bind(this);
         this.onView = this.onView.bind(this);
@@ -79,6 +82,10 @@ class NCRTab extends React.Component {
     }
 
     //</editor-fold>
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onNew">
     onNew(evt, btn) {
@@ -206,11 +213,11 @@ class NCRTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}
             getTBodyProps={this.getTBodyProps}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateNCR}/>
             
-            <NewNCRDialog ref="newDialog"/>
-            <EditNCRDialog ref="editDialog"/>
-            <ProfileNCRDialog ref="profileDialog"/>
+            <NewNCRDialog ref="newDialog" onRemoved={this.onRemoved}/>
+            <EditNCRDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileNCRDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             
             <NCRItemListDialog ref="ncrItemListDialog" permissionKey={permissionKey}/>
              
@@ -218,6 +225,7 @@ class NCRTab extends React.Component {
         </APageListReadWrite>;
     }
     // </editor-fold>
+    
 }
 
 export default NCRTab;

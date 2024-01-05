@@ -27,6 +27,8 @@ import HazchemSheetRenderRow from "./HazchemSheetRenderRow";
 import ProfilePDFReader from '../printers/ProfileHazchemSheetPDFReader';
 
 import byLogged from "./Query/List/listAllHazchemSheetsByLogged";
+import updateChemicalHazchemsheet
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
 
 @observer
@@ -48,6 +50,8 @@ class HazchemSheetTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onExport = this.onExport.bind(this);
         
@@ -109,7 +113,11 @@ class HazchemSheetTab extends React.Component {
             return res;
         });
     }
+    
     //</editor-fold>
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="actions">
     onExport(e, btn) {
@@ -201,17 +209,19 @@ class HazchemSheetTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateChemicalHazchemsheet}/>
             
-            <ProfileHazchemSheetDialog ref="profileDialog"/>
+            <ProfileHazchemSheetDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <NewHazchemSheetDialog ref="newDialog"/>
-            <EditHazchemSheetDialog ref="editDialog"/>
+            <EditHazchemSheetDialog ref="editDialog" onRemoved={this.onRemoved}/>
             
             <ProfilePDFReader ref="pdfReader"/>
             <ExportHazchemSheetsDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
     // </editor-fold>
+    
+   
 }
 
 export default HazchemSheetTab;

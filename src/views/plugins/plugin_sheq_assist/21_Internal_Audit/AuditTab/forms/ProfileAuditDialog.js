@@ -12,11 +12,14 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import AuditItemTable from './AuditItemTable';
 
 import style from "./ProfileAuditDialog.lazy.css";
+import updateAudit from "../../../../../../mutations/all/AuditsAndInspections/Audit/updateAudit";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileAuditDialog";
     className = 'ANewTableFormDialog';
+    
+    removeById = updateAudit;
   
     constructor(props) {
         super(props, style);

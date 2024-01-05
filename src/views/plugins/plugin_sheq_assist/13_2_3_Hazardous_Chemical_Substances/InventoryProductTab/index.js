@@ -28,6 +28,8 @@ import ExportInventoryProductsDialog from '../dialogs/ExportInventoryProductsDia
 
 import InventoryProductRenderRow from "./InventoryProductRenderRow";
 import ProfilePDFReader from '../printers/ProfileInventoryProductPDFReader';
+import updateChemicalHazchemsheet
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
 
 @observer
@@ -53,6 +55,8 @@ class InventoryProductTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onExport = this.onExport.bind(this);
         
@@ -117,7 +121,11 @@ class InventoryProductTab extends React.Component {
             return res;
         });
     }
+    
     //</editor-fold>
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="actions">
     onExport(e, btn) {
@@ -320,11 +328,11 @@ class InventoryProductTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateChemicalHazchemsheet}/>
             
-            <ProfileInventoryProductDialog ref="profileDialog"/>
-            <NewInventoryProductDialog ref="newDialog"/>
-            <EditInventoryProductDialog ref="editDialog"/>
+            <ProfileInventoryProductDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+            <NewInventoryProductDialog ref="newDialog" onRemoved={this.onRemoved}/>
+            <EditInventoryProductDialog ref="editDialog" onRemoved={this.onRemoved}/>
             
             <NewMSDSDialog ref="newSDSDialog"/>
             <NewHazchemSheetDialog ref="newHazchemSheetDialog"/>
@@ -334,6 +342,7 @@ class InventoryProductTab extends React.Component {
         </APageListReadWrite>;
     }
     // </editor-fold>
+    
 }
 
 export default InventoryProductTab;

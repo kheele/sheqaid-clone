@@ -40,6 +40,7 @@ class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileNCRDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdNCR;
+	removeById = updateNCR ;
 
 	//<editor-fold desc="constructor">
 	constructor(props) {

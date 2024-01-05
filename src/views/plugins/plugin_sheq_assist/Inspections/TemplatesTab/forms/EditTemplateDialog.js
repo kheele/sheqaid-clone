@@ -22,7 +22,7 @@ class EditDialog extends AEditDialog {
     pageKey = "EditTemplateDialog";
     findById = findByIdInspectionsQuestionnaireTemplate;
 
-        constructor(props) {
+    constructor(props) {
         super(props, style);
     }
 

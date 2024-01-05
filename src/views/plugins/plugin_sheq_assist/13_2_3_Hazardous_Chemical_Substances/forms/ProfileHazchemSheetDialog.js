@@ -29,6 +29,8 @@ import {changeColors} from '../dialogs/Utils';
 import style from "./ProfileHazchemSheetDialog.lazy.css";
 import findByIdChemicalHazchemsheet
     from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
+import updateChemicalHazchemsheet
+    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -36,6 +38,8 @@ import findByIdChemicalHazchemsheet
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileHazchemSheetDialog";
     findById = findByIdChemicalHazchemsheet;
+    
+    removeById = updateChemicalHazchemsheet ;
 
     constructor(props) {
         super(props, style);

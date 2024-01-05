@@ -44,6 +44,7 @@ import style from "./EditHazchemSheetDialog.lazy.css";
 import updateChemicalHazchemsheet
     from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 import findByIdChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -51,6 +52,7 @@ import findByIdChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazche
 class EditHazchemSheetDialog extends AEditDialog {
     pageKey = "EditHazchemSheetDialog";
     findById = findByIdChemicalHazchemsheet;
+    removeById = updateChemicalHazchemsheet ;
 
     constructor(props) {
         super(props, style);

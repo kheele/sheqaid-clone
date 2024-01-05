@@ -18,6 +18,8 @@ import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllAuditB
 
 import style from "./AuditTab.lazy.css";
 
+import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+
 @observer
 class AuditTab extends React.Component {
     path;
@@ -28,6 +30,8 @@ class AuditTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         this.onDownload = this.onDownload.bind(this);
@@ -76,6 +80,9 @@ class AuditTab extends React.Component {
     }
 
     //</editor-fold>
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     async onSaveAsPDF(e, btn) {
         const {idx} = btn.props;
@@ -161,15 +168,16 @@ class AuditTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateAudit}/>
             
-            <NewAuditDialog ref="newDialog"/>
-            <EditAuditDialog ref="editDialog"/>
-            <ProfileAuditDialog ref="profileDialog"/>
+            <NewAuditDialog ref="newDialog" onRemoved={this.onRemoved}/>
+            <EditAuditDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileAuditDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <ProfilePDFReader ref="pdfReader"/>
         </APageListReadWrite>;
     }
     //</editor-fold>
+    
 }
 
 export default AuditTab;

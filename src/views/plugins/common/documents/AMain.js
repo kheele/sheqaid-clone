@@ -19,6 +19,7 @@ import DocumentCategoriesDialog from './dialogs/DocumentCategoriesDialog';
 
 import style from "./AMain.lazy.css";
 import byLogged from "./Query/List/listAllDocumentsByLogged";
+import updateDocument from "mutations/all/Document/updateDocument";
 
 // </editor-fold>
 
@@ -37,8 +38,11 @@ class AMain extends React.Component {
 		super(props);
 
 		this.onLoadList = this.onLoadList.bind(this);
+		
+		this.onRemoved = this.onRemoved.bind(this);
 
 		this.onUpdateReview = this.onUpdateReview.bind(this);
+		
 		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
 		this.onDownload = this.onDownload.bind(this);
 
@@ -119,6 +123,10 @@ class AMain extends React.Component {
 	}
 
 	//</editor-fold>
+	
+	onRemoved(item) {
+		this.refs.root.list.removeIf((v, n) => v.id === item.id);
+	}
 
 	// <editor-fold defaultstate="collapsed" desc="fixText, fixFile">
 	fixText(evt, btn) {
@@ -430,15 +438,15 @@ class AMain extends React.Component {
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
 
-			<ConfirmDialog ref="removeDialog"/>
+			<ConfirmDialog ref="removeDialog"  onSoftDelete={updateDocument}/>
 
 			{!this.notHasWritePermission &&
 				<NewDialog ref="newDialog" doc_type={this.type} title={pageTitleSingular} extraContent={ExtraContent}
 				           showCategory={showCategory}/>}
 			<ProfileDialog ref="profileDialog" title={pageTitleSingular} extraContent={ExtraContent}
-			               showCategory={showCategory}/>
+			               showCategory={showCategory} onRemoved={this.onRemoved}/>
 			<EditDialog ref="editDialog" path={this.path} title={pageTitleSingular} extraContent={ExtraContent}
-			            showCategory={showCategory}/>
+			            showCategory={showCategory} onRemoved={this.onRemoved}/>
 
 			<ShareDialog ref="shareDialog" path={this.path} title={pageTitleSingular} extraContent={ExtraContent}
 			             showCategory={showCategory}/>

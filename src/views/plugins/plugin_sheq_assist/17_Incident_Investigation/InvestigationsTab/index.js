@@ -62,6 +62,8 @@ class InvestigationsTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+      
 
         this.onSetCategoryRef = this.onSetCategoryRef.bind(this);
 
@@ -177,7 +179,8 @@ class InvestigationsTab extends React.Component {
         });
     }
     //</editor-fold>
-
+    
+    
     // <editor-fold defaultstate="collapsed" desc="actions">
     onApproveInvestigation(e, el) {
         const {idx} = el.props;

@@ -30,13 +30,15 @@ import riskLevelImg from 'img/risk-assessment.png';
 import style from "./EditInventoryProductDialog.lazy.css";
 import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 import updateChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
-import updateChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
+import updateChemicalProduct from "mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditInventoryProductDialog extends AEditDialog {
     pageKey = "EditInventoryProductDialog";
+    removeById = updateChemicalProduct ;
 
     constructor(props) {
         super(props, style);

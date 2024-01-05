@@ -33,6 +33,8 @@ class TemplatesTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onCreateQuestionnaire = this.onCreateQuestionnaire.bind(this);
@@ -85,7 +87,11 @@ class TemplatesTab extends React.Component {
     }
 
     //</editor-fold>
-
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
+    
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
         const {idx, action} = elem.props;
@@ -202,8 +208,8 @@ class TemplatesTab extends React.Component {
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateJobObservationsQuestionnaireTemplate}/>
             
             <NewTemplateDialog ref="newDialog"/>
-            <EditTemplateDialog ref="editDialog"/>
-            <ProfileTemplateDialog ref="profileDialog"/>
+            <EditTemplateDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileTemplateDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             
             <NewQuestionnaireDialog ref="newQuestionnaireDialog"/>
             {/*<EditResponseDialog ref="editResponseDialog"/>*/}

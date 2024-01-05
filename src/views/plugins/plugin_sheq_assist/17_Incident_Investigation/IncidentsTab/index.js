@@ -29,12 +29,14 @@ import style from "./IncidentsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import {execWhen} from "utils/UtilsFuns";
 import updateIncident from "mutations/all/Incident/updateIncident";
+import updateQuestionnaire from "../../../../../mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 // </editor-fold>
 
 @observer
 class IncidentsTab extends React.Component {
     path;
     pageKey = "IncidentsTab";
+    
 
     // <editor-fold defaultstate="collapsed" desc="state">
     @observable
@@ -64,6 +66,8 @@ class IncidentsTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onRemoved = this.onRemoved.bind(this);
 
         this.onSetCategoryRef = this.onSetCategoryRef.bind(this);
 
@@ -99,6 +103,9 @@ class IncidentsTab extends React.Component {
     }
 
     // </editor-fold>
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
@@ -582,11 +589,11 @@ class IncidentsTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateIncident}/>
 
-            <NewIncidentDialog ref="newDialog"/>
-            <EditIncidentDialog ref="editDialog"/>
-            <ProfileIncidentDialog ref="profileDialog"/>
+            <NewIncidentDialog ref="newDialog"onRemoved={this.onRemoved}/>
+            <EditIncidentDialog ref="editDialog"onRemoved={this.onRemoved}/>
+            <ProfileIncidentDialog ref="profileDialog"onRemoved={this.onRemoved}/>
 
             <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>
             <NewIncidentInvestigationDialog ref="newInvestigationDialog"/>
@@ -596,6 +603,7 @@ class IncidentsTab extends React.Component {
     }
 
     // </editor-fold>
+    
 }
 
 export default IncidentsTab;
