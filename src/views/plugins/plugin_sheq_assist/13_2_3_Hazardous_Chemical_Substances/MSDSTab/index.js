@@ -49,6 +49,8 @@ class MSDSTab extends React.Component {
 
         this.onExport = this.onExport.bind(this);
         
+        this.onRemoved = this.onRemoved.bind(this);
+        
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         
         this.onAttachProduct = this.onAttachProduct.bind(this);
@@ -71,6 +73,10 @@ class MSDSTab extends React.Component {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
