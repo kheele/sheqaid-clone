@@ -16,7 +16,7 @@ import style from "./EditLibraryDialog.lazy.css";
 import updateContractorsQuestionnaire
     from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 import updateContractorsQuestionnaireLibrary
-    from "../../../../../mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
+    from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

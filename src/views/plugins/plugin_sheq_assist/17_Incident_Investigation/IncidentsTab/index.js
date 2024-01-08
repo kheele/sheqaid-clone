@@ -29,7 +29,7 @@ import style from "./IncidentsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
 import {execWhen} from "utils/UtilsFuns";
 import updateIncident from "mutations/all/Incident/updateIncident";
-import updateQuestionnaire from "../../../../../mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 // </editor-fold>
 
 @observer

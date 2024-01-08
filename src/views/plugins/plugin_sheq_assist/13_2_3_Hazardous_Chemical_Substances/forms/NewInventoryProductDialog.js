@@ -28,7 +28,7 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewInventoryProductDialog.lazy.css";
-import insertChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/insertChemicalProduct";
+import insertChemicalProduct from "mutations/all/Chemicals/ChemicalProduct/insertChemicalProduct";
 import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 

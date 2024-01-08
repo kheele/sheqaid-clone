@@ -26,11 +26,11 @@ import WCl5Table from "../../dialogs/WCl5Table";
 
 import style from "./ProfileClaimsClientDialog.lazy.css";
 import findByIdClaimsClient from "mutations/all/COIDA/ClaimsClient/findByIdClaimsClient";
-import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
-import findByIdWCL4 from "../../../../../mutations/all/COIDA/WCL4/findByIdWCL4";
-import findByIdWCL5 from "../../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
-import findByIdWCL6 from "../../../../../mutations/all/COIDA/WCL6/findByIdWCL6";
-import findByIdAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/findByIdAnnexture1";
+import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
+import findByIdWCL4 from "mutations/all/COIDA/WCL4/findByIdWCL4";
+import findByIdWCL5 from "mutations/all/COIDA/WCL5/findByIdWCL5";
+import findByIdWCL6 from "mutations/all/COIDA/WCL6/findByIdWCL6";
+import findByIdAnnexture1 from "mutations/all/COIDA/Annexture1/findByIdAnnexture1";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

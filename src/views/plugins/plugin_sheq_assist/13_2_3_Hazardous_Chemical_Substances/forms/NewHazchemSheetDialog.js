@@ -42,7 +42,7 @@ import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onCha
 
 import style from "./NewHazchemSheetDialog.lazy.css";
 import insertChemicalHazchemsheet
-    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/insertChemicalHazchemsheet";
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/insertChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

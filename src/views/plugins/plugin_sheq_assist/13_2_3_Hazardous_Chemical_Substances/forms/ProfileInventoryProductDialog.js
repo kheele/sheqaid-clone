@@ -15,7 +15,7 @@ import {changeColors} from '../dialogs/Utils';
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./ProfileInventoryProductDialog.lazy.css";
 import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
-import updateChemicalProduct from "../../../../../mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
+import updateChemicalProduct from "mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

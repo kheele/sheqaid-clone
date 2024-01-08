@@ -215,7 +215,7 @@ class NCRTab extends React.Component {
             getTBodyProps={this.getTBodyProps}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateNCR}/>
             
-            <NewNCRDialog ref="newDialog" onRemoved={this.onRemoved}/>
+            <NewNCRDialog ref="newDialog"/>
             <EditNCRDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileNCRDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             

@@ -14,13 +14,15 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./ProfileMSDSDialog.lazy.css";
-import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
+import NewChemicalSupplierListTable from "components/FormTableComponents/NewChemicalSupplierListTable";
+import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileMSDSDialog";
+    removeById = updateChemicalSDS;
 
     constructor(props) {
         super(props, style);

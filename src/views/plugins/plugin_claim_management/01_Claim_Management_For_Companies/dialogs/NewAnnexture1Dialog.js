@@ -11,11 +11,11 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewAnnexture1Dialog.lazy.css";
-import updateAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/updateAnnexture1";
-import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
-import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
-import findByIdAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/findByIdAnnexture1";
+import updateAnnexture1 from "mutations/all/COIDA/Annexture1/updateAnnexture1";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
+import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
+import findByIdAnnexture1 from "mutations/all/COIDA/Annexture1/findByIdAnnexture1";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

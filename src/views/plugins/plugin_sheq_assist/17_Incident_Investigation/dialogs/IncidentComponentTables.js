@@ -10,9 +10,9 @@ import insertInvestigationDocument
 import updateInvestigationDocument
     from "mutations/all/Incident/InvestigationDocument/updateInvestigationDocument";
 import updateInvestigationFinding
-    from "../../../../../mutations/all/Incident/InvestigationFinding/updateInvestigationFinding";
+    from "mutations/all/Incident/InvestigationFinding/updateInvestigationFinding";
 import insertInvestigationFinding
-    from "../../../../../mutations/all/Incident/InvestigationFinding/insertInvestigationFinding";
+    from "mutations/all/Incident/InvestigationFinding/insertInvestigationFinding";
 // </editor-fold>
 
 const calcCosts = (...args) => {

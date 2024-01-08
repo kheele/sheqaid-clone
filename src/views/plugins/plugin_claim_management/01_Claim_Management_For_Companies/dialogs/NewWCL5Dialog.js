@@ -13,13 +13,13 @@ import {ANewDialog} from 'components/dialogs';
 import {OperationOrProcedureOrTestCarriedOutAndDatesTable} from '../../dialogs/ClaimForms';
 
 import style from "./NewWCL5Dialog.lazy.css";
-import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import updateWCL5 from "../../../../../mutations/all/COIDA/WCL5/updateWCL5";
-import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
-import insertWCL5 from "../../../../../mutations/all/COIDA/WCL5/insertWCL5";
-import updateWCL5Proxy from "../../../../../mutations/all/COIDA/WCL5Proxy/updateWCL5Proxy";
-import insertWCL5Proxy from "../../../../../mutations/all/COIDA/WCL5Proxy/insertWCL5Proxy";
-import findByIdWCL5 from "../../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import updateWCL5 from "mutations/all/COIDA/WCL5/updateWCL5";
+import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
+import insertWCL5 from "mutations/all/COIDA/WCL5/insertWCL5";
+import updateWCL5Proxy from "mutations/all/COIDA/WCL5Proxy/updateWCL5Proxy";
+import insertWCL5Proxy from "mutations/all/COIDA/WCL5Proxy/insertWCL5Proxy";
+import findByIdWCL5 from "mutations/all/COIDA/WCL5/findByIdWCL5";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

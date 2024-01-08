@@ -20,12 +20,12 @@ import {ANewDialog} from 'components/dialogs';
 import {EarningsTable} from '../../dialogs/ClaimForms';
 
 import style from "./NewWCL2Dialog.lazy.css";
-import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import updateWCL2 from "../../../../../mutations/all/COIDA/WCL2/updateWCL2";
-import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
-import insertWCL2 from "../../../../../mutations/all/COIDA/WCL2/insertWCL2";
-import findByIdWCL5 from "../../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
-import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import updateWCL2 from "mutations/all/COIDA/WCL2/updateWCL2";
+import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
+import insertWCL2 from "mutations/all/COIDA/WCL2/insertWCL2";
+import findByIdWCL5 from "mutations/all/COIDA/WCL5/findByIdWCL5";
+import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

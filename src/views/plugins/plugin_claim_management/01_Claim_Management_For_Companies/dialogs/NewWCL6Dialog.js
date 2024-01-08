@@ -13,12 +13,12 @@ import {ANewDialog} from 'components/dialogs';
 import {OffAndLightDutyPeriodTable} from '../../dialogs/ClaimForms';
 
 import style from "./NewWCL6Dialog.lazy.css";
-import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import updateWCL6 from "../../../../../mutations/all/COIDA/WCL6/updateWCL6";
-import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
-import insertWCL6 from "../../../../../mutations/all/COIDA/WCL6/insertWCL6";
-import findByIdWCL2 from "../../../../../mutations/all/COIDA/WCL2/findByIdWCL2";
-import findByIdWCL6 from "../../../../../mutations/all/COIDA/WCL6/findByIdWCL6";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import updateWCL6 from "mutations/all/COIDA/WCL6/updateWCL6";
+import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
+import insertWCL6 from "mutations/all/COIDA/WCL6/insertWCL6";
+import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
+import findByIdWCL6 from "mutations/all/COIDA/WCL6/findByIdWCL6";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

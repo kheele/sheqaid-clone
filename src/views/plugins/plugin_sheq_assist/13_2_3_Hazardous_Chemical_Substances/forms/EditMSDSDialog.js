@@ -24,15 +24,17 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./EditMSDSDialog.lazy.css";
-import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
-import insertChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/insertChemicalSDS";
-import updateChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
+import NewChemicalSupplierListTable from "components/FormTableComponents/NewChemicalSupplierListTable";
+
+import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditMSDSDialog extends AEditDialog {
     pageKey = "EditMSDSDialog";
+    removeById = updateChemicalSDS;
 
     constructor(props) {
         super(props, style);

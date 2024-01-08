@@ -11,11 +11,11 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewWCL4Dialog.lazy.css";
-import updateClaimsClient from "../../../../../mutations/all/COIDA/ClaimsClient/updateClaimsClient";
-import updateWCL4 from "../../../../../mutations/all/COIDA/WCL4/updateWCL4";
-import insertAnnexture1 from "../../../../../mutations/all/COIDA/Annexture1/insertAnnexture1";
-import insertWCL4 from "../../../../../mutations/all/COIDA/WCL4/insertWCL4";
-import findByIdWCL4 from "../../../../../mutations/all/COIDA/WCL4/findByIdWCL4";
+import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
+import updateWCL4 from "mutations/all/COIDA/WCL4/updateWCL4";
+import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
+import insertWCL4 from "mutations/all/COIDA/WCL4/insertWCL4";
+import findByIdWCL4 from "mutations/all/COIDA/WCL4/findByIdWCL4";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

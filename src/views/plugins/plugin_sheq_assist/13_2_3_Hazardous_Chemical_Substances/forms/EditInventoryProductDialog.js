@@ -29,7 +29,7 @@ import {changeColors} from '../dialogs/Utils';
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./EditInventoryProductDialog.lazy.css";
 import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
-import updateChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
+import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
 import updateChemicalProduct from "mutations/all/Chemicals/ChemicalProduct/updateChemicalProduct";
 
 // </editor-fold>

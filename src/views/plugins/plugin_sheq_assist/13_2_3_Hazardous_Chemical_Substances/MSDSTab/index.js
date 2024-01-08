@@ -25,6 +25,7 @@ import MSDSRenderRow from "./MSDSRenderRow";
 import ProfilePDFReader from '../printers/ProfileMSDSPDFReader';
 
 import byLogged from "./Query/List/listAllSDSByLogged";
+import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
 // </editor-fold>
 
 @observer
@@ -212,11 +213,11 @@ class MSDSTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateChemicalSDS}/>
             
-            <ProfileMSDSDialog ref="profileDialog"/>
+            <ProfileMSDSDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <NewMSDSDialog ref="newDialog"/>
-            <EditMSDSDialog ref="editDialog"/>
+            <EditMSDSDialog ref="editDialog" onRemoved={this.onRemoved}/>
             
             <ProfilePDFReader ref="pdfReader"/>
             <ExportMSDSsDialog ref="exportDialog"/>

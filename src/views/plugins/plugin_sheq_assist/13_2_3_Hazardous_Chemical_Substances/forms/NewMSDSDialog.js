@@ -24,7 +24,7 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewMSDSDialog.lazy.css";
-import insertChemicalSDS from "../../../../../mutations/all/Chemicals/ChemicalSDS/insertChemicalSDS";
+import insertChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/insertChemicalSDS";
 import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 

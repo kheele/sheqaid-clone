@@ -266,6 +266,9 @@ class NCRItemListDialog extends ADialogList {
 	}
 
 	//</editor-fold>
+	onRemoved(item) {
+		this.refs.root.list.removeIf((v, n) => v.id === item.id);
+	}
 
 	//<editor-fold desc="setView">
 	async setView({expiry_date = 'ALL', load = true}) {

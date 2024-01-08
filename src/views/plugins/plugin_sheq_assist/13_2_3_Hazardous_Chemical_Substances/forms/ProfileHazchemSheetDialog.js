@@ -30,7 +30,7 @@ import style from "./ProfileHazchemSheetDialog.lazy.css";
 import findByIdChemicalHazchemsheet
     from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
 import updateChemicalHazchemsheet
-    from "../../../../../mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
+    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
