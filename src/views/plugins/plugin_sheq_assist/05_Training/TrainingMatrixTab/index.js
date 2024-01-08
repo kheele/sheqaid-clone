@@ -204,6 +204,7 @@ class TrainingMatrixTab extends React.Component {
                 provider_requirement,
                 institution_conducting_training,
                 trainer,
+                trainer_external,
                 job_position_list,
                 course,
                 requirement,
@@ -217,7 +218,7 @@ class TrainingMatrixTab extends React.Component {
         return <TRow key={"item-" + id}>
             <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{course && course.name || 'N/A'}</div>
-            <div className="td">{trainer ? (trainer.fname + ' ' + trainer.lname) : 'N/A'}</div>
+            <div className="td">{(trainer || trainer_external) ? (trainer || trainer_external).full_name : 'N/A'}</div>
             <div className="td">{institution_conducting_training || 'N/A'}</div>
             <div className="td">
                 {

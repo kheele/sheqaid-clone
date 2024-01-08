@@ -65,13 +65,10 @@
                               created_at,
                               company, client, project, site,
                               
-                              status,
                               //1
-                              name,
-                              job_position_list,
-                              sector_list,
-                              frequency,
-                              provider,
+                              subject,
+                              subject_category,
+                              training_frequency,
                               //2
                               unit_standard,
                               unit_standard_desc,
@@ -92,16 +89,18 @@
                             
                             id,
                             
-                            name,
+                            subject,
+                            subject_category,
+                            training_frequency,
                             
-                            job_position_list: job_position_list ? job_position_list.map(v => v.name).join(', ') : "",
-                            sector_list: sector_list ? sector_list.map(v => v.name).join(', ') : "",
-                            
-                            provider,
-                            frequency,
-                            
-                            unit_standard,
-                            unit_standard_desc,
+                            // institution_conducting_training,
+                            //
+                            // trainer: ,
+                            // trainer_job_position: ,
+                            //
+                            // date: ,
+                            // time_from,
+                            // time_to,
                             
                             status: removed ? "Inactive" : "Active",
                         };

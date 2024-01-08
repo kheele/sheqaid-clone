@@ -119,8 +119,8 @@
                             
                             name,
                             
-                            job_position_list: job_position_list ? job_position_list.map(v => v.name).join(', ') : "",
-                            sector_list: sector_list ? sector_list.map(v => v.name).join(', ') : "",
+                            job_position_list: job_position_list ? job_position_list.map(v => v.job_position.name).join(', ') : "",
+                            sector_list: sector_list ? sector_list.map(v => v.sector.name).join(', ') : "",
                             
                             provider,
                             frequency,

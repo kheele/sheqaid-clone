@@ -15,7 +15,7 @@ import {
 	SelectProjectInput,
 	SelectSiteInput,
 	SelectToolboxTalkSubjectInput, SelectToolboxTalkSubjectCategoryInput,
-	SelectUserInput, UploadButton
+	SelectEmployeeInput, UploadButton
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
@@ -63,27 +63,27 @@ class Controls extends React.Component {
 		this.onNext = this.onNext.bind(this);
 		
 		this.form = new Form();
-		this.form.addChangeOne("hr", this.onChangeHR.bind(this));
+		this.form.addChangeOne("trainer", this.onChangeHR.bind(this));
 	}
 	
 	// </editor-fold>
 	
 	// <editor-fold defaultstate="collapsed" desc="onChangeHR">
 	onChangeHR(el, val) {
-		execWhen(() => this.refs.job_desc).then(job_desc_ref => {
+		execWhen(() => this.refs.trainer_job_position).then(trainer_job_position_ref => {
 			if (val) {
 				if (val.data) {
 					let {optional_info} = val.data;
 					if (optional_info) {
 						const {job_position} = optional_info;
-						job_position && job_desc_ref.onChange({label: job_position.name, value: job_position});
+						job_position && trainer_job_position_ref.onChange({label: job_position.name, value: job_position});
 					}
 				} else if (val.job_position) {
 					const {job_position} = val;
-					job_position && job_desc_ref.onChange({label: job_position.name, value: job_position});
+					job_position && trainer_job_position_ref.onChange({label: job_position.name, value: job_position});
 				}
 			} else {
-				job_desc_ref.reset();
+				trainer_job_position_ref.reset();
 			}
 		});
 	}
@@ -173,8 +173,8 @@ class Controls extends React.Component {
 			time_to,
 			//2.2
 			institution_conducting_training,
-			hr,
-			job_desc,
+			trainer,
+			trainer_job_position,
 			//2.3
 			doc,
 			
@@ -191,9 +191,9 @@ class Controls extends React.Component {
 			project_id: project && project.id,
 			site_id: site && site.id,
 			//1
-			training_frequency,
 			subject_id: subject && subject.id,
 			subject_category,
+			training_frequency,
 			
 			//2
 			toolbox_talk_list: {
@@ -204,8 +204,8 @@ class Controls extends React.Component {
 					time_to,
 					//2.2
 					institution_conducting_training,
-					hr_id: hr && hr.id,
-					job_desc_id: job_desc && job_desc.id,
+					trainer_id: trainer && trainer.id,
+					trainer_job_position_id: trainer_job_position && trainer_job_position.id,
 					//2.3
 					doc,
 					
@@ -296,9 +296,7 @@ class Controls extends React.Component {
 					>
 						<ClearableInput name="date" type="date" placeholder="Date..." className="col-lg-12 form-control"
 						                onChange={this.form.onChange}/>
-						<div
-							className="
-                            flex col-lg-12 bg-eee margin-t-10 margin-b-5 border-radius-20
+						<div className="flex col-lg-12 bg-eee margin-t-10 margin-b-5 border-radius-20
                             padding-t-20 padding-b-10 padding-l-10 padding-r-10
                             ">
 							<ClearableInput name="time_from" type="time" placeholder="Time From..."
@@ -321,12 +319,12 @@ class Controls extends React.Component {
 						                placeholder="Institution Conducting Training" defaultValue={loggedClientName}
 						                className="col-lg-12 form-control"
 						                onChange={this.form.onChange}/>
-						<SelectUserInput name="hr" placeholder="Training Conductor..." defaultUser showOtherPerson
+						<SelectEmployeeInput name="trainer" placeholder="Training Conductor..." defaultUser showOtherPerson
 						                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-						<SelectJobPositionInput name="job_desc" placeholder="Job Position..."
+						<SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..."
 						                        desc="Job Position For Training Conductor"
 						                        className="col-lg-12 form-control"
-						                        onChange={this.form.onChange} add/>
+						                        onChange={this.form.onChange}/>
 					</Row>
 					<Row
 						rendered

@@ -124,12 +124,16 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {
         return <THead>
-            <div className="td fixed-flex min-w-100">Status</div>
-            <div className="td fixed-flex min-w-120">Accreditation</div>
+            <div className="td fixed-flex min-w-30">ID</div>
+            <div className="td">Toolbox Talk / Training Meeting Subject</div>
+            <div className="td">Subject Category</div>
+            <div className="td">Institution Conducting Training</div>
             <div className="td">Training Conductor</div>
-            <div className="td">Job Position</div>
-            <div className="td">Subject</div>
-            <div className="td fixed-flex min-w-100">Requirement</div>
+            <div className="td">Trainer Job Position</div>
+            <div className="td fixed-flex min-w-140">Training Frequency</div>
+            <div className="td fixed-flex min-w-120">Date</div>
+            <div className="td fixed-flex min-w-80">Time From</div>
+            <div className="td fixed-flex min-w-80">Time To</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
         </THead>;
     }
@@ -137,8 +141,17 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
-        const {id, data:{created_at, status, training_provider_requirement, institution_conducting_training, hr, job_title, subject, requirement, certificate_expiration}} = item;
+        const {
+            id, data:{
+                created_at,
+                
+                subject,
+                subject_category,
+                training_frequency,
+            }
+        } = item;
         return <>
+            <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{training_provider_requirement || 'N/A'}</div>
             <div className="td">{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</div>

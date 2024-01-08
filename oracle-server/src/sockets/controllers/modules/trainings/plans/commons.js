@@ -64,7 +64,19 @@ exports.getVariablesAndQueryConfig = (
                 filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
             }
             if (date_range) {
-                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+                const {start, end} = date_range;
+                if(start && end) {
+                    filter.push(`training_plan_list:{
+                        training:{
+                            date_range_start: {_gte: ${start}},
+                            date_range_end: {_lte: ${end}}
+                        }
+                    }`);
+                } else if(start) {
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                } else if(end) {
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                }
             }
         }
     } else if (view === 'Job Position') {
@@ -97,7 +109,19 @@ exports.getVariablesAndQueryConfig = (
                 filter.push(`result: {_eq: ${result}}`);
             }
             if (date_range) {
-                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+                const {start, end} = date_range;
+                if(start && end) {
+                    filter.push(`training_plan_list:{
+                        training:{
+                            date_range_start: {_gte: ${start}},
+                            date_range_end: {_lte: ${end}}
+                        }
+                    }`);
+                } else if(start) {
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                } else if(end) {
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                }
             }
         }
     } else if (view === 'Course') {
@@ -130,7 +154,17 @@ exports.getVariablesAndQueryConfig = (
                 filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
             }
             if (date_range) {
-                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+                const {start, end} = date_range;
+                if(start && end) {
+                    filter.push(`training_matrix_list:{
+                        date_range_start: {_gte: ${start}},
+                        date_range_end: {_lte: ${end}}
+                    }`);
+                } else if(start) {
+                    filter.push(`training_matrix_list:{date_range_start: {_gte: ${start}}}`);
+                } else if(end) {
+                    filter.push(`training_matrix_list:{date_range_end: {_lte: ${end}}}`);
+                }
             }
         }
     } else if (view === 'Year') {
@@ -163,7 +197,19 @@ exports.getVariablesAndQueryConfig = (
                 filter.push(`training_plan_list:{result: {_eq: ${result}}}`);
             }
             if (date_range) {
-                filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+                const {start, end} = date_range;
+                if(start && end) {
+                    filter.push(`training_plan_list:{
+                        training:{
+                            date_range_start: {_gte: ${start}},
+                            date_range_end: {_lte: ${end}}
+                        }
+                    }`);
+                } else if(start) {
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                } else if(end) {
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                }
             }
         }
     } else {
@@ -195,9 +241,9 @@ exports.getVariablesAndQueryConfig = (
         if (result) {
             filter.push(`result: {_eq: ${result}}`);
         }
-        if (date_range) {
-            filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
-        }
+        // if (date_range) {
+        //     filter.push(`date: {_gte: ${date_range.start}, _lte: ${date_range.end}}`);
+        // }
     }
 
     filter = filter.join(',');

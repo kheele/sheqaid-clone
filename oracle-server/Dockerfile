@@ -6,11 +6,12 @@ FROM --platform=linux/arm64/v8 oven/bun
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the /app directory
-COPY package.json package-lock.json ./
+COPY package.json ./
+#COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN bun install
-RUN #npm install
+#RUN npm install
 
 # Copy the rest of project files into this image
 COPY . .
@@ -19,5 +20,5 @@ COPY . .
 EXPOSE 5500
 
 # Start the application
-CMD bun run start
-#CMD npm start
+CMD bun run start:bun
+#CMD npm start:node

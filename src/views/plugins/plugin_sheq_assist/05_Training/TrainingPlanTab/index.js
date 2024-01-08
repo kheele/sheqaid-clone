@@ -472,7 +472,7 @@ class Index extends React.Component {
             <ClearableInput name="result_status" type="radio" placeholder="Result Status"
                             className="form-control"
                             onChange={onChange} values={this.state.lists.result_status} returnValue/>
-            <SelectYearInput name="year" className="form-control" onChange={onChange}/>
+            <SelectYearInput name="year" className="form-control" start={new Date().getFullYear() + 10} onChange={onChange}/>
             <DateRangeInput name="date_range" className="form-control" placeholder="Date" onChange={onChange}/>
         </div>;
     }

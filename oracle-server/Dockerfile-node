@@ -19,5 +19,5 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
-#CMD bun run start
-CMD npm start
+#CMD bun run start:bun
+CMD npm start:node

@@ -141,14 +141,14 @@ class Controls extends AControls {
 
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
-        const {id, data:{created_at, status, provider_requirement, institution_conducting_training, trainer, job_position_list, course, requirement, certificate_expiration}} = item;
+        const {id, data:{created_at, status, provider_requirement, institution_conducting_training, trainer, trainer_external, job_position_list, course, requirement, certificate_expiration}} = item;
         console.log('job_position_list', job_position_list.slice());
         return <>
             <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td">{course ? course.name : 'N/A'}</div>
-            <div className="td">{trainer ? trainer.full_name : 'N/A'}</div>
+            <div className="td">{(trainer || trainer_external) ? (trainer || trainer_external).full_name : 'N/A'}</div>
             <div className="td">{institution_conducting_training || 'N/A'}</div>
-            <div className="td">{job_position_list ? job_position_list.filter(v => !!v).map(({name}) => name).join(', ') : 'N/A'}</div>
+            <div className="td">{job_position_list ? job_position_list.filter(v => !!v).map(({job_position}) => job_position.name).join(', ') : 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{requirement || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{provider_requirement || 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{status || 'N/A'}</div>

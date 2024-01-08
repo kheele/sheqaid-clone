@@ -407,6 +407,7 @@
                               cost,
                               institution_conducting_training,
                               trainer,
+                              trainer_external,
                               trainer_job_position,
                               job_category_list,
                               job_position_list,
@@ -447,13 +448,13 @@
                             id,
                             
                             course: course && course.name,
-                            trainer: trainer && trainer.full_name,
-                            trainer_job_position: trainer_job_position && trainer_job_position.name,
+                            trainer: (trainer || trainer_external) && (trainer || trainer_external).full_name,
+                            trainer_job_position: trainer_job_position && ` (${trainer_job_position.name})`,
                             institution_conducting_training,
                             
-                            job_category_list: job_category_list ? job_category_list.map(v => v.name).join(', ') : "",
-                            job_position_list: job_position_list ? job_position_list.map(v => v.name).join(', ') : "",
-                            sector_list: sector_list ? sector_list.map(v => v.name).join(', ') : "",
+                            job_category_list: job_category_list ? job_category_list.map(v => v.job_category.name).join(', ') : "",
+                            job_position_list: job_position_list ? job_position_list.map(v => v.job_position.name).join(', ') : "",
+                            sector_list: sector_list ? sector_list.map(v => v.sector.name).join(', ') : "",
                             
                             requirement_legal,
                             requirement,
