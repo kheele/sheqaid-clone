@@ -47,10 +47,10 @@ class MSDSTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-
-        this.onExport = this.onExport.bind(this);
         
         this.onRemoved = this.onRemoved.bind(this);
+        
+        this.onExport = this.onExport.bind(this);
         
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         
@@ -74,10 +74,6 @@ class MSDSTab extends React.Component {
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
-    
-    onRemoved(item) {
-        this.refs.root.list.removeIf((v, n) => v.id === item.id);
-    }
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
@@ -113,6 +109,10 @@ class MSDSTab extends React.Component {
         });
     }
     //</editor-fold>
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="actions">
     onExport(e, btn) {
