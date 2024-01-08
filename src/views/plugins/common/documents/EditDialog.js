@@ -65,8 +65,6 @@ class Controls extends React.Component {
 		title: null,
 
 		last_doc_num: null,
-
-		item: null,
 	};
 	// </editor-fold>
 
@@ -226,7 +224,7 @@ class Controls extends React.Component {
 	// </editor-fold>
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">

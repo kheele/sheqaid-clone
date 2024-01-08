@@ -22,6 +22,7 @@ import employeeStore from "mutations/all/Employee";
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfilePDFReport";
+    findById = findByIdEmployee;
 
     constructor(props) {
         super(props, style);
@@ -58,7 +59,6 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
     state = {
-        item: null,
     };
     // </editor-fold>
 
@@ -372,8 +372,8 @@ class Controls extends React.Component {
     //</editor-fold>
 
     @computed get item() {
-        return this.state.item;
-    }
+		return this.props.state.item;
+	}
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {

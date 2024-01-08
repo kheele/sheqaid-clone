@@ -68,7 +68,6 @@ class Controls extends React.Component {
                 checked: false
             }],
         },
-        item: null,
         index: 0
     };
     components = [

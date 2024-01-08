@@ -57,7 +57,9 @@ class NCRItemListDialog extends ADialogList {
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
+		this.onRemoved = this.onRemoved.bind(this);
+		
 		this.setView = this.setView.bind(this);
 
 		this.onApprove = this.onApprove.bind(this);
@@ -484,11 +486,11 @@ class NCRItemListDialog extends ADialogList {
 			renderItem={this.renderItem}>
 			<TitlePanel state={this.selfState}/>
 
-			<ConfirmDialog ref="removeDialog"/>
+			<ConfirmDialog ref="removeDialog" onSoftDelete={updateNCR}/>
 
 			<NewNCRDialog ref="newDialog"/>
-			<EditNCRDialog ref="editDialog"/>
-			<ProfileNCRDialog ref="profileDialog"/>
+			<EditNCRDialog ref="editDialog" onRemoved={this.onRemoved}/>
+			<ProfileNCRDialog ref="profileDialog" onRemoved={this.onRemoved}/>
 
 			<ProfileSiteDialog ref="profileSiteDialog"/>
 			<ProfileAuditDialog ref="profileAuditDialog"/>

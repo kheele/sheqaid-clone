@@ -42,7 +42,6 @@ class Controls extends React.Component {
 	path = 'plugin_sheq_assist/employees/job-positions/';
 	@observable
 	state = {
-		item: null,
 	};
 
 	constructor(props) {
@@ -98,7 +97,7 @@ class Controls extends React.Component {
 	}
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	render() {

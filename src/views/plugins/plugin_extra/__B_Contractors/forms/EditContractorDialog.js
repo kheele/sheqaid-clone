@@ -23,6 +23,7 @@ import NavItem from "components/navs/NavItem";
 class EditDialog extends AEditDialog {
     pageKey = "EditContractorDialog";
     title = "Edit Contractor";
+    findById = findByIdContractor;
 
     constructor(props) {
         super(props, style);
@@ -55,7 +56,6 @@ class Controls extends React.Component {
                 {text: 'No', value: 'No', checked: false}
             ]
         },
-        item: null,
     };
     
     constructor() {
@@ -247,8 +247,8 @@ class Controls extends React.Component {
     //</editor-fold>
 
     @computed get item() {
-        return this.state.item;
-    }
+		return this.props.state.item;
+	}
 
     //<editor-fold desc="render">
     render() {

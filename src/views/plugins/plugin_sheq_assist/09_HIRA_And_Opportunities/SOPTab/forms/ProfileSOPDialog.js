@@ -51,7 +51,7 @@ class Controls extends React.Component {
 	//<editor-fold desc="fields">
 	@observable
 	state = {
-		item: null,
+	
 	};
 	//</editor-fold>
 
@@ -60,7 +60,7 @@ class Controls extends React.Component {
 	}
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	//<editor-fold desc="render">

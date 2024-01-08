@@ -60,7 +60,6 @@ class Controls extends React.Component {
 
 	@observable
 	state = {
-		item: null,
 	};
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
@@ -178,7 +177,7 @@ class Controls extends React.Component {
 	}
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	// </editor-fold>

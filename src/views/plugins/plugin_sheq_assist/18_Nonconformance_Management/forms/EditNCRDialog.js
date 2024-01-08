@@ -20,9 +20,6 @@ import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper} from '../dial
 import style from "./EditNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
 import updateNCR from "mutations/all/NCR/updateNCR";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
-import parsePhoneNumber from "libphonenumber-js";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import findByIdNCR from "mutations/all/NCR/findByIdNCR";
 import {CircularProgress} from "@mui/material";
 // </editor-fold>
@@ -80,7 +77,6 @@ class Controls extends React.Component {
 				{label: 'Incident Investigation', value: '17_Incident_Investigation/'}
 			]
 		},
-		item: null,
 	};
 	// </editor-fold>
 	source = null;
@@ -435,7 +431,7 @@ class Controls extends React.Component {
 	}
 
 	@computed get item() {
-		return this.state.item;
+		return this.props.state.item;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="render">
@@ -443,6 +439,7 @@ class Controls extends React.Component {
 		if (!this.item) {
 			return <CircularProgress className="fixed-center"/>;
 		}
+		
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
