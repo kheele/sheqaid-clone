@@ -107,14 +107,15 @@ class Controls extends AControls {
 		}
 
 		const {item} = this;
-		this.unsubscribe = subscribeByIdContractorQuestionnaire({
-			id: item.id,
-			onEvent: res => {
-				console.log(`subscription`, res)
-//            alert('ProfileResponseDialog')
-// 				questionnairesOnUpdate(item, {updateVal, data});
-			},
-		});
+		if(!item) return;
+// 		this.unsubscribe = subscribeByIdContractorQuestionnaire({
+// 			id: item.id,
+// 			onEvent: res => {
+// 				console.log(`subscription`, res)
+// //            alert('ProfileResponseDialog')
+// // 				questionnairesOnUpdate(item, {updateVal, data});
+// 			},
+// 		});
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="onExportOptions, onExport, onSaveAs">
