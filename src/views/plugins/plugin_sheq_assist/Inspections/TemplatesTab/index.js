@@ -81,6 +81,7 @@ class TemplatesTab extends React.Component {
     }
 
     //</editor-fold>
+    
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }

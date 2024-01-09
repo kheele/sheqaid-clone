@@ -62,8 +62,10 @@ class Questions extends AQuestions {
     }
 
     set item(item) {
+        this.state.loadingFormData = true;
         this.state.item = item;
         this.defaultQuestionList();
+        this.state.loadingFormData = false;
     }
 }
 

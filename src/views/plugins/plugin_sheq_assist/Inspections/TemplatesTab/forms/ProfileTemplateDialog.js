@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable, toJS} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {AProfileDialog} from 'components/dialogs';
 
@@ -172,8 +173,9 @@ class Controls extends React.Component {
 
 	//<editor-fold desc="render">
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
 
 		const {
 			props: {

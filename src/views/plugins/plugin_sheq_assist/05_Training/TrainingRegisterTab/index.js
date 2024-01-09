@@ -189,7 +189,7 @@ class TrainingRegisterTab extends React.Component {
             pageId={this.pageKey + "-tab"}
             pageTitle="Training Register"
             pageTitleSingular="training register"
-            path={this.path}
+            onLoadList={this.onLoadList}
             noAnimation={true}
             renderLeftButtons={this.renderLeftButtons}
             renderPopoverOptions={this.renderPopoverOptions}

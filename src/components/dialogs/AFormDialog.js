@@ -64,18 +64,20 @@ class AFormDialog extends React.Component {
 	}
 
 	extraProp(key, val) {
-		if (!!key && !!val) {
-			extendObservable(this.extraProps, {[key]: val});
-			return this;
-		} else if (!!key && val === null) {
-			if (key in this.extraProps) {
-				delete this.extraProps[key];
-			}
-			return this;
-		} else if (key in this.extraProps) {
+		const argsLen = arguments.length;
+		if (argsLen === 1) {
 			return this.extraProps[key];
 		}
-		return null;
+		if (argsLen === 2) {
+			if (!!key) {
+				if (!!val) {
+					extendObservable(this.extraProps, {[key]: val});
+				} else if (val === null || val === undefined) {
+					delete this.extraProps[key];
+				}
+			}
+    }
+		return this;
 	}
 
 	open(item) {

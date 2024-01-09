@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import ANewDialog from 'components/dialogs/ANewDialog';
@@ -13,6 +14,8 @@ import insertInspectionsQuestionnaireTemplate
 import {FormControls, Row} from "components/FormComponents";
 import {ClearableInput, SelectAssetInput, SelectAssetTypeInput} from "components/inputs";
 import {execWhen} from "utils/UtilsFuns";
+import findByIdInspectionsQuestionnaireTemplate
+    from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
 
 //<editor-fold desc="Dialog">
 @observer
@@ -22,6 +25,11 @@ class NewDialog extends ANewDialog {
 
     constructor(props) {
         super(props, style);
+    }
+    
+    get findById() {
+        if(!this.state.item) return;
+        return findByIdInspectionsQuestionnaireTemplate;
     }
 
     get controls() {
@@ -157,12 +165,19 @@ class Controls extends React.Component {
         return this.props.dialog.props.asset;
     }
 
+    @computed
     get item() {
         return this.props.state.item;
     }
 
     //<editor-fold desc="render">
     render() {
+        if(this.props.dialog.findById) {
+            if (!this.item) {
+                return <CircularProgress className="fixed-center"/>;
+            }
+        }
+        
         const {
             item, props: {
                 onFormNext, onFormBack, onFormOpen

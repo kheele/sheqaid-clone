@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {computed, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -23,6 +23,8 @@ import insertInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/insertInspectionsQuestionnaire";
 import {Dates} from "utils/Dates";
 import Divider from "@mui/material/Divider";
+import findByIdInspectionsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -30,11 +32,11 @@ import Divider from "@mui/material/Divider";
 class NewQuestionnaireDialog extends ANewDialog {
 	pageKey = "NewQuestionnaireDialog";
 	title = "Create Questionnaire";
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -45,7 +47,7 @@ class NewQuestionnaireDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
-
+	
 	@observable
 	state = {
 		lists: {
@@ -55,42 +57,65 @@ class Controls extends React.Component {
 		},
 		selectedTemplate: null
 	};
-
+//Rain Kit (Pic: Stadium)
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onNext = this.onNext.bind(this);
 		this.getDialogDOM = this.getDialogDOM.bind(this);
 		this.onFilterAsset = this.onFilterAsset.bind(this);
-
-		const {dialog} = props;
-		this.state.selectedTemplate = dialog.extraProp('template');
-
+		
+		this.loadTemplate = this.loadTemplate.bind(this);
+		
 		this.form = new Form();
 		this.form.addChangeOne("template", this.onChangeTemplate.bind(this));
 	}
-
+	
 	// </editor-fold>
-
+	
+	async componentWillMount() {
+		const {dialog} = this.props;
+		
+		const template = dialog.extraProp('template');
+		if (template) {
+			await this.loadTemplate(template);
+		}
+	}
+	
 	// <editor-fold defaultstate="collapsed" desc="onChange funs">
-	onChangeTemplate(el, val) {
-		this.props.dialog.execWhen(() => this.refs.questions).then(ref => {
-			if (val) {
-				val = toJS(val);
-
-				const {selectedTemplate} = this.state;
-				if (!selectedTemplate || selectedTemplate.id !== val.id) {
+	async onChangeTemplate(el, val) {
+		if (val) {
+			const {selectedTemplate} = this.state;
+			if (!selectedTemplate || selectedTemplate.id !== val.id) {
+				await this.loadTemplate(val);
+			}
+		} else {
+			ref.item = this.state.selectedTemplate = val;
+		}
+	}
+	
+	// </editor-fold>
+	
+	async loadTemplate(val) {
+		progressDialog.open();
+		this.props.dialog.execWhen(() => this.refs.questions).then(async ref => {
+			try {
+				val = await findByIdInspectionsQuestionnaireTemplate(val.id);
+				
+				if (val) {
 					ref.item = this.state.selectedTemplate = val;
+				} else {
+					infoDialog.open("Could not load the template. Please check your internet connection and try again.");
 				}
-			} else {
-				ref.item = this.state.selectedTemplate = val;
+			} catch (err) {
+				console.error('loadTemplate', err);
+			} finally {
+				progressDialog.close();
 			}
 		});
 	}
-
-	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onNext">
 	onNext(e, btn) {
 		const {form} = this;
@@ -113,12 +138,12 @@ class Controls extends React.Component {
 				return;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	async onSubmit(e, btn, onSaved) {
 		const {form, refs: {questions: questionsRef}} = this;
@@ -127,16 +152,16 @@ class Controls extends React.Component {
 			infoDialog.open('Company is required');
 			return;
 		}
-
+		
 		// if (!form.isValid('asset_type')) {
 		// 	infoDialog.open('Asset Type is required');
 		// 	return;
 		// }
-
+		
 		if (!questionsRef.isValidForm()) {
 			return;
 		}
-
+		
 		progressDialog.open('Please wait...');
 		const qForm = await questionsRef.getForm();
 		let {
@@ -146,12 +171,12 @@ class Controls extends React.Component {
 			title_page_list,
 			question_list,
 		} = qForm;
-
+		
 		question_list = [
 			...title_page_list.map(v => ({is_page_title: true, ...v})),
 			...question_list.map(v => ({is_page_title: false, ...v})),
 		];
-
+		
 		const {
 			client,
 			project,
@@ -188,9 +213,9 @@ class Controls extends React.Component {
 			desc,
 			question_list: {data: question_list},
 		};
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		insertInspectionsQuestionnaire(data).then(res => {
 			console.log("res", res)
@@ -203,34 +228,34 @@ class Controls extends React.Component {
 			btn.text("Save").enabled();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	getDialogDOM() {
 		const {props: {dialog}} = this;
 		return dialog.getDOMNode();
 	}
-
+	
 	onFilterAsset() {
 		const {asset_type} = this.refs;
 		if (asset_type.hasValue) {
 			return {asset_type: asset_type.value};
 		}
 	}
-
+	
 	get defaultTitlePageQuestions() {
 		return [{questionText: "Completed By", questionType: "Short Answer"}];
 	}
-
+	
 	get selectedTemplate() {
 		const {selectedTemplate} = this.state;
 		return selectedTemplate || this.props.state.item;
 	}
-
+	
 	get asset() {
 		return this.props.dialog.props.asset;
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		let {
@@ -240,13 +265,14 @@ class Controls extends React.Component {
 			},
 			asset,
 		} = this;
-
+		
 		let asset_type,
 			responsible_person, responsible_department, interval, start_date, time;
-
-		if(asset) {
+		
+		if (asset) {
 			asset_type = asset.data.asset_detail.asset_type;
 		} else {
+			console.log("selectedTemplate", selectedTemplate)
 			const data = selectedTemplate ? selectedTemplate.data : {};
 			const {
 				asset_type: _asset_type,
@@ -267,7 +293,7 @@ class Controls extends React.Component {
 			start_date = _start_date;
 			time = _time;
 		}
-
+		
 		return <FormControls>
 			<RowOrgs
 				onChange={this.form.onChange}
@@ -310,20 +336,20 @@ class Controls extends React.Component {
 				onFormBack={onFormBack}
 			>
 				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
-									 defaultValue={responsible_person}
+				                     defaultValue={responsible_person}
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<SelectDepartmentInput name="responsible_department" placeholder="Responsible Department..."
-									   defaultValue={responsible_department}
+				                       defaultValue={responsible_department}
 				                       className="col-lg-12 form-control" onChange={this.form.onChange}/>
-
+				
 				<ClearableInput name="interval" type="select" placeholder="Interval..." className="col-lg-4 form-control"
-								defaultValue={interval}
+				                defaultValue={interval}
 				                onChange={this.form.onChange} values={this.state.lists.interval} returnValue/>
 				<ClearableInput name="start_date" type="date" placeholder="Start Date..." className="col-lg-4 form-control"
-								defaultValue={start_date}
+				                defaultValue={start_date}
 				                onChange={this.form.onChange}/>
 				<ClearableInput name="time" type="time" placeholder="Time..." className="col-lg-4 form-control"
-								defaultValue={time}
+				                defaultValue={time}
 				                onChange={this.form.onChange}/>
 			</Row>
 			<Row
@@ -337,11 +363,11 @@ class Controls extends React.Component {
 					name="template"
 					placeholder="Inspection Questionnaire Template"
 					defaultValue={this.selectedTemplate}
-					className="col-lg-12 form-control"
+					className="col-lg-12 w-900 margin-t-20 margin-b-15 hor-center form-control"
 					onChange={this.form.onChange}
 					byLogged={byLogged}
 				/>
-				<Divider/>
+				<Divider sx={{mb: "20px"}}/>
 				<TemplateQuestions
 					ref="questions"
 					getDialogDOM={this.getDialogDOM}
@@ -355,7 +381,7 @@ class Controls extends React.Component {
 			</Row>
 		</FormControls>;
 	}
-
+	
 	// </editor-fold>
 }
 
