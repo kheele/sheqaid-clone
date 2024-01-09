@@ -138,42 +138,40 @@ class TrainingRegisterTab extends React.Component {
             id, data: {
                 created_at,
                 client, project, site,
-                training_matrix = {},
+                training,
                 trainer,
+                trainer_external,
                 institution_conducting_training,
                 time_or_duration,
                 time_from,
                 time_to,
                 date,
                 list_proof,
-                list_table,
-                list_table_keys,
-                training_plan_list = [],
+                employee_list,
             }
         } = item;
 
         console.log('item', item)
 
-        let {data: {course_or_module, job_title}} = training_matrix;
-        course_or_module = isObject(course_or_module) ? (course_or_module.name || course_or_module.data.name) : course_or_module;
-        const training_plan_attendants = training_plan_list;
-        const year = training_plan_list.map(({data: {year}}) => year)[0];
-        console.log('training_plan_list', training_plan_list.slice().map(({data: {year}}) => year))
+        let {course, training_plan_list, job_position_list} = training || {};
+        training_plan_list = training_plan_list || [];
+        const year = training_plan_list.map(({year}) => year)[0];
+        console.log('training_plan_list', training_plan_list.slice().map(({year}) => year))
         return <TRow key={"item-" + n}>
             <div className="td fixed-flex min-w-30">{id}</div>
             <div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
-            <div className="td">{course_or_module}</div>
+            <div className="td">{course && course.name}</div>
             <div className="td">
                 <Grid container spacing={1} columns={4}>
-                    {job_title.map(({id, name, data}) => <Grid item><Chip label={name || data.name} size="small"/></Grid>)}
+                    {(job_position_list || []).map(({job_position:{id, name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
                 </Grid>
             </div>
-            <div className="td">{trainer.lname} {trainer.fname}</div>
+            <div className="td">{trainer.full_name}</div>
             <div className="td fixed-flex min-w-120">{year || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{time_from} - {time_to}</div>
             <div className="td fixed-flex min-w-120">{time_or_duration}</div>
-            <div className="td fixed-flex min-w-100">{list_table ? list_table.length : 'Uploaded'}</div>
-            <div className="td fixed-flex min-w-140">{list_table ? (list_table.length / training_plan_attendants.length * 100).toFixed(0) + '%' : 'N/A'}</div>
+            <div className="td fixed-flex min-w-100">{employee_list ? employee_list.length : 'Uploaded'}</div>
+            <div className="td fixed-flex min-w-140">{employee_list ? (employee_list.length / training_plan_list.length * 100).toFixed(0) + '%' : 'N/A'}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>

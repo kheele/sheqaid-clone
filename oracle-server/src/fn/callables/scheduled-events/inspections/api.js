@@ -184,17 +184,19 @@ exports.onScheduleNextDate = async (data) => {
                 if (schedule_date) {
                     return Dates.formatDateSQL(schedule_date.addDays(1));
                 } else {
-                    const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    console.log('lastDate', interval, lastDate)//
-                    if(lastDate) {
-                        const days = lastDate.durationNextDays(new Date());
-                        console.log('lastDate', interval, lastDate, days)
-                        if (days === 0) {
-                            return Dates.formatDateSQL(lastDate);
+                    if(start_date) {
+                        const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        console.log('lastDate', interval, lastDate)//
+                        if (lastDate) {
+                            const days = lastDate.durationNextDays(new Date());
+                            console.log('lastDate', interval, lastDate, days)
+                            if (days === 0) {
+                                return Dates.formatDateSQL(lastDate);
+                            }
+                            return Dates.formatDateSQL(lastDate.addDays(1));
                         }
-                        return Dates.formatDateSQL(lastDate.addDays(1));
+                        return Dates.formatDateSQL(start_date);
                     }
-                    return Dates.formatDateSQL(start_date);
                 }
             } else if (interval === "Weekly") {
                 if (schedule_date) {
@@ -215,9 +217,11 @@ exports.onScheduleNextDate = async (data) => {
                     // return Dates.formatDateSQL(lastDate.addWeeks(1));
                     return Dates.formatDateSQL(lastDate.addDays(7));
                 } else {
-                    const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    // return Dates.formatDateSQL(lastDate.addWeeks(1));
-                    return lastDate && Dates.formatDateSQL(lastDate.addDays(7));
+                    if(start_date) {
+                        const lastDate = Dates.getWeeksStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        // return Dates.formatDateSQL(lastDate.addWeeks(1));
+                        return lastDate && Dates.formatDateSQL(lastDate.addDays(7));
+                    }
                 }
             } else if (interval === "Monthly") {
                 if (schedule_date) {
@@ -240,8 +244,10 @@ exports.onScheduleNextDate = async (data) => {
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(1));
                 } else {
-                    const lastDate = Dates.getMonthsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(1));
+                    if(start_date) {
+                        const lastDate = Dates.getMonthsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        return lastDate && Dates.formatDateSQL(lastDate.addMonths(1));
+                    }
                 }
             } else if (interval === "Quarterly") {
                 if (schedule_date) {
@@ -264,8 +270,10 @@ exports.onScheduleNextDate = async (data) => {
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(3));
                 } else {
-                    const lastDate = Dates.getQuartersStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(3));
+                    if(start_date) {
+                        const lastDate = Dates.getQuartersStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        return lastDate && Dates.formatDateSQL(lastDate.addMonths(3));
+                    }
                 }
             } else if (interval === "Bi-Annually") {
                 if (schedule_date) {
@@ -288,8 +296,10 @@ exports.onScheduleNextDate = async (data) => {
                     }
                     return Dates.formatDateSQL(lastDate.addMonths(6));
                 } else {
-                    const lastDate = Dates.getHalvesStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    return lastDate && Dates.formatDateSQL(lastDate.addMonths(6));
+                    if(start_date) {
+                        const lastDate = Dates.getHalvesStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        return lastDate && Dates.formatDateSQL(lastDate.addMonths(6));
+                    }
                 }
             } else if (interval === "Annually") {
                 if (schedule_date) {
@@ -312,8 +322,10 @@ exports.onScheduleNextDate = async (data) => {
                     }
                     return Dates.formatDateSQL(lastDate.addYears(1));
                 } else {
-                    const lastDate = Dates.getYearsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
-                    return lastDate && Dates.formatDateSQL(lastDate.addYears(1));
+                    if(start_date) {
+                        const lastDate = Dates.getYearsStartAndEndDateRange(start_date, new Date()).map(({currDate}) => currDate).pop();
+                        return lastDate && Dates.formatDateSQL(lastDate.addYears(1));
+                    }
                 }
             }
         };
