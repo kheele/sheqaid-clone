@@ -36,6 +36,109 @@
                 photo && await files.remove(photo);
             });
         }
+        
+        // <editor-fold defaultstate="collapsed" desc="export_excel">
+        async export_excel(evt, {
+            client: _client, project: _project, site: _site,
+            list,
+        }) {
+            return Events.whenLoggedIn(async loggedUser => {
+                if (isArray(list)) {
+                    const rows = list.map((item, idx) => {
+                        let {
+                            id,
+                            data: {
+                                created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
+                                company, client, project, site,
+                                //1 done
+                                category,
+                                work_task,
+                                date_created,
+                                location,
+                                department,
+                                person_approving_procedure,
+                                expiry,
+                                sign_sheet_notes,
+                                //2
+                                doc,
+                                //3
+                                potential_hazard_and_possible_cause_list,
+                                //4
+                                ppe_required_list,
+                                //5
+                                steps_to_perform_task_list,
+                                //6
+                                notes,
+                                //7
+                                training_requirement_list,
+                                //8
+                                sign_sheet_employee_list,
+                            }
+                        } = item;
+                        
+                        client = client || company;
+                        
+                        return {
+                            idx: idx + 1,
+                            
+                            project: project && project.name,
+                            site: site && site.name,
+                            
+                            category,
+                            
+                            work_task,
+                            
+                            date_created: Dates.formatDateSQL(date_created),
+                            
+                            location,
+                            
+                            department,
+                            
+                            person_approving_procedure,
+                            
+                            expiry: Dates.formatDateSQL(expiry),
+                            
+                            sign_sheet_notes,
+                            
+                            doc: doc && doc.dlUrls[0],
+                            
+                            potential_hazard_and_possible_cause_list,
+                            
+                            ppe_required_lis: (ppe_required_list || []).map(({id: ppe_id}) => ({ppe_id})),
+                            
+                            steps_to_perform_task_list,
+                            
+                            notes,
+                            
+                            training_requirement_list,
+                            
+                            sign_sheet_employee_list: (sign_sheet_employee_list || []).map(({id: employee_id}) => ({employee_id})),
+                            
+                            status,
+                        };
+                    });
+                    
+                    const response = await fetch(
+                      `${self.locationRoot}/templates/xlsx/assets/Template-List-Asset.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+                    
+                    data.set('date', new Date().formatDate());
+                    
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+                    
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+                }
+                return list;
+            });
+        }
+        
+        // </editor-fold>
 
         async filter(evt, search_val) {
             return Events.whenLoggedIn(async loggedUser => {

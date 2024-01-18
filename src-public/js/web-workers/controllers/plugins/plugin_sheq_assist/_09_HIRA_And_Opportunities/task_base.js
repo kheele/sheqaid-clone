@@ -56,6 +56,71 @@
 //            }
 //            load();
         }
+        // <editor-fold defaultstate="collapsed" desc="export_excel">
+        async export_excel(evt, {
+            client: _client, project: _project, site: _site,
+            list,
+        }) {
+            return Events.whenLoggedIn(async loggedUser => {
+                if (isArray(list)) {
+                    const rows = list.map((item, idx) => {
+                        let {
+                            id,
+                            data: {
+                                created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
+                                company, client, project, site,
+                                //1 done
+                                activity,
+                                expiry_date,
+                                risk_tolerance,
+                                list,
+                            }
+                        } = item;
+                        
+                        client = client || company;
+                        
+                        return {
+                            idx: idx + 1,
+                            
+                            project: project && project.name,
+                            site: site && site.name,
+                            
+                            activity,
+                            expiry_date: Dates.formatDateSQL(expiry_date),
+                            risk_tolerance,
+                            list: toJS(val.control_measure_list_additional.map(val => {
+                                  const {text, responsible_person, cost, date_completed} = val;
+                                  return {
+                                      ...val,
+                                      date_completed: Dates.formatDateSQL(date_completed),
+                                      responsible_person_id: responsible_person && responsible_person.id,
+                                  };
+                              })),
+                              
+                        };
+                    });
+                    
+                    const response = await fetch(
+                      `${self.locationRoot}/templates/xlsx/hira and opportunities/Template-task-based-risk-assessment.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+                    
+                    data.set('date', new Date().formatDate());
+                    
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+                    
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+                }
+                return list;
+            });
+        }
+        
+        // </editor-fold>
 
         async search_by_name(evt, activity) {
             return this.filter(evt, {activity});
