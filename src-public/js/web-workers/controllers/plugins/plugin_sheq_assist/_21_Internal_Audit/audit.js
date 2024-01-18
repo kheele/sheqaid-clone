@@ -98,30 +98,9 @@
 							scope,
 							date: Dates.formatDateSQL(date),
 							type,
-							representative_list: (representative_list || []).map((v) => {
-								const {other_person, employee} = v;
-								if (other_person) {
-									return {other_person};
-								} else if (employee) {
-									const {id} = employee;
-									return {employee_id: id};
-								} else {
-									return {employee_id: v.id};
-								}
-							}),
-							auditor_list: (auditor_list || []).map((v) => {
-								const {other_person, employee} = v;
-								if (other_person) {
-									return {other_person};
-								} else if (employee) {
-									const {id} = employee;
-									return {employee_id: id};
-								} else {
-									return {employee_id: v.id};
-								}
-							}),
-							definition_list,
-							list,
+							representative_list:  (representative_list || []).map(({employee, other_person}) => (employee || other_person).full_name).join(','),
+							auditor_list:  (auditor_list || []).map(({employee, other_person}) => (employee || other_person).full_name).join(','),
+							definition_list:  (definition_list || []).map(({title}) => title).join(','),
 							
 							status,
 						};
