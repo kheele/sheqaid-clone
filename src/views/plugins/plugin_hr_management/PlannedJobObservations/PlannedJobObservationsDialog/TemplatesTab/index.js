@@ -5,14 +5,19 @@ import {observable, toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
+import {
+    ActionsButton,
+    ClearableInput,
+    Clickable,
+    SelectAssetTypeInput,
+    SelectJobPositionInput
+} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
 import {EditResponseDialog, NewQuestionnaireDialog} from '../ObservationsTab/forms';
 
 import style from "./TemplatesTab.lazy.css";
-import byLogged from "./Query/List/listAllJobObservationTemplatesByLogged";
 import TemplateTableRow from "./TemplateTableRow";
 import updateJobObservationsQuestionnaireTemplate
     from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
@@ -25,6 +30,10 @@ class TemplatesTab extends React.Component {
     state = {
         lists: {
             scheduled: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
+            visibility: [
+                {text: 'Private', value: 'Private', checked: false},
+                {text: 'Public', value: 'Public', checked: false}
+            ],
         }
     }
 
@@ -59,33 +68,34 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {item: employee} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
+            job_position_list,
             name,
+            scheduled,
+            visibility,
         } = filterData || {};
-
-        const limit = 50;
-
-        const args = {
-            name,
+        
+        const listByLogged = sockets.of('job-observations').fn('listTemplatesByLogged');
+        
+        return listByLogged({
+            employee_id: employee && employee.id,
             //
-            limit,
+            job_position_list,
+            name,
+            scheduled,
+            visibility,
             //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
-
+    
     //</editor-fold>
     
     onRemoved(item) {
@@ -159,6 +169,8 @@ class TemplatesTab extends React.Component {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
             <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>
+            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control" onChange={onChange} values={this.state.lists.visibility}/>
+            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." className="form-control" onChange={onChange}/>
         </div>;
     }
     //</editor-fold>

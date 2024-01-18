@@ -103,6 +103,7 @@ exports.training_register_details_fragment = `
       id
       fname
       lname
+      full_name
       email
       phone
     }

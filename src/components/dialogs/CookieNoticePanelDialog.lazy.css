@@ -4,8 +4,14 @@
 }
 
 #dialog-overlay.CookieNoticePanelDialog-new-dialog > .dialog-container{
-    width: 600px;
-    height: 240px;
+    /*width: 600px;*/
+    /*height: 240px;*/
+    width: 75%;
+    max-width: 100% !important;
+    height: 190px;
+    top: unset !important;
+    transform: translate(-50%, 0%) !important;
+    bottom: 10px;
 }
 
 #dialog-overlay.CookieNoticePanelDialog-new-dialog .controls-wrapper,

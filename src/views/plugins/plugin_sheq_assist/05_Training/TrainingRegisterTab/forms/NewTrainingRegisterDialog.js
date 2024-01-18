@@ -491,7 +491,7 @@ function calcTimeDiff({time_from, time_to}) {
 
     const num = time_from_now.durationNextHours(time_to_now);
     const parts = String(num).split('.');
-    const min = parseInt(parts[1], 10) * 60;
+    const min = parseInt(`0.${parts[1]}`) * 60;
     return `${parts[0]}hrs${isNaN(min) ? '' : (', ' + min + 'min')}`;
 }
 

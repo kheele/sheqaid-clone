@@ -23,10 +23,7 @@ import style from "./EditQuestionnaireDialog.lazy.css";
 import {ShouldUpdate} from "utils/Utils";
 import updateJobObservationsQuestionnaire
     from "mutations/all/Questionnaires/JobObservationsQuestionnaires/updateJobObservationsQuestionnaire";
-import byLogged from "../../TemplatesTab/Query/List/listAllJobObservationTemplatesByLogged";
 import Divider from "@mui/material/Divider";
-import updateEmployee from "../../../../../../../mutations/all/Employee/updateEmployee";
-import parsePhoneNumber from "libphonenumber-js";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -210,6 +207,12 @@ class Controls extends React.Component {
 		const {props: {dialog}} = this;
 		return dialog.getDOMNode();
 	}
+	
+	get byLogged() {
+		return sockets.
+		of('structure-and-responsibility/job-appointments').
+		fn('listTemplatesByLogged');
+	}
 
 	get selectedTemplate() {
 		const {template} = this.item.data;
@@ -224,11 +227,13 @@ class Controls extends React.Component {
 	render() {
 		if (!this.item)
 			return null;
+		
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
 				dialog, dialog: {renderProfileCover}
 			},
+			byLogged,
 			item, item: {
 				id, data: {
 					created_at,

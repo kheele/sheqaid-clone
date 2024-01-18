@@ -5,7 +5,7 @@ import {observable, toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ClearableInput} from 'components/inputs';
+import {ClearableInput, SelectAssetTypeInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
@@ -24,6 +24,10 @@ class TemplatesTab extends React.Component {
     state = {
         lists: {
             scheduled: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
+            visibility: [
+                {text: 'Private', value: 'Private', checked: false},
+                {text: 'Public', value: 'Public', checked: false}
+            ],
         }
     }
 
@@ -61,7 +65,10 @@ class TemplatesTab extends React.Component {
         const {item: asset} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
+            asset_type,
             name,
+            scheduled,
+            visibility,
         } = filterData || {};
 
         const listByLogged = sockets.of('inspections').fn('listTemplatesByLogged');
@@ -69,7 +76,10 @@ class TemplatesTab extends React.Component {
         return listByLogged({
             asset_id: asset && asset.id,
             //
+            asset_type,
             name,
+            scheduled,
+            visibility,
             //
             exact_orgs: true,
             //
@@ -164,6 +174,8 @@ class TemplatesTab extends React.Component {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
             <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>
+            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control" onChange={onChange} values={this.state.lists.visibility}/>
+            <SelectAssetTypeInput name="asset_type" type="select_multi" placeholder="Asset Type(s)..." className="form-control" onChange={onChange}/>
         </div>;
     }
     //</editor-fold>

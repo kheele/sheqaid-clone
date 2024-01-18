@@ -2,10 +2,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import style from "./ObservationsTab.lazy.css";
-import byLogged from "./Query/List/listAllJobObservationByLogged";
 import {observable, toJS} from "mobx";
 import NavItem from "components/navs/NavItem";
-import {ClearableInput, SelectEmployeeInput, SelectJobPositionInput} from "components/inputs";
+import {
+    ClearableInput,
+    SelectContractorQuestionnaireTemplateInput,
+    SelectEmployeeInput,
+    SelectJobPositionInput, SelectQuestionnaireTemplateInput
+} from "components/inputs";
 import {THead} from "components/tables";
 import APageListReadWrite from "views/APageListReadWrite";
 import {
@@ -23,6 +27,9 @@ class ObservationsTab extends React.Component {
     @observable
     state = {
         lists: {
+            interval: ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually'].map(value => {
+                return {value, label: value}
+            })
         }
     };
 
@@ -35,6 +42,7 @@ class ObservationsTab extends React.Component {
         this.onStart = this.onStart.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -65,32 +73,30 @@ class ObservationsTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
+        const {item: employee} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            job_position,
-            employee,
-            template,
+            name,
+            interval,
+            template_id,
+            job_position_list,
+            employee: employee2,
         } = filterData || {};
-
-        const limit = 50;
-
-        const args = {
-            job_position,
-            employee,
-            template,
+        
+        const listByLogged = sockets.of('job-observations').fn('listByLogged');
+        
+        return listByLogged({
+            employee_id: (employee2 || employee) && (employee || employee2).id,
             //
-            limit,
+            name,
+            interval,
+            template_id,
+            job_position_list,
             //
-            exact_orgs: false,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            exact_orgs: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -114,24 +120,42 @@ class ObservationsTab extends React.Component {
     }
 
     renderFilterNode(onChange) {
+        const listByLogged = sockets.of('job-observations').fn('listTemplatesByLogged');
+        
         return <div className="col-lg-12 controls flex">
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" showOtherPerson onChange={onChange}/>
-            <ClearableInput name="template" type="text" placeholder="Template" className="form-control" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
+            <ClearableInput
+              name="interval"
+              type="select"
+              placeholder="Interval..."
+              className="form-control"
+              onChange={onChange}
+              values={this.state.lists.interval}
+              returnValue
+            />
+            <SelectQuestionnaireTemplateInput
+              name="template"
+              placeholder="Template..."
+              className="form-control"
+              byLogged={listByLogged}
+              onChange={onChange}
+            />
+            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
         </div>;
     }
 
     renderTHead() {
+        const {item: employee} = this.props;
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
-            {/*<div className="td">Name</div>*/}
-            {/*<div className="td">Template</div>*/}
             {/*<div className="td fixed-flex min-w-140">Score</div>*/}
-            <div className="td">Job Position</div>
-            <div className="td">Employee</div>
+            {!employee && <div className="td">Job Position</div>}
+            {!employee && <div className="td">Employee</div>}
             <div className="td">Responsible Person</div>
             <div className="td fixed-flex min-w-160">Interval</div>
             <div className="td fixed-flex min-w-160">Start Date</div>
+            <div className="td fixed-flex min-w-160">Scheduled Date</div>
             <div className="td fixed-flex min-w-160">Next Schedule</div>
             <div className="td fixed-flex min-w-160">Completed</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -139,8 +163,9 @@ class ObservationsTab extends React.Component {
     }
 
     renderItem(n, onClick) {
+        const {item: employee} = this.props;
         let item = this.refs.root.list[n];
-        return <ObservationTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <ObservationTableRow key={item.id} idx={n} item={item} employee={employee} onClick={onClick}/>;
     }
 
     render() {

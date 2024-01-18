@@ -10,7 +10,7 @@ const {
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    // console.log('data', data)
+    console.log('plans data', data)
 
     let {
         offset = 0,

@@ -29,15 +29,14 @@ exports.getVariablesAndQueryConfig = (
 
     // const {id, target} = target_view || {};
 
-    if (employee_view) {
-        // filter.push(`removed: {_eq: ${employee_view === 'active'}}`);
-        // filter.push(`employee: {removed: {_eq: ${employee_view === 'active'}}}`);
-    }
-
     if (view === 'Employee') {
         if (employee_id) {
             filter.push(`id: {_eq: ${employee_id}}`);
         } else {
+            if (employee_view && employee_view !== "all") {
+                filter.push(`removed: {_eq: ${employee_view === 'active'}}`);
+            }
+            
             if (year) {
                 filter.push(`training_plan_list:{year: {_eq: ${year}}}`);
             }
@@ -68,14 +67,14 @@ exports.getVariablesAndQueryConfig = (
                 if(start && end) {
                     filter.push(`training_plan_list:{
                         training:{
-                            date_range_start: {_gte: ${start}},
-                            date_range_end: {_lte: ${end}}
+                            date_range_start: {_gte: "${start}"},
+                            date_range_end: {_lte: "${end}"}
                         }
                     }`);
                 } else if(start) {
-                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: "${start}"}}}`);
                 } else if(end) {
-                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: "${end}"}}}`);
                 }
             }
         }
@@ -97,6 +96,10 @@ exports.getVariablesAndQueryConfig = (
             }
             if (employee_id) {
                 filter.push(`employee_list:{id: {_eq: ${employee_id}}}`);
+            } else {
+                if (employee_view && employee_view !== "all") {
+                    filter.push(`employee_list:{removed: {_eq: ${employee_view === 'active'}}}`);
+                }
             }
 
             if (completion_status) {
@@ -113,14 +116,14 @@ exports.getVariablesAndQueryConfig = (
                 if(start && end) {
                     filter.push(`training_plan_list:{
                         training:{
-                            date_range_start: {_gte: ${start}},
-                            date_range_end: {_lte: ${end}}
+                            date_range_start: {_gte: "${start}"},
+                            date_range_end: {_lte: "${end}"}
                         }
                     }`);
                 } else if(start) {
-                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: "${start}"}}}`);
                 } else if(end) {
-                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: "${end}"}}}`);
                 }
             }
         }
@@ -142,6 +145,10 @@ exports.getVariablesAndQueryConfig = (
             }
             if (employee_id) {
                 filter.push(`training_plan_list:{employee_id: {_eq: ${employee_id}}}`);
+            } else {
+                if (employee_view && employee_view !== "all") {
+                    filter.push(`training_plan_list:{employee:{removed: {_eq: ${employee_view === 'active'}}}}`);
+                }
             }
 
             if (completion_status) {
@@ -157,13 +164,13 @@ exports.getVariablesAndQueryConfig = (
                 const {start, end} = date_range;
                 if(start && end) {
                     filter.push(`training_matrix_list:{
-                        date_range_start: {_gte: ${start}},
-                        date_range_end: {_lte: ${end}}
+                        date_range_start: {_gte: "${start}"},
+                        date_range_end: {_lte: "${end}"}
                     }`);
                 } else if(start) {
-                    filter.push(`training_matrix_list:{date_range_start: {_gte: ${start}}}`);
+                    filter.push(`training_matrix_list:{date_range_start: {_gte: "${start}"}}`);
                 } else if(end) {
-                    filter.push(`training_matrix_list:{date_range_end: {_lte: ${end}}}`);
+                    filter.push(`training_matrix_list:{date_range_end: {_lte: "${end}"}}`);
                 }
             }
         }
@@ -185,6 +192,10 @@ exports.getVariablesAndQueryConfig = (
             }
             if (employee_id) {
                 filter.push(`employee_list:{id: {_eq: ${employee_id}}}`);
+            } else {
+                if (employee_view && employee_view !== "all") {
+                    filter.push(`employee_list:{removed: {_eq: ${employee_view === 'active'}}}`);
+                }
             }
 
             if (completion_status) {
@@ -201,14 +212,14 @@ exports.getVariablesAndQueryConfig = (
                 if(start && end) {
                     filter.push(`training_plan_list:{
                         training:{
-                            date_range_start: {_gte: ${start}},
-                            date_range_end: {_lte: ${end}}
+                            date_range_start: {_gte: "${start}"},
+                            date_range_end: {_lte: "${end}"}
                         }
                     }`);
                 } else if(start) {
-                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: ${start}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_start: {_gte: "${start}"}}}`);
                 } else if(end) {
-                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: ${end}}}}`);
+                    filter.push(`training_plan_list:{training:{date_range_end: {_lte: "${end}"}}}`);
                 }
             }
         }
@@ -230,6 +241,10 @@ exports.getVariablesAndQueryConfig = (
         }
         if (employee_id) {
             filter.push(`employee_id: {_eq: ${employee_id}}`);
+        } else {
+            if (employee_view && employee_view !== "all") {
+                filter.push(`employee:{removed: {_eq: ${employee_view === 'active'}}}`);
+            }
         }
 
         if (completion_status) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {computed, toJS} from 'mobx';
+import {extendObservable} from 'mobx';
 
 import {Draggable} from "react-beautiful-dnd";
 import TextField from '@material-ui/core/TextField';
@@ -13,6 +14,9 @@ import OpenCloseBtn from './OpenCloseBtn';
 import Details from './Details';
 import Actions from './ActionsAsArray';
 import FormBody from './FormBodyAsArray';
+
+import updateQuestion from "mutations/all/Questionnaires/Questions/updateQuestion";
+import insertQuestion from "mutations/all/Questionnaires/Questions/insertQuestion";
 
 import style from './List.lazy.css';
 
@@ -46,7 +50,7 @@ class List extends React.Component {
     }
         
     renderDraggables(ques, idx) {
-        const {question_list, indexes = [], idx: sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {question_list, indexes = [], idx: sectionIdx, isEditting, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
         return (provided, snapshot) => <ListDraggable 
             innerRef={provided.innerRef} 
             {...provided.draggableProps} 
@@ -69,6 +73,7 @@ class List extends React.Component {
                 onUploadDialog={onUploadDialog}
                 onSelectTemplateDocDialog={onSelectTemplateDocDialog} 
                 onViewTemplateDocDialog={onViewTemplateDocDialog}
+                isEditting={isEditting}
                 isLibrary={isLibrary}
                 isPrivate={isPrivate}
                 visibilityState={visibilityState}
@@ -82,7 +87,7 @@ class List extends React.Component {
     
     render() {
         const {question_list} = this.props;
-        return <React.Fragment>{question_list.map(this.renderQuestion)}</React.Fragment>;
+        return <>{question_list.map(this.renderQuestion)}</>;
     }
 }
 
@@ -111,8 +116,9 @@ class AccordionWrappper extends React.Component {
         return false;
     }
     
+    //<editor-fold desc="render">
     render() {
-        const {question_list, ques, indexes = [], idx, isLibrary, isPrivate, visibilityState, sectionIdx, expandCloseAll, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {question_list, ques, indexes = [], idx, isEditting, isLibrary, isPrivate, visibilityState, sectionIdx, expandCloseAll, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
         console.log('ques', ques)
 //        console.log('AccordionWrappper indexes', indexes)
         return <Accordion onChange={this.handleExpand} expanded={ques.open}>
@@ -122,7 +128,8 @@ class AccordionWrappper extends React.Component {
                     idx={idx} 
                     sectionIdx={sectionIdx} 
                     indexes={[...indexes, sectionIdx, idx]} 
-                    onUploadDialog={onUploadDialog} 
+                    onUploadDialog={onUploadDialog}
+                    isEditting={isEditting}
                     isLibrary={isLibrary}
                     isPrivate={isPrivate}
                     visibilityState={visibilityState}
@@ -132,7 +139,8 @@ class AccordionWrappper extends React.Component {
                     ques={ques} 
                     idx={idx} 
                     sectionIdx={sectionIdx} 
-                    indexes={[...indexes, sectionIdx, idx]} 
+                    indexes={[...indexes, sectionIdx, idx]}
+                    isEditting={isEditting}
                     isLibrary={isLibrary}
                     isPrivate={isPrivate}
                     visibilityState={visibilityState}
@@ -158,12 +166,14 @@ class AccordionWrappper extends React.Component {
                 onSelectTemplateDocDialog={onSelectTemplateDocDialog} 
                 onViewTemplateDocDialog={onViewTemplateDocDialog}
                 expandCloseAll={expandCloseAll}
+                isEditting={isEditting}
                 isLibrary={isLibrary}
                 isPrivate={isPrivate}
                 visibilityState={visibilityState}
                 readonly={readonly}/>
         </Accordion>;
     }
+    //</editor-fold>
 }
 
 @observer
@@ -171,22 +181,63 @@ class Section extends React.Component {
     
     constructor(props) {
         super(props);
+        
+        this.handleSectionValue = this.handleSectionValue.bind(this);
         this.onRemoveSection = this.onRemoveSection.bind(this);
         this.onCopySection = this.onCopySection.bind(this);
     }
     
+    //<editor-fold desc="handleSectionValue">
+    handleSectionValue(evt) {
+        const {readonly} = this.props;
+        if (readonly) return;
+        
+        const {value: questionText} = evt.target;
+        const {isEditting, idx, ques} = this.props;
+        
+        if(isEditting && ques.id) {
+            updateQuestion({id: ques.id, questionText}).then(() => {
+                extendObservable(ques, {questionText});
+            });
+        } else {
+            extendObservable(ques, {questionText});
+        }
+    }
+    
+    //</editor-fold>
+    
     onCopySection() {
-        const {ques, question_list, expandCloseAll} = this.props;
+        const {isEditting, ques, question_list, expandCloseAll} = this.props;
         expandCloseAll().then(() => {
             const newQ = toJS(ques);
-            newQ.open = true;
-            question_list.push(newQ);
+            if(isEditting && newQ.id) {
+                delete newQ.id;
+                
+                insertQuestion(newQ).then(() => {
+                    newQ.open = true;
+                    question_list.push(newQ);
+                });
+            } else {
+                newQ.open = true;
+                question_list.push(newQ);
+            }
         });
     } 
 
     onRemoveSection() {
-        const {idx, question_list} = this.props;
-        question_list.removeIf((q, n) => n === idx);
+        const {isEditting, idx, question_list} = this.props;
+        
+        if(isEditting) {
+            const section = question_list.find((q, n) => n === idx);
+            
+            if(section && section.id) {
+                updateQuestion({id: section.id, removed: true}).then(() => {
+                    question_list.removeIf((q, n) => n === idx);
+                });
+            }
+        } else {
+            question_list.removeIf((q, n) => n === idx);
+        }
     }
 
     @computed get isSection() {
@@ -196,21 +247,30 @@ class Section extends React.Component {
         if(question_list.isEmpty()) return false;
         return true;
     }
-   
+    
+    //<editor-fold desc="render">
     render() {
         if(!this.isSection) {
             return null;
         }
 
-        const {question_list, indexes = [], ques, idx, sectionIdx, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {question_list, indexes = [], ques, idx, sectionIdx, isEditting, isLibrary, isPrivate, visibilityState, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
 
        console.log('Section ques', ques)
-        return <React.Fragment>
+        return <>
             <OpenCloseBtn question_list={question_list} ques={ques} top showOnOpen/>
             <OpenCloseBtn question_list={question_list} ques={ques}/>
             <h3 className="section-title margin-t-0">
-                <span className="counter">{isNumber(sectionIdx) ? ((sectionIdx+1) + ".") : null}{idx+1}</span> 
-                <TextField disabled={readonly} variant="filled" placeholder="Add section title" value={ques.questionText} onChange={evt => ques.questionText = evt.target.value}/>
+                <span className="counter">
+                    {isNumber(sectionIdx) ? ((sectionIdx+1) + ".") : null}{idx+1}
+                </span>
+                <TextField
+                  disabled={readonly}
+                  variant="filled"
+                  placeholder="Add section title"
+                  value={ques.questionText}
+                  onChange={this.handleSectionValue}
+                />
                 {!readonly && <Button className="btn btn-primary pull-right" onClick={this.onRemoveSection}>
                     <i className="fa fa-times icon-left"/>Remove Section
                 </Button>}
@@ -232,12 +292,14 @@ class Section extends React.Component {
                 onUploadDialog={onUploadDialog}
                 onSelectTemplateDocDialog={onSelectTemplateDocDialog}
                 onViewTemplateDocDialog={onViewTemplateDocDialog}
+                isEditting={isEditting}
                 isLibrary={isLibrary}
                 isPrivate={isPrivate}
                 visibilityState={visibilityState}
                 readonly={readonly}/>
-        </React.Fragment>;
+        </>;
     }
+    //</editor-fold>
 }
 
 @observer

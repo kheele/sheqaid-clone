@@ -57,7 +57,7 @@ class Controls extends React.Component {
 		},
 		selectedTemplate: null
 	};
-//Rain Kit (Pic: Stadium)
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
@@ -255,7 +255,7 @@ class Controls extends React.Component {
 	get asset() {
 		return this.props.dialog.props.asset;
 	}
-	
+	//Ray: Accounting & HR, (Ed, Love, Dave, And), Anel: Sales Manager, Charlemagne: , IT Manager
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		let {

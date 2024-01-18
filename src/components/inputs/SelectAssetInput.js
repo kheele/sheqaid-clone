@@ -51,7 +51,9 @@ class SelectInput extends ASelectInput {
 			if (defaultValue.label && defaultValue.value) {
 				return defaultValue;
 			}
-			const {data: {asset_detail: {name, asset_type}}} = defaultValue;
+			let {asset_detail, data} = defaultValue;
+			asset_detail = asset_detail || data.asset_detail;
+			const {name, asset_type} = asset_detail;
 			const label = name + ' (' + asset_type + ')';
 //            console.log('selectedVal', label)
 			return {value: defaultValue, label};

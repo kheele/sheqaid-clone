@@ -1,30 +1,49 @@
-
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
-    {
-        orgs_filter = [],
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-    }
+	{
+		orgs_filter = [],
+		//
+		id,
+		//
+		status,
+		name,
+		scheduled,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    //<editor-fold desc="variables, filters">
-    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
-
-    filter = filter.map(v => `{${v}}`).join(',');
-    //</editor-fold>
-
-    return {filter};
+	//<editor-fold desc="variables, filters">
+	let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+	
+	if(id) {
+		filter.push(`id: {_eq: ${id}}`);
+	} else {
+		if(status) {
+			filter.push(`status: {_eq: "${status}"}`);
+		}
+		if(name) {
+			filter.push(`name: {_ilike: "%${name}%"}`);
+		}
+		if(scheduled) {
+			filter.push(`scheduled: {_eq: ${scheduled === "Yes"}}`);
+		}
+	}
+	
+	filter = filter.join(',');
+	//</editor-fold>
+	
+	return {filter};
 };
 //</editor-fold>
 
 //<editor-fold desc="inspection_template_question_find_fragment">
 const inspection_template_question_find_fragment = (deep = 3) => {
-    if(deep === 0) {
-        return `id`;
-    }
-    return `
+	if (deep === 0) {
+		return `id`;
+	}
+	return `
     id
     hasResponseAttachment
     responseAttachmentRequired
@@ -93,6 +112,41 @@ exports.inspection_template_details_find_fragment = `
     answered_by
     is_template
     visibility
+    scheduled
+    
+    asset_type
+    asset{
+      id
+      asset_detail{
+        asset_type
+        name
+        reg_num
+        serial_num
+        manufacturer
+        model
+        location
+        toolkit
+        condition
+        owning_company
+      }
+      profile_pic:photo_list(where: {is_default: {_eq: true}}){
+          id
+          doc
+          is_default
+      }
+      photo_list{
+        id
+        is_default
+        doc
+      }
+      responsible_person{
+        id
+        lname
+        fname
+        email
+        phone
+      }
+    }
     
     total_questions #computed
     
@@ -129,6 +183,41 @@ exports.inspection_template_details_list_fragment = `
     answered_by
     is_template
     visibility
+    scheduled
+    
+    asset_type
+    asset{
+      id
+      asset_detail{
+        asset_type
+        name
+        reg_num
+        serial_num
+        manufacturer
+        model
+        location
+        toolkit
+        condition
+        owning_company
+      }
+      profile_pic:photo_list(where: {is_default: {_eq: true}}){
+          id
+          doc
+          is_default
+      }
+      photo_list{
+        id
+        is_default
+        doc
+      }
+      responsible_person{
+        id
+        lname
+        fname
+        email
+        phone
+      }
+    }
     
     total_questions #computed
     

@@ -1,21 +1,24 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
-import {AProfileDialog} from '../../../../../../components/dialogs';
-import {SelectTable, THead} from '../../../../../../components/tables';
+import {AProfileDialog} from 'components/dialogs';
+import {SelectTable, THead} from 'components/tables';
 import {
     ProfileField, SelectTrainingMatixInput, UploadButton
-} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileTrainingRegisterDialog.lazy.css";
-import TrainingPlanListByCourse from "../../../../../../components/FormListComponents/TrainingPlanListByCourse";
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
 import Divider from "@mui/material/Divider";
+import findByIdTrainingRegister from "mutations/all/TrainingRegister/findByIdTrainingRegister";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileTrainingRegisterDialog";
+    findById = findByIdTrainingRegister;
 
     constructor(props) {
         super(props, style);
@@ -33,32 +36,21 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends React.Component {
 
-    @observable
-    state = {
-        lists: {
-            audit_summary: ['Major NCR', 'Minor NCR', 'Complaint', 'Good Practice', 'Observation', 'Note'],
-            achieved_score: ['0', '1', '2', '3', '4', '5']
-        }
-    };
-
     constructor(props) {
         super(props);
-
-        this.onNext = this.onNext.bind(this);
     }
 
-    onNext(e, btn) {
-        return true;
-    }
-
+    @computed
     get item() {
         return this.props.state.item;
     }
 
     render() {
-        if (!this.item)
-            return null;
-        const {
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+        
+        let {
             props: {
                 onFormNext, onFormBack, onFormOpen,
                 dialog: {renderProfileCover}
@@ -67,23 +59,26 @@ class Controls extends React.Component {
                 id, data: {
                     created_at,
                     client, project, site,
-                    training_matrix,
+                    training,
                     trainer,
+                    trainer_external,
                     institution_conducting_training,
                     time_or_duration,
                     time_from,
                     time_to,
                     date,
                     list_proof,
-                    list_table,
-                    list_table_keys,
-                    training_plan_list = [],
+                    employee_list,
                 }
             }
         } = this;
 
         const {isConsultant, isNoProjects} = storage.is;
-
+        
+        let {course, training_plan_list, job_position_list} = training || {};
+        training_plan_list = training_plan_list || [];
+        // const year = training_plan_list.map(({year}) => year)[0];
+        
         return <FormControls>
             {!isNoProjects && <Row
                 rendered
@@ -110,9 +105,9 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
             >
                 <SelectTrainingMatixInput
-                    name="training_matrix"
+                    name="training"
                     placeholder="Training Matrix (Course)"
-                    defaultValue={training_matrix}
+                    defaultValue={training}
                     className="col-lg-12"
                     readonly
                 />
@@ -180,7 +175,7 @@ class Controls extends React.Component {
                     name="trainer"
                     placeholder="Trainer"
                     value={trainer}
-                    renderer={v => v.lname + ' ' + v.fname}
+                    renderer={v => v.full_name}
                     className="col-lg-12"
                 />
             </Row>
@@ -201,7 +196,7 @@ class Controls extends React.Component {
                     className="col-lg-7 hor-center"
                 />
                 <Divider/>
-                <Employees title="Attendance Register List" list_table={list_table}/>
+                <Employees title="Attendance Register List" list_table={employee_list}/>
             </Row>
         </FormControls>;
     }
@@ -230,12 +225,12 @@ class Employees extends React.Component {
     }
 
     renderItem(item, n) {
-        const {signature, employee: {id, fname, lname, id_num, passport_num, employee_num, site}} = item;
+        const {signature, employee: {id, full_name, id_num, passport_num, employee_num, site}} = item;
         return <React.Fragment key={id}>
             <div className="td fixed-flex min-w-120">{employee_num || 'N/A'}</div>
-            <div className="td">{lname} {fname}</div>
+            <div className="td">{full_name}</div>
             <div className="td fixed-flex min-w-140">{id_num || passport_num}</div>
-            <div className="td">{site && site.name && site.data.name}</div>
+            <div className="td">{site && site.name || 'N/A'}</div>
             <div className="td td-signature fixed-flex min-w-140">
                 <ProfileField idx={n} name="signature" type="signature" value={signature} className="w-full"/>
             </div>
@@ -243,8 +238,8 @@ class Employees extends React.Component {
     }
 
     render() {
-        const {list_table, title} = this.props;
-        console.log('list_table', list_table)
+        const {employee_list, title} = this.props;
+        console.log('employee_list', employee_list)
         return <div className="row SelectedEmployees">
             <div className="row sec-group row-table">
                 <SelectTable
@@ -253,10 +248,10 @@ class Employees extends React.Component {
                     name="employee"
                     desc="Employees"
                     title={title}
-                    className="col-lg-12 margin-l-0 margin-r-10 no-padding"
+                    className="col-lg-12 min-h-300 margin-l-0 margin-r-10 no-padding"
                     renderTHead={this.renderTHead}
                     renderItem={this.renderItem}
-                    list={list_table}
+                    list={employee_list}
                 />
             </div>
         </div>;

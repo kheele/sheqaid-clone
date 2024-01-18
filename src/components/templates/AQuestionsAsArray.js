@@ -287,7 +287,8 @@ class AQuestions extends React.Component {
 							defaultQuestions={defaultTitlePageQuestions}
 							item={item}
 							readonly={readonly}
-							onFormOpen={this.onFormOpen}/>
+							onFormOpen={this.onFormOpen}
+						/>
 					</Suspense>}
 					<FormBody
 						ref="formBody"
@@ -303,9 +304,11 @@ class AQuestions extends React.Component {
 						onViewTemplateDocDialog={this.onViewTemplateDocDialog}
 						onFormOpen={this.onFormOpen}
 						visibilityState={this.visibilityState}
+						isEditting={isEditting}
 						isLibrary={isLibrary}
 						isPrivate={isPrivate}
-						readonly={readonly}/>
+						readonly={readonly}
+					/>
 				</Grid>}
 			</Grid>
 			<Popover key="popover" ref="popover"/>

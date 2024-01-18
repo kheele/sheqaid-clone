@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {Button} from '../inputs';
 import Dialog from './Dialog';
@@ -62,6 +63,7 @@ class ANewDialog extends AFormDialog {
 			onClose={this.onClose}
 			dialog={this}
 		>
+			<CircularProgressWrapper findById={this.findById} state={this.state}/>
 			<Controls
 				ref="controls"
 				dialog={this}
@@ -78,6 +80,19 @@ class ANewDialog extends AFormDialog {
 				execWhen={this.execWhen}
 			/>
 		</Dialog>);
+	}
+}
+
+@observer
+class CircularProgressWrapper extends React.Component {
+	
+	render() {
+		const {findById, item} = this.props.state;
+		if(findById) {
+			if (!item) return <CircularProgress className="fixed-center"/>;
+		}
+		
+		return null;
 	}
 }
 

@@ -41,7 +41,8 @@ eventManager.on("inspections/listUnansweredByLogged", async (socket, data) => {
 
     data.client_filter = [
         `schedule_date: {_lt: "${Dates.formatDateSQL(new Date())}"}`,
-        unansweredFilter(3)
+        `progress: {_eq: 0}`,
+        // unansweredFilter(3)
     ];
 
     if(asset_id) {
@@ -101,7 +102,8 @@ eventManager.on("inspections/listActiveByLogged", async (socket, data) => {
 
     data.client_filter = [
         `status: {_neq: "CompleteAccepted"}`,
-        answeredFilter(3)
+        `progress: {_gt: 0}`,
+        // answeredFilter(3)
     ];
 
     if(asset_id) {

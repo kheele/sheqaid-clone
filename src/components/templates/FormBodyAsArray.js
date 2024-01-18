@@ -89,7 +89,7 @@ class FormBody extends React.Component {
     }
 
     render() {
-        const {defaultType, isTitlePage, isSection, isLibrary, isPrivate, visibilityState, formData, indexes = [], idx, sectionIdx, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly, onFormOpen} = this.props;
+        const {defaultType, isTitlePage, isSection, isEditting, isLibrary, isPrivate, visibilityState, formData, indexes = [], idx, sectionIdx, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly, onFormOpen} = this.props;
         if(isSection && !formData.open) return null;
         const typeSelected = (isTitlePage || isSection) ? null : {label: formData.type || 'Inspection', value: formData.type || 'Inspection'};
         let className = (readonly ? "FormBody-readonly " : "");
@@ -146,7 +146,8 @@ class FormBody extends React.Component {
                                     idx={idx} 
                                     indexes={[...indexes, sectionIdx, idx]}
                                     sectionIdx={sectionIdx}
-                                    formData={formData} 
+                                    formData={formData}
+                                    isEditting={isEditting}
                                     isLibrary={isLibrary}
                                     isPrivate={isPrivate}
                                     visibilityState={visibilityState}
@@ -180,7 +181,7 @@ class ListWrapper extends React.Component {
     }
     
     render() {
-        const {indexes = [], idx, sectionIdx, isLibrary, isPrivate, visibilityState, formData: {question_list}, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
+        const {indexes = [], idx, sectionIdx, isEditting, isLibrary, isPrivate, visibilityState, formData: {question_list}, clearQuestions, addMoreSectionField, addMoreQuestionField, onSelectNotified, onUploadDialog, onSelectTemplateDocDialog, onViewTemplateDocDialog, readonly} = this.props;
         if(!question_list || question_list.isEmpty()) {
             return <p className="text-center padding-50">No questions added</p>;
         }
@@ -191,6 +192,7 @@ class ListWrapper extends React.Component {
             idx={idx} 
             sectionIdx={sectionIdx}
             question_list={question_list}
+            isEditting={isEditting}
             isLibrary={isLibrary}
             isPrivate={isPrivate}
             visibilityState={visibilityState}

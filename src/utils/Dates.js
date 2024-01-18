@@ -403,7 +403,10 @@ class Dates {
     }
 
     static getWeeksStartAndEndDateRange(startDate, endDate) {
+        if(!startDate) return [];
+        
         const dates = [];
+        
         let currDate = startDate;
         if(!endDate) {
             endDate = startDate;

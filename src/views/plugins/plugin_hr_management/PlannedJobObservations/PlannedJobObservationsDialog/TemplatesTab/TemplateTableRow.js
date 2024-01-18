@@ -28,6 +28,7 @@ class TemplateTableRow extends React.Component {
                 scheduled,
                 page_title_list,
                 question_list,
+                total_questions,
               //
                 template_questionnaire_list_aggregate,
                 job_position
@@ -35,26 +36,14 @@ class TemplateTableRow extends React.Component {
         } = item;
 //        console.log('form', item)
 
-        const getLength = async (question_list) => {
-            return all_question_list(question_list).length;
-        };
-
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-40">{id}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
             <div className="td">{job_position && job_position.name || "Any"}</div>
             <div className="td">{name}</div>
             <div className="td">{desc || 'N/A'}</div>
-            <AsyncTD
-              title="Questionnaires Used"
-              defaultValue={template_questionnaire_list_aggregate.aggregate.count} renderer={v => v}
-              className="td fixed-flex min-w-180"
-            />
-            <AsyncTD
-              title="Questions"
-              defaultValue={getLength(question_list)} renderer={v => v}
-              className="td fixed-flex min-w-100"
-            />
+            <div className="td fixed-flex min-w-180">{template_questionnaire_list_aggregate.aggregate.count}</div>
+            <div className="td fixed-flex min-w-100">{total_questions}</div>
             <div className="td fixed-flex min-w-80">{visibility}</div>
             <div className="td fixed-flex min-w-80">{scheduled ? "Yes" : "No"}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

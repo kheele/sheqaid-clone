@@ -37,6 +37,7 @@ class InspectionTableRow extends React.Component {
                 date_completed,
                 time_completed,
                 schedule_date,
+                next_schedule_date,
                 responsible_person,
                 responsible_department,
                 asset_type,
@@ -46,39 +47,6 @@ class InspectionTableRow extends React.Component {
                 template
             }
         } = item;
-
-        const _schedule_date = Dates.parse(schedule_date);
-
-        let nextSchedule;
-
-        if (_schedule_date) {
-            switch (interval) {
-                case 'Daily': {
-                    nextSchedule = _schedule_date.addDays(1);
-                    break;
-                }
-                case 'Weekly': {
-                    nextSchedule = _schedule_date.addWeeks(1);
-                    break;
-                }
-                case 'Monthly': {
-                    nextSchedule = _schedule_date.addMonths(1);
-                    break;
-                }
-                case 'Quarterly': {
-                    nextSchedule = _schedule_date.addMonths(3);
-                    break;
-                }
-                case 'Bi-Annually': {
-                    nextSchedule = _schedule_date.addMonths(6);
-                    break;
-                }
-                case 'Annually': {
-                    nextSchedule = _schedule_date.addYears(1);
-                    break;
-                }
-            }
-        }
 
         // const getQuestions = async (question_list) => {
         //     return all_question_list(question_list);
@@ -103,7 +71,7 @@ class InspectionTableRow extends React.Component {
             <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
             <div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {time_completed}</div>
-            <div className="td fixed-flex min-w-120">{Dates.formatDate(nextSchedule)}</div>
+            <div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>
             <div className="td fixed-flex min-w-270 flex-center progress-bar">{progress.toFixed(1) + '% Complete'}</div>
             {onRenderActionCell && onRenderActionCell(item, idx)}
             {!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

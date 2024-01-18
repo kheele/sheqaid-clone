@@ -22,7 +22,6 @@ import {TemplateQuestions} from 'components/templates';
 import style from "./NewQuestionnaireDialog.lazy.css";
 import insertJobObservationsQuestionnaire
 	from "mutations/all/Questionnaires/JobObservationsQuestionnaires/insertJobObservationsQuestionnaire";
-import byLogged from "../../TemplatesTab/Query/List/listAllJobObservationTemplatesByLogged";
 import {Dates} from "utils/Dates";
 import Divider from "@mui/material/Divider";
 // </editor-fold>
@@ -201,6 +200,12 @@ class Controls extends React.Component {
 		const {props: {dialog}} = this;
 		return dialog.getDOMNode();
 	}
+	
+	get byLogged() {
+		return sockets.
+		of('structure-and-responsibility/job-appointments').
+		fn('listTemplatesByLogged');
+	}
 
 	get defaultTitlePageQuestions() {
 		return [{questionText: "Completed By", questionType: "Short Answer"}];
@@ -214,6 +219,7 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		const {
+			byLogged,
 			item, props: {
 				onFormNext, onFormBack, onFormOpen
 			}

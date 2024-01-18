@@ -1,6 +1,7 @@
 require("./assets");
 require("./chemicals");
 require("./claims");
+require("./contractors");
 require("./dashboard");
 require("./employees");
 require("./incidents");

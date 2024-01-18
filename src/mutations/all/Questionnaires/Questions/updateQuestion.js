@@ -7,6 +7,7 @@ import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityQuestion} from "mutations/types.d.ts";
 import findByIdQuestion from "./findByIdQuestion";
 import {toJS} from "mobx";
+import insertQuestionOption from "../QuestionOptions/insertQuestionOption";
 
 // 2
 const mutation = graphql`
@@ -26,6 +27,8 @@ export default async (attrs: EntityQuestion) => {
 		id,
 		answer_asset,
 		answer_employee,
+		//
+		options,
 	} = attrs;
 
 	const _attrs = {...attrs};
@@ -44,6 +47,14 @@ export default async (attrs: EntityQuestion) => {
 	}
 	if(answer_employee) {
 		_attrs.answer_employee_id = answer_employee.id;
+	}
+	
+	if(options) {
+		await Promise.all(options.map(async option => {
+			if(!option.id) {
+				return insertQuestionOption({ques_id: id, ...option});
+			}
+		}));
 	}
 
 	return updateMutationImpl({

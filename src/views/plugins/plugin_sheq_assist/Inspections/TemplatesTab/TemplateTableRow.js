@@ -35,10 +35,6 @@ class TemplateTableRow extends React.Component {
         } = item;
 //        console.log('form', item)
 
-        // const getLength = async (question_list) => {
-        //     return all_question_list(question_list).length;
-        // };
-
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-40">{id}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>

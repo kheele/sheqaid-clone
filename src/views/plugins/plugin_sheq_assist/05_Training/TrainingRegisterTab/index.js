@@ -168,10 +168,14 @@ class TrainingRegisterTab extends React.Component {
             </div>
             <div className="td">{trainer.full_name}</div>
             <div className="td fixed-flex min-w-120">{year || 'N/A'}</div>
-            <div className="td fixed-flex min-w-120">{time_from} - {time_to}</div>
+            <div className="td fixed-flex min-w-120">{time_from && time_to ? `${time_from.substring(0, 5)} - ${time_to.substring(0, 5)}` : "N/A"}</div>
             <div className="td fixed-flex min-w-120">{time_or_duration}</div>
             <div className="td fixed-flex min-w-100">{employee_list ? employee_list.length : 'Uploaded'}</div>
-            <div className="td fixed-flex min-w-140">{employee_list ? (employee_list.length / training_plan_list.length * 100).toFixed(0) + '%' : 'N/A'}</div>
+            <div className="td fixed-flex min-w-140">{
+                training_plan_list.isNotEmpty() ? (
+                  employee_list ? (employee_list.length / training_plan_list.length * 100).toFixed(0) + '%' : 'N/A'
+                ) : 'N/A'
+            }</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>

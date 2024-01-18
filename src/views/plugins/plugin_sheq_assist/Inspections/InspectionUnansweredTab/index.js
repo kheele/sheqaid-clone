@@ -4,7 +4,6 @@ import {observer} from 'mobx-react';
 import ATab from '../ATab';
 
 import style from "../InspectionTab/InspectionTab.lazy.css";
-import {Dates} from "utils/Dates";
 
 @observer
 class InspectionTab extends React.Component {
@@ -12,8 +11,6 @@ class InspectionTab extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.onLoadList = this.onLoadList.bind(this);
     }
 
     componentWillMount() {
@@ -24,36 +21,6 @@ class InspectionTab extends React.Component {
         style.unuse();
     }
 
-    //<editor-fold desc="onLoadList">
-    onLoadList(params = {}) {
-        const {item: asset} = this.props;
-        const {page, lastItem, filterData, filtered, isNew} = params;
-        const {
-            name,
-        } = filterData || {};
-
-        const today = Dates.formatDateSQL(new Date());
-
-        const listByLogged = sockets.of('inspections').fn('listUnansweredByLogged');
-
-        return listByLogged({
-            asset_id: asset && asset.id,
-            //
-            today,
-            //
-            name,
-            //
-            exact_orgs: true,
-            //
-            offset: isNew ? 0 : this.refs.root.list.length,
-        }).then((res) => {
-            console.log('onLoadList res', res)
-            return res;
-        });
-    }
-
-    //</editor-fold>
-
     render() {
         const {item, permissionKey} = this.props;
         const props = {
@@ -61,8 +28,8 @@ class InspectionTab extends React.Component {
             pageId: this.pageKey + "-tab",
             pageTitle: "Inspections",
             pageTitleSingular: "inspection",
-            onLoadList: this.onLoadList,
             type: "Inspection",
+            fn: 'listUnansweredByLogged',
             item,
             permissionKey,
             unanswered: true,

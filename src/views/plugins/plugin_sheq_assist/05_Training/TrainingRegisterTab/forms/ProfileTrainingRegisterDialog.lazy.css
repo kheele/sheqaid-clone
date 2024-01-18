@@ -2,7 +2,7 @@
 
 #dialog-overlay.ProfileTrainingRegisterDialog-profile-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 900px;
+    width: 1000px;
     max-width: calc(100% - 30px);
 }
 #dialog-overlay.ProfileTrainingRegisterDialog-profile-dialog .dialog-content{

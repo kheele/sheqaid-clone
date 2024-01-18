@@ -66,7 +66,13 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/contractors/questionnaires/templates/list").then(res => {
+    const byLogged = sockets.of('contractors/questionnaires').fn('listTemplatesByLogged');
+    const args = {
+        limit: 0,
+        //
+        exact_orgs: true,
+    };
+    return byLogged(args).then(res => {
         return res.map(value => {
             const {name, desc, category, review_date, doc_num, doc} = value.data;
             const label = <div className="flex">

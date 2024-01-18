@@ -155,6 +155,7 @@ class Actions extends React.Component {
             question_list,
             ques,
             idx,
+            isEditting,
             isLibrary,
             isPrivate,
             visibilityState,
@@ -164,6 +165,7 @@ class Actions extends React.Component {
             onSelectTemplateDocDialog,
             onViewTemplateDocDialog
         } = this.props;
+        
         return <AccordionActions className="Actions">
             <div className="left-actions grid-4 grid-gap-5">
                 <Option

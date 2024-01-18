@@ -1,43 +1,49 @@
-
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
-    {
-        orgs_filter = [],
-        status,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-    }
+	{
+		orgs_filter = [],
+		//
+		id,
+		//
+		name,
+		interval,
+		template_id,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    //<editor-fold desc="variables, filters">
-    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
-
-    if (status) {
-        let comp;
-        if (status.startsWith('!')) {
-            status = status.replace('!', '');
-            comp = '_neq';
-        } else {
-            comp = '_eq';
-        }
-
-        filter.push(`status: {${comp}: "${status}"}`);
-    }
-
-    filter = filter.join(',');
-    //</editor-fold>
-
-    return {filter};
+	//<editor-fold desc="variables, filters">
+	let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+	
+	if(id) {
+		filter.push(`id: {_eq: ${id}}`);
+	} else {
+		if(name) {
+			filter.push(`name: {_ilike: "%${name}%"}`);
+		}
+		if(interval) {
+			filter.push(`interval: {_eq: "${interval}"}`);
+		}
+		if(template_id) {
+			filter.push(`template_id: {_eq: ${template_id}}`);
+		}
+	}
+	
+	filter = filter.join(',');
+	//</editor-fold>
+	
+	return {filter};
 };
 //</editor-fold>
 
 //<editor-fold desc="inspection_question_find_fragment">
 const inspection_question_find_fragment = (deep = 3) => {
-    if (deep === 0) {
-        return `id`;
-    }
-    return `
+	if (deep === 0) {
+		return `id`;
+	}
+	return `
     id
     answer
     answer_employee{
