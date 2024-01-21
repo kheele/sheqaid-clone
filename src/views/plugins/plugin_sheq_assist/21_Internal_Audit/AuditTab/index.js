@@ -4,7 +4,7 @@ import {toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ClearableInput} from 'components/inputs';
+import {Button, ClearableInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import AuditTableRow from './AuditTableRow';
@@ -19,6 +19,8 @@ import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllAuditB
 import style from "./AuditTab.lazy.css";
 
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+import ExportTrainingMatrixDialog from "../../05_Training/TrainingMatrixTab/forms/ExportTrainingMatrixDialog";
+import ExportAuditDialog from "./forms/ExportAuditDialog";
 
 @observer
 class AuditTab extends React.Component {
@@ -30,6 +32,8 @@ class AuditTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onExportAll = this.onExportAll.bind(this);
         
         this.onRemoved = this.onRemoved.bind(this);
 
@@ -78,6 +82,12 @@ class AuditTab extends React.Component {
             return res;
         });
     }
+    
+    onExportAll(e, btn) {
+        const {getDialogByRef} = this.refs.root;
+        const exportDialog = getDialogByRef('exportDialog');
+        exportDialog.open();
+    }
 
     //</editor-fold>
     onRemoved(item) {
@@ -102,6 +112,22 @@ class AuditTab extends React.Component {
         const copy = toJS(list[idx]);
         onNew(evt, elem, copy);
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="onExportAll">
+    
+    // </editor-fold>
+    
+    renderLeftButtons() {
+        const {isEmployee, isContractorView} = storage.is;
+        const isReadonly = isEmployee;// || isContractorView;
+        return <div className="left-buttons pull-left">
+            {!isReadonly && <Button className="btn btn-primary pull-right" onClick={this.onExportAll}>
+                Export
+            </Button>}
+        </div>;
+    }
+    
+    // </editor-fold>
 
     //<editor-fold desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -164,6 +190,7 @@ class AuditTab extends React.Component {
             pageTitleSingular="non-conformance report"
             onLoadList={this.onLoadList}
             noAnimation={true}
+            renderLeftButtons={this.renderLeftButtons}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
@@ -174,6 +201,9 @@ class AuditTab extends React.Component {
             <EditAuditDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileAuditDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <ProfilePDFReader ref="pdfReader"/>
+            
+            <ExportAuditDialog ref="exportDialog"/>
+            
         </APageListReadWrite>;
     }
     //</editor-fold>

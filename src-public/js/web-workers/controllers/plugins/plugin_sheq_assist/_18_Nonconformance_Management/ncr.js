@@ -269,117 +269,98 @@
 		// </editor-fold>
 		
 		// <editor-fold defaultstate="collapsed" desc="export_excel">
-		async export_excel(evt, {client, project, site, department, job_position, supervisor, list}) {
+		// <editor-fold defaultstate="collapsed" desc="export_excel">
+		async export_excel(evt, {
+			client: _client, project: _project, site: _site,
+			list,
+		}) {
 			return Events.whenLoggedIn(async loggedUser => {
-				const cols = [
-					{header: 'Company', key: 'Company', width: 25},
-					{header: 'Project', key: 'Project', width: 25},
-					{header: 'Site', key: 'Site', width: 25},
-					
-					{header: 'Type', key: 'Type', width: 20},
-					{header: 'Priority', key: 'Priority', width: 10},
-					{header: 'Allocation', key: 'Allocation', width: 10},
-					{header: 'Source', key: 'Source', width: 20},
-					
-					{header: 'Finding / NCR Description', key: 'Finding / NCR Description', width: 50},
-					{header: 'Process', key: 'Process', width: 40},
-					
-					{header: 'Responsible Party', key: 'Responsible Party', width: 25},
-					{header: 'Assigned To', key: 'Assigned To', width: 25},
-					{header: 'Approving Person', key: 'Approving Person', width: 25},
-					
-					{header: 'Document(s) / Photo(s)', key: 'Document(s) / Photo(s)', width: 30},
-					{header: 'Document(s) (Proof of Correction)', key: 'Document(s) (Proof of Correction)', width: 30},
-					
-					{header: 'Comments', key: 'Comments', width: 40},
-					{header: 'Remarks', key: 'Remarks', width: 40},
-					
-					{header: 'Outstanding', key: 'Outstanding', width: 40},
-					
-					{header: 'Acceptance Status', key: 'Acceptance Status', width: 13},
-					{header: 'Progress Status', key: 'Progress Status', width: 13},
-					{header: 'Result', key: 'Result', width: 12},
-					
-					{header: 'Due Date', key: 'Due Date', width: 18},
-					{header: 'Progress Date', key: 'Progress Date', width: 18},
-					{header: 'Completed Date', key: 'Completed Date', width: 18},
-					
-					{header: 'Additional Notes', key: 'Additional Notes', width: 40}
-				];
-				
-				const rows = list.map((
-					{
-						id, data: {
-							created_at,
-							client, project, site,
-							//1
-							type, priority, allocation,
-							source, selected_source_id, selected_source_ref, selected_source_item,
-							//2
-							desc, process,
-							//3
-							due_date,
-							responsible_party_list,
-							assigned_job_position_list,
-							assigned_person_list,
-							approving_person,
-							//4
-							document_list, document_proof_list,
-							//5
-							comments, remarks,
-							//6
-							status_acceptance, status_progress, result, progress_date, completed_date, outstanding, additional_notes
-						}
-					}
-				) => {
-					
-					const assigned_to_list = [
-						...(assigned_job_position_list ? assigned_job_position_list.map(({job_position: {name}}) => name) : []),
-						...(assigned_person_list ? assigned_person_list.map(({employee: {full_name}}) => full_name) : []),
-					];
-					
-					const res = {
-						Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-						Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-						Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
+				if (isArray(list)) {
+					const rows = list.map((item, idx) => {
+						let {
+							id,
+							data: {
+								created_at,
+								company, client, project, site,
+								//1 done
+								type,
+								priority,
+								allocation,
+								desc, process,
+								due_date,
+								responsible_party_list,
+								assigned_job_position_list,
+								assigned_person_list,
+								approving_person,
+								document_list,
+								document_proof_list,
+								comments, remarks,
+								progress_list,
+								status_acceptance,
+								status_progress,
+								result,
+								completed_date,
+								additional_notes,
+								//
+								removed,
+							}
+						} = item;
 						
-						"Type": type || '',
-						"Priority": priority || '',
-						"Allocation": allocation || '',
-						"Source": source || "",
+						client = client || company;
 						
-						"Finding / NCR Description": desc || "",
-						Process: process || '',
-						
-						"Responsible Party": responsible_party_list ? responsible_party_list.map(({value}) => value).join(', ') : "",
-						"Assigned To": assigned_to_list ? assigned_to_list.join(', ') : "",
-						"Approving Person": approving_person ? (approving_person.full_name) : "",
-						
-						"Document(s) / Photo(s)": "",
-						"Document(s) (Proof of Correction)": "",
-						
-						"Comments": comments || "",
-						"Remarks": remarks || "",
-						
-						"Outstanding": outstanding || "",
-						
-						"Acceptance Status": status_acceptance || "",
-						"Progress Status": status_progress || "",
-						"Result": result || "",
-						
-						"Due Date": (due_date && Dates.formatDate(due_date)) || '',
-						"Progress Date": (progress_date && Dates.formatDate(progress_date)) || '',
-						"Completed Date": (completed_date && Dates.formatDate(completed_date)) || '',
-						
-						"Additional Notes": additional_notes || ""
-					};
+						return {
+							idx: idx + 1,
+							
+							project: project && project.name,
+							site: site && site.name,
+							
+							id,
+							type,
+							priority,
+							allocation,
+							desc,
+							process,
+							due_date: Dates.formatDateSQL(due_date),
+							responsible_party_list: (responsible_party_list || []).map(({value}) => value).join(', '),
+							assigned_job_position_list: (assigned_job_position_list || []).map(({job_position}) => job_position.name).join(', '),
+							assigned_person_list: (assigned_person_list || []).map(({employee}) => (employee.full_name)).join(','),
+							approving_person: approving_person && approving_person.full_name,
+							document_list: (document_list || []).map(({doc}) => doc.dlUrls[0]).join(', '),
+							document_proof_list: (document_proof_list || []).map(({doc}) => doc.dlUrls[0]).join(', '),
+							comments,
+							remarks,
+							progress_list: (progress_list || []).map(({date}) => Dates.formatDateSQL(date)).join(', '),
+							status_acceptance,
+							status_progress,
+							result,
+							completed_date: Dates.formatDateSQL(completed_date),
+							additional_notes,
+							//
+							status: removed ? "Inactive": "Active",
+						};
+					});
 					
-					return res;
-				});
-				
-				return await this.export_excel_impl(loggedUser, "Non-Conformance-Docs", "Non-Conformances-Active", "Non-Conformance Data", cols, rows);
+					const response = await fetch(
+						`${self.locationRoot}/templates/xlsx/ncr/Template-List-NCR.xlsx`.replace('//', '/')
+					);
+					const arrayBuffer = await response.arrayBuffer();
+					const data = new Map();
+					
+					data.set('date', new Date().formatDate());
+					
+					data.set('company', _client ? _client.name || _client.data.name : "ANY");
+					data.set('project', _project ? _project.name || _project.data.name : "ANY");
+					data.set('site', _site ? _site.name || _site.data.name : "ANY");
+					
+					data.set("rows", rows);
+					return await Events.emit("excelTemplate", {arrayBuffer, data});
+					// return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+				}
+				return list;
 			});
 		}
+		
+		// </editor-fold>
 		
 		// </editor-fold>
 		

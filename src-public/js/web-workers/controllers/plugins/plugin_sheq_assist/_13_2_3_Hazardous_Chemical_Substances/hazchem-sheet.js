@@ -217,167 +217,113 @@
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
-        async export_excel(evt, list) {
+        // <editor-fold defaultstate="collapsed" desc="export_excel">
+        async export_excel(evt, {
+            client: _client, project: _project, site: _site,
+            list,
+        }) {
             return Events.whenLoggedIn(async loggedUser => {
-                if (list.isEmpty()) {
-                    return "EMPTY";
+                if (isArray(list)) {
+                    const rows = list.map((item, idx) => {
+                        let {
+                            id,
+                            data: {
+                                created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
+                                company, client, project, site,
+                                //1 done
+                                name,
+                                physical_state,
+                                type,
+                                product,
+                                sds,
+                                //3
+                                active_ingredient_list,
+                                //4
+                                hazard_identification_physical_list,
+                                hazard_identification_reproductive_list,
+                                hazard_identification_biological_list,
+                                //5
+                                first_aid_procedure_splashes_in_eyes_list,
+                                first_aid_procedure_contact_with_skin_list,
+                                first_aid_procedure_mouth_contact_or_eaten_list,
+                                first_aid_procedure_fumes_breathed_in_list,
+                                //6
+                                emergency_action_for_spills_small_list,
+                                emergency_action_for_spills_large_list,
+                                //7
+                                disposal_used_container_list,
+                                disposal_unused_product_list,
+                                //8
+                                contacts_emergency_name,
+                                contacts_emergency_num,
+                                contacts_manufacturer_name,
+                                contacts_manufacturer_num,
+                                //9
+                                doc,
+                                //10
+                                precaution_photo_list,
+                            }
+                        } = item;
+                        
+                        client = client || company;
+                        
+                        return {
+                            idx: idx + 1,
+                            
+                            project: project && project.name,
+                            site: site && site.name,
+                            
+                            name,
+                            physical_state,
+                            type,
+                            product,
+                            sds,
+                            active_ingredient_list: (active_ingredient_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_physical_list: (hazard_identification_physical_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_reproductive_list:  (hazard_identification_reproductive_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_biological_list:  (hazard_identification_biological_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_splashes_in_eyes_list:  (first_aid_procedure_splashes_in_eyes_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_contact_with_skin_list: (first_aid_procedure_contact_with_skin_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_mouth_contact_or_eaten_list: (first_aid_procedure_mouth_contact_or_eaten_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_fumes_breathed_in_list: (first_aid_procedure_fumes_breathed_in_list || []).map(({value}) => value).join(', '),
+                            emergency_action_for_spills_small_list: (emergency_action_for_spills_small_list || []).map(({value}) => value).join(', '),
+                            emergency_action_for_spills_large_list: (emergency_action_for_spills_large_list || []).map(({value}) => value).join(', '),
+                            disposal_used_container_list: (disposal_used_container_list || []).map(({value}) => value).join(', '),
+                            disposal_unused_product_list: (disposal_unused_product_list || []).map(({value}) => value).join(', '),
+                            precaution_photo_list: (precaution_photo_list || []).map(({doc}) => doc.dlUrls).join(', '),
+                            contacts_emergency_name,
+                            contacts_emergency_num,
+                            contacts_manufacturer_name,
+                            contacts_manufacturer_num,
+                            doc: doc && doc.dlUrls[0],
+                            
+                            
+                            
+                            status,
+                        };
+                    });
+                    
+                    const response = await fetch(
+                      `${self.locationRoot}/templates/xlsx/chemicals/Template-hazchem-sheets.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+                    
+                    data.set('date', new Date().formatDate());
+                    
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+                    
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
                 }
-
-                const cols = [
-                    //0
-                    {header: 'Company', key: 'Company', width: 25},
-                    {header: 'Project', key: 'Project', width: 25},
-                    {header: 'Site', key: 'Site', width: 25},
-                    //1
-                    {header: 'Product Name', key: 'Product Name', width: 35},
-                    {header: 'Category', key: 'Category', width: 35},
-                    {header: 'Manufacturer', key: 'Manufacturer', width: 35},
-                    {header: 'Physical State', key: 'Physical State', width: 25},
-                    {header: 'Type', key: 'Type', width: 25},
-                    {header: 'Risk Level', key: 'Risk Level', width: 25},
-                    //8
-                    {header: 'Contact Name (Emergency)', key: 'Contact Name (Emergency)', width: 35},
-                    {header: 'Contact No. (Emergency)', key: 'Contact No. (Emergency)', width: 35},
-                    {header: 'Contact Name (Manufacturer)', key: 'Contact Name (Manufacturer)', width: 35},
-                    {header: 'Contact No. (Manufacturer)', key: 'Contact No. (Manufacturer)', width: 35},
-                    //3
-                    {header: 'Active Ingredients', key: 'Active Ingredients', width: 35},
-                    //4
-                    {
-                        header: 'Physical Hazards (Hazard Identification)',
-                        key: 'Physical Hazards (Hazard Identification)',
-                        width: 35
-                    },
-                    {
-                        header: 'Reproductive Hazards (Hazard Identification)',
-                        key: 'Reproductive Hazards (Hazard Identification)',
-                        width: 35
-                    },
-                    {
-                        header: 'Biological Hazards (Hazard Identification)',
-                        key: 'Biological Hazards (Hazard Identification)',
-                        width: 35
-                    },
-                    //5
-                    {
-                        header: 'Splashes in Eyes (First Aid Procedures)',
-                        key: 'Splashes in Eyes (First Aid Procedures)',
-                        width: 35
-                    },
-                    {
-                        header: 'Contact with Skin (First Aid Procedures)',
-                        key: 'Contact with Skin (First Aid Procedures)',
-                        width: 35
-                    },
-                    {
-                        header: 'Mouth Contact or Eaten (First Aid Procedures)',
-                        key: 'Mouth Contact or Eaten (First Aid Procedures)',
-                        width: 35
-                    },
-                    {
-                        header: 'Fumes Breathed In (First Aid Procedures)',
-                        key: 'Fumes Breathed In (First Aid Procedures)',
-                        width: 35
-                    },
-                    //6
-                    {
-                        header: 'Small Spills (<= 10 Litres) (Emergency Action For Spills)',
-                        key: 'Small Spills (<= 10 Litres) (Emergency Action For Spills)',
-                        width: 35
-                    },
-                    {
-                        header: 'Large Spills (> 10 Litres) (Emergency Action For Spills)',
-                        key: 'Large Spills (> 10 Litres) (Emergency Action For Spills)',
-                        width: 35
-                    },
-                    //7
-                    {header: 'Used Containers (Disposal)', key: 'Used Containers (Disposal)', width: 35},
-                    {header: 'Unused Product (Disposal)', key: 'Unused Product (Disposal)', width: 35}
-                ];
-
-                console.log('print', list)
-
-                const rows = list.map(({id, data: {
-                created_at,
-                        //0
-                        client, project, site,
-                        //1
-                        product,
-                        physical_state,
-                        type,
-                        //2
-                        precaution_photo_concentrate_list,
-                        precaution_photo_application_list,
-                        //3
-                        active_ingredient_list,
-                        //4
-                        hazard_identification_physical_list,
-                        hazard_identification_reproductive_list,
-                        hazard_identification_biological_list,
-                        //5
-                        first_aid_procedure_splashes_in_eyes_list,
-                        first_aid_procedure_contact_with_skin_list,
-                        first_aid_procedure_mouth_contact_or_eaten_list,
-                        first_aid_procedure_fumes_breathed_in_list,
-                        //6
-                        emergency_action_for_spills_small_list,
-                        emergency_action_for_spills_large_list,
-                        //7
-                        disposal_used_container_list,
-                        disposal_unused_product_list,
-                        //8
-                        contacts_emergency_name,
-                        contacts_emergency_num,
-                        contacts_manufacturer_name,
-                        contacts_manufacturer_num
-                }
-                }) => {
-                    const mapList = list => {
-                        return list ? list.map(v => v.text).distinct().join(', ') : "N/A";
-                    };
-
-                    const res = {
-                        //0
-                        Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-                        Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-                        Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
-                        //1
-                        'Product Name': product.data.name,
-                        'Category': product.data.category || 'N/A',
-                        'Manufacturer': product.data.manufacturer || 'N/A',
-                        'Physical State': physical_state || 'N/A',
-                        'Type': type || 'N/A',
-                        'Risk Level': product.data.risk_level || 'N/A',
-                        //8
-                        'Contact Name (Emergency)': contacts_emergency_name || 'N/A',
-                        'Contact No. (Emergency)': contacts_emergency_num || 'N/A',
-                        'Contact Name (Manufacturer)': contacts_manufacturer_name || 'N/A',
-                        'Contact No. (Manufacturer)': contacts_manufacturer_num || 'N/A',
-                        //3
-                        'Active Ingredients': mapList(active_ingredient_list),
-                        //4
-                        'Physical Hazards (Hazard Identification)': mapList(hazard_identification_physical_list),
-                        'Reproductive Hazards (Hazard Identification)': mapList(hazard_identification_reproductive_list),
-                        'Biological Hazards (Hazard Identification)': mapList(hazard_identification_biological_list),
-                        //5
-                        'Splashes in Eyes (First Aid Procedures)': mapList(first_aid_procedure_splashes_in_eyes_list),
-                        'Contact with Skin (First Aid Procedures)': mapList(first_aid_procedure_contact_with_skin_list),
-                        'Mouth Contact or Eaten (First Aid Procedures)': mapList(first_aid_procedure_mouth_contact_or_eaten_list),
-                        'Fumes Breathed In (First Aid Procedures)': mapList(first_aid_procedure_fumes_breathed_in_list),
-                        //6
-                        'Small Spills (<= 10 Litres) (Emergency Action For Spills)': mapList(emergency_action_for_spills_small_list),
-                        'Large Spills (> 10 Litres) (Emergency Action For Spills)': mapList(emergency_action_for_spills_large_list),
-                        //7
-                        'Used Containers (Disposal)': mapList(disposal_used_container_list),
-                        'Unused Product (Disposal)': mapList(disposal_unused_product_list)
-                    };
-
-                    return res;
-                });
-
-                return await this.export_excel_impl(loggedUser, "Hazchem-Sheet-Docs", "Hazchem-Sheets-Active", "Hazchem Sheets Data", cols, rows);
+                return list;
             });
         }
+        
+        // </editor-fold>
 
         // </editor-fold>
 

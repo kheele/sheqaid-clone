@@ -1,4 +1,5 @@
 require("./assets");
+require("./audits");
 require("./chemicals");
 require("./claims");
 require("./contractors");
@@ -6,6 +7,7 @@ require("./dashboard");
 require("./employees");
 require("./incidents");
 require("./inspections");
+require("./hira-and-opportunities");
 require("./signature-settings");
 require("./structure-and-responsibility");
 require("./trainings");
