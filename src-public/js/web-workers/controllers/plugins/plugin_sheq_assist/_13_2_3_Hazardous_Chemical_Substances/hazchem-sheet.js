@@ -259,7 +259,9 @@
                                 contacts_manufacturer_name,
                                 contacts_manufacturer_num,
                                 //9
-                                doc
+                                doc,
+                                //10
+                                precaution_photo_list,
                             }
                         } = item;
                         
@@ -276,68 +278,19 @@
                             type,
                             product,
                             sds,
-                            active_ingredient_list: (active_ingredient_list || []).map(value => ({
-                                    value,
-                                    group: "Active Ingredient",
-                                })),
-                            hazard_identification_physical_list: (hazard_identification_physical_list || []).map(value => ({
-                                    value,
-                                    group: "Hazard Identification",
-                                    type: "Physical",
-                                })),
-                            hazard_identification_reproductive_list:(hazard_identification_reproductive_list || []).map(value => ({
-                                    value,
-                                    group: "Hazard Identification",
-                                    type: "Reproductive",
-                                })),
-                            hazard_identification_biological_list:(hazard_identification_biological_list || []).map(value => ({
-                                    value,
-                                    group: "Hazard Identification",
-                                    type: "Biological",
-                                })),
-                            first_aid_procedure_splashes_in_eyes_list:(first_aid_procedure_splashes_in_eyes_list || []).map(value => ({
-                                value,
-                                group: "First Aid Procedure",
-                                type: "Splashes In Eyes",
-                            })),
-                            first_aid_procedure_contact_with_skin_list:(first_aid_procedure_contact_with_skin_list || []).map(value => ({
-                                value,
-                                group: "First Aid Procedure",
-                                type: "Contact with Skin",
-                            })),
-                            first_aid_procedure_mouth_contact_or_eaten_list:(first_aid_procedure_mouth_contact_or_eaten_list || []).map(value => ({
-                                value,
-                                group: "First Aid Procedure",
-                                type: "Mouth Contact or Eaten",
-                            })),
-                            first_aid_procedure_fumes_breathed_in_list:(first_aid_procedure_fumes_breathed_in_list || []).map(value => ({
-                                value,
-                                group: "First Aid Procedure",
-                                type: "Fumes Breathed In",
-                            })),
-                            
-                            emergency_action_for_spills_small_list:(emergency_action_for_spills_small_list || []).map(value => ({
-                                value,
-                                group: "Emergency Action For Spills",
-                                type: "Small Spills",
-                            })),
-                            
-                            emergency_action_for_spills_large_list:(emergency_action_for_spills_large_list || []).map(value => ({
-                                value,
-                                group: "Emergency Action For Spills",
-                                type: "Large Spills",
-                            })),
-                            disposal_used_container_list:(disposal_used_container_list || []).map(value => ({
-                                value,
-                                group: "Disposal",
-                                type: "Used Containers",
-                            })),
-                            disposal_unused_product_list:(disposal_unused_product_list || []).map(value => ({
-                                value,
-                                group: "Disposal",
-                                type: "Unused Product",
-                            })),
-                            
+                            active_ingredient_list: (active_ingredient_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_physical_list: (hazard_identification_physical_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_reproductive_list:  (hazard_identification_reproductive_list || []).map(({value}) => value).join(', '),
+                            hazard_identification_biological_list:  (hazard_identification_biological_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_splashes_in_eyes_list:  (first_aid_procedure_splashes_in_eyes_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_contact_with_skin_list: (first_aid_procedure_contact_with_skin_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_mouth_contact_or_eaten_list: (first_aid_procedure_mouth_contact_or_eaten_list || []).map(({value}) => value).join(', '),
+                            first_aid_procedure_fumes_breathed_in_list: (first_aid_procedure_fumes_breathed_in_list || []).map(({value}) => value).join(', '),
+                            emergency_action_for_spills_small_list: (emergency_action_for_spills_small_list || []).map(({value}) => value).join(', '),
+                            emergency_action_for_spills_large_list: (emergency_action_for_spills_large_list || []).map(({value}) => value).join(', '),
+                            disposal_used_container_list: (disposal_used_container_list || []).map(({value}) => value).join(', '),
+                            disposal_unused_product_list: (disposal_unused_product_list || []).map(({value}) => value).join(', '),
+                            precaution_photo_list: (precaution_photo_list || []).map(({doc}) => doc.dlUrls).join(', '),
                             contacts_emergency_name,
                             contacts_emergency_num,
                             contacts_manufacturer_name,

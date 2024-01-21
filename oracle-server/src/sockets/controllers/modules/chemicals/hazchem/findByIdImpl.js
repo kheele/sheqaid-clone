@@ -1,3 +1,4 @@
+const {orgs_fragment} = require("../../../../../graphql/Fragments");
 const {incident_investigation_details_fragment} = require('./commons');
 
 //<editor-fold desc="listImpl">
@@ -9,6 +10,7 @@ module.exports = async (socket, id) => {
                   where: {id: {_eq: ${id}},},
                 ) {
                     ${incident_investigation_details_fragment}
+                    ${orgs_fragment}
                 }
             }
         `,

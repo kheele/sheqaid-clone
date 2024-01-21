@@ -15,6 +15,7 @@ import ViewBaselineRiskAssessmentReportDialog from './forms/ViewBaselineRiskAsse
 
 import style from "./BaselineRiskAssessmentTab.lazy.css";
 import byLogged from "./Query/List/listAllBaselineRiskAssessmentByLogged";
+import ExportBaselineRiskAssessmentDialog from "./forms/ExportBaselineRiskAssessmentDialog";
 
 @observer
 class BaselineRiskAssessmentTab extends React.Component {
@@ -25,6 +26,8 @@ class BaselineRiskAssessmentTab extends React.Component {
 		super(props);
 
 		this.onLoadList = this.onLoadList.bind(this);
+		
+		this.onExport=this.onExport.bind(this);
 
 		this.onViewReport = this.onViewReport.bind(this);
 		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
@@ -73,6 +76,13 @@ class BaselineRiskAssessmentTab extends React.Component {
 			console.log('onLoadList res', res)
 			return res;
 		});
+	}
+	
+	// <editor-fold defaultstate="collapsed" desc="onExport">
+	onExport(e, btn) {
+		const {getDialogByRef} = this.refs.root;
+		const exportDialog = getDialogByRef('exportDialog');
+		exportDialog.open();
 	}
 
 	//</editor-fold>
@@ -182,6 +192,7 @@ class BaselineRiskAssessmentTab extends React.Component {
 			<ViewBaselineRiskAssessmentReportDialog ref="viewBaselineRiskAssessmentReportDialog"/>
 			<ViewReportPDFDialog ref="viewReportPDFDialog" fileName="Risk_Assessment_Baseline_Full_Report"
 			                     title="Baseline Risk Assessment Full Report"/>
+			<ExportBaselineRiskAssessmentDialog ref="exportDialog"/>
 		</APageListReadWrite>;
 	}
 }

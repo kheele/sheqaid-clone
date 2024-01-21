@@ -56,6 +56,8 @@ class InventoryProductTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
         
+        this.onExportAll=this.onExportAll.bind(this);
+        
         this.onRemoved = this.onRemoved.bind(this);
 
         this.onExport = this.onExport.bind(this);
@@ -123,6 +125,14 @@ class InventoryProductTab extends React.Component {
     }
     
     //</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="onExportAll">
+    onExportAll(e, btn) {
+        const {getDialogByRef} = this.refs.root;
+        const exportDialog = getDialogByRef('exportDialog');
+        exportDialog.open();
+    }
+    
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }

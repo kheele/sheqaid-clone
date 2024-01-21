@@ -56,6 +56,7 @@
 //            }
 //            load();
         }
+        
         // <editor-fold defaultstate="collapsed" desc="export_excel">
         async export_excel(evt, {
             client: _client, project: _project, site: _site,
@@ -88,15 +89,6 @@
                             activity,
                             expiry_date: Dates.formatDateSQL(expiry_date),
                             risk_tolerance,
-                            list: toJS(val.control_measure_list_additional.map(val => {
-                                  const {text, responsible_person, cost, date_completed} = val;
-                                  return {
-                                      ...val,
-                                      date_completed: Dates.formatDateSQL(date_completed),
-                                      responsible_person_id: responsible_person && responsible_person.id,
-                                  };
-                              })),
-                              
                         };
                     });
                     

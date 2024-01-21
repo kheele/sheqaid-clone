@@ -48,6 +48,8 @@ class MSDSTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
         
+        this.onExportAll=this.onExportAll.bind(this);
+        
         this.onRemoved = this.onRemoved.bind(this);
         
         this.onExport = this.onExport.bind(this);
@@ -107,6 +109,13 @@ class MSDSTab extends React.Component {
             console.log('onLoadList res', res)
             return res;
         });
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="onExportAll">
+    onExportAll(e, btn) {
+        const {getDialogByRef} = this.refs.root;
+        const exportDialog = getDialogByRef('exportDialog');
+        exportDialog.open();
     }
     //</editor-fold>
     

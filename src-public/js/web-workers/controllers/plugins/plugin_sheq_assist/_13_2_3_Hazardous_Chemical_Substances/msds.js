@@ -106,187 +106,126 @@
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
-        async export_excel(evt, list) {
+        // <editor-fold defaultstate="collapsed" desc="export_excel">
+        async export_excel(evt, {
+            client: _client, project: _project, site: _site,
+            list,
+        }) {
             return Events.whenLoggedIn(async loggedUser => {
-                if (list.isEmpty()) {
-                    return "EMPTY";
+                if (isArray(list)) {
+                    const rows = list.map((item, idx) => {
+                        let {
+                            id,
+                            data: {
+                                created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
+                                company, client, project, site,
+                                
+                                product,
+                                
+                                name,
+                                
+                                common_names,
+                                
+                                chemical_name,
+                                
+                                empirical_formula,
+                                
+                                un_num,
+                                
+                                category,
+                                
+                                date_identified,
+                                
+                                application_or_use,
+                                
+                                supplier_list,
+                                emergency_phone_nums,
+                                risk_level,
+                                more_product_info,
+                                composition_or_information_on_ingredients,
+                                hazards_identification,
+                                first_aid_measures_and_precautions,
+                                firefighting_measures,
+                                accidental_release_measures,
+                                handling_and_storage_requirements,
+                                exposure_controls_or_personal_protection,
+                                physical_and_chemical_properties,
+                                stability_and_reactivity,
+                                toxicological_info,
+                                ecological_info,
+                                disposal_considerations,
+                                transport_info,
+                                regulatory_info,
+                                other_info,
+                                doc
+                            }
+                        } = item;
+                        
+                        client = client || company;
+                        
+                        return {
+                            idx: idx + 1,
+                            
+                            project: project && project.name,
+                            site: site && site.name,
+                            
+                            product,
+                            name,
+                            common_names,
+                            chemical_name,
+                            empirical_formula,
+                            un_num,
+                            category,
+                            date_identified:Dates.formatDateSQL(date_identified),
+                            application_or_use,
+                            supplier_list: (supplier_list || []).map(({manufacturer}) => manufacturer).join(', '),
+                            emergency_phone_nums,
+                            risk_level,
+                            more_product_info,
+                            composition_or_information_on_ingredients,
+                            hazards_identification,
+                            first_aid_measures_and_precautions,
+                            firefighting_measures,
+                            accidental_release_measures,
+                            handling_and_storage_requirements,
+                            exposure_controls_or_personal_protection,
+                            physical_and_chemical_properties,
+                            stability_and_reactivity,
+                            toxicological_info,
+                            ecological_info,
+                            disposal_considerations,
+                            transport_info,
+                            regulatory_info,
+                            other_info,
+                            doc: doc && doc.dlUrls[0],
+                            
+                            
+                            
+                            status,
+                        };
+                    });
+                    
+                    const response = await fetch(
+                      `${self.locationRoot}/templates/xlsx/chemicals/Template-safety-datasheets.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+                    
+                    data.set('date', new Date().formatDate());
+                    
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+                    
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
                 }
-
-                const cols = [
-                    //0
-                    {header: 'Company', key: 'Company', width: 25},
-                    {header: 'Project', key: 'Project', width: 25},
-                    {header: 'Site', key: 'Site', width: 25},
-                    //1
-                    {header: 'Product Name', key: 'Product Name', width: 35},
-                    {header: 'Common Names / Synonyms', key: 'Common Names / Synonyms', width: 35},
-                    {header: 'Chemical Name', key: 'Chemical Name', width: 35},
-                    {header: 'Empirical Formula', key: 'Empirical Formula', width: 35},
-                    {header: 'UN Number', key: 'UN Number', width: 35},
-
-                    {header: 'Category', key: 'Category', width: 35},
-                    {header: 'Date Identified', key: 'Date Identified', width: 35},
-
-                    {header: 'Application / Use', key: 'Application / Use', width: 35},
-
-                    {header: 'Manufacturer / Supplier', key: 'Manufacturer / Supplier', width: 35},
-                    {header: 'Manufacturer/Supplier Address', key: 'Manufacturer/Supplier Address', width: 35},
-                    {header: 'Manufacturer/Supplier Telephone', key: 'Manufacturer/Supplier Telephone', width: 35},
-                    {header: 'Manufacturer/Supplier Fax', key: 'Manufacturer/Supplier Fax', width: 35},
-                    {header: 'Manufacturer/Supplier E-mail Address', key: 'Manufacturer/Supplier E-mail Address', width: 35},
-                    {header: 'Manufacturer/Supplier Website', key: 'Manufacturer/Supplier Website', width: 35},
-
-                    {header: 'Emergency Phone Numbers', key: 'Emergency Phone Numbers', width: 35},
-
-                    {header: 'Risk Level', key: 'Risk Level', width: 35},
-
-                    {header: 'More Product Information', key: 'More Product Information', width: 35},
-                    //2
-                    {header: 'Composition/Information On Ingredients', key: 'Composition/Information On Ingredients', width: 35},
-                    //3
-                    {header: 'Hazards Identification', key: 'Hazards Identification', width: 35},
-                    //4
-                    {header: 'First Aid Measures & Precautions', key: 'First Aid Measures & Precautions', width: 35},
-                    //5
-                    {header: 'Firefighting Measures', key: 'Firefighting Measures', width: 35},
-                    //6
-                    {header: 'Accidental Release Measures (Spillage)', key: 'Accidental Release Measures (Spillage)', width: 35},
-                    //7
-                    {header: 'Handling & Storage Requirements', key: 'Handling & Storage Requirements', width: 35},
-                    //8
-                    {header: 'Exposure Controls / Personal Protection', key: 'Exposure Controls / Personal Protection', width: 35},
-                    //9
-                    {header: 'Physical & Chemical Properties', key: 'Physical & Chemical Properties', width: 35},
-                    //10
-                    {header: 'Stability & Reactivity', key: 'Stability & Reactivity', width: 35},
-                    //11
-                    {header: 'Toxicological Information', key: 'Toxicological Information', width: 35},
-                    //12
-                    {header: 'Ecological Information', key: 'Ecological Information', width: 35},
-                    //13
-                    {header: 'Disposal Considerations', key: 'Disposal Considerations', width: 35},
-                    //14
-                    {header: 'Transport Information', key: 'Transport Information', width: 35},
-                    //15
-                    {header: 'Regulatory Information', key: 'Regulatory Information', width: 35},
-                    //16
-                    {header: 'Other Information', key: 'Other Information', width: 35},
-                    //17
-                    {header: 'Document', key: 'Document', width: 35}
-                ];
-
-                console.log('print', list)
-
-                const rows = list.map(({id, data: {
-                //0
-                client, project, site,
-                        //1
-                        name, common_names, chemical_name, empirical_formula, un_num,
-                        category, date_identified, //other added
-                        application_or_use,
-                        manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
-                        emergency_phone_nums,
-                        //            emergency_phone, //replaced with emergency_phone_nums
-                        risk_level, //other added
-                        more_product_info,
-                        //2
-                        composition_or_information_on_ingredients,
-                        //3
-                        hazards_identification,
-                        //4
-                        first_aid_measures_and_precautions,
-                        //5
-                        firefighting_measures,
-                        //6
-                        accidental_release_measures,
-                        //7
-                        handling_and_storage_requirements,
-                        //8
-                        exposure_controls_or_personal_protection,
-                        //9
-                        physical_and_chemical_properties,
-                        //10
-                        stability_and_reactivity,
-                        //11
-                        toxicological_info,
-                        //12
-                        ecological_info,
-                        //13
-                        disposal_considerations,
-                        //14
-                        transport_info,
-                        //15
-                        regulatory_info,
-                        //16
-                        other_info,
-                        //17
-                        doc
-                }}) => {
-                    const res = {
-                        //0
-                        Company: isString(client) ? client : (client ? (client.name || client.data.name) : ""),
-                        Project: isString(project) ? project : (project ? (project.name || project.data.name) : ""),
-                        Site: isString(site) ? site : (site ? (site.name || site.data.name) : ""),
-
-                        //1
-                        'Product Name': name || 'N/A',
-                        'Common Names / Synonyms': common_names || 'N/A',
-                        'Chemical Name': chemical_name || 'N/A',
-                        'Empirical Formula': empirical_formula || 'N/A',
-                        'UN Number': un_num || 'N/A',
-                        'Category': category || 'N/A',
-                        'Date Identified': date_identified ? Dates.formatDate(date_identified) : 'N/A',
-                        'Application / Use': application_or_use || 'N/A',
-                        'Manufacturer / Supplier': manufacturer || 'N/A',
-                        'Manufacturer/Supplier Address': manufacturer_addr || 'N/A',
-                        'Manufacturer/Supplier Telephone': manufacturer_phone_num || 'N/A',
-                        'Manufacturer/Supplier Fax': manufacturer_email || 'N/A',
-                        'Manufacturer/Supplier E-mail Address': manufacturer_fax || 'N/A',
-                        'Manufacturer/Supplier Website': manufacturer_website || 'N/A',
-                        'Emergency Phone Numbers': emergency_phone_nums && emergency_phone_nums.join(', ') || 'N/A',
-                        'Risk Level': risk_level || 'N/A',
-                        'More Product Information': more_product_info || 'N/A',
-
-                        //2
-                        'Composition/Information On Ingredients': composition_or_information_on_ingredients || 'N/A',
-                        //3
-                        'Hazards Identification': hazards_identification || 'N/A',
-                        //4
-                        'First Aid Measures & Precautions': first_aid_measures_and_precautions || 'N/A',
-                        //5
-                        'Firefighting Measures': firefighting_measures || 'N/A',
-                        //6
-                        'Accidental Release Measures (Spillage)': accidental_release_measures || 'N/A',
-                        //7
-                        'Handling & Storage Requirements': handling_and_storage_requirements || 'N/A',
-                        //8
-                        'Exposure Controls / Personal Protection': exposure_controls_or_personal_protection || 'N/A',
-                        //9
-                        'Physical & Chemical Properties': physical_and_chemical_properties || 'N/A',
-                        //10
-                        'Stability & Reactivity': stability_and_reactivity || 'N/A',
-                        //11
-                        'Toxicological Information': toxicological_info || 'N/A',
-                        //12
-                        'Ecological Information': ecological_info || 'N/A',
-                        //13
-                        'Disposal Considerations': disposal_considerations || 'N/A',
-                        //14
-                        'Transport Information': transport_info || 'N/A',
-                        //15
-                        'Regulatory Information': regulatory_info || 'N/A',
-                        //16
-                        'Other Information': other_info || 'N/A',
-                        //17
-                        'Document': doc && doc.dlUrls[0] || 'N/A',
-                    };
-
-                    return res;
-                });
-
-                return await this.export_excel_impl(loggedUser, "MSDS-Docs", "MSDS-Active", "MSDS Data", cols, rows);
+                return list;
             });
         }
+        
+        // </editor-fold>
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="find_by_id">
