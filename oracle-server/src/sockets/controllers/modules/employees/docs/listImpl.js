@@ -2,64 +2,80 @@ const {orgs_fragment, employee_personal_details_fragment} = require("../../../..
 const {getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
-module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, singular, attrs, isContract = false}) => {
-    console.log('data', data);
-
-    let {
-        offset = 0,
-        limit = 50,
-        //
-        removed = false,
-        //
-        view = 'Employee',
-        mon, mon2, mon3,
-        expiry_date = 'ALL',
-        date_range,
-        //
-        department_id,
-        job_position_id,
-        team_id,
-        supervisor_id,
-        employee_id,
-        //
-        // ...attrs,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-        //
-        client_filter,
-        orgs_filter = [],
-    } = data;
-
-    const {filter, filterEmployee} = getVariablesAndQueryConfig({
-        orgs_filter,
-        //
-        view,
-        mon, mon2, mon3,
-        expiry_date,
-        date_range,
-        //
-        department_id,
-        job_position_id,
-        team_id,
-        supervisor_id,
-        employee_id,
-        //
-        ...attrs,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs,
-        isContract,
-    });
-
-    const singularQueryName = singular.replace('/','_').replace(' ','');
-
-    if (view === 'Employee') {
-        //<editor-fold desc="ByGroup">
-        return listGraphQL({
-            query: `
+module.exports = async (
+	{
+		socket,
+		data,
+		tbl,
+		listName,
+		listRename,
+		inc_fragment,
+		singular,
+		attrs,
+		isContract = false
+	}
+) => {
+	console.log('data', data);
+	
+	let {
+		offset = 0,
+		limit = 50,
+		//
+		removed = false,
+		//
+		id,
+		//
+		view = 'Employee',
+		mon, mon2, mon3,
+		expiry_date = 'ALL',
+		date_range,
+		//
+		department_id,
+		job_position_id,
+		team_id,
+		supervisor_id,
+		employee_id,
+		//
+		// ...attrs,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+		//
+		client_filter,
+		orgs_filter = [],
+	} = data;
+	
+	const {filter, filterEmployee} = getVariablesAndQueryConfig({
+		orgs_filter,
+		//
+		id,
+		//
+		view,
+		mon, mon2, mon3,
+		expiry_date,
+		date_range,
+		//
+		department_id,
+		job_position_id,
+		team_id,
+		supervisor_id,
+		employee_id,
+		//
+		...attrs,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs,
+		isContract,
+	});
+	
+	const singularQueryName = singular.replace('/', '_').replace(' ', '');
+	
+	if (view === 'Employee') {
+		//<editor-fold desc="ByGroup">
+		return listGraphQL({
+			query: `
                 query listAllByGroup${singularQueryName}ByLoggedQuery {
                   hr_employees(
                       where: {
@@ -134,7 +150,7 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
                               }
                           }
                       ` : `
-                          ${listRename?`${listRename}:`:``}${listName}(
+                          ${listRename ? `${listRename}:` : ``}${listName}(
                             where: {
                                 removed: {_eq: ${removed}}
                                 ${singular === 'PrDP' ? `,type: {_eq: "PrDP"}` : ``}
@@ -204,13 +220,13 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
                   }
                 }
 			`,
-            operationName: `listAllByGroup${singularQueryName}ByLoggedQuery`,
-        });
-        //</editor-fold>
-    } else {
-        //<editor-fold desc="ByEach">
-        return listGraphQL({
-            query: `
+			operationName: `listAllByGroup${singularQueryName}ByLoggedQuery`,
+		});
+		//</editor-fold>
+	} else {
+		//<editor-fold desc="ByEach">
+		return listGraphQL({
+			query: `
                 query listAllByEach${singularQueryName}ByLoggedQuery {
                   ${tbl}(
                       where: {
@@ -229,9 +245,9 @@ module.exports = async ({socket, data, tbl, listName, listRename, inc_fragment, 
                   }
                 }
 			`,
-            operationName: `listAllByEach${singularQueryName}ByLoggedQuery`,
-        });
-        //</editor-fold>
-    }
+			operationName: `listAllByEach${singularQueryName}ByLoggedQuery`,
+		});
+		//</editor-fold>
+	}
 }
 //</editor-fold>

@@ -204,7 +204,7 @@ exports.getVariablesAndQueryConfig = (
         if (desc) {
             filter.push(`desc: {_ilike: "%${desc}%"}`);
         }
-
+        
         if (!filter.isEmpty()) {
             filter = `,${filter.join(',')}`;
         }

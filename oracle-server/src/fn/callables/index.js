@@ -9,6 +9,7 @@ const excel = require("./excel");
 const thumbnail_generator = require("./thumbnail-generator");
 const docs = require("./docs");
 
+const sharepoint = require("./sharepoint");
 const triggeredEvents = require("./triggered-events");
 const scheduledEvents = require("./scheduled-events");
 
@@ -21,6 +22,7 @@ router.use('/excel', excel);
 router.use('/thumbnail-generator', thumbnail_generator);
 router.use('/docs', docs);
 
+router.use('/sharepoint', sharepoint);
 router.use('/triggered-events', triggeredEvents);
 router.use('/scheduled-events', scheduledEvents);
 

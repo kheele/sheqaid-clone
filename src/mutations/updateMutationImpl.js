@@ -22,7 +22,7 @@ export default async ({checkLogin = true, mutation, id, attrs, optimisticUpdater
 			variables.id = {id};
 			variables._set = await convertMobx(attrs);
 		} else {
-			variables.id = id;
+			variables.id = {id};
 		}
 
 		// 5

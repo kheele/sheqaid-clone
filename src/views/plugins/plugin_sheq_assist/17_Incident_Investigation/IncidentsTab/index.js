@@ -93,12 +93,12 @@ class IncidentsTab extends React.Component {
 		style.use();
 	}
 	
-	componentDidMount() {
-		execWhen(() => this.refs.root && this.refs.root.refs.filterWrapper).then(filterWrapper => {
-			filterWrapper.form.addChangeOne("category_list", this.onChangeCategoryList.bind(this));
-			filterWrapper.form.addChangeOne("sector_list", this.onChangeSectorList.bind(this));
-		});
-	}
+	// componentDidMount() {
+	// 	execWhen(() => this.refs.root && this.refs.root.refs.filterWrapper).then(filterWrapper => {
+	// 		filterWrapper.form.addChangeOne("category_list", this.onChangeCategoryList.bind(this));
+	// 		// filterWrapper.form.addChangeOne("sector_list", this.onChangeSectorList.bind(this));
+	// 	});
+	// }
 	
 	componentWillUnmount() {
 		style.unuse();
@@ -312,15 +312,15 @@ class IncidentsTab extends React.Component {
 	
 	// <editor-fold defaultstate="collapsed" desc="onChange funs">
 	onChangeCategoryList(el, val) {
-		console.log("onChangeCategory", this)
-		execWhen(() => this.refs.sub_category_list).then(ref => {
-			if (val) {
-				!val.map && (val = [val]);
-				ref.list = val.map(({data: {sub_category_list}}) => sub_category_list).reduce((a1, a2) => [...a1, ...a2], []);
-			} else {
-				ref.list = [];
-			}
-		});
+		// console.log("onChangeCategory", this)
+		// execWhen(() => this.refs.sub_category_list).then(ref => {
+		// 	if (val) {
+		// 		!val.map && (val = [val]);
+		// 		ref.list = val.map(({data: {sub_category_list}}) => sub_category_list).reduce((a1, a2) => [...a1, ...a2], []);
+		// 	} else {
+		// 		ref.list = [];
+		// 	}
+		// });
 	}
 	
 	onChangeSectorList(el, val) {
@@ -419,116 +419,122 @@ class IncidentsTab extends React.Component {
 	
 	// <editor-fold defaultstate="collapsed" desc="renderFilterNode">
 	renderFilterNode(onChange) {
-		return <div className="col-lg-12 controls -margin-b-15">
+		return <div className="col-lg-12 controls grid-3 grid-gap-10 -margin-b-35">
 			<ClearableInput
 				name="id"
 				type="number"
 				placeholder="ID #"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="person_reporting"
 				placeholder="Reported By..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="person_reported_to"
 				placeholder="Reported To..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="person_involved"
 				placeholder="Person Involved..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			
 			<SelectEmployeeInput
 				name="person_injured"
 				placeholder="Person Injured..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="witness"
 				placeholder="Witness..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="person_distributed_to"
 				placeholder="Person Distributed To..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			<SelectEmployeeInput
 				name="driver"
 				placeholder="Driver..."
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
 			
 			<SelectIncidentCategoryList
 				name="category_list"
 				type="select_multi"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
-			<SelectIncidentSubCategoryList
-				ref="sub_category_list"
-				name="sub_category_list"
-				type="select_multi"
-				className="col-lg-3 margin-b-10 form-control"
-				onChange={onChange}
-			/>
-			<SelectSectorInput
-				name="sector_list"
-				type="select_multi"
-				placeholder="Sector(s)..."
-				className="col-lg-3 margin-b-10 form-control"
-				onChange={onChange}
-				add={false}
-			/>
-			<SelectIncidentActivityList
-				ref="activity_list"
-				name="activity_list"
-				type="select_multi"
-				placeholder="Activities..."
-				className="col-lg-3 margin-b-10 form-control"
-				onChange={onChange}
-				add={false}
-			/>
-			
+			{/*<SelectIncidentSubCategoryList*/}
+			{/*	ref="sub_category_list"*/}
+			{/*	name="sub_category_list"*/}
+			{/*	type="select_multi"*/}
+			{/*	className="form-control"*/}
+			{/*	onChange={onChange}*/}
+			{/*/>*/}
+			{/*<SelectSectorInput*/}
+			{/*	name="sector_list"*/}
+			{/*	type="select_multi"*/}
+			{/*	placeholder="Sector(s)..."*/}
+			{/*	className="form-control"*/}
+			{/*	onChange={onChange}*/}
+			{/*	add={false}*/}
+			{/*/>*/}
+			{/*<SelectIncidentActivityList*/}
+			{/*	ref="activity_list"*/}
+			{/*	name="activity_list"*/}
+			{/*	type="select_multi"*/}
+			{/*	placeholder="Activities..."*/}
+			{/*	className="form-control"*/}
+			{/*	onChange={onChange}*/}
+			{/*	add={false}*/}
+			{/*/>*/}
+			<ClearableInput name="day_group" type="radio" placeholder="Morning / Afternoon"
+			                className="form-control" onChange={onChange}
+			                values={this.state.lists.day_group} returnValue/>
+			<ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
+			                className="form-control" onChange={onChange}
+			                values={this.state.lists.time_shift} returnValue/>
 			<ClearableInput
 				name="exact_location"
 				type="text"
 				placeholder="Exact Location"
-				className="col-lg-2 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 			/>
+			
 			<ClearableInput name="is_vehicle_incident" type="select" placeholder="Vehicle Incident?"
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
-			                values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({label, value}))}
+			                className="form-control" onChange={onChange}
+			                values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({label, value: value === "Yes"}))}
 			                returnValue/>
 			<ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}/>
+			                className="form-control" onChange={onChange}/>
 			<ClearableInput name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}/>
+			                className="form-control" onChange={onChange}/>
 			<ClearableInput name="incident_status" type="select" placeholder="Incident Status..."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
+			                className="form-control" onChange={onChange}
 			                values={this.state.lists.incident_status} returnValue/>
 			<ClearableInput name="investigation_status" type="select" placeholder="Investigation Status..."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
+			                className="form-control" onChange={onChange}
 			                values={this.state.lists.investigation_status} returnValue/>
 			
 			<ClearableInput
 				name="group"
 				type="select"
 				placeholder="Incident Group"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 				values={this.state.lists.group.map(({text: label, value}) => ({label, value}))}
 				returnValue
@@ -537,7 +543,7 @@ class IncidentsTab extends React.Component {
 				name="consequence"
 				type="select"
 				placeholder="Consequence / Severity"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 				values={this.state.lists.consequence.map(({text: label, value}) => ({label, value}))}
 				returnValue
@@ -546,7 +552,7 @@ class IncidentsTab extends React.Component {
 				name="likelihood"
 				type="select"
 				placeholder="Likelihood / Probability"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 				values={this.state.lists.likelihood.map(({text: label, value}) => ({label, value}))}
 				returnValue
@@ -555,7 +561,7 @@ class IncidentsTab extends React.Component {
 				name="risk_rating"
 				type="select"
 				placeholder="Risk Rating"
-				className="col-lg-3 margin-b-10 form-control"
+				className="form-control"
 				onChange={onChange}
 				values={[...this.state.lists.risk_rating.map(({text: label, value}) => ({label, value})), {
 					label: 'N/A',
@@ -564,15 +570,9 @@ class IncidentsTab extends React.Component {
 				returnValue
 			/>
 			
-			<ClearableInput name="day_group" type="radio" placeholder="Morning / Afternoon"
-			                className="col-lg-3 margin-b-10 form-control" onChange={onChange}
-			                values={this.state.lists.day_group} returnValue/>
-			<ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
-			                className="col-lg-3 margin-b-10 form-control" onChange={onChange}
-			                values={this.state.lists.time_shift} returnValue/>
-			<DateRangeInput name="incident_date_range" className="col-lg-3 margin-b-10 form-control"
+			<DateRangeInput name="incident_date_range" className="form-control"
 			                placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
-			<DateRangeInput name="date_reported_range" className="col-lg-3 margin-b-10 form-control"
+			<DateRangeInput name="date_reported_range" className="form-control"
 			                placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange}/>
 		</div>;
 	}
