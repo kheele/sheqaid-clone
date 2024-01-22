@@ -55,7 +55,7 @@ class Main extends APage {
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardTab ref="dashboard" title="Dashboard"/>
                 {!isEmployee && <AuditTab ref="audit" title="Audits" path={this.path}/>}
-                {!isEmployee && <ConstructionAuditsTab ref="constructionAudits" title="Construction Audits" path={this.path}/>}
+                {/*{!isEmployee && <ConstructionAuditsTab ref="constructionAudits" title="Construction Audits" path={this.path}/>}*/}
             </Tabs>
         </div>);
     }

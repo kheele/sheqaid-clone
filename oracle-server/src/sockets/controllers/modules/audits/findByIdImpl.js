@@ -1,20 +1,20 @@
 const {orgs_fragment} = require("../../../../graphql/Fragments");
-const {inspection_details_find_fragment} = require('./commons');
+const {audit_details_fragment} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, id) => {
     return getGraphQLOne({
         query: `
-            query findOneInspectionQuestionnaireQuery {
-                default_contractor_questionnaires(
+            query findByIdAuditQuery {
+                sheq_compliance_audits(
                   where: {id: {_eq: ${id}},},
                 ) {
-                    ${inspection_details_find_fragment}
+                    ${audit_details_fragment}
                     ${orgs_fragment}
                 }
             }
         `,
-        operationName: "findOneInspectionQuestionnaireQuery",
+        operationName: "findByIdAuditQuery",
     });
 }
 //</editor-fold>

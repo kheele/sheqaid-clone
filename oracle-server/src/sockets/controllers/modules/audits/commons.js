@@ -1,3 +1,8 @@
+const {
+	employee_personal_details_fragment,
+	personal_details_other_fragment,
+} = require("../../../../graphql/Fragments");
+
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
 	{
@@ -5,9 +10,12 @@ exports.getVariablesAndQueryConfig = (
 		//
 		id,
 		//
-		name,
-		interval,
-		template_id,
+		representative_list,
+		representative_id,
+		auditor,
+		type,
+		scope,
+		date_range,
 		//
 		site_id, project_id, client_id,
 		//
@@ -20,14 +28,49 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
-		if(name) {
-			filter.push(`name: {_ilike: "%${name}%"}`);
+		if(representative_list) {
+			filter.push(`representative_list: {employee_id:{_in: [${representative_list.map(v => v.id).join(', ')}]}}`);
 		}
-		if(interval) {
-			filter.push(`interval: {_eq: "${interval}"}`);
+		if(representative_id) {
+			filter.push(`representative_list: {employee_id:{_eq: ${representative_id}}}`);
 		}
-		if(template_id) {
-			filter.push(`template_id: {_eq: ${template_id}}`);
+		if(auditor) {
+			filter.push(`
+				auditor_list:{
+	        _or:{
+	          employee:{
+	            _or:{
+	              fname: {_ilike: "%${auditor}%"},
+	              lname: {_ilike: "%${auditor}%"}
+	            }
+	          },
+	          other_person:{
+	            _or:{
+	              fname: {_ilike: "%${auditor}%"},
+	              lname: {_ilike: "%${auditor}%"}
+	            }
+	          }
+	        }
+	      }
+      `);
+		}
+		
+		if(type) {
+			filter.push(`type: {_ilike: "%${type}%"}`);
+		}
+		if(scope) {
+			filter.push(`scope: {_ilike: "%${scope}%"}`);
+		}
+		
+		if (date_range) {
+			const {start, end} = date_range;
+			if (start && end) {
+				filter.push(`date: {_gte: "${start}", _lte: "${end}"}`);
+			} else if (start) {
+				filter.push(`date: {_gte: "${start}"}`);
+			} else if (end) {
+				filter.push(`date: {_lte: "${end}"}`);
+			}
 		}
 	}
 	
@@ -38,292 +81,54 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="inspection_question_find_fragment">
-const inspection_question_find_fragment = (deep = 3) => {
-	if (deep === 0) {
-		return `id`;
-	}
-	return `
+//<editor-fold desc="audit_details_fragment">
+exports.audit_details_fragment = `
+  id
+  removed
+  created_at
+  type
+  date
+  scope
+  
+  auditor_list{
     id
-    answer
-    answer_employee{
-      id
-      fname
-      lname
-      full_name
-      email
-    } 
-    answer_asset{
-      id
-      asset_detail{
-        id
-        name
-        reg_num
-        serial_num
-      }
+    employee{
+      ${employee_personal_details_fragment}
     }
-    responseAttachment
-    hasResponseAttachment
-    responseAttachmentRequired
-    expiry
-    hasExpiry
-    isMandatory
-    isMultiAnswer
-    open
-    linkDoc {
-        id
-        created_at
-        name
-        desc
-        category
+    other_person{
+      ${personal_details_other_fragment}
     }
-    maxScore
-    notify
-    notifyAction
-    questionImage
-    questionText
-    questionType
-    score
-    questionnaire{
-        id
-    }
-    idx
-    is_page_title
-    question_list:question_list{
-        ${inspection_question_find_fragment(deep - 1)}
-    }
-    options{
-      optionImage
-      optionText
-      optionType
-      answer
-    }
-    message_list{
-        ques{
-            id
-        }
-        msg
-        read
-        date
-        sender{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        recipient{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        contractor_sender{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        contractor_recipient{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        logged_user{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-    }
-    notified_list{
-        employee{
-            id
-            fname
-            lname
-            email
-            phone
-        }
-        ques{
-            id
-        }
-    }
-    #ques_path_list{
-    #    id
-    #    path
-    #    ques{
-    #        id
-    #    }
-    #}
-`;
-};
-//</editor-fold>
-
-//<editor-fold desc="inspection_details_find_fragment">
-exports.inspection_details_find_fragment = `
+  }
+  representative_list{
     id
-    ques_next_id
-    ques_prev_id
-    created_at
-    name
+    employee{
+      ${employee_personal_details_fragment}
+    }
+    other_person{
+      ${personal_details_other_fragment}
+    }
+  }
+  definition_list{
+    title
     desc
-    status
-    status_answered_by_sender
-    answered_by
-    #is_template
-    #visibility
-    
-    progress #computed
-    total_questions #computed
-    
-    interval
-    start_date
-    time
-    schedule_date
-    date_completed
-    time_completed
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-        location
-        toolkit
-        condition
-        owning_company
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc    
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        lname
-        fname
-        email
-        phone
-      }
-    }
-    template{
-      id
-      name
-    }
-    responsible_person{
-      id
-      full_name
-    }
-    responsible_department{
-      id
-      name
-    }
-    
-    page_title_list:question_list(where: {is_page_title: {_eq: true}}){
-        ${inspection_question_find_fragment(3)}
-    }
-    question_list:question_list(where: {is_page_title: {_eq: false}}){
-        ${inspection_question_find_fragment(3)}
-    }
-    contractor_site{
-        id
-        name
-    }
-    contractor {
-        id
-        name
-    }
-`;
-//</editor-fold>
-
-//<editor-fold desc="inspection_details_list_fragment">
-exports.inspection_details_list_fragment = `
+  }
+  list{
+    element
+    sub_element
+    audit_findings
+    audit_summary
+    possible_score
+    achieved_score
+    comments
+  }
+  
+  contractor_site{
     id
-    ques_next_id
-    ques_prev_id
-    created_at
     name
-    desc
-    status
-    status_answered_by_sender
-    answered_by
-    #is_template
-    #visibility
-    
-    progress #computed
-    total_questions #computed
-    total_answered #computed
-    total_compliance #computed
-    total_deviations #computed
-    total_non_deviations #computed
-    total_unanswered #computed
-    
-    interval
-    start_date
-    time
-    schedule_date
-    date_completed
-    time_completed
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc    
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        full_name
-      }
-    }
-    template{
-      id
-      name
-    }
-    responsible_person{
-      id
-      full_name
-    }
-    responsible_department{
-      id
-      name
-    }
-    
-    contractor_site{
-        id
-        name
-    }
-    contractor {
-        id
-        name
-    }
+  }
+  contractor {
+    id
+    name
+  }
 `;
 //</editor-fold>

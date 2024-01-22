@@ -29,5 +29,5 @@
     margin: 0;
 }
 #_21_Internal_Audit-page .tab-content .filter-wrapper + .table{
-    height: calc(100% - (10px + 122px)) !important;
+    height: calc(100% - (10px + 136px)) !important;
 }

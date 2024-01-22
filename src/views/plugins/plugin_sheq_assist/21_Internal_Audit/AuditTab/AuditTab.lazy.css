@@ -1,6 +1,9 @@
 #AuditTab-tab {
 
 }
+#AuditTab-tab .page-title > .tabled-top-panel > .buttons > .left-buttons {
+    margin-top: -26px !important;
+}
 #AuditTab-tab .table{
     width: 100%;
     height: 100%;

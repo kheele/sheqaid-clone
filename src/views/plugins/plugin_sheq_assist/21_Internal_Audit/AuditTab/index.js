@@ -4,7 +4,7 @@ import {toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {Button, ClearableInput} from 'components/inputs';
+import {Button, ClearableInput, DateRangeInput, SelectEmployeeInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import AuditTableRow from './AuditTableRow';
@@ -14,12 +14,10 @@ import EditAuditDialog from './forms/EditAuditDialog.js';
 import ProfileAuditDialog from './forms/ProfileAuditDialog.js';
 
 import ProfilePDFReader from './printers/ProfilePDFReader';
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllAuditByLogged";
 
 import style from "./AuditTab.lazy.css";
 
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
-import ExportTrainingMatrixDialog from "../../05_Training/TrainingMatrixTab/forms/ExportTrainingMatrixDialog";
 import ExportAuditDialog from "./forms/ExportAuditDialog";
 
 @observer
@@ -33,7 +31,7 @@ class AuditTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
         
-        this.onExportAll = this.onExportAll.bind(this);
+        this.onExport = this.onExport.bind(this);
         
         this.onRemoved = this.onRemoved.bind(this);
 
@@ -42,6 +40,7 @@ class AuditTab extends React.Component {
         
         this.onCopy = this.onCopy.bind(this);
         this.renderItem = this.renderItem.bind(this);
+        this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
     }
     //</editor-fold>
@@ -55,41 +54,35 @@ class AuditTab extends React.Component {
     }
 
     //<editor-fold desc="onLoadList">
-    onLoadList(page, isNew) {
-        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-
-        let fn;
-
-        const args = {};
-
-        if (selectedSite) {
-            args.site_id = selectedSite.id;
-            fn = bySite;
-        } else if (selectedProject) {
-            args.project_id = selectedProject.id;
-            fn = byProject;
-        } else if (selectedClient) {
-            args.client_id = selectedClient.id;
-            fn = byClient;
-        } else {
-            args.company_id = sess_company_id;
-            fn = byCompany;
-        }
-
-        return fn(args).then((res) => {
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            representative_list,
+            auditor,
+            type,
+            scope,
+            date_range,
+        } = filterData || {};
+        
+        const listByLogged = sockets.of('audits').fn('listByLogged');
+        
+        return listByLogged({
+            representative_list,
+            auditor,
+            type,
+            scope,
+            date_range,
+            //
+            exact_orgs: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
-    
-    onExportAll(e, btn) {
-        const {getDialogByRef} = this.refs.root;
-        const exportDialog = getDialogByRef('exportDialog');
-        exportDialog.open();
-    }
-
     //</editor-fold>
+    
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
@@ -113,15 +106,19 @@ class AuditTab extends React.Component {
         onNew(evt, elem, copy);
     }
     
-    // <editor-fold defaultstate="collapsed" desc="onExportAll">
-    
+    // <editor-fold defaultstate="collapsed" desc="onExport">
+    onExport(e, btn) {
+        const {getDialogByRef} = this.refs.root;
+        const exportDialog = getDialogByRef('exportDialog');
+        exportDialog.open();
+    }
     // </editor-fold>
     
     renderLeftButtons() {
         const {isEmployee, isContractorView} = storage.is;
         const isReadonly = isEmployee;// || isContractorView;
         return <div className="left-buttons pull-left">
-            {!isReadonly && <Button className="btn btn-primary pull-right" onClick={this.onExportAll}>
+            {!isReadonly && <Button className="btn btn-primary pull-right" onClick={this.onExport}>
                 Export
             </Button>}
         </div>;
@@ -146,11 +143,13 @@ class AuditTab extends React.Component {
 
     //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls flex">
-            <ClearableInput name="date" type="date" placeholder="Audit Date" className="form-control" onChange={onChange}/>
-            <ClearableInput name="type" type="text" placeholder="Audit Type" className="form-control" onChange={onChange}/>
+        return <div className="col-lg-12 controls grid-3 grid-gap-10 -margin-b-35">
+            <SelectEmployeeInput name="representative_list" type="select_multi" placeholder="Company Representative(s)..." className="form-control" onChange={onChange}/>
             <ClearableInput name="auditor" type="text" placeholder="Auditor" className="form-control" onChange={onChange}/>
-            <ClearableInput name="company" type="text" placeholder="Company" className="form-control" onChange={onChange}/>
+            <ClearableInput name="type" type="text" placeholder="Audit Type" className="form-control" onChange={onChange}/>
+            <ClearableInput name="scope" type="text" placeholder="Scope Of Audit" className="form-control" onChange={onChange}/>
+            <DateRangeInput name="date_range" className="form-control"
+                            placeholder="Audit Date" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
     //</editor-fold>
@@ -162,10 +161,10 @@ class AuditTab extends React.Component {
             <div className="td fixed-flex min-w-110">Date Created</div>
             <div className="td fixed-flex min-w-110">Audit Date</div>
             <div className="td">Audit Type</div>
-            <div className="td">Auditor</div>
             <div className="td">Scope Of Audit</div>
             <div className="td">Company</div>
-            <div className="td fixed-flex min-w-195">Company Representative</div>
+            <div className="td">Auditor(s)</div>
+            <div className="td fixed-flex min-w-195">Company Representative(s)</div>
             <div className="td fixed-flex min-w-70"></div>
         </THead>;
     }
@@ -186,8 +185,8 @@ class AuditTab extends React.Component {
             page={this}
             createBtnTitle="Create"
             pageId={this.pageKey + "-tab"}
-            pageTitle="Non-Conformance Report"
-            pageTitleSingular="non-conformance report"
+            pageTitle="Audit"
+            pageTitleSingular="audit"
             onLoadList={this.onLoadList}
             noAnimation={true}
             renderLeftButtons={this.renderLeftButtons}
@@ -200,10 +199,10 @@ class AuditTab extends React.Component {
             <NewAuditDialog ref="newDialog" onRemoved={this.onRemoved}/>
             <EditAuditDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileAuditDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+            
             <ProfilePDFReader ref="pdfReader"/>
             
             <ExportAuditDialog ref="exportDialog"/>
-            
         </APageListReadWrite>;
     }
     //</editor-fold>

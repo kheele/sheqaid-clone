@@ -22,21 +22,22 @@ class AuditTableRow extends React.Component {
 			<div className="td fixed-flex min-w-110">{Dates.formatDate(created_at)}</div>
 			<div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
 			<div className="td">{type}</div>
-			<div className="td">{(auditor_list && auditor_list.map((
-				{
-					employee,
-					other_person,
-				}
-			) =>
-				<span>{(employee || other_person).lname + ' ' + (employee || other_person).fname}</span>)) || 'N/A'}</div>
 			<div className="td">{scope}</div>
 			<div className="td">{(client && client.name) || 'N/A'}</div>
-			<div className="td fixed-flex min-w-195">{(representative_list && representative_list.map((
+			<div className="td">
 				{
-					employee,
-					other_person,
+					(auditor_list && auditor_list.map(({employee, other_person}) => <span>
+						{(employee || other_person).full_name}
+					</span>)) || 'N/A'
 				}
-			) => (employee || other_person).lname + ' ' + (employee || other_person).fname)) || 'N/A'}</div>
+			</div>
+			<div className="td fixed-flex min-w-195">
+				{
+					(representative_list && representative_list.map(({employee, other_person}) => <span>
+						{(employee || other_person).full_name}
+					</span>)) || 'N/A'
+				}
+			</div>
 			{onRenderActionCell && onRenderActionCell(item, idx)}
 			{!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
 				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

@@ -19,8 +19,8 @@ import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ExportDialog extends AExportDialog {
-    titleSingular = 'Training Matrix';
-    titlePlural = 'Training Matrices';
+    titleSingular = 'Internal Audit';
+    titlePlural = 'Internal Audits';
     
     get excludePDF() {
         return true;
@@ -85,14 +85,11 @@ class Controls extends AControls {
             project_id,
             site_id,
             //
-            trainer_id,
-            job_position_id,
-            //
-            course_id,
-            //
-            provider_requirement,
-            requirement,
-            status,
+            representative_list,
+            auditor,
+            type,
+            scope,
+            date_range,
         } = filterData || {};
 
         const listByLogged = sockets.of('audits').fn('listByLogged');
@@ -102,14 +99,11 @@ class Controls extends AControls {
             project_id,
             site_id,
             //
-            trainer_id,
-            job_position_id,
-            //
-            course_id,
-            //
-            provider_requirement,
-            requirement,
-            status,
+            representative_list,
+            auditor,
+            type,
+            scope,
+            date_range,
             //
             exact_orgs: true,
             //

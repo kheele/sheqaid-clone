@@ -110,7 +110,7 @@ function onSelectLoadAuditElements() {
 		.query({
 			query: `
       query listAllAuditElementsQuery {
-        sheq_compliance_audits(
+        sheq_compliance_audits_items(
           where: {
             element:{_is_null: false}
           },
@@ -131,7 +131,7 @@ function onSelectLoadAuditSubElements() {
 		.query({
 			query: `
       query listAllAuditSubElementsQuery {
-        sheq_compliance_audits(
+        sheq_compliance_audits_items(
           where: {
             sub_element:{_is_null: false}
           },

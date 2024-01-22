@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {observable, toJS, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
@@ -14,6 +15,7 @@ import AuditItemTable from './AuditItemTable';
 
 import style from "./EditAuditDialog.lazy.css";
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
 
 
 @observer
@@ -21,7 +23,7 @@ class EditAuditDialog extends AEditDialog {
 	pageKey = "EditAuditDialog";
 	title = "Edit Audit";
 	className = 'ANewTableFormDialog';
-	
+	findById = findByIdAudit;
 	removeById = updateAudit;
 
 	constructor(props) {
@@ -158,14 +160,15 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.close());
 		});
 	}
-
-	get item() {
+	
+	@computed get item() {
 		return this.props.state.item;
 	}
 
 	render() {
-		if (!this.item)
-			return null;
+		if (!this.item) {
+			return <CircularProgress className="fixed-center"/>;
+		}
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,

@@ -1,6 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import {Dates} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
@@ -12,13 +13,14 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import AuditItemTable from './AuditItemTable';
 
 import style from "./ProfileAuditDialog.lazy.css";
-import updateAudit from "../../../../../../mutations/all/AuditsAndInspections/Audit/updateAudit";
+import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileAuditDialog";
     className = 'ANewTableFormDialog';
-    
+    findById = findByIdAudit;
     removeById = updateAudit;
   
     constructor(props) {
@@ -55,13 +57,14 @@ class Controls extends React.Component {
         }
     }
     
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item){
+            return <CircularProgress className="fixed-center"/>;
+        }
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,

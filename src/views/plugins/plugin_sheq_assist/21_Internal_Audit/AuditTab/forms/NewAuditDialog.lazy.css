@@ -21,4 +21,9 @@
 }
 #dialog-overlay.NewAuditDialog-new-dialog .table.DefinitionsTable .list > .tr > .td {
     border: none !important;
+    padding: 5px 5px 5px 5px !important;
+    height: 50px !important;
+}
+#dialog-overlay.NewAuditDialog-new-dialog .table.DefinitionsTable .list > .tr > .td:last-of-type {
+    padding: 5px 0 5px 8px !important;
 }

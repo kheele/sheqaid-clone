@@ -1,5 +1,5 @@
 const {orgs_fragment} = require("../../../../graphql/Fragments");
-const {inspection_details_list_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {audit_details_fragment, getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -13,10 +13,11 @@ module.exports = async (socket, data) => {
 		//
 		id,
 		//
-		name,
-		interval,
-		template_id,
-		asset_type,
+		representative_list,
+		auditor,
+		type,
+		scope,
+		date_range,
 		//
 		site_id, project_id, client_id,
 		//
@@ -31,9 +32,11 @@ module.exports = async (socket, data) => {
 		//
 		id,
 		//
-		name,
-		interval,
-		template_id,
+		representative_list,
+		auditor,
+		type,
+		scope,
+		date_range,
 		//
 		site_id, project_id, client_id,
 		//
@@ -43,55 +46,38 @@ module.exports = async (socket, data) => {
 	if (id) {
 		return listGraphQL({
 			query: `
-        query listAllInspectionQuestionnaireByLoggedQuery {
-            default_contractor_questionnaires(
+        query listAllAuditByLoggedQuery {
+            sheq_compliance_audits(
               where: {
                   ${filter}
               }
             ) {
-                ${inspection_details_list_fragment}
+                ${audit_details_fragment}
                 ${orgs_fragment}
             }
         }
 			`,
-			operationName: "listAllInspectionQuestionnaireByLoggedQuery",
+			operationName: "listAllAuditByLoggedQuery",
 		});
 	} else {
-		let where_asset_type;
-		if (asset_type) {
-			if (isArray(asset_type)) {
-				where_asset_type = `
-					asset_type:{_in: [${asset_type.map(v => `"${v}"`).join(',')}]},
-				`;
-			} else {
-				where_asset_type = `
-					asset_type:{_eq: ${asset_type}},
-				`;
-			}
-		}
-		
 		return listGraphQL({
 			query: `
-        query listAllInspectionQuestionnaireByLoggedQuery {
-            default_contractor_questionnaires(
+        query listAllAuditByLoggedQuery {
+            sheq_compliance_audits(
               where: {
                   removed: {_eq: ${removed}},
-                  group: {_eq: "Inspections"},
-                  is_template: {_eq: false},
-                  ${where_asset_type ? where_asset_type : ''}
-                  ${client_filter}
                   ${filter}
               },
-              order_by: {name: asc},
+              order_by: {date: desc},
               offset: ${offset},
               ${limit > 0 ? `limit: ${limit}` : ''}
             ) {
-                ${inspection_details_list_fragment}
+                ${audit_details_fragment}
                 ${orgs_fragment}
             }
         }
 			`,
-			operationName: "listAllInspectionQuestionnaireByLoggedQuery",
+			operationName: "listAllAuditByLoggedQuery",
 		});
 	}
 }

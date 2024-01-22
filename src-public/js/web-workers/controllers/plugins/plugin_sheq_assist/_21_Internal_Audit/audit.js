@@ -55,14 +55,18 @@
 							scope,
 							date: Dates.formatDateSQL(date),
 							type,
-							representative_list: (representative_list || []).map(({
-								                                                      employee,
-								                                                      other_person
-							                                                      }) => (employee || other_person).full_name).join(','),
-							auditor_list: (auditor_list || []).map(({
-								                                        employee,
-								                                        other_person
-							                                        }) => (employee || other_person).full_name).join(','),
+							representative_list: (representative_list || []).map((
+								{
+									employee,
+									other_person
+								}
+							) => (employee || other_person).full_name).join(','),
+							auditor_list: (auditor_list || []).map((
+								{
+									employee,
+									other_person
+								}
+							) => (employee || other_person).full_name).join(','),
 							definition_list: (definition_list || []).map(({title}) => title).join(','),
 							
 							status,
