@@ -18,7 +18,7 @@ class AuditTableRow extends React.Component {
 			data: {created_at, client, scope, date, type, representative_list, auditor_list, definition_list, list}
 		} = item;
 		return <TRow className="w-full">
-			<div className="td fixed-flex min-w-40">ID</div>
+			<div className="td fixed-flex min-w-40">{id}</div>
 			<div className="td fixed-flex min-w-110">{Dates.formatDate(created_at)}</div>
 			<div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div>
 			<div className="td">{type}</div>

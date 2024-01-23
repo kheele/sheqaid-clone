@@ -102,7 +102,61 @@ class ATableSavable extends React.Component {
         onChange && onChange(toJS(this.list), name, this);
         console.log(`removeAt list: ${idx}`)
     }
-
+    
+    onClickComplete(e, el) {
+        let {savable, targetItem, insertFn, deleteFn, onAttrs, onUpdated} = this.props;
+        
+        if (savable && targetItem) {
+            let {action, idx, item} = el.props;
+            
+            if (insertFn && (action === "save" || action === "saveEdit")) {
+                progressDialog.open();
+                insertFn({
+                    [targetItem.key]: targetItem.item.id,
+                    ...onAttrs(item),
+                }).then(savedItem => {
+                    if (!savedItem) {
+                        infoDialog.open("Sorry! Record couldn't be added.");
+                    } else {
+                        infoDialog.open("Record successfully added.");
+                    }
+                    
+                    infoDialog.close(2000);
+                }).catch(err => {
+                    infoDialog.open("An error occurred. Please try again later.");
+                    infoDialog.close(2000);
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            } else if (deleteFn && action === "delete") {
+                confirmDialog.open("Are you sure you want to remove the item?").then(res => {
+                    if (!res) return;
+                    
+                    if (!item.id) return;
+                    
+                    progressDialog.open();
+                    deleteFn(item.id).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be removed.");
+                        } else {
+                            infoDialog.open("Record successfully removed.");
+                        }
+                        
+                        infoDialog.close(2000);
+                    }).catch(err => {
+                        infoDialog.open("An error occurred. Please try again later.");
+                        infoDialog.close(2000);
+                        console.error(err);
+                    }).finally(() => {
+                        setTimeout(() => progressDialog.close());
+                    });
+                });
+            }
+            // onUpdate && onUpdate(e, el);
+        }
+    }
+    
     onClick(evt, el) {
         const {onClickComplete} = this;
         const {onChange, name, insertAt} = this.props;

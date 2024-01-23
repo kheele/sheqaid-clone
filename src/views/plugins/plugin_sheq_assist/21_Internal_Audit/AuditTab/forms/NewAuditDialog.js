@@ -145,6 +145,11 @@ class Controls extends React.Component {
 				data: (representative_list || []).map((v) => {
 					const {other_person, employee} = v;
 					if (other_person) {
+						const {job_position} = other_person;
+						if (job_position) {
+							other_person.job_position_id = job_position.id;
+							delete other_person.job_position;
+						}
 						return {other_person: {data: other_person}};
 					} else if (employee) {
 						const {id} = employee;
@@ -159,6 +164,11 @@ class Controls extends React.Component {
 				data: (auditor_list || []).map((v) => {
 					const {other_person, employee} = v;
 					if (other_person) {
+						const {job_position} = other_person;
+						if (job_position) {
+							other_person.job_position_id = job_position.id;
+							delete other_person.job_position;
+						}
 						return {other_person: {data: other_person}};
 					} else if (employee) {
 						const {id} = employee;
@@ -171,7 +181,29 @@ class Controls extends React.Component {
 			//4
 			definition_list: {data: (definition_list || [])},//[{title, desc}]
 			//5
-			list: {data: (list || [])},//[{element, sub_element, audit_findings, audit_summary, possible_score, achieved_score, comments}]
+			list: {
+				data: (list || []).map((
+					{
+						element, sub_element,
+						responsible_person, target_date, due_date,
+						audit_findings, audit_summary,
+						possible_score, achieved_score,
+						comments, compliance,
+					}
+				) => ({
+					achieved_score,//
+					audit_findings,//
+					audit_summary,//
+					comments,//
+					compliance,//
+					due_date: Dates.formatDateSQL(due_date),//
+					element,//
+					possible_score,//
+					target_date: Dates.formatDateSQL(target_date),//
+					responsible_person_id: responsible_person && responsible_person.id,//
+					sub_element,//
+				}))
+			},//[{element, sub_element, audit_findings, audit_summary, possible_score, achieved_score, comments}]
 		};
 		
 		console.log(data)

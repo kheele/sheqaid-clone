@@ -157,7 +157,7 @@ const personal_details_other_fragment = `
     created_at
     fname
     lname
-    #full_name
+    full_name
     id_num
     passport_num
     email

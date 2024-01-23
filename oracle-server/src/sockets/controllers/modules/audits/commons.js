@@ -92,6 +92,7 @@ exports.audit_details_fragment = `
   
   auditor_list{
     id
+    audit_id
     employee{
       ${employee_personal_details_fragment}
     }
@@ -101,6 +102,7 @@ exports.audit_details_fragment = `
   }
   representative_list{
     id
+    audit_id
     employee{
       ${employee_personal_details_fragment}
     }
@@ -109,17 +111,27 @@ exports.audit_details_fragment = `
     }
   }
   definition_list{
+    id
+    audit_id
     title
     desc
   }
   list{
+    id
+    audit_id
     element
     sub_element
+    target_date
+    due_date
     audit_findings
     audit_summary
     possible_score
     achieved_score
     comments
+    compliance
+    responsible_person{
+      ${employee_personal_details_fragment}
+    }
   }
   
   contractor_site{

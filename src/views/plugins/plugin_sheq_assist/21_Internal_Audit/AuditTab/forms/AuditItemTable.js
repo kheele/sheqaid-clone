@@ -108,9 +108,9 @@ class AuditItemTable extends React.Component {
     }
 
     render() {
-        const {isDialog, isSingleSelect, name, readonly, isNew, onChange, onSelect} = this.props;
+        const {isDialog, isSingleSelect, name, savable, auditItem, readonly, isNew, onChange, onSelect} = this.props;
         const tbl = <Table className="AAuditItemTable AuditItemTable w-full min-h-380 padding-0 margin-0">
-            {!readonly && !isDialog && <NewAuditItemDialog ref="newDialog"/>}
+            {!readonly && !isDialog && <NewAuditItemDialog ref="newDialog" savable={savable} auditItem={auditItem}/>}
             <AuditItemTHead/>  
             <AuditItemTBody ref="tbody" name={name} readonly={readonly} isSingleSelect={isSingleSelect} isNew={isNew} onNew={this.onNew} onEditItem={this.onEditItem} onSelect={this.onSelect} state={this.state} onChange={onChange}/>
             

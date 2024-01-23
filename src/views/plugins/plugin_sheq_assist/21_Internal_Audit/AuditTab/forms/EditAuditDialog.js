@@ -4,9 +4,9 @@ import {observable, toJS, computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
-import {ShouldUpdate} from 'utils/Utils';
+import {Dates, ShouldUpdate} from 'utils/Utils';
 import {Button, ClearableInput, Clickable, SelectClientInput} from 'components/inputs';
-import {NavButtons} from 'components/FormComponents';
+import {FormControls, NavButtons, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {AEditDialog} from 'components/dialogs';
@@ -16,7 +16,20 @@ import AuditItemTable from './AuditItemTable';
 import style from "./EditAuditDialog.lazy.css";
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
 import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
-
+import insertProxyEmployeeAuditRepresentative
+	from "mutations/all/ProxyEmployeeAuditRepresentative/insertProxyEmployeeAuditRepresentative";
+import deleteProxyEmployeeAuditRepresentative
+	from "mutations/all/ProxyEmployeeAuditRepresentative/deleteProxyEmployeeAuditRepresentative";
+import insertProxyEmployeeAuditor
+	from "mutations/all/ProxyEmployeeAuditor/insertProxyEmployeeAuditor";
+import deleteProxyEmployeeAuditor
+	from "mutations/all/ProxyEmployeeAuditor/deleteProxyEmployeeAuditor";
+import insertAuditItem from "mutations/all/AuditsAndInspections/AuditItem/insertAuditItem";
+import insertAuditDefinition
+	from "mutations/all/AuditsAndInspections/AuditDefinition/insertAuditDefinition";
+import deleteAuditDefinition
+	from "mutations/all/AuditsAndInspections/AuditDefinition/deleteAuditDefinition";
+import deleteAuditItem from "mutations/all/AuditsAndInspections/AuditItem/deleteAuditItem";
 
 @observer
 class EditAuditDialog extends AEditDialog {
@@ -25,11 +38,15 @@ class EditAuditDialog extends AEditDialog {
 	className = 'ANewTableFormDialog';
 	findById = findByIdAudit;
 	removeById = updateAudit;
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
+	get topButtonsHiddenSave() {
+		return true;
+	}
+	
 	get controls() {
 		return Controls;
 	}
@@ -38,20 +55,52 @@ class EditAuditDialog extends AEditDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/21_Internal_Audit/audit/";
-
+	
 	constructor() {
 		super();
-
-		this.onNext = this.onNext.bind(this);
+		
+		this.onFormSave = this.onFormSave.bind(this);
 		this.onFormChange = this.onFormChange.bind(this);
-
+		
 		this.form = new Form();
 	}
-
-	onNext(e, btn) {
-		const {form} = this;
+	
+	onFormSave(e, btn) {
+		const {
+			form,
+			item: {
+				id,
+				data: old_data,
+			},
+		} = this;
 		const {idx} = btn.props;
 		const {isConsultant} = storage.is;
+		
+		const onSubmit = (data, onProgress) => {
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+			
+			console.log(data)
+			
+			if (!onProgress) {
+				btn.text("Saving...").disabled();
+				progressDialog.open();
+			}
+			return updateAudit({id: this.item.id, ...data}).then(res => {
+				console.log("res", res)
+				// onSaved && onSaved(res);
+				infoDialog.open("Record successfully updated.");
+				infoDialog.close(2000);
+				// this.props.close();
+				return true;
+			}).finally(() => {
+				btn.text("Save").enabled();
+				setTimeout(() => progressDialog.close());
+			});
+		};
+		
 		if (idx === 1) {
 			if (isConsultant && !form.isValid('client')) {
 				infoDialog.open('Company is required');
@@ -61,110 +110,37 @@ class Controls extends React.Component {
 				infoDialog.open('Audit Date is required');
 				return;
 			}
+			
+			const {
+				client,
+				scope, date, type,
+			} = form.data;
+			
+			const data = {};
+			
+			ShouldUpdate.checkClient(data, old_data, client, 'client');
+			ShouldUpdate.check(data, old_data, scope, 'scope');
+			ShouldUpdate.checkDate(data, old_data, date, 'date');
+			ShouldUpdate.check(data, old_data, type, 'type');
+			
+			onSubmit(data);
+			return;
 		}
-		if (idx === 2) {
-			if (!form.isValid('representative_list')) {
-				infoDialog.open('Company Representative(s) is required');
-				return;
-			}
-		}
-		if (idx === 3) {
-			if (!form.isValid('auditor_list')) {
-				infoDialog.open('Auditor(s) is required');
-				return;
-			}
-		}
-
+		
 		return true;
 	}
-
+	
 	onFormChange(idx) {
 		const {list} = this.refs;
 		if (idx === 5 && list) {
 			list.refresh();
 		}
 	}
-
-	onSubmit(e, btn, onSaved) {
-		const {form, item: {data: old_data}} = this;
-		const {isConsultant} = storage.is;
-
-		if (isConsultant && !form.isValid('client')) {
-			infoDialog.open('Company is required');
-			return;
-		}
-		if (!form.isValid('date')) {
-			infoDialog.open('Audit Date is required');
-			return;
-		}
-
-		// if (!form.isValid('representative_list') || form.get('representative_list').isEmpty()) {
-		// 	infoDialog.open('Company Representative(s) is/are required');
-		// 	return;
-		// }
-		// if (!form.isValid('auditor_list') || form.get('auditor_list').isEmpty()) {
-		// 	infoDialog.open('Auditor(s) is/are required');
-		// 	return;
-		// }
-
-		// if (!form.isValid('list') || form.get('list').isEmpty()) {
-		// 	infoDialog.open('Findings are required');
-		// 	return;
-		// }
-
-		const {
-			//0
-			client, project, site,
-			//1
-			scope, date, type,
-			//2
-			representative_list,
-			//3
-			auditor_list,
-			//4
-			definition_list,
-			//5
-			list,
-		} = form.data;
-		const data = {};
-
-		ShouldUpdate.checkClient(data, old_data, client, 'client');
-		ShouldUpdate.check(data, old_data, scope, 'scope');
-		ShouldUpdate.checkDate(data, old_data, date, 'date');
-		ShouldUpdate.check(data, old_data, type, 'type');
-
-		if (representative_list) {
-			data.representative_list = toJS(representative_list);
-		}
-		if (auditor_list) {
-			data.auditor_list = toJS(auditor_list);
-		}
-		if (list) {
-			data.list = toJS(list);
-		}
-		if (definition_list) {
-			data.definition_list = toJS(definition_list);
-		}
-		console.log(data)
-
-		btn.text("Saving...").disabled();
-		progressDialog.open();
-		updateAudit({id: this.item.id, ...data}).then(res => {
-			console.log("res", res)
-			onSaved && onSaved(data);
-			infoDialog.open("Record successfully saved.");
-			infoDialog.close(2000);
-			this.props.close();
-		}).finally(() => {
-			btn.text("Save").enabled();
-			setTimeout(() => progressDialog.close());
-		});
-	}
 	
 	@computed get item() {
 		return this.props.state.item;
 	}
-
+	
 	render() {
 		if (!this.item) {
 			return <CircularProgress className="fixed-center"/>;
@@ -185,95 +161,151 @@ class Controls extends React.Component {
 				}
 			}
 		} = this;
-
+		
 		const {isConsultant} = storage.is;
-
-		return (<div className="controls-wrapper controls-sectioned">
-			<div className="controls">
-				<div className="row active">
-					<label>
-						1. General Details
-						<Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						<div className="flex">
-							<div className="margin-t-10 margin-r-20">
-								{isConsultant &&
-									<SelectClientInput name="client" placeholder="Company..." defaultValue={client} required
-									                   className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>}
-								<ClearableInput name="scope" type="text" placeholder="Scope Of Audit" defaultValue={scope} required
-								                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
-							</div>
-							<div className="margin-t-10 margin-l-20">
-								<ClearableInput name="date" type="date" placeholder="Audit Date..." defaultValue={date || new Date()}
-								                required className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
-								<ClearableInput name="type" type="text" placeholder="Audit Type" defaultValue={type} required
-								                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
-							</div>
-						</div>
+		
+		return (<FormControls>
+			<Row
+				rendered
+				idx={1}
+				title="1. General Details"
+				onFormOpen={onFormOpen}
+				onFormNext={onFormNext}
+				onFormSave={this.onFormSave}
+			>
+				<div className="flex">
+					<div className="margin-t-10 margin-r-20">
+						{isConsultant &&
+							<SelectClientInput name="client" placeholder="Company..." defaultValue={client} required
+							                   className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>}
+						<ClearableInput name="scope" type="text" placeholder="Scope Of Audit" defaultValue={scope} required
+						                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
 					</div>
-					<NavButtons idx={1} onNext={onFormNext}/>
-				</div>
-				<div className="row row-representatives">
-					<label>
-						2. Company Representative(s)
-						<Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						<NewEmployeeListTable name="representative_list"
-						                      defaultValue={representative_list ? [...representative_list, null] : [null]}
-						                      onChange={this.form.onChange}/>
+					<div className="margin-t-10 margin-l-20">
+						<ClearableInput name="date" type="date" placeholder="Audit Date..." defaultValue={date || new Date()}
+						                required className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
+						<ClearableInput name="type" type="text" placeholder="Audit Type" defaultValue={type} required
+						                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
 					</div>
-					<NavButtons idx={2} onBack={onFormBack} onNext={onFormNext}/>
 				</div>
-				<div className="row row-auditors">
-					<label>
-						3. Auditor(s)
-						<Clickable idx={3} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						<NewEmployeeListTable name="auditor_list" defaultValue={auditor_list ? [...auditor_list, null] : [null]}
-						                      onChange={this.form.onChange}/>
-					</div>
-					<NavButtons idx={3} onBack={onFormBack} onNext={onFormNext}/>
-				</div>
-				<div className="row row-definitions">
-					<label>
-						4. Definitions
-						<Clickable idx={4} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group">
-						<DefinitionsTable name="definition_list"
-						                  defaultValue={definition_list ? [...definition_list, null] : [null]}
-						                  onChange={this.form.onChange}/>
-					</div>
-					<NavButtons idx={4} onBack={onFormBack} onNext={onFormNext}/>
-				</div>
-				<div className="row row-table">
-					<label>
-						5. Findings
-						<Clickable idx={5} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-					</label>
-					<div className="row sec-group row-findings">
-						<AuditItemTable ref="list" name="list" defaultValue={list} onChange={this.form.onChange}/>
-					</div>
-					<NavButtons idx={5} onBack={onFormBack}/>
-				</div>
-			</div>
-		</div>);
+			</Row>
+			<Row
+				rendered
+				idx={2}
+				title="2. Company Representative(s)"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+				onFormNext={onFormNext}
+			>
+				<NewEmployeeListTable
+					name="representative_list"
+					defaultValue={representative_list ? [...representative_list, null] : [null]}
+					savable
+					targetItem={{key: "audit_id", item}}
+					insertFn={insertProxyEmployeeAuditRepresentative}
+					deleteFn={deleteProxyEmployeeAuditRepresentative}
+					onAttrs={onEmployeeAttrs}
+					onChange={this.form.onChange}
+				/>
+			</Row>
+			<Row
+				rendered
+				idx={3}
+				title="3. Auditor(s)"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+				onFormNext={onFormNext}
+			>
+				<NewEmployeeListTable
+					name="auditor_list"
+					defaultValue={auditor_list ? [...auditor_list, null] : [null]}
+					savable
+					targetItem={{key: "audit_id", item}}
+					insertFn={insertProxyEmployeeAuditor}
+					deleteFn={deleteProxyEmployeeAuditor}
+					onAttrs={onEmployeeAttrs}
+					onChange={this.form.onChange}
+				/>
+			</Row>
+			<Row
+				rendered
+				idx={4}
+				title="4. Definitions"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+				onFormNext={onFormNext}
+			>
+				<DefinitionsTable
+					name="definition_list"
+					defaultValue={definition_list ? [...definition_list, null] : [null]}
+					savable
+					targetItem={{key: "audit_id", item}}
+					insertFn={insertAuditDefinition}
+					deleteFn={deleteAuditDefinition}
+					onAttrs={({title, desc}) => {
+						return {title, desc};
+					}}
+					onChange={this.form.onChange}
+				/>
+			</Row>
+			<Row
+				rendered
+				idx={5}
+				title="5. Findings"
+				className="row-table"
+				onFormOpen={onFormOpen}
+				onFormBack={onFormBack}
+			>
+				<AuditItemTable
+					ref="list"
+					name="list"
+					defaultValue={list}
+					savable
+					auditItem={item}
+					onChange={this.form.onChange}
+				/>
+			</Row>
+		</FormControls>);
 	}
+}
+
+function onEmployeeAttrs({employee, other_person}) {
+	if (other_person && !other_person.id) {
+		const {job_position} = other_person;
+		if (job_position) {
+			other_person.job_position_id = job_position.id;
+			delete other_person.job_position;
+		}
+	}
+	
+	return {
+		employee_id: employee && employee.id,
+		other_person_id: other_person && other_person.id ? other_person.id : null,
+		other_person: other_person && !other_person.id ? {data: other_person} : null
+	};
 }
 
 @observer
 class DefinitionsTable extends ATableSavable {
-
+	
 	@observable
 	selfState = {};
-
+	
 	constructor(props) {
 		super(props);
 	}
-
+	
+	onPostChange(val, name, el) {
+		if(!val) {
+			return;
+		}
+		
+		const {idx} = el.props;
+		this.onClick(null, {
+			props: {action: "save", idx},
+		});
+	}
+	
 	renderItem(n, onClick) {
 		const item = this.state.list[n];
 		if (item) {
@@ -304,7 +336,7 @@ class DefinitionsTable extends ATableSavable {
 			</TRow>;
 		}
 	}
-
+	
 	render() {
 		return (<Table className="DefinitionsTable">
 			<THead className="align-left">
