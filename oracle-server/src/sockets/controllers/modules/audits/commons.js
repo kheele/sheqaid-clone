@@ -119,6 +119,9 @@ exports.audit_details_fragment = `
   list{
     id
     audit_id
+    audit{
+      id
+    }
     element
     sub_element
     target_date

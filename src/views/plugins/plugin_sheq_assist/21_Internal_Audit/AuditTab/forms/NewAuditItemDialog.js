@@ -303,11 +303,14 @@ class Controls extends React.Component {
 			progressDialog.open();
 			insertAuditItem(data).then(res => {
 				console.log("res", res)
-				onSaved && onSaved(res);
-				infoDialog.open("Record successfully added.");
-				infoDialog.close(2000);
-				this.props.close();
-				return true;
+				if(res) {
+					onSaved && onSaved(res.data);
+					infoDialog.open("Record successfully added.");
+					infoDialog.close(2000);
+					this.props.close();
+				} else {
+					infoDialog.open("Record could not be added. Please try again later.");
+				}
 			}).finally(() => {
 				btn.text("Save").enabled();
 				setTimeout(() => progressDialog.close());
