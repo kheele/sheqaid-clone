@@ -47,7 +47,7 @@ class AuditItemTBodyElement extends ATableSavable {
         });
     }
     
-    RenderItem({item, n, readonly, onCloseAll, isSingleSelect, onClick, onNew, onEditItem, onSelect}) {
+    RenderItem({item, n, readonly, savable, targetItem, deleteFn, onAttrs, onCloseAll, isSingleSelect, onClick, onNew, onEditItem, onSelect}) {
         let {
             element, list
         } = item;
@@ -83,17 +83,21 @@ class AuditItemTBodyElement extends ATableSavable {
                     isSingleSelect={isSingleSelect} 
                     element={element} 
                     elementIdx={n} 
-                    readonly={readonly} 
-                    onNew={onNew} 
+                    readonly={readonly}
+                    onNew={onNew}
                     onEditItem={onEditItem}
                     onSelect={onSelect}
+                    savable={savable}
+                    targetItem={targetItem}
+                    deleteFn={deleteFn}
+                    onAttrs={onAttrs}
                 />
             </div>;
     }
     
     renderItem(n, onClick) {
         const {RenderItem} = this;
-        const {readonly, onEditItem, onSelect, onNew, isSingleSelect} = this.props;
+        const {readonly, onEditItem, savable, targetItem, deleteFn, onAttrs, onSelect, onNew, isSingleSelect} = this.props;
         const item = this.listGroup[n];
         return <RenderItem 
             key={n + '-' + new Date().getTime()} 
@@ -106,6 +110,10 @@ class AuditItemTBodyElement extends ATableSavable {
             onNew={onNew} 
             onEditItem={onEditItem}
             onSelect={onSelect}
+            savable={savable}
+            targetItem={targetItem}
+            deleteFn={deleteFn}
+            onAttrs={onAttrs}
         />;
     }
 
@@ -169,7 +177,7 @@ class AuditItemTBodySubElement extends ATableSavable {
         this.selfState.rendered = false;
     }
     
-    RenderItem({item, n, element, elementIdx, readonly, isSingleSelect, onCloseAll, onClick, onNew, onEditItem, onSelect}) {
+    RenderItem({item, n, element, elementIdx, readonly, savable, targetItem, deleteFn, onAttrs, isSingleSelect, onCloseAll, onClick, onNew, onEditItem, onSelect}) {
         let {
             sub_element, list
         } = item;
@@ -207,13 +215,17 @@ class AuditItemTBodySubElement extends ATableSavable {
                     readonly={readonly} 
                     onEditItem={onEditItem}
                     onSelect={onSelect}
+                    savable={savable}
+                    targetItem={targetItem}
+                    deleteFn={deleteFn}
+                    onAttrs={onAttrs}
                 />
             </div>;
     }
     
     renderItem(n, onClick) {
         const {RenderItem} = this;
-        const {readonly, element, elementIdx, isSingleSelect, onEditItem, onSelect, onNew} = this.props;
+        const {readonly, savable, targetItem, deleteFn, onAttrs, element, elementIdx, isSingleSelect, onEditItem, onSelect, onNew} = this.props;
         const item = this.listGroup[n];
         return <RenderItem 
             key={elementIdx + n + new Date().getTime()} 
@@ -222,12 +234,16 @@ class AuditItemTBodySubElement extends ATableSavable {
             isSingleSelect={isSingleSelect} 
             element={element} 
             elementIdx={elementIdx} 
-            readonly={readonly} 
-            onCloseAll={this.onCloseAll} 
+            readonly={readonly}
+            onCloseAll={this.onCloseAll}
             onClick={onClick} 
             onNew={onNew} 
             onEditItem={onEditItem}
             onSelect={onSelect}
+            savable={savable}
+            targetItem={targetItem}
+            deleteFn={deleteFn}
+            onAttrs={onAttrs}
         />;
     }
 
@@ -305,14 +321,6 @@ class AuditItemTBody extends ATableSavable {
             possible_score, achieved_score, compliance,
             comments
         } = item;
-        
-        let responsible_personName = null;
-        if(responsible_person) {
-            const {fname, lname, data} = responsible_person;
-            responsible_personName = (fname || data.fname).charAt(0).toUpperCase() + '. ' + (lname || data.lname);
-        } else {
-            responsible_personName = "";
-        }
             
         return <TRow key={"item-" + elementIdx + '-' + subElementIdx + '-' + n}>
             <div className="td">

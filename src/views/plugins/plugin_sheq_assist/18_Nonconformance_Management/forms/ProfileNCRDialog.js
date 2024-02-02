@@ -12,16 +12,16 @@ import {
 	ClearableInput,
 	ProfileField
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
-import InspectionTableRow from '../../Inspections/InspectionTab/InspectionTableRow';
+import InspectionTableRow from 'views/plugins/plugin_sheq_assist/Inspections/InspectionTab/InspectionTableRow';
 
-import AuditTableRow from '../../21_Internal_Audit/AuditTab/AuditTableRow';
-import {IncidentTableRow} from '../../17_Incident_Investigation/dialogs/IncidentComponentRows';
+import AuditTableRow from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/AuditTableRow';
+import {IncidentTableRow} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
 
 import ProfileSiteDialog from 'views/plugins/plugin_general/Sites/ProfileDialog.js';
-import ProfileAuditDialog from '../../21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
-import ProfileIncidentDialog from '../../17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
+import ProfileAuditDialog from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
+import ProfileIncidentDialog from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
 
 import style from "./ProfileNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -31,6 +31,11 @@ import EditNCRDialog from "./EditNCRDialog";
 import {CircularProgress} from "@mui/material";
 import findByIdNCR from "mutations/all/NCR/findByIdNCR";
 import updateNCR from "mutations/all/NCR/updateNCR";
+import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
+import findByIdIncident from "mutations/all/Incident/findByIdIncident";
+import findByIdInspectionsQuestionnaire
+	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import findByIdSite from "mutations/all/Site/findByIdSite";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog, DialogTitle, DialogTopButtons">
@@ -40,20 +45,20 @@ class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileNCRDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdNCR;
-	removeById = updateNCR ;
-
+	removeById = updateNCR;
+	
 	//<editor-fold desc="constructor">
 	constructor(props) {
 		super(props, style);
-
+		
 		this.onApprove = this.onApprove.bind(this);
 		this.onReject = this.onReject.bind(this);
 		this.onProgress = this.onProgress.bind(this);
 		this.onComplete = this.onComplete.bind(this);
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="title">
 	get title() {
 		const {controls} = this.refs;
@@ -67,24 +72,24 @@ class ProfileDialog extends AProfileDialog {
 			return <DialogTitle state={state}/>;
 		}
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="controls">
 	get controls() {
 		return Controls;
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onEdit">
 	onEdit(evt, btn) {
 		const {editDialog} = this.refs.controls.refs;
 		editDialog && editDialog.open(this.state.item);
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onApprove">
 	onApprove(e, el) {
 		const {item} = this.state;
@@ -104,9 +109,9 @@ class ProfileDialog extends AProfileDialog {
 			}
 		})
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onReject">
 	onReject(e, el) {
 		const {item} = this.state;
@@ -126,9 +131,9 @@ class ProfileDialog extends AProfileDialog {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onProgress">
 	onProgress(e, el) {
 		const {item} = this.state;
@@ -138,9 +143,9 @@ class ProfileDialog extends AProfileDialog {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onComplete">
 	onComplete(e, el) {
 		const {item} = this.state;
@@ -150,9 +155,9 @@ class ProfileDialog extends AProfileDialog {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="topButtons">
 	get topButtons() {
 		const {controls} = this.refs;
@@ -174,7 +179,7 @@ class ProfileDialog extends AProfileDialog {
 			return execWhen(() => this.refs.controls).then(onRender);
 		}
 	}
-
+	
 	//</editor-fold>
 }
 
@@ -206,10 +211,10 @@ const DialogTopButtons = observer((
 ) => {
 	const {item} = mainState;
 	if (!item) return null;
-
+	
 	const {
 		id, data: {
-			selected_source_ref,
+			selected_source,
 			assigned_job_position_list,
 			assigned_person_list,
 			approving_person,
@@ -217,9 +222,9 @@ const DialogTopButtons = observer((
 			status_acceptance
 		}
 	} = item;
-
+	
 	const {view} = state;
-
+	
 	const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
 	const isResponsible = () => {
 		if (assigned_job_position_list || assigned_person_list) {
@@ -240,7 +245,7 @@ const DialogTopButtons = observer((
 	const isApproving = () => {
 		return approving_person && user_uid === approving_person.id;
 	};
-
+	
 	return <>
 		{isResponsible() && <>
 			{status_progress !== 'Progressed' && status_progress !== 'Completed' && view !== "Progressed" &&
@@ -275,7 +280,7 @@ const DialogTopButtons = observer((
 
 @observer
 class Controls extends React.Component {
-
+	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable
 	state = {
@@ -294,31 +299,31 @@ class Controls extends React.Component {
 		
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onView = this.onView.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-
+		
 		this.form = new Form();
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="componentDidMount">
 	async componentDidMount() {
 		const view = await execWhen(() => this.props.dialog && this.props.dialog.extraProp('view'));
 		this.state.view = view || "Profile";
 	}
-
+	
 	//</editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onView">
 	onView(evt, btn) {
 		const {source, selected_source} = this.selfState;
-
+		
 		let name;
 		if (source === "Site Audit") {
 			name = "profileSiteDialog";
@@ -329,32 +334,32 @@ class Controls extends React.Component {
 		} else if (source === "Incident Investigation") {
 			name = "profileIncidentDialog";
 		}
-
+		
 		const profileDialog = this.refs[name];
 		profileDialog && profileDialog.open(selected_source);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	onSubmit(val, name, el) {
 		const {form, item: {data: old_data}, viewProfile, viewProgress, viewComplete,} = this;
-
+		
 		if (viewProgress) {
 			let {
 				//6
 				progress_list,
 			} = form.data;
 			const data = {};
-
+			
 			//6
 			progress_list = (progress_list || []).map(({progress_date, ...others}) => ({
 				...others,
 				progress_date: Dates.formatDateSQL(progress_date),
 			}));
-
+			
 			console.log(data)
-
+			
 			progressDialog.open("Progressing the non-conformance...");
 			updateNCR({id: this.item.id, progress_list, status_progress: 'Progressed'}).then(res => {
 				console.log("res", res)
@@ -363,7 +368,7 @@ class Controls extends React.Component {
 				} else {
 					const data_updated = {...res.data, status_progress: 'Progressed'};
 					// onSaved && onSaved(data_updated);
-
+					
 					extendObservable(this.item.data, data_updated);
 					infoDialog.open("Non-Conformance successfully progressed.");
 					infoDialog.close(2000);
@@ -374,23 +379,23 @@ class Controls extends React.Component {
 			});
 			return;
 		}
-
+		
 		if (viewComplete) {
 			const {
 				//7
 				status_acceptance, status_progress, result, completed_date, additional_notes
 			} = form.data;
 			const data = {};
-
+			
 			//7
 			ShouldUpdate.check(data, old_data, status_acceptance, 'status_acceptance');
 			// ShouldUpdate.check(data, old_data, status_progress, 'status_progress');
 			ShouldUpdate.check(data, old_data, result, 'result');
 			ShouldUpdate.checkDate(data, old_data, completed_date, 'completed_date');
 			ShouldUpdate.check(data, old_data, additional_notes, 'additional_notes');
-
+			
 			console.log(data)
-
+			
 			progressDialog.open("Closing the non-conformance...");
 			updateNCR({id: this.item.id, ...data, status_progress: 'Completed'}).then(res => {
 				console.log("res", res)
@@ -399,7 +404,7 @@ class Controls extends React.Component {
 				} else {
 					const data_updated = {...data, status_progress: 'Completed'};
 					// onSaved && onSaved(data_updated);
-
+					
 					extendObservable(this.item.data, data_updated);
 					infoDialog.open("Non-Conformance successfully closed.");
 					infoDialog.close(2000);
@@ -410,37 +415,37 @@ class Controls extends React.Component {
 			});
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="viewProfile">
 	@computed get viewProfile() {
 		const {view} = this.state;
 		return !view || view === "Profile";
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="viewProgress">
 	@computed get viewProgress() {
 		const {view} = this.state;
 		return view === "Progressed";
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="viewComplete">
 	@computed get viewComplete() {
 		const {view} = this.state;
 		return view === "Completed";
 	}
-
+	
 	//</editor-fold>
-
+	
 	@computed get item() {
 		return this.props.state.item;
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		if (!this.item) {
@@ -454,12 +459,21 @@ class Controls extends React.Component {
 			item, item: {
 				id, data: {
 					created_at,
-					client, project, site,
+					client,
+					project,
+					site,
 					//1
-					type, priority, allocation,
-					source, selected_source_id, selected_source_ref, selected_source_item,
+					type,
+					priority,
+					allocation,
+					source,
+					selected_source_compliance_audit,
+					selected_source_incident,
+					selected_source_inspection,
+					selected_source_site,
 					//2
-					desc, process,
+					desc,
+					process,
 					//3
 					due_date,
 					responsible_party_list,
@@ -467,20 +481,26 @@ class Controls extends React.Component {
 					assigned_person_list,
 					approving_person,
 					//4
-					document_list, document_proof_list,
+					document_list,
+					document_proof_list,
 					//5
-					comments, remarks,
+					comments,
+					remarks,
 					//6
 					progress_list,
 					//7
-					status_acceptance, status_progress, result, completed_date, additional_notes
+					status_acceptance,
+					status_progress,
+					result,
+					completed_date,
+					additional_notes
 				}
 			},
 			viewProfile, viewProgress, viewComplete,
 		} = this;
-
+		
 		const {isConsultant} = storage.is;
-
+		
 		return <FormControls>
 			<Row
 				rendered
@@ -509,11 +529,18 @@ class Controls extends React.Component {
 				<ProfileField name="type" placeholder="Type" value={type} className="col-lg-12"/>
 				<ProfileField name="priority" placeholder="Priority" value={priority} className="col-lg-12"/>
 				<ProfileField name="allocation" placeholder="Allocation" value={allocation} className="col-lg-12"/>
-
+				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+				
 				<ProfileField name="source" placeholder="Source" value={source} className="col-lg-12"/>
-				<TitlePanel source={source} selected_source={selected_source_ref} onView={this.onView}/>
+				<TitlePanel
+					source={source}
+					selected_source_compliance_audit={selected_source_compliance_audit}
+					selected_source_incident={selected_source_incident}
+					selected_source_inspection={selected_source_inspection}
+					selected_source_site={selected_source_site}
+					onView={this.onView}
+				/>
 			</Row>
 			<Row
 				rendered
@@ -537,9 +564,9 @@ class Controls extends React.Component {
 			>
 				<ProfileField name="due_date" type="date" placeholder="Due Date" value={due_date}
 				              className="col-lg-12"/>
-
+				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+				
 				<ProfileField
 					name="responsible_party_list"
 					placeholder="Responsible Parties"
@@ -549,16 +576,16 @@ class Controls extends React.Component {
 				<ProfileField
 					name="assigned_job_position_list"
 					placeholder="Assigned Job Position(s)"
-					value={assigned_job_position_list && assigned_job_position_list.map(({name}) => name).join(', ')}
+					value={assigned_job_position_list && assigned_job_position_list.map(({job_position: {name}}) => name).join(', ')}
 					className="col-lg-12"
 				/>
 				<ProfileField
 					name="assigned_person_list"
 					placeholder="Assigned Person(s)"
-					value={assigned_person_list && assigned_person_list.map(({full_name}) => full_name).join(', ')}
+					value={assigned_person_list && assigned_person_list.map(({employee: {full_name}}) => full_name).join(', ')}
 					className="col-lg-12"
 				/>
-
+				
 				<ProfileField name="approving_person" placeholder="Approving Person" value={approving_person}
 				              renderer={v => v.full_name} className="col-lg-12"/>
 			</Row>
@@ -644,15 +671,15 @@ class Controls extends React.Component {
 					<ClearableInput name="completed_date" type="date" placeholder="Completed Date..."
 					                defaultValue={completed_date || new Date()} className="col-lg-6 form-control"
 					                onChange={this.form.onChange}/>
-
+					
 					<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+					
 					<ClearableInput ref="additional_notes" name="additional_notes" type="textarea"
 					                placeholder="Additional Notes" defaultValue={additional_notes}
 					                className="col-lg-12 form-control" onChange={this.form.onChange}/>
-
+					
 					<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+					
 					<Button className="btn btn-primary hor-center w-120 border-radius-20 margin-0"
 					        onClick={this.onSubmit}>
 						<i className="fa fa-check"/> Submit
@@ -666,55 +693,100 @@ class Controls extends React.Component {
 					              className="col-lg-12"/>
 					<ProfileField name="result" type="radio" placeholder="Result" defaultValue={result}
 					              className="col-lg-12"/>
-
+					
 					<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+					
 					<ProfileField name="completed_date" type="date" placeholder="Completed Date"
 					              defaultValue={completed_date} className="col-lg-12"/>
-
+					
 					<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+					
 					<ProfileField name="additional_notes" placeholder="Additional Notes" defaultValue={additional_notes}
 					              className="col-lg-12"/>
 				</>}
 			</Row>
-
+			
 			<EditNCRDialog ref="editDialog"/>
-
+			
 			<ProfileSiteDialog ref="profileSiteDialog"/>
 			<ProfileAuditDialog ref="profileAuditDialog"/>
 			<ProfileIncidentDialog ref="profileIncidentDialog"/>
 		</FormControls>;
 	}
-
+	
 	// </editor-fold>
-
+	
 }
 
 // <editor-fold defaultstate="collapsed" desc="TitlePanel">
 @observer
 class TitlePanel extends React.Component {
-
+	
+	@observable state = {
+		selected_source: null,
+		is_loaded: true,
+		is_error: false,
+	};
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onRenderActionCell = this.onRenderActionCell.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
+	async componentDidMount() {
+		const {
+			selected_source_compliance_audit,
+			selected_source_incident,
+			selected_source_inspection,
+			selected_source_site
+		} = this.props;
+		
+		this.state.is_loaded = true;
+		this.state.is_error = false;
+		
+		try {
+			if (selected_source_compliance_audit) {
+				this.state.selected_source = await findByIdAudit(selected_source_compliance_audit.id);
+			} else if (selected_source_incident) {
+				this.state.selected_source = await findByIdIncident(selected_source_incident.id);
+			} else if (selected_source_inspection) {
+				this.state.selected_source = await findByIdInspectionsQuestionnaire(selected_source_inspection.id);
+			} else if (selected_source_site) {
+				this.state.selected_source = await findByIdSite(selected_source_site.id);
+			}
+		} catch (e) {
+			this.state.is_error = true;
+		} finally {
+			this.state.is_loaded = false;
+		}
+	}
+	
 	onRenderActionCell(selected_source, idx) {
 		const {onView} = this.props;
 		return <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60">
 			<ActionsButton className="btn btn-primary pull-right min-w-40" icon="eye" onClick={onView}/>
 		</div>;
 	}
-
+	
+	@computed get selected_source() {
+		return this.state.selected_source;
+	}
+	
+	@computed get isLoading() {
+		return this.state.is_loaded;
+	}
+	
+	@computed get isError() {
+		return this.state.is_error;
+	}
+	
 	get renderSite() {
-		const {selected_source} = this.props;
-		if (!selected_source) return null;
-		const {id, data: {name, address, client, project}} = selected_source;
+		let {selected_source} = this;
+		const {id, data:{name, address, client, project}} = selected_source;
 		return <div className="SiteTableRow">
 			<TRow>
 				{RenderUtils.renderOrgTD(client, null, 'Company Name')}
@@ -727,41 +799,56 @@ class TitlePanel extends React.Component {
 			</TRow>
 		</div>;
 	}
-
+	
 	get renderAudit() {
-		const {selected_source} = this.props;
-		if (!selected_source) return null;
+		let {selected_source} = this;
 		return <div className="AuditTableRow">
 			<AuditTableRow item={selected_source} onRenderActionCell={this.onRenderActionCell}/>
 		</div>;
 	}
-
+	
 	get renderInspection() {
-		const {selected_source} = this.props;
-		if (!selected_source) return null;
+		let {selected_source} = this;
 		return <div className="InspectionTableRow">
 			<InspectionTableRow item={selected_source} onRenderActionCell={this.onRenderActionCell}/>
 		</div>;
 	}
-
+	
 	get renderIncident() {
-		const {selected_source} = this.props;
-		if (!selected_source) return null;
+		let {selected_source} = this;
 		return <div className="IncidentTableRow">
 			<IncidentTableRow item={selected_source} onRenderActionCell={this.onRenderActionCell}/>
 		</div>;
 	}
-
+	
 	render() {
-		const {source, selected_source} = this.props;
-		if (!source) return null;
-		if (!selected_source) return null;
+		const {isLoading, isError} = this;
+		if (isLoading) {
+			return <div className="TitlePanel">
+				<hr className="w-full margin-0 margin-t-5"/>
+				<CircularProgress className="fixed-center"/>
+			</div>;
+		}
+		if (isError) {
+			return <div className="TitlePanel">
+				<hr className="w-full margin-0 margin-t-5"/>
+				<p>Couldn't load results. Please try again later.</p>
+			</div>;
+		}
+		
+		const {
+			selected_source_compliance_audit,
+			selected_source_incident,
+			selected_source_inspection,
+			selected_source_site
+		} = this.props;
+		
 		return <div className="TitlePanel">
 			<hr className="w-full margin-0 margin-t-5"/>
-			{source === "Site Audit" && this.renderSite}
-			{source === "Compliance Audit" && this.renderAudit}
-			{source === "Inspection" && this.renderInspection}
-			{source === "Incident Investigation" && this.renderIncident}
+			{selected_source_site && this.renderSite}
+			{selected_source_compliance_audit && this.renderAudit}
+			{selected_source_inspection && this.renderInspection}
+			{selected_source_incident && this.renderIncident}
 		</div>;
 	}
 }

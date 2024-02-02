@@ -9,9 +9,9 @@ import {SelectTable} from '../../components/tables';
 import {ANewDialog} from '../../components/dialogs';
 
 import ExportFilteredData from './ExportFilteredData';
-// </editor-fold>
 import style from "./AExportDialog.lazy.css";
 import {toJS} from "mobx";
+// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
@@ -103,7 +103,7 @@ class AControls extends React.Component {
 		} else {
 			this.filterData[refName] = null;
 		}
-		// console.log('onChangeFields', refName, val)
+		console.log('onChangeFields', refName, val)
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="reset">

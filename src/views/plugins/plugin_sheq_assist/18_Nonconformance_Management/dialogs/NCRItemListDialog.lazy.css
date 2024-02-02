@@ -86,6 +86,6 @@
     margin: 0px 10px;
 }
 #NCRItemListDialog-page > .filter-wrapper + .table{
-    height: calc(100% - (50px + 332px)) !important;
-    margin: 332px 0 0;
+    height: calc(100% - (50px + 299px)) !important;
+    margin: 298px 0 0;
 }

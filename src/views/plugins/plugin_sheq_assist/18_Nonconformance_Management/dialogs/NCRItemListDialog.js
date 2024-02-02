@@ -24,7 +24,6 @@ import NCRRenderRow from "./NCRRenderRow";
 import ExportNCRDialog from "./ExportNCRDialog";
 
 import style from "./NCRItemListDialog.lazy.css";
-import byLogged from "../NCRTab/Query/List/listAllNCRByLogged";
 import updateNCR from "mutations/all/NCR/updateNCR";
 
 // </editor-fold>
@@ -34,7 +33,7 @@ class NCRItemListDialog extends ADialogList {
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	pageKey = "NCRItemListDialog";
 	title = "Non-Conformances";
-
+	
 	@observable
 	selfState = {
 		lists: {
@@ -47,13 +46,12 @@ class NCRItemListDialog extends ADialogList {
 			result: ['Pass', 'Fail'].map(text => {
 				return {text, value: text, checked: false}
 			}),
-			source: ['Site Audit', 'Compliance Audit', 'Inspection', 'Incident Investigation']
 		},
 		source: null,
 		expiry_date: 'ALL',
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
@@ -61,31 +59,31 @@ class NCRItemListDialog extends ADialogList {
 		this.onRemoved = this.onRemoved.bind(this);
 		
 		this.setView = this.setView.bind(this);
-
+		
 		this.onApprove = this.onApprove.bind(this);
 		this.onReject = this.onReject.bind(this);
 		this.onProgress = this.onProgress.bind(this);
 		this.onComplete = this.onComplete.bind(this);
-
+		
 		this.onExport = this.onExport.bind(this);
 		this.onViewItemSource = this.onViewItemSource.bind(this);
-
+		
 		this.renderFilterNode = this.renderFilterNode.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="mounts">
 	componentWillMount() {
 		style.use();
 	}
-
+	
 	componentWillUnmount() {
 		style.unuse();
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="onApprove">
 	onApprove(e, el) {
 		const {idx} = el.props;
@@ -105,9 +103,9 @@ class NCRItemListDialog extends ADialogList {
 			}
 		})
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onReject">
 	onReject(e, el) {
 		const {idx} = el.props;
@@ -127,9 +125,9 @@ class NCRItemListDialog extends ADialogList {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onProgress">
 	onProgress(e, el) {
 		const {idx} = el.props;
@@ -142,9 +140,9 @@ class NCRItemListDialog extends ADialogList {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onComplete">
 	onComplete(e, el) {
 		const {idx} = el.props;
@@ -157,9 +155,9 @@ class NCRItemListDialog extends ADialogList {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onExport">
 	onExport(evt, btn) {
 		const {getDialogByRef} = this.refs.root;
@@ -167,18 +165,18 @@ class NCRItemListDialog extends ADialogList {
 		const exportNCRDialog = getDialogByRef('exportNCRDialog');
 		exportNCRDialog.extraProp('source', source).open();
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onViewItemSource">
 	onViewItemSource(evt, btn) {
 		const {idx} = btn.props;
 		const item = this.refs.root.list[idx];
-
+		
 		const {source} = this.selfState;
-
+		
 		const {getDialogByRef} = this.refs.root;
-
+		
 		let name;
 		if (source === "Site Audit") {
 			name = "profileSiteDialog";
@@ -189,25 +187,25 @@ class NCRItemListDialog extends ADialogList {
 		} else if (source === "Incident Investigation") {
 			name = "profileIncidentDialog";
 		}
-
+		
 		const {selected_source_ref} = item.data;
 		if (!selected_source_ref) {
 			infoDialog.open(`Selected item is not attached to any ${source} from the system.`);
 			return;
 		}
-
+		
 		const profileDialog = getDialogByRef(name);
 		profileDialog && profileDialog.open(selected_source_ref);
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="onLoadList">
 	onLoadList(params = {}) {
 		const {selfState: {expiry_date}} = this;
 		const source = this.extraProp('source');
 		this.selfState.source = source;
-
+		
 		const {page, lastItem, filterData, filtered, isNew} = params;
 		const {
 			responsible_party_list,
@@ -224,15 +222,14 @@ class NCRItemListDialog extends ADialogList {
 			progress_date_range,
 			completed_date_range,
 		} = filterData || {};
-
+		
 		const mon = Dates.formatDateSQL(new Date().addMonths(1));
 		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
 		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-		const limit = 50;
-
-		const args = {
-			removed: false,
+		
+		const listByLogged = sockets.of('ncr').fn('listByLogged');
+		
+		return listByLogged({
 			expiry_date,
 			mon, mon2, mon3,
 			source,
@@ -250,39 +247,32 @@ class NCRItemListDialog extends ADialogList {
 			progress_date_range,
 			completed_date_range,
 			//
-			limit,
-			//
 			exact_orgs: true,
-		};
-
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
 	}
-
+	
 	//</editor-fold>
+	
 	onRemoved(item) {
 		this.refs.root.list.removeIf((v, n) => v.id === item.id);
 	}
-
+	
 	//<editor-fold desc="setView">
 	async setView({expiry_date = 'ALL', load = true}) {
 		this.selfState.expiry_date = expiry_date;
-
+		
 		if (load) {
 			this.refs.root.load();
 		}
 	}
-
+	
 	//</editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
 		const {permissionKey} = this.props;
@@ -295,9 +285,9 @@ class NCRItemListDialog extends ADialogList {
 			status_progress,
 			status_acceptance
 		} = item.data;
-
+		
 		const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
-
+		
 		const isResponsible = () => {
 			if (assigned_job_position_list || assigned_person_list) {
 				if (
@@ -314,11 +304,11 @@ class NCRItemListDialog extends ADialogList {
 			}
 			return false;
 		};
-
+		
 		const isApproving = () => {
 			return approving_person && user_uid === approving_person.id;
 		};
-
+		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
@@ -354,9 +344,9 @@ class NCRItemListDialog extends ADialogList {
 			{selected_source_ref && <hr/>}
 		</Options>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderFilterNode">
 	renderFilterNode(onChange) {
 		const {
@@ -364,67 +354,67 @@ class NCRItemListDialog extends ADialogList {
 			type,
 			priority,
 			allocation,
-			source,
 			status_progress,
 			status_acceptance,
 			result,
 		} = this.selfState.lists;
-		return <div className="col-lg-12 controls">
-			<DateRangeInput name="due_date_range" className="col-lg-4 h-105 grid-6 margin-b-10 form-control"
+		return <div className="col-lg-12 controls grid-3 grid-gap-10 -margin-b-35">
+			<DateRangeInput name="due_date_range" className="h-105 grid-6 form-control"
 			                placeholder="Due Date" onChange={onChange}>
 				<label className="min-w-60">From</label>
 				<label className="min-w-50">To</label>
 			</DateRangeInput>
 			<DateRangeInput ref="progress_date_range" name="progress_date_range"
-			                className="col-lg-4 h-105 grid-6 margin-b-10 form-control"
+			                className="h-105 grid-6 form-control"
 			                placeholder="Progress Date" onChange={onChange}>
 				<label className="min-w-65">From</label>
 				<label className="min-w-50">To</label>
 			</DateRangeInput>
-			<DateRangeInput name="completed_date_range" className="col-lg-4 h-105 grid-6 margin-b-10 form-control"
+			<DateRangeInput name="completed_date_range" className="h-105 grid-6 form-control"
 			                placeholder="Date Completed" onChange={onChange}>
 				<label className="min-w-60">From</label>
 				<label className="min-w-50">To</label>
 			</DateRangeInput>
-
-			<ClearableInput name="priority" type="select" placeholder="Priority..."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
-			                values={priority} returnValue/>
-			<ClearableInput name="allocation" type="select" placeholder="Allocation..."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
-			                values={allocation} returnValue/>
-			<ClearableInput name="status_progress" type="select" placeholder="Progress Status..."
-			                className="col-lg-2 margin-b-10 form-control" onChange={onChange}
-			                values={status_progress} returnValue/>
-
-			<ClearableInput name="status_acceptance" type="select" placeholder="Acceptance Status..."
-			                className="col-lg-3 margin-b-10 form-control" onChange={onChange}
-			                values={status_acceptance} returnValue/>
+			
+			<div className="grid-2 grid-gap-10 margin-l-10">
+				<ClearableInput name="priority" type="select" placeholder="Priority..."
+				                className="form-control" onChange={onChange}
+				                values={priority} returnValue/>
+				<ClearableInput name="allocation" type="select" placeholder="Allocation..."
+				                className="form-control" onChange={onChange}
+				                values={allocation} returnValue/>
+			</div>
+			<div className="grid-2 grid-gap-10 margin-l-10">
+				<ClearableInput name="status_progress" type="select" placeholder="Progress Status..."
+				                className="form-control" onChange={onChange}
+				                values={status_progress} returnValue/>
+				<ClearableInput name="status_acceptance" type="select" placeholder="Acceptance Status..."
+				                className="form-control" onChange={onChange}
+				                values={status_acceptance} returnValue/>
+			</div>
 			<ClearableInput ref="result" name="result" type="radio" placeholder="Result"
-			                className="col-lg-3 margin-b-10 form-control" onChange={onChange}
+			                className="form-control" onChange={onChange}
 			                values={result} returnValue/>
-
+			
 			<ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Party..."
-			                className="col-lg-4 margin-b-10 form-control" onChange={onChange}
+			                className="form-control" onChange={onChange}
 			                values={responsible_party_list} returnValue add/>
 			<SelectJobPositionInput name="assigned_job_position_list" placeholder="Assigned Job Position..."
 			                        type="select_multi"
-			                        className="col-lg-4 form-control" onChange={onChange} add={false}/>
+			                        className="form-control" onChange={onChange} add={false}/>
 			<SelectEmployeeInput name="assigned_person_list" placeholder="Assigned Person..."
 			                     type="select_multi"
-			                     className="col-lg-4 margin-b-10 form-control" onChange={onChange}/>
-
+			                     className="form-control" onChange={onChange}/>
+			
 			<SelectEmployeeInput name="approving_person_list" placeholder="Approving Person..." type="select_multi"
-			                     className="col-lg-4 form-control" onChange={onChange}/>
-			<ClearableInput ref="source" name="source" type="select" placeholder="Source..."
-			                className="col-lg-4 form-control" onChange={onChange} values={source} returnValue/>
+			                     className="form-control" onChange={onChange}/>
 			<ClearableInput name="type" type="select" placeholder="Type..."
-			                className="col-lg-4 form-control" onChange={onChange} values={type} returnValue/>
+			                className="form-control" onChange={onChange} values={type} returnValue/>
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderDefaultLeftButtons">
 	renderDefaultLeftButtons() {
 		const {isEmployee, isContractorView} = storage.is;
@@ -435,9 +425,9 @@ class NCRItemListDialog extends ADialogList {
 			</Button>
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderTHead">
 	renderTHead() {
 		return <THead>
@@ -455,20 +445,22 @@ class NCRItemListDialog extends ADialogList {
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderItem">
 	renderItem(n, onClick) {
 		const item = this.refs.root.list[n];
 		const {source} = this.selfState;
 		return <NCRRenderRow key={item.id} idx={n} item={item} source={source} onClick={onClick}/>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderPage">
 	renderPage() {
+		const {source} = this.selfState;
+		
 		return <APageListReadWrite
 			ref="root"
 			page={this}
@@ -485,28 +477,28 @@ class NCRItemListDialog extends ADialogList {
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
 			<TitlePanel state={this.selfState}/>
-
+			
 			<ConfirmDialog ref="removeDialog" onSoftDelete={updateNCR}/>
-
-			<NewNCRDialog ref="newDialog"/>
+			
+			<NewNCRDialog ref="newDialog" source={source}/>
 			<EditNCRDialog ref="editDialog" onRemoved={this.onRemoved}/>
 			<ProfileNCRDialog ref="profileDialog" onRemoved={this.onRemoved}/>
-
+			
 			<ProfileSiteDialog ref="profileSiteDialog"/>
 			<ProfileAuditDialog ref="profileAuditDialog"/>
 			<ProfileIncidentDialog ref="profileIncidentDialog"/>
-
+			
 			<ExportNCRDialog ref="exportNCRDialog"/>
 		</APageListReadWrite>;
 	}
-
+	
 	// </editor-fold>
 }
 
 // <editor-fold defaultstate="collapsed" desc="TitlePanel">
 @observer
 class TitlePanel extends React.Component {
-
+	
 	render() {
 		const {state: {source}} = this.props;
 		if (!source) return null;

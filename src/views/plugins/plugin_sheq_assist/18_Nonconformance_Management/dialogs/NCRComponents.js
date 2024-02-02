@@ -2,12 +2,17 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, extendObservable, observable} from 'mobx';
+import Chip from "@material-ui/core/Chip";
+import Grid from "@mui/material/Grid";
 
 import {Dates} from 'utils/Utils';
 import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
 
-import {IncidentTableRow} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
+import {
+    IncidentInvestigationStatus,
+    IncidentTableRow
+} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
 
 import AuditItemTable from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/AuditItemTable';
 
@@ -59,7 +64,6 @@ class SelectSourceTable extends React.Component {
         this.renderTHeadSource = this.renderTHeadSource.bind(this);
         this.renderTHeadSourceItem = this.renderTHeadSourceItem.bind(this);
         this.renderItemSource = this.renderItemSource.bind(this);
-        this.renderItemSourceItem = this.renderItemSourceItem.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
     }
     // </editor-fold>
@@ -93,6 +97,7 @@ class SelectSourceTable extends React.Component {
                 </THead>;
             case "Compliance Audit": 
                 return <THead>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td fixed-flex min-w-100">Audit Date</div>
                     <div className="td">Audit Type</div>
                     <div className="td">Auditor</div>
@@ -101,20 +106,22 @@ class SelectSourceTable extends React.Component {
                     <div className="td fixed-flex min-w-195">Company Representative</div>
                     <div className="td fixed-flex no-padding min-w-70"></div>
                 </THead>;
-            case "Inspection": 
+            case "Inspection":
                 return <THead>
-                    <div className="td fixed-flex min-w-120">Date Created</div>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td">Name</div>
-                    <div className="td">Template</div>
-                    <div className="td">Score</div>
-                    <div className="td">Conducted</div>
-                    <div className="td">Completed</div>
+                    <div className="td">Asset</div>
+                    <div className="td">Responsible Person</div>
+                    <div className="td fixed-flex min-w-80">Interval</div>
+                    <div className="td fixed-flex min-w-140">Date Scheduled</div>
+                    <div className="td fixed-flex min-w-140">Conducted On</div>
                     <div className="td fixed-flex no-padding min-w-70"></div>
                 </THead>;
             case "Incident Investigation": 
                 return <THead>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td fixed-flex min-w-120">Incident Date</div>
-                    <div className="td fixed-flex min-w-140">Type</div>
+                    <div className="td fixed-flex min-w-140">Incident Group</div>
                     <div className="td">Category</div>
                     <div className="td">Description</div>
                     <div className="td">Location</div>
@@ -135,28 +142,31 @@ class SelectSourceTable extends React.Component {
                 </THead>;
             case "Compliance Audit": 
                 return <THead>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td fixed-flex min-w-100">Audit Date</div>
                     <div className="td">Audit Type</div>
-                    <div className="td">Auditor</div>
+                    <div className="td">Auditor(s)</div>
                     <div className="td">Scope Of Audit</div>
                     <div className="td">Company</div>
-                    <div className="td fixed-flex min-w-195">Company Representative</div>
+                    <div className="td fixed-flex min-w-195">Company Representative(s)</div>
                     <div className="td fixed-flex no-padding min-w-70"></div>
                 </THead>;
             case "Inspection": 
                 return <THead>
-                    <div className="td fixed-flex min-w-120">Date Created</div>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td">Name</div>
-                    <div className="td">Template</div>
-                    <div className="td">Score</div>
-                    <div className="td">Conducted</div>
-                    <div className="td">Completed</div>
+                    <div className="td">Asset</div>
+                    <div className="td">Responsible Person</div>
+                    <div className="td fixed-flex min-w-80">Interval</div>
+                    <div className="td fixed-flex min-w-140">Date Scheduled</div>
+                    <div className="td fixed-flex min-w-140">Conducted On</div>
                     <div className="td fixed-flex no-padding min-w-70"></div>
                 </THead>;
             case "Incident Investigation": 
                 return <THead>
+                    <div className="td fixed-flex min-w-50">ID</div>
                     <div className="td fixed-flex min-w-120">Incident Date</div>
-                    <div className="td fixed-flex min-w-140">Type</div>
+                    <div className="td fixed-flex min-w-140">Incident Group</div>
                     <div className="td">Category</div>
                     <div className="td">Description</div>
                     <div className="td">Location</div>
@@ -174,117 +184,126 @@ class SelectSourceTable extends React.Component {
                 return null;
             case "Compliance Audit": {
                 const {id, data:{created_at, client, scope, date, type, representative_list, auditor_list, definition_list, list}} = item;
-                return <React.Fragment>
+                return <>
+                    <div className="td fixed-flex min-w-50">{id}</div>
                     <div className="td fixed-flex min-w-100">{Dates.formatDate(date)}</div>
                     <div className="td">{type || 'N/A'}</div>
-                    <div className="td">{auditor_list ? auditor_list.map(v => v.lname + ' ' + v.fname) : 'N/A'}</div>
+                    <div className="td">{
+                        auditor_list ? auditor_list.map(({other_person, employee}) => (employee || other_person).full_name) : 'N/A'
+                    }</div>
                     <div className="td">{scope || 'N/A'}</div>
-                    <div className="td">{(client && (client.name || client.data.name)) || 'N/A'}</div>
-                    <div className="td fixed-flex padding-l-10 min-w-195">{representative_list ? representative_list.map(v => v.lname + ' ' + v.fname) : 'N/A'}</div>
-                </React.Fragment>;
+                    <div className="td">{(client && client.name) || 'N/A'}</div>
+                    <div className="td fixed-flex padding-l-10 min-w-195">{
+                        representative_list ? representative_list.map(({other_person, employee}) => (employee || other_person).full_name) : 'N/A'
+                    }</div>
+                </>;
             }
             case "Inspection": {
-                const {id, data: {created_at, name, template: {data: template_data, name: template_name}, score, conducted, completed}} = item;
-                return <React.Fragment>
-                    <div className="td fixed-flex min-w-120">{Dates.formatDateTime(created_at)}</div>
+                const {
+                    id, data: {
+                        created_at,
+                        name,
+                        desc,
+                        status,
+                        status_answered_by_sender,
+                        is_template,
+                        type,
+                        visibility,
+                        scheduled,
+                        page_title_list,
+                        question_list,
+                        progress,
+                        total_questions,
+                        //
+                        interval,
+                        start_date,
+                        date_completed,
+                        time_completed,
+                        schedule_date,
+                        next_schedule_date,
+                        responsible_person,
+                        responsible_department,
+                        asset_type,
+                        asset,
+                        schedule_list = [],
+                        //
+                        template
+                    }
+                } = item;
+                
+                return <>
+                    <div className="td fixed-flex min-w-50">{id}</div>
                     <div className="td">{name}</div>
-                    <div className="td">{template_name || template_data.name}</div>
-                    <div className="td">{score}</div>
-                    <div className="td fixed-flex min-w-140">{Dates.formatDateTime(conducted)}</div>
-                    <div className="td fixed-flex padding-l-10 min-w-140">{Dates.formatDateTime(completed)}</div>
-                </React.Fragment>;
+                    <div className="td">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}</div>
+                    <div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
+                    <div className="td fixed-flex min-w-80">{interval}</div>
+                    <div className="td fixed-flex min-w-140">{Dates.formatDateTime(schedule_date)}</div>
+                    <div className="td fixed-flex padding-l-10 min-w-140">{Dates.formatDate(date_completed)} {time_completed}</div>
+                </>;
             }
             case "Incident Investigation": {
                 let {id, data: {
-                    created_at, status,
-                    classification,
-                    investigation,
-                    sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data, 
-                    sec9_data, sec10_data, sec11_data, sec12_data, sec13_data, sec14_data, sec15_data, 
-    //                sec1_data: {category_list, short_desc},//1
-    //                sec2_data: {sub_category_list},//2
-    //                sec3_data: {type},//3
-    //                sec4_data: {secondary_type_list},//4
-    //                sec5_data: {person_involved_list},//5
-    //                sec6_data: {person_reporting},//6
-    //                sec7_data: {person_reported_to, date_reported, time_reported},//7
-    //                sec8_data: {witness_list},//8
-    //                sec9_data: {incident_date, incident_time, exact_location},//9
-    //                sec10_data: {document_list, desc},//10
-    //                sec11_data: {person_injured, injured_person_dob, injured_person_gender, nature_of_injury_list, bodily_injury_location_list, injury_mechanism_list},//11
-    //                sec12_data: {test_undertaken, test_type_list, test_type_drug_undertaken, test_type_alcohol_undertaken, test_type_mobile_device_undertaken},//12
-    //                sec13_data: {is_vehicle_incident, is_infringement_issued, did_police_attend_scene, collision_reported_to_police_station, have_charges_been_laid},//13
-    //                sec14_data: {consequence, frequency, risk_rating},//15
-    //                sec15_data: {distribution_list}//16
+                    created_at,
+                    client, project, site,
+                    investigation, investigation: {
+                        //1
+                        
+                        //2
+                        investigation_team_list,//
+                        due_date,//
+                        //3
+                        investigation_details,//
+                        investigation_findings_list,//
+                        investigation_findings_further_desc,//
+                        document_list,//
+                        //4
+                        severity,//{consequence, likelihood}
+                        //5
+                        cause_analysis,//
+                        //7
+                        distribution_list,//
+                        //8
+                        weather_condition_list,//
+                        //9
+                        protective_equipment_worn_list,//
+                        //10
+                        class_list,//
+                        //11
+                        environment_list,//
+                        //12
+                        estimated_costs_damages,//
+                        estimated_costs_medical,//
+                        estimated_costs_salaries_wages,//
+                        estimated_costs_investigations,//
+                        estimated_costs_others,//
+                    },
+                    //
+                    group,
+                    incident_date,
+                    short_desc,
+                    location,
+                    exact_location,
+                    //
+                    category_list,
+                    sub_category_list,
+                    sector_list,
+                    activity_list,
+                    //
                 }} = item;
-                if(!status) {
-                    extendObservable(item.data, {status: []});
-                }
 
-                const AssignedInvestigator = !!classification && !!classification.sec5_data && !!classification.sec5_data.investigation_team_list;
-                const isInvestigating = !!investigation;
-
-                const Status = ({status}) => {
-                    const statusVal = () => {
-                        if(!status.contains('ApprovedIncident')) {
-                            return ['Awaiting Approval'];
-                        } else if(status.contains('ClosedIncident')) {
-                            return ['Closed Incident'];
-                        } else if(isInvestigating) {
-                            return ['Investigating'];
-                        } else {
-                            return status.map(v => {
-                                if(v === 'ApprovedIncident') {
-                                    return 'Approved Incident';
-                                } else if(AssignedInvestigator) {
-                                    return 'Assigned Investigator';
-                                } else if(v === 'ApprovedInvestigation') {
-                                    return 'Approved Investigation';
-                                } else {
-                                    return v;
-                                }
-                            });
-                        }
-                    };
-                    return <div key={new Date().getTime()} className="td fixed-flex padding-l-10 min-w-120">{statusVal().map(v => <span>{v}</span>)}</div>; 
-                };
-
-                if(classification) {
-                    sec1_data = classification.sec1_data || sec1_data;
-                    sec2_data = classification.sec2_data || sec2_data;
-                    sec3_data = classification.sec3_data || sec3_data;
-                    sec4_data = classification.sec4_data || sec4_data;
-                }
-
-                return <React.Fragment>
-                    <div className="td fixed-flex min-w-120">{sec9_data && sec9_data.incident_date ? Dates.formatDate(sec9_data.incident_date) : 'N/A'}</div>
-                    <div className="td fixed-flex min-w-140">{sec3_data && sec3_data.type ? sec3_data.type : 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.category_list ? sec1_data.category_list.map(v => <span>{v}</span>) : 'N/A'}</div>
-                    <div className="td">{sec1_data && sec1_data.short_desc ? sec1_data.short_desc : 'N/A'}</div>
-                    <div className="td">{sec9_data && sec9_data.exact_location ? sec9_data.exact_location : 'N/A'}</div>
-                    <Status key={new Date().getTime()} status={item.data.status}/>
-                </React.Fragment>;
-            }
-        }
-    }
-    
-    renderItemSourceItem(item, n){
-        switch(this.source.label) {
-            case "Site Audit":
-                return null;
-            case "Compliance Audit": {
-                const {element, sub_element, audit_findings, audit_summary, possible_score, achieved_score, compliance} = item;
-                console.log('item', item)
-                return null;
-                //<AuditItemTable ref="list" name="list" defaultValue={_list} isNew={!item} onChange={this.form.onChange}/>
-            }
-            case "Inspection": {
-                const {} = item;
-                return null;
-            }
-            case "Incident Investigation": {
-                const {} = item;
-                return null;
+                return <>
+                    <div className="td fixed-flex min-w-50">{id}</div>
+                    <div className="td fixed-flex min-w-120">{Dates.formatDate(incident_date) || 'N/A'}</div>
+                    <div className="td fixed-flex min-w-140">{group || 'N/A'}</div>
+                    <div className="td">
+                        {category_list ? <Grid container spacing={1} columns={4}>{
+                            category_list.map(({category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                        </Grid> : 'N/A'}
+                    </div>
+                    <div className="td">{short_desc || 'N/A'}</div>
+                    <div className="td">{exact_location || 'N/A'}</div>
+                    <IncidentInvestigationStatus key={new Date().getTime()} item={item}/>
+                </>;
             }
         }
     }
@@ -292,7 +311,8 @@ class SelectSourceTable extends React.Component {
     
     // <editor-fold defaultstate="collapsed" desc="onLoadList">
     onLoadList(isNew) {
-        return neonBinding.events.emit("plugin_sheq_assist/" + this.source.value + 'list', {isNew});
+        const {value: listByLogged} = this.source;
+        return listByLogged({isNew});
     }
     // </editor-fold>
 
@@ -320,9 +340,9 @@ class SelectSourceTable extends React.Component {
         const {source, selected_source} = this;
         if(!source) return null;
         if(!source || source.label === 'Site Audit') return null;
-        return <React.Fragment>
+        return <>
             {selected_source && <SelectedSource
-                key={new Date().getTime()} 
+                key={new Date().getTime()}
                 source={source}
                 selected_source={selected_source}
                 onClick={onSelectSourceItem}/>
@@ -341,7 +361,7 @@ class SelectSourceTable extends React.Component {
             uncheckBtnTitle="Unselect"
             isSingleSelect
             isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
-        </React.Fragment>;
+        </>;
     }
     // </editor-fold>
 }
@@ -400,8 +420,9 @@ class SelectAuditItemTable extends React.Component {
 
 @observer
 class SelectedSource extends React.Component {
-    renderPerson({fname, lname, email}) {
-        return <span>{lname} {fname}{email ? ' (' + email + ')' : ''}</span>;
+    renderPerson({other_person, employee}) {
+        const email = (employee || other_person).email;
+        return <span>{(employee || other_person).full_name}{email ? `${email}` : ''}</span>;
     }
     
     renderIncidentCategory(v) {
@@ -411,7 +432,7 @@ class SelectedSource extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderSiteAudit">
     get renderSiteAudit() {
         const {source, selected_source, onClick} = this.props;
-        return "good";
+        return null;
     }
     // </editor-fold>
     
@@ -456,35 +477,66 @@ class SelectedSource extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderInspection">
     get renderInspection() {
         const {source, selected_source, onClick} = this.props;
-        const {id, data: {client, type, scope, date, representative_list, auditor_list}} = selected_source;
-        return <React.Fragment> 
+        const {
+            id, data: {
+                created_at,
+                name,
+                desc,
+                status,
+                status_answered_by_sender,
+                is_template,
+                type,
+                visibility,
+                scheduled,
+                page_title_list,
+                question_list,
+                progress,
+                total_questions,
+                //
+                interval,
+                start_date,
+                date_completed,
+                time_completed,
+                schedule_date,
+                next_schedule_date,
+                responsible_person,
+                responsible_department,
+                asset_type,
+                asset,
+                schedule_list = [],
+                //
+                template
+            }
+        } = selected_source;
+        
+        return <>
             <div className="row margin-0">
                 <div className="col-lg-4 margin-b-5 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Company</label><br />
-                    {(client && (client.name || client.data.name)) || 'N/A'}
+                    <label>Name</label><br />
+                    {name}
                 </div>
                 <div className="col-lg-4 margin-b-5 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Type</label><br />
-                    {type}
+                    <label>Asset</label><br />
+                    {asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}
                 </div>
                 <div className="col-lg-4 margin-b-5 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Scope</label><br />
-                    {scope}
+                    <label>Responsible Person</label><br />
+                    {responsible_person && responsible_person.full_name || 'N/A'}
                 </div>
                 <div className="col-lg-4 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Date</label><br />
-                    {Dates.formatDate(date)}
+                    <label>Interval</label><br />
+                    {interval}
                 </div>
                 <div className="col-lg-4 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Representative(s)</label><br />
-                    {!representative_list ? 'N/A' : representative_list.map(this.renderPerson)}
+                    <label>Date Scheduled</label><br />
+                    {Dates.formatDateTime(schedule_date)}
                 </div>
                 <div className="col-lg-4 margin-r-10 bg-f8f8f8 padding-10">
-                    <label>Auditor(s)</label><br />
-                    {!auditor_list ? 'N/A' : auditor_list.map(this.renderPerson)}
+                    <label>Conducted On</label><br />
+                    {Dates.formatDate(date_completed)} {time_completed}
                 </div>
             </div>
-        </React.Fragment>;
+        </>;
     }
     // </editor-fold>
     
@@ -538,18 +590,13 @@ class SelectedSourceItem extends React.Component {
             comments
         } = selected_source_item;
         
-        let responsible_personName = null;
-        if(responsible_person) {
-            const {fname, lname, data} = responsible_person;
-            responsible_personName = (lname || data.lname) + ' ' + (fname || data.fname);
-        }
         return <div className="row margin-0">   
             <hr className="margin-t-10 margin-r-10 margin-b-0"/>
             <label className="bg-f8f8f8 block margin-0 margin-r-10 padding-5 text-center">Selected Audit Findings</label>   
             <hr className="margin-t-0 margin-r-10 margin-b-5"/>
             <div className="row margin-0">
                 <div className="col-lg-12 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Audit Findings</label><br />{audit_findings || 'N/A'}</div>
-                <div className="col-lg-3 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Responsible Person</label><br />{responsible_personName || 'N/A'}</div>
+                <div className="col-lg-3 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Responsible Person</label><br />{responsible_person ? responsible_person.full_name : 'N/A'}</div>
                 <div className="col-lg-3 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Audit Summary</label><br />{audit_summary || 'N/A'}</div>
                 <div className="col-lg-2 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Possible Score</label><br />{possible_score}</div>
                 <div className="col-lg-2 margin-b-5 margin-r-10 bg-f8f8f8 padding-10"><label>Achieved Score</label><br />{achieved_score}</div>

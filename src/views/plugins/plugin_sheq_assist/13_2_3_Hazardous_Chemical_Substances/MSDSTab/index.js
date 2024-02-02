@@ -24,7 +24,6 @@ import ExportMSDSsDialog from '../dialogs/ExportMSDSsDialog.js';
 import MSDSRenderRow from "./MSDSRenderRow";
 import ProfilePDFReader from '../printers/ProfileMSDSPDFReader';
 
-import byLogged from "./Query/List/listAllSDSByLogged";
 import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
 // </editor-fold>
 
@@ -85,27 +84,18 @@ class MSDSTab extends React.Component {
             risk_level,
         } = filterData || {};
 
-        const limit = 50;
-
-        const args = {
-            //
+        const listByLogged = sockets.of('chemicals/sds').fn('listByLogged');
+        
+        return listByLogged({
             name,
             category,
             manufacturer,
             risk_level,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

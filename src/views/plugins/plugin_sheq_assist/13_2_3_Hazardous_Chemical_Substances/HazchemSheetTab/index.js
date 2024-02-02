@@ -26,7 +26,6 @@ import ExportHazchemSheetsDialog from '../dialogs/ExportHazchemSheetsDialog.js';
 import HazchemSheetRenderRow from "./HazchemSheetRenderRow";
 import ProfilePDFReader from '../printers/ProfileHazchemSheetPDFReader';
 
-import byLogged from "./Query/List/listAllHazchemSheetsByLogged";
 import updateChemicalHazchemsheet
     from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
 // </editor-fold>
@@ -86,10 +85,9 @@ class HazchemSheetTab extends React.Component {
             risk_level,
         } = filterData || {};
 
-        const limit = 50;
-
-        const args = {
-            //
+        const listByLogged = sockets.of('chemicals/hazchem-sheets').fn('listByLogged');
+        
+        return listByLogged({
             name,
             category,
             manufacturer,
@@ -97,18 +95,10 @@ class HazchemSheetTab extends React.Component {
             type,
             risk_level,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

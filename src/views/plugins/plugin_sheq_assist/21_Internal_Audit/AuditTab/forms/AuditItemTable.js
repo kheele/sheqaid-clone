@@ -10,6 +10,8 @@ import NewAuditItemDialog from './NewAuditItemDialog';
 import AuditItemTHead from './AuditItemTHead';
 import AuditItemTBody from './AuditItemTBody';
 
+import deleteAuditItem from "mutations/all/AuditsAndInspections/AuditItem/deleteAuditItem";
+
 import style from "./AuditItemTable.lazy.css";
 
 @observer
@@ -102,17 +104,32 @@ class AuditItemTable extends React.Component {
     }
     
     @computed get topButtons() {
-        return <React.Fragment>
+        return <>
             <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-        </React.Fragment>;
+        </>;
     }
 
     render() {
-        const {isDialog, isSingleSelect, name, savable, auditItem, readonly, isNew, onChange, onSelect} = this.props;
+        const {isDialog, isSingleSelect, name, savable, auditItem, onAttrs, readonly, isNew, onChange, onSelect} = this.props;
         const tbl = <Table className="AAuditItemTable AuditItemTable w-full min-h-380 padding-0 margin-0">
             {!readonly && !isDialog && <NewAuditItemDialog ref="newDialog" savable={savable} auditItem={auditItem}/>}
             <AuditItemTHead/>  
-            <AuditItemTBody ref="tbody" name={name} readonly={readonly} isSingleSelect={isSingleSelect} isNew={isNew} onNew={this.onNew} onEditItem={this.onEditItem} onSelect={this.onSelect} state={this.state} onChange={onChange}/>
+            <AuditItemTBody
+              ref="tbody"
+              name={name}
+              readonly={readonly}
+              savable={savable}
+              targetItem={auditItem ? {key: 'audit_id', item: auditItem} : null}
+              deleteFn={deleteAuditItem}
+              onAttrs={onAttrs}
+              isSingleSelect={isSingleSelect}
+              isNew={isNew}
+              onNew={this.onNew}
+              onEditItem={this.onEditItem}
+              onSelect={this.onSelect}
+              state={this.state}
+              onChange={onChange}
+            />
             
             {!readonly && !isDialog && <Button className="btn btn-primary add-item-b" onClick={this.onNew}>
                 <i className="fa fa-plus"/> Add Item

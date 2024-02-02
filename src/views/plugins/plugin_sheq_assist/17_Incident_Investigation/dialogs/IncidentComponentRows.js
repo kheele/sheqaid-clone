@@ -8,7 +8,6 @@ import {Dates} from 'utils/Utils';
 
 import {ActionsButton, Button,} from 'components/inputs';
 import {Table, TBody, THead, TRow} from 'components/tables';
-import MKBox from "components/MK/MKBox";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="IncidentStatus">
@@ -618,6 +617,6 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
 // </editor-fold>
 
 export {
-	IncidentStatus,
+	IncidentStatus, IncidentInvestigationStatus,
 	IncidentTableRow, IncidentQuickTableRow, IncidentInvestigationTableRow, IncidentCorrectiveActionsTableRow,
 };

@@ -1,64 +1,60 @@
-
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
-    {
-        orgs_filter = [],
-        //
-        id,
-        //
-        name,
-        category,
-        manufacturer,
-        risk_level,
-        //
-        date_range,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-    }
+	{
+		orgs_filter = [],
+		//
+		id,
+		//
+		name,
+		category,
+		manufacturer,
+		risk_level,
+		//
+		date_range,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+	}
 ) => {
-    //<editor-fold desc="variables, filters">
-    let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
-
-    if(id) {
-        filter.push(`id: {_eq: ${id}}`);
-    } else {
-        if (name) {
-            if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
-                filter.push(`_and: {
-				_or: [
-					{name: {_ilike: "%${name}%"}}, 
-					{common_names: {_ilike: "%${name}%"}}, 
-					{chemical_name: {_ilike: "%${name}%"}}
-				]
-      }`);
-            } else {
-                filter.push(`_or: [
-				{name: {_ilike: "%${name}%"}}, 
-				{common_names: {_ilike: "%${name}%"}}, 
-				{chemical_name: {_ilike: "%${name}%"}}
-			]`);
-            }
-        }
-        if (category) {
-            filter.push(`category: {_eq: "${category}"}`);
-        }
-        if (manufacturer) {
-            filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
-        }
-        if (risk_level) {
-            filter.push(`risk_level: {_eq: "${risk_level}"}`);
-        }
-        if (date_range) {
-            // filter.push(`is_flammable: {_eq: ${is_flammable}}`);
-        }
-    }
-
-    filter = filter.join(',');
-    //</editor-fold>
-
-    return {filter};
+	//<editor-fold desc="variables, filters">
+	let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+	
+	if (id) {
+		filter.push(`id: {_eq: ${id}}`);
+	} else {
+		if (name) {
+			if (filter.anyMatch(v => v.trim().startsWith('_or'))) {
+				filter.push(`_and: {
+            _or: [
+              {name: {_ilike: "%${name}%"}},
+              {common_names: {_ilike: "%${name}%"}},
+              {chemical_name: {_ilike: "%${name}%"}}
+            ]
+          }`);
+			} else {
+				filter.push(`_or: [
+          {name: {_ilike: "%${name}%"}},
+          {common_names: {_ilike: "%${name}%"}},
+          {chemical_name: {_ilike: "%${name}%"}}
+        ]`);
+			}
+		}
+		if (category) {
+			filter.push(`category: {_eq: "${category}"}`);
+		}
+		if (manufacturer) {
+			filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
+		}
+		if (risk_level) {
+			filter.push(`risk_level: {_eq: "${risk_level}"}`);
+		}
+	}
+	
+	filter = filter.join(',');
+	//</editor-fold>
+	
+	return {filter};
 };
 //</editor-fold>
 

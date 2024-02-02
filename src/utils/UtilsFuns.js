@@ -3,7 +3,6 @@ import {findDOMNode} from "react-dom";
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
 import WebWorker from "../web-worker/WebWorker";
 import {Dates} from "./Dates";
-import findByIdAssetDoc from "../mutations/all/Asset/findByIdAssetDoc";
 
 function findReactComponent(el) {
     for (const key in el) {

@@ -16,7 +16,6 @@ import {NewNCRDialog, EditNCRDialog, ProfileNCRDialog} from '../forms';
 
 
 import style from "./NCRTab.lazy.css";
-import byLogged from "./Query/List/listAllNCRByLogged";
 import updateNCR from "mutations/all/NCR/updateNCR";
 
 // </editor-fold>
@@ -59,23 +58,14 @@ class NCRTab extends React.Component {
         const {
         } = filterData || {};
 
-        const limit = 50;
-
-        const args = {
-            removed: false,
-            //
-            limit,
+        const listByLogged = sockets.of('ncr').fn('listByLogged');
+        
+        return listByLogged({
             //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

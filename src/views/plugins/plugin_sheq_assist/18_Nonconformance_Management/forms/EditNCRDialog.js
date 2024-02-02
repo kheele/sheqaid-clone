@@ -22,6 +22,11 @@ import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgre
 import updateNCR from "mutations/all/NCR/updateNCR";
 import findByIdNCR from "mutations/all/NCR/findByIdNCR";
 import {CircularProgress} from "@mui/material";
+import findByIdAudit from "../../../../../mutations/all/AuditsAndInspections/Audit/findByIdAudit";
+import findByIdIncident from "../../../../../mutations/all/Incident/findByIdIncident";
+import findByIdInspectionsQuestionnaire
+	from "../../../../../mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import findByIdSite from "../../../../../mutations/all/Site/findByIdSite";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EditDialog">
@@ -102,11 +107,35 @@ class Controls extends React.Component {
 
 	//<editor-fold desc="componentDidMount">
 	componentDidMount() {
-		execWhen(() => this.item && this.refs.selectSourceTable && this.refs.selectSourceListTable).then(() => {
-			const {data: {selected_source_ref, selected_source_item}} = this.item;
+		execWhen(() => this.item && this.refs.selectSourceTable && this.refs.selectSourceListTable).then(async () => {
+			const {
+				data: {
+					selected_source_item,
+					selected_source_compliance_audit,
+					selected_source_incident,
+					selected_source_inspection,
+					selected_source_site
+				}
+			} = this.item;
+			
 			const {selectSourceTable, selectSourceListTable} = this.refs;
-			selectSourceTable.selected_source = selected_source_ref;
 			selectSourceListTable.selected_source_item = selected_source_item;
+			
+			try {
+				if (selected_source_compliance_audit) {
+					selectSourceTable.selected_source = await findByIdAudit(selected_source_compliance_audit.id);
+				} else if (selected_source_incident) {
+					selectSourceTable.selected_source = await findByIdIncident(selected_source_incident.id);
+				} else if (selected_source_inspection) {
+					selectSourceTable.selected_source = await findByIdInspectionsQuestionnaire(selected_source_inspection.id);
+				} else if (selected_source_site) {
+					selectSourceTable.selected_source = await findByIdSite(selected_source_site.id);
+				}
+			} catch (e) {
+				selectSourceTable.is_error = true;
+			} finally {
+				selectSourceTable.is_loaded = false;
+			}
 		});
 	}
 
@@ -556,20 +585,20 @@ class Controls extends React.Component {
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
 				<ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Parties..."
-				                defaultValue={responsible_party_list}
+				                defaultValue={(responsible_party_list || []).map(({value}) => value)}
 				                className="col-lg-12 form-control" onChange={this.form.onChange}
 				                values={this.state.lists.responsible_party_list} returnValue add/>
 
 				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Assigned Job Position(s)..."
-				                        type="select_multi" defaultValue={assigned_job_position_list}
+				                        type="select_multi" defaultValue={(assigned_job_position_list || []).map(({job_position}) => job_position)}
 				                        required className="col-lg-12 form-control"
 				                        onChange={this.form.onChange}/>
 				<SelectEmployeeInput name="assigned_person_list" placeholder="Assigned Person(s)..."
-				                     type="select_multi" defaultValue={assigned_person_list}
+				                     type="select_multi" defaultValue={(assigned_person_list || []).map(({employee}) => employee)}
 				                     required className="col-lg-12 form-control"
 				                     onChange={this.form.onChange}/>
 
-				<SelectEmployeeInput name="approving_person" defaultValue={approving_person} showOtherPerson
+				<SelectEmployeeInput name="approving_person" defaultValue={approving_person}
 				                     placeholder="Approving Person..." required
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 			</Row>

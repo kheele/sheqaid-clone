@@ -1,9 +1,4 @@
 
-const {
-    employee_personal_details_fragment,
-    personal_details_other_fragment,
-} = require("../../../../../graphql/Fragments");
-
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
     {
@@ -11,34 +6,12 @@ exports.getVariablesAndQueryConfig = (
         //
         id,
         //
-        person_reporting_id,
-        person_reported_to_id,
-        person_involved_id,
-        person_injured_id,
-        witness_id,
-        person_distributed_to_id,
-        driver_id,
-        //
-        category_list,
-        sub_category_list,
-        activity_list,
-        //
-        exact_location,
-        is_vehicle_incident,
-        vehicle_make,
-        vehicle_reg_num,
-        incident_status,
-        investigation_status,
-        //
-        group,
-        consequence,
-        likelihood,
-        risk_rating,
-        //
-        day_group,
-        time_shift,
-        incident_date_range,
-        date_reported_range,
+        name,
+        category,
+        manufacturer,
+        physical_state,
+        type,
+        risk_level,
         //
         site_id, project_id, client_id,
         //
@@ -52,120 +25,23 @@ exports.getVariablesAndQueryConfig = (
         filter.push(`id: {_eq: ${id}}`);
     } else {
         //
-        if (person_reporting_id) {
-            filter.push(`person_reporting_id: {_eq: ${person_reporting_id}}`);
+        if (name) {
+            filter.push(`name: {_ilike: "%${name}%"}`);
         }
-        if (person_reported_to_id) {
-            filter.push(`person_reported_to_id: {_eq: ${person_reported_to_id}}`);
+        if (category) {
+            filter.push(`category: {_eq: "${category}"}`);
         }
-        if (person_involved_id) {
-            filter.push(`person_involved_list:{person_involved_id: {_eq: ${person_involved_id}}}`);
+        if (manufacturer) {
+            filter.push(`manufacturer: {_eq: "${manufacturer}"}`);
         }
-        if (person_injured_id) {
-            filter.push(`person_injured_id: {_eq: ${person_injured_id}}`);
+        if (physical_state) {
+            filter.push(`physical_state: {_eq: "${physical_state}"}`);
         }
-        if (person_distributed_to_id) {
-            filter.push(`distribution_list:{employee_id: {_eq: ${person_distributed_to_id}}}`);
+        if (type) {
+            filter.push(`type: {_eq: "${type}"}`);
         }
-        if (witness_id) {
-            filter.push(`witness_list:{witness_id: {_eq: ${witness_id}}}`);
-        }
-        if (driver_id) {
-            filter.push(`vehicle_list:{driver_id: {_eq: ${driver_id}}}`);
-        }
-
-        //
-        if (category_list && category_list.isNotEmpty()) {
-            filter.push(`category_list: {category_id: {_in: [${category_list.map(v => v.id)}]}}`);
-        }
-        if (sub_category_list && sub_category_list.isNotEmpty()) {
-            filter.push(`sub_category_list: {sub_category_id: {_in: [${sub_category_list.map(v => v.id)}]}}`);
-        }
-        if (activity_list && activity_list.isNotEmpty()) {
-            filter.push(`activity_list: {activity_id: {_in: [${activity_list.map(v => v.id)}]}}`);
-        }
-
-        //
-        if (exact_location) {
-            filter.push(`exact_location: {_ilike: "%${exact_location}%"}`);
-        }
-        if (isBoolean(is_vehicle_incident)) {
-            filter.push(`is_vehicle_incident: {_eq: ${is_vehicle_incident}}`);
-        }
-        if (vehicle_make) {
-            filter.push(`vehicle_list:{vehicle_make: {_ilike: "%${vehicle_make}%"}}`);
-        }
-        if (vehicle_reg_num) {
-            filter.push(`vehicle_list:{vehicle_reg_num: {_ilike: "%${vehicle_reg_num}%"}}`);
-        }
-
-        if (incident_status) {
-            if (incident_status === 'ClosedIncident') {
-                filter.push(`status_closed: {_eq: true}`);
-            } else if (incident_status === 'AwaitingApproval') {
-                filter.push(`status_awaiting_approval: {_eq: true}`);
-            } else if (incident_status === 'ApprovedIncident') {
-                filter.push(`status_approved: {_eq: true}`);
-            } else if (incident_status === 'AssignedInvestigator') {
-                filter.push(`status_investigating: {_eq: true}`);
-            } else if (incident_status === 'Investigating') {
-                filter.push(`status_investigating: {_eq: true}`);
-            }
-        }
-        if (investigation_status) {
-            if (investigation_status === 'ClosedInvestigation') {
-                filter.push(`status_closed_investigation: {_eq: true}`);
-            } else if (investigation_status === 'AwaitingInvestigationApproval') {
-                filter.push(`status_awaiting_investigation_approval: {_eq: true}`);
-            } else if (investigation_status === 'ApprovedInvestigation') {
-                filter.push(`status_approved_investigation: {_eq: true}`);
-            }
-        }
-
-        //
-        if (group) {
-            filter.push(`group: {_eq: "${group}"}`);
-        }
-        if (consequence) {
-            filter.push(`severity: {consequence: {_eq: ${consequence}}}`);
-        }
-        if (likelihood) {
-            filter.push(`severity: {likelihood: {_eq: ${likelihood}}}`);
-        }
-        if (risk_rating) {
-            filter.push(`severity: {risk_rating: {_eq: "${risk_rating}"}}`);
-        }
-
-        //
-        if (day_group) {
-            if (day_group === 'Morning') {
-                filter.push(`incident_time: {_gte: "00:00",_lt: "12:00"}`);
-            } else if (day_group === 'Afternoon') {
-                filter.push(`incident_time: {_gte: "12:00", _lt: "23:59"}`);
-            }
-        }
-        if (time_shift) {
-            filter.push(`time_shift: {_eq: "${time_shift}"}`);
-        }
-        if (incident_date_range) {
-            const {start, end} = incident_date_range;
-            if (start && end) {
-                filter.push(`incident_date: {_gte: "${start}", _lte: "${end}"}`);
-            } else if (start) {
-                filter.push(`incident_date: {_gte: "${start}"}`);
-            } else if (end) {
-                filter.push(`incident_date: {_lte: "${end}"}`);
-            }
-        }
-        if (date_reported_range) {
-            const {start, end} = date_reported_range;
-            if (start && end) {
-                filter.push(`date_reported: {_gte: "${start}", _lte: "${end}"}`);
-            } else if (start) {
-                filter.push(`date_reported: {_gte: "${start}"}`);
-            } else if (end) {
-                filter.push(`date_reported: {_lte: "${end}"}`);
-            }
+        if (risk_level) {
+            filter.push(`type: {_eq: "${risk_level}"}`);
         }
     }
 
@@ -176,252 +52,103 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="incident_corrective_actions_factors_fragment">
-const incident_corrective_actions_factors_fragment = `
-      id
-      text
-      cost
-      date_completed
-      type
-      responsible_person{
-        id
-        full_name
-        email
-        job_position{
-          id
-          name
-        }
-      }
-`;
-exports.incident_corrective_actions_factors_fragment = incident_corrective_actions_factors_fragment;
-//</editor-fold>
-
-//<editor-fold desc="incident_investigation_cause_analysis_immediate_fragment">
-const incident_investigation_cause_analysis_immediate_fragment = `
-  id
-      sub_standard_practices_or_unsafe_acts:cause_analysis_cause_list(where:{type:{_eq:"sub_standard_practices_or_unsafe_acts"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      sub_standard_practices_or_unsafe_conditions:cause_analysis_cause_list(where:{type:{_eq:"sub_standard_practices_or_unsafe_conditions"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      custom_sub_standard_practices_or_unsafe_acts:cause_analysis_cause_list(where:{type:{_eq:"custom_sub_standard_practices_or_unsafe_acts"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      custom_sub_standard_practices_or_unsafe_conditions:cause_analysis_cause_list(where:{type:{_eq:"custom_sub_standard_practices_or_unsafe_conditions"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-`;
-exports.incident_investigation_cause_analysis_immediate_fragment = incident_investigation_cause_analysis_immediate_fragment;
-//</editor-fold>
-
-//<editor-fold desc="incident_investigation_cause_analysis_root_fragment">
-const incident_investigation_cause_analysis_root_fragment = `
-  id
-      custom_job_factors:cause_analysis_cause_list(where:{type:{_eq:"custom_job_factors"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      custom_personal_factors:cause_analysis_cause_list(where:{type:{_eq:"custom_personal_factors"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      job_factors:cause_analysis_cause_list(where:{type:{_eq:"job_factors"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-      personal_factors:cause_analysis_cause_list(where:{type:{_eq:"personal_factors"}}) {
-          id
-          text
-          type
-          corrective_action_list_job_factors:corrective_action_list(where:{type:{_eq: "job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_personal_factors:corrective_action_list(where:{type:{_eq: "personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_job_factors:corrective_action_list(where:{type:{_eq: "custom_job_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-          corrective_action_list_custom_personal_factors:corrective_action_list(where:{type:{_eq: "custom_personal_factors"}}){
-            ${incident_corrective_actions_factors_fragment}
-          }
-      }
-`;
-exports.incident_investigation_cause_analysis_root_fragment = incident_investigation_cause_analysis_root_fragment;
-//</editor-fold>
-
-//<editor-fold desc="incident_investigation_cause_analysis_fragment">
-const incident_investigation_cause_analysis_fragment = `
-  id
-  immediate_analysis{
-    ${incident_investigation_cause_analysis_immediate_fragment}
-  }
-  root_analysis{
-    ${incident_investigation_cause_analysis_root_fragment}
-  }
-`;
-exports.incident_investigation_cause_analysis_fragment = incident_investigation_cause_analysis_fragment;
-//</editor-fold>
-
-//<editor-fold desc="incident_investigation_details_fragment">
-exports.incident_investigation_details_fragment = `
+//<editor-fold desc="chemical_hazchem_details_fragment">
+exports.chemical_hazchem_details_fragment = `
   id
   created_at
-  due_date
-  investigation_details
-  estimated_costs_damages
-  estimated_costs_medical
-  estimated_costs_salaries_wages
-  estimated_costs_investigations
-  estimated_costs_others
-  environment_list
-  class_list
-  protective_equipment_worn_list
-  weather_condition_list
-  investigation_findings_further_desc
-  cause_analysis{
+
+  name
+  physical_state
+  type
+  product{
     id
-    immediate_analysis{
-      ${incident_investigation_cause_analysis_immediate_fragment}
-    }
-    root_analysis{
-      ${incident_investigation_cause_analysis_root_fragment}
-    }
+    name
   }
-  severity{
+  sds{
     id
-    consequence
-    likelihood
-    risk_rating
-    risk_rating_score
+    name
   }
-  distribution_list{
-    id
-    employee{
-      ${employee_personal_details_fragment}
-    }
-    other_person{
-      ${personal_details_other_fragment}
-    }
-  }
-  document_list{
+
+  contacts_emergency_name
+  contacts_emergency_num
+  contacts_manufacturer_name
+  contacts_manufacturer_num
+
+  doc
+
+  precaution_photo_concentrate_list:precaution_photo_list(where: {type: {_eq: "Concentrate"}}){
     id
     doc
-    investigation_id
+    type
   }
-  investigation_finding_list{
+  precaution_photo_application_list:precaution_photo_list(where: {type: {_eq: "Application"}}){
     id
-    desc
-    investigation_id
+    doc
+    type
   }
-  investigation_team_list{
-    id
-    investigator{
-      ${employee_personal_details_fragment}
-    }
-    investigator_other{
-      ${personal_details_other_fragment}
-    }
-    investigation_id
+
+  active_ingredient_list:list(where: {group: {_eq: "Active Ingredient"}}){
+    value
+    group
   }
-  incident_list{
-    id
+
+  hazard_identification_physical_list:list(where: {group: {_eq: "Hazard Identification"}, type: {_eq: "Physical"}}){
+    value
+    group
+    type
+  }
+  hazard_identification_reproductive_list:list(where: {group: {_eq: "Hazard Identification"}, type: {_eq: "Reproductive"}}){
+    value
+    group
+    type
+  }
+  hazard_identification_biological_list:list(where: {group: {_eq: "Hazard Identification"}, type: {_eq: "Biological"}}){
+    value
+    group
+    type
+  }
+
+  first_aid_procedure_splashes_in_eyes_list:list(where: {group: {_eq: "First Aid Procedure"}, type: {_eq: "Splashes In Eyes"}}){
+    value
+    group
+    type
+  }
+  first_aid_procedure_contact_with_skin_list:list(where: {group: {_eq: "First Aid Procedure"}, type: {_eq: "Contact with Skin"}}){
+    value
+    group
+    type
+  }
+  first_aid_procedure_mouth_contact_or_eaten_list:list(where: {group: {_eq: "First Aid Procedure"}, type: {_eq: "Mouth Contact or Eaten"}}){
+    value
+    group
+    type
+  }
+  first_aid_procedure_fumes_breathed_in_list:list(where: {group: {_eq: "First Aid Procedure"}, type: {_eq: "Fumes Breathed In"}}){
+    value
+    group
+    type
+  }
+
+  emergency_action_for_spills_small_list:list(where: {group: {_eq: "Emergency Action For Spills"}, type: {_eq: "Small Spills"}}){
+    value
+    group
+    type
+  }
+  emergency_action_for_spills_large_list:list(where: {group: {_eq: "Emergency Action For Spills"}, type: {_eq: "Large Spills"}}){
+    value
+    group
+    type
+  }
+
+  disposal_used_container_list:list(where: {group: {_eq: "Disposal"}, type: {_eq: "Used Containers"}}){
+    value
+    group
+    type
+  }
+  disposal_unused_product_list:list(where: {group: {_eq: "Disposal"}, type: {_eq: "Unused Product"}}){
+    value
+    group
+    type
   }
 `;
 //</editor-fold>

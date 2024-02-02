@@ -27,7 +27,7 @@ class RenderRow extends React.Component {
     // </editor-fold>
 
     render() {
-        const {item, source, selected_source, idx, onClick, renderActionsCol} = this.props;
+        const {item, source, selected_source, isExport, idx, onClick, renderActionsCol} = this.props;
         try{
             console.log('NCRRenderRow', item)
             let {
@@ -68,13 +68,13 @@ class RenderRow extends React.Component {
             ];
 
             const resultClass = result === 'Pass' ? 'green' : result === 'Fail' ? 'red' : 'none';
-            return <TRow key={id} className="NCRRenderRow w-full">
+            const tbl = <>
                 <div className="td fixed-flex min-w-20">{idx + 1}</div>
                 <div className="td fixed-flex min-w-100">{renderExpiryDateSpan(due_date)}</div>
                 <div className="td fixed-flex min-w-130">{Dates.formatDate(completed_date) || 'N/A'}</div>
                 <div className="td fixed-flex min-w-70">{priority || 'N/A'}</div>
                 <div className="td fixed-flex min-w-180">{type || 'N/A'}</div>
-                <div className="td fixed-flex min-w-120">{allocation || 'N/A'}</div>
+                {!isExport && <div className="td fixed-flex min-w-120">{allocation || 'N/A'}</div>}
                 <div className="td">{desc}</div>
                 <div className="td fixed-flex min-w-180">{
                     responsible_party_list && <Grid container spacing={1} columns={4}>
@@ -93,7 +93,11 @@ class RenderRow extends React.Component {
                 {!renderActionsCol && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                     <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
                 </div>}
-            </TRow>;
+            </>;
+            
+            if(isExport) return tbl;
+            
+            return <TRow key={id} className="NCRRenderRow w-full">{tbl}</TRow>;
         } catch(err) {
             console.error('NCRRenderRow error', item)
             const onReport = (evt, btn) => {

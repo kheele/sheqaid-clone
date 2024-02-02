@@ -39,7 +39,7 @@ class AuditTableRow extends React.Component {
 				}
 			</div>
 			{onRenderActionCell && onRenderActionCell(item, idx)}
-			{!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+			{!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-60">
 				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
 			</div>}
 		</TRow>;

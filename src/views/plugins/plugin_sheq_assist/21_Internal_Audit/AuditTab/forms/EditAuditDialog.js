@@ -24,12 +24,10 @@ import insertProxyEmployeeAuditor
 	from "mutations/all/ProxyEmployeeAuditor/insertProxyEmployeeAuditor";
 import deleteProxyEmployeeAuditor
 	from "mutations/all/ProxyEmployeeAuditor/deleteProxyEmployeeAuditor";
-import insertAuditItem from "mutations/all/AuditsAndInspections/AuditItem/insertAuditItem";
 import insertAuditDefinition
 	from "mutations/all/AuditsAndInspections/AuditDefinition/insertAuditDefinition";
 import deleteAuditDefinition
 	from "mutations/all/AuditsAndInspections/AuditDefinition/deleteAuditDefinition";
-import deleteAuditItem from "mutations/all/AuditsAndInspections/AuditItem/deleteAuditItem";
 
 @observer
 class EditAuditDialog extends AEditDialog {
@@ -262,6 +260,21 @@ class Controls extends React.Component {
 					defaultValue={list}
 					savable
 					auditItem={item}
+					onAttrs={({achieved_score, audit_findings, audit_summary, comments, compliance, due_date, element, possible_score, target_date, responsible_person, sub_element}) => {
+						return toNoneNullObject({
+							achieved_score,//
+							audit_findings,//
+							audit_summary,//
+							comments,//
+							compliance,//
+							due_date: Dates.formatDateSQL(due_date),//
+							element,//
+							possible_score,//
+							target_date: Dates.formatDateSQL(target_date),//
+							responsible_person_id: responsible_person && responsible_person.id,//
+							sub_element,//
+						});
+					}}
 					onChange={this.form.onChange}
 				/>
 			</Row>

@@ -124,7 +124,7 @@ global.loginSession = async ({data}) => {
     const _auth = admin.auth();
 
     return _auth.verifyIdToken(idToken).then((decodedIdToken) => {
-        // Only process if the user just signed in in the last 60 minutes.
+        // Only process if the user just signed in the last 60 minutes.
         // if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 60 * 60) {
         // Create session cookie and set it.
         return _auth.createSessionCookie(idToken, {expiresIn}).then(sessionCookie => {

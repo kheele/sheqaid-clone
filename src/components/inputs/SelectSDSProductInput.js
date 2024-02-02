@@ -5,7 +5,6 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import byLogged from "views/plugins/plugin_sheq_assist/13_2_3_Hazardous_Chemical_Substances/MSDSTab/Query/List/listAllSDSByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -82,8 +81,10 @@ function onAsyncSelectLoad() {
         //
         exact_orgs: true,
     };
-
-    return byLogged(args).then(list => {
+    
+    const listByLogged = sockets.of('chemicals/sds').fn('listByLogged');
+    
+    return listByLogged(args).then(list => {
         console.log('listForSelectionByLogged', list)
         return list.map((value) => {
             const {id, data: {name}} = value;

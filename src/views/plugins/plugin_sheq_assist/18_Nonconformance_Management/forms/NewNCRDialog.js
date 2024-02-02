@@ -65,9 +65,9 @@ class Controls extends React.Component {
 			selected_source: [],
 			source: [
 				{label: "Site Audit", value: 'N/A'},
-				{label: 'Compliance Audit', value: '21_Internal_Audit/audit/'},
-				{label: 'Inspection', value: '21_Internal_Audit/inspection/'},
-				{label: 'Incident Investigation', value: '17_Incident_Investigation/'}
+				{label: 'Compliance Audit', value: sockets.of('audits').fn('listByLogged')},
+				{label: 'Inspection', value: sockets.of('inspections').fn('listCompletedByLogged')},
+				{label: 'Incident Investigation', value: sockets.of('incidents').fn('listByLogged')}
 			]
 		},
 	};
@@ -369,8 +369,8 @@ class Controls extends React.Component {
 
 	//<editor-fold desc="defaultSource">
 	get defaultSource() {
-		const {dialog} = this.props;
-		const source = dialog.extraProp('source');
+		const {dialog, dialog: {props: {source: sourceProp}}} = this.props;
+		const source = dialog.extraProp('source') || sourceProp;
 		let defaultSource;
 		const {source: state_source} = this;
 		if (state_source) {

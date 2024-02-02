@@ -1,3 +1,5 @@
+require('./definitions');
+require('./items');
 
 const findByIdImpl = require("./findByIdImpl");
 const listImpl = require('./listImpl');

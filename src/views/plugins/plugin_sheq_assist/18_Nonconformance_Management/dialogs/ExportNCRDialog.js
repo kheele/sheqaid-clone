@@ -1,16 +1,15 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, toJS} from 'mobx';
 
-import {getRandomRolor} from 'utils/Utils';
+import {execWhen, getRandomRolor} from 'utils/Utils';
 import {ClearableInput, DateRangeInput, SelectEmployeeInput, SelectJobPositionInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 
 import NCRRenderRow from "./NCRRenderRow";
-import byLogged from "../NCRTab/Query/List/listAllNCRByLogged";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -50,6 +49,7 @@ class Controls extends AControls {
         },
         searchList: []
     };
+    
     @observable
     filterData = {
         //
@@ -82,17 +82,28 @@ class Controls extends AControls {
         super(props);
     }
     // </editor-fold>
-
+    
+    componentDidMount() {
+        execWhen(() => this.refs.source).then(ref => {
+            this.filterData.source = this.props.dialog.extraProp('source');
+        });
+    }
+    
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
+        
         const {
+            client_id,
+            project_id,
+            site_id,
+            //
             source,
             responsible_party_list,
             assigned_job_position_list,
             assigned_person_list,
             approving_person_list,
-
+            //
             type,
             priority,
             allocation,
@@ -104,16 +115,19 @@ class Controls extends AControls {
             completed_date_range,
         } = filterData || {};
 
-        const limit = 50;
-
-        const args = {
-            removed: false,
+        const listByLogged = sockets.of('ncr').fn('listByLogged');
+        
+        return listByLogged({
+            client_id,
+            project_id,
+            site_id,
+            //
             source,
             responsible_party_list,
-            assigned_job_position_list: assigned_job_position_list && assigned_job_position_list.map(({id}) => id),
-            assigned_person_list: assigned_person_list && assigned_person_list.map(({id}) => id),
-            approving_person_list: approving_person_list && approving_person_list.map(({id}) => id),
-
+            assigned_job_position_list,
+            assigned_person_list,
+            approving_person_list,
+            
             type,
             priority,
             allocation,
@@ -124,18 +138,11 @@ class Controls extends AControls {
             progress_date_range,
             completed_date_range,
             //
-            limit,
-            //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -151,12 +158,12 @@ class Controls extends AControls {
             <div className="td fixed-flex min-w-130">Date Completed</div>
             <div className="td fixed-flex min-w-70">Priority</div>
             <div className="td fixed-flex min-w-180">Type</div>
-            <div className="td fixed-flex min-w-120">Allocation</div>
+            {/*<div className="td fixed-flex min-w-120">Allocation</div>*/}
             <div className="td">Finding/NCR Description</div>
             <div className="td fixed-flex min-w-180">Responsible Party</div>
             <div className="td fixed-flex min-w-180">Assigned To</div>
             <div className="td fixed-flex min-w-140">Progress Status</div>
-            <div className="td fixed-flex min-w-60">Result</div>
+            <div className="td fixed-flex min-w-120">Result</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
         </THead>;
     }
@@ -165,7 +172,16 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="renderItemFrom">
     renderItemFrom(item, n, onClick, renderActionsCol) {
         const {source, selected_source} = this.filterData;
-        return <NCRRenderRow key={item.id} idx={n} item={item} source={source} selected_source={selected_source} renderActionsCol={renderActionsCol} onClick={onClick}/>;
+        return <NCRRenderRow
+          key={item.id}
+          idx={n}
+          item={item}
+          source={source}
+          selected_source={selected_source}
+          renderActionsCol={renderActionsCol}
+          isExport
+          onClick={onClick}
+        />;
     }
     // </editor-fold>
 
@@ -232,14 +248,14 @@ class TitlePanel extends React.Component {
         const {state: {source}} = this.props;
         if(!source) return null;
         const style = {background: getRandomRolor()};  
-        return <React.Fragment>
+        return <>
             <div style={style} className="TitlePanel flex margin-10 padding-20 color_white b">
                 {source} Non-Comformances
             </div>
             <div className="TitlePanel-message flex flex-center">
                 Non-Conformances are listed per {source}
             </div>
-        </React.Fragment>;
+        </>;
     }
 }
 // </editor-fold>

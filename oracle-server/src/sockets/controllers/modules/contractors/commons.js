@@ -38,292 +38,130 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="inspection_question_find_fragment">
-const inspection_question_find_fragment = (deep = 3) => {
-	if (deep === 0) {
-		return `id`;
-	}
+//<editor-fold desc="site_details_fragment">
+const site_details_fragment = `
+      id
+      status
+      contractor{
+        id
+        name
+        username
+      }
+      site {
+        id
+        name
+        company {
+          id
+          name
+        }
+        client {
+          id
+          name
+        }
+        project {
+          id
+          name
+        }
+      }
+`;
+//</editor-fold>
+
+exports.contractor_details_fragment = (where) => {
+	// const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
+	// const {selectedClient, selectedProject, selectedSite} = storage.selected;
+	//
+	// const company_id = sess_company_id;
+	// const client_id = selectedClient && selectedClient.id;
+	// const project_id = selectedProject && selectedProject.id;
+	// const site_id = selectedSite && selectedSite.id;
+	//
+	// const id = site_id || project_id || client_id || company_id;
+	// let where = '';
+	// if (site_id) {
+	// 	where = `id: {_eq: ${id}}`;
+	// } else if (project_id) {
+	// 	where = `project_id: {_eq: ${id}}`;
+	// } else if (client_id) {
+	// 	where = `client_id: {_eq: ${id}}`;
+	// } else {
+	// 	where = `company_id: {_eq: ${id}}`;
+	// }
+	//
 	return `
     id
-    answer
-    answer_employee{
-      id
-      fname
-      lname
-      full_name
-      email
-    } 
-    answer_asset{
-      id
-      asset_detail{
-        id
-        name
-        reg_num
-        serial_num
+    created_at
+    name
+    username
+    inc_contractor_pack
+    contractor_user_list_aggregate{
+      aggregate{
+        count
       }
     }
-    responseAttachment
-    hasResponseAttachment
-    responseAttachmentRequired
-    expiry
-    hasExpiry
-    isMandatory
-    isMultiAnswer
-    open
-    linkDoc {
-        id
-        created_at
-        name
-        desc
-        category
+    employee_list_aggregate{
+      aggregate{
+        count
+      }
     }
-    maxScore
-    notify
-    notifyAction
-    questionImage
-    questionText
-    questionType
-    score
-    questionnaire{
-        id
+    questionnaire_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}}){
+      aggregate{
+        count
+      }
     }
-    idx
-    is_page_title
-    question_list:question_list{
-        ${inspection_question_find_fragment(deep - 1)}
+    questionnaire_active_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_neq: "CompleteAccepted"}}){
+      aggregate{
+        count
+      }
     }
-    options{
-      optionImage
-      optionText
-      optionType
-      answer
-    }
-    message_list{
-        ques{
-            id
-        }
-        msg
-        read
-        date
-        sender{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        recipient{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        contractor_sender{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        contractor_recipient{
-            id
-            fname
-            lname
-            username
-            phone
-        }
-        logged_user{
-            id
-            fname
-            lname
-            username
-            phone
+    questionnaire_complete_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
+        aggregate{
+          count
         }
     }
-    notified_list{
-        employee{
+    questionnaire_compliance_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
+        nodes {
             id
-            fname
-            lname
-            email
-            phone
-        }
-        ques{
-            id
+            question_list_aggregate {
+                aggregate {
+                    sum {
+                        score
+                        maxScore
+                    }
+                    min {
+                        score
+                    }
+                    max {
+                        score
+                    }
+                    avg {
+                        score
+                    }
+                }
+            }
         }
     }
-    #ques_path_list{
-    #    id
-    #    path
-    #    ques{
-    #        id
-    #    }
-    #}
+    incident_list_aggregate{
+      aggregate{
+        count
+      }
+    }
+    site_pending_list:site_list(where: {status: {_eq: "Pending"}, site: {${where}}}){
+      ${site_details_fragment}
+    }
+    site_accepted_list:site_list(where: {status: {_eq: "Accepted"}, site: {${where}}}){
+      ${site_details_fragment}
+    }
+    site_declined_list:site_list(where: {status: {_eq: "Declined"}, site: {${where}}}){
+      ${site_details_fragment}
+    }
+    site_cancelled_list:site_list(where: {status: {_eq: "Cancelled"}, site: {${where}}}){
+      ${site_details_fragment}
+    }
+    site_removed_list:site_list(where: {status: {_eq: "Removed"}, site: {${where}}}){
+      ${site_details_fragment}
+    }
+    site_list(where: {site: {${where}}}){
+      ${site_details_fragment}
+    }
 `;
 };
-//</editor-fold>
-
-//<editor-fold desc="inspection_details_find_fragment">
-exports.inspection_details_find_fragment = `
-    id
-    ques_next_id
-    ques_prev_id
-    created_at
-    name
-    desc
-    status
-    status_answered_by_sender
-    answered_by
-    #is_template
-    #visibility
-    
-    progress #computed
-    total_questions #computed
-    
-    interval
-    start_date
-    time
-    schedule_date
-    date_completed
-    time_completed
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-        location
-        toolkit
-        condition
-        owning_company
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc    
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        lname
-        fname
-        email
-        phone
-      }
-    }
-    template{
-      id
-      name
-    }
-    responsible_person{
-      id
-      full_name
-    }
-    responsible_department{
-      id
-      name
-    }
-    
-    page_title_list:question_list(where: {is_page_title: {_eq: true}}){
-        ${inspection_question_find_fragment(3)}
-    }
-    question_list:question_list(where: {is_page_title: {_eq: false}}){
-        ${inspection_question_find_fragment(3)}
-    }
-    contractor_site{
-        id
-        name
-    }
-    contractor {
-        id
-        name
-    }
-`;
-//</editor-fold>
-
-//<editor-fold desc="inspection_details_list_fragment">
-exports.inspection_details_list_fragment = `
-    id
-    ques_next_id
-    ques_prev_id
-    created_at
-    name
-    desc
-    status
-    status_answered_by_sender
-    answered_by
-    #is_template
-    #visibility
-    
-    progress #computed
-    total_questions #computed
-    total_answered #computed
-    total_compliance #computed
-    total_deviations #computed
-    total_non_deviations #computed
-    total_unanswered #computed
-    
-    interval
-    start_date
-    time
-    schedule_date
-    date_completed
-    time_completed
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc    
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        full_name
-      }
-    }
-    template{
-      id
-      name
-    }
-    responsible_person{
-      id
-      full_name
-    }
-    responsible_department{
-      id
-      name
-    }
-    
-    contractor_site{
-        id
-        name
-    }
-    contractor {
-        id
-        name
-    }
-`;
-//</editor-fold>
