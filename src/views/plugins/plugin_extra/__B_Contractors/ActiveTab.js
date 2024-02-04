@@ -28,6 +28,8 @@ import byLogged from "./AQuestionnaireTab/Subscription/subscriptionAllContractor
 import style from "./ActiveTab.lazy.css";
 import AQuestionnaireTab from "./AQuestionnaireTab";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+import updateContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 // </editor-fold>
 
 @observer
@@ -349,7 +351,7 @@ class ActiveTab extends AQuestionnaireTab {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateQuestionnaire}/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateContractorsQuestionnaire}/>
             
             <NewQuestionnaireDialog ref="newDialog"/>
             <EditQuestionnaireDialog ref="editDialog" onRemoved={this.onRemoved}/>
