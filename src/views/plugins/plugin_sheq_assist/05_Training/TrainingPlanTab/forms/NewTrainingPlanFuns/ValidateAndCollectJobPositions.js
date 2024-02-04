@@ -25,7 +25,7 @@ class ValidateAndCollectJobPositions {
                     newTrainingYearListTableWrapper,
                     select_employees,
                 },
-                job_position: {id: job_position_id},
+                job_position,
             } = job_position_list[n];
 
             if (!select_employees.hasValue) {
@@ -39,18 +39,18 @@ class ValidateAndCollectJobPositions {
             }
 
             if (select_employees.value === 'Courses') {
-                const {refs: {newTrainingCourseListTable: {list: course_or_module_list}}} = newTrainingCourseListTableWrapper;
+                const {refs: {newTrainingCourseListTable: {list: course_list}}} = newTrainingCourseListTableWrapper;
 
-                if (course_or_module_list.isEmpty()) {
+                if (course_list.isEmpty()) {
                     infoDialog.open('At least 1 Course is required');
                     return;
                 }
 
-                for (let n = 0; n < course_or_module_list.length; n++) {
+                for (let n = 0; n < course_list.length; n++) {
                     const {
                         ctrl_refs: {newTrainingYearListTableWrapper},
-                        course_or_module: {id: course_or_module_id}
-                    } = course_or_module_list[n];
+                        course
+                    } = course_list[n];
 
                     if (!newTrainingYearListTableWrapper) {
                         infoDialog.open('At least 1 Year is required');
@@ -64,7 +64,7 @@ class ValidateAndCollectJobPositions {
                     }
 
                     training_year_list.forEach(({year}) => {
-                        process({data, job_position_id, course_or_module_id, year, employee_list_exception,});
+                        process({data, job_position, course, year, employee_list_exception,});
                     });
                 }
             } else if (select_employees.value === 'Years') {
@@ -82,15 +82,15 @@ class ValidateAndCollectJobPositions {
                         infoDialog.open('At least 1 Course is required');
                         return;
                     }
-                    const {refs: {newTrainingCourseListTable: {list: course_or_module_list}}} = newTrainingCourseListTableWrapper;
+                    const {refs: {newTrainingCourseListTable: {list: course_list}}} = newTrainingCourseListTableWrapper;
 
-                    if (course_or_module_list.isEmpty()) {
+                    if (course_list.isEmpty()) {
                         infoDialog.open('At least 1 Course is required');
                         return;
                     }
-
-                    course_or_module_list.forEach(({id: course_or_module_id}) => {
-                        process({data, job_position_id, course_or_module_id, year, employee_list_exception,});
+                    
+                    course_list.forEach(({course}) => {
+                        process({data, job_position, course, year, employee_list_exception,});
                     });
                 }
             }
@@ -103,11 +103,11 @@ class ValidateAndCollectJobPositions {
 
 // </editor-fold>
 
-function process({data, job_position_id, course_or_module_id, year, employee_list_exception}) {
+function process({data, job_position, course, year, employee_list_exception}) {
     const values = {};
 
-    values.course_id = course_or_module_id;
-    values.job_position_id = job_position_id;
+    values.course_id = course.id;
+    values.job_position_id = job_position.id;
     values.year = year;
     values.employee_blacklist = employee_list_exception ? employee_list_exception.list : [];
 

@@ -8,15 +8,15 @@ import listAllActiveEmployeeByJobPosition
 class ValidateAndCollectCourses {
 
     static collect(data, newTrainingCourseListTableWrapper) {
-        const {refs: {newTrainingCourseListTable: {list: course_or_module_list}}} = newTrainingCourseListTableWrapper;
-        if (course_or_module_list.isEmpty()) {
+        const {refs: {newTrainingCourseListTable: {list: course_list}}} = newTrainingCourseListTableWrapper;
+        if (course_list.isEmpty()) {
             infoDialog.open('At least 1 Course is required');
             return;
         }
 
         data.course_plan_list = [];
 
-        for (let n = 0; n < course_or_module_list.length; n++) {
+        for (let n = 0; n < course_list.length; n++) {
             const {
                 ctrl_refs: {
                     employee_list_exception,
@@ -24,8 +24,8 @@ class ValidateAndCollectCourses {
                     newTrainingYearListTableWrapper,
                     select_employees,
                 },
-                course_or_module: {id: course_or_module_id},
-            } = course_or_module_list[n];
+                course,
+            } = course_list[n];
 
             if (!select_employees.hasValue) {
                 infoDialog.open(<div className="text-left">
@@ -49,7 +49,7 @@ class ValidateAndCollectCourses {
                         ctrl_refs: {
                             newTrainingYearListTableWrapper,
                         },
-                        job_position: {id: job_position_id},
+                        job_position,
                     } = job_position_list[n];
 
                     if (!newTrainingYearListTableWrapper) {
@@ -65,7 +65,7 @@ class ValidateAndCollectCourses {
                     }
 
                     training_year_list.forEach(({year}) => {
-                        process({data, job_position_id, course_or_module_id, year, employee_list_exception});
+                        process({data, job_position, course, year, employee_list_exception});
                     });
                 }
             } else if (select_employees.value === 'Years') {
@@ -91,8 +91,8 @@ class ValidateAndCollectCourses {
                         return;
                     }
 
-                    job_position_list.map(({employee_list_exception, job_position: {id: job_position_id}}) => {
-                        process({data, job_position_id, course_or_module_id, year, employee_list_exception});
+                    job_position_list.map(({employee_list_exception, job_position}) => {
+                        process({data, job_position, course, year, employee_list_exception});
                     });
                 }
             }
@@ -105,11 +105,11 @@ class ValidateAndCollectCourses {
 
 // </editor-fold>
 
-function process({data, job_position_id, course_or_module_id, year, employee_list_exception,}) {
+function process({data, job_position, course, year, employee_list_exception,}) {
     const values = {};
 
-    values.course_id = course_or_module_id;
-    values.job_position_id = job_position_id;
+    values.course_id = course.id;
+    values.job_position_id = job_position.id;
     values.year = year;
     values.employee_blacklist = employee_list_exception ? employee_list_exception.list : [];
 

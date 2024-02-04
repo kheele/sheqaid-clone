@@ -273,7 +273,67 @@ const moment = require('moment');
 
             return dd + "-" + mon + " " + hrs + ":" + min;
         }
-
+        
+        static formatYearMonth(date) {
+            if (!date)
+                return null;
+            
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+            
+            const mon = monthsStr.get(date.getMonth());
+            const yr = date.getFullYear();
+            
+            return yr + "-" + mon;
+        }
+        
+        static formatMonthYear(date) {
+            if (!date)
+                return null;
+            
+            if (isNumber(date)) {
+                date = new Date(date);
+            }
+            if (isString(date)) {
+                date = Dates.parse(date);
+            }
+            if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
+                date = Dates.parse(date);
+            }
+            if (!isDate(date)) {
+                return null;
+            }
+            
+            const mon = monthsStr.get(date.getMonth());
+            const yr = date.getFullYear();
+            
+            return mon + "-" + yr;
+        }
+        
+        static formatDateRange(startD, endD) {
+            let dateS;
+            if (startD.getFullYear() === endD.getFullYear()) {
+                if (startD.getMonth() === endD.getMonth()) {
+                    dateS = Dates.formatDateOnly(startD) + ' - ' + Dates.formatDateOnly(endD) + ', ' + Dates.formatDateExcDate(startD);
+                } else {
+                    dateS = Dates.formatDateExcYear(startD) + ' - ' + Dates.formatDateExcYear(endD) + ', ' + startD.getFullYear();
+                }
+            } else {
+                dateS = `${Dates.formatDate(startD)} - ${Dates.formatDate(endD)}`;
+            }
+            return dateS;
+        }
+        
         static getWeeksStartAndEndDateRange(startDate, endDate) {
             const dates = [];
             let currDate = startDate;
@@ -693,6 +753,12 @@ const moment = require('moment');
     };
     Date.prototype.formatDateTime = function () {
         return Dates.formatDateTime(this);
+    };
+    Date.prototype.formatYearMonth = function () {
+        return Dates.formatYearMonth(this);
+    };
+    Date.prototype.formatMonthYear = function () {
+        return Dates.formatMonthYear(this);
     };
     Date.prototype.getMonthsStr = function () {
         return Dates.getMonthsStr(this);

@@ -1,4 +1,3 @@
-import AStore from "../AStore";
 import listAllContractorByLoggedSite from "./listAllContractorByLoggedSite";
 import listAllContractorByLoggedProject from "./listAllContractorByLoggedProject";
 import listAllContractorByLoggedClient from "./listAllContractorByLoggedClient";
@@ -7,9 +6,13 @@ import listAllTeamByLoggedSite from "../Team/listAllTeamByLoggedSite";
 import listAllTeamByLoggedProject from "../Team/listAllTeamByLoggedProject";
 import listAllTeamByLoggedClient from "../Team/listAllTeamByLoggedClient";
 import listAllTeamByLoggedCompany from "../Team/listAllTeamByLoggedCompany";
+import AOrgStore from "../AOrgStore";
 
-class Store extends AStore{
-
+class Store extends AOrgStore{
+    
+    key = "sess_my_contractor_id";
+    org = "contractor";
+    
     async listAllByLogged() {
         return super.listAllByLogged(
             {
