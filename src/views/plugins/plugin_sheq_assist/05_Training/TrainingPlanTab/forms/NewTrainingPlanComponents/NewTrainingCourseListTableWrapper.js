@@ -71,7 +71,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
 
         let id;
         if(root === 'TrainingCourse') {
-            id = (item.course_or_module || item).id;
+            id = (item.course || item).id;
         }
 
         console.log('renderTable', item)
@@ -145,7 +145,7 @@ class NewTrainingCourseListTableWrapper extends ASelectWrapper {
         } = this.props;
         if (!this.isSelected || unrendered) return null;
 
-        let name = `course_or_module_list`;
+        let name = `course_list`;
         if (item) {
             if (parentName === "Years") {
                 name += `__${item.year || item}`;
@@ -179,12 +179,12 @@ class ListTable extends ANewListTable {
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
-        if (item && (item.course_or_module || item.id)) {
+        if (item && (item.course || item.id)) {
             const {
                 id, data: {
                     created_at, name, job_position_list, frequency, sector_list, provider, client, project, site
                 }
-            } = item.course_or_module || item;
+            } = item.course || item;
 
             if(!item.ctrl_refs) {
                 item.ctrl_refs = {};
@@ -212,7 +212,7 @@ class ListTable extends ANewListTable {
         } else {
             return <TRow key="item-new" className="w-full padding-10">
                 <div className="td flex padding-0 margin-0">
-                    <SelectTrainingCourseInput ref={this.onSetRef} name="course_or_module"
+                    <SelectTrainingCourseInput ref={this.onSetRef} name="course"
                                                placeholder="Add Course..."
                                                className="no-border-radius-r form-control" onChange={this.onChange}
                                                add={false}/>

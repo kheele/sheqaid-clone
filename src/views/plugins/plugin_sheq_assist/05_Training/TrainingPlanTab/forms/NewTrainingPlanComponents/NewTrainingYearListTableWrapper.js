@@ -148,7 +148,7 @@ class NewTrainingYearListTableWrapper extends ASelectWrapper {
             if (parentName === "JobPositions") {
                 name += `__${(item.job_position || item).id}`;
             } else if (parentName === "Courses") {
-                name += `__${(item.course_or_module || item).id}`;
+                name += `__${(item.course || item).id}`;
             }
         }
 

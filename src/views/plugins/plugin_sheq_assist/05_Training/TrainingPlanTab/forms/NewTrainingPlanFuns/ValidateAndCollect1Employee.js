@@ -9,7 +9,7 @@ class ValidateAndCollect1Employee {
         const {
             form: selectEmployeeForm, innerRefs: {newTrainingCourseListTableWrapper, newTrainingYearListTableWrapper,}
         } = selectEmployeeWrapper;
-        // console.log('valid(selectEmployeeForm)', selectEmployeeForm)
+        
         if (!selectEmployeeForm.isValid('employee')) {
             infoDialog.open('Please Select An Employee');
             return;
@@ -30,17 +30,17 @@ class ValidateAndCollect1Employee {
         data.employee_plan_list = [];
 
         if (selectEmployeeForm.get('select_employees') === 'Courses') {
-            const {refs: {newTrainingCourseListTable: {list: course_or_module_list}}} = newTrainingCourseListTableWrapper;
+            const {refs: {newTrainingCourseListTable: {list: course_list}}} = newTrainingCourseListTableWrapper;
 
-            if (course_or_module_list.isEmpty()) {
+            if (course_list.isEmpty()) {
                 infoDialog.open('At least 1 Course is required');
                 return;
             }
 
-            for (let n = 0; n < course_or_module_list.length; n++) {
+            for (let n = 0; n < course_list.length; n++) {
                 const {
-                    ctrl_refs: {newTrainingYearListTableWrapper,}, course_or_module: {id: course_or_module_id},
-                } = course_or_module_list[n];
+                    ctrl_refs: {newTrainingYearListTableWrapper,}, course,
+                } = course_list[n];
 
                 if (!newTrainingYearListTableWrapper) {
                     infoDialog.open('At least 1 Year is required');
@@ -55,7 +55,7 @@ class ValidateAndCollect1Employee {
                 }
 
                 training_year_list.forEach(({year}) => {
-                    process({data, employee, course_or_module_id, year,});
+                    process({data, employee, course, year,});
                 });
             }
         } else if (selectEmployeeForm.get('select_employees') === 'Years') {
@@ -74,15 +74,15 @@ class ValidateAndCollect1Employee {
                     return;
                 }
 
-                const {refs: {newTrainingCourseListTable: {list: course_or_module_list}}} = newTrainingCourseListTableWrapper;
+                const {refs: {newTrainingCourseListTable: {list: course_list}}} = newTrainingCourseListTableWrapper;
 
-                if (course_or_module_list.isEmpty()) {
+                if (course_list.isEmpty()) {
                     infoDialog.open('At least 1 Course is required');
                     return;
                 }
-
-                course_or_module_list.forEach(({id: course_or_module_id}) => {
-                    process({data, employee, course_or_module_id, year,});
+                
+                course_list.forEach(({course}) => {
+                    process({data, employee, course, year,});
                 });
             }
         }
@@ -94,12 +94,12 @@ class ValidateAndCollect1Employee {
 
 // </editor-fold>
 
-function process({data, employee, course_or_module_id, year,}) {
+function process({data, employee, course, year,}) {
     const values = {};
 
     values.completion_status = 'Not Started';
     values.employee_id = employee.id;
-    values.course_id = course_or_module_id;
+    values.course_id = course.id;
     values.year = year;
 
     data.employee_plan_list.push(values);

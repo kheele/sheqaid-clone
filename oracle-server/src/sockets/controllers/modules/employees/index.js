@@ -1,4 +1,5 @@
 require('./employees');
+require('./employees-external');
 require('./docs');
 require('./departments');
 require('./job-categories');

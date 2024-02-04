@@ -152,7 +152,7 @@ class NewJobPositionListTableWrapper extends ASelectWrapper {
             if(parentName === "Years") {
                 name += `__${item.year || item}`;
             } else if (parentName === "Courses") {
-                name += `__${(item.course_or_module || item).id}`;
+                name += `__${(item.course || item).id}`;
             }
         }
 

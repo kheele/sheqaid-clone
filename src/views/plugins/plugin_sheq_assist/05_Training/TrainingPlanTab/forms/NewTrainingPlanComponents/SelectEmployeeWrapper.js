@@ -55,7 +55,7 @@ class SelectEmployeeWrapper extends ASelectWrapper {
             <ClearableInput name="select_employees" type="radio" placeholder="Select Per" required className="margin-t-10 margin-b-10 form-control" onChange={this.form.onChange} values={this.state.lists.select_employees}/>
             <NewTrainingCourseListTableWrapper
                 ref={ref => {this.innerRefs.newTrainingCourseListTableWrapper = ref}}
-                name="course_or_module_list"
+                name="course_list"
                 values={values}
                 root={root}
                 parentName="Employee"

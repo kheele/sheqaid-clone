@@ -170,6 +170,14 @@ class AStore {
         return my_site.id;
     }
 
+    get sess_my_contractor_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, my_contractor} = sess_claims;
+        if (!my_contractor) return null;
+        return my_contractor.id;
+    }
+
     async extractId(item) {
         if (!item) return null;
 

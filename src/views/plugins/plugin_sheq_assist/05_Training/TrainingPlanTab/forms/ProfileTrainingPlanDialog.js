@@ -2,17 +2,16 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
-import {Dates} from '../../../../../../utils/Utils';
-
-import {ProfileField} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../../components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingPlanDialog.lazy.css";
-import findByIdClient from "../../../../../../mutations/all/Client/findByIdClient";
-import findByIdProject from "../../../../../../mutations/all/Project/findByIdProject";
-import findByIdSite from "../../../../../../mutations/all/Site/findByIdSite";
+import findByIdClient from "mutations/all/Client/findByIdClient";
+import findByIdProject from "mutations/all/Project/findByIdProject";
+import findByIdSite from "mutations/all/Site/findByIdSite";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -51,7 +50,7 @@ class Controls extends React.Component {
         super(props);
     }
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
@@ -242,7 +241,7 @@ class Controls extends React.Component {
     //<editor-fold desc="render">
     render() {
         if (!this.item) {
-            return null;
+            return <CircularProgress/>;
         }
 
         const {
