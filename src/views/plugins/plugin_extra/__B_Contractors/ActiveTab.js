@@ -28,7 +28,6 @@ import byLogged from "./AQuestionnaireTab/Subscription/subscriptionAllContractor
 import style from "./ActiveTab.lazy.css";
 import AQuestionnaireTab from "./AQuestionnaireTab";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
-
 // </editor-fold>
 
 @observer
@@ -66,6 +65,7 @@ class ActiveTab extends AQuestionnaireTab {
         
         this.onExport = this.onExport.bind(this);
         this.onSaveAs = this.onSaveAs.bind(this);
+        this.onRemoved = this.onRemoved.bind(this)
         
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -196,6 +196,10 @@ class ActiveTab extends AQuestionnaireTab {
         } else if(type === 'Excel') {
             
         }
+    }
+    
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
     // </editor-fold>
 
@@ -345,11 +349,11 @@ class ActiveTab extends AQuestionnaireTab {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateQuestionnaire}/>
             
             <NewQuestionnaireDialog ref="newDialog"/>
-            <EditQuestionnaireDialog ref="editDialog"/>
-            <ProfileQuestionnaireDialog ref="profileDialog"/>
+            <EditQuestionnaireDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileQuestionnaireDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             
             <NewDocTemplateDialog ref="newTemplateDialog"/>
             
