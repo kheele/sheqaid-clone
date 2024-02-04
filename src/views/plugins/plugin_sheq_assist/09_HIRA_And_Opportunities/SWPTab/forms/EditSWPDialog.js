@@ -41,6 +41,7 @@ import style from "./EditSWPDialog.lazy.css";
 class EditSWPDialog extends AEditDialog {
 	pageKey = "EditSWPDialog";
 	findById = findByIdSWP;
+	removeById = updateSWP;
 
 	constructor(props) {
 		super(props, style);
