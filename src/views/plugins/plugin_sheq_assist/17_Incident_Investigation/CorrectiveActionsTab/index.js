@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {observable, computed, isObservableArray} from 'mobx';
 
 import {Dates, execWhen} from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
@@ -36,6 +36,7 @@ class CorrectiveActionsTab extends React.Component {
 		this.setView = this.setView.bind(this);
 		this.onView && (this.onView = this.onView.bind(this));
 		
+		this.renderTHead = this.renderTHead.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
 	}
