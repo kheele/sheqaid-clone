@@ -75,11 +75,9 @@ class Controls extends AControls {
         super(props);
     }
     // </editor-fold>
-
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
-
         const {
             client_id,
             project_id,
@@ -114,9 +112,7 @@ class Controls extends AControls {
             return res;
         });
     }
-
     //</editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="renderTHeadFrom">
     renderTHeadFrom() {
         return <THead>
@@ -150,7 +146,6 @@ class Controls extends AControls {
         </>;
     }
     // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="renderFields">
     get renderFields() {
         return <>
