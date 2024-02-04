@@ -27,6 +27,8 @@ import byLogged from "./AQuestionnaireTab/Subscription/subscriptionAllContractor
 import style from "./CompleteTab.lazy.css";
 import AQuestionnaireTab from "./AQuestionnaireTab";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+import updateContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 
 // </editor-fold>
 
@@ -47,6 +49,7 @@ class CompleteTab extends AQuestionnaireTab {
         this.onMarkAsIncomplete = this.onMarkAsIncomplete.bind(this);
         
         this.onExport = this.onExport.bind(this);
+        this.onRemoved = this.onRemoved.bind(this)
         this.onSaveAs = this.onSaveAs.bind(this);
         
         this.renderItem = this.renderItem.bind(this);
@@ -140,6 +143,9 @@ class CompleteTab extends AQuestionnaireTab {
                 });
             }
         });
+    }
+    onRemoved(item) {
+        this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
     
     onExport(e, el) {
@@ -267,11 +273,11 @@ class CompleteTab extends AQuestionnaireTab {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateContractorsQuestionnaire}/>
             
             <NewQuestionnaireDialog ref="newDialog"/>
-            <EditQuestionnaireDialog ref="editDialog"/>
-            <ProfileQuestionnaireDialog ref="profileDialog"/>
+            <EditQuestionnaireDialog ref="editDialog" onRemoved={this.onRemoved}/>
+            <ProfileQuestionnaireDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             
             <NewDocTemplateDialog ref="newTemplateDialog"/>
             
