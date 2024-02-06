@@ -22,12 +22,19 @@ import ProfileQuestionnairePDFReader from '../printers/ProfileQuestionnairePDFRe
 import ProfileResponsePDFReader from '../printers/ProfileResponsePDFReader';
 
 import style from "./ProfileQuestionnaireDialog.lazy.css";
+import findByIdContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/findByIdContractorsQuestionnaire";
+import updateContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
+import updateContractorsQuestionnaireLibrary
+    from "../../../../../mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileQuestionnaireDialog";
+    findById = findByIdContractorsQuestionnaire;
 
     constructor(props) {
         super(props, style);
@@ -59,6 +66,18 @@ class ProfileDialog extends AProfileDialog {
         return "Contractor's Questionnaire";
     }
     
+    get removeById() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {status}} = item;
+        
+        const {isContractor} = storage.is;
+        
+        if (!isContractor && status !== "CompleteAccepted") {
+            return updateContractorsQuestionnaire;
+        }
+    }
+    
     @computed get topButtons() {
         const {item} = this.state;
         if(!item) return null;
@@ -71,7 +90,7 @@ class ProfileDialog extends AProfileDialog {
         
         const isWritable = status !== "CompleteAccepted";
         
-        return <React.Fragment>
+        return <>
             {!isContractor && isWritable && <Button className="btn btn-primary" onClick={this.onDelete}>
                 <i className="fa fa-ban icon-left"/>Delete
             </Button>}
@@ -87,7 +106,7 @@ class ProfileDialog extends AProfileDialog {
             <Button className="btn btn-primary" onClick={this.onViewResponses}>
                 <i className="fa fa-eye icon-left"/>Responses
             </Button>
-        </React.Fragment>;
+        </>;
     }
 
     get controls() {

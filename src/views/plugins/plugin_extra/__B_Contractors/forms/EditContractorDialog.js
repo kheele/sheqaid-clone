@@ -24,6 +24,7 @@ class EditDialog extends AEditDialog {
     pageKey = "EditContractorDialog";
     title = "Edit Contractor";
     findById = findByIdContractor;
+    removeById = updateContractor;
 
     constructor(props) {
         super(props, style);

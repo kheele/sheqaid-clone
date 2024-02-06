@@ -14,6 +14,7 @@ import {computed, observable} from "mobx";
 
 import findByIdBaselineRA from "mutations/all/HIRA_And_Opportunities/BaselineRA/findByIdBaselineRA";
 import {CircularProgress} from "@mui/material";
+import updateBaselineRA from "mutations/all/HIRA_And_Opportunities/BaselineRA/updateBaselineRA";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -22,6 +23,7 @@ class ProfileBaselineRiskAssessmentDialog extends AProfileDialog {
 	pageKey = "ProfileBaselineRiskAssessmentDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdBaselineRA;
+	removeById = updateBaselineRA;
 
 	constructor(props) {
 		super(props, style);

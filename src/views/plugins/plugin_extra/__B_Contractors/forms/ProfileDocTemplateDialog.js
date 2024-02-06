@@ -13,11 +13,8 @@ import style from "./ProfileDocTemplateDialog.lazy.css";
 import findByIdContractorsQuestionnaireTemplate
 	from "mutations/all/Questionnaires/ContractorsQuestionnaireTemplate/findByIdContractorsQuestionnaireTemplate";
 import {CircularProgress} from "@mui/material";
-import OptionalInfoSection from "../../../plugin_hr_management/Employees/forms/EditOptionalInfoSection";
-import DocumentsSection from "../../../plugin_hr_management/Employees/forms/EditDocumentsSection";
-import DependentsAndNextOfKinSection
-	from "../../../plugin_hr_management/Employees/forms/EditDependentsAndNextOfKinSection";
-import DashboardSection from "../../../plugin_hr_management/Employees/forms/DashboardSection";
+import updateContractorsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/ContractorsQuestionnaireTemplate/updateContractorsQuestionnaireTemplate";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -25,6 +22,7 @@ import DashboardSection from "../../../plugin_hr_management/Employees/forms/Dash
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileDocTemplateDialog";
 	findById = findByIdContractorsQuestionnaireTemplate;
+	removeById = updateContractorsQuestionnaireTemplate;
 
 	constructor(props) {
 		super(props, style);

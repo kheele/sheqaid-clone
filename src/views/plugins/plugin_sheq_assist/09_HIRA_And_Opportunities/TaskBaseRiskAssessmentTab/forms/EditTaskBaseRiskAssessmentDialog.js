@@ -31,6 +31,7 @@ class EditTaskBaseRiskAssessmentDialog extends AEditDialog {
     pageKey = "EditTaskBaseRiskAssessmentDialog";
     className = 'ANewTableFormDialog';
     findById = findByIdTaskbasedRA;
+    removeById = updateTaskbasedRA;
 
     constructor(props) {
         super(props, style);

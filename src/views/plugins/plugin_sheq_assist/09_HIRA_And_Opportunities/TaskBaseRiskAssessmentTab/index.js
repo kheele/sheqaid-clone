@@ -14,25 +14,18 @@ import EditTaskBaseRiskAssessmentDialog from './forms/EditTaskBaseRiskAssessment
 import ViewTaskBaseRiskAssessmentReportDialog from './forms/ViewTaskBaseRiskAssessmentReportDialog';
 
 import style from "./TaskBaseRiskAssessmentTab.lazy.css";
-import byLogged from "./Query/List/listAllTaskBaseRiskAssessmentByLogged";
+import AList from "views/AList";
 
 @observer
-class TaskBaseRiskAssessmentTab extends React.Component {
+class TaskBaseRiskAssessmentTab extends AList {
 
 	pageKey = "task-base-risk-assessment";
 
 	constructor(props) {
 		super(props);
 
-		this.onLoadList = this.onLoadList.bind(this);
-
 		this.onViewReport = this.onViewReport.bind(this);
-		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
 		this.printImpl = this.printImpl.bind(this);
-
-		this.renderItem = this.renderItem.bind(this);
-		this.renderLeftButtons = this.renderLeftButtons.bind(this);
-		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
 	}
 
 	componentWillMount() {
@@ -51,25 +44,16 @@ class TaskBaseRiskAssessmentTab extends React.Component {
 			risk_tolerance,
 		} = filterData || {};
 
-		const limit = 50;
-
-		const args = {
-			removed: false,
+		const listByLogged = sockets.of('hira-and-opportunities/task-based-ra').fn('listByLogged');
+		
+		return listByLogged({
 			activity,
 			risk_tolerance,
 			//
-			limit,
-			//
 			exact_orgs: true,
-		};
-
-		if(!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});

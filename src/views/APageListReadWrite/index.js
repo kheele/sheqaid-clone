@@ -12,10 +12,10 @@ class APageListReadWrite extends APageList {
 	constructor(props) {
 		super(props);
 
-		this.hasCreateBtn = this.hasCreateBtn.bind(this);//
-		this.onNew = this.onNew.bind(this);//
-		this.onEdit = this.onEdit.bind(this);//
-		this.onRemove = this.onRemove.bind(this);//
+		this.hasCreateBtn = this.hasCreateBtn.bind(this);
+		this.onNew = this.onNew.bind(this);
+		this.onEdit = this.onEdit.bind(this);
+		this.onRemove = this.onRemove.bind(this);
 	}
 
 	componentDidMount() {
@@ -147,23 +147,33 @@ class APageListReadWrite extends APageList {
 			infoDialog.open(<p className='action-prohibited'>The action is prohibited</p>);
 		}
 	}
-
+	
+	get parentListPage() {
+		return this.props.page;
+	}
+	
 	onRemove(evt, elem) {
 		const removeDialog = this.getDialogByRef("removeDialog");
 		if (removeDialog) {
-			const {onSoftDelete, onSoftDeleteProhibit, softDeleteAttrs} = removeDialog.props;
-			let {idx} = elem.props;
-			if (!('idx' in elem.props)) {
-				idx = parseInt(elem._reactInternals.key.replace("item-remove-", ""));
-			} else {
-				idx = elem.props.idx;
-			}
-
 			removeDialog.open("Are you sure you want to remove the " + (this.props.pageTitleSingular || "item") + "?").then(async res => {
 				if (res === 1) {
+					let {idx} = elem.props;
+					if (!('idx' in elem.props)) {
+						idx = parseInt(elem._reactInternals.key.replace("item-remove-", ""));
+					} else {
+						idx = elem.props.idx;
+					}
+					
 					const item = this.list[idx];
-
-					if (onSoftDelete) {
+					
+					const {editDialog, profileDialog} = this.parentListPage.refs;
+					const dialog = profileDialog || editDialog;
+					
+					const {onSoftDelete, onSoftDeleteProhibit, softDeleteAttrs} = removeDialog.props;
+					
+					let onDelete = onSoftDelete || (dialog && dialog.removeById);
+					
+					if (onDelete) {
 						if(onSoftDeleteProhibit) {
 							let prohibit = onSoftDeleteProhibit(item);
 							if(prohibit instanceof Promise) {
@@ -181,8 +191,8 @@ class APageListReadWrite extends APageList {
 						} else {
 							args.removed = true;
 						}
-
-						onSoftDelete(args).then(res => {
+						
+						onDelete(args).then(res => {
 							setTimeout(function () {
 								this.list.removeIf((item, _idx) => _idx === idx);
 							}.bind(this), 0);

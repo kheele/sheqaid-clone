@@ -1,4 +1,5 @@
 require('./sites');
+require('./templates');
 require('./users');
 
 const findByIdImpl = require('../findByIdImpl');
@@ -18,10 +19,6 @@ eventManager.on("contractors/findById", findByIdImpl(args));
 eventManager.on("contractors/listByLogged", listImpl({
 	...args,
 	order_by: "order_by: {name: asc}",
-	where: (filter, removed) => `
-		 removed: {_eq: ${removed}},
-	   site_list: {${filter}}
-	`,
 	getVariablesAndQueryConfig,
 }));
 //

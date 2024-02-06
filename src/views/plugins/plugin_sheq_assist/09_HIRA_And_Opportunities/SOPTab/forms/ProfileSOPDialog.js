@@ -20,6 +20,7 @@ import {
 import {FormControls, Row} from "components/FormComponents";
 
 import findByIdSOP from "mutations/all/HIRA_And_Opportunities/SOP/findByIdSOP";
+import updateSOP from "mutations/all/HIRA_And_Opportunities/SOP/updateSOP";
 
 import style from "./ProfileSOPDialog.lazy.css";
 //</editor-fold>
@@ -29,6 +30,7 @@ import style from "./ProfileSOPDialog.lazy.css";
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileSOPDialog";
 	findById = findByIdSOP;
+	removeById = updateSOP;
 
 	constructor(props) {
 		super(props, style);

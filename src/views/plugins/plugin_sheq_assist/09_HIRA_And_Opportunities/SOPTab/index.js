@@ -15,9 +15,10 @@ import NewSOPDialog from './forms/NewSOPDialog';
 import ProfileSOPDialog from './forms/ProfileSOPDialog';
 import EditSOPDialog from './forms/EditSOPDialog';
 import ExportSOPDialog from "./forms/ExportSOPDialog";
+import AList from "views/AList";
 
 @observer
-class SOPTab extends React.Component {
+class SOPTab extends AList {
 	
 	pageKey = "SOPTab";
 	@observable
@@ -30,12 +31,6 @@ class SOPTab extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		
-		this.onLoadList = this.onLoadList.bind(this);
-		this.onExport = this.onExport.bind(this);
-		this.renderItem = this.renderItem.bind(this);
-		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
-		this.renderFilterNode = this.renderFilterNode.bind(this);
 	}
 	
 	componentWillMount() {

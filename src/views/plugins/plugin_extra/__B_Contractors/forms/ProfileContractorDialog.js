@@ -17,12 +17,14 @@ import Popover from "components/popovers/Popover";
 import NavItem from "components/navs/NavItem";
 import {CircularProgress} from "@mui/material";
 import findByIdContractor from "mutations/all/Contractor/findByIdContractor";
+import updateContractor from "mutations/all/Contractor/updateContractor";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileContractorDialog";
     findById = findByIdContractor;
+    removeById = updateContractor;
 
     constructor(props) {
         super(props, style);

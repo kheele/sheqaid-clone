@@ -20,6 +20,7 @@ import {FormControls, Row} from "components/FormComponents";
 import findByIdSWP from "mutations/all/HIRA_And_Opportunities/SWP/findByIdSWP";
 
 import style from "./ProfileSWPDialog.lazy.css";
+import updateSWP from "mutations/all/HIRA_And_Opportunities/SWP/updateSWP";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -27,6 +28,7 @@ import style from "./ProfileSWPDialog.lazy.css";
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileSWPDialog";
 	findById = findByIdSWP;
+	removeById = updateSWP;
 
 	constructor(props) {
 		super(props, style);

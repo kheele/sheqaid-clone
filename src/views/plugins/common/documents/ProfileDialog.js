@@ -226,11 +226,13 @@ class Controls extends React.Component {
 					category,
 					removed,
 
-					doc_version_list: _doc_version_list,
-					latest_version,
+					doc_version_list,
+					latest_version: _latest_version,
 				}
 			}
 		} = this;
+		
+		const [latest_version] = _latest_version || [];
 
 		// console.log(doc, doc_old && doc_old.dlUrls && doc_old.dlUrls[0])
 

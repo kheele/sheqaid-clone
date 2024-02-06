@@ -15,7 +15,7 @@ try {
     if (os.platform() === 'win32') {
         mod = require('./win32');
     } else {
-        mod = require('./linux');
+        mod = require('file-type');
     }
 } catch (err) {
     mod = {};

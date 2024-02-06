@@ -16,12 +16,16 @@ import style from "./EditQuestionnaireDialog.lazy.css";
 import updateContractorsQuestionnaire
     from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 import {ShouldUpdate} from "utils/Utils";
+import findByIdContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/findByIdContractorsQuestionnaire";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditQuestionnaireDialog extends AEditDialog {
     pageKey = "EditQuestionnaireDialog";
+    findById = findByIdContractorsQuestionnaire;
+    removeById = updateContractorsQuestionnaire;
 
     constructor(props) {
         super(props, style);
@@ -30,7 +34,19 @@ class EditQuestionnaireDialog extends AEditDialog {
     get title() {
         return "Edit Questionnaire";
     }
-
+    
+    get removeById() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {status}} = item;
+        
+        const {isContractor} = storage.is;
+        
+        if (!isContractor && status !== "CompleteAccepted") {
+            return updateContractorsQuestionnaire;
+        }
+    }
+    
     get controls() {
         return  Controls;
     }

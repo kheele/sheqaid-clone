@@ -18,6 +18,7 @@ class AProfileDialog extends AFormDialog {
 		this.onDownload && (this.onDownload = this.onDownload.bind(this));
 		this.onEdit && (this.onEdit = this.onEdit.bind(this));
 		this.onDelete = this.onDelete.bind(this);
+		this.onRemoved = this.onRemoved.bind(this);
 	}
 	
 	componentDidMount() {
@@ -56,34 +57,52 @@ class AProfileDialog extends AFormDialog {
 		return super.open(item);
 	}
 	
+	get parentListPage() {
+		const {stateNode} = this._reactInternals._debugOwner;
+		return stateNode;
+	}
+	
+	onRemoved(item) {
+		if(!item || !item.id) return;
+		
+		const {parentListPage} = this;
+		if(parentListPage) {
+			const {root} = parentListPage.refs || {};
+			if(root && root.list) {
+				root.list.removeIf((v, n) => v.id === item.id);
+			}
+		}
+	}
+	
 	onDelete(e, btn) {
 //        this.refs.controls.onDelete(e, btn);
 		confirmDialog.open("Are you sure you want to remove the record?").then(async res => {
 			if (res === 1) {
 				const {item} = this.state;
-				let {removeById, props:{onRemoved, softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
+				let {removeById, props: {softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
 				const onDelete = onSoftDelete || removeById;
 				if (onDelete) {
-					if(onSoftDeleteProhibit) {
+					if (onSoftDeleteProhibit) {
 						let prohibit = onSoftDeleteProhibit(item);
-						if(prohibit instanceof Promise) {
+						if (prohibit instanceof Promise) {
 							prohibit = await prohibit;
 						}
-						if(prohibit) {
+						if (prohibit) {
 							return;
 						}
 					}
-
+					
 					progressDialog.open();
 					let args = {id: item.id};
-					if(softDeleteAttrs) {
+					if (softDeleteAttrs) {
 						args = {...args, ...softDeleteAttrs};
 					} else {
 						args.removed = true;
 					}
-
+					
 					onDelete(args).then(res => {
-						onRemoved && onRemoved(item);
+						this.onRemoved(item);
+						
 						infoDialog.open("Record successfully removed.");
 						setTimeout(function () {
 							infoDialog.close();
@@ -174,7 +193,7 @@ class CircularProgressWrapper extends React.Component {
 	
 	render() {
 		const {item} = this.props.state;
-		if(!item) return <CircularProgress className="fixed-center"/>;
+		if (!item) return <CircularProgress className="fixed-center"/>;
 		
 		return null;
 	}

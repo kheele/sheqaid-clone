@@ -18,7 +18,6 @@ import EditDialog from './EditDialog';
 import DocumentCategoriesDialog from './dialogs/DocumentCategoriesDialog';
 
 import style from "./AMain.lazy.css";
-import byLogged from "./Query/List/listAllDocumentsByLogged";
 import updateDocument from "mutations/all/Document/updateDocument";
 
 // </editor-fold>
@@ -82,41 +81,44 @@ class AMain extends React.Component {
 
 	//<editor-fold desc="onLoadList">
 	onLoadList(params = {}) {
-		const {state: {view, employee_view, target_view}} = this;
-
 		const {type: doc_type} = this;
-
 		const {page, lastItem, filterData, filtered, isNew} = params;
+		
 		const {
-			// completion_status,
-			// result_status,
-			// result,
-			// date_range,
-			// course_id,
-			// training_id,
-			// trainer_id,
-			// job_position_id,
-			// employee_id,
-			// year,
+			title,
+			type,
+			internal_or_external,
+			category_list,
+			category_id,
+			employee_list,
+			employee_id,
+			responsible_person_list,
+			responsible_person_id,
+			responsible_department_list,
+			responsible_department_id,
 		} = filterData || {};
-
-		const limit = 50;
-
-		const args = {
-			limit,
-		};
-
-		if (doc_type) {
-			args.doc_type = doc_type;
-		}
-
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return byLogged(args).then((res) => {
+		
+		const listByLogged = sockets.of('documents').fn('listByLogged');
+		
+		return listByLogged({
+			doc_type,
+			//
+			title,
+			type,
+			internal_or_external,
+			category_list,
+			category_id,
+			employee_list,
+			employee_id,
+			responsible_person_list,
+			responsible_person_id,
+			responsible_department_list,
+			responsible_department_id,
+			//
+			exact_orgs: true,
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
@@ -316,12 +318,13 @@ class AMain extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="renderTHead">
 	renderTHead() {
 		return <THead>
+			<div className="td fixed-flex min-w-30"/>
 			<div className="td fixed-flex min-w-50">No.</div>
 			<div className="td fixed-flex min-w-80">Code</div>
 			<div className="td">Document Name</div>
 			<div className="td">Company</div>
-			<div className="td">Responsible Department</div>
-			<div className="td">Responsible Person</div>
+			<div className="td fixed-flex min-w-240">Responsible Department</div>
+			<div className="td fixed-flex min-w-240">Responsible Person</div>
 			<div className="td fixed-flex min-w-80">Revisions</div>
 			<div className="td fixed-flex min-w-100">Review Date</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
@@ -356,28 +359,35 @@ class AMain extends React.Component {
 				doc_type,
 				category,
 				removed,
-
-				doc_version_list: _doc_version_list,
+				
+				doc_version_list,
+				latest_version: _latest_version,
 			}
 		} = item;
 
-		const doc_version_list = _doc_version_list || [];
-
-		const [lastDoc] = doc_version_list;
+		const [latest_version] = _latest_version || [];
 
 		const getFileType = (type) => {
 			if (type) return type.toLowerCase();
 			// console.log('getFileType', type, doc, doc_old)
 		};
 
-		return <TRow key={id}>
-			<div className={"td fixed-flex min-w-50 td-filetype-" + getFileType(lastDoc.type)}>
+		const getFileTypeIcon = (type) => {
+			if (type === "Type") return <i className="fa fa-regular fa-file"></i>;
+			return <i className="fa fa-solid fa-paperclip"></i>;
+		};
+		
+		console.log('doc', latest_version.doc);
+
+		return <TRow key={id} className="w-full">
+			<div className="td fixed-flex min-w-30 td-filetype">{getFileTypeIcon(latest_version.type)}</div>
+			<div className={"td fixed-flex min-w-50"}>
 				<h6 className="xs-shown font-size-13">No.</h6>
-				{n + 1}
+				{id}
 			</div>
 			<div className="td fixed-flex min-w-80">
 				<h6 className="xs-shown font-size-13">Code</h6>
-				{lastDoc.doc_num || 'N/A'}
+				{latest_version.doc_num || 'N/A'}
 			</div>
 			<div className="td">
 				<h6 className="xs-shown font-size-13">Document Name</h6>
@@ -387,11 +397,11 @@ class AMain extends React.Component {
 				<h6 className="xs-shown font-size-13">Company</h6>
 				{client && client.name || company && company.name}
 			</div>
-			<div className="td">
+			<div className="td fixed-flex min-w-240">
 				<h6 className="xs-shown font-size-13">Responsible Department</h6>
 				{responsible_department && responsible_department.name || 'N/A'}
 			</div>
-			<div className="td">
+			<div className="td fixed-flex min-w-240">
 				<h6 className="xs-shown font-size-13">Responsible Person</h6>
 				{responsible_person ? (responsible_person.lname + ' ' + responsible_person.fname) : 'N/A'}
 			</div>
@@ -401,7 +411,7 @@ class AMain extends React.Component {
 			</div>
 			<div className="td fixed-flex min-w-100">
 				<h6 className="xs-shown font-size-13">Review Date</h6>
-				{renderExpiryDateSpan(lastDoc.expiry)}
+				{renderExpiryDateSpan(latest_version.expiry)}
 			</div>
 			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
 				<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>

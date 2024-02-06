@@ -19,8 +19,7 @@ module.exports = (
 	        ${tbl}(
 	            where: {id: {_eq: ${id}},},
 	        ) {
-	            ${details_fragment}
-	            #// ${isFunction(details_fragment) ? details_fragment(where) : details_fragment}
+	            ${isFunction(details_fragment) ? details_fragment() : details_fragment}
 	            ${orgs_fragment ? orgs_fragment : ''}
 	        }
 	      }

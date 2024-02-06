@@ -15,9 +15,10 @@ import NewSWPDialog from './forms/NewSWPDialog';
 import ProfileSWPDialog from './forms/ProfileSWPDialog';
 import EditSWPDialog from './forms/EditSWPDialog';
 import ExportSWPDialog from "./forms/ExportSWPDialog";
+import AList from "views/AList";
 
 @observer
-class SWPTab extends React.Component {
+class SWPTab extends AList {
 	
 	pageKey = "SWPTab";
 	@observable
@@ -27,16 +28,6 @@ class SWPTab extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		
-		this.onLoadList = this.onLoadList.bind(this);
-		
-		this.onExport = this.onExport.bind(this);
-		
-		this.renderItem = this.renderItem.bind(this);
-		
-		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
-		
-		this.renderFilterNode = this.renderFilterNode.bind(this);
 	}
 	
 	componentWillMount() {

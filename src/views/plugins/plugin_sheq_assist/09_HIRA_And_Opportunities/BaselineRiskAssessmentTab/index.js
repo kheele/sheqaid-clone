@@ -14,28 +14,19 @@ import EditBaselineRiskAssessmentDialog from './forms/EditBaselineRiskAssessment
 import ViewBaselineRiskAssessmentReportDialog from './forms/ViewBaselineRiskAssessmentReportDialog';
 
 import style from "./BaselineRiskAssessmentTab.lazy.css";
-import byLogged from "./Query/List/listAllBaselineRiskAssessmentByLogged";
 import ExportBaselineRiskAssessmentDialog from "./forms/ExportBaselineRiskAssessmentDialog";
+import AList from "views/AList";
 
 @observer
-class BaselineRiskAssessmentTab extends React.Component {
+class BaselineRiskAssessmentTab extends AList {
 
 	pageKey = "baseline-risk-assessment";
 
 	constructor(props) {
 		super(props);
 
-		this.onLoadList = this.onLoadList.bind(this);
-		
-		this.onExport=this.onExport.bind(this);
-
 		this.onViewReport = this.onViewReport.bind(this);
-		this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
 		this.printImpl = this.printImpl.bind(this);
-
-		this.renderItem = this.renderItem.bind(this);
-		this.renderLeftButtons = this.renderLeftButtons.bind(this);
-		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
 	}
 
 	componentWillMount() {
@@ -54,25 +45,16 @@ class BaselineRiskAssessmentTab extends React.Component {
 			risk_tolerance,
 		} = filterData || {};
 
-		const limit = 50;
-
-		const args = {
-			removed: false,
+		const listByLogged = sockets.of('hira-and-opportunities/baseline-ra').fn('listByLogged');
+		
+		return listByLogged({
 			activity,
 			risk_tolerance,
 			//
-			limit,
-			//
 			exact_orgs: true,
-		};
-
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});

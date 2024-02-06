@@ -16,4 +16,3 @@ eventManager.on("projects/listByLogged", listImpl({
 	order_by: "order_by: {name: asc}",
 	getVariablesAndQueryConfig,
 }));
-//

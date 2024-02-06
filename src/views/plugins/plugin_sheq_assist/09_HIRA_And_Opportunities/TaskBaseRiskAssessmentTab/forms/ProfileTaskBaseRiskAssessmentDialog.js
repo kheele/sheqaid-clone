@@ -15,6 +15,7 @@ import {computed, observable} from "mobx";
 import findByIdTaskbasedRA
 	from "mutations/all/HIRA_And_Opportunities/TaskbasedRA/findByIdTaskbasedRA";
 import {CircularProgress} from "@mui/material";
+import updateTaskbasedRA from "mutations/all/HIRA_And_Opportunities/TaskbasedRA/updateTaskbasedRA";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -23,6 +24,7 @@ class ProfileTaskBaseRiskAssessmentDialog extends AProfileDialog {
 	pageKey = "ProfileTaskBaseRiskAssessmentDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdTaskbasedRA;
+	removeById = updateTaskbasedRA;
 
 	constructor(props) {
 		super(props, style);

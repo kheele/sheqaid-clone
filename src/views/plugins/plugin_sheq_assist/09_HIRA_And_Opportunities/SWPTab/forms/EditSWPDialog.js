@@ -28,7 +28,6 @@ import {
 
 import {FormControls, Row} from "components/FormComponents";
 import {Dates} from "utils/Dates";
-import {toDataURI} from "utils/UtilsFuns";
 
 import updateSWP from "mutations/all/HIRA_And_Opportunities/SWP/updateSWP";
 import findByIdSWP from "mutations/all/HIRA_And_Opportunities/SWP/findByIdSWP";
@@ -41,6 +40,7 @@ import style from "./EditSWPDialog.lazy.css";
 class EditSWPDialog extends AEditDialog {
 	pageKey = "EditSWPDialog";
 	findById = findByIdSWP;
+	removeById = updateSWP;
 
 	constructor(props) {
 		super(props, style);

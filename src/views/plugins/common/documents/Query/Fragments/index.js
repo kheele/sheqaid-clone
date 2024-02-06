@@ -19,7 +19,7 @@ export const document_details_fragment = `
         doc
         expiry
     }
-    latest_version: doc_version_list(order_by: {expiry: desc_nulls_last}){
+    latest_version: doc_version_list(limit: 1, order_by: {expiry: desc_nulls_last}){
         id
         type
         doc_num
@@ -53,4 +53,3 @@ export const document_details_fragment = `
     }
 `;
 //</editor-fold>
-

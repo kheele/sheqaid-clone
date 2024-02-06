@@ -16,6 +16,7 @@ class AEditDialog extends AFormDialog {
 
 		this.onView && (this.onView = this.onView.bind(this));
 		this.onDelete = this.onDelete.bind(this);
+		this.onRemoved = this.onRemoved.bind(this);
 	}
 
 	componentDidMount() {
@@ -52,13 +53,30 @@ class AEditDialog extends AFormDialog {
 		});
 		return super.open(item);
 	}
-
+	
+	get parentListPage() {
+		const {stateNode} = this._reactInternals._debugOwner;
+		return stateNode;
+	}
+	
+	onRemoved(item) {
+		if(!item || !item.id) return;
+		
+		const {parentListPage} = this;
+		if(parentListPage) {
+			const {root} = parentListPage.refs || {};
+			if(root && root.list) {
+				root.list.removeIf((v, n) => v.id === item.id);
+			}
+		}
+	}
+	
 	onDelete(e, btn) {
 //        this.refs.controls.onDelete(e, btn);
 		confirmDialog.open("Are you sure you want to remove the record?").then(async res => {
 			if (res === 1) {
 				const {item} = this.state;
-				let {removeById, props:{onRemoved, softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
+				let {removeById, props:{softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
 				const onDelete = onSoftDelete || removeById;
 				if (onDelete) {
 					if(onSoftDeleteProhibit) {
@@ -80,7 +98,8 @@ class AEditDialog extends AFormDialog {
 					}
 
 					onDelete(args).then(res => {
-						onRemoved && onRemoved(item);
+						this.onRemoved(item);
+						
 						infoDialog.open("Record successfully removed.");
 						setTimeout(function () {
 							infoDialog.close();

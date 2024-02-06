@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import {getRandomRolor, Permissions} from "utils/Utils";
+import {Dates, getRandomRolor, Permissions} from "utils/Utils";
 
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
@@ -13,8 +13,6 @@ import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import {NewContractorDialog, EditContractorDialog, ProfileContractorDialog} from '../forms';
-
-import byLogged from "./Query/List/listAllContractorsByLogged";
 
 import style from "./ContractorsTab.lazy.css";
 
@@ -61,28 +59,42 @@ class ContractorsTab extends React.Component {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
+            client_name,
             site_name,
             name,
             username,
         } = filterData || {};
-
-        const limit = 50;
-
-        const args = {
+        
+        const {hasProjects, isConsultant,} = storage.is;
+        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
+        const {selectedClient, selectedProject, selectedSite,} = storage.selected;
+        
+        const client_id = selectedClient && selectedClient.id;
+        const project_id = selectedProject && selectedProject.id;
+        const site_id = selectedSite && selectedSite.id;
+        
+        const listByLogged = sockets.of('contractors').fn('listByLogged');
+        
+        return listByLogged({
+            hasProjects,
+            isConsultant,
+            sess_company_id,
+            sess_my_client_id,
+            sess_my_project_id,
+            sess_my_site_id,
+            client_id,
+            project_id,
+            site_id,
+            //
+            client_name,
             site_name,
             name,
             username,
             //
-            limit,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            exact_orgs: false,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -231,12 +243,14 @@ class ContractorsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
-        const {hasProjects} = storage.is;
+        const {hasProjects, isConsultant} = storage.is;
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Contractor Name" className="form-control"
                             onChange={onChange}/>
             <ClearableInput name="username" type="text" placeholder="Email Address" className="form-control"
                             onChange={onChange}/>
+            {isConsultant && <ClearableInput name="client_name" type="text" placeholder="Client" className="form-control"
+                                              onChange={onChange}/>}
             {hasProjects && <ClearableInput name="site_name" type="text" placeholder="Site" className="form-control"
                                               onChange={onChange}/>}
         </div>;
@@ -320,10 +334,10 @@ class ContractorsTab extends React.Component {
             renderItem={this.renderItem}
             loadOnScrolled={false}
         >
-            {Permissions.allowRemoveMod(permissionsKey) && !isEmployee && <ConfirmDialog ref="removeDialog"/>}
-            {Permissions.allowCreateMod(permissionsKey) && !isEmployee && <NewContractorDialog ref="newDialog"/>}
-            {Permissions.allowEditMod(permissionsKey) && !isEmployee && <EditContractorDialog ref="editDialog"/>}
-            {Permissions.allowViewMod(permissionsKey) && <ProfileContractorDialog ref="profileDialog"/>}
+            <ConfirmDialog ref="removeDialog"/>
+            <NewContractorDialog ref="newDialog"/>
+            <EditContractorDialog ref="editDialog"/>
+            <ProfileContractorDialog ref="profileDialog"/>
         </APageListReadWrite>;
     }
 

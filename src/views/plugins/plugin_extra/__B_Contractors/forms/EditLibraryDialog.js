@@ -13,16 +13,17 @@ import {AEditDialog} from 'components/dialogs';
 import {TemplateQuestions} from 'components/templates';
 
 import style from "./EditLibraryDialog.lazy.css";
-import updateContractorsQuestionnaire
-    from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 import updateContractorsQuestionnaireLibrary
     from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
+import findByIdContractorsQuestionnaireLibrary
+    from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/findByIdContractorsQuestionnaireLibrary";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditLibraryDialog";
+    findById = findByIdContractorsQuestionnaireLibrary;
 
     constructor(props) {
         super(props, style);
@@ -31,8 +32,25 @@ class EditDialog extends AEditDialog {
     get title() {
         return "Edit Master Questionnaire";
     }
-
+    
+    get removeById() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return updateContractorsQuestionnaireLibrary;
+        }
+    }
+    
     get topButtonsHiddenDelete() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return false;
+        }
         return true;
     }
 

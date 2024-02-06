@@ -2,20 +2,19 @@ require('./categories');
 
 const findByIdImpl = require('../findByIdImpl');
 const listImpl = require('../listImpl');
-const {company_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
+const {document_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
 
-// const args = {
-// 	name: "Company",
-// 	tbl: "default_companies",
-// 	details_fragment,
-// };
-//
-// eventManager.on("companies/findById", findByIdImpl(args));
-//
-// eventManager.on("companies/listByLogged", listImpl({
-// 	...args,
-// 	details_fragment,
-// 	ord
-// //er_by: "order_by: {name: asc}",
-// 	getVariablesAndQueryConfig,
-// }));
+const args = {
+	name: "Documents",
+	tbl: "sheq_documents",
+	details_fragment,
+};
+
+eventManager.on("documents/findById", findByIdImpl(args));
+
+eventManager.on("documents/listByLogged", listImpl({
+	...args,
+	details_fragment,
+	order_by: "order_by: {title: asc}",
+	getVariablesAndQueryConfig,
+}));

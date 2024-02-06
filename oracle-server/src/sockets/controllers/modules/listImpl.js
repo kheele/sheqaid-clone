@@ -7,7 +7,7 @@ module.exports = (
 		tbl,
 		details_fragment,
 		orgs_fragment: orgs_fragment_override,
-		where,
+		where: __where,
 		order_by,
 		getVariablesAndQueryConfig,
 	}
@@ -24,7 +24,7 @@ module.exports = (
 			id,
 			//
 			//
-			site_id, project_id, client_id,
+			site_id, project_id, client_id, company_id,
 			//
 			exact_orgs = false,
 			//
@@ -41,10 +41,22 @@ module.exports = (
 			//
 			...others,
 			//
-			site_id, project_id, client_id,
+			site_id, project_id, client_id, company_id,
 			//
 			exact_orgs
 		});
+		
+		// const whereArgs = {filter, removed, ...data, site_id, project_id, client_id, company_id};
+		
+		let where;
+		if (__where) {
+			where = __where({filter, removed});
+		} else {
+			where = `
+			  removed: {_eq: ${removed}},
+		    ${filter}
+			`;
+		}
 		
 		if (id) {
 			return listGraphQL({
@@ -55,7 +67,7 @@ module.exports = (
               ${filter}
             }
           ) {
-              ${isFunction(details_fragment) ? details_fragment(where) : details_fragment}
+              ${isFunction(details_fragment) ? details_fragment(data) : details_fragment}
               ${orgs_fragment}
           }
         }
@@ -63,11 +75,6 @@ module.exports = (
 				operationName: `listAll${name}ByLoggedQuery`,
 			});
 		} else {
-			where = where ? where(filter, removed) : `
-				removed: {_eq: ${removed}},
-	      ${filter}
-			`;
-			
 			orgs_fragment = orgs_fragment_override || orgs_fragment;
 			
 			return listGraphQL({
@@ -81,7 +88,7 @@ module.exports = (
 	            offset: ${offset},
 	            ${limit > 0 ? `limit: ${limit}` : ''}
 	          ) {
-                ${isFunction(details_fragment) ? details_fragment(where) : details_fragment}
+                ${isFunction(details_fragment) ? details_fragment(data) : details_fragment}
 	              ${orgs_fragment ? orgs_fragment : ''}
 	          }
 	        }

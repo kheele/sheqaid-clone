@@ -16,14 +16,6 @@ export default (
 		doc_type,
 	});
 
-	const fillNullLists = (list) => list.map(v => {
-		!v.doc_version_list && (v.doc_version_list = []);
-		if (isArray(v.latest_version)) {
-			v.latest_version = v.latest_version[0];
-		}
-		return v;
-	});
-
 	//<editor-fold desc="ByEach">
 	return GQLClient
 	.query({
@@ -43,6 +35,6 @@ export default (
            }
        }
     `,
-	}).then(fillNullLists);
+	});
 	//</editor-fold>
 };

@@ -28,7 +28,6 @@ import {
 } from './SOPComponents';
 
 import {FormControls, Row} from "components/FormComponents";
-import {Dates} from "utils/Dates";
 import {ShouldUpdate, toDataURI} from "utils/Utils";
 
 import updateSOP from "mutations/all/HIRA_And_Opportunities/SOP/updateSOP";
@@ -42,6 +41,7 @@ import style from "./EditSOPDialog.lazy.css";
 class EditSOPDialog extends AEditDialog {
 	pageKey = "EditSOPDialog";
 	findById = findByIdSOP;
+	removeById = updateSOP;
 
 	constructor(props) {
 		super(props, style);

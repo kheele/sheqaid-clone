@@ -1,3 +1,4 @@
+const {employee_personal_details_fragment} = require("../../../../graphql/Fragments");
 
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
@@ -6,17 +7,19 @@ exports.getVariablesAndQueryConfig = (
 		//
 		id,
 		//
-		name,
-		module_id,
-		module_list,
-		sector_id,
-		sector_list,
-		category_id,
+		doc_type,
+		//
+		title,
+		type,
+		internal_or_external,
 		category_list,
-		zone_id,
-		zone_list,
-		country_id,
-		country_list,
+		category_id,
+		employee_list,
+		employee_id,
+		responsible_person_list,
+		responsible_person_id,
+		responsible_department_list,
+		responsible_department_id,
 		//
 		date_range,
 		//
@@ -31,48 +34,55 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
-		if(name) {
-			filter.push(`name: {_ilike: "%${name}%"}`);
+		if (doc_type) {
+			filter.push(`doc_type: {_eq: "${doc_type}"}`);
 		}
-		if(module_list) {
-			filter.push(`module_list: {module_id:{_in: [${module_list.map(v => v.id).join(', ')}]}}`);
+		if (title) {
+			filter.push(`title: {_ilike: "%${title}%"}`);
 		}
-		if(module_id) {
-			filter.push(`module_list: {module_id:{_eq: ${module_id}}}`);
+		if (type) {
+			filter.push(`type: {_eq: "${type}"}`);
 		}
-		if(sector_list) {
-			filter.push(`sector_list: {sector_id:{_in: [${sector_list.map(v => v.id).join(', ')}]}}`);
+		if (internal_or_external) {
+			filter.push(`internal_or_external: {_eq: "${internal_or_external}"}`);
 		}
-		if(sector_id) {
-			filter.push(`sector_list: {sector_id:{_eq: ${sector_id}}}`);
+		
+		if (category_list) {
+			filter.push(`category_id: {_in: [${category_list.map(v => v.id).join(', ')}]}`);
 		}
-		if(category_list) {
-			filter.push(`category_id:{_in: [${category_list.map(v => v.id).join(', ')}]}`);
+		if (category_id) {
+			filter.push(`category_id: {_eq: ${category_id}}`);
 		}
-		if(category_id) {
-			filter.push(`category_id:{_eq: ${category_id}}`);
+		
+		if (employee_list) {
+			filter.push(`employee_id: {_in: [${employee_list.map(v => v.id).join(', ')}]}`);
 		}
-		if(zone_list) {
-			filter.push(`zone_id:{_in: [${zone_list.map(v => v.id).join(', ')}]}`);
+		if (employee_id) {
+			filter.push(`employee_id: {_eq: ${employee_id}}`);
 		}
-		if(zone_id) {
-			filter.push(`zone_id:{_eq: ${zone_id}}`);
+		
+		if (responsible_person_list) {
+			filter.push(`responsible_person_id: {_in: [${responsible_person_list.map(v => v.id).join(', ')}]}`);
 		}
-		if(country_list) {
-			filter.push(`country_id:{_in: [${country_list.map(v => v.id).join(', ')}]}`);
+		if (responsible_person_id) {
+			filter.push(`responsible_person_id: {_eq: ${responsible_person_id}}`);
 		}
-		if(country_id) {
-			filter.push(`country_id:{_eq: ${country_id}}`);
+		
+		if (responsible_department_list) {
+			filter.push(`responsible_department_id: {_in: [${responsible_department_list.map(v => v.id).join(', ')}]}`);
+		}
+		if (responsible_department_id) {
+			filter.push(`responsible_department_id: {_eq: ${responsible_department_id}}`);
 		}
 		
 		if (date_range) {
 			const {start, end} = date_range;
 			if (start && end) {
-				filter.push(`created_at: {_gte: "${start}", _lte: "${end}"}`);
+				filter.push(`doc_version_list:{expiry: {_gte: "${start}", _lte: "${end}"}}`);
 			} else if (start) {
-				filter.push(`created_at: {_gte: "${start}"}`);
+				filter.push(`doc_version_list:{expiry: {_gte: "${start}"}}`);
 			} else if (end) {
-				filter.push(`created_at: {_lte: "${end}"}`);
+				filter.push(`doc_version_list:{expiry: {_lte: "${end}"}}`);
 			}
 		}
 	}
@@ -84,58 +94,56 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="company_details_fragment">
-exports.company_details_fragment = `
+//<editor-fold desc="document_details_fragment">
+exports.document_details_fragment = `
   id
   created_at
-  account_type
-  address
-  business_id
-  consultant
-  email
-  name
-  no_projects
-  phone
-  profile_pic
-  sector_list {
-    id
-    sector {
+  title
+  desc
+  doc_type
+  internal_or_external
+  category {
       id
       name
-    }
   }
-  module_list {
-    id
-    price
-    module {
+  doc_version_list(order_by:{expiry: desc_nulls_last}){
       id
-      borderColor
-      desc
-      discount
-      faIconLeft
-      faIconRight
-      has_update
-      hover
-      key
-      price
-      sort
-      status
-      svgIconLeft
-      svgIconRight
-      title
-    }
+      type
+      doc_num
+      doc
+      expiry
   }
-  zone {
-    id
-    name
+  latest_version: doc_version_list(limit: 1, order_by: {expiry: desc_nulls_last}){
+      id
+      type
+      doc_num
+      doc
+      expiry
   }
-  country {
-    id
-    name
+  shared_doc_list{
+      id
+      doc_expiry_date
+      email
+      fname
+      lname
   }
-  category {
-    id
-    name
+  employee{
+      ${employee_personal_details_fragment}
+  }
+  responsible_person{
+      ${employee_personal_details_fragment}
+  }
+  responsible_department{
+      id
+      name
+  }
+  contractor_site{
+      id
+      name
+  }
+  contractor {
+      id
+      name
   }
 `;
 //</editor-fold>
