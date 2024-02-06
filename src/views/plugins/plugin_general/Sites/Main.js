@@ -27,8 +27,11 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-
+        
+        this.onLoadList = this.onLoadList.bind(this);
+        
         this.onRemoved = this.onRemoved.bind(this);
+        
         this.hasCreateBtn = this.hasCreateBtn.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
@@ -48,7 +51,7 @@ class Main extends React.Component {
     }
 
     onRemoved(item) {
-        storage.list.clients.removeIf(val => val.id === item.id);
+        this.refs.root.list.removeIf(val => val.id === item.id);
     }
 
     hasCreateBtn() {
@@ -150,11 +153,11 @@ class Main extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}
             loadOnScrolled={false}>
-            <ConfirmDialog ref="removeDialog"/>
+            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateSite}/>
 
             <NewDialog ref="newDialog"/>
-            <ProfileDialog ref="profileDialog"/>
-            <EditDialog ref="editDialog"/>
+            <ProfileDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+            <EditDialog ref="editDialog" onRemoved={this.onRemoved}/>
         </APageListReadWrite>;
     }
 }

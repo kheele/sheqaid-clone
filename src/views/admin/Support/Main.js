@@ -40,7 +40,7 @@ class Main extends React.Component {
     }
     
     onRemoved(item) {
-        storage.list.clients.removeIf(val => val.id === item.id);
+        this.refs.root.list.removeIf(val => val.id === item.id);
     }
     
     hasCreateBtn() {
