@@ -200,7 +200,7 @@ class AEmployeeDocControls extends React.Component {
 		}
 		
 		if (isNewEmployee) {
-			const {list} = this.state;
+			const {list} = this;
 			
 			const sliderIndex = tabWrapper.sliderIndex || 0;
 			let updateItem = list[sliderIndex];
@@ -255,7 +255,7 @@ class AEmployeeDocControls extends React.Component {
 				const sliderIndex = tabWrapper.sliderIndex || 0;
 				
 				if (isNewEmployee) {
-					const {list} = this.state;
+					const {list} = this;
 					
 					list.removeAt(sliderIndex);
 					infoDialog.open("Record successfully removed.");
@@ -317,12 +317,12 @@ class AEmployeeDocControls extends React.Component {
 		}
 		
 		if (isEmbedded) {
-			const {props: {activeId}, state} = this;
+			const {props: {activeId}, list} = this;
 			return <Slider
 				ref="slider"
 				isEmbedded
 				activeId={activeId}
-				state={state}
+				list={list}
 				item={this.item}
 				listName={listName}
 				tabsHeight={tabsHeight}
@@ -349,7 +349,7 @@ class AEmployeeDocControls extends React.Component {
 					fname, lname,
 				},
 			},
-			state,
+			list,
 		} = this;
 		
 		const activeId = dialog.extraProp('activeId');
@@ -360,12 +360,12 @@ class AEmployeeDocControls extends React.Component {
 			<div className="controls">
 				{renderProfileCover(<>
 					<h3>{lname + ' ' + fname}</h3>
-					<h5>{this.list.length + ' ' + title}</h5>
+					<h5>{list.length + ' ' + title}</h5>
 				</>)}
 				<Slider
 					ref="slider"
 					activeId={activeId}
-					state={state}
+					list={list}
 					item={this.item}
 					listName={listName}
 					tabsHeight={tabsHeight}
@@ -413,7 +413,7 @@ class Slider extends React.Component {
 		const {
 			activeId,
 			isEmbedded,
-			state,
+			list,
 			item,
 			listName,
 			tabsHeight,
@@ -428,7 +428,7 @@ class Slider extends React.Component {
 			renderItem,
 			onClick,
 		} = this.props;
-		const {list} = state;
+		console.log('Slider.render', list.slice());
 		const sliderIndex = activeId ? list.indexOfWithPredicate(item => item.id === activeId) : 0;
 		const tabIndex = activeId ? 1 : 0;
 		
@@ -463,7 +463,7 @@ class Slider extends React.Component {
 				loadDashboard={loadDashboard}
 				renderItem={renderItem}
 				onSliderClick={onClick}
-				state={state}
+				list={list}
 				tabIndex={tabIndex}
 				sliderIndex={sliderIndex}
 				listName={listName}
@@ -542,14 +542,12 @@ class TabWrapper extends React.Component {
 			loadDashboard,
 			listName,
 			renderItem,
-			state,
+			list,
 			sliderIndex,
 			onSliderClick,
 			tabsHeight,
 			isEmbedded,
 		} = this.props;
-		
-		const {list} = state;
 		
 		return (
 			<Tabs key="tabs" ref="mainTabs" tabsHeight={tabsHeight} permissionKey={permissionKey}

@@ -21,7 +21,6 @@ import style from "./EditTeamDialog.lazy.css";
 import updateTeam from "mutations/all/Team/updateTeam";
 import {CircularProgress} from "@mui/material";
 import findByIdTeam from "mutations/all/Team/findByIdTeam";
-import {SelectWrapper} from "../../../../plugin_sheq_assist/19_Maintenance/ToolsTab/forms/AssetComponents";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -30,11 +29,13 @@ class EditDialog extends AEditDialog {
 	pageKey = "EditTeamDialog";
 	title = "Edit Team";
 	findById = findByIdTeam;
-
+	removeById = updateTeam;
+	softDeleteAttrs = {status: "Inactive"};
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -45,7 +46,7 @@ class EditDialog extends AEditDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/employees/teams/";
-
+	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable
 	state = {
@@ -58,19 +59,19 @@ class Controls extends React.Component {
 		},
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor() {
 		super();
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		
 		this.form = new Form();
 		this.form.addChangeOne("supervisor", this.onChangeSupervisor.bind(this));
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onChange funs">
 	onChangeSupervisor(el, val) {
 		const {execWhen} = this.props;
@@ -82,17 +83,17 @@ class Controls extends React.Component {
 					if (res && isArray(res)) {
 						list_ref.list = [...res, null];
 					} else {
-
+					
 					}
 				}).catch(err => {
-
+				
 				});
 			}
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onNext">
 	onNext(e, btn) {
 		const {form} = this;
@@ -121,16 +122,16 @@ class Controls extends React.Component {
 				return;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	onSubmit(e, btn, onSaved) {
 		const {form, item: {data: old_data}} = this;
-
+		
 		//1
 		if (!form.isValid('client')) {
 			infoDialog.open('Company is required');
@@ -144,7 +145,7 @@ class Controls extends React.Component {
 		// 	infoDialog.open('Site is required');
 		// 	return;
 		// }
-
+		
 		//2
 		if (!form.isValid('supervisor')) {
 			infoDialog.open('Supervisor is required');
@@ -154,13 +155,13 @@ class Controls extends React.Component {
 			infoDialog.open('Team Name is required');
 			return;
 		}
-
+		
 		//3
 		if (!form.isValid('employee_list') || form.get('employee_list').isEmpty()) {
 			infoDialog.open('At least 1 team member is required');
 			return;
 		}
-
+		
 		const {
 			site, project, client,
 			//
@@ -171,28 +172,28 @@ class Controls extends React.Component {
 			//
 			ppe_list
 		} = form.data;
-
+		
 		const data = {};
-
+		
 		ShouldUpdate.checkClient(data, old_data, client);
 		ShouldUpdate.checkProject(data, old_data, project);
 		ShouldUpdate.checkSite(data, old_data, site);
-
+		
 		ShouldUpdate.checkEmployee(data, old_data, supervisor, 'supervisor_id');
 		ShouldUpdate.check(data, old_data, name, 'name');
 		ShouldUpdate.check(data, old_data, status, 'status');
-
+		
 		ShouldUpdate.checkTeamEmployeeList(data, old_data, employee_list, 'employee_list');
-
+		
 		ShouldUpdate.checkPPEList(data, old_data, ppe_list, 'ppe_list');
-
+		
 		if (Object.keys(data).isEmpty()) {
 			infoDialog.open("Nothing changed!");
 			return;
 		}
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		updateTeam({id: this.item.id, ...data}).then(res => {
@@ -212,19 +213,19 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.close());
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	@computed get item() {
 		return this.props.state.item;
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		if (!this.item) {
 			return <CircularProgress className="fixed-center"/>;
 		}
-
+		
 		let {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
@@ -243,9 +244,9 @@ class Controls extends React.Component {
 				}
 			}
 		} = this;
-
+		
 		const {isConsultant, isNoProjects} = storage.is;
-
+		
 		return (<FormControls>
 			<RowOrgs
 				client={client}
@@ -293,7 +294,7 @@ class Controls extends React.Component {
 			</Row>
 		</FormControls>);
 	}
-
+	
 	// </editor-fold>
 }
 

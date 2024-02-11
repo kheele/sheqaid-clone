@@ -32,7 +32,10 @@ class AOrgStore extends AStore {
         
         const findDashboard = sockets.of(`${path}/${org}`).fn('dashboard');
         const id = sess_my_org_id || selectedOrg.id;
-        return findDashboard({id, mon, mon2, mon3});
+        return findDashboard({id, mon, mon2, mon3}).then(res => {
+            console.log('findByIdHRModuleDashboardStatsByLoggedImpl', path, res);
+            return res;
+        });
     }
     
     async findByIdHRCompetenciesDashboardStatsByLogged(selectedOrg) {

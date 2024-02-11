@@ -1,3 +1,5 @@
+const {findByIdEmployeeDashboardStats} = require("../../../findByIdEmployeeDashboardStatsImpl");
+
 const {
 	findByIdCompanyDashboardStatsImpl,
 	findByIdClientDashboardStatsImpl,
@@ -74,7 +76,7 @@ const getFragment = type => {
 
 const mapResults = id => {
 	return res => {
-		console.log('findByIdOrgHRDocumentDashboardStatsQuery', id, res)
+		// console.log('findByIdOrgHRDocumentDashboardStatsQuery', id, res)
 		const {employee_list_aggregate: {nodes}} = res;
 		
 		const convertAggregates = (key, nodes) => ({
@@ -85,19 +87,29 @@ const mapResults = id => {
 		
 		return {
 			id,
-			data: {
-				list_active_aggregate: convertAggregates('list_active', nodes),
-				list_removed_aggregate: convertAggregates('list_removed', nodes),
-				list_no_expiry_aggregate: convertAggregates('list_no_expiry', nodes),
-				list_expired_aggregate: convertAggregates('list_expired', nodes),
-				list_mon_expiry_aggregate: convertAggregates('list_mon_expiry', nodes),
-				list_2mon_expiry_aggregate: convertAggregates('list_2mon_expiry', nodes),
-				list_3mon_expiry_aggregate: convertAggregates('list_3mon_expiry', nodes),
-				list_4mon_expiry_aggregate: convertAggregates('list_4mon_expiry', nodes),
-			}
+			list_active_aggregate: convertAggregates('list_active', nodes),
+			list_removed_aggregate: convertAggregates('list_removed', nodes),
+			list_no_expiry_aggregate: convertAggregates('list_no_expiry', nodes),
+			list_expired_aggregate: convertAggregates('list_expired', nodes),
+			list_mon_expiry_aggregate: convertAggregates('list_mon_expiry', nodes),
+			list_2mon_expiry_aggregate: convertAggregates('list_2mon_expiry', nodes),
+			list_3mon_expiry_aggregate: convertAggregates('list_3mon_expiry', nodes),
+			list_4mon_expiry_aggregate: convertAggregates('list_4mon_expiry', nodes),
 		};
 	};
 };
+
+//<editor-fold desc="findByIdEmployeeDashboardStats">
+module.exports.findByIdEmployeeDashboardStats = ({name, listName, isContract, type}) => {
+	return findByIdEmployeeDashboardStats({
+		name,
+		listName,
+		isContract,
+		type,
+		mapResults: id => res => res && res.data,
+	});
+}
+//</editor-fold>
 
 //<editor-fold desc="findByIdCompanyDashboardStatsImpl">
 module.exports.findByIdCompanyDashboardStats = ({name, type}) => {

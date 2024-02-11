@@ -15,15 +15,16 @@ import {
 import {AEditDialog} from 'components/dialogs';
 import style from "./EditDepartmentDialog.lazy.css";
 import {FormControls, Row} from "components/FormComponents";
-import updateDepartment from "mutations/all/Department/updateDepartment";
 import {CircularProgress} from "@mui/material";
 import findByIdDepartment from "mutations/all/Department/findByIdDepartment";
+import updateDepartment from "mutations/all/Department/updateDepartment";
 
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "DepartmentDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdDepartment;
+	removeById = updateDepartment;
 
 	constructor(props) {
 		super(props, style);

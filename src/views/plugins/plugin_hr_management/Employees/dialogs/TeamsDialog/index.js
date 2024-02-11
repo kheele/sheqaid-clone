@@ -152,10 +152,10 @@ class TeamsDialog extends ADialogList {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" softDeleteAttrs={{status: "Inactive"}} onSoftDelete={updateTeam}/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateTeam}/>
             
             <NewTeamDialog ref="newDialog" path={this.path}/>
-            <ProfileTeamDialog ref="profileDialog" softDeleteAttrs={{status: "Inactive"}} onSoftDelete={updateTeam}/>
+            <ProfileTeamDialog ref="profileDialog" onSoftDelete={updateTeam}/>
             <EditTeamDialog ref="editDialog" path={this.path}/>
         </APageListReadWrite>;
     }

@@ -17,8 +17,12 @@ import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {ANewDialog, InputDialog} from 'components/dialogs';
 
 import style from "./ImportDialog.lazy.css";
-import insertEmployee from "../../../../mutations/all/Employee/insertEmployee";
-import insertEmployeeImported from "../../../../mutations/all/Employee/insertEmployeeImported";
+import insertEmployee from "mutations/all/Employee/insertEmployee";
+import insertEmployeeImported from "mutations/all/Employee/insertEmployeeImported";
+import insertDepartment from "mutations/all/Department/insertDepartment";
+import insertJobPosition from "mutations/all/JobPosition/insertJobPosition";
+import findByClientIdAndNameJobPosition from "mutations/all/JobPosition/findByClientIdAndNameJobPosition";
+import findByClientIdAndNameDepartment from "mutations/all/Department/findByClientIdAndNameDepartment";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ImportDialog">
@@ -125,6 +129,11 @@ class Controls extends React.Component {
 							{res.errors.map(this.mapErrors)}
 						</div>);
 					} else {
+						
+						const {
+							client,
+						} = this.form.data;
+						
 						this.state.list = await Promise.all(res.map(async val => {
 							let {
 								fname,
@@ -207,46 +216,49 @@ class Controls extends React.Component {
 								}
 								if (job_position) {
 									job_position = job_position.toLowerCase().toCapitalCase();
-									const job_position_list = await neonBinding.events.emit(this.props.path + "job-positions/list/filter", {name: job_position});
-									if (job_position_list && !job_position_list.isEmpty()) {
-										const job_position_obj = job_position_list.find(v => v.data.name.toLowerCase() === job_position.toLowerCase());
-										if (job_position_obj) {
-											const {id, data: {name}} = job_position_obj;
-											if (job_category) {
-												val.job_position = {id, name: name.toLowerCase().toCapitalCase(), job_category};//{name: job_position, job_category};
-											} else {
-												val.job_position = {id, name: name.toLowerCase().toCapitalCase()};
-											}
+									const found_job_position = await findByClientIdAndNameJobPosition({
+										client_id: client.id,
+										name: job_position,
+										exact_orgs: true,
+										exact_orgs_company: true,
+									});
+									if (found_job_position) {
+										const {id, data: {name}} = found_job_position;
+										if (job_category) {
+											val.job_position = {id, name: name.toLowerCase().toCapitalCase(), job_category};//{name: job_position, job_category};
 										} else {
-											val.job_position = job_position;
+											val.job_position = {id, name: name.toLowerCase().toCapitalCase()};
 										}
 									} else {
-										if (job_category) {
-											val.job_position = {name: job_position, job_category};
-										} else {
-											val.job_position = job_position;
-										}
+										val.job_position = job_position;
 									}
-									delete val.job_position;
+									// else {
+									// 	if (job_category) {
+									// 		val.job_position = {name: job_position, job_category};
+									// 	} else {
+									// 		val.job_position = job_position;
+									// 	}
+									// }
+									// delete val.job_position;
 								}
 								if (department) {
 									department = department.toLowerCase().toCapitalCase();
-									const department_list = await neonBinding.events.emit(this.props.path + "departments/list/filter", {name: department});
-									if (department_list && !department_list.isEmpty()) {
-										const department_obj = department_list.find(v => v.data.name.toLowerCase() === department.toLowerCase());
-										if (department_obj) {
-											const {id, data: {name}} = department_obj;
-											val.department = {id, name: name.toLowerCase().toCapitalCase()};
-										} else {
-											val.department = department;
-										}
+									const found_department = await findByClientIdAndNameDepartment({
+										client_id: client.id,
+										name: department,
+										exact_orgs: true,
+										exact_orgs_company: true,
+									});
+									if (found_department) {
+										const {id, data: {name}} = found_department;
+										val.department = {id, name: name.toLowerCase().toCapitalCase()};
 									} else {
 										val.department = department;
 									}
-									delete val.department;
+									// delete val.department;
 								}
 							}
-							delete val.job_category;
+							// delete val.job_category;
 							
 							return val;
 						}));
@@ -358,20 +370,22 @@ class GroupBy extends React.Component {
 		const {state: {list}} = this.props;
 		let groups;
 		if (this.isJobPos) {
-			groups = list.groupBy(({
-				                       fname,
-				                       lname,
-				                       id_num,
-				                       passport_num,
-				                       sex,
-				                       dob,
-				                       phone,
-				                       email,
-				                       employee_num,
-				                       employment_date,
-				                       job_position,
-				                       department
-			                       }) => {
+			groups = list.groupBy((
+				{
+					fname,
+					lname,
+					id_num,
+					passport_num,
+					sex,
+					dob,
+					phone,
+					email,
+					employee_num,
+					employment_date,
+					job_position,
+					department
+				}
+			) => {
 				if (job_position) {
 					if (job_position.id) {
 						return job_position.name;
@@ -383,20 +397,22 @@ class GroupBy extends React.Component {
 				}
 			});
 		} else {
-			groups = list.groupBy(({
-				                       fname,
-				                       lname,
-				                       id_num,
-				                       passport_num,
-				                       sex,
-				                       dob,
-				                       phone,
-				                       email,
-				                       employee_num,
-				                       employment_date,
-				                       job_position,
-				                       department
-			                       }) => {
+			groups = list.groupBy((
+				{
+					fname,
+					lname,
+					id_num,
+					passport_num,
+					sex,
+					dob,
+					phone,
+					email,
+					employee_num,
+					employment_date,
+					job_position,
+					department
+				}
+			) => {
 				if (department) {
 					if (department.id) {
 						return department.name;
@@ -647,11 +663,16 @@ class RenderItemGroup extends React.Component {
 				return (job_position.name || job_position).toLowerCase() === name.toLowerCase();
 			});
 			
-			neonBinding.events.emit(this.props.path + "job-positions/create", {
+			const new_job_position = {
 				name: job_position.name || job_position,
 				job_category: job_position.job_category,
 				client_id: client.id,
-			}).then(job_position => {
+			};
+			if (job_position.job_category) {
+				new_job_position.job_category = {data: job_position.job_category};
+			}
+			
+			insertJobPosition(new_job_position).then(job_position => {
 				if (job_position) {
 					const {id, data: {name, job_category}} = job_position;
 					// if(job_category) {
@@ -678,7 +699,7 @@ class RenderItemGroup extends React.Component {
 			const {department} = state.list.find(({department}) => {
 				return (department.name || department).toLowerCase() === name.toLowerCase();
 			});
-			neonBinding.events.emit(this.props.path + "departments/create", {
+			insertDepartment({
 				name: name,
 				client_id: client.id,
 			}).then(res => {
@@ -761,7 +782,7 @@ class RenderItemGroup extends React.Component {
 						contractor_client_id: isContractor ? (client && client.id) : null,
 						contractor_site_id: isContractor ? (site && site.id) : null,
 						dob: Dates.formatDateSQL(v.dob),
-						employment_date: Dates.formartDateSQL(v.employment_date),
+						employment_date: Dates.formatDateSQL(v.employment_date),
 					};
 				});
 			}
@@ -900,7 +921,7 @@ class GroupByTBody extends ATableSavable {
 			<div className="td fixed-flex min-w-140">{Dates.formatDate(employment_date) || 'N/A'}</div>
 			{!this.isJobPos && <div
 				className="td padding-l-0">{job_position ? ((job_position.name || job_position) + (job_category ? (" [" + job_category + "]") : "")) : 'N/A'}</div>}
-			{this.isJobPos && <div className="td padding-l-0">{department || 'N/A'}</div>}
+			{this.isJobPos && <div className="td padding-l-0">{department ? (department.name || department) : 'N/A'}</div>}
 		</TRow>;
 	}
 	

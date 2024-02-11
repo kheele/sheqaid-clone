@@ -66,7 +66,22 @@ class DepartmentsDialog extends ADialogList {
         });
     }
     //</editor-fold>
-
+    
+    onSoftDeleteProhibit(item) {
+        const {id, data: {employee_list_aggregate}} = item;
+        const prohibit = employee_list_aggregate.aggregate.count > 0;
+        if(prohibit) {
+            infoDialog.open(<p>
+                The Department can't be removed while<br />
+                there are employees attached to it.<br /><br />
+                Please first remove the employees or assign<br />
+                them to other Department(s) before removing<br />
+                this Department.
+            </p>);
+        }
+        return prohibit;
+    }
+    
     onImport(e, btn) {
         this.refs.importDialog.open().then(list => {
             this.refs.root.list.push(...list);
@@ -158,30 +173,15 @@ class DepartmentsDialog extends ADialogList {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateDepartment}/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateDepartment}/>
 
             <ImportDepartmentsDialog ref="importDialog" path={this.path}/>
             <NewDepartmentDialog ref="newDialog" path={this.path}/>
-            <ProfileDepartmentDialog ref="profileDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateDepartment}/>
+            <ProfileDepartmentDialog ref="profileDialog" onSoftDelete={updateDepartment}/>
             <EditDepartmentDialog ref="editDialog" path={this.path}/>
         </APageListReadWrite>;
     }
 
-}
-
-function onSoftDeleteProhibit(item) {
-    const {id, data: {employee_list_aggregate}} = item;
-    const prohibit = employee_list_aggregate.aggregate.count > 0;
-    if(prohibit) {
-        infoDialog.open(<p>
-            The Department can't be removed while<br />
-            there are employees attached to it.<br /><br />
-            Please first remove the employees or assign<br />
-            them to other Department(s) before removing<br />
-            this Department.
-        </p>);
-    }
-    return prohibit;
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">

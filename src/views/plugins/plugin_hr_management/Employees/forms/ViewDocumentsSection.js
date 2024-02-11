@@ -51,7 +51,7 @@ class ViewDocumentsSection extends React.Component {
                 trainer_training_list,
             }
         } = item;
-
+        
         let __idx = 0;
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
@@ -64,7 +64,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormOpen={onFormOpen}
                     onFormNext={onFormNext}
                 >
-                    <IDOrPassportSection item={item} isEmbedded isEmbedded/>
+                    <IDOrPassportSection item={item} isEmbedded/>
                 </Row>
                 <Row
                     rendered

@@ -10,11 +10,13 @@ import style from "./ProfileJobCategoryDialog.lazy.css";
 import EmployeesDialog from "../EmployeesDialog";
 import {CircularProgress} from "@mui/material";
 import findByIdJobCategory from "mutations/all/JobCategory/findByIdJobCategory";
+import updateJobCategory from "mutations/all/JobCategory/updateJobCategory";
 
 @observer
 class ProfileJobCategoryDialog extends AProfileDialog {
 	pageKey = "ProfileJobCategoryDialog";
 	findById = findByIdJobCategory;
+	removeById = updateJobCategory;
 
 	constructor(props) {
 		super(props, style);

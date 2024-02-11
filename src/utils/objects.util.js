@@ -856,6 +856,9 @@ window.isSetter = function (obj, prop) {
             return -1;
         }
         let self = this;
+        
+        if(self.isEmpty()) return -1;
+        
         let n = self.length - 1;
 
         do {

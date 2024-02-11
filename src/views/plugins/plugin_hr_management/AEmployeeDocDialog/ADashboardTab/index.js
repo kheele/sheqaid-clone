@@ -121,7 +121,7 @@ class DashboardTab extends React.Component {
 			<TopGridCounter
 				ref="topStats"
 				titlePlural={titlePlural}
-				data={topStats.data}
+				data={topStats}
 				topStatsSize={topStatsSize}
 				onViewActiveTab={onViewActiveTab}
 				onViewRemovedTab={onViewRemovedTab}

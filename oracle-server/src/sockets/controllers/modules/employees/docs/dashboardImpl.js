@@ -1,3 +1,5 @@
+const {findByIdEmployeeDashboardStats} = require("../../findByIdEmployeeDashboardStatsImpl");
+
 const {
 	findByIdCompanyDashboardStatsImpl,
 	findByIdClientDashboardStatsImpl,
@@ -74,11 +76,27 @@ const getFragment = (listName, isContract) => {
 };
 //</editor-fold>
 
+const mapResults = id => {
+	return res => res && res.data;
+};
+
+//<editor-fold desc="findByIdEmployeeDashboardStats">
+module.exports.findByIdEmployeeDashboardStats = ({name, listName, isContract}) => {
+	return findByIdEmployeeDashboardStats({
+		name,
+		listName,
+		isContract,
+		mapResults,
+	});
+}
+//</editor-fold>
+
 //<editor-fold desc="findByIdCompanyDashboardStatsImpl">
 module.exports.findByIdCompanyDashboardStats = ({name, listName, isContract}) => {
 	return findByIdCompanyDashboardStatsImpl({
 		name: `HR${name}`,
 		details_fragment: getFragment(listName, isContract),
+		mapResults,
 	});
 }
 //</editor-fold>
@@ -88,6 +106,7 @@ module.exports.findByIdClientDashboardStats = ({name, listName, isContract}) => 
 	return findByIdClientDashboardStatsImpl({
 		name: `HR${name}`,
 		details_fragment: getFragment(listName, isContract),
+		mapResults,
 	});
 }
 //</editor-fold>
@@ -97,6 +116,7 @@ module.exports.findByIdProjectDashboardStats = ({name, listName, isContract}) =>
 	return findByIdProjectDashboardStatsImpl({
 		name: `HR${name}`,
 		details_fragment: getFragment(listName, isContract),
+		mapResults,
 	});
 }
 //</editor-fold>
@@ -106,6 +126,7 @@ module.exports.findByIdSiteDashboardStats = ({name, listName, isContract}) => {
 	return findByIdSiteDashboardStatsImpl({
 		name: `HR${name}`,
 		details_fragment: getFragment(listName, isContract),
+		mapResults,
 	});
 }
 //</editor-fold>
@@ -115,6 +136,7 @@ module.exports.findByIdContractorDashboardStats = ({name, listName, isContract})
 	return findByIdContractorDashboardStatsImpl({
 		name: `HR${name}`,
 		details_fragment: getFragment(listName, isContract),
+		mapResults,
 	});
 }
 //</editor-fold>

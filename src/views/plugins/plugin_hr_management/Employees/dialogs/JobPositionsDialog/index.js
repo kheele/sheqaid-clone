@@ -17,7 +17,6 @@ import EditJobPositionDialog from "./EditJobPositionDialog";
 
 import style from "./JobPositionsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
-import updateJobPosition from "mutations/all/JobPosition/updateJobPosition";
 
 // </editor-fold>
 
@@ -84,7 +83,22 @@ class JobPositionsDialog extends ADialogList {
 	}
 
 	//</editor-fold>
-
+	
+	onSoftDeleteProhibit(item) {
+		const {id, data: {employee_list_aggregate}} = item;
+		const prohibit = employee_list_aggregate.aggregate.count > 0;
+		if(prohibit) {
+			infoDialog.open(<p>
+				The Job Position can't be removed while<br />
+				there are employees attached to it.<br /><br />
+				Please first remove the employees or assign<br />
+				them to other Job Position(s) before removing<br />
+				this Job Position.
+			</p>);
+		}
+		return prohibit;
+	}
+	
 	// <editor-fold defaultstate="collapsed" desc="actions">
 	onImport(e, btn) {
 		this.refs.importDialog.open().then(list => {
@@ -210,32 +224,17 @@ class JobPositionsDialog extends ADialogList {
 			renderFilterNode={this.renderFilterNode}
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
-			<ConfirmDialog ref="removeDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateJobPosition}/>
+			<ConfirmDialog ref="removeDialog"/>
 
 			<ImportJobPositionsDialog ref="importDialog" path={this.path}/>
 			<NewJobPositionDialog ref="newDialog" path={this.path}/>
-			<ProfileJobPositionDialog ref="profileDialog" onSoftDeleteProhibit={onSoftDeleteProhibit} onSoftDelete={updateJobPosition}/>
+			<ProfileJobPositionDialog ref="profileDialog"/>
 			<EditJobPositionDialog ref="editDialog" path={this.path}/>
 		</APageListReadWrite>;
 	}
 
 	// </editor-fold>
 
-}
-
-function onSoftDeleteProhibit(item) {
-	const {id, data: {employee_list_aggregate}} = item;
-	const prohibit = employee_list_aggregate.aggregate.count > 0;
-	if(prohibit) {
-		infoDialog.open(<p>
-			The Job Position can't be removed while<br />
-			there are employees attached to it.<br /><br />
-			Please first remove the employees or assign<br />
-			them to other Job Position(s) before removing<br />
-			this Job Position.
-		</p>);
-	}
-	return prohibit;
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">

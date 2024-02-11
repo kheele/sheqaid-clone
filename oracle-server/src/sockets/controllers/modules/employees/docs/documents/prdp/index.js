@@ -2,6 +2,8 @@ const findByIdImpl = require('./findByIdImpl');
 const listImpl = require('./listImpl');
 
 const {
+	findByIdEmployeeDashboardStats,
+	//
 	findByIdCompanyDashboardStats,
 	findByIdClientDashboardStats,
 	findByIdProjectDashboardStats,
@@ -16,7 +18,7 @@ const {
 	findByIdSiteHRDocumentsDateRangeDashboardStats,
 	findByIdContractorHRDocumentsDateRangeDashboardStats,
 } = require("../dateRangeDashboardImpl");
-const {findByIdEmployeeDashboardStats} = require("../../../../findByIdEmployeeDashboardStatsImpl");
+
 const {findByIdEmployeeDateRangeDashboardStats} = require("../../../../findByIdEmployeeDateRangeDashboardStatsImpl");
 
 eventManager.on("employees/documents/prdp/findById", findByIdImpl);

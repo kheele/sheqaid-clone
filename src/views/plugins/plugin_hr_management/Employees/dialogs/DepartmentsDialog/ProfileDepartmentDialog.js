@@ -10,11 +10,13 @@ import style from "./ProfileDepartmentDialog.lazy.css";
 import EmployeesDialog from "../EmployeesDialog";
 import {CircularProgress} from "@mui/material";
 import findByIdDepartment from "mutations/all/Department/findByIdDepartment";
+import updateDepartment from "mutations/all/Department/updateDepartment";
 
 @observer
 class ProfileDepartmentDialog extends AProfileDialog {
 	pageKey = "ProfileDepartmentDialog";
 	findById = findByIdDepartment;
+	removeById = updateDepartment;
 
 	constructor(props) {
 		super(props, style);

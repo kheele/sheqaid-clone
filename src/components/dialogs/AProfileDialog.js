@@ -79,7 +79,8 @@ class AProfileDialog extends AFormDialog {
 		confirmDialog.open("Are you sure you want to remove the record?").then(async res => {
 			if (res === 1) {
 				const {item} = this.state;
-				let {removeById, props: {softDeleteAttrs, onSoftDelete, onSoftDeleteProhibit}} = this;
+				const {onSoftDeleteProhibit} = this.parentListPage;
+				let {removeById, softDeleteAttrs, props: {onSoftDelete}} = this;
 				const onDelete = onSoftDelete || removeById;
 				if (onDelete) {
 					if (onSoftDeleteProhibit) {

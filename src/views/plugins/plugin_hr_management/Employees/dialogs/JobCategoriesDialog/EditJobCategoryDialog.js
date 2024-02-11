@@ -21,6 +21,7 @@ class EditDialog extends AEditDialog {
 	pageKey = "JobCategoryDialog";
 	className = 'ANewTableFormDialog';
 	findById = findByIdJobCategory;
+	removeById = updateJobCategory;
 
 	constructor(props) {
 		super(props, style);

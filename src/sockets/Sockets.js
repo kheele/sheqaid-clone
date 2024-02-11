@@ -14,8 +14,24 @@ class Socket {
 				if (!isNumber(data) && !isBoolean(data)) {
 					data = await convertMobx(data);
 					
-					const {site_id, project_id, client_id, exact_orgs} = data;
-					const orgs_filter = orgsFilter({site_id, project_id, client_id, exact_orgs});
+					const {
+						site_id,
+						project_id,
+						client_id,
+						incContractors,
+						excContractors,
+						exact_orgs,
+						exact_orgs_company,
+					} = data;
+					const orgs_filter = orgsFilter({
+						site_id,
+						project_id,
+						client_id,
+						incContractors,
+						excContractors,
+						exact_orgs,
+						exact_orgs_company,
+					});
 					
 					data = {...data, orgs_filter};
 				}

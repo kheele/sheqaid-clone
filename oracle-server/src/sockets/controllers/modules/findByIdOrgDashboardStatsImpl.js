@@ -47,7 +47,7 @@ const findByIdOrgDashboardStatsImpl = (
 		});
 		
 		if (mapResults) {
-			promise = promise.then(mapResults);
+			promise = promise.then(mapResults(id));
 		}
 		
 		return promise;

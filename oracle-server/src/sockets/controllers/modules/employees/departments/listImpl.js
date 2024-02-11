@@ -3,40 +3,40 @@ const {departments_details_fragment, getVariablesAndQueryConfig} = require('./co
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    // console.log('data', data)
-
-    let {
-        offset = 0,
-        limit = 50,
-        //
-        removed = false,
-        id,
-        //
-        name,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = true,
-        exact_orgs_company = true,
-        //
-        client_filter,
-        orgs_filter = [],
-    } = data;
-
-    const {filter} = getVariablesAndQueryConfig({
-        orgs_filter,
-        id,
-        //
-        name,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs,
-        exact_orgs_company,
-    });
-
-    return listGraphQL({
-        query: `
+	// console.log('data', data)
+	
+	let {
+		offset = 0,
+		limit = 50,
+		//
+		removed = false,
+		id,
+		//
+		name,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = true,
+		exact_orgs_company = true,
+		//
+		client_filter,
+		orgs_filter = [],
+	} = data;
+	
+	const {filter} = getVariablesAndQueryConfig({
+		orgs_filter,
+		id,
+		//
+		name,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs,
+		exact_orgs_company,
+	});
+	
+	return listGraphQL({
+		query: `
 			  query listAllDepartmentByLoggedClientQuery {
 				default_departments(
 				  where: {
@@ -52,7 +52,7 @@ module.exports = async (socket, data) => {
 				}
 			  }
 			`,
-        operationName: "listAllDepartmentByLoggedClientQuery",
-    });
+		operationName: "listAllDepartmentByLoggedClientQuery",
+	});
 }
 //</editor-fold>
