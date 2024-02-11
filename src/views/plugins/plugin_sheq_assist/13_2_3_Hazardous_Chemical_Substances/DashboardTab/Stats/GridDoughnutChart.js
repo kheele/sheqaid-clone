@@ -100,8 +100,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -129,7 +127,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		has_hazchem_sheet_no_chemical_product_list_aggregate = defaults,
 		has_risk_assessment_yes_chemical_product_list_aggregate = defaults,
 		has_risk_assessment_no_chemical_product_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	return <Grid
 		container

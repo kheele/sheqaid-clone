@@ -31,10 +31,29 @@ class EditDialog extends AEditDialog {
         return "Edit Inspection Template Questionnaire";
     }
     
+    get removeById() {
+        if(!this.isOpen) return updateInspectionsQuestionnaireTemplate;
+        
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return updateInspectionsQuestionnaireTemplate;
+        }
+    }
+    
     get topButtonsHiddenDelete() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return false;
+        }
         return true;
     }
-
+    
     get controls() {
         return  Controls;
     }
@@ -136,7 +155,7 @@ class Controls extends React.Component {
             is_template: true,
             // name,
             // desc,
-            question_list: {data: question_list},
+            // question_list,
         };
 
         ShouldUpdate.check(data, old_data, asset_type, 'asset_type');

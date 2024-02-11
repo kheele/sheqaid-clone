@@ -7,6 +7,7 @@ import createMutationImpl from "mutations/createMutationImpl";
 import {EntityQuestion} from "mutations/types.d.ts";
 import crudUtils from "../../CRUDUtils/CRUDUtils";
 import findByIdQuestion from "./findByIdQuestion";
+import updateQuestion from "./updateQuestion";
 
 // 2
 const mutation = graphql`
@@ -42,6 +43,16 @@ export default async (input: EntityQuestion) => {
 	} = input;
 
 	// crudUtils.injectCreate(input);
+	
+	// if(question_list) {
+	// 	await Promise.all(question_list.map(async v => {
+	// 		if(v.id) {
+	// 			return updateQuestion(v);
+	// 		} else {
+	// 			return insertQuestion({ques_id: id, ...v});
+	// 		}
+	// 	}));
+	// }
 
 	const res = await createMutationImpl({
 		mutation,

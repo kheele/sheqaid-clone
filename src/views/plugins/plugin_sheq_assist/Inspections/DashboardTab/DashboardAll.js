@@ -21,8 +21,7 @@ class DashboardAll extends React.Component {
 	}
 
 	render() {
-		const listBy = sockets.of('inspections').fn('dashboard');
-		return <Dashboard ref="dashboard" listBy={listBy} {...Grids} noEmployees/>;
+		return <Dashboard ref="dashboard" path="inspections" {...Grids} noEmployees/>;
 	}
 
 }

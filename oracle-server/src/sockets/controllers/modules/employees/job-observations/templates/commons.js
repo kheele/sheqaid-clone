@@ -65,6 +65,7 @@ const job_observation_template_question_find_fragment = (deep = 3) => {
     questionImage
     questionText
     questionType
+    questionnaire_id
     questionnaire{
         id
     }
@@ -74,11 +75,13 @@ const job_observation_template_question_find_fragment = (deep = 3) => {
         ${job_observation_template_question_find_fragment(deep - 1)}
     }
     options{
+      id
       optionImage
       optionText
       optionType
     }
     notified_list{
+        id
         employee{
             id
             fname

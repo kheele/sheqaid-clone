@@ -62,6 +62,8 @@ class ProfileDialog extends AProfileDialog {
 	}
 	
 	get removeById() {
+		if(!this.isOpen) return updateContractorsQuestionnaireLibrary;
+		
 		const {item} = this.state;
 		if (!item) return null;
 		const {data: {visibility}} = item;

@@ -3,6 +3,7 @@ require('./categories');
 const findByIdImpl = require('../findByIdImpl');
 const listImpl = require('../listImpl');
 const {document_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
+const findByIdDashboardImpl = require("./findByIdDashboardImpl");
 
 const args = {
 	name: "Documents",
@@ -18,3 +19,5 @@ eventManager.on("documents/listByLogged", listImpl({
 	order_by: "order_by: {title: asc}",
 	getVariablesAndQueryConfig,
 }));
+
+eventManager.on("documents/dashboard", findByIdDashboardImpl);

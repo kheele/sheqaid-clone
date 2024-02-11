@@ -144,6 +144,11 @@ class AProfileDialog extends AFormDialog {
 		</React.Fragment>;
 	}
 	
+	get isOpen() {
+		const {dialog} = this.refs;
+		return dialog && dialog.isOpen;
+	}
+	
 	renderProfileCover(val) {
 		return <div className="row row-profile-cover">
 			{isString(val) && <h3>{val}</h3>}

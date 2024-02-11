@@ -17,6 +17,8 @@ import ProfilePDFReader from "../printers/ProfileTemplatePDFReader";
 import NavItem from "components/navs/NavItem";
 import findByIdInspectionsQuestionnaireTemplate
 	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
+import updateInspectionsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/updateInspectionsQuestionnaireTemplate";
 
 //<editor-fold desc="Dialog">
 @observer
@@ -54,11 +56,19 @@ class ProfileDialog extends AProfileDialog {
 	title() {
 		return "Inspection Template Questionnaire";
 	}
-
-	get topButtonsHiddenDelete() {
-		return true;
+	
+	get removeById() {
+		if(!this.isOpen) return updateInspectionsQuestionnaireTemplate;
+		
+		const {item} = this.state;
+		if (!item) return null;
+		const {data: {visibility}} = item;
+		
+		if (visibility === "Private") {
+			return updateInspectionsQuestionnaireTemplate;
+		}
 	}
-
+	
 	@computed get topButtons() {
 		const {item} = this.state;
 		if (!item) return null;

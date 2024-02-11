@@ -146,19 +146,23 @@ class Users extends React.Component {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         const {id, data: {username}} = item;
+        
+        const {isContractor} = storage.is;
+        
         if (username) {
             progressDialog.open("Please wait...");
-            neonBinding.events.emit(this.path + "send-app-link", id).then(res => {
+            const sendAppLink = sockets.of("send").fn("sendAppLink");
+            sendAppLink({id, access_type: isContractor ? "ContractorUser" : "User"}).then(res => {
                 infoDialog.open("Link successfully sent.");
                 infoDialog.close(2000);
             }).finally(() => {
                 progressDialog.close();
             });
         } else {
-            infoDialog.open(<React.Fragment>
+            infoDialog.open(<>
                 <p>The user does not have an username / email address.</p>
                 <p>Please edit the user and add his/her username / email address.</p>
-            </React.Fragment>);
+            </>);
         }
     }
 

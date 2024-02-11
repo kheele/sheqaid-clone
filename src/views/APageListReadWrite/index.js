@@ -166,12 +166,16 @@ class APageListReadWrite extends APageList {
 					
 					const item = this.list[idx];
 					
-					const {editDialog, profileDialog} = this.parentListPage.refs;
-					const dialog = profileDialog || editDialog;
-					
 					const {onSoftDelete, onSoftDeleteProhibit, softDeleteAttrs} = removeDialog.props;
 					
-					let onDelete = onSoftDelete || (dialog && dialog.removeById);
+					let onDelete;
+					if(onSoftDelete) {
+						onDelete = onSoftDelete;
+					} else {
+						const editDialog = this.getDialogByRef("editDialog");
+						const profileDialog = this.getDialogByRef("profileDialog");
+						onDelete = (profileDialog || editDialog) && (profileDialog || editDialog).removeById;
+					}
 					
 					if (onDelete) {
 						if(onSoftDeleteProhibit) {

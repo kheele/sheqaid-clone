@@ -47,6 +47,10 @@ export default async (input: EntityJobObservationsQuestionnaire) => {
 	crudUtils.injectCreate(input);
 
 	if(employee_other && employee_other.data) {
+		if(employee_other.data.job_position) {
+			employee_other.data.job_position_id = employee_other.data.job_position.id;
+			delete employee_other.data.job_position;
+		}
 		crudUtils.injectCreate(employee_other.data);
 	}
 

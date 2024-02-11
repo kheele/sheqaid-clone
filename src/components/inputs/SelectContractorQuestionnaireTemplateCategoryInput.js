@@ -64,8 +64,11 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("plugin_sheq_assist/contractors/questionnaires/templates/categories/list").then(res => {
-        return res.map(value => {
+    const listByLogged = sockets.of('contractors/template-categories').fn('listByLogged');
+    
+    return listByLogged().then(list => {
+        console.log('list', list);
+        return list.map((value) => {
             return {label: value, value};
         });
     });

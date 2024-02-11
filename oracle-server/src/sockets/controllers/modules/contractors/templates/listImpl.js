@@ -14,8 +14,10 @@ module.exports = async (socket, data) => {
 		id,
 		//
 		name,
+		doc_num,
+		category,
 		//
-		site_id, project_id, client_id,
+		client_id, company_id,
 		//
 		exact_orgs = false,
 		//
@@ -29,18 +31,12 @@ module.exports = async (socket, data) => {
 		id,
 		//
 		name,
+		doc_num,
+		category,
 		//
-		site_id, project_id, client_id,
+		client_id, company_id,
 		//
 		exact_orgs
-	});
-	
-	const fillNullLists = (list) => list.map(v => {
-		!v.doc_version_list && (v.doc_version_list = []);
-		if(isArray(v.latest_version)) {
-			v.latest_version = v.latest_version[0];
-		}
-		return v;
 	});
 	
 	if (id) {
@@ -58,7 +54,7 @@ module.exports = async (socket, data) => {
         }
       `,
 			operationName: "listAllContractorQuestionnaireTemplateByLoggedQuery",
-		}).then(fillNullLists);
+		});
 	} else {
 		return listGraphQL({
 			query: `
@@ -77,7 +73,7 @@ module.exports = async (socket, data) => {
         }
       `,
 			operationName: "listAllContractorQuestionnaireTemplateByLoggedQuery",
-		}).then(fillNullLists);
+		});
 	}
 }
 //</editor-fold>

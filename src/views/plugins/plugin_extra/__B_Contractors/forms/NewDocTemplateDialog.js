@@ -113,15 +113,20 @@ class Controls extends React.Component {
             doc,
         } = form.data;
         const data = {
-            name,
-            category,
-            desc,
-            doc_num,
-            doc: doc.path,
-            expiry: Dates.formatDateSQL(expiry),
             client_id: client && client.id,
             project_id: project && project.id,
             site_id: site && site.id,
+            //
+            name,
+            desc,
+            category,
+            doc_version_list:{
+                data: [{
+                    doc_num,
+                    doc: doc.path,
+                    expiry: Dates.formatDateSQL(expiry),
+                }],
+            },
         };
         
         console.log(data)

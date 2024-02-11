@@ -2,7 +2,7 @@
 module.exports = async (socket, data) => {
     if(!data) return;
 
-    const {removed = false, date_range = {},} = data;
+    const {removed = false, now, range_start, range_end,} = data;
     const {site_id, project_id, client_id, company_id,} = data;
     const id = site_id || project_id || client_id || company_id;
     let tbl;
@@ -15,10 +15,9 @@ module.exports = async (socket, data) => {
     } else {
         tbl = "default_companies";
     }
-
-    // const {start, end} = date_range;
-    // const monStart = start || new Date().addMonths(-12);
-    // const monEnd = end || new Date().addMonths(6);
+    
+    // const monStart = range_start || now.addMonths(-12);
+    // const monEnd = range_end || now.addMonths(6);
     //
     // const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
     // const dateRangeQueries = dates.map(date => {
@@ -38,13 +37,13 @@ module.exports = async (socket, data) => {
 	// 	`;
     // }).join('\n');
     //
-    // const mon = Dates.formatDateSQL(new Date().addMonths(1));
-    // const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-    // const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+    // const mon = Dates.formatDateSQL(now.addMonths(1));
+    // const mon2 = Dates.formatDateSQL(now.addMonths(2));
+    // const mon3 = Dates.formatDateSQL(now.addMonths(3));
 
     return getGraphQLOne({
         multi_queries: true,
-        count: true,
+        // count: true,
         query: `
             query findByIdOrgInspectionsDashboardQuery {
                 ${tbl}(

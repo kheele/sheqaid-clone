@@ -138,7 +138,7 @@ class Controls extends React.Component {
 			// is_template: false,
 			// name,
 			// desc,
-			question_list: {data: question_list},
+			// question_list,
 		};
 
 		ShouldUpdate.check(data, old_data, asset_type, 'asset_type');

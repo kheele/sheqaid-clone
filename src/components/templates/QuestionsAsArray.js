@@ -48,7 +48,7 @@ class Questions extends AQuestions {
     }
     
     async getForm() {
-        const {state: {formData}, refs: {titlePage}, props: {isEditting}} = this;
+        const {state: {formData}, refs: {titlePage}, props: {isLibrary, isEditting}} = this;
         const {name, desc, type, question_list} = formData;
         
         const data = {name, desc};
@@ -57,7 +57,7 @@ class Questions extends AQuestions {
         }
         
         data.title_page_list = await titlePage.getForm();
-        data.question_list = await getQuestionnaireTemplateForm(question_list, isEditting);
+        data.question_list = await getQuestionnaireTemplateForm(question_list, isEditting, isLibrary);
         return data;
     }
 

@@ -6,9 +6,12 @@ const {onSetCustomUserClaims, onResetPassword} = require('./accounts_impl');
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendWelcomeEmail">
-exports.sendWelcomeEmail = async (data) => {
+exports.sendWelcomeEmail = async (body) => {
     await authorize();
 
+    if (!body) return;
+    
+    const {data} = body;
     if (!data) return;
 
     const {
@@ -39,9 +42,10 @@ exports.sendWelcomeEmail = async (data) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendWelcomeOTP">
-exports.sendWelcomeOTP = async (data) => {
+exports.sendWelcomeOTP = async (body) => {
     await authorize();
-
+    
+    const {data} = body;
     if (!data) return;
 
     const {
@@ -79,9 +83,10 @@ exports.sendWelcomeOTP = async (data) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendNewContractorSiteEmail">
-exports.sendNewContractorSiteEmail = async (data) => {
+exports.sendNewContractorSiteEmail = async (body) => {
     await authorize();
-
+    
+    const {data} = body;
     if (!data) return;
 
     const {
@@ -174,9 +179,10 @@ exports.sendNewContractorSiteEmail = async (data) => {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="sendUpdateStatusContractorSiteEmail">
-exports.sendUpdateStatusContractorSiteEmail = async (data) => {
+exports.sendUpdateStatusContractorSiteEmail = async (body) => {
     await authorize();
-
+    
+    const {data} = body;
     if (!data) return;
 
     const {
@@ -382,7 +388,7 @@ const sendWelcomeOTPContractor = async (data) => {
 // </editor-fold>
 
 //<editor-fold desc="getAppDownloadOptionMsg">
-const getAppDownloadOptionMsg = (params = {}) => {
+global.getAppDownloadOptionMsg = (params = {}) => {
     const {isEmployee = false, isContractor = false, showOnlyAccess = false} = params || {};
 
     if(showOnlyAccess) {

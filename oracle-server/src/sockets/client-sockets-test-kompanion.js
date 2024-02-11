@@ -21,11 +21,11 @@ module.exports = (connectSocket) => {
         }, 2000);
     };
     
-    // fn('accounts/onSetCustomUserClaims', {
-    //     access_type: "Doctor",
-    //     idToken: "sdspo09sd088jkljjkhk",
-    // });
-    fn('branches/clients/academic-institutions/findById', 1);
+    fn('accounts/onSetCustomUserClaims', {
+        access_type: "Doctor",
+        idToken: "sdspo09sd088jkljjkhk",
+    });
+    // fn('branches/clients/academic-institutions/findById', 1);
     // fn('branches/clients/academic-institutions/listByLogged', {
     //
     // });

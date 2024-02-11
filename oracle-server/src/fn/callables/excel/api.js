@@ -8,12 +8,12 @@ const createExcelFileSheets = async (data) => {
 	if (!data) {
 		return null;
 	}
-
+	
 	const {folder, fileName, sheets = []} = data;
-
+	
 	const date = new Date();
 	const dir = path.join(os.homedir(), "Documents", "SHEQAid", folder, Dates.formatDate(date));
-
+	
 	// Make sure the output directory is there.
 	fs.ensureDirSync(dir);
 	const options = {
@@ -21,7 +21,7 @@ const createExcelFileSheets = async (data) => {
 		useStyles: true,
 		useSharedStrings: true
 	};
-
+	
 	const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
 	workbook.creator = 'SHEQ Aid';
 	workbook.lastModifiedBy = 'SHEQ Aid';
@@ -30,7 +30,7 @@ const createExcelFileSheets = async (data) => {
 	workbook.lastPrinted = date;
 //    workbook.properties.date1904 = true;
 //    workbook.calcProperties.fullCalcOnLoad = true;
-
+	
 	sheets.forEach((sheet) => {
 		const {sheetName, columns, rows} = sheet;
 		const worksheet = workbook.addWorksheet(sheetName, {properties: {tabColor: {argb: 'FFC0000'}}});
@@ -41,10 +41,10 @@ const createExcelFileSheets = async (data) => {
 			pattern: 'solid',
 			fgColor: {argb: 'cccccc'}
 		};
-
+		
 		const lastCell = header.getCell(columns.length - 1);
 		// worksheet.autoFilter = `A1:${lastCell.address}`;
-
+		
 		rows.forEach((row, n) => {
 //                if (row.addImage) {
 //                    const image = row.addImage();
@@ -61,20 +61,20 @@ const createExcelFileSheets = async (data) => {
 			worksheet.addRow(row).commit();
 //                }
 		});
-
+		
 		worksheet.commit();
 	});
-
+	
 	await workbook.commit();
-
+	
 	const {filename} = options;
 	//read then file then delete it
 	const base64 = fs.readFileSync(filename, {encoding: 'base64'});
 	const dataUri = `data:${mime.getType(filename)};base64,${base64}`;
 	deleteTmpFile(filename);
-
+	
 	// console.log('filename', filename, `data:${mime.getType(filename)};`)
-
+	
 	return dataUri;
 };
 exports.createExcelFileSheets = createExcelFileSheets;
@@ -83,7 +83,7 @@ const createExcelFile = async (data) => {
 	if (!data) {
 		return null;
 	}
-
+	
 	const {folder, fileName, sheetName, columns, rows} = data;
 
 //     const date = new Date();
@@ -136,9 +136,9 @@ const createExcelFile = async (data) => {
 //     });
 //
 //     worksheet.commit();
-
+	
 	return createExcelFileSheets({folder, fileName, sheets: [{sheetName, columns, rows}]});
-
+	
 	// await workbook.commit();
 	//
 	// const {filename} = options;
@@ -155,10 +155,10 @@ exports.onReadAsJson = async (data) => {
 	if (!data) {
 		return null;
 	}
-
+	
 	const {path, validHeaderNames} = data;
 
-//    console.log('path', path)
+   console.log('path', path, 'data', data);
 	const base64 = path.split(',')[1];
 //    console.log('base64', base64)
 	const buffer = Buffer.from(base64, 'base64');//data_url
@@ -170,7 +170,7 @@ exports.onReadAsJson = async (data) => {
 //                console.log('worksheet', worksheet)
 		return worksheet.rows;
 	});
-
+	
 	rows = rows.filter(({cells}) => 'value' in cells[0]).map(({number, cells}) => {
 		const row = {};
 		cells.forEach((cell) => {//{address, type, value, hyperlink, text}
@@ -183,18 +183,18 @@ exports.onReadAsJson = async (data) => {
 		});
 		return row;
 	});
-
+	
 	const cols = rows.slice(0, 1)[0];
-
+	
 	const errors = getExcelHeaderErrors(cols, validHeaderNames);
 	if (!errors.isEmpty()) {
 		return {errors};
 	}
-
+	
 	rows = rows.slice(1);
-
+	
 	// console.log('onReadAsJson', rows)
-
+	
 	return convertExcelToJson(cols, rows, validHeaderNames);
 };
 
@@ -215,18 +215,18 @@ const convertExcelToJson = (cols, rows, validHeaderNames) => {
 	const colsKeys = Object.keys(cols).filter(k => {
 		return !!cols[k].key;
 	});
-
+	
 	const getRowVal = row => {
 		const res = {};
 		const keys = Object.keys(row);
 		for (let n = 0; n < colsKeys.length; n++) {//{A1: {key: ?, address: "A1", type: 3, value: "Company Number"}}
 			const colKey = colsKeys[n];//A1
 			const {type, key} = cols[colKey];//{key: ?, address: "A1", type: 3, value: "Company Number"}
-
+			
 			// console.log('type', type)//
-
+			
 			const rowKey = keys.find(k => k.charAt(0) === colKey.charAt(0));
-			if(key === 'document_list') {
+			if (key === 'document_list') {
 				// console.log('type', type, key, keys, colKey)
 			}
 			if (rowKey) {
@@ -244,20 +244,20 @@ const convertExcelToJson = (cols, rows, validHeaderNames) => {
 		}
 		return res;
 	};
-
+	
 	return rows.map(getRowVal);
 };
 
 const createExcelHeaderColsKeys = (cols, validHeaderNames) => {
 	const colsKeys = Object.keys(cols);
-
+	
 	for (let n = 0; n < validHeaderNames.length; n++) {
 		const validHeaderName = validHeaderNames[n];
 		let {key: headerKey, value: headerValues, required} = validHeaderName;
-		if(!isArray(headerValues)) {
+		if (!isArray(headerValues)) {
 			headerValues = [headerValues];
 		}
-
+		
 		const colFoundKey = colsKeys.find(key => {
 			const colsVal = cols[key];
 			return headerValues.anyMatch(v => {
@@ -273,15 +273,15 @@ const createExcelHeaderColsKeys = (cols, validHeaderNames) => {
 
 const getExcelHeaderErrors = (cols, validHeaderNames) => {
 	const colsKeys = Object.keys(cols);
-
+	
 	let errors = [];
 	for (let n = 0; n < validHeaderNames.length; n++) {
 		const validHeaderName = validHeaderNames[n];
 		let {key: headerKey, value: headerValues, required} = validHeaderName;
-		if(!isArray(headerValues)) {
+		if (!isArray(headerValues)) {
 			headerValues = [headerValues];
 		}
-
+		
 		const colFoundKey = colsKeys.find(key => {
 			const colsVal = cols[key];
 			return headerValues.anyMatch(v => {
@@ -292,6 +292,6 @@ const getExcelHeaderErrors = (cols, validHeaderNames) => {
 			errors.push(validHeaderName);
 		}
 	}
-
+	
 	return errors;
 };

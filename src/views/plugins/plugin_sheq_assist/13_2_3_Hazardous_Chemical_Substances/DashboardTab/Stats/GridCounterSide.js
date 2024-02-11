@@ -229,23 +229,21 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	return <>
 		<CompImpl
 			title="Safety Data Sheet"
 			type="sds"
-			data={item}
+			data={data}
 		/>
 		<CompImpl
 			title="Hazchem Sheet"
 			type="hazchem_sheet"
-			data={item}
+			data={data}
 		/>
 		<CompImpl
 			title="Chemical Product"
 			type="chemical_product"
-			data={item}
+			data={data}
 		/>
 	</>;
 });
@@ -257,4 +255,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

@@ -9,6 +9,7 @@ import {execWhen} from "utils/UtilsFuns";
 import {Grid} from "@material-ui/core";
 import Card from "@mui/material/Card";
 import {ErrorBoundary} from "../index";
+import {Dates} from "../../utils/Dates";
 //</editor-fold>
 
 @observer
@@ -50,7 +51,7 @@ class Comp extends React.Component {
 		const {selectedClient, selectedProject, selectedSite, selectedContractorSite} = storage.selected;
 		const {loggedContractor} = storage;
 		const {hasProjects, isConsultant} = storage.is;
-		const {listBy} = this.props;
+		let {listBy, path} = this.props;
 		const {LOADING, ERROR} = DATA_LOAD_STATUS;
 
 		const company_id = sess_company_id;
@@ -75,8 +76,13 @@ class Comp extends React.Component {
 
 		{
 			const {interval, view, range_start, range_end} = this.state;
+			
+			if(path) {
+				listBy = sockets.of(path).fn("dashboard");
+			}
 
 			listBy({
+				now: Dates.formatDateSQL(new Date()),
 				company_id,
 				client_id,
 				project_id,

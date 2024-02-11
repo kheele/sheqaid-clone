@@ -100,8 +100,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -130,7 +128,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		time_shift_day_incident_list_aggregate = defaults,
 		time_shift_night_incident_list_aggregate = defaults,
 		time_shift_non_incident_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	return <Grid
 		container

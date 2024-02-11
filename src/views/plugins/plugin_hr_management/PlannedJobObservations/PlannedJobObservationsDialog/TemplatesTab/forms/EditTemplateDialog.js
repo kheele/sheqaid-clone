@@ -14,10 +14,13 @@ import updateJobObservationsQuestionnaireTemplate
     from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
 import {FormControls, Row} from "components/FormComponents";
 import {ClearableInput, SelectJobPositionInput} from "components/inputs";
+import findByIdJobObservationsQuestionnaireTemplate
+    from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/findByIdJobObservationsQuestionnaireTemplate";
 
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditTemplateDialog";
+    findById = findByIdJobObservationsQuestionnaireTemplate;
 
     constructor(props) {
         super(props, style);
@@ -27,10 +30,29 @@ class EditDialog extends AEditDialog {
         return "Edit Job Observation Template Questionnaire";
     }
     
+    get removeById() {
+        if(!this.isOpen) return updateJobObservationsQuestionnaireTemplate;
+        
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return updateJobObservationsQuestionnaireTemplate;
+        }
+    }
+    
     get topButtonsHiddenDelete() {
+        const {item} = this.state;
+        if (!item) return null;
+        const {data: {visibility}} = item;
+        
+        if (visibility === "Private") {
+            return false;
+        }
         return true;
     }
-
+    
     get controls() {
         return  Controls;
     }
@@ -123,7 +145,7 @@ class Controls extends React.Component {
             is_template: true,
             // name,
             // desc,
-            question_list: {data: question_list},
+            // question_list,
         };
 
         ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position');

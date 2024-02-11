@@ -410,6 +410,10 @@ class Dialog extends React.Component {
     getTitleDOMNode() {
         return this.dialogInline && this.dialogInline.getTitleDOMNode();
     }
+    
+    get isOpen() {
+        return this.layerState.isOpen;
+    }
 
     render() {
         const {preventEsc, noBackAction} = this.props;

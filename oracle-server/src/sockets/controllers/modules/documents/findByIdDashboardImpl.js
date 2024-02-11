@@ -1,31 +1,25 @@
-import GQLClient from "graphql/GQLClient";
-import {Dates} from "utils/Dates";
-
-export default (
-	{
-		removed = false,
-		//
-		date_range = {},
-		//
-		site_id, project_id, client_id, company_id,
-	}
-) => {
+//<editor-fold desc="listImpl">
+module.exports = async (socket, data) => {
+	if (!data) return;
+	
+	const {removed = false, now, range_start, range_end,} = data;
+	const {site_id, project_id, client_id, company_id, contractor_id, contractor_site_id,} = data;
+	
 	const id = site_id || project_id || client_id || company_id;
 	let tbl;
-	if(site_id) {
+	if (site_id) {
 		tbl = "default_sites";
-	} else if(project_id) {
+	} else if (project_id) {
 		tbl = "default_projects";
-	} else if(client_id) {
+	} else if (client_id) {
 		tbl = "default_clients";
 	} else {
 		tbl = "default_companies";
 	}
-
-	const {start, end} = date_range;
-	const monStart = start || new Date().addMonths(-12);
-	const monEnd = end || new Date().addMonths(6);
-
+	
+	const monStart = range_start || now.addMonths(-12);
+	const monEnd = range_end || now;
+	
 	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 	const dateRangeQueries = dates.map(date => {
 		const {year, month, start, end} = date;
@@ -38,7 +32,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__project_plan_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -49,7 +43,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__ims_policy_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -60,7 +54,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__certificate_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -71,7 +65,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__insurance_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -82,7 +76,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__registration_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -93,7 +87,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__regulatorybody_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -104,7 +98,7 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 			_${year}_${month}__unclassified_expiry_document_list_aggregate: document_list_aggregate(
 				where: {
@@ -115,20 +109,18 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 		`;
 	}).join('\n');
-
+	
 	const mon = Dates.formatDateSQL(new Date().addMonths(1));
 	const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
 	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
-		variables: {mon, mon2, mon3},
-		query: `
+	
+	return getGraphQLOne({
+			variables: {mon, mon2, mon3},
+			query: `
       query findByIdOrgDocumentsDashboardQuery($mon: date, $mon2: date, $mon3: date) {
         ${tbl}(
           where: {
@@ -233,6 +225,7 @@ export default (
 			  }
       }
     `,
-	});//.then(fillNullLists);
-	//</editor-fold>
-};
+			operationName: "findByIdOrgDocumentsDashboardQuery",
+		}).then(res => [res]);
+}
+//</editor-fold>

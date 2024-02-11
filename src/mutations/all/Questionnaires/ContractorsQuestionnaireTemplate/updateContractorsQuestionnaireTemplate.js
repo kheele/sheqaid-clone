@@ -61,20 +61,6 @@ export default async (attrs: EntityContractorsQuestionnaireTemplate) => {
     const item = await findByIdContractorsQuestionnaireTemplate(id);
     if(!item) return;
 
-
-    if (profile_pic && !profile_pic.dlUrls) {
-        const path = `clients/${id}`;
-        const name = "profile-pic";
-        const gcsUri = await workers.emit("files/upload", {
-            file: profile_pic,
-            path,
-            name,
-        });
-        console.log("gcsUri", gcsUri);
-
-        attrs.profile_pic = gcsUri;
-    }
-
     return updateMutationImpl({
         mutation,
         id: attrs.id,

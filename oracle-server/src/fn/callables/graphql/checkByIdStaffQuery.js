@@ -5,6 +5,9 @@ exports.query = `
         node {
           id
           auth_id
+          fname
+          lname
+          email
         }
       }
     }

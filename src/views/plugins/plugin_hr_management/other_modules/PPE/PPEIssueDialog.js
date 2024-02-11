@@ -9,6 +9,7 @@ import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} 
 import {Row} from 'components/FormComponents';
 
 import style from "./PPEIssueDialog.lazy.css";
+import insertPPE from "../../../../../mutations/all/PPE/insertPPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -58,6 +59,119 @@ class Controls extends React.Component {
     onChangeType(el, val) {
         this.state.type = val;
     }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="onSubmit">
+    onSubmit(e, btn, onSaved) {
+        const {form} = this;
+        
+        //1
+        if (!form.isValid('client')) {
+            infoDialog.open('Company is required');
+            return;
+        }
+        // if (!form.isValid('project')) {
+        //     infoDialog.open('Project is required');
+        //     return;
+        // }
+        // if (!form.isValid('site')) {
+        //     infoDialog.open('Site is required');
+        //     return;
+        // }
+        
+        //2
+        if (!form.isValid('name')) {
+            infoDialog.open('Item Description is required');
+            return;
+        }
+        if (!form.isValid('unit')) {
+            infoDialog.open('Item Unit is required');
+            return;
+        }
+        if (form.isValid('duration_type') && !form.isValid('duration_value')) {
+            infoDialog.open('Duration Value is required');
+            return;
+        }
+        
+        const {
+            site,
+            project,
+            client,
+            //
+            name,
+            unit,
+            qty_received,
+            qty_issued,
+            qty_in_stock,
+            duration_type,
+            duration_value,
+            notes,
+            profile_pic,
+            //
+            team_list,
+            department_list,
+            job_position_list
+        } = form.data;
+        const data = {
+            name,
+            unit,
+            qty_received,
+            qty_issued,
+            qty_in_stock,
+            duration_type,
+            duration_value: isNumber(duration_value) && duration_value,
+            notes,
+            profile_pic: profile_pic && profile_pic.path,
+            
+            client_id: client && client.id,
+            project_id: project && project.id,
+            site_id: site && site.id,
+            
+            team_list: {
+                data: (team_list || []).map(v => {
+                    if (v.team) {
+                        return {team_id: v.team.id};
+                    } else {
+                        return {team_id: v.id};
+                    }
+                }),
+            },
+            department_list: {
+                data: (department_list || []).map(v => {
+                    if (v.department) {
+                        return {department_id: v.department.id};
+                    } else {
+                        return {department_id: v.id};
+                    }
+                }),
+            },
+            job_position_list: {
+                data: (job_position_list || []).map(v => {
+                    if (v.job_position) {
+                        return {job_position_id: v.job_position.id};
+                    } else {
+                        return {job_position_id: v.id};
+                    }
+                }),
+            },
+        };
+        
+        console.log(data)
+        
+        btn.text("Saving...").disabled();
+        progressDialog.open();
+        insertPPE(data).then(res => {
+            console.log("res", res)
+            onSaved && onSaved(res);
+            infoDialog.open("Record successfully saved.");
+            infoDialog.close(2000);
+            this.props.close();
+        }).finally(() => {
+            btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
+        });
+    }
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">

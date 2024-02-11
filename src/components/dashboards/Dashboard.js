@@ -71,6 +71,7 @@ class Dashboard extends React.Component {
 		const {
 			noEmployees,
 			listBy,
+			path,
 			GridCounter,
 			GridDoughnutChart,
 			GridCounterSide,
@@ -100,6 +101,7 @@ class Dashboard extends React.Component {
 					<Stats
 						ref="stats"
 						listBy={listBy}
+						path={path}
 						GridCounter={GridCounter}
 						GridDoughnutChart={GridDoughnutChart}
 						GridCounterSide={GridCounterSide}

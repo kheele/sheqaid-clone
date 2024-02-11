@@ -29,9 +29,12 @@ import MKBox from "components/MK/MKBox";
 import updateUser from "mutations/all/User/updateUser";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
 import Divider from "@mui/material/Divider";
-import findByIdUser from "../../../mutations/all/User/findByIdUser";
+import findByIdUser from "mutations/all/User/findByIdUser";
 import {CircularProgress} from "@mui/material";
-import findByIdContractorUser from "../../../mutations/all/ContractorUser/findByIdContractorUser";
+import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
+import updateContractorsQuestionnaireLibrary
+    from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
+import updateContractorUser from "mutations/all/ContractorUser/updateContractorUser";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -47,7 +50,18 @@ class ProfileDialog extends AProfileDialog {
         const {isContractor} = storage.is;
         return isContractor ? findByIdContractorUser : findByIdUser;
     }
-
+    
+    get removeById() {
+        const {isContractor} = storage.is;
+        const onUpdate = isContractor ? updateContractorUser : updateUser;
+        if(!this.isOpen) return onUpdate;
+        
+        const {item} = this.state;
+        if (!item) return null;
+        
+        return onUpdate;
+    }
+    
     onEdit(evt, btn) {
         const {editDialog} = this.refs.controls.refs;
         editDialog && editDialog.open(this.state.item);

@@ -34,6 +34,8 @@ class EditDialog extends AEditDialog {
     }
     
     get removeById() {
+        if(!this.isOpen) return updateContractorsQuestionnaireLibrary;
+        
         const {item} = this.state;
         if (!item) return null;
         const {data: {visibility}} = item;
@@ -161,7 +163,7 @@ class Controls extends React.Component {
             // name,
             // desc,
             // answered_by,
-            question_list: {data: question_list},
+            // question_list,
         };
         
         ShouldUpdate.check(data, old_data, visibility, 'visibility');

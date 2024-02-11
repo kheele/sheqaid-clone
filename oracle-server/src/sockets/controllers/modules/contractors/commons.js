@@ -170,7 +170,7 @@ exports.contractor_details_fragment = (data) => {
 			where = `company_id: {_eq: ${id}}`;
 		}
 		
-		where = `site: {${where}}`;
+		where = `site: {removed: {_eq: false}, ${where}}`;
 	}
 
 	return `
@@ -179,32 +179,32 @@ exports.contractor_details_fragment = (data) => {
     name
     username
     inc_contractor_pack
-    contractor_user_list_aggregate{
+    contractor_user_list_aggregate(where:{removed: {_eq: false}}){
       aggregate{
         count
       }
     }
-    employee_list_aggregate{
+    employee_list_aggregate(where:{removed: {_eq: false}}){
       aggregate{
         count
       }
     }
-    questionnaire_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}}){
+    questionnaire_list_aggregate:contractor_questionnaire_list_aggregate(where: {removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"}}){
       aggregate{
         count
       }
     }
-    questionnaire_active_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_neq: "CompleteAccepted"}}){
+    questionnaire_active_list_aggregate:contractor_questionnaire_list_aggregate(where: {removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"}, status: {_neq: "CompleteAccepted"}}){
       aggregate{
         count
       }
     }
-    questionnaire_complete_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
+    questionnaire_complete_list_aggregate:contractor_questionnaire_list_aggregate(where: {removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
         aggregate{
           count
         }
     }
-    questionnaire_compliance_list_aggregate:contractor_questionnaire_list_aggregate(where: {group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
+    questionnaire_compliance_list_aggregate:contractor_questionnaire_list_aggregate(where: {removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"}, status: {_eq: "CompleteAccepted"}}){
         nodes {
             id
             question_list_aggregate {
@@ -226,7 +226,7 @@ exports.contractor_details_fragment = (data) => {
             }
         }
     }
-    incident_list_aggregate{
+    incident_list_aggregate(where:{removed: {_eq: false}}){
       aggregate{
         count
       }

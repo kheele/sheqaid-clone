@@ -36,11 +36,11 @@ async function getQuestionnaireAnswerForm(questionsObject) {
 }
 
 //keep this one
-async function getQuestionnaireTemplateForm(question_list, isEditting) {
+async function getQuestionnaireTemplateForm(question_list, isEditting, isLibrary) {
     const worker = new WebWorker(() => {
         Events.on("process", Utils.getQuestionnaireTemplateForm);
     });
-    const res = await worker.emit("process", toJS(question_list), isEditting);
+    const res = await worker.emit("process", toJS(question_list), isEditting, isLibrary);
     worker.terminate();
     return res;
 }

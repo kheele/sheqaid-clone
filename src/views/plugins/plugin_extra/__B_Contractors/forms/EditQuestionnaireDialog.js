@@ -127,7 +127,7 @@ class Controls extends React.Component {
             // name,
             // desc,
             // answered_by,
-            question_list: {data: question_list},
+            // question_list,
         };
 
         ShouldUpdate.check(data, old_data, name, 'name');

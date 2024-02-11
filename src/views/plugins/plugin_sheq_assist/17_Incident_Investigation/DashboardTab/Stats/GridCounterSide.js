@@ -60,8 +60,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -70,7 +68,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		risk_rating_medium_incident_list_aggregate = defaults,
 		risk_rating_high_incident_list_aggregate = defaults,
 		risk_rating_extreme_incident_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	const total = risk_rating_non_incident_list_aggregate.aggregate.count +
 		risk_rating_low_incident_list_aggregate.aggregate.count +
@@ -84,7 +82,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 	const risk_rating_high_incident_list_aggregate_perc = ((risk_rating_high_incident_list_aggregate.aggregate.count / total) * 100).toFixed(1);
 	const risk_rating_extreme_incident_list_aggregate_perc = ((risk_rating_extreme_incident_list_aggregate.aggregate.count / total) * 100).toFixed(1);
 
-	console.log('item', item)
+	console.log('data', data)
 
 	return <>
 		<Grid
@@ -236,4 +234,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

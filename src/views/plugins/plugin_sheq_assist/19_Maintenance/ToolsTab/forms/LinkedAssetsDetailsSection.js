@@ -33,6 +33,8 @@ class LinkedAssetsDetailsSection extends ASectionSection {
     //</editor-fold>
 
     async componentDidMount() {
+        super.componentDidMount();
+        
         const {readonly, isEditing} = this.props;
         if (readonly || isEditing) {
             const {item, itemData, listName} = this;

@@ -86,8 +86,9 @@
 				{key: 'department', value: ['Department', 'Department Title', 'Department Name']}
 			];
 			const res = await excelUtils.read(path, validHeaderNames);
-			if (res.errors)
+			if (res.errors) {
 				return res;
+			}
 
 			res.sortBy('lname');
 			return res.distinct();

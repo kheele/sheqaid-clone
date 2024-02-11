@@ -6,20 +6,35 @@ exports.getVariablesAndQueryConfig = (
 		id,
 		//
 		name,
+		doc_num,
+		category,
 		//
-		site_id, project_id, client_id,
+		client_id, company_id,
 		//
 		exact_orgs = false,
 	}
 ) => {
 	//<editor-fold desc="variables, filters">
-	let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
+	let filter = [];//orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
 	
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if(client_id) {
+			filter.push(`client_id: {_eq: ${client_id}}`);
+		}
+		if(company_id) {
+			filter.push(`company_id: {_eq: ${company_id}}`);
+		}
+		
 		if(name) {
 			filter.push(`name: {_ilike: "%${name}%"}`);
+		}
+		if(doc_num) {
+			filter.push(`doc_version_list:{doc_num: {_eq: "${doc_num}"}}`);
+		}
+		if(category) {
+			filter.push(`category: {_eq: "${category}"}`);
 		}
 	}
 	

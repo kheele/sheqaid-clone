@@ -370,6 +370,12 @@ const moment = require('moment');
 
         static getMonthsStartAndEndDateRange(startDate, endDate) {
             const dates = [];
+            if(!isDate(startDate)) {
+                startDate = Dates.parse(startDate);
+            }
+            if(!isDate(endDate)) {
+                endDate = Dates.parse(endDate);
+            }
             let currDate = startDate;
             if(!endDate) {
                 endDate = startDate;
@@ -404,6 +410,12 @@ const moment = require('moment');
 
         static getQuartersStartAndEndDateRange(startDate, endDate) {
             const dates = [];
+            if(!isDate(startDate)) {
+                startDate = Dates.parse(startDate);
+            }
+            if(!isDate(endDate)) {
+                endDate = Dates.parse(endDate);
+            }
             let currDate = startDate;
             if(!endDate) {
                 endDate = startDate;
@@ -478,7 +490,7 @@ const moment = require('moment');
             // return quarters;
         }
 
-        static getQuartersStartAndEndDateRangeSQL(startDate, endDate) {
+        static getQuartersStartAndEndDateRangeSQL(args) {
             let {startYear, endYear, includeAllQuartersInCurrYear = false} = args || {};
             return Dates.getQuartersStartAndEndDateRange({startYear, endYear, includeAllQuartersInCurrYear}).map(({year, quarter, start, end, currDate}) => ({
                 year,
@@ -491,6 +503,12 @@ const moment = require('moment');
 
         static getHalvesStartAndEndDateRange(startDate, endDate) {
             const dates = [];
+            if(!isDate(startDate)) {
+                startDate = Dates.parse(startDate);
+            }
+            if(!isDate(endDate)) {
+                endDate = Dates.parse(endDate);
+            }
             let currDate = startDate;
             if(!endDate) {
                 endDate = startDate;
@@ -565,7 +583,7 @@ const moment = require('moment');
             // return halves;
         }
 
-        static getHalvesStartAndEndDateRangeSQL(startDate, endDate) {
+        static getHalvesStartAndEndDateRangeSQL(args) {
             let {startYear, endYear, includeAllHalvesInCurrYear = false} = args || {};
             return Dates.getHalvesStartAndEndDateRange({startYear, endYear, includeAllHalvesInCurrYear}).map(({year, half, start, end, currDate}) => ({
                 year,
@@ -578,6 +596,12 @@ const moment = require('moment');
 
         static getYearsStartAndEndDateRange(startDate, endDate) {
             const dates = [];
+            if(!isDate(startDate)) {
+                startDate = Dates.parse(startDate);
+            }
+            if(!isDate(endDate)) {
+                endDate = Dates.parse(endDate);
+            }
             let currDate = startDate;
             if(!endDate) {
                 endDate = startDate;

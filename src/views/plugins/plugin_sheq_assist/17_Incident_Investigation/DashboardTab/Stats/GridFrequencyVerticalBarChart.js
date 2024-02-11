@@ -120,8 +120,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
         return null;
     }
 
-    const [item = {}] = data;
-
     const defaults = {aggregate: {count: 0}};
 
     const {
@@ -129,7 +127,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
         all_quick_incident_list_aggregate = defaults,
         all_investigation_list_aggregate = defaults,
         all_non_conformance_list_aggregate = defaults,
-    } = item;
+    } = data;
 
     console.log('data', data)
 

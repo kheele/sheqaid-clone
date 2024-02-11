@@ -1,44 +1,38 @@
-import GQLClient from "graphql/GQLClient";
-import {Dates} from "utils/Dates";
-
-export default (
-    {
-        written_off = false, //
-        date_range = {}, //
-        site_id, project_id, client_id, company_id,
-    }
-) => {
-    const id = site_id || project_id || client_id || company_id;
-    let tbl, org_key;
-    if (site_id) {
-        org_key = "site_id";
-        tbl = "default_sites";
-    } else if (project_id) {
-        org_key = "project_id";
-        tbl = "default_projects";
-    } else if (client_id) {
-        org_key = "client_id";
-        tbl = "default_clients";
-    } else {
-        org_key = "company_id";
-        tbl = "default_companies";
-    }
-
-    const {start, end} = date_range;
-    const monStart = start || new Date().addMonths(-12);
-    const monEnd = end || new Date();
-
-    const datesOnlyPrev = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
-
-    const monStartNext = start || new Date().addMonths(-3);
-    const monEndNext = end || new Date().addMonths(8);
-    const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStartNext, monEndNext);
-
-    const dateRangeOnlyPrevQueries = datesOnlyPrev.map(async date => {
-        const {year, month, start, end} = date;
-        return GQLClient
-            .query({
-                query: `
+//<editor-fold desc="dashboard">
+module.exports = async (socket, data) => {
+	if (!data) return;
+	
+	const {written_off = false, now, range_start, range_end,} = data;
+	const {site_id, project_id, client_id, company_id, contractor_id, contractor_site_id,} = data;
+	const id = site_id || project_id || client_id || company_id;
+	let tbl, org_key;
+	if (site_id) {
+		org_key = "site_id";
+		tbl = "default_sites";
+	} else if (project_id) {
+		org_key = "project_id";
+		tbl = "default_projects";
+	} else if (client_id) {
+		org_key = "client_id";
+		tbl = "default_clients";
+	} else {
+		org_key = "company_id";
+		tbl = "default_companies";
+	}
+	
+	const monStart = range_start || now.addMonths(-12);
+	const monEnd = range_end || now;
+	
+	const datesOnlyPrev = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
+	
+	const monStartNext = range_start || now.addMonths(-3);
+	const monEndNext = range_end || now.addMonths(8);
+	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStartNext, monEndNext);
+	
+	const dateRangeOnlyPrevQueries = datesOnlyPrev.map(async date => {
+		const {year, month, start, end} = date;
+		return getGraphQLOne({
+			query: `
 				query findByIdOrgAssetDashboardQuery_dateRangeOnlyPrev_${year}_${month} {
 	        ${tbl}(
 	          where: {
@@ -73,18 +67,18 @@ export default (
 				  }
 	      }
 	    `,
-            });
-    });
-
-    const dateRangeQueries = dates.map(async date => {
-        const {year, month, start, end} = date;
-        return GQLClient
-            .query({
-                multi_queries: true,
-                query: `
+			operationName: `findByIdOrgAssetDashboardQuery_dateRangeOnlyPrev_${year}_${month}`,
+		}).then(res => [res]);
+	});
+	
+	const dateRangeQueries = dates.map(async date => {
+		const {year, month, start, end} = date;
+		return getGraphQLOne({
+			multi_queries: true,
+			query: `
 				query findByIdOrgAssetDashboardQuery_dateRange_${year}_${month} {
 					_${year}_${month}__next_calibration_list_aggregate: asset_calibration_record_aggregate(where: {
-						asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, 
+						asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}},
 						next_calibration_date: {_gte: "${start}", _lte: "${end}"}
 					}) {
 						aggregate {
@@ -93,7 +87,7 @@ export default (
 					}
 					_${year}_${month}__doc_expiry_list_aggregate: asset_docs_aggregate(where: {
 						removed: {_eq: false},
-						asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, 
+						asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}},
 						expiry: {_gte: "${start}", _lte: "${end}"},
 					}) {
 						aggregate {
@@ -102,18 +96,17 @@ export default (
 					}
 				}
 	    	`,
-            }).then(res => res && [res]);
-    });
-
-    const mon = Dates.formatDateSQL(new Date().addMonths(1));
-    const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-    const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-    //<editor-fold desc="ByEach">
-    return Promise.all([
-        GQLClient
-            .query({
-                query: `
+			operationName: `findByIdOrgAssetDashboardQuery_dateRange_${year}_${month}`,
+		}).then(res => res && [res]);
+	});
+	
+	const mon = Dates.formatDateSQL(now.addMonths(1));
+	const mon2 = Dates.formatDateSQL(now.addMonths(2));
+	const mon3 = Dates.formatDateSQL(now.addMonths(3));
+	
+	return Promise.all([
+		getGraphQLOne({
+			query: `
                   query findByIdOrgAssetDashboard1Query {
                     ${tbl}(
                       where: {
@@ -198,11 +191,11 @@ export default (
                     }
                   }
                 `,
-            }),
-        GQLClient
-            .query({
-                multi_queries: true,
-                query: `
+			operationName: "findByIdOrgAssetDashboard1Query",
+		}).then(res => [res]),
+		getGraphQLOne({
+			multi_queries: true,
+			query: `
                     query findByIdOrgAssetDashboard2Query {
                         #
                         next_service_reason_for_service_due_date_list_aggregate: asset_maintenance_plan_aggregate(where: {asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, plan_list: {reason_for_service: {_eq: "Due Date"}}}) {
@@ -410,10 +403,11 @@ export default (
                         }
 			        }
     	        `,
-            }).then(res => res && [res]),
-        ...dateRangeOnlyPrevQueries,
-        ...dateRangeQueries,
-        // ]).then(res => console.log(res));
-    ]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []).reduce((a1, a2) => ({...a1, ...a2}), {})).then(res => [res]);
-    //</editor-fold>
-};
+			operationName: "findByIdOrgAssetDashboard2Query",
+		}).then(res => res && [res]),
+		...dateRangeOnlyPrevQueries,
+		...dateRangeQueries,
+		// ]).then(res => console.log(res));
+	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []).reduce((a1, a2) => ({...a1, ...a2}), {})).then(res => [res]);
+}
+//</editor-fold>

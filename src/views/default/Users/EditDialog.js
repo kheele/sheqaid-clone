@@ -11,6 +11,10 @@ import {ControlsContractor, ControlsUser} from './EditDialogControls';
 import style from "./EditDialog.lazy.css";
 import findByIdUser from "mutations/all/User/findByIdUser";
 import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
+import updateContractorsQuestionnaireLibrary
+    from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
+import updateContractorUser from "mutations/all/ContractorUser/updateContractorUser";
+import updateUser from "mutations/all/User/updateUser";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -49,7 +53,18 @@ class EditDialog extends AEditDialog {
         const {isContractor} = storage.is;
         return isContractor ? findByIdContractorUser : findByIdUser;
     }
-
+    
+    get removeById() {
+        const {isContractor} = storage.is;
+        const onUpdate = isContractor ? updateContractorUser : updateUser;
+        if(!this.isOpen) return onUpdate;
+        
+        const {item} = this.state;
+        if (!item) return null;
+        
+        return onUpdate;
+    }
+    
     onCancel(e, btn) {
         const {forShouldSetupPermissions} = this.props;
         if (forShouldSetupPermissions) {

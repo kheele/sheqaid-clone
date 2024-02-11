@@ -1,39 +1,32 @@
-import GQLClient from "graphql/GQLClient";
-import {Dates} from "utils/Dates";
-
-//<editor-fold desc="contractor_questionnaire_question_list_fragment">
-const contractor_questionnaire_question_list_fragment = (deep = 3) => {
-	if(deep === 0) {
-		return `id`;
+//<editor-fold desc="listImpl">
+module.exports = async (socket, data) => {
+	if (!data) return;
+	console.log(data);
+	
+	const {removed = false, now, range_start, range_end,} = data;
+	const {site_id, project_id, client_id, company_id, contractor_id, contractor_site_id, isContractor} = data;
+	
+	// const id = site_id || project_id || client_id || company_id;
+	// let tbl;
+	// if (site_id) {
+	// 	tbl = "default_sites";
+	// } else if (project_id) {
+	// 	tbl = "default_projects";
+	// } else if (client_id) {
+	// 	tbl = "default_clients";
+	// } else {
+	// 	tbl = "default_companies";
+	// }
+	//
+	// let where = 'is_template: {_eq: false}, group: {_eq: "Contractors"},';
+	let where = 'removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"},';
+	let whereSite = '';
+	
+	if (contractor_site_id) {
+		where += whereSite += `site:{id: {_eq: ${contractor_site_id}}}`;
 	}
-	return `
-    id
-    maxScore
-    score
-    question_list{
-        ${contractor_questionnaire_question_list_fragment(deep - 1)}
-    }
-`;
-};
-//</editor-fold>
-
-export default (
-	{
-		removed = false,
-		//
-		date_range = {},
-		//
-		site_id, project_id, client_id, company_id,
-		contractor_id, contractor_site_id,
-	}
-) => {
-	let where = 'group: {_eq: "Contractors"},', whereSite = '';
-
-	if(contractor_site_id) {
-		where += whereSite = `site:{id: {_eq: ${contractor_site_id}}}`;
-	}
-
-	if(!storage.is.isContractor) {
+	
+	if (!isContractor) {
 		const id = site_id || project_id || client_id || company_id;
 		// if (site_id) {
 		// 	where = whereSite = `site:{id: {_eq: ${id}}}`;
@@ -48,11 +41,10 @@ export default (
 		// 	whereSite = `site:{project:{client:{company:{id: {_eq: ${id}}}}}}`;
 		// }
 	}
-
-	const {start, end} = date_range;
-	const monStart = start || new Date().addMonths(-12);
-	const monEnd = end || new Date().addMonths(6);
-
+	
+	const monStart = range_start || now.addMonths(-12);
+	const monEnd = range_end || now.addMonths(6);
+	
 	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 	const dateRangeQueries = dates.map(date => {
 		const {year, month, start, end} = date;
@@ -66,25 +58,22 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 		`;
 	}).join('\n');
-
-	const mon = Dates.formatDateSQL(new Date().addMonths(1));
-	const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
+	
+	const mon = Dates.formatDateSQL(now.addMonths(1));
+	const mon2 = Dates.formatDateSQL(now.addMonths(2));
+	const mon3 = Dates.formatDateSQL(now.addMonths(3));
+	
+	return getGraphQLOne({
 		multi_queries: true,
-		count: true,
 		variables: {mon, mon2, mon3},
 		query: `
-      query findByIdOrgContractorsMainDashboardQuery($mon: date, $mon2: date, $mon3: date) {
+      query findByIdOrgContractorsSingleDashboardQuery($mon: date, $mon2: date, $mon3: date) {
         #
-        all_site_list_aggregate: default_sites_aggregate(where: {contractor_list: {contractor_id:{_eq: ${contractor_id}},${whereSite}}}) {
+        all_site_list_aggregate: default_sites_aggregate(where: {removed: {_eq: false}, contractor_list: {status:{_neq:"Removed"}, contractor_id:{_eq: ${contractor_id}},${whereSite}}}) {
 			    aggregate {
 			      count
 			    }
@@ -155,9 +144,9 @@ export default (
 			  }
 			  
 			  #
-			  questionnaire_list: default_contractor_questionnaires(where: {status: {_neq: "CompleteAccepted"}, contractor_id:{_eq: ${contractor_id}},${where}}) {
-			    question_list {
-			      ${contractor_questionnaire_question_list_fragment(3)}
+			  contractor_questionnaires_compliance_aggregate: default_contractor_questionnaires_aggregate(where: {contractor_id:{_eq: ${contractor_id}},${where}}) {
+			    nodes{
+			      compliance
 			    }
 			  }
 			  
@@ -165,6 +154,7 @@ export default (
 			  ${dateRangeQueries}
       }
     `,
+		operationName: "findByIdOrgContractorsSingleDashboardQuery",
 	}).then(res => [res]);
-	//</editor-fold>
-};
+}
+//</editor-fold>

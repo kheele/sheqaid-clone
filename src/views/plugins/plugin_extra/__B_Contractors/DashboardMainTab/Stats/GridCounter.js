@@ -14,19 +14,21 @@ import {computed} from "mobx";
 //</editor-fold>
 
 //<editor-fold desc="Counter">
-function Counter({
-	                 placeTitleOnTop,
-	                 background,
-	                 title,
-	                 count,
-	                 value,
-	                 radius = '50%',
-	                 width = '180px',
-	                 height = '180px',
-	                 label,
-	                 color,
-	                 sx
-                 }) {
+function Counter(
+	{
+		placeTitleOnTop,
+		background,
+		title,
+		count,
+		value,
+		radius = '50%',
+		width = '180px',
+		height = '180px',
+		label,
+		color,
+		sx
+	}
+) {
 	return <DefaultCounterCard
 		placeTitleOnTop={placeTitleOnTop}
 		color={color || "light"}
@@ -55,18 +57,22 @@ function Counter({
 //<editor-fold desc="calculateCompliance">
 const calculateCompliance = async ({contractor, question_list}) => {
 	question_list = all_question_list(question_list);
-
+	
 	const list = question_list.filter(({maxScore}) => isNumber(maxScore) && maxScore > 0);
-
-	const score = list.map(({
-		                        score,
-		                        maxScore,
-	                        }) => ((score && isNumber(score)) ? parseInt(score) : 0)).reduce((n1, n2) => n1 + n2, 0);
-	const maxScore = list.map(({
-		                           score,
-		                           maxScore,
-	                           }) => ((maxScore && isNumber(maxScore)) ? parseInt(maxScore) : 0)).reduce((n1, n2) => n1 + n2, 0);
-
+	
+	const score = list.map((
+		{
+			score,
+			maxScore,
+		}
+	) => ((score && isNumber(score)) ? parseInt(score) : 0)).reduce((n1, n2) => n1 + n2, 0);
+	const maxScore = list.map((
+		{
+			score,
+			maxScore,
+		}
+	) => ((maxScore && isNumber(maxScore)) ? parseInt(maxScore) : 0)).reduce((n1, n2) => n1 + n2, 0);
+	
 	const perc = maxScore > 0 ? (score / maxScore) * 100 : 'N/A';
 	console.log('calculateCompliance 2 - ', {score, maxScore, perc})
 	return {contractor, perc};
@@ -76,7 +82,7 @@ const calculateCompliance = async ({contractor, question_list}) => {
 //<editor-fold desc="GridCounter">
 const Comp = forwardRef(({data: __data}, ref) => {
 	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
-
+	
 	// <editor-fold desc="useImperativeHandle funs">
 	useImperativeHandle(ref, () => ({
 		setData: (value) => {
@@ -84,17 +90,17 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		},
 	}));
 	// </editor-fold>
-
+	
 	if (data === DATA_LOAD_STATUS.LOADING) {
 		return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
 			<CircularProgress/>
 		</div>;
 	}
-
+	
 	if (data === DATA_LOAD_STATUS.ERROR) {
 		return null;
 	}
-
+	
 	const complianceLowest = (completed_questionnaire_list) => {
 		return Promise.all(completed_questionnaire_list.map(calculateCompliance)).then(list => {
 			console.log('complianceLowest', list);
@@ -102,7 +108,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			return list.isEmpty() ? "N/A" : (Math.min(...list).toFixed(1) + "%");
 		});
 	}
-
+	
 	const complianceAverage = (completed_questionnaire_list) => {
 		return Promise.all(completed_questionnaire_list.map(calculateCompliance)).then(list => {
 			console.log('complianceAverage', list);
@@ -110,7 +116,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			return list.isEmpty() ? "N/A" : ((list.reduce((n1, n2) => n1 + n2, 0) / list.length).toFixed(1) + "%");
 		});
 	}
-
+	
 	const complianceHighest = (completed_questionnaire_list) => {
 		return Promise.all(completed_questionnaire_list.map(calculateCompliance)).then(list => {
 			console.log('complianceHighest', list);
@@ -118,23 +124,23 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			return list.isEmpty() ? "N/A" : (Math.max(...list).toFixed(1) + "%");
 		});
 	}
-
+	
 	const contractorsWithActiveQuestionnaires = (active_questionnaire_list) => {
 		return active_questionnaire_list.map(({contractor_id}) => contractor_id).distinct().length;
 	};
-
+	
 	const contractorsWithCompletionRequestsQuestionnaires = (completion_requests_questionnaire_list) => {
 		return completion_requests_questionnaire_list.map(({contractor_id}) => contractor_id).distinct().length;
 	};
-
+	
 	const contractorsWithDeclinedRequestsQuestionnaires = (declined_requests_questionnaire_list) => {
 		return declined_requests_questionnaire_list.map(({contractor_id}) => contractor_id).distinct().length;
 	};
-
+	
 	const contractorsWithCompletedQuestionnaires = (completed_questionnaire_list) => {
 		return completed_questionnaire_list.map(({contractor_id}) => contractor_id).distinct().length;
 	};
-
+	
 	const contractorWithHighestCompliance = (completed_questionnaire_list) => {
 		const list = completed_questionnaire_list.map(calculateCompliance);
 		console.log('contractorWithHighestCompliance', list);
@@ -143,7 +149,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		const contractorList = list.filter(v => v.perc === max).map(v => v.contractor.name);
 		return contractorList.isEmpty() ? "N/A" : contractorList.join(', ');
 	}
-
+	
 	const contractorWithLowestCompliance = (completed_questionnaire_list) => {
 		const list = completed_questionnaire_list.map(calculateCompliance);
 		console.log('contractorWithLowestCompliance', list);
@@ -152,11 +158,11 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		const contractorList = list.filter(v => v.perc === min).map(v => v.contractor.name);
 		return contractorList.isEmpty() ? "N/A" : contractorList.join(', ');
 	}
-
+	
 	const [item = {}] = data;
-
+	
 	const defaults = {aggregate: {count: 0}};
-
+	
 	const {
 		all_contractor_list_aggregate = defaults,
 		all_questionnaire_list_aggregate = defaults,
@@ -173,7 +179,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		completion_requests_questionnaire_list = [],
 		declined_requests_questionnaire_list = [],
 	} = item;
-
+	
 	const chart = {
 		labels: ['Active Questionnaires', 'Completed Questionnaires', 'Completion Requests', 'Declined Requests'],
 		datasets: [{
@@ -187,7 +193,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			],
 		}],
 	};
-
+	
 	const chartContractors = {
 		labels: [
 			'Contractors With Active Questionnaires',
@@ -206,7 +212,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			],
 		}],
 	};
-
+	
 	const chartCompliance = {
 		labels: ['Lowest Compliance', 'Average Compliance', 'Highest Compliance'],
 		datasets: [{
@@ -219,9 +225,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			],
 		}],
 	};
-
+	
 	console.log('data', data)
-
+	
 	return <>
 		<Grid
 			container
@@ -249,11 +255,15 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			sx={{m: '0 !important', mt: '20px !important', mb: '15px !important', justifyItems: 'center',}}
 		>
 			<Counter placeTitleOnTop radius={'0.75rem'} width="100%" height="149.5px" background="#506b7b"
-			         title={<b className="color-white font-size-14 pull-left -margin-t-20 margin-b-10">Contractors With<br/>Highest Compliance</b>}
-			         value={<div className="font-size-14">{contractorWithHighestCompliance(completed_questionnaire_list)}</div>}/>
+			         title={<b className="color-white font-size-14 pull-left -margin-t-20 margin-b-10">Contractors With<br/>Highest
+				         Compliance</b>}
+			         value={<div
+				         className="font-size-14">{contractorWithHighestCompliance(completed_questionnaire_list)}</div>}/>
 			<Counter placeTitleOnTop radius={'0.75rem'} width="100%" height="149.5px" background="#506b7b"
-			         title={<b className="color-white font-size-14 pull-left -margin-t-20 margin-b-10">Contractors With<br/>Lowest Compliance</b>}
-			         value={<div className="font-size-14">{contractorWithLowestCompliance(completed_questionnaire_list)}</div>}/>
+			         title={<b className="color-white font-size-14 pull-left -margin-t-20 margin-b-10">Contractors With<br/>Lowest
+				         Compliance</b>}
+			         value={<div
+				         className="font-size-14">{contractorWithLowestCompliance(completed_questionnaire_list)}</div>}/>
 		</Grid>
 		<MDBox
 			className="w-full grid-gap-10"
@@ -333,4 +343,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

@@ -53,7 +53,6 @@ class Controls extends React.Component {
     onChangeCountry(el, val) {
         this.props.execWhen(() => this.refs.zone).then(ref => {
             ref.country = val;
-            alert(val)
         });
     }
 
@@ -187,7 +186,7 @@ class Controls extends React.Component {
 
     get itemData() {
         if (this.isNewEmployee) {
-            return this.item;
+            return this.item.data || this.item;
         }
         return this.item.data;
     }

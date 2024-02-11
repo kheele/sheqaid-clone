@@ -73,6 +73,8 @@ class Main extends AEmployeeListTab {
                     });
                     infoDialog.open("Employee successfully re-insteaded.");
                     infoDialog.close(2000);
+                }).catch(err => {
+                    console.log(err)
                 }).finally(() => {
                     progressDialog.close();
                 });

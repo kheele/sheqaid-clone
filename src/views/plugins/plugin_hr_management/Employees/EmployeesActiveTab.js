@@ -71,17 +71,18 @@ class Main extends AEmployeeListTab {
 		const {id, data: {email}} = item;
 		if (email) {
 			progressDialog.open("Please wait...");
-			neonBinding.events.emit(this.path + "send-app-link", id).then(res => {
+			const sendAppLink = sockets.of("send").fn("sendAppLink");
+			sendAppLink({id, access_type: "Staff"}).then(res => {
 				infoDialog.open("Link successfully sent.");
 				infoDialog.close(2000);
 			}).finally(() => {
 				progressDialog.close();
 			});
 		} else {
-			infoDialog.open(<React.Fragment>
+			infoDialog.open(<>
 				<p>The employee does not have an username / email address.</p>
 				<p>Please edit the employee and add his/her username / email address.</p>
-			</React.Fragment>);
+			</>);
 		}
 	}
 

@@ -17,12 +17,14 @@ import NavItem from "components/navs/NavItem";
 
 import updateJobObservationsQuestionnaireTemplate
 	from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/updateJobObservationsQuestionnaireTemplate";
+import findByIdJobObservationsQuestionnaireTemplate
+	from "mutations/all/Questionnaires/JobObservationsQuestionnaireTemplate/findByIdJobObservationsQuestionnaireTemplate";
 
 //<editor-fold desc="Dialog">
 @observer
 class ProfileDialog extends AProfileDialog {
 	pageKey = "ProfileTemplateDialog";
-	removeById = updateJobObservationsQuestionnaireTemplate;
+	findById = findByIdJobObservationsQuestionnaireTemplate;
 
 	constructor(props) {
 		super(props, style);
@@ -54,11 +56,19 @@ class ProfileDialog extends AProfileDialog {
 	title() {
 		return "Job Observation Template Questionnaire";
 	}
-
-	get topButtonsHiddenDelete() {
-		return true;
+	
+	get removeById() {
+		if(!this.isOpen) return updateJobObservationsQuestionnaireTemplate;
+		
+		const {item} = this.state;
+		if (!item) return null;
+		const {data: {visibility}} = item;
+		
+		if (visibility === "Private") {
+			return updateJobObservationsQuestionnaireTemplate;
+		}
 	}
-
+	
 	@computed get topButtons() {
 		const {item} = this.state;
 		if (!item) return null;

@@ -1,5 +1,4 @@
-import GQLClient from "graphql/GQLClient";
-import {Dates} from "utils/Dates";
+//<editor-fold desc="listImpl">
 
 //<editor-fold desc="contractor_questionnaire_question_list_fragment">
 const contractor_questionnaire_question_list_fragment = (deep = 3) => {
@@ -17,17 +16,16 @@ const contractor_questionnaire_question_list_fragment = (deep = 3) => {
 };
 //</editor-fold>
 
-export default (
-	{
-		removed = false,
-		//
-		date_range = {},
-		//
-		site_id, project_id, client_id, company_id,
-	}
-) => {
+module.exports = async (socket, data) => {
+	if (!data) return;
+	console.log(data);
+	
+	const {removed = false, now, range_start, range_end,} = data;
+	const {site_id, project_id, client_id, company_id, contractor_id, contractor_site_id, isContractor} = data;
+	
 	const id = site_id || project_id || client_id || company_id;
-	let where = 'group: {_eq: "Contractors"},', whereSite = '';
+	let where = 'removed: {_eq: false}, is_template: {_eq: false}, group: {_eq: "Contractors"},';
+	let whereSite = '';
 	if (site_id) {
 		where += whereSite = `site:{id: {_eq: ${id}}}`;
 	} else if (project_id) {
@@ -37,14 +35,13 @@ export default (
 		where += `client:{id: {_eq: ${id}}}`;
 		whereSite = `site:{project:{client:{id: {_eq: ${id}}}}}`;
 	} else {
-		where = +`company:{id: {_eq: ${id}}}`;
+		where += `company:{id: {_eq: ${id}}}`;
 		whereSite = `site:{project:{client:{company:{id: {_eq: ${id}}}}}}`;
 	}
-
-	const {start, end} = date_range;
-	const monStart = start || new Date().addMonths(-12);
-	const monEnd = end || new Date().addMonths(6);
-
+	
+	const monStart = range_start || now.addMonths(-12);
+	const monEnd = range_end || now.addMonths(6);
+	
 	const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
 	const dateRangeQueries = dates.map(date => {
 		const {year, month, start, end} = date;
@@ -58,25 +55,22 @@ export default (
 			) {
 				aggregate {
 				  count
-				} 
+				}
 			}
 		`;
 	}).join('\n');
-
-	const mon = Dates.formatDateSQL(new Date().addMonths(1));
-	const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-
-	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
+	
+	const mon = Dates.formatDateSQL(now.addMonths(1));
+	const mon2 = Dates.formatDateSQL(now.addMonths(2));
+	const mon3 = Dates.formatDateSQL(now.addMonths(3));
+	
+	return getGraphQLOne({
 		multi_queries: true,
-		count: true,
 		variables: {mon, mon2, mon3},
 		query: `
       query findByIdOrgContractorsMainDashboardQuery($mon: date, $mon2: date, $mon3: date) {
         #
-        all_contractor_list_aggregate: default_contractors_aggregate(where: {site_list: {${whereSite}}}) {
+        all_contractor_list_aggregate: default_contractors_aggregate(where: {site_list: {status:{_neq:"Removed"}, ${whereSite}}}) {
 			    aggregate {
 			      count
 			    }
@@ -171,6 +165,7 @@ export default (
 			  ${dateRangeQueries}
       }
     `,
+		operationName: "findByIdOrgContractorsMainDashboardQuery",
 	}).then(res => [res]);
-	//</editor-fold>
-};
+}
+//</editor-fold>

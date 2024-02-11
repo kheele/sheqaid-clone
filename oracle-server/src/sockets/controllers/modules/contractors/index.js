@@ -1,4 +1,5 @@
 require('./sites');
+require('./template-categories');
 require('./templates');
 require('./users');
 
@@ -6,6 +7,8 @@ const findByIdImpl = require('../findByIdImpl');
 const listImpl = require('../listImpl');
 const {contractor_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
 const {orgs_no_site_fragment} = require("../../../../graphql/Fragments");
+const findByIdDashboardMainImpl = require("./findByIdDashboardMainImpl");
+const findByIdDashboardSingleImpl = require("./findByIdDashboardSingleImpl");
 
 const args = {
 	name: "Contractors",
@@ -21,4 +24,6 @@ eventManager.on("contractors/listByLogged", listImpl({
 	order_by: "order_by: {name: asc}",
 	getVariablesAndQueryConfig,
 }));
-//
+
+eventManager.on("contractors/main/dashboard", findByIdDashboardMainImpl);
+eventManager.on("contractors/single/dashboard", findByIdDashboardSingleImpl);

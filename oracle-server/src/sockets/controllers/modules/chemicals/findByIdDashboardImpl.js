@@ -1,30 +1,23 @@
-import GQLClient from "graphql/GQLClient";
-import {getVariablesAndQueryConfig} from "../Utils";
-import {orgs_fragment} from "graphql/Fragments";
-import {incident_details_fragment} from "../Fragments";
-
-export default (
-	{
-		removed = false,
-		//
-		site_id, project_id, client_id, company_id,
-	}
-) => {
+//<editor-fold desc="listImpl">
+module.exports = async (socket, data) => {
+	if (!data) return;
+	
+	const {removed = false, now, range_start, range_end,} = data;
+	const {site_id, project_id, client_id, company_id, contractor_id, contractor_site_id,} = data;
+	
 	const id = site_id || project_id || client_id || company_id;
 	let tbl;
-	if(site_id) {
+	if (site_id) {
 		tbl = "default_sites";
-	} else if(project_id) {
+	} else if (project_id) {
 		tbl = "default_projects";
-	} else if(client_id) {
+	} else if (client_id) {
 		tbl = "default_clients";
 	} else {
 		tbl = "default_companies";
 	}
-
-	//<editor-fold desc="ByEach">
-	return GQLClient
-	.query({
+	
+	return getGraphQLOne({
 		query: `
       query findByIdOrgChemicalsDashboardQuery {
         ${tbl}(
@@ -305,6 +298,7 @@ export default (
 			  }
       }
     `,
-	});//.then(fillNullLists);
-	//</editor-fold>
-};
+		operationName: "findByIdOrgChemicalsDashboardQuery",
+	});
+}
+//</editor-fold>

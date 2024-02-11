@@ -10,6 +10,8 @@ import updateProxySectorTrainingCourse from "../../ProxySectorTrainingCourse/upd
 import insertProxySectorTrainingCourse from "../../ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
 import updateEmployeeExternal from "../../Employee/updateEmployeeExternal";
 import insertEmployeeExternal from "../../Employee/insertEmployeeExternal";
+import updateQuestion from "../Questions/updateQuestion";
+import insertQuestion from "../Questions/insertQuestion";
 
 // 2
 const mutation = graphql`
@@ -22,10 +24,8 @@ const mutation = graphql`
 
 // 3
 export default async (attrs: EntityJobObservationsQuestionnaire) => {
-	const {
-		employee_other,
-	} = attrs;
-
+	const {id, question_list, employee_other} = attrs;
+	
 	if (employee_other) {
 		delete attrs.employee_other;
 		let {data, job_position} = employee_other;
@@ -45,6 +45,18 @@ export default async (attrs: EntityJobObservationsQuestionnaire) => {
 		if(employee_other_pg) {
 			attrs.employee_other_id = employee_other_pg.id;
 		}
+	}
+	
+	if(question_list) {
+		delete attrs.question_list;
+		
+		await Promise.all(question_list.map(async q => {
+			if(q.id) {
+				return updateQuestion(q);
+			} else {
+				return insertQuestion({questionnaire_id: id, ...q});
+			}
+		}));
 	}
 
 	return updateMutationImpl({

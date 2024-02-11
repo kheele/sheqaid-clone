@@ -39,17 +39,10 @@ function Counter({background, title, count, label, color, sx}) {
 //</editor-fold>
 
 //<editor-fold desc="calculateCompliance">
-const calculateCompliance = async ({question_list}) => {
-	question_list = all_question_list(question_list);
-
-	const list = question_list.filter(({maxScore}) => isNumber(maxScore) && maxScore > 0);
-
-	const score = list.map(({score, maxScore,}) => ((score && isNumber(score)) ? parseInt(score) : 0)).reduce((n1, n2) => n1 + n2, 0);
-	const maxScore = list.map(({score, maxScore,}) => ((maxScore && isNumber(maxScore)) ? parseInt(maxScore) : 0)).reduce((n1, n2) => n1 + n2, 0);
-
-	const perc = maxScore > 0 ? (score / maxScore) * 100 : 'N/A';
-	console.log('calculateCompliance 2 - ', {score, maxScore, perc})
-	return perc;
+const calculateCompliance = async ({key, nodes}) => {
+	if(nodes.isEmpty()) return "N/A";
+	const sum = nodes.map(({compliance:{[key]: count}}) => count).reduce((a, b) => a + b, 0);
+	return sum.toFixed(1) + "%";
 };
 //</editor-fold>
 
@@ -75,29 +68,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const complianceLowest = (questionnaire_list) => {
-		return Promise.all(questionnaire_list.map(calculateCompliance)).then(list => {
-			console.log('complianceLowest', list);
-			list = list.filter(v => v !== 'N/A');
-			return list.isEmpty() ? "N/A" : (Math.min(...list).toFixed(1) + "%");
-		});
-	}
-
-	const complianceAverage = (questionnaire_list) => {
-		return Promise.all(questionnaire_list.map(calculateCompliance)).then(list => {
-			console.log('complianceAverage', list);
-			list = list.filter(v => v !== 'N/A');
-			return list.isEmpty() ? "N/A" : ((list.reduce((n1, n2) => n1 + n2, 0) / list.length).toFixed(1) + "%");
-		});
-	}
-
-	const complianceHighest = (questionnaire_list) => {
-		return Promise.all(questionnaire_list.map(calculateCompliance)).then(list => {
-			console.log('complianceHighest', list);
-			list = list.filter(v => v !== 'N/A');
-			return list.isEmpty() ? "N/A" : (Math.max(...list).toFixed(1) + "%");
-		});
-	}
+	const complianceLowest = ({nodes}) => calculateCompliance({key: "min",nodes});
+	const complianceAverage = ({nodes}) => calculateCompliance({key: "avg",nodes});
+	const complianceHighest = ({nodes}) => calculateCompliance({key: "max",nodes});
 
 	const [item = {}] = data;
 
@@ -114,7 +87,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		completion_requests_questionnaire_list_aggregate = defaults,
 		declined_requests_questionnaire_list_aggregate = defaults,
 		//
-		questionnaire_list = defaults,
+		contractor_questionnaires_compliance_aggregate = {nodes:[]},
 	} = item;
 
 	const chart = {
@@ -137,9 +110,9 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			label: 'Total',
 			color: 'white',
 			data: [
-				complianceLowest(questionnaire_list),
-				complianceAverage(questionnaire_list),
-				complianceHighest(questionnaire_list),
+				complianceLowest(contractor_questionnaires_compliance_aggregate),
+				complianceAverage(contractor_questionnaires_compliance_aggregate),
+				complianceHighest(contractor_questionnaires_compliance_aggregate),
 			],
 		}],
 	};
@@ -205,4 +178,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-
