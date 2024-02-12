@@ -1,0 +1,23 @@
+
+#RemovedTab-tab{
+    padding: 0;
+    height: 100% !important;
+    overflow: visible !important;
+}
+
+#RemovedTab-tab .page-title{
+    float: right;
+    position: absolute;
+    top: -91px;
+    right: 0;
+    border: none;
+}
+
+#RemovedTab-tab > .table{
+    width: 100%;
+    height: 100% !important;
+    margin: 0;
+}
+#RemovedTab-tab .filter-wrapper + .table{
+    height: calc(100% - (125px)) !important;
+}

@@ -65,6 +65,7 @@ export default async (attrs: EntityTeam) => {
         id,
         name,
         status,
+        removed,
         client_id,
         project_id,
         site_id,
@@ -92,6 +93,11 @@ export default async (attrs: EntityTeam) => {
                 return insertProxyTeamPPE(item);
             }
         }));
+    }
+    
+    if('removed' in attrs) {
+        attrs.status = removed ? 'Inactive' : 'Active';
+        delete attrs.removed;
     }
 
     return updateMutationImpl({

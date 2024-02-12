@@ -907,7 +907,7 @@ class GroupByTBody extends ATableSavable {
 			job_position,
 			department
 		} = item;
-		const job_category = job_position.job_category;
+		const job_category = job_position && job_position.job_category;
 		return <TRow key={"item-" + n + new Date().getTime()}>
 			<div className="td fixed-flex min-w-95">{employee_num || 'N/A'}</div>
 			<div className="td">{lname}</div>

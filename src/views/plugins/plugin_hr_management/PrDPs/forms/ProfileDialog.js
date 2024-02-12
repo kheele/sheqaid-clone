@@ -49,7 +49,6 @@ class Controls extends AEmployeeDocControls {
 
     type = 'PrDP';
     listName = "document_list";
-    // listName = "prdp_list";
     onUpdate = updateEmployeeDocDocument;
     NewDialog = NewDialog;
     EditDialog = EditDialog;

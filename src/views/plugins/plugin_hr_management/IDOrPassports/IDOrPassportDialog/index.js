@@ -19,6 +19,8 @@ import findByIdContractorHRIDOrPassportDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRIDOrPassportDashboardStatsByLogged";
 import findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged";
+import updateEmployeeDocDocument
+    from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 // </editor-fold>
 
 @observer
@@ -28,7 +30,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "ID/Passport";
     permissionKey = "IDOrPassports";
     module = "IDOrPassports";
-    // onUpdate = updateEmployeeCounselling;
+    onUpdate = updateEmployeeDocDocument;
     filterNodeMarginB = 35;
 
     dialogs = {

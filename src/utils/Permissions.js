@@ -188,10 +188,12 @@ class Permissions {
     static allowTypeMod(key, type) {
         if(!key) return;
         const {permissions_module_list} = storage.loggedUser.user.data;
+        // console.log('allowTypeMod', key, type);
         const perm = (permissions_module_list || []).find(({key: __key, module}) => {
             if(module) return module.key === key;
             return __key === key;
         });
+        // console.log('allowTypeMod perm', perm);
         return Permissions.allowType(perm, type);
     }
 

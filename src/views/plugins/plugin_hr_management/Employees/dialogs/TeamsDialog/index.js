@@ -2,11 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates} from 'utils/Utils';
-import ADialogList from "views/ADialogList";
-import APageListReadWrite from "views/APageListReadWrite";
-import NavItem from 'components/navs/NavItem';
-import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {ActionsButton, ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
@@ -17,168 +12,185 @@ import EditTeamDialog from "./EditTeamDialog";
 import style from "./TeamsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
 import updateTeam from "mutations/all/Team/updateTeam";
+import {Tabs} from "components/tabs";
+import ActiveTab from "../ActiveTab";
+import RemovedTab from "../RemovedTab";
+import ADialogTab from "views/ADialogTab";
 
 // </editor-fold>
 
 @observer
-class TeamsDialog extends ADialogList {
-    path;
-    pageKey = "TeamsDialog";
-    title = "Teams";
-
-    // <editor-fold defaultstate="collapsed" desc="constructor">
-    constructor(props) {
-        super(props);
-
-        this.path = props.path + 'teams/';
-
-        this.onLoadList = this.onLoadList.bind(this);
-
-        this.renderFilterNode = this.renderFilterNode.bind(this);
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="mounts">
-    componentWillMount() {
-        style.use();
-    }
-
-    componentWillUnmount() {
-        style.unuse();
-    }
-    // </editor-fold>
-
-    //<editor-fold desc="onLoadList">
-    onLoadList(params = {}) {
-        const {page, lastItem, filterData, filtered, isNew} = params;
-        const {
-            name,
-            supervisor_id,
-            employee_id,
-        } = filterData || {};
-
-        const listByLogged = sockets.of('teams').fn('listByLogged');
-
-        return listByLogged({
-            name,
-            supervisor_id,
-            employee_id,
-            //
-            exact_orgs: true,
-            //
-            offset: isNew ? 0 : this.refs.root.list.length,
-        }).then((res) => {
-            console.log('onLoadList res', res)
-            return res;
-        });
-    }
-
-    //</editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="renderFuns">
-    renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-        const permissionKey = "Teams";
-        return <Options idx={idx} permissionOtherKey={permissionKey}>
-            <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
-            <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-        </Options>;
-    }
-
-    renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Team Name" className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-        </div>;
-    }
-
-    renderTHead() {
-        const {isConsultant} = storage.is;
-        return <THead>
-            <div className="td fixed-flex min-w-50">ID</div>
-            <div className="td">Supervisor</div>
-            <div className="td">Team Name</div>
-            {isConsultant && <div className="td">Company</div>}
-            <div className="td fixed-flex min-w-200">Stats</div>
-            <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
-        </THead>;
-    }
-
-    renderItem(n, onClick) {
-        const item = this.refs.root.list[n];
-        const {
-            id,
-            data: {
-                created_at, supervisor, name, status,
-                company, client, project, site,
-                employee_list_aggregate, ppe_list_aggregate
-            }
-        } = item;
-
-        const {isConsultant} = storage.is;
+class TeamsDialog extends ADialogTab {
+	path;
+	pageKey = "TeamsDialog";
+	title = "Teams";
+	titleSingular = "Team";
+	permissionKey = "Teams";
+	onUpdate = updateTeam;
+	
+	// <editor-fold defaultstate="collapsed" desc="constructor">
+	constructor(props) {
+		super(props);
+		
+		this.path = props.path + 'teams/';
+		
+		this.onBuildQuery = this.onBuildQuery.bind(this);
+		
+		this.renderFilterNode = this.renderFilterNode.bind(this);
+		this.renderItem = this.renderItem.bind(this);
+	}
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="mounts">
+	componentWillMount() {
+		style.use();
+	}
+	
+	componentWillUnmount() {
+		style.unuse();
+	}
+	
+	// </editor-fold>
+	
+	//<editor-fold desc="onBuildQuery">
+	onBuildQuery(filterData = {}) {
+		const {
+			name,
+			supervisor_id,
+			employee_id,
+		} = filterData || {};
+		
+		return {
+			path: "teams",
+			attrs: {
+				name,
+				supervisor_id,
+				employee_id,
+			},
+		};
+	}
+	//</editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="renderFuns">
+	//<editor-fold desc="renderFilterNode">
+	renderFilterNode(onChange) {
+		return <div className="col-lg-12 controls flex">
+			<ClearableInput name="name" type="text" placeholder="Team Name" className="form-control" onChange={onChange}/>
+			<SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
+			<SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
+		</div>;
+	}
+	//</editor-fold>
+	
+	//<editor-fold desc="renderTHead">
+	renderTHead() {
+		const {isConsultant} = storage.is;
+		return <THead>
+			<div className="td fixed-flex min-w-50">ID</div>
+			<div className="td">Supervisor</div>
+			<div className="td">Team Name</div>
+			{isConsultant && <div className="td">Company</div>}
+			<div className="td fixed-flex min-w-200">Stats</div>
+			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+		</THead>;
+	}
+	//</editor-fold>
+	
+	//<editor-fold desc="renderItem">
+	renderItem(item, idx, onClick) {
+		const {
+			id,
+			data: {
+				created_at, supervisor, name, status,
+				company, client, project, site,
+				employee_list_aggregate, ppe_list_aggregate
+			}
+		} = item;
+		
+		const {isConsultant} = storage.is;
 
 //        console.log(item)
-        return <TRow key={id}>
-            <div className="td fixed-flex min-w-50">{id}</div>
-            <div className="td">{supervisor ? `${supervisor.lname} ${supervisor.fname}` : 'N/A'}</div>
-            <div className="td">{name}</div>
-            {isConsultant && <div className="td">
-                {client ? client.name : 'All'}
-            </div>}
-            <div className="td fixed-flex min-w-200 flex td-stats">
-                <StatsPanel item={item}/>
-            </div>
-            <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-            </div>
-        </TRow>;
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="renderPage">
-    renderPage() {
-        return <APageListReadWrite 
-            ref="root"
-            page={this}
-            hasBackBtn={false}
-            createBtnTitle="Create"
-            pageId={this.pageKey + '-page'}
-            listCountTopTitle="team"
-            pageTitleSingular="team"
-            onLoadList={this.onLoadList}
-            noAnimation={true}
-            renderPopoverOptions={this.renderPopoverOptions}
-            renderFilterNode={this.renderFilterNode}
-            renderTHead={this.renderTHead}
-            renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDelete={updateTeam}/>
-            
-            <NewTeamDialog ref="newDialog" path={this.path}/>
-            <ProfileTeamDialog ref="profileDialog" onSoftDelete={updateTeam}/>
-            <EditTeamDialog ref="editDialog" path={this.path}/>
-        </APageListReadWrite>;
-    }
-    // </editor-fold>
-
+		return <TRow key={id}>
+			<div className="td fixed-flex min-w-50">{id}</div>
+			<div className="td">{supervisor ? `${supervisor.lname} ${supervisor.fname}` : 'N/A'}</div>
+			<div className="td">{name}</div>
+			{isConsultant && <div className="td">
+				{client ? client.name : 'All'}
+			</div>}
+			<div className="td fixed-flex min-w-200 flex td-stats">
+				<StatsPanel item={item}/>
+			</div>
+			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+			</div>
+		</TRow>;
+	}
+	//</editor-fold>
+	
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="renderPage">
+	renderPage() {
+		const {onUpdate, onBuildQuery, titleSingular, title, permissionKey, renderFilterNode, renderTHead, renderItem} = this;
+		
+		return <Tabs
+			key="tabs"
+			ref="mainTabs"
+			permissionKey={permissionKey}
+			index={this.state.index}
+			onChange={this.onChange}
+		>
+			<ActiveTab
+				ref="activeTab"
+				onUpdate={onUpdate}
+				onBuildQuery={onBuildQuery}
+				title="Active"
+				titleSingular={titleSingular}
+				titlePlural={title}
+				renderFilterNode={renderFilterNode}
+				renderTHead={renderTHead}
+				renderItem={renderItem}
+				NewDialog={NewTeamDialog}
+				ProfileDialog={ProfileTeamDialog}
+				EditDialog={EditTeamDialog}
+				permissionKey={permissionKey}
+			/>
+			<RemovedTab
+				ref="removedTab"
+				onUpdate={onUpdate}
+				onBuildQuery={onBuildQuery}
+				title="Removed"
+				titleSingular={titleSingular}
+				titlePlural={title}
+				renderFilterNode={renderFilterNode}
+				renderTHead={renderTHead}
+				renderItem={renderItem}
+				ProfileDialog={ProfileTeamDialog}
+				permissionKey={permissionKey}
+			/>
+		</Tabs>;
+	}
+	
+	// </editor-fold>
+	
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">
 @observer
 class StatsPanel extends React.Component {
-
-    render() {
-        const {
-            data: {
-                employee_list_aggregate, ppe_list_aggregate,
-            }
-        } = this.props.item;
-
-        return <>
-            <AggregateStat title="Employees" value={employee_list_aggregate}/>
-            <AggregateStat title="PPE" value={ppe_list_aggregate}/>
-        </>;
-    }
+	
+	render() {
+		const {
+			data: {
+				employee_list_aggregate, ppe_list_aggregate,
+			}
+		} = this.props.item;
+		
+		return <>
+			<AggregateStat title="Employees" value={employee_list_aggregate}/>
+			<AggregateStat title="PPE" value={ppe_list_aggregate}/>
+		</>;
+	}
 }
 
 // </editor-fold>

@@ -2,11 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, Permissions} from 'utils/Utils';
-import ADialogList from "views/ADialogList";
-import APageListReadWrite from "views/APageListReadWrite";
-import NavItem from 'components/navs/NavItem';
-import ConfirmDialog from 'components/dialogs/ConfirmDialog';
+import {Permissions} from 'utils/Utils';
 import {ActionsButton, Button, ClearableInput, Clickable, SelectJobCategoryInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
@@ -17,87 +13,91 @@ import EditJobPositionDialog from "./EditJobPositionDialog";
 
 import style from "./JobPositionsDialog.lazy.css";
 import AggregateStat from "components/AggregateStat";
+import updateJobPosition from "mutations/all/JobPosition/updateJobPosition";
+import ADialogTab from "views/ADialogTab";
+import {Tabs} from "components/tabs";
+import ActiveTab from "../ActiveTab";
+import RemovedTab from "../RemovedTab";
 
 // </editor-fold>
 
 @observer
-class JobPositionsDialog extends ADialogList {
+class JobPositionsDialog extends ADialogTab {
 	path;
 	pageKey = "JobPositionsDialog";
 	title = "Job Positions";
-
+	titleSingular = "Job Position";
+	permissionKey = "Job Positions";
+	onUpdate = updateJobPosition;
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.path = props.path + 'job-positions/';
-
-		this.onLoadList = this.onLoadList.bind(this);
-
+		
+		this.onBuildQuery = this.onBuildQuery.bind(this);
+		
 		this.onImport = this.onImport.bind(this);
 		this.onViewByDoc = this.onViewByDoc.bind(this);
-
+		
 		this.renderLeftButtons = this.renderLeftButtons.bind(this);
 		this.renderFilterNode = this.renderFilterNode.bind(this);
-		this.renderTHead = this.renderTHead.bind(this);
+		this.renderItem = this.renderItem.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentWillMount">
 	componentWillMount() {
 		style.use();
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
 	componentWillUnmount() {
 		style.unuse();
 	}
-
+	
 	// </editor-fold>
-
-	//<editor-fold desc="onLoadList">
-	onLoadList(params = {}) {
-		const {page, lastItem, filterData, filtered, isNew} = params;
+	
+	//<editor-fold desc="onBuildQuery">
+	onBuildQuery(filterData = {}) {
 		const {
 			name,
 			job_category_id,
 		} = filterData || {};
-
-		const listByLogged = sockets.of('job-positions').fn('listByLogged');
-
-		return listByLogged({
-			name,
-			job_category_id,
-			//
-			exact_orgs: true,
-			exact_orgs_company: true,
-			//
-			offset: isNew ? 0 : this.refs.root.list.length,
-		}).then((res) => {
-			console.log('onLoadList res', res)
-			return res;
-		});
+		
+		return {
+			path: "job-positions",
+			attrs: {
+				name,
+				job_category_id,
+				exact_orgs_company: true,
+			},
+		};
 	}
-
+	
 	//</editor-fold>
 	
+	//<editor-fold desc="onSoftDeleteProhibit">
 	onSoftDeleteProhibit(item) {
 		const {id, data: {employee_list_aggregate}} = item;
 		const prohibit = employee_list_aggregate.aggregate.count > 0;
-		if(prohibit) {
+		if (prohibit) {
 			infoDialog.open(<p>
-				The Job Position can't be removed while<br />
-				there are employees attached to it.<br /><br />
-				Please first remove the employees or assign<br />
-				them to other Job Position(s) before removing<br />
+				The Job Position can't be removed while<br/>
+				there are employees attached to it.<br/><br/>
+				Please first remove the employees or assign<br/>
+				them to other Job Position(s) before removing<br/>
 				this Job Position.
 			</p>);
 		}
 		return prohibit;
 	}
+	
+	//</editor-fold>
 	
 	// <editor-fold defaultstate="collapsed" desc="actions">
 	onImport(e, btn) {
@@ -105,21 +105,31 @@ class JobPositionsDialog extends ADialogList {
 			this.refs.root.list.push(...list);
 		});
 	}
-
+	
 	onViewByDoc(e, btn) {
 		const {idx} = btn.props;
-		this.refs.root.onView(e, btn);
+		const {mainTabs} = this.refs;
+		
+		let tabKey;
+		if (mainTabs.state.activeIndex === 0) {
+			tabKey = "activeTab";
+		} else {
+			tabKey = "removedTab";
+		}
+		mainTabs.getTabByRef(tabKey).refs.root.onView(e, btn);
 	}
+	
 	// </editor-fold>
-
+	
+	//<editor-fold desc="renderFuns">
 	// <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
 	renderLeftButtons() {
 		const {isEmployee, isContractorView} = storage.is;
 		const isReadonly = isEmployee || isContractorView;
 		if (isReadonly) return null;
 		const {permissions_other} = storage.loggedUser.user.data;
-		const permissions_other_JobPositions = (permissions_other || []).find(v => v.key === "Job Positions");
-
+		const permissions_other_JobPositions = (permissions_other || []).find(v => v.key === this.permissionKey);
+		
 		return <div className="left-buttons pull-left">
 			{Permissions.allow(permissions_other_JobPositions) &&
 				<Button className="btn btn-primary pull-right min-w-110" onClick={this.onImport}>
@@ -127,21 +137,9 @@ class JobPositionsDialog extends ADialogList {
 				</Button>}
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
-	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
-	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-		const permissionKey = "Job Positions";
-		return <Options idx={idx} permissionOtherKey={permissionKey}>
-			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
-			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-		</Options>;
-	}
-
-	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderFilterNode">
 	renderFilterNode(onChange) {
 		return <div className="col-lg-12 controls flex">
@@ -149,9 +147,9 @@ class JobPositionsDialog extends ADialogList {
 			<SelectJobCategoryInput name="job_category" className="form-control" onChange={onChange}/>
 		</div>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderTHead">
 	renderTHead() {
 		const {isConsultant} = storage.is;
@@ -165,12 +163,11 @@ class JobPositionsDialog extends ADialogList {
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="renderItem">
-	renderItem(n, onClick) {
-		const item = this.refs.root.list[n];
+	renderItem(item, idx, onClick) {
 		const {
 			id,
 			data: {
@@ -182,7 +179,7 @@ class JobPositionsDialog extends ADialogList {
 				toolbox_talk_list_aggregate, training_plan_list_aggregate,
 			}
 		} = item;
-
+		
 		const {isConsultant} = storage.is;
 
 //        console.log(item)
@@ -191,7 +188,7 @@ class JobPositionsDialog extends ADialogList {
 			<div className="td">{name || 'N/A'}</div>
 			<div className="td">{job_category ? job_category.name : 'N/A'}</div>
 			<div className="td">{
-				doc ? <Clickable idx={n} onClick={this.onViewByDoc}><a href="#">PDF Document</a></Clickable> : (desc || 'N/A')
+				doc ? <Clickable idx={idx} onClick={this.onViewByDoc}><a href="#">PDF Document</a></Clickable> : (desc || 'N/A')
 			}</div>
 			{isConsultant && <div className="td">
 				{client ? (client.name || client.data.name) : 'All'}
@@ -200,47 +197,79 @@ class JobPositionsDialog extends ADialogList {
 				<StatsPanel item={item}/>
 			</div>
 			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-				<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
 			</div>
 		</TRow>;
 	}
-
+	
 	// </editor-fold>
-
+	//</editor-fold>
+	
 	// <editor-fold defaultstate="collapsed" desc="renderPage">
 	renderPage() {
-		return <APageListReadWrite
-			ref="root"
-			page={this}
-			hasBackBtn={false}
-			createBtnTitle="Create"
-			pageId={this.pageKey + '-page'}
-			listCountTopTitle="job position"
-			pageTitleSingular="job position"
-			onLoadList={this.onLoadList}
-			noAnimation={true}
-			renderLeftButtons={this.renderLeftButtons}
-			renderPopoverOptions={this.renderPopoverOptions}
-			renderFilterNode={this.renderFilterNode}
-			renderTHead={this.renderTHead}
-			renderItem={this.renderItem}>
-			<ConfirmDialog ref="removeDialog"/>
-
+		const {
+			onUpdate,
+			onBuildQuery,
+			titleSingular,
+			title,
+			permissionKey,
+			renderFilterNode,
+			renderTHead,
+			renderItem
+		} = this;
+		
+		return <>
+			<Tabs
+				key="tabs"
+				ref="mainTabs"
+				permissionKey={permissionKey}
+				index={this.state.index}
+				onChange={this.onChange}
+			>
+				<ActiveTab
+					ref="activeTab"
+					onUpdate={onUpdate}
+					onBuildQuery={onBuildQuery}
+					title="Active"
+					titleSingular={titleSingular}
+					titlePlural={title}
+					onSoftDeleteProhibit={this.onSoftDeleteProhibit}
+					renderLeftButtons={this.renderLeftButtons}
+					renderFilterNode={renderFilterNode}
+					renderTHead={renderTHead}
+					renderItem={renderItem}
+					NewDialog={NewJobPositionDialog}
+					ProfileDialog={ProfileJobPositionDialog}
+					EditDialog={EditJobPositionDialog}
+					permissionKey={permissionKey}
+				/>
+				<RemovedTab
+					ref="removedTab"
+					onUpdate={onUpdate}
+					onBuildQuery={onBuildQuery}
+					title="Removed"
+					titleSingular={titleSingular}
+					titlePlural={title}
+					renderFilterNode={renderFilterNode}
+					renderTHead={renderTHead}
+					renderItem={renderItem}
+					ProfileDialog={ProfileJobPositionDialog}
+					permissionKey={permissionKey}
+				/>
+			</Tabs>
+			
 			<ImportJobPositionsDialog ref="importDialog" path={this.path}/>
-			<NewJobPositionDialog ref="newDialog" path={this.path}/>
-			<ProfileJobPositionDialog ref="profileDialog"/>
-			<EditJobPositionDialog ref="editDialog" path={this.path}/>
-		</APageListReadWrite>;
+		</>;
 	}
-
+	
 	// </editor-fold>
-
+	
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">
 @observer
 class StatsPanel extends React.Component {
-
+	
 	render() {
 		const {
 			data: {
@@ -249,7 +278,7 @@ class StatsPanel extends React.Component {
 				toolbox_talk_list_aggregate, training_plan_list_aggregate,
 			}
 		} = this.props.item;
-
+		
 		return <>
 			<AggregateStat title="Employees" className="h-70" value={employee_list_aggregate}/>
 			<AggregateStat title="External Persons" className="h-70" value={employee_external_list_aggregate}/>

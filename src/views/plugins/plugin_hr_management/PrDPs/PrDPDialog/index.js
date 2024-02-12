@@ -19,6 +19,8 @@ import findByIdContractorHRPrDPDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRPrDPDashboardStatsByLogged";
 import findByIdContractorHRPrDPDateRangeDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRPrDPDateRangeDashboardStatsByLogged";
+import updateEmployeeDocDocument
+    from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 // </editor-fold>
 
@@ -29,7 +31,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "PrDP";
     permissionKey = "PrDP";
     module = "PrDP";
-    // onUpdate = updateEmployeeCompetency;
+    onUpdate = updateEmployeeDocDocument;
     filterNodeMarginB = 35;
 
     dialogs = {

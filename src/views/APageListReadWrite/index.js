@@ -170,17 +170,28 @@ class APageListReadWrite extends APageList {
 					
 					const editDialog = this.getDialogByRef("editDialog");
 					const profileDialog = this.getDialogByRef("profileDialog");
-					const dialog = profileDialog || editDialog;
 					
-					const {softDeleteAttrs} = dialog || {};
-					const {onSoftDeleteProhibit} = this;
+					const {onSoftDeleteProhibit, onUpdate} = this.parentListPage;
 					
-					let onDelete;
-					if(onSoftDelete) {
-						onDelete = onSoftDelete;
-					} else {
-						onDelete = dialog && dialog.removeById;
-					}
+					const {onDelete, softDeleteAttrs} = ((onUpdate, onSoftDelete, editDialog, profileDialog) => {
+						profileDialog = profileDialog || {};
+						editDialog = editDialog || {};
+						
+						const {softDeleteAttrs: softDeleteAttrsProfile} = profileDialog;
+						const {softDeleteAttrs: softDeleteAttrsEdit} = editDialog;
+						
+						const res = {softDeleteAttrs: softDeleteAttrsProfile || softDeleteAttrsEdit};
+						
+						if(onSoftDelete || onUpdate) {
+							res.onDelete = onSoftDelete || onUpdate;
+						} else {
+							const {removeById: removeByIdProfile} = profileDialog;
+							const {removeById: removeByIdEdit} = editDialog;
+							res.onDelete = removeByIdProfile || removeByIdEdit;
+						}
+						
+						return res;
+					})(onUpdate, onSoftDelete, editDialog, profileDialog);
 					
 					if (onDelete) {
 						if(onSoftDeleteProhibit) {
@@ -193,7 +204,7 @@ class APageListReadWrite extends APageList {
 							}
 						}
 
-						progressDialog.open("Removing the " + this.props.pageTitleSingular);
+						progressDialog.open(`Removing the ${this.props.pageTitleSingular || "item"}`);
 						let args = {id: item.id};
 						if(softDeleteAttrs) {
 							args = {...args, ...softDeleteAttrs};

@@ -7,7 +7,7 @@
 #dialog-overlay.JobPositionsDialog-dialog .dialog-content,
 #JobPositionsDialog-page{
     padding: 0;
-    height: 100%;
+    height: calc(100% - 50px);
     overflow: visible !important;
 }
 #JobPositionsDialog-page > .page-title {
