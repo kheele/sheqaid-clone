@@ -6,6 +6,7 @@ const session = require('express-session');
 const csrf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require("cookie-parser");
+// const redis = require('redis');
 const sockets = require('./sockets');
 const appRoutes = require('./app-routes');
 
@@ -23,7 +24,7 @@ const sessionMiddleware = session({
 
 // Middleware function to log requests
 app.use((req, res, next) => {
-	console.log(`${req.method} request received for ${req.url}`, req.body)
+	console.log(`${req.method} request received for ${req.url}`, req.session && req.session.id)
 	res.header({"Access-Control-Allow-Origin": "*"});
 	next()
 });

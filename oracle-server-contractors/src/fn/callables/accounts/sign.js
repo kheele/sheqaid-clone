@@ -28,8 +28,6 @@ router.post('/onReAuthUser', async (req, res) => {
 		return;
 	}
 
-	const access_type = 'ContractorUser';
-
 	admin.auth().getUser(uid).then(async (userRecord) => {
 		if (!userRecord) {
 			return "NO_USER_AUTH";
@@ -38,7 +36,7 @@ router.post('/onReAuthUser', async (req, res) => {
 		const {uid, email, phoneNumber} = userRecord;
 
 		try {
-			const token = await admin.auth().createCustomToken(uid, {access_type});
+			const token = await createCustomToken(uid);
 			return token;
 		} catch (err) {
 			console.error(err)
@@ -85,9 +83,8 @@ router.post('/setCustomUserClaims', async (req, res) => {
 
 router.post('/createCustomToken', async (req, res) => {
 	const {uid} = req.body;
-	const access_type = 'ContractorUser';
 	try {
-		const token = await admin.auth().createCustomToken(uid, {access_type});
+		const token = await createCustomToken(uid);
 		res.end(token);
 	} catch (err) {
 		console.error(err)
@@ -106,4 +103,3 @@ router.post('/verifySession', async (req, res) => {
 });
 
 module.exports = router;
-

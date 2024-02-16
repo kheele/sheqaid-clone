@@ -1,7 +1,3 @@
-// <editor-fold defaultstate="collapsed" desc="imports">
-const {convertMutations} = require("../../graphql/convertMutations");
-// </editor-fold>
-
 //<editor-fold desc="addCustomUserClaims">
 global.addCustomUserClaims = (uid, claims) => {
     const _auth = admin.auth();

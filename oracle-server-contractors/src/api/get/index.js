@@ -1,23 +1,8 @@
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
 
-const getUserUidByUsername = async (username, access_type) => {
-    if(access_type === 'ContractorUser') {
-        return fetch(`${CONTRACTORS_ENDPOINT}api/callables/get/getUserUidByUsername`, {
-            method: "POST",
-            body: username,
-        }).then(res => res.json());
-    }
-    if(access_type === 'Staff') {
-        return null;//TODO: deploy HR Server
-        // return fetch(`${HR_ENDPOINT}api/callables/get/getUserUidByUsername`, {
-        //     method: "POST",
-        //     body: username,
-        // }).then(res => res.json());
-    }
-
+const getUserUidByUsername = async (username) => {
     const fnName = username.isEmailAddress() ? 'getUserByEmail' : 'getUserByPhoneNumber';
     try {
-        const userRecord = await adminAuth(access_type)[fnName](username);
+        const userRecord = await admin.auth()[fnName](username);
         if (!userRecord)
             return null;
         const {uid, email, phoneNumber} = userRecord;
@@ -34,28 +19,28 @@ const getUserUidByUsername = async (username, access_type) => {
 };
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByUsername">
-global.getUserUidByUsername = async (username, access_type) => {
-    await authorize(access_type);
-    return getUserUidByUsername(username, access_type);
+global.getUserUidByUsername = async (username) => {
+    await authorize();
+    return getUserUidByUsername(username);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByEmail">
-global.getUserUidByEmail = async (email, access_type) => {
-    await authorize(access_type);
+global.getUserUidByEmail = async (email) => {
+    await authorize();
     if (!email.isEmailAddress()) {
         return null;
     }
-    return getUserUidByUsername(email, access_type);
+    return getUserUidByUsername(email);
 };
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="getUserUidByPhone">
-global.getUserUidByPhone = async (phone, access_type) => {
-    await authorize(access_type);
+global.getUserUidByPhone = async (phone) => {
+    await authorize();
     if (phone.isEmailAddress()) {
         return null;
     }
-    return getUserUidByUsername(phone, access_type);
+    return getUserUidByUsername(phone);
 };
 // </editor-fold>

@@ -29,7 +29,7 @@ class ACntr {
 
 			db_company = {id: db_company.id, data: company_data};
 			const loggedUser = {user: db_user, company: db_company};
-//            const loggedUser = {user: db_user, company: db_company, access_type: 'User'};
+//            const loggedUser = {user: db_user, company: db_company, access_type: 'ContractorUser'};
 
 			return loggedUser;
 		} else {

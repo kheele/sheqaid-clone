@@ -73,4 +73,4 @@ require('./libs/graphql_impl');
 require('./libs/auth_impl');
 require('./libs/files_impl');
 require('./libs/face.util');
-require('./graphql/convertMutations');;
+require('./graphql/convertMutations');

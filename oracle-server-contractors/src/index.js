@@ -1,6 +1,7 @@
-process.on('uncaughtException', (err) => {
-    console.error('Caught exception: ', err);
-});
+// require("@babel/register")({
+//     presets: ["@babel/preset-env"],
+// });
+// module.exports = require('./server.js');
 
-require('./globals.js');
-require('./app.js');
+// require = require("esm")(module/*, options*/);
+module.exports = require("./server.js");
