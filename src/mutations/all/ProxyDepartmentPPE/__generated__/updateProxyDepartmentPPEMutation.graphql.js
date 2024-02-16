@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<10b244708475933a7161a501f2c16328>>
+ * @generated SignedSource<<5b1092e3b5d02cb9b95d71b499c4cc7d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,9 +34,9 @@ v2 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "proxy_department__ppe",
+    "concreteType": "proxy_department__ppe_type",
     "kind": "LinkedField",
-    "name": "update_proxy_department__ppe_by_pk",
+    "name": "update_proxy_department__ppe_type_by_pk",
     "plural": false,
     "selections": [
       {
@@ -74,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "2792d0a92170229879243cf5357345b0",
+    "cacheID": "4d3882b1e52d95305c75449627925e76",
     "id": null,
     "metadata": {},
     "name": "updateProxyDepartmentPPEMutation",
     "operationKind": "mutation",
-    "text": "mutation updateProxyDepartmentPPEMutation(\n  $id: proxy_department__ppe_pk_columns_input!\n  $_set: proxy_department__ppe_set_input!\n) {\n  update_proxy_department__ppe_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateProxyDepartmentPPEMutation(\n  $id: proxy_department__ppe_type_pk_columns_input!\n  $_set: proxy_department__ppe_type_set_input!\n) {\n  update_proxy_department__ppe_type_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "f7f19776bfef894bddadf05415c8742e";
+node.hash = "a704c7749fb7f11a3e2ed587f6e0ce0a";
 
 module.exports = node;

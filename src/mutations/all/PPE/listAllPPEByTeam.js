@@ -9,14 +9,11 @@ import listMutationImpl from "../../listMutationImpl";
 // 2
 const query = graphql`
   query listAllPPEByTeamQuery($team_id: bigint) {
-    ppe_connection(where: {team_list: {team_id: {_eq: $team_id}}}) {
+    ppe_types_connection(where: {team_list: {team_id: {_eq: $team_id}}}) {
       edges {
         node {
           name
           unit
-          qty_received
-          qty_issued
-          qty_in_stock
           duration_type
           duration_value
           notes

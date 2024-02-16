@@ -2,7 +2,7 @@
 
 #dialog-overlay.PPEIssueDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
-    width: 800px;
+    width: 1400px;
     max-width: 100%;
 }
 #dialog-overlay.PPEIssueDialog-new-dialog .dialog-content{

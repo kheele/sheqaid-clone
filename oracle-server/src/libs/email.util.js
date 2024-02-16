@@ -25,12 +25,14 @@ class EmailUtils {
     }
 
     static async send(mailOptions) {
-        // send mail with defined transport object 
+        // send mail with defined transport object
+        console.log('EmailUtils.send', mailOptions);
         return new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
                     reject(error);
                 } else {
+                    console.log('EmailUtils.send res', info.response);
                     resolve(info.response);
                 }
             });

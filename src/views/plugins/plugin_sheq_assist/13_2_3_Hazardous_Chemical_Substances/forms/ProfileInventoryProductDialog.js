@@ -128,7 +128,7 @@ class Controls extends React.Component {
                     //10
                     has_risk_assessment, risk_assessment_doc, risk_assessment_date,
                     //11
-                    ppe_list,
+                    ppe_type_list,
                     //12
                     action_or_comments,
                     //13
@@ -360,7 +360,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <NewPPEItemListTable name="ppe_list" defaultValue={ppe_list} readonly/>
+                <NewPPEItemListTable name="ppe_type_list" defaultValue={ppe_type_list} readonly/>
             </Row>
             <Row 
                 rendered 

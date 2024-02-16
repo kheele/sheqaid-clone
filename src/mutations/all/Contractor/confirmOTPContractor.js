@@ -198,7 +198,7 @@ export default async ({id, code}) => {
     const item = await findByIdContractor(id);
     if(!item) return "NO_USER_DB";
 
-    const res = await findOneMutationImpl({query, variables: {id, code}});
+    const res = await findOneMutationImpl({checkLogin: false, query, variables: {id, code}});
     if(res) {
         removeOTPContractor(id);
         return res;

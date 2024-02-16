@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<abf6618344b7b7935a6361d891ea5a37>>
+ * @generated SignedSource<<30dd113569fabe4759fa212d07f1a594>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -213,15 +213,15 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_team__ppe_aggregate",
+                "concreteType": "proxy_team__ppe_type_aggregate",
                 "kind": "LinkedField",
-                "name": "ppe_list_aggregate",
+                "name": "ppe_type_list_aggregate",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_team__ppe_aggregate_fields",
+                    "concreteType": "proxy_team__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -259,16 +259,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "40eb2ee873d54952ed75b3477713541d",
+    "cacheID": "ba79a3e98e39d4fd38c733370df1730c",
     "id": null,
     "metadata": {},
     "name": "listAllTeamByLoggedProjectQuery",
     "operationKind": "query",
-    "text": "query listAllTeamByLoggedProjectQuery(\n  $project_id: bigint\n) {\n  default_teams_connection(where: {project_id: {_eq: $project_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        status\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n          job_position {\n            id\n            name\n          }\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllTeamByLoggedProjectQuery(\n  $project_id: bigint\n) {\n  default_teams_connection(where: {project_id: {_eq: $project_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        status\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n          job_position {\n            id\n            name\n          }\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_type_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "b4ca2a983e260d655c1364b83d900ae0";
+node.hash = "cfde7d266f9bb3cd839ecdc6b0524188";
 
 module.exports = node;

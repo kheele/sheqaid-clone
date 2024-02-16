@@ -1,3 +1,4 @@
+const {employee_basic_personal_details_fragment} = require("../../../../../graphql/Fragments");
 
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
@@ -62,20 +63,37 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="ppe_one_details_fragment">
-exports.ppe_one_details_fragment = `    
+//<editor-fold desc="ppe_type_one_details_fragment">
+exports.ppe_type_one_details_fragment = `
   id
+  created_at
   removed
   name
   unit
-  qty_received
-  qty_issued
-  qty_in_stock
   duration_type
   duration_value
   notes
   profile_pic
-
+  
+  ppe_item_list{
+    id
+    ppe_item{
+      id
+      created_at
+      removed
+      serial_num
+      purchase_date
+      condition
+      notes
+      profile_pic
+    }
+  }
+  employee_list{
+    id
+    employee{
+      ${employee_basic_personal_details_fragment}
+    }
+  }
   team_list{
     id
     team {
@@ -110,6 +128,16 @@ exports.ppe_one_details_fragment = `
     }
   }
 
+  ppe_item_list_aggregate{
+    aggregate {
+      count
+    }
+  }
+  employee_list_aggregate{
+    aggregate {
+      count
+    }
+  }
   team_list_aggregate{
     aggregate {
       count
@@ -128,20 +156,28 @@ exports.ppe_one_details_fragment = `
 `;
 //</editor-fold>
 
-//<editor-fold desc="ppe_details_fragment">
-exports.ppe_details_fragment = `    
+//<editor-fold desc="ppe_type_details_fragment">
+exports.ppe_type_details_fragment = `
   id
+  created_at
   removed
   name
   unit
-  qty_received
-  qty_issued
-  qty_in_stock
   duration_type
   duration_value
   notes
   profile_pic
 
+  ppe_item_list_aggregate{
+    aggregate {
+      count
+    }
+  }
+  employee_list_aggregate{
+    aggregate {
+      count
+    }
+  }
   team_list_aggregate{
     aggregate {
       count

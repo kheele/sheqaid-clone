@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bd3e7bbf049a0ef1d21b18ced5662e20>>
+ * @generated SignedSource<<abf2f021aff53024835b6cc2aa5b6ab0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -186,15 +186,15 @@ v6 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_team__ppe_aggregate",
+        "concreteType": "proxy_team__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_team__ppe_aggregate_fields",
+            "concreteType": "proxy_team__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -232,16 +232,16 @@ return {
     "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "a1b45646194edd942f1e90a729724494",
+    "cacheID": "4e2dfd149cf8b9f2439054b3a9625b8a",
     "id": null,
     "metadata": {},
     "name": "updateTeamMutation",
     "operationKind": "mutation",
-    "text": "mutation updateTeamMutation(\n  $id: default_teams_pk_columns_input!\n  $_set: default_teams_set_input!\n) {\n  update_default_teams_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    name\n    status\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n      job_position {\n        id\n        name\n      }\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
+    "text": "mutation updateTeamMutation(\n  $id: default_teams_pk_columns_input!\n  $_set: default_teams_set_input!\n) {\n  update_default_teams_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    name\n    status\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n      job_position {\n        id\n        name\n      }\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "6898f089b0d55d3bf27e2dff047ecc33";
+node.hash = "8952be44abda0a06fef13077d3b6fadf";
 
 module.exports = node;

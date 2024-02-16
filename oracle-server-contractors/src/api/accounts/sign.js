@@ -58,7 +58,7 @@ global.onReAuthUser = async ({uid}) => {
     return {token};
 };
 
-global.loginSession = async ({data}) => {
+global.loginSession = async (data) => {
     console.log('loginSession')
     // Get the ID token passed and the CSRF token.
     // console.log('loginSession', req)

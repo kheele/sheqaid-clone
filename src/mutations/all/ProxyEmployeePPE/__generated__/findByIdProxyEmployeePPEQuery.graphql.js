@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<97729fe87a607542fadcbef73f9a8cb2>>
+ * @generated SignedSource<<fad16eb3be81bb10aa8c842a2c5b850a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,15 +38,15 @@ v1 = [
         "name": "where"
       }
     ],
-    "concreteType": "proxy_employee__ppeConnection",
+    "concreteType": "proxy_employee__ppe_typeConnection",
     "kind": "LinkedField",
-    "name": "proxy_employee__ppe_connection",
+    "name": "proxy_employee__ppe_type_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_employee__ppeEdge",
+        "concreteType": "proxy_employee__ppe_typeEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -54,7 +54,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_employee__ppe",
+            "concreteType": "proxy_employee__ppe_type",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -94,16 +94,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "29b95a37517f9d2338a0d357203e6533",
+    "cacheID": "bc99b589e3e0d786c5fd1276804f09d3",
     "id": null,
     "metadata": {},
     "name": "findByIdProxyEmployeePPEQuery",
     "operationKind": "query",
-    "text": "query findByIdProxyEmployeePPEQuery(\n  $id: bigint\n) {\n  proxy_employee__ppe_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdProxyEmployeePPEQuery(\n  $id: bigint\n) {\n  proxy_employee__ppe_type_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "eca1c78c7c2a7c69a5203f4ee11aa49b";
+node.hash = "9a2e291d25f45b03bad6fdc9b2341189";
 
 module.exports = node;

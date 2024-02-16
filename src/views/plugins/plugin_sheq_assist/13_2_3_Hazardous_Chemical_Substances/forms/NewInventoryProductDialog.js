@@ -329,7 +329,7 @@ class Controls extends React.Component {
             risk_assessment_doc,
             risk_assessment_date,
             //11
-            ppe_list,
+            ppe_type_list,
             //12
             action_or_comments,
             //13
@@ -405,12 +405,12 @@ class Controls extends React.Component {
             risk_assessment_doc: risk_assessment_doc && {path: await toDataURI(risk_assessment_doc.path)},
             risk_assessment_date: Dates.formatDateSQL(risk_assessment_date),
             //11
-            ppe_list: {
-                data: (ppe_list || []).filter(v => v && (v.id || (v.ppe && v.ppe.id))).map(v => {
-                    if (v.ppe) {
-                        return {ppe_id: v.ppe.id};
+            ppe_type_list: {
+                data: (ppe_type_list || []).filter(v => v && (v.id || (v.ppe_type && v.ppe_type.id))).map(v => {
+                    if (v.ppe_type) {
+                        return {ppe_type_id: v.ppe_type.id};
                     } else {
-                        return {ppe_id: v.id};
+                        return {ppe_type_id: v.id};
                     }
                 })
             },
@@ -759,7 +759,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <NewPPEItemListTable name="ppe_list" onChange={this.form.onChange}/>
+                <NewPPEItemListTable name="ppe_type_list" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

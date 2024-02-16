@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<579414d50fc5deef6cc21f6e60cec0da>>
+ * @generated SignedSource<<de9a8d50b3ebb3bff7f2dcdf8d99fa8c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -65,15 +65,15 @@ v5 = [
         "name": "where"
       }
     ],
-    "concreteType": "ppeConnection",
+    "concreteType": "ppe_typesConnection",
     "kind": "LinkedField",
-    "name": "ppe_connection",
+    "name": "ppe_types_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "ppeEdge",
+        "concreteType": "ppe_typesEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -81,7 +81,7 @@ v5 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ppe",
+            "concreteType": "ppe_types",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -100,27 +100,6 @@ v5 = [
                 "args": null,
                 "kind": "ScalarField",
                 "name": "unit",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "qty_received",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "qty_issued",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "qty_in_stock",
                 "storageKey": null
               },
               {
@@ -184,7 +163,7 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_team__ppe_aggregate",
+                "concreteType": "proxy_team__ppe_type_aggregate",
                 "kind": "LinkedField",
                 "name": "team_list_aggregate",
                 "plural": false,
@@ -192,7 +171,7 @@ v5 = [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_team__ppe_aggregate_fields",
+                    "concreteType": "proxy_team__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -205,7 +184,7 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_department__ppe_aggregate",
+                "concreteType": "proxy_department__ppe_type_aggregate",
                 "kind": "LinkedField",
                 "name": "department_list_aggregate",
                 "plural": false,
@@ -213,7 +192,7 @@ v5 = [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_department__ppe_aggregate_fields",
+                    "concreteType": "proxy_department__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -226,7 +205,7 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_job_position__ppe_aggregate",
+                "concreteType": "proxy_job_position__ppe_type_aggregate",
                 "kind": "LinkedField",
                 "name": "job_position_list_aggregate",
                 "plural": false,
@@ -234,7 +213,7 @@ v5 = [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_job_position__ppe_aggregate_fields",
+                    "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -272,16 +251,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "9522144de4907fb9ab61f7cb73e7df76",
+    "cacheID": "93bf9b0445bca1d2a9d3cd1f113b8e14",
     "id": null,
     "metadata": {},
     "name": "listAllPPEByLoggedCompanyQuery",
     "operationKind": "query",
-    "text": "query listAllPPEByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  ppe_connection(where: {company_id: {_eq: $company_id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        unit\n        qty_received\n        qty_issued\n        qty_in_stock\n        duration_type\n        duration_value\n        notes\n        profile_pic\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        team_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        department_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        job_position_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllPPEByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  ppe_types_connection(where: {company_id: {_eq: $company_id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        unit\n        duration_type\n        duration_value\n        notes\n        profile_pic\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        team_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        department_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        job_position_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "2cf6b941febb4a159ffc4d4cc6663fce";
+node.hash = "1dc6bae6ec250b5536f83d519faacf76";
 
 module.exports = node;

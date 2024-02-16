@@ -9,7 +9,7 @@ import {EntityPPE} from "mutations/types.d.ts";
 // 2
 const query = graphql`
   query findByFirestoreIdPPEQuery($firestore_id: String) {
-    ppe_connection(where: {firestore_id: {_eq: $firestore_id}}) {
+    ppe_types_connection(where: {firestore_id: {_eq: $firestore_id}}) {
       edges {
         node {
           id

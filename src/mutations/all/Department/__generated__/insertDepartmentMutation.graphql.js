@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1c9714366935b954e643bc2a7b7edbae>>
+ * @generated SignedSource<<bb881f1866136beb4aa52133c792b2eb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -70,15 +70,15 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_department__ppe_aggregate",
+        "concreteType": "proxy_department__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_department__ppe_aggregate_fields",
+            "concreteType": "proxy_department__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -192,16 +192,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "d7c5121266068beecb8f81e1ffb50190",
+    "cacheID": "6386c3335613e1f5d6fca1b66664cb03",
     "id": null,
     "metadata": {},
     "name": "insertDepartmentMutation",
     "operationKind": "mutation",
-    "text": "mutation insertDepartmentMutation(\n  $object: default_departments_insert_input!\n) {\n  insert_default_departments_one(object: $object) {\n    id\n    created_at\n    name\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    responsible_document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation insertDepartmentMutation(\n  $object: default_departments_insert_input!\n) {\n  insert_default_departments_one(object: $object) {\n    id\n    created_at\n    name\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    responsible_document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "dc5879d4cf7df1c247bab6c065a613ca";
+node.hash = "2bacb4da4392f7641108f7853e3d21c2";
 
 module.exports = node;

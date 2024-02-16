@@ -8,8 +8,8 @@ import listMutationImpl from "../../listMutationImpl";
 
 // 2
 const query = graphql`
-  query listAllTeamByPPEQuery($ppe_id: bigint) {
-    default_teams_connection(where: {ppe_list: {ppe_id: {_eq: $ppe_id}}}, order_by: {name: asc}) {
+  query listAllTeamByPPEQuery($ppe_type_id: bigint) {
+    default_teams_connection(where: {ppe_type_list: {ppe_type_id: {_eq: $ppe_type_id}}}, order_by: {name: asc}) {
       edges {
         node {
           id
@@ -47,7 +47,7 @@ const query = graphql`
               count
             }
           }
-          ppe_list_aggregate{
+          ppe_type_list_aggregate{
             aggregate{
               count
             }
@@ -60,4 +60,4 @@ const query = graphql`
 //firestore_id
 // 3
 export default async (input: number) : [EntityTeam] =>
-    listMutationImpl({ query, variables: {ppe_id: input} });
+    listMutationImpl({ query, variables: {ppe_type_id: input} });

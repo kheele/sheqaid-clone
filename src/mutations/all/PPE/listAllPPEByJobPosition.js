@@ -10,14 +10,11 @@ import listMutationImpl from "../../listMutationImpl";
 // 2
 const query = graphql`
   query listAllPPEByJobPositionQuery($job_position_id: bigint) {
-    ppe_connection(where: {job_position_list: {job_position_id: {_eq: $job_position_id}}}) {
+    ppe_types_connection(where: {job_position_list: {job_position_id: {_eq: $job_position_id}}}) {
       edges {
         node {
           name
           unit
-          qty_received
-          qty_issued
-          qty_in_stock
           duration_type
           duration_value
           notes

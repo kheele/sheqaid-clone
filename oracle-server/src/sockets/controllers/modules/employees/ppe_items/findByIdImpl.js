@@ -6,7 +6,7 @@ module.exports = async (socket, id) => {
     return getGraphQLOne({
         query: `
             query findByIdPPEQuery {
-                ppe(
+                ppe_types(
                   where: {id: {_eq: ${id}},},
                 ) {
                     ${ppe_one_details_fragment}

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<da76f7ea5c93773c1545ab9fcb6dc2cd>>
+ * @generated SignedSource<<684a422c61f8db66db922cd4050c38e2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -237,15 +237,15 @@ v9 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_employee__ppe_aggregate",
+                "concreteType": "proxy_employee__ppe_type_aggregate",
                 "kind": "LinkedField",
-                "name": "ppe_list_aggregate",
+                "name": "ppe_type_list_aggregate",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_employee__ppe_aggregate_fields",
+                    "concreteType": "proxy_employee__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -444,16 +444,16 @@ return {
     "selections": (v9/*: any*/)
   },
   "params": {
-    "cacheID": "4c460619d673229dc5520feac49f080a",
+    "cacheID": "985f48ac0a966af832e6649d249f62ca",
     "id": null,
     "metadata": {},
     "name": "listAllInactiveEmployeeByLoggedClientQuery",
     "operationKind": "query",
-    "text": "query listAllInactiveEmployeeByLoggedClientQuery(\n  $client_id: bigint\n) {\n  hr_employees_connection(where: {removed: {_eq: true}, client_id: {_eq: $client_id}}) {\n    edges {\n      node {\n        id\n        created_at\n        fname\n        lname\n        email\n        phone\n        dob\n        sex\n        id_num\n        passport_num\n        profile_pic\n        employment_num\n        employment_date\n        medical_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        leave_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        ppe_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        trainer_training_list_aggregate: trainer_training_matrix_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        warning_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n        }\n        linked_user {\n          id\n          fname\n          lname\n          username\n          phone\n        }\n        department {\n          id\n          name\n        }\n        job_position {\n          id\n          name\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllInactiveEmployeeByLoggedClientQuery(\n  $client_id: bigint\n) {\n  hr_employees_connection(where: {removed: {_eq: true}, client_id: {_eq: $client_id}}) {\n    edges {\n      node {\n        id\n        created_at\n        fname\n        lname\n        email\n        phone\n        dob\n        sex\n        id_num\n        passport_num\n        profile_pic\n        employment_num\n        employment_date\n        medical_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        leave_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        ppe_type_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        trainer_training_list_aggregate: trainer_training_matrix_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        warning_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n          aggregate {\n            count\n          }\n        }\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n        }\n        linked_user {\n          id\n          fname\n          lname\n          username\n          phone\n        }\n        department {\n          id\n          name\n        }\n        job_position {\n          id\n          name\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "24749e99c3c50197f8b9d555c74fbcd8";
+node.hash = "8f90b6a30f2a064ad4462aafbd68074f";
 
 module.exports = node;

@@ -1,3 +1,5 @@
+require('./library');
+require('./questionnaires');
 require('./sites');
 require('./template-categories');
 require('./templates');
@@ -26,4 +28,5 @@ eventManager.on("contractors/listByLogged", listImpl({
 }));
 
 eventManager.on("contractors/main/dashboard", findByIdDashboardMainImpl);
+
 eventManager.on("contractors/single/dashboard", findByIdDashboardSingleImpl);

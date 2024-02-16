@@ -605,7 +605,7 @@ return {
                     "args": null,
                     "concreteType": "proxy_chemical_product__ppe",
                     "kind": "LinkedField",
-                    "name": "ppe_list",
+                    "name": "ppe_type_list",
                     "plural": true,
                     "selections": [
                       (v58/*: any*/)
@@ -735,7 +735,7 @@ return {
                     "args": null,
                     "concreteType": "proxy_chemical_product__ppe",
                     "kind": "LinkedField",
-                    "name": "ppe_list",
+                    "name": "ppe_type_list",
                     "plural": true,
                     "selections": [
                       (v58/*: any*/),
@@ -782,7 +782,7 @@ return {
     "metadata": {},
     "name": "findByIdChemicalProductQuery",
     "operationKind": "query",
-    "text": "query findByIdChemicalProductQuery(\n  $id: bigint\n) {\n  sheq_chemical_products_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        common_names\n        chemical_name\n        empirical_formula\n        un_num\n        cas_num\n        concentration\n        category\n        physical_state\n        type\n        application_or_use\n        manufacturer\n        manufacturer_addr\n        manufacturer_phone_num\n        manufacturer_email\n        manufacturer_fax\n        manufacturer_website\n        emergency_phone_nums\n        location_where_product_is_used\n        process_where_product_is_used\n        is_stable\n        is_cool_well_ventilated_area\n        heat_sparks_static_flames\n        spillage_control\n        other_special_info\n        compatible_with_list\n        incompatible_with_list\n        risk_level\n        is_combustible\n        is_flammable\n        flammability_combustibility_class\n        fire_fighting_foam\n        fire_fighting_dcp\n        fire_fighting_co2\n        fire_fighting_sand\n        fire_fighting_water\n        fire_fighting_other\n        is_hazardous\n        hazard_class_list\n        has_sds\n        has_sds_view\n        sds {\n          id\n        }\n        sds_doc\n        sds_date\n        has_hazchem_sheet\n        has_hazchem_sheet_view\n        hazchem_sheet {\n          id\n        }\n        hazchem_sheet_doc\n        hazchem_sheet_date\n        has_risk_assessment\n        risk_assessment_doc\n        risk_assessment_date\n        ppe_list {\n          ppe {\n            id\n            name\n          }\n          id\n        }\n        action_or_comments\n        chemical_stock_list {\n          is_clearly_labeled\n          storage_location\n          unit\n          qty\n          date_received\n          expiry_date\n          id\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdChemicalProductQuery(\n  $id: bigint\n) {\n  sheq_chemical_products_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        common_names\n        chemical_name\n        empirical_formula\n        un_num\n        cas_num\n        concentration\n        category\n        physical_state\n        type\n        application_or_use\n        manufacturer\n        manufacturer_addr\n        manufacturer_phone_num\n        manufacturer_email\n        manufacturer_fax\n        manufacturer_website\n        emergency_phone_nums\n        location_where_product_is_used\n        process_where_product_is_used\n        is_stable\n        is_cool_well_ventilated_area\n        heat_sparks_static_flames\n        spillage_control\n        other_special_info\n        compatible_with_list\n        incompatible_with_list\n        risk_level\n        is_combustible\n        is_flammable\n        flammability_combustibility_class\n        fire_fighting_foam\n        fire_fighting_dcp\n        fire_fighting_co2\n        fire_fighting_sand\n        fire_fighting_water\n        fire_fighting_other\n        is_hazardous\n        hazard_class_list\n        has_sds\n        has_sds_view\n        sds {\n          id\n        }\n        sds_doc\n        sds_date\n        has_hazchem_sheet\n        has_hazchem_sheet_view\n        hazchem_sheet {\n          id\n        }\n        hazchem_sheet_doc\n        hazchem_sheet_date\n        has_risk_assessment\n        risk_assessment_doc\n        risk_assessment_date\n        ppe_type_list {\n          ppe {\n            id\n            name\n          }\n          id\n        }\n        action_or_comments\n        chemical_stock_list {\n          is_clearly_labeled\n          storage_location\n          unit\n          qty\n          date_received\n          expiry_date\n          id\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

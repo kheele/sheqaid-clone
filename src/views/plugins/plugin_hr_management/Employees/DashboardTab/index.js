@@ -14,6 +14,7 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import {CircularProgress} from "@mui/material";
 import findByIdContractorHRDashboardStatsByLogged from "./Query/List/findByIdContractorHRDashboardStatsByLogged";
+import contractorStore from "../../../../../mutations/all/Contractor";
 
 @observer
 class DashboardTab extends React.Component {
@@ -61,7 +62,10 @@ class DashboardTab extends React.Component {
 		const {selectedClient, selectedProject, selectedSite} = storage.selected;
 		const {isConsultant, isNoProjects, isContractorView} = storage.is;
 		if (isContractorView) {
-			return findByIdContractorHRDashboardStatsByLogged();
+			const {is: {isContractor,}, loggedContractor} = storage;
+			let {selectedContractorSite, selectedContractorClient} = storage.selected;
+			
+			return contractorStore.findByIdHRDashboardStatsByLogged(loggedContractor);
 		} else {
 			if (isConsultant) {
 				console.log('load', 'isConsultant')

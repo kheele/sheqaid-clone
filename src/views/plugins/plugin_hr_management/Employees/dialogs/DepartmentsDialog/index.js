@@ -142,7 +142,7 @@ class DepartmentsDialog extends ADialogTab {
 			data: {
 				created_at, name,
 				company, client, project, site,
-				ppe_list_aggregate, employee_list_aggregate, responsible_document_list_aggregate
+				ppe_type_list_aggregate, employee_list_aggregate, responsible_document_list_aggregate
 			}
 		} = item;
 		
@@ -234,13 +234,13 @@ class StatsPanel extends React.Component {
 	render() {
 		const {
 			data: {
-				employee_list_aggregate, ppe_list_aggregate, responsible_document_list_aggregate,
+				employee_list_aggregate, ppe_type_list_aggregate, responsible_document_list_aggregate,
 			}
 		} = this.props.item;
 		
 		return <>
 			<AggregateStat title="Employees" className="h-70" value={employee_list_aggregate}/>
-			<AggregateStat title="PPE" className="h-70" value={ppe_list_aggregate}/>
+			<AggregateStat title="PPE" className="h-70" value={ppe_type_list_aggregate}/>
 			<AggregateStat title="Documents Responsible" className="h-70" value={responsible_document_list_aggregate}/>
 		</>;
 	}

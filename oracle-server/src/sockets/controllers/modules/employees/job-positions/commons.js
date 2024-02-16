@@ -56,7 +56,7 @@ exports.job_positions_details_fragment = `
       count
     }
   }
-  ppe_list_aggregate{
+  ppe_type_list_aggregate{
     aggregate{
       count
     }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b1c9b7198e9d8ffdc131e6f6f0c634fb>>
+ * @generated SignedSource<<e1f29860c577c9c1c2276c07634ce6ce>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,9 +34,9 @@ v2 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "proxy_job_position__ppe",
+    "concreteType": "proxy_job_position__ppe_type",
     "kind": "LinkedField",
-    "name": "update_proxy_job_position__ppe_by_pk",
+    "name": "update_proxy_job_position__ppe_type_by_pk",
     "plural": false,
     "selections": [
       {
@@ -74,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "aca1b5f46c34356b9b07cceeda0d32f3",
+    "cacheID": "d45ee6e380f6475c8f66df29eacbbb16",
     "id": null,
     "metadata": {},
     "name": "updateProxyJobPositionPPEMutation",
     "operationKind": "mutation",
-    "text": "mutation updateProxyJobPositionPPEMutation(\n  $id: proxy_job_position__ppe_pk_columns_input!\n  $_set: proxy_job_position__ppe_set_input!\n) {\n  update_proxy_job_position__ppe_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateProxyJobPositionPPEMutation(\n  $id: proxy_job_position__ppe_type_pk_columns_input!\n  $_set: proxy_job_position__ppe_type_set_input!\n) {\n  update_proxy_job_position__ppe_type_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "2e92efca9912ec896aabaecb725b29ae";
+node.hash = "6edc6cf659b1cba6c6e5ee8037740543";
 
 module.exports = node;

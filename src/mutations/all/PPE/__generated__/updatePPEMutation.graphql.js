@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<be2999b74f584e04ba370dededd332f1>>
+ * @generated SignedSource<<a2ca9d48ab993e6c64295ab5e26a1922>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -61,9 +61,9 @@ v6 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "ppe",
+    "concreteType": "ppe_types",
     "kind": "LinkedField",
-    "name": "update_ppe_by_pk",
+    "name": "update_ppe_types_by_pk",
     "plural": false,
     "selections": [
       (v2/*: any*/),
@@ -73,27 +73,6 @@ v6 = [
         "args": null,
         "kind": "ScalarField",
         "name": "unit",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_received",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_issued",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_in_stock",
         "storageKey": null
       },
       {
@@ -157,7 +136,7 @@ v6 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_team__ppe_aggregate",
+        "concreteType": "proxy_team__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "team_list_aggregate",
         "plural": false,
@@ -165,7 +144,7 @@ v6 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_team__ppe_aggregate_fields",
+            "concreteType": "proxy_team__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -178,7 +157,7 @@ v6 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_department__ppe_aggregate",
+        "concreteType": "proxy_department__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "department_list_aggregate",
         "plural": false,
@@ -186,7 +165,7 @@ v6 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_department__ppe_aggregate_fields",
+            "concreteType": "proxy_department__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -199,7 +178,7 @@ v6 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_job_position__ppe_aggregate",
+        "concreteType": "proxy_job_position__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "job_position_list_aggregate",
         "plural": false,
@@ -207,7 +186,7 @@ v6 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_job_position__ppe_aggregate_fields",
+            "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -245,16 +224,16 @@ return {
     "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "286a45e0788f92941977541d747cce4b",
+    "cacheID": "ba00e274f13aff93110202b23eb233a9",
     "id": null,
     "metadata": {},
     "name": "updatePPEMutation",
     "operationKind": "mutation",
-    "text": "mutation updatePPEMutation(\n  $id: ppe_pk_columns_input!\n  $_set: ppe_set_input!\n) {\n  update_ppe_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    name\n    unit\n    qty_received\n    qty_issued\n    qty_in_stock\n    duration_type\n    duration_value\n    notes\n    profile_pic\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    department_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_position_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
+    "text": "mutation updatePPEMutation(\n  $id: ppe_types_pk_columns_input!\n  $_set: ppe_types_set_input!\n) {\n  update_ppe_types_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    name\n    unit\n    duration_type\n    duration_value\n    notes\n    profile_pic\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    department_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_position_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "eb54c8f181deeeb3a447d1d593ee0b9a";
+node.hash = "2d9dbd5426cd197278f9f50380ad7380";
 
 module.exports = node;

@@ -47,7 +47,7 @@ class ViewDocumentsSection extends React.Component {
                 work_permit_list,
                 job_appointment_list,
 
-                ppe_list,
+                ppe_type_list,
                 trainer_training_list,
             }
         } = item;

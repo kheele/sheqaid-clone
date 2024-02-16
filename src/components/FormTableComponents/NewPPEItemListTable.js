@@ -19,12 +19,12 @@ class ListTable extends ANewListTable {
 	renderItem(n, onClick) {
 		const {readonly, renderTable} = this.props;
 		const item = this.state.list[n];
-		if(item && isString(item.ppe)) {
+		if(item && isString(item.ppe_type)) {
 			return null;
 		}
 
-		if (item && (item.ppe || item.id)) {
-			const _item = item.ppe || item;
+		if (item && (item.ppe_type || item.id)) {
+			const _item = item.ppe_type || item;
 			const {
 				id, created_at, name, profile_pic, client, project, site,
 			} = _item.data || _item;
@@ -48,7 +48,7 @@ class ListTable extends ANewListTable {
 		} else {
 			return <TRow key="item-new" className="w-full padding-10">
 				<div className="td flex padding-0 margin-0">
-					<SelectPPEItemInput ref={this.onSetRef} name="ppe" placeholder="Add PPE Item..."
+					<SelectPPEItemInput ref={this.onSetRef} name="ppe_type" placeholder="Add PPE Item..."
 					                    className="no-border-radius-r form-control" onChange={this.onChange} add={false}/>
 					<Button idx={n} action="save" className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l"
 					        onClick={onClick}>

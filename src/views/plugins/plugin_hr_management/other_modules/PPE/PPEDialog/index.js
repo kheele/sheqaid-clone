@@ -77,7 +77,7 @@ class PPEDialog extends ADialogList {
             employee_id,
         } = filterData || {};
 
-        const listByLogged = sockets.of('ppe').fn('listByLogged');
+        const listByLogged = sockets.of('ppe-types').fn('listByLogged');
 
         return listByLogged({
             name,
@@ -190,8 +190,8 @@ class PPEDialog extends ADialogList {
           hasBackBtn={false}
           createBtnTitle="Create"
           pageId={this.pageKey + '-page'}
-          listCountTopTitle="ppe"
-          pageTitleSingular="ppe"
+          listCountTopTitle="ppe type"
+          pageTitleSingular="ppe type"
           onLoadList={this.onLoadList}
           noAnimation={true}
           renderLeftButtons={this.renderLeftButtons}

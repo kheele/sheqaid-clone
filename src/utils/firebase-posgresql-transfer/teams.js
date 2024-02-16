@@ -29,7 +29,7 @@ export const teams_transfer = async () => {
             status,
             supervisor,//done
 
-            ppe_list,//already insert
+            ppe_type_list,//already insert
             list: employee_list,//done
 
             created_at,
@@ -59,7 +59,7 @@ export const teams_transfer = async () => {
 
         // const pg_supervisor = await findByFirestoreIdEmployee(supervisor && supervisor.id);
 
-        // const pg_ppe_list = await Promise.all(ppe_list.map(async id => await findByFirestoreIdPPE(id)));
+        // const pg_ppe_type_list = await Promise.all(ppe_type_list.map(async id => await findByFirestoreIdPPE(id)));
 
         const item = {
             firestore_id: id,
@@ -67,7 +67,7 @@ export const teams_transfer = async () => {
             status,
             // supervisor_id: pg_supervisor.id,
 
-            // ppe_list: {data: pg_ppe_list.map(ppe_id => ({ppe_id}))},//already inserted in ppe
+            // ppe_type_list: {data: pg_ppe_type_list.map(ppe_type_id => ({ppe_type_id}))},//already inserted in ppe_type
             // employee_list,//done
 
             created_at: Dates.formatTimestampSQL(created_at),

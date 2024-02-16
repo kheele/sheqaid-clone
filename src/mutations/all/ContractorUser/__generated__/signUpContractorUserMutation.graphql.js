@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c25dbf43c0434bd8d12c7270300b96e4>>
+ * @generated SignedSource<<7cd3e3764d4fce78795012f2180494ce>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -41,10 +41,17 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "phone",
+  "name": "username",
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "phone",
+  "storageKey": null
+},
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "sheq_permissions_actions",
@@ -91,31 +98,32 @@ v5 = {
   ],
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "key",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v8 = [
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v10 = [
   (v1/*: any*/),
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "name",
-    "storageKey": null
-  }
+  (v9/*: any*/)
 ],
-v9 = [
+v11 = [
   {
     "alias": null,
     "args": [
@@ -154,14 +162,8 @@ v9 = [
         "name": "full_name",
         "storageKey": null
       },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "username",
-        "storageKey": null
-      },
       (v4/*: any*/),
+      (v5/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -191,7 +193,7 @@ v9 = [
         "name": "permissions_module_list",
         "plural": true,
         "selections": [
-          (v5/*: any*/),
+          (v6/*: any*/),
           (v1/*: any*/),
           {
             "alias": null,
@@ -201,7 +203,7 @@ v9 = [
             "name": "module",
             "plural": false,
             "selections": [
-              (v6/*: any*/),
+              (v7/*: any*/),
               (v1/*: any*/),
               {
                 "alias": null,
@@ -212,7 +214,7 @@ v9 = [
                 "plural": false,
                 "selections": [
                   (v1/*: any*/),
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -220,7 +222,7 @@ v9 = [
                     "name": "desc",
                     "storageKey": null
                   },
-                  (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -231,7 +233,7 @@ v9 = [
                 ],
                 "storageKey": null
               },
-              (v7/*: any*/)
+              (v8/*: any*/)
             ],
             "storageKey": null
           }
@@ -246,7 +248,7 @@ v9 = [
         "name": "permissions_other_list",
         "plural": true,
         "selections": [
-          (v5/*: any*/),
+          (v6/*: any*/),
           (v1/*: any*/),
           {
             "alias": null,
@@ -363,7 +365,7 @@ v9 = [
             "name": "email",
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       },
@@ -374,7 +376,7 @@ v9 = [
         "kind": "LinkedField",
         "name": "company",
         "plural": false,
-        "selections": (v8/*: any*/),
+        "selections": (v10/*: any*/),
         "storageKey": null
       },
       {
@@ -384,7 +386,11 @@ v9 = [
         "kind": "LinkedField",
         "name": "contractor",
         "plural": false,
-        "selections": (v8/*: any*/),
+        "selections": [
+          (v1/*: any*/),
+          (v9/*: any*/),
+          (v4/*: any*/)
+        ],
         "storageKey": null
       },
       {
@@ -394,7 +400,7 @@ v9 = [
         "kind": "LinkedField",
         "name": "site",
         "plural": false,
-        "selections": (v8/*: any*/),
+        "selections": (v10/*: any*/),
         "storageKey": null
       }
     ],
@@ -407,7 +413,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "signUpContractorUserMutation",
-    "selections": (v9/*: any*/),
+    "selections": (v11/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -416,19 +422,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "signUpContractorUserMutation",
-    "selections": (v9/*: any*/)
+    "selections": (v11/*: any*/)
   },
   "params": {
-    "cacheID": "b1ce7bb6cc0643bfa71738c767437254",
+    "cacheID": "f8089753e047070ec35ebf0e1bb9a9c0",
     "id": null,
     "metadata": {},
     "name": "signUpContractorUserMutation",
     "operationKind": "mutation",
-    "text": "mutation signUpContractorUserMutation(\n  $object: default_contractor_users_insert_input!\n) {\n  insert_default_contractor_users_one(object: $object) {\n    id\n    auth_id\n    created_at\n    fname\n    lname\n    full_name\n    username\n    phone\n    profile_pic\n    auth_type\n    has_biometric\n    permissions_module_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      module {\n        key\n        id\n        plugin {\n          id\n          key\n          desc\n          title\n          status\n        }\n        title\n      }\n    }\n    permissions_other_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      key {\n        value\n        id\n      }\n    }\n    notifications_settings {\n      id\n      receive_asset_management_notifs\n      receive_chemicals_management_notifs\n      receive_contractor_management_notifs\n      receive_employees_expired_docs_medicals\n      receive_employees_profile_notifs\n      receive_incident_management_notifs\n      receive_non_conformance_management_notifs\n      receive_training_management_notifs\n      receive_expired_docs_notifs\n    }\n    linked_employee {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    company {\n      id\n      name\n    }\n    contractor {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation signUpContractorUserMutation(\n  $object: default_contractor_users_insert_input!\n) {\n  insert_default_contractor_users_one(object: $object) {\n    id\n    auth_id\n    created_at\n    fname\n    lname\n    full_name\n    username\n    phone\n    profile_pic\n    auth_type\n    has_biometric\n    permissions_module_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      module {\n        key\n        id\n        plugin {\n          id\n          key\n          desc\n          title\n          status\n        }\n        title\n      }\n    }\n    permissions_other_list {\n      actions {\n        create\n        edit\n        id\n        remove\n        share\n        view\n      }\n      id\n      key {\n        value\n        id\n      }\n    }\n    notifications_settings {\n      id\n      receive_asset_management_notifs\n      receive_chemicals_management_notifs\n      receive_contractor_management_notifs\n      receive_employees_expired_docs_medicals\n      receive_employees_profile_notifs\n      receive_incident_management_notifs\n      receive_non_conformance_management_notifs\n      receive_training_management_notifs\n      receive_expired_docs_notifs\n    }\n    linked_employee {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    company {\n      id\n      name\n    }\n    contractor {\n      id\n      name\n      username\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "d21d361a91307446be01ca36f9c1b071";
+node.hash = "b444c52131e270c590c50277fe8e0766";
 
 module.exports = node;

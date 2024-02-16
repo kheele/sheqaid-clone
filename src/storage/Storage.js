@@ -152,6 +152,18 @@ class Storage {
     set idTokenResult(idTokenResult) {
         this.attrs.set("idTokenResult", idTokenResult);
     }
+    
+    set isNewContractorUserOTPStatus(val) {
+        this.attrs.set("isNewContractorUserOTPStatus", val);
+    }
+
+    setIsNewContractorUserOTPStatusVerified() {
+        this.isNewContractorUserOTPStatus = 'Verified';
+    }
+
+    setIsNewContractorUserOTPStatusSent() {
+        this.isNewContractorUserOTPStatus = 'Sent';
+    }
 
     @computed
     get access_type() {

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3871ff22db1905cf5e728bb79801c9fc>>
+ * @generated SignedSource<<24eec25294dbe80fe40d8dad1ebb114c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,15 +38,15 @@ v1 = [
         "name": "where"
       }
     ],
-    "concreteType": "ppeConnection",
+    "concreteType": "ppe_typesConnection",
     "kind": "LinkedField",
-    "name": "ppe_connection",
+    "name": "ppe_types_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "ppeEdge",
+        "concreteType": "ppe_typesEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -54,7 +54,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ppe",
+            "concreteType": "ppe_types",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -94,16 +94,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "f345c262655c715013eb5cbfd6de578d",
+    "cacheID": "367ecd0e0c40c0a759becc22c68c3ba0",
     "id": null,
     "metadata": {},
     "name": "findByFirestoreIdPPEQuery",
     "operationKind": "query",
-    "text": "query findByFirestoreIdPPEQuery(\n  $firestore_id: String\n) {\n  ppe_connection(where: {firestore_id: {_eq: $firestore_id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query findByFirestoreIdPPEQuery(\n  $firestore_id: String\n) {\n  ppe_types_connection(where: {firestore_id: {_eq: $firestore_id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "5092c2148608cf2169ea4c0db8f191cc";
+node.hash = "82b85c222f9ade07bf6652c82ce6d693";
 
 module.exports = node;

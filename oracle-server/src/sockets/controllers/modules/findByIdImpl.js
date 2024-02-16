@@ -9,10 +9,9 @@ module.exports = (
 		orgs_fragment: orgs_fragment_override,
 	}
 ) => {
-	
-	orgs_fragment = orgs_fragment_override || orgs_fragment;
-	
 	return async (socket, id) => {
+		const __orgs_fragment = orgs_fragment_override === null ? '' : orgs_fragment_override || orgs_fragment;
+		console.log('findByIdImpl => orgs_fragment:', __orgs_fragment);
 		return getGraphQLOne({
 			query: `
 	      query findById${name}Query {
@@ -20,7 +19,7 @@ module.exports = (
 	            where: {id: {_eq: ${id}},},
 	        ) {
 	            ${isFunction(details_fragment) ? details_fragment() : details_fragment}
-	            ${orgs_fragment ? orgs_fragment : ''}
+	            ${__orgs_fragment}
 	        }
 	      }
 	    `,

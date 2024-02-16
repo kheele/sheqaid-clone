@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<443d5b6bc982601f7b2a21d90355ee81>>
+ * @generated SignedSource<<50f6da27053e3988c4c040ed8a7e39aa>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,15 +38,15 @@ v1 = [
         "name": "where"
       }
     ],
-    "concreteType": "proxy_team__ppeConnection",
+    "concreteType": "proxy_team__ppe_typeConnection",
     "kind": "LinkedField",
-    "name": "proxy_team__ppe_connection",
+    "name": "proxy_team__ppe_type_connection",
     "plural": false,
     "selections": [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_team__ppeEdge",
+        "concreteType": "proxy_team__ppe_typeEdge",
         "kind": "LinkedField",
         "name": "edges",
         "plural": true,
@@ -54,7 +54,7 @@ v1 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_team__ppe",
+            "concreteType": "proxy_team__ppe_type",
             "kind": "LinkedField",
             "name": "node",
             "plural": false,
@@ -94,16 +94,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "5856f4398a35cdb6db04a75c71744a60",
+    "cacheID": "48f64a22424156b5888b8944ffaa5ce5",
     "id": null,
     "metadata": {},
     "name": "findByIdProxyTeamPPEQuery",
     "operationKind": "query",
-    "text": "query findByIdProxyTeamPPEQuery(\n  $id: bigint\n) {\n  proxy_team__ppe_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdProxyTeamPPEQuery(\n  $id: bigint\n) {\n  proxy_team__ppe_type_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "bbbc1c552a66f231c34aa7ac58a76d8f";
+node.hash = "ed4bbbe5078c0a476229dc7cc46cacfb";
 
 module.exports = node;

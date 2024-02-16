@@ -11,8 +11,11 @@ export default async ({checkLogin = true, mutation, id, attrs, optimisticUpdater
 	new Promise(async (resolve, reject) => {
 		// eslint-disable-next-line no-unused-vars
 		const {is} = storage;
-		if (checkLogin && !is.isLoggedInAuth) {
-			return;
+		if (checkLogin) {
+			// return;//TODO: Uncomment. it was commented for data transfer
+			if (!is.isLoggedInAuth && !is.isNewContractorUserOTPStatusVerified) {
+				return Promise.reject(new Error(`Unauthorized request => mutation: ${JSON.stringify(mutation)}`));
+			}
 		}
 
 		// 4

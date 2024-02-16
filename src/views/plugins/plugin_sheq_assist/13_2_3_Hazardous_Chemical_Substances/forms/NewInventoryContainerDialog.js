@@ -285,7 +285,7 @@ class Controls extends React.Component {
             //10
             has_risk_assessment, risk_assessment_doc, risk_assessment_date,
             //11
-            ppe_list,
+            ppe_type_list,
             //12
             action_or_comments,
             //13
@@ -329,7 +329,7 @@ class Controls extends React.Component {
             //10
             has_risk_assessment, risk_assessment_doc, risk_assessment_date,
             //11
-            ppe_list,
+            ppe_type_list,
             //12
             action_or_comments,
             //13
@@ -361,10 +361,10 @@ class Controls extends React.Component {
         //7
         hazard_class_list && (data.hazard_class_list = hazard_class_list.slice());
         //11
-        if(ppe_list) {
-            data.ppe_list = ppe_list.map(v => {
-                if(v.ppe) {
-                    return v.ppe.id;
+        if(ppe_type_list) {
+            data.ppe_type_list = ppe_type_list.map(v => {
+                if(v.ppe_type) {
+                    return v.ppe_type.id;
                 } else {
                     return v.id;
                 }
@@ -622,7 +622,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <NewPPEItemListTable name="ppe_list" onChange={this.form.onChange}/>
+                <NewPPEItemListTable name="ppe_type_list" onChange={this.form.onChange}/>
             </Row>
             <Row 
                 rendered 

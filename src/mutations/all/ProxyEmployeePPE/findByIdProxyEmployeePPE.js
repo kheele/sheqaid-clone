@@ -8,7 +8,7 @@ import findOneMutationImpl from "mutations/findOneMutationImpl";
 // 2
 const query = graphql`
   query findByIdProxyEmployeePPEQuery($id: bigint) {
-    proxy_employee__ppe_connection(where: {id: {_eq: $id}}) {
+    proxy_employee__ppe_type_connection(where: {id: {_eq: $id}}) {
       edges {
         node {
           id

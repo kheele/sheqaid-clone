@@ -22,4 +22,4 @@ const query = graphql`
 //firestore_id
 // 3
 export default async ({id, phone: input}) =>
-    input && findOneMutationImpl({checkLogin: false, query, variables: {id, username: input} });
+    input && findOneMutationImpl({query, variables: {id, username: input} });

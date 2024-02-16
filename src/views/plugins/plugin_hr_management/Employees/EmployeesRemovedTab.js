@@ -164,7 +164,7 @@ class Main extends AEmployeeListTab {
                 created_at, fname, lname, profile_pic,
                 department, job_position, supervisor,
                 client, project, site,
-                medical_list_aggregate, leave_list_aggregate, ppe_list_aggregate,
+                medical_list_aggregate, leave_list_aggregate, ppe_type_list_aggregate,
                 trainer_training_list_aggregate, warning_list_aggregate,
                 supervisor_employee_list_aggregate,
             }

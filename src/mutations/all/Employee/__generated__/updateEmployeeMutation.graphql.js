@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<97518ea58747ad477a05b627c16876dc>>
+ * @generated SignedSource<<15d85ec37c08c9074411a3d8890a550e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -217,15 +217,15 @@ v10 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_employee__ppe_aggregate",
+        "concreteType": "proxy_employee__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_employee__ppe_aggregate_fields",
+            "concreteType": "proxy_employee__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -424,16 +424,16 @@ return {
     "selections": (v10/*: any*/)
   },
   "params": {
-    "cacheID": "0ac38e3e1a537f526626d618c6e03442",
+    "cacheID": "7899c022b105ddea8c42426acdbbd7d3",
     "id": null,
     "metadata": {},
     "name": "updateEmployeeMutation",
     "operationKind": "mutation",
-    "text": "mutation updateEmployeeMutation(\n  $id: hr_employees_pk_columns_input!\n  $_set: hr_employees_set_input!\n) {\n  update_hr_employees_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    fname\n    lname\n    full_name\n    email\n    phone\n    dob\n    sex\n    id_num\n    passport_num\n    profile_pic\n    employment_num\n    employment_date\n    medical_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    leave_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    trainer_training_matrix_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    warning_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    linked_user {\n      id\n      fname\n      lname\n      username\n      phone\n    }\n    department {\n      id\n      name\n    }\n    job_position {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation updateEmployeeMutation(\n  $id: hr_employees_pk_columns_input!\n  $_set: hr_employees_set_input!\n) {\n  update_hr_employees_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    fname\n    lname\n    full_name\n    email\n    phone\n    dob\n    sex\n    id_num\n    passport_num\n    profile_pic\n    employment_num\n    employment_date\n    medical_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    leave_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    trainer_training_matrix_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    warning_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    linked_user {\n      id\n      fname\n      lname\n      username\n      phone\n    }\n    department {\n      id\n      name\n    }\n    job_position {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "e1aede806813d7ecb380a18954ff0e78";
+node.hash = "5255a6bb75987c62d436aeb34968b2b6";
 
 module.exports = node;

@@ -176,7 +176,7 @@ class Controls extends React.Component {
                 warning_list = [],
                 work_permit_list = [],
 
-                ppe_list = [],
+                ppe_type_list = [],
                 trainer_training_list = [],
                 //
                 client, project, site,
@@ -295,7 +295,7 @@ class Controls extends React.Component {
             warning_count: String(warning_list.length),
             work_permit_count: String(work_permit_list.length),
 
-            ppe_count: String(ppe_list.length),
+            ppe_type_count: String(ppe_type_list.length),
             trainer_training_count: String(trainer_training_list.length),
         };
 
@@ -365,7 +365,7 @@ class Controls extends React.Component {
             />
         });
 
-        // ppe_list = [],
+        // ppe_type_list = [],
         // trainer_training_list = [],
     }
 

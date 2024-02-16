@@ -20,7 +20,7 @@ import storage from "../../../../storage/Storage";
 
 @observer
 class Controls extends React.Component {
-
+	
 	// <editor-fold defaultstate="collapsed" desc="state">
 	@observable
 	state = {
@@ -80,7 +80,6 @@ class Controls extends React.Component {
 			//
 		},
 		employee: null,
-		isNewContractorUserOTPStatus: 'NotSent',
 		usernameStatus: {
 			valid: false,
 			required: true,
@@ -93,69 +92,69 @@ class Controls extends React.Component {
 		}
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onSendOTP = this.onSendOTP.bind(this);
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		
 		this.form = new Form();
-
+		
 		this.onSelectAllModulePermissions = this.onSelectAllModulePermissions.bind(this);
 		this.onClearAllModulePermissions = this.onClearAllModulePermissions.bind(this);
 		this.onSelectAllOtherPermissions = this.onSelectAllOtherPermissions.bind(this);
 		this.onClearAllOtherPermissions = this.onClearAllOtherPermissions.bind(this);
-
+		
 		this.onChangeNames = this.onChangeNames.bind(this);
-
+		
 		this.onChangeUsernameStatus = this.onChangeUsernameStatus.bind(this);
-
+		
 		this.form.addChangeOne("username", debounce(onChangeUsername.call(this, "ContractorUser")).bind(this));
 		this.form.addChangeMany(["fname", "lname"], this.onChangeNames);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentDidMount">
 	componentDidMount() {
 		autorun(() => {
 			if (!this.isNewContractorUser) return;
-
+			
 			const {
 				isNewContractorUserOTPStatusNotSent,
 				isNewContractorUserOTPStatusSent,
 				isNewContractorUserOTPStatusVerified
 			} = this;
-
+			
 			const {dialog} = this.props;
 			if (isNewContractorUserOTPStatusNotSent) {
 				dialog.setTitle('Account Verification')
-				.hideSubmitBtn()
-				.addClass('AccountVerificationStep1');
+					.hideSubmitBtn()
+					.addClass('AccountVerificationStep1');
 				return;
 			}
 			if (isNewContractorUserOTPStatusSent) {
 				dialog.setTitle('Account Verification')
-				.hideSubmitBtn()
-				.removeClass('AccountVerificationStep1')
-				.addClass('AccountVerificationStep2');
+					.hideSubmitBtn()
+					.removeClass('AccountVerificationStep1')
+					.addClass('AccountVerificationStep2');
 				return;
 			}
 			if (isNewContractorUserOTPStatusVerified) {
 				dialog.setTitle('Account Setup')
-				.showSubmitBtn()
-				.removeClass('AccountVerificationStep1')
-				.removeClass('AccountVerificationStep2');
+					.showSubmitBtn()
+					.removeClass('AccountVerificationStep1')
+					.removeClass('AccountVerificationStep2');
 				return;
 			}
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="onChangeUsernameStatus">
 	onChangeUsernameStatus(status) {
 		const {dialog} = this.props;
@@ -179,9 +178,9 @@ class Controls extends React.Component {
 			}
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="funs">
 	onChangeNames(el, name, val) {
 		const {
@@ -207,7 +206,7 @@ class Controls extends React.Component {
 				clearTimeout(this.employeeTO);
 				this.employeeTO = null;
 			}, 500);
-
+			
 			this.state.employee = val;
 			if (val) {
 				const {
@@ -227,54 +226,54 @@ class Controls extends React.Component {
 				lname && ref_lname.onChange(lname);
 				email && ref_username.onChange(email);
 			} else {
-
+			
 			}
 		}
 	}
-
+	
 	onSelectAllModulePermissions() {
 		const {refs: {modulePermissionsRef}} = this;
 		modulePermissionsRef.selectAll();
 	}
-
+	
 	onClearAllModulePermissions() {
 		const {refs: {modulePermissionsRef}} = this;
 		modulePermissionsRef.unselectAll();
 	}
-
+	
 	onSelectAllOtherPermissions() {
 		const {refs: {otherPermissionsRef}} = this;
 		otherPermissionsRef.selectAll();
 	}
-
+	
 	onClearAllOtherPermissions() {
 		const {refs: {otherPermissionsRef}} = this;
 		otherPermissionsRef.unselectAll();
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSendOTP">
 	onSendOTP(evt, btn) {
 		onSendOTPContractor(this.contractor.id).then(res => {
 			if (res) {
-				this.state.isNewContractorUserOTPStatus = 'Sent';
+				storage.setIsNewContractorUserOTPStatusSent();
 			}
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onNext">
 	onNext(e, btn) {
 		const {form, isNewContractorUser} = this;
 		const {idx} = btn.props;
-
+		
 		if (isNewContractorUser) {
 			const {uid, token} = this.state.usernameStatus;
 			if (idx === 1) {
 				const {employee} = this.state;
-
+				
 				if (!form.isValid('username')) {
 					infoDialog.open('Username / Email Address is required');
 					return;
@@ -282,7 +281,7 @@ class Controls extends React.Component {
 					infoDialog.open('Username / Email Address is not valid');
 					return;
 				}
-
+				
 				if (!form.isValid('fname')) {
 					infoDialog.open('First Name is required');
 					return;
@@ -291,7 +290,7 @@ class Controls extends React.Component {
 					infoDialog.open('Last Name is required');
 					return;
 				}
-
+				
 				if (!uid) {
 					if (!form.isValid('password')) {
 						infoDialog.open('Password is required');
@@ -318,7 +317,7 @@ class Controls extends React.Component {
 		} else {
 			if (idx === 1) {
 				const {employee} = this.state;
-
+				
 				if (!form.isValid('username')) {
 					infoDialog.open('Username / Email Address is required');
 					return;
@@ -330,7 +329,7 @@ class Controls extends React.Component {
 //                    infoDialog.open('Authentication Type is required');
 //                    return;
 //                }
-
+				
 				if (!employee && !form.isValid('fname')) {
 					infoDialog.open('First Name is required');
 					return;
@@ -341,17 +340,17 @@ class Controls extends React.Component {
 				}
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	async onSubmit(e, btn, onSaved) {
 		const {form, isNewContractorUser, contractor} = this;
 		const fn = storage.is.isContractor ? insertContractorUser : signUpContractorUser;
-
+		
 		//2
 		const {employee} = this.state;
 		if (!form.isValid('username')) {
@@ -369,7 +368,7 @@ class Controls extends React.Component {
 			infoDialog.open('Last Name is required');
 			return;
 		}
-
+		
 		//3
 		if (isNewContractorUser) {
 			if (!form.isValid('password')) {
@@ -393,7 +392,7 @@ class Controls extends React.Component {
 //            infoDialog.open('Authentication Type is required');
 //            return;
 //        }
-
+		
 		const {
 			profile_pic,
 			fname,
@@ -416,7 +415,7 @@ class Controls extends React.Component {
 			project,
 			client,
 		} = form.data;
-
+		
 		const data = {
 			contractor_id: contractor && contractor.id,
 			//
@@ -440,10 +439,10 @@ class Controls extends React.Component {
 				}
 			},
 		};
-
+		
 		if (isNewContractorUser) {
 			data.password = password;
-
+			
 			// const {data: {company, client, project}} = contractor;
 			// data.company_id = company.id;
 			// data.client_id = client && client.id;
@@ -453,9 +452,9 @@ class Controls extends React.Component {
 			// data.project_id = project && project.id;
 			// data.site_id = site && site.id;
 		}
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		fn(data).then(res => {
@@ -510,22 +509,28 @@ class Controls extends React.Component {
 									break;
 							}
 						} else if (isObject(res)) {
+							alert(0)
 							auth2.onAuthStateChanged(currentUser => {
+								alert(1)
 								storage.onLogin(currentUser);
 							});
-
+							
+							alert(2)
+							
 							execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
+								alert(3)
 								storage.idTokenResult = idTokenResult;
 								return res;
 							})).then(() => {
+								alert(4)
 								const {loggedUserAuth: currentUser} = storage;
 								if (currentUser) {
 									infoDialog.open(<div>
 										Your account was successfully set up
 									</div>);
-
+									
 									this.props.close();
-
+									
 									storage.login.loginUser(res.loggedUser);
 								} else {
 									infoDialog.open("Authentication failed.");
@@ -540,50 +545,58 @@ class Controls extends React.Component {
 					this.props.close();
 				}
 			}
+		}).catch(err => {
+			btn.text("Save").enabled();
+			setTimeout(() => progressDialog.close());
+			console.error(err);
+			infoDialog.open("An error occurred while creating the account. Please try again.");
 		}).finally(() => {
 //            btn.text("Save").enabled();
 			setTimeout(() => progressDialog.close());
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="computeds">
 	@computed
 	get isNewContractorUserOTPStatusNotSent() {
-		const {isNewContractorUserOTPStatus} = this.state;
-		return this.isNewContractorUser && isNewContractorUserOTPStatus === 'NotSent';
+		return this.isNewContractorUser && storage.is.isNewContractorUserOTPStatusNotSent;
 	}
-
+	
 	@computed
 	get isNewContractorUserOTPStatusSent() {
-		const {isNewContractorUserOTPStatus} = this.state;
-		return this.isNewContractorUser && isNewContractorUserOTPStatus === 'Sent';
+		return this.isNewContractorUser && storage.is.isNewContractorUserOTPStatusSent;
 	}
-
+	
 	@computed
 	get isNewContractorUserOTPStatusVerified() {
-		const {isNewContractorUserOTPStatus} = this.state;
-		return this.isNewContractorUser && isNewContractorUserOTPStatus === 'Verified';
+		return this.isNewContractorUser && storage.is.isNewContractorUserOTPStatusVerified;
 	}
-
+	
 	@computed
 	get isShowNewForm() {
 		const {isNewContractorUserOTPStatusVerified} = this;
 		return !this.isNewContractorUser || isNewContractorUserOTPStatusVerified;
 	}
-
+	
 	//</editor-fold>
-
+	
 	get isNewContractorUser() {
 		const {props: {dialog: {props: {isNewContractorUser}}}} = this;
 		return isNewContractorUser;
 	}
-
+	
 	get contractor() {
 		return this.props.state.item;
 	}
-
+	
+	@computed
+	get hideNotificationSettings() {
+		if(!this.isNewContractorUser) return false;
+		return this.isNewContractorUserOTPStatusVerified && this.contractor.data.inc_contractor_pack === "No";
+	}
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		const {onFormNext, onFormBack, onFormOpen} = this.props;
@@ -593,11 +606,11 @@ class Controls extends React.Component {
 		} = this;
 		const {data = {}} = contractor || {};
 		const {name: contractorName, site_list, client, project} = data;
-
+		
 		const {isConsultant, isContractor} = storage.is;
-
+		
 		const {usernameStatus} = this.state;
-
+		
 		let idx = 0;
 		return (<div className="controls-wrapper controls-sectioned">
 			<IsNewContractorUserOTPStatusNotSent show={isNewContractorUserOTPStatusNotSent} onSendOTP={this.onSendOTP}/>
@@ -633,7 +646,7 @@ class Controls extends React.Component {
 					idx={idx += isNewContractorUser ? 0.9 : 0.8}
 					title={idx + ". User Details"}
 					onFormOpen={onFormOpen}
-					onFormNext={onFormNext}
+					onFormNext={!this.hideNotificationSettings && onFormNext}
 					onFormBack={onFormBack}
 				>
 					<ClearableInput ref="username" name="username" type="email" placeholder="Username / Email Address"
@@ -648,7 +661,7 @@ class Controls extends React.Component {
 					                className="col-lg-12 form-control" onChange={this.form.onChange}
 					                values={this.state.lists.auth_type}/>
 				</Row>
-				<Row
+				{!this.hideNotificationSettings && <Row
 					rendered
 					idx={idx += 1}
 					title={idx + ". Notifications Settings"}
@@ -660,48 +673,55 @@ class Controls extends React.Component {
 					                className="col-lg-12 form-control margin-b-0" vertical onChange={this.form.onChange}
 					                values={this.state.lists.receive_asset_management_notifs} returnValue/>
 					<ClearableInput name="receive_chemicals_management_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_chemicals_management_notifs} returnValue/>
 					<ClearableInput name="receive_contractor_management_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_contractor_management_notifs} returnValue/>
 					<ClearableInput name="receive_employees_expired_docs_medicals" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_employees_expired_docs_medicals} returnValue/>
 					<ClearableInput name="receive_employees_profile_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_employees_profile_notifs} returnValue/>
 					<ClearableInput name="receive_incident_management_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_incident_management_notifs} returnValue/>
 					<ClearableInput name="receive_non_conformance_management_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_non_conformance_management_notifs} returnValue/>
 					<ClearableInput name="receive_training_management_notifs" type="checkbox"
-					                className="col-lg-12 form-control margin-t-5 margin-b-10" vertical onChange={this.form.onChange}
+					                className="col-lg-12 form-control margin-t-5 margin-b-10" vertical
+					                onChange={this.form.onChange}
 					                values={this.state.lists.receive_training_management_notifs} returnValue/>
-
+					
 					<hr className="margin-v-10"/>
-
+					
 					<ClearableInput name="receive_expired_docs_notifs" type="checkbox" required
 					                className="col-lg-12 form-control margin-b-10" onChange={this.form.onChange}
 					                values={this.state.lists.receive_expired_docs_notifs} returnValue/>
-				</Row>
+				</Row>}
 			</div>}
 		</div>);
 	}
-
+	
 	// </editor-fold>
 }
 
 //<editor-fold desc="IsNewContractorUserOTPStatusNotSent">
 @observer
 class IsNewContractorUserOTPStatusNotSent extends React.Component {
-
+	
 	render() {
 		const {show, onSendOTP} = this.props;
 		if (!show) return null;
-
+		
 		return <div className="controls">
 			<Row
 				activeAlways
@@ -731,33 +751,33 @@ class IsNewContractorUserOTPStatusSent extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onVerifyOTP = this.onVerifyOTP.bind(this);
-
+		
 		this.form = new Form();
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onVerifyOTP">
 	onVerifyOTP(evt, btn) {
 		const {form} = this;
-
+		
 		if (!form.isValid('code')) {
 			infoDialog.open('One-Time Password is required');
 			return;
 		}
-
+		
 		const {contractor, state} = this.props;
-
+		
 		const {code} = form.data;
 		const data = {id: contractor.id, code};
-
+		
 		progressDialog.open();
-
+		
 		onConfirmContractorOTP(data).then(res => {
 			if (res && res.data) {
-				state.isNewContractorUserOTPStatus = 'Verified';
+				storage.setIsNewContractorUserOTPStatusVerified();
 			}
 		}).catch(err => {
 			infoDialog.open(<div>
@@ -769,13 +789,13 @@ class IsNewContractorUserOTPStatusSent extends React.Component {
 			setTimeout(() => progressDialog.close());
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	render() {
 		const {show, onSendOTP} = this.props;
 		if (!show) return null;
-
+		
 		return <div className="controls">
 			<Row
 				activeAlways

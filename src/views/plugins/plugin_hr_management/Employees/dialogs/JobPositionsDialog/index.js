@@ -175,7 +175,7 @@ class JobPositionsDialog extends ADialogTab {
 				job_category,
 				company, client, project, site,
 				employee_list_aggregate, employee_external_list_aggregate,
-				ppe_list_aggregate,
+				ppe_type_list_aggregate,
 				toolbox_talk_list_aggregate, training_plan_list_aggregate,
 			}
 		} = item;
@@ -274,7 +274,7 @@ class StatsPanel extends React.Component {
 		const {
 			data: {
 				employee_list_aggregate, employee_external_list_aggregate,
-				ppe_list_aggregate,
+				ppe_type_list_aggregate,
 				toolbox_talk_list_aggregate, training_plan_list_aggregate,
 			}
 		} = this.props.item;
@@ -282,7 +282,7 @@ class StatsPanel extends React.Component {
 		return <>
 			<AggregateStat title="Employees" className="h-70" value={employee_list_aggregate}/>
 			<AggregateStat title="External Persons" className="h-70" value={employee_external_list_aggregate}/>
-			<AggregateStat title="PPE" className="h-70" value={ppe_list_aggregate}/>
+			<AggregateStat title="PPE" className="h-70" value={ppe_type_list_aggregate}/>
 			<AggregateStat title="Toolbox Talks" className="h-70" value={toolbox_talk_list_aggregate}/>
 			<AggregateStat title="Training Plans" className="h-70" value={training_plan_list_aggregate}/>
 		</>;

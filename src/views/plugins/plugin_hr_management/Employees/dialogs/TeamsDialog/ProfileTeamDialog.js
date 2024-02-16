@@ -87,7 +87,7 @@ class Controls extends React.Component {
 					//
 					list,
 					//
-					ppe_list
+					ppe_type_list
 				}
 			}
 		} = this;
@@ -122,7 +122,7 @@ class Controls extends React.Component {
 					onFormOpen={onFormOpen}
 					onFormBack={onFormBack}
 				>
-					<NewPPEItemListTable name="ppe_list" defaultValue={[...(ppe_list || [])]} readonly/>
+					<NewPPEItemListTable name="ppe_type_list" defaultValue={[...(ppe_type_list || [])]} readonly/>
 				</Row>
 				<Row
 					activeAlways

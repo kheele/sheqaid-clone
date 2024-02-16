@@ -82,8 +82,8 @@ const mutation = graphql`
             risk_assessment_doc
             risk_assessment_date
 
-            ppe_list {
-                ppe{
+            ppe_type_list {
+                ppe_type{
                     id
                     name
                 }
@@ -188,7 +188,7 @@ export default async (input: EntityChemicalProduct) => {
         risk_assessment_doc,
         risk_assessment_date,
         //11
-        ppe_list,
+        ppe_type_list,
         //12
         action_or_comments,
         //13

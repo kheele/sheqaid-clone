@@ -14,8 +14,8 @@ class PPEIssueHistoryTab extends React.Component {
     
     constructor(props) {
         super(props);
-        const {item: {data: {ppe_issue_history}}} = this.props;
-        this.state.listPPEIssueHistory = ppe_issue_history || [];
+        const {item: {data: {ppe_type_issue_history}}} = this.props;
+        this.state.listPPEIssueHistory = ppe_type_issue_history || [];
         
         this.onLoadListPPEIssueHistory = this.onLoadListPPEIssueHistory.bind(this);
         this.renderPPEIssueHistoryItem = this.renderPPEIssueHistoryItem.bind(this);

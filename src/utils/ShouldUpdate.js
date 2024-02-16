@@ -1125,28 +1125,28 @@ class ShouldUpdate {
 		}
 	}
 
-	static checkPPEList(data, old_data, ppe_list, key) {
-		key = key || 'ppe_list';
-		if (ppe_list && (isArray(ppe_list) || isObservableArray(ppe_list))) {
+	static checkPPEList(data, old_data, ppe_type_list, key) {
+		key = key || 'ppe_type_list';
+		if (ppe_type_list && (isArray(ppe_type_list) || isObservableArray(ppe_type_list))) {
 			const mapper = v => {
-				if (v.ppe) {
-					return v.ppe.id;
+				if (v.ppe_type) {
+					return v.ppe_type.id;
 				} else {
 					return v.id;
 				}
 			};
-			const ppe_list_mapped = ppe_list.map(mapper);
-			ppe_list_mapped.sort();
+			const ppe_type_list_mapped = ppe_type_list.map(mapper);
+			ppe_type_list_mapped.sort();
 
-			const old_ppe_list_mapped = (old_data[key] || []).map(mapper);
-			old_ppe_list_mapped.sort();
+			const old_ppe_type_list_mapped = (old_data[key] || []).map(mapper);
+			old_ppe_type_list_mapped.sort();
 
 			const setList = () => {
-				data[key] = ppe_list_mapped;
+				data[key] = ppe_type_list_mapped;
 			};
 			if (!old_data) {
 				setList();
-			} else if (JSON.stringify(old_ppe_list_mapped) !== JSON.stringify(ppe_list_mapped)) {
+			} else if (JSON.stringify(old_ppe_type_list_mapped) !== JSON.stringify(ppe_type_list_mapped)) {
 				setList();
 			}
 		}

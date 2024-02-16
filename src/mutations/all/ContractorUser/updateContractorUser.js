@@ -35,11 +35,12 @@ export default async (attrs: EntityContractorUser) => {
     if (!item) return;
 
     if (username) {
-        const existingUser = await findByUsernameDuplicateContractorUser({id, username});
+        const existingUser = await findByUsernameDuplicateContractorUser({id, email: username});
         if (existingUser) {
             return "EMAIL_DUP";
         }
     }
+    
     if (phone) {
         const existingUser = await findByPhoneDuplicateContractorUser({id, phone});
         if (existingUser) {

@@ -10,8 +10,11 @@ import {convertMutations} from "./convertMutations";
 export default async ({checkLogin = true, mutation, input, optimisticUpdater, updater}) =>
 	new Promise(async (resolve, reject) => {
 		const {is} = storage;
-		if (checkLogin && !is.isLoggedInAuth) {
-			return;//TODO: Uncomment. it was commented for data transfer
+		if (checkLogin) {
+			// return;//TODO: Uncomment. it was commented for data transfer
+			if (!is.isLoggedInAuth && !is.isNewContractorUserOTPStatusVerified) {
+				return Promise.reject(new Error(`Unauthorized request => mutation: ${JSON.stringify(mutation)}`));
+			}
 		}
 
 		// 4

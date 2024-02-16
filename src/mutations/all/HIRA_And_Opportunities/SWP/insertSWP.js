@@ -40,7 +40,7 @@ export default async (input: EntitySWP) => {
 		//3
 		potential_hazard_and_possible_cause_list, //{id, swp_id, cause, hazard, rating,}
 		//4
-		ppe_required_list, //{id, swp_id, ppe,}
+		ppe_type_required_list, //{id, swp_id, ppe_type,}
 		//5
 		steps_to_perform_task_list,
 		//6

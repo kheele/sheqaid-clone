@@ -16,7 +16,7 @@ const query = graphql`
           id
           created_at
           name
-          ppe_list_aggregate{
+          ppe_type_list_aggregate{
             aggregate{
               count
             }

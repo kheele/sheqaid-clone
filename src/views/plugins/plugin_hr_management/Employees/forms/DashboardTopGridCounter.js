@@ -30,7 +30,7 @@ const Comp = forwardRef((
             warning_list_aggregate,
             work_permit_list_aggregate,
 
-            ppe_list_aggregate,
+            ppe_type_list_aggregate,
             trainer_training_list_aggregate,
             supervisor_employee_list_aggregate,
         }
@@ -162,7 +162,7 @@ const Comp = forwardRef((
                  countUpClass="color-white"
                  background={getRandomRolor()}
                  title={<b className="color-white font-size-14">PPE</b>}
-                 count={ppe_list_aggregate.aggregate.count}
+                 count={ppe_type_list_aggregate.aggregate.count}
         />
         <Counter size={topStatsSize}
                  color="white"

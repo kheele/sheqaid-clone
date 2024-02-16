@@ -170,7 +170,7 @@ class Controls extends React.Component {
 			//
 			employee_list,
 			//
-			ppe_list
+			ppe_type_list
 		} = form.data;
 		
 		const data = {};
@@ -185,7 +185,7 @@ class Controls extends React.Component {
 		
 		ShouldUpdate.checkTeamEmployeeList(data, old_data, employee_list, 'employee_list');
 		
-		ShouldUpdate.checkPPEList(data, old_data, ppe_list, 'ppe_list');
+		ShouldUpdate.checkPPEList(data, old_data, ppe_type_list, 'ppe_type_list');
 		
 		if (Object.keys(data).isEmpty()) {
 			infoDialog.open("Nothing changed!");
@@ -240,7 +240,7 @@ class Controls extends React.Component {
 					//
 					employee_list,
 					//
-					ppe_list
+					ppe_type_list
 				}
 			}
 		} = this;
@@ -289,7 +289,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
-				<NewPPEItemListTable name="ppe_list" defaultValue={[...(ppe_list || []), null]}
+				<NewPPEItemListTable name="ppe_type_list" defaultValue={[...(ppe_type_list || []), null]}
 				                     onChange={this.form.onChange}/>
 			</Row>
 		</FormControls>);

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<62bda3a14ce7db23b729c0ac25bd41e6>>
+ * @generated SignedSource<<5cb7cbe3ee59b17d7535b057ec86b696>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -168,15 +168,15 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_job_position__ppe_aggregate",
+                "concreteType": "proxy_job_position__ppe_type_aggregate",
                 "kind": "LinkedField",
-                "name": "ppe_list_aggregate",
+                "name": "ppe_type_list_aggregate",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_job_position__ppe_aggregate_fields",
+                    "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -306,16 +306,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "65477244c31e7216e55047f0910cb6a2",
+    "cacheID": "301e72b80e0f5eeb79b7e7833c8b0a1a",
     "id": null,
     "metadata": {},
     "name": "listAllJobPositionByLoggedCompanyQuery",
     "operationKind": "query",
-    "text": "query listAllJobPositionByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  default_job_positions_connection(where: {company_id: {_eq: $company_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        desc\n        doc\n        job_position_owner\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        employee_external_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        toolbox_talk_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        training_plan_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        job_category {\n          id\n          name\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllJobPositionByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  default_job_positions_connection(where: {company_id: {_eq: $company_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        desc\n        doc\n        job_position_owner\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        employee_external_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_type_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        toolbox_talk_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        training_plan_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        job_category {\n          id\n          name\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "25a066eb9140f5313c325cfeba105b5f";
+node.hash = "f4a313689b6e3ca6cb6c16b5943de771";
 
 module.exports = node;

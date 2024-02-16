@@ -165,7 +165,7 @@ class Controls extends React.Component {
             //
             employee_list,
             //
-            ppe_list
+            ppe_type_list
         } = form.data;
         const data = {
             name,
@@ -180,9 +180,9 @@ class Controls extends React.Component {
                     return {id};
                 })
             },
-            ppe_list: {
-                data: (ppe_list || []).filter(v => !!v).map(({ppe: {id: ppe_id}}) => {
-                    return {ppe_id};
+            ppe_type_list: {
+                data: (ppe_type_list || []).filter(v => !!v).map(({ppe_type: {id: ppe_type_id}}) => {
+                    return {ppe_type_id};
                 })
             }
         };
@@ -247,7 +247,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <NewPPEItemListTable name="ppe_list" onChange={this.form.onChange}/>
+                <NewPPEItemListTable name="ppe_type_list" onChange={this.form.onChange}/>
             </Row>
         </FormControls>);
     }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1dd9edefbe39de5a985d629cef2fbd5c>>
+ * @generated SignedSource<<4f7c4227cf75a7c5ff958cb80c34d609>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -34,9 +34,9 @@ v2 = [
         "variableName": "id"
       }
     ],
-    "concreteType": "proxy_team__ppe",
+    "concreteType": "proxy_team__ppe_type",
     "kind": "LinkedField",
-    "name": "update_proxy_team__ppe_by_pk",
+    "name": "update_proxy_team__ppe_type_by_pk",
     "plural": false,
     "selections": [
       {
@@ -74,16 +74,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "cb135ca0aa1359c5ae0fec3582f584dc",
+    "cacheID": "ab1156a10e686c6e2e9c45760d1dffc3",
     "id": null,
     "metadata": {},
     "name": "updateProxyTeamPPEMutation",
     "operationKind": "mutation",
-    "text": "mutation updateProxyTeamPPEMutation(\n  $id: proxy_team__ppe_pk_columns_input!\n  $_set: proxy_team__ppe_set_input!\n) {\n  update_proxy_team__ppe_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
+    "text": "mutation updateProxyTeamPPEMutation(\n  $id: proxy_team__ppe_type_pk_columns_input!\n  $_set: proxy_team__ppe_type_set_input!\n) {\n  update_proxy_team__ppe_type_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "d47b5f4ebb00ce73ac34abdba1cd319f";
+node.hash = "ba7e17b3e797751b5deb5735d75d76b8";
 
 module.exports = node;

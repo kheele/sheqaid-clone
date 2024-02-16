@@ -72,7 +72,7 @@ class ListInventoryProducts extends APageDocuments {
                 //10
                 has_risk_assessment, risk_assessment_doc, risk_assessment_date,
                 //11
-                ppe_list,
+                ppe_type_list,
                 //12
                 action_or_comments,
                 //13

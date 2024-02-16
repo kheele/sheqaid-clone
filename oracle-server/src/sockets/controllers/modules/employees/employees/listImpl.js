@@ -3,51 +3,51 @@ const {getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    // console.log('data', data)
-
-    let {
-        offset = 0,
-        limit = 50,
-        //
-        removed = false,
-        id,
-        incContractors = false,
-        department_id,
-        job_position_id,
-        job_category_id,
-        team_id,
-        supervisor_id,
-        name,
-        id_or_pass_num,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-        //
-        client_filter,
-        orgs_filter = [],
-    } = data;
-
-    const {filter} = getVariablesAndQueryConfig({
-        orgs_filter,
-        id,
-        //
-        incContractors,
-        department_id,
-        job_position_id,
-        job_category_id,
-        team_id,
-        supervisor_id,
-        name,
-        id_or_pass_num,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs
-    });
-
-    return listGraphQL({
-        query: `
+	// console.log('data', data)
+	
+	let {
+		offset = 0,
+		limit = 50,
+		//
+		removed = false,
+		id,
+		incContractors = false,
+		department_id,
+		job_position_id,
+		job_category_id,
+		team_id,
+		supervisor_id,
+		name,
+		id_or_pass_num,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+		//
+		client_filter,
+		orgs_filter = [],
+	} = data;
+	
+	const {filter} = getVariablesAndQueryConfig({
+		orgs_filter,
+		id,
+		//
+		incContractors,
+		department_id,
+		job_position_id,
+		job_category_id,
+		team_id,
+		supervisor_id,
+		name,
+		id_or_pass_num,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs
+	});
+	
+	return listGraphQL({
+		query: `
 			  query listAllEmployeesByLoggedQuery {
 				hr_employees(
 				  where: {
@@ -83,7 +83,7 @@ module.exports = async (socket, data) => {
                         count
                       }
                     }
-                    ppe_list_aggregate{
+                    ppe_type_list_aggregate{
                       aggregate{
                         count
                       }
@@ -134,7 +134,7 @@ module.exports = async (socket, data) => {
 				}
 			  }
 		`,
-        operationName: "listAllEmployeesByLoggedQuery",
-    });
+		operationName: "listAllEmployeesByLoggedQuery",
+	});
 }
 //</editor-fold>

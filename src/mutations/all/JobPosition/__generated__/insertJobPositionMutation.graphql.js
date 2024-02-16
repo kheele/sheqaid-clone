@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<95c649968dd4aa629761ece573d9f74f>>
+ * @generated SignedSource<<d8cb0afd384601c2d053f4142d57fa9e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -133,15 +133,15 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_job_position__ppe_aggregate",
+        "concreteType": "proxy_job_position__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_job_position__ppe_aggregate_fields",
+            "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -265,16 +265,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "865bc9bd00904100a63a118617a5abfb",
+    "cacheID": "2eebcff845119f2d5e0f834677d45a93",
     "id": null,
     "metadata": {},
     "name": "insertJobPositionMutation",
     "operationKind": "mutation",
-    "text": "mutation insertJobPositionMutation(\n  $object: default_job_positions_insert_input!\n) {\n  insert_default_job_positions_one(object: $object) {\n    id\n    created_at\n    name\n    desc\n    doc\n    job_position_owner\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_external_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    toolbox_talk_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    training_plan_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_category {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation insertJobPositionMutation(\n  $object: default_job_positions_insert_input!\n) {\n  insert_default_job_positions_one(object: $object) {\n    id\n    created_at\n    name\n    desc\n    doc\n    job_position_owner\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_external_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    toolbox_talk_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    training_plan_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_category {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "34fd33e1fac6032ee63207e581225eac";
+node.hash = "35fa19bb47efc57af0dae415f4cb80a1";
 
 module.exports = node;

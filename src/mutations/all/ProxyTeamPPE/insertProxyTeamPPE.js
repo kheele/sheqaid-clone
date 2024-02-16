@@ -8,8 +8,8 @@ import {EntityProxyTeamPPE} from "mutations/types.d.ts";
 
 // 2
 const mutation = graphql`
-  mutation insertProxyTeamPPEMutation($object: proxy_team__ppe_insert_input!) {
-    insert_proxy_team__ppe_one(
+  mutation insertProxyTeamPPEMutation($object: proxy_team__ppe_type_insert_input!) {
+    insert_proxy_team__ppe_type_one(
       object: $object
     ) {
       id

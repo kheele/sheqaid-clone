@@ -220,7 +220,7 @@ class Controls extends React.Component {
 		if (idx === 4) {
 			const {
 				//4
-				ppe_required_list,
+				ppe_type_required_list,
 			} = form.data;
 			const data = {};
 			ShouldUpdate.checkFile(data, old_data, doc, 'doc');
@@ -314,7 +314,7 @@ class Controls extends React.Component {
 					//3
 					potential_hazard_and_possible_cause_list,
 					//4
-					ppe_required_list,
+					ppe_type_required_list,
 					//5
 					steps_to_perform_task_list,
 					//6
@@ -445,7 +445,7 @@ class Controls extends React.Component {
 				onFormBack={onFormBack}
 				onFormSave={this.onFormSave}
 			>
-				<NewPPERequiredListTable name="ppe_required_list" defaultValue={ppe_required_list || []}
+				<NewPPERequiredListTable name="ppe_type_required_list" defaultValue={ppe_type_required_list || []}
 				                         onChange={this.form.onChange}/>
 			</Row>
 			<Row

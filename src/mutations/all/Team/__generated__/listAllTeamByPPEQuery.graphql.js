@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ec30960a71de8dd29a3d78ec1f083c16>>
+ * @generated SignedSource<<5c34410ba53e5757b36442419419b395>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,7 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "ppe_id"
+    "name": "ppe_type_id"
   }
 ],
 v1 = {
@@ -63,15 +63,15 @@ v5 = [
                   {
                     "kind": "Variable",
                     "name": "_eq",
-                    "variableName": "ppe_id"
+                    "variableName": "ppe_type_id"
                   }
                 ],
                 "kind": "ObjectValue",
-                "name": "ppe_id"
+                "name": "ppe_type_id"
               }
             ],
             "kind": "ObjectValue",
-            "name": "ppe_list"
+            "name": "ppe_type_list"
           }
         ],
         "kind": "ObjectValue",
@@ -219,15 +219,15 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_team__ppe_aggregate",
+                "concreteType": "proxy_team__ppe_type_aggregate",
                 "kind": "LinkedField",
-                "name": "ppe_list_aggregate",
+                "name": "ppe_type_list_aggregate",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_team__ppe_aggregate_fields",
+                    "concreteType": "proxy_team__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -265,16 +265,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "4c79143c91a8fedcb36408ab5bef90f1",
+    "cacheID": "505ba65839c0fdc1541880871204747e",
     "id": null,
     "metadata": {},
     "name": "listAllTeamByPPEQuery",
     "operationKind": "query",
-    "text": "query listAllTeamByPPEQuery(\n  $ppe_id: bigint\n) {\n  default_teams_connection(where: {ppe_list: {ppe_id: {_eq: $ppe_id}}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        status\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n          job_position {\n            id\n            name\n          }\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllTeamByPPEQuery(\n  $ppe_type_id: bigint\n) {\n  default_teams_connection(where: {ppe_type_list: {ppe_type_id: {_eq: $ppe_type_id}}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        status\n        supervisor {\n          id\n          fname\n          lname\n          email\n          phone\n          job_position {\n            id\n            name\n          }\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        ppe_type_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "fb3a3a0b5e2878a54068441b0fcac4c3";
+node.hash = "cd7fca85b0c776e4048afb8d63362ef8";
 
 module.exports = node;

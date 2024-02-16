@@ -511,27 +511,55 @@ exports.employee_details_fragment = `
     desc
     doc
   }
-  ppe_list_aggregate{
+  ppe_type_list_aggregate(where: {removed: {_eq: false}}){
     aggregate{
       count
     }
   }
-  ppe_list{
+  ppe_item_list_aggregate(where: {removed: {_eq: false}}){
+    aggregate{
+      count
+    }
+  }
+  ppe_type_list(where: {removed: {_eq: false}}){
+    id
+    created_at
+    ppe_type {
+      id
+      removed
+      created_at
+      name
+      unit
+      duration_type
+      duration_value
+      notes
+      profile_pic
+    }
+  }
+  ppe_item_list(where: {removed: {_eq: false}}){
     id
     created_at
     assignment_status
     date_assigned
     ppe_condition
-    ppe {
+    ppe_item {
       id
+      removed
       created_at
-      name
-      unit
-      qty_received
-      qty_issued
-      qty_in_stock
-      duration_type
-      duration_value
+      purchase_date
+      condition
+      serial_num
+      ppe_type{
+        id
+        removed
+        created_at
+        name
+        unit
+        duration_type
+        duration_value
+        notes
+        profile_pic
+      }
       notes
       profile_pic
     }

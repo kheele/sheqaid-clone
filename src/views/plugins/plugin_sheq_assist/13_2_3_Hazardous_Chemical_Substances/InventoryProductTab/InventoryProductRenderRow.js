@@ -57,7 +57,7 @@ class RenderRow extends React.Component {
                     has_risk_assessment,
                     risk_assessment_date,
                     risk_assessment_doc,
-                    ppe_list = [],
+                    ppe_type_list = [],
                 }
             } = item;
 
@@ -105,7 +105,7 @@ class RenderRow extends React.Component {
                     </div>}
                 {!isExporting && <div className="td fixed-flex min-w-110 padding-r-10 md-hidden">
                     <h6 className="xs-shown font-size-13">PPE Required</h6>
-                    {(ppe_list && !ppe_list.isEmpty()) ? <span className='counter'>{ppe_list.length}</span> : 'N/A'}
+                    {(ppe_type_list && !ppe_type_list.isEmpty()) ? <span className='counter'>{ppe_type_list.length}</span> : 'N/A'}
                 </div>}
                 <div
                     className={"td fixed-flex min-w-100 md-hidden td-risk-level " + RisksCodes.colorClassName(risk_level)}>

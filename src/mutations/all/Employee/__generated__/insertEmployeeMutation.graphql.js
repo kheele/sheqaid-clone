@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b373841e8a133379c5e143b11d5c9af4>>
+ * @generated SignedSource<<0ba09c879bc0eac1cd9c2003b04a11f7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -230,15 +230,15 @@ v9 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_employee__ppe_aggregate",
+        "concreteType": "proxy_employee__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_employee__ppe_aggregate_fields",
+            "concreteType": "proxy_employee__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -461,16 +461,16 @@ return {
     "selections": (v9/*: any*/)
   },
   "params": {
-    "cacheID": "e37d2a469e1c6d08bf6e0845c2d9a2ee",
+    "cacheID": "2c65f5c5a8f37c8b4d7adca3ba085afe",
     "id": null,
     "metadata": {},
     "name": "insertEmployeeMutation",
     "operationKind": "mutation",
-    "text": "mutation insertEmployeeMutation(\n  $object: hr_employees_insert_input!\n) {\n  insert_hr_employees_one(object: $object) {\n    id\n    created_at\n    fname\n    lname\n    full_name\n    email\n    phone\n    dob\n    sex\n    id_num\n    passport_num\n    profile_pic\n    employment_num\n    employment_date\n    document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    medical_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    leave_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    trainer_training_matrix_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    warning_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    linked_user {\n      id\n      fname\n      lname\n      username\n      phone\n    }\n    department {\n      id\n      name\n    }\n    job_position {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    contractor {\n      id\n      name\n    }\n    contractor_client {\n      id\n      name\n    }\n    contractor_site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation insertEmployeeMutation(\n  $object: hr_employees_insert_input!\n) {\n  insert_hr_employees_one(object: $object) {\n    id\n    created_at\n    fname\n    lname\n    full_name\n    email\n    phone\n    dob\n    sex\n    id_num\n    passport_num\n    profile_pic\n    employment_num\n    employment_date\n    document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    medical_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    leave_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    trainer_training_matrix_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    warning_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor_employee_list_aggregate(where: {removed: {_eq: false}}) {\n      aggregate {\n        count\n      }\n    }\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n    }\n    linked_user {\n      id\n      fname\n      lname\n      username\n      phone\n    }\n    department {\n      id\n      name\n    }\n    job_position {\n      id\n      name\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    contractor {\n      id\n      name\n    }\n    contractor_client {\n      id\n      name\n    }\n    contractor_site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "05da9eff2c90807a9490ee44fe2a05be";
+node.hash = "98c01707d99d569daa79ff9e92b856ef";
 
 module.exports = node;

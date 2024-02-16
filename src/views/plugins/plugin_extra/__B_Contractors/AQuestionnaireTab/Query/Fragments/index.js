@@ -34,10 +34,11 @@ const contractor_questionnaire_question_list_fragment = (deep = 3) => {
     }
     idx
     is_page_title
-    question_list:question_list{
+    question_list{
         ${contractor_questionnaire_question_list_fragment(deep - 1)}
     }
     options{
+      id
       optionImage
       optionText
       optionType

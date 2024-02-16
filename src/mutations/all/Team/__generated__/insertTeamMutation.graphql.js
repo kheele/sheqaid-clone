@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d065c7da5d018007ea9da4c9e2a5682e>>
+ * @generated SignedSource<<e52b108b476ea6f4bc24e321519b5edb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -178,15 +178,15 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_team__ppe_aggregate",
+        "concreteType": "proxy_team__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_team__ppe_aggregate_fields",
+            "concreteType": "proxy_team__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -218,16 +218,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "ce89cc744be83459e80a35da00967176",
+    "cacheID": "f5f7231b985b0ec4d40ee109ae03187f",
     "id": null,
     "metadata": {},
     "name": "insertTeamMutation",
     "operationKind": "mutation",
-    "text": "mutation insertTeamMutation(\n  $object: default_teams_insert_input!\n) {\n  insert_default_teams_one(object: $object) {\n    id\n    created_at\n    name\n    status\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n      job_position {\n        id\n        name\n      }\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
+    "text": "mutation insertTeamMutation(\n  $object: default_teams_insert_input!\n) {\n  insert_default_teams_one(object: $object) {\n    id\n    created_at\n    name\n    status\n    supervisor {\n      id\n      fname\n      lname\n      email\n      phone\n      job_position {\n        id\n        name\n      }\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "0702db1fdc39d9b4c693bb2eab7907eb";
+node.hash = "e72a9119abf4734c60483eabcf37fb12";
 
 module.exports = node;

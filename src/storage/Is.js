@@ -238,6 +238,26 @@ class Is {
     }
 
     @computed
+    get isNewContractorUserOTPStatus() {
+        return this.storage.attrs.get("isNewContractorUserOTPStatus");
+    }
+
+    @computed
+    get isNewContractorUserOTPStatusNotSent() {
+        return !this.storage.attrs.has("isNewContractorUserOTPStatus");
+    }
+
+    @computed
+    get isNewContractorUserOTPStatusSent() {
+        return this.isNewContractorUserOTPStatus === "Sent";
+    }
+
+    @computed
+    get isNewContractorUserOTPStatusVerified() {
+        return this.isNewContractorUserOTPStatus === "Verified";
+    }
+
+    @computed
     get isUser() {
         if (isAdminApp || !this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))

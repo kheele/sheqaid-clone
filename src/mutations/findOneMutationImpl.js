@@ -9,8 +9,11 @@ import {convertMutations} from "./convertMutations";
 export default async ({checkLogin = true, query, variables}) => {
 	// eslint-disable-next-line no-unused-vars
 	const {is} = storage;
-	if (checkLogin && !is.isLoggedInAuth) {
-		return Promise.reject(new Error('Unauthorized request'));
+	if (checkLogin) {
+		console.log(`checkLogin:${checkLogin}`, query)
+		if (!is.isLoggedInAuth && !is.isNewContractorUserOTPStatusVerified) {
+			return Promise.reject(new Error(`Unauthorized request => query: ${JSON.stringify(query)}`));
+		}
 	}
 
 	// 4

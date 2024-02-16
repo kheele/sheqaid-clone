@@ -1,7 +1,7 @@
-import listAllContractorByLoggedSite from "./listAllContractorByLoggedSite";
-import listAllContractorByLoggedProject from "./listAllContractorByLoggedProject";
-import listAllContractorByLoggedClient from "./listAllContractorByLoggedClient";
-import listAllContractorByLoggedCompany from "./listAllContractorByLoggedCompany";
+// import listAllContractorByLoggedSite from "./listAllContractorByLoggedSite";
+// import listAllContractorByLoggedProject from "./listAllContractorByLoggedProject";
+// import listAllContractorByLoggedClient from "./listAllContractorByLoggedClient";
+// import listAllContractorByLoggedCompany from "./listAllContractorByLoggedCompany";
 import listAllTeamByLoggedSite from "../Team/listAllTeamByLoggedSite";
 import listAllTeamByLoggedProject from "../Team/listAllTeamByLoggedProject";
 import listAllTeamByLoggedClient from "../Team/listAllTeamByLoggedClient";

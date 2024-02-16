@@ -80,8 +80,8 @@ const mutation = graphql`
         risk_assessment_doc
         risk_assessment_date
 
-        ppe_list {
-            ppe{
+        ppe_type_list {
+            ppe_type{
                 id
                 name
             }

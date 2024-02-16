@@ -50,7 +50,7 @@ const mutation = graphql`
                     count
                 }
             }
-            ppe_list_aggregate{
+            ppe_type_list_aggregate{
                 aggregate{
                     count
                 }
@@ -72,7 +72,7 @@ export default async (attrs: EntityTeam) => {
 
         supervisor_id,
         employee_list,
-        ppe_list,
+        ppe_type_list,
     } = attrs;
 
     const existingItem = await findByIdTeam(id);
@@ -85,8 +85,8 @@ export default async (attrs: EntityTeam) => {
             return updateEmployee({...item, team_id: id});
         }));
     }
-    if(ppe_list) {
-        await Promise.all(ppe_list.map(async item => {
+    if(ppe_type_list) {
+        await Promise.all(ppe_type_list.map(async item => {
             if(item.id) {
                 return updateProxyTeamPPE(item);
             } else {

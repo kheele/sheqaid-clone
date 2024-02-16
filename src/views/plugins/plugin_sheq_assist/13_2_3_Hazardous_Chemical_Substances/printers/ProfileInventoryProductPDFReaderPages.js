@@ -100,15 +100,15 @@ class Page2 extends React.Component {
         });
     }
     
-    get ppe_table_list() {
+    get ppe_type_table_list() {
         const {item} = this.props;
-        const {data: {ppe_list}} = item;
+        const {data: {ppe_type_list}} = item;
         return [
             ['Photo', 'PPE Name'],
-            ...[...(ppe_list || [])].filter(v => !!v).map(v => {
+            ...[...(ppe_type_list || [])].filter(v => !!v).map(v => {
                 let {
                     id, name, profile_pic, data
-                } = v.ppe || v;
+                } = v.ppe_type || v;
                 name = name || (data && data.name);
                 profile_pic = profile_pic || (data && data.profile_pic);
                 let dlUrls;
@@ -171,7 +171,7 @@ class Page2 extends React.Component {
                     //10
                     has_risk_assessment, risk_assessment_doc, risk_assessment_date,
                     //11
-                    ppe_list,
+                    ppe_type_list,
                     //12
                     action_or_comments,
                     //13
@@ -325,7 +325,7 @@ class Page2 extends React.Component {
                 <View break style={[styles.contentPanel, {textAlign: "left"}]}>
                     <Text style={styles.headingPoint}>11. PPE Required</Text>
                     <View style={[styles.flexColumn, styles.gridGap5]}>
-                        {ppe_list && <Table th col={['15%', '85%']} list={this.ppe_table_list}/>}
+                        {ppe_type_list && <Table th col={['15%', '85%']} list={this.ppe_type_table_list}/>}
                     </View>
                 </View>
                 

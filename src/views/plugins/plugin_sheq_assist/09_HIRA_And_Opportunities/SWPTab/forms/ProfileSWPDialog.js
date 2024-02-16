@@ -92,7 +92,7 @@ class Controls extends React.Component {
 					//3
 					potential_hazard_and_possible_cause_list,
 					//4
-					ppe_required_list,
+					ppe_type_required_list,
 					//5
 					steps_to_perform_task_list,
 					//6
@@ -211,7 +211,7 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<NewPPERequiredListTable name="ppe_required_list" defaultValue={ppe_required_list || []} readonly/>
+				<NewPPERequiredListTable name="ppe_type_required_list" defaultValue={ppe_type_required_list || []} readonly/>
 			</Row>
 			<Row
 				rendered

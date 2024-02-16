@@ -94,6 +94,7 @@ const mutation = graphql`
       contractor {
         id
         name
+        username
       }
       site {
         id
@@ -146,12 +147,15 @@ export default async (input) => {
   if (existingUser) {
     return "EMAIL_DUP";
   }
+  
   // existingUser = await findByPhoneContractorUser(phone);
   // if (existingUser) {
   //   return "PHONE_DUP";
   // }
 
   delete input.password;
+  
+  console.log('contractor signup input', input);
 
   const newUser = await createMutationImpl({mutation, input});
 

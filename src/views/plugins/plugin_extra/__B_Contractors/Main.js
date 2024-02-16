@@ -14,6 +14,7 @@ import TemplatesTab from './TemplatesTab';
 import LibraryTab from './LibraryTab';
 import ActiveTab from './ActiveTab';
 import CompleteTab from './CompleteTab';
+import UnansweredTab from './UnansweredTab';
 
 import style from "./Main.lazy.css";
 import {Button} from "components/inputs";
@@ -118,6 +119,7 @@ class Main extends APage {
                 <DashboardSingleContractorTab ref="dashboard" title="Dashboard" path={this.path}/>
                 {!isContractor && <TemplatesTab ref="templates" title="Templates" path={this.path}/>}
                 {!isContractor && <LibraryTab ref="library" title="Master Questionnaires" path={this.path}/>}
+                <UnansweredTab ref="unanswered" title="Unanswered" path={this.path}/>
                 <ActiveTab ref="active" title="Active" path={this.path}/>
                 <CompleteTab ref="complete" title="Complete" path={this.path}/>
             </Tabs>}

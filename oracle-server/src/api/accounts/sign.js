@@ -65,9 +65,9 @@ global.onReAuthUser = async ({uid, access_type}) => {
         }
     }
 
-    let token;
+    let tokenRes;
     if (access_type === 'ContractorUser') {
-        token = await socketClientContractor.emit('emit', {
+        tokenRes = await socketClientContractor.emit('emit', {
             path: 'accounts/sign/onReAuthUser',
             data: {uid},
         }).catch(err => {
@@ -75,7 +75,7 @@ global.onReAuthUser = async ({uid, access_type}) => {
             throw err;
         });
     } else if (access_type === 'Staff') {
-        token = await socketClientHR.emit('emit', {
+        tokenRes = await socketClientHR.emit('emit', {
             path: 'accounts/sign/onReAuthUser',
             data: {uid},
         }).catch(err => {
@@ -85,7 +85,7 @@ global.onReAuthUser = async ({uid, access_type}) => {
     } else {
         console.log('onReAuthUser', uid)
         const _auth = admin.auth();
-        token = await _auth.getUser(uid).then(async userRecord => {
+        tokenRes = await _auth.getUser(uid).then(async userRecord => {
             if (!userRecord) {
                 return "NO_USER_AUTH";
             }
@@ -94,7 +94,7 @@ global.onReAuthUser = async ({uid, access_type}) => {
 
             try {
                 const token = await _auth.createCustomToken(uid, {access_type});
-                return token;
+                return {token};
             } catch (err) {
                 console.error(err)
                 return "ERR_CREATING_TOKEN";
@@ -102,11 +102,11 @@ global.onReAuthUser = async ({uid, access_type}) => {
         });
     }
 
-    console.log('onReAuthUser res', token)
-    return {token};
+    console.log('onReAuthUser res', tokenRes)
+    return tokenRes;
 };
 
-global.loginSession = async ({data}) => {
+global.loginSession = async (data) => {
     console.log('loginSession')
     // Get the ID token passed and the CSRF token.
     // console.log('loginSession', req)

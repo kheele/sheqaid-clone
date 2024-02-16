@@ -17,30 +17,30 @@ router.use("/onSetCustomUserClaims", CustomUserClaims);
 router.use("/sign", sign);
 
 router.post('/sendWelcomeEmail', async (req, res) => {
-    const data = await sendWelcomeEmail(req.body);
-    res.json(data);
+    await sendWelcomeEmail(req.body);
+    res.end();
 });
 
 router.post('/sendWelcomeOTP', async (req, res) => {
-    const data = await sendWelcomeOTP(req.body);
-    res.json(data);
+    await sendWelcomeOTP(req.body);
+    res.end();
 });
 
 router.post('/sendNewContractorSiteEmail', async (req, res) => {
-    const data = await sendNewContractorSiteEmail(req.body);
-    res.json(data);
+    await sendNewContractorSiteEmail(req.body);
+    res.end();
 });
 
 router.post('/sendUpdateStatusContractorSiteEmail', async (req, res) => {
-    const data = await sendUpdateStatusContractorSiteEmail(req.body);
-    res.json(data);
+    await sendUpdateStatusContractorSiteEmail(req.body);
+    res.end();
 });
 
 router.post('/onResetPassword/:access_type', async (req, res) => {
     const {access_type} = req.params;
     if (isValidAccessType(access_type)) {
-        const data = await onResetPassword(req.body, access_type);
-        res.json(data);
+        await onResetPassword(req.body, access_type);
+        res.end();
     } else {
         res.end();
     }
@@ -48,4 +48,3 @@ router.post('/onResetPassword/:access_type', async (req, res) => {
 
 
 module.exports = router;
-

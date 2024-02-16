@@ -156,8 +156,10 @@
 
                 await Events.emit("updateNewContractorUser", {id: newUser.id, auth_id: uid});
 
-                await AllUserFuns.sendCreationEmail('ContractorUserSignup',
-                  {username, fname, lname, contractorName: contractor.name, contractorUsername: contractor.username});
+                await AllUserFuns.sendCreationEmail(
+                  'ContractorUserSignup',
+                  {username, fname, lname, contractorName: contractor.name, contractorUsername: contractor.username,}
+                );
 
                 let userCredential = await this.auth.signInWithEmailAndPassword(username, password);
 

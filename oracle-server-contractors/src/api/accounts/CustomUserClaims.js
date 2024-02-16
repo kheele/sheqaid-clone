@@ -3,8 +3,8 @@ const {
 	onSetCustomUserClaims,
 } = require('./api.js');
 
-global.onSetCustomUserClaims = async ({data}) => {
-	let res = await loginSession({data});
+global.onSetCustomUserClaims = async (data) => {
+	let res = await loginSession(data);//{idToken, csrfToken}
 	// console.log(`/${access_type} decodedIdToken`, decodedIdToken)
 	if (!res) return;
 	const {sessionCookie, options, decodedIdToken} = res;

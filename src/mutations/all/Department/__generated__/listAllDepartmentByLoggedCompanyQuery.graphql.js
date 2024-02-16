@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<99f36edb133628f1960391f44256fe28>>
+ * @generated SignedSource<<7795058ed1e2ad5dbf797e7318c6d0bb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -105,15 +105,15 @@ v5 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "proxy_department__ppe_aggregate",
+                "concreteType": "proxy_department__ppe_type_aggregate",
                 "kind": "LinkedField",
-                "name": "ppe_list_aggregate",
+                "name": "ppe_type_list_aggregate",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "proxy_department__ppe_aggregate_fields",
+                    "concreteType": "proxy_department__ppe_type_aggregate_fields",
                     "kind": "LinkedField",
                     "name": "aggregate",
                     "plural": false,
@@ -233,16 +233,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "54db862480d2a62b2a75e1331d5d5b5c",
+    "cacheID": "f7b22e33a99118dbdf13b633a9c940ea",
     "id": null,
     "metadata": {},
     "name": "listAllDepartmentByLoggedCompanyQuery",
     "operationKind": "query",
-    "text": "query listAllDepartmentByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  default_departments_connection(where: {company_id: {_eq: $company_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        ppe_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        responsible_document_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query listAllDepartmentByLoggedCompanyQuery(\n  $company_id: bigint\n) {\n  default_departments_connection(where: {company_id: {_eq: $company_id}}, order_by: {name: asc}) {\n    edges {\n      node {\n        id\n        created_at\n        name\n        ppe_type_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        employee_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        responsible_document_list_aggregate {\n          aggregate {\n            count\n          }\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "1f022013c2d561843db6798fe1c371a0";
+node.hash = "6e6da3ca1b59c3d5bdb24ef8e9a1d3cb";
 
 module.exports = node;

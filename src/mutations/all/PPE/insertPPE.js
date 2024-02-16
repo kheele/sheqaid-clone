@@ -11,16 +11,13 @@ import updatePPE from "./updatePPE";
 
 // 2
 const mutation = graphql`
-    mutation insertPPEMutation($object: ppe_insert_input!) {
-        insert_ppe_one(
+    mutation insertPPEMutation($object: ppe_types_insert_input!) {
+        insert_ppe_types_one(
             object: $object
         ) {
 		        id
             name
             unit
-            qty_received
-            qty_issued
-            qty_in_stock
             duration_type
             duration_value
             notes
@@ -63,9 +60,6 @@ export default async (input: EntityPPE) => {
 	const {
 		name,
 		unit,
-		qty_received,
-		qty_issued,
-		qty_in_stock,
 		duration_type,
 		duration_value,
 		notes,

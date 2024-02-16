@@ -38,7 +38,7 @@ exports.departments_details_fragment = `
   created_at
   name
   removed
-  ppe_list_aggregate{
+  ppe_type_list_aggregate{
     aggregate{
       count
     }

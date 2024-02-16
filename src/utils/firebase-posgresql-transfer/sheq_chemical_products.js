@@ -105,7 +105,7 @@ export const sheq_chemical_products_transfer = async () => {
             risk_assessment_doc,
             risk_assessment_date,
             //11
-            ppe_list,
+            ppe_type_list,
             //12
             action_or_comments,
             //13
@@ -217,18 +217,18 @@ export const sheq_chemical_products_transfer = async () => {
                     risk_assessment_doc,
                     risk_assessment_date: Dates.formatDateSQL(risk_assessment_date),
                     //11
-                    ppe_list: {
-                        data: (ppe_list || []).map(v => {
-                            if (v.ppe) {
-                                if(!v.ppe.id) {
+                    ppe_type_list: {
+                        data: (ppe_type_list || []).map(v => {
+                            if (v.ppe_type) {
+                                if(!v.ppe_type.id) {
                                     return;
                                 }
-                                return {ppe_id: v.ppe.id};
+                                return {ppe_type_id: v.ppe_type.id};
                             } else {
                                 if(!v.id) {
                                     return;
                                 }
-                                return {ppe_id: v.id};
+                                return {ppe_type_id: v.id};
                             }
                         }).filter(v => !!v)
                     },

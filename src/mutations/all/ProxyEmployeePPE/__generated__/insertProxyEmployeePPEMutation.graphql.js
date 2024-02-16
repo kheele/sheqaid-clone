@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1ae269f30f3f375c8473c578290d4074>>
+ * @generated SignedSource<<1de737abc4011ef606e1026058af4009>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,9 +26,9 @@ v1 = [
         "variableName": "object"
       }
     ],
-    "concreteType": "proxy_employee__ppe",
+    "concreteType": "proxy_employee__ppe_type",
     "kind": "LinkedField",
-    "name": "insert_proxy_employee__ppe_one",
+    "name": "insert_proxy_employee__ppe_type_one",
     "plural": false,
     "selections": [
       {
@@ -60,16 +60,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "76914c9d5e73542acdeea77286f350b1",
+    "cacheID": "48d6d64fb0228d09fc60a088abf70d8e",
     "id": null,
     "metadata": {},
     "name": "insertProxyEmployeePPEMutation",
     "operationKind": "mutation",
-    "text": "mutation insertProxyEmployeePPEMutation(\n  $object: proxy_employee__ppe_insert_input!\n) {\n  insert_proxy_employee__ppe_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertProxyEmployeePPEMutation(\n  $object: proxy_employee__ppe_type_insert_input!\n) {\n  insert_proxy_employee__ppe_type_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "46f77f6e71187c9924675b267e873446";
+node.hash = "dcfe7f24b298e35093fce8a1ec7cba4a";
 
 module.exports = node;

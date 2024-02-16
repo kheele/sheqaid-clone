@@ -44,7 +44,7 @@ export const hira_swp_transfer = async () => {
 			person_approving_procedure,
 			photo,
 			potential_hazard_and_possible_cause_list,//[{cause, hazard, rating}]
-			ppe_required_list,//[{text}]
+			ppe_type_required_list,//[{text}]
 			sign_sheet_name_list,//[{employee}]
 			sign_sheet_notes,
 			steps_to_perform_task_list,//[{text}]
@@ -101,9 +101,9 @@ export const hira_swp_transfer = async () => {
 						}))
 					}, //{id, swp_id, cause, hazard, rating,}
 					//4
-					ppe_required_list: {
-						data: (ppe_required_list || []).map(({text}) => ({
-							ppe: {
+					ppe_type_required_list: {
+						data: (ppe_type_required_list || []).map(({text}) => ({
+							ppe_type: {
 								data: {
 									name: text,
 									company_id: pg_company && pg_company.id,
@@ -113,7 +113,7 @@ export const hira_swp_transfer = async () => {
 								},
 							}
 						}))
-					},//{id, swp_id, ppe,}
+					},//{id, swp_id, ppe_type,}
 					//5
 					steps_to_perform_task_list: steps_to_perform_task_list && steps_to_perform_task_list.map(({text}) => text),
 					//6

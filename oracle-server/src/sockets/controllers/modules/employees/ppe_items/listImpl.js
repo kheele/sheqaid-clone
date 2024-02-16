@@ -46,7 +46,7 @@ module.exports = async (socket, data) => {
     return listGraphQL({
         query: `
 			  query listAllPPEByLoggedQuery {
-				ppe(
+				ppe_types(
 				  where: {
 					removed: {_eq: ${removed}},
 					${filter}

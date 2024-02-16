@@ -61,6 +61,7 @@ module.exports = async (socket, data) => {
         query listAllContractorQuestionnaireTemplateByLoggedQuery {
             default_contractor_questionnaire_templates(
               where: {
+                removed: {_eq: ${removed}},
                 ${filter}
               },
               order_by: {name: asc},

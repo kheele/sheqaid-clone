@@ -50,7 +50,7 @@ const mutation = graphql`
                     count
                 }
             }
-            ppe_list_aggregate{
+            ppe_type_list_aggregate{
                 aggregate{
                     count
                 }
@@ -70,7 +70,7 @@ export default async (input: EntityTeam) => {
 
         supervisor_id,
         employee_list,
-        ppe_list,
+        ppe_type_list,
     } = input;
 
     crudUtils.injectCreate(input);

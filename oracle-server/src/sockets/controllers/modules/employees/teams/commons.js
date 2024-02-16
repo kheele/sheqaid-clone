@@ -64,7 +64,7 @@ exports.teams_details_fragment = `
       count
     }
   }
-  ppe_list_aggregate{
+  ppe_type_list_aggregate{
     aggregate{
       count
     }
@@ -95,7 +95,7 @@ exports.teams_details_one_fragment = `
       count
     }
   }
-  ppe_list_aggregate{
+  ppe_type_list_aggregate{
     aggregate{
       count
     }
@@ -110,9 +110,9 @@ exports.teams_details_one_fragment = `
     phone
   }
           
-  ppe_list{
+  ppe_type_list{
     id
-    ppe{
+    ppe_type{
       name
       profile_pic
     }

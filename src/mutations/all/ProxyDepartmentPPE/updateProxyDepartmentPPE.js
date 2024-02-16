@@ -8,8 +8,8 @@ import {EntityDepartmentPPE} from "mutations/types.d.ts";
 
 // 2
 const mutation = graphql`
-  mutation updateProxyDepartmentPPEMutation($id: proxy_department__ppe_pk_columns_input!, $_set: proxy_department__ppe_set_input!) {
-    update_proxy_department__ppe_by_pk(pk_columns: $id, _set: $_set) {
+  mutation updateProxyDepartmentPPEMutation($id: proxy_department__ppe_type_pk_columns_input!, $_set: proxy_department__ppe_type_set_input!) {
+    update_proxy_department__ppe_type_by_pk(pk_columns: $id, _set: $_set) {
       id
     }
   }

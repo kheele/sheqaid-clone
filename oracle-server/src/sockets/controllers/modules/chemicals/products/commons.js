@@ -162,7 +162,7 @@ const chemical_product_details_fragment = `
     risk_assessment_doc
     risk_assessment_date
     
-    ppe_list {
+    ppe_type_list {
         ppe{
             id
             name

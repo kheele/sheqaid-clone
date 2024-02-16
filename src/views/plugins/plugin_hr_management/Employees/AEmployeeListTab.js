@@ -70,7 +70,7 @@ class StatsPanel extends React.Component {
     render() {
         const {
             data: {
-                medical_list_aggregate, leave_list_aggregate, ppe_list_aggregate,
+                medical_list_aggregate, leave_list_aggregate, ppe_type_list_aggregate,
                 trainer_training_list_aggregate, warning_list_aggregate,
                 supervisor_employee_list_aggregate,
             }
@@ -78,7 +78,7 @@ class StatsPanel extends React.Component {
 
         return <>
             {/*<AggregateStat title="Employees" value={supervisor_employee_list_aggregate}/>*/}
-            <AggregateStat title="PPE" value={ppe_list_aggregate}/>
+            <AggregateStat title="PPE" value={ppe_type_list_aggregate}/>
             <AggregateStat title="Trainings" value={trainer_training_list_aggregate}/>
             <AggregateStat title="Leaves" value={leave_list_aggregate}/>
             <AggregateStat title="Medicals" value={medical_list_aggregate}/>

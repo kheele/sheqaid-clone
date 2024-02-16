@@ -31,7 +31,7 @@ class SelectInput extends ASelectInput {
         this.state.props = {
             ref: "input",
             key: new Date().getTime(),
-            name: "ppe",
+            name: "ppe_type",
             type: "select",
             placeholder: "PPE Item...",
             values: this.list,

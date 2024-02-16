@@ -8,8 +8,8 @@ import {EntityProxyJobPositionPPE} from "mutations/types.d.ts";
 
 // 2
 const mutation = graphql`
-  mutation insertProxyJobPositionPPEMutation($object: proxy_job_position__ppe_insert_input!) {
-    insert_proxy_job_position__ppe_one(
+  mutation insertProxyJobPositionPPEMutation($object: proxy_job_position__ppe_type_insert_input!) {
+    insert_proxy_job_position__ppe_type_one(
       object: $object
     ) {
       id

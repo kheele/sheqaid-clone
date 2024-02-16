@@ -58,6 +58,8 @@ module.exports = (
 			`;
 		}
 		
+		const __orgs_fragment = orgs_fragment_override === null ? '' : orgs_fragment_override || orgs_fragment;
+		
 		if (id) {
 			return listGraphQL({
 				query: `
@@ -68,14 +70,13 @@ module.exports = (
             }
           ) {
               ${isFunction(details_fragment) ? details_fragment(data) : details_fragment}
-              ${orgs_fragment}
+              ${__orgs_fragment}
           }
         }
 			`,
 				operationName: `listAll${name}ByLoggedQuery`,
 			});
 		} else {
-			orgs_fragment = orgs_fragment_override || orgs_fragment;
 			
 			return listGraphQL({
 				query: `
@@ -89,7 +90,7 @@ module.exports = (
 	            ${limit > 0 ? `limit: ${limit}` : ''}
 	          ) {
                 ${isFunction(details_fragment) ? details_fragment(data) : details_fragment}
-	              ${orgs_fragment ? orgs_fragment : ''}
+	              ${__orgs_fragment}
 	          }
 	        }
 				`,

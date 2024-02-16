@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<416f1f480f627ce3899f290015ce9990>>
+ * @generated SignedSource<<d2c94d23a054bd9fc6e0cbb2ab2a33a7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -53,9 +53,9 @@ v5 = [
         "variableName": "object"
       }
     ],
-    "concreteType": "ppe",
+    "concreteType": "ppe_types",
     "kind": "LinkedField",
-    "name": "insert_ppe_one",
+    "name": "insert_ppe_types_one",
     "plural": false,
     "selections": [
       (v1/*: any*/),
@@ -65,27 +65,6 @@ v5 = [
         "args": null,
         "kind": "ScalarField",
         "name": "unit",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_received",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_issued",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "qty_in_stock",
         "storageKey": null
       },
       {
@@ -149,7 +128,7 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_team__ppe_aggregate",
+        "concreteType": "proxy_team__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "team_list_aggregate",
         "plural": false,
@@ -157,7 +136,7 @@ v5 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_team__ppe_aggregate_fields",
+            "concreteType": "proxy_team__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -170,7 +149,7 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_department__ppe_aggregate",
+        "concreteType": "proxy_department__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "department_list_aggregate",
         "plural": false,
@@ -178,7 +157,7 @@ v5 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_department__ppe_aggregate_fields",
+            "concreteType": "proxy_department__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -191,7 +170,7 @@ v5 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_job_position__ppe_aggregate",
+        "concreteType": "proxy_job_position__ppe_type_aggregate",
         "kind": "LinkedField",
         "name": "job_position_list_aggregate",
         "plural": false,
@@ -199,7 +178,7 @@ v5 = [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_job_position__ppe_aggregate_fields",
+            "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -231,16 +210,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "a65d503564dacf55d9aad9d5df38d3ff",
+    "cacheID": "96a65dbb85b3cc760e9ee0c558f8b87c",
     "id": null,
     "metadata": {},
     "name": "insertPPEMutation",
     "operationKind": "mutation",
-    "text": "mutation insertPPEMutation(\n  $object: ppe_insert_input!\n) {\n  insert_ppe_one(object: $object) {\n    id\n    name\n    unit\n    qty_received\n    qty_issued\n    qty_in_stock\n    duration_type\n    duration_value\n    notes\n    profile_pic\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    department_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_position_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
+    "text": "mutation insertPPEMutation(\n  $object: ppe_types_insert_input!\n) {\n  insert_ppe_types_one(object: $object) {\n    id\n    name\n    unit\n    duration_type\n    duration_value\n    notes\n    profile_pic\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    department_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_position_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "9d60bb7668caabf677a0f31da5b1e995";
+node.hash = "eecc5aadc1c164e997de6228a538e337";
 
 module.exports = node;

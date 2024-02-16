@@ -10,14 +10,11 @@ import listMutationImpl from "../../listMutationImpl";
 // 2
 const query = graphql`
   query listAllPPEByLoggedClientQuery($client_id: bigint) {
-    ppe_connection(where: {client_id: {_eq: $client_id}}) {
+    ppe_types_connection(where: {client_id: {_eq: $client_id}}) {
       edges {
         node {
           name
           unit
-          qty_received
-          qty_issued
-          qty_in_stock
           duration_type
           duration_value
           notes

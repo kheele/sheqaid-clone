@@ -29,7 +29,7 @@ const mutation = graphql`
                     count
                 }
             }
-            ppe_list_aggregate{
+            ppe_type_list_aggregate{
                 aggregate{
                     count
                 }

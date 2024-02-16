@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<301078bf323408c6e864be62d03e91c5>>
+ * @generated SignedSource<<8cc3a3f9c972aa87a57a0fd4fb220213>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -78,15 +78,15 @@ v6 = [
       {
         "alias": null,
         "args": null,
-        "concreteType": "proxy_department__ppe_aggregate",
+        "concreteType": "proxy_department__ppe_type_aggregate",
         "kind": "LinkedField",
-        "name": "ppe_list_aggregate",
+        "name": "ppe_type_list_aggregate",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "proxy_department__ppe_aggregate_fields",
+            "concreteType": "proxy_department__ppe_type_aggregate_fields",
             "kind": "LinkedField",
             "name": "aggregate",
             "plural": false,
@@ -206,16 +206,16 @@ return {
     "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "f7354389d0d57f4ef81a3350176656dd",
+    "cacheID": "d49f36dc1249f2d9aaf414866f11993b",
     "id": null,
     "metadata": {},
     "name": "updateDepartmentMutation",
     "operationKind": "mutation",
-    "text": "mutation updateDepartmentMutation(\n  $id: default_departments_pk_columns_input!\n  $_set: default_departments_set_input!\n) {\n  update_default_departments_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    name\n    ppe_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    responsible_document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation updateDepartmentMutation(\n  $id: default_departments_pk_columns_input!\n  $_set: default_departments_set_input!\n) {\n  update_default_departments_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    name\n    ppe_type_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    employee_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    responsible_document_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "14d4c345fce8330d95d9e5af498dfcfc";
+node.hash = "d756f456908f92bb14486d11bae33ca6";
 
 module.exports = node;

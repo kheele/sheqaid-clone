@@ -103,7 +103,7 @@ class TeamsDialog extends ADialogTab {
 			data: {
 				created_at, supervisor, name, status,
 				company, client, project, site,
-				employee_list_aggregate, ppe_list_aggregate
+				employee_list_aggregate, ppe_type_list_aggregate
 			}
 		} = item;
 		
@@ -182,13 +182,13 @@ class StatsPanel extends React.Component {
 	render() {
 		const {
 			data: {
-				employee_list_aggregate, ppe_list_aggregate,
+				employee_list_aggregate, ppe_type_list_aggregate,
 			}
 		} = this.props.item;
 		
 		return <>
 			<AggregateStat title="Employees" value={employee_list_aggregate}/>
-			<AggregateStat title="PPE" value={ppe_list_aggregate}/>
+			<AggregateStat title="PPE" value={ppe_type_list_aggregate}/>
 		</>;
 	}
 }
