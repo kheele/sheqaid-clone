@@ -132,7 +132,7 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 			>
 				<SelectClientInput name="client" placeholder="Company..." defaultValue={RenderUtils.selectedClient.call(this)}
-				                   required showAll className="col-lg-12 form-control" onChange={this.form.onChange}/>
+				                   required className="col-lg-12 form-control" onChange={this.form.onChange}/>
 			</Row>}
 			<Row
 				rendered

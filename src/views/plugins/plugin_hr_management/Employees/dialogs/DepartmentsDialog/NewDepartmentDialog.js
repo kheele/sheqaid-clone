@@ -85,7 +85,7 @@ class Controls extends React.Component {
                 idx={0}
                 title="Company"
             >
-                <SelectClientInput name="client" placeholder="Company..." required showAll
+                <SelectClientInput name="client" placeholder="Company..." required
                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>}
             <Row

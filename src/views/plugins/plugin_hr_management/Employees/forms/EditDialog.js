@@ -563,7 +563,6 @@ class Controls extends React.Component {
 				client={client}
 				project={project}
 				site={site}
-				showAll
 			>
 				<Row
 					rendered

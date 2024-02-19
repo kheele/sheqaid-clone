@@ -233,7 +233,6 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
-                showAll
             >
                 <Row
                     rendered
