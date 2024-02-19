@@ -238,12 +238,12 @@ class Main extends APage {
 				{Permissions.allowOther("Job Positions") && <NavItem onClick={this.onViewJobPositions} title="Job Positions"/>}
 				{Permissions.allowOther("Departments") && <NavItem onClick={this.onViewDepartments} title="Departments"/>}
 				<hr className="margin-t-0 margin-b-0"/>
-				{Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}
+				{/*{Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}*/}
 				<NavItem onClick={this.onExport} title="Export"/>
-				<NavItem onClick={this.onPrintCards} title="Print Cards"/>
+				{/*<NavItem onClick={this.onPrintCards} title="Print Cards"/>*/}
 				{isContractor && !isContractor && hasProjects && <NavItem onClick={this.onTransfer} title="Transfer"/>}
-				<hr className="margin-t-0 margin-b-0"/>
-				{Permissions.allowRemoveMod("Employees") && <NavItem onClick={this.onBulkDelete} title="Bulk Delete"/>}
+				{/*<hr className="margin-t-0 margin-b-0"/>*/}
+				{/*{Permissions.allowRemoveMod("Employees") && <NavItem onClick={this.onBulkDelete} title="Bulk Delete"/>}*/}
 			</div>
 		}).open();
 	}
