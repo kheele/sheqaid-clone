@@ -58,7 +58,7 @@ eventManager.on("contractors/questionnaires/listActiveByLogged", async (socket, 
 
     data.client_filter = [
         `status: {_neq: "CompleteAccepted"}`,
-        `progress: {_gt: 0}`,
+        // `progress: {_gt: 0}`,
         // answeredFilter(3)
     ];
 

@@ -4,34 +4,34 @@ import {observer} from 'mobx-react';
 import {observable, computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
-import Form from 'utils/Form';
-import {ShouldUpdate} from 'utils/Utils';
+import Form from '../../../../../../utils/Form';
+import {ShouldUpdate} from '../../../../../../utils/Utils';
 
-import {AEditDialog} from 'components/dialogs';
+import {AEditDialog} from '../../../../../../components/dialogs';
 import {
     ClearableInput, ProfilePic, RowOrgs,
     SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from 'components/inputs';
+} from '../../../../../../components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from 'components/FormTableComponents';
-import {FormControls, Row} from 'components/FormComponents';
+} from '../../../../../../components/FormTableComponents';
+import {FormControls, Row} from '../../../../../../components/FormComponents';
 
 import style from "./EditPPEDialog.lazy.css";
-import findByIdPPE from "mutations/all/PPE/findByIdPPE";
-import updatePPE from "mutations/all/PPE/updatePPE";
+import findByIdPPE from "../../../../../../mutations/all/PPE/findByIdPPE";
+import updatePPE from "../../../../../../mutations/all/PPE/updatePPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditPPEDialog";
-    title = "Edit PPE";
+    title = "Edit PPE Type";
     findById = findByIdPPE;
     removeById = updatePPE;
 
@@ -71,37 +71,11 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
         
         this.form = new Form();
-        this.form.addChangeOne("qty_received", this.onChangeQtyReceived.bind(this));
-        this.form.addChangeOne("qty_issued", this.onChangeQtyIssued.bind(this));
         this.form.addChangeOne("duration_type", this.onChangeDurationType.bind(this));
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
-    onChangeQtyReceived(el, val) {
-        const {execWhen} = this.props;
-        execWhen(() => this.refs.qty_received && this.refs.qty_issued && this.refs.qty_in_stock).then(list_ref => {
-            const {qty_issued, qty_in_stock} = this.refs;
-            val = val || 0;
-            const res = val - (qty_issued.hasValue ? qty_issued.value : 0);
-            qty_in_stock.setEditable(true);
-            qty_in_stock.onChange(res);
-            qty_in_stock.setEditable(false);
-        });
-    }
-    
-    onChangeQtyIssued(el, val) {
-        const {execWhen} = this.props;
-        execWhen(() => this.refs.qty_received && this.refs.qty_issued && this.refs.qty_in_stock).then(list_ref => {
-            const {qty_received, qty_in_stock} = this.refs;
-            val = val || 0;
-            const res = (qty_received.hasValue ? qty_received.value : 0) - val;
-            qty_in_stock.setEditable(true);
-            qty_in_stock.onChange(res);
-            qty_in_stock.setEditable(false);
-        });
-    }
-    
     onChangeDurationType(el, val) {
         this.state.duration_type = val;
     }
@@ -127,11 +101,11 @@ class Controls extends React.Component {
         }
         if(idx === 1) {
             if (!form.isValid('name')) {
-                infoDialog.open('Item Description is required');
+                infoDialog.open('PPE Type is required');
                 return;
             }
             if (!form.isValid('unit')) {
-                infoDialog.open('Item Unit is required');
+                infoDialog.open('PPE Type Unit is required');
                 return;
             }
             if (form.isValid('duration_type') && !form.isValid('duration_value')) {
@@ -164,11 +138,11 @@ class Controls extends React.Component {
         
         //2
         if (!form.isValid('name')) {
-            infoDialog.open('Item Description is required');
+            infoDialog.open('PPE Type is required');
             return;
         }
         if (!form.isValid('unit')) {
-            infoDialog.open('Item Unit is required');
+            infoDialog.open('PPE Type Unit is required');
             return;
         }
         if (form.isValid('duration_type') && !form.isValid('duration_value')) {
@@ -179,7 +153,7 @@ class Controls extends React.Component {
         const {
             site, project, client, 
             //
-            name, unit, qty_received, qty_issued, qty_in_stock, duration_type, duration_value, notes, profile_pic,
+            name, unit, duration_type, duration_value, notes, profile_pic,
             //
             team_list,
             department_list,
@@ -194,9 +168,6 @@ class Controls extends React.Component {
         
         ShouldUpdate.check(data, old_data, name, 'name');
         ShouldUpdate.check(data, old_data, unit, 'unit');
-        ShouldUpdate.check(data, old_data, qty_received, 'qty_received');
-        ShouldUpdate.check(data, old_data, qty_issued, 'qty_issued');
-        ShouldUpdate.check(data, old_data, qty_in_stock, 'qty_in_stock');
         ShouldUpdate.check(data, old_data, duration_type, 'duration_type');
         ShouldUpdate.check(data, old_data, duration_value, 'duration_value');
         ShouldUpdate.check(data, old_data, notes, 'notes');
@@ -249,7 +220,7 @@ class Controls extends React.Component {
                 id, data: {
                     created_at, 
                     site, project, client, 
-                    name, unit, qty_received, qty_issued, qty_in_stock, duration_type, duration_value, notes, profile_pic,
+                    name, unit, duration_type, duration_value, notes, profile_pic,
                     team_list = [],
                     department_list = [],
                     job_position_list = []
@@ -268,20 +239,17 @@ class Controls extends React.Component {
                     <Row
                         rendered
                         idx={1}
-                        title="1. Item Details"
+                        title="1. PPE Type Details"
                     >
-                        <ClearableInput name="name" type="text" placeholder="Item Description" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="unit" type="text" placeholder="Item Unit" defaultValue={unit} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received" defaultValue={qty_received} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued" defaultValue={qty_issued} isClearable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock" defaultValue={qty_in_stock} isClearable={false} isEditable={false} className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="name" type="text" placeholder="PPE Type" defaultValue={name} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="unit" type="text" placeholder="Measurement Unit" defaultValue={unit} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" defaultValue={duration_type} vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.duration_type} returnValue/>
                         <DurationValueWrapper state={this.state} defaultValue={duration_value} onChange={this.form.onChange}/>
                         <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                         <UploadButton
                             name="profile_pic"
                             defaultValue={profile_pic}
-                            buttonTitle="PPE Item Photo"
+                            buttonTitle="PPE Type Photo"
                             type={['Photo']}
                             showOnlyIcon
                             className="col-lg-6 col-xs-12 hor-center"

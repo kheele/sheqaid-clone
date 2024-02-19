@@ -15,6 +15,8 @@ import style from "./EditResponseDialog.lazy.css";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 import subscribeByIdContractorQuestionnaire
     from "../AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
+import findByIdContractorsQuestionnaire
+    from "mutations/all/Questionnaires/ContractorsQuestionnaires/findByIdContractorsQuestionnaire";
 
 // </editor-fold>
 
@@ -22,6 +24,7 @@ import subscribeByIdContractorQuestionnaire
 @observer
 class EditDialog extends ANewDialog {
     pageKey = "EditResponseDialog";
+    findById = findByIdContractorsQuestionnaire;
 
     constructor(props) {
         super(props, style);
@@ -152,15 +155,15 @@ class Controls extends AControls {
             return;
         }
 
-        const {item} = this;
-        this.unsubscribe = subscribeByIdContractorQuestionnaire({
-            id: item.id,
-            onEvent: res => {
-                console.log(`subscription`, res)
-//            alert('ProfileResponseDialog')
-// 				questionnairesOnUpdate(item, {updateVal, data});
-            },
-        });
+//         const {item} = this;
+//         this.unsubscribe = subscribeByIdContractorQuestionnaire({
+//             id: item.id,
+//             onEvent: res => {
+//                 console.log(`subscription`, res)
+// //            alert('ProfileResponseDialog')
+// // 				questionnairesOnUpdate(item, {updateVal, data});
+//             },
+//         });
     }
     
     // <editor-fold defaultstate="collapsed" desc="onActionAsComplete">
@@ -341,11 +344,15 @@ class Controls extends AControls {
                     page_title_list,
                     question_list,
                     //
+                    total_questions,
+                    total_compliance,
+                    // total_questions,
+                    //
                     contractor: {name: contractorName, username},
                 }
             }
         } = this;
-//        console.log('item', item)
+       console.log('item', item)
         
         return <FormControls>
             <Row 
@@ -357,9 +364,9 @@ class Controls extends AControls {
                 onFormNext={onFormNext}
             >
                 <div className="row margin-0 flex">
-                    <Stats value={question_list} title='Total Questions'/>
-                    <Compliance list={question_list} title='Non-Compliance' status={status}/>
-                    <Compliance list={question_list} title='Compliance' status={status}/>
+                    <Stats value={total_questions} title='Total Questions'/>
+                    <Compliance value={100 - total_compliance} title='Non-Compliance' status={status}/>
+                    <Compliance value={total_compliance} title='Compliance' status={status}/>
                 </div>
             </Row>
             <Row 

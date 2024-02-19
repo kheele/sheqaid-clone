@@ -8,6 +8,7 @@ import {EntityPPE} from "mutations/types.d.ts";
 import updateMutationImpl from "../../updateMutationImpl";
 import crudUtils from "../CRUDUtils/CRUDUtils";
 import updatePPE from "./updatePPE";
+import findByIdPPE from "./findByIdPPE";
 
 // 2
 const mutation = graphql`
@@ -15,42 +16,7 @@ const mutation = graphql`
         insert_ppe_types_one(
             object: $object
         ) {
-		        id
-            name
-            unit
-            duration_type
-            duration_value
-            notes
-            profile_pic
-
-            client{
-                id
-                name
-            }
-            project{
-                id
-                name
-            }
-            site{
-                id
-                name
-            }
-
-            team_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
-            department_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
-            job_position_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
+            id
         }
     }
 `;
@@ -104,6 +70,7 @@ export default async (input: EntityPPE) => {
 				console.log('insertPPE error', err)
 			}
 		}
+		return findByIdPPE(newItem.id);
 	}
 	return newItem;
 };

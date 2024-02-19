@@ -14,6 +14,8 @@ exports.sendWelcomeEmail = async (body) => {
 	const {data} = body;
 	if (!data) return;
 	
+	console.log('sendWelcomeEmail', data);
+	
 	const {
 		table: {
 			table_name,

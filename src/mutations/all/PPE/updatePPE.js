@@ -5,49 +5,15 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityPPE} from "mutations/types.d.ts";
+import findByIdPPE from "./findByIdPPE";
 
 // 2
 const mutation = graphql`
-    mutation updatePPEMutation($id: ppe_types_pk_columns_input!, $_set: ppe_types_set_input!) {
-        update_ppe_types_by_pk(pk_columns: $id, _set: $_set) {
-            id
-            name
-            unit
-            duration_type
-            duration_value
-            notes
-            profile_pic
-
-            client{
-                id
-                name
-            }
-            project{
-                id
-                name
-            }
-            site{
-                id
-                name
-            }
-
-            team_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
-            department_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
-            job_position_list_aggregate{
-                aggregate {
-                    count
-                }
-            }
-        }
+  mutation updatePPEMutation($id: ppe_types_pk_columns_input!, $_set: ppe_types_set_input!) {
+    update_ppe_types_by_pk(pk_columns: $id, _set: $_set) {
+      id
     }
+  }
 `;
 
 // 3
@@ -56,4 +22,4 @@ export default async (attrs: EntityPPE) =>
         mutation,
         id: attrs.id,
         attrs,
-    });
+    }).then(res => res && findByIdPPE(res.id));

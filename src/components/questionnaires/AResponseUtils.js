@@ -53,17 +53,10 @@ class AControls extends React.Component {
 	calculateProgress() {
 		const {execWhen, refs} = this.props.dialog;
 		execWhen(() => refs.infoB).then(async infoB => {
-			let {questions} = this;
+			let {progress} = this;
 			infoB.text('Loading...');
-			if (questions instanceof Promise) {
-				questions = await questions;
-			}
 
-			questions = questions.filter(v => v.questionType !== 'NoAnswer');
-			const total = questions.length;
-			const answerCount = questions.filter(v => !!v.answer).length;
-			let perc = (answerCount / total) * 100;
-			infoB.text(perc.toFixed(1) + '% Complete');
+			infoB.text((progress || 0).toFixed(1) + '% Complete');
 		});
 	}
 
@@ -149,13 +142,11 @@ class AControls extends React.Component {
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="get questions">
-	@computed get questions() {
-		if (!this.item) return [];
-		let {data: {question_list}} = this.item;
-		return new Promise(async (resolve, reject) => {
-			resolve(all_question_list(question_list));
-		});
+	// <editor-fold defaultstate="collapsed" desc="get progress">
+	@computed get progress() {
+		if (!this.item) return null;
+		let {data: {total_questions, progress}} = this.item;
+		return progress;
 	}
 
 	// </editor-fold>
@@ -174,38 +165,15 @@ function questionHasChat(ques) {
 @observer
 class Compliance extends React.Component {
 
-	@computed get calculate() {
-		let {props: {title, list}} = this;
-		return new Promise((resolve, reject) => {
-			list = all_question_list(list).filter(({maxScore}) => isNumber(maxScore) && maxScore > 0);
-
-			const score = list.map(({
-				                        score,
-				                        maxScore
-			                        }) => ((score && isNumber(score)) ? score : 0)).reduce((n1, n2) => n1 + n2, 0);
-			const maxScore = list.map(({score, maxScore}) => maxScore).reduce((n1, n2) => n1 + n2, 0);
-			const perc = maxScore > 0 ? ((score / maxScore) * 100).toFixed(1) : 'N/A';
-
-			resolve({compliance: perc, nonCompliance: perc === 'N/A' ? perc : 100 - perc});
-		});
-	}
-
 	render() {
-		let {props: {title, status = "New"}} = this;
+		let {props: {title, status = "New", value}} = this;
 		if (status !== "CompleteAccepted") {
 			return <Stats value="N/A" title={title}/>;
 		}
 
 		const isCompliance = title === "Compliance";
 
-		const getPerc = async (calculate) => {
-			const {compliance, nonCompliance} = await calculate;
-			let perc;
-			if (isCompliance) {
-				perc = compliance;
-			} else {
-				perc = nonCompliance;
-			}
+		const getPerc = async (isCompliance, perc) => {
 			if (perc === 'N/A') {
 				return {perc};
 			}
@@ -222,7 +190,7 @@ class Compliance extends React.Component {
 			}
 			return {perc, color};
 		};
-		return <Stats value={getPerc(this.calculate)} title={title}/>;
+		return <Stats value={getPerc(isCompliance, value)} title={title}/>;
 	}
 }
 
@@ -232,39 +200,12 @@ class Compliance extends React.Component {
 @observer
 class Stats extends React.Component {
 
-	@observable state = {
-		value: null,
-		loading: true
-	};
-
-	async componentDidMount() {
-		const {value} = this;
-		this.state.loading = true;
-		this.state.value = await value;
-		this.state.loading = false;
-	}
-
-	@computed get value() {
-		let {props: {title, value, className = ""}} = this;
-
-		if (value instanceof Promise) return value;
-		if (isString(value)) return value;
-
-		console.log('value', value)
-		return Promise.resolve(all_question_list(value).length);
-	}
-
 	render() {
-		let {props: {title, className = ""}} = this;
-		const {value, loading} = this.state;
-		if (value && value.color) {
-			className += ' ' + value.color;
-		}
+		let {props: {title, className = "", value}} = this;
 		return <div className={"margin-r-10 padding-10 Statistics ComplianceStats margin-t-5 " + className}>
 			<label className="text-center w-full margin-b-10">{title}</label>
 			<div className="content">
-				{loading && 'Loading...'}
-				{!loading && (!!value && (value.perc || value))}
+				{value}
 			</div>
 		</div>;
 	}

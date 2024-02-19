@@ -6,7 +6,8 @@ require("./modules");
 
 exports.start = (socket) => {
 	socket.on("emit", async (req, callback) => {
-		// console.log('socket emit', req);
+		console.log('socket emit', req);
+		
 		const {path, data} = req;
 		if (data !== undefined && data !== null && !isNumber(data) && !isBoolean(data) && !isString(data) && !isArray(data)) {
 			if ('now' in data) {

@@ -24,9 +24,6 @@ export const ppes_transfer = async () => {
             name,
             duration_type,
             duration_value,
-            qty_in_stock,
-            qty_issued,
-            qty_received,
             unit,
 
             team_list = [],
@@ -63,9 +60,6 @@ export const ppes_transfer = async () => {
             name,
             duration_type,
             duration_value,
-            qty_in_stock,
-            qty_issued,
-            qty_received,
             unit,
 
             team_list: {data: pg_team_list.map(team => ({team_id: team.id}))},

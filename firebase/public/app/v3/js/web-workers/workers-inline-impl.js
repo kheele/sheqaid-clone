@@ -120,7 +120,7 @@ class Utils {
     }
 
     //keep this one
-    static getQuestionnaireTemplateForm = async (db, question_list, isEditing) => {
+    static getQuestionnaireTemplateForm = async (db, question_list, isEditing, isLibrary) => {
         const mapQuestions = async (v, n) => {
 //            v.idx = n;
             delete v.open;

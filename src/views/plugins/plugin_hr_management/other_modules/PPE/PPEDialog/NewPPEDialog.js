@@ -3,32 +3,32 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from 'utils/Form';
+import Form from '../../../../../../utils/Form';
 
-import {ANewDialog} from 'components/dialogs';
+import {ANewDialog} from '../../../../../../components/dialogs';
 import {
     ClearableInput, ProfilePic, RowOrgs,
     SelectClientInput, SelectGenderInput,
     SelectProjectInput,
     SelectSiteInput,
     UploadButton
-} from 'components/inputs';
+} from '../../../../../../components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from 'components/FormTableComponents';
-import {FormControls, Row} from 'components/FormComponents';
+} from '../../../../../../components/FormTableComponents';
+import {FormControls, Row} from '../../../../../../components/FormComponents';
 
 import style from "./NewPPEDialog.lazy.css";
-import insertPPE from "mutations/all/PPE/insertPPE";
+import insertPPE from "../../../../../../mutations/all/PPE/insertPPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewPPEDialog";
-    title = "Create PPE Item";
+    title = "Create PPE Type";
 
     constructor(props) {
         super(props, style);
@@ -67,38 +67,12 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.form = new Form();
-        this.form.addChangeOne("qty_received", this.onChangeQtyReceived.bind(this));
-        this.form.addChangeOne("qty_issued", this.onChangeQtyIssued.bind(this));
         this.form.addChangeOne("duration_type", this.onChangeDurationType.bind(this));
     }
 
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
-    onChangeQtyReceived(el, val) {
-        const {execWhen} = this.props;
-        execWhen(() => this.refs.qty_received && this.refs.qty_issued && this.refs.qty_in_stock).then(list_ref => {
-            const {qty_issued, qty_in_stock} = this.refs;
-            val = val || 0;
-            const res = val - (qty_issued.hasValue ? qty_issued.value : 0);
-            qty_in_stock.setEditable(true);
-            qty_in_stock.onChange(res);
-            qty_in_stock.setEditable(false);
-        });
-    }
-
-    onChangeQtyIssued(el, val) {
-        const {execWhen} = this.props;
-        execWhen(() => this.refs.qty_received && this.refs.qty_issued && this.refs.qty_in_stock).then(list_ref => {
-            const {qty_received, qty_in_stock} = this.refs;
-            val = val || 0;
-            const res = (qty_received.hasValue ? qty_received.value : 0) - val;
-            qty_in_stock.setEditable(true);
-            qty_in_stock.onChange(res);
-            qty_in_stock.setEditable(false);
-        });
-    }
-
     onChangeDurationType(el, val) {
         this.state.duration_type = val;
     }
@@ -125,11 +99,11 @@ class Controls extends React.Component {
         }
         if (idx === 1) {
             if (!form.isValid('name')) {
-                infoDialog.open('Item Description is required');
+                infoDialog.open('PPE Type is required');
                 return;
             }
             if (!form.isValid('unit')) {
-                infoDialog.open('Item Unit is required');
+                infoDialog.open('Measurement Unit is required');
                 return;
             }
             if (form.isValid('duration_type') && !form.isValid('duration_value')) {
@@ -163,11 +137,11 @@ class Controls extends React.Component {
 
         //2
         if (!form.isValid('name')) {
-            infoDialog.open('Item Description is required');
+            infoDialog.open('PPE Type is required');
             return;
         }
         if (!form.isValid('unit')) {
-            infoDialog.open('Item Unit is required');
+            infoDialog.open('Measurement Unit is required');
             return;
         }
         if (form.isValid('duration_type') && !form.isValid('duration_value')) {
@@ -182,9 +156,6 @@ class Controls extends React.Component {
             //
             name,
             unit,
-            qty_received,
-            qty_issued,
-            qty_in_stock,
             duration_type,
             duration_value,
             notes,
@@ -197,9 +168,6 @@ class Controls extends React.Component {
         const data = {
             name,
             unit,
-            qty_received,
-            qty_issued,
-            qty_in_stock,
             duration_type,
             duration_value: isNumber(duration_value) && duration_value,
             notes,
@@ -270,21 +238,12 @@ class Controls extends React.Component {
                 <Row
                     rendered
                     idx={1}
-                    title="1. Item Details"
+                    title="1. PPE Type Details"
                 >
-                    <ClearableInput name="name" type="text" placeholder="Item Description"
+                    <ClearableInput name="name" type="text" placeholder="PPE Type"
                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="unit" type="text" placeholder="Item Unit" className="col-lg-12 form-control"
+                    <ClearableInput name="unit" type="text" placeholder="Measurement Unit" className="col-lg-12 form-control"
                                     onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_received" name="qty_received" type="number" placeholder="Quantity Received"
-                                    defaultValue={0} isClearable={false} className="col-lg-4 form-control"
-                                    onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_issued" name="qty_issued" type="number" placeholder="Quantity Issued"
-                                    defaultValue={0} isClearable={false} className="col-lg-4 form-control"
-                                    onChange={this.form.onChange}/>
-                    <ClearableInput ref="qty_in_stock" name="qty_in_stock" type="number" placeholder="Quantity In Stock"
-                                    defaultValue={0} isClearable={false} isEditable={false}
-                                    className="col-lg-4 form-control" onChange={this.form.onChange}/>
                     <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" vertical
                                     className="col-lg-12 form-control" onChange={this.form.onChange}
                                     values={this.state.lists.duration_type} returnValue/>
@@ -293,7 +252,7 @@ class Controls extends React.Component {
                                     onChange={this.form.onChange}/>
                     <UploadButton
                         name="profile_pic"
-                        buttonTitle="PPE Item Photo"
+                        buttonTitle="PPE Type Photo"
                         type={['Photo']}
                         showOnlyIcon
                         className="col-lg-6 col-xs-12 hor-center"

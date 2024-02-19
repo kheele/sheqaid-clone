@@ -2,7 +2,7 @@
 
 export default async (input: number) => {
   const findById = sockets.
-  of('structure-and-responsibility/job-appointments').
+  of('job-observations').
   fn('findByIdTemplate');
   
   return findById(input);

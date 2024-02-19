@@ -4,19 +4,19 @@ import {observer} from 'mobx-react';
 import {observable, computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
-import {Dates} from 'utils/Utils';
-import {AProfileDialog} from 'components/dialogs';
-import {ClearableInput, ProfileField, ProfilePic, RowOrgs, SelectGenderInput, UploadButton} from 'components/inputs';
+import {Dates} from '../../../../../../utils/Utils';
+import {AProfileDialog} from '../../../../../../components/dialogs';
+import {ClearableInput, ProfileField, ProfilePic, RowOrgs, SelectGenderInput, UploadButton} from '../../../../../../components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
     NewTeamListTable
-} from 'components/FormTableComponents';
-import {FormControls, Row} from 'components/FormComponents';
+} from '../../../../../../components/FormTableComponents';
+import {FormControls, Row} from '../../../../../../components/FormComponents';
 
 import style from "./ProfilePPEDialog.lazy.css";
-import findByIdPPE from "mutations/all/PPE/findByIdPPE";
-import updatePPE from "mutations/all/PPE/updatePPE";
+import findByIdPPE from "../../../../../../mutations/all/PPE/findByIdPPE";
+import updatePPE from "../../../../../../mutations/all/PPE/updatePPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -31,7 +31,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "PPE Item";
+        return "PPE Type";
     }
 
     get controls() {
@@ -74,9 +74,6 @@ class Controls extends React.Component {
                     client,
                     name,
                     unit,
-                    qty_received,
-                    qty_issued,
-                    qty_in_stock,
                     duration_type,
                     duration_value,
                     notes,
@@ -102,20 +99,17 @@ class Controls extends React.Component {
                 <Row
                     rendered
                     idx={1}
-                    title="1. Item Details"
+                    title="1. PPE Type Details"
                 >
-                    <ProfileField title="Item Description" value={name} className="col-lg-12"/>
-                    <ProfileField title="Item Unit" value={unit} className="col-lg-12"/>
-                    <ProfileField title="Quantity Received" value={qty_received} className="col-lg-4"/>
-                    <ProfileField title="Quantity Issued" value={qty_issued} className="col-lg-4"/>
-                    <ProfileField title="Quantity In Stock" value={qty_in_stock} className="col-lg-4"/>
+                    <ProfileField title="PPE Type" value={name} className="col-lg-12"/>
+                    <ProfileField title="Measurement Unit" value={unit} className="col-lg-12"/>
                     <ProfileField title="Duration" value={(duration_value && duration_type) || null}
                                   renderer={() => duration_value + '' + duration_type} className="col-lg-12"/>
                     <ProfileField title="Notes" value={notes} className="col-lg-12"/>
                     <UploadButton
                         name="profile_pic"
                         defaultValue={profile_pic}
-                        buttonTitle="PPE Item Photo"
+                        buttonTitle="PPE Type Photo"
                         type={['Photo']}
                         showOnlyIcon
                         readonly

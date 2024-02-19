@@ -20,12 +20,11 @@ class RenderRow extends React.Component {
                 profile_pic,
                 name,
                 unit,
-                qty_received,
-                qty_issued,
-                qty_in_stock,
                 team_list_aggregate,
                 department_list_aggregate,
-                job_position_list_aggregate
+                job_position_list_aggregate,
+                employee_list_aggregate,
+                ppe_item_list_aggregate,
             }
         } = item;
         return <TRow key={id} className="w-full">
@@ -36,13 +35,12 @@ class RenderRow extends React.Component {
                 </Clickable>
             </div>
             <div className="td">{name}</div>
-            <div className="td fixed-flex min-w-120">{unit}</div>
-            <div className="td fixed-flex min-w-120">{qty_received}</div>
-            <div className="td fixed-flex min-w-100">{qty_issued}</div>
-            <div className="td fixed-flex min-w-120">{qty_in_stock}</div>
+            <div className="td fixed-flex min-w-160">{unit}</div>
             <div className="td fixed-flex min-w-80">{team_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex min-w-110">{department_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex min-w-110">{job_position_list_aggregate.aggregate.count}</div>
+            <div className="td fixed-flex min-w-110">{employee_list_aggregate.aggregate.count}</div>
+            <div className="td fixed-flex min-w-110">{ppe_item_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>

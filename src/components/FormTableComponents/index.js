@@ -14,6 +14,7 @@ import NewPartItemOrderOrderedListTable from './NewPartItemOrderOrderedListTable
 import NewPartItemOrderApprovedListTable from './NewPartItemOrderApprovedListTable';
 import NewPPEItemListTable from './NewPPEItemListTable';
 import NewChemicalStockItemListTable from './NewChemicalStockItemListTable';
+import NewIssuePPEListTable from './NewIssuePPEListTable';
 import NewModuleListTable from './NewModuleListTable';
 
 import NewBillableCompanyListTable from './NewBillableCompanyListTable';
@@ -35,6 +36,7 @@ export {
     NewPartItemOrderApprovedListTable,
     NewPPEItemListTable,
     NewChemicalStockItemListTable,
+    NewIssuePPEListTable,
     NewModuleListTable,
     
     NewBillableCompanyListTable

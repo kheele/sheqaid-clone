@@ -511,17 +511,17 @@ exports.employee_details_fragment = `
     desc
     doc
   }
-  ppe_type_list_aggregate(where: {removed: {_eq: false}}){
+  ppe_type_list_aggregate(where: {ppe_type: {removed: {_eq: false}}}){
     aggregate{
       count
     }
   }
-  ppe_item_list_aggregate(where: {removed: {_eq: false}}){
+  ppe_item_list_aggregate(where: {ppe_item:{removed: {_eq: false}}}){
     aggregate{
       count
     }
   }
-  ppe_type_list(where: {removed: {_eq: false}}){
+  ppe_type_list(where: {ppe_type: {removed: {_eq: false}}}){
     id
     created_at
     ppe_type {
@@ -536,7 +536,7 @@ exports.employee_details_fragment = `
       profile_pic
     }
   }
-  ppe_item_list(where: {removed: {_eq: false}}){
+  ppe_item_list(where: {ppe_item:{removed: {_eq: false}}}){
     id
     created_at
     assignment_status

@@ -37,20 +37,20 @@ exports.getVariablesAndQueryConfig = (
 		if(auditor) {
 			filter.push(`
 				auditor_list:{
-	        _or:{
-	          employee:{
-	            _or:{
-	              fname: {_ilike: "%${auditor}%"},
-	              lname: {_ilike: "%${auditor}%"}
-	            }
-	          },
-	          other_person:{
-	            _or:{
-	              fname: {_ilike: "%${auditor}%"},
-	              lname: {_ilike: "%${auditor}%"}
-	            }
-	          }
-	        }
+	        _or:[
+	          {employee:{
+	            _or:[
+	              {fname: {_ilike: "%${auditor}%"}},
+	              {lname: {_ilike: "%${auditor}%"}}
+	            ]
+	          }},
+	          {other_person:{
+	            _or:[
+	              {fname: {_ilike: "%${auditor}%"}},
+	              {lname: {_ilike: "%${auditor}%"}}
+	            ]
+	          }}
+	        ]
 	      }
       `);
 		}

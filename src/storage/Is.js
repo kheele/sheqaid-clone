@@ -214,8 +214,8 @@ class Is {
         if (isAdminApp || !this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
-        const {claims: {access_type}} = this.storage.idTokenResult;
-        return access_type === 'ContractorUser';
+        const {claims: {aud, access_type}} = this.storage.idTokenResult;
+        return access_type === 'ContractorUser' || aud === "sheqassist-8e36a";
     }
 
     @computed
@@ -262,8 +262,8 @@ class Is {
         if (isAdminApp || !this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
-        const {claims: {access_type}} = this.storage.idTokenResult;
-        return access_type === 'User';
+        const {claims: {aud, access_type}} = this.storage.idTokenResult;
+        return access_type === 'User' || aud === "sheqsolve";
     }
 
     @computed
@@ -281,8 +281,8 @@ class Is {
         if (isAdminApp || !this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
-        const {claims: {access_type}} = this.storage.idTokenResult;
-        return access_type === 'Staff';
+        const {claims: {aud, access_type}} = this.storage.idTokenResult;
+        return access_type === 'Staff' || aud === "sheqassist-hr";//TODO: check employee aud
     }
 
     @computed

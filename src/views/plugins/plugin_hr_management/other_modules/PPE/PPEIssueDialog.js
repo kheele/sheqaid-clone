@@ -3,53 +3,40 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import {execWhen} from 'utils/Utils';
-import Form from 'utils/Form';
-import {ANewDialog} from 'components/dialogs';
 import {
+	Button,
 	ClearableInput,
 	SelectClientInput, SelectDepartmentInput, SelectEmployeeInput, SelectJobPositionInput,
 	SelectProjectInput,
 	SelectSiteInput,
 	SelectTeamInput
 } from 'components/inputs';
-import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./PPEIssueDialog.lazy.css";
+import {PPEIssueRenderRow} from "./PPEIssueComponents";
+import ADialogList from "views/ADialogList";
+import NavItem from "components/navs/NavItem";
+import {THead, TRow} from "components/tables";
+import APageListReadWrite from "views/APageListReadWrite";
+import {execWhen} from "utils/UtilsFuns";
 import MKBox from "components/MK/MKBox";
-import {EmployeePPEItemIssueTable} from "./PPEIssueComponents";
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="Dialog">
-@observer
-class NewDialog extends ANewDialog {
-	pageKey = "PPEIssueDialog";
-	
-	constructor(props) {
-		super(props, style);
-	}
-	
-	title() {
-		return "PPE Issue";
-	}
-	
-	get controls() {
-		return Controls;
-	}
-}
+import ViewByButtons from "components/ViewByButtons";
+import NewIssuePPEDialog from "./NewIssuePPEDialog";
 
 // </editor-fold>
 
 @observer
-class Controls extends React.Component {
-	
+class PPEIssueDialog extends ADialogList {
 	// <editor-fold defaultstate="collapsed" desc="fields">
+	path = "plugin_sheq_assist/employees/ppe/";
+	pageKey = "PPEIssueDialog";
+	title = "PPE Issue";
+	
 	@observable
 	state = {
-		employee_list: [],
-		team_list: [],
-		department_list: [],
-		job_position_list: [],
+		view: 'Employee',
+		expiry_date: 'ALL',
+		items: ["Employee", "Team", "Department", "Job Position", "PPE Type"],
 	};
 	// </editor-fold>
 	
@@ -57,205 +44,357 @@ class Controls extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		this.form = new Form();
-		this.form.addChangeOne("team_list", this.onChangeTeams.bind(this));
-		this.form.addChangeOne("department_list", this.onChangeDepartments.bind(this));
-		this.form.addChangeOne("job_position_list", this.onChangeJobPositions.bind(this));
+		this.onIssuePPE = this.onIssuePPE.bind(this);
+		this.onChangeInternal = this.onChangeInternal.bind(this);
+		
+		this.setView = this.setView.bind(this);
+		this.onView && (this.onView = this.onView.bind(this));
+		
 	}
+	
 	// </editor-fold>
 	
-	// <editor-fold defaultstate="collapsed" desc="onChange funs">
-	onChangeTeams(el, val) {
-		execWhen(() => this.refs.employee_ppe_item_issue).then(ref => {
-			this.state.team_list = val;
-			ref.onLoadList();
-		});
+	// <editor-fold defaultstate="collapsed" desc="mounts">
+	componentWillMount() {
+		style.use();
 	}
 	
-	onChangeDepartments(el, val) {
-		execWhen(() => this.refs.employee_ppe_item_issue).then(ref => {
-			this.state.department_list = val;
-			ref.onLoadList();
-		});
+	// <editor-fold defaultstate="collapsed" desc="componentDidMount">
+	componentDidMount() {
+		const {view, expiry_date} = this.state;
+		this.setView({view, expiry_date, load: false});
 	}
 	
-	onChangeJobPositions(el, val) {
-		execWhen(() => this.refs.employee_ppe_item_issue).then(ref => {
-			this.state.job_position_list = val;
-			ref.onLoadList();
-		});
-	}
 	// </editor-fold>
 	
-	// <editor-fold defaultstate="collapsed" desc="onSubmit">
-	onSubmit(e, btn, onSaved) {
-		const {form} = this;
-		
-		//1
-		if (!form.isValid('client')) {
-			infoDialog.open('Company is required');
-			return;
-		}
-		// if (!form.isValid('project')) {
-		//     infoDialog.open('Project is required');
-		//     return;
-		// }
-		// if (!form.isValid('site')) {
-		//     infoDialog.open('Site is required');
-		//     return;
-		// }
-		
-		//2
-		if (!form.isValid('name')) {
-			infoDialog.open('Item Description is required');
-			return;
-		}
-		if (!form.isValid('unit')) {
-			infoDialog.open('Item Unit is required');
-			return;
-		}
-		if (form.isValid('duration_type') && !form.isValid('duration_value')) {
-			infoDialog.open('Duration Value is required');
-			return;
-		}
-		
+	componentWillUnmount() {
+		style.unuse();
+	}
+	
+	// </editor-fold>
+	
+	//<editor-fold desc="onLoadList">
+	onLoadList(params = {}) {
+		const {state: {view, expiry_date: expiry_date_top_filter}} = this;
+		const {page, lastItem, filterData, filtered, isNew} = params;
 		const {
-			site,
-			project,
-			client,
+			client_id,
+			project_id,
+			site_id,
 			//
-			name,
-			unit,
-			qty_received,
-			qty_issued,
-			qty_in_stock,
-			duration_type,
-			duration_value,
-			notes,
-			profile_pic,
-			//
+			ppe_type_list,
 			team_list,
 			department_list,
-			job_position_list
-		} = form.data;
-		const data = {
-			name,
-			unit,
-			qty_received,
-			qty_issued,
-			qty_in_stock,
-			duration_type,
-			duration_value: isNumber(duration_value) && duration_value,
-			notes,
-			profile_pic: profile_pic && profile_pic.path,
-			
-			client_id: client && client.id,
-			project_id: project && project.id,
-			site_id: site && site.id,
-			
-			team_list: {
-				data: (team_list || []).map(v => {
-					if (v.team) {
-						return {team_id: v.team.id};
-					} else {
-						return {team_id: v.id};
-					}
-				}),
-			},
-			department_list: {
-				data: (department_list || []).map(v => {
-					if (v.department) {
-						return {department_id: v.department.id};
-					} else {
-						return {department_id: v.id};
-					}
-				}),
-			},
-			job_position_list: {
-				data: (job_position_list || []).map(v => {
-					if (v.job_position) {
-						return {job_position_id: v.job_position.id};
-					} else {
-						return {job_position_id: v.id};
-					}
-				}),
-			},
-		};
+			job_position_list,
+			employee_list,
+		} = filterData || {};
 		
-		console.log(data)
+		const loadBy = sockets.of("employees").fn("listByPPEIssue");
 		
-		btn.text("Saving...").disabled();
-		progressDialog.open();
-		insertPPE(data).then(res => {
-			console.log("res", res)
-			onSaved && onSaved(res);
-			infoDialog.open("Record successfully saved.");
-			infoDialog.close(2000);
-			this.props.close();
-		}).finally(() => {
-			btn.text("Save").enabled();
-			setTimeout(() => progressDialog.close());
+		return loadBy({
+			view,
+			//
+			client_id,
+			project_id,
+			site_id,
+			//
+			ppe_type_list,
+			team_list,
+			department_list,
+			job_position_list,
+			employee_list,
+			//
+			exact_orgs: true,
+			//
+			offset: this.refs.root.list.length,
+		}).then((res) => {
+			console.log('onLoadList res', res)
+			return res;
 		});
 	}
 	
-	// </editor-fold>
+	//</editor-fold>
 	
-	// <editor-fold defaultstate="collapsed" desc="render">
-	render() {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			},
-			state
-		} = this;
+	//<editor-fold desc="setView">
+	async setView({view = 'Employee', expiry_date = 'ALL', load = true}) {
+		let ref;
+		if (this.refs.viewButtonsRefBox) {
+			ref = this.refs.viewButtonsRefBox;
+		} else {
+			ref = await execWhen(() => this.refs.viewButtonsRefBox);
+		}
 		
-		return <FormControls>
-			<Row
-				active
-				rendered
-				idx={0}
-				title="Company / Project / Site"
-				onFormOpen={onFormOpen}
-				onFormNext={onFormNext}
-			>
-				<SelectClientInput name="client" placeholder="Company..." required className="col-lg-12 form-control"
-				                   onChange={this.form.onChange}/>
-				<SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
-				                    onChange={this.form.onChange}/>
-				<SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
-				                 onChange={this.form.onChange}/>
-			</Row>
-			<Row
-				rendered
-				idx={1}
-				title="1. PPE Issue"
-				onFormOpen={onFormOpen}
-				onFormBack={onFormBack}
-			>
-				<MKBox
-					className="filter-section grid-2 grid-gap-10"
-					sx={{background: '#eee', m: '5px 10px 10px 0', p: '10px',}}
-				>
-					<SelectDepartmentInput name="department_list" type="select_multi" placeholder="Department(s)..." onChange={this.form.onChange}/>
-					<SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." onChange={this.form.onChange}/>
-					<SelectTeamInput name="team_list" type="select_multi" placeholder="Team(s)..." onChange={this.form.onChange}/>
-					<SelectEmployeeInput name="employee_list" type="select_multi" placeholder="Employee(s)..." onChange={this.form.onChange}/>
-				</MKBox>
-				
-				<hr className="margin-0"/>
-				
-				<EmployeePPEItemIssueTable
-					ref="employee_ppe_item_issue"
-					name="employee_ppe_item_issue"
-					state={state}
-					onChange={this.form.onChange}
-				/>
-			</Row>
-		</FormControls>;
+		const {view: old_view, expiry_date: old_expiry_date,} = this.state;
+		
+		console.log('setView', this);
+		console.log('setView view', old_view, view);
+		console.log('setView expiry_date', old_expiry_date, expiry_date);
+		
+		if (old_view !== view || old_expiry_date !== expiry_date) {
+			const filterWrapper = await execWhen(() => this.refs.root.refs.filterWrapper);
+			if (filterWrapper.isOpen) {
+				await filterWrapper.close();
+			}
+		}
+		
+		ref.setView(view);
+		this.state.view = view;
+		this.state.expiry_date = expiry_date;
+		
+		if (load) {
+			this.refs.root.load();
+		}
+	}
+	
+	//</editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="onView">
+	onView(e, el) {
+		const {idx} = el.props;
+		const {list} = this.refs.root;
+		const item = list[idx];
+		console.log("list", this.isEmployee, list.slice())
+		const dialog = this.refs.root.getDialogByRef('profileDialog');
+		if (dialog) {
+			if (this.isEmployee) {
+				dialog.open(item);
+			} else {
+				const {data: {employee: employeeItem}} = item;
+				dialog.extraProp('activeId', item.id).open(employeeItem);
+			}
+		}
 	}
 	
 	// </editor-fold>
+	
+	get view() {
+		return this.state.view;
+	}
+	
+	get isEmployee() {
+		return this.view === 'Employee';
+	}
+	
+	get isTeam() {
+		return this.view === 'Team';
+	}
+	
+	get isDepartment() {
+		return this.view === 'Department';
+	}
+	
+	get isJobPosition() {
+		return this.view === 'Job Position';
+	}
+	get isPPEType() {
+		return this.view === 'PPE Type';
+	}
+	
+	onIssuePPE(evt, btn) {
+		const {idx} = btn.props;
+		const item = this.refs.root.list[idx];
+		this.refs.newIssuePPEDialog.open(item);
+	}
+	
+	//<editor-fold desc="onChangeInternal">
+	onChangeInternal(val) {
+		const {name, onChange, disableOneChange} = this.props;
+		const {list} = this;
+		// list.sortBy('key.value');
+		// list.sortBy('module.title');
+		this.onChange(list, name, this);
+		
+		if (disableOneChange) {
+			onChange && onChange(toJS(list), name, this);
+		} else {
+			const {item, action, oldVal, newVal, onComplete} = val;
+			onChange && onChange({list: toJS(list), item, action, oldVal, newVal, onComplete}, name, this);
+		}
+	}
+	
+	//</editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
+	renderLeftButtons() {
+		const w = $(window).width();
+		const fontSizeClass = w < 1100 ? "font-size-12 " : "";
+		
+		return <div className="left-buttons pull-left">
+			<Button className="btn btn-primary pull-right" onClick={this.onSignatures}>
+				Signatures
+			</Button>
+			<Button className={fontSizeClass + " btn btn-primary pull-right _888"} onClick={this.onViewPPEIssue}>
+				Export PPE Item
+			</Button>
+			<Button className={fontSizeClass + " btn btn-primary pull-right _888"} onClick={this.onViewPPEIssue}>
+				Export PPE Type
+			</Button>
+		</div>;
+	}
+	
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="renderRightButtons">
+	renderRightButtons() {
+		const w = $(window).width();
+		const fontSizeClass = w < 1100 ? "font-size-12 " : "";
+		
+		return <div className="left-buttons pull-left">
+			<Button className={fontSizeClass + " btn btn-primary pull-right _888"} onClick={this.onViewPPEIssue}>
+				Issue PPE
+			</Button>
+			<Button className="btn btn-primary pull-right" onClick={this.onSignatures}>
+				Create PPE Item
+			</Button>
+			<Button className="btn btn-primary pull-right" onClick={this.onSignatures}>
+				Create PPE Type
+			</Button>
+		</div>;
+	}
+	
+	// </editor-fold>
+	
+	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
+		const permissionKey = "PPE";
+		return <Options idx={idx} permissionModKey={permissionKey}>
+			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View Employee"/>
+			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
+			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
+		</Options>;
+	}
+	
+	//<editor-fold desc="renderFilterNode">
+	renderFilterNode(onChange) {
+		return <div className="col-lg-12 controls grid-4 grid-gap-10">
+			<SelectClientInput name="client" placeholder="Company..." required className="col-lg-12 form-control"
+			                   onChange={onChange}/>
+			<SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
+			                    onChange={onChange}/>
+			<SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
+			                 onChange={onChange}/>
+			<SelectDepartmentInput name="department_list" type="select_multi" placeholder="Department(s)..."
+			                       className="form-control"
+			                       onChange={onChange}/>
+			<SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
+			                        className="form-control"
+			                        onChange={onChange}/>
+			<SelectTeamInput name="team_list" type="select_multi" placeholder="Team(s)..." className="form-control"
+			                 onChange={onChange}/>
+			<SelectEmployeeInput name="employee_list" type="select_multi" placeholder="Employee(s)..."
+			                     className="form-control" onChange={onChange}/>
+			<ClearableInput name="name" type="text" placeholder="PPE Type" className="form-control"
+			                onChange={onChange}/>
+		</div>;
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="renderTHead">
+	renderTHead() {
+		const {readonly, disableOneChange} = this.props;
+		return <THead>
+			<div className="td fixed-flex min-w-60">ID</div>
+			<div className="td">Employee</div>
+			<div className="td">Job Position</div>
+			<div className="td">Department</div>
+			<div className="td">Team</div>
+			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-160"/>
+		</THead>;
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="renderItem">
+	renderItem(n, onClick) {
+		const item = this.refs.root.list[n];
+		return <PPEIssueRenderRow key={item.id} idx={n} item={item} view={this.view} onIssuePPE={this.onIssuePPE} onView={this.refs.root.onView} onClick={onClick}/>;
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="renderPage">
+	renderPage() {
+		const {state, state: {expiry_date}} = this;
+		
+		return <>
+			<ViewByButtonsBox
+				ref="viewButtonsRefBox"
+				state={state}
+				expiry_date={expiry_date}
+				onChange={this.setView}
+			/>
+			<APageListReadWrite
+				ref="root"
+				page={this}
+				hasBackBtn={false}
+				createBtnTitle="Create"
+				pageId={this.pageKey + '-page'}
+				listCountTopTitle="ppe type"
+				pageTitleSingular="ppe type"
+				onLoadList={this.onLoadList}
+				noAnimation={true}
+				renderPopoverOptions={this.renderPopoverOptions}
+				renderFilterNode={this.renderFilterNode}
+				renderTHead={this.renderTHead}
+				renderItem={this.renderItem}>
+				<NewIssuePPEDialog ref="newIssuePPEDialog"/>
+				
+				{/*<NewPPEDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>*/}
+				{/*<ProfilePPEDialog ref="profileDialog"/>*/}
+				{/*<EditPPEDialog ref="editDialog"/>*/}
+				
+				{/*<NewPPEItemDialog ref="newItemDialog" onSetSignatureSettings={this.onSignatures}/>*/}
+				{/*<ProfilePPEItemDialog ref="profileItemDialog"/>*/}
+				{/*<EditPPEItemDialog ref="editItemDialog"/>*/}
+				
+				{/*<PPEIssueDialog ref="ppeIssueDialog"/>*/}
+				
+				{/*<SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module="PPE"/>*/}
+			</APageListReadWrite>
+		</>;
+	}
+	
+	//</editor-fold>
 	
 }
 
-export default NewDialog;
+// <editor-fold defaultstate="collapsed" desc="ViewByButtonsBox">
+@observer
+class ViewByButtonsBox extends React.Component {
+	
+	// <editor-fold defaultstate="collapsed" desc="constructor">
+	constructor(props) {
+		super(props);
+		
+		this.setView = this.setView.bind(this);
+	}
+	
+	// </editor-fold>
+	
+	setView(value) {
+		execWhen(() => this.viewButtonsRef).then(ref => {
+			ref.setView(value);
+		});
+	}
+	
+	render() {
+		const {state: {view, items}, expiry_date, onChange} = this.props;
+		return <MKBox
+			width="100%"
+			display="flex"
+			alignItems="center"
+			justifyContent="center"
+			margin='10px 0 0px'
+			padding="0 0 10px"
+			borderBottom="2px solid #ebebeb"
+		>
+			<ViewByButtons ref={ref => {
+				this.viewButtonsRef = ref;
+			}} expiry_date={expiry_date} value={view} onChange={onChange} items={items}/>
+		</MKBox>
+	}
+}
+
+// </editor-fold>
+
+export default PPEIssueDialog;

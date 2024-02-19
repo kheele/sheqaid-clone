@@ -49,6 +49,7 @@ class Stats extends React.Component {
 
     @computed get question_list() {
         let {ques, question_list} = this.props;
+        console.log('question_list', ques, question_list);
         return new Promise(async (resolve, reject) => {
             question_list = question_list || ques.question_list;
             resolve(question_list.

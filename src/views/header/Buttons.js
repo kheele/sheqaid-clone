@@ -12,7 +12,7 @@ import {calculateRightPos, Permissions} from 'utils/Utils';
 import NewAttendanceDialog from 'views/plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceDialog.js';
 import NewAttendanceSelfDialog
     from 'views/plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceSelfDialog.js';
-import NewPPERegisterDialog from 'views/plugins/plugin_hr_management/other_modules/PPE/NewPPERegisterDialog.js';
+// import NewPPERegisterDialog from 'views/plugins/plugin_hr_management/other_modules/PPE/NewPPERegisterDialog.js';
 
 import NewScreeningDialog from 'views/plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
 import NewIncidentQuickDialog
@@ -285,7 +285,7 @@ class SelectShortcutsBtn extends React.Component {
         const path = 'plugin_sheq_assist/';
         return <React.Fragment>
             {/*<NewPlannedJobObservationDialog ref="newPlannedJobObservationDialog"/>*/}
-            <NewPPERegisterDialog ref="newPPERegisterDialog"/>
+            {/*<NewPPERegisterDialog ref="newPPERegisterDialog"/>*/}
             <NewScreeningDialog ref="newScreeningDialog"/>
             <NewIncidentQuickDialog ref="newQuickIncidentDialog"/>
             <NewIncidentDialog ref="newIncidentDialog"/>

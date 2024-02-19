@@ -1,4 +1,4 @@
-@import '../../../../../css/AProfileDialog.css';
+@import '../../../../../../css/AProfileDialog.css';
 
 #dialog-overlay.ProfilePPEDialog-profile-dialog .dialog-container{
     height: calc(100% - 35px);

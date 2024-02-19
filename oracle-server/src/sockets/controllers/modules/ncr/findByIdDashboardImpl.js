@@ -16,7 +16,7 @@ module.exports = async (socket, data) => {
 		tbl = "default_companies";
 	}
 	
-	const due_date = now;
+	const due_date = Dates.formatDateSQL(now);
 	
 	const monStart = range_start || now.addMonths(-12);
 	const monEnd = range_end || now;

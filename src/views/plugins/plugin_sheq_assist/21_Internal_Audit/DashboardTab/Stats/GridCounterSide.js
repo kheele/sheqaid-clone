@@ -41,7 +41,7 @@ function Counter({background, title, count, value, label, color, sx}) {
 //<editor-fold desc="GridCounter">
 const Comp = forwardRef(({data: __data}, ref) => {
 	const [data, setData] = useState(__data || DATA_LOAD_STATUS.LOADING);
-
+	
 	// <editor-fold desc="useImperativeHandle funs">
 	useImperativeHandle(ref, () => ({
 		setData: (value) => {
@@ -49,48 +49,43 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		},
 	}));
 	// </editor-fold>
-
-	if (data === DATA_LOAD_STATUS.LOADING) {
+	
+	if(data === DATA_LOAD_STATUS.LOADING) {
 		return <div className="stats-count grid-1 grid-gap-10 margin-b-10 h-100">
-			<CircularProgress/>
+			<CircularProgress />
 		</div>;
 	}
-
-	if (data === DATA_LOAD_STATUS.ERROR) {
+	
+	if(data === DATA_LOAD_STATUS.ERROR) {
 		return null;
 	}
-
+	
 	const [item = {}] = data;
-
+	
 	const defaults = {aggregate: {count: 0}};
+	
 	const {
-		doc_type_unclassified_incident_list_aggregate = defaults,
-		all_project_plan_list_aggregate = defaults,
-		all_ims_policy_list_aggregate = defaults,
-		doc_type_company_certificate_list_aggregate = defaults,
-		doc_type_company_insurance_list_aggregate = defaults,
-		doc_type_company_registration_list_aggregate = defaults,
-		doc_type_company_regulatory_body_list_aggregate = defaults,
+		priority_non_ncr_list_aggregate = defaults,
+		priority_low_ncr_list_aggregate = defaults,
+		priority_medium_ncr_list_aggregate = defaults,
+		priority_high_ncr_list_aggregate = defaults,
+		priority_critical_ncr_list_aggregate = defaults,
 	} = item;
-
-	const total = doc_type_unclassified_incident_list_aggregate.aggregate.count +
-		all_project_plan_list_aggregate.aggregate.count +
-		all_ims_policy_list_aggregate.aggregate.count +
-		doc_type_company_certificate_list_aggregate.aggregate.count +
-		doc_type_company_insurance_list_aggregate.aggregate.count +
-		doc_type_company_registration_list_aggregate.aggregate.count +
-		doc_type_company_regulatory_body_list_aggregate.aggregate.count;
-
-	const doc_type_unclassified_incident_list_aggregate_perc = ((doc_type_unclassified_incident_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const all_project_plan_list_aggregate_perc = ((all_project_plan_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const all_ims_policy_list_aggregate_perc = ((all_ims_policy_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const doc_type_company_certificate_list_aggregate_perc = ((doc_type_company_certificate_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const doc_type_company_insurance_list_aggregate_perc = ((doc_type_company_insurance_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const doc_type_company_registration_list_aggregate_perc = ((doc_type_company_registration_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-	const doc_type_company_regulatory_body_list_aggregate_perc = ((doc_type_company_regulatory_body_list_aggregate.aggregate.count / total) * 100).toFixed(1);
-
+	
+	const total = priority_non_ncr_list_aggregate.aggregate.count +
+		priority_low_ncr_list_aggregate.aggregate.count +
+		priority_medium_ncr_list_aggregate.aggregate.count +
+		priority_high_ncr_list_aggregate.aggregate.count +
+		priority_critical_ncr_list_aggregate.aggregate.count;
+	
+	const priority_non_ncr_list_aggregate_perc = ((priority_non_ncr_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	const priority_low_ncr_list_aggregate_perc = ((priority_low_ncr_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	const priority_medium_ncr_list_aggregate_perc = ((priority_medium_ncr_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	const priority_high_ncr_list_aggregate_perc = ((priority_high_ncr_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	const priority_critical_ncr_list_aggregate_perc = ((priority_critical_ncr_list_aggregate.aggregate.count / total) * 100).toFixed(1);
+	
 	console.log('data', data)
-
+	
 	return <>
 		<Grid
 			container
@@ -100,182 +95,136 @@ const Comp = forwardRef(({data: __data}, ref) => {
 			sx={{m: '0 !important', mt: '10px !important', justifyItems: 'center',}}
 		>
 			<DefaultDoughnutChart
-				title="Document Category"
+				title="Priority"
 				width="calc(100% - 10px)"
 				height="260px"
 				chart={{
-					labels: ['Unclassified', 'Project Plans', 'IMS Policies', 'Company Certificate', 'Company Insurance', 'Company Registration', 'Company Regulatory Body'],
+					labels: ['Unclassified', 'Low', 'Medium', 'High', 'Critical'],
 					datasets: {
-						label: "Document Categories",
-						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'info', 'error', 'dark'],
+						label: "Risk Rating",
+						backgroundColors: ['secondary', 'success', 'warning', 'primary', 'error'],
 						data: [
-							getDashboardCounter(doc_type_unclassified_incident_list_aggregate),
-							getDashboardCounter(all_project_plan_list_aggregate),
-							getDashboardCounter(all_ims_policy_list_aggregate),
-							getDashboardCounter(doc_type_company_certificate_list_aggregate),
-							getDashboardCounter(doc_type_company_insurance_list_aggregate),
-							getDashboardCounter(doc_type_company_registration_list_aggregate),
-							getDashboardCounter(doc_type_company_regulatory_body_list_aggregate),
+							getDashboardCounter(priority_non_ncr_list_aggregate),
+							getDashboardCounter(priority_low_ncr_list_aggregate),
+							getDashboardCounter(priority_medium_ncr_list_aggregate),
+							getDashboardCounter(priority_high_ncr_list_aggregate),
+							getDashboardCounter(priority_critical_ncr_list_aggregate),
 						],
 					},
 					cutout: 60
 				}}
 			/>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
 					background: "rgba(25, 25, 25, 0.5)",
 				}}
 			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
 					color: "rgb(217, 217, 217)",
 					textTransform: "uppercase",
 				}}>
-					Unclassified
+					Unclassified Priority
 				</MKBox>
 				<MKBox
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${getDashboardCounter(doc_type_unclassified_incident_list_aggregate_perc)}%`}/>
+					         value={`${getDashboardCounter(priority_non_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={getDashboardCounter(doc_type_unclassified_incident_list_aggregate)}/>
+					         count={getDashboardCounter(priority_non_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
 					background: "rgba(25, 25, 25, 0.5)",
 				}}
 			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
 					color: "rgb(217, 217, 217)",
 					textTransform: "uppercase",
 				}}>
-					Project Plans
+					Low Priority
 				</MKBox>
 				<MKBox
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${getDashboardCounter(all_project_plan_list_aggregate_perc)}%`}/>
+					         value={`${getDashboardCounter(priority_low_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={getDashboardCounter(all_project_plan_list_aggregate)}/>
+					         count={getDashboardCounter(priority_low_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
 					background: "rgba(25, 25, 25, 0.5)",
 				}}
 			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
 					color: "rgb(217, 217, 217)",
 					textTransform: "uppercase",
 				}}>
-					IMS Policies
+					Medium Priority
 				</MKBox>
 				<MKBox
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${getDashboardCounter(all_ims_policy_list_aggregate_perc)}%`}/>
+					         value={`${getDashboardCounter(priority_medium_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={getDashboardCounter(all_ims_policy_list_aggregate)}/>
+					         count={getDashboardCounter(priority_medium_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
 					background: "rgba(25, 25, 25, 0.5)",
 				}}
 			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
 					color: "rgb(217, 217, 217)",
 					textTransform: "uppercase",
 				}}>
-					Company Certificate
+					High Priority
 				</MKBox>
 				<MKBox
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${getDashboardCounter(doc_type_company_certificate_list_aggregate_perc)}%`}/>
+					         value={`${getDashboardCounter(priority_high_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={getDashboardCounter(doc_type_company_certificate_list_aggregate)}/>
+					         count={getDashboardCounter(priority_high_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 			<MKBox
 				className="flex w-full grid-gap-10 border-radius-20"
 				sx={{
 					background: "rgba(25, 25, 25, 0.5)",
 				}}
 			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
+				<MKBox className="font-size-20 padding-v-10 padding-l-20 flex flex-align-center" sx={{
 					color: "rgb(217, 217, 217)",
 					textTransform: "uppercase",
 				}}>
-					Company Insurance
+					Critical Priority
 				</MKBox>
 				<MKBox
 					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
 				>
 					<Counter background="transparent"
-					         value={`${getDashboardCounter(doc_type_company_insurance_list_aggregate_perc)}%`}/>
+					         value={`${getDashboardCounter(priority_critical_ncr_list_aggregate_perc)}%`}/>
 					<Counter background="#66BB6A"
-					         count={getDashboardCounter(doc_type_company_insurance_list_aggregate)}/>
+					         count={getDashboardCounter(priority_critical_ncr_list_aggregate)}/>
 				</MKBox>
 			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
-			<MKBox
-				className="flex w-full grid-gap-10 border-radius-20"
-				sx={{
-					background: "rgba(25, 25, 25, 0.5)",
-				}}
-			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
-					color: "rgb(217, 217, 217)",
-					textTransform: "uppercase",
-				}}>
-					Company Registration
-				</MKBox>
-				<MKBox
-					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
-				>
-					<Counter background="transparent"
-					         value={`${getDashboardCounter(doc_type_company_registration_list_aggregate_perc)}%`}/>
-					<Counter background="#66BB6A"
-					         count={getDashboardCounter(doc_type_company_registration_list_aggregate)}/>
-				</MKBox>
-			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
-			<MKBox
-				className="flex w-full grid-gap-10 border-radius-20"
-				sx={{
-					background: "rgba(25, 25, 25, 0.5)",
-				}}
-			>
-				<MKBox className="font-size-17 padding-v-10 padding-l-20 flex flex-align-center" sx={{
-					color: "rgb(217, 217, 217)",
-					textTransform: "uppercase",
-				}}>
-					Company Regulatory Body
-				</MKBox>
-				<MKBox
-					className="fixed-flex flex min-w-130 grid-gap-5 -margin-t-5 -margin-r-5 -margin-b-5"
-				>
-					<Counter background="transparent"
-					         value={`${getDashboardCounter(doc_type_company_regulatory_body_list_aggregate_perc)}%`}/>
-					<Counter background="#66BB6A"
-					         count={getDashboardCounter(doc_type_company_regulatory_body_list_aggregate)}/>
-				</MKBox>
-			</MKBox>
-			<Divider sx={{m: '0.1rem 0'}}/>
+			<Divider sx={{m: '0.91rem 0'}}/>
 		</Grid>
 	</>;
 });
@@ -287,4 +236,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

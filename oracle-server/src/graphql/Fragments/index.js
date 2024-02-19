@@ -110,6 +110,10 @@ const employee_personal_details_fragment = `
       id
       name
     }
+    team{
+      id
+      name
+    }
     linked_user_id
     linked_user{
       id

@@ -1,5 +1,5 @@
 import PPEDialog from './PPEDialog';
-import ProfilePPEDialog from './ProfilePPEDialog';
+import ProfilePPEDialog from './PPEDialog/ProfilePPEDialog';
 import ViewPPETab from './ViewPPETab';
 
 export {
