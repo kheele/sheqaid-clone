@@ -22,6 +22,7 @@ class Socket {
 						excContractors,
 						exact_orgs,
 						exact_orgs_company,
+						contractor_site_id_key,
 					} = data;
 					const orgs_filter = orgsFilter({
 						site_id,
@@ -31,6 +32,7 @@ class Socket {
 						excContractors,
 						exact_orgs,
 						exact_orgs_company,
+						contractor_site_id_key,
 					});
 					
 					data = {...data, orgs_filter};

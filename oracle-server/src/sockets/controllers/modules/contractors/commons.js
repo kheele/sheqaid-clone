@@ -15,6 +15,8 @@ exports.getVariablesAndQueryConfig = (
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
+		//
+		contractor_site_id_key = "site_id",
 	}
 ) => {
 	//<editor-fold desc="variables, filters">
@@ -35,11 +37,11 @@ exports.getVariablesAndQueryConfig = (
 		const site_id_fn = (site_id) => {
 			if (site_id) {
 				if (sess_my_site_id || exact_orgs) {
-					return `, site_id: {_eq: ${site_id}}`;
+					return `, ${contractor_site_id_key}: {_eq: ${site_id}}`;
 				} else {
 					return `, _or: [
-					{site_id: {_eq: ${site_id}}},
-					{site_id: {_is_null: true}}
+					{${contractor_site_id_key}: {_eq: ${site_id}}},
+					{${contractor_site_id_key}: {_is_null: true}}
 				]`;
 				}
 			}
@@ -155,6 +157,7 @@ exports.contractor_details_fragment = (data) => {
 	if(data) {
 		const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = data;
 		const {client_id, project_id, site_id} = data;
+		const {contractor_site_id_key = "site_id"} = data;
 		
 		const company_id = sess_company_id;
 		

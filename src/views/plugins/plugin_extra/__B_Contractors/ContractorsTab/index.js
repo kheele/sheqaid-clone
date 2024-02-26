@@ -76,6 +76,7 @@ class ContractorsTab extends React.Component {
         const listByLogged = sockets.of('contractors').fn('listByLogged');
         
         return listByLogged({
+            contractor_site_id_key: selectedSite ? "id" : "site_id",
             hasProjects,
             isConsultant,
             sess_company_id,
