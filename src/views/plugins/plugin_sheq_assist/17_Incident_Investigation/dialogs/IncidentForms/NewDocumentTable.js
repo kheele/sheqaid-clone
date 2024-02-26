@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from "mobx-react";
-import {observable} from "mobx";
+import {computed, extendObservable, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 import {ATableSavable, Table, TBody, THead, TRow} from "components/tables";
@@ -16,17 +16,6 @@ class NewDocumentTable extends ATableSavable {
 	@observable
 	selfState = {
 		lists: {
-			type: [
-				'Clearance Certificate',
-				'Vehicle Registration Certificate',
-				'Work Manual',
-				'Work Procedure',
-				'Break Test Report',
-				'Certificate of Fitness (C.O.F)',
-				'Invoice',
-				'Vehicle License',
-				'LUX Test Report',
-			]
 		}
 	};
 	
