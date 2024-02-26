@@ -188,7 +188,7 @@ class NewDocumentTable extends ATableSavable {
 	render() {
 		const {readonly} = this.props;
 		return (<Table
-			className={`NewDocumentTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0`}>
+			className={`NewDocumentTable pull-left w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0`}>
 			<THead className="align-left">
 				<div className="td fixed-flex min-w-20">#</div>
 				<div className="td fixed-flex min-w-200 font-size-14">Document</div>
