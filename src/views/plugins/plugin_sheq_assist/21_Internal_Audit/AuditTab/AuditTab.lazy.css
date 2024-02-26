@@ -1,8 +1,11 @@
 #AuditTab-tab {
 
 }
+#AuditTab-tab .page-title > .tabled-top-panel > .buttons{
+    min-width: 263px;
+}
 #AuditTab-tab .page-title > .tabled-top-panel > .buttons > .left-buttons {
-    margin-top: -26px !important;
+    margin-top: 8px !important;
 }
 #AuditTab-tab .table{
     width: 100%;

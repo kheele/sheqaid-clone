@@ -11,10 +11,12 @@ import {ProfileField, ProfilePic} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
+import updateClient from "mutations/all/Client/updateClient";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Clients";
+    removeById = updateClient;
 
     constructor(props) {
         super(props, style);

@@ -102,8 +102,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -132,7 +130,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		type_preventative_action_ncr_list_aggregate = defaults,
 		type_opportunity_for_improver_ncr_list_aggregate = defaults,
 		type_non_ncr_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	return <Grid
 		container

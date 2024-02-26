@@ -63,6 +63,11 @@
         return /^\[object\s(?:Blob|.+Array)\]$/.test(Object.prototype.toString.call($this));
     };
 
+    self.isDataURI = function ($this) {
+        const dataUriRegex = /^\s*data:([a-z]+\/[a-z0-9-+.]+(;[a-z-]+=[a-z0-9-]+)?)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)\s*$/i;
+        return dataUriRegex.test(Object.prototype.toString.call($this));
+    };
+
     self.forEach = function (self, param, callback, doneCallback) {
         if (param && isFunction(param)) {
             doneCallback = callback;

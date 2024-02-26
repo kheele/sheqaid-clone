@@ -308,16 +308,17 @@ class DefinitionsTable extends ATableSavable {
 		super(props);
 	}
 	
-	onPostChange(val, name, el) {
-		if(!val) {
-			return;
-		}
-		
-		const {idx} = el.props;
-		this.onClick(null, {
-			props: {action: "save", idx},
-		});
-	}
+	// onClickComplete(e, el) {
+	// 	let {action, idx, item} = el.props;
+	// // onPostChange(val, name, el) {
+	// 	if(!val) {
+	// 		return;
+	// 	}
+	//
+	// 	this.onClick(null, {
+	// 		props: {action: "save", idx},
+	// 	});
+	// }
 	
 	renderItem(n, onClick) {
 		const item = this.state.list[n];

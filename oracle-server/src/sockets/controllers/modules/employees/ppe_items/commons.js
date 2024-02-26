@@ -77,6 +77,7 @@ exports.ppe_item_one_details_fragment = `
   ppe_type{
     id
     name
+    unit
   }
 
   employee_list{
@@ -107,6 +108,7 @@ exports.ppe_item_details_fragment = `
   ppe_type{
     id
     name
+    unit
   }
 
   employee_list_aggregate{

@@ -42,7 +42,7 @@ global.getTriggeredEventsData = (body, name) => {
 
     const {
         table: {
-            table_name,//sheq_chemical_sds
+            table_name,
             schema,
             old_item,
             new_item,

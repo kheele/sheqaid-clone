@@ -3,6 +3,7 @@ import {findDOMNode} from "react-dom";
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
 import WebWorker from "../web-worker/WebWorker";
 import {Dates} from "./Dates";
+import mime from "mime";
 
 function findReactComponent(el) {
     for (const key in el) {
@@ -28,7 +29,10 @@ async function convertMobx(arg) {
     if(arg === null || arg === undefined) return arg;
 
     if(arg && (isFile(arg) || isFile(arg.path))) {
-        return await toDataURI(arg);
+        const file = isFile(arg) ? arg : arg.path;
+        const {type: contentType} = file;
+        return {contentType, buffer: file};
+        // return {contentType, datauri: await toDataURI(arg)};
     }
     if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);

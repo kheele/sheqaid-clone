@@ -21,6 +21,7 @@ import {
 } from 'components/inputs';
 import {FormControls, Fragment, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
+import NewDocumentTable from "./NewDocumentTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="newRender">
@@ -67,10 +68,11 @@ const newRender = function () {
 				<ClearableInput name="exact_location" type="textarea" placeholder="Exact Location"
 				                className="col-lg-12 form-control" onChange={this.form.onChange}/>
 
-				<label className="col-lg-12 margin-t-15">Attach Relevant Documents/Files</label>
-				<AddFilesGridViewInput name="document_list" title="Add Document/File"
-				                       className="padding-t-40 margin-0 -margin-t-40 col-lg-12 pull-left"
-				                       onChange={this.form.onChange}/>
+				<label className="col-lg-12 margin-t-15">Relevant Documents/Files</label>
+				{/*<AddFilesGridViewInput name="document_list" title="Add Document/File"*/}
+				{/*                       className="padding-t-40 margin-0 -margin-t-40 col-lg-12 pull-left"*/}
+				{/*                       onChange={this.form.onChange}/>*/}
+				<NewDocumentTable ref="document_list" name="document_list" onChange={this.form.onChange}/>
 			</Row>
 			<Row
 				rendered

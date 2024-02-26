@@ -276,10 +276,7 @@ module.exports = async (socket, data) => {
 			operationName: "findByIdOrgIncidentsDashboardQuery",
 		}),
 		...dateRangeQueries,
-	]).then(res => {
-		console.log(res);
-		return res;
-	});
+	]).then(res => res.reduce((o, a) => ({...o, ...a}), {}));
 	
 	// return getGraphQLOne({
 	// 	multi_queries: true,

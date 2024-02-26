@@ -23,8 +23,6 @@ const labels = {
 };
 //</editor-fold>
 
-console.log('style', style);
-
 //<editor-fold desc="ReportsLineChartWrapper">
 function ReportsLineChartWrapper({desc, data: _data, color, percColor, title, percLabel}) {
 	const [data, setData] = useState(null);
@@ -169,7 +167,6 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 	
-	const [item = {}] = data;
 	// _2022_Aug__all_non_conformance_list_aggregate,
 	//
 	// _2022_Aug__source_site_audit_non_conformance_list_aggregate,
@@ -188,11 +185,11 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 	// _2022_Aug__type_opportunity_for_improver_non_conformance_list_aggregate,
 	// _2022_Aug__type_non_non_conformance_list_aggregate,
 	
-	const list = Object.keys(item).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
+	const list = Object.keys(data).filter(key => key.startsWith('_') && key.contains('__')).map(key => {
 		const parts = key.split('__');
 		const year = parts[0].split('_')[1];
 		const month = parts[0].split('_')[2];
-		return {key: parts[1].split('_non_conformance')[0], year, month, count: item[key].aggregate.count};
+		return {key: parts[1].split('_non_conformance')[0], year, month, count: data[key].aggregate.count};
 	});
 	
 	const list_all = list.filter(({key}) => key === 'all');

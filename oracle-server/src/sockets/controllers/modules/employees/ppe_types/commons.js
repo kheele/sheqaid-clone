@@ -87,16 +87,13 @@ exports.ppe_type_one_details_fragment = `
   
   ppe_item_list{
     id
-    ppe_item{
-      id
-      created_at
-      removed
-      serial_num
-      purchase_date
-      condition
-      notes
-      profile_pic
-    }
+    created_at
+    removed
+    serial_num
+    purchase_date
+    condition
+    notes
+    profile_pic
   }
   employee_list{
     id

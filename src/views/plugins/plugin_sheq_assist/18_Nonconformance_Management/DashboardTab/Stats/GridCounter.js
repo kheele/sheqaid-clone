@@ -55,8 +55,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -65,7 +63,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		source_compliance_audit_aggregate = defaults,
 		source_inspection_aggregate = defaults,
 		source_incident_investigation_aggregate = defaults,
-	} = item;
+	} = data;
 
 	console.log('data', data)
 
@@ -99,4 +97,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

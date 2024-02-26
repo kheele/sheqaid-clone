@@ -9,10 +9,12 @@ import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
+import updateSite from "mutations/all/Site/updateSite";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Sites";
+    removeById = updateSite;
   
     constructor(props) {
         super(props, style);

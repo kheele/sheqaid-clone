@@ -14,6 +14,7 @@ import updateSector from "mutations/all/Sector/updateSector";
 class EditDialog extends AEditDialog {
     pageKey = "Sector";
     className = 'ANewTableFormDialog';
+    removeById = updateSector;
 
     constructor(props) {
         super(props, style);

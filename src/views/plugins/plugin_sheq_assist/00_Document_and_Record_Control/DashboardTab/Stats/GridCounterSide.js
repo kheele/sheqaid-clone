@@ -60,8 +60,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -72,7 +70,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		doc_type_company_insurance_list_aggregate = defaults,
 		doc_type_company_registration_list_aggregate = defaults,
 		doc_type_company_regulatory_body_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	const total = doc_type_unclassified_incident_list_aggregate.aggregate.count +
 		all_project_plan_list_aggregate.aggregate.count +
@@ -288,4 +286,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

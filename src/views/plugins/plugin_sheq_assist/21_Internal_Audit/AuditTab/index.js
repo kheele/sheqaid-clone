@@ -158,13 +158,12 @@ class AuditTab extends React.Component {
     renderTHead() {
         return <THead>
             <div className="td fixed-flex min-w-40">ID</div>
-            <div className="td fixed-flex min-w-110">Date Created</div>
             <div className="td fixed-flex min-w-110">Audit Date</div>
-            <div className="td">Audit Type</div>
-            <div className="td">Scope Of Audit</div>
-            <div className="td">Company</div>
+            <div className="td fixed-flex min-w-200">Audit Type</div>
+            <div className="td fixed-flex min-w-200">Scope Of Audit</div>
+            <div className="td fixed-flex min-w-200">Company</div>
             <div className="td">Auditor(s)</div>
-            <div className="td fixed-flex min-w-195">Company Representative(s)</div>
+            <div className="td">Company Representative(s)</div>
             <div className="td fixed-flex min-w-70"></div>
         </THead>;
     }

@@ -14,6 +14,7 @@ import updateSite from "mutations/all/Site/updateSite";
 class EditDialog extends AEditDialog {
     pageKey = "Site";
     className = 'ANewTableFormDialog';
+    removeById = updateSite;
 
     constructor(props) {
         super(props, style);

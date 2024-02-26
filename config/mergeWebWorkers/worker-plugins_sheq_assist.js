@@ -92,6 +92,6 @@ module.exports = path => [
         // '_21_Internal_Audit/checkable_register.js',
         // '_21_Internal_Audit/checkable_templates_schedules.js',
         // '_21_Internal_Audit/safety_observations_report.js',
-        // '_21_Internal_Audit/audit.js',
+        '_21_Internal_Audit/audit.js',
         // '_21_Internal_Audit/construction_audits.js'
     ].map(v => path + '/plugins/plugin_sheq_assist/' + v);

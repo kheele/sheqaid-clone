@@ -42,8 +42,6 @@ module.exports = async (socket, data) => {
     // const mon3 = Dates.formatDateSQL(now.addMonths(3));
 
     return getGraphQLOne({
-        multi_queries: true,
-        // count: true,
         query: `
             query findByIdOrgInspectionsDashboardQuery {
                 ${tbl}(

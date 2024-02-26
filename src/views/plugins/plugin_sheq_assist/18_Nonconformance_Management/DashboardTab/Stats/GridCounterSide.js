@@ -60,8 +60,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -70,7 +68,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		priority_medium_ncr_list_aggregate = defaults,
 		priority_high_ncr_list_aggregate = defaults,
 		priority_critical_ncr_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	const total = priority_non_ncr_list_aggregate.aggregate.count +
 		priority_low_ncr_list_aggregate.aggregate.count +
@@ -236,4 +234,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

@@ -55,8 +55,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 	
-	const [item = {}] = data;
-	
 	const defaults = {aggregate: {count: 0}};
 	
 	const {
@@ -66,7 +64,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		auditor_list_aggregate = defaults,
 		representative_list_aggregate = defaults,
 		audits_item_responsible_person_list_aggregate = defaults,
-	} = item;
+	} = data;
 	
 	console.log('data', data)
 	

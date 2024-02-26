@@ -88,9 +88,9 @@ class Controls extends React.Component {
         
         return <div className="controls-wrapper controls-sectioned">
             <div className="controls">
-                {renderProfileCover(<React.Fragment>
-                    <h5>{'Created On ' + Dates.formatDate(created_at)}</h5>
-                </React.Fragment>)}
+                {renderProfileCover(<>
+                    <h5>{'Conducted On ' + Dates.formatDate(date)}</h5>
+                </>)}
                 <div className="row active">
                     <label>
                         1. General Details

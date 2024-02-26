@@ -408,6 +408,9 @@ module.exports = async (socket, data) => {
 		...dateRangeOnlyPrevQueries,
 		...dateRangeQueries,
 		// ]).then(res => console.log(res));
-	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []).reduce((a1, a2) => ({...a1, ...a2}), {})).then(res => [res]);
+	]).then(res => res.
+	reduce((a1, a2) => [...a1, ...a2], []).
+	reduce((o, a) => ({...o, ...a}), {})
+	);
 }
 //</editor-fold>

@@ -9,11 +9,12 @@ import {
     SelectClientInput,
     SelectEmployeeInput, SelectIncidentSubCategoryList,
     SelectProjectInput,
-    SelectSiteInput
+    SelectSiteInput,
 } from 'components/inputs';
 import {FormControls, Fragment, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 import ProfilePDFReader from '../../printers/ProfilePDFReader';
+import NewDocumentTable from "./NewDocumentTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="profileRender">
@@ -23,7 +24,7 @@ const profileRender = function () {
     let {
         props: {
             onFormNext, onFormBack, onFormOpen,
-            dialog: {renderProfileCover}
+            dialog, dialog: {renderProfileCover}
         },
         item, item: {
             id, data: {
@@ -165,6 +166,8 @@ const profileRender = function () {
         estimated_costs_investigations,
         estimated_costs_others
     } = investigation || {};
+    
+    const docActiveId = dialog.extraProp('docActiveId');
 
     return (<>
         <FormControls>
@@ -194,10 +197,11 @@ const profileRender = function () {
                     <ProfileField name="exact_location" title="Exact Location" value={exact_location}
                                   className="col-lg-12"/>
 
-                    <label className="label-docs col-lg-12 margin-t-15">Attach Relevant Documents/Files</label>
-                    <AddFilesGridViewInput name="document_list" title="Document/File"
-                                           defaultValue={document_list || []} readonly
-                                           className="padding-t-40 margin-0 -margin-t-40 col-lg-12 pull-left"/>
+                    <label className="label-docs col-lg-12 margin-t-15">Relevant Documents/Files</label>
+                    {/*<AddFilesGridViewInput name="document_list" title="Document/File"*/}
+                    {/*                       defaultValue={document_list || []} readonly*/}
+                    {/*                       className="padding-t-40 margin-0 -margin-t-40 col-lg-12 pull-left"/>*/}
+                    <NewDocumentTable ref="document_list" name="document_list" defaultValue={document_list || []} docActiveId={docActiveId} readonly/>
                 </Row>
             </RowOrgs>
             <Row

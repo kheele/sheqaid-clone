@@ -328,7 +328,7 @@ exports.coida_claims_fragment = `
         id_num
         accident_date
         accident_time
-        effect_on_person2
+        effect_on_person
         expected_period_of_disablement
         disease_desc
         process
@@ -341,7 +341,7 @@ exports.coida_claims_fragment = `
         investigator_designation
         incident_desc
         incident_cause
-        steps_to_prevent_recurrence2
+        steps_to_prevent_recurrence
         investigator_signature
         investigator_signature_date
         employer_preventative_action_for_recurrence_of_similar_incident

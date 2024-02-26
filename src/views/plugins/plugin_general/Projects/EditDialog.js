@@ -14,6 +14,7 @@ import updateProject from "mutations/all/Project/updateProject";
 class EditDialog extends AEditDialog {
     pageKey = "Project";
     className = 'ANewTableFormDialog';
+    removeById = updateProject;
 
     constructor(props) {
         super(props, style);

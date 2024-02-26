@@ -88,26 +88,10 @@ class Controls extends React.Component {
                 infoDialog.open('Company is required');
                 return;
             }
-            // if (!form.isValid('project')) {
-            //     infoDialog.open('Project is required');
-            //     return;
-            // }
-            // if (!form.isValid('site')) {
-            //     infoDialog.open('Site is required');
-            //     return;
-            // }
         }
         if (idx === 1) {
             if (!form.isValid('name')) {
                 infoDialog.open('PPE Type is required');
-                return;
-            }
-            if (!form.isValid('unit')) {
-                infoDialog.open('Measurement Unit is required');
-                return;
-            }
-            if (form.isValid('duration_type') && !form.isValid('duration_value')) {
-                infoDialog.open('Duration Value is required');
                 return;
             }
         }
@@ -126,26 +110,10 @@ class Controls extends React.Component {
             infoDialog.open('Company is required');
             return;
         }
-        // if (!form.isValid('project')) {
-        //     infoDialog.open('Project is required');
-        //     return;
-        // }
-        // if (!form.isValid('site')) {
-        //     infoDialog.open('Site is required');
-        //     return;
-        // }
 
         //2
         if (!form.isValid('name')) {
             infoDialog.open('PPE Type is required');
-            return;
-        }
-        if (!form.isValid('unit')) {
-            infoDialog.open('Measurement Unit is required');
-            return;
-        }
-        if (form.isValid('duration_type') && !form.isValid('duration_value')) {
-            infoDialog.open('Duration Value is required');
             return;
         }
 

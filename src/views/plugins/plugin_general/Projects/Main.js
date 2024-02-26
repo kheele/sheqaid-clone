@@ -150,7 +150,7 @@ class Main extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}
             loadOnScrolled={false}>
-            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateProject}/>
+            <ConfirmDialog ref="removeDialog"/>
             
             <NewDialog ref="newDialog"/>
             <ProfileDialog ref="profileDialog" onRemoved={this.onRemoved}/>

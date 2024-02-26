@@ -27,3 +27,7 @@
 #dialog-overlay.EditAuditDialog-profile-dialog .table.DefinitionsTable .list > .tr > .td:last-of-type {
     padding: 5px 0 5px 8px !important;
 }
+
+#dialog-overlay.EditAuditDialog-profile-dialog .table.DefinitionsTable > .tbody .tr > .td .clearable-field-control > .MuiTextField-root{
+    top: 0;
+}

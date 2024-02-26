@@ -92,8 +92,6 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -151,7 +149,7 @@ const Comp = forwardRef(({data: __data, interval: __interval}, ref) => {
 		// doc_2mon_expiry_list_aggregate = defaults,
 		// doc_3mon_expiry_list_aggregate = defaults,
 		// doc_4mon_expiry_list_aggregate = defaults,
-	} = item;
+	} = data;
 
 	console.log('data', data)
 
@@ -428,4 +426,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-

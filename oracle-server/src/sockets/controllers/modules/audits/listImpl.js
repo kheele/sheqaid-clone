@@ -14,6 +14,7 @@ module.exports = async (socket, data) => {
 		id,
 		//
 		representative_list,
+		representative_id,
 		auditor,
 		type,
 		scope,
@@ -33,6 +34,7 @@ module.exports = async (socket, data) => {
 		id,
 		//
 		representative_list,
+		representative_id,
 		auditor,
 		type,
 		scope,

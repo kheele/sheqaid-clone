@@ -132,15 +132,10 @@ class APageListReadWrite extends APageList {
 			}
 			editDialog.open(item).then(updateAttrs => {
 				if (updateAttrs) {
-					setTimeout(() => {
+					setImmediate(() => {
+						updateAttrs = updateAttrs.data || updateAttrs;
 						extendObservable(item.data, updateAttrs);
-					}, 0);
-					setTimeout(() => {
-						this.list.removeIf((item, _idx) => _idx === idx);
-					}, 50);
-					setTimeout(() => {
-						this.list.insertAt(idx, item);
-					}, 100);
+					});
 				}
 			});
 		} else {

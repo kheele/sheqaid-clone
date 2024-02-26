@@ -15,6 +15,7 @@ import updateClient from "mutations/all/Client/updateClient";
 class EditDialog extends AEditDialog {
     pageKey = "Client";
     className = 'ANewTableFormDialog';
+    removeById = updateClient;
 
     constructor(props) {
         super(props, style);

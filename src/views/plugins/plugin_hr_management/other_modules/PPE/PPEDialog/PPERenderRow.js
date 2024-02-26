@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 
 import {ActionsButton, Clickable} from 'components/inputs';
 import {TRow} from 'components/tables';
-import assetProfilePic from "../../../../../../assets/images/vehicle-image-loading.png";
+import default_ppe_type from "assets/images/default_ppe_type.jpeg";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -28,10 +28,10 @@ class RenderRow extends React.Component {
             }
         } = item;
         return <TRow key={id} className="w-full">
-            <div className="td fixed-flex min-w-30">{id}</div>
+            <div className="td fixed-flex min-w-60">{id}</div>
             <div className="td fixed-flex min-w-80">
                 <Clickable idx={idx} onClick={onView}>
-                    {RenderUtils.renderImage(profile_pic, null, '100%')}
+                    {RenderUtils.renderImage(profile_pic, null, '100%', default_ppe_type)}
                 </Clickable>
             </div>
             <div className="td">{name}</div>

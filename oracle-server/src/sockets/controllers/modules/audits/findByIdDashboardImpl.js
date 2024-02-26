@@ -278,6 +278,8 @@ module.exports = async (socket, data) => {
 			operationName: "findByIdOrgAuditsDashboardQuery",
 		}).then(res => [res]),
 		...dateRangeQueries,
-	]).then(res => res.reduce((a1, a2) => [...a1, ...a2], []));
+	]).then(res => res.
+	reduce((a1, a2) => [...a1, ...a2], []).
+	reduce((o, a) => ({...o, ...a}), {}));
 }
 //</editor-fold>

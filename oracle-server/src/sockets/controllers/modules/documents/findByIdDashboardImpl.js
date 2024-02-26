@@ -119,8 +119,8 @@ module.exports = async (socket, data) => {
 	const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 	
 	return getGraphQLOne({
-			variables: {mon, mon2, mon3},
-			query: `
+		variables: {mon, mon2, mon3},
+		query: `
       query findByIdOrgDocumentsDashboardQuery($mon: date, $mon2: date, $mon3: date) {
         ${tbl}(
           where: {
@@ -225,7 +225,7 @@ module.exports = async (socket, data) => {
 			  }
       }
     `,
-			operationName: "findByIdOrgDocumentsDashboardQuery",
-		}).then(res => [res]);
+		operationName: "findByIdOrgDocumentsDashboardQuery",
+	});
 }
 //</editor-fold>

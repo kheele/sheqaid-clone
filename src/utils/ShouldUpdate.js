@@ -83,6 +83,7 @@ class ShouldUpdate {
 
 	static checkFile(data, old_data, newVal, key) {
 		if (newVal && (isString(newVal.path) || newVal.path instanceof File)) {
+			// console.log('checkFile', newVal)
 			if (!old_data) {
 				data[key] = newVal.path;
 			} else if (!old_data[key] || old_data[key] !== newVal) {
@@ -491,6 +492,31 @@ class ShouldUpdate {
 					data[key] = parseInt(year, 10);
 				} else {
 					data[key] = parseInt(training_plan, 10);
+				}
+			}
+		}
+	}
+
+	static checkPPEType(data, old_data, ppe_type_id, key) {
+		key = key || 'ppe_type';
+		const key_id = key.endsWith('_id') ? key : `${key}_id`;
+		if (ppe_type_id) {
+			if (!isNumber(ppe_type_id) && ppe_type_id.id) {
+				ppe_type_id = ppe_type_id.id;
+			}
+			if (!old_data) {
+				data[key_id] = ppe_type_id;
+			} else {
+				if (old_data[key_id]) {
+					if (old_data[key_id] !== ppe_type_id) {
+						data[key_id] = ppe_type_id;
+					}
+				} else if (old_data[key]) {
+					if (old_data[key].id !== ppe_type_id) {
+						data[key_id] = ppe_type_id;
+					}
+				} else {
+					data[key_id] = ppe_type_id;
 				}
 			}
 		}

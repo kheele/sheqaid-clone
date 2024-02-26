@@ -7,10 +7,12 @@ import {ProfileField, } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
+import updateSector from "mutations/all/Sector/updateSector";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Sector";
+    removeById = updateSector;
 
     constructor(props) {
         super(props, style);

@@ -27,7 +27,7 @@
 						let {
 							id,
 							data: {
-								created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
+								created_at, removed,
 								company, client, project, site,
 								
 								scope,
@@ -48,33 +48,34 @@
 						
 						return {
 							idx: idx + 1,
+							id,
 							
 							project: project && project.name,
 							site: site && site.name,
 							
 							scope,
-							date: Dates.formatDateSQL(date),
 							type,
+							date: Dates.formatDateSQL(date),
 							representative_list: (representative_list || []).map((
 								{
 									employee,
 									other_person
 								}
-							) => (employee || other_person).full_name).join(','),
+							) => (employee || other_person).full_name).join(', '),
 							auditor_list: (auditor_list || []).map((
 								{
 									employee,
 									other_person
 								}
-							) => (employee || other_person).full_name).join(','),
-							definition_list: (definition_list || []).map(({title}) => title).join(','),
+							) => (employee || other_person).full_name).join(', '),
+							definition_list: (definition_list || []).map(({title, desc}, n) => `${n+1}) ${title}: ${desc}`).join(', '),
 							
-							status,
+							status: removed ? "Inactive" : "Active",
 						};
 					});
 					
 					const response = await fetch(
-						`${self.locationRoot}/templates/xlsx/Audits/Template-audits.xlsx`.replace('//', '/')
+						`${self.locationRoot}/templates/xlsx/Audits/Audits.xlsx`.replace('//', '/')
 					);
 					const arrayBuffer = await response.arrayBuffer();
 					const data = new Map();
@@ -95,4 +96,6 @@
 		
 		// </editor-fold>
 	}
+	
+	new Controller(events);
 })();

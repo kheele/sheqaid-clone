@@ -7,7 +7,8 @@ import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
 import {
-    ClearableInput, ProfilePic, RowOrgs, SelectPPETypeInput,
+    ClearableInput,
+    SelectPPETypeInput,
     UploadButton
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -52,55 +53,7 @@ class Controls extends React.Component {
     constructor() {
         super();
 
-        this.onNext = this.onNext.bind(this);
-
         this.form = new Form();
-        this.form.addChangeOne("duration_type", this.onChangeDurationType.bind(this));
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onChange funs">
-    onChangeDurationType(el, val) {
-        this.state.duration_type = val;
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onNext">
-    onNext(e, btn) {
-        const {form} = this;
-        const {idx} = btn.props;
-        if (idx === 0) {
-            if (!form.isValid('client')) {
-                infoDialog.open('Company is required');
-                return;
-            }
-            // if (!form.isValid('project')) {
-            //     infoDialog.open('Project is required');
-            //     return;
-            // }
-            // if (!form.isValid('site')) {
-            //     infoDialog.open('Site is required');
-            //     return;
-            // }
-        }
-        if (idx === 1) {
-            if (!form.isValid('name')) {
-                infoDialog.open('PPE Item is required');
-                return;
-            }
-            if (!form.isValid('unit')) {
-                infoDialog.open('Measurement Unit is required');
-                return;
-            }
-            if (form.isValid('duration_type') && !form.isValid('duration_value')) {
-                infoDialog.open('Duration Value is required');
-                return;
-            }
-        }
-
-        return true;
     }
 
     // </editor-fold>

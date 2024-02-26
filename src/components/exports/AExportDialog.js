@@ -239,6 +239,7 @@ class AControls extends React.Component {
 
 		btn.text("Exporting...").disabled();
 		neonBinding.events.emit(this.path + "export-excel", {
+			date: new Date().formatDate(),
 			client,
 			project,
 			site,

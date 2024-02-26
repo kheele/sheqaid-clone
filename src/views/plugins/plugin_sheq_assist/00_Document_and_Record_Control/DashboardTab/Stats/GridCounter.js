@@ -58,8 +58,6 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		return null;
 	}
 
-	const [item = {}] = data;
-
 	const defaults = {aggregate: {count: 0}};
 
 	const {
@@ -77,7 +75,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
 		list_2mon_expiry_aggregate = defaults,
 		list_3mon_expiry_aggregate = defaults,
 		list_4mon_expiry_aggregate = defaults,
-	} = item;
+	} = data;
 
 	const chart = {
 		labels: ['No Expiry', 'Expired', '1 Month Expiry', '2 Month Expiry', '3 Month Expiry', '+4 Month Expiry'],
@@ -151,4 +149,3 @@ Comp.propTypes = {
 };
 
 export default Comp;
-
