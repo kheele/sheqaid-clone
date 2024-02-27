@@ -2,8 +2,8 @@ require('./categories');
 
 const findByIdImpl = require('../findByIdImpl');
 const listImpl = require('../listImpl');
-const {document_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
 const findByIdDashboardImpl = require("./findByIdDashboardImpl");
+const {document_details_fragment: details_fragment, getVariablesAndQueryConfig} = require("./commons");
 
 const args = {
 	name: "Documents",

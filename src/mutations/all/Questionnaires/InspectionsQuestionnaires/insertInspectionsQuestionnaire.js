@@ -40,9 +40,34 @@ export default async (input: EntityInspectionsQuestionnaire) => {
 		desc,
 		question_list,
 	} = input;
+	
+	
+	if(asset_type && !asset_id) {
+		const listByLogged = sockets.of("assets").fn('listByLogged');
+		
+		return listByLogged({
+			written_off: false,
+			//
+			asset_type,
+			//
+			exact_orgs: true,
+			//
+			limit: 0,
+			offset: 0,
+		}).then((res) => {
+			console.log('onLoadList res', res)
+			if(res && isArray(res)) {
+				return Promise.all(res.map(async item => await onCreate({...input, asset_id: item.id})));
+			}
+		});
+	} else {
+		return onCreate(input);
+	}
+};
 
+const onCreate = async (input) => {
 	crudUtils.injectCreate(input);
-
+	
 	const res = await createMutationImpl({
 		mutation,
 		input: {is_template: false, group: "Inspections", answered_by: "Sender", ...input}
@@ -50,6 +75,6 @@ export default async (input: EntityInspectionsQuestionnaire) => {
 	if (res) {
 		return findByIdInspectionsQuestionnaire(res.id);
 	}
-
+	
 	return res;
 };

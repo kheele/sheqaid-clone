@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d2c94d23a054bd9fc6e0cbb2ab2a33a7>>
+ * @generated SignedSource<<a88eac230a1a5acbd3ddd76445f17636>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,34 +16,7 @@ var v0 = [
     "name": "object"
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v3 = [
-  (v1/*: any*/),
-  (v2/*: any*/)
-],
-v4 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "count",
-    "storageKey": null
-  }
-],
-v5 = [
+v1 = [
   {
     "alias": null,
     "args": [
@@ -58,134 +31,11 @@ v5 = [
     "name": "insert_ppe_types_one",
     "plural": false,
     "selections": [
-      (v1/*: any*/),
-      (v2/*: any*/),
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "unit",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "duration_type",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "duration_value",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "notes",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "profile_pic",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "default_clients",
-        "kind": "LinkedField",
-        "name": "client",
-        "plural": false,
-        "selections": (v3/*: any*/),
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "default_projects",
-        "kind": "LinkedField",
-        "name": "project",
-        "plural": false,
-        "selections": (v3/*: any*/),
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "default_sites",
-        "kind": "LinkedField",
-        "name": "site",
-        "plural": false,
-        "selections": (v3/*: any*/),
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "proxy_team__ppe_type_aggregate",
-        "kind": "LinkedField",
-        "name": "team_list_aggregate",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "proxy_team__ppe_type_aggregate_fields",
-            "kind": "LinkedField",
-            "name": "aggregate",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "proxy_department__ppe_type_aggregate",
-        "kind": "LinkedField",
-        "name": "department_list_aggregate",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "proxy_department__ppe_type_aggregate_fields",
-            "kind": "LinkedField",
-            "name": "aggregate",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "proxy_job_position__ppe_type_aggregate",
-        "kind": "LinkedField",
-        "name": "job_position_list_aggregate",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "proxy_job_position__ppe_type_aggregate_fields",
-            "kind": "LinkedField",
-            "name": "aggregate",
-            "plural": false,
-            "selections": (v4/*: any*/),
-            "storageKey": null
-          }
-        ],
+        "name": "id",
         "storageKey": null
       }
     ],
@@ -198,7 +48,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "insertPPEMutation",
-    "selections": (v5/*: any*/),
+    "selections": (v1/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -207,19 +57,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "insertPPEMutation",
-    "selections": (v5/*: any*/)
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "96a65dbb85b3cc760e9ee0c558f8b87c",
+    "cacheID": "aaf259237df5b20f3f2c87a2ccf8d012",
     "id": null,
     "metadata": {},
     "name": "insertPPEMutation",
     "operationKind": "mutation",
-    "text": "mutation insertPPEMutation(\n  $object: ppe_types_insert_input!\n) {\n  insert_ppe_types_one(object: $object) {\n    id\n    name\n    unit\n    duration_type\n    duration_value\n    notes\n    profile_pic\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n    team_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    department_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n    job_position_list_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n}\n"
+    "text": "mutation insertPPEMutation(\n  $object: ppe_types_insert_input!\n) {\n  insert_ppe_types_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "eecc5aadc1c164e997de6228a538e337";
+node.hash = "2cc54702e767d0e85b395343df73d2eb";
 
 module.exports = node;

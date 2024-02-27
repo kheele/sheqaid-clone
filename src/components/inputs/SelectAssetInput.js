@@ -5,7 +5,6 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import byLogged from "views/plugins/plugin_sheq_assist/19_Maintenance/ToolsTab/Query/List/listAllToolsByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -71,13 +70,18 @@ class SelectInput extends ASelectInput {
 
 function onSelectLoad(onLoadFilter) {
 	const filter = isFunction(onLoadFilter) && onLoadFilter();
-	const args = {
-		limit: 0,
+	const listByLogged = sockets.of("assets").fn('listByLogged');
+	
+	return listByLogged({
+		written_off: false,
+		//
 		...(filter || {}),
 		//
 		exact_orgs: true,
-	};
-	return byLogged(args).then(res => {
+		//
+		limit: 0,
+		offset: 0,
+	}).then((res) => {
 		return res.map(value => {
 			const {data: {asset_detail: {name, asset_type}}} = value;
 			return {label: name + ' (' + asset_type + ')', value};

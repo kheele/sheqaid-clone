@@ -153,10 +153,10 @@ class Controls extends React.Component {
 			return;
 		}
 		
-		// if (!form.isValid('asset_type')) {
-		// 	infoDialog.open('Asset Type is required');
-		// 	return;
-		// }
+		if (!form.isValid('asset_type') && !form.isValid('asset')) {
+			infoDialog.open('Asset Type / Asset must be selected');
+			return;
+		}
 		
 		if (!questionsRef.isValidForm()) {
 			return;

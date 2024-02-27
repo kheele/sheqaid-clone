@@ -1,8 +1,0 @@
-version: 1.1.0
-files:
-  - url: sheqassist-1.1.0.exe
-    sha512: Qt84gT1OE0VZ+yec3ZG9gZEJiXzbOPZ98UenExpyzX4tWciI6Yq/YIsrBuRUhq6OK9RByO/qFqJ4aQK88rJdYQ==
-    size: 69868861
-path: sheqassist-1.1.0.exe
-sha512: Qt84gT1OE0VZ+yec3ZG9gZEJiXzbOPZ98UenExpyzX4tWciI6Yq/YIsrBuRUhq6OK9RByO/qFqJ4aQK88rJdYQ==
-releaseDate: '2021-08-17T07:20:44.760Z'

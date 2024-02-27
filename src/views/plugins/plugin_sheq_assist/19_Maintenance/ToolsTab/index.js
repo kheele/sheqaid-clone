@@ -28,7 +28,6 @@ import assetProfilePic from "assets/images/vehicle-image-loading.png";
 
 import ProfilePDFReader from '../printers/ProfilePDFReader';
 import {CONSTANTS} from "./forms/AssetComponents";
-import byLogged from "./Query/List/listAllToolsByLogged";
 
 // </editor-fold>
 @observer
@@ -117,9 +116,11 @@ class ToolsTab extends React.Component {
 			asset_type,
 		} = filterData || {};
 		
-		const limit = 50;
+		const listByLogged = sockets.of("assets").fn('listByLogged');
 		
-		const args = {
+		return listByLogged({
+			written_off: false,
+			//
 			name,
 			reg_num,
 			serial_num,
@@ -128,20 +129,11 @@ class ToolsTab extends React.Component {
 			location,
 			manufacturer,
 			asset_type,
-			written_off: false,
-			//
-			limit,
 			//
 			exact_orgs: true,
-		};
-		
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-		
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});

@@ -10,16 +10,21 @@ exports.getVariablesAndQueryConfig = (
 		//
 		id,
 		//
-		representative_list,
-		representative_id,
-		auditor,
-		type,
-		scope,
-		date_range,
+		name,
+		reg_num,
+		serial_num,
+		model,
+		condition,
+		location,
+		manufacturer,
+		asset_type,
+		//
+		written_off = false,
 		//
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
+		data_export = false,
 	}
 ) => {
 	//<editor-fold desc="variables, filters">
@@ -28,49 +33,40 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
-		if(representative_list) {
-			filter.push(`representative_list: {employee_id:{_in: [${representative_list.map(v => v.id).join(', ')}]}}`);
-		}
-		if(representative_id) {
-			filter.push(`representative_list: {employee_id:{_eq: ${representative_id}}}`);
-		}
-		if(auditor) {
-			filter.push(`
-				auditor_list:{
-	        _or:{
-	          employee:{
-	            _or:{
-	              fname: {_ilike: "%${auditor}%"},
-	              lname: {_ilike: "%${auditor}%"}
-	            }
-	          },
-	          other_person:{
-	            _or:{
-	              fname: {_ilike: "%${auditor}%"},
-	              lname: {_ilike: "%${auditor}%"}
-	            }
-	          }
-	        }
-	      }
-      `);
+		if (isBoolean(written_off)) {
+			filter.push(`written_off: {_eq: ${written_off}}`);
 		}
 		
-		if(type) {
-			filter.push(`type: {_ilike: "%${type}%"}`);
-		}
-		if(scope) {
-			filter.push(`scope: {_ilike: "%${scope}%"}`);
+		if(name) {
+			filter.push(`asset_detail:{name: {_ilike: "%${name}%"}}`);
 		}
 		
-		if (date_range) {
-			const {start, end} = date_range;
-			if (start && end) {
-				filter.push(`date: {_gte: "${start}", _lte: "${end}"}`);
-			} else if (start) {
-				filter.push(`date: {_gte: "${start}"}`);
-			} else if (end) {
-				filter.push(`date: {_lte: "${end}"}`);
-			}
+		if(reg_num) {
+			filter.push(`asset_detail:{reg_num: {_eq: "${reg_num}"}}`);
+		}
+		
+		if(serial_num) {
+			filter.push(`asset_detail:{serial_num: {_eq: "${serial_num}"}}`);
+		}
+		
+		if(model) {
+			filter.push(`asset_detail:{model: {_ilike: "%${model}%"}}`);
+		}
+		
+		if(condition) {
+			filter.push(`asset_detail:{condition: {_eq: "${condition}"}}`);
+		}
+		
+		if(location) {
+			filter.push(`asset_detail:{location: {_ilike: "%${location}%"}}`);
+		}
+		
+		if(manufacturer) {
+			filter.push(`asset_detail:{manufacturer: {_ilike: "%${manufacturer}%"}}`);
+		}
+		
+		if(asset_type) {
+			filter.push(`asset_detail:{asset_type: {_eq: "${asset_type}"}}`);
 		}
 	}
 	

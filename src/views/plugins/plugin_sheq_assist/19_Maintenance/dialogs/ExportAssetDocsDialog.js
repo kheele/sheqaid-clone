@@ -13,7 +13,6 @@ import {
 } from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
 import style from "./ExportAssetDocsDialog.lazy.css";
-import byLogged from "../ToolsTab/Query/List/listAllToolsByLogged";
 import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";

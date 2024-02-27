@@ -15,7 +15,6 @@ import {Button, ClearableInput, Clickable, SelectAssetTypeInput} from 'component
 import {THead, TRow} from 'components/tables';
 
 import ProfileToolWrittenOffDialog from '../ToolsTab/forms/ProfileToolWrittenOffDialog.js';
-import byLogged from "./Query/List/listAllToolsByLogged";
 
 import style from "./ToolsWrittenOffTab.lazy.css";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";
@@ -81,26 +80,33 @@ class ToolsWrittenOffTab extends React.Component {
 		const {page, lastItem, filterData, filtered, isNew} = params;
 		const {
 			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
 		} = filterData || {};
 
-		const limit = 50;
-
-		const args = {
-			name,
+		const listByLogged = sockets.of("assets").fn('listByLogged');
+		
+		return listByLogged({
 			written_off: true,
 			//
-			limit,
+			name,
+			reg_num,
+			serial_num,
+			model,
+			condition,
+			location,
+			manufacturer,
+			asset_type,
 			//
 			exact_orgs: true,
-		};
-
-		if (!isNew) {
-			args.offset = this.refs.root.list.length;
-		} else {
-			args.offset = 0;
-		}
-
-		return byLogged(args).then((res) => {
+			//
+			offset: isNew ? 0 : this.refs.root.list.length,
+		}).then((res) => {
 			console.log('onLoadList res', res)
 			return res;
 		});
@@ -135,6 +141,14 @@ class ToolsWrittenOffTab extends React.Component {
 			                className="col-lg-4 margin-t-10 form-control" onChange={onChange}
 			                values={this.state.lists.conditions} returnValue/>
 			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="reg_num" type="text" placeholder="Registration No."
+			                className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="serial_num" type="text" placeholder="Serial No."
+			                className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			<ClearableInput name="model" type="text" placeholder="Model" className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange}/>
 			{/*<Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
                 <i className="fa fa-barcode icon-left"/>Scan Barcode

@@ -13,7 +13,6 @@ import {
 } from 'components/inputs';
 import {SelectTable, THead} from 'components/tables';
 import style from "./ExportAssetsDialog.lazy.css";
-import byLogged from "../ToolsTab/Query/List/listAllToolsByLogged";
 import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";
@@ -120,9 +119,11 @@ class Controls extends AControls {
             asset_type,
         } = filterData || {};
 
-        const limit = 0;
-
-        const args = {
+        const listByLogged = sockets.of("assets").fn('listByLogged');
+        
+        return listByLogged({
+            written_off: false,
+            //
             name,
             reg_num,
             serial_num,
@@ -131,21 +132,13 @@ class Controls extends AControls {
             location,
             manufacturer,
             asset_type,
-            written_off: false,
-            //
-            limit,
             //
             exact_orgs: true,
             data_export: true,
-        };
-
-        // if (!isNew) {
-        //     args.offset = this.refs.root.list.length;
-        // } else {
-            args.offset = 0;
-        // }
-
-        return byLogged(args).then((res) => {
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });

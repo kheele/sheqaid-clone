@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<16ac55203f09dd1383d5824bf38a2b05>>
+ * @generated SignedSource<<ab2eef47d41dcf2c058bd79c5bf9c0f6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,14 +19,7 @@ v1 = {
   "kind": "LocalArgument",
   "name": "id"
 },
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v3 = [
+v2 = [
   {
     "alias": null,
     "args": [
@@ -46,66 +39,11 @@ v3 = [
     "name": "update_ppe_items_by_pk",
     "plural": false,
     "selections": [
-      (v2/*: any*/),
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "removed",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "created_at",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "notes",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "profile_pic",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "serial_num",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "purchase_date",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "condition",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "ppe_types",
-        "kind": "LinkedField",
-        "name": "ppe_type",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/)
-        ],
+        "name": "id",
         "storageKey": null
       }
     ],
@@ -121,7 +59,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "updatePPEItemMutation",
-    "selections": (v3/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -133,19 +71,19 @@ return {
     ],
     "kind": "Operation",
     "name": "updatePPEItemMutation",
-    "selections": (v3/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "f11d93ee468a0e8604072edaefb07c00",
+    "cacheID": "56f83f5a591988550bbfa769362c6fde",
     "id": null,
     "metadata": {},
     "name": "updatePPEItemMutation",
     "operationKind": "mutation",
-    "text": "mutation updatePPEItemMutation(\n  $id: ppe_items_pk_columns_input!\n  $_set: ppe_items_set_input!\n) {\n  update_ppe_items_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    removed\n    created_at\n    notes\n    profile_pic\n    serial_num\n    purchase_date\n    condition\n    ppe_type {\n      id\n    }\n  }\n}\n"
+    "text": "mutation updatePPEItemMutation(\n  $id: ppe_items_pk_columns_input!\n  $_set: ppe_items_set_input!\n) {\n  update_ppe_items_by_pk(pk_columns: $id, _set: $_set) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "3167fc800bdb7e604e0bb0414e779e56";
+node.hash = "8868f95a6cfcca9f9271836630ecae66";
 
 module.exports = node;
