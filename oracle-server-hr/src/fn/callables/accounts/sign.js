@@ -65,8 +65,8 @@ router.post('/onReAuthUser/:access_type', async (req, res) => {
 		}
 
 		try {
-			const token = await _auth.createCustomToken(uid, {access_type});
-			return {token};
+			const customToken = await _auth.createCustomToken(uid, {access_type});
+			return {customToken};
 		} catch (err) {
 			console.error(err)
 			return "ERR_CREATING_TOKEN";
@@ -75,4 +75,3 @@ router.post('/onReAuthUser/:access_type', async (req, res) => {
 });
 
 module.exports = router;
-

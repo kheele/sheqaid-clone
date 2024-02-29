@@ -93,8 +93,8 @@ global.onReAuthUser = async ({uid, access_type}) => {
             const {uid, email, phoneNumber} = userRecord;
 
             try {
-                const token = await _auth.createCustomToken(uid, {access_type});
-                return {token};
+                const customToken = await _auth.createCustomToken(uid, {access_type});
+                return {customToken};
             } catch (err) {
                 console.error(err)
                 return "ERR_CREATING_TOKEN";

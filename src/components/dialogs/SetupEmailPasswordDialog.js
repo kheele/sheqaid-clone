@@ -160,7 +160,7 @@ class Controls extends ALoginControls {
                                         </div>);
                                     });
                                 } else {
-                                    user.getIdToken(true).then(token => {
+                                    user.getIdToken(true).then(_token => {
                                         return auth.signInWithEmailAndPassword(username, password);
                                     }).finally(() => {
                                         this.authListener();

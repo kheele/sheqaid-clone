@@ -71,8 +71,8 @@ class TemplatesTab extends React.Component {
 		const listByLogged = sockets.of('contractors/questionnaires').fn('listTemplatesByLogged');
 		
 		return listByLogged({
-			company_id: sess_company_id,
-			client_id: selectedClient && selectedClient.id,
+			// company_id: sess_company_id,
+			// client_id: selectedClient && selectedClient.id,
 			//
 			name,
 			doc_num,

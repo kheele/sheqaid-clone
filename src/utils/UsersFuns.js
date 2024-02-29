@@ -264,7 +264,7 @@ function onConfirmUserOTP(data) {
     //                 break;
     //         }
     //     } else if (res && res.uid) {
-    //         return res;//{uid, token}
+    //         return res;//{uid, customToken}
     //     } else {
     //         infoDialog.open(<div>
     //             Sorry, we couldn't verify your One-Time Password at the moment.<br/>
@@ -334,7 +334,7 @@ function onConfirmUserOTP(data) {
                     break;
             }
         } else if (res && res.uid) {
-            return res;//{uid, token}
+            return res;//{uid, customToken}
         } else {
             infoDialog.open(<div>
                 Sorry, we couldn't verify your One-Time Password at the moment.<br/>

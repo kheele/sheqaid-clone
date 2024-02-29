@@ -78,8 +78,8 @@ class Cntr extends ACntr {
 			access_type,
 		}).then(res => {
 			console.log('_onSetCustomUserClaims user logged', socket.id, session.auth_id);
-			if (res && res.token) {
-				const {loggedUser, token, customClaims, sessionCookie, options} = res;
+			if (res && res.customToken) {
+				const {loggedUser, customToken, customClaims, sessionCookie, options} = res;
 				
 				session.sessionCookie = sessionCookie;
 				
@@ -96,7 +96,7 @@ class Cntr extends ACntr {
 				// socket.token = token;
 				// socket.customClaims = customClaims;
 				// console.log('user logged', socket.id, socket.auth_id);
-				return {loggedUser, token};
+				return {loggedUser, customToken};
 			}
 			return res;
 		});

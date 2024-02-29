@@ -19,28 +19,12 @@ class SelectInput extends ASelectInput {
 
 	constructor(props) {
 		super(props);
+		
+		this.update = this.update.bind(this);
 	}
 
-	async componentDidMount() {
-		let {className = '', onLoadFilter} = this.props;
-		className += ` SelectAssetInput`;
-
-		const res = await onSelectLoad(onLoadFilter);
-		this.state.lists.list = res.distinct();
-
-		this.state.props = {
-			ref: "input",
-			key: new Date().getTime(),
-			name: "asset",
-			type: "select",
-			placeholder: "Asset...",
-			values: this.list,
-			returnValue: true,
-			add: false,
-			...this.props,
-			defaultValue: this.selectedItem,
-			className
-		};
+	componentDidMount() {
+		this.update();
 	}
 
 	@computed
@@ -59,7 +43,31 @@ class SelectInput extends ASelectInput {
 		}
 		return null;
 	}
-
+	
+	async update() {
+		let {className = '', onLoadFilter} = this.props;
+		className += ` SelectAssetInput`;
+		
+		this.state.props = null;
+		
+		const res = await onSelectLoad(onLoadFilter);
+		this.state.lists.list = res.distinct();
+		
+		this.state.props = {
+			ref: "input",
+			key: new Date().getTime(),
+			name: "asset",
+			type: "select",
+			placeholder: "Asset...",
+			values: this.list,
+			returnValue: true,
+			add: false,
+			...this.props,
+			defaultValue: this.selectedItem,
+			className
+		};
+	}
+	
 	render() {
 		const {props} = this.state;
 		if (!props) return null;
@@ -71,7 +79,7 @@ class SelectInput extends ASelectInput {
 function onSelectLoad(onLoadFilter) {
 	const filter = isFunction(onLoadFilter) && onLoadFilter();
 	const listByLogged = sockets.of("assets").fn('listByLogged');
-	
+
 	return listByLogged({
 		written_off: false,
 		//

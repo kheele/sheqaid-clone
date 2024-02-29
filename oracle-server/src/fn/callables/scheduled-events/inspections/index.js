@@ -9,7 +9,6 @@ router.post('/onScheduleNextDate', async (req, res) => {
     res.json();
 });
 
-onScheduleNextDate();//
+// onScheduleNextDate();//
 
 module.exports = router;
-

@@ -22,6 +22,7 @@ import style from "./NewQuestionnaireDialog.lazy.css";
 import insertInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/insertInspectionsQuestionnaire";
 import {Dates} from "utils/Dates";
+import {execWhen} from "utils/Utils";
 import Divider from "@mui/material/Divider";
 import findByIdInspectionsQuestionnaireTemplate
 	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
@@ -69,6 +70,7 @@ class Controls extends React.Component {
 		this.loadTemplate = this.loadTemplate.bind(this);
 		
 		this.form = new Form();
+		this.form.addChangeOne("asset_type", this.onChangeAssetType.bind(this));
 		this.form.addChangeOne("template", this.onChangeTemplate.bind(this));
 	}
 	
@@ -84,6 +86,12 @@ class Controls extends React.Component {
 	}
 	
 	// <editor-fold defaultstate="collapsed" desc="onChange funs">
+	async onChangeAssetType(el, val) {
+		execWhen(() => this.refs.asset).then(ref => {
+			ref.update();
+		});
+	}
+	
 	async onChangeTemplate(el, val) {
 		if (val) {
 			const {selectedTemplate} = this.state;
@@ -91,7 +99,7 @@ class Controls extends React.Component {
 				await this.loadTemplate(val);
 			}
 		} else {
-			ref.item = this.state.selectedTemplate = val;
+			// ref.item = this.state.selectedTemplate = val;
 		}
 	}
 	
@@ -239,7 +247,7 @@ class Controls extends React.Component {
 	onFilterAsset() {
 		const {asset_type} = this.refs;
 		if (asset_type.hasValue) {
-			return {asset_type: asset_type.value};
+			return {asset_type: asset_type.value.value};
 		}
 	}
 	
@@ -316,6 +324,7 @@ class Controls extends React.Component {
 						onChange={this.form.onChange}
 					/>
 					<SelectAssetInput
+						ref="asset"
 						name="asset"
 						placeholder="Asset..."
 						defaultValue={asset}

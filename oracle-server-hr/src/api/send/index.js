@@ -106,8 +106,8 @@ global.confirmUserOTP = async (data, access_type) => {
         }
 
         try {
-            const token = await _auth.createCustomToken(uid, {access_type});
-            return {uid, token};
+            const customToken = await _auth.createCustomToken(uid, {access_type});
+            return {uid, customToken};
         } catch (err) {
             console.error(err)
             return "ERR_CREATING_TOKEN";

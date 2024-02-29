@@ -217,7 +217,7 @@ class Is {
         const {claims: {aud, access_type}} = this.storage.idTokenResult;
         return access_type === 'ContractorUser' || aud === "sheqassist-8e36a";
     }
-
+//
     @computed
     get isContractorView() {
         if (isAdminApp || !this.isLoggedIn) return false;

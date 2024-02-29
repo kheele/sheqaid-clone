@@ -186,9 +186,9 @@ class ALoginControls extends React.Component {
                 console.log('onComplete loggedUserAuth', loggedUserAuth)
 
                 if (!loggedUserAuth && type) {
-                    const {token} = res;
+                    const {customToken} = res;
                     const __auth = type === "Contractor" ? auth2 : auth;
-                    await __auth.signInWithCustomToken(token).then(async userCredential => {
+                    await __auth.signInWithCustomToken(customToken).then(async userCredential => {
                         if (!userCredential)
                             return false;
                         const {user} = userCredential;

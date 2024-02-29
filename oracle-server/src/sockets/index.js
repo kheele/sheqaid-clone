@@ -17,7 +17,7 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 		if (error.syscall !== 'listen') {
 			throw error;
 		}
-
+		
 		switch (error.code) {
 			case 'EACCES':
 				console.error(`Port ${process.env.PORT} requires elevated privileges`);
@@ -31,11 +31,11 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 				throw error;
 		}
 	});
-
+	
 	server.on('listening', () => {
 		console.log('Server is now listening');
 	});
-
+	
 	global.io = new Server(server, {
 		cors: corsOptions,
 		transports: ['websocket'],
@@ -49,55 +49,62 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	});
 	// io.engine.use(sessionMiddleware);
 	io.use(sharedSession(sessionMiddleware, {
-		autoSave:true
+		autoSave: true
 	}));
 	io.use((socket, next) => {
 		// console.log('socket.handshake', socket.handshake);//
-		if(socket.handshake) {
-			const {session:{req: {headers, auth}}} = socket.handshake;
+		if (socket.handshake) {
+			const {session: {req: {headers, auth}}} = socket.handshake;
 			console.log('io.use session ip', headers);
-			console.log('io.use session token', auth.token);
+			console.log('io.use session token', auth);
 			const {token = null} = auth || {};
 			if (token) {
-				try {
-					const [authType, tokenValue] = token.trim().split(' ');
-					if (authType !== 'Bearer') {
-						// throw new Error('Expected a Bearer token');
-					}
-
-					console.log(authType, tokenValue);//
-
-					// const {claims: {sub}} = await jwtVerifier.verifyAccessToken(tokenValue, 'api://default');
-					// const user = await oktaClient.getUser(sub);
-
-					// users.set(socket, {
-					// 	id: user.id,
-					// 	name: [user.profile.firstName, user.profile.lastName].filter(Boolean).join(' '),
-					// });
-				} catch (err) {
-					console.error(err);
-				}
+				// admin.auth().verifyIdToken(token).then(decodedIdToken => {
+				// 	console.log("decodedIdToken", decodedIdToken);
+				// 	return decodedIdToken;
+				// }).catch(err => {
+				// 	console.error(err);
+				// 	return 'UNAUTHORIZED REQUEST!';
+				// });
+				// try {
+				// 	const [authType, tokenValue] = token.trim().split(' ');
+				// 	if (authType !== 'Bearer') {
+				// 		// throw new Error('Expected a Bearer token');
+				// 	}
+				//
+				// 	console.log(authType, tokenValue);//
+				//
+				// 	// const {claims: {sub}} = await jwtVerifier.verifyAccessToken(tokenValue, 'api://default');
+				// 	// const user = await oktaClient.getUser(sub);
+				//
+				// 	// users.set(socket, {
+				// 	// 	id: user.id,
+				// 	// 	name: [user.profile.firstName, user.profile.lastName].filter(Boolean).join(' '),
+				// 	// });
+				// } catch (err) {
+				// 	console.error(err);
+				// }
 			}
 		}
-
+		
 		next();
 	});
 	// io.adapter(createAdapter(pubClient, subClient));
-
+	
 	io.on('connection', (socket) => {
 		const {session} = socket.handshake;
-
+		
 		const sessionId = session.id;
 		// the session ID is used as a room
 		socket.join(sessionId);
-
+		
 		console.log('user connected', socket.id, sessionId);
-
+		
 		socket.on("disconnect", () => {
 			// controllers.destroy();
 			console.log('user disconnected', socket.id, sessionId);
 		});
-
+		
 		// socket.use((__, next) => {
 		// 	session.reload((err) => {
 		// 		// WARNING! "session" still points towards the previous session object
@@ -112,7 +119,7 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 		// 		next();
 		// 	});
 		// });
-
+		
 		controllers.start(socket);
 	});
 };

@@ -4,16 +4,25 @@
   "scripts": {
     "test": "mocha --reporter spec",
     "lint": "eslint .",
+
     "start:bun": "bun src/index.js",
-    "start": "nodemon -r dotenv/config src/index.js",
+    "start:node": "nodemon -r dotenv/config src/index.js",
+
     "docker:prune": "docker system prune -a",
-    "docker:build": "docker build --no-cache . -t rhespo/sheqaid-server-hr",
-    "docker:push": "docker push rhespo/sheqaid-server-hr",
-    "docker:build & push": "docker build . -t rhespo/sheqaid-server-hr && docker push rhespo/sheqaid-server-hr",
+
+    "docker:build:node": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-server-hr",
+    "docker:build:bun": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-server-hr-bun",
+    "docker:push:node": "docker push rhespo/sheqaid-server-hr",
+    "docker:push:bun": "docker push rhespo/sheqaid-server-hr-bun",
+
+    "docker:build&push:node": "docker build . -t rhespo/sheqaid-server-hr && docker push rhespo/sheqaid-server-hr",
+    "docker:build&push:bun": "docker build . -t rhespo/sheqaid-server-hr-bun && docker push rhespo/sheqaid-server-hr-bun",
+
     "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
-    "install:mod": "npm i express-socket.io-session helmet --save",
+    "install:mod": "npm install -g npm@10.2.5",
     "install:remove": "rm -rf node_modules package-lock.json",
-    "install:all": "npm install"
+    "install:all": "npm install",
+    "neon:build": "npm run build"
   },
   "engines": {
     "node": "16"

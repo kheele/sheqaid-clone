@@ -20,6 +20,7 @@ class Session {
     loginUser(value, auth) {
         this.set("logged_user", value);//user, company
         this.set("auth", auth);
+        console.log('auth', auth);
         Utils.onLogin();
     }
 

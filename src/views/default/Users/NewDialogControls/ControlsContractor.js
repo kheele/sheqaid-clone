@@ -86,7 +86,7 @@ class Controls extends React.Component {
 			exist: false,
 			duplicate: false,
 			uid: null,
-			token: null,
+			customToken: null,
 			loading: false,
 			username: null
 		}
@@ -270,7 +270,7 @@ class Controls extends React.Component {
 		const {idx} = btn.props;
 		
 		if (isNewContractorUser) {
-			const {uid, token} = this.state.usernameStatus;
+			const {uid, customToken} = this.state.usernameStatus;
 			if (idx === 1) {
 				const {employee} = this.state;
 				

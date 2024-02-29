@@ -73,7 +73,7 @@ class Controls extends React.Component {
             exist: false,
             duplicate: false,
             uid: null,
-            token: null,
+            customToken: null,
             loading: false,
             username: null
         },

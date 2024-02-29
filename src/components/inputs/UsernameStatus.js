@@ -52,7 +52,7 @@ class UsernameStatus extends React.Component {
                 access_type,
                 onChange,
                 usernameStatus,
-                usernameStatus: {valid, required, duplicate, exist, uid, token, username, loading}
+                usernameStatus: {valid, required, duplicate, exist, uid, customToken, username, loading}
             } = this.props;
             onChange && onChange(this.state);
         });
@@ -68,7 +68,7 @@ class UsernameStatus extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSendOTP">
     onSendOTP(evt, btn) {
-        const {access_type, usernameStatus: {valid, required, duplicate, exist, uid, token, username, loading}} = this.props;
+        const {access_type, usernameStatus: {valid, required, duplicate, exist, uid, customToken, username, loading}} = this.props;
         let onSend;
 //        if(access_type === 'ContractorUser') {
 //            onSend = onSendOTPContractor;
@@ -96,7 +96,7 @@ class UsernameStatus extends React.Component {
             access_type,
             onChange,
             usernameStatus,
-            usernameStatus: {valid, required, duplicate, exist, uid, token, username, loading}
+            usernameStatus: {valid, required, duplicate, exist, uid, customToken, username, loading}
         } = this.props;
         const {form} = this;
 
@@ -114,13 +114,13 @@ class UsernameStatus extends React.Component {
             onConfirm = onConfirmUserOTP;
 //        }
         onConfirm(data).then(res => {
-            if (res) {//{uid, token}
-                const {uid, token} = res;
+            if (res) {//{uid, customToken}
+                const {uid, customToken} = res;
                 infoDialog.open('One-Time Password successfully verified');
                 usernameStatus.uid = uid;
-                usernameStatus.token = token;
+                usernameStatus.customToken = customToken;
                 this.state.uid = uid;
-                this.state.token = token;
+                this.state.customToken = customToken;
                 this.state.status = 'CONFIRMED';
                 onChange && onChange(this.state);
             }
@@ -131,13 +131,13 @@ class UsernameStatus extends React.Component {
 
     @computed
     get isAvailable() {
-        const {usernameStatus: {valid, required, duplicate, exist, uid, token, username, loading}} = this.props;
+        const {usernameStatus: {valid, required, duplicate, exist, uid, customToken, username, loading}} = this.props;
         return !(loading || !valid || !username || required || duplicate || exist);
     }
 
     @computed
     get isRequired() {
-        const {usernameStatus: {valid, required, duplicate, exist, uid, token, username, loading}} = this.props;
+        const {usernameStatus: {valid, required, duplicate, exist, uid, customToken, username, loading}} = this.props;
         return required;
     }
 

@@ -78,8 +78,8 @@ exports.onLoginBiometric = async (data, access_type) => {
                     return "UNKNOWN_DETECTION";
                 } else {
                     try {
-                        const token = await _auth.createCustomToken(uid, {access_type});
-                        return {token};
+                        const customToken = await _auth.createCustomToken(uid, {access_type});
+                        return {customToken};
                     } catch (err) {
                         console.error(err)
                         return "ERR_CREATING_TOKEN";
@@ -166,8 +166,8 @@ exports.onSetupBiometric = async (data, access_type) => {
                 return "ERR_UPDATE_USER";
             }
             try {
-                const token = await _auth.createCustomToken(uid, {access_type});
-                return {token};
+                const customToken = await _auth.createCustomToken(uid, {access_type});
+                return {customToken};
             } catch (err) {
                 console.error(err)
                 return "ERR_CREATING_TOKEN";

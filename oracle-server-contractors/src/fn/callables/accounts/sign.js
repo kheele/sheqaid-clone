@@ -36,8 +36,8 @@ router.post('/onReAuthUser', async (req, res) => {
 		const {uid, email, phoneNumber} = userRecord;
 
 		try {
-			const token = await createCustomToken(uid);
-			return token;
+			const customToken = await createCustomToken(uid);
+			return customToken;
 		} catch (err) {
 			console.error(err)
 			return "ERR_CREATING_TOKEN";
@@ -84,8 +84,8 @@ router.post('/setCustomUserClaims', async (req, res) => {
 router.post('/createCustomToken', async (req, res) => {
 	const {uid} = req.body;
 	try {
-		const token = await createCustomToken(uid);
-		res.end(token);
+		const customToken = await createCustomToken(uid);
+		res.end(customToken);
 	} catch (err) {
 		console.error(err)
 		res.end("ERR_CREATING_TOKEN");

@@ -20,6 +20,7 @@ module.exports = (
 			limit = 50,
 			//
 			removed = false,
+			written_off = false,
 			//
 			id,
 			//
@@ -34,6 +35,13 @@ module.exports = (
 			...others
 		} = data;
 		
+		let remove_args;
+		if('written_off' in data) {
+			remove_args = {key: 'written_off', value: written_off};
+		} else {
+			remove_args = {key: 'removed', value: removed};
+		}
+		
 		const {filter} = getVariablesAndQueryConfig({
 			orgs_filter,
 			//
@@ -46,14 +54,14 @@ module.exports = (
 			exact_orgs
 		});
 		
-		// const whereArgs = {filter, removed, ...data, site_id, project_id, client_id, company_id};
+		// const whereArgs = {filter, [remove_args.key]: remove_args.value, ...data, site_id, project_id, client_id, company_id};
 		
 		let where;
 		if (__where) {
-			where = __where({filter, removed});
+			where = __where({filter, [remove_args.key]: remove_args.value});
 		} else {
 			where = `
-			  removed: {_eq: ${removed}},
+			  ${remove_args.key}: {_eq: ${remove_args.value}},
 		    ${filter}
 			`;
 		}

@@ -66,6 +66,10 @@ exports.contractor_questionnaire_template_details_find_fragment = `
       doc
       expiry
     }
+    site{
+        id
+        name
+    }
     contractor_site{
       id
       name

@@ -69,7 +69,7 @@ const mutation = graphql`
 export default async (input) => {
 	const {
 		uid,
-		token: customToken,
+		customToken,
 		fname,
 		lname,
 		username,
@@ -140,7 +140,7 @@ export default async (input) => {
 
 	delete input.password;
 	delete input.uid;
-	delete input.token;
+	delete input.customToken;
 
 	if(account_type === 'Trial') {
 		company.data.trial_start_date = Dates.formatDateSQL(new Date());

@@ -20,6 +20,14 @@ export const contractor_questionnaire_template_details_fragment = `
         doc
         expiry
     }
+    project{
+        id
+        name
+    }
+    site{
+        id
+        name
+    }
     contractor_site{
         id
         name
@@ -30,4 +38,3 @@ export const contractor_questionnaire_template_details_fragment = `
     }
 `;
 //</editor-fold>
-

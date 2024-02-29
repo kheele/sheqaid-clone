@@ -33,9 +33,9 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
-		if (isBoolean(written_off)) {
-			filter.push(`written_off: {_eq: ${written_off}}`);
-		}
+		// if (isBoolean(written_off)) {
+		// 	filter.push(`written_off: {_eq: ${written_off}}`);
+		// }
 		
 		if(name) {
 			filter.push(`asset_detail:{name: {_ilike: "%${name}%"}}`);

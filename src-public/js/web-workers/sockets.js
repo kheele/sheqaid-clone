@@ -1,7 +1,7 @@
 importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 
-self.SERVER_HOST = "http://localhost:5500";
-// self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
+// self.SERVER_HOST = "http://localhost:5500";
+self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
 // self.SERVER_HOST = "https://server.cloud.sheqaid.com";
 
 self.socket = io(SERVER_HOST, {
@@ -11,11 +11,12 @@ self.socket = io(SERVER_HOST, {
 		const {session} = self;
 		if (session.isLoggedIn) {
 			const {currentUser} = session.auth;
+			console.log('currentUser', currentUser)
 			currentUser.getIdToken().then(token => {
-				cb({token});
+				cb({token, access_type: "t"});
 			});
 		} else {
-			cb({token: null});
+			cb({token: null, access_type: null});
 		}
 	},
 });

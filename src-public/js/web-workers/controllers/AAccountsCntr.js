@@ -89,7 +89,7 @@ class AAccountsCntr extends AAccountsServerCntr {
 			return res;
 		}
 
-		const {token: customToken} = res;
+		const {customToken} = res;
 		console.log('loginBiometric customToken')
 		res = await this.auth.signInWithCustomToken(customToken).then(async userCredential => {
 			if (!userCredential)
@@ -119,7 +119,7 @@ class AAccountsCntr extends AAccountsServerCntr {
 			return res;
 		}
 
-		const {token: customToken} = res;
+		const {customToken} = res;
 		console.log('setupBiometric res')
 		res = await this.auth.signInWithCustomToken(customToken).then(async userCredential => {
 			if (!userCredential)
@@ -150,7 +150,7 @@ class AAccountsCntr extends AAccountsServerCntr {
 			return res;
 		}
 
-		const {token: customToken} = res;
+		const {customToken} = res;
 		console.log('relogin contractor customToken')
 		res = await this.auth.signInWithCustomToken(customToken).then(async userCredential => {
 			if (!userCredential)
@@ -172,11 +172,11 @@ class AAccountsCntr extends AAccountsServerCntr {
 	// <editor-fold defaultstate="collapsed" desc="loginImpl">
 	async loginImpl(res) {
 		if (res) {
-			let {loggedUser, token} = res;
+			let {loggedUser, customToken} = res;
 			loggedUser = {...loggedUser, access_type: this.access_type};
 
 			self.session.loginUser(loggedUser, this.auth);
-			return {loggedUser, token};
+			return {loggedUser, customToken};
 		}
 
 		// let snapshot;

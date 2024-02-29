@@ -95,8 +95,8 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken) => {
     console.log('currentCustomClaims', JSON.stringify(currentCustomClaims).length, JSON.stringify(currentCustomClaims))
     return setCustomUserClaims(uid, currentCustomClaims).then(async () => {
         try {
-            const token = await createCustomToken(uid);
-            return {loggedUser, token, customClaims: currentCustomClaims};
+            const customToken = await createCustomToken(uid);
+            return {loggedUser, customToken, customClaims: currentCustomClaims};
         } catch (err) {
             console.error(err)
             return "ERR_CREATING_TOKEN";

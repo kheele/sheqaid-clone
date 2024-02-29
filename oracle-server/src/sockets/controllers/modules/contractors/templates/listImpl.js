@@ -1,4 +1,4 @@
-const {orgs_no_project_and_site_fragment} = require("../../../../../graphql/Fragments");
+const {orgs_fragment} = require("../../../../../graphql/Fragments");
 const {contractor_questionnaire_template_details_list_fragment, getVariablesAndQueryConfig} = require('./commons');
 
 //<editor-fold desc="listImpl">
@@ -49,7 +49,7 @@ module.exports = async (socket, data) => {
               }
             ) {
                 ${contractor_questionnaire_template_details_list_fragment}
-                ${orgs_no_project_and_site_fragment}
+                ${orgs_fragment}
             }
         }
       `,
@@ -69,7 +69,7 @@ module.exports = async (socket, data) => {
               ${limit > 0 ? `limit: ${limit}` : ''}
             ) {
                 ${contractor_questionnaire_template_details_list_fragment}
-                ${orgs_no_project_and_site_fragment}
+                ${orgs_fragment}
             }
         }
       `,

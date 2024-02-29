@@ -50,7 +50,7 @@ class Signup extends React.Component {
 			exist: false,
 			duplicate: false,
 			uid: null,
-			token: null,
+			customToken: null,
 			loading: false,
 			username: null
 		}
@@ -210,7 +210,7 @@ class Signup extends React.Component {
 		} else {
 			back.hide();
 			if (this.index === 0) {
-				const {valid, required, duplicate, exist, uid, token, username} = this.state.usernameStatus;
+				const {valid, required, duplicate, exist, uid, customToken, username} = this.state.usernameStatus;
 				if (valid && (uid || (!duplicate && !exist))) {
 					signup.show();
 				} else {
@@ -240,7 +240,7 @@ class Signup extends React.Component {
 		const {index} = this;
 //        console.log('index', index)
 		if (index === 0) {
-			const {uid, token} = this.state.usernameStatus;
+			const {uid, customToken} = this.state.usernameStatus;
 
 			if (!form.isValid('username')) {
 				infoDialog.open('Email Address is required');
@@ -327,7 +327,7 @@ class Signup extends React.Component {
 	onSubmit(evt, btn) {
 		const {form} = this;
 
-		const {uid, token, status} = this.state.usernameStatus;
+		const {uid, customToken, status} = this.state.usernameStatus;
 
 		const {
 			account_type,
@@ -337,7 +337,7 @@ class Signup extends React.Component {
 		} = form.data;
 		const data = {
 			uid,
-			token,
+			customToken,
 			fname,
 			lname,
 			username: username.toLowerCase(),
@@ -425,7 +425,7 @@ class Signup extends React.Component {
 		const {
 			display,
 			usernameStatus,
-			usernameStatus: {valid, required, duplicate, exist, uid, token, username}
+			usernameStatus: {valid, required, duplicate, exist, uid, customToken, username}
 		} = this.state;
 		if (!display) {
 			return null;

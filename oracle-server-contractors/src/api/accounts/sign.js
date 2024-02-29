@@ -35,10 +35,10 @@ global.onReAuthUser = async ({uid}) => {
         }
     }
 
-    let token;
+    let customToken;
     console.log('onReAuthUser', uid)
     const _auth = admin.auth();
-    token = await _auth.getUser(uid).then(async userRecord => {
+    customToken = await _auth.getUser(uid).then(async userRecord => {
         if (!userRecord) {
             return "NO_USER_AUTH";
         }
@@ -46,16 +46,16 @@ global.onReAuthUser = async ({uid}) => {
         const {uid, email, phoneNumber} = userRecord;
 
         try {
-            const token = await createCustomToken(uid);
-            return token;
+            const customToken = await createCustomToken(uid);
+            return customToken;
         } catch (err) {
             console.error(err)
             return "ERR_CREATING_TOKEN";
         }
     });
 
-    console.log('onReAuthUser res', token)
-    return {token};
+    console.log('onReAuthUser res customToken', customToken)
+    return {customToken};
 };
 
 global.loginSession = async (data) => {
