@@ -55,17 +55,20 @@ const onChangeBodilyInjuryLocationList = function (el, val) {
 
 const onHumanBodyPartsAdded = function (val) {
     execWhen(() => this.refs.bodily_injury_location_list).then(ref => {
-        const list = ref.value || [];
-        list.push({label: val, value: val});
-        ref.value = list;
+        const {list} = ref;
+        const selectedItem = list.find(({value: {data: {name}}}) => name === val);
+        console.log('onHumanBodyPartsAdded selectedItem', selectedItem, val, list.slice());
+        const selectedList = ref.value || [];
+        selectedList.push(selectedItem.value);
+        ref.value = selectedList;
     });
 }
 
 const onHumanBodyPartsRemoved = function (val) {
     execWhen(() => this.refs.bodily_injury_location_list).then(ref => {
-        const list = ref.value || [];
-        list.removeIf(v => v.value === val);
-        ref.value = list;
+        const selectedList = ref.value || [];
+        selectedList.removeIf(({value:{data:{name}}}) => name === val);
+        ref.value = selectedList;
     });
 }
 

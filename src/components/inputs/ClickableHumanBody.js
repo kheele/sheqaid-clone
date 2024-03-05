@@ -22,8 +22,8 @@ class ClickableHumanBody extends React.Component {
 
     onClick(e) {
         const $this = $(e.target);
-        const selected = $this.data("selected");
-        if (selected) {
+        const item = $this.data("item");
+        if (item) {
             this.removedItem($this, true);
         } else {
             this.selectItem($this, true);
@@ -32,7 +32,7 @@ class ClickableHumanBody extends React.Component {
     
     removedItem($this, remove) {
         const {onRemoved} = this.props;
-        $this.data("selected", null);
+        $this.data("item", null);
         $this.attr('fill', 'rgb(2, 168, 168)');
         $this.attr('fill-opacity', '0');
         $this.attr('stroke', 'rgb(2, 168, 168)');
@@ -45,7 +45,7 @@ class ClickableHumanBody extends React.Component {
     
     selectItem($this, add) {
         const {onAdded} = this.props;
-        $this.data("selected", true);
+        $this.data("item", true);
         $this.attr('fill', 'red');
         $this.attr('fill-opacity', '0.3');
         $this.attr('stroke', '#ff8080');
@@ -66,9 +66,9 @@ class ClickableHumanBody extends React.Component {
             }
         }).then(node => {
             $(node).children('path').each(function () {
-                var $this = $(this);
-                var type = $this.attr("type");
-                if (items.contains(type)) {
+                const $this = $(this);
+                const type = $this.attr("type");
+                if (items.anyMatch(({data:{name}}) => name === type)) {
                     selectItem($this);
                 } else {
                     removedItem($this);
