@@ -59,7 +59,7 @@ const onHumanBodyPartsAdded = function (val) {
         const selectedItem = list.find(({value: {data: {name}}}) => name === val);
         console.log('onHumanBodyPartsAdded selectedItem', selectedItem, val, list.slice());
         const selectedList = ref.value || [];
-        selectedList.push(selectedItem.value);
+        selectedList.push(selectedItem);
         ref.value = selectedList;
     });
 }

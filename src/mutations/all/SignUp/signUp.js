@@ -152,7 +152,7 @@ export default async (input) => {
 		data: module_list,
 	};
 
-	const newUser = await createMutationImpl({mutation, input});
+	const newUser = await createMutationImpl({checkLogin: false, mutation, input});
 
 	if (newUser) {
 		return await workers.emit("users/accounts/signup", {newUser, password, uid, customToken});
