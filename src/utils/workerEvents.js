@@ -67,7 +67,7 @@ class WorkerEvents {
     }
 
     async updateNewUser({id, auth_id, profile_pic}) {
-        return await updateUser({id, auth_id, profile_pic});
+        return await updateUser({id, auth_id, profile_pic, checkLogin: false});
     }
 
     async updateNewContractorUser({id, auth_id, profile_pic}) {

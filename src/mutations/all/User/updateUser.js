@@ -117,7 +117,11 @@ export default async (attrs: EntityUser) => {
         // permissions_other,
         //
         password_conf,
+      //
+        checkLogin = true,
     } = attrs;
+    
+    delete attrs.checkLogin;
 
     const item = await findByIdUser(id);
     if (!item) return;
@@ -209,6 +213,7 @@ export default async (attrs: EntityUser) => {
     // }
 
     return updateMutationImpl({
+        checkLogin,
         mutation,
         id: attrs.id,
         attrs,
