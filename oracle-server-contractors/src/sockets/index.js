@@ -54,28 +54,36 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	io.use((socket, next) => {
 		// console.log('socket.handshake', socket.handshake);//
 		if(socket.handshake) {
-			const {session} = socket.handshake;
-			console.log('io.use session', session);
-			const {token = null} = socket.handshake.query || {};
+			const {session: {req: {headers, auth}}} = socket.handshake;
+			console.log('io.use session ip', headers);
+			console.log('io.use session token', auth);
+			const {token = null} = auth || {};
 			if (token) {
-				try {
-					const [authType, tokenValue] = token.trim().split(' ');
-					if (authType !== 'Bearer') {
-						throw new Error('Expected a Bearer token');
-					}
-
-					console.log(authType, tokenValue);//
-
-					// const {claims: {sub}} = await jwtVerifier.verifyAccessToken(tokenValue, 'api://default');
-					// const user = await oktaClient.getUser(sub);
-
-					// users.set(socket, {
-					// 	id: user.id,
-					// 	name: [user.profile.firstName, user.profile.lastName].filter(Boolean).join(' '),
-					// });
-				} catch (err) {
-					console.error(err);
-				}
+				// admin.auth().verifyIdToken(token).then(decodedIdToken => {
+				// 	console.log("decodedIdToken", decodedIdToken);
+				// 	return decodedIdToken;
+				// }).catch(err => {
+				// 	console.error(err);
+				// 	return 'UNAUTHORIZED REQUEST!';
+				// });
+				// try {
+				// 	const [authType, tokenValue] = token.trim().split(' ');
+				// 	if (authType !== 'Bearer') {
+				// 		// throw new Error('Expected a Bearer token');
+				// 	}
+				//
+				// 	console.log(authType, tokenValue);//
+				//
+				// 	// const {claims: {sub}} = await jwtVerifier.verifyAccessToken(tokenValue, 'api://default');
+				// 	// const user = await oktaClient.getUser(sub);
+				//
+				// 	// users.set(socket, {
+				// 	// 	id: user.id,
+				// 	// 	name: [user.profile.firstName, user.profile.lastName].filter(Boolean).join(' '),
+				// 	// });
+				// } catch (err) {
+				// 	console.error(err);
+				// }
 			}
 		}
 

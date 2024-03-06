@@ -77,7 +77,6 @@ export default async (input: EntitySector) => {
     if (selectedClient) {
         input.client_id = selectedClient.id;
     }
-
-
+    
     return await createMutationImpl({mutation, input});
 };

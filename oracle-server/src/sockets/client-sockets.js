@@ -26,6 +26,10 @@ const connectSocket = (key, domain) => {
         console.log(`Connected to ${key} server`, socket.id);
     });
 
+    socket.on('connect_error', (err) => {
+        console.log(`Connection error to ${key} server:`, err);
+    });
+
     socket.on('disconnect', () => {
         console.log(`Disconnected from ${key} server`, socket.id);
     });
