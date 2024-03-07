@@ -4,15 +4,21 @@
     "scripts": {
         "test": "mocha --reporter spec",
         "lint": "eslint .",
+
         "start:bun": "bun src/index.js",
         "start:node": "nodemon -r dotenv/config src/index.js",
+
         "docker:prune": "docker system prune -a",
+
         "docker:build:node": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-server",
         "docker:build:bun": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-server-bun",
+
         "docker:push:node": "docker push rhespo/sheqaid-server",
         "docker:push:bun": "docker push rhespo/sheqaid-server-bun",
+
         "docker:build&push:node": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
         "docker:build&push:bun": "docker build . -t rhespo/sheqaid-server-bun && docker push rhespo/sheqaid-server-bun",
+
         "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
         "install:mod": "npm install -g npm@10.2.5",
         "install:remove": "rm -rf node_modules package-lock.json",
