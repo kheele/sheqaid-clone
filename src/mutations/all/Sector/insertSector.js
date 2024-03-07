@@ -57,13 +57,13 @@ export default async (input: EntitySector) => {
     input.sector_owner = "Private";
 
     const {company, user} = storage.loggedUser;
-
+//
     if(isContractor) {
         input.contractor_user_id = user.id;
     } else {
         input.user_id = user.id;
     }
-
+//
     if(isContractor) {
         const {loggedContractor} = storage;
         input.contractor_id = loggedContractor && loggedContractor.id;
@@ -72,7 +72,6 @@ export default async (input: EntitySector) => {
     }
 
     input.company_id = company.id;
-
 
     if (selectedClient) {
         input.client_id = selectedClient.id;

@@ -31,6 +31,14 @@
       <excludeFolder url="file://$MODULE_DIR$/public/js/lib" />
       <excludeFolder url="file://$MODULE_DIR$/src-public/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/src-public/js/web-workers/node/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase-2" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase-hr" />
+      <excludeFolder url="file://$MODULE_DIR$/firebase_funs" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server-contractors" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server-convert-binary" />
+      <excludeFolder url="file://$MODULE_DIR$/oracle-server-hr" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

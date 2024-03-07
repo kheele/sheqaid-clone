@@ -11,7 +11,7 @@ class InitViewSetupClients extends React.Component {
 			return true;
 		});
 	}
-
+	
 	onCreateClients() {
 		const {login} = storage;
 		defaultView.navigate('Clients', 'New').then(item => {
@@ -23,7 +23,7 @@ class InitViewSetupClients extends React.Component {
 			});
 		})
 	}
-
+	
 	onCreateProjects() {
 		const {login} = storage;
 		defaultView.navigate('Projects', 'New').then(item => {
@@ -35,7 +35,7 @@ class InitViewSetupClients extends React.Component {
 			});
 		})
 	}
-
+	
 	onCreateSites() {
 		const {login} = storage;
 		defaultView.navigate('Sites', 'New').then(item => {
@@ -47,7 +47,7 @@ class InitViewSetupClients extends React.Component {
 			});
 		})
 	}
-
+	
 	render() {
 		const {loggedUser} = storage;
 		const {
@@ -55,12 +55,12 @@ class InitViewSetupClients extends React.Component {
 			is: {hasProjects, isConsultant, isContractorViewIncContractorPack, isEmployee},
 			list: {clients, projects}
 		} = storage;
-		if (isEmployee || isContractorViewIncContractorPack) return null;
-		if(isConsultant) {
+		if (isEmployee || isContractorViewIncContractorPack || (!isConsultant && !hasProjects)) return null;
+		if (isConsultant) {
 			if (clients.isNotEmpty()) return null;
 		}
 		if (projects.isNotEmpty()) return null;
-
+		
 		return <div className="InitViewSetupClients">
 			{isConsultant && <MKBox
 				className="flex flex-align-center"
@@ -74,29 +74,31 @@ class InitViewSetupClients extends React.Component {
 				<p className="margin-0">Currently no clients created.</p>
 				<Button text="Create" className="btn btn-primary pull-right fixed-flex" onClick={this.onCreateClients}/>
 			</MKBox>}
-			{hasProjects && <MKBox
-				className="flex flex-align-center"
-				sx={{
-					fontSize: '16px',
-					background: 'rgba(2, 45, 45, 0.4)',
-					padding: '15px 20px',
-					marginBottom: '3px',
-					color: '#41a0a5',
-				}}>
-				<p className="margin-0">Currently no projects created.</p>
-				<Button text="Create" className="btn btn-primary pull-right fixed-flex" onClick={this.onCreateProjects}/>
-			</MKBox>}
-			<MKBox
-				className="flex flex-align-center"
-				sx={{
-					fontSize: '16px',
-					background: 'rgba(2, 45, 45, 0.4)',
-					padding: '15px 20px',
-					color: '#41a0a5',
-				}}>
-				<p className="margin-0">Currently no sites created.</p>
-				<Button text="Create" className="btn btn-primary pull-right fixed-flex" onClick={this.onCreateSites}/>
-			</MKBox>
+			{hasProjects && <>
+				<MKBox
+					className="flex flex-align-center"
+					sx={{
+						fontSize: '16px',
+						background: 'rgba(2, 45, 45, 0.4)',
+						padding: '15px 20px',
+						marginBottom: '3px',
+						color: '#41a0a5',
+					}}>
+					<p className="margin-0">Currently no projects created.</p>
+					<Button text="Create" className="btn btn-primary pull-right fixed-flex" onClick={this.onCreateProjects}/>
+				</MKBox>
+				<MKBox
+					className="flex flex-align-center"
+					sx={{
+						fontSize: '16px',
+						background: 'rgba(2, 45, 45, 0.4)',
+						padding: '15px 20px',
+						color: '#41a0a5',
+					}}>
+					<p className="margin-0">Currently no sites created.</p>
+					<Button text="Create" className="btn btn-primary pull-right fixed-flex" onClick={this.onCreateSites}/>
+				</MKBox>
+			</>}
 		</div>;
 	}
 }
