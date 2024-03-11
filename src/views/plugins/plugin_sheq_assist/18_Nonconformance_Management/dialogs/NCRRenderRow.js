@@ -10,6 +10,7 @@ import {TRow} from 'components/tables';
 import style from "./NCRRenderRow.lazy.css";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -102,16 +103,9 @@ class RenderRow extends React.Component {
 		} catch (err) {
 			console.error('NCRRenderRow error', item)
 			const onReport = (evt, btn) => {
-				const data = {message: err.message || "", stack: err.stack || "", error_info: err.componentStack || ""};
-				
 				btn.text("Reporting...").disabled();
-				neonBinding.events.emit("error-reporting/create", data).then(res => {
-					infoDialog.open(<React.Fragment>
-						<p>Problem successfully reported!</p>
-						<p>We will fix it as soon as possible.</p>
-					</React.Fragment>);
-					infoDialog.close(5000);
-				}).finally(() => {
+				insertErrorReporting({error: err, errorInfo: err}).
+				finally(() => {
 					btn.text("Report Problem").enabled();
 				});
 			};

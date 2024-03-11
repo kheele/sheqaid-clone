@@ -178,7 +178,7 @@ class Controls extends React.Component {
                         <ProfileField name="type" title="Type" value={sec3_data && sec3_data.type} className="col-lg-6"/>
                         
                         <ProfileField name="category_list" title="Category" value={sec1_data && sec1_data.category_list && sec1_data.category_list.join(', ')} className="col-lg-12"/>
-                        <ProfileField name="exact_location" title="Location" value={sec9_data && sec9_data.exact_location} className="col-lg-12"/>
+                        <ProfileField name="exact_location" title="Exact Location" value={sec9_data && sec9_data.exact_location} className="col-lg-12"/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
                 </div>

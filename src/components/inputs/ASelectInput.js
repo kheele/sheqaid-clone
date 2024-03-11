@@ -53,8 +53,12 @@ class ASelectInput extends React.Component {
     }
     
     set value(value) {
-        execWhen(() => this.refs.input).then(ref => ref.onChange(value));
-        console.log(`${this.props.name} - set value`, value)
+        execWhen(() => this.refs.input).then(ref => {
+            ref.hide();
+            ref.onChange(value);
+            ref.show();
+        });
+        // console.log(`${this.props.name} - set value`, value)
     }
     
     @computed

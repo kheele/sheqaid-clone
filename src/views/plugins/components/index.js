@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {Button} from 'components/inputs';
+import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
 
 @observer
 class AsyncTD extends React.Component {
@@ -65,16 +66,9 @@ class Val extends React.Component {
             } catch(err) {
                 console.error(err);
                 const onReport = (evt, btn) => {
-                    const data = {message: err.message || "", stack: err.stack || "", error_info: err.componentStack || ""};
-
                     btn.text("Reporting...").disabled();
-                    neonBinding.events.emit("error-reporting/create", data).then(res => {
-                        infoDialog.open(<React.Fragment>
-                                    <p>Problem successfully reported!</p> 
-                                    <p>We will fix it as soon as possible.</p>    
-                                </React.Fragment>);
-                        infoDialog.close(5000);
-                    }).finally(() => {
+                    insertErrorReporting({error: err, errorInfo: err}).
+                    finally(() => {
                         btn.text("Report Problem").enabled();
                     });
                 };

@@ -210,7 +210,7 @@ class Controls extends React.Component {
             <div className="td">Sector(s)</div>
             <div className="td">Activities</div>
             <div className="td">Description</div>
-            <div className="td">Location</div>
+            <div className="td">Area</div>
             <div className="td fixed-flex min-w-140">Status</div>
             <div className="td fixed-flex no-padding min-w-70"></div>
         </THead>;

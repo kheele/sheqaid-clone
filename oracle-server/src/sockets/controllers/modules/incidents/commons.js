@@ -220,6 +220,7 @@ exports.incident_details_fragment = `
   test_type_drug_undertaken
   test_type_alcohol_undertaken
   test_type_mobile_device_undertaken
+  is_person_injured
   is_vehicle_incident
   test_undertaken
   status_closed

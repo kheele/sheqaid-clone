@@ -24,6 +24,7 @@ exports.getVariablesAndQueryConfig = (
         activity_list,
         //
         exact_location,
+        is_person_injured,
         is_vehicle_incident,
         vehicle_make,
         vehicle_reg_num,

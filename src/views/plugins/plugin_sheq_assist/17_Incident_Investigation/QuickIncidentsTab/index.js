@@ -292,7 +292,7 @@ class QuickIncidentsTab extends React.Component {
             <div className="td fixed-flex min-w-160">Asset</div>
             <div className="td">Driver</div>
             <div className="td">Description</div>
-            <div className="td">Location</div>
+            <div className="td">Exact Location</div>
             {/*<div className="td fixed-flex min-w-140">Status</div>*/}
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;

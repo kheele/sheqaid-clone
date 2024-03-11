@@ -11,6 +11,7 @@ import {NavigateTop} from '../';
 import {Button} from '../inputs';
 
 import * as Utils from '../../utils/Utils';
+import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
 
 @observer
 class TBody extends React.Component {
@@ -186,16 +187,9 @@ class TBody extends React.Component {
         } catch(err) {
             console.error(err);
             const onReport = (evt, btn) => {
-                const data = {message: err.message || "", stack: err.stack || "", error_info: err.componentStack || ""};
-
                 btn.text("Reporting...").disabled();
-                neonBinding.events.emit("error-reporting/create", data).then(res => {
-                    infoDialog.open(<React.Fragment>
-                                <p>Problem successfully reported!</p> 
-                                <p>We will fix it as soon as possible.</p>    
-                            </React.Fragment>);
-                    infoDialog.close(5000);
-                }).finally(() => {
+                insertErrorReporting({error: err, errorInfo: err}).
+                finally(() => {
                     btn.text("Report Problem").enabled();
                 });
             };

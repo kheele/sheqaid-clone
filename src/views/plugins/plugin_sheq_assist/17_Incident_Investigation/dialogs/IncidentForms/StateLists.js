@@ -29,6 +29,9 @@ export default {
     test_type_mobile_device_undertaken: ['Yes', 'No', 'Unknown at notification', 'Suspected'].map(value => {
         return {value, label: value, checked: false}
     }),
+    is_person_injured: ['Yes', 'No'].map(value => {
+        return {value, text: value, checked: false}
+    }),
     is_vehicle_incident: ['Yes', 'No'].map(value => {
         return {value, text: value, checked: false}
     }),

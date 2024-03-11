@@ -15,7 +15,7 @@ import AIncidentWritableForm from "./IncidentForms/AIncidentWritableForm";
 @observer
 class NewDialog extends ANewDialog {
 	pageKey = "NewIncidentDialog";
-	title = "Incident";
+	title = "Create Incident";
 
 	constructor(props) {
 		super(props, style);

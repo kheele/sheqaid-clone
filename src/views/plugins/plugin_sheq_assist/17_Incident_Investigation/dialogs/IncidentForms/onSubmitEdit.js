@@ -1,8 +1,7 @@
 import {mapIncidentPersonDetails} from "utils/ArrayMapperUtils";
 import {isObservableArray, toJS} from "mobx";
 import {ShouldUpdate} from "utils/Utils";
-import insertIncident from "../../../../../../mutations/all/Incident/insertIncident";
-import updateIncident from "../../../../../../mutations/all/Incident/updateIncident";
+import updateIncident from "mutations/all/Incident/updateIncident";
 
 export default function onSubmitEdit(e, btn, onSaved) {
     const {form, item: {data: old_data}} = this;
@@ -11,10 +10,10 @@ export default function onSubmitEdit(e, btn, onSaved) {
         infoDialog.open('Incident Category is required');
         return;
     }
-    if (!form.isValid('person_involved_list') || form.get('person_involved_list').isEmpty()) {
-        infoDialog.open('Person(s) Involved in the Incident are/is required');
-        return;
-    }
+    // if (!form.isValid('person_involved_list') || form.get('person_involved_list').isEmpty()) {
+    //     infoDialog.open('Person(s) Involved in the Incident are/is required');
+    //     return;
+    // }
     if (!form.isValid('person_reporting')) {
         infoDialog.open('Person Reporting the Incident is required');
         return;
@@ -63,37 +62,22 @@ export default function onSubmitEdit(e, btn, onSaved) {
         time_shift,
         //3
         category_list,
-        //4
         sub_category_list,
-        //5
+        //4
         sector_list,
         activity_list,
-        //6.1
+        //5
+        //5.1
         person_involved_list,
-        //6.2
+        //5.2
         person_reporting,
-        //6.3
+        //5.3
         person_reported_to,
-        //6.4
+        //5.4
         witness_list,
-        //6.5
+        //5.5
         distribution_list,
-
-        //7.1
-        person_injured,
-        injured_person_dob,
-        injured_person_gender,
-        nature_of_injury_list,
-        bodily_injury_location_list,
-        injury_mechanism_list,
-        injury_desc,
-        //7.2
-        test_undertaken,
-        test_type_list,
-        test_type_drug_undertaken,
-        test_type_alcohol_undertaken,
-        test_type_mobile_device_undertaken,
-        //7.3
+        //6
         is_vehicle_incident,
         is_infringement_issued,
         did_police_attend_scene,
@@ -144,7 +128,22 @@ export default function onSubmitEdit(e, btn, onSaved) {
         nature_of_charges,
         who_laid_charges,
         who_were_nature_charges_laid_against,
-        //7.4
+        //7
+        is_person_injured,
+        person_injured,
+        injured_person_dob,
+        injured_person_gender,
+        nature_of_injury_list,
+        bodily_injury_location_list,
+        injury_mechanism_list,
+        injury_desc,
+        //8
+        test_undertaken,
+        test_type_list,
+        test_type_drug_undertaken,
+        test_type_alcohol_undertaken,
+        test_type_mobile_device_undertaken,
+        //9
         consequence,
         likelihood,
         risk_rating,

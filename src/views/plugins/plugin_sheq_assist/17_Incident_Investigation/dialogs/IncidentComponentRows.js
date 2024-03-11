@@ -298,7 +298,7 @@ class IncidentQuickTableRow extends React.Component {
 				{short_desc || 'N/A'}
 			</div>
 			<div className="td">
-				<h6 className="xs-shown font-size-13">Location</h6>
+				<h6 className="xs-shown font-size-13">Exact Location</h6>
 				{(latitude && longitude) || exact_location ? <Grid container spacing={1} columns={4}>
 					{latitude && longitude && <Grid item>
 						<Chip label={latitude + ', ' + longitude} size="small"/>
@@ -583,7 +583,7 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
 						{short_desc || 'N/A'}
 					</div>
 					<div className="td">
-						<h6 className="xs-shown font-size-13">Location</h6>
+						<h6 className="xs-shown font-size-13">Exact Location</h6>
 						{exact_location || 'N/A'}
 					</div>
 					

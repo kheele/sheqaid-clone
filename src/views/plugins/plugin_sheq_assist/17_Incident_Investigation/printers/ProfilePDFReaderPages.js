@@ -243,7 +243,7 @@ class IncidentDetailsPanel extends React.Component {
                     <Panel title="Date Occurred" value={incident_date} colStyle={{width: '50%', borderBottom: '1px dotted #eee', borderRight: '1px dotted #eee'}}/>
                     <Panel title="Time Occurred" value={incident_time} colStyle={{width: '50%', borderBottom: '1px dotted #eee'}}/>
                 </View>
-                <Panel title="Incident Location" value={exact_location}/>
+                <Panel title="Exact Location" value={exact_location}/>
             </View>
             <View style={[styles.flexColumn, {marginTop: 10}]}>
                 <Text style={styles.headingPoint2}>2.7 Incident Reporting</Text>

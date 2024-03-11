@@ -43,6 +43,7 @@ class Controls extends React.Component {
             onChangeRiskRating,
             onChangeTestUndertaken,
             onChangeTestTypeList,
+            onChangeIsPersonInjured,
             onChangeIsVehicleIncident,
             onChangeWas3rdPartyInvolved,
             onChangeAre3rdPartyDetailsAvailable,
@@ -67,6 +68,7 @@ class Controls extends React.Component {
         this.form.addChangeOne("risk_rating", onChangeRiskRating.bind(this));
         this.form.addChangeOne("test_undertaken", onChangeTestUndertaken.bind(this));
         this.form.addChangeOne("test_type_list", onChangeTestTypeList.bind(this));
+        this.form.addChangeOne("is_person_injured", onChangeIsPersonInjured.bind(this));
         this.form.addChangeOne("is_vehicle_incident", onChangeIsVehicleIncident.bind(this));
         this.form.addChangeOne("was_3rd_party_involved", onChangeWas3rdPartyInvolved.bind(this));
         this.form.addChangeOne("are_3rd_party_details_available", onChangeAre3rdPartyDetailsAvailable.bind(this));

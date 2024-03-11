@@ -44,7 +44,7 @@ import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 @observer
 class EditDialog extends AEditDialog {
 	pageKey = "EditIncidentDialog";
-	title = "Incident";
+	title = "Edit Incident";
 	findById = findByIdIncident;
 	removeById = updateIncident;
 
@@ -230,7 +230,7 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test
-		if (idx == 3) {
+		if (idx === 3) {
 			if (!form.isValid('category_list') || form.get('category_list').isEmpty()) {
 				infoDialog.open('Incident Category is required');
 				return;
@@ -239,10 +239,12 @@ class Controls extends AIncidentWritableForm {
 			const {
 				//3
 				category_list,
+				sub_category_list,
 			} = form.data;
 			const data = {};
 
 			ShouldUpdate.checkListToJS(data, old_data, category_list, 'category_list');
+			ShouldUpdate.checkListToJS(data, old_data, sub_category_list, 'sub_category_list');
 
 			if (Object.keys(data).isEmpty()) {
 				infoDialog.open("Nothing changed!");
@@ -252,7 +254,7 @@ class Controls extends AIncidentWritableForm {
 			btn.text("Saving...").disabled();
 			progressDialog.open();
 
-			const res = await Promise.all(category_list.map(async v => {
+			const res1 = await Promise.all(category_list.map(async v => {
 				const {incident_id, category_id, category} = v;
 				const attrs = {};
 				if (category && category.id !== category_id) {
@@ -270,35 +272,8 @@ class Controls extends AIncidentWritableForm {
 					});
 				}
 			}));
-			console.log("res", res)
-			// onSaved && onSaved(res);
-			infoDialog.open("Record successfully updated.");
-			infoDialog.close(2000);
-			// this.props.close();
-
-			btn.text("Save").enabled();
-			setTimeout(() => progressDialog.close());
-		}
-
-		//to test
-		if (idx == 4) {
-			const {
-				//4
-				sub_category_list,
-			} = form.data;
-			const data = {};
-
-			ShouldUpdate.checkListToJS(data, old_data, sub_category_list, 'sub_category_list');
-
-			if (Object.keys(data).isEmpty()) {
-				infoDialog.open("Nothing changed!");
-				return;
-			}
-
-			btn.text("Saving...").disabled();
-			progressDialog.open();
-
-			const res = await Promise.all(sub_category_list.map(async v => {
+			
+			const res2 = await Promise.all(sub_category_list.map(async v => {
 				const {id, incident_id, sub_category_id, sub_category} = v;
 				const attrs = {};
 				if (sub_category && sub_category.id !== sub_category_id) {
@@ -316,7 +291,8 @@ class Controls extends AIncidentWritableForm {
 					});
 				}
 			}));
-			console.log("res", res)
+			
+			console.log("res", res1, res2)
 			// onSaved && onSaved(res);
 			infoDialog.open("Record successfully updated.");
 			infoDialog.close(2000);
@@ -327,9 +303,9 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test
-		if (idx == 5) {
+		if (idx === 4) {
 			const {
-				//5
+				//4
 				sector_list,
 				activity_list,
 			} = form.data;
@@ -400,9 +376,9 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test: fix new other person
-		if (idx == '6.1') {
+		if (idx === 5.1) {
 			const {
-				//6.1
+				//5.1
 				person_involved_list,
 			} = form.data;
 			const data = {};
@@ -464,13 +440,13 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test: fix new other person
-		if (idx == '6.2') {
+		if (idx === 5.2) {
 			if (!form.isValid('person_reporting')) {
 				infoDialog.open('Person Reporting the Incident is required');
 				return;
 			}
 			const {
-				//6.2
+				//5.2
 				person_reporting,
 			} = form.data;
 			const data = {};
@@ -482,13 +458,13 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test: fix new other person
-		if (idx == '6.3') {
+		if (idx === 5.3) {
 			if (!form.isValid('person_reported_to')) {
 				infoDialog.open('Person Reported To is required');
 				return;
 			}
 			const {
-				//6.3
+				//5.3
 				person_reported_to,
 			} = form.data;
 			const data = {};
@@ -500,9 +476,9 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test: fix new other person
-		if (idx == '6.4') {
+		if (idx === 5.4) {
 			const {
-				//6.4
+				//5.4
 				witness_list,
 			} = form.data;
 			const data = {};
@@ -557,9 +533,9 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test: fix new other person
-		if (idx == '6.5') {
+		if (idx === 5.5) {
 			const {
-				//6.5
+				//5.5
 				distribution_list,
 			} = form.data;
 			const data = {};
@@ -612,11 +588,192 @@ class Controls extends AIncidentWritableForm {
 			btn.text("Save").enabled();
 			setTimeout(() => progressDialog.close());
 		}
+		
+		if (idx === 6) {
+			const {
+				//6
+				vehicle_list = [],
+			} = old_data;
+			const old_vehicle_details = (vehicle_list || [])[0] || {};
+			
+			const {
+				id: vehicle_details_id,
+			} = old_vehicle_details;
+			const {
+				//6
+				is_vehicle_incident,
+				is_infringement_issued,
+				did_police_attend_scene,
+				collision_reported_to_police_station,
+				have_charges_been_laid,
+				driver,
+				driver_dob,
+				driver_gender,
+				address,
+				email,
+				phone,
+				licence_num,
+				licence_expiry,
+				licence_years,
+				vehicle_make,
+				vehicle_model,
+				vehicle_year,
+				vehicle_color,
+				vehicle_reg_num,
+				vehicle_fleet_num,
+				vehicle_reg_date,
+				vehicle_trip_type,
+				vehicle_load_type,
+				was_3rd_party_involved,
+				are_3rd_party_details_available,
+				third_party_fname,
+				third_party_lname,
+				third_party_address,
+				third_party_email,
+				third_party_phone,
+				did_driver_admit_liability,
+				did_someone_else_admit_liability,
+				someone_else_admit_liability_name,
+				liability_admitted_to_name,
+				third_party_opinion,
+				third_party_document_list,
+				penalty_num,
+				issuing_authority,
+				issuing_officer,
+				type_of_breach,
+				addressee_issued_to_name,
+				addressee_name_or_entity,
+				addressee_amount,
+				addressee_due_date,
+				ref_or_report_num,
+				officer_name,
+				officer_station,
+				nature_of_charges,
+				who_laid_charges,
+				who_were_nature_charges_laid_against,
+			} = form.data;
+			const data = {};
+			
+			ShouldUpdate.checkEmployee(data, old_vehicle_details, driver, 'driver');
+			ShouldUpdate.checkDate(data, old_vehicle_details, driver_dob, 'driver_dob');
+			ShouldUpdate.check(data, old_vehicle_details, driver_gender, 'driver_gender');
+			ShouldUpdate.check(data, old_vehicle_details, address, 'address');
+			ShouldUpdate.check(data, old_vehicle_details, email, 'email');
+			ShouldUpdate.check(data, old_vehicle_details, phone, 'phone');
+			ShouldUpdate.check(data, old_vehicle_details, licence_num, 'licence_num');
+			ShouldUpdate.checkDate(data, old_vehicle_details, licence_expiry, 'licence_expiry');
+			ShouldUpdate.check(data, old_vehicle_details, licence_years, 'licence_years');
+			
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_make, 'vehicle_make');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_model, 'vehicle_model');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_year, 'vehicle_year');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_color, 'vehicle_color');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_reg_num, 'vehicle_reg_num');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_fleet_num, 'vehicle_fleet_num');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_reg_date, 'vehicle_reg_date');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_trip_type, 'vehicle_trip_type');
+			ShouldUpdate.check(data, old_vehicle_details, vehicle_load_type, 'vehicle_load_type');
+			
+			ShouldUpdate.check(data, old_vehicle_details, was_3rd_party_involved, 'was_3rd_party_involved');
+			ShouldUpdate.check(data, old_vehicle_details, are_3rd_party_details_available, 'are_3rd_party_details_available');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_fname, 'third_party_fname');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_lname, 'third_party_lname');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_address, 'third_party_address');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_email, 'third_party_email');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_phone, 'third_party_phone');
+			ShouldUpdate.check(data, old_vehicle_details, did_driver_admit_liability, 'did_driver_admit_liability');
+			ShouldUpdate.check(data, old_vehicle_details, did_someone_else_admit_liability, 'did_someone_else_admit_liability');
+			ShouldUpdate.check(data, old_vehicle_details, someone_else_admit_liability_name, 'someone_else_admit_liability_name');
+			ShouldUpdate.check(data, old_vehicle_details, liability_admitted_to_name, 'liability_admitted_to_name');
+			ShouldUpdate.check(data, old_vehicle_details, third_party_opinion, 'third_party_opinion');
+			ShouldUpdate.checkFileList(data, old_vehicle_details, third_party_document_list, 'third_party_document_list');
+			
+			ShouldUpdate.check(data, old_vehicle_details, is_infringement_issued, 'is_infringement_issued');
+			ShouldUpdate.check(data, old_vehicle_details, penalty_num, 'penalty_num');
+			ShouldUpdate.check(data, old_vehicle_details, issuing_authority, 'issuing_authority');
+			ShouldUpdate.check(data, old_vehicle_details, issuing_officer, 'issuing_officer');
+			ShouldUpdate.check(data, old_vehicle_details, type_of_breach, 'type_of_breach');
+			ShouldUpdate.check(data, old_vehicle_details, addressee_issued_to_name, 'addressee_issued_to_name');
+			ShouldUpdate.check(data, old_vehicle_details, addressee_name_or_entity, 'addressee_name_or_entity');
+			ShouldUpdate.check(data, old_vehicle_details, addressee_amount, 'addressee_amount');
+			ShouldUpdate.checkDate(data, old_vehicle_details, addressee_due_date, 'addressee_due_date');
+			ShouldUpdate.check(data, old_vehicle_details, did_police_attend_scene, 'did_police_attend_scene');
+			ShouldUpdate.check(data, old_vehicle_details, ref_or_report_num, 'ref_or_report_num');
+			ShouldUpdate.check(data, old_vehicle_details, officer_name, 'officer_name');
+			ShouldUpdate.check(data, old_vehicle_details, officer_station, 'officer_station');
+			ShouldUpdate.check(data, old_vehicle_details, collision_reported_to_police_station, 'collision_reported_to_police_station');
+			ShouldUpdate.check(data, old_vehicle_details, have_charges_been_laid, 'have_charges_been_laid');
+			ShouldUpdate.check(data, old_vehicle_details, nature_of_charges, 'nature_of_charges');
+			ShouldUpdate.check(data, old_vehicle_details, who_laid_charges, 'who_laid_charges');
+			ShouldUpdate.check(data, old_vehicle_details, who_were_nature_charges_laid_against, 'who_were_nature_charges_laid_against');
+			
+			if (Object.keys(data).isEmpty()) {
+				infoDialog.open("Nothing changed!");
+				return;
+			}
+			
+			console.log(data)
+			
+			if (vehicle_details_id) {
+				let onProgress;
+				
+				if (data.third_party_document_list) {
+					onProgress = true;
+					const {third_party_document_list} = data;
+					delete data.third_party_document_list;
+					
+					btn.text("Saving...").disabled();3
+					progressDialog.open();
+					
+					const res = await Promise.all(third_party_document_list.map(async v => {
+						const {id, incident_id, name} = v;
+						if (id) {
+							const attrs = {name};
+							attrs.id = id;
+							return updateIncidentTestType(attrs);
+						} else {
+							const {name} = v;
+							return insertIncidentTestType({
+								incident_id: this.item.id,
+								name,
+							});
+						}
+					}));
+					if (Object.keys(data).isEmpty()) {
+						console.log("res", res)
+						// onSaved && onSaved(res);
+						infoDialog.open("Record successfully updated.");
+						infoDialog.close(2000);
+						
+						btn.text("Save").enabled();
+						setTimeout(() => progressDialog.close());
+						return;
+					}
+				}
+				
+				if (Object.keys(data).isEmpty()) {
+					infoDialog.open("Nothing changed!");
+					return;
+				}
+				
+				//submit edit vehicle details
+			} else {
+				if (data.third_party_document_list) {
+					data.third_party_document_list = {
+						data: third_party_document_list,
+					};
+				}
+				//submit save vehicle details
+			}
+			
+			return;
+		}
 
 		//to test
-		if (idx == '7.1') {
+		if (idx === 7) {
 			const {
-				//7.1
+				//7
+				is_person_injured,
 				person_injured,
 				person_injured_other,
 				injured_person_dob,
@@ -699,9 +856,9 @@ class Controls extends AIncidentWritableForm {
 		}
 
 		//to test
-		if (idx == '7.2') {
+		if (idx === 8) {
 			const {
-				//7.2
+				//8
 				test_undertaken,
 				test_type_list,
 				test_type_drug_undertaken,
@@ -768,187 +925,7 @@ class Controls extends AIncidentWritableForm {
 			return;
 		}
 
-		if (idx == '7.3') {
-			const {
-				//7.3
-				vehicle_list = [],
-			} = old_data;
-			const old_vehicle_details = (vehicle_list || [])[0] || {};
-
-			const {
-				id: vehicle_details_id,
-			} = old_vehicle_details;
-			const {
-				//7.3
-				is_vehicle_incident,
-				is_infringement_issued,
-				did_police_attend_scene,
-				collision_reported_to_police_station,
-				have_charges_been_laid,
-				driver,
-				driver_dob,
-				driver_gender,
-				address,
-				email,
-				phone,
-				licence_num,
-				licence_expiry,
-				licence_years,
-				vehicle_make,
-				vehicle_model,
-				vehicle_year,
-				vehicle_color,
-				vehicle_reg_num,
-				vehicle_fleet_num,
-				vehicle_reg_date,
-				vehicle_trip_type,
-				vehicle_load_type,
-				was_3rd_party_involved,
-				are_3rd_party_details_available,
-				third_party_fname,
-				third_party_lname,
-				third_party_address,
-				third_party_email,
-				third_party_phone,
-				did_driver_admit_liability,
-				did_someone_else_admit_liability,
-				someone_else_admit_liability_name,
-				liability_admitted_to_name,
-				third_party_opinion,
-				third_party_document_list,
-				penalty_num,
-				issuing_authority,
-				issuing_officer,
-				type_of_breach,
-				addressee_issued_to_name,
-				addressee_name_or_entity,
-				addressee_amount,
-				addressee_due_date,
-				ref_or_report_num,
-				officer_name,
-				officer_station,
-				nature_of_charges,
-				who_laid_charges,
-				who_were_nature_charges_laid_against,
-			} = form.data;
-			const data = {};
-
-			ShouldUpdate.checkEmployee(data, old_vehicle_details, driver, 'driver');
-			ShouldUpdate.checkDate(data, old_vehicle_details, driver_dob, 'driver_dob');
-			ShouldUpdate.check(data, old_vehicle_details, driver_gender, 'driver_gender');
-			ShouldUpdate.check(data, old_vehicle_details, address, 'address');
-			ShouldUpdate.check(data, old_vehicle_details, email, 'email');
-			ShouldUpdate.check(data, old_vehicle_details, phone, 'phone');
-			ShouldUpdate.check(data, old_vehicle_details, licence_num, 'licence_num');
-			ShouldUpdate.checkDate(data, old_vehicle_details, licence_expiry, 'licence_expiry');
-			ShouldUpdate.check(data, old_vehicle_details, licence_years, 'licence_years');
-
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_make, 'vehicle_make');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_model, 'vehicle_model');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_year, 'vehicle_year');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_color, 'vehicle_color');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_reg_num, 'vehicle_reg_num');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_fleet_num, 'vehicle_fleet_num');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_reg_date, 'vehicle_reg_date');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_trip_type, 'vehicle_trip_type');
-			ShouldUpdate.check(data, old_vehicle_details, vehicle_load_type, 'vehicle_load_type');
-
-			ShouldUpdate.check(data, old_vehicle_details, was_3rd_party_involved, 'was_3rd_party_involved');
-			ShouldUpdate.check(data, old_vehicle_details, are_3rd_party_details_available, 'are_3rd_party_details_available');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_fname, 'third_party_fname');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_lname, 'third_party_lname');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_address, 'third_party_address');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_email, 'third_party_email');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_phone, 'third_party_phone');
-			ShouldUpdate.check(data, old_vehicle_details, did_driver_admit_liability, 'did_driver_admit_liability');
-			ShouldUpdate.check(data, old_vehicle_details, did_someone_else_admit_liability, 'did_someone_else_admit_liability');
-			ShouldUpdate.check(data, old_vehicle_details, someone_else_admit_liability_name, 'someone_else_admit_liability_name');
-			ShouldUpdate.check(data, old_vehicle_details, liability_admitted_to_name, 'liability_admitted_to_name');
-			ShouldUpdate.check(data, old_vehicle_details, third_party_opinion, 'third_party_opinion');
-			ShouldUpdate.checkFileList(data, old_vehicle_details, third_party_document_list, 'third_party_document_list');
-
-			ShouldUpdate.check(data, old_vehicle_details, is_infringement_issued, 'is_infringement_issued');
-			ShouldUpdate.check(data, old_vehicle_details, penalty_num, 'penalty_num');
-			ShouldUpdate.check(data, old_vehicle_details, issuing_authority, 'issuing_authority');
-			ShouldUpdate.check(data, old_vehicle_details, issuing_officer, 'issuing_officer');
-			ShouldUpdate.check(data, old_vehicle_details, type_of_breach, 'type_of_breach');
-			ShouldUpdate.check(data, old_vehicle_details, addressee_issued_to_name, 'addressee_issued_to_name');
-			ShouldUpdate.check(data, old_vehicle_details, addressee_name_or_entity, 'addressee_name_or_entity');
-			ShouldUpdate.check(data, old_vehicle_details, addressee_amount, 'addressee_amount');
-			ShouldUpdate.checkDate(data, old_vehicle_details, addressee_due_date, 'addressee_due_date');
-			ShouldUpdate.check(data, old_vehicle_details, did_police_attend_scene, 'did_police_attend_scene');
-			ShouldUpdate.check(data, old_vehicle_details, ref_or_report_num, 'ref_or_report_num');
-			ShouldUpdate.check(data, old_vehicle_details, officer_name, 'officer_name');
-			ShouldUpdate.check(data, old_vehicle_details, officer_station, 'officer_station');
-			ShouldUpdate.check(data, old_vehicle_details, collision_reported_to_police_station, 'collision_reported_to_police_station');
-			ShouldUpdate.check(data, old_vehicle_details, have_charges_been_laid, 'have_charges_been_laid');
-			ShouldUpdate.check(data, old_vehicle_details, nature_of_charges, 'nature_of_charges');
-			ShouldUpdate.check(data, old_vehicle_details, who_laid_charges, 'who_laid_charges');
-			ShouldUpdate.check(data, old_vehicle_details, who_were_nature_charges_laid_against, 'who_were_nature_charges_laid_against');
-
-			if (Object.keys(data).isEmpty()) {
-				infoDialog.open("Nothing changed!");
-				return;
-			}
-
-			console.log(data)
-
-			if (vehicle_details_id) {
-				let onProgress;
-
-				if (data.third_party_document_list) {
-					onProgress = true;
-					const {third_party_document_list} = data;
-					delete data.third_party_document_list;
-
-					btn.text("Saving...").disabled();3
-					progressDialog.open();
-
-					const res = await Promise.all(third_party_document_list.map(async v => {
-						const {id, incident_id, name} = v;
-						if (id) {
-							const attrs = {name};
-							attrs.id = id;
-							return updateIncidentTestType(attrs);
-						} else {
-							const {name} = v;
-							return insertIncidentTestType({
-								incident_id: this.item.id,
-								name,
-							});
-						}
-					}));
-					if (Object.keys(data).isEmpty()) {
-						console.log("res", res)
-						// onSaved && onSaved(res);
-						infoDialog.open("Record successfully updated.");
-						infoDialog.close(2000);
-
-						btn.text("Save").enabled();
-						setTimeout(() => progressDialog.close());
-						return;
-					}
-				}
-
-				if (Object.keys(data).isEmpty()) {
-					infoDialog.open("Nothing changed!");
-					return;
-				}
-
-				//submit edit vehicle details
-			} else {
-				if (data.third_party_document_list) {
-					data.third_party_document_list = {
-						data: third_party_document_list,
-					};
-				}
-				//submit save vehicle details
-			}
-
-			return;
-		}
-
-		if (idx == '7.4') {
+		if (idx === 9) {
 			const {
 				//7.4
 				severity: old_severity = {},

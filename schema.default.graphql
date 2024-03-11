@@ -9056,6 +9056,9 @@ type default_contractor_questionnaire_templates {
     firestore_id: String
     id: bigint!
     name: String!
+    "An object relationship"
+    project: default_projects
+    project_id: bigint
     "An array relationship"
     ques_list(
         "distinct select on columns"
@@ -9083,6 +9086,9 @@ type default_contractor_questionnaire_templates {
         where: default_contractor_questionnaires_ques_bool_exp
     ): default_contractor_questionnaires_ques_aggregate!
     removed: Boolean!
+    "An object relationship"
+    site: default_sites
+    site_id: bigint
     "An object relationship"
     user: default_users
     user_id: bigint
@@ -9117,6 +9123,8 @@ type default_contractor_questionnaire_templates_avg_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9133,6 +9141,8 @@ type default_contractor_questionnaire_templates_max_fields {
     firestore_id: String
     id: bigint
     name: String
+    project_id: bigint
+    site_id: bigint
     user_id: bigint
 }
 
@@ -9149,6 +9159,8 @@ type default_contractor_questionnaire_templates_min_fields {
     firestore_id: String
     id: bigint
     name: String
+    project_id: bigint
+    site_id: bigint
     user_id: bigint
 }
 
@@ -9168,6 +9180,8 @@ type default_contractor_questionnaire_templates_stddev_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9179,6 +9193,8 @@ type default_contractor_questionnaire_templates_stddev_pop_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9190,6 +9206,8 @@ type default_contractor_questionnaire_templates_stddev_samp_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9201,6 +9219,8 @@ type default_contractor_questionnaire_templates_sum_fields {
     contractor_site_id: bigint
     contractor_user_id: bigint
     id: bigint
+    project_id: bigint
+    site_id: bigint
     user_id: bigint
 }
 
@@ -9212,6 +9232,8 @@ type default_contractor_questionnaire_templates_var_pop_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9223,6 +9245,8 @@ type default_contractor_questionnaire_templates_var_samp_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -9234,6 +9258,8 @@ type default_contractor_questionnaire_templates_variance_fields {
     contractor_site_id: Float
     contractor_user_id: Float
     id: Float
+    project_id: Float
+    site_id: Float
     user_id: Float
 }
 
@@ -24525,6 +24551,84 @@ type hr_employees {
         "filter the rows returned"
         where: assets_bool_exp
     ): assets_aggregate!
+    "An array relationship"
+    audit_representative_list(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__audit_representative_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__audit_representative_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__audit_representative_bool_exp
+    ): [proxy_employee__audit_representative!]!
+    "An aggregate relationship"
+    audit_representative_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__audit_representative_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__audit_representative_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__audit_representative_bool_exp
+    ): proxy_employee__audit_representative_aggregate!
+    "An array relationship"
+    auditor_list(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__auditor_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__auditor_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__auditor_bool_exp
+    ): [proxy_employee__auditor!]!
+    "An aggregate relationship"
+    auditor_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [proxy_employee__auditor_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [proxy_employee__auditor_order_by!],
+        "filter the rows returned"
+        where: proxy_employee__auditor_bool_exp
+    ): proxy_employee__auditor_aggregate!
+    "An array relationship"
+    audits_item_responsible_person_list(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_items_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_items_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_items_bool_exp
+    ): [sheq_compliance_audits_items!]!
+    "An aggregate relationship"
+    audits_item_responsible_person_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_compliance_audits_items_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_compliance_audits_items_order_by!],
+        "filter the rows returned"
+        where: sheq_compliance_audits_items_bool_exp
+    ): sheq_compliance_audits_items_aggregate!
     auth_id: String
     "An array relationship"
     banking_detail_list(
@@ -54962,6 +55066,32 @@ type sheq_compliance_audits {
         "filter the rows returned"
         where: sheq_compliance_audits_items_bool_exp
     ): sheq_compliance_audits_items_aggregate!
+    "An array relationship"
+    ncr_list(
+        "distinct select on columns"
+        distinct_on: [sheq_non_conformances_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_non_conformances_order_by!],
+        "filter the rows returned"
+        where: sheq_non_conformances_bool_exp
+    ): [sheq_non_conformances!]!
+    "An aggregate relationship"
+    ncr_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_non_conformances_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_non_conformances_order_by!],
+        "filter the rows returned"
+        where: sheq_non_conformances_bool_exp
+    ): sheq_non_conformances_aggregate!
     "An object relationship"
     project: default_projects
     project_id: bigint
@@ -55910,6 +56040,7 @@ type sheq_incident_investigation {
     "An object relationship"
     investigation: sheq_incident_investigation_investigations
     investigation_id: bigint
+    is_person_injured: Boolean
     is_vehicle_incident: Boolean!
     location: String
     "An array relationship"
@@ -76995,6 +77126,8 @@ type ten_branch_employer {
         "filter the rows returned"
         where: ten_branch_employer_bool_exp
     ): ten_branch_employer_aggregate!
+    "An object relationship"
+    city: ten_cities
     city_id: bigint
     created_at: timestamptz!
     email: String
@@ -77282,6 +77415,8 @@ type ten_branch_medical_center {
         "filter the rows returned"
         where: ten_branch_medical_center_bool_exp
     ): ten_branch_medical_center_aggregate!
+    "An object relationship"
+    city: ten_cities
     city_id: bigint
     created_at: timestamptz!
     "An array relationship"
@@ -77569,6 +77704,8 @@ type ten_branch_pharmacy {
         "filter the rows returned"
         where: ten_branch_pharmacy_bool_exp
     ): ten_branch_pharmacy_aggregate!
+    "An object relationship"
+    city: ten_cities
     city_id: bigint
     created_at: timestamptz!
     email: String
@@ -77921,13 +78058,117 @@ type ten_branch_settings_variance_fields {
 
 "columns and relationships of \"ten_cities\""
 type ten_cities {
+    "An array relationship"
+    academic_institution_branch_list(
+        "distinct select on columns"
+        distinct_on: [ten_branch_academic_institution_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_academic_institution_order_by!],
+        "filter the rows returned"
+        where: ten_branch_academic_institution_bool_exp
+    ): [ten_branch_academic_institution!]!
+    "An aggregate relationship"
+    academic_institution_branch_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [ten_branch_academic_institution_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_academic_institution_order_by!],
+        "filter the rows returned"
+        where: ten_branch_academic_institution_bool_exp
+    ): ten_branch_academic_institution_aggregate!
     "An object relationship"
     country: ten_countries!
     country_iso2: String!
+    "An array relationship"
+    employer_branch_list(
+        "distinct select on columns"
+        distinct_on: [ten_branch_employer_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_employer_order_by!],
+        "filter the rows returned"
+        where: ten_branch_employer_bool_exp
+    ): [ten_branch_employer!]!
+    "An aggregate relationship"
+    employer_branch_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [ten_branch_employer_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_employer_order_by!],
+        "filter the rows returned"
+        where: ten_branch_employer_bool_exp
+    ): ten_branch_employer_aggregate!
     id: bigint!
     latitude: String
     longitude: String
+    "An array relationship"
+    medical_center_branch_list(
+        "distinct select on columns"
+        distinct_on: [ten_branch_medical_center_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_medical_center_order_by!],
+        "filter the rows returned"
+        where: ten_branch_medical_center_bool_exp
+    ): [ten_branch_medical_center!]!
+    "An aggregate relationship"
+    medical_center_branch_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [ten_branch_medical_center_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_medical_center_order_by!],
+        "filter the rows returned"
+        where: ten_branch_medical_center_bool_exp
+    ): ten_branch_medical_center_aggregate!
     name: String!
+    "An array relationship"
+    pharmacy_branch_list(
+        "distinct select on columns"
+        distinct_on: [ten_branch_pharmacy_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_pharmacy_order_by!],
+        "filter the rows returned"
+        where: ten_branch_pharmacy_bool_exp
+    ): [ten_branch_pharmacy!]!
+    "An aggregate relationship"
+    pharmacy_branch_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [ten_branch_pharmacy_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [ten_branch_pharmacy_order_by!],
+        "filter the rows returned"
+        where: ten_branch_pharmacy_bool_exp
+    ): ten_branch_pharmacy_aggregate!
     wikiDataId: String
     "An object relationship"
     zone: ten_zones!
@@ -79498,6 +79739,7 @@ type ten_org_medical_center {
         where: ten_branch_medical_center_bool_exp
     ): ten_branch_medical_center_aggregate!
     center_num: String
+    center_type: String!
     created_at: timestamptz!
     id: bigint!
     is_active: Boolean
@@ -79537,6 +79779,7 @@ type ten_org_medical_center_avg_fields {
 "aggregate max on columns"
 type ten_org_medical_center_max_fields {
     center_num: String
+    center_type: String
     created_at: timestamptz
     id: bigint
     name: String
@@ -79545,6 +79788,7 @@ type ten_org_medical_center_max_fields {
 "aggregate min on columns"
 type ten_org_medical_center_min_fields {
     center_num: String
+    center_type: String
     created_at: timestamptz
     id: bigint
     name: String
@@ -81100,6 +81344,7 @@ type ten_sicknotes {
     branch_medical_center: ten_branch_medical_center
     branch_medical_center_id: bigint
     bytes: bytea
+    created_at: timestamptz!
     fingerprintBytes: bytea
     id: bigint!
     "An object relationship"
@@ -81165,6 +81410,7 @@ type ten_sicknotes_max_fields {
     branch_academic_institution_id: bigint
     branch_employer_id: bigint
     branch_medical_center_id: bigint
+    created_at: timestamptz
     id: bigint
     illness_id: bigint
     ipAddress: String
@@ -81187,6 +81433,7 @@ type ten_sicknotes_min_fields {
     branch_academic_institution_id: bigint
     branch_employer_id: bigint
     branch_medical_center_id: bigint
+    created_at: timestamptz
     id: bigint
     illness_id: bigint
     ipAddress: String
@@ -86201,7 +86448,11 @@ enum default_contractor_questionnaire_templates_select_column {
     "column name"
     name
     "column name"
+    project_id
+    "column name"
     removed
+    "column name"
+    site_id
     "column name"
     user_id
 }
@@ -86243,7 +86494,11 @@ enum default_contractor_questionnaire_templates_update_column {
     "column name"
     name
     "column name"
+    project_id
+    "column name"
     removed
+    "column name"
+    site_id
     "column name"
     user_id
 }
@@ -94439,6 +94694,8 @@ enum sheq_incident_investigation_select_column {
     "column name"
     investigation_id
     "column name"
+    is_person_injured
+    "column name"
     is_vehicle_incident
     "column name"
     location
@@ -94497,6 +94754,8 @@ enum sheq_incident_investigation_select_column {
 "select \"sheq_incident_investigation_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_incident_investigation\""
 enum sheq_incident_investigation_select_column_sheq_incident_investigation_aggregate_bool_exp_bool_and_arguments_columns {
     "column name"
+    is_person_injured
+    "column name"
     is_vehicle_incident
     "column name"
     removed
@@ -94520,6 +94779,8 @@ enum sheq_incident_investigation_select_column_sheq_incident_investigation_aggre
 
 "select \"sheq_incident_investigation_aggregate_bool_exp_bool_or_arguments_columns\" columns of table \"sheq_incident_investigation\""
 enum sheq_incident_investigation_select_column_sheq_incident_investigation_aggregate_bool_exp_bool_or_arguments_columns {
+    "column name"
+    is_person_injured
     "column name"
     is_vehicle_incident
     "column name"
@@ -94658,6 +94919,8 @@ enum sheq_incident_investigation_update_column {
     injury_desc
     "column name"
     investigation_id
+    "column name"
+    is_person_injured
     "column name"
     is_vehicle_incident
     "column name"
@@ -98053,6 +98316,8 @@ enum ten_org_medical_center_select_column {
     "column name"
     center_num
     "column name"
+    center_type
+    "column name"
     created_at
     "column name"
     id
@@ -98068,6 +98333,8 @@ enum ten_org_medical_center_select_column {
 enum ten_org_medical_center_update_column {
     "column name"
     center_num
+    "column name"
+    center_type
     "column name"
     created_at
     "column name"
@@ -98519,6 +98786,8 @@ enum ten_sicknotes_select_column {
     "column name"
     bytes
     "column name"
+    created_at
+    "column name"
     fingerprintBytes
     "column name"
     id
@@ -98594,6 +98863,8 @@ enum ten_sicknotes_update_column {
     branch_medical_center_id
     "column name"
     bytes
+    "column name"
+    created_at
     "column name"
     fingerprintBytes
     "column name"
@@ -107808,6 +108079,8 @@ input default_contractor_questionnaire_templates_avg_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -107834,9 +108107,13 @@ input default_contractor_questionnaire_templates_bool_exp {
     firestore_id: String_comparison_exp
     id: bigint_comparison_exp
     name: String_comparison_exp
+    project: default_projects_bool_exp
+    project_id: bigint_comparison_exp
     ques_list: default_contractor_questionnaires_ques_bool_exp
     ques_list_aggregate: default_contractor_questionnaires_ques_aggregate_bool_exp
     removed: Boolean_comparison_exp
+    site: default_sites_bool_exp
+    site_id: bigint_comparison_exp
     user: default_users_bool_exp
     user_id: bigint_comparison_exp
 }
@@ -107849,6 +108126,8 @@ input default_contractor_questionnaire_templates_inc_input {
     contractor_site_id: bigint
     contractor_user_id: bigint
     id: bigint
+    project_id: bigint
+    site_id: bigint
     user_id: bigint
 }
 
@@ -107871,8 +108150,12 @@ input default_contractor_questionnaire_templates_insert_input {
     firestore_id: String
     id: bigint
     name: String
+    project: default_projects_obj_rel_insert_input
+    project_id: bigint
     ques_list: default_contractor_questionnaires_ques_arr_rel_insert_input
     removed: Boolean
+    site: default_sites_obj_rel_insert_input
+    site_id: bigint
     user: default_users_obj_rel_insert_input
     user_id: bigint
 }
@@ -107890,6 +108173,8 @@ input default_contractor_questionnaire_templates_max_order_by {
     firestore_id: order_by
     id: order_by
     name: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -107906,6 +108191,8 @@ input default_contractor_questionnaire_templates_min_order_by {
     firestore_id: order_by
     id: order_by
     name: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -107942,8 +108229,12 @@ input default_contractor_questionnaire_templates_order_by {
     firestore_id: order_by
     id: order_by
     name: order_by
+    project: default_projects_order_by
+    project_id: order_by
     ques_list_aggregate: default_contractor_questionnaires_ques_aggregate_order_by
     removed: order_by
+    site: default_sites_order_by
+    site_id: order_by
     user: default_users_order_by
     user_id: order_by
 }
@@ -107966,7 +108257,9 @@ input default_contractor_questionnaire_templates_set_input {
     firestore_id: String
     id: bigint
     name: String
+    project_id: bigint
     removed: Boolean
+    site_id: bigint
     user_id: bigint
 }
 
@@ -107978,6 +108271,8 @@ input default_contractor_questionnaire_templates_stddev_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -107989,6 +108284,8 @@ input default_contractor_questionnaire_templates_stddev_pop_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -108000,6 +108297,8 @@ input default_contractor_questionnaire_templates_stddev_samp_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -108024,7 +108323,9 @@ input default_contractor_questionnaire_templates_stream_cursor_value_input {
     firestore_id: String
     id: bigint
     name: String
+    project_id: bigint
     removed: Boolean
+    site_id: bigint
     user_id: bigint
 }
 
@@ -108036,6 +108337,8 @@ input default_contractor_questionnaire_templates_sum_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -108056,6 +108359,8 @@ input default_contractor_questionnaire_templates_var_pop_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -108067,6 +108372,8 @@ input default_contractor_questionnaire_templates_var_samp_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -108078,6 +108385,8 @@ input default_contractor_questionnaire_templates_variance_order_by {
     contractor_site_id: order_by
     contractor_user_id: order_by
     id: order_by
+    project_id: order_by
+    site_id: order_by
     user_id: order_by
 }
 
@@ -119693,6 +120002,12 @@ input hr_employees_bool_exp {
     _or: [hr_employees_bool_exp!]
     asset_responsible_list: assets_bool_exp
     asset_responsible_list_aggregate: assets_aggregate_bool_exp
+    audit_representative_list: proxy_employee__audit_representative_bool_exp
+    audit_representative_list_aggregate: proxy_employee__audit_representative_aggregate_bool_exp
+    auditor_list: proxy_employee__auditor_bool_exp
+    auditor_list_aggregate: proxy_employee__auditor_aggregate_bool_exp
+    audits_item_responsible_person_list: sheq_compliance_audits_items_bool_exp
+    audits_item_responsible_person_list_aggregate: sheq_compliance_audits_items_aggregate_bool_exp
     auth_id: String_comparison_exp
     banking_detail_list: hr_employees_banking_details_bool_exp
     banking_detail_list_aggregate: hr_employees_banking_details_aggregate_bool_exp
@@ -125753,6 +126068,9 @@ input hr_employees_inc_input {
 "input type for inserting data into table \"hr_employees\""
 input hr_employees_insert_input {
     asset_responsible_list: assets_arr_rel_insert_input
+    audit_representative_list: proxy_employee__audit_representative_arr_rel_insert_input
+    auditor_list: proxy_employee__auditor_arr_rel_insert_input
+    audits_item_responsible_person_list: sheq_compliance_audits_items_arr_rel_insert_input
     auth_id: String
     banking_detail_list: hr_employees_banking_details_arr_rel_insert_input
     client: default_clients_obj_rel_insert_input
@@ -126399,6 +126717,9 @@ input hr_employees_on_conflict {
 "Ordering options when selecting data from \"hr_employees\"."
 input hr_employees_order_by {
     asset_responsible_list_aggregate: assets_aggregate_order_by
+    audit_representative_list_aggregate: proxy_employee__audit_representative_aggregate_order_by
+    auditor_list_aggregate: proxy_employee__auditor_aggregate_order_by
+    audits_item_responsible_person_list_aggregate: sheq_compliance_audits_items_aggregate_order_by
     auth_id: order_by
     banking_detail_list_aggregate: hr_employees_banking_details_aggregate_order_by
     client: default_clients_order_by
@@ -139050,6 +139371,8 @@ input sheq_compliance_audits_bool_exp {
     id: bigint_comparison_exp
     list: sheq_compliance_audits_items_bool_exp
     list_aggregate: sheq_compliance_audits_items_aggregate_bool_exp
+    ncr_list: sheq_non_conformances_bool_exp
+    ncr_list_aggregate: sheq_non_conformances_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
     removed: Boolean_comparison_exp
@@ -139273,6 +139596,7 @@ input sheq_compliance_audits_insert_input {
     firestore_id: String
     id: bigint
     list: sheq_compliance_audits_items_arr_rel_insert_input
+    ncr_list: sheq_non_conformances_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
     removed: Boolean
@@ -139634,6 +139958,7 @@ input sheq_compliance_audits_order_by {
     firestore_id: order_by
     id: order_by
     list_aggregate: sheq_compliance_audits_items_aggregate_order_by
+    ncr_list_aggregate: sheq_non_conformances_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
     removed: order_by
@@ -140538,6 +140863,7 @@ input sheq_incident_investigation_bool_exp {
     injury_list_aggregate: proxy_incident__injury_aggregate_bool_exp
     investigation: sheq_incident_investigation_investigations_bool_exp
     investigation_id: bigint_comparison_exp
+    is_person_injured: Boolean_comparison_exp
     is_vehicle_incident: Boolean_comparison_exp
     location: String_comparison_exp
     man_hour_list: proxy_incident___man_hours_bool_exp
@@ -141736,6 +142062,7 @@ input sheq_incident_investigation_insert_input {
     injury_list: proxy_incident__injury_arr_rel_insert_input
     investigation: sheq_incident_investigation_investigations_obj_rel_insert_input
     investigation_id: bigint
+    is_person_injured: Boolean
     is_vehicle_incident: Boolean
     location: String
     man_hour_list: proxy_incident___man_hours_arr_rel_insert_input
@@ -143043,6 +143370,7 @@ input sheq_incident_investigation_order_by {
     injury_list_aggregate: proxy_incident__injury_aggregate_order_by
     investigation: sheq_incident_investigation_investigations_order_by
     investigation_id: order_by
+    is_person_injured: order_by
     is_vehicle_incident: order_by
     location: order_by
     man_hour_list_aggregate: proxy_incident___man_hours_aggregate_order_by
@@ -143796,6 +144124,7 @@ input sheq_incident_investigation_set_input {
     injured_person_gender: sex
     injury_desc: String
     investigation_id: bigint
+    is_person_injured: Boolean
     is_vehicle_incident: Boolean
     location: String
     person_injured_id: bigint
@@ -144004,6 +144333,7 @@ input sheq_incident_investigation_stream_cursor_value_input {
     injured_person_gender: sex
     injury_desc: String
     investigation_id: bigint
+    is_person_injured: Boolean
     is_vehicle_incident: Boolean
     location: String
     person_injured_id: bigint
@@ -154427,6 +154757,7 @@ input ten_branch_employer_bool_exp {
     branch_id: bigint_comparison_exp
     branch_list: ten_branch_employer_bool_exp
     branch_list_aggregate: ten_branch_employer_aggregate_bool_exp
+    city: ten_cities_bool_exp
     city_id: bigint_comparison_exp
     created_at: timestamptz_comparison_exp
     email: String_comparison_exp
@@ -154466,6 +154797,7 @@ input ten_branch_employer_insert_input {
     branch: ten_branch_employer_obj_rel_insert_input
     branch_id: bigint
     branch_list: ten_branch_employer_arr_rel_insert_input
+    city: ten_cities_obj_rel_insert_input
     city_id: bigint
     created_at: timestamptz
     email: String
@@ -154538,6 +154870,7 @@ input ten_branch_employer_order_by {
     branch: ten_branch_employer_order_by
     branch_id: order_by
     branch_list_aggregate: ten_branch_employer_aggregate_order_by
+    city: ten_cities_order_by
     city_id: order_by
     created_at: order_by
     email: order_by
@@ -154747,6 +155080,7 @@ input ten_branch_medical_center_bool_exp {
     branch_id: bigint_comparison_exp
     branch_list: ten_branch_medical_center_bool_exp
     branch_list_aggregate: ten_branch_medical_center_aggregate_bool_exp
+    city: ten_cities_bool_exp
     city_id: bigint_comparison_exp
     created_at: timestamptz_comparison_exp
     doctor_list: ten_doctors_bool_exp
@@ -154786,6 +155120,7 @@ input ten_branch_medical_center_insert_input {
     branch: ten_branch_medical_center_obj_rel_insert_input
     branch_id: bigint
     branch_list: ten_branch_medical_center_arr_rel_insert_input
+    city: ten_cities_obj_rel_insert_input
     city_id: bigint
     created_at: timestamptz
     doctor_list: ten_doctors_arr_rel_insert_input
@@ -154858,6 +155193,7 @@ input ten_branch_medical_center_order_by {
     branch: ten_branch_medical_center_order_by
     branch_id: order_by
     branch_list_aggregate: ten_branch_medical_center_aggregate_order_by
+    city: ten_cities_order_by
     city_id: order_by
     created_at: order_by
     doctor_list_aggregate: ten_doctors_aggregate_order_by
@@ -155067,6 +155403,7 @@ input ten_branch_pharmacy_bool_exp {
     branch_id: bigint_comparison_exp
     branch_list: ten_branch_pharmacy_bool_exp
     branch_list_aggregate: ten_branch_pharmacy_aggregate_bool_exp
+    city: ten_cities_bool_exp
     city_id: bigint_comparison_exp
     created_at: timestamptz_comparison_exp
     email: String_comparison_exp
@@ -155102,6 +155439,7 @@ input ten_branch_pharmacy_insert_input {
     branch: ten_branch_pharmacy_obj_rel_insert_input
     branch_id: bigint
     branch_list: ten_branch_pharmacy_arr_rel_insert_input
+    city: ten_cities_obj_rel_insert_input
     city_id: bigint
     created_at: timestamptz
     email: String
@@ -155172,6 +155510,7 @@ input ten_branch_pharmacy_order_by {
     branch: ten_branch_pharmacy_order_by
     branch_id: order_by
     branch_list_aggregate: ten_branch_pharmacy_aggregate_order_by
+    city: ten_cities_order_by
     city_id: order_by
     created_at: order_by
     email: order_by
@@ -155619,12 +155958,20 @@ input ten_cities_bool_exp {
     _and: [ten_cities_bool_exp!]
     _not: ten_cities_bool_exp
     _or: [ten_cities_bool_exp!]
+    academic_institution_branch_list: ten_branch_academic_institution_bool_exp
+    academic_institution_branch_list_aggregate: ten_branch_academic_institution_aggregate_bool_exp
     country: ten_countries_bool_exp
     country_iso2: String_comparison_exp
+    employer_branch_list: ten_branch_employer_bool_exp
+    employer_branch_list_aggregate: ten_branch_employer_aggregate_bool_exp
     id: bigint_comparison_exp
     latitude: String_comparison_exp
     longitude: String_comparison_exp
+    medical_center_branch_list: ten_branch_medical_center_bool_exp
+    medical_center_branch_list_aggregate: ten_branch_medical_center_aggregate_bool_exp
     name: String_comparison_exp
+    pharmacy_branch_list: ten_branch_pharmacy_bool_exp
+    pharmacy_branch_list_aggregate: ten_branch_pharmacy_aggregate_bool_exp
     wikiDataId: String_comparison_exp
     zone: ten_zones_bool_exp
     zone_code: String_comparison_exp
@@ -155639,12 +155986,16 @@ input ten_cities_inc_input {
 
 "input type for inserting data into table \"ten_cities\""
 input ten_cities_insert_input {
+    academic_institution_branch_list: ten_branch_academic_institution_arr_rel_insert_input
     country: ten_countries_obj_rel_insert_input
     country_iso2: String
+    employer_branch_list: ten_branch_employer_arr_rel_insert_input
     id: bigint
     latitude: String
     longitude: String
+    medical_center_branch_list: ten_branch_medical_center_arr_rel_insert_input
     name: String
+    pharmacy_branch_list: ten_branch_pharmacy_arr_rel_insert_input
     wikiDataId: String
     zone: ten_zones_obj_rel_insert_input
     zone_code: String
@@ -155691,12 +156042,16 @@ input ten_cities_on_conflict {
 
 "Ordering options when selecting data from \"ten_cities\"."
 input ten_cities_order_by {
+    academic_institution_branch_list_aggregate: ten_branch_academic_institution_aggregate_order_by
     country: ten_countries_order_by
     country_iso2: order_by
+    employer_branch_list_aggregate: ten_branch_employer_aggregate_order_by
     id: order_by
     latitude: order_by
     longitude: order_by
+    medical_center_branch_list_aggregate: ten_branch_medical_center_aggregate_order_by
     name: order_by
+    pharmacy_branch_list_aggregate: ten_branch_pharmacy_aggregate_order_by
     wikiDataId: order_by
     zone: ten_zones_order_by
     zone_code: order_by
@@ -156994,6 +157349,7 @@ input ten_org_medical_center_bool_exp {
     branch_list: ten_branch_medical_center_bool_exp
     branch_list_aggregate: ten_branch_medical_center_aggregate_bool_exp
     center_num: String_comparison_exp
+    center_type: String_comparison_exp
     created_at: timestamptz_comparison_exp
     id: bigint_comparison_exp
     is_active: Boolean_comparison_exp
@@ -157010,6 +157366,7 @@ input ten_org_medical_center_inc_input {
 input ten_org_medical_center_insert_input {
     branch_list: ten_branch_medical_center_arr_rel_insert_input
     center_num: String
+    center_type: String
     created_at: timestamptz
     id: bigint
     is_active: Boolean
@@ -157035,6 +157392,7 @@ input ten_org_medical_center_on_conflict {
 input ten_org_medical_center_order_by {
     branch_list_aggregate: ten_branch_medical_center_aggregate_order_by
     center_num: order_by
+    center_type: order_by
     created_at: order_by
     id: order_by
     is_active: order_by
@@ -157050,6 +157408,7 @@ input ten_org_medical_center_pk_columns_input {
 "input type for updating data in table \"ten_org_medical_center\""
 input ten_org_medical_center_set_input {
     center_num: String
+    center_type: String
     created_at: timestamptz
     id: bigint
     is_active: Boolean
@@ -157068,6 +157427,7 @@ input ten_org_medical_center_stream_cursor_input {
 "Initial value of the column from where the streaming should start"
 input ten_org_medical_center_stream_cursor_value_input {
     center_num: String
+    center_type: String
     created_at: timestamptz
     id: bigint
     is_active: Boolean
@@ -158791,6 +159151,7 @@ input ten_sicknotes_bool_exp {
     branch_medical_center: ten_branch_medical_center_bool_exp
     branch_medical_center_id: bigint_comparison_exp
     bytes: bytea_comparison_exp
+    created_at: timestamptz_comparison_exp
     fingerprintBytes: bytea_comparison_exp
     id: bigint_comparison_exp
     illness: ten_illnesses_bool_exp
@@ -158836,6 +159197,7 @@ input ten_sicknotes_insert_input {
     branch_medical_center: ten_branch_medical_center_obj_rel_insert_input
     branch_medical_center_id: bigint
     bytes: bytea
+    created_at: timestamptz
     fingerprintBytes: bytea
     id: bigint
     illness: ten_illnesses_obj_rel_insert_input
@@ -158866,6 +159228,7 @@ input ten_sicknotes_max_order_by {
     branch_academic_institution_id: order_by
     branch_employer_id: order_by
     branch_medical_center_id: order_by
+    created_at: order_by
     id: order_by
     illness_id: order_by
     ipAddress: order_by
@@ -158888,6 +159251,7 @@ input ten_sicknotes_min_order_by {
     branch_academic_institution_id: order_by
     branch_employer_id: order_by
     branch_medical_center_id: order_by
+    created_at: order_by
     id: order_by
     illness_id: order_by
     ipAddress: order_by
@@ -158921,6 +159285,7 @@ input ten_sicknotes_order_by {
     branch_medical_center: ten_branch_medical_center_order_by
     branch_medical_center_id: order_by
     bytes: order_by
+    created_at: order_by
     fingerprintBytes: order_by
     id: order_by
     illness: ten_illnesses_order_by
@@ -158957,6 +159322,7 @@ input ten_sicknotes_set_input {
     branch_employer_id: bigint
     branch_medical_center_id: bigint
     bytes: bytea
+    created_at: timestamptz
     fingerprintBytes: bytea
     id: bigint
     illness_id: bigint
@@ -159026,6 +159392,7 @@ input ten_sicknotes_stream_cursor_value_input {
     branch_employer_id: bigint
     branch_medical_center_id: bigint
     bytes: bytea
+    created_at: timestamptz
     fingerprintBytes: bytea
     id: bigint
     illness_id: bigint

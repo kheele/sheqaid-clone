@@ -256,7 +256,7 @@ class Controls extends React.Component {
 					<ProfileField name="desc" title="Incident Description" value={desc}
 					              className="col-lg-12"/>
 					
-					<ProfileField name="location" title="Location" value={location}
+					<ProfileField name="location" title="Area" value={location}
 					              className="col-lg-6"/>
 					<ProfileField name="exact_location" title="Exact Location" value={exact_location}
 					              className="col-lg-6"/>

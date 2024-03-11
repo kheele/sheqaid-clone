@@ -183,7 +183,7 @@ class IncidentTableRow extends React.Component {
                 {short_desc || 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Location</h6>
+                <h6 className="xs-shown font-size-13">Exact Location</h6>
                 {exact_location || 'N/A'}
             </div>
             <InvestigationStatus key={new Date().getTime()} item={item}/>
@@ -290,7 +290,7 @@ class IncidentInvestigationTableRow extends React.Component {
                 {short_desc || 'N/A'}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Location</h6>
+                <h6 className="xs-shown font-size-13">Exact Location</h6>
                 {exact_location || 'N/A'}
             </div>
             <IncidentInvestigationStatus key={new Date().getTime()} item={item}/>
@@ -458,7 +458,7 @@ class IncidentCorrectiveActionsTableRow extends React.Component {
                         {short_desc || 'N/A'}
                     </div>
                     <div className="td">
-                        <h6 className="xs-shown font-size-13">Location</h6>
+                        <h6 className="xs-shown font-size-13">Exact Location</h6>
                         {exact_location || 'N/A'}
                     </div>
 

@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {Button} from '../components/inputs';
+import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
 
 @observer
 class ErrorBoundary extends React.Component {
@@ -21,49 +22,9 @@ class ErrorBoundary extends React.Component {
     
     onReport(e, btn) {
         const {error, errorInfo} = this;
-        const data = {
-            message: error.message || "", 
-            stack: error.stack || "", 
-            error_info: errorInfo.componentStack || ""
-        };
-        
-        const {is: {isLoggedIn, isConsultant}} = storage;
-        if(isLoggedIn) {
-            const {loggedUser = {}, selected = {}, loggedContractor} = storage;
-            const {access_type, company = {}, user = {}} = loggedUser;
-            const {data: user_data = {}} = user;
-            
-            const {client, project, site, contractor} = user_data;
-            
-            const {selectedClient, selectedProject, selectedSite, selectedContractorSite} = selected;
-            
-            data.access_type = access_type;
-            
-            data.company = company;
-            if(isConsultant) {
-                data.client = client;
-                data.project = project;
-                data.site = site;
-
-                data.selectedClient = selectedClient;
-                data.selectedProject = selectedProject;
-                data.selectedSite = selectedSite;
-            }
-            data.contractor = contractor;
-            data.loggedContractor = loggedContractor;
-            data.selectedContractorSite = selectedContractorSite;
-            
-            data.user = user;
-        }
-                
         btn.text("Reporting...").disabled();
-        neonBinding.events.emit("error-reporting/create", data).then(res => {
-            infoDialog.open(<React.Fragment>
-                        <p>Problem successfully reported!</p> 
-                        <p>We will fix it as soon as possible.</p>    
-                    </React.Fragment>);
-            infoDialog.close(5000);
-        }).finally(() => {
+        insertErrorReporting({error, errorInfo}).
+        finally(() => {
             btn.text("Report Problem").enabled();
         });
     }

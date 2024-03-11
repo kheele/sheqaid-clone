@@ -1,7 +1,8 @@
 require("./graphql");
 
-require("./excel");
 require("./accounts");
+require("./error-reporting");
+require("./excel");
 require("./get");
 require("./send");
 require("./send-msg");

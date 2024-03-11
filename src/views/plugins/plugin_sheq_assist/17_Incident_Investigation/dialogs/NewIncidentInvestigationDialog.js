@@ -654,7 +654,7 @@ class Controls extends React.Component {
 
                             <ProfileField
                                 name="location"
-                                title="Location"
+                                title="Area"
                                 value={location}
                                 className="col-lg-6"
                             />

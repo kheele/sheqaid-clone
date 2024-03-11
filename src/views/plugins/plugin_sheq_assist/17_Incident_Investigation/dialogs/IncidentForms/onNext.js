@@ -10,25 +10,25 @@ export default function onNext(e, btn) {
 			return;
 		}
 	}
-	// if (idx === 6.1) {
+	// if (idx === 5.1) {
 	//     if (!form.isValid('person_involved_list') || form.get('person_involved_list').isEmpty()) {
 	//         infoDialog.open('Person(s) Involved in the Incident are/is required');
 	//         return;
 	//     }
 	// }
-	if (idx === 6.2) {
+	if (idx === 5.2) {
 		if (!form.isValid('person_reporting')) {
 			infoDialog.open('Person Reporting the Incident is required');
 			return;
 		}
 	}
-	if (idx === 6.3) {
+	if (idx === 5.3) {
 		if (!form.isValid('person_reported_to')) {
 			infoDialog.open('Person Reported To is required');
 			return;
 		}
 	}
-	if (idx === 7.1) {
+	if (idx === 7) {
 //            if (!form.isValid('person_injured')) {
 //                infoDialog.open('Person Injured is required');
 //                return;
@@ -46,7 +46,7 @@ export default function onNext(e, btn) {
 //                return;
 //            }
 	}
-	if (idx === 7.2) {
+	if (idx === 8) {
 		if (form.get('test_undertaken') === 'Yes') {
 			//TODO: further validation is necessory
 		}
