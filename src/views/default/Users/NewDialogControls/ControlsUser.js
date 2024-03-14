@@ -79,6 +79,11 @@ class Controls extends React.Component {
                 value: true,
                 checked: false
             }],
+            receive_inspection_management_notifs: [{
+                text: "Receive Inspection Management Notifications",
+                value: true,
+                checked: false
+            }],
             receive_non_conformance_management_notifs: [{
                 text: "Receive Non-Conformance Management Notifications",
                 value: true,
@@ -310,6 +315,7 @@ class Controls extends React.Component {
             receive_employees_expired_docs_medicals,
             receive_employees_profile_notifs,
             receive_incident_management_notifs,
+            receive_inspection_management_notifs,
             receive_non_conformance_management_notifs,
             receive_training_management_notifs,
             receive_expired_docs_notifs,
@@ -376,6 +382,7 @@ class Controls extends React.Component {
                     receive_employees_expired_docs_medicals,
                     receive_employees_profile_notifs,
                     receive_incident_management_notifs,
+                    receive_inspection_management_notifs,
                     receive_non_conformance_management_notifs,
                     receive_training_management_notifs,
                     receive_expired_docs_notifs,
@@ -556,6 +563,10 @@ class Controls extends React.Component {
                                 className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
                                 onChange={this.form.onChange}
                                 values={this.state.lists.receive_incident_management_notifs} returnValue/>
+                <ClearableInput name="receive_inspection_management_notifs" type="checkbox"
+                                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+                                onChange={this.form.onChange}
+                                values={this.state.lists.receive_inspection_management_notifs} returnValue/>
                 <ClearableInput name="receive_non_conformance_management_notifs" type="checkbox"
                                 className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
                                 onChange={this.form.onChange}

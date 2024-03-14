@@ -35,12 +35,21 @@ class AControls extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="componentDidMount">
 	componentDidMount() {
+		const {group} = this;
 		const {isContractor} = storage.is;
 		this.props.execWhen(() => this.item).then(item => {
 			const {data: {status = "New"}} = item;
-			if (isContractor) {
-				if (status === "New") {
-					this.onUpdateImpl({status: "Seen"}, false);
+			if(group === "Contractors") {
+				if (isContractor) {
+					if (status === "New") {
+						this.onUpdateImpl({status: "Seen"}, false);
+					}
+				}
+			} else if (group === "Inspections") {
+				if (this.isLoggedUser) {
+					if (status === "New") {
+						this.onUpdateImpl({status: "Seen"}, false);
+					}
 				}
 			}
 			this.calculateProgress();
@@ -48,7 +57,13 @@ class AControls extends React.Component {
 	}
 
 	// </editor-fold>
-
+	
+	get isLoggedUser() {
+		const {user} = storage.loggedUser;
+		const {data: {responsible_person}} = this.item;
+		return responsible_person && responsible_person.linked_user_id === user.id;
+	}
+	
 	// <editor-fold defaultstate="collapsed" desc="calculateProgress">
 	calculateProgress() {
 		const {execWhen, refs} = this.props.dialog;

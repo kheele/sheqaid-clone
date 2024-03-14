@@ -85,7 +85,7 @@ function onSelectLoad(onLoadFilter) {
 		//
 		...(filter || {}),
 		//
-		exact_orgs: true,
+		exact_orgs: false,
 		//
 		limit: 0,
 		offset: 0,

@@ -117,13 +117,24 @@ class ATab extends React.Component {
 		
 		console.log('permissionKey', permissionKey)
 		
+		const item = this.refs.root.list[idx];
+		const {
+			id, data: {
+				status,
+				responsible_person,
+			}
+		} = item;
+		
+		const {user} = storage.loggedUser;
+		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
+			{isLoggedUser && <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>}
 			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-			{!isUpcoming && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
+			{isLoggedUser && !isUpcoming && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
 		</Options>;
 	}
 	

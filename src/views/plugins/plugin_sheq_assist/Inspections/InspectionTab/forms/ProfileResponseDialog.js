@@ -20,6 +20,7 @@ import subscribeByIdContractorQuestionnaire
 	from "../../../../plugin_extra/__B_Contractors/AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
 import findByIdInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import {Dates} from "../../../../../../utils/Dates";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -33,6 +34,7 @@ class ProfileDialog extends AEditDialog {
 		super(props, style);
 
 		this.onExportOptions = this.onExportOptions.bind(this);
+		this.onSetAsComplete = this.onSetAsComplete.bind(this);
 	}
 
 	open(item) {
@@ -48,7 +50,41 @@ class ProfileDialog extends AEditDialog {
 	onExportOptions(e, btn) {
 		this.refs.controls.onExportOptions(e, btn);
 	}
-
+	
+	onSetAsComplete(evt, elem) {
+		const d = new Date();
+		this.onUpdateImpl({
+			status: 'CompleteAccepted',
+			date_completed: Dates.formatDateSQL(d),
+			time_completed: Dates.formatTime(d),
+		});
+	}
+	
+	onUpdateImpl(attrs, showDialogs = true) {
+		confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
+			if (res === 1) {
+				showDialogs && progressDialog.open("Please wait...");
+				updateQuestionnaire({id: this.item.id, ...attrs}).then(res => {
+					console.log("res", res)
+					extendObservable(this.item.data, attrs);
+					//            onSaved && onSaved(res);
+					if (showDialogs) {
+						infoDialog.open("Record successfully updated.");
+						infoDialog.close(2000);
+					}
+				}).finally(() => {
+					showDialogs && progressDialog.close();
+				});
+			}
+		});
+	}
+	
+	get isLoggedUser() {
+		const {user} = storage.loggedUser;
+		const {data: {responsible_person}} = this.item;
+		return responsible_person && responsible_person.linked_user_id === user.id;
+	}
+	
 	get title() {
 		return "Questionnaire Responses";
 	}
@@ -62,8 +98,22 @@ class ProfileDialog extends AEditDialog {
 	}
 
 	@computed get topButtons() {
+		const {item} = this.state;
+		if (!item) return null;
+		const {
+			id, data: {
+				status = "New",
+			}
+		} = item;
+		
+		const shouldSetAsComplete = this.isLoggedUser && status !== "CompleteAccepted";
+		
 		return <>
 			<Button ref={ref => this.refs.infoB = ref} className="btn btn-primary progress-bar"/>
+			{(shouldSetAsComplete) &&
+				<Button className="btn btn-primary" onClick={this.onSetAsComplete}>
+					Set As Complete <i className="fa fa-check icon-right font-size-16"/>
+				</Button>}
 			{/*<Button className="btn btn-primary" onClick={this.onExportOptions}>
                 Export <i className="fa fa-angle-down icon-right font-size-16"/>
             </Button>*/}
@@ -80,6 +130,7 @@ class ProfileDialog extends AEditDialog {
 @observer
 class Controls extends AControls {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
+	group = "Inspections";
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {

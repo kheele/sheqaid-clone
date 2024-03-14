@@ -128,6 +128,7 @@ class EditDialog extends ANewDialog {
 @observer
 class Controls extends AControls {
     path = "plugin_sheq_assist/contractors/questionnaires/";
+    group = "Contractors";
     
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

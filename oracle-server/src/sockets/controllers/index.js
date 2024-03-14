@@ -18,6 +18,7 @@ exports.start = (socket) => {
 			if ('range_start' in data) {
 				const {range_start} = data;
 				if (range_start) {
+					console.log('range_start', range_start);
 					if (range_start.contains("All")) {
 						data.range_start = undefined;
 					} else if (isDate(range_start)) {

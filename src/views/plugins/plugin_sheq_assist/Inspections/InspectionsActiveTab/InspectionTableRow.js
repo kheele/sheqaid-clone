@@ -50,7 +50,6 @@ class InspectionTableRow extends React.Component {
 
 		let statusView;
 
-		if (status === 'CompleteRequested' || status === 'CompleteAccepted' || status === 'CompleteDeclined') {
 			switch (status) {
 				case "New":
 				case "Seen":
@@ -66,15 +65,6 @@ class InspectionTableRow extends React.Component {
 					statusView = "Completion Declined";
 					break;
 			}
-		} else {
-			if (status_answered_by_sender === 'ApprovalRequested') {
-				statusView = 'Awaiting Request Approval';
-			} else if (status_answered_by_sender === 'ApprovalDeclined') {
-				statusView = 'Request Declined';
-			} else if (status_answered_by_sender === 'ApprovalAccepted') {
-				statusView = 'Approval Accepted';
-			}
-		}
 
 		// const getQuestions = async (question_list) => {
 		// 	return all_question_list(question_list);
@@ -99,7 +89,7 @@ class InspectionTableRow extends React.Component {
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
 			<div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {time_completed}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>
-			<div className="td fixed-flex min-w-270 flex-center progress-bar">{progress.toFixed(1) + '% Complete'}</div>
+			<div className="td fixed-flex min-w-250 flex-center progress-bar margin-r-20">{progress.toFixed(1) + '% Complete'}</div>
 			<div className="td fixed-flex min-w-140">{statusView}</div>
 			{onRenderActionCell && onRenderActionCell(item, idx)}
 			{!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">

@@ -218,6 +218,11 @@ exports.inspection_details_find_fragment = `
         fname
         email
         phone
+        linked_user_id
+        linked_user{
+          id
+          username
+        }
       }
     }
     template{
@@ -227,6 +232,11 @@ exports.inspection_details_find_fragment = `
     responsible_person{
       id
       full_name
+      linked_user_id
+      linked_user{
+        id
+        username
+      }
     }
     responsible_department{
       id
@@ -301,6 +311,11 @@ exports.inspection_details_list_fragment = `
       }
       responsible_person{
         id
+        linked_user_id
+        linked_user{
+          id
+          username
+        }
         full_name
       }
     }
@@ -310,6 +325,11 @@ exports.inspection_details_list_fragment = `
     }
     responsible_person{
       id
+      linked_user_id
+      linked_user{
+        id
+        username
+      }
       full_name
     }
     responsible_department{

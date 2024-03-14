@@ -25,6 +25,7 @@ import EditQuestionnaireDialog from "../forms/EditQuestionnaireDialog";
 import ProfileQuestionnaireDialog from "../forms/ProfileQuestionnaireDialog";
 import EditResponseDialog from "../forms/EditResponseDialog";
 import ProfileResponseDialog from "../forms/ProfileResponseDialog";
+import {Dates} from "../../../../../utils/Dates";
 
 @observer
 class ActiveTab extends React.Component {
@@ -70,6 +71,7 @@ class ActiveTab extends React.Component {
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
 		this.renderFilterNode = this.renderFilterNode.bind(this);
 	}
+	
 	//</editor-fold>
 	
 	//<editor-fold desc="mounts">
@@ -102,10 +104,12 @@ class ActiveTab extends React.Component {
 //             questionnairesOnUpdate(list, {updateVal, data});
 //         });
 	}
+	
 	componentWillUnmount() {
 		style.unuse();
 		// neonBinding.events.off(`${this.props.path}questionnaires/onUpdate`, this.onPromise);
 	}
+	
 	//</editor-fold>
 	
 	//<editor-fold desc="onLoadList">
@@ -165,7 +169,12 @@ class ActiveTab extends React.Component {
 	
 	onActionAsComplete(evt, el) {
 		const {status} = el.props;
-		this.onUpdateImpl(el, {status});
+		const d = new Date();
+		this.onUpdateImpl(el, {
+			status,
+			date_completed: Dates.formatDateSQL(d),
+			time_completed: Dates.formatTime(d),
+		});
 	}
 	
 	onActionQuestionnaire(evt, el) {
@@ -175,13 +184,13 @@ class ActiveTab extends React.Component {
 	
 	onUpdateImpl(el, attrs) {
 		return confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
-			if(res === 1) {
+			if (res === 1) {
 				const {idx} = el.props;
 				const item = this.refs.root.list[idx];
 				
 				progressDialog.open("Please wait...");
 				return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
-					if(res && attrs.status === 'CompleteAccepted') {
+					if (res && attrs.status === 'CompleteAccepted') {
 						this.refs.root.list.removeIf((val, n) => n === idx);
 					}
 					
@@ -215,10 +224,10 @@ class ActiveTab extends React.Component {
 	async onSaveAs(e, el) {
 		const {idx, type, refName} = el.props;
 		const item = this.refs.root.list[idx];
-		const {[refName] : dialog} = this.refs;
-		if(type === 'PDF') {
+		const {[refName]: dialog} = this.refs;
+		if (type === 'PDF') {
 			dialog.open(item);
-		} else if(type === 'Excel') {
+		} else if (type === 'Excel') {
 		
 		}
 	}
@@ -226,6 +235,7 @@ class ActiveTab extends React.Component {
 	onRemoved(item) {
 		this.refs.root.list.removeIf((v, n) => v.id === item.id);
 	}
+	
 	// </editor-fold>
 	
 	// <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
@@ -249,8 +259,8 @@ class ActiveTab extends React.Component {
 		let shouldAcceptQuestionnaire;
 		let shouldDeclineQuestionnaire;
 		
-		if(isAnsweredBySender) {
-			if(isContractor) {
+		if (isAnsweredBySender) {
+			if (isContractor) {
 				shoudAcceptAsComplete = status === "CompleteRequested" || status === "CompleteDeclined";
 				shoudDeclineAsComplete = status === "CompleteRequested";
 				
@@ -258,12 +268,12 @@ class ActiveTab extends React.Component {
 				shouldDeclineQuestionnaire = status_answered_by_sender === "ApprovalRequested";
 			} else {
 				shouldRequestApproval = status_answered_by_sender !== "ApprovalRequested" && status_answered_by_sender !== "ApprovalAccepted";
-				if(!shouldRequestApproval) {
+				if (!shouldRequestApproval) {
 					shoudMarkAsComplete = status_answered_by_sender === "ApprovalAccepted" && status !== "CompleteRequested" && status !== "CompleteAccepted";
 				}
 			}
 		} else {
-			if(isContractor) {
+			if (isContractor) {
 				shoudMarkAsComplete = status !== "CompleteRequested" && status !== "CompleteAccepted";
 				
 				shouldAcceptQuestionnaire = status_answered_by_sender === "ApprovalRequested" || status_answered_by_sender === "ApprovalDeclined";
@@ -279,17 +289,17 @@ class ActiveTab extends React.Component {
 		}
 		
 		const renderResponses = (isAnsweredBySender, isContractor) => {
-			if(isAnsweredBySender) {
-				if(isContractor) {
+			if (isAnsweredBySender) {
+				if (isContractor) {
 					return <NavItem onClick={this.onViewResponses} faIconLeft="eye" title="Responses"/>;
 				} else {
-					if(status_answered_by_sender === "ApprovalAccepted") {
+					if (status_answered_by_sender === "ApprovalAccepted") {
 						return <NavItem action="writable" onClick={this.onEditResponses} faIconLeft="edit" title="Responses"/>;
 					}
 					return <NavItem onClick={this.onViewResponses} faIconLeft="eye" title="Responses"/>;
 				}
 			} else {
-				if(isContractor) {
+				if (isContractor) {
 					return <NavItem action="writable" onClick={this.onEditResponses} faIconLeft="edit" title="Responses"/>;
 				} else {
 					return <NavItem onClick={this.onViewResponses} faIconLeft="eye" title="Responses"/>;
@@ -303,18 +313,29 @@ class ActiveTab extends React.Component {
 			{!isContractor && <NavItem action="edit" override onClick={onEdit} faIconLeft="edit" title="Edit"/>}
 			{!isContractor && <NavItem action="remove" override onClick={onRemove} faIconLeft="ban" title="Remove"/>}
 			{!isContractor && <hr/>}
-			{isContractor && !isAnsweredBySender && <NavItem action="writable" onClick={this.onViewResponses} faIconLeft="eye" title="View"/>}
+			{isContractor && !isAnsweredBySender &&
+				<NavItem action="writable" onClick={this.onViewResponses} faIconLeft="eye" title="View"/>}
 			{renderResponses(isAnsweredBySender, isContractor)}
 			
 			{(shoudMarkAsComplete || shoudAcceptAsComplete || shoudDeclineAsComplete) && <hr action="writable"/>}
-			{shoudMarkAsComplete && <NavItem action="writable" status="CompleteRequested" onClick={this.onActionAsComplete} faIconLeft="check" title="Mark As Complete"/>}
-			{shoudAcceptAsComplete && <NavItem status="CompleteAccepted" onClick={this.onActionAsComplete} faIconLeft="check" title="Accept As Complete"/>}
-			{shoudDeclineAsComplete && <NavItem status="CompleteDeclined" onClick={this.onActionAsComplete} faIconLeft="close" title="Decline As Complete"/>}
+			{shoudMarkAsComplete &&
+				<NavItem action="writable" status="CompleteRequested" onClick={this.onActionAsComplete} faIconLeft="check"
+				         title="Mark As Complete"/>}
+			{shoudAcceptAsComplete && <NavItem status="CompleteAccepted" onClick={this.onActionAsComplete} faIconLeft="check"
+			                                   title="Accept As Complete"/>}
+			{shoudDeclineAsComplete && <NavItem status="CompleteDeclined" onClick={this.onActionAsComplete} faIconLeft="close"
+			                                    title="Decline As Complete"/>}
 			
 			{(shouldRequestApproval || shouldAcceptQuestionnaire || shouldDeclineQuestionnaire) && <hr action="writable"/>}
-			{shouldRequestApproval && <NavItem status_answered_by_sender="ApprovalRequested" onClick={this.onActionQuestionnaire} faIconLeft="check" title="Request Approval"/>}
-			{shouldAcceptQuestionnaire && <NavItem status_answered_by_sender="ApprovalAccepted" onClick={this.onActionQuestionnaire} faIconLeft="check" title="Accept Questionnaire"/>}
-			{shouldDeclineQuestionnaire && <NavItem status_answered_by_sender="ApprovalDeclined" onClick={this.onActionQuestionnaire} faIconLeft="close" title="Decline Questionnaire"/>}
+			{shouldRequestApproval &&
+				<NavItem status_answered_by_sender="ApprovalRequested" onClick={this.onActionQuestionnaire} faIconLeft="check"
+				         title="Request Approval"/>}
+			{shouldAcceptQuestionnaire &&
+				<NavItem status_answered_by_sender="ApprovalAccepted" onClick={this.onActionQuestionnaire} faIconLeft="check"
+				         title="Accept Questionnaire"/>}
+			{shouldDeclineQuestionnaire &&
+				<NavItem status_answered_by_sender="ApprovalDeclined" onClick={this.onActionQuestionnaire} faIconLeft="close"
+				         title="Decline Questionnaire"/>}
 			
 			{!isContractor && <hr action="writable"/>}
 			{!isContractor && <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>}
@@ -324,6 +345,7 @@ class ActiveTab extends React.Component {
 			{/*<NavItem action="writable" idx={idx} type="Response" onClick={this.onExport} faIconLeft="file-pdf-o" title="Export Responses"/>*/}
 		</Options>;
 	}
+	
 	// </editor-fold>
 	
 	//<editor-fold desc="renderFilterNode">
@@ -339,9 +361,11 @@ class ActiveTab extends React.Component {
 				byLogged={listByLogged}
 				onChange={onChange}
 			/>
-			<ClearableInput name="status" type="select" placeholder="Status..." className="fixed-flex min-w-300 form-control" onChange={onChange} values={this.state.lists.status} returnValue/>
+			<ClearableInput name="status" type="select" placeholder="Status..." className="fixed-flex min-w-300 form-control"
+			                onChange={onChange} values={this.state.lists.status} returnValue/>
 		</div>;
 	}
+	
 	//</editor-fold>
 	
 	//<editor-fold desc="renderTHead">
@@ -356,6 +380,7 @@ class ActiveTab extends React.Component {
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;
 	}
+	
 	//</editor-fold>
 	
 	//<editor-fold desc="renderItem">
@@ -363,6 +388,7 @@ class ActiveTab extends React.Component {
 		let item = this.refs.root.list[n];
 		return <ActiveTabTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
 	}
+	
 	//</editor-fold>
 	
 	render() {

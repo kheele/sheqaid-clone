@@ -20,6 +20,7 @@ import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/upd
 
 import findByIdInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import {Dates} from "../../../../../../utils/Dates";
 
 // </editor-fold>
 
@@ -32,6 +33,8 @@ class EditDialog extends ANewDialog {
 
 	constructor(props) {
 		super(props, style);
+		
+		this.onSetAsComplete = this.onSetAsComplete.bind(this);
 	}
 
 	open(item) {
@@ -43,7 +46,41 @@ class EditDialog extends ANewDialog {
 		});
 		return super.open(item);
 	}
-
+	
+	onSetAsComplete(evt, elem) {
+		const d = new Date();
+		this.onUpdateImpl({
+			status: 'CompleteAccepted',
+			date_completed: Dates.formatDateSQL(d),
+			time_completed: Dates.formatTime(d),
+		});
+	}
+	
+	onUpdateImpl(attrs, showDialogs = true) {
+		confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
+			if (res === 1) {
+				showDialogs && progressDialog.open("Please wait...");
+				updateQuestionnaire({id: this.item.id, ...attrs}).then(res => {
+					console.log("res", res)
+					extendObservable(this.item.data, attrs);
+					//            onSaved && onSaved(res);
+					if (showDialogs) {
+						infoDialog.open("Record successfully updated.");
+						infoDialog.close(2000);
+					}
+				}).finally(() => {
+					showDialogs && progressDialog.close();
+				});
+			}
+		});
+	}
+	
+	get isLoggedUser() {
+		const {user} = storage.loggedUser;
+		const {data: {responsible_person}} = this.item;
+		return responsible_person && responsible_person.linked_user_id === user.id;
+	}
+	
 	get title() {
 		return "Questionnaire Responses";
 	}
@@ -51,8 +88,19 @@ class EditDialog extends ANewDialog {
 	@computed get topButtons() {
 		const {item} = this.state;
 		if (!item) return null;
-
+		const {
+			id, data: {
+				status = "New",
+			}
+		} = item;
+		
+		const shouldSetAsComplete = this.isLoggedUser && status !== "CompleteAccepted";
+		
 		return <>
+			{(shouldSetAsComplete) &&
+				<Button className="btn btn-primary" onClick={this.onSetAsComplete}>
+					Set As Complete <i className="fa fa-check icon-right font-size-16"/>
+				</Button>}
 			<Button className="btn btn-primary cancel" onClick={this.onCancel}>
 				<i className="fa fa-times icon-left"/>Cancel
 			</Button>
@@ -72,6 +120,7 @@ class EditDialog extends ANewDialog {
 @observer
 class Controls extends AControls {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
+	group = "Inspections";
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {

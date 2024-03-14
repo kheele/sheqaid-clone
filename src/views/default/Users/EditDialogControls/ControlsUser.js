@@ -92,6 +92,11 @@ class Controls extends React.Component {
                 value: true,
                 checked: false
             }],
+            receive_inspection_management_notifs: [{
+                text: "Receive Inspection Management Notifications",
+                value: true,
+                checked: false
+            }],
             receive_non_conformance_management_notifs: [{
                 text: "Receive Non-Conformance Management Notifications",
                 value: true,
@@ -512,6 +517,7 @@ class Controls extends React.Component {
         //         receive_employees_expired_docs_medicals,
         //         receive_employees_profile_notifs,
         //         receive_incident_management_notifs,
+        //         receive_inspection_management_notifs,
         //         receive_non_conformance_management_notifs,
         //         receive_training_management_notifs,
         //         receive_expired_docs_notifs,
@@ -526,6 +532,7 @@ class Controls extends React.Component {
         //                 receive_employees_expired_docs_medicals,
         //                 receive_employees_profile_notifs,
         //                 receive_incident_management_notifs,
+        //                 receive_inspection_management_notifs,
         //                 receive_non_conformance_management_notifs,
         //                 receive_training_management_notifs,
         //                 receive_expired_docs_notifs,
@@ -538,6 +545,7 @@ class Controls extends React.Component {
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_employees_expired_docs_medicals, 'receive_employees_expired_docs_medicals');
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_employees_profile_notifs, 'receive_employees_profile_notifs');
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_incident_management_notifs, 'receive_incident_management_notifs');
+        //         ShouldUpdate.checkBox(data, notifications_settings, receive_inspection_management_notifs, 'receive_inspection_management_notifs');
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_non_conformance_management_notifs, 'receive_non_conformance_management_notifs');
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_training_management_notifs, 'receive_training_management_notifs');
         //         ShouldUpdate.checkBox(data, notifications_settings, receive_expired_docs_notifs, 'receive_expired_docs_notifs');
@@ -804,6 +812,7 @@ class Controls extends React.Component {
             receive_employees_expired_docs_medicals,
             receive_employees_profile_notifs,
             receive_incident_management_notifs,
+            receive_inspection_management_notifs,
             receive_non_conformance_management_notifs,
             receive_training_management_notifs,
             receive_expired_docs_notifs,
@@ -827,6 +836,7 @@ class Controls extends React.Component {
             receive_employees_expired_docs_medicals = true;
             receive_employees_profile_notifs = true;
             receive_incident_management_notifs = true;
+            receive_inspection_management_notifs = true;
             receive_non_conformance_management_notifs = true;
             receive_training_management_notifs = true;
             receive_expired_docs_notifs = true;
@@ -838,6 +848,7 @@ class Controls extends React.Component {
             this.state.lists.receive_employees_expired_docs_medicals[0].checked = !!receive_employees_expired_docs_medicals;
             this.state.lists.receive_employees_profile_notifs[0].checked = !!receive_employees_profile_notifs;
             this.state.lists.receive_incident_management_notifs[0].checked = !!receive_incident_management_notifs;
+            this.state.lists.receive_inspection_management_notifs[0].checked = !!receive_inspection_management_notifs;
             this.state.lists.receive_non_conformance_management_notifs[0].checked = !!receive_non_conformance_management_notifs;
             this.state.lists.receive_training_management_notifs[0].checked = !!receive_training_management_notifs;
             this.state.lists.receive_expired_docs_notifs[0].checked = !!receive_expired_docs_notifs;
@@ -1031,6 +1042,12 @@ class Controls extends React.Component {
                                 onChange={this.form.onChange}
                                 onUpdate={this.onUpdateNotificationPermission}
                                 values={this.state.lists.receive_incident_management_notifs} returnValue/>
+                <ClearableInput name="receive_inspection_management_notifs" type="checkbox"
+                                defaultValue={receive_inspection_management_notifs} required
+                                className="col-lg-12 form-control margin-t-5 margin-b-0" vertical
+                                onChange={this.form.onChange}
+                                onUpdate={this.onUpdateNotificationPermission}
+                                values={this.state.lists.receive_inspection_management_notifs} returnValue/>
                 <ClearableInput name="receive_non_conformance_management_notifs" type="checkbox"
                                 defaultValue={receive_non_conformance_management_notifs} required
                                 className="col-lg-12 form-control margin-t-5 margin-b-0" vertical

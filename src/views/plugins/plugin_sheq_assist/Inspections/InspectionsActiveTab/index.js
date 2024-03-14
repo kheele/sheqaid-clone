@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, extendObservable} from 'mobx';
 
 import style from "./InspectionTab.lazy.css";
 import APageListReadWrite from "views/APageListReadWrite";
@@ -17,6 +17,7 @@ import {
 } from "components/inputs";
 import {THead} from "components/tables";
 import InspectionTableRow from "./InspectionTableRow";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 @observer
 class InspectionTab extends React.Component {
@@ -38,6 +39,7 @@ class InspectionTab extends React.Component {
 		
 		this.onCopy = this.onCopy.bind(this);
 		this.onStart = this.onStart.bind(this);
+		this.onSetAsComplete = this.onSetAsComplete.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
 		this.renderTHead = this.renderTHead.bind(this);
@@ -105,6 +107,35 @@ class InspectionTab extends React.Component {
 		editDialog.open(item);
 	}
 	
+	onSetAsComplete(evt, el) {
+		const {status} = el.props;
+		this.onUpdateImpl(el, {status});
+	}
+	
+	onUpdateImpl(el, attrs) {
+		return confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
+			if(res === 1) {
+				const {idx} = el.props;
+				const item = this.refs.root.list[idx];
+				
+				progressDialog.open("Please wait...");
+				return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
+					if(res && attrs.status === 'CompleteAccepted') {
+						this.refs.root.list.removeIf((val, n) => n === idx);
+					}
+					
+					console.log("res", res)
+					extendObservable(item.data, attrs);
+					infoDialog.open("Record successfully updated.");
+					infoDialog.close(2000);
+					return true;
+				}).finally(() => {
+					progressDialog.close();
+				});
+			}
+		});
+	}
+	
 	//</editor-fold>
 	
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -115,13 +146,27 @@ class InspectionTab extends React.Component {
 		
 		console.log('permissionKey', permissionKey)
 		
+		const item = this.refs.root.list[idx];
+		const {
+			id, data: {
+				status,
+				responsible_person,
+			}
+		} = item;
+		
+		const {user} = storage.loggedUser;
+		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		
+		const shouldSetAsComplete = isLoggedUser && status !== "CompleteAccepted";
+		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-			<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
+			{isLoggedUser && <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>}
 			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-			<NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>
+			{isLoggedUser && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
+			{shouldSetAsComplete && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
 		</Options>;
 	}
 	

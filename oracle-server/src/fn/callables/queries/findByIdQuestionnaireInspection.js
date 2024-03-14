@@ -123,11 +123,39 @@ module.exports = async (id) => {
               answered_by
               is_template
               group
+              
               page_title_list:question_list(where: {is_page_title: {_eq: true}}){
                   ${contractor_questionnaire_question_list_fragment(3)}
               }
               question_list:question_list(where: {is_page_title: {_eq: false}}){
                   ${contractor_questionnaire_question_list_fragment(3)}
+              }
+              asset{
+                id
+                asset_detail{
+                  asset_type
+                  name
+                  reg_num
+                  serial_num
+                }
+              }
+              responsible_person{
+                id
+                full_name
+                email
+				        linked_user_id
+				        linked_user{
+				          id
+				          username
+				        }
+                company{
+                  id
+                  name
+                }
+                client{
+                  id
+                  name
+                }
               }
               user{
                 id
@@ -154,14 +182,65 @@ module.exports = async (id) => {
                     username
                   }
               }
+              
               company{
                   id
                   name
-                }
-                client{
+                  user_list(where: {
+                      removed: {_eq: false},
+                      notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                      client_id: {_is_null: true},
+                      project_id: {_is_null: true},
+                      site_id: {_is_null: true}
+                  }){
+                      id
+                      full_name
+                      username
+                      phone
+                  }
+              }
+              client{
                   id
                   name
-                }
+                  user_list(where: {
+                      removed: {_eq: false},
+                      notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                      project_id: {_is_null: true},
+                      site_id: {_is_null: true}
+                  }){
+                      id
+                      full_name
+                      username
+                      phone
+                  }
+              }
+              project{
+                  id
+                  name
+                  user_list(where: {
+                      removed: {_eq: false},
+                      notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                      site_id: {_is_null: true}
+                  }){
+                      id
+                      full_name
+                      username
+                      phone
+                  }
+              }
+              site{
+                  id
+                  name
+                  user_list(where: {
+                      removed: {_eq: false},
+                      notifications_settings: {receive_incident_management_notifs: {_eq: true}},
+                  }){
+                      id
+                      full_name
+                      username
+                      phone
+                  }
+              }
             }
           }
         }
