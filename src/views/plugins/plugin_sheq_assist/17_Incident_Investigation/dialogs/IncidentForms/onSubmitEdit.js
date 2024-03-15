@@ -14,14 +14,14 @@ export default function onSubmitEdit(e, btn, onSaved) {
     //     infoDialog.open('Person(s) Involved in the Incident are/is required');
     //     return;
     // }
-    if (!form.isValid('person_reporting')) {
-        infoDialog.open('Person Reporting the Incident is required');
-        return;
-    }
-    if (!form.isValid('person_reported_to')) {
-        infoDialog.open('Person Reported To is required');
-        return;
-    }
+    // if (!form.isValid('person_reporting')) {
+    //     infoDialog.open('Person Reporting the Incident is required');
+    //     return;
+    // }
+    // if (!form.isValid('person_reported_to')) {
+    //     infoDialog.open('Person Reported To is required');
+    //     return;
+    // }
 
 //        if (!form.isValid('person_injured')) {
 //            infoDialog.open('Person Injured is required');

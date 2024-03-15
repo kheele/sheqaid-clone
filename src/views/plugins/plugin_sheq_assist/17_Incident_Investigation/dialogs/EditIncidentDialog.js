@@ -441,10 +441,10 @@ class Controls extends AIncidentWritableForm {
 
 		//to test: fix new other person
 		if (idx === 5.2) {
-			if (!form.isValid('person_reporting')) {
-				infoDialog.open('Person Reporting the Incident is required');
-				return;
-			}
+			// if (!form.isValid('person_reporting')) {
+			// 	infoDialog.open('Person Reporting the Incident is required');
+			// 	return;
+			// }
 			const {
 				//5.2
 				person_reporting,
@@ -459,10 +459,10 @@ class Controls extends AIncidentWritableForm {
 
 		//to test: fix new other person
 		if (idx === 5.3) {
-			if (!form.isValid('person_reported_to')) {
-				infoDialog.open('Person Reported To is required');
-				return;
-			}
+			// if (!form.isValid('person_reported_to')) {
+			// 	infoDialog.open('Person Reported To is required');
+			// 	return;
+			// }
 			const {
 				//5.3
 				person_reported_to,
@@ -654,6 +654,7 @@ class Controls extends AIncidentWritableForm {
 			} = form.data;
 			const data = {};
 			
+			ShouldUpdate.check(data, old_data, is_vehicle_incident, 'is_vehicle_incident');
 			ShouldUpdate.checkEmployee(data, old_vehicle_details, driver, 'driver');
 			ShouldUpdate.checkDate(data, old_vehicle_details, driver_dob, 'driver_dob');
 			ShouldUpdate.check(data, old_vehicle_details, driver_gender, 'driver_gender');
@@ -785,6 +786,7 @@ class Controls extends AIncidentWritableForm {
 			} = form.data;
 			const data = {};
 
+			ShouldUpdate.check(data, old_data, is_person_injured, 'is_person_injured');
 			ShouldUpdate.checkEmployee(data, old_data, person_injured, 'person_injured');
 			// ShouldUpdate.checkEmployee(data, old_data, person_injured_other, 'person_injured_other');
 			ShouldUpdate.checkDate(data, old_data, injured_person_dob, 'injured_person_dob');

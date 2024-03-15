@@ -16,18 +16,18 @@ export default function onNext(e, btn) {
 	//         return;
 	//     }
 	// }
-	if (idx === 5.2) {
-		if (!form.isValid('person_reporting')) {
-			infoDialog.open('Person Reporting the Incident is required');
-			return;
-		}
-	}
-	if (idx === 5.3) {
-		if (!form.isValid('person_reported_to')) {
-			infoDialog.open('Person Reported To is required');
-			return;
-		}
-	}
+	// if (idx === 5.2) {
+	// 	if (!form.isValid('person_reporting')) {
+	// 		infoDialog.open('Person Reporting the Incident is required');
+	// 		return;
+	// 	}
+	// }
+	// if (idx === 5.3) {
+	// 	if (!form.isValid('person_reported_to')) {
+	// 		infoDialog.open('Person Reported To is required');
+	// 		return;
+	// 	}
+	// }
 	if (idx === 7) {
 //            if (!form.isValid('person_injured')) {
 //                infoDialog.open('Person Injured is required');

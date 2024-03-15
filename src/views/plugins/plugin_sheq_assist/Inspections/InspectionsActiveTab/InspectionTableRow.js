@@ -82,7 +82,7 @@ class InspectionTableRow extends React.Component {
 			<div className="td fixed-flex min-w-40">{id}</div>
 			<div className="td">{name}</div>
 			{!mainAsset && <div
-				className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}</div>}
+				className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num })` : 'N/A'}</div>}
 			<div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{interval}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
