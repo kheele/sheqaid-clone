@@ -334,7 +334,7 @@ class IncidentsTab extends React.Component {
 				ref.list = [];
 			}
 			
-			if(!ref.list || ref.list.isEmpty()) {
+			if (!ref.list || ref.list.isEmpty()) {
 				ref.hide();
 			} else {
 				ref.show();
@@ -372,10 +372,46 @@ class IncidentsTab extends React.Component {
 				status_awaiting_approval,
 				status_investigating,
 				status_awaiting_investigation_approval,
+				//
+				distribution_list,
 			},
 		} = item;
 		
 		const AssignedInvestigator = !!investigation && !!investigation.investigation_team_list;
+		
+		const {is: {isEmployee}, loggedUser: {user}} = storage;
+		
+		if (isEmployee) {
+			//TODO: Determine who is an approver
+			// const isApprover = distribution_list && distribution_list.anyMatch(({employee: {id}}) => id === user.id);
+			const isInvestigator = investigation && investigation.investigation_team_list && investigation.investigation_team_list.anyMatch(({investigator: {id}}) => id === user.id);
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				<hr action="writable"/>
+				{/*{isApprover && !status_approved &&*/}
+				{/*	<NavItem*/}
+				{/*		action="writable"*/}
+				{/*		idx={idx}*/}
+				{/*		onClick={this.onApproveIncident}*/}
+				{/*		faIconLeft="check"*/}
+				{/*		title="Approve Incident"*/}
+				{/*	/>*/}
+				{/*}*/}
+				{status_approved && isInvestigator && <>
+					{!status_closed && <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
+					                            title="Investigate"/>}
+					{!status_closed &&
+						<NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
+						         title="Close Incident"/>}
+					{status_closed &&
+						<NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
+						         title="Re-Open Incident"/>}
+				</>}
+				{/*<hr action="writable"/>*/}
+				{/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
+				{/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
+			</Options>;
+		}
 		
 		return <Options idx={idx} permissionModKey={this.props.permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -409,9 +445,9 @@ class IncidentsTab extends React.Component {
 					<NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
 					         title="Re-Open Incident"/>}
 			</>}
-			<hr action="writable"/>
-			<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>
-			<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+			{/*<hr action="writable"/>*/}
+			{/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
+			{/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
 		</Options>;
 	}
 	
@@ -517,7 +553,10 @@ class IncidentsTab extends React.Component {
 			
 			<ClearableInput name="is_vehicle_incident" type="select" placeholder="Vehicle Incident?"
 			                className="form-control" onChange={onChange}
-			                values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({label, value: value === "Yes"}))}
+			                values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({
+				                label,
+				                value: value === "Yes"
+			                }))}
 			                returnValue/>
 			<ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
 			                className="form-control" onChange={onChange}/>

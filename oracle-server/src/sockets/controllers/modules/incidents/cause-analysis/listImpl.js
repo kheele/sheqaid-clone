@@ -18,6 +18,7 @@ module.exports = async (socket, data) => {
         removed = false,
         // status,
         //
+        logged_employee_id,
         site_id, project_id, client_id,
         //
         exact_orgs = false,
@@ -31,6 +32,7 @@ module.exports = async (socket, data) => {
         //
         // status,
         //
+        logged_employee_id,
         site_id, project_id, client_id,
         //
         exact_orgs
@@ -43,7 +45,12 @@ module.exports = async (socket, data) => {
                   where: {
                     removed: {_eq: ${removed}},
                     ${filter},
-                    investigation:{cause_analysis:{immediate_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}}
+                    _and:{
+                      _or:[
+	                      {investigation:{cause_analysis:{immediate_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}},
+	                      {investigation:{cause_analysis:{root_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}}
+                      ]
+                    }
                   },
 	                order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
                     offset: ${offset},

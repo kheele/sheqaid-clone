@@ -201,6 +201,27 @@ class CorrectiveActionsTab extends React.Component {
 		};
 		
 		const {Options} = _actions;
+
+		const {is: {isEmployee}, loggedUser: {user}} = storage;
+
+		if (isEmployee) {
+			const isLoggedUser = responsible_person && responsible_person.id === user.id;
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				{isLoggedUser && <>
+					<hr action="writable"/>
+					{!status.contains('ClosedCorrectiveAction') && <React.Fragment>
+						<NavItem action="writable" idx={idx} onClick={onProgressNotes} faIconLeft="edit" title="Progress Notes"/>
+					</React.Fragment>}
+					
+					{!status.contains('ClosedCorrectiveAction') &&
+						<NavItem action="writable" idx={idx} onClick={onCloseCorrectiveAction} faIconLeft="ban"
+						         title="Close Corrective Action"/>}
+					{status.contains('ClosedCorrectiveAction') &&
+						<NavItem action="writable" idx={idx} onClick={onReOpen} faIconLeft="edit" title="Re-Open Corrective Action"/>}
+				</>}
+			</Options>;
+		}
 		
 		return <Options idx={idx} permissionModKey={this.props.permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>

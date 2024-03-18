@@ -14,28 +14,34 @@ class Socket {
 				if (!isNumber(data) && !isBoolean(data)) {
 					data = await convertMobx(data);
 					
-					const {
-						site_id,
-						project_id,
-						client_id,
-						incContractors,
-						excContractors,
-						exact_orgs,
-						exact_orgs_company,
-						contractor_site_id_key,
-					} = data;
-					const orgs_filter = orgsFilter({
-						site_id,
-						project_id,
-						client_id,
-						incContractors,
-						excContractors,
-						exact_orgs,
-						exact_orgs_company,
-						contractor_site_id_key,
-					});
-					
-					data = {...data, orgs_filter};
+					const {is, loggedUser} = storage;
+					if (is.isEmployee) {
+						const {user: {id: logged_employee_id}} = loggedUser;
+						data = {...data, logged_employee_id};
+					} else {
+						const {
+							site_id,
+							project_id,
+							client_id,
+							incContractors,
+							excContractors,
+							exact_orgs,
+							exact_orgs_company,
+							contractor_site_id_key,
+						} = data;
+						const orgs_filter = orgsFilter({
+							site_id,
+							project_id,
+							client_id,
+							incContractors,
+							excContractors,
+							exact_orgs,
+							exact_orgs_company,
+							contractor_site_id_key,
+						});
+						
+						data = {...data, orgs_filter};
+					}
 				}
 			}
 			

@@ -27,6 +27,7 @@ exports.getVariablesAndQueryConfig = (
 		progress_date_range,
 		completed_date_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -35,9 +36,45 @@ exports.getVariablesAndQueryConfig = (
 	//<editor-fold desc="variables, filters">
 	let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
 	
-	if(id) {
+	if (id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if (logged_employee_id) {
+			filter.push(`_or: [
+				{approving_person_id: {_eq: ${logged_employee_id}}},
+				{assigned_person_list: {employee_id: {_eq: ${logged_employee_id}}}},
+				{assigned_job_position_list: {employee_list:{id: {_eq: ${logged_employee_id}}}}},
+				
+				#For Site
+				#{selected_source_site: {employee_list:{id: {_eq: ${logged_employee_id}}}}},
+				
+				#For Incident
+				{selected_source_incident: {person_reporting_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_incident: {person_reported_to_id: {_eq: ${logged_employee_id}}}},
+				{selected_source_incident: {person_involved_list: {person_involved_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_incident: {person_injured_id: {_eq: ${logged_employee_id}}}},
+				{selected_source_incident: {distribution_list: {employee_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_incident: {witness_list: {witness_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_incident: {vehicle_list: {driver_id: {_eq: ${logged_employee_id}}}}},
+				
+				#For Incident Investigation
+				{selected_source_incident: {investigation:{investigation_team_list:{investigator_id: {_eq: ${logged_employee_id}}}}}},
+				
+				#For Corrective Actions
+				{selected_source_incident: {investigation:{cause_analysis:{immediate_analysis:{cause_analysis_cause_list:{corrective_action_list:{responsible_person_id: {_eq: ${logged_employee_id}}}}}}}}},
+				{selected_source_incident: {investigation:{cause_analysis:{root_analysis:{cause_analysis_cause_list:{corrective_action_list:{responsible_person_id: {_eq: ${logged_employee_id}}}}}}}}},
+				
+				#For Inspection
+				{selected_source_inspection: {responsible_person_id: {_eq: ${logged_employee_id}}}},
+				
+				#For Audit
+				{selected_source_compliance_audit: {auditor_list:{employee_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_compliance_audit: {representative_list:{employee_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_compliance_audit: {list:{responsible_person_id: {_eq: ${logged_employee_id}}}}},
+			]`);
+		}
+		
+		//
 		if (expiry_date === null) {//expiry_no
 			filter.push(`due_date: {_is_null: true}`);
 		} else if (expiry_date === -1) {//expired
@@ -90,31 +127,31 @@ exports.getVariablesAndQueryConfig = (
 		
 		if (due_date_range) {
 			const {start, end} = due_date_range;
-			if(start && end) {
+			if (start && end) {
 				filter.push(`due_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
-			} else if(start) {
+			} else if (start) {
 				filter.push(`due_date: {_gte: "${Dates.formatDateSQL(start)}"}`);
-			} else if(end) {
+			} else if (end) {
 				filter.push(`due_date: {_lte: "${Dates.formatDateSQL(end)}"}`);
 			}
 		}
 		if (progress_date_range) {
 			const {start, end} = progress_date_range;
-			if(start && end) {
+			if (start && end) {
 				filter.push(`progress_list: {date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}}`);
-			} else if(start) {
+			} else if (start) {
 				filter.push(`progress_list: {date: {_gte: "${Dates.formatDateSQL(start)}"}}`);
-			} else if(end) {
+			} else if (end) {
 				filter.push(`progress_list: {date: {_lte: "${Dates.formatDateSQL(end)}"}}`);
 			}
 		}
 		if (completed_date_range) {
 			const {start, end} = completed_date_range;
-			if(start && end) {
+			if (start && end) {
 				filter.push(`completed_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
-			} else if(start) {
+			} else if (start) {
 				filter.push(`completed_date: {_gte: "${Dates.formatDateSQL(start)}"}`);
-			} else if(end) {
+			} else if (end) {
 				filter.push(`completed_date: {_lte: "${Dates.formatDateSQL(end)}"}`);
 			}
 		}

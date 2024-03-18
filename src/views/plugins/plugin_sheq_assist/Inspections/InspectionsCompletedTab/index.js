@@ -17,6 +17,7 @@ import {
 } from "components/inputs";
 import {THead} from "components/tables";
 import InspectionTableRow from "./InspectionTableRow";
+import updateQuestionnaire from "../../../../../mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 @observer
 class InspectionTab extends React.Component {
@@ -37,6 +38,7 @@ class InspectionTab extends React.Component {
 		this.onLoadList = this.onLoadList.bind(this);
 		
 		this.onCopy = this.onCopy.bind(this);
+		this.onRemoveAsComplete = this.onRemoveAsComplete.bind(this);
 
 //        this.renderLeftButtons = this.renderLeftButtons.bind(this);
 		this.renderTHead = this.renderTHead.bind(this);
@@ -96,6 +98,35 @@ class InspectionTab extends React.Component {
 		newDialog.open(copy);
 	}
 	
+	onRemoveAsComplete(evt, el) {
+		const {status} = el.props;
+		this.onUpdateImpl(el, {status});
+	}
+	
+	onUpdateImpl(el, attrs) {
+		return confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
+			if(res === 1) {
+				const {idx} = el.props;
+				const item = this.refs.root.list[idx];
+				
+				progressDialog.open("Please wait...");
+				return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
+					if(res && attrs.status === 'Seen') {
+						this.refs.root.list.removeIf((val, n) => n === idx);
+					}
+					
+					console.log("res", res)
+					extendObservable(item.data, attrs);
+					infoDialog.open("Record successfully updated.");
+					infoDialog.close(2000);
+					return true;
+				}).finally(() => {
+					progressDialog.close();
+				});
+			}
+		});
+	}
+	
 	//</editor-fold>
 	
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -114,7 +145,17 @@ class InspectionTab extends React.Component {
 			}
 		} = item;
 		
-		const {user} = storage.loggedUser;
+		const {is:{isEmployee},loggedUser:{user}} = storage;
+		
+		if(isEmployee) {
+			const isLoggedUser = responsible_person && responsible_person.id === user.id;
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				{isLoggedUser && <hr action="writable"/>}
+				{isLoggedUser && <NavItem action="writable" status="Seen" idx={idx} onClick={this.onRemoveAsComplete} faIconLeft="ban" title="Unset As Complete"/>}
+			</Options>;
+		}
+		
 		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>

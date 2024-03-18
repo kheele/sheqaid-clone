@@ -21,6 +21,7 @@ exports.getVariablesAndQueryConfig = (
 		//
 		written_off = false,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -33,6 +34,15 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if (logged_employee_id) {
+			filter.push(`_or: [
+				{auditor_list:{employee_id: {_eq: ${logged_employee_id}}}},
+				{representative_list:{employee_id: {_eq: ${logged_employee_id}}}},
+				{list:{responsible_person_id: {_eq: ${logged_employee_id}}}},
+			]`);
+		}
+		
+		//
 		// if (isBoolean(written_off)) {
 		// 	filter.push(`written_off: {_eq: ${written_off}}`);
 		// }

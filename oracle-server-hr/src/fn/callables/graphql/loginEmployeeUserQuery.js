@@ -6,13 +6,14 @@ exports.query = `
         node {
           id
           auth_id
-          created_at,
+          created_at
           fname
           lname
           full_name
           email
           phone
           profile_pic
+          linked_user_id
           linked_user {
             id
             fname
@@ -20,6 +21,7 @@ exports.query = `
             username
             phone
           }
+          linked_contractor_user_id
           linked_contractor_user {
             id
             fname
@@ -27,6 +29,7 @@ exports.query = `
             username
             phone
           }
+          supervisor_id
           supervisor {
             id
             fname
@@ -34,6 +37,17 @@ exports.query = `
             email
             phone
           }
+          job_position_id
+          job_position{
+            id
+            name
+          }
+          department_id
+          department{
+            id
+            name
+          }
+          team_id
           team {
             id
             name

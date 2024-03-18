@@ -23,6 +23,7 @@ exports.getVariablesAndQueryConfig = (
 		//
 		date_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -34,6 +35,14 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if(logged_employee_id) {
+			filter.push(`_or: [
+				{employee_id: {_eq: ${logged_employee_id}}},
+				{responsible_person_id: {_eq: ${logged_employee_id}}},
+				{responsible_department:{employee_list:{id: {_eq: ${logged_employee_id}}}}}
+			]`);
+		}
+		
 		if (doc_type) {
 			filter.push(`doc_type: {_eq: "${doc_type}"}`);
 		}

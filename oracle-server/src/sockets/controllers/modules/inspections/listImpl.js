@@ -18,6 +18,7 @@ module.exports = async (socket, data) => {
 		template_id,
 		asset_type,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -35,6 +36,7 @@ module.exports = async (socket, data) => {
 		interval,
 		template_id,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs

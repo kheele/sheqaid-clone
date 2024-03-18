@@ -33,9 +33,9 @@ class InitViewClientOrNonConsultant extends React.Component {
     }
 
     renderItem(item, idx) {
+        const {disallowedModules} = moduleManager;
         const {module: {color, key, svgIconLeft, faIconLeft, title}} = item;
-        if (key === "_06_Communication_And_Participation" || key === "_16_Emergency_Preparedness"
-          || key === "_01_Project_Plan" || key === "_02_IMS_Policies") return null;
+        if (disallowedModules.contains(key)) return null;
 
         const {onInfo, onClick} = this.props;
         const {permissions_module_list} = storage.loggedUser.user.data;

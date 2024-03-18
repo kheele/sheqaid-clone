@@ -20,6 +20,7 @@ module.exports = async (socket, data) => {
 		scope,
 		date_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -40,6 +41,7 @@ module.exports = async (socket, data) => {
 		scope,
 		date_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs

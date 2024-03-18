@@ -288,6 +288,47 @@ class NCRItemListDialog extends ADialogList {
 		
 		const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
 		
+		const {is:{isEmployee},loggedUser:{user}} = storage;
+		
+		if(isEmployee) {
+			const isResponsible = (assigned_person_list && assigned_person_list.anyMatch(({employee: {id}}) => id === user.id)) ||
+				(assigned_job_position_list && assigned_job_position_list.anyMatch(({job_position_id}) => user.data.job_position_id === job_position_id));
+			const isApproving = approving_person && user.id === approving_person.id;
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				<hr action="writable"/>
+				{isResponsible && <>
+					<hr/>
+					{
+						status_progress !== 'Progressed' && status_progress !== 'Completed' && (
+							<NavItem idx={idx} onClick={this.onProgress} faIconLeft="check" title="Progressed"/>
+						)
+					}
+					{
+						status_progress !== 'Completed' && (
+							<NavItem idx={idx} onClick={this.onComplete} faIconLeft="check" title="Complete"/>
+						)
+					}
+				</>}
+				{isApproving && <>
+					<hr/>
+					{
+						status_acceptance !== 'Approved' && (
+							<NavItem idx={idx} onClick={this.onApprove} faIconLeft="check" title="Approve"/>
+						)
+					}
+					{
+						status_acceptance !== 'Rejected' && (
+							<NavItem idx={idx} onClick={this.onReject} faIconLeft="check" title="Reject"/>
+						)
+					}
+				</>}
+				{selected_source_ref &&
+					<NavItem idx={idx} action="view" onClick={this.onViewItemSource} faIconLeft="eye" title="View NCR Source"/>}
+				{selected_source_ref && <hr/>}
+			</Options>;
+		}
+		
 		const isResponsible = () => {
 			if (assigned_job_position_list || assigned_person_list) {
 				if (

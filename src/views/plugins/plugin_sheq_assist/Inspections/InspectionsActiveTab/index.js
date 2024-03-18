@@ -154,10 +154,21 @@ class InspectionTab extends React.Component {
 			}
 		} = item;
 		
-		const {user} = storage.loggedUser;
-		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		const {is:{isEmployee},loggedUser:{user}} = storage;
 		
-		const shouldSetAsComplete = isLoggedUser && status !== "CompleteAccepted";
+		const shouldSetAsComplete = (isLoggedUser, status) => isLoggedUser && status !== "CompleteAccepted";
+		
+		if(isEmployee) {
+			const isLoggedUser = responsible_person && responsible_person.id === user.id;
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				<hr action="writable"/>
+				{isLoggedUser && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
+				{shouldSetAsComplete(isLoggedUser, status) && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
+			</Options>;
+		}
+		
+		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -166,7 +177,7 @@ class InspectionTab extends React.Component {
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
 			{isLoggedUser && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
-			{shouldSetAsComplete && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
+			{shouldSetAsComplete(isLoggedUser, status) && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
 		</Options>;
 	}
 	

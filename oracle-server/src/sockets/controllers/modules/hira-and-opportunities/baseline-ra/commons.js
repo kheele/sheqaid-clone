@@ -13,6 +13,7 @@ exports.getVariablesAndQueryConfig = (
 		activity,
 		risk_tolerance,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -24,6 +25,14 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if (logged_employee_id) {
+			filter.push(`_or: [
+				{list:{responsible_person_id: {_eq: ${logged_employee_id}}}},
+				{list:{control_measure_list_additional:{responsible_person_id: {_eq: ${logged_employee_id}}}}}
+			]`);
+		}
+		
+		//
 		if (expiry_date === null) {//expiry_no
 			filter.push(`expiry_date: {_is_null: true}`);
 		} else if (expiry_date === -1) {//expired

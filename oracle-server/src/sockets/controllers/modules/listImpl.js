@@ -25,6 +25,7 @@ module.exports = (
 			id,
 			//
 			//
+			logged_employee_id,
 			site_id, project_id, client_id, company_id,
 			//
 			exact_orgs = false,
@@ -49,6 +50,7 @@ module.exports = (
 			//
 			...others,
 			//
+			logged_employee_id,
 			site_id, project_id, client_id, company_id,
 			//
 			exact_orgs

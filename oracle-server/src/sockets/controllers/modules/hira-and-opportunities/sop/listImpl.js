@@ -21,6 +21,7 @@ module.exports = async (socket, data) => {
         date_created_range,
         date_revised_range,
         //
+        logged_employee_id,
         site_id, project_id, client_id,
         //
         exact_orgs = false,
@@ -43,6 +44,7 @@ module.exports = async (socket, data) => {
         date_created_range,
         date_revised_range,
         //
+        logged_employee_id,
         site_id, project_id, client_id,
         //
         exact_orgs

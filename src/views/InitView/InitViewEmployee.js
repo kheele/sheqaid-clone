@@ -14,9 +14,9 @@ class InitViewEmployee extends React.Component {
     }
 
     onFilterEmployeeOnly(modulesDashboard) {
-        const {employeeDisallowedModules} = moduleManager;
+        const {disallowedModules, employeeDisallowedModules} = moduleManager;
         return onFilterImpl(modulesDashboard).filter(({module: {key}}) => {
-            const allow = !employeeDisallowedModules.contains(key);
+            const allow = !disallowedModules.contains(key) && !employeeDisallowedModules.contains(key);
             return allow;
         });
     }

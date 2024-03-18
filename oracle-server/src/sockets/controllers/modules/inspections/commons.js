@@ -9,6 +9,7 @@ exports.getVariablesAndQueryConfig = (
 		interval,
 		template_id,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -19,7 +20,16 @@ exports.getVariablesAndQueryConfig = (
 	
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
-	} else {
+	}  else {
+		if(logged_employee_id) {
+			filter.push(`_or: [
+				{responsible_department: {employee_list:{id: {_eq: ${logged_employee_id}}}}},
+				{responsible_person_id: {_eq: ${logged_employee_id}}},
+				{asset:{responsible_person_id: {_eq: ${logged_employee_id}}}}
+			]`);
+		}
+		
+		//
 		if(name) {
 			filter.push(`name: {_ilike: "%${name}%"}`);
 		}

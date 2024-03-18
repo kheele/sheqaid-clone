@@ -180,7 +180,6 @@ class InvestigationsTab extends React.Component {
     }
     //</editor-fold>
     
-    
     // <editor-fold defaultstate="collapsed" desc="actions">
     onApproveInvestigation(e, el) {
         const {idx} = el.props;
@@ -351,6 +350,38 @@ class InvestigationsTab extends React.Component {
         } = item;
 
         console.log('this.props.permissionKey', this.props.permissionKey)
+        
+        const {is: {isEmployee}, loggedUser: {user}} = storage;
+        
+        if (isEmployee) {
+            //TODO: Determine who is an approver
+            // const isInvestigationApprover = distribution_list && distribution_list.anyMatch(({employee: {id}}) => id === user.id);
+            const isInvestigator = investigation && investigation.investigation_team_list && investigation.investigation_team_list.anyMatch(({investigator: {id}}) => id === user.id);
+            return <Options idx={idx}>
+                <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+                <hr action="writable"/>
+                {/*{isInvestigationApprover && !status_approved_investigation &&*/}
+                {/*  <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check"*/}
+                {/*           title="Approve Investigation"/>}*/}
+                
+                {isInvestigator && <>
+                    {!status_closed && <>
+                        <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
+                                 title="Investigate"/>
+                        {status_approved_investigation &&
+                          <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
+                                   title="Close Incident"/>}
+                    </>}
+                    {status_closed &&
+                      <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
+                               title="Re-Open Incident"/>}
+                </>}
+                {/*<hr action="writable"/>*/}
+                {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
+                {/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
+            </Options>;
+        }
+        
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>

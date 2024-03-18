@@ -22,6 +22,7 @@ exports.getVariablesAndQueryConfig = (
 		//
 		expiry_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -33,6 +34,21 @@ exports.getVariablesAndQueryConfig = (
 	if (id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if (logged_employee_id) {
+			filter.push(`_or: [
+				{person_approving_procedure_id: {_eq: ${logged_employee_id}}},
+				{department:{employee_list:{id: {_eq: ${logged_employee_id}}}}},
+				{ppe_required_list:{ppe:{representative_list:{employee_id: {_eq: ${logged_employee_id}}}}}},
+				{sign_sheet_employee_list:{employee_id: {_eq: ${logged_employee_id}}}},
+			]`);
+		}
+		
+		//: /etc/letsencrypt/live/cloud.sheqaid.com/fullchain.pem
+		//: /etc/nginx/certs/all.cloud.sheqaid.com.crt
+		
+		//:copy /etc/letsencrypt/live/cloud.sheqaid.com/fullchain.pem to ./certs/all.cloud.sheqaid.com.crt
+		
+		//
 		if (category) {
 			filter.push(`category: {_like: "%${category}%"}`);
 		}

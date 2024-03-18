@@ -17,6 +17,7 @@ exports.getVariablesAndQueryConfig = (
 		scope,
 		date_range,
 		//
+		logged_employee_id,
 		site_id, project_id, client_id,
 		//
 		exact_orgs = false,
@@ -28,6 +29,15 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
+		if (logged_employee_id) {
+			filter.push(`_or: [
+				{auditor_list:{employee_id: {_eq: ${logged_employee_id}}}},
+				{representative_list:{employee_id: {_eq: ${logged_employee_id}}}},
+				{list:{responsible_person_id: {_eq: ${logged_employee_id}}}},
+			]`);
+		}
+		
+		//
 		if(representative_list) {
 			filter.push(`representative_list: {employee_id:{_in: [${representative_list.map(v => v.id).join(', ')}]}}`);
 		}

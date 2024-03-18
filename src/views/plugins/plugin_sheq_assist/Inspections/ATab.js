@@ -125,7 +125,17 @@ class ATab extends React.Component {
 			}
 		} = item;
 		
-		const {user} = storage.loggedUser;
+		const {is:{isEmployee},loggedUser:{user}} = storage;
+		
+		if(isEmployee) {
+			const isLoggedUser = responsible_person && responsible_person.id === user.id;
+			return <Options idx={idx}>
+				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
+				<hr action="writable"/>
+				{isLoggedUser && !isUpcoming && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
+			</Options>;
+		}
+		
 		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>

@@ -34,13 +34,22 @@ class Manager {
     @computed
     get employeeDisallowedModules() {
         return [
-            '_00_Procedure_for_Document_and_Record_Control',
-            '_01_Project_Plan',
-            '_02_IMS_Policies',
+            // '_00_Procedure_for_Document_and_Record_Control',
             '_09_HIRA_And_Opportunities',
             '_13_2_3_Hazardous_Chemical_Substances',
-            '_19_Maintenance',
-            '__B_Contractors'
+            // '_19_Maintenance',
+            '__B_Contractors',
+        ];
+    }
+
+    @computed
+    get disallowedModules() {
+        return [
+            '_01_Project_Plan',
+            '_02_IMS_Policies',
+            '_06_Communication_And_Participation',
+            '_16_Emergency_Preparedness',
+            'Job Appointments',
         ];
     }
 

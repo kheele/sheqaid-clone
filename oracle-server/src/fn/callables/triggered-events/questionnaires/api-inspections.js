@@ -1,7 +1,6 @@
 const findByIdQuestionnaireInspection = require('../../queries/findByIdQuestionnaireInspection');
 const {
-	create_schedule_date, insertInspectionsQuestionnaire, updateInspectionsQuestionnaire,
-	getQuestionnaireTemplateForm, all_question_list
+	create_schedule_date, updateInspectionsQuestionnaire, all_question_list,
 } = require("../../../../libs/inspections");
 
 // <editor-fold defaultstate="collapsed" desc="onCreatedQuestionnaire">
