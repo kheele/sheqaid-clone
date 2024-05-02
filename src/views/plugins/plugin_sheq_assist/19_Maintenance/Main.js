@@ -9,6 +9,7 @@ import APage from "views/APage";
 import DashboardTab from './DashboardTab';
 import ToolsTab from './ToolsTab';
 import ToolsWrittenOffTab from './ToolsTab/ToolsWrittenOffTab';
+import RegisterTab from './RegisterTab';
 import MonitoringPlanTab from './MonitoringPlanTab';
 import MaintanancePlanTab from './MaintanancePlanTab';
 import CalibrationRecordTab from './CalibrationRecordTab';
@@ -74,6 +75,7 @@ class Main extends APage {
                 {/*<ToolsTab ref="planner" title="Planner" path={this.path}/>*/}
                 {/*<ActionsTab ref="actions" title="Actions" path={this.path}/>*/}
                 <ToolsWrittenOffTab ref="toolsWrittenOff" title="Assets Written Off" path={this.path}/>
+                {/*<RegisterTab ref="register" title="Asset Register" path={this.path}/>*/}
                 {/*<PartsTab ref="parts" title="Parts" path={this.path}/>*/}
                 {/*<JobCardsTab ref="jobCards" title="Job Cards" path={this.path}/>*/}
                 <MonitoringPlanTab ref="monitoringPlan" title="Monitoring Plan" path={this.path}/>

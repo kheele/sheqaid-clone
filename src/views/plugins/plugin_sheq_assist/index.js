@@ -46,6 +46,8 @@ const _21_Internal_Audit = lazy(() => import('./21_Internal_Audit/Main'/* webpac
 
 const Inspections = lazy(() => import('./Inspections/Main'/* webpackChunkName:"Inspections" */));
 
+const SafetyFiles = lazy(() => import('./SafetyFiles/Main'/* webpackChunkName:"SafetyFiles" */));
+
 // const _22_Procedure_for_Continual_Improvement = lazy(() => import('./22_Procedure_for_Continual_Improvement/Main'/* webpackChunkName:"22_Procedure_for_Continual_Improvement" */));
 
 // const _23_Procedure_for_Management_Review = lazy(() => import('./23_Procedure_for_Management_Review/Main'/* webpackChunkName:"23_Procedure_for_Management_Review" */));
@@ -78,6 +80,7 @@ const modules = {
 //  _20_Procedure_for_Measuring_Customer_Satisfaction,
 	_21_Internal_Audit,
 	Inspections,
+	SafetyFiles,
 //  _22_Procedure_for_Continual_Improvement,
 //  _23_Procedure_for_Management_Review,
 

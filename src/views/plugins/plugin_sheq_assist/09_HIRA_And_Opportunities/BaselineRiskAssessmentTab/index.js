@@ -16,6 +16,7 @@ import ViewBaselineRiskAssessmentReportDialog from './forms/ViewBaselineRiskAsse
 import style from "./BaselineRiskAssessmentTab.lazy.css";
 import ExportBaselineRiskAssessmentDialog from "./forms/ExportBaselineRiskAssessmentDialog";
 import AList from "views/AList";
+import ViewDocumentDialog from "../../../../../components/dialogs/ViewDocumentDialog";
 
 @observer
 class BaselineRiskAssessmentTab extends AList {
@@ -70,13 +71,31 @@ class BaselineRiskAssessmentTab extends AList {
 	//</editor-fold>
 
 	printImpl() {
-		return neonBinding.events.emit(this.path + "create/pdf");
+		const createPDF = sockets.of('hira-and-opportunities/baseline-ra').fn('createPDF');
+		
+		const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
+		const {selectedClient, selectedProject, selectedSite,} = storage.selected;
+		
+		const company_id = sess_company_id;
+		const client_id = selectedClient && selectedClient.id;
+		const project_id = selectedProject && selectedProject.id;
+		const site_id = selectedSite && selectedSite.id;
+		
+		return createPDF({
+			company_id,
+			client_id,
+			project_id,
+			site_id,
+		}).then((res) => {
+			console.log('createPDF res', res)
+			return res;
+		});
 	}
 
 	onSaveAsPDF(e, btn) {
 		btn.text("Saving As PDF...").disabled();
 		this.printImpl().then(res => {
-			this.refs.viewReportPDFDialog.open(res);
+			this.refs.viewReportPDFDialog.open({path: res, previewPath: res});
 			infoDialog.open("Record successfully saved as PDF.");
 			infoDialog.close(2000);
 		}).finally(() => {
@@ -89,16 +108,17 @@ class BaselineRiskAssessmentTab extends AList {
 	}
 
 	renderLeftButtons() {
-		const {isEmployee, isContractorView} = storage.is;
-		const isReadonly = isEmployee || isContractorView;
-		return !isReadonly && <div className="left-buttons pull-left">
-			<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onViewReport}>
-				<i className="fa fa-eye icon-left"/> View Report
-			</Button>
-			<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onSaveAsPDF}>
-				<i className="fa fa-file-pdf-o icon-left"/> Save As PDF
-			</Button>
-		</div>;
+		return null;
+		// const {isEmployee, isContractorView} = storage.is;
+		// const isReadonly = isEmployee || isContractorView;
+		// return !isReadonly && <div className="left-buttons pull-left">
+		// 	<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onViewReport}>
+		// 		<i className="fa fa-eye icon-left"/> View Report
+		// 	</Button>
+		// 	<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onSaveAsPDF}>
+		// 		<i className="fa fa-file-pdf-o icon-left"/> Save As PDF
+		// 	</Button>
+		// </div>;
 	}
 
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -118,6 +138,7 @@ class BaselineRiskAssessmentTab extends AList {
 	renderTHead() {
 		const {hasProjects} = storage.is;
 		return <THead>
+			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td fixed-flex min-w-120">Date Created</div>
 			<div className="td">Activity</div>
 			{hasProjects && <div className="td">Project</div>}
@@ -127,14 +148,15 @@ class BaselineRiskAssessmentTab extends AList {
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;
 	}
-
+	
 	renderItem(n, onClick) {
 		const {hasProjects} = storage.is;
 
 		const item = this.refs.root.list[n];
 		const {id, data: {created_at, activity, expiry_date, risk_tolerance, list, client, project, site}} = item;
 		console.log('Baseline RA', item)
-		return <TRow key={"item-" + n}>
+		return <TRow key={"item-" + id}>
+			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
 			<div className="td">{activity}</div>
 
@@ -172,8 +194,8 @@ class BaselineRiskAssessmentTab extends AList {
 			<EditBaselineRiskAssessmentDialog ref="editDialog"/>
 
 			<ViewBaselineRiskAssessmentReportDialog ref="viewBaselineRiskAssessmentReportDialog"/>
-			<ViewReportPDFDialog ref="viewReportPDFDialog" fileName="Risk_Assessment_Baseline_Full_Report"
-			                     title="Baseline Risk Assessment Full Report"/>
+			<ViewDocumentDialog ref="viewReportPDFDialog" title="Baseline Risk Assessment Full Report" showDownload
+			                    fileName="Risk_Assessment_Baseline_Full_Report"/>
 			<ExportBaselineRiskAssessmentDialog ref="exportDialog"/>
 		</APageListReadWrite>;
 	}

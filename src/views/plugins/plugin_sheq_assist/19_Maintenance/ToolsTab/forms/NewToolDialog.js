@@ -3,6 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import {
+	Button,
 	ClearableInput,
 	RowOrgs,
 	SelectAssetTypeInput,
@@ -11,6 +12,7 @@ import {
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {
+	CONSTANTS,
 	CurrentDistanceOrTime,
 	FutureMaintenanceDistanceOrTime,
 	SelectWrapper
@@ -523,19 +525,36 @@ class Controls extends AControls {
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
 			>
-				<NewMonitoringPlanWorkingHrsOrKmTable ref="monitoring_plan_working_distance_or_time_list"
-				                                      name="monitoring_plan_working_distance_or_time_list"
-				                                      state={this.state}
-				                                      onChange={this.form.onChange}/>
-				<MonitoringPlanStats ref="monitoring_plan_stats_working_distance_or_time"
-				                     name='working_distance_or_time_list' state={this.state}/>
-
-				<NewMonitoringPlanFuelUsageTable ref="monitoring_plan_fuel_usage_list"
-				                                 name="monitoring_plan_fuel_usage_list"
-				                                 state={this.state}
-				                                 onChange={this.form.onChange}/>
-				<MonitoringPlanStats ref="monitoring_plan_stats_fuel_usage" name='fuel_usage_list'
-				                     state={this.state}/>
+				<FormControls>
+					<Row
+						rendered
+						idx={CONSTANTS.MONITORING + 0.1}
+						title={`${CONSTANTS.MONITORING}.1 Working Distance/Time`}
+						onFormOpen={onFormOpen}
+						onFormNext={onFormNext}
+					>
+						<NewMonitoringPlanWorkingHrsOrKmTable ref="monitoring_plan_working_distance_or_time_list"
+						                                      name="monitoring_plan_working_distance_or_time_list"
+						                                      state={this.state}
+						                                      onChange={this.form.onChange}/>
+						<MonitoringPlanStats ref="monitoring_plan_stats_working_distance_or_time"
+						                     name='working_distance_or_time_list' state={this.state}/>
+					</Row>
+					<Row
+						rendered
+						idx={CONSTANTS.MONITORING + 0.2}
+						title={`${CONSTANTS.MONITORING}.2 Fuel Usage`}
+						onFormOpen={onFormOpen}
+						onFormBack={onFormBack}
+					>
+						<NewMonitoringPlanFuelUsageTable ref="monitoring_plan_fuel_usage_list"
+						                                 name="monitoring_plan_fuel_usage_list"
+						                                 state={this.state}
+						                                 onChange={this.form.onChange}/>
+						<MonitoringPlanStats ref="monitoring_plan_stats_fuel_usage" name='fuel_usage_list'
+						                     state={this.state}/>
+					</Row>
+				</FormControls>
 			</Row>
 			<Row
 				rendered

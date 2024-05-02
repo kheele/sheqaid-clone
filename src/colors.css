@@ -26,6 +26,9 @@
 .bg-yellow, .bg-border-yellow{
     background: yellow !important;
 }
+.bg-blue, .bg-border-blue{
+    background: blue !important;
+}
 .bg-f8f8f8, .bg-border-f8f8f8{
     background: #f8f8f8 !important;
 }
@@ -87,6 +90,9 @@
 }
 .bg-border-yellow {
     border-color: yellow !important;
+}
+.bg-border-blue {
+    border-color: blue !important;
 }
 .bg-border-f8f8f8 {
     border-color: #f8f8f8 !important;

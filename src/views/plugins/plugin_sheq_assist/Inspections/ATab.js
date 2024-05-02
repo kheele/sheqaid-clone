@@ -5,6 +5,7 @@ import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import Popover from 'components/popovers/Popover';
 import {
+	Button,
 	ClearableInput,
 	SelectAssetInput,
 	SelectAssetTypeInput,
@@ -122,6 +123,7 @@ class ATab extends React.Component {
 			id, data: {
 				status,
 				responsible_person,
+				responsible_user,
 			}
 		} = item;
 		
@@ -136,7 +138,12 @@ class ATab extends React.Component {
 			</Options>;
 		}
 		
-		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		let isLoggedUser;
+		if(responsible_person) {
+			isLoggedUser = responsible_person.linked_user_id === user.id;
+		} else if(responsible_user) {
+			isLoggedUser = responsible_user.id === user.id;
+		}
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -186,6 +193,7 @@ class ATab extends React.Component {
 			{!asset && <div className="td fixed-flex min-w-140">Asset Type</div>}
 			{!asset && <div className="td fixed-flex min-w-140">Asset</div>}
 			<div className="td fixed-flex min-w-180">Responsible Person</div>
+			<div className="td fixed-flex min-w-180">Responsible User</div>
 			<div className="td fixed-flex min-w-80">Interval</div>
 			<div className="td fixed-flex min-w-100">Start Date</div>
 			<div className="td fixed-flex min-w-120">Date Scheduled</div>
@@ -201,6 +209,13 @@ class ATab extends React.Component {
 		let item = this.refs.root.list[n];
 		return <InspectionTableRow key={item.id} idx={n} item={item} asset={asset} isUpcoming={isUpcoming}
 		                           unanswered={unanswered} onClick={onClick}/>;
+	}
+	
+	get isRemovedAsset() {
+		const {children, pageId, pageTitle, pageTitleSingular, item: asset, type, NewDialog} = this.props;
+		if(!asset) return false;
+		const {written_off, data} = asset;
+		return written_off || (data && data.written_off);
 	}
 	
 	render() {
@@ -223,8 +238,11 @@ class ATab extends React.Component {
 			renderItem={this.renderItem}>
 			<ConfirmDialog ref="removeDialog" onSoftDelete={updateQuestionnaire}/>
 			
-			<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
-			<EditResponseDialog ref="editDialog" onRemoved={this.onRemoved}/>
+			{!this.isRemovedAsset && <>
+				<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
+				<EditResponseDialog ref="editDialog" onRemoved={this.onRemoved}/>
+			</>}
+			
 			<ProfileResponseDialog ref="profileDialog" onRemoved={this.onRemoved}/>
 			<Popover key="popover" ref="popover"/>
 		</APageListReadWrite>;

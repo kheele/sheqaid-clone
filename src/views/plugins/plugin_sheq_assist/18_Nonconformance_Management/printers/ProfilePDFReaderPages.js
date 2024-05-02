@@ -390,7 +390,6 @@ class ItemList extends React.Component {
     renderItem(item, n) {
         const {elementIdx, subElementIdx} = this.props;
         let {
-            responsible_person,
             audit_findings, audit_summary,
             possible_score, achieved_score, compliance,
             comments

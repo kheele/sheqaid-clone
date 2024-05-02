@@ -5,12 +5,11 @@ import {observable, toJS} from 'mobx';
 import Form from 'utils/Form';
 import {
 	ClearableInput,
-	Clickable,
 	SelectClientInput,
 	SelectProjectInput,
 	SelectSiteInput
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import RiskAssessmentItemBaselineTable from './RiskAssessmentItemBaselineTable';
@@ -24,11 +23,11 @@ class NewBaselineRiskAssessmentDialog extends ANewDialog {
 	pageKey = "NewBaselineRiskAssessmentDialog";
 	title = "Create Baseline Risk Assessment";
 	className = 'ANewTableFormDialog';
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -37,7 +36,7 @@ class NewBaselineRiskAssessmentDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/09_HIRA_And_Opportunities/baseline/";
-
+	
 	@observable
 	state = {
 		lists: {
@@ -46,41 +45,47 @@ class Controls extends React.Component {
 			})
 		}
 	};
-
+	
 	constructor() {
 		super();
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		this.onFormChange = this.onFormChange.bind(this);
+		
 		this.form = new Form();
 	}
-
+	
+	// <editor-fold defaultstate="collapsed" desc="onFormChange">
+	onFormChange(idx) {
+		const {dialog} = this.props;
+		dialog.cssWidth = idx === 3 ? '100%' : '800px';
+		return true;
+	}
+	
+	// </editor-fold>
+	
 	onNext(e, btn) {
 		const {form} = this;
 		const {idx} = btn.props;
-		if (idx === 1) {
+		if (idx === 0) {
 			if (!isObject(form.get('client'))) {
 				infoDialog.open('Company is required');
 				return;
 			}
+		}
+		if (idx === 1) {
 			if (!form.isValid('activity')) {
 				infoDialog.open('Activity is required');
 				return;
 			}
 		}
-		if (idx === 2) {
-			if (!form.isValid('list') || form.get('list').isEmpty()) {
-				infoDialog.open('Assessed Items are required');
-				return;
-			}
-		}
-
+		
 		return true;
 	}
-
+	
 	onSubmit(e, btn, onSaved) {
 		const {form} = this;
-
+		
 		if (!isObject(form.get('client'))) {
 			infoDialog.open('Company is required');
 			return;
@@ -93,7 +98,7 @@ class Controls extends React.Component {
 			infoDialog.open('Assessed Items are required');
 			return;
 		}
-
+		
 		const {
 			//0
 			client,
@@ -116,32 +121,45 @@ class Controls extends React.Component {
 			expiry_date: Dates.formatDateSQL(expiry_date),
 			risk_tolerance,
 			//2
-			list: toJS(list.map(val => {
-				const {
-					control_measure_list_additional,
-				} = val;
-				if (control_measure_list_additional) {
+			list: {
+				data: toJS(list.map(val => {
+					const {
+						responsible_person,
+						control_measure_list_additional,
+					} = val;
+					if (responsible_person) {
+						delete val.responsible_person;
+					}
+					if (control_measure_list_additional) {
+						return {
+							...val,
+							responsible_person_id: responsible_person && responsible_person.id,
+							control_measure_list_additional: {
+								data: toJS(val.control_measure_list_additional.map(val => {
+										const {text, responsible_person, cost, date_completed} = val;
+										if (responsible_person) {
+											delete val.responsible_person;
+										}
+										return {
+											...val,
+											date_completed: Dates.formatDateSQL(date_completed),
+											responsible_person_id: responsible_person && responsible_person.id,
+										};
+									}),
+								),
+							},
+						};
+					}
 					return {
 						...val,
-						control_measure_list_additional: {
-							data: toJS(val.control_measure_list_additional.map(val => {
-									const {text, responsible_person, cost, date_completed} = val;
-									return {
-										...val,
-										date_completed: Dates.formatDateSQL(date_completed),
-										responsible_person_id: responsible_person && responsible_person.id,
-									};
-								}),
-							),
-						},
+						responsible_person_id: responsible_person && responsible_person.id
 					};
-				}
-				return val;
-			})),
+				}))
+			},
 		};
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		insertBaselineRA(data).then(res => {
@@ -155,11 +173,11 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.open());
 		});
 	}
-
+	
 	render() {
-		const {onFormNext, onFormBack, onFormOpen} = this.props;
+		const {onFormNext, onFormBack, onFormOpen, onFormChange} = this.props;
 		const {isConsultant, isNoProjects} = storage.is;
-
+		
 		return <FormControls>
 			{!isNoProjects && <Row
 				rendered
@@ -168,6 +186,7 @@ class Controls extends React.Component {
 				title="Company / Project / Site"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
+				onFormChange={onFormChange}
 			>
 				{isConsultant && <SelectClientInput name="client" placeholder="Company..." required
 				                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
@@ -185,6 +204,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<ClearableInput name="activity" type="text" placeholder="Activity" required
 				                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
@@ -201,6 +221,7 @@ class Controls extends React.Component {
 				sectionClassName="overflow-auto"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<RiskAssessmentItemBaselineTable name="list" isNew onChange={this.form.onChange}/>
 			</Row>

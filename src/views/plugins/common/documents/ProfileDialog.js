@@ -89,7 +89,7 @@ class Controls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="onSaveAsPDF">
 	async onSaveAsPDF(e, btn) {
 		this.refs.pdfReader.open(this.item);
-
+//
 //        progressDialog.open("Please wait...");
 
 //        let filePath = this.src;
@@ -164,13 +164,17 @@ class Controls extends React.Component {
 
 	// <editor-fold defaultstate="collapsed" desc="src, item">
 	get src() {
-		const {item: {id, data: {category, title, doc, doc_old}}} = this;
+		const {item: {id, data: {category, title, doc, doc_docs_id, doc_old}}} = this;
 		if (doc_old) {
 			const url = doc_old && doc_old.dlUrls && doc_old.dlUrls[0];
 			if (url) {
 				return url;
 //                return `https://docs.google.com/gview?url=${url}&embedded=true`;
 			}
+		}
+		
+		if(doc_docs_id) {
+			return `https://docs.google.com/document/d/${doc_docs_id}/preview`;
 		}
 //        alert(doc)
 		return `https://docs.google.com/document/d/${doc}/preview`;
@@ -233,6 +237,7 @@ class Controls extends React.Component {
 		} = this;
 		
 		const [latest_version] = _latest_version || [];
+		const {doc, doc_docs_id} = latest_version || {};
 
 		// console.log(doc, doc_old && doc_old.dlUrls && doc_old.dlUrls[0])
 
@@ -294,19 +299,19 @@ class Controls extends React.Component {
 				{/*	className="col-lg-12 document-preview margin-t-10"*/}
 				{/*	dangerouslySetInnerHTML={{__html: doc_old}}*/}
 				{/*/>}*/}
-				{/*{!doc_old && <GDocEditor*/}
-				{/*	ref="gdoc"*/}
-				{/*	item={item}*/}
-				{/*	doc_old={doc_old}*/}
-				{/*	readonly*/}
-				{/*/>}*/}
-				<UploadButton
+				{doc_docs_id && <GDocEditor
+					ref="gdoc"
+					item={item}
+					doc_docs_id={doc_docs_id}
+					readonly
+				/>}
+				{doc && <UploadButton
 					buttonTitle="PDF/Word/Spreadsheet"
-					defaultValue={latest_version && latest_version.doc}
+					defaultValue={doc}
 					showOnlyIcon
 					readonly
 					className="flex"
-				/>
+				/>}
 			</Row>
 			<ProfilePDFReader ref="pdfReader" title={dialog.title()} showCategory={showCategory}/>
 		</FormControls>;

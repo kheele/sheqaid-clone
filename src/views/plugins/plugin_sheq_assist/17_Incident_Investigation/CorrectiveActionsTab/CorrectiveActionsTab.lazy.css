@@ -12,9 +12,9 @@
     display: none;
 }
 #CorrectiveActionsTab-tab .page-title > .tabled-top-panel {
-    margin-top: -82px;
+    margin-top: -82px !important;
     flex-grow: initial;
-    min-width: 340px;
+    min-width: 340px !important;
 }
 #CorrectiveActionsTab-tab .filter-wrapper{
     margin: 10px 0 0;

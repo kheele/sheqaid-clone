@@ -237,9 +237,32 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<NewProcedureListTable name="procedure_list" defaultValue={procedure_list || []} readonly/>
-				<NewKeyPointListTable name="key_point_list" defaultValue={key_point_list || []} readonly/>
-				<NewOperationListTable name="operation_list" defaultValue={operation_list || []} readonly/>
+				<FormControls>
+					<Row
+						rendered
+						activeAlways
+						idx={7.1}
+						title="7.1. Pre-start Check"
+					>
+						<NewProcedureListTable name="procedure_list" defaultValue={procedure_list || []} readonly/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.2}
+						title="7.2. Key Points"
+					>
+						<NewKeyPointListTable name="key_point_list" defaultValue={key_point_list || []} readonly/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.3}
+						title="7.3. Operations"
+					>
+						<NewOperationListTable name="operation_list" defaultValue={operation_list || []} readonly/>
+					</Row>
+				</FormControls>
 			</Row>
 			<Row
 				rendered

@@ -1,0 +1,122 @@
+
+* {
+  font-family: Roboto, sans-serif;
+}
+*:focus {
+  outline: none !important;
+}
+body, html{
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  overflow-x: hidden;
+}
+html{
+  overflow-x: hidden;
+}
+body{
+  height: 100%;
+  color: rgb(2 136 136 / 50%) !important;
+}
+a:link{
+  text-decoration: none;
+}
+input, textarea {
+  padding: 8px 12px !important;
+  font-size: 20px !important;
+  border: none !important;
+}
+@media (min-width:767px){
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  * {
+    scrollbar-color: rgba(2, 168, 168, 0.8) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+::-webkit-scrollbar-track {
+  width: 0;
+  height: 0;
+  display: none;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(2, 168, 168, 0.8);
+  background-clip: padding-box;
+  margin-left: -8px;
+  transform: translate(-50%, -50%);
+}
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus{
+  background-color: rgb(2, 168, 168) !important;
+  border-color: rgb(2, 168, 168) !important;
+}
+
+header .title,
+.home > .title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-family: sans-serif;
+  color: rgb(2 220 220 / 50%);
+  flex-direction: column;
+  transition: all 0.9s;
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+}
+header .title {
+  padding-top: 50px;
+}
+.home > .title {
+  color: #888;
+  font-size: 30px;
+  line-height: 40px;
+  max-width: 600px;
+  padding-top: 70px;
+}
+
+header .title p,
+.home > .title p {
+  font-size: 24px;
+  max-width: 800px;
+  text-align: center;
+}
+
+.home > .title p {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+main {
+  position: relative;
+}
+
+.contacts-bar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 60px; */
+  /* padding: 20px; */
+  /* background: rgb(0 0 0 / 10%); */
+  /*border-radius: 50px;*/
+  /* margin-bottom: 40px; */
+}
+.contacts-bar > p{
+margin: 0 20px;
+}

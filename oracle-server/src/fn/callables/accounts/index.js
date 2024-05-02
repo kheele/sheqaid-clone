@@ -30,7 +30,8 @@ router.post('/sendNewContractorSiteEmail', async (req, res) => {
     await sendNewContractorSiteEmail(req.body);
     res.end();
 });
-
+//safety2: consultants
+//
 router.post('/sendUpdateStatusContractorSiteEmail', async (req, res) => {
     await sendUpdateStatusContractorSiteEmail(req.body);
     res.end();
@@ -40,9 +41,9 @@ router.post('/onResetPassword/:access_type', async (req, res) => {
     const {access_type} = req.params;
     if (isValidAccessType(access_type)) {
         await onResetPassword(req.body, access_type);
-        res.end();
+        res.json(true);
     } else {
-        res.end();
+        res.json(false);
     }
 });
 

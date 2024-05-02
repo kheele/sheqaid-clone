@@ -10,6 +10,7 @@ import AFormDialog from './AFormDialog';
 
 @observer
 class AEditDialog extends AFormDialog {
+	key = "AEditDialog";
 
 	constructor(props, style) {
 		super(props, style);

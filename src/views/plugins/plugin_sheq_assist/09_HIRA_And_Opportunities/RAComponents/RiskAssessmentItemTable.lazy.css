@@ -8,5 +8,5 @@
 .NewTaskBaseRiskAssessmentDialog-new-dialog .ARiskAssessmentItemTable,
 .EditTaskBaseRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable,
 .ProfileTaskBaseRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable {
-    min-width: 100%;
+    min-width: 2500px;
 }

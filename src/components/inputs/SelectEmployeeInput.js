@@ -56,17 +56,18 @@ class SelectInput extends ASelectInput {
 	}
 
 	_createProps() {
-		let {type, className = ''} = this.props;
+		let {name, type, className = '', showOtherPersonsOnly} = this.props;
 		className += ` SelectEmployeeInput`;
 		return {
 			ref: "input",
 			key: new Date().getTime(),
-			name: "employee",
+			name: name || "employee",
 			type: type || "select",
 			placeholder: "Employee...",
 			values: this.list,
 			// onAsyncSelectLoad: onAsyncSelectLoad,
 			returnValue: true,
+			add: !!showOtherPersonsOnly,
 			...this.props,
 			renderItem: this.renderItem,
 			renderer: this.renderer,
@@ -100,7 +101,7 @@ class SelectInput extends ASelectInput {
 	}
 
 	hide() {
-		const {showOtherPerson = false} = this.props;
+		const {showOtherPerson = false, showOtherPersonsOnly = false} = this.props;
 		if (!showOtherPerson) {
 			const {input} = this.refs;
 			input && input.hide();
@@ -109,7 +110,7 @@ class SelectInput extends ASelectInput {
 	}
 
 	show() {
-		const {showOtherPerson = false} = this.props;
+		const {showOtherPerson = false, showOtherPersonsOnly = false} = this.props;
 		if (!showOtherPerson) {
 			const {input} = this.refs;
 			input && input.show();
@@ -120,6 +121,11 @@ class SelectInput extends ASelectInput {
 	@computed
 	get isOtherPerson() {
 		return this.showOtherPerson;
+	}
+
+	@computed
+	get isOtherPersonsOnly() {
+		return this.showOtherPersonsOnly;
 	}
 
 	onFilter(option) {
@@ -279,10 +285,11 @@ class SelectInput extends ASelectInput {
 			parentClassName,
 			className,
 			showOtherPerson = false,
+			showOtherPersonsOnly = false,
 			incContractors: prop_incContractors = false,
 		} = this.props;
 
-		if (showOtherPerson || prop_incContractors) {
+		if (showOtherPersonsOnly || showOtherPerson || prop_incContractors) {
 			if (!props) {
 				return <div
 					className={'CustomPersonalInfoDialog SelectEmployeeInput-CustomPersonalInfoDialog col-lg-12 flex' + (parentClassName ? ` ${parentClassName}` : '')}>
@@ -309,7 +316,7 @@ class SelectInput extends ASelectInput {
 							</>}
 						</Button>
 					</>}
-					{showOtherPerson && <>
+					{(showOtherPersonsOnly || showOtherPerson) && <>
 						<CustomPersonalInfoDialog ref="otherPersonDialog"/>
 						<Button className="btn btn-primary w-160 fixed-flex" onClick={this.onAddOtherPerson}>
 							<i className="fa fa-plus"/> Add Other Person
@@ -333,7 +340,7 @@ class SelectInput extends ASelectInput {
 						</>}
 					</Button>
 				</>}
-				{showOtherPerson && <>
+				{(showOtherPersonsOnly || showOtherPerson) && <>
 					<CustomPersonalInfoDialog ref="otherPersonDialog"/>
 					<Button className="btn btn-primary w-160 fixed-flex" onClick={this.onAddOtherPerson}>
 						<i className="fa fa-plus"/> Add Other Person

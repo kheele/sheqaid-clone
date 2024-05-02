@@ -20,9 +20,29 @@ function toArray(args) {
 // <editor-fold defaultstate="collapsed" desc="window.workers. Click on the + sign on the left to edit the code.">
 const workers = {
 	emit() {
+		const convert = (arg) => {
+			if (isObservable(arg)) {
+				return toJS(arg);
+			}
+			if (isObservableArray(arg)) {
+				return convert(toJS(arg));
+			}
+			if (isObservableObject(arg)) {
+				return convert(toJS(arg));
+			}
+			if (isObservableMap(arg)) {
+				return convert(toJS(arg));
+			}
+			if (isArray(arg)) {
+				return arg.map(convert);
+			}
+			return arg;
+		};
+		
 		// eslint-disable-next-line prefer-rest-params
 		const args = toArray(arguments);
 		const evt = args.removeFirst();
+		const argsConverted = args.map(convert);
 		return new Promise((resolve, reject) => {
 			const to = setTimeout(() => {
 				execWhen(() => !!window.infoDialog).then(() => {
@@ -30,38 +50,18 @@ const workers = {
 					infoDialog
 						.action("Try Again", () => {
 							// eslint-disable-next-line no-use-before-define
-							send(evt, args);
+							send(evt, argsConverted);
 						})
 						.open("The request took too long.");
 					//                        infoDialog.open('The request took too long.');
 				});
 				// reject(new Error('(' + evt + ')' + ' The request took too long'));
-			}, 200000);
+			}, 60000);
 			
 			// eslint-disable-next-line no-shadow
 			const send = (evt, args) => {
-				const convert = (arg) => {
-					if (isObservable(arg)) {
-						return toJS(arg);
-					}
-					if (isObservableArray(arg)) {
-						return convert(toJS(arg));
-					}
-					if (isObservableObject(arg)) {
-						return convert(toJS(arg));
-					}
-					if (isObservableMap(arg)) {
-						return convert(toJS(arg));
-					}
-					if (isArray(arg)) {
-						return arg.map(convert);
-					}
-					return arg;
-				};
-				const argsFinal = args.map(convert);
-				
 				worker.emit
-					.apply(worker, [evt, ...argsFinal])
+					.apply(worker, [evt, ...args])
 					.then((res) => {
 						clearTimeout(to);
 						resolve(res);
@@ -88,7 +88,7 @@ const workers = {
 							} else if (mainErr.toString().startsWith("Error: AUTH-NETWORK-ERROR")) {
 								infoDialog.open(
 									<p>
-										Auhentication failed due to internet connection.
+										Authentication failed due to internet connection.
 										<br/>
 										<br/>
 										Please connect and try again.
@@ -132,7 +132,7 @@ const workers = {
 					});
 			};
 			
-			send(evt, args);
+			send(evt, argsConverted);
 		});
 	},
 	on: (evt, fn) => {

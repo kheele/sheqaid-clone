@@ -81,8 +81,13 @@ class ProfileDialog extends AEditDialog {
 	
 	get isLoggedUser() {
 		const {user} = storage.loggedUser;
-		const {data: {responsible_person}} = this.item;
-		return responsible_person && responsible_person.linked_user_id === user.id;
+		const {data: {responsible_person_list, responsible_user}} = this.item;
+		if(responsible_user) {
+			return responsible_user.id === user.id;
+		}
+		if(responsible_person_list) {
+			return responsible_person_list.anyMatch(v => v.linked_user_id === user.id);
+		}
 	}
 	
 	get title() {
@@ -271,11 +276,18 @@ class Controls extends AControls {
 					scheduled,
 					page_title_list,
 					question_list,
+					total_answered,
+					total_compliance,
+					total_deviations,
+					total_non_deviations,
+					total_questions,
+					total_unanswered,
 					//
 					interval,
 					start_date,
 					time,
-					responsible_person,
+					responsible_person_list,
+					responsible_user,
 					responsible_department,
 					asset_type,
 					asset,
@@ -295,9 +307,12 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 			>
 				<div className="row margin-0 flex">
-					<Stats value={question_list} title='Total Questions'/>
-					<Compliance list={question_list} title='Non-Compliance' status={status}/>
-					<Compliance list={question_list} title='Compliance' status={status}/>
+					<Stats value={total_questions} title='Total Questions'/>
+					<Stats value={total_questions-total_compliance} title='Non-Compliance'/>
+					<Stats value={total_compliance} title='Compliance'/>
+					{/*<Stats value={question_list} title='Total Questions'/>*/}
+					{/*<Compliance list={question_list} title='Non-Compliance' status={status}/>*/}
+					{/*<Compliance list={question_list} title='Compliance' status={status}/>*/}
 				</div>
 			</Row>
 			<Row
@@ -320,7 +335,9 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<ProfileField name="responsible_person" placeholder="Responsible Person" value={responsible_person}
+				<ProfileField name="responsible_person_list" placeholder="Responsible Employee(s)" value={responsible_person_list || []}
+				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
+				<ProfileField name="responsible_user" placeholder="Responsible User" value={responsible_user}
 				              renderer={v => v.full_name} className="col-lg-12"/>
 				<ProfileField name="responsible_department" placeholder="Responsible Department" value={responsible_department}
 				              renderer={v => v.name} className="col-lg-12"/>

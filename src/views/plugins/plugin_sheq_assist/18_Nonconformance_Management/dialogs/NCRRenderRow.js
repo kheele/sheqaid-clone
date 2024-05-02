@@ -47,7 +47,6 @@ class RenderRow extends React.Component {
 					desc, process,
 					//3
 					due_date,
-					// responsible_person,
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,

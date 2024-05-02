@@ -120,6 +120,7 @@ exports.document_details_fragment = `
       type
       doc_num
       doc
+      doc_docs_id
       expiry
   }
   latest_version: doc_version_list(limit: 1, order_by: {expiry: desc_nulls_last}){
@@ -127,6 +128,7 @@ exports.document_details_fragment = `
       type
       doc_num
       doc
+      doc_docs_id
       expiry
   }
   shared_doc_list{

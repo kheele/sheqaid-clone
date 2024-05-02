@@ -1,17 +1,22 @@
 const {JsExcelTemplate} = require("../../../libs/JsExcelTemplate");
 const path = require("path");
+const listImpl = require("./ncr/listImpl");
 
 //<editor-fold desc="exportExcelImpl">
 module.exports = (
 	{
+		currDir,
 		name,
 		mapRow,
+		listImpl,
 	}
 ) => {
 	return async (socket, data) => {
 		if(!data) return;
 		
-		const filename = path.join(__dirname, `xlsx/${name}.xlsx`)
+		console.log('exportExcel', data);
+		
+		const filename = path.join(currDir, `xlsx/${name}.xlsx`)
 		const template = await JsExcelTemplate.fromFile(filename);
 		
 		const {
@@ -23,9 +28,10 @@ module.exports = (
 			job_position,
 			supervisor,
 			//
-			list,
+			list: id_list,
 		} = data;
 		
+		const list = await listImpl(socket, {id_list});
 		const rows = list.map(mapRow);
 		
 		template.set('date', date);
@@ -38,7 +44,7 @@ module.exports = (
 		
 		const buffer = await template.toBuffer();
 		const base64 = buffer.toString('base64');
-		return base64;
+		return `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`;
 	};
 }
 //</editor-fold>

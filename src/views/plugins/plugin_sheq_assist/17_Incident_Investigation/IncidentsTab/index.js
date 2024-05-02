@@ -38,7 +38,6 @@ class IncidentsTab extends React.Component {
 	path;
 	pageKey = "IncidentsTab";
 	
-	
 	// <editor-fold defaultstate="collapsed" desc="state">
 	@observable
 	state = {

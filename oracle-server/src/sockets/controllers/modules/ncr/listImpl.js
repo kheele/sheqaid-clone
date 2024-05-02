@@ -12,6 +12,7 @@ module.exports = async (socket, data) => {
 		removed = false,
 		//
 		id,
+		id_list,
 		//
 		expiry_date = 'ALL',
 		mon, mon2, mon3,
@@ -80,6 +81,23 @@ module.exports = async (socket, data) => {
                 ${orgs_fragment}
             }
         }
+			`,
+			operationName: "listAllNCRByLoggedQuery",
+		});
+	} else if(id_list) {
+		return listGraphQL({
+			query: `
+				query listByIdsNCRByLoggedQuery {
+	        sheq_non_conformances(
+	          where: {
+	            id: {_in: [${id_list.join(',')}]}
+	          },
+	          order_by: {desc: asc, sort: asc}
+	        ) {
+	          ${ncr_details_fragment}
+	          ${orgs_fragment}
+	        }
+	      }
 			`,
 			operationName: "listAllNCRByLoggedQuery",
 		});

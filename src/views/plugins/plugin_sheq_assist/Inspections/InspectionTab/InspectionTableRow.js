@@ -39,6 +39,7 @@ class InspectionTableRow extends React.Component {
                 schedule_date,
                 next_schedule_date,
                 responsible_person,
+                responsible_user,
                 responsible_department,
                 asset_type,
                 asset,
@@ -61,18 +62,52 @@ class InspectionTableRow extends React.Component {
         // };
 
         return <TRow key={id} className="w-full">
-            <div className="td fixed-flex min-w-40">{id}</div>
-            <div className="td">{name}</div>
+            <div className="td fixed-flex min-w-40">
+                <h6 className="xs-shown font-size-13">ID</h6>
+                {id}
+            </div>
+            <div className="td">
+                <h6 className="xs-shown font-size-13">Name</h6>
+                {name}
+            </div>
             {/*<div className="td fixed-flex min-w-140">/!*score*!/</div>*/}
-            {!mainAsset && <div className="td fixed-flex min-w-140">{asset_type || 'N/A'}</div>}
+            {!mainAsset && <div className="td fixed-flex min-w-140">
+                <h6 className="xs-shown font-size-13">Asset Type</h6>
+                {asset_type || 'N/A'}
+            </div>}
             {!mainAsset && <div
-                className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}</div>}
-            <div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
-            <div className="td fixed-flex min-w-80">{interval}</div>
-            <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
-            <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
-            {!isUpcoming && <div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>}
-            <div className="td fixed-flex min-w-120">{total_questions}</div>
+              className="td fixed-flex min-w-140">
+                <h6 className="xs-shown font-size-13">Asset</h6>
+                {asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}
+            </div>}
+            <div className="td fixed-flex min-w-180">
+                <h6 className="xs-shown font-size-13">Responsible Person</h6>
+                {responsible_person && responsible_person.full_name || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-180">
+                <h6 className="xs-shown font-size-13">Responsible User</h6>
+                {responsible_user && responsible_user.full_name || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-80">
+                <h6 className="xs-shown font-size-13">Interval</h6>
+                {interval || "N/A"}
+            </div>
+            <div className="td fixed-flex min-w-100">
+                <h6 className="xs-shown font-size-13">Start Date</h6>
+                {Dates.formatDate(start_date) || "N/A"}
+            </div>
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Date Scheduled</h6>
+                {Dates.formatDate(schedule_date) || "N/A"}
+            </div>
+            {!isUpcoming && <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Next Schedule</h6>
+                {Dates.formatDate(next_schedule_date) || "N/A"}
+            </div>}
+            <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Questions</h6>
+                {total_questions}
+            </div>
             {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-270 flex-center progress-bar">
                 {progress.toFixed(1) + '% Complete'}
             </div>}

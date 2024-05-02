@@ -9,6 +9,7 @@
 
 #ToolsTab-tab .page-title > .tabled-top-panel > .buttons > .left-buttons > button {
     width: auto;
+    text-shadow: none;
 }
 
 #ToolsTab-tab .filter-wrapper + .table {

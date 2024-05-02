@@ -202,8 +202,8 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="incident_details_fragment">
-exports.incident_details_fragment = `
+//<editor-fold desc="incident_details_one_fragment">
+exports.incident_details_one_fragment = `
   id
   removed
   group
@@ -463,3 +463,375 @@ exports.incident_details_fragment = `
   }
 `;
 //</editor-fold>
+
+//<editor-fold desc="incident_details_fragment">
+exports.incident_details_fragment = `
+  id
+  removed
+  group
+  short_desc
+  desc
+  location
+  exact_location
+  incident_date
+  incident_time
+  date_reported
+  time_reported
+  time_shift
+  injury_desc
+  severity{
+    id
+    consequence
+    likelihood
+    risk_rating
+    risk_rating_score
+  }
+  person_reporting{
+    ${employee_personal_details_fragment}
+  }
+  person_reporting_other{
+    ${personal_details_other_fragment}
+  }
+  person_reported_to{
+    ${employee_personal_details_fragment}
+  }
+  person_reported_to_other{
+    ${personal_details_other_fragment}
+  }
+  person_injured{
+    ${employee_personal_details_fragment}
+  }
+  person_injured_other{
+    ${personal_details_other_fragment}
+  }
+  injured_person_dob
+  injured_person_gender
+  test_type_drug_undertaken
+  test_type_alcohol_undertaken
+  test_type_mobile_device_undertaken
+  is_person_injured
+  is_vehicle_incident
+  test_undertaken
+  status_closed
+  status_approved
+  status_approved_investigation
+  status_awaiting_approval
+  status_investigating
+  status_awaiting_investigation_approval
+  investigation{
+    id
+    due_date
+    severity{
+        id
+        consequence
+        likelihood
+        risk_rating
+        risk_rating_score
+    }
+  }
+  category_list{
+    category{
+      id
+      name
+    }
+  }
+  sub_category_list{
+    sub_category{
+      id
+      name
+      category{
+        id
+        name
+      }
+    }
+  }
+  
+  contractor_site{
+    id
+    name
+  }
+  contractor {
+    id
+    name
+  }
+`;
+//</editor-fold>
+
+`
+query listAllIncidentsByLoggedQuery {
+	sheq_incident_investigation(
+		where: {
+			removed: {_eq: false},
+			company_id: {_eq: 18},
+			_or: [
+				{client_id: {_eq: 7}}
+			]
+		},
+		order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
+		offset: 0,
+		limit: 50
+	) {
+			id
+			removed
+			group
+			short_desc
+			desc
+			location
+			exact_location
+			incident_date
+			incident_time
+			date_reported
+			time_reported
+			time_shift
+			injury_desc
+			severity{
+			  id
+			  consequence
+			  likelihood
+			  risk_rating
+			  risk_rating_score
+			}
+			person_reporting{
+			  
+			  id
+			  created_at
+			  profile_pic
+			  fname
+			  lname
+			  full_name
+			  dob
+			  sex
+			  phone
+			  email
+			  id_num
+			  passport_num
+			  employment_num
+			  employment_date
+			  removed
+			  job_position{
+			    id
+			    name
+			  }
+			  department{
+			    id
+			    name
+			  }
+			  team{
+			    id
+			    name
+			  }
+			  linked_user_id
+			  linked_user{
+			    id
+			    auth_id
+			    created_at
+			    profile_pic
+			    fname
+			    lname
+			    full_name
+			    phone
+			    username
+			  }
+			}
+			person_reporting_other{
+			  
+			  id
+			  created_at
+			  fname
+			  lname
+			  full_name
+			  id_num
+			  passport_num
+			  email
+			  phone
+			  job_position{
+			    id
+			    name
+			  }
+			}
+			person_reported_to{
+			  
+			  id
+			  created_at
+			  profile_pic
+			  fname
+			  lname
+			  full_name
+			  dob
+			  sex
+			  phone
+			  email
+			  id_num
+			  passport_num
+			  employment_num
+			  employment_date
+			  removed
+			  job_position{
+			    id
+			    name
+			  }
+			  department{
+			    id
+			    name
+			  }
+			  team{
+			    id
+			    name
+			  }
+			  linked_user_id
+			  linked_user{
+			    id
+			    auth_id
+			    created_at
+			    profile_pic
+			    fname
+			    lname
+			    full_name
+			    phone
+			    username
+			  }
+			}
+			person_reported_to_other{
+			  
+			  id
+			  created_at
+			  fname
+			  lname
+			  full_name
+			  id_num
+			  passport_num
+			  email
+			  phone
+			  job_position{
+			    id
+			    name
+			  }
+			}
+			person_injured{
+			  
+			  id
+			  created_at
+			  profile_pic
+			  fname
+			  lname
+			  full_name
+			  dob
+			  sex
+			  phone
+			  email
+			  id_num
+			  passport_num
+			  employment_num
+			  employment_date
+			  removed
+			  job_position{
+			    id
+			    name
+			  }
+			  department{
+			    id
+			    name
+			  }
+			  team{
+			    id
+			    name
+			  }
+			  linked_user_id
+			  linked_user{
+			    id
+			    auth_id
+			    created_at
+			    profile_pic
+			    fname
+			    lname
+			    full_name
+			    phone
+			    username
+			  }
+			}
+			person_injured_other{
+			  
+			  id
+			  created_at
+			  fname
+			  lname
+			  full_name
+			  id_num
+			  passport_num
+			  email
+			  phone
+			  job_position{
+			    id
+			    name
+			  }
+			}
+			injured_person_dob
+			injured_person_gender
+			test_type_drug_undertaken
+			test_type_alcohol_undertaken
+			test_type_mobile_device_undertaken
+			is_person_injured
+			is_vehicle_incident
+			test_undertaken
+			status_closed
+			status_approved
+			status_approved_investigation
+			status_awaiting_approval
+			status_investigating
+			status_awaiting_investigation_approval
+			investigation{
+			  id
+			  due_date
+			  severity{
+			      id
+			      consequence
+			      likelihood
+			      risk_rating
+			      risk_rating_score
+			  }
+			}
+			category_list{
+			  category{
+			    id
+			    name
+			  }
+			}
+			sub_category_list{
+			  sub_category{
+			    id
+			    name
+			    category{
+			      id
+			      name
+			    }
+			  }
+			}
+			
+			contractor_site{
+			  id
+			  name
+			}
+			contractor {
+			  id
+			  name
+			}
+			
+			company {
+			  id
+			  name
+			}
+			client {
+			  id
+			  name
+			}
+			project {
+			  id
+			  name
+			}
+			site {
+			  id
+			  name
+			}
+		}
+}
+`

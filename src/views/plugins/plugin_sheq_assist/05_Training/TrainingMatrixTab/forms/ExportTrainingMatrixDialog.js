@@ -34,7 +34,7 @@ class ExportDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-    path = "plugin_sheq_assist/05_Trainings/training-matrix/";
+    exportFn = sockets.of('trainings/matrix').fn('export-excel');
     
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable

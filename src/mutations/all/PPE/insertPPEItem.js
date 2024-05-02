@@ -6,6 +6,7 @@ import {graphql} from "react-relay";
 import createMutationImpl from "mutations/createMutationImpl";
 import crudUtils from "../CRUDUtils/CRUDUtils";
 import updatePPEItem from "./updatePPEItem";
+import findByIdPPEItem from "./findByIdPPEItem";
 
 // 2
 const mutation = graphql`
@@ -69,6 +70,7 @@ export default async (input) => {
 				console.log('insertPPEItem error', err)
 			}
 		}
+		return findByIdPPEItem(newItem.id);
 	}
 	return newItem;
 };

@@ -59,7 +59,7 @@ class Controls extends AControls {
     };
     // </editor-fold>
 
-    path = "plugin_sheq_assist/Hazardous_Chemical_Substances/msds/";
+    exportFn = sockets.of('chemicals/sds').fn('export-excel');
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

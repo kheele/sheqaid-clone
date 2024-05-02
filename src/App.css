@@ -162,7 +162,7 @@ button._888, button._888:active , button._888:focus, button._888:hover {
 .nice-scrollbars {
     /*overflow: hidden !important;*/
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 #navigate-top {

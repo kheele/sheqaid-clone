@@ -176,6 +176,10 @@ export const inspection_details_fragment = `
       id
       full_name
     }
+    responsible_user{
+      id
+      full_name
+    }
     responsible_department{
       id
       name

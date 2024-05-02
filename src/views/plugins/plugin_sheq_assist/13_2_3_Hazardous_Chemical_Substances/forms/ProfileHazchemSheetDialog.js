@@ -430,7 +430,7 @@ class Controls extends React.Component {
                         <ProfileField name="contacts_emergency_name" type="text" placeholder="Contact Name"
                                       value={contacts_emergency_name} className="w-full margin-t-0 margin-r-0"/>
                         <ProfileField name="contacts_emergency_num" type="text" placeholder="Contact No."
-                                      value={contacts_emergency_num} className="w-full margin-t-0 margin-r-0"/>
+                                      value={contacts_emergency_num} renderer={v=> v.join(', ')} className="w-full margin-t-0 margin-r-0"/>
                     </div>
                     <div className="grid-1 grid-gap-5 padding-10 padding-t-5 bg-f8f8f8">
                         <label className="margin-0">Manufacturer</label>

@@ -562,7 +562,7 @@ class InvestigationsTab extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-50">ID</div>
             <div className="td fixed-flex min-w-120">Incident Date</div>
-            <div className="td fixed-flex min-w-120">Due Date</div>
+            <div className="td fixed-flex min-w-120">Investigation Due Date</div>
             <div className="td fixed-flex min-w-120">Risk Rating</div>
             <div className="td">Category</div>
             <div className="td">Sub-Category</div>

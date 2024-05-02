@@ -38,14 +38,14 @@ const mutation = graphql`
 // 3
 export default async (input) => {
 	const {
+		maintenance_plan_id,
 		reason_for_service,
 		service,
 		service_hrs_or_km,
 		service_date,
-		parts_used,
 		cost,
 		receipt,
-		maintenance_plan_id,
+		parts_used_list,
 	} = input;
 
 	if(service_date) {

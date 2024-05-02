@@ -15,12 +15,12 @@ import style from "./GDocEditor.lazy.css";
 
 @observer
 class GDocEditor extends React.Component {
-
+	
 	// <editor-fold defaultstate="collapsed" desc="fileds">
 	static propTypes = {
 		state: PropTypes.object.isRequired
 	};
-
+	
 	@observable state = {
 		lists: {
 			type: [
@@ -33,7 +33,7 @@ class GDocEditor extends React.Component {
 		type: "Type"
 	};
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
@@ -41,38 +41,38 @@ class GDocEditor extends React.Component {
 		this.onLoadError = this.onLoadError.bind(this);
 		this.onChangeTitle = this.onChangeTitle.bind(this);
 		this.onChangeFileType = this.onChangeFileType.bind(this);
-
-		this.onChangeFile = this.onChangeFile.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentWillMount">
 	componentWillMount() {
 		style.use();
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentDidMount">
 	componentDidMount() {
 		if (this.props.notcreate) return;
 		this.state.loadStatus = 'LOADING';
-
-		const {onChange, name, item, state, readonly, doc_old} = this.props;
+		
+		const {onChange, name, state, readonly, doc_docs_id, doc_old} = this.props;
 		const createSrc = () => {
 			this.state.loadStatus = 'LOADED';
 			execWhen(() => this.refs.frameWrapper).then(frameWrapper_ref => {
 				clearTimeout(this.timeoutTry);
-				onChange && onChange(this.state.doc, name, this);
+				if(!readonly) {
+					onChange && onChange(this.state.doc, name, this);
+				}
 				setTimeout(() => {
 					this.refresh();
-				}, 3000);
+				}, 3000);//eli
 			});
 		};
-		if (item || (state && state.new_doc_id)) {
-			if (item) {
-				this.state.doc = item.data.doc;
+		if (doc_docs_id || (state && state.new_doc_id)) {
+			if (doc_docs_id) {
+				this.state.doc = doc_docs_id;
 			} else if (state) {
 				this.state.doc = state.new_doc_id;
 			}
@@ -81,7 +81,7 @@ class GDocEditor extends React.Component {
 			const {title} = state;
 			const load = () => {
 				this.state.loadStatus = 'LOADING';
-
+				
 				neonBinding.events.emit("default/docs/doc/new", title).then(res => {
 					const {id} = res.data;
 					this.state.doc = state.new_doc_id = id;
@@ -98,9 +98,9 @@ class GDocEditor extends React.Component {
 			load();
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
 	componentWillUnmount() {
 		style.unuse();
@@ -113,9 +113,9 @@ class GDocEditor extends React.Component {
 			$(iframe).remove();
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="get src">
 	get src() {
 		const {readonly, doc_old} = this.props;
@@ -132,9 +132,9 @@ class GDocEditor extends React.Component {
 			return `https://docs.google.com/document/d/${doc}/edit?usp=drivesdk`;
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="refresh">
 	refresh() {
 		execWhen(() => this.refs.frameWrapper && this.refs.frameWrapper.refs.iframe).then(() => {
@@ -145,47 +145,17 @@ class GDocEditor extends React.Component {
 			iframe.addEventListener('did-stop-loading', this.onLoadSuccess);
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onLoadSuccess">
 	onLoadSuccess() {
 		const {frameWrapper} = this.refs;
 		const {iframe} = frameWrapper.refs;
-		if (isWeb()) {
-			if (isMobile()) {
-
-			} else {
-//            alert('onLoadSuccess web')
-//            const contents = $(iframe).contents();
-//            console.log('contents', contents.html())
-
-				//meta [content=title];
-			}
-		} else {
-			iframe.removeEventListener('did-stop-loading', this.onLoadSuccess);
-			iframe.insertCSS(
-				'.kix-appview-editor{overflow-x: hidden !important;}\
-				#docs-file-menu, #docs-extensions-menu, #docs-help-menu, #printButton,\n\
-				.docs-titlebar-buttons, .docs-titlebar-button, #viewModeButton, #docs-toolbar-mode-switcher-separator,\n\
-				/*.left-sidebar-container.docs-ui-unprintable,*/\n\
-				.docs-butterbar-wrap, .docs-explore-widget {display: none !important;}'
-			);
-			iframe.executeJavaScript('\n\
-                const interval = setInterval(() => {\n\
-                    const editor = document.querySelector(".kix-appview-editor");\n\
-                    editor && (editor.scrollLeft = editor.offsetWidth);\n\
-                    if(editor.scrollLeft > 0) {\n\
-                        clearInterval(interval);\n\
-                    }\n\
-                }, 500);\n\
-            ');
-			//        console.log(iframe.contentDocument)
-		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onLoadError">
 	onLoadError() {
 		const {frameWrapper} = this.refs;
@@ -194,60 +164,29 @@ class GDocEditor extends React.Component {
 			iframe.src = this.src;
 		}
 	}
-
-	// </editor-fold>
-
-	// <editor-fold defaultstate="collapsed" desc="onChangeFile">
-	onChangeFile(val, name, el) {
-		const {type} = this.state;
-		// console.log('onChangeFile', type, val)
-		if (val) {
-			if (type === "Upload") {
-				progressDialog.open("Uploading File...");
-				const {item, state} = this.props;
-				let doc;
-				if (item) {
-					doc = item.data.doc;
-				} else if (state) {
-					doc = state.new_doc_id;
-				}
-				console.log('onChangeFile', doc)
-				neonBinding.events.emit("default/docs/doc/update-upload", doc, val.path, type).then(res => {
-					console.log(type, res);
-					if (res) {
-						const {dlUrls, gcsUri} = res;
-						//                    this.refs.iframe.style.display = "block";
-//                        this.state.doc = state.new_doc_id = id;
-						//                    this.refresh();
-					}
-					progressDialog.close();
-				});
-			}
-		}
-	}
-
+	
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="onChangeFileType">
 	onChangeFileType(val, name, el) {
 		let {onChangeFileType} = this.props;
 		this.state.type = val || "Type";
-
+		
 		onChangeFileType && onChangeFileType(this.state.type, name, el);
-
+		
 		if (this.state.type === "Type") {
 			this.refresh();
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="removeDoc">
 	removeDoc() {
 		let {state = {}, readonly} = this.props;
 		if (readonly || !state.new_doc_id)
 			return Promise.resolve();
-
+		
 		progressDialog.open("Removing unsaved document");
 		return neonBinding.events.emit("default/docs/doc/remove", state.new_doc_id).then(res => {
 			// indexedStorage.orphanedUploadedDocs.remove(state.new_doc_id);
@@ -255,15 +194,15 @@ class GDocEditor extends React.Component {
 			progressDialog.close();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onChangeTitle">
 	onChangeTitle(val, name, el) {
 		let {item, state = {}, onChangeTitle, readonly} = this.props;
 		if (val) {
 			const {type} = this.state;
-
+			
 			if (type === "Upload") {
 				onChangeTitle && onChangeTitle(val, name, el);
 			} else {
@@ -273,7 +212,7 @@ class GDocEditor extends React.Component {
 				} else if (state) {
 					doc = state.new_doc_id;
 				}
-
+				
 				neonBinding.events.emit("default/docs/doc/edit-title", doc, val).then(res => {
 					//                    state.new_doc_id = res.data.id;
 					onChangeTitle && onChangeTitle(val, name, el);
@@ -283,12 +222,12 @@ class GDocEditor extends React.Component {
 			onChangeTitle && onChangeTitle(val, name, el);
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {//this.state.loadStatus = 'LOADING';
-		let {item, state = {}, onChangeTitle, readonly, defaultValue} = this.props;
+		let {item, state = {}, onChange, onChangeTitle, readonly, defaultValue} = this.props;
 		const title = item ? item.data.title : state.title;
 		const type = item ? item.data.type : this.state.type;
 //        if(!defaultValue) {
@@ -306,7 +245,7 @@ class GDocEditor extends React.Component {
 		}
 //        }
 		console.log('defaultValue', defaultValue)
-
+		
 		return <React.Fragment>
 			{!readonly && onChangeTitle &&
 				<ClearableInput
@@ -318,7 +257,7 @@ class GDocEditor extends React.Component {
 					onChange={this.onChangeTitle}
 				/>
 			}
-
+			
 			{!readonly && <ClearableInput
 				ref="type"
 				name="type"
@@ -328,15 +267,15 @@ class GDocEditor extends React.Component {
 				onChange={this.onChangeFileType}
 				values={this.state.lists.type}
 			/>}
-
+			
 			{!readonly && <hr className="margin-t-10 margin-b-20"/>}
-
+			
 			<UploadButtonWrapper
 				state={this.state}
 				readonly={readonly}
-				onChange={this.onChangeFile}
+				onChange={onChange}
 			/>
-
+			
 			<FrameWrapper
 				ref='frameWrapper'
 				state={this.state}
@@ -345,7 +284,7 @@ class GDocEditor extends React.Component {
 			/>
 		</React.Fragment>;
 	}
-
+	
 	// </editor-fold>
 }
 
@@ -357,7 +296,7 @@ class UploadButtonWrapper extends React.Component {
 		if (type === "Type") return null;
 		return <UploadButton
 			name="doc"
-			type={['PDF','Word','Excel']}
+			type={['PDF', 'Word', 'Excel']}
 			buttonTitle="Upload Document (PDF/Word/Excel)"
 			readonly={readonly}
 			showOnlyIcon
@@ -388,7 +327,7 @@ class FrameWrapper extends React.Component {
 			});
 		}
 	}
-
+	
 	render() {
 		let {state: {type}, onLoadSuccess, onLoadError} = this.props;
 		if (type !== "Type") return null;
@@ -399,7 +338,7 @@ class FrameWrapper extends React.Component {
 				</h4>
 			</div>;
 		}
-
+		
 		const props = {
 			ref: "iframe",
 			key: "FrameWrapper",

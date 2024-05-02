@@ -64,8 +64,9 @@ export default async (input: EntityTrainingToolboxTalkRegister) => {
 
 	crudUtils.injectCreate(input);
 
-	const res = await createMutationImpl({mutation, input});
-	if(res) {
-		return workers.emit("plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/export-excel", res);
+	const item = await createMutationImpl({mutation, input});
+	if(item) {
+		const path =  await workers.emit("plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/export-excel", item);
+		return {path, item};
 	}
 };

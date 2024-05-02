@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, extendObservable} from 'mobx';
+import {observable, computed, extendObservable} from 'mobx';
 
 import Form from 'utils/Form';
 import {execWhen, ShouldUpdate} from 'utils/Utils';
@@ -22,8 +22,6 @@ import TrainingCourseGridCounter from "../../dialogs/ProfileStats/TrainingCourse
 import TrainingCourseGridReportsLineChart from "../../dialogs/ProfileStats/TrainingCourseGridReportsLineChart";
 import findByIdClient from "mutations/all/Client/findByIdClient";
 import updateTrainingCourse from "mutations/all/TrainingCourse/updateTrainingCourse";
-import updateProxyJobPositionTrainingCourse
-    from "mutations/all/ProxyJobPositionTrainingCourse/updateProxyJobPositionTrainingCourse";
 import insertProxyJobPositionTrainingCourse
     from "mutations/all/ProxyJobPositionTrainingCourse/insertProxyJobPositionTrainingCourse";
 import deleteProxyJobPositionTrainingCourse
@@ -32,6 +30,7 @@ import insertProxySectorTrainingCourse
     from "mutations/all/ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
 import deleteProxySectorTrainingCourse
     from "mutations/all/ProxySectorTrainingCourse/deleteProxySectorTrainingCourse";
+import findByIdTrainingCourse from "mutations/all/TrainingCourse/findByIdTrainingCourse";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -39,6 +38,8 @@ import deleteProxySectorTrainingCourse
 class EditTrainingRegistryDialog extends AEditDialog {
     pageKey = "EditTrainingRegistryDialog";
     title = "Edit Training Course";
+    findById = findByIdTrainingCourse;
+    removeById = updateTrainingCourse;
 
     constructor(props) {
         super(props, style);
@@ -336,8 +337,8 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
-    get item() {
+    
+    @computed get item() {
         return this.props.state.item;
     }
 

@@ -16,12 +16,10 @@ import ProfileTrainingRegistryDialog from './forms/ProfileTrainingRegistryDialog
 import ExportTrainingCoursesDialog from "./forms/ExportTrainingCoursesDialog";
 
 import style from "./TrainingRegistryTab.lazy.css";
-import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
-import {Stack} from "@mui/material";
 import {Grid} from "@material-ui/core";
 import {CostBtn} from "../TrainingPlanTab/Components";
-import SelectSectorInput from "../../../../../components/inputs/SelectSectorInput";
+import SelectSectorInput from "components/inputs/SelectSectorInput";
 
 // </editor-fold>
 

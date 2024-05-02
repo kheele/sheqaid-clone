@@ -7,11 +7,10 @@ import Form from 'utils/Form';
 import {
 	AddFilesGridViewInput,
 	ClearableInput,
-	Clickable,
 	SelectClientInput,
-	SelectEmployeeInput, SelectJobPositionInput, SelectProjectInput, SelectSiteInput
+	SelectEmployeeInput, SelectJobPositionInput, SelectProjectInput, SelectSiteInput, SelectUserInput
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import {toDataURI} from "utils/Utils";
@@ -29,11 +28,11 @@ class NewNCRDialog extends ANewDialog {
 	pageKey = "NewNCRDialog";
 	title = "Create NCR";
 	className = 'ANewTableFormDialog';
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -44,7 +43,7 @@ class NewNCRDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/ncr/";
-
+	
 	// <editor-fold defaultstate="collapsed" desc="state">
 	@observable
 	state = {
@@ -58,7 +57,7 @@ class Controls extends React.Component {
 			status_acceptance: ['Pending', 'Approved', 'Rejected'].map(text => {
 				return {text, value: text, checked: false}
 			}),
-			responsible_party_list: ['Consultant', 'Client', 'External'],
+			responsible_party_list: ['Consultant', 'Client', 'External', 'Internal'],
 			result: ['Pass', 'Fail'].map(text => {
 				return {text, value: text, checked: false}
 			}),
@@ -73,27 +72,27 @@ class Controls extends React.Component {
 	};
 	// </editor-fold>
 	source = null;
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor() {
 		super();
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		
 		this.onSelectSite = this.onSelectSite.bind(this);
 		this.onSelectSource = this.onSelectSource.bind(this);
 		this.onSelectSourceItem = this.onSelectSourceItem.bind(this);
-
+		
 		this.onChangeSelectedSource = this.onChangeSelectedSource.bind(this);
-
+		
 		this.form = new Form();
 		this.form.addChangeOne("source", this.onChangeSource.bind(this));
 		this.form.addChangeOne("selected_source", this.onChangeSelectedSource);
 		this.form.addChangeOne("selected_source_item", this.onChangeSelectedSourceItem.bind(this));
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="componentDidMount">
 	componentDidMount() {
 		const {dialog} = this.props;
@@ -102,9 +101,9 @@ class Controls extends React.Component {
 			this.onChangeSelectedSource(null, selected_source);
 		}
 	}
-
+	
 	//</editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSelectSite, onSelectSource, onChangeSource, onChangeSelectedSource, onChangeSelectedSourceItem">
 	onSelectSite(val, el) {
 		const {execWhen} = this.props;
@@ -112,12 +111,12 @@ class Controls extends React.Component {
 			selectSourceTable.selected_source = val;
 		});
 	}
-
+	
 	onSelectSource(evt, btn) {
 		const {selectSourceTable} = this.refs;
 		selectSourceTable.open();
 	}
-
+	
 	onSelectSourceItem(evt, btn) {
 		const {execWhen, dialog} = this.props;
 		execWhen(() => this.refs.selectSourceTable && this.refs.selectSourceListTable && this.refs.desc).then(() => {
@@ -153,7 +152,7 @@ class Controls extends React.Component {
 			}
 		});
 	}
-
+	
 	onChangeSource(el, val) {
 		this.source = val;
 		const {execWhen} = this.props;
@@ -167,7 +166,7 @@ class Controls extends React.Component {
 			ref.source = val;
 		});
 	}
-
+	
 	onChangeSelectedSource(el, val) {
 		const {execWhen} = this.props;
 		execWhen(() => this.refs.selectSourceTable).then(selectSourceTable => {
@@ -175,7 +174,7 @@ class Controls extends React.Component {
 			selectSourceTable.close();
 		});
 	}
-
+	
 	onChangeSelectedSourceItem(el, val) {
 		const {execWhen, dialog} = this.props;
 		execWhen(() => this.refs.selectSourceTable && this.refs.selectSourceListTable && this.refs.desc).then(() => {
@@ -202,9 +201,9 @@ class Controls extends React.Component {
 			selectSourceTable.close();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onNext">
 	onNext(e, btn) {
 		const {form} = this;
@@ -221,28 +220,29 @@ class Controls extends React.Component {
 				return;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	async onSubmit(e, btn, onSaved) {
 		const {form} = this;
-
+		
 		if (!form.isValid('source')) {
 			infoDialog.open('Source is required');
 			return;
 		}
-
+		
 		if (!form.isValid('desc')) {
 			infoDialog.open('Finding / NCR Description is required');
 			return;
 		}
-
+		
 		const {selected_source} = this.refs.selectSourceTable;
-
+		const {selected_source_item} = this.refs.selectSourceListTable;
+		
 		const source = this.source.label;
 		const sources = {
 			"Site Audit": "selected_source_site_id",
@@ -250,7 +250,13 @@ class Controls extends React.Component {
 			'Inspection': "selected_source_inspection_id",
 			'Incident Investigation': "selected_source_incident_id",
 		};
-
+		const sourceItems = {
+			// "Site Audit": "selected_source_site_id",
+			'Compliance Audit': "selected_source_item_compliance_audit_finding_id",
+			'Inspection': "selected_source_item_inspection_ques_id",
+			'Incident Investigation': "selected_source_item_incident_id",
+		};
+		
 		const {
 			//0
 			site,
@@ -264,10 +270,10 @@ class Controls extends React.Component {
 			desc, process,
 			//3
 			due_date,
-			// responsible_person,
 			responsible_party_list,
 			assigned_job_position_list,
 			assigned_person_list,
+			assigned_person_other_list,
 			approving_person,
 			//4
 			document_list, document_proof_list,
@@ -294,7 +300,6 @@ class Controls extends React.Component {
 			process,
 			//3
 			due_date: Dates.formatTimestampSQL(due_date),
-			// responsible_person_id: responsible_person && responsible_person.id,
 			responsible_party_list: {
 				data: [
 					...(responsible_party_list || []).map((value) => ({value})),
@@ -308,6 +313,18 @@ class Controls extends React.Component {
 			assigned_person_list: {
 				data: [
 					...(assigned_person_list || []).map(({id: employee_id}) => ({employee_id})),
+				],
+			},
+			assigned_person_other_list: {
+				data: [
+					...(assigned_person_other_list || []).map(({id: employee_other_id, ...attrs}) => {
+						if(employee_other_id) {
+							return {employee_other_id};
+						}
+						const data = {...attrs};
+						// delete data.is_external;
+						return {employee_other: {data}};
+					}),
 				],
 			},
 			approving_person_id: approving_person && approving_person.id,
@@ -341,9 +358,13 @@ class Controls extends React.Component {
 			completed_date: Dates.formatTimestampSQL(completed_date),
 			additional_notes
 		};
-
+		
+		if ([sourceItems[source]] && selected_source_item) {
+			data[[sourceItems[source]]] = selected_source_item.id;
+		}
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		insertNCR(data).then(res => {
@@ -364,9 +385,9 @@ class Controls extends React.Component {
 			progressDialog.close();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	//<editor-fold desc="defaultSource">
 	get defaultSource() {
 		const {dialog, dialog: {props: {source: sourceProp}}} = this.props;
@@ -380,15 +401,15 @@ class Controls extends React.Component {
 		}
 		return defaultSource;
 	}
-
+	
 	//</editor-fold>
-
+	
 	/// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		const {onFormNext, onFormBack, onFormOpen} = this.props;
-
+		
 		const {isConsultant} = storage.is;
-
+		
 		return (<FormControls>
 			<Row
 				rendered
@@ -400,7 +421,7 @@ class Controls extends React.Component {
 			>
 				{isConsultant && <SelectClientInput name="client" placeholder="Company..." required
 				                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-
+				
 				<SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
 				                    onChange={this.form.onChange}/>
 				<SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control"
@@ -423,9 +444,9 @@ class Controls extends React.Component {
 				<ClearableInput name="allocation" type="select" placeholder="Allocation..."
 				                className="col-lg-12 form-control margin-b-10" onChange={this.form.onChange}
 				                values={this.state.lists.allocation} returnValue/>
-
+				
 				<hr className="pull-left margin-0 margin-t-0 margin-b-15"/>
-
+				
 				<ClearableInput name="source" type="select" placeholder="Source..." defaultValue={this.defaultSource}
 				                required className="col-lg-12 form-control margin-b-10" onChange={this.form.onChange}
 				                values={this.state.lists.source}/>
@@ -450,28 +471,41 @@ class Controls extends React.Component {
 			<Row
 				rendered
 				idx={3}
-				title="3. Due Date & Persons Assigned"
+				title="3. Due Date & Persons Responsible"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
 			>
 				<ClearableInput name="due_date" type="date" placeholder="Due Date..."
 				                className="col-lg-8 pull-left-2 form-control" onChange={this.form.onChange}/>
-
+				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+				
 				<ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Parties..."
 				                className="col-lg-12 form-control" onChange={this.form.onChange}
 				                values={this.state.lists.responsible_party_list} returnValue add/>
-
-				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Assigned Job Position(s)..."
-				                     type="select_multi"
-				                     required className="col-lg-12 form-control"
-				                     onChange={this.form.onChange}/>
-				<SelectEmployeeInput name="assigned_person_list" placeholder="Assigned Person(s)..."
-				                     type="select_multi"
-				                     required className="col-lg-12 form-control"
-				                     onChange={this.form.onChange}/>
+				
+				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Responsible Job Position(s)..."
+				                        type="select_multi"
+				                        required className="col-lg-12 form-control"
+				                        onChange={this.form.onChange}/>
+				<SelectEmployeeInput
+					name="assigned_person_list" placeholder="Responsible Employee(s)..."
+					type="select_multi"
+					required
+					className="col-lg-12 form-control"
+					onChange={this.form.onChange}
+				/>
+				<SelectEmployeeInput
+					name="assigned_person_other_list" placeholder="Responsible External Person(s)..."
+					type="select_multi"
+					required
+					className="col-lg-12 form-control"
+					onChange={this.form.onChange}
+					showOtherPersonsOnly
+				/>
+				<SelectUserInput name="responsible_user" placeholder="Responsible User(s)..."
+				                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<SelectEmployeeInput name="approving_person" placeholder="Approving Person..." required
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 			</Row>
@@ -548,16 +582,16 @@ class Controls extends React.Component {
 				                values={this.state.lists.result} returnValue/>
 				<ClearableInput name="completed_date" type="date" placeholder="Completed Date..."
 				                className="col-lg-6 form-control" onChange={this.form.onChange}/>
-
+				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
-
+				
 				<ClearableInput ref="additional_notes" name="additional_notes" type="textarea"
 				                placeholder="Additional Notes" className="col-lg-12 form-control"
 				                onChange={this.form.onChange}/>
 			</Row>
 		</FormControls>);
 	}
-
+	
 	// </editor-fold>
 }
 

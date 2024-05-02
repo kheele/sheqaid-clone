@@ -205,6 +205,7 @@ class Controls extends React.Component {
 					//2.2
 					institution_conducting_training,
 					trainer_id: trainer && trainer.id,
+					trainer_other: trainer && !trainer.id ? {data: trainer} : null,
 					trainer_job_position_id: trainer_job_position && trainer_job_position.id,
 					//2.3
 					doc,

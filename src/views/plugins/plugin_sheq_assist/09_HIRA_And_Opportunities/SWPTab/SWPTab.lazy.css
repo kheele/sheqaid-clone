@@ -10,7 +10,7 @@
 #SWPTab-tab .page-title > .tabled-top-panel {
     margin-top: -37px;
     flex-grow: initial;
-    min-width: 270px;
+    min-width: 275px;
 }
 #SWPTab-tab .filter-wrapper{
     margin: 10px 0 0;

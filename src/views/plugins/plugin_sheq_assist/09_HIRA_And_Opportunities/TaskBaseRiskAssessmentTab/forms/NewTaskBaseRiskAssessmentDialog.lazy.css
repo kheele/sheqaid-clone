@@ -1,10 +1,12 @@
 @import '../../../../../../css/ANewDialog.css';
 
+:root{
+    --NewTaskBaseRiskAssessmentDialog-dialog-width: 800px;
+}
+
 #dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .dialog-container{
-    width: 100% !important;
-    max-width: calc(100% - 90px) !important;
-    left: 15px !important;
-    transform: translate(0, -50%);
+    width: var(--NewTaskBaseRiskAssessmentDialog-dialog-width) !important;
+    max-width: calc(100% - 30px) !important;
 }
 #dialog-overlay.NewTaskBaseRiskAssessmentDialog-new-dialog .dialog-content{
     padding: 0;

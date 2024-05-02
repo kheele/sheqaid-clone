@@ -13,6 +13,8 @@ eventManager.on("inspections/listTodayByLogged", async (socket, data) => {
 
     if(asset_id) {
         data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    } else {
+        data.client_filter.push(`asset_id: {_is_null: false}`);
     }
 
     data.client_filter = data.client_filter.join(',\n')
@@ -47,6 +49,8 @@ eventManager.on("inspections/listUnansweredByLogged", async (socket, data) => {
 
     if(asset_id) {
         data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    } else {
+        data.client_filter.push(`asset_id: {_is_null: false}`);
     }
 
     data.client_filter = data.client_filter.join(',\n')
@@ -61,6 +65,8 @@ eventManager.on("inspections/listUpcomingByLogged", async (socket, data) => {
 
     if(asset_id) {
         data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    } else {
+        data.client_filter.push(`asset_id: {_is_null: false}`);
     }
 
     data.client_filter = data.client_filter.join(',\n')
@@ -74,6 +80,8 @@ eventManager.on("inspections/listCompletedByLogged", async (socket, data) => {
 
     if(asset_id) {
         data.client_filter.push(`asset_id: {_eq: ${asset_id}}`);
+    } else {
+        data.client_filter.push(`asset_id: {_is_null: false}`);
     }
 
     data.client_filter = data.client_filter.join(',\n')
@@ -108,6 +116,8 @@ eventManager.on("inspections/listActiveByLogged", async (socket, data) => {
 
     if(asset_id) {
         data.client_filter.push(`,\nasset_id: {_eq: ${asset_id}}`);
+    } else {
+        data.client_filter.push(`,\nasset_id: {_is_null: false}`);
     }
 
     data.client_filter = data.client_filter.join(',\n')

@@ -35,7 +35,7 @@ class ExportDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-	path = "plugin_sheq_assist/09_HIRA_And_Opportunities/sop/";
+	exportFn = sockets.of('hira-and-opportunities/sop').fn('export-excel');
 	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable

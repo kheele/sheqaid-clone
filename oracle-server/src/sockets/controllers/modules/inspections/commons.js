@@ -24,7 +24,7 @@ exports.getVariablesAndQueryConfig = (
 		if(logged_employee_id) {
 			filter.push(`_or: [
 				{responsible_department: {employee_list:{id: {_eq: ${logged_employee_id}}}}},
-				{responsible_person_id: {_eq: ${logged_employee_id}}},
+				{responsible_person_list:{employee_id: {_eq: ${logged_employee_id}}}},
 				{asset:{responsible_person_id: {_eq: ${logged_employee_id}}}}
 			]`);
 		}
@@ -190,6 +190,11 @@ exports.inspection_details_find_fragment = `
     
     progress #computed
     total_questions #computed
+    total_answered #computed
+    total_compliance #computed
+    total_deviations #computed
+    total_non_deviations #computed
+    total_unanswered #computed
     
     interval
     start_date
@@ -239,13 +244,38 @@ exports.inspection_details_find_fragment = `
       id
       name
     }
-    responsible_person{
+    responsible_person_list{
+      id
+      questionnaire_id
+      questionnaire{
+        id
+      }
+      employee_other{
+	      id
+	      full_name
+	      email
+	      phone
+      }
+      employee{
+	      id
+	      full_name
+	      email
+	      phone
+	      linked_user_id
+	      linked_user{
+	        id
+	        username
+	      }
+      }
+    }
+    responsible_user{
       id
       full_name
-      linked_user_id
-      linked_user{
+      username
+      linked_employee_id
+      linked_employee{
         id
-        username
+        email
       }
     }
     responsible_department{
@@ -333,13 +363,38 @@ exports.inspection_details_list_fragment = `
       id
       name
     }
-    responsible_person{
+    responsible_person_list{
       id
-      linked_user_id
-      linked_user{
+      questionnaire_id
+      questionnaire{
         id
-        username
       }
+      employee_other{
+	      id
+	      full_name
+	      email
+	      phone
+      }
+      employee{
+	      id
+	      full_name
+	      email
+	      phone
+	      linked_user_id
+	      linked_user{
+	        id
+	        username
+	      }
+      }
+    }
+    responsible_user{
+      id
+      linked_employee_id
+      linked_employee{
+        id
+        email
+      }
+      username
       full_name
     }
     responsible_department{

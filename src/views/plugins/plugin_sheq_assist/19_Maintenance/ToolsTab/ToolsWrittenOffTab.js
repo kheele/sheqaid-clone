@@ -18,6 +18,9 @@ import ProfileToolWrittenOffDialog from '../ToolsTab/forms/ProfileToolWrittenOff
 
 import style from "./ToolsWrittenOffTab.lazy.css";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";
+import updateAsset from "mutations/all/Asset/updateAsset";
+import ProfileToolDialog from "./forms/ProfileToolDialog";
+import {Dates} from "../../../../../utils/Dates";
 
 // </editor-fold>
 
@@ -42,6 +45,8 @@ class ToolsWrittenOffTab extends React.Component {
 		super(props);
 
 		this.onLoadList = this.onLoadList.bind(this);
+		
+		this.onReInstead = this.onReInstead.bind(this);
 
 		this.renderFilterNode = this.renderFilterNode.bind(this);
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -113,13 +118,37 @@ class ToolsWrittenOffTab extends React.Component {
 	}
 
 	//</editor-fold>
-
+	
+	// <editor-fold defaultstate="collapsed" desc="onReInstead">
+	onReInstead(evt, btn) {
+		confirmDialog.open("Are you sure you want to re-instead the asset?").then(res => {
+			if (res === 1) {
+				const {idx} = btn.props;
+				const {list} = this.refs.root;
+				const item = list[idx];
+				progressDialog.open("Re-insteading the asset...");
+				updateAsset({id: item.id, written_off: false}).then(res => {
+					setTimeout(() => {
+						list.removeIf((item, _idx) => _idx === idx);
+					});
+					infoDialog.open("Asset successfully re-insteaded.");
+					infoDialog.close(2000);
+				}).catch(err => {
+					console.log(err)
+				}).finally(() => {
+					progressDialog.close();
+				});
+			}
+		});
+	}
+	
+	// </editor-fold>
+	
 	//<editor-fold desc="renderPopoverOptions">
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
 		return <Options idx={idx} permissionModKey={this.props.permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-			{/*<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>*/}
-			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
+			<NavItem action="remove" idx={idx} onClick={this.onReInstead} faIconLeft="ban" title="Re-Instead"/>
 		</Options>;
 	}
 
@@ -161,6 +190,7 @@ class ToolsWrittenOffTab extends React.Component {
 	//<editor-fold desc="renderTHead">
 	renderTHead() {
 		return <THead>
+			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td fixed-flex min-w-80">Photo</div>
 			<div className="td">Type</div>
 			<div className="td">Name</div>
@@ -168,13 +198,15 @@ class ToolsWrittenOffTab extends React.Component {
 			<div className="td fixed-flex min-w-100">Reg No.</div>
 			<div className="td fixed-flex min-w-160">Serial No.</div>
 			<div className="td fixed-flex min-w-80">Condition</div>
-			<div className="td fixed-flex min-w-100">Status</div>
+			<div className="td">Reason Written Off</div>
+			<div className="td">Written Off Comments</div>
+			<div className="td fixed-flex min-w-120">Date Written Off</div>
 			<div className="td fixed-flex min-w-70 padding-l-0 padding-r-0"></div>
 		</THead>;
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="renderItem">
 	renderItem(n, onClick) {
 		const item = this.refs.root.list[n];
@@ -218,6 +250,12 @@ class ToolsWrittenOffTab extends React.Component {
 				//10
 				inspection_template_list = [],
 				inspection_list = [],
+				//
+				written_off_date,
+				written_off_store_keeper_signature,
+				written_off_manager_signature,
+				written_off_reason,
+				written_off_comments,
 			}
 		} = item;
 
@@ -226,7 +264,8 @@ class ToolsWrittenOffTab extends React.Component {
 			profile_pic = (photo_list || [])[0];
 		}
 
-		return <TRow key={id}>
+		return <TRow key={id} className="w-full">
+			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td fixed-flex min-w-80">
 				<Clickable idx={n} onClick={this.refs.root.onView}>
 					{RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
@@ -238,7 +277,9 @@ class ToolsWrittenOffTab extends React.Component {
 			<div className="td fixed-flex min-w-100">{reg_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-160">{serial_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{condition || 'N/A'}</div>
-			<div className="td fixed-flex min-w-100">{status}</div>
+			<div className="td">{written_off_reason}</div>
+			<div className="td">{written_off_comments}</div>
+			<div className="td fixed-flex min-w-120">{Dates.formatDate(written_off_date)}</div>
 			<div className="td fixed-flex min-w-60 padding-l-0 padding-r-0">
 				<Button idx={n} className="btn btn-primary pull-right w-40" onClick={onClick}>
 					<i className="fa fa-bars"/>
@@ -246,9 +287,9 @@ class ToolsWrittenOffTab extends React.Component {
 			</div>
 		</TRow>;
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="render">
 	render() {
 		return <APageListReadWrite
@@ -267,7 +308,7 @@ class ToolsWrittenOffTab extends React.Component {
 			renderItem={this.renderItem}>
 			<ConfirmDialog ref="removeDialog"/>
 
-			<ProfileToolWrittenOffDialog ref="profileDialog"/>
+			<ProfileToolDialog ref="profileDialog"/>
 		</APageListReadWrite>;
 	}
 

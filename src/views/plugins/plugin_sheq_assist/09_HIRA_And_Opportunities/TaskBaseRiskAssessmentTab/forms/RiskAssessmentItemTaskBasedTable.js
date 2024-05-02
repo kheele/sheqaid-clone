@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {toJS} from 'mobx';
+import {toJS, computed} from 'mobx';
 import {Button} from 'components/inputs';
 import {Table} from 'components/tables';
 
@@ -42,6 +42,10 @@ class RiskAssessmentItemTable extends React.Component {
         });
     }
     
+    @computed get list() {
+        return this.refs.tbody.state.list.filter(v => !!v);
+    }
+    
     render() {
         const {name, readonly, isNew, defaultValue, item, onChange} = this.props;
         // return (<>
@@ -62,7 +66,7 @@ class RiskAssessmentItemTable extends React.Component {
         // </>);
         return (<Table className="ARiskAssessmentItemTable RiskAssessmentItemTable overflow-hidden w-full min-h-380 padding-0 margin-0">
             {!readonly && <NewRiskAssessmentItemTaskBasedDialog ref="newDialog" mainItem={item}/>}
-            <RiskAssessmentItemTHead className="h-165"/>
+            <RiskAssessmentItemTHead className="h-175"/>
             <RiskAssessmentItemTBody ref="tbody" name={name} readonly={readonly} isNew={isNew} onEditItem={this.onEditItem} defaultValue={defaultValue} onChange={onChange}/>
 
             {!readonly && <Button className="btn btn-primary add-item-b" onClick={this.onNew}>

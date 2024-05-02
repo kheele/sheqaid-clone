@@ -57,6 +57,8 @@ class AnswerPreviewReadonly extends React.Component {
 			mainQuestions,
 			ques: {
 				answer,
+				answer_asset,
+				answer_employee,
 				responseAttachment,
 				hasResponseAttachment,
 				responseAttachmentRequired,
@@ -75,7 +77,7 @@ class AnswerPreviewReadonly extends React.Component {
 
 		const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
 
-		const createAnswerInputs = (idx, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n) => {
+		const createAnswerInputs = ({idx, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n}) => {
 			let node, className = "";
 			switch (questionType) {
 				case "NoAnswer":
@@ -84,6 +86,8 @@ class AnswerPreviewReadonly extends React.Component {
 				case "Short Answer":
 				case "Paragraph":
 				case "Time":
+				case "Low,Medium,High,N/A":
+				case "Empty,Medium,Full,N/A":
 				case "Safe,At Risk,N/A":
 				case "Good,Fair,Poor,N/A":
 				case "Pass,Fail,N/A":
@@ -108,13 +112,13 @@ class AnswerPreviewReadonly extends React.Component {
 					node = answer ? Dates.formatDate(answer) : 'No Answer';
 					break;
 				case "Person":
-					node = answer ? (isString(answer) ? answer : (answer.lname + ' ' + answer.fname)) : 'No Answer';
+					node = answer_employee ? answer_employee.full_name : 'No Answer';
 					break;
 				case "Asset":
-					node = answer ? (isString(answer) ? answer : (answer.name)) : 'No Answer';
+					node = answer_asset ? answer_asset.name : 'No Answer';
 					break;
 				case "Signature":
-					node = answer ? <ProfileField type="signature" value={answer} className="col-lg-12"/> : 'No Answer';
+					node = answer ? <ProfileField type="signature" value={answer[0]} className="col-lg-12"/> : 'No Answer';
 					break;
 				case "Photo": {
 					let singleAnswer;
@@ -191,7 +195,7 @@ class AnswerPreviewReadonly extends React.Component {
 					break;
 			}
 
-			const renderFrag = (idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer) => (
+			const renderFrag = ({idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer}) => (
 				<React.Fragment>
                     <span
 	                    className={"block w-full margin-b-5 margin-l-10 pull-left font-size-15 font-weight-bold " + className}>{node}</span>
@@ -220,13 +224,14 @@ class AnswerPreviewReadonly extends React.Component {
 				return <div
 					className={"multi-answer-each pull-left margin-b-" + ((n === this.answerList.length - 1) ? 5 : 10)}>
 					<span className="counter">{index}.{n + 1}</span>
-					{renderFrag(idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, true)}
+					{renderFrag({idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer: true})}
 				</div>;
 			}
-			return renderFrag(idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
+			return renderFrag({idx, responseAttachment, hasResponseAttachment, responseAttachmentRequired},);
 		};
 
 		console.log('answer', answer)
+		console.log('answer_employee', answer_employee)
 
 		if (isMultiAnswer) {
 			return <React.Fragment>
@@ -234,11 +239,11 @@ class AnswerPreviewReadonly extends React.Component {
 					className={"block w-full margin-b-5 font-size-15 font-weight-bold margin-l-10"}>No Answers</span>}
 				{!this.answerList.isEmpty() && <div
 					className="multi-answer row w-full margin-0 padding-0 pos-relative">{this.answerList.map((v, n) => createAnswerInputs(
-					idx, v, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n
+					{idx, answer: v, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n}
 				))}</div>}
 			</React.Fragment>;
 		} else {
-			return createAnswerInputs(idx, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
+			return createAnswerInputs({idx, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired,});
 		}
 	}
 }
@@ -264,6 +269,8 @@ class AnswerPreviewWritable extends React.Component {
 
 		const {idx} = this.props;
 		this.form.addChangeOne("answer_" + idx, debounce(this.onChangeAnswer.bind(this)).bind(this));
+		this.form.addChangeOne("answer_asset_" + idx, debounce(this.onChangeAnswer.bind(this)).bind(this));
+		this.form.addChangeOne("answer_employee_" + idx, debounce(this.onChangeAnswer.bind(this)).bind(this));
 		this.form.addChangeOne("response_attachment_" + idx, debounce(this.onChangeResponseAttachment.bind(this)).bind(this));
 		this.form.addChangeOne("answer_expiry_" + idx, this.onChangeAnswerExpiry.bind(this));
 	}
@@ -302,7 +309,7 @@ class AnswerPreviewWritable extends React.Component {
 			parentId,
 			idx,
 			ques,
-			ques: {isMultiAnswer},
+			ques: {questionType, isMultiAnswer},
 			notifyChange,
 			onChange
 		} = this.props;
@@ -321,6 +328,10 @@ class AnswerPreviewWritable extends React.Component {
 			} else {
 				if (val.path) {
 					ques.answer = {path: await toDataURI(val.path)};
+				} else if(questionType === 'Asset') {
+					ques.answer_asset = val;
+				} else if(questionType === 'Person') {
+					ques.answer_employee = val;
 				} else {
 					ques.answer = val;
 				}
@@ -331,7 +342,13 @@ class AnswerPreviewWritable extends React.Component {
 					ques.answer.clear();
 				}
 			} else {
-				ques.answer = null;
+				if(questionType === 'Asset') {
+					ques.answer_asset = val;
+				} else if(questionType === 'Person') {
+					ques.answer_employee = val;
+				} else {
+					ques.answer = null;
+				}
 			}
 		}
 //        console.log('ques', ques)
@@ -428,6 +445,8 @@ class AnswerPreviewWritable extends React.Component {
 			mainQuestions,
 			ques: {
 				answer,
+				answer_asset,
+				answer_employee,
 				responseAttachment,
 				hasResponseAttachment,
 				responseAttachmentRequired,
@@ -448,7 +467,7 @@ class AnswerPreviewWritable extends React.Component {
 
 		const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
 
-		const createAnswerInputs = (idx, questionType, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n) => {
+		const createAnswerInputs = ({idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n}) => {
 //            alert(questionType)
 			let node, className = "";
 			switch (questionType) {
@@ -481,15 +500,15 @@ class AnswerPreviewWritable extends React.Component {
 					                       values={options} returnValue/>;
 					break;
 				case "Person":
-					node = <SelectEmployeeInput name={"answer_" + idx} type="select" placeholder="Select Person..."
-					                            defaultValue={answer} showOtherPerson className="form-control"
+					node = <SelectEmployeeInput name={"answer_employee_" + idx} type="select" placeholder="Select Person..."
+					                            defaultValue={answer_employee} showOtherPerson className="form-control"
 					                            onChange={onChange}/>;
 					break;
 				case "Asset":
 					node = <SelectAssetInput
-						name={"answer_" + idx}
+						name={"answer_asset_" + idx}
 						placeholder="Select Asset..."
-						defaultValue={answer}
+						defaultValue={answer_asset}
 						className="form-control"
 						onChange={onChange}
 					/>;
@@ -563,6 +582,8 @@ class AnswerPreviewWritable extends React.Component {
 					                       defaultValue={answer} vertical className="form-control" onChange={onChange}
 					                       values={this.values} returnValue/>;
 					break;
+				case "Low,Medium,High,N/A":
+				case "Empty,Medium,Full,N/A":
 				case "Safe,At Risk,N/A":
 				case "Good,Fair,Poor,N/A":
 				case "Pass,Fail,N/A":
@@ -584,7 +605,7 @@ class AnswerPreviewWritable extends React.Component {
 					break;
 			}
 
-			const renderFrag = (idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer) => {
+			const renderFrag = ({idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer}) => {
 				return <React.Fragment>
 					<span className={"block w-full margin-b-5 pull-left " + className}>{node}</span>
 					{hasResponseAttachment && <span className={"block w-full margin-b-5 pull-left " + className}>
@@ -618,24 +639,24 @@ class AnswerPreviewWritable extends React.Component {
 			if (isMultiAnswer) {
 				return <div className="multi-answer-each pull-left margin-b-10">
 					<span className="counter">{index}.{n + 1}</span>
-					{renderFrag(idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, true)}
+					{renderFrag({idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired, isMultiAnswer: true})}
 				</div>;
 			}
-			return renderFrag(idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
+			return renderFrag({idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired},);
 		};
 
 		if (isMultiAnswer) {
 			return <React.Fragment>
 				<div
-					className="multi-answer row w-full margin-0 pos-relative">{this.answerList.map((v, n) => createAnswerInputs(
-					idx, questionType, v, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n
+					className="multi-answer row w-full margin-0 pos-relative">{this.answerList.map((answer, n) => createAnswerInputs(
+					{idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n}
 				))}</div>
 				<Button className="btn btn-primary margin-b-5" onClick={this.onAddAnswer}>
 					<i className="fa fa-plus"/> Add another answer
 				</Button>
 			</React.Fragment>;
 		} else {
-			return createAnswerInputs(idx, questionType, answer, responseAttachment, hasResponseAttachment, responseAttachmentRequired,);
+			return createAnswerInputs({idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired,});
 		}
 	}
 }

@@ -13,7 +13,7 @@ import {THead} from 'components/tables';
 
 import {IncidentInvestigationStatus} from './IncidentComponentRows';
 import style from "./ExportInvestigationsDialog.lazy.css";
-import {AExportDialog} from "components/exports/AExportDialog";
+import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import StateLists from "./IncidentForms/StateLists";
 // </editor-fold>
 
@@ -47,8 +47,8 @@ class ExportInvestigationsDialog extends AExportDialog {
 
 // <editor-fold defaultstate="collapsed" desc="Controls">
 @observer
-class Controls extends React.Component {
-	path = 'plugin_sheq_assist/17_Incident_Investigation/';
+class Controls extends AControls {
+	exportFn = sockets.of('incidents/investigations').fn('export-excel');
 	
 	//<editor-fold desc="state">
 	@observable
@@ -202,12 +202,12 @@ class Controls extends React.Component {
 		return <THead>
 			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td fixed-flex min-w-120">Incident Date</div>
-			<div className="td fixed-flex min-w-120">Investigation Date</div>
+			<div className="td fixed-flex min-w-120">Investigation Due Date</div>
 			<div className="td fixed-flex min-w-120">Risk Rating</div>
 			<div className="td">Category</div>
 			<div className="td">Sub-Category</div>
-			<div className="td">Description</div>
-			<div className="td">Area</div>
+			<div className="td">Short Description</div>
+			<div className="td">Exact Location</div>
 			<div className="td fixed-flex min-w-140">Status</div>
 			<div className="td fixed-flex no-padding min-w-70"></div>
 		</THead>;
@@ -273,7 +273,7 @@ class Controls extends React.Component {
 				{Dates.formatDate(incident_date) || 'N/A'}
 			</div>
 			<div className="td fixed-flex min-w-120">
-				{Dates.formatDate(investigation_date) || 'N/A'}
+				{Dates.formatDate(due_date) || 'N/A'}
 			</div>
 			<div className="td fixed-flex min-w-120">
 				{severity ? severity.risk_rating : 'N/A'}

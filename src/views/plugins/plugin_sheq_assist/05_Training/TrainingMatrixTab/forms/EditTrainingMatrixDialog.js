@@ -1,10 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React, {createRef} from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
-import {execWhen, ShouldUpdate} from '../../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
 import {onSelectLoadTrainingFrequencies} from '../../../../utils';
 
 import {
@@ -17,14 +17,15 @@ import {
     SelectSiteInput,
     SelectTrainingCourseInput,
     SelectUserInput
-} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {AEditDialog} from '../../../../../../components/dialogs';
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingMatrixDialog.lazy.css";
-import TrainingPlanListByCourse from "../../../../../../components/FormListComponents/TrainingPlanListByCourse";
-import findByIdClient from "../../../../../../mutations/all/Client/findByIdClient";
-import updateTrainingMatrix from "../../../../../../mutations/all/TrainingMatrix/updateTrainingMatrix";
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
+import findByIdClient from "mutations/all/Client/findByIdClient";
+import updateTrainingMatrix from "mutations/all/TrainingMatrix/updateTrainingMatrix";
+import findByIdTrainingMatrix from "mutations/all/TrainingMatrix/findByIdTrainingMatrix";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -32,6 +33,8 @@ import updateTrainingMatrix from "../../../../../../mutations/all/TrainingMatrix
 class EditTrainingMatrixDialog extends AEditDialog {
     pageKey = "EditTrainingMatrixDialog";
     title = "Edit Training Matrix";
+    findById = findByIdTrainingMatrix;
+    removeById = updateTrainingMatrix;
 
     constructor(props) {
         super(props, style);
@@ -329,8 +332,8 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
-    get item() {
+    
+    @computed get item() {
         return this.props.state.item;
     }
 

@@ -95,6 +95,7 @@ exports.getVariablesAndQueryConfig = (
 exports.employee_details_fragment = `
   id
   created_at,
+  removed
   fname
   lname
   full_name

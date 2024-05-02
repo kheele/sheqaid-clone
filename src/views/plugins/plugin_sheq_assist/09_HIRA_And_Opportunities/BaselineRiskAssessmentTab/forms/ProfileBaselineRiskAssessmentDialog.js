@@ -68,6 +68,8 @@ class Controls extends React.Component {
 
 	constructor() {
 		super();
+		
+		this.onFormChange = this.onFormChange.bind(this);
 
 		this.printImpl = this.printImpl.bind(this);
 	}
@@ -86,6 +88,14 @@ class Controls extends React.Component {
 			btn.text("Save As PDF").enabled();
 		});
 	}
+	
+	// <editor-fold defaultstate="collapsed" desc="onFormChange">
+	onFormChange(idx) {
+		const {dialog} = this.props;
+		dialog.cssWidth = idx === 3 ? '100%' : '800px';
+		return true;
+	}
+	// </editor-fold>
 
 	@computed get item() {
 		return this.props.state.item;
@@ -99,7 +109,7 @@ class Controls extends React.Component {
 
 		let {
 			props: {
-				onFormNext, onFormBack, onFormOpen,
+				onFormNext, onFormBack, onFormOpen, onFormChange,
 			},
 			item, item: {
 				id, data: {
@@ -128,6 +138,7 @@ class Controls extends React.Component {
 				title="Company / Project / Site"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
+				onFormChange={onFormChange}
 			>
 				{isConsultant && <ProfileField
 					name="client"
@@ -160,6 +171,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<ProfileField name="activity" type="text" placeholder="Description Of Task" value={activity}
 				              className="col-lg-12"/>
@@ -172,9 +184,10 @@ class Controls extends React.Component {
 				rendered
 				idx={2}
 				title="2. Assessed Items"
-				className="row-photos"
+				sectionClassName="overflow-auto"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<RiskAssessmentItemBaselineTable name="list" readonly defaultValue={list}/>
 			</Row>

@@ -199,8 +199,8 @@ class Controls extends React.Component {
                 
                 <hr className="col-lg-12 margin-v-5 margin-r-5"/>
             
-                <ProfileField name="is_stable" title="Is Stable?" value={is_stable} className="col-lg-6"/>
-                <ProfileField name="is_cool_well_ventilated_area" title="Requires Cool, Well-Ventilated Area?" value={is_cool_well_ventilated_area} className="col-lg-6"/>
+                <ProfileField name="is_stable" title="Is It Stable?" value={is_stable} className="col-lg-6"/>
+                <ProfileField name="is_cool_well_ventilated_area" title="Does It Require Cool, Well-Ventilated Area?" value={is_cool_well_ventilated_area} className="col-lg-6"/>
                 <ProfileField name="heat_sparks_static_flames" title="Heat, Sparks, Static, Flames" value={heat_sparks_static_flames} renderer={v => v.join(', ')} className="col-lg-12"/>
                 <ProfileField name="spillage_control" title="Spillage Control" value={spillage_control} renderer={v => v.join(', ')} className="col-lg-12"/>
                 <ProfileField name="other_special_info" title="Other Special Info" value={other_special_info} renderer={v => v.join(', ')} className="col-lg-12"/>
@@ -236,8 +236,8 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ProfileField name="is_combustible" title="Is Combustible?" value={is_combustible} className="col-lg-12"/>
-                <ProfileField name="is_flammable" title="Is Flammable?" value={is_flammable} className="col-lg-12"/>
+                <ProfileField name="is_combustible" title="Is It Combustible?" value={is_combustible} className="col-lg-12"/>
+                <ProfileField name="is_flammable" title="Is It Flammable?" value={is_flammable} className="col-lg-12"/>
                 <ProfileField name="flammability_combustibility_class" title="Flammability / Combustibility Class" value={flammability_combustibility_class} className="col-lg-12"/>
             </Row>
             <Row 
@@ -276,7 +276,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ProfileField name="has_sds" title="Has SDS?" value={has_sds} className={`col-lg-${has_sds === 'Yes' ? 6 : 12}`}/>
+                <ProfileField name="has_sds" title="Does It Have SDS?" value={has_sds} className={`col-lg-${has_sds === 'Yes' ? 6 : 12}`}/>
                 <Fragment ref="sds_details_sec" rendered={has_sds === 'Yes'}>
                     <ProfileField name="sds_date" type="date" title="Safety Data Sheet Date" value={sds_date} className="col-lg-6"/>
                     
@@ -307,7 +307,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ProfileField name="has_hazchem_sheet" title="Has Hazchem Sheet?" value={has_hazchem_sheet} className={`col-lg-${has_hazchem_sheet === 'Yes' ? 6 : 12}`}/>
+                <ProfileField name="has_hazchem_sheet" title="Does It Have Hazchem Sheet?" value={has_hazchem_sheet} className={`col-lg-${has_hazchem_sheet === 'Yes' ? 6 : 12}`}/>
                 <Fragment ref="hazchem_sheet_details_sec" rendered={has_hazchem_sheet === 'Yes'}>
                     <ProfileField name="hazchem_sheet_date" type="date" title="Hazchem Sheet Date" value={hazchem_sheet_date} className="col-lg-6"/>
                     
@@ -338,7 +338,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ProfileField name="has_risk_assessment" title="Has Risk Assessment?" value={has_risk_assessment} className={`col-lg-${has_risk_assessment === 'Yes' ? 6 : 12}`}/>
+                <ProfileField name="has_risk_assessment" title="Does It Have Risk Assessment?" value={has_risk_assessment} className={`col-lg-${has_risk_assessment === 'Yes' ? 6 : 12}`}/>
                 <Fragment ref="risk_assessment_details_sec" rendered={has_risk_assessment === 'Yes'}>
                     <ProfileField name="risk_assessment_date" type="date" title="Risk Assessment Date" value={risk_assessment_date} className="col-lg-6"/>
                     <UploadButton 

@@ -7,7 +7,7 @@ import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
 import {
-    ActionsButton,
+    ActionsButton, Button,
     ClearableInput, SelectEmployeeInput,
     SelectJobPositionInput,
     SelectTrainingCourseInput
@@ -20,6 +20,7 @@ import ProfileTrainingRegisterDialog from './forms/ProfileTrainingRegisterDialog
 import style from "./TrainingRegisterTab.lazy.css";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import ExportTrainingRegisterDialog from "./forms/ExportTrainingRegisterDialog";
 
 @observer
 class TrainingRegisterTab extends React.Component {
@@ -39,6 +40,8 @@ class TrainingRegisterTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+        
+        this.onExport = this.onExport.bind(this);
 
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
@@ -83,11 +86,25 @@ class TrainingRegisterTab extends React.Component {
         });
     }
     //</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="onExport">
+    onExport(e, btn) {
+        const {getDialogByRef} = this.refs.root;
+        const exportDialog = getDialogByRef('exportDialog');
+        exportDialog.open();
+    }
+    
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
     renderLeftButtons() {
+        const {isEmployee, isContractorView} = storage.is;
+        const isReadonly = isEmployee;// || isContractorView;
         return <div className="left-buttons pull-left">
             {this.props.onRenderCompetenciesBtb()}
+            {!isReadonly && <Button className="btn btn-primary pull-right" onClick={this.onExport}>
+                Export
+            </Button>}
         </div>;
     }
 
@@ -166,7 +183,7 @@ class TrainingRegisterTab extends React.Component {
                     {(job_position_list || []).map(({job_position:{id, name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
                 </Grid>
             </div>
-            <div className="td">{trainer.full_name}</div>
+            <div className="td">{trainer && trainer.full_name || trainer_external && trainer_external.full_name || ""}</div>
             <div className="td fixed-flex min-w-120">{year || 'N/A'}</div>
             <div className="td fixed-flex min-w-120">{time_from && time_to ? `${time_from.substring(0, 5)} - ${time_to.substring(0, 5)}` : "N/A"}</div>
             <div className="td fixed-flex min-w-120">{time_or_duration}</div>
@@ -202,6 +219,8 @@ class TrainingRegisterTab extends React.Component {
 
             <NewTrainingRegisterDialog ref="newDialog"/>
             <ProfileTrainingRegisterDialog ref="profileDialog"/>
+            
+            <ExportTrainingRegisterDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
 }

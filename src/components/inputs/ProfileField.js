@@ -37,7 +37,7 @@ class ProfileField extends React.Component {
     componentDidMount() {
         setTimeout(() => {
             if (this.props.type === 'signature' && this.props.value) {
-                const value = JSON.parse(this.props.value);
+                const value = this.props.value[0];
                 this.refs.signature.fromData(value);
                 this.refs.signature.off();
             }

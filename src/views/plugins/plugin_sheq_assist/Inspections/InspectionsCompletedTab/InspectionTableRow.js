@@ -39,6 +39,7 @@ class InspectionTableRow extends React.Component {
                 schedule_date,
                 next_schedule_date,
                 responsible_person,
+                responsible_user,
                 responsible_department,
                 asset_type,
                 asset,
@@ -67,10 +68,11 @@ class InspectionTableRow extends React.Component {
                 {asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}
             </div>}
             <div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
+            <div className="td fixed-flex min-w-180">{responsible_user && responsible_user.full_name || 'N/A'}</div>
             <div className="td fixed-flex min-w-80">{interval}</div>
             <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
-            <div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {time_completed}</div>
+            <div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {Dates.formatTime(time_completed)}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>
             <div className="td fixed-flex min-w-270 flex-center progress-bar">{progress.toFixed(1) + '% Complete'}</div>
             {onRenderActionCell && onRenderActionCell(item, idx)}

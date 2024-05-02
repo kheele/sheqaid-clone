@@ -2,365 +2,367 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
+import Chip from "@material-ui/core/Chip";
+import Grid from "@material-ui/core/Grid";
 
-import Form from 'utils/Form';
+import {Dates} from 'utils/Utils';
+import {
+	ClearableInput, DateRangeInput,
+	SelectEmployeeInput,
+	SelectIncidentCategoryList,
+} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import {Dates, isWeb} from 'utils/Utils';
-import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
-import {SelectTable, THead} from 'components/tables';
-import {ANewDialog} from 'components/dialogs';
-
-import {IncidentStatus} from '../dialogs/IncidentComponentRows';
+import style from "./ExportQuickIncidentsDialog.lazy.css";
+import {AControls, AExportDialog} from "components/exports/AExportDialog";
 
 // </editor-fold>
-import style from "./ExportQuickIncidentsDialog.lazy.css";
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
-class ExportQuickIncidentsDialog extends ANewDialog {
-    pageKey = "ExportQuickIncidentsDialog";
-
-//    className = 'ANewTableFormDialog';
-
-    constructor(props) {
-        super(props, style);
-    }
-
-    open(item) {
-        this.execWhen(() => this.extraProp('role')).then(() => {
-            this.refs.dialog.setTopButtons(this.topButtons);
-        });
-        return super.open(item);
-    }
-
-    get isExport() {
-        return !this.extraProp('role') || this.extraProp('role') === 'export';
-    }
-
-    get isSelect() {
-        return this.extraProp('role') === 'select';
-    }
-
-    get title() {
-        const {isExport, isSelect} = this;
-        if (isExport) {
-            return "Export Quick Incident(s)";
-        }
-        return "Select Quick Incident(s)";
-    }
-
-    get topButtons() {
-        const {isExport, isSelect} = this;
-        const title = () => {
-            if (isExport) return "Export";
-            return "Done";
-        };
-        return <>
-            <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-            <Button className="btn btn-primary save" onClick={this.onSubmit}>
-                <i className="fa fa-check icon-left"/>{title()}
-            </Button>
-        </>;
-    }
-
-    get controls() {
-        return Controls;
-    }
+class ExportQuickIncidentsDialog extends AExportDialog {
+	pageKey = "ExportQuickIncidentsDialog";
+	titleSingular = 'Quick Incident';
+	titlePlural = 'Quick Incidents';
+	
+	componentWillMount() {
+		super.componentWillMount();
+		style.use();
+	}
+	
+	componentWillUnmount() {
+		super.componentWillUnmount();
+		style.unuse();
+	}
+	
+	get excludePDF() {
+		return true;
+	}
+	
+	get controls() {
+		return Controls;
+	}
 }
 
 // </editor-fold>
 
 @observer
-class Controls extends React.Component {
-    path = 'plugin_sheq_assist/17_Incident_Investigation/';
-
-    @observable
-    state = {
-        incidentList: []
-    };
-    filterData;
-
-    // <editor-fold defaultstate="collapsed" desc="constructor">
-    constructor() {
-        super();
-
-        this.onSearch = this.onSearch.bind(this);
-        this.onLoadListIncidents = this.onLoadListIncidents.bind(this);
-        this.onSelectAll = this.onSelectAll.bind(this);
-        this.onUnSelectAll = this.onUnSelectAll.bind(this);
-
-        this.form = new Form();
-    }
-
-    // </editor-fold>
-
-    onLoadListIncidents(isNew) {
-        return neonBinding.events.emit(this.path + 'select/filter', {isNew, ...this.filterData});
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="onSearch">
-    onSearch() {
-        const {form} = this;
-        if (!form.isValid('client_from')) {
-            infoDialog.open('Company is required');
-            return;
-        }
-        const {
-            client_from, project_from, site_from
-        } = form.data;
-        this.filterData = {client_id: client_from.id};
-        if (project_from) {
-            this.filterData.project_id = project_from.id;
-        }
-        if (site_from) {
-            this.filterData.site_id = site_from.id;
-        }
-
-        const {incidentList} = this.state;
-        this.refs.selectIncidentTable.setSelectedList(incidentList).open().then(list => {
-            this.state.incidentList.clear();
-            this.state.incidentList.push(...list);
-            // this.reset();
-        });
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onSubmit">
-    onSubmit(e, btn, onSaved) {
-        const {isExport, isSelect} = this.props.dialog;
-        if (isExport) {
-            return this.onSubmitExport(e, btn, onSaved);
-        }
-        return this.onSubmitSelect(e, btn, onSaved);
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onSubmitExport">
-    onSubmitExport(e, btn, onSaved) {
-        const {form, state: {incidentList}} = this;
-
-        if (incidentList.isEmpty()) {
-            infoDialog.open('Please select at least one Incident');
-            return;
-        }
-
-        btn.text("Exporting...").disabled();
-        neonBinding.events.emit(this.path + "export-excel", incidentList.slice()).then(res => {
-            if (!res) {
-                infoDialog.open(<React.Fragment>
-                    <p>An error occurred. Please try again</p>
-                </React.Fragment>);
-            } else {
-                if (isWeb()) {
-                    infoDialog.open(<React.Fragment>
-                        <p>Incidents successfully exported.</p>
-                        <p><small>The file will be automatically downloaded</small></p>
-                    </React.Fragment>);
-                    saveFileAs(res, `Incidents-Report_${Dates.formatDate(new Date())}.xlsx`);
-                } else {
-                    infoDialog.open(<React.Fragment>
-                        <p>Incidents successfully exported.</p>
-                        <p>Saved in the following folder:</p>
-                        <p><small>{res.path}</small></p>
-                        <p><small>The file will open after 3 seconds</small></p>
-                    </React.Fragment>);
-                }
-            }
-        }).catch(err => {
-            infoDialog.open(<React.Fragment>
-                <p>An error occurred. Please check your network connection and try again</p>
-            </React.Fragment>);
-        }).finally(() => {
-            btn.text("Export").enabled();
-        });
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="onSubmitSelect">
-    onSubmitSelect(e, btn, onSaved) {
-        const {form, state: {incidentList}, props: {dialog}} = this;
-
-        if (incidentList.isEmpty()) {
-            infoDialog.open('Please select at least one Incident');
-            return;
-        }
-
-        onSaved(incidentList);
-        dialog.close();
-    }
-
-    // </editor-fold>
-
-    onSelectAll(e, btn) {
-
-    }
-
-    onUnSelectAll(e, btn) {
-
-    }
-
-    renderTHeadIncidentsFrom() {
-        return <THead>
-            <div className="td fixed-flex min-w-120">Incident Date</div>
-            <div className="td">Group</div>
-            <div className="td">Category</div>
-            <div className="td">Sub-Category</div>
-            <div className="td">Sector(s)</div>
-            <div className="td">Activities</div>
-            <div className="td">Description</div>
-            <div className="td">Exact Location</div>
-            <div className="td fixed-flex min-w-140">Status</div>
-            <div className="td fixed-flex no-padding min-w-70"></div>
-        </THead>;
-    }
-
-    renderItemIncidentsFrom(item, n) {
-        let {
-            id, data: {
-                created_at,
-                //
-                company,
-                client,
-                project,
-                site,
-                //
-                logged_user,
-                logged_employee,
-                //Step 2 (Incident Details)
-                latitude,
-                longitude,
-                exact_location,
-                short_desc,
-                //Step 3 (Date & Time)
-                incident_date,
-                incident_time,
-                date_reported,
-                time_reported,
-                time_shift,
-                //Step 4 (Incident Category)
-                category_list,
-                //Step 5 (Injury Report)
-                person_reporting,
-                //Step 6 (Injury Details)
-                person_injured,
-                nature_of_injury_list,
-                bodily_injury_location_list,
-                injury_mechanism_list,
-                //6.2 Motor Vehicle
-                is_vehicle_incident,
-                driver,
-                driver_email,
-                driver_phone,
-                vehicle_make,
-                vehicle_reg_num,
-                //6.3 Incident Severity
-                severity,
-                //Step 7 (Media Details)
-                image_list,
-                video_list,
-            }
-        } = item;
-//        console.log('Incidents', item)
-
-        return <React.Fragment key={id}>
-            <div
-                className="td fixed-flex min-w-120">{sec9_data && sec9_data.incident_date ? Dates.formatDate(sec9_data.incident_date) : 'N/A'}</div>
-            <div className="td">{sec1_data && sec1_data.group || 'N/A'}</div>
-            <div className="td">
-                {
-                    sec1_data && sec1_data.category_list ? sec1_data.category_list.map(v => (
-                        <span>{isString(v) ? v : v.value}</span>
-                    )) : 'N/A'
-                }
-            </div>
-            <div className="td">
-                {
-                    sec2_data && sec2_data.sub_category_list ? sec2_data.sub_category_list.filter(v => !!v).map(v =>
-                        <span>{isString(v) ? v : v.value}</span>
-                    ) : 'N/A'
-                }
-            </div>
-            <div className="td">
-                {
-                    sec1_data && sec1_data.sector_list ? sec1_data.sector_list.map(v => (
-                        <span>{isString(v) ? v : v.value}</span>
-                    )) : 'N/A'
-                }
-            </div>
-            <div className="td">
-                {
-                    sec2_data && sec2_data.activity_list ? sec2_data.activity_list.map(v =>
-                        <span>{isString(v) ? v : v.value}</span>
-                    ) : 'N/A'
-                }
-            </div>
-            <div className="td">{sec1_data && sec1_data.short_desc ? sec1_data.short_desc : 'N/A'}</div>
-            <div className="td">{sec9_data && sec9_data.exact_location ? sec9_data.exact_location : 'N/A'}</div>
-            <IncidentStatus key={new Date().getTime()} item={item}/>
-        </React.Fragment>;
-    }
-
-    get title() {
-        return "Export";
-    }
-
-    get titleSelected() {
-        return "Export";
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="render">
-    render() {
-        const {title, titleSelected} = this;
-        return (<div className="controls-wrapper h-full">
-            <div className="controls h-full">
-                <div className="row col-lg-3 h-full padding-0">
-                    <label className="heading text-center"><h4>Find Incident(s) To {title}:</h4></label>
-                    <div className="row sec-group margin-t-10 padding-l-10 padding-r-10">
-                        <SelectClientInput name="client_from" group="orgs1" placeholder="Company..." required showAll
-                                           className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <SelectProjectInput name="project_from" group="orgs1" placeholder="Project..." required showAll
-                                            className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <SelectSiteInput name="site_from" group="orgs1" placeholder="Site..." required showAll
-                                         className="col-lg-12 margin-b-10 form-control" onChange={this.form.onChange}/>
-                        <Button className="btn btn-primary hor-center margin-b-10" onClick={this.onSearch}>
-                            Find Incident(s)
-                        </Button>
-                    </div>
-                    <SelectTable ref="selectIncidentTable"
-                                 isDialog
-                                 replaceCols
-                                 name="incident"
-                                 desc="Incidents"
-                                 title="Select Incident(s)"
-                                 className="col-lg-12 no-padding SelectIncidentTable"
-                                 renderTHead={this.renderTHeadIncidentsFrom}
-                                 renderItem={this.renderItemIncidentsFrom}
-                                 onLoadList={this.onLoadListIncidents}
-                                 onUnSelectAll={this.onUnSelectAll}
-                                 onSelectAll={this.onSelectAll}
-                                 isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
-                </div>
-                <div className="row col-lg-9 h-full pull-right padding-0">
-                    <label className="heading text-center"><h4>Incident(s) To {titleSelected}:</h4></label>
-                    <SelectTable ref="selectedIncidentTable"
-                                 replaceCols
-                                 name="incident"
-                                 desc="Incidents"
-                                 title="Selected Incident(s)"
-                                 className={"col-lg-12 no-padding SelectedIncidentTable Table-" + (title.replaceAll(' ', ''))}
-                                 renderTHead={this.renderTHeadIncidentsFrom}
-                                 renderItem={this.renderItemIncidentsFrom}
-                                 list={this.state.incidentList}
-                                 isChecked={(item, selectedList) => true}/>
-                </div>
-            </div>
-        </div>);
-    }
-
-    // </editor-fold>
+class Controls extends AControls {
+	exportFn = sockets.of('incidents-quick').fn('export-excel');
+	
+	//<editor-fold desc="state">
+	@observable
+	state = {
+		lists: {
+			is_vehicle_incident: ['Yes', 'No'].map(value => ({label: value, value: value === "Yes", checked: false})),
+			severity: ['Medical Examination', 'Working / At Work'].map(value => ({
+				label: value,
+				value,
+				checked: false
+			})),
+			time_shift: ['Day', 'Night'].map(value => ({label: value, value, checked: false})),
+		},
+		searchList: [],
+	};
+	//</editor-fold>
+	
+	//<editor-fold desc="filterData">
+	@observable
+	filterData = {
+		//
+		client_id: null,
+		project_id: null,
+		site_id: null,
+		//
+		category_list: null,
+		time_shift: null,
+		person_reporting_id: null,
+		person_reporting_other_id: null,//
+		person_injured_id: null,
+		person_injured_other_id: null,//
+		driver_id: null,
+		driver_other_id: null,//
+		severity: null,
+		exact_location: null,
+		is_vehicle_incident: null,
+		vehicle_make: null,
+		vehicle_reg_num: null,
+		//
+		incident_date_range: null,
+		date_reported_range: null,
+	};
+	//</editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="constructor">
+	constructor(props) {
+		super(props);
+	}
+	
+	// </editor-fold>
+	
+	//<editor-fold desc="onLoadList">
+	onLoadList(params = {}) {
+		const {page, lastItem, filterData, filtered, isNew} = params;
+		const {
+			id,
+			category_list,
+			time_shift,
+			person_reporting_id,
+			person_reporting_other_id,
+			person_injured_id,
+			person_injured_other_id,
+			driver_id,
+			driver_other_id,
+			severity,
+			exact_location,
+			is_vehicle_incident,
+			vehicle_make,
+			vehicle_reg_num,
+			//
+			incident_date_range,
+			date_reported_range,
+		} = filterData || {};
+		
+		const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
+		
+		return listByLogged({
+			id,
+			category_list,
+			time_shift,
+			person_reporting_id,
+			person_reporting_other_id,
+			person_injured_id,
+			person_injured_other_id,
+			driver_id,
+			driver_other_id,
+			severity,
+			exact_location,
+			is_vehicle_incident,
+			vehicle_make,
+			vehicle_reg_num,
+			//
+			incident_date_range,
+			date_reported_range,
+			//
+			exact_orgs: true,
+			data_export: true,
+			//
+			limit: 0,
+			offset: 0,
+		}).then((res) => {
+			console.log('onLoadList res', res)
+			return res;
+		});
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="renderTHeadFrom">
+	renderTHeadFrom() {
+		return <THead>
+			<div className="td fixed-flex min-w-50">ID</div>
+			<div className="td fixed-flex min-w-180">Date & Time</div>
+			<div className="td fixed-flex min-w-140">Severity</div>
+			<div className="td">Category</div>
+			<div className="td">Reported By</div>
+			<div className="td">Person Injured</div>
+			<div className="td fixed-flex min-w-160">Asset</div>
+			<div className="td">Driver</div>
+			<div className="td">Description</div>
+			<div className="td">Exact Location</div>
+			<div className="td fixed-flex no-padding min-w-70"></div>
+		</THead>;
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="renderItemFrom">
+	renderItemFrom(item, n) {
+		const {
+			id,
+			data: {
+				created_at,
+				//
+				company,
+				client,
+				project,
+				site,
+				//
+				logged_user,
+				logged_employee,
+				//Step 2 (Incident Details)
+				latitude,
+				longitude,
+				exact_location,
+				short_desc,
+				//Step 3 (Date & Time)
+				incident_date,
+				incident_time,
+				date_reported,
+				time_reported,
+				time_shift,
+				//Step 4 (Incident Category)
+				category_list,
+				//Step 5 (Injury Report)
+				person_reporting,
+				//Step 6 (Injury Details)
+				person_injured,
+				nature_of_injury_list,
+				bodily_injury_location_list,
+				injury_mechanism_list,
+				//6.2 Motor Vehicle
+				is_vehicle_incident,
+				driver,
+				driver_email,
+				driver_phone,
+				vehicle_make,
+				vehicle_reg_num,
+				//6.3 Incident Severity
+				severity,
+				//Step 7 (Media Details)
+				image_list,
+				video_list,
+			}
+		} = item;
+		
+		return <React.Fragment key={id}>
+			<div className="td fixed-flex min-w-50">{id}</div>
+			<div className="td fixed-flex min-w-180">
+				{(incident_date || incident_time) ? <Chip
+					label={<>{Dates.formatDate(incident_date)}<br/>{incident_time}</>} size="medium"
+				/> : 'N/A'}
+			</div>
+			<div className="td fixed-flex min-w-140">
+				{severity || 'N/A'}
+			</div>
+			<div className="td">
+				{category_list ? <Grid container spacing={1} columns={4}>{
+					category_list.map(({category: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+				</Grid> : 'N/A'}
+			</div>
+			<div className="td">
+				{person_reporting && person_reporting.full_name || 'N/A'}
+			</div>
+			<div className="td">
+				{person_injured && person_injured.full_name || 'N/A'}
+			</div>
+			<div className="td">
+				{is_vehicle_incident ? `${vehicle_make ? `${vehicle_make}${vehicle_reg_num ? `(${vehicle_reg_num})` : ''}` : vehicle_reg_num || 'N/A'}` : 'N/A'}
+			</div>
+			<div className="td">
+				{driver && driver.full_name || 'N/A'}
+			</div>
+			<div className="td">{short_desc || 'N/A'}</div>
+			<div className="td">
+				{(latitude && longitude) || exact_location ? <Grid container spacing={1} columns={4}>
+					{latitude && longitude && <Grid item>
+						<Chip label={latitude + ', ' + longitude} size="small"/>
+					</Grid>}
+					{exact_location && <Grid item>
+						<Chip label={exact_location} size="small"/>
+					</Grid>}
+				</Grid> : 'N/A'}
+			</div>
+		</React.Fragment>;
+	}
+	
+	//</editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="renderFields">
+	get renderFields() {
+		const {onChange} = this.form;
+		
+		return <>
+			<SelectEmployeeInput
+				ref="person_reporting"
+				name="person_reporting"
+				placeholder="Reported By..."
+				className="form-control col-lg-12"
+				onChange={onChange}
+			/>
+			<SelectEmployeeInput
+				ref="person_injured"
+				name="person_injured"
+				placeholder="Person Injured..."
+				className="form-control col-lg-12"
+				onChange={onChange}
+			/>
+			<SelectEmployeeInput
+				ref="driver"
+				name="driver"
+				placeholder="Driver..."
+				className="form-control col-lg-12"
+				onChange={onChange}
+			/>
+			
+			<hr className="pull-left no-border bg-ddd h-2"/>
+			<SelectIncidentCategoryList
+				ref="category_list"
+				name="category_list"
+				type="select_multi"
+				className="form-control col-lg-12"
+				onChange={onChange}
+			/>
+			<ClearableInput
+				ref="severity"
+				name="severity"
+				type="radio"
+				placeholder="Severity"
+				className="form-control col-lg-12"
+				onChange={onChange}
+				values={this.state.lists.severity}
+				returnValue
+			/>
+			<ClearableInput
+				ref="exact_location"
+				name="exact_location"
+				type="text"
+				placeholder="Exact Location"
+				className="form-control col-lg-12"
+				onChange={onChange}
+			/>
+			
+			<hr className="pull-left no-border bg-ddd h-2"/>
+			<ClearableInput
+				ref="is_vehicle_incident"
+				name="is_vehicle_incident"
+				type="radio"
+				placeholder="Vehicle Incident"
+				className="form-control col-lg-12"
+				onChange={onChange}
+				values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({
+					label,
+					value: value === "Yes"
+				}))}
+				returnValue
+			/>
+			<ClearableInput ref="vehicle_make" name="vehicle_make" type="text" placeholder="Vehicle Make"
+			                className="form-control col-lg-12" onChange={onChange}/>
+			<ClearableInput ref="vehicle_reg_num" name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
+			                className="form-control col-lg-12" onChange={onChange}/>
+			
+			<ClearableInput ref="time_shift" name="time_shift" type="radio" placeholder="Time Shift"
+			                className="form-control col-lg-12" onChange={onChange}
+			                values={this.state.lists.time_shift} returnValue/>
+			
+			<hr className="pull-left no-border bg-ddd h-2"/>
+			<DateRangeInput ref="incident_date_range" name="incident_date_range" vertical
+			                className="col-lg-12 h-75 margin-0 form-control" placeholder="Incident Date Range"
+			                onChange={onChange}>
+				<label className="min-w-65">From</label>
+				<label className="min-w-50">To</label>
+			</DateRangeInput>
+			<DateRangeInput ref="date_reported_range" name="date_reported_range" vertical
+			                className="col-lg-12 h-75 margin-0 form-control" placeholder="Reported Date Range"
+			                onChange={onChange}>
+				<label className="min-w-65">From</label>
+				<label className="min-w-50">To</label>
+			</DateRangeInput>
+		</>;
+	}
+	
+	// </editor-fold>
+	
 }
 
 export default ExportQuickIncidentsDialog;

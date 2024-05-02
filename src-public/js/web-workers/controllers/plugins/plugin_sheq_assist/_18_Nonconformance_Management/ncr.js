@@ -269,7 +269,6 @@
 		// </editor-fold>
 		
 		// <editor-fold defaultstate="collapsed" desc="export_excel">
-		// <editor-fold defaultstate="collapsed" desc="export_excel">
 		async export_excel(evt, {
 			client: _client, project: _project, site: _site,
 			list,

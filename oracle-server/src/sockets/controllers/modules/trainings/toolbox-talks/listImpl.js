@@ -1,5 +1,9 @@
 const {orgs_fragment} = require("../../../../../graphql/Fragments");
-const {training_toolbox_talks_details_fragment, sheq_training_toolbox_talk_list_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {
+	training_toolbox_talks_details_fragment,
+	sheq_training_toolbox_talk_list_details_fragment,
+	getVariablesAndQueryConfig
+} = require('./commons');
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {

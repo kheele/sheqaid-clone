@@ -5,12 +5,11 @@ import {observable, toJS} from 'mobx';
 import Form from 'utils/Form';
 import {
 	ClearableInput,
-	Clickable, SelectChemicalPhysicalStateInput, SelectChemicalProductInput, SelectChemicalTypesInput,
-	SelectClientInput, SelectEmployeeInput,
-	SelectProjectInput, SelectSDSProductInput,
+	SelectClientInput,
+	SelectProjectInput,
 	SelectSiteInput
 } from 'components/inputs';
-import {FormControls, Fragment, NavButtons, RiskRating, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import RiskAssessmentItemTaskBasedTable from './RiskAssessmentItemTaskBasedTable';
@@ -24,11 +23,11 @@ class NewTaskBaseRiskAssessmentDialog extends ANewDialog {
 	pageKey = "NewTaskBaseRiskAssessmentDialog";
 	title = "Create Task Base Risk Assessment";
 	className = 'ANewTableFormDialog';
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -37,7 +36,7 @@ class NewTaskBaseRiskAssessmentDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/09_HIRA_And_Opportunities/task-base/";
-
+	
 	@observable
 	state = {
 		lists: {
@@ -46,41 +45,47 @@ class Controls extends React.Component {
 			})
 		}
 	};
-
+	
 	constructor() {
 		super();
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		this.onFormChange = this.onFormChange.bind(this);
+		
 		this.form = new Form();
 	}
-
+	
+	// <editor-fold defaultstate="collapsed" desc="onFormChange">
+	onFormChange(idx) {
+		const {dialog} = this.props;
+		dialog.cssWidth = idx === 3 ? '100%' : '800px';
+		return true;
+	}
+	
+	// </editor-fold>
+	
 	onNext(e, btn) {
 		const {form} = this;
 		const {idx} = btn.props;
-		if (idx === 1) {
+		if (idx === 0) {
 			if (!isObject(form.get('client'))) {
 				infoDialog.open('Company is required');
 				return;
 			}
+		}
+		if (idx === 1) {
 			if (!form.isValid('activity')) {
 				infoDialog.open('Description Of Task is required');
 				return;
 			}
 		}
-		if (idx === 2) {
-			if (!form.isValid('list') || form.get('list').isEmpty()) {
-				infoDialog.open('Assessed Items are required');
-				return;
-			}
-		}
-
+		
 		return true;
 	}
-
+	
 	onSubmit(e, btn, onSaved) {
 		const {form} = this;
-
+		
 		if (!isObject(form.get('client'))) {
 			infoDialog.open('Company is required');
 			return;
@@ -93,7 +98,7 @@ class Controls extends React.Component {
 			infoDialog.open('Assessed Items are required');
 			return;
 		}
-
+		
 		const {
 			//0
 			client,
@@ -116,11 +121,24 @@ class Controls extends React.Component {
 			expiry_date: Dates.formatDateSQL(expiry_date),
 			risk_tolerance,
 			//2
-			list: toJS(list),
+			list: {
+				data: toJS(list.map(val => {
+					const {
+						responsible_person,
+					} = val;
+					if (responsible_person) {
+						delete val.responsible_person;
+					}
+					return {
+						...val,
+						responsible_person_id: responsible_person && responsible_person.id,
+					};
+				}))
+			}
 		};
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		insertTaskbasedRA(data).then(res => {
@@ -134,12 +152,12 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.open());
 		});
 	}
-
+	
 	render() {
-		const {onFormNext, onFormBack, onFormOpen} = this.props;
-
+		const {onFormNext, onFormBack, onFormOpen, onFormChange} = this.props;
+		
 		const {isConsultant, isNoProjects} = storage.is;
-
+		
 		return <FormControls>
 			{!isNoProjects && <Row
 				rendered
@@ -148,6 +166,7 @@ class Controls extends React.Component {
 				title="Company / Project / Site"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
+				onFormChange={onFormChange}
 			>
 				{isConsultant && <SelectClientInput name="client" placeholder="Company..." required
 				                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
@@ -165,6 +184,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<ClearableInput name="activity" type="text" placeholder="Description Of Task" required
 				                className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
@@ -181,6 +201,7 @@ class Controls extends React.Component {
 				sectionClassName="overflow-auto"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
+				onFormChange={onFormChange}
 			>
 				<RiskAssessmentItemTaskBasedTable name="list" isNew onChange={this.form.onChange}/>
 			</Row>

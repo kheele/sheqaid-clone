@@ -65,9 +65,19 @@ class Controls extends React.Component {
 
     constructor() {
         super();
+        
+        this.onFormChange = this.onFormChange.bind(this);
 
         this.form = new Form();
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="onFormChange">
+    onFormChange(idx) {
+        const {dialog} = this.props;
+        dialog.cssWidth = idx === 3 ? '100%' : '800px';
+        return true;
+    }
+    // </editor-fold>
 
     //<editor-fold desc="onFormSave">
     onFormSave(e, btn) {
@@ -219,7 +229,7 @@ class Controls extends React.Component {
 
         let {
             props: {
-                onFormNext, onFormBack, onFormOpen,
+                onFormNext, onFormBack, onFormOpen, onFormChange
             },
             item, item: {
                 id, data: {
@@ -248,6 +258,7 @@ class Controls extends React.Component {
               title="Company / Project / Site"
               onFormOpen={onFormOpen}
               onFormNext={onFormNext}
+              onFormChange={onFormChange}
               onFormSave={this.onFormSave}
             >
                 {isConsultant && <SelectClientInput
@@ -284,6 +295,7 @@ class Controls extends React.Component {
               onFormOpen={onFormOpen}
               onFormNext={onFormNext}
               onFormBack={onFormBack}
+              onFormChange={onFormChange}
               onFormSave={this.onFormSave}
             >
                 <ClearableInput name="activity" type="text" placeholder="Activity" defaultValue={activity} required
@@ -301,6 +313,7 @@ class Controls extends React.Component {
               sectionClassName="overflow-auto"
               onFormOpen={onFormOpen}
               onFormBack={onFormBack}
+              onFormChange={onFormChange}
               onFormSave={this.onFormSave}
             >
                 <RiskAssessmentItemBaselineTable name="list" item={item} defaultValue={list} onChange={this.form.onChange}/>

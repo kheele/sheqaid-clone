@@ -92,17 +92,19 @@ module.exports = async (socket, data) => {
 	return listGraphQL({
 		query: `
 			  query listAllIncidentsByLoggedQuery {
-				sheq_incident_investigation(
-				  where: {
-					  removed: {_eq: ${removed}},
-					  ${filter}
-				  },
-	        order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
-					offset: ${offset},
-					${limit > 0 ? `limit: ${limit}` : ''}
-				) {
+					sheq_incident_investigation(
+					  where: {
+						  removed: {_eq: ${removed}},
+						  ${filter}
+					  },
+		        order_by: {incident_date: desc},
+		        #order_by: {short_desc: asc, group: asc, incident_time: desc, incident_date: desc},
+						offset: ${offset},
+						${limit > 0 ? `limit: ${limit}` : ''}
+					) {
 				    ${incident_details_fragment}
             ${orgs_fragment}
+			    }
 			  }
 			`,
 		operationName: "listAllIncidentsByLoggedQuery",

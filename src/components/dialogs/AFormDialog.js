@@ -8,22 +8,22 @@ import {createGetter, execWhen, findReactComponent, scrollTo} from '../../utils/
 @observer
 class AFormDialog extends React.Component {
 	style;
-
+	
 	@observable
-	state = {item: null, onResponse: null,};
+	state = {item: null, itemToView: null, onResponse: null,};
 	@observable
 	extraProps = {};
-
+	
 	constructor(props, style) {
 		super(props);
-
+		
 		this.style = style;
 		this.onCancel = this.onCancel.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this.onClose = this.onClose.bind(this);
-
+		
 		this.execWhen = execWhen.bind(this);
 		this.scrollTo = scrollTo.bind(this);
 		this.onFormGotoImpl = this.onFormGotoImpl.bind(this);
@@ -34,35 +34,35 @@ class AFormDialog extends React.Component {
 		this.onFormBack = this.onFormBack.bind(this);
 		this.onFormNext = this.onFormNext.bind(this);
 		this.onFormChange = this.onFormChange.bind(this);
-
+		
 		this.showSubmitBtn = this.showSubmitBtn.bind(this);
 		this.showCancelBtn = this.showCancelBtn.bind(this);
 		this.hideSubmitBtn = this.hideSubmitBtn.bind(this);
 		this.hideCancelBtn = this.hideCancelBtn.bind(this);
 	}
-
+	
 	componentWillMount() {
 		!!this.style && this.style.use();
 	}
-
+	
 	componentDidMount() {
 		setTimeout(() => {
 			const {open} = this.props;
 			open && this.open();
 		}, 0);
 	}
-
+	
 	componentWillUnmount() {
 		!!this.style && this.style.unuse();
 	}
-
+	
 	setTitle(title) {
 		setTimeout(() => {
 			this.refs.dialog.setTitle(title);
 		});
 		return this;
 	}
-
+	
 	extraProp(key, val) {
 		const argsLen = arguments.length;
 		if (argsLen === 1) {
@@ -76,14 +76,15 @@ class AFormDialog extends React.Component {
 					delete this.extraProps[key];
 				}
 			}
-    }
+		}
 		return this;
 	}
-
+	
 	open(item) {
+		this.state.itemToView = item;
 		return new Promise(async (resolve, reject) => {
 			this.state.onResponse = resolve;
-
+			
 			this.refs.dialog.open();
 			
 			if (!this.topButtonsHiddenCancel) {
@@ -92,12 +93,16 @@ class AFormDialog extends React.Component {
 				});
 			}
 			
-			const {findById} = this;
+			const {key, findById} = this;
 			
-			if (findById) {
+			if (key === "ANewDialog" && item && findById) {
 				this.state.item = await findById(item.id);
-			} else if(item) {
-				this.state.item = item;
+			} else if (item) {
+				if (findById) {
+					this.state.item = await findById(item.id);
+				} else {
+					this.state.item = item;
+				}
 			}
 			
 			let title = isFunction(this.title) ? this.title() : this.title;
@@ -107,11 +112,11 @@ class AFormDialog extends React.Component {
 			this.refs.dialog.setTitle(title);
 			
 			const controls = await execWhen(() => this.refs.controls);
-
+			
 			createGetter.call(controls, "dialog", () => this);
-
+			
 			// createGetter.call(controls, "item", () => this.state.item);
-			if(item && controls.state) {
+			if (item && controls.state) {
 				controls.state.item = item;
 				// createGetter.call(controls, "item", () => {
 				// 	const {$mobx} = this;
@@ -123,36 +128,36 @@ class AFormDialog extends React.Component {
 				// 		}
 				// 	}
 				// });
-			// 	// createGetter.call(controls, "item", computed(() => this.state.item));
-			// 	// createGetter.call(controls, "item", () => this.state.item);
-			// 	// extendObservable(controls, {item: computed(() => this.state.item)});
+				// 	// createGetter.call(controls, "item", computed(() => this.state.item));
+				// 	// createGetter.call(controls, "item", () => this.state.item);
+				// 	// extendObservable(controls, {item: computed(() => this.state.item)});
 			}
 		});
 	}
-
+	
 	close() {
 		const {dialog} = this.refs;
 		dialog && dialog.close();
 	}
-
+	
 	onClose() {
 		this.extraProps = {};
 		this.state.item = null;
 	}
-
+	
 	onCancel(e, btn) {
 		this.close();
 	}
-
+	
 	onSubmit(e, btn) {
 		this.refs.controls.onSubmit(e, btn, this.state.onResponse);
 	}
-
+	
 	onFormGotoImpl(currRow) {
 		const curr = currRow.addClass('active');
 		currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
 		currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-
+		
 		const currComp = findReactComponent(curr[0]);
 		if (currComp && currComp.props.lazyLoad) {
 			currComp.show();
@@ -161,25 +166,25 @@ class AFormDialog extends React.Component {
 			this.onFormChange(curr.index());
 		});
 	}
-
+	
 	onFormGoto(idx) {
 		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row:not(.row-profile-cover, .active-always):nth-child(' + idx + ')');
 		this.onFormGotoImpl(currRow);
 	}
-
+	
 	onFormGotoNext() {
 		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').next(".row:not(.row-profile-cover, .active-always)");
 		this.onFormGotoImpl(currRow);
 	}
-
+	
 	onFormGotoPrev() {
 		const currRow = $(findDOMNode(this.refs.controls)).find('.controls').children('.row.active').prev(".row:not(.row-profile-cover, .active-always)");
 		this.onFormGotoImpl(currRow);
 	}
-
+	
 	onFormOpen(e, btn) {
 		const {idx, lazyLoad, getFormChildren} = btn.props;
-
+		
 		const currRow = $(e.target).closest('.row');
 		if (currRow.hasClass('active')) {
 			currRow.removeClass('active');
@@ -193,14 +198,14 @@ class AFormDialog extends React.Component {
 			const curr = currRow.addClass('active');
 			currRow.prevAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
 			currRow.nextAll(".row:not(.row-profile-cover, .active-always)").removeClass('active');
-
+			
 			if (lazyLoad) {
 				const rows = getFormChildren();
 				rows.forEach(row => {
 					const {idx: _idx, className} = row.props;
-
-					if(className && (className.contains('row-profile-cover') || className.contains('active-always'))) return;
-
+					
+					if (className && (className.contains('row-profile-cover') || className.contains('active-always'))) return;
+					
 					if (_idx === idx) {
 						row.show && row.show();
 					} else {
@@ -213,10 +218,10 @@ class AFormDialog extends React.Component {
 			});
 		}
 	}
-
+	
 	onFormBack(e, btn) {
 		const {idx, lazyLoad, getFormChildren} = btn.props;
-
+		
 		const currRow = $(btn.getDOMNode ? btn.getDOMNode() : e.target).closest('.row.active');
 		currRow.removeClass('active');
 		if (lazyLoad) {
@@ -224,7 +229,7 @@ class AFormDialog extends React.Component {
 			const currRowComp = rows.find(row => row.props.idx === idx);
 			currRowComp && currRowComp.hide && currRowComp.hide();
 		}
-
+		
 		const prev = currRow.prev(".row:not(.row-profile-cover, .active-always)").addClass('active');
 		if (lazyLoad) {
 			const rows = getFormChildren();
@@ -236,7 +241,7 @@ class AFormDialog extends React.Component {
 			this.onFormChange(prev.index());
 		});
 	}
-
+	
 	async onFormNext(e, btn) {
 		const {onNext} = this.refs.controls;
 		if (isFunction(onNext)) {
@@ -246,9 +251,9 @@ class AFormDialog extends React.Component {
 			}
 			if (!res) return;
 		}
-
+		
 		const {idx, lazyLoad, getFormChildren} = btn.props;
-
+		
 		const currRow = $(btn.getDOMNode()).closest('.row.active');
 		currRow.removeClass('active');
 		if (lazyLoad) {
@@ -256,7 +261,7 @@ class AFormDialog extends React.Component {
 			const currRowComp = rows.find(row => row.props.idx === idx);
 			currRowComp && currRowComp.hide && currRowComp.hide();
 		}
-
+		
 		const next = currRow.next(".row:not(.row-profile-cover, .active-always)").addClass('active');
 		if (lazyLoad) {
 			const rows = getFormChildren();
@@ -268,12 +273,12 @@ class AFormDialog extends React.Component {
 			this.onFormChange(next.index());
 		});
 	}
-
+	
 	onFormChange(idx) {
 		const {onFormChange} = this.refs.controls;
 		isFunction(onFormChange) && onFormChange(idx + 1);
 	}
-
+	
 	addClass(c) {
 		setTimeout(() => {
 			const {dialog} = this.refs;
@@ -281,7 +286,7 @@ class AFormDialog extends React.Component {
 		});
 		return this;
 	}
-
+	
 	removeClass(c) {
 		setTimeout(() => {
 			const {dialog} = this.refs;
@@ -289,51 +294,56 @@ class AFormDialog extends React.Component {
 		});
 		return this;
 	}
-
+	
 	getDOMNode() {
 		return this.refs.dialog.getDOMNode();
 	}
-
+	
 	getHeader() {
 		return this.refs.dialog.getHeader();
 	}
-
+	
 	getHeaderDOMNode() {
 		return this.refs.dialog.getHeaderDOMNode();
 	}
-
+	
 	getTitleDOMNode() {
 		return this.refs.dialog.getTitleDOMNode();
 	}
-
+	
 	@computed get item() {
 		return this.state.item;
 	}
-
+	
 	showSubmitBtn() {
 		const {submit} = this.refs;
 		submit && submit.show();
 		return this;
 	}
-
+	
 	showCancelBtn() {
 		const {cancel} = this.refs;
 		cancel && cancel.show();
 		return this;
 	}
-
+	
 	hideSubmitBtn() {
 		const {submit} = this.refs;
 		submit && submit.hide();
 		return this;
 	}
-
+	
 	hideCancelBtn() {
 		const {cancel} = this.refs;
 		cancel && cancel.hide();
 		return this;
 	}
-
+	
+	set cssWidth(w) {
+		const {style} = document.documentElement;
+		const attr = `--${this.pageKey}-dialog-width`;
+		style.setProperty(attr, w);
+	}
 }
 
 export default AFormDialog;

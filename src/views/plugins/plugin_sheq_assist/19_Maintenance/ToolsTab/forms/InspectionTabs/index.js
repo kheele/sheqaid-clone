@@ -76,6 +76,7 @@ class TabWrapper extends React.Component {
             isEmbedded,
             item, item: {
                 id, data: {
+                    written_off,
                     inspection_template_list = [],
                     inspection_list = [],
                 }
@@ -105,7 +106,7 @@ class TabWrapper extends React.Component {
             <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" item={item}/>
             <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" item={item}/>
             <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" item={item}/>
-            {!isEmployee && <TemplatesTab ref="forms" title="Templates" item={item}/>}
+            {!written_off && !isEmployee && <TemplatesTab ref="forms" title="Templates" item={item}/>}
         </Tabs>);
     }
 }

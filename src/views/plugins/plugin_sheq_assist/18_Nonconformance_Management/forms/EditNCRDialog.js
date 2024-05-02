@@ -27,6 +27,7 @@ import findByIdIncident from "../../../../../mutations/all/Incident/findByIdInci
 import findByIdInspectionsQuestionnaire
 	from "../../../../../mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
 import findByIdSite from "../../../../../mutations/all/Site/findByIdSite";
+import findByIdQuestion from "../../../../../mutations/all/Questionnaires/Questions/findByIdQuestion";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EditDialog">
@@ -70,7 +71,7 @@ class Controls extends React.Component {
 			status_acceptance: ['Pending', 'Approved', 'Rejected'].map(text => {
 				return {text, value: text, checked: false}
 			}),
-			responsible_party_list: ['Consultant', 'Client', 'External'],
+			responsible_party_list: ['Consultant', 'Client', 'External', 'Internal'],
 			result: ['Pass', 'Fail'].map(text => {
 				return {text, value: text, checked: false}
 			}),
@@ -114,12 +115,15 @@ class Controls extends React.Component {
 					selected_source_compliance_audit,
 					selected_source_incident,
 					selected_source_inspection,
-					selected_source_site
+					selected_source_site,
+					selected_source_item_compliance_audit_finding,
+					selected_source_item_incident,
+					selected_source_item_inspection_ques,
 				}
 			} = this.item;
 			
 			const {selectSourceTable, selectSourceListTable} = this.refs;
-			selectSourceListTable.selected_source_item = selected_source_item;
+			selectSourceListTable.selected_source_item = selected_source_item_compliance_audit_finding || selected_source_item_incident || selected_source_item_inspection_ques;
 			
 			try {
 				if (selected_source_compliance_audit) {
@@ -130,6 +134,20 @@ class Controls extends React.Component {
 					selectSourceTable.selected_source = await findByIdInspectionsQuestionnaire(selected_source_inspection.id);
 				} else if (selected_source_site) {
 					selectSourceTable.selected_source = await findByIdSite(selected_source_site.id);
+				}
+			} catch (e) {
+				selectSourceTable.is_error = true;
+			} finally {
+				selectSourceTable.is_loaded = false;
+			}
+			
+			try {
+				if (selected_source_item_compliance_audit_finding) {
+					selectSourceTable.selected_source_item = await findByIdAudit(selected_source_item_compliance_audit_finding.id);
+				} else if (selected_source_item_incident) {
+					selectSourceTable.selected_source_item = await findByIdIncident(selected_source_item_incident.id);
+				} else if (selected_source_item_inspection_ques) {
+					selectSourceTable.selected_source_item = await findByIdQuestion(selected_source_item_inspection_ques.id);
 				}
 			} catch (e) {
 				selectSourceTable.is_error = true;
@@ -372,16 +390,15 @@ class Controls extends React.Component {
 		if (idx === 3) {
 			const {
 				due_date,
-				//responsible_person,
 				responsible_party_list,
 				assigned_job_position_list,
 				assigned_person_list,
+				assigned_person_other_list,
 				approving_person,
 			} = form.data;
 
 			const data = {};
 			ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
-			// ShouldUpdate.checkEmployee(data, old_data, responsible_person, 'responsible_person_id');
 			ShouldUpdate.checkEmployee(data, old_data, approving_person, 'approving_person_id');
 
 			onSubmit(data);
@@ -487,10 +504,10 @@ class Controls extends React.Component {
 					desc, process,
 					//3
 					due_date,
-					// responsible_person,
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,
+					assigned_person_other_list,
 					approving_person,
 					//4
 					document_list, document_proof_list,
@@ -573,7 +590,7 @@ class Controls extends React.Component {
 			<Row
 				rendered
 				idx={3}
-				title="3. Due Date & Persons Assigned"
+				title="3. Due Date & Persons Responsible"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
@@ -589,12 +606,16 @@ class Controls extends React.Component {
 				                className="col-lg-12 form-control" onChange={this.form.onChange}
 				                values={this.state.lists.responsible_party_list} returnValue add/>
 
-				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Assigned Job Position(s)..."
+				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Responsible Job Position(s)..."
 				                        type="select_multi" defaultValue={(assigned_job_position_list || []).map(({job_position}) => job_position)}
 				                        required className="col-lg-12 form-control"
 				                        onChange={this.form.onChange}/>
-				<SelectEmployeeInput name="assigned_person_list" placeholder="Assigned Person(s)..."
+				<SelectEmployeeInput name="assigned_person_list" placeholder="Responsible Employee(s)..."
 				                     type="select_multi" defaultValue={(assigned_person_list || []).map(({employee}) => employee)}
+				                     required className="col-lg-12 form-control"
+				                     onChange={this.form.onChange}/>
+				<SelectEmployeeInput name="assigned_person_other_list" placeholder="Responsible External Person(s)..."
+				                     type="select_multi" defaultValue={(assigned_person_other_list || []).map(({employee_other}) => employee_other)}
 				                     required className="col-lg-12 form-control"
 				                     onChange={this.form.onChange}/>
 

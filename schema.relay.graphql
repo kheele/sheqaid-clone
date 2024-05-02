@@ -9808,6 +9808,45 @@ type default_contractor_questionnaires implements Node {
     job_position: default_job_positions
     job_position_id: bigint
     name: String!
+    "An array relationship"
+    ncr_list(
+        "distinct select on columns"
+        distinct_on: [sheq_non_conformances_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_non_conformances_order_by!],
+        "filter the rows returned"
+        where: sheq_non_conformances_bool_exp
+    ): [sheq_non_conformances!]!
+    "An aggregate relationship"
+    ncr_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_non_conformances_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_non_conformances_order_by!],
+        "filter the rows returned"
+        where: sheq_non_conformances_bool_exp
+    ): sheq_non_conformances_aggregate!
+    "An array relationship connection"
+    ncr_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_non_conformances_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_non_conformances_order_by!],
+        "filter the rows returned"
+        where: sheq_non_conformances_bool_exp
+    ): sheq_non_conformancesConnection!
     "A computed field, executes function \"questionnaire_next_schedule_date\""
     next_schedule_date: date
     "A computed field, executes function \"default_contractor_questionnaires_progress\""
@@ -9867,6 +9906,9 @@ type default_contractor_questionnaires implements Node {
     "An object relationship"
     responsible_person: hr_employees
     responsible_person_id: bigint
+    "An object relationship"
+    responsible_user: default_users
+    responsible_user_id: bigint
     schedule_date: date
     "An array relationship"
     schedule_list(
@@ -10029,6 +10071,7 @@ type default_contractor_questionnaires_avg_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -10077,6 +10120,7 @@ type default_contractor_questionnaires_max_fields {
     ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    responsible_user_id: bigint
     schedule_date: date
     site_id: bigint
     start_date: date
@@ -10312,6 +10356,7 @@ type default_contractor_questionnaires_min_fields {
     ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    responsible_user_id: bigint
     schedule_date: date
     site_id: bigint
     start_date: date
@@ -10415,45 +10460,6 @@ type default_contractor_questionnaires_ques implements Node {
         "filter the rows returned"
         where: default_contractor_questionnaires_messages_bool_exp
     ): default_contractor_questionnaires_messagesConnection!
-    "An array relationship"
-    non_conformance_list(
-        "distinct select on columns"
-        distinct_on: [sheq_non_conformances_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_non_conformances_order_by!],
-        "filter the rows returned"
-        where: sheq_non_conformances_bool_exp
-    ): [sheq_non_conformances!]!
-    "An aggregate relationship"
-    non_conformance_list_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_non_conformances_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_non_conformances_order_by!],
-        "filter the rows returned"
-        where: sheq_non_conformances_bool_exp
-    ): sheq_non_conformances_aggregate!
-    "An array relationship connection"
-    non_conformance_list_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_non_conformances_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_non_conformances_order_by!],
-        "filter the rows returned"
-        where: sheq_non_conformances_bool_exp
-    ): sheq_non_conformancesConnection!
     "An array relationship"
     notified_list(
         "distinct select on columns"
@@ -11180,6 +11186,7 @@ type default_contractor_questionnaires_stddev_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11217,6 +11224,7 @@ type default_contractor_questionnaires_stddev_pop_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11254,6 +11262,7 @@ type default_contractor_questionnaires_stddev_samp_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11291,6 +11300,7 @@ type default_contractor_questionnaires_sum_fields {
     ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    responsible_user_id: bigint
     site_id: bigint
     template_id: bigint
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11328,6 +11338,7 @@ type default_contractor_questionnaires_var_pop_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11365,6 +11376,7 @@ type default_contractor_questionnaires_var_samp_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -11402,6 +11414,7 @@ type default_contractor_questionnaires_variance_fields {
     ques_prev_id: Float
     responsible_department_id: Float
     responsible_person_id: Float
+    responsible_user_id: Float
     site_id: Float
     template_id: Float
     "A computed field, executes function \"default_contractor_questionnaires_total_answered\""
@@ -28029,7 +28042,7 @@ type hira_swp implements Node {
         where: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
     ): hira_swp_potential_hazard_and_possible_cause_listConnection!
     "An array relationship"
-    ppe_required_list(
+    ppe_type_required_list(
         "distinct select on columns"
         distinct_on: [proxy_swp__ppe_type_select_column!],
         "limit the number of rows returned"
@@ -28042,7 +28055,7 @@ type hira_swp implements Node {
         where: proxy_swp__ppe_type_bool_exp
     ): [proxy_swp__ppe_type!]!
     "An aggregate relationship"
-    ppe_required_list_aggregate(
+    ppe_type_required_list_aggregate(
         "distinct select on columns"
         distinct_on: [proxy_swp__ppe_type_select_column!],
         "limit the number of rows returned"
@@ -28055,7 +28068,7 @@ type hira_swp implements Node {
         where: proxy_swp__ppe_type_bool_exp
     ): proxy_swp__ppe_type_aggregate!
     "An array relationship connection"
-    ppe_required_list_connection(
+    ppe_type_required_list_connection(
         after: String,
         before: String,
         "distinct select on columns"
@@ -29948,45 +29961,6 @@ type hr_employees implements Node {
         "filter the rows returned"
         where: sheq_training_toolbox_talk_list_registers_bool_exp
     ): sheq_training_toolbox_talk_list_registersConnection!
-    "An array relationship"
-    sheq_training_toolbox_talk_lists(
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_bool_exp
-    ): [sheq_training_toolbox_talk_list!]!
-    "An aggregate relationship"
-    sheq_training_toolbox_talk_lists_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_bool_exp
-    ): sheq_training_toolbox_talk_list_aggregate!
-    "An array relationship connection"
-    sheq_training_toolbox_talk_lists_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_bool_exp
-    ): sheq_training_toolbox_talk_listConnection!
     "An array relationship"
     signature_settings_list(
         "distinct select on columns"
@@ -43344,8 +43318,18 @@ type mutation_root {
     ): [sheq_chemical_hazchem_sheet_docs_mutation_response]
     "update data of the table: \"sheq_chemical_hazchem_sheets\""
     update_sheq_chemical_hazchem_sheets(
+        "append existing jsonb value of filtered columns with new jsonb value"
+        _append: sheq_chemical_hazchem_sheets_append_input,
+        "delete the field or element with specified path (for JSON arrays, negative integers count from the end)"
+        _delete_at_path: sheq_chemical_hazchem_sheets_delete_at_path_input,
+        "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array"
+        _delete_elem: sheq_chemical_hazchem_sheets_delete_elem_input,
+        "delete key/value pair or string element. key/value pairs are matched based on their key value"
+        _delete_key: sheq_chemical_hazchem_sheets_delete_key_input,
         "increments the numeric columns with given value of the filtered values"
         _inc: sheq_chemical_hazchem_sheets_inc_input,
+        "prepend existing jsonb value of filtered columns with new jsonb value"
+        _prepend: sheq_chemical_hazchem_sheets_prepend_input,
         "sets the columns of the filtered rows to the given values"
         _set: sheq_chemical_hazchem_sheets_set_input,
         "filter the rows which have to be updated"
@@ -43353,8 +43337,18 @@ type mutation_root {
     ): sheq_chemical_hazchem_sheets_mutation_response
     "update single row of the table: \"sheq_chemical_hazchem_sheets\""
     update_sheq_chemical_hazchem_sheets_by_pk(
+        "append existing jsonb value of filtered columns with new jsonb value"
+        _append: sheq_chemical_hazchem_sheets_append_input,
+        "delete the field or element with specified path (for JSON arrays, negative integers count from the end)"
+        _delete_at_path: sheq_chemical_hazchem_sheets_delete_at_path_input,
+        "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array"
+        _delete_elem: sheq_chemical_hazchem_sheets_delete_elem_input,
+        "delete key/value pair or string element. key/value pairs are matched based on their key value"
+        _delete_key: sheq_chemical_hazchem_sheets_delete_key_input,
         "increments the numeric columns with given value of the filtered values"
         _inc: sheq_chemical_hazchem_sheets_inc_input,
+        "prepend existing jsonb value of filtered columns with new jsonb value"
+        _prepend: sheq_chemical_hazchem_sheets_prepend_input,
         "sets the columns of the filtered rows to the given values"
         _set: sheq_chemical_hazchem_sheets_set_input,
         pk_columns: sheq_chemical_hazchem_sheets_pk_columns_input!
@@ -55233,7 +55227,10 @@ type sheq_chemical_hazchem_sheets implements Node {
     company: default_companies
     company_id: bigint
     contacts_emergency_name: String
-    contacts_emergency_num: String
+    contacts_emergency_num(
+        "JSON select path"
+        path: String
+    ): jsonb
     contacts_manufacturer_name: String
     contacts_manufacturer_num: String
     "An object relationship"
@@ -55518,7 +55515,6 @@ type sheq_chemical_hazchem_sheets_max_fields {
     client_id: bigint
     company_id: bigint
     contacts_emergency_name: String
-    contacts_emergency_num: String
     contacts_manufacturer_name: String
     contacts_manufacturer_num: String
     contractor_id: bigint
@@ -55542,7 +55538,6 @@ type sheq_chemical_hazchem_sheets_min_fields {
     client_id: bigint
     company_id: bigint
     contacts_emergency_name: String
-    contacts_emergency_num: String
     contacts_manufacturer_name: String
     contacts_manufacturer_num: String
     contractor_id: bigint
@@ -63152,8 +63147,14 @@ type sheq_non_conformances implements Node {
     selected_source_incident: sheq_incident_investigation
     selected_source_incident_id: bigint
     "An object relationship"
-    selected_source_inspection: default_contractor_questionnaires_ques
+    selected_source_inspection: default_contractor_questionnaires
     selected_source_inspection_id: bigint
+    "An object relationship"
+    selected_source_item_compliance_audit_finding: sheq_compliance_audits_items
+    selected_source_item_compliance_audit_finding_id: bigint
+    "An object relationship"
+    selected_source_item_inspection_ques: default_contractor_questionnaires_ques
+    selected_source_item_inspection_ques_id: bigint
     "An object relationship"
     selected_source_site: default_sites
     selected_source_site_id: bigint
@@ -63217,6 +63218,8 @@ type sheq_non_conformances_avg_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63250,6 +63253,8 @@ type sheq_non_conformances_max_fields {
     selected_source_compliance_audit_id: bigint
     selected_source_incident_id: bigint
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site_id: bigint
     site_id: bigint
     "A computed field, executes function \"ncr_sort\""
@@ -63287,6 +63292,8 @@ type sheq_non_conformances_min_fields {
     selected_source_compliance_audit_id: bigint
     selected_source_incident_id: bigint
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site_id: bigint
     site_id: bigint
     "A computed field, executes function \"ncr_sort\""
@@ -63320,6 +63327,8 @@ type sheq_non_conformances_stddev_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63341,6 +63350,8 @@ type sheq_non_conformances_stddev_pop_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63362,6 +63373,8 @@ type sheq_non_conformances_stddev_samp_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63383,6 +63396,8 @@ type sheq_non_conformances_sum_fields {
     selected_source_compliance_audit_id: bigint
     selected_source_incident_id: bigint
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site_id: bigint
     site_id: bigint
     "A computed field, executes function \"ncr_sort\""
@@ -63404,6 +63419,8 @@ type sheq_non_conformances_var_pop_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63425,6 +63442,8 @@ type sheq_non_conformances_var_samp_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -63446,6 +63465,8 @@ type sheq_non_conformances_variance_fields {
     selected_source_compliance_audit_id: Float
     selected_source_incident_id: Float
     selected_source_inspection_id: Float
+    selected_source_item_compliance_audit_finding_id: Float
+    selected_source_item_inspection_ques_id: Float
     selected_source_site_id: Float
     site_id: Float
     "A computed field, executes function \"ncr_sort\""
@@ -66858,6 +66879,45 @@ type sheq_training_toolbox_talk_list implements Node {
         "JSON select path"
         path: String
     ): json
+    "An array relationship"
+    attendance_register_list(
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_list_registers_bool_exp
+    ): [sheq_training_toolbox_talk_list_registers!]!
+    "An aggregate relationship"
+    attendance_register_list_aggregate(
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_list_registers_bool_exp
+    ): sheq_training_toolbox_talk_list_registers_aggregate!
+    "An array relationship connection"
+    attendance_register_list_connection(
+        after: String,
+        before: String,
+        "distinct select on columns"
+        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
+        first: Int,
+        last: Int,
+        "sort the rows by one or more columns"
+        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
+        "filter the rows returned"
+        where: sheq_training_toolbox_talk_list_registers_bool_exp
+    ): sheq_training_toolbox_talk_list_registersConnection!
     "An object relationship"
     client: default_clients
     client_id: bigint
@@ -66876,7 +66936,6 @@ type sheq_training_toolbox_talk_list implements Node {
         "JSON select path"
         path: String
     ): json
-    hr_id: bigint
     id: ID!
     institution_conducting_training: String
     "An array relationship"
@@ -66921,45 +66980,6 @@ type sheq_training_toolbox_talk_list implements Node {
     "An object relationship"
     project: default_projects
     project_id: bigint
-    "An array relationship"
-    register_list(
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_registers_bool_exp
-    ): [sheq_training_toolbox_talk_list_registers!]!
-    "An aggregate relationship"
-    register_list_aggregate(
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_registers_bool_exp
-    ): sheq_training_toolbox_talk_list_registers_aggregate!
-    "An array relationship connection"
-    register_list_connection(
-        after: String,
-        before: String,
-        "distinct select on columns"
-        distinct_on: [sheq_training_toolbox_talk_list_registers_select_column!],
-        first: Int,
-        last: Int,
-        "sort the rows by one or more columns"
-        order_by: [sheq_training_toolbox_talk_list_registers_order_by!],
-        "filter the rows returned"
-        where: sheq_training_toolbox_talk_list_registers_bool_exp
-    ): sheq_training_toolbox_talk_list_registersConnection!
     removed: Boolean!
     "An object relationship"
     site: default_sites
@@ -66972,6 +66992,15 @@ type sheq_training_toolbox_talk_list implements Node {
     "An object relationship"
     trainer: hr_employees
     trainer_id: bigint
+    "An object relationship"
+    trainer_job_position: default_job_positions
+    trainer_job_position_id: bigint
+    "An object relationship"
+    trainer_other: hr_employees_external
+    trainer_other_id: bigint
+    "An object relationship"
+    user: default_users
+    user_id: bigint
 }
 
 "A Relay connection object on \"sheq_training_toolbox_talk_list\""
@@ -67012,12 +67041,14 @@ type sheq_training_toolbox_talk_list_avg_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate max on columns"
@@ -67028,7 +67059,6 @@ type sheq_training_toolbox_talk_list_max_fields {
     contractor_site_id: bigint
     created_at: timestamptz
     date: timestamptz
-    hr_id: bigint
     id: bigint
     institution_conducting_training: String
     project_id: bigint
@@ -67037,6 +67067,9 @@ type sheq_training_toolbox_talk_list_max_fields {
     time_to: timetz
     toolbox_talk_id: bigint
     trainer_id: bigint
+    trainer_job_position_id: bigint
+    trainer_other_id: bigint
+    user_id: bigint
 }
 
 "aggregate min on columns"
@@ -67047,7 +67080,6 @@ type sheq_training_toolbox_talk_list_min_fields {
     contractor_site_id: bigint
     created_at: timestamptz
     date: timestamptz
-    hr_id: bigint
     id: bigint
     institution_conducting_training: String
     project_id: bigint
@@ -67056,6 +67088,9 @@ type sheq_training_toolbox_talk_list_min_fields {
     time_to: timetz
     toolbox_talk_id: bigint
     trainer_id: bigint
+    trainer_job_position_id: bigint
+    trainer_other_id: bigint
+    user_id: bigint
 }
 
 "response of any mutation on the table \"sheq_training_toolbox_talk_list\""
@@ -67202,12 +67237,14 @@ type sheq_training_toolbox_talk_list_stddev_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_pop on columns"
@@ -67216,12 +67253,14 @@ type sheq_training_toolbox_talk_list_stddev_pop_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_samp on columns"
@@ -67230,12 +67269,14 @@ type sheq_training_toolbox_talk_list_stddev_samp_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate sum on columns"
@@ -67244,12 +67285,14 @@ type sheq_training_toolbox_talk_list_sum_fields {
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
-    hr_id: bigint
     id: bigint
     project_id: bigint
     site_id: bigint
     toolbox_talk_id: bigint
     trainer_id: bigint
+    trainer_job_position_id: bigint
+    trainer_other_id: bigint
+    user_id: bigint
 }
 
 "aggregate var_pop on columns"
@@ -67258,12 +67301,14 @@ type sheq_training_toolbox_talk_list_var_pop_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate var_samp on columns"
@@ -67272,12 +67317,14 @@ type sheq_training_toolbox_talk_list_var_samp_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "aggregate variance on columns"
@@ -67286,12 +67333,14 @@ type sheq_training_toolbox_talk_list_variance_fields {
     company_id: Float
     contractor_id: Float
     contractor_site_id: Float
-    hr_id: Float
     id: Float
     project_id: Float
     site_id: Float
     toolbox_talk_id: Float
     trainer_id: Float
+    trainer_job_position_id: Float
+    trainer_other_id: Float
+    user_id: Float
 }
 
 "columns and relationships of \"sheq_training_toolbox_talk_registers\""
@@ -67352,6 +67401,9 @@ type sheq_training_toolbox_talk_registers implements Node {
     "An object relationship"
     subject: sheq_training_toolbox_talk_subjects!
     subject_id: bigint!
+    "An object relationship"
+    user: default_users
+    user_id: bigint
 }
 
 "A Relay connection object on \"sheq_training_toolbox_talk_registers\""
@@ -67394,6 +67446,7 @@ type sheq_training_toolbox_talk_registers_avg_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate max on columns"
@@ -67405,6 +67458,7 @@ type sheq_training_toolbox_talk_registers_max_fields {
     project_id: bigint
     site_id: bigint
     subject_id: bigint
+    user_id: bigint
 }
 
 "aggregate min on columns"
@@ -67416,6 +67470,7 @@ type sheq_training_toolbox_talk_registers_min_fields {
     project_id: bigint
     site_id: bigint
     subject_id: bigint
+    user_id: bigint
 }
 
 "response of any mutation on the table \"sheq_training_toolbox_talk_registers\""
@@ -67434,6 +67489,7 @@ type sheq_training_toolbox_talk_registers_stddev_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_pop on columns"
@@ -67444,6 +67500,7 @@ type sheq_training_toolbox_talk_registers_stddev_pop_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate stddev_samp on columns"
@@ -67454,6 +67511,7 @@ type sheq_training_toolbox_talk_registers_stddev_samp_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate sum on columns"
@@ -67464,6 +67522,7 @@ type sheq_training_toolbox_talk_registers_sum_fields {
     project_id: bigint
     site_id: bigint
     subject_id: bigint
+    user_id: bigint
 }
 
 "aggregate var_pop on columns"
@@ -67474,6 +67533,7 @@ type sheq_training_toolbox_talk_registers_var_pop_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate var_samp on columns"
@@ -67484,6 +67544,7 @@ type sheq_training_toolbox_talk_registers_var_samp_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "aggregate variance on columns"
@@ -67494,6 +67555,7 @@ type sheq_training_toolbox_talk_registers_variance_fields {
     project_id: Float
     site_id: Float
     subject_id: Float
+    user_id: Float
 }
 
 "columns and relationships of \"sheq_training_toolbox_talk_subjects\""
@@ -79707,6 +79769,8 @@ enum default_contractor_questionnaires_select_column {
     "column name"
     responsible_person_id
     "column name"
+    responsible_user_id
+    "column name"
     schedule_date
     "column name"
     site_id
@@ -79800,6 +79864,8 @@ enum default_contractor_questionnaires_update_column {
     responsible_department_id
     "column name"
     responsible_person_id
+    "column name"
+    responsible_user_id
     "column name"
     schedule_date
     "column name"
@@ -88401,6 +88467,10 @@ enum sheq_non_conformances_select_column {
     "column name"
     selected_source_inspection_id
     "column name"
+    selected_source_item_compliance_audit_finding_id
+    "column name"
+    selected_source_item_inspection_ques_id
+    "column name"
     selected_source_site_id
     "column name"
     site_id
@@ -88480,6 +88550,10 @@ enum sheq_non_conformances_update_column {
     selected_source_incident_id
     "column name"
     selected_source_inspection_id
+    "column name"
+    selected_source_item_compliance_audit_finding_id
+    "column name"
+    selected_source_item_inspection_ques_id
     "column name"
     selected_source_site_id
     "column name"
@@ -89573,8 +89647,6 @@ enum sheq_training_toolbox_talk_list_select_column {
     "column name"
     doc
     "column name"
-    hr_id
-    "column name"
     id
     "column name"
     institution_conducting_training
@@ -89592,6 +89664,12 @@ enum sheq_training_toolbox_talk_list_select_column {
     toolbox_talk_id
     "column name"
     trainer_id
+    "column name"
+    trainer_job_position_id
+    "column name"
+    trainer_other_id
+    "column name"
+    user_id
 }
 
 "select \"sheq_training_toolbox_talk_list_aggregate_bool_exp_bool_and_arguments_columns\" columns of table \"sheq_training_toolbox_talk_list\""
@@ -89625,8 +89703,6 @@ enum sheq_training_toolbox_talk_list_update_column {
     "column name"
     doc
     "column name"
-    hr_id
-    "column name"
     id
     "column name"
     institution_conducting_training
@@ -89644,6 +89720,12 @@ enum sheq_training_toolbox_talk_list_update_column {
     toolbox_talk_id
     "column name"
     trainer_id
+    "column name"
+    trainer_job_position_id
+    "column name"
+    trainer_other_id
+    "column name"
+    user_id
 }
 
 "unique or primary key constraints on table \"sheq_training_toolbox_talk_registers\""
@@ -89668,6 +89750,8 @@ enum sheq_training_toolbox_talk_registers_select_column {
     site_id
     "column name"
     subject_id
+    "column name"
+    user_id
 }
 
 "update columns of table \"sheq_training_toolbox_talk_registers\""
@@ -89686,6 +89770,8 @@ enum sheq_training_toolbox_talk_registers_update_column {
     site_id
     "column name"
     subject_id
+    "column name"
+    user_id
 }
 
 "unique or primary key constraints on table \"sheq_training_toolbox_talk_subjects\""
@@ -100086,6 +100172,7 @@ input default_contractor_questionnaires_avg_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -100128,6 +100215,8 @@ input default_contractor_questionnaires_bool_exp {
     job_position: default_job_positions_bool_exp
     job_position_id: bigint_comparison_exp
     name: String_comparison_exp
+    ncr_list: sheq_non_conformances_bool_exp
+    ncr_list_aggregate: sheq_non_conformances_aggregate_bool_exp
     next_schedule_date: date_comparison_exp
     progress: bigint_comparison_exp
     project: default_projects_bool_exp
@@ -100143,6 +100232,8 @@ input default_contractor_questionnaires_bool_exp {
     responsible_department_id: bigint_comparison_exp
     responsible_person: hr_employees_bool_exp
     responsible_person_id: bigint_comparison_exp
+    responsible_user: default_users_bool_exp
+    responsible_user_id: bigint_comparison_exp
     schedule_date: date_comparison_exp
     schedule_list: default_contractor_questionnaires_schedules_bool_exp
     schedule_list_aggregate: default_contractor_questionnaires_schedules_aggregate_bool_exp
@@ -100187,6 +100278,7 @@ input default_contractor_questionnaires_inc_input {
     ques_prev_id: bigint
     responsible_department_id: bigint
     responsible_person_id: bigint
+    responsible_user_id: bigint
     site_id: bigint
     template_id: bigint
     user_id: bigint
@@ -100225,6 +100317,7 @@ input default_contractor_questionnaires_insert_input {
     job_position: default_job_positions_obj_rel_insert_input
     job_position_id: bigint
     name: String
+    ncr_list: sheq_non_conformances_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
     ques_next: default_contractor_questionnaires_obj_rel_insert_input
@@ -100237,6 +100330,8 @@ input default_contractor_questionnaires_insert_input {
     responsible_department_id: bigint
     responsible_person: hr_employees_obj_rel_insert_input
     responsible_person_id: bigint
+    responsible_user: default_users_obj_rel_insert_input
+    responsible_user_id: bigint
     schedule_date: date
     schedule_list: default_contractor_questionnaires_schedules_arr_rel_insert_input
     site: default_sites_obj_rel_insert_input
@@ -100281,6 +100376,7 @@ input default_contractor_questionnaires_max_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     schedule_date: order_by
     site_id: order_by
     start_date: order_by
@@ -100592,6 +100688,7 @@ input default_contractor_questionnaires_min_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     schedule_date: order_by
     site_id: order_by
     start_date: order_by
@@ -100652,6 +100749,7 @@ input default_contractor_questionnaires_order_by {
     job_position: default_job_positions_order_by
     job_position_id: order_by
     name: order_by
+    ncr_list_aggregate: sheq_non_conformances_aggregate_order_by
     next_schedule_date: order_by
     progress: order_by
     project: default_projects_order_by
@@ -100666,6 +100764,8 @@ input default_contractor_questionnaires_order_by {
     responsible_department_id: order_by
     responsible_person: hr_employees_order_by
     responsible_person_id: order_by
+    responsible_user: default_users_order_by
+    responsible_user_id: order_by
     schedule_date: order_by
     schedule_list_aggregate: default_contractor_questionnaires_schedules_aggregate_order_by
     scheduled: order_by
@@ -100783,8 +100883,6 @@ input default_contractor_questionnaires_ques_bool_exp {
     maxScore: Int_comparison_exp
     message_list: default_contractor_questionnaires_messages_bool_exp
     message_list_aggregate: default_contractor_questionnaires_messages_aggregate_bool_exp
-    non_conformance_list: sheq_non_conformances_bool_exp
-    non_conformance_list_aggregate: sheq_non_conformances_aggregate_bool_exp
     notified_list: proxy_contractor_questionnaires__notified_bool_exp
     notified_list_aggregate: proxy_contractor_questionnaires__notified_aggregate_bool_exp
     notify: Boolean_comparison_exp
@@ -100839,7 +100937,6 @@ input default_contractor_questionnaires_ques_insert_input {
     link_doc_id: bigint
     maxScore: Int
     message_list: default_contractor_questionnaires_messages_arr_rel_insert_input
-    non_conformance_list: sheq_non_conformances_arr_rel_insert_input
     notified_list: proxy_contractor_questionnaires__notified_arr_rel_insert_input
     notify: Boolean
     notifyAction: String
@@ -101100,7 +101197,6 @@ input default_contractor_questionnaires_ques_order_by {
     link_doc_id: order_by
     maxScore: order_by
     message_list_aggregate: default_contractor_questionnaires_messages_aggregate_order_by
-    non_conformance_list_aggregate: sheq_non_conformances_aggregate_order_by
     notified_list_aggregate: proxy_contractor_questionnaires__notified_aggregate_order_by
     notify: order_by
     notifyAction: order_by
@@ -101631,6 +101727,7 @@ input default_contractor_questionnaires_set_input {
     removed: Boolean
     responsible_department_id: bigint
     responsible_person_id: bigint
+    responsible_user_id: bigint
     schedule_date: date
     site_id: bigint
     start_date: date
@@ -101661,6 +101758,7 @@ input default_contractor_questionnaires_stddev_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101684,6 +101782,7 @@ input default_contractor_questionnaires_stddev_pop_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101707,6 +101806,7 @@ input default_contractor_questionnaires_stddev_samp_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101730,6 +101830,7 @@ input default_contractor_questionnaires_sum_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101762,6 +101863,7 @@ input default_contractor_questionnaires_var_pop_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101785,6 +101887,7 @@ input default_contractor_questionnaires_var_samp_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -101808,6 +101911,7 @@ input default_contractor_questionnaires_variance_order_by {
     ques_prev_id: order_by
     responsible_department_id: order_by
     responsible_person_id: order_by
+    responsible_user_id: order_by
     site_id: order_by
     template_id: order_by
     user_id: order_by
@@ -109635,8 +109739,8 @@ input hira_swp_bool_exp {
     person_approving_procedure_id: bigint_comparison_exp
     potential_hazard_and_possible_cause_list: hira_swp_potential_hazard_and_possible_cause_list_bool_exp
     potential_hazard_and_possible_cause_list_aggregate: hira_swp_potential_hazard_and_possible_cause_list_aggregate_bool_exp
-    ppe_required_list: proxy_swp__ppe_type_bool_exp
-    ppe_required_list_aggregate: proxy_swp__ppe_type_aggregate_bool_exp
+    ppe_type_required_list: proxy_swp__ppe_type_bool_exp
+    ppe_type_required_list_aggregate: proxy_swp__ppe_type_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
     removed: Boolean_comparison_exp
@@ -109696,7 +109800,7 @@ input hira_swp_insert_input {
     person_approving_procedure: hr_employees_obj_rel_insert_input
     person_approving_procedure_id: bigint
     potential_hazard_and_possible_cause_list: hira_swp_potential_hazard_and_possible_cause_list_arr_rel_insert_input
-    ppe_required_list: proxy_swp__ppe_type_arr_rel_insert_input
+    ppe_type_required_list: proxy_swp__ppe_type_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
     removed: Boolean
@@ -109753,7 +109857,7 @@ input hira_swp_order_by {
     person_approving_procedure: hr_employees_order_by
     person_approving_procedure_id: order_by
     potential_hazard_and_possible_cause_list_aggregate: hira_swp_potential_hazard_and_possible_cause_list_aggregate_order_by
-    ppe_required_list_aggregate: proxy_swp__ppe_type_aggregate_order_by
+    ppe_type_required_list_aggregate: proxy_swp__ppe_type_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
     removed: order_by
@@ -110803,8 +110907,6 @@ input hr_employees_bool_exp {
     sheq_training_plans__employee_blacklists_aggregate: sheq_training_plans__employee_blacklist_aggregate_bool_exp
     sheq_training_toolbox_talk_list_registers: sheq_training_toolbox_talk_list_registers_bool_exp
     sheq_training_toolbox_talk_list_registers_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_bool_exp
-    sheq_training_toolbox_talk_lists: sheq_training_toolbox_talk_list_bool_exp
-    sheq_training_toolbox_talk_lists_aggregate: sheq_training_toolbox_talk_list_aggregate_bool_exp
     signature_settings_list: proxy_signature_settings__link_bool_exp
     signature_settings_list_aggregate: proxy_signature_settings__link_aggregate_bool_exp
     site: default_sites_bool_exp
@@ -116359,7 +116461,6 @@ input hr_employees_insert_input {
     sheq_non_conformances: sheq_non_conformances_arr_rel_insert_input
     sheq_training_plans__employee_blacklists: sheq_training_plans__employee_blacklist_arr_rel_insert_input
     sheq_training_toolbox_talk_list_registers: sheq_training_toolbox_talk_list_registers_arr_rel_insert_input
-    sheq_training_toolbox_talk_lists: sheq_training_toolbox_talk_list_arr_rel_insert_input
     signature_settings_list: proxy_signature_settings__link_arr_rel_insert_input
     site: default_sites_obj_rel_insert_input
     site_id: bigint
@@ -116967,7 +117068,6 @@ input hr_employees_order_by {
     sheq_non_conformances_aggregate: sheq_non_conformances_aggregate_order_by
     sheq_training_plans__employee_blacklists_aggregate: sheq_training_plans__employee_blacklist_aggregate_order_by
     sheq_training_toolbox_talk_list_registers_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_order_by
-    sheq_training_toolbox_talk_lists_aggregate: sheq_training_toolbox_talk_list_aggregate_order_by
     signature_settings_list_aggregate: proxy_signature_settings__link_aggregate_order_by
     site: default_sites_order_by
     site_id: order_by
@@ -126308,6 +126408,11 @@ input sheq_chemical_hazchem_sheets_aggregate_order_by {
     variance: sheq_chemical_hazchem_sheets_variance_order_by
 }
 
+"append existing jsonb value of filtered columns with new jsonb value"
+input sheq_chemical_hazchem_sheets_append_input {
+    contacts_emergency_num: jsonb
+}
+
 "input type for inserting array relation for remote table \"sheq_chemical_hazchem_sheets\""
 input sheq_chemical_hazchem_sheets_arr_rel_insert_input {
     data: [sheq_chemical_hazchem_sheets_insert_input!]!
@@ -126340,7 +126445,7 @@ input sheq_chemical_hazchem_sheets_bool_exp {
     company: default_companies_bool_exp
     company_id: bigint_comparison_exp
     contacts_emergency_name: String_comparison_exp
-    contacts_emergency_num: String_comparison_exp
+    contacts_emergency_num: jsonb_comparison_exp
     contacts_manufacturer_name: String_comparison_exp
     contacts_manufacturer_num: String_comparison_exp
     contractor: default_contractors_bool_exp
@@ -126373,6 +126478,21 @@ input sheq_chemical_hazchem_sheets_bool_exp {
     user_id: bigint_comparison_exp
 }
 
+"delete the field or element with specified path (for JSON arrays, negative integers count from the end)"
+input sheq_chemical_hazchem_sheets_delete_at_path_input {
+    contacts_emergency_num: [String!]
+}
+
+"delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array"
+input sheq_chemical_hazchem_sheets_delete_elem_input {
+    contacts_emergency_num: Int
+}
+
+"delete key/value pair or string element. key/value pairs are matched based on their key value"
+input sheq_chemical_hazchem_sheets_delete_key_input {
+    contacts_emergency_num: String
+}
+
 "input type for incrementing numeric columns in table \"sheq_chemical_hazchem_sheets\""
 input sheq_chemical_hazchem_sheets_inc_input {
     client_id: bigint
@@ -126395,7 +126515,7 @@ input sheq_chemical_hazchem_sheets_insert_input {
     company: default_companies_obj_rel_insert_input
     company_id: bigint
     contacts_emergency_name: String
-    contacts_emergency_num: String
+    contacts_emergency_num: jsonb
     contacts_manufacturer_name: String
     contacts_manufacturer_num: String
     contractor: default_contractors_obj_rel_insert_input
@@ -126596,7 +126716,6 @@ input sheq_chemical_hazchem_sheets_max_order_by {
     client_id: order_by
     company_id: order_by
     contacts_emergency_name: order_by
-    contacts_emergency_num: order_by
     contacts_manufacturer_name: order_by
     contacts_manufacturer_num: order_by
     contractor_id: order_by
@@ -126620,7 +126739,6 @@ input sheq_chemical_hazchem_sheets_min_order_by {
     client_id: order_by
     company_id: order_by
     contacts_emergency_name: order_by
-    contacts_emergency_num: order_by
     contacts_manufacturer_name: order_by
     contacts_manufacturer_num: order_by
     contractor_id: order_by
@@ -126696,12 +126814,17 @@ input sheq_chemical_hazchem_sheets_pk_columns_input {
     id: bigint!
 }
 
+"prepend existing jsonb value of filtered columns with new jsonb value"
+input sheq_chemical_hazchem_sheets_prepend_input {
+    contacts_emergency_num: jsonb
+}
+
 "input type for updating data in table \"sheq_chemical_hazchem_sheets\""
 input sheq_chemical_hazchem_sheets_set_input {
     client_id: bigint
     company_id: bigint
     contacts_emergency_name: String
-    contacts_emergency_num: String
+    contacts_emergency_num: jsonb
     contacts_manufacturer_name: String
     contacts_manufacturer_num: String
     contractor_id: bigint
@@ -126783,8 +126906,18 @@ input sheq_chemical_hazchem_sheets_sum_order_by {
 }
 
 input sheq_chemical_hazchem_sheets_updates {
+    "append existing jsonb value of filtered columns with new jsonb value"
+    _append: sheq_chemical_hazchem_sheets_append_input
+    "delete the field or element with specified path (for JSON arrays, negative integers count from the end)"
+    _delete_at_path: sheq_chemical_hazchem_sheets_delete_at_path_input
+    "delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array"
+    _delete_elem: sheq_chemical_hazchem_sheets_delete_elem_input
+    "delete key/value pair or string element. key/value pairs are matched based on their key value"
+    _delete_key: sheq_chemical_hazchem_sheets_delete_key_input
     "increments the numeric columns with given value of the filtered values"
     _inc: sheq_chemical_hazchem_sheets_inc_input
+    "prepend existing jsonb value of filtered columns with new jsonb value"
+    _prepend: sheq_chemical_hazchem_sheets_prepend_input
     "sets the columns of the filtered rows to the given values"
     _set: sheq_chemical_hazchem_sheets_set_input
     "filter the rows which have to be updated"
@@ -128828,6 +128961,13 @@ input sheq_compliance_audits_items_min_order_by {
     responsible_person_id: order_by
     sub_element: order_by
     target_date: order_by
+}
+
+"input type for inserting object relation for remote table \"sheq_compliance_audits_items\""
+input sheq_compliance_audits_items_obj_rel_insert_input {
+    data: sheq_compliance_audits_items_insert_input!
+    "upsert condition"
+    on_conflict: sheq_compliance_audits_items_on_conflict
 }
 
 "on_conflict condition type for table \"sheq_compliance_audits_items\""
@@ -135601,6 +135741,8 @@ input sheq_non_conformances_avg_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -135655,8 +135797,12 @@ input sheq_non_conformances_bool_exp {
     selected_source_compliance_audit_id: bigint_comparison_exp
     selected_source_incident: sheq_incident_investigation_bool_exp
     selected_source_incident_id: bigint_comparison_exp
-    selected_source_inspection: default_contractor_questionnaires_ques_bool_exp
+    selected_source_inspection: default_contractor_questionnaires_bool_exp
     selected_source_inspection_id: bigint_comparison_exp
+    selected_source_item_compliance_audit_finding: sheq_compliance_audits_items_bool_exp
+    selected_source_item_compliance_audit_finding_id: bigint_comparison_exp
+    selected_source_item_inspection_ques: default_contractor_questionnaires_ques_bool_exp
+    selected_source_item_inspection_ques_id: bigint_comparison_exp
     selected_source_site: default_sites_bool_exp
     selected_source_site_id: bigint_comparison_exp
     site: default_sites_bool_exp
@@ -135684,6 +135830,8 @@ input sheq_non_conformances_inc_input {
     selected_source_compliance_audit_id: bigint
     selected_source_incident_id: bigint
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site_id: bigint
     site_id: bigint
     user_id: bigint
@@ -135730,8 +135878,12 @@ input sheq_non_conformances_insert_input {
     selected_source_compliance_audit_id: bigint
     selected_source_incident: sheq_incident_investigation_obj_rel_insert_input
     selected_source_incident_id: bigint
-    selected_source_inspection: default_contractor_questionnaires_ques_obj_rel_insert_input
+    selected_source_inspection: default_contractor_questionnaires_obj_rel_insert_input
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding: sheq_compliance_audits_items_obj_rel_insert_input
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques: default_contractor_questionnaires_ques_obj_rel_insert_input
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site: default_sites_obj_rel_insert_input
     selected_source_site_id: bigint
     site: default_sites_obj_rel_insert_input
@@ -135770,6 +135922,8 @@ input sheq_non_conformances_max_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     source: order_by
@@ -135805,6 +135959,8 @@ input sheq_non_conformances_min_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     source: order_by
@@ -135869,8 +136025,12 @@ input sheq_non_conformances_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident: sheq_incident_investigation_order_by
     selected_source_incident_id: order_by
-    selected_source_inspection: default_contractor_questionnaires_ques_order_by
+    selected_source_inspection: default_contractor_questionnaires_order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding: sheq_compliance_audits_items_order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques: default_contractor_questionnaires_ques_order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site: default_sites_order_by
     selected_source_site_id: order_by
     site: default_sites_order_by
@@ -135916,6 +136076,8 @@ input sheq_non_conformances_set_input {
     selected_source_compliance_audit_id: bigint
     selected_source_incident_id: bigint
     selected_source_inspection_id: bigint
+    selected_source_item_compliance_audit_finding_id: bigint
+    selected_source_item_inspection_ques_id: bigint
     selected_source_site_id: bigint
     site_id: bigint
     source: String
@@ -135939,6 +136101,8 @@ input sheq_non_conformances_stddev_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -135958,6 +136122,8 @@ input sheq_non_conformances_stddev_pop_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -135977,6 +136143,8 @@ input sheq_non_conformances_stddev_samp_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -135996,6 +136164,8 @@ input sheq_non_conformances_sum_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -136024,6 +136194,8 @@ input sheq_non_conformances_var_pop_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -136043,6 +136215,8 @@ input sheq_non_conformances_var_samp_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -136062,6 +136236,8 @@ input sheq_non_conformances_variance_order_by {
     selected_source_compliance_audit_id: order_by
     selected_source_incident_id: order_by
     selected_source_inspection_id: order_by
+    selected_source_item_compliance_audit_finding_id: order_by
+    selected_source_item_inspection_ques_id: order_by
     selected_source_site_id: order_by
     site_id: order_by
     user_id: order_by
@@ -140165,12 +140341,14 @@ input sheq_training_toolbox_talk_list_avg_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"sheq_training_toolbox_talk_list\". All fields are combined with a logical 'AND'."
@@ -140179,6 +140357,8 @@ input sheq_training_toolbox_talk_list_bool_exp {
     _not: sheq_training_toolbox_talk_list_bool_exp
     _or: [sheq_training_toolbox_talk_list_bool_exp!]
     attendance_register_doc: json_comparison_exp
+    attendance_register_list: sheq_training_toolbox_talk_list_registers_bool_exp
+    attendance_register_list_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_bool_exp
     client: default_clients_bool_exp
     client_id: bigint_comparison_exp
     company: default_companies_bool_exp
@@ -140190,15 +140370,12 @@ input sheq_training_toolbox_talk_list_bool_exp {
     created_at: timestamptz_comparison_exp
     date: timestamptz_comparison_exp
     doc: json_comparison_exp
-    hr_id: bigint_comparison_exp
     id: bigint_comparison_exp
     institution_conducting_training: String_comparison_exp
     job_position_list: proxy_job_position__training_toolbox_talk_list_bool_exp
     job_position_list_aggregate: proxy_job_position__training_toolbox_talk_list_aggregate_bool_exp
     project: default_projects_bool_exp
     project_id: bigint_comparison_exp
-    register_list: sheq_training_toolbox_talk_list_registers_bool_exp
-    register_list_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_bool_exp
     removed: Boolean_comparison_exp
     site: default_sites_bool_exp
     site_id: bigint_comparison_exp
@@ -140208,6 +140385,12 @@ input sheq_training_toolbox_talk_list_bool_exp {
     toolbox_talk_id: bigint_comparison_exp
     trainer: hr_employees_bool_exp
     trainer_id: bigint_comparison_exp
+    trainer_job_position: default_job_positions_bool_exp
+    trainer_job_position_id: bigint_comparison_exp
+    trainer_other: hr_employees_external_bool_exp
+    trainer_other_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_training_toolbox_talk_list\""
@@ -140216,17 +140399,20 @@ input sheq_training_toolbox_talk_list_inc_input {
     company_id: bigint
     contractor_id: bigint
     contractor_site_id: bigint
-    hr_id: bigint
     id: bigint
     project_id: bigint
     site_id: bigint
     toolbox_talk_id: bigint
     trainer_id: bigint
+    trainer_job_position_id: bigint
+    trainer_other_id: bigint
+    user_id: bigint
 }
 
 "input type for inserting data into table \"sheq_training_toolbox_talk_list\""
 input sheq_training_toolbox_talk_list_insert_input {
     attendance_register_doc: json
+    attendance_register_list: sheq_training_toolbox_talk_list_registers_arr_rel_insert_input
     client: default_clients_obj_rel_insert_input
     client_id: bigint
     company: default_companies_obj_rel_insert_input
@@ -140238,13 +140424,11 @@ input sheq_training_toolbox_talk_list_insert_input {
     created_at: timestamptz
     date: timestamptz
     doc: json
-    hr_id: bigint
     id: bigint
     institution_conducting_training: String
     job_position_list: proxy_job_position__training_toolbox_talk_list_arr_rel_insert_input
     project: default_projects_obj_rel_insert_input
     project_id: bigint
-    register_list: sheq_training_toolbox_talk_list_registers_arr_rel_insert_input
     removed: Boolean
     site: default_sites_obj_rel_insert_input
     site_id: bigint
@@ -140254,6 +140438,12 @@ input sheq_training_toolbox_talk_list_insert_input {
     toolbox_talk_id: bigint
     trainer: hr_employees_obj_rel_insert_input
     trainer_id: bigint
+    trainer_job_position: default_job_positions_obj_rel_insert_input
+    trainer_job_position_id: bigint
+    trainer_other: hr_employees_external_obj_rel_insert_input
+    trainer_other_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
 }
 
 "order by max() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140264,7 +140454,6 @@ input sheq_training_toolbox_talk_list_max_order_by {
     contractor_site_id: order_by
     created_at: order_by
     date: order_by
-    hr_id: order_by
     id: order_by
     institution_conducting_training: order_by
     project_id: order_by
@@ -140273,6 +140462,9 @@ input sheq_training_toolbox_talk_list_max_order_by {
     time_to: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by min() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140283,7 +140475,6 @@ input sheq_training_toolbox_talk_list_min_order_by {
     contractor_site_id: order_by
     created_at: order_by
     date: order_by
-    hr_id: order_by
     id: order_by
     institution_conducting_training: order_by
     project_id: order_by
@@ -140292,6 +140483,9 @@ input sheq_training_toolbox_talk_list_min_order_by {
     time_to: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "input type for inserting object relation for remote table \"sheq_training_toolbox_talk_list\""
@@ -140311,6 +140505,7 @@ input sheq_training_toolbox_talk_list_on_conflict {
 "Ordering options when selecting data from \"sheq_training_toolbox_talk_list\"."
 input sheq_training_toolbox_talk_list_order_by {
     attendance_register_doc: order_by
+    attendance_register_list_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_order_by
     client: default_clients_order_by
     client_id: order_by
     company: default_companies_order_by
@@ -140322,13 +140517,11 @@ input sheq_training_toolbox_talk_list_order_by {
     created_at: order_by
     date: order_by
     doc: order_by
-    hr_id: order_by
     id: order_by
     institution_conducting_training: order_by
     job_position_list_aggregate: proxy_job_position__training_toolbox_talk_list_aggregate_order_by
     project: default_projects_order_by
     project_id: order_by
-    register_list_aggregate: sheq_training_toolbox_talk_list_registers_aggregate_order_by
     removed: order_by
     site: default_sites_order_by
     site_id: order_by
@@ -140338,6 +140531,12 @@ input sheq_training_toolbox_talk_list_order_by {
     toolbox_talk_id: order_by
     trainer: hr_employees_order_by
     trainer_id: order_by
+    trainer_job_position: default_job_positions_order_by
+    trainer_job_position_id: order_by
+    trainer_other: hr_employees_external_order_by
+    trainer_other_id: order_by
+    user: default_users_order_by
+    user_id: order_by
 }
 
 "primary key columns input for table: sheq_training_toolbox_talk_list"
@@ -140541,7 +140740,6 @@ input sheq_training_toolbox_talk_list_set_input {
     created_at: timestamptz
     date: timestamptz
     doc: json
-    hr_id: bigint
     id: bigint
     institution_conducting_training: String
     project_id: bigint
@@ -140551,6 +140749,9 @@ input sheq_training_toolbox_talk_list_set_input {
     time_to: timetz
     toolbox_talk_id: bigint
     trainer_id: bigint
+    trainer_job_position_id: bigint
+    trainer_other_id: bigint
+    user_id: bigint
 }
 
 "order by stddev() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140559,12 +140760,14 @@ input sheq_training_toolbox_talk_list_stddev_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140573,12 +140776,14 @@ input sheq_training_toolbox_talk_list_stddev_pop_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140587,12 +140792,14 @@ input sheq_training_toolbox_talk_list_stddev_samp_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by sum() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140601,12 +140808,14 @@ input sheq_training_toolbox_talk_list_sum_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 input sheq_training_toolbox_talk_list_updates {
@@ -140624,12 +140833,14 @@ input sheq_training_toolbox_talk_list_var_pop_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by var_samp() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140638,12 +140849,14 @@ input sheq_training_toolbox_talk_list_var_samp_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 "order by variance() on columns of table \"sheq_training_toolbox_talk_list\""
@@ -140652,12 +140865,14 @@ input sheq_training_toolbox_talk_list_variance_order_by {
     company_id: order_by
     contractor_id: order_by
     contractor_site_id: order_by
-    hr_id: order_by
     id: order_by
     project_id: order_by
     site_id: order_by
     toolbox_talk_id: order_by
     trainer_id: order_by
+    trainer_job_position_id: order_by
+    trainer_other_id: order_by
+    user_id: order_by
 }
 
 input sheq_training_toolbox_talk_registers_aggregate_bool_exp {
@@ -140701,6 +140916,7 @@ input sheq_training_toolbox_talk_registers_avg_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "Boolean expression to filter rows from the table \"sheq_training_toolbox_talk_registers\". All fields are combined with a logical 'AND'."
@@ -140722,6 +140938,8 @@ input sheq_training_toolbox_talk_registers_bool_exp {
     site_id: bigint_comparison_exp
     subject: sheq_training_toolbox_talk_subjects_bool_exp
     subject_id: bigint_comparison_exp
+    user: default_users_bool_exp
+    user_id: bigint_comparison_exp
 }
 
 "input type for incrementing numeric columns in table \"sheq_training_toolbox_talk_registers\""
@@ -140732,6 +140950,7 @@ input sheq_training_toolbox_talk_registers_inc_input {
     project_id: bigint
     site_id: bigint
     subject_id: bigint
+    user_id: bigint
 }
 
 "input type for inserting data into table \"sheq_training_toolbox_talk_registers\""
@@ -140749,6 +140968,8 @@ input sheq_training_toolbox_talk_registers_insert_input {
     site_id: bigint
     subject: sheq_training_toolbox_talk_subjects_obj_rel_insert_input
     subject_id: bigint
+    user: default_users_obj_rel_insert_input
+    user_id: bigint
 }
 
 "order by max() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140760,6 +140981,7 @@ input sheq_training_toolbox_talk_registers_max_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by min() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140771,6 +140993,7 @@ input sheq_training_toolbox_talk_registers_min_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "input type for inserting object relation for remote table \"sheq_training_toolbox_talk_registers\""
@@ -140802,6 +141025,8 @@ input sheq_training_toolbox_talk_registers_order_by {
     site_id: order_by
     subject: sheq_training_toolbox_talk_subjects_order_by
     subject_id: order_by
+    user: default_users_order_by
+    user_id: order_by
 }
 
 "primary key columns input for table: sheq_training_toolbox_talk_registers"
@@ -140818,6 +141043,7 @@ input sheq_training_toolbox_talk_registers_set_input {
     project_id: bigint
     site_id: bigint
     subject_id: bigint
+    user_id: bigint
 }
 
 "order by stddev() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140828,6 +141054,7 @@ input sheq_training_toolbox_talk_registers_stddev_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_pop() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140838,6 +141065,7 @@ input sheq_training_toolbox_talk_registers_stddev_pop_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by stddev_samp() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140848,6 +141076,7 @@ input sheq_training_toolbox_talk_registers_stddev_samp_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by sum() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140858,6 +141087,7 @@ input sheq_training_toolbox_talk_registers_sum_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 input sheq_training_toolbox_talk_registers_updates {
@@ -140877,6 +141107,7 @@ input sheq_training_toolbox_talk_registers_var_pop_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by var_samp() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140887,6 +141118,7 @@ input sheq_training_toolbox_talk_registers_var_samp_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 "order by variance() on columns of table \"sheq_training_toolbox_talk_registers\""
@@ -140897,6 +141129,7 @@ input sheq_training_toolbox_talk_registers_variance_order_by {
     project_id: order_by
     site_id: order_by
     subject_id: order_by
+    user_id: order_by
 }
 
 input sheq_training_toolbox_talk_subjects_aggregate_bool_exp {

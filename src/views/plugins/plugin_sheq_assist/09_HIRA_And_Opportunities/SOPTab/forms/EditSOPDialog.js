@@ -465,9 +465,32 @@ class Controls extends React.Component {
 				onFormBack={onFormBack}
 				onFormSave={this.onFormSave}
 			>
-				<NewProcedureListTable name="procedure_list" defaultValue={procedure_list || []} onChange={this.form.onChange}/>
-				<NewKeyPointListTable name="key_point_list" defaultValue={key_point_list || []} onChange={this.form.onChange}/>
-				<NewOperationListTable name="operation_list" defaultValue={operation_list || []} onChange={this.form.onChange}/>
+				<FormControls>
+					<Row
+						rendered
+						activeAlways
+						idx={7.1}
+						title="7.1. Pre-start Check"
+					>
+						<NewProcedureListTable name="procedure_list" defaultValue={procedure_list || []} onChange={this.form.onChange}/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.2}
+						title="7.2. Key Points"
+					>
+						<NewKeyPointListTable name="key_point_list" defaultValue={key_point_list || []} onChange={this.form.onChange}/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.3}
+						title="7.3. Operations"
+					>
+						<NewOperationListTable name="operation_list" defaultValue={operation_list || []} onChange={this.form.onChange}/>
+					</Row>
+				</FormControls>
 			</Row>
 			<Row
 				rendered

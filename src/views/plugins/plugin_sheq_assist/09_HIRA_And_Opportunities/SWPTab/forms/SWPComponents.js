@@ -36,26 +36,29 @@ class ANewListTable extends ATableSavable {
 	}
 
 	renderItem(n, onClick) {
+		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			return <TRow key={"item-" + n} className="tr-readonly">
-				<div className="td fixed-flex min-w-20"><span>{n + 1}.</span></div>
-				<div className="td"><span>{item.text}</span></div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+			return <TRow key={"item-" + n} className="tr-readonly w-full">
+				<div className="td fixed-flex min-w-20"><span>{n + 1}</span></div>
+				<div className="td">{item.text}</div>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="delete" shouldRender={!readonly} readonly={readonly} className="btn btn-primary pull-right w-40" onClick={onClick}>
 						<i className="fa fa-times-circle"/>
 					</Button>
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0">
+			if(readonly) return null;
+			
+			return <TRow key="item-new" className="padding-l-0 w-full">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">
-					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder="Type here" required
+					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder={this.title} required
 					                className="form-control" onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10" onClick={onClick}>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-v-10" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -64,7 +67,7 @@ class ANewListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full-calc-add-20 h-full padding-0 -margin-l-10">
 			<THead className="align-left">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">{this.title}</div>
@@ -92,27 +95,30 @@ class NewSignSheetListTable extends ATableSavable {
 	}
 
 	renderItem(n, onClick) {
+		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
 			const {id, data: {fname, lname}} = item.employee;
-			return <TRow key={"item-" + n} className="tr-readonly">
-				<div className="td fixed-flex min-w-20"><span>{n + 1}.</span></div>
-				<div className="td"><span>{lname + ' ' + fname}</span></div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+			return <TRow key={"item-" + n} className="tr-readonly w-full">
+				<div className="td fixed-flex min-w-20"><span>{n + 1}</span></div>
+				<div className="td">{lname + ' ' + fname}</div>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="delete" shouldRender={!readonly} readonly={readonly} className="btn btn-primary pull-right w-40" onClick={onClick}>
 						<i className="fa fa-times-circle"/>
 					</Button>
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0">
+			if(readonly) return null;
+			
+			return <TRow key="item-new" className="padding-l-0 w-full">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">
-					<SelectEmployeeInput ref={this.onSetRef} name="employee" type="select" placeholder="Select..." required
+					<SelectEmployeeInput ref={this.onSetRef} name="employee" type="select" placeholder="Select Employee..." required
 					                     className="form-control" onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10" onClick={onClick}>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-v-10" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -121,7 +127,7 @@ class NewSignSheetListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full-calc-add-20 h-full padding-0 -margin-l-10">
 			<THead className="align-left">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">Employee</div>
@@ -179,36 +185,39 @@ class NewPotentialHazardAndPossibleCauseListTable extends ATableSavable {
 	}
 
 	renderItem(n, onClick) {
+		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			return <TRow key={"item-" + n} className="tr-readonly">
-				<div className="td fixed-flex min-w-20"><span>{n + 1}.</span></div>
-				<div className="td"><span>{item.hazard}</span></div>
-				<div className="td"><span>{item.cause}</span></div>
-				<div className="td fixed-flex min-w-295"><span>{item.rating}</span></div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+			return <TRow key={"item-" + n} className="tr-readonly w-full">
+				<div className="td fixed-flex min-w-20"><span>{n + 1}</span></div>
+				<div className="td">{item.hazard}</div>
+				<div className="td">{item.cause}</div>
+				<div className="td fixed-flex min-w-295">{item.rating}</div>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="delete" shouldRender={!readonly} readonly={readonly} className="btn btn-primary pull-right w-40" onClick={onClick}>
 						<i className="fa fa-times-circle"/>
 					</Button>
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0">
+			if(readonly) return null;
+			
+			return <TRow key="item-new" className="padding-l-0 w-full">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">
-					<ClearableInput ref={this.onSetRef} name="hazard" type="text" placeholder="Type here" required
+					<ClearableInput ref={this.onSetRef} name="hazard" type="text" placeholder="Potential Hazard" required
 					                className="form-control" onChange={this.onChange}/>
 				</div>
 				<div className="td">
-					<ClearableInput ref={this.onSetRef} name="cause" type="text" placeholder="Type here" required
+					<ClearableInput ref={this.onSetRef} name="cause" type="text" placeholder="Possible Cause" required
 					                className="form-control" onChange={this.onChange}/>
 				</div>
 				<div className="td fixed-flex min-w-295">
 					<ClearableInput ref={this.onSetRef} name="rating" type="radio" required className="form-control"
 					                onChange={this.onChange} values={this.selfState.lists.ratings}/>
 				</div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10" onClick={onClick}>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-v-10" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -217,7 +226,7 @@ class NewPotentialHazardAndPossibleCauseListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full-calc-add-20 h-full padding-0 -margin-l-10">
 			<THead className="align-left">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">Potential Hazard</div>

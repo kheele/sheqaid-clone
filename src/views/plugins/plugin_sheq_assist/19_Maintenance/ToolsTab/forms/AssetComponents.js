@@ -44,16 +44,16 @@ class PartsUsed extends React.Component {
         if (readonly) {
             parts_used = parts_used || [];
             return <div className="grid-2 grid-gap-10 h-30">
-                <Button
-                    className={`btn btn-primary no-border font-size-11 bg-${parts_used.isNotEmpty() ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${parts_used.isNotEmpty() ? 'check' : 'times'}`}/> ${parts_used.isNotEmpty() ? 'Parts Available' : 'No Parts'}
-                </Button>
-                <Button
-                    className='btn btn-primary fixed-flex font-size-12 padding-5 w-120'
-                    text={(isEditable ? (!parts_used.isEmpty() ? 'Edit/View' : 'Add') : 'View') + ' Receipt/Cost'}
-                    onClick={isEditable ? this.onEdit : this.onView}
-                    rendered={isEditable || !parts_used.isEmpty()}
-                />
+                {/*<Button*/}
+                {/*    className={`btn btn-primary no-border font-size-11 bg-${parts_used.isNotEmpty() ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>*/}
+                {/*    <i className={`fa fa-${parts_used.isNotEmpty() ? 'check' : 'times'}`}/> {parts_used.isNotEmpty() ? 'Parts Available' : 'No Parts'}*/}
+                {/*</Button>*/}
+                {/*<Button*/}
+                {/*    className='btn btn-primary fixed-flex font-size-12 padding-5 w-120'*/}
+                {/*    text={(isEditable ? (!parts_used.isEmpty() ? 'Edit/View' : 'Add') : 'View') + ' Receipt/Cost'}*/}
+                {/*    onClick={isEditable ? this.onEdit : this.onView}*/}
+                {/*    rendered={isEditable || !parts_used.isEmpty()}*/}
+                {/*/>*/}
             </div>;
         } else {
             let {parts_used = []} = state || {};
@@ -61,7 +61,7 @@ class PartsUsed extends React.Component {
             return <div className="grid-2 grid-gap-10 h-30">
                 <Button
                     className={`btn btn-primary no-border font-size-11 bg-${parts_used.isNotEmpty() ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${parts_used.isNotEmpty() ? 'check' : 'times'}`}/> ${parts_used.isNotEmpty() ? `${parts_used.length} Parts Available` : 'No Parts'}
+                    <i className={`fa fa-${parts_used.isNotEmpty() ? 'check' : 'times'}`}/> {parts_used.isNotEmpty() ? `${parts_used.length} Parts Available` : 'No Parts'}
                 </Button>
                 <Button
                     className='btn btn-primary fixed-flex font-size-12 padding-5 w-120'
@@ -111,15 +111,15 @@ class CostAndReceipt extends React.Component {
             const {cost, receipt} = cost_and_receipt || {};
             return <div className="grid-3 grid-gap-10 h-30">
                 <Button
-                    className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> ${receipt ? 'Receipt Available' : 'No Receipt'}
+                    className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-30 hor-center w-85`}>
+                    <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> {receipt ? 'Receipt Available' : 'No Receipt'}
                 </Button>
                 <Button
-                    className={`btn btn-primary no-border font-size-11 bg-${cost ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${cost ? 'check' : 'times'}`}/> ${cost ? cost.replace('$', '').toCurrency('R') : 'No Cost'}
+                    className={`btn btn-primary no-border font-size-11 bg-${cost ? 'green' : 'red'} padding-0 h-30 hor-center w-70`}>
+                    <i className={`fa fa-${cost ? 'check' : 'times'}`}/> {cost ? cost.replace('$', '').toCurrency('R') : 'No Cost'}
                 </Button>
                 <Button
-                    className='btn btn-primary fixed-flex font-size-12 padding-5 w-120'
+                    className='btn btn-primary fixed-flex font-size-12 padding-5 w-110'
                     text={(isEditable ? (cost || receipt ? 'Edit/View' : 'Add') : 'View') + ' Receipt/Cost'}
                     onClick={isEditable ? this.onEdit : this.onView}
                 />
@@ -129,12 +129,12 @@ class CostAndReceipt extends React.Component {
             const {cost, receipt} = cost_and_receipt || {};
             return <div className="grid-3 grid-gap-10 h-30">
                 <Button
-                    className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> ${receipt ? 'Receipt Available' : 'No Receipt'}
+                    className={`btn btn-primary no-border font-size-11 bg-${receipt ? 'green' : 'red'} padding-0 h-30 hor-center w-85`}>
+                    <i className={`fa fa-${receipt ? 'check' : 'times'}`}/> {receipt ? 'Receipt Available' : 'No Receipt'}
                 </Button>
                 <Button
-                    className={`btn btn-primary no-border font-size-11 bg-${cost ? 'green' : 'red'} padding-0 h-30 hor-center w-120`}>
-                    <i className={`fa fa-${cost ? 'check' : 'times'}`}/> ${cost ? cost.replace('$', '').toCurrency('R') : 'No Cost'}
+                    className={`btn btn-primary no-border font-size-11 bg-${cost ? 'green' : 'red'} padding-0 h-30 hor-center w-70`}>
+                    <i className={`fa fa-${cost ? 'check' : 'times'}`}/> {cost ? cost.replace('$', '').toCurrency('R') : 'No Cost'}
                 </Button>
                 <Button
                     className='btn btn-primary fixed-flex font-size-12 padding-5'
@@ -265,12 +265,14 @@ class FutureMaintenanceDistanceOrTime extends AFutureOrCurrentMaintenanceDistanc
 //</editor-fold>
 
 const CONSTANTS = {
+    DOCUMENTS: 4,
     MONITORING: 7,
     MAINTENANCE: 8,
     CALIBRATION: 9,
-    INSPECTIONS: 10,
-    PARTS: 11,
-    JOB_CARDS: 12
+    INSPECTIONS: 11,
+    REGISTER: 12,
+    PARTS: 13,
+    JOB_CARDS: 14
 };
 
 export {

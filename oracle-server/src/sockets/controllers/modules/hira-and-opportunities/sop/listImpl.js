@@ -3,55 +3,90 @@ const {hira_sop_details_fragment, getVariablesAndQueryConfig} = require('./commo
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    // console.log('data', data)
-
-    let {
-        offset = 0,
-        limit = 50,
-        //
-        removed = false,
-        id,
-        //
-        category,
-        risk_level,
-        location,
-        prepared_by_list,
-        prepared_by_id,
-        //
-        date_created_range,
-        date_revised_range,
-        //
-        logged_employee_id,
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-        //
-        client_filter,
-        orgs_filter = [],
-    } = data;
-
-    const {filter} = getVariablesAndQueryConfig({
-        orgs_filter,
-        //
-        id,
-        //
-        category,
-        risk_level,
-        location,
-        prepared_by_list,
-        prepared_by_id,
-        //
-        date_created_range,
-        date_revised_range,
-        //
-        logged_employee_id,
-        site_id, project_id, client_id,
-        //
-        exact_orgs
-    });
-
-    return listGraphQL({
-        query: `
+	// console.log('data', data)
+	
+	let {
+		offset = 0,
+		limit = 50,
+		//
+		removed = false,
+		id,
+		id_list,
+		//
+		category,
+		risk_level,
+		location,
+		prepared_by_list,
+		prepared_by_id,
+		//
+		date_created_range,
+		date_revised_range,
+		//
+		logged_employee_id,
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+		//
+		client_filter,
+		orgs_filter = [],
+	} = data;
+	
+	const {filter} = getVariablesAndQueryConfig({
+		orgs_filter,
+		//
+		id,
+		//
+		category,
+		risk_level,
+		location,
+		prepared_by_list,
+		prepared_by_id,
+		//
+		date_created_range,
+		date_revised_range,
+		//
+		logged_employee_id,
+		site_id, project_id, client_id,
+		//
+		exact_orgs
+	});
+	
+	if (id) {
+		return listGraphQL({
+			query: `
+        query listAllSOPByLoggedQuery {
+          hira_sop(
+            where: {
+              ${filter}
+            }
+          ) {
+              ${hira_sop_details_fragment}
+              ${orgs_fragment}
+          }
+        }
+			`,
+			operationName: `listAllSOPByLoggedQuery`,
+		});
+	} else if (id_list) {
+		return listGraphQL({
+			query: `
+					query listByIdsSOPByLoggedQuery {
+		        hira_sop(
+		          where: {
+		            id: {_in: [${id_list.join(',')}]}
+		          },
+	            #order_by: {name: asc},
+		        ) {
+		          ${hira_sop_details_fragment}
+              ${orgs_fragment}
+		        }
+		      }
+				`,
+			operationName: "listAllNCRByLoggedQuery",
+		});
+	} else {
+		return listGraphQL({
+			query: `
             query listAllSOPByLoggedQuery {
                 hira_sop(
                   where: {
@@ -67,7 +102,8 @@ module.exports = async (socket, data) => {
                 }
             }
 		`,
-        operationName: "listAllSOPByLoggedQuery",
-    });
+			operationName: "listAllSOPByLoggedQuery",
+		});
+	}
 }
 //</editor-fold>

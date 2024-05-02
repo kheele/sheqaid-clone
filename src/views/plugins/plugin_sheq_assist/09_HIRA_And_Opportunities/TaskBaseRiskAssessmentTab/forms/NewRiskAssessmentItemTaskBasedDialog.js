@@ -372,7 +372,7 @@ class Controls extends React.Component {
 		if (!this.item || !this.item.id) {
 			data = {
 				//1
-				responsible_person_id: responsible_person && responsible_person.id,
+				responsible_person,
 				target_date: Dates.formatDateSQL(target_date),
 				due_date: Dates.formatDateSQL(due_date),
 				//2

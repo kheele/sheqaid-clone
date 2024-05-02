@@ -19,8 +19,8 @@ import {AControls, AExportDialog} from 'components/exports/AExportDialog';
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ExportDialog extends AExportDialog {
-    titleSingular = 'Training Matrix';
-    titlePlural = 'Training Matrices';
+    titleSingular = 'Written Safe Work Procedure';
+    titlePlural = 'Written Safe Work Procedures';
     
     get excludePDF() {
         return true;
@@ -34,7 +34,7 @@ class ExportDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-    path = "plugin_sheq_assist/09_HIRA_And_Opportunities/swp/";
+    exportFn = sockets.of('hira-and-opportunities/swp').fn('export-excel');
     
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
@@ -87,7 +87,7 @@ class Controls extends AControls {
         } = filterData || {};
         
         const listByLogged = sockets.of('hira-and-opportunities/swp').fn('listByLogged');
-        
+
         return listByLogged({
             client_id,
             project_id,
@@ -162,7 +162,7 @@ class Controls extends AControls {
             <ClearableInput ref="location" name="location" type="text" placeholder="Area activity takes place" className="col-lg-12 form-control" onChange={this.form.onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
             <DateRangeInput name="expiry_range" className="col-lg-12 form-control"
-                            placeholder="Expiry Date Reported" placeholderWidthClass="min-w-135" onChange={this.form.onChange}/>
+                            placeholder="Expiry Date Range" placeholderWidthClass="min-w-135" vertical onChange={this.form.onChange}/>
         </>;
     }
     // </editor-fold>

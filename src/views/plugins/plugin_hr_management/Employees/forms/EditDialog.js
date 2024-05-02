@@ -125,7 +125,7 @@ class Controls extends React.Component {
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="componentDidMount">
-	async componentDidMount() {
+	componentDidMount() {
 		const {dialog} = this.props;
 
 		autorun(async () => {

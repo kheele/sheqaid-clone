@@ -25,11 +25,11 @@ class NewDialog extends ANewDialog {
 	pageKey = "NewContractDialog";
 	className = "ANewEmployeeDocDialog";
 	title = "Create Contract";
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -40,20 +40,20 @@ class NewDialog extends ANewDialog {
 @observer
 class Controls extends React.Component {
 	path = "plugin_sheq_assist/employees/contracts/";
-
+	
 	@observable
 	state = {
 		index: 0
 	};
-
+	
 	constructor() {
 		super();
-
+		
 		this.onNext = this.onNext.bind(this);
-
+		
 		this.form = new Form();
 	}
-
+	
 	//<editor-fold desc="onNext">
 	onNext(e, btn) {
 		const {
@@ -64,9 +64,11 @@ class Controls extends React.Component {
 		} = this;
 		const {idx} = btn.props;
 		if (idx === 1) {
-			if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
-				infoDialog.open('Employee is required');
-				return;
+			if (!isNewEmployee && !embeddedEmployee) {
+				if (!form.isValid('employee')) {
+					infoDialog.open('Employee is required');
+					return;
+				}
 			}
 		}
 		if (idx === 2) {
@@ -76,7 +78,7 @@ class Controls extends React.Component {
 					infoDialog.open('Start Date is required');
 					return;
 				}
-
+				
 				if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
 					infoDialog.open('Working End Time is required');
 					return;
@@ -107,12 +109,12 @@ class Controls extends React.Component {
 				}
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="onSubmit">
 	onSubmit(e, btn, onSaved) {
 		const {
@@ -121,19 +123,21 @@ class Controls extends React.Component {
 			embeddedEmployee,
 			refs: {contractDetailsTab, salaryInfoTab}
 		} = this;
-
-		if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
-			infoDialog.open('Employee is required');
-			return;
+		
+		if (!isNewEmployee && !embeddedEmployee) {
+			if (!form.isValid('employee')) {
+				infoDialog.open('Employee is required');
+				return;
+			}
 		}
-
+		
 		const contract_details = toNoneNullObject(contractDetailsTab.form.data);
 		if (contract_details) {
 			if (contractDetailsTab.form.isValid('expiry_date') && !contractDetailsTab.form.isValid('start_date')) {
 				infoDialog.open('Start Date is required');
 				return;
 			}
-
+			
 			if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
 				infoDialog.open('Working End Time is required');
 				return;
@@ -161,14 +165,14 @@ class Controls extends React.Component {
 //                }
 			}
 		}
-
+		
 		console.log(form)
 		const {
 			employee,//
 			doc,//
 			job_profile_doc//
 		} = form.data;
-
+		
 		if (isNewEmployee) {
 			const data = {
 				contractDetailsTab,
@@ -177,7 +181,7 @@ class Controls extends React.Component {
 				doc,
 				job_profile_doc,
 			};
-
+			
 			console.log("res", data)
 			onSaved && onSaved(data);
 			infoDialog.open("Record added.");
@@ -185,9 +189,9 @@ class Controls extends React.Component {
 			this.props.close();
 			return;
 		}
-
+		
 		let data = {};
-
+		
 		if (contract_details) {
 			const {
 				contract_type,
@@ -212,7 +216,7 @@ class Controls extends React.Component {
 				}]
 			};
 		}
-
+		
 		if (salary_info) {
 			const {
 				payment_type,
@@ -221,9 +225,9 @@ class Controls extends React.Component {
 				wage,
 				deductible,//[{text, value}]
 			} = salary_info;
-
+			
 			const deductible_list = deductible ? deductible.list.filter(v => !!v && !!v.text && !!v.value) : [];
-
+			
 			data.salary_info_list = {
 				data: [{
 					payment_type,
@@ -234,16 +238,16 @@ class Controls extends React.Component {
 				}]
 			};
 		}
-
+		
 		data = {
 			...data,
 			employee_id: (embeddedEmployee || employee).id,
 			doc: doc && doc.path,
 			job_profile_doc: job_profile_doc && job_profile_doc.path,
 		};
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		insertEmployeeContract(data).then(employee_res => {
@@ -257,32 +261,32 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.close());
 		});
 	}
-
+	
 	//</editor-fold>
-
+	
 	get onSetSignatureSettings() {
 		const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
 		return onSetSignatureSettings;
 	}
-
+	
 	get embeddedEmployee() {
 		const {props: {dialog: {props: {embeddedEmployee}}}} = this;
 		return embeddedEmployee;
 	}
-
+	
 	get isNewEmployee() {
 		const {props: {dialog: {props: {isNewEmployee}}}} = this;
 		return isNewEmployee;
 	}
-
+	
 	get employeeItem() {
 		return this.props.state.item;
 	}
-
+	
 	//<editor-fold desc="render">
 	render() {
-		const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
-
+		const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props: {onFormNext, onFormBack, onFormOpen}} = this;
+		
 		let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
 		return <FormControls
 			lazyLoad={false}
@@ -297,8 +301,13 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 			>
-				<SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-				                     className="col-lg-12 form-control"/>
+				<SelectEmployeeInput
+					name="employee"
+					placeholder="Employee..."
+					defaultValue={this.employeeItem}
+					className="col-lg-12 form-control"
+					onChange={this.form.onChange}
+				/>
 			</Row>}
 			<Row
 				rendered
@@ -363,18 +372,18 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
-
+			
 			</SignatureListRow>
 		</FormControls>;
 	}
-
+	
 	//</editor-fold>
 }
 
 //<editor-fold desc="ContractDetails">
 @observer
 class ContractDetails extends React.Component {
-
+	
 	@observable
 	state = {
 		lists: {
@@ -383,12 +392,12 @@ class ContractDetails extends React.Component {
 			})
 		}
 	};
-
+	
 	constructor(props) {
 		super(props);
 		this.form = new Form();
 	}
-
+	
 	render() {
 		return <>
 			<hr className="margin-b-10 hor-center w-200"/>
@@ -423,7 +432,7 @@ class ContractDetails extends React.Component {
 //<editor-fold desc="SalaryInfo">
 @observer
 class SalaryInfo extends React.Component {
-
+	
 	@observable
 	state = {
 		lists: {
@@ -436,21 +445,21 @@ class SalaryInfo extends React.Component {
 		isSalary: false,
 		isWage: false
 	};
-
+	
 	constructor(props) {
 		super(props);
-
+		
 		this.onChangePaymentType = this.onChangePaymentType.bind(this);
-
+		
 		this.form = new Form();
 		this.form.addChangeOne("payment_type", this.onChangePaymentType);
 	}
-
+	
 	onChangePaymentType(el, val) {
 		this.state.isSalary = val === "Salary";
 		this.state.isWage = val === "Wage";
 	}
-
+	
 	render() {
 		return <>
 			<ClearableInput name="payment_type" type="radio" placeholder="Payment Type" className="col-lg-12 form-control"
@@ -467,7 +476,7 @@ class SalaryInfo extends React.Component {
 //<editor-fold desc="SalaryField">
 @observer
 class SalaryField extends React.Component {
-
+	
 	@observable
 	state = {
 		lists: {
@@ -478,7 +487,7 @@ class SalaryField extends React.Component {
 			]
 		}
 	};
-
+	
 	render() {
 		const {onSalaryChange, onSalaryIntervalChange, state: {isSalary}} = this.props;
 		return !!isSalary && <React.Fragment>
@@ -496,7 +505,7 @@ class SalaryField extends React.Component {
 //<editor-fold desc="WageField">
 @observer
 class WageField extends React.Component {
-
+	
 	render() {
 		const {onChange, state: {isWage}} = this.props;
 		return !!isWage && <ClearableInput name="wage" type="number" placeholder="Wage" className="col-lg-12 form-control"
@@ -509,30 +518,30 @@ class WageField extends React.Component {
 //<editor-fold desc="Deductibles">
 @observer
 class Deductibles extends React.Component {
-
+	
 	@observable
 	state = {
 		list: []
 	};
-
+	
 	constructor(props) {
 		super(props);
-
+		
 		this.onAdd = this.onAdd.bind(this);
 	}
-
+	
 	onAdd(e, btn) {
 		this.state.list.push({
 			text: null,
 			value: null
 		});
 	}
-
+	
 	@computed
 	get list() {
 		return this.state.list;
 	}
-
+	
 	@computed
 	get calculate() {
 		const {onChange} = this.props;
@@ -542,7 +551,7 @@ class Deductibles extends React.Component {
 		onChange({list: toJS(list), total}, "deductible", this);
 		return total;
 	}
-
+	
 	render() {
 		return <React.Fragment>
 			<hr className="margin-r-10"/>
@@ -562,32 +571,32 @@ class Deductibles extends React.Component {
 //<editor-fold desc="Deductible">
 @observer
 class Deductible extends React.Component {
-
+	
 	constructor(props) {
 		super(props);
-
+		
 		this.onRemove = this.onRemove.bind(this);
-
+		
 		this.form = new Form();
 		this.onChangeText = this.onChangeText.bind(this);
 		this.onChangeValue = this.onChangeValue.bind(this);
 		this.form.addChangeOne("text", this.onChangeText);
 		this.form.addChangeOne("value", this.onChangeValue);
 	}
-
+	
 	onChangeText(el, val) {
 		this.props.item.text = val;
 	}
-
+	
 	onChangeValue(el, val) {
 		this.props.item.value = val;
 	}
-
+	
 	onRemove(e, btn) {
 		const {idx, list} = this.props;
 		list.removeAt(idx);
 	}
-
+	
 	render() {
 		return <div className="row margin-l-0 margin-r-0 margin-t-15 margin-b-5 flex">
 			<ClearableInput name="text" type="text" placeholder="Deductible Title"

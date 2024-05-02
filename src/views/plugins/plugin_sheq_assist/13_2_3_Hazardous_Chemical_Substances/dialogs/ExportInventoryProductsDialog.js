@@ -71,7 +71,7 @@ class Controls extends AControls {
     };
     // </editor-fold>
 
-    path = "plugin_sheq_assist/Hazardous_Chemical_Substances/chemical-inventory/";
+    exportFn = sockets.of('chemicals/products').fn('export-excel');
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

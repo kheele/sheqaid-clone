@@ -30,8 +30,8 @@ eventManager.on("error-reporting/onCreate", async (socket, input) => {
 		user_id,
 	} = input;
 	
-	const data = await insertRelay({
-		query: `
+	const data = await insertGraphQL({
+		mutation: `
 			mutation insertErrorReportingMutation($object: default_error_reporting_insert_input!) {
 		    insert_default_error_reporting_one(
 		      object: $object

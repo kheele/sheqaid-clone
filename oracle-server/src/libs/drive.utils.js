@@ -254,6 +254,9 @@ class DriveUtils {
 			word: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		};
+		
+		console.log('type', type, remoteFileName);
+		
 		if (type) {
 			if(type === 'Type') {
 				type = "google";
@@ -272,7 +275,7 @@ class DriveUtils {
 			media.mimeType = mimes[type];
 		}
 
-//        console.log('updateRemotePathToDrive 2', fileId, media.mimeType);
+       console.log('updateRemotePathToDrive 2', fileId, media.mimeType);
 
 		return drive.files.update({
 			fileId,

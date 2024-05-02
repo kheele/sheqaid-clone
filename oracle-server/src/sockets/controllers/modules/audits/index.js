@@ -13,7 +13,9 @@ eventManager.on("audits/listByLogged", listImpl);
 eventManager.on("audits/dashboard", findByIdDashboardImpl);
 
 eventManager.on("audits/export-excel", exportExcelImpl({
+	currDir: __dirname,
 	name: "Audits",
+	listImpl,
 	mapRow: (item, idx) => {
 		let {
 			id,

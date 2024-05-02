@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, extendObservable} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -11,6 +11,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 
 import style from "./CheckOutToolDialog.lazy.css";
+import {Dates} from "utils/Dates";
 
 @observer
 class CheckOutToolDialog extends ANewDialog {
@@ -49,7 +50,9 @@ class Controls extends React.Component {
 
     constructor(props) {
         super(props);
-
+        
+        this.onFormChange = this.onFormChange.bind(this);
+        
         this.onChangeAsset = this.onChangeAsset.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
         this.renderTHead = renderTHead.bind(this);
@@ -68,7 +71,22 @@ class Controls extends React.Component {
     }
     
     onLoadList() {
-        return neonBinding.events.emit(this.path + 'list/search_by', {key: '!status', value: 'Checked Out'});
+        const listByLogged = sockets.of("assets").fn('listByLogged');
+        
+        return listByLogged({
+            written_off: false,
+            //
+            status: "!Checked Out",
+            //
+            exact_orgs: true,
+            data_export: true,
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
     
     onChangeAsset(){
@@ -91,6 +109,14 @@ class Controls extends React.Component {
     onChangeStatus(el, val) {
         this.state.status = val;
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="onFormChange">
+    onFormChange(idx) {
+        const {dialog} = this.props;
+        dialog.cssWidth = idx === 1 ? '700px' : '1400px';
+        return true;
+    }
+    // </editor-fold>
 
     onSubmit(e, btn, onSaved) {
         const {form} = this;
@@ -102,38 +128,47 @@ class Controls extends React.Component {
 
         const {asset, assets} = this.state;
         const {
-            employee, due_return_date, comments
+            employee_received_by, employee_issued_by, status, taken_date, taken_time, due_return_date, comments
         } = form.data;
         const data = {
-            employee: {id: employee.id, fname: employee.data.fname, lname: employee.data.lname}
+            employee_received_by_id: employee_received_by && employee_received_by.id,
+            employee_issued_by_id: employee_issued_by && employee_issued_by.id,
+            status,
+            comments,
+            taken_date: Dates.formatDateSQL(taken_date),
+            taken_time,
+            due_return_date: Dates.formatDateSQL(due_return_date),
+            list: asset ? [asset.id] : assets ? assets.map(v => v.id) : [],
         };
-        if (comments) {
-            data.comments = comments;
-        }
-        if (due_return_date) {
-            data.due_return_date = due_return_date.getTime();
-        }
-        if (asset) {
-            data.list = [asset.id];
-        } else if (assets) {
-            data.list = assets.map(v => v.id);
-        }
+        
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "checkout", data).then(res => {
+        progressDialog.open();
+        
+        const create = sockets.of('assets/register-list').fn('create');
+        create(data).then(res => {
             console.log("res", res)
+            if(res) {
+                extendObservable(asset.data, {status: status});
+                if(asset.data.register_list) {
+                    asset.data.register_list.push(...res);
+                } else {
+                    extendObservable(asset.data, {register_list: res});
+                }
+            }
             onSaved && onSaved(res);
-            infoDialog.open("Record successfully saved.");
+            infoDialog.open("Record successfully checked out.");
             infoDialog.close(2000);
             this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
     
     render() {
-        const {onFormNext, onFormBack, onFormOpen} = this.props;
+        const {onFormNext, onFormBack, onFormOpen, onFormChange} = this.props;
         
         return <FormControls>
             <Row 
@@ -144,9 +179,13 @@ class Controls extends React.Component {
                 sectionClassName="-margin-r-10"
                 onFormOpen={onFormOpen} 
                 onFormNext={onFormNext}
+                onFormChange={onFormChange}
             >
+                <SelectEmployeeInput name="employee_received_by" type="select" placeholder="Received By..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectEmployeeInput name="employee_issued_by" type="select" placeholder="Issued By..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="taken_date" type="date" placeholder="Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="taken_time" type="time" placeholder="Time..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <SelectStatusWrapper state={this.state} onChange={this.form.onChange}/>
-                <SelectEmployeeInput name="employee" type="select" placeholder="Team Member..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="due_return_date" type="date" placeholder="Due Return Date..." required defaultValue={new Date()} className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="reason" type="textarea" placeholder="Reason" className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="comments" type="textarea" placeholder="Comments" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -157,6 +196,7 @@ class Controls extends React.Component {
                 title="2. Asset Details" 
                 onFormOpen={onFormOpen} 
                 onFormBack={onFormBack}
+                onFormChange={onFormChange}
             >
                 <SelectTable ref="selectTable" isDialog replaceCols name="asset" desc="Assests" title="Select Asset(s) To Check Out" className="col-lg-12 no-padding SelectAssetTable" renderTHead={this.renderTHead} defaultValue={this.state.assets ? this.state.assets : (this.state.asset ? [this.state.asset] : null)} renderItem={this.renderItem} onLoadList={this.onLoadList}/>
                 <SelectedAssets state={this.state} onChangeAsset={this.onChangeAsset} title="Select Asset(s) To Check Out"/>

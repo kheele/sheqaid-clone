@@ -33,7 +33,7 @@ class SelectInput extends ASelectInput {
             placeholder: "Asset Type...",
             values: this.list,
             returnValue: true,
-            add: false,
+            add: true,
             ...this.props,
             defaultValue: this.selectedItem,
             className

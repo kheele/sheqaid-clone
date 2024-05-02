@@ -36,7 +36,7 @@ class ExportDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-	path = "plugin_sheq_assist/21_Internal_Audit/audit/";
+	exportFn = sockets.of('audits').fn('export-excel');
 	
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	@observable

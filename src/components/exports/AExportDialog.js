@@ -17,15 +17,15 @@ import {toJS} from "mobx";
 @observer
 class AExportDialog extends ANewDialog {
 	pageKey = "AExportDialog";
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get title() {
 		return `Export ${this.titlePlural}`;
 	}
-
+	
 	get topButtons() {
 		return <React.Fragment>
 			<Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
@@ -36,7 +36,7 @@ class AExportDialog extends ANewDialog {
 				        onClick={this.onSubmit}/>}
 		</React.Fragment>;
 	}
-
+	
 }
 
 // </editor-fold>
@@ -46,36 +46,36 @@ class AControls extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="fields">
 	path;
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		const {path} = props;
 		path && (this.path = path);
-
+		
 		this.reset = this.reset.bind(this);
-
+		
 		this.onListenChanges = this.onListenChanges.bind(this);
 		this.onGetRef = this.onGetRef.bind(this);
-
+		
 		this.onPrepareSearchOrgs = this.onPrepareSearchOrgs.bind(this);
 		this.onSearch = this.onSearch.bind(this);
 		this.onLoadListImpl = this.onLoadListImpl.bind(this);
 		this.onLoadList && (this.onLoadList = this.onLoadList.bind(this));
 		this.onSelectAll = this.onSelectAll.bind(this);
 		this.onUnSelectAll = this.onUnSelectAll.bind(this);
-
+		
 		this.renderTHeadFrom && (this.renderTHeadFrom = this.renderTHeadFrom.bind(this));
 		this.renderItemFrom && (this.renderItemFrom = this.renderItemFrom.bind(this));
-
+		
 		this.form = new Form();
-
+		
 		execWhen(() => this.filterData).then(this.onListenChanges);
 	}
-
+	
 	// </editor-fold>
-
+	
 	async onListenChanges(filterData) {
 		const fieldNames = (await Promise.all(Object.keys(filterData).filter(key => key !== 'onGetRef').map(async key => {
 			const ref = await execWhen(() => this.onGetRef(key));
@@ -85,12 +85,12 @@ class AControls extends React.Component {
 		});
 		this.form.addChangeMany(fieldNames, this.onChangeFields.bind(this));
 	}
-
+	
 	onChangeFields(el, name, val) {
 		const {_reactInternals: {ref}, parentWrapper} = el;
-
+		
 		const refName = parentWrapper ? parentWrapper.refName : ref._stringRef;
-
+		
 		if (Form.hasVal(val)) {
 			// console.log('onChangeFields1', refName, val)
 			val = this.form.getFormData(refName, val);
@@ -105,7 +105,7 @@ class AControls extends React.Component {
 		}
 		console.log('onChangeFields', refName, val)
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="reset">
 	reset() {
 		// Object.keys(this.filterData).
@@ -118,35 +118,35 @@ class AControls extends React.Component {
 		//     }
 		// });
 	}
-
+	
 	// </editor-fold>
-
+	
 	onGetRef(ref) {
 		return this.refs[ref];
 	}
-
+	
 	onLoadListImpl(isNew) {
 		const {onLoadList} = this;
-
+		
 		const data = {};
 		Object.keys(this.filterData).filter(key => Form.hasVal(this.filterData[key])).forEach(key => {
 			data[key] = this.filterData[key];
 		});
-
+		
 		console.log('filterData', data)
 		return onLoadList({isNew, filterData: data});
 	}
-
+	
 	onPrepareSearchOrgs() {
 		const {isConsultant, hasProjects, isContractor} = storage.is;
-
+		
 		const {form} = this;
 		if (isConsultant) {
 			if (!form.isValid('client_from')) {
 				infoDialog.open('Company is required');
 				return;
 			}
-
+			
 			const {
 				client_from
 			} = form.data;
@@ -154,12 +154,12 @@ class AControls extends React.Component {
 		} else {
 		
 		}
-
+		
 		if (!isContractor && hasProjects) {
 			const {
 				project_from, site_from
 			} = form.data;
-
+			
 			if (project_from && project_from !== 'All') {
 				this.filterData.project_id = project_from.id;
 			} else if (project_from === 'All') {
@@ -171,16 +171,16 @@ class AControls extends React.Component {
 				this.filterData.site_id = null;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSearch">
 	onSearch() {
 		if (!this.onPrepareSearchOrgs()) {
 			return;
 		}
-
+		
 		const {searchList} = this.state;
 		this.refs.selectTable.setSelectedList(searchList).open().then(list => {
 			this.state.searchList.clear();
@@ -188,18 +188,18 @@ class AControls extends React.Component {
 			this.reset();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	onSubmit(e, btn, onSaved) {
 		const {props: {dialog: {titleSingular}}, form, state: {searchList}} = this;
-
+		
 		if (searchList.isEmpty()) {
 			infoDialog.open(`Please select at least one ${titleSingular}`);
 			return;
 		}
-
+		
 		const {action} = btn.props;
 		if (action === 'pdf') {
 			return this.onSubmitPrint(e, btn, onSaved);
@@ -207,9 +207,9 @@ class AControls extends React.Component {
 			return this.onSubmitExport(e, btn, onSaved);
 		}
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmitPrint">
 	onSubmitPrint(e, btn, onSaved) {
 		const {
@@ -220,9 +220,9 @@ class AControls extends React.Component {
 		const item = {list, values};
 		this.refs.pdfReader.open(item);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmitExport">
 	onSubmitExport(e, btn, onSaved) {
 		const {props: {dialog: {titlePlural}}, form, state: {searchList}} = this;
@@ -232,13 +232,16 @@ class AControls extends React.Component {
 			department, job_position,
 			supervisor
 		} = form.data;
-
+		
 		const client = client_from || selectedClient;
 		const project = project_from || selectedProject;
 		const site = site_from || selectedSite;
-
+		
 		btn.text("Exporting...").disabled();
-		neonBinding.events.emit(this.path + "export-excel", {
+		
+		const isOnline = this.exportFn && isFunction(this.exportFn);
+		
+		const data = {
 			date: new Date().formatDate(),
 			client,
 			project,
@@ -246,27 +249,24 @@ class AControls extends React.Component {
 			department,
 			job_position,
 			supervisor,
-			list: toJS(searchList.map(v => toJS(v))),
-		}).then(res => {
+			list: isOnline ? searchList.map(v => v.id) : toJS(searchList.map(v => toJS(v))),
+		};
+		
+		console.log('this.exportFn', isFunction(this.exportFn), this.exportFn);
+		let promise = isOnline ? this.exportFn(data) : neonBinding.events.emit(this.path + "export-excel", data);
+		console.log('this.exportFn 2', promise);
+		promise.then(res => {
+			console.log('this.exportFn res', res);
 			if (!res) {
 				infoDialog.open(<>
 					<p>An error occurred. Please try again</p>
 				</>);
 			} else {
-				if (isWeb()) {
-					infoDialog.open(<>
-						<p>{titlePlural} successfully exported.</p>
-						<p><small>The file will be automatically downloaded</small></p>
-					</>);
-					saveFileAs(res, `${titlePlural.replaceAll(' ', '-')}_${Dates.formatDate(new Date())}.xlsx`);
-				} else {
-					infoDialog.open(<>
-						<p>{titlePlural} successfully exported.</p>
-						<p>Saved in the following folder:</p>
-						<p><small>{res.path}</small></p>
-						<p><small>The file will open after 3 seconds</small></p>
-					</>);
-				}
+				infoDialog.open(<>
+					<p>{titlePlural} successfully exported.</p>
+					<p><small>The file will be automatically downloaded</small></p>
+				</>);
+				saveFileAs(res, `${titlePlural.replaceAll(' ', '-')}_${Dates.formatDate(new Date())}.xlsx`);
 			}
 		}).catch(err => {
 			console.error(err);
@@ -277,31 +277,31 @@ class AControls extends React.Component {
 			btn.text("Export").enabled();
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSelectAll">
 	onSelectAll(e, btn) {
-
+	
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onUnSelectAll">
 	onUnSelectAll(e, btn) {
-
+	
 	}
-
+	
 	// </editor-fold>
-
+	
 	get title() {
 		return "Export";
 	}
-
+	
 	get titleSelected() {
 		return "Export";
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		const {isConsultant, hasProjects, isContractor} = storage.is;
@@ -378,7 +378,7 @@ class AControls extends React.Component {
 			</div>
 		</div>);
 	}
-
+	
 	// </editor-fold>
 }
 

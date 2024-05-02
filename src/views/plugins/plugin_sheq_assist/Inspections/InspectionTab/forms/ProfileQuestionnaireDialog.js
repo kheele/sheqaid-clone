@@ -227,7 +227,8 @@ class Controls extends React.Component {
 					page_title_list,
 					question_list,
 					//
-					responsible_person,
+					responsible_person_list,
+					responsible_user,
 					responsible_department,
 					interval,
 					start_date,
@@ -263,7 +264,9 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<ProfileField name="responsible_person" placeholder="Responsible Person" value={responsible_person}
+				<ProfileField name="responsible_person_list" placeholder="Responsible Employee(s)" value={responsible_person_list || []}
+				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
+				<ProfileField name="responsible_user" placeholder="Responsible User" value={responsible_user}
 				              renderer={v => v.full_name} className="col-lg-12"/>
 				<ProfileField name="responsible_department" placeholder="Responsible Department" value={responsible_department}
 				              renderer={v => v.name} className="col-lg-12"/>

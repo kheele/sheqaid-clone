@@ -294,7 +294,7 @@ class SelectTable extends React.Component {
 	}
 
 	render() {
-		const {children, desc, className, dialogClassName, isDialog, renderTHead} = this.props;
+		const {children, title, desc, className, dialogClassName, isDialog, renderTHead} = this.props;
 		const tbl = <Table className={"SelectTable " + className} ignoreResize>
 			{renderTHead && renderTHead(this.props)}
 			{!renderTHead && <THead className="align-left">

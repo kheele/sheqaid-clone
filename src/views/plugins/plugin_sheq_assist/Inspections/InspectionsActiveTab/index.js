@@ -114,13 +114,13 @@ class InspectionTab extends React.Component {
 	
 	onUpdateImpl(el, attrs) {
 		return confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
-			if(res === 1) {
+			if (res === 1) {
 				const {idx} = el.props;
 				const item = this.refs.root.list[idx];
 				
 				progressDialog.open("Please wait...");
 				return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
-					if(res && attrs.status === 'CompleteAccepted') {
+					if (res && attrs.status === 'CompleteAccepted') {
 						this.refs.root.list.removeIf((val, n) => n === idx);
 					}
 					
@@ -151,24 +151,33 @@ class InspectionTab extends React.Component {
 			id, data: {
 				status,
 				responsible_person,
+				responsible_user,
 			}
 		} = item;
 		
-		const {is:{isEmployee},loggedUser:{user}} = storage;
+		const {is: {isEmployee}, loggedUser: {user}} = storage;
 		
 		const shouldSetAsComplete = (isLoggedUser, status) => isLoggedUser && status !== "CompleteAccepted";
 		
-		if(isEmployee) {
+		if (isEmployee) {
 			const isLoggedUser = responsible_person && responsible_person.id === user.id;
 			return <Options idx={idx}>
 				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 				<hr action="writable"/>
-				{isLoggedUser && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
-				{shouldSetAsComplete(isLoggedUser, status) && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
+				{isLoggedUser &&
+					<NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
+				{shouldSetAsComplete(isLoggedUser, status) &&
+					<NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete}
+					         faIconLeft="check" title="Set As Complete"/>}
 			</Options>;
 		}
 		
-		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		let isLoggedUser;
+		if (responsible_person) {
+			isLoggedUser = responsible_person.linked_user_id === user.id;
+		} else if (responsible_user) {
+			isLoggedUser = responsible_user.id === user.id;
+		}
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -177,7 +186,9 @@ class InspectionTab extends React.Component {
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
 			{isLoggedUser && <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title="Inspect"/>}
-			{shouldSetAsComplete(isLoggedUser, status) && <NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check" title="Set As Complete"/>}
+			{shouldSetAsComplete(isLoggedUser, status) &&
+				<NavItem action="writable" status="CompleteAccepted" idx={idx} onClick={this.onSetAsComplete} faIconLeft="check"
+				         title="Set As Complete"/>}
 		</Options>;
 	}
 	
@@ -205,7 +216,7 @@ class InspectionTab extends React.Component {
 			<SelectAssetTypeInput name="asset_type" type="select_multi" placeholder="Asset Type(s)..."
 			                      className="form-control" onChange={onChange}/>
 			<SelectAssetInput name="asset" type="select" placeholder="Asset..."
-			                      className="form-control" onChange={onChange}/>
+			                  className="form-control" onChange={onChange}/>
 		</div>;
 	}
 	
@@ -218,6 +229,7 @@ class InspectionTab extends React.Component {
 			{!asset && <div className="td fixed-flex min-w-140">Asset Type</div>}
 			{!asset && <div className="td fixed-flex min-w-140">Asset</div>}
 			<div className="td fixed-flex min-w-180">Responsible Person</div>
+			<div className="td fixed-flex min-w-180">Responsible User</div>
 			<div className="td fixed-flex min-w-80">Interval</div>
 			<div className="td fixed-flex min-w-100">Start Date</div>
 			<div className="td fixed-flex min-w-120">Date Scheduled</div>
@@ -233,6 +245,13 @@ class InspectionTab extends React.Component {
 		const {item: asset} = this.props;
 		let item = this.refs.root.list[n];
 		return <InspectionTableRow key={item.id} idx={n} item={item} asset={asset} onClick={onClick}/>;
+	}
+	
+	get isRemovedAsset() {
+		const {children, pageId, pageTitle, pageTitleSingular, item: asset, type, NewDialog} = this.props;
+		if (!asset) return false;
+		const {written_off, data} = asset;
+		return written_off || (data && data.written_off);
 	}
 	
 	render() {
@@ -254,9 +273,13 @@ class InspectionTab extends React.Component {
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
 			<ConfirmDialog ref="removeDialog"/>
-			<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
-			<EditResponseDialog ref="editDialog"/>
-			<ProfileResponseDialog ref="profileDialog"/>
+			
+			{!this.isRemovedAsset && <>
+				<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
+				<EditResponseDialog ref="editDialog"/>
+				<ProfileResponseDialog ref="profileDialog"/>
+			</>}
+			
 			<Popover key="popover" ref="popover"/>
 		</APageListReadWrite>;
 	}

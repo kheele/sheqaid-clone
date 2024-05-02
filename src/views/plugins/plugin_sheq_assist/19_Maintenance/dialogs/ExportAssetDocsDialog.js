@@ -50,7 +50,7 @@ class ExportAssetDocsDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-    path = 'plugin_sheq_assist/19_Maintenance/tools/docs/';
+    exportFn = sockets.of('assets/docs').fn('export-excel');
 
     @observable
     state = {

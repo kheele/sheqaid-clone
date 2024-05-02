@@ -15,6 +15,9 @@ import ViewTaskBaseRiskAssessmentReportDialog from './forms/ViewTaskBaseRiskAsse
 
 import style from "./TaskBaseRiskAssessmentTab.lazy.css";
 import AList from "views/AList";
+import ViewDocumentDialog from "../../../../../components/dialogs/ViewDocumentDialog";
+import ExportBaselineRiskAssessmentDialog from "../BaselineRiskAssessmentTab/forms/ExportBaselineRiskAssessmentDialog";
+import ExportTaskBaseRiskAssessmentDialog from "./forms/ExportTaskBaseRiskAssessmentDialog";
 
 @observer
 class TaskBaseRiskAssessmentTab extends AList {
@@ -62,13 +65,31 @@ class TaskBaseRiskAssessmentTab extends AList {
 	//</editor-fold>
 
 	printImpl() {
-		return neonBinding.events.emit(this.path + "create/pdf");
+		const createPDF = sockets.of('hira-and-opportunities/task-based-ra').fn('createPDF');
+		
+		const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
+		const {selectedClient, selectedProject, selectedSite,} = storage.selected;
+		
+		const company_id = sess_company_id;
+		const client_id = selectedClient && selectedClient.id;
+		const project_id = selectedProject && selectedProject.id;
+		const site_id = selectedSite && selectedSite.id;
+		
+		return createPDF({
+			company_id,
+			client_id,
+			project_id,
+			site_id,
+		}).then((res) => {
+			console.log('createPDF res', res)
+			return res;
+		});
 	}
 
 	onSaveAsPDF(e, btn) {
 		btn.text("Saving As PDF...").disabled();
 		this.printImpl().then(res => {
-			this.refs.viewReportPDFDialog.open(res);
+			this.refs.viewReportPDFDialog.open({path: res, previewPath: res});
 			infoDialog.open("Record successfully saved as PDF.");
 			infoDialog.close(2000);
 		}).finally(() => {
@@ -81,16 +102,17 @@ class TaskBaseRiskAssessmentTab extends AList {
 	}
 
 	renderLeftButtons() {
-		const {isEmployee, isContractorView} = storage.is;
-		const isReadonly = isEmployee || isContractorView;
-		return !isReadonly && <div className="left-buttons pull-left">
-			<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onViewReport}>
-				<i className="fa fa-eye icon-left"/> View Report
-			</Button>
-			<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onSaveAsPDF}>
-				<i className="fa fa-file-pdf-o icon-left"/> Save As PDF
-			</Button>
-		</div>;
+		return null;
+		// const {isEmployee, isContractorView} = storage.is;
+		// const isReadonly = isEmployee || isContractorView;
+		// return !isReadonly && <div className="left-buttons pull-left">
+		// 	<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onViewReport}>
+		// 		<i className="fa fa-eye icon-left"/> View Report
+		// 	</Button>
+		// 	<Button className="btn btn-primary pull-right _888 min-w-90" onClick={this.onSaveAsPDF}>
+		// 		<i className="fa fa-file-pdf-o icon-left"/> Save As PDF
+		// 	</Button>
+		// </div>;
 	}
 
 	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -103,13 +125,14 @@ class TaskBaseRiskAssessmentTab extends AList {
 
 	renderFilterNode(onChange) {
 		return <div className="col-lg-12 controls">
-			<ClearableInput name="activity" type="text" placeholder="Activity" className="form-control" onChange={onChange}/>
+			<ClearableInput name="activity" type="text" placeholder="Description of Task" className="form-control" onChange={onChange}/>
 		</div>;
 	}
 
 	renderTHead() {
 		const {hasProjects} = storage.is;
 		return <THead>
+			<div className="td fixed-flex min-w-50">ID</div>
 			<div className="td fixed-flex min-w-120">Date Created</div>
 			<div className="td">Description Of Task</div>
 			{hasProjects && <div className="td">Project</div>}
@@ -126,13 +149,14 @@ class TaskBaseRiskAssessmentTab extends AList {
 		const item = this.refs.root.list[n];
 		const {id, data: {created_at, activity, expiry_date, risk_tolerance, list, client, project, site}} = item;
 		console.log('TaskBase RA', item)
-		return <TRow key={"item-" + n}>
+		return <TRow key={"item-" + id}>
+			<div className="td fixed-flex min-w-50">{id}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
 			<div className="td">{activity}</div>
-
+			
 			{hasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
 			{hasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
-
+			
 			<div className="td fixed-flex min-w-120">{!!risk_tolerance ? String(risk_tolerance) : 'N/A'}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(expiry_date) || 'N/A'}</div>
 			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
@@ -140,7 +164,7 @@ class TaskBaseRiskAssessmentTab extends AList {
 			</div>
 		</TRow>;
 	}
-
+	
 	render() {
 		return <APageListReadWrite
 			hasBackBtn={false}
@@ -164,8 +188,9 @@ class TaskBaseRiskAssessmentTab extends AList {
 			<EditTaskBaseRiskAssessmentDialog ref="editDialog"/>
 
 			<ViewTaskBaseRiskAssessmentReportDialog ref="viewTaskBaseRiskAssessmentReportDialog"/>
-			<ViewReportPDFDialog ref="viewReportPDFDialog" fileName="Risk_Assessment_Task-Based_Full_Report"
-			                     title="Task Base Risk Assessment Full Report"/>
+			<ViewDocumentDialog ref="viewReportPDFDialog" title="Task Base Risk Assessment Full Report" showDownload
+			                    fileName="Risk_Assessment_Task-Based_Full_Report"/>
+			<ExportTaskBaseRiskAssessmentDialog ref="exportDialog"/>
 		</APageListReadWrite>;
 	}
 }

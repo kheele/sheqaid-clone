@@ -71,6 +71,7 @@ exports.getVariablesAndQueryConfig = (
 				{selected_source_compliance_audit: {auditor_list:{employee_id: {_eq: ${logged_employee_id}}}}},
 				{selected_source_compliance_audit: {representative_list:{employee_id: {_eq: ${logged_employee_id}}}}},
 				{selected_source_compliance_audit: {list:{responsible_person_id: {_eq: ${logged_employee_id}}}}},
+				{selected_source_item_compliance_audit_finding: {responsible_person_id: {_eq: ${logged_employee_id}}}},
 			]`);
 		}
 		
@@ -212,17 +213,13 @@ exports.ncr_details_fragment = `
       employee{
         ${employee_personal_details_fragment}
       }
+      employee_other{
+        ${personal_details_other_fragment}
+      }
   }
   approving_person{
     ${employee_personal_details_fragment}
   }
-  # responsible_person{
-  #   id
-  #   lname
-  #   fname
-  #   email
-  #   phone
-  # }
   selected_source_site {
     id
     name
@@ -242,6 +239,16 @@ exports.ncr_details_fragment = `
     id
   }
   selected_source_compliance_audit {
+    id
+  }
+  
+  #selected_source_item_incident {
+  #  id
+  #}
+  selected_source_item_inspection_ques {
+    id
+  }
+  selected_source_item_compliance_audit_finding {
     id
   }
   

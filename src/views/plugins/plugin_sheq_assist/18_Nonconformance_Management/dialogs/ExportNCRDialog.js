@@ -31,7 +31,7 @@ class ExportDialog extends AExportDialog {
 @observer
 class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="fields">
-    path = "plugin_sheq_assist/ncr/";
+    exportFn = sockets.of('ncr').fn('export-excel');
 
     @observable
     state = {

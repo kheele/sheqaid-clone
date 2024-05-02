@@ -4,6 +4,7 @@ import React from "react";
 import {computed, extendObservable, observable} from "mobx";
 import CreateAndEditBar from "./CreateAndEditBar";
 import {SliderWithChildren} from "../lists";
+
 //</editor-fold>
 
 @observer
@@ -215,6 +216,17 @@ class ASectionSection extends React.Component {
 	
 	//</editor-fold>
 	
+	get isRemovedItem() {
+		const {
+			props: {onChange, onInsert, onUpdate, isEmbedded, isNewEmployee, embeddedEmployee, item_id_key},
+		} = this;
+		if (!embeddedEmployee) return false;
+		let {data, removed, written_off} = embeddedEmployee;
+		removed = removed || data && data.removed;
+		written_off = written_off || data && data.written_off;
+		return removed || written_off;
+	}
+	
 	//<editor-fold desc="list">
 	@computed get list() {
 		if (this.isNewEmployee) {
@@ -257,7 +269,7 @@ class ASectionSection extends React.Component {
 		} = this;
 		
 		return <>
-			<CreateAndEditBar
+			{!this.isRemovedItem && <CreateAndEditBar
 				type={type}
 				onView={ProfileDialog && this.onView}
 				onRemove={this.onRemove}
@@ -265,7 +277,7 @@ class ASectionSection extends React.Component {
 				onCreate={this.onCreate}
 				list={list}
 				isEmbedded={isEmbedded}
-			/>
+			/>}
 			<SliderWithChildren
 				ref="slider"
 				title="Details"
@@ -276,10 +288,12 @@ class ASectionSection extends React.Component {
 				{itemRenderer}
 			</SliderWithChildren>
 			
-			<NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
-			           onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
-			<EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
-			            onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
+			{!this.isRemovedItem && <>
+				<NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
+				           onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
+				<EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
+				            onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
+			</>}
 			{ProfileDialog && !isNewEmployee &&
 				<ProfileDialog ref="profileDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
 				               onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>}

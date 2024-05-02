@@ -1,11 +1,39 @@
 @import '../../../../../../css/ANewDialog.css';
 @import './AssetComponents.css';
 
+:root{
+    --EditToolDialog-dialog-width: 1060px;
+}
+
 #dialog-overlay.EditToolDialog-profile-dialog .dialog-container {
     height: calc(100% - 35px);
-    width: 1060px;
+    width: var(--EditToolDialog-dialog-width);
     max-width: 100%;
 }
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-header > h3 {
+    margin: 8px 15px;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container .dialog-header > h3.green{
+    background: green;
+    color: white;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container .dialog-header > h3.yellow{
+    background: yellow;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container .dialog-header > h3.orange{
+    background: orange;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container .dialog-header > h3.removed{
+    background: red;
+    color: white;
+}
+#dialog-overlay.EditToolDialog-profile-dialog .dialog-container .dialog-header > h3.blue{
+    background: blue;
+    color: white;
+}
+
 #dialog-overlay.EditToolDialog-profile-dialog .dialog-content{
     padding: 0;
     height: calc(100% - 50px);

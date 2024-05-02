@@ -1,5 +1,6 @@
 const {orgs_fragment} = require("../../../../graphql/Fragments");
 const {audit_details_fragment, getVariablesAndQueryConfig} = require('./commons');
+const {ncr_details_fragment} = require("../ncr/commons");
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
@@ -12,6 +13,7 @@ module.exports = async (socket, data) => {
 		removed = false,
 		//
 		id,
+		id_list,
 		//
 		representative_list,
 		representative_id,
@@ -62,6 +64,23 @@ module.exports = async (socket, data) => {
         }
 			`,
 			operationName: "listAllAuditByLoggedQuery",
+		});
+	} else if(id_list) {
+		return listGraphQL({
+			query: `
+				query listByIdsAuditByLoggedQuery {
+	        sheq_compliance_audits(
+	          where: {
+	            id: {_in: [${id_list.join(',')}]}
+	          },
+            order_by: {date: desc},
+	        ) {
+	          ${audit_details_fragment}
+	          ${orgs_fragment}
+	        }
+	      }
+			`,
+			operationName: "listAllNCRByLoggedQuery",
 		});
 	} else {
 		return listGraphQL({

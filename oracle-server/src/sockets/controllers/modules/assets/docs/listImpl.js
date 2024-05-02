@@ -1,5 +1,6 @@
 const {orgs_fragment, asset_basic_details_fragment} = require("../../../../../graphql/Fragments");
 const {getVariablesAndQueryConfig} = require('./commons');
+const {audit_details_fragment} = require("../../audits/commons");
 
 //<editor-fold desc="doc_inc_fragment">
 const doc_inc_fragment = `
@@ -21,72 +22,77 @@ const doc_inc_fragment = `
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
-    console.log('data', data)
-
-    let {
-        offset = 0,
-        limit = 50,
-        //
-        view = 'Asset',
-        mon, mon2, mon3,
-        expiry_date = 'ALL',
-        date_range,
-        date,
-        removed = false,
-        //
-        type,
-        title,
-        asset_id,
-        responsible_person_list,
-        //
-        reg_num,
-        serial_num,
-        manufacturer,
-        location,
-        asset_type,
-        condition,
-        status,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs = false,
-        //
-        client_filter,
-        orgs_filter = [],
-    } = data;
-
-    const {filter, filterAsset} = getVariablesAndQueryConfig({
-        orgs_filter,
-        //
-        view,
-        mon, mon2, mon3,
-        expiry_date,
-        date_range,
-        date,
-        //
-        type,
-        title,
-        asset_id,
-        responsible_person_list,
-        //
-        reg_num,
-        serial_num,
-        manufacturer,
-        location,
-        asset_type,
-        condition,
-        status,
-        //
-        site_id, project_id, client_id,
-        //
-        exact_orgs
-    });
-
-
-    if (view === 'Asset') {
-        //<editor-fold desc="ByGroup">
-        return listGraphQL({
-            query: `
+	console.log('data', data)
+	
+	let {
+		offset = 0,
+		limit = 50,
+		//
+		view = 'Asset',
+		mon, mon2, mon3,
+		expiry_date = 'ALL',
+		date_range,
+		date,
+		removed = false,
+		//
+		id_list,
+		//
+		type,
+		title,
+		asset_id,
+		responsible_person_list,
+		//
+		name,
+		reg_num,
+		serial_num,
+		model,
+		manufacturer,
+		location,
+		asset_type,
+		condition,
+		status,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs = false,
+		//
+		client_filter,
+		orgs_filter = [],
+	} = data;
+	
+	const {filter, filterAsset} = getVariablesAndQueryConfig({
+		orgs_filter,
+		//
+		view,
+		mon, mon2, mon3,
+		expiry_date,
+		date_range,
+		date,
+		//
+		type,
+		title,
+		asset_id,
+		responsible_person_list,
+		//
+		name,
+		reg_num,
+		serial_num,
+		model,
+		manufacturer,
+		location,
+		asset_type,
+		condition,
+		status,
+		//
+		site_id, project_id, client_id,
+		//
+		exact_orgs
+	});
+	
+	if (!id_list && view === 'Asset') {
+		//<editor-fold desc="ByGroup">
+		return listGraphQL({
+			query: `
                 query listAllByGroupAssetDocByLoggedQuery {
                   assets(
                     where: {
@@ -153,12 +159,46 @@ module.exports = async (socket, data) => {
                   }
                 }
             `,
-        });
-        //</editor-fold>
-    } else {
-        //<editor-fold desc="ByEach">
-        return listGraphQL({
-            query: `
+		});
+		//</editor-fold>
+	} else {
+		if (id_list) {
+			return listGraphQL({
+				query: `
+				query listByIdsByEachAssetDocByLoggedQuery {
+	        asset_docs(
+	          where: {
+	            id: {_in: [${id_list.join(',')}]}
+	          },
+            order_by: {asset: {asset_detail:{name: asc}}},
+	        ) {
+	          id
+                    created_at
+                    date
+                    expiry
+                    removed
+                    title
+                    desc
+                    type
+                    doc
+                    
+                    asset{
+                      ${asset_basic_details_fragment}
+                      doc_list(where: {removed: {_eq: ${removed}}}){
+                        id
+                        expiry
+                      }
+                      ${orgs_fragment}
+                    }
+	        }
+	      }
+			`,
+				operationName: "listByIdsByEachAssetDocByLoggedQuery",
+			});
+		} else {
+			//<editor-fold desc="ByEach">
+			return listGraphQL({
+				query: `
                 query listAllByEachAssetDocByLoggedQuery {
                   asset_docs(
                     where: {
@@ -191,8 +231,10 @@ module.exports = async (socket, data) => {
                   }
                 }
             `,
-        });
-        //</editor-fold>
-    }
+				operationName: "listAllByEachAssetDocByLoggedQuery",
+			});
+			//</editor-fold>
+		}
+	}
 }
 //</editor-fold>

@@ -63,7 +63,7 @@ class Controls extends AControls {
     };
     // </editor-fold>
     
-    path = "plugin_sheq_assist/Hazardous_Chemical_Substances/hazchem-sheet/";
+    exportFn = sockets.of('chemicals/hazchem-sheets').fn('export-excel');
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

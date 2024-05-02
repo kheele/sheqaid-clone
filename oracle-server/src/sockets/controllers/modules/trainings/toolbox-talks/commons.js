@@ -125,6 +125,18 @@ exports.training_toolbox_talks_details_fragment = `
             name
         }
     }
+    trainer_other{
+        id
+        fname
+        lname
+        full_name
+        email
+        phone
+        job_position{
+            id
+            name
+        }
+    }
     job_position_list{
         id
         job_position{
@@ -132,7 +144,7 @@ exports.training_toolbox_talks_details_fragment = `
             name
         }
     }
-    register_list{
+    attendance_register_list{
         id
         date
         signature
@@ -180,6 +192,18 @@ exports.sheq_training_toolbox_talk_list_details_fragment = `
             name
         }
     }
+    trainer_other{
+        id
+        fname
+        lname
+        full_name
+        email
+        phone
+        job_position{
+            id
+            name
+        }
+    }
     job_position_list{
         id
         job_position{
@@ -187,7 +211,7 @@ exports.sheq_training_toolbox_talk_list_details_fragment = `
             name
         }
     }
-    register_list{
+    attendance_register_list{
         id
         date
         signature

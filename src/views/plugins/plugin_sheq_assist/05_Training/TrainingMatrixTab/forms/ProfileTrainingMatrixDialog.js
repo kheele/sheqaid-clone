@@ -1,19 +1,24 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 
-import {Dates} from '../../../../../../utils/Utils';
-import {ProfileField} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../../components/dialogs';
+import {Dates} from 'utils/Utils';
+import {ProfileField} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingMatrixDialog.lazy.css";
+import findByIdTrainingMatrix from "mutations/all/TrainingMatrix/findByIdTrainingMatrix";
+import updateTrainingMatrix from "mutations/all/TrainingMatrix/updateTrainingMatrix";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileTrainingMatrixDialog extends AProfileDialog {
     pageKey = "ProfileTrainingMatrixDialog";
+    findById = findByIdTrainingMatrix;
+    removeById = updateTrainingMatrix;
 
     constructor(props) {
         super(props, style);
@@ -39,8 +44,8 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-
-    get item() {
+    
+    @computed get item() {
         return this.props.state.item;
     }
 

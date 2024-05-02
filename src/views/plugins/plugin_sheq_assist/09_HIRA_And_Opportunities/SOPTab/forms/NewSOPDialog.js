@@ -39,20 +39,21 @@ import style from "./NewSOPDialog.lazy.css";
 class NewSOPDialog extends ANewDialog {
 	pageKey = "NewSOPDialog";
 	title = "Create Safe Operating Procedure";
-
+	
 	constructor(props) {
 		super(props, style);
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
 }
+
 //</editor-fold>
 
 @observer
 class Controls extends React.Component {
-
+	
 	//<editor-fold desc="fields">
 	@observable
 	state = {
@@ -63,14 +64,15 @@ class Controls extends React.Component {
 		},
 		loadedSelectLists: false
 	};
+	
 	//</editor-fold>
-
+	
 	constructor() {
 		super();
-
+		
 		this.form = new Form();
 	}
-
+	
 	componentDidMount() {
 		const loads = {location: onSelectLoadSOPLocations};
 		Promise.all(Object.keys(loads).map(k => {
@@ -82,11 +84,11 @@ class Controls extends React.Component {
 			this.state.loadedSelectLists = true;
 		});
 	}
-
+	
 	//<editor-fold desc="onSubmit">
 	async onSubmit(e, btn, onSaved) {
 		const {form} = this;
-
+		
 		if (!form.isValid('category')) {
 			infoDialog.open('Category is required');
 			return;
@@ -99,7 +101,7 @@ class Controls extends React.Component {
 		// 	infoDialog.open('Prepared By is required');
 		// 	return;
 		// }
-
+		
 		const {
 			//0
 			client,
@@ -158,9 +160,9 @@ class Controls extends React.Component {
 			//8
 			other,
 		};
-
+		
 		console.log(data)
-
+		
 		btn.text("Saving...").disabled();
 		progressDialog.open();
 		insertSOP(data).then(res => {
@@ -174,13 +176,14 @@ class Controls extends React.Component {
 			setTimeout(() => progressDialog.close());
 		});
 	}
+	
 	//</editor-fold>
-
+	
 	//<editor-fold desc="render">
 	render() {
 		const {onFormNext, onFormBack, onFormOpen} = this.props;
 		const {isConsultant, isNoProjects} = storage.is;
-
+		
 		return <FormControls>
 			{!isNoProjects && <Row
 				rendered
@@ -215,9 +218,9 @@ class Controls extends React.Component {
 				                values={this.state.lists.risk_level}/>
 				<SelectWrapper state={this.state} name="location" placeholder="Risk Task Location"
 				               className="col-lg-12 form-control" onChange={this.form.onChange} values="location"/>
-
+				
 				<SelectEmployeeInput name="prepared_by" placeholder="Prepared By..."
-				                 required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+				                     required className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<ClearableInput name="date_created" type="date" placeholder="Date Created..." defaultValue={new Date()}
 				                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<ClearableInput name="date_revised" type="date" placeholder="Date Revised..." required
@@ -289,9 +292,32 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<NewProcedureListTable name="procedure_list" onChange={this.form.onChange}/>
-				<NewKeyPointListTable name="key_point_list" onChange={this.form.onChange}/>
-				<NewOperationListTable name="operation_list" onChange={this.form.onChange}/>
+				<FormControls>
+					<Row
+						rendered
+						activeAlways
+						idx={7.1}
+						title="7.1. Pre-start Check"
+					>
+						<NewProcedureListTable name="procedure_list" onChange={this.form.onChange}/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.2}
+						title="7.2. Key Points"
+					>
+						<NewKeyPointListTable name="key_point_list" onChange={this.form.onChange}/>
+					</Row>
+					<Row
+						rendered
+						activeAlways
+						idx={7.3}
+						title="7.3. Operations"
+					>
+						<NewOperationListTable name="operation_list" onChange={this.form.onChange}/>
+					</Row>
+				</FormControls>
 			</Row>
 			<Row
 				rendered
@@ -305,6 +331,7 @@ class Controls extends React.Component {
 			</Row>
 		</FormControls>;
 	}
+	
 	//</editor-fold>
 }
 

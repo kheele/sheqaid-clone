@@ -63,6 +63,7 @@ global.sendGraphQL = async (args) => {
             const {errors, data} = res;
 
             if (errors) {
+                console.log('errors', mutation);
                 throw new Error(JSON.stringify(errors));
             }
 
@@ -273,7 +274,7 @@ global.insertGraphQL = async ({mutation, operationName, input}) => {
     return await sendGraphQL({
         mutation,
         operationName,
-        variables: {object: input}
+        variables: {[isArray(input)? "objects" : "object"]: input}
     });
 };
 //</editor-fold>

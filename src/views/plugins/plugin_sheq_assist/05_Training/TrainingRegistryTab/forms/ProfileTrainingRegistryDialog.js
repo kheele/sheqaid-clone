@@ -1,21 +1,25 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 
-import {Dates} from '../../../../../../utils/Utils';
-import {ProfileField} from '../../../../../../components/inputs';
-import {Row} from '../../../../../../components/FormComponents';
-import {AProfileDialog} from '../../../../../../components/dialogs';
+import {ProfileField} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingRegistryDialog.lazy.css";
 import TrainingCourseGridCounter from "../../dialogs/ProfileStats/TrainingCourseGridCounter";
 import TrainingCourseGridReportsLineChart from "../../dialogs/ProfileStats/TrainingCourseGridReportsLineChart";
+import findByIdTrainingCourse from "mutations/all/TrainingCourse/findByIdTrainingCourse";
+import updateTrainingCourse from "mutations/all/TrainingCourse/updateTrainingCourse";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileTrainingRegistryDialog extends AProfileDialog {
     pageKey = "ProfileTrainingRegistryDialog";
+    findById = findByIdTrainingCourse;
+    removeById = updateTrainingCourse;
   
     constructor(props) {
         super(props, style);
@@ -39,8 +43,8 @@ class Controls extends React.Component {
         super(props);
     }
     // </editor-fold>
-
-    get item() {
+    
+    @computed get item() {
         return this.props.state.item;
     }
 

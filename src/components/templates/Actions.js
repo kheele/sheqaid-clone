@@ -97,6 +97,8 @@ class Actions extends React.Component {
     get showNotify() {
         const {ques} = this.props;
         switch (ques.questionType) {
+            case "Low,Medium,High,N/A":
+            case "Empty,Medium,Full,N/A":
             case "Safe,At Risk,N/A":
             case "Good,Fair,Poor,N/A":
             case "Pass,Fail,N/A":

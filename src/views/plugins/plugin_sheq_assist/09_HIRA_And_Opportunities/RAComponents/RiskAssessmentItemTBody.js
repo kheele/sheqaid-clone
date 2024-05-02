@@ -87,9 +87,9 @@ class RiskAssessmentItemTBody extends ATableSavable {
         
         const checkIco = <i className="fa fa-check"/>;
         
-        return <TRow key={"item-" + n}>
+        return <TRow key={"item-" + n} className="w-full">
             <div className="td">
-                <span className="counter max-w-20">{n + 1}</span>
+                <span className="counter max-w-20 margin-10">{n + 1}</span>
                 {task_step}
             </div>
             <div className="td">{hazard}</div>

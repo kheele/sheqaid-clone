@@ -89,12 +89,13 @@ class Controls extends React.Component {
             is_flammable: ['Yes', 'No'].map(text => {
                 return {text, value: text};
             }),
-            flammability_class: [
+            flammability_combustibility_class: [
                 {text: <div><b>IA</b> <small><i>(Liquids that have a flash point below 73&deg;F(22.8&deg;C) and a boiling point below 100&deg;F(37.8&deg;C))</i></small></div>, value: 'IA'}, 
                 {text: <div><b>IB</b> <small><i>(Liquids that have a flash point below 73&deg;F(22.8&deg;C) and a boiling point at or above 100&deg;F(37.8&deg;C))</i></small></div>, value: 'IB'}, 
                 {text: <div><b>IC</b> <small><i>(Liquids that have a flash point at or above 73&deg;F(22.8&deg;C) but below 100&deg;F(37.8&deg;C))</i></small></div>, value: 'IC'}, 
                 {text: <div><b>II</b> <small><i>(Liquids that have a flash point at or above 100&deg;F(37.8&deg;C) and below 140&deg;F(60&deg;C))</i></small></div>, value: 'II'}, 
-                {text: <div><b>IIIA</b> <small><i>(Liquids that have a flash point at or above 140&deg;F(60&deg;C) but below 200&deg;F(93&deg;C))</i></small></div>, value: 'IIIA'}
+                {text: <div><b>IIIA</b> <small><i>(Liquids that have a flash point at or above 140&deg;F(60&deg;C) but below 200&deg;F(93&deg;C))</i></small></div>, value: 'IIIA'},
+                {text: <div><b>IIIB</b> <small><i>(Liquids that have a flash point above 200&deg;F(93&deg;C)</i></small></div>, value: 'IIIB'}
             ],
             //6
             fire_fighting_foam: ['Yes', 'No'].map(text => {
@@ -145,6 +146,8 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
         
         this.form = new Form();
+        this.form.addChangeOne("is_combustible", this.onChangeIsCombustible.bind(this));
+        this.form.addChangeOne("is_flammable", this.onChangeIsFlammable.bind(this));
         this.form.addChangeOne("is_hazardous", this.onChangeIsHazardous.bind(this));
         this.form.addChangeOne("has_sds", this.onChangeHasSDS.bind(this));
         this.form.addChangeOne("has_hazchem_sheet", this.onChangeHasHazchemSheet.bind(this));
@@ -154,6 +157,38 @@ class Controls extends React.Component {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="onChange">
+    // <editor-fold defaultstate="collapsed" desc="onChangeIsCombustible">
+    onChangeIsCombustible(el, val) {
+        execWhen(() => this.refs.flammability_combustibility_class).then(ref => {
+            const {
+                is_flammable
+            } = this.refs;
+            if (val === 'Yes') {
+                ref.show();
+            } else if(is_flammable.value !== "Yes") {
+                ref.hide();
+            }
+        });
+    }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="onChangeIsFlammable">
+    onChangeIsFlammable(el, val) {
+        execWhen(() => this.refs.flammability_combustibility_class).then(ref => {
+            const {
+                is_combustible
+            } = this.refs;
+            if (val === 'Yes') {
+                ref.show();
+            } else if(is_combustible.value !== "Yes") {
+                ref.hide();
+            }
+        });
+    }
+    
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="onChangeIsHazardous">
     onChangeIsHazardous(el, val) {
         execWhen(() => this.refs.hazardous_details_sec).then(ref => {
@@ -545,8 +580,8 @@ class Controls extends React.Component {
                 
                 <hr className="col-lg-12 margin-t-5 margin-b-10 margin-r-5"/>
             
-                <ClearableInput name="is_stable" type="radio" placeholder="Is Stable?" defaultValue={is_stable} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_stable} returnValue/>
-                <ClearableInput name="is_cool_well_ventilated_area" type="radio" placeholder="Requires Cool, Well-Ventilated Area?" defaultValue={is_cool_well_ventilated_area} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_cool_well_ventilated_area} returnValue/>
+                <ClearableInput name="is_stable" type="radio" placeholder="Is It Stable?" defaultValue={is_stable} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_stable} returnValue/>
+                <ClearableInput name="is_cool_well_ventilated_area" type="radio" placeholder="Does It Require Cool, Well-Ventilated Area?" defaultValue={is_cool_well_ventilated_area} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_cool_well_ventilated_area} returnValue/>
                 <ClearableInput name="heat_sparks_static_flames" type="select_multi" placeholder="Heat, Sparks, Static, Flames..." defaultValue={heat_sparks_static_flames} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.heat_sparks_static_flames} add returnValue/>
                 <ClearableInput name="spillage_control" type="select_multi" placeholder="Spillage Control..." defaultValue={spillage_control} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.spillage_control} add returnValue/>
                 <ClearableInput name="other_special_info" type="select_multi" placeholder="Other Special Info..." defaultValue={other_special_info} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.other_special_info} add returnValue/>
@@ -582,9 +617,9 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="is_combustible" type="radio" placeholder="Is Combustible?" defaultValue={is_combustible} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_combustible} returnValue/>
-                <ClearableInput name="is_flammable" type="radio" placeholder="Is Flammable?" defaultValue={is_flammable} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_flammable} returnValue/>
-                <ClearableInput name="flammability_combustibility_class" type="radio" placeholder="Flammability / Combustibility Class" defaultValue={flammability_combustibility_class} vertical className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.flammability_class} returnValue/>
+                <ClearableInput ref="is_combustible" name="is_combustible" type="radio" placeholder="Is It Combustible?" defaultValue={is_combustible} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_combustible} returnValue/>
+                <ClearableInput ref="is_flammable" name="is_flammable" type="radio" placeholder="Is It Flammable?" defaultValue={is_flammable} vertical className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.is_flammable} returnValue/>
+                <ClearableInput ref="flammability_combustibility_class" name="flammability_combustibility_class" type="radio" rendered={false} placeholder="Flammability / Combustibility Class" defaultValue={flammability_combustibility_class} vertical={1} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.flammability_combustibility_class} returnValue/>
             </Row>
             <Row 
                 rendered 
@@ -625,7 +660,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="has_sds" type="radio" placeholder="Has SDS?" defaultValue={has_sds} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_sds} returnValue/>
+                <ClearableInput name="has_sds" type="radio" placeholder="Does It Have SDS?" defaultValue={has_sds} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_sds} returnValue/>
                 <Fragment ref="sds_details_sec" rendered={false}>
                     <hr className="col-lg-12 margin-t-5 margin-b-20 margin-r-5"/>
                     
@@ -657,7 +692,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="has_hazchem_sheet" type="radio" placeholder="Has Hazchem Sheet?" defaultValue={has_hazchem_sheet} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_hazchem_sheet} returnValue/>
+                <ClearableInput name="has_hazchem_sheet" type="radio" placeholder="Does It Have Hazchem Sheet?" defaultValue={has_hazchem_sheet} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_hazchem_sheet} returnValue/>
                 <Fragment ref="hazchem_sheet_details_sec" rendered={false}>
                     <hr className="col-lg-12 margin-t-5 margin-b-20 margin-r-5"/>
                     
@@ -689,7 +724,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack} 
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="has_risk_assessment" type="radio" placeholder="Has Risk Assessment?" defaultValue={has_risk_assessment} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_risk_assessment} returnValue/>
+                <ClearableInput name="has_risk_assessment" type="radio" placeholder="Does It Have Risk Assessment?" defaultValue={has_risk_assessment} vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_risk_assessment} returnValue/>
                 <Fragment ref="risk_assessment_details_sec" rendered={false}>
                     <hr className="col-lg-12 margin-t-5 margin-b-20 margin-r-5"/>
                     

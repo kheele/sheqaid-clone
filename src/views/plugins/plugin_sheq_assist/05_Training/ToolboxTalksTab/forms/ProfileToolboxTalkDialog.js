@@ -11,12 +11,17 @@ import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileToolboxTalkDialog.lazy.css";
 import {NewEmployeeListTable} from "components/FormTableComponents";
+import findByIdTrainingToolboxTalk
+    from "mutations/all/TrainingToolboxTalk/findByIdTrainingToolboxTalk";
+import updateTrainingToolboxTalk from "mutations/all/TrainingToolboxTalk/updateTrainingToolboxTalk";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
 @observer
 class ProfileToolboxTalkDialog extends AProfileDialog {
     pageKey = "ProfileToolboxTalkDialog";
+    findById = findByIdTrainingToolboxTalk;
+    removeById = updateTrainingToolboxTalk;
 
     constructor(props) {
         super(props, style);

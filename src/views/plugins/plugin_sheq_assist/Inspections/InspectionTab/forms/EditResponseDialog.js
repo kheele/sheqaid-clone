@@ -15,12 +15,11 @@ import {AnswerQuestions} from 'components/checkables';
 import {AControls, Compliance, questionnairesOnUpdate, Stats} from 'components/questionnaires/AResponseUtils';
 
 import style from "./EditResponseDialog.lazy.css";
-import Divider from "@mui/material/Divider";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 import findByIdInspectionsQuestionnaire
 	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
-import {Dates} from "../../../../../../utils/Dates";
+import {Dates} from "utils/Dates";
 
 // </editor-fold>
 
@@ -29,14 +28,14 @@ import {Dates} from "../../../../../../utils/Dates";
 class EditDialog extends ANewDialog {
 	pageKey = "EditResponseDialog";
 	findById = findByIdInspectionsQuestionnaire;
-	removeById = updateQuestionnaire ;
-
+	removeById = updateQuestionnaire;
+	
 	constructor(props) {
 		super(props, style);
 		
 		this.onSetAsComplete = this.onSetAsComplete.bind(this);
 	}
-
+	
 	open(item) {
 		this.execWhen(() => this.refs.dialog).then(dialog => {
 			dialog.setTopButtons(this.topButtons);
@@ -77,14 +76,19 @@ class EditDialog extends ANewDialog {
 	
 	get isLoggedUser() {
 		const {user} = storage.loggedUser;
-		const {data: {responsible_person}} = this.item;
-		return responsible_person && responsible_person.linked_user_id === user.id;
+		const {data: {responsible_person_list, responsible_user}} = this.item;
+		if (responsible_user) {
+			return responsible_user.id === user.id;
+		}
+		if(responsible_person_list) {
+			return responsible_person_list.anyMatch(v => v.linked_user_id === user.id);
+		}
 	}
 	
 	get title() {
 		return "Questionnaire Responses";
 	}
-
+	
 	@computed get topButtons() {
 		const {item} = this.state;
 		if (!item) return null;
@@ -109,7 +113,7 @@ class EditDialog extends ANewDialog {
 			</Button>
 		</>;
 	}
-
+	
 	get controls() {
 		return Controls;
 	}
@@ -121,26 +125,26 @@ class EditDialog extends ANewDialog {
 class Controls extends AControls {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
 	group = "Inspections";
-
+	
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-
+		
 		this.onUpdate = this.onUpdate.bind(this);
-
+		
 		this.onActionAsComplete = this.onActionAsComplete.bind(this);
 		this.onActionQuestionnaire = this.onActionQuestionnaire.bind(this);
 	}
-
+	
 	// </editor-fold>
-
+	
 	componentWillUnmount() {
 		if (this.unsubscribe && isFunction(this.unsubscribe)) {
 			// this.unsubscribe();
 		}
 		this.unsubscribe = null;
 	}
-
+	
 	onUpdate() {
 		if (this.unsubscribe) {
 			return;
@@ -156,35 +160,35 @@ class Controls extends AControls {
 // 			},
 // 		});
 	}
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onActionAsComplete">
 	onActionAsComplete(evt, el) {
 		const {status} = el.props;
 		this.onUpdateImpl({status});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onActionQuestionnaire">
 	onActionQuestionnaire(evt, el) {
 		const {status_answered_by_sender} = el.props;
 		this.onUpdateImpl({status_answered_by_sender});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onSubmit">
 	onSubmit(e, btn, onSaved) {
 		btn.text("Saving...").disabled();
 		setTimeout(() => {
 			infoDialog.open("Record successfully updated.");
 			infoDialog.close(2000);
-			btn.text("Save").enabled();
+			this.props.close();
 		}, 1000);
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="onUpdateImpl">
 	onUpdateImpl(attrs, showConfirm = true) {
 		let promise;
@@ -210,9 +214,9 @@ class Controls extends AControls {
 			}
 		});
 	}
-
+	
 	// </editor-fold>
-
+	
 	// <editor-fold defaultstate="collapsed" desc="render">
 	render() {
 		if (!this.item)
@@ -234,12 +238,19 @@ class Controls extends AControls {
 					scheduled,
 					page_title_list,
 					question_list,
+					total_answered,
+					total_compliance,
+					total_deviations,
+					total_non_deviations,
+					total_questions,
+					total_unanswered,
 					//
 					interval,
 					start_date,
 					time,
 					schedule_date,
-					responsible_person,
+					responsible_person_list,
+					responsible_user,
 					responsible_department,
 					asset_type,
 					asset,
@@ -249,7 +260,7 @@ class Controls extends AControls {
 			}
 		} = this;
 //        console.log('item', item)
-
+		
 		return <FormControls>
 			<Row
 				rendered
@@ -259,9 +270,11 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 			>
 				<div className="row margin-0 flex">
-					<Stats value={question_list} title='Total Questions'/>
-					<Compliance list={question_list} title='Non-Compliance' status={status}/>
-					<Compliance list={question_list} title='Compliance' status={status}/>
+					<Stats value={total_questions} title='Total Questions'/>
+					<Stats value={total_questions-total_compliance} title='Non-Compliance'/>
+					<Stats value={total_compliance} title='Compliance'/>
+					{/*<Compliance list={total_questions-total_compliance} title='Non-Compliance' status={status}/>*/}
+					{/*<Compliance list={total_compliance} title='Compliance' status={status}/>*/}
 				</div>
 			</Row>
 			<Row
@@ -284,16 +297,19 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<ProfileField name="responsible_person" placeholder="Responsible Person" value={responsible_person}
+				<ProfileField name="responsible_person_list" placeholder="Responsible Employee(s)" value={responsible_person_list || []}
+				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
+				<ProfileField name="responsible_user" placeholder="Responsible User" value={responsible_user}
 				              renderer={v => v.full_name} className="col-lg-12"/>
 				<ProfileField name="responsible_department" placeholder="Responsible Department" value={responsible_department}
 				              renderer={v => v.name} className="col-lg-12"/>
-
+				
 				<ProfileField name="interval" placeholder="Interval" value={interval} className="col-lg-4"/>
 				<ProfileField name="start_date" placeholder="Start Date" type="date" value={start_date} className="col-lg-4"/>
 				<ProfileField name="time" placeholder="Time" value={time} className="col-lg-4"/>
-
-				<ProfileField name="schedule_date" placeholder="Scheduled Date" type="date" value={schedule_date} className="col-lg-12"/>
+				
+				<ProfileField name="schedule_date" placeholder="Scheduled Date" type="date" value={schedule_date}
+				              className="col-lg-12"/>
 			</Row>
 			<Row
 				rendered
@@ -315,7 +331,7 @@ class Controls extends AControls {
 			</Row>
 		</FormControls>;
 	}
-
+	
 	// </editor-fold>
 }
 

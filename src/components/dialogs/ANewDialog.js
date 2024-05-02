@@ -10,6 +10,7 @@ import AFormDialog from './AFormDialog';
 
 @observer
 class ANewDialog extends AFormDialog {
+	key = "ANewDialog";
 	
 	constructor(props, style) {
 		super(props, style);
@@ -48,6 +49,11 @@ class ANewDialog extends AFormDialog {
 		</React.Fragment>;
 	}
 	
+	get isOpen() {
+		const {dialog} = this.refs;
+		return dialog && dialog.isOpen;
+	}
+	
 	render() {
 		let className = this.pageKey + '-new-dialog';
 		!!this.className && (className += ' ' + this.className);
@@ -63,7 +69,7 @@ class ANewDialog extends AFormDialog {
 			onClose={this.onClose}
 			dialog={this}
 		>
-			<CircularProgressWrapper findById={this.findById} state={this.state}/>
+			<CircularProgressWrapper dialog={this} state={this.state}/>
 			<Controls
 				ref="controls"
 				dialog={this}
@@ -87,9 +93,9 @@ class ANewDialog extends AFormDialog {
 class CircularProgressWrapper extends React.Component {
 	
 	render() {
-		const {findById, item} = this.props.state;
-		if(findById) {
-			if (!item) return <CircularProgress className="fixed-center"/>;
+		const {dialog:{findById}, state: {item, itemToView}} = this.props;
+		if (findById && itemToView && !item) {
+			return <CircularProgress className="fixed-center"/>;
 		}
 		
 		return null;

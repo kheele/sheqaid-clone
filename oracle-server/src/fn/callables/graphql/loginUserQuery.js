@@ -139,11 +139,26 @@ exports.query = `
               site_list{
 	              id
 	              name
+	              project {
+		              id
+		            }
+		            client {
+		              id
+		            }
+	            }
+	            client {
+	              id
 	            }
             }
             site_list{
               id
               name
+	            project {
+		            id
+		          }
+	            client {
+	              id
+	            }
             }
             module_list {
                 id
@@ -176,11 +191,26 @@ exports.query = `
             site_list{
               id
               name
+	            project {
+		            id
+		          }
+	            client {
+	              id
+	            }
             }
+	          client {
+	            id
+	          }
           }
           site {
             id
             name
+	          project {
+		          id
+		        }
+	          client {
+	            id
+	          }
           }
         }
       }

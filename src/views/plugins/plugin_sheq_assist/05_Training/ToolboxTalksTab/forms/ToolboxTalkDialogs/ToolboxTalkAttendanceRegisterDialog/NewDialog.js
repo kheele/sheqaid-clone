@@ -18,7 +18,7 @@ import {NewEmployeeListTable} from "components/FormTableComponents";
 import {execWhen, isWeb} from "utils/UtilsFuns";
 import {Dates} from "utils/Dates";
 import insertTrainingToolboxTalkRegister
-	from "../../../../../../../../mutations/all/TrainingToolboxTalkRegister/insertTrainingToolboxTalkRegister";
+	from "mutations/all/TrainingToolboxTalkRegister/insertTrainingToolboxTalkRegister";
 
 @observer
 class NewDialog extends ANewDialog {

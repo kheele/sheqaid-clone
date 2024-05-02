@@ -1,10 +1,12 @@
 @import '../../../../../../css/AProfileDialog.css';
 
+:root{
+    --ProfileTaskBaseRiskAssessmentDialog-dialog-width: 800px;
+}
+
 #dialog-overlay.ProfileTaskBaseRiskAssessmentDialog-profile-dialog .dialog-container{
-    width: 100% !important;
-    max-width: calc(100% - 90px) !important;
-    left: 15px !important;
-    transform: translate(0, -50%);
+    width: var(--ProfileTaskBaseRiskAssessmentDialog-dialog-width) !important;
+    max-width: calc(100% - 30px) !important;
 }
 #dialog-overlay.ProfileTaskBaseRiskAssessmentDialog-profile-dialog .dialog-content{
     padding: 0;

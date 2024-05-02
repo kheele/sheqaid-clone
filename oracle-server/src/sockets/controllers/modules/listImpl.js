@@ -1,4 +1,5 @@
 let {orgs_fragment} = require("../../../graphql/Fragments");
+const {audit_details_fragment} = require("./audits/commons");
 
 //<editor-fold desc="listImpl">
 module.exports = (
@@ -23,7 +24,7 @@ module.exports = (
 			written_off = false,
 			//
 			id,
-			//
+			id_list,
 			//
 			logged_employee_id,
 			site_id, project_id, client_id, company_id,
@@ -37,7 +38,7 @@ module.exports = (
 		} = data;
 		
 		let remove_args;
-		if('written_off' in data) {
+		if ('written_off' in data) {
 			remove_args = {key: 'written_off', value: written_off};
 		} else {
 			remove_args = {key: 'removed', value: removed};
@@ -85,6 +86,23 @@ module.exports = (
         }
 			`,
 				operationName: `listAll${name}ByLoggedQuery`,
+			});
+		} else if (id_list) {
+			return listGraphQL({
+				query: `
+					query listByIds${name}ByLoggedQuery {
+		        ${tbl}(
+		          where: {
+		            id: {_in: [${id_list.join(',')}]}
+		          },
+	            ${order_by ? `${order_by},` : ''}
+		        ) {
+		          ${isFunction(details_fragment) ? details_fragment(data) : details_fragment}
+	            ${__orgs_fragment}
+		        }
+		      }
+				`,
+				operationName: `listByIds${name}ByLoggedQuery`,
 			});
 		} else {
 			

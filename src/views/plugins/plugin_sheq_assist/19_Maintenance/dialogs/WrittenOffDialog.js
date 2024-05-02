@@ -11,6 +11,8 @@ import {FormControls, Row} from 'components/FormComponents';
 import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 
 import style from "./WrittenOffDialog.lazy.css";
+import deleteAssets from "../../../../../mutations/all/Asset/deleteAssets";
+import {Dates} from "../../../../../utils/Dates";
 
 @observer
 class WrittenOffDialog extends ANewDialog {
@@ -39,14 +41,16 @@ class Controls extends React.Component {
             barcode_or_qr_code_types: [{text: "Barcode", value: "Barcode", checked: false}, {text: "QR Code", value: "QR Code", checked: false}],
             vendors: []
         },
-        item: null,
-        items: null,
+        asset: null,
+        assets: null,
         showBarcode: false,
         showQRCode: false
     };
 
     constructor(props) {
         super(props);
+        
+        this.onFormChange = this.onFormChange.bind(this);
         
         this.onChangeBarcodeOrQRCode = this.onChangeBarcodeOrQRCode.bind(this);
         
@@ -61,22 +65,35 @@ class Controls extends React.Component {
     
     componentWillMount() {
         const {dialog} = this.props;
-        this.state.item = dialog.extraProp('item');
-        this.state.items = dialog.extraProp('items');
+        this.state.asset = dialog.extraProp('item');
+        this.state.assets = dialog.extraProp('items');
     }
     
     onLoadList() {
-        return neonBinding.events.emit(this.path + 'list/search_by', {key: '!written_off', value: true});
+        const listByLogged = sockets.of("assets").fn('listByLogged');
+        
+        return listByLogged({
+            written_off: false,
+            //
+            exact_orgs: true,
+            data_export: true,
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
     }
     
     onChangeAsset(){
         this.refs.selectTable.open().then(list => {
             if(list.length === 1) {
-                this.state.item = list[0];
-                this.state.items = null;
+                this.state.asset = list[0];
+                this.state.assets = null;
             } else if(list.length > 1) {
-                this.state.items = list;
-                this.state.item = null;
+                this.state.assets = list;
+                this.state.asset = null;
             }
         });
     }
@@ -85,52 +102,60 @@ class Controls extends React.Component {
         this.state.showBarcode = val === 'Barcode';
         this.state.showQRCode = val === 'QR Code';
     }
+    
+    // <editor-fold defaultstate="collapsed" desc="onFormChange">
+    onFormChange(idx) {
+        const {dialog} = this.props;
+        dialog.cssWidth = idx === 1 ? '700px' : '1400px';
+        return true;
+    }
+    // </editor-fold>
 
     onSubmit(e, btn, onSaved) {
         const {form} = this;
 
-        if (!form.isValid('store_keeper_signature')) {
+        if (!form.isValid('written_off_store_keeper_signature')) {
             infoDialog.open('Store Keeper Signature is required');
             return;
         }
-        if (!form.isValid('manager_signature')) {
+        if (!form.isValid('written_off_manager_signature')) {
             infoDialog.open('Manager Signature is required');
             return;
         }
 
-        const {item, items} = this.state;
+        const {asset, assets} = this.state;
         const {
-            store_keeper_signature, manager_signature, comments
+            written_off_date, written_off_store_keeper_signature, written_off_manager_signature, written_off_reason, written_off_comments
         } = form.data;
         const data = {
-            store_keeper_signature: JSON.stringify(store_keeper_signature), 
-            manager_signature: JSON.stringify(manager_signature)
+            written_off_date: Dates.formatDateSQL(written_off_date),
+            written_off_store_keeper_signature: JSON.stringify(written_off_store_keeper_signature),
+            written_off_manager_signature: JSON.stringify(written_off_manager_signature),
+            written_off_reason,
+            written_off_comments,
+            list: asset ? [asset.id] : assets ? assets.map(v => v.id) : [],
         };
-        if (comments) {
-            data.comments = comments;
-        }
-        if (item) {
-            data.list = [item.id];
-        } else if (items) {
-            data.list = items.map(v => v.id);
-        }
-        console.log(data)
+        
+        console.log(data, assets)//
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "write-off", data).then(res => {
+        progressDialog.open();
+        
+        const remove = sockets.of('assets').fn('removeMany');
+        remove(data).then(res => {
             console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully saved.");
-            setTimeout(function () {
-                infoDialog.close();
-            }.bind(this), 2000);
+            onSaved && onSaved();
+            infoDialog.open("Record(s) successfully removed.");
+            infoDialog.close(2000);
+            this.props.close();
         }).finally(() => {
             btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
         });
     }
     
     render() {
-        const {onFormNext, onFormBack, onFormOpen} = this.props;
+        const {onFormNext, onFormBack, onFormOpen, onFormChange} = this.props;
         
         return <FormControls>
             <Row 
@@ -141,10 +166,13 @@ class Controls extends React.Component {
                 sectionClassName="-margin-r-10"
                 onFormOpen={onFormOpen} 
                 onFormNext={onFormNext}
+                onFormChange={onFormChange}
             >
-                <ClearableInput name="store_keeper_signature" type="signature" placeholder="Store Keeper Signature" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="manager_signature" type="signature" placeholder="Manager Signature" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="comments" type="textarea" placeholder="Comments" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="written_off_date" type="date" placeholder="Date Written Off..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="written_off_store_keeper_signature" type="signature" placeholder="Store Keeper Signature" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="written_off_manager_signature" type="signature" placeholder="Manager Signature" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="written_off_reason" type="textarea" placeholder="Reason" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="written_off_comments" type="textarea" placeholder="Comments" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row 
                 rendered 
@@ -152,8 +180,9 @@ class Controls extends React.Component {
                 title="2. Asset Details" 
                 onFormOpen={onFormOpen} 
                 onFormBack={onFormBack}
+                onFormChange={onFormChange}
             >
-                <SelectTable ref="selectTable" isDialog replaceCols name="asset" desc="Assests" title="Select Asset(s) To Check Out" className="col-lg-12 no-padding SelectAssetTable" renderTHead={this.renderTHead} defaultValue={this.state.items ? this.state.items : (this.state.item ? [this.state.item] : null)} renderItem={this.renderItem} onLoadList={this.onLoadList}/>
+                <SelectTable ref="selectTable" isDialog replaceCols name="asset" desc="Assests" title="Select Asset(s) To Check Out" className="col-lg-12 no-padding SelectAssetTable" renderTHead={this.renderTHead} defaultValue={this.state.assets ? this.state.assets : (this.state.asset ? [this.state.asset] : null)} renderItem={this.renderItem} onLoadList={this.onLoadList}/>
                 <SelectedAssets state={this.state} onChangeAsset={this.onChangeAsset} title="Select Asset(s) To Write Off"/>
             </Row>
         </FormControls>;

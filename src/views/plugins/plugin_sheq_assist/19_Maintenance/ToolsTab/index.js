@@ -157,7 +157,8 @@ class ToolsTab extends React.Component {
 	}
 	
 	onChangeStatus(e, btn) {
-		const open = item => {
+		const {idx, action} = btn.props;
+		const open = (action, item) => {
 			let {checkOutToolDialog, checkInToolDialog} = this.refs;
 			let dlg;
 			if (item) {
@@ -176,12 +177,14 @@ class ToolsTab extends React.Component {
 				} else {
 					dlg = 'Out';
 				}
+				
+				checkOutToolDialog = checkOutToolDialog.extraProp('status', action);
 			} else {
-				if (btn.props.action === 'In Storage') {
+				if (action === 'In Storage') {
 					dlg = 'In';
 				} else {
 					dlg = 'Out';
-					checkOutToolDialog = checkOutToolDialog.extraProp('status', btn.props.action);
+					checkOutToolDialog = checkOutToolDialog.extraProp('status', action);
 				}
 			}
 			if (dlg === 'Out') {
@@ -202,16 +205,15 @@ class ToolsTab extends React.Component {
 				});
 			}
 		};
-		if (btn.props.action) {
-			open();
-		} else {
-			let idx = btn.props.idx;
+		
+		const args = [action];
+		if ('idx' in btn.props) {
 			const {list} = this.refs.root;
 			const item = list[idx];
-			if (item) {
-				open(item);
-			}
+			args.push(item);
 		}
+		
+		open.apply(this, args);
 	}
 	
 	onAddMonitoringService(e, el) {
@@ -219,7 +221,7 @@ class ToolsTab extends React.Component {
 		const {list} = this.refs.root;
 		const item = list[idx];
 		if (item) {
-			this.refs.editDialog.extraProp('index', CONSTANTS.MONITORING).open(item);
+			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.MONITORING).open(item);
 		}
 	}
 	
@@ -228,7 +230,7 @@ class ToolsTab extends React.Component {
 		const {list} = this.refs.root;
 		const item = list[idx];
 		if (item) {
-			this.refs.editDialog.extraProp('index', CONSTANTS.MAINTENANCE).open(item);
+			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
 		}
 	}
 	
@@ -237,7 +239,7 @@ class ToolsTab extends React.Component {
 		const {list} = this.refs.root;
 		const item = list[idx];
 		if (item) {
-			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
+			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.CALIBRATION).open(item);
 		}
 	}
 	
@@ -246,7 +248,7 @@ class ToolsTab extends React.Component {
 		const {list} = this.refs.root;
 		const item = list[idx];
 		if (item) {
-			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
+			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.INSPECTIONS).open(item);
 		}
 	}
 	
@@ -255,7 +257,7 @@ class ToolsTab extends React.Component {
 		const {list} = this.refs.root;
 		const item = list[idx];
 		if (item) {
-			this.refs.editDialog.extraProp('index', CONSTANTS.CALIBRATION).open(item);
+			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.INSPECTIONS).open(item);
 		}
 	}
 	
@@ -282,19 +284,19 @@ class ToolsTab extends React.Component {
 			<Button className="btn btn-primary pull-right" onClick={this.onExport}>
 				Export
 			</Button>
-			<Button className="btn btn-primary pull-right _888" action="In Storage" onClick={this.onChangeStatus}>
+			<Button className="btn btn-primary pull-right bg-border-green" action="In Storage" onClick={this.onChangeStatus}>
 				Check In
 			</Button>
-			<Button className="btn btn-primary pull-right _888" action="Checked Out" onClick={this.onChangeStatus}>
+			<Button className="btn btn-primary pull-right bg-border-yellow color-888" action="Checked Out" onClick={this.onChangeStatus}>
 				Check Out
 			</Button>
-			<Button className="btn btn-primary pull-right _888" action="Loaned Out" onClick={this.onChangeStatus}>
+			<Button className="btn btn-primary pull-right bg-border-orange" action="Loaned Out" onClick={this.onChangeStatus}>
 				Loan Out
 			</Button>
-			<Button className="btn btn-primary pull-right _888" action="Out For Repair" onClick={this.onChangeStatus}>
+			<Button className="btn btn-primary pull-right bg-border-blue" action="Out For Repair" onClick={this.onChangeStatus}>
 				Out For Repair
 			</Button>
-			<Button className="btn btn-primary pull-right _888" onClick={this.onWriteOffTools}>
+			<Button className="btn btn-primary pull-right bg-border-red" onClick={this.onWriteOffTools}>
 				Write Off
 			</Button>
 		</div>;
@@ -389,7 +391,7 @@ class ToolsTab extends React.Component {
 		const item = this.refs.root.list[n];
 		if (!('statusVal' in item.data)) {
 			item.data.statusVal = computed(() => {
-				const {status} = item.data;
+				const {status, register_list} = item.data;
 				// console.log(item.id, 'status', status)
 				if (status === 'In Storage') {
 					return 'Check Out';
@@ -454,6 +456,17 @@ class ToolsTab extends React.Component {
 			profile_pic = (photo_list || [])[0];
 		}
 		
+		let color;
+		if (status === 'In Storage') {
+			color = 'green';
+		} else if (status === 'Checked Out') {
+			color = 'yellow color-888';
+		} else if (status === 'Loaned Out') {
+			color = 'orange';
+		} else if (status === 'Out For Repair') {
+			color = 'blue';
+		}
+		
 		// console.log('Assets', item)
 		return <TRow key={id} className="w-full">
 			<div className="td fixed-flex min-w-50">{id}</div>
@@ -468,7 +481,11 @@ class ToolsTab extends React.Component {
 			<div className="td fixed-flex min-w-100">{reg_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-160">{serial_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{condition || 'N/A'}</div>
-			<div className="td fixed-flex min-w-100">{status}</div>
+			<div className="td fixed-flex min-w-100">
+				<Button className={`btn btn-primary bg-border-${color}`}>
+					{status || 'No Status'}
+				</Button>
+			</div>
 			<div className="td fixed-flex min-w-170 flex-center padding-l-0 padding-r-0">
 				<Button idx={n} action="Checked Out" className="btn btn-primary pull-right w-100 margin-r-5"
 				        onClick={this.onChangeStatus}>{statusValFinal}</Button>

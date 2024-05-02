@@ -1,0 +1,249 @@
+footer {
+    background: linear-gradient(195deg, rgba(60, 60, 60, 0.98), rgba(60, 60, 60, 0.98)) center bottom / cover no-repeat, url(../img/new/partyapp_mobileapplication_2.jpg) transparent;
+}
+
+footer > section:first-of-type {
+    border-bottom: 1px solid #4b4b4b !important;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 130px !important;
+    padding-top: 60px !important;
+}
+
+footer > section:first-of-type .fab {
+    font-size: 17px;
+}
+
+footer * {
+    color: #bbb;
+}
+
+.faq_area {
+    position: relative;
+    z-index: 1;
+    background-color: #f5f5ff;
+}
+
+.faq-accordian {
+    position: relative;
+    z-index: 1;
+}
+
+.faq-accordian .card {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.5rem;
+}
+
+.faq-accordian .card:last-child {
+    margin-bottom: 0;
+}
+
+.faq-accordian .card .card-header {
+    background-color: #ffffff;
+    padding: 0;
+    border-bottom-color: #ebebeb;
+}
+
+.faq-accordian .card .card-header h6 {
+    cursor: pointer;
+    padding: 1.75rem 2rem;
+    color: rgba(2, 168, 168, 1);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -ms-grid-row-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.faq-accordian .card .card-header h6 span {
+    font-size: 1.5rem;
+}
+
+.faq-accordian .card .card-header h6.collapsed {
+    color: rgba(2, 168, 168, 1);
+}
+
+.faq-accordian .card .card-header h6.collapsed span {
+    -webkit-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+
+.faq-accordian .card .card-body {
+    padding: 1.75rem 2rem;
+}
+
+.faq-accordian .card .card-body p:last-child {
+    margin-bottom: 0;
+}
+
+@media only screen and (max-width: 575px) {
+    .support-button p {
+        font-size: 14px;
+    }
+}
+
+.support-button i {
+    color: rgba(2, 168, 168, 1);
+    font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 575px) {
+    .support-button i {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .support-button a {
+        font-size: 13px;
+    }
+}
+
+.section-testimonials {
+    color: rgba(2, 168, 168, 1);
+}
+
+.section-testimonials .section_heading {
+    padding-top: 60px;
+}
+.section-testimonials .section_heading h1{
+    font-weight: normal !important;
+}
+
+.section-faqs {
+    padding-top: 80px;
+    padding-bottom: 120px;
+    background: rgb(2 80 80 / 10%);
+    color: rgba(2, 168, 168, 1) !important;
+}
+
+.section-faqs h1{
+    font-weight: normal;
+}
+
+.section-faqs .accordion-item {
+    background-color: #fff;
+    border: none !important;
+    margin: 16px 0;
+    padding: 8px;
+    color: rgba(2, 168, 168, 1) !important;
+}
+
+.section-faqs .accordion-item h2 button {
+    color: rgba(2, 168, 168, 1) !important;
+}
+
+.section-faqs .accordion-item h2 button {
+    background: rgba(2, 168, 168, 0.1);
+    box-shadow: none;
+    border-radius: 5px;
+}
+
+.section-faqs .support-button button {
+    border-radius: 20px !important;
+    background: rgba(2, 168, 168, 1);
+    border-color: rgba(2, 168, 168, .5);
+}
+
+.section-schedule-demo {
+    height: 460px;
+    background: linear-gradient(190deg, rgba(2, 25, 25, 1), rgba(2, 68, 68, 0.9)) center center / cover no-repeat, url("../img/6.jpg") transparent;
+    background-position: center center;
+    background-size: cover;
+}
+.section-schedule-demo button{
+    margin: 0 15px;
+    width: 160px;
+    height: 50px;
+}
+
+.section-schedule-demo h3,
+.section-news-letter-subscription h3 {
+    font-size: 50px;
+    font-weight: normal;
+    color: #A7A7A7;
+    width: 675px;
+    margin: 90px auto 30px;
+}
+
+.section-schedule-demo p,
+.section-news-letter-subscription p {
+    font-size: 22px;
+    color: #A7A7A7;
+    margin: 0 auto 25px;
+}
+
+.section-news-letter-subscription {
+    position: relative;
+    height: 460px;
+    background: linear-gradient(270deg, rgb(2, 190, 190) 0%, rgb(2, 100, 100) 100%);
+}
+
+.section-news-letter-subscription > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.section-news-letter-subscription-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 0;
+}
+
+.section-news-letter-subscription .form{
+    width: 600px;
+}
+.section-news-letter-subscription .input-email{
+    width: 100%;
+}
+.section-news-letter-subscription input{
+    padding: 8px 12px;
+    font-size: 20px;
+}
+.section-news-letter-subscription button{
+    width: 120px;
+    margin-left: 12px;
+}
+
+.container.section-logos {
+    margin: -57px auto;
+    position: relative;
+    z-index: 1;
+    height: 112px;
+}
+
+.section-logos .card-featured {
+    border-radius: 60px;
+    box-shadow: 0 8px 12px 0 rgba(14, 36, 129, .08);
+    background: #fff;
+    padding: 30px 0;
+}
+
+.section-logos .card-featured-content {
+    text-align: center;
+}
+
+.section-logos img {
+    width: 100px;
+    margin: 0 25px;
+    vertical-align: middle;
+}
+
+footer .contacts-bar {
+    height: 60px;
+    padding: 20px;
+    background: rgb(0 0 0 / 10%);
+    border-radius: 50px;
+    margin-bottom: 40px;
+}

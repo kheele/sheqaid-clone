@@ -69,6 +69,8 @@ class Details extends React.Component {
 			case "NoAnswer":
 				delete ques.options;
 				break;
+			case "Low,Medium,High,N/A":
+			case "Empty,Medium,Full,N/A":
 			case "Safe,At Risk,N/A":
 			case "Good,Fair,Poor,N/A":
 			case "Pass,Fail,N/A":
@@ -230,6 +232,18 @@ class Details extends React.Component {
 						onChange={this.handleQuestionType}
 					>
 						<MenuItem value='NoAnswer'>No Answer</MenuItem>
+						<MenuItem value='Low,Medium,High,N/A'>
+							<label className="green">Low</label>
+							<label className="orange">Medium</label>
+							<label className="red">High</label>
+							<label className="grey">N/A</label>
+						</MenuItem>
+						<MenuItem value='Empty,Medium,Full,N/A'>
+							<label className="red">Empty</label>
+							<label className="orange">Medium</label>
+							<label className="green">Full</label>
+							<label className="grey">N/A</label>
+						</MenuItem>
 						<MenuItem value='Safe,At Risk,N/A'>
 							<label className="green">Safe</label>
 							<label className="red">At Risk</label>

@@ -76,7 +76,7 @@ const onChangeProduct = function (el, val) {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="onChangeSDS">
-const onChangeSDS = function (val) {
+const onChangeSDS = function (el, val) {
     this.state.selectedSDS = val;
     if (val) {
         if (isObject(val)) {
@@ -93,20 +93,23 @@ const onChangeSDS = function (val) {
                     risk_level, //other added
                 }
             } = val;
+            
+            const {selectedProduct} = this.state;
+            
             execWhen(() => this.refs.name).then(ref => {
-                if (!this.state.selectedProduct) {
+                if (!selectedProduct) {
                     ref.value = name;
                 }
             });
             execWhen(() => this.refs.physical_state).then(ref => {
-                if (product) {
+                if (!selectedProduct && product) {
                     const {data = {}} = product;
                     const {physical_state} = product;
                     ref.value = physical_state;
                 }
             });
             execWhen(() => this.refs.type).then(ref => {
-                if (product) {
+                if (!selectedProduct && product) {
                     const {data = {}} = product;
                     const {type} = product;
                     ref.value = type;
@@ -117,29 +120,29 @@ const onChangeSDS = function (val) {
 //                        ref.value = ;
 //                    });
             execWhen(() => this.refs.contacts_emergency_num).then(ref => {
-                if (product) {
+                if (!selectedProduct && product) {
                     const {data = {}} = product;
                     const {emergency_phone_nums: _emergency_phone_nums} = product;
                     ref.value = _emergency_phone_nums || emergency_phone_nums;
-                } else {
+                } else if (!selectedProduct) {
                     ref.value = emergency_phone_nums;
                 }
             });
             execWhen(() => this.refs.contacts_manufacturer_name).then(ref => {
-                if (product) {
+                if (!selectedProduct && product) {
                     const {data = {}} = product;
                     const {manufacturer: _manufacturer} = product;
                     ref.value = _manufacturer || manufacturer;
-                } else {
+                } else if (!selectedProduct) {
                     ref.value = manufacturer;
                 }
             });
             execWhen(() => this.refs.contacts_manufacturer_num).then(ref => {
-                if (product) {
+                if (!selectedProduct && product) {
                     const {data = {}} = product;
                     const {manufacturer_phone_num: _manufacturer_phone_num} = data;
                     ref.value = _manufacturer_phone_num || manufacturer_phone_num;
-                } else {
+                } else if (!selectedProduct){
                     ref.value = manufacturer_phone_num;
                 }
             });

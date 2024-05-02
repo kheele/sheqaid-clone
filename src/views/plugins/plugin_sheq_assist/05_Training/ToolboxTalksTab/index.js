@@ -303,13 +303,13 @@ class ToolboxTalksTab extends React.Component {
 			<div className="td fixed-flex min-w-30">ID</div>
 			<div className="td">Toolbox Talk / Training Meeting Subject</div>
 			<div className="td">Subject Category</div>
-			<div className="td">Institution Conducting Training</div>
-			<div className="td">Training Conductor</div>
-			<div className="td">Trainer Job Position</div>
+			{/*<div className="td">Institution Conducting Training</div>*/}
+			{/*<div className="td">Training Conductor</div>*/}
+			{/*<div className="td">Trainer Job Position</div>*/}
 			<div className="td fixed-flex min-w-140">Training Frequency</div>
-			<div className="td fixed-flex min-w-120">Date</div>
-			<div className="td fixed-flex min-w-80">Time From</div>
-			<div className="td fixed-flex min-w-80">Time To</div>
+			{/*<div className="td fixed-flex min-w-120">Date</div>*/}
+			{/*<div className="td fixed-flex min-w-80">Time From</div>*/}
+			{/*<div className="td fixed-flex min-w-80">Time To</div>*/}
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;
 	}
@@ -324,17 +324,16 @@ class ToolboxTalksTab extends React.Component {
 				subject,
 				subject_category,
 				training_frequency,
+				
+				toolbox_talk_list,
 			}
 		} = item;
 		console.log(item)
 		return <TRow key={"item-" + n}>
 			<div className="td fixed-flex min-w-30">{id}</div>
-			<TData flex={100}>{status || 'N/A'}</TData>
-			<TData flex={120}>{training_provider_requirement || 'N/A'}</TData>
-			<TData>{hr ? ((hr.fname || hr.data.fname) + ' ' + (hr.lname || hr.data.lname)) : 'N/A'}</TData>
-			<TData>{job_title ? job_title.name : 'N/A'}</TData>
-			<TData>{subject}</TData>
-			<TData flex={100}>{requirement || 'N/A'}</TData>
+			<TData>{subject.name}</TData>
+			<TData>{subject_category || 'N/A'}</TData>
+			<TData flex={140}>{training_frequency}</TData>
 			<TData flex={50} className="padding-l-10 padding-r-0">
 				<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
 			</TData>

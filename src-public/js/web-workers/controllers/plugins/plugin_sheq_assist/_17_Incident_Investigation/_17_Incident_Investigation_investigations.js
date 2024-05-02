@@ -7,13 +7,13 @@
 
             this.tbl = 'plugin_sheq_assist_17_Incident_Investigation';
 
-            this.filter = this.filter.bind(this);
-            const {addAction} = this;
+            // this.filter = this.filter.bind(this);
+            // const {addAction} = this;
             
-            addAction("add-status", this.addStatus.bind(this));
-            addAction("remove-status", this.removeStatus.bind(this));
-            addAction("list/filter", this.filter.bind(this));
-            addAction("stats", this.stats.bind(this));
+            // addAction("add-status", this.addStatus.bind(this));
+            // addAction("remove-status", this.removeStatus.bind(this));
+            // addAction("list/filter", this.filter.bind(this));
+            // addAction("stats", this.stats.bind(this));
         }
 
         async updateStatus(evt, id, status, action) {
@@ -69,6 +69,7 @@
             });
         }
         // </editor-fold>
+        
         // <editor-fold defaultstate="collapsed" desc="export_excel">
         async export_excel(evt, {
             client: _client, project: _project, site: _site,
@@ -250,7 +251,6 @@
                             nature_of_charges,
                             who_laid_charges : who_laid_charges && who_laid_charges.full_name,
                             who_were_nature_charges_laid_against: who_were_nature_charges_laid_against && who_were_nature_charges_laid_against.full_name,
-                            onsequence,
                             consequence,
                             likelihood,
                             risk_rating,
@@ -273,7 +273,7 @@
                     });
                     
                     const response = await fetch(
-                      `${self.locationRoot}/templates/xlsx/incidents/Template-List-incident-Quick.xlsx`.replace('//', '/')
+                      `${self.locationRoot}/templates/xlsx/incidents/Template-List-Incident-Investigations.xlsx`.replace('//', '/')
                     );
                     const arrayBuffer = await response.arrayBuffer();
                     const data = new Map();

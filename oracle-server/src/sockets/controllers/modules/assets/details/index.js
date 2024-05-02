@@ -19,5 +19,8 @@ const details_fragment = `
 `;
 
 eventManager.on("assets/details/findById", findByIdImpl({
-	name: "AssetDetails", tbl: "asset_details", details_fragment,
+	name: "AssetDetails",
+	tbl: "asset_details",
+	details_fragment,
+	orgs_fragment: null,
 }));

@@ -35,13 +35,18 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return storage.is.isEmployee ? "My Account" : ("Employee (" + (this.props.isRemoved ? "Removed" : "Active") + ")");
+    @computed
+    get title() {
+        if (!this.item) {
+            return storage.is.isEmployee ? "My Account" : "Employee";
+        }
+        const {removed} = this.item.data;
+        return storage.is.isEmployee ? "My Account" : `Employee (${removed ? "Removed" : "Active"})`;
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 
 //    
 //    get topButtonsHiddenDelete() {

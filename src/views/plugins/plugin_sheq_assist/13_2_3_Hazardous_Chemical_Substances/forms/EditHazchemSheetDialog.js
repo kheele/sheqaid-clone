@@ -799,22 +799,22 @@ class Controls extends React.Component {
                 <div className="grid-2 grid-gap-10 padding-t-5 margin-r-10">
                     <div className="grid-1 grid-gap-5 padding-10 padding-t-5 bg-f8f8f8">
                         <label className="margin-0 margin-b-5">Emergency</label>
-                        <ClearableInput name="contacts_emergency_name" type="text" placeholder="Contact Name"
+                        <ClearableInput name="contacts_emergency_name" type="text" placeholder="Emergency Contact Name"
                                         defaultValue={contacts_emergency_name}
                                         className="w-full margin-b-10 form-control" onChange={this.form.onChange}/>
                         <ClearableInput ref="contacts_emergency_num" 
                                         name="contacts_emergency_num" type="select_multi" 
-                                        placeholder="Contact No. ..." className="w-full form-control"
+                                        placeholder="Emergency Contact No. ..." className="w-full form-control"
                                         defaultValue={contacts_emergency_num}
                                         onChange={this.form.onChange} 
                                         values={this.state.lists.emergency_phone_nums} add returnValue/>
                     </div>
                     <div className="grid-1 grid-gap-5 padding-10 padding-t-5 bg-f8f8f8">
                         <label className="margin-0 margin-b-5">Manufacturer</label>
-                        <ClearableInput name="contacts_manufacturer_name" type="text" placeholder="Contact Name"
+                        <ClearableInput name="contacts_manufacturer_name" type="text" placeholder="Manufacturer Contact Name"
                                         defaultValue={contacts_manufacturer_name}
                                         className="w-full margin-b-10 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="contacts_manufacturer_num" type="text" placeholder="Contact No."
+                        <ClearableInput name="contacts_manufacturer_num" type="text" placeholder="Manufacturer Contact No."
                                         defaultValue={contacts_manufacturer_num} className="w-full form-control"
                                         onChange={this.form.onChange}/>
                     </div>

@@ -11,7 +11,7 @@ import {
 	RowOrgs,
 	SelectAssetInput,
 	SelectAssetTypeInput, SelectDepartmentInput,
-	SelectEmployeeInput, SelectQuestionnaireTemplateInput
+	SelectEmployeeInput, SelectQuestionnaireTemplateInput, SelectUserInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import SelectEmployeesDialog from 'components/templates/SelectEmployeesDialog';
@@ -132,7 +132,7 @@ class Controls extends React.Component {
 		const {
 			asset_type, asset,
 			//
-			responsible_person, responsible_department, interval, start_date, time,
+			responsible_person_list, responsible_user, responsible_department, interval, start_date, time,
 		} = form.data;
 		const data = {
 			// is_template: false,
@@ -145,7 +145,8 @@ class Controls extends React.Component {
 		ShouldUpdate.checkAsset(data, old_data, asset, 'asset');
 
 		//
-		ShouldUpdate.checkJobPosition(data, old_data, responsible_person, 'responsible_person');
+		// ShouldUpdate.checkEmployee(data, old_data, responsible_person_list, 'responsible_person_list');
+		ShouldUpdate.checkUser(data, old_data, responsible_user, 'responsible_user');
 		ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
 		ShouldUpdate.check(data, old_data, interval, 'interval');
 		ShouldUpdate.checkDate(data, old_data, start_date, 'start_date');
@@ -214,7 +215,8 @@ class Controls extends React.Component {
 					asset_type,
 					asset,
 					//
-					responsible_person,
+					responsible_person_list,
+					responsible_user,
 					responsible_department,
 					interval,
 					start_date,
@@ -262,8 +264,11 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
-				                     defaultValue={responsible_person} className="col-lg-12 form-control"
+				<SelectEmployeeInput name="responsible_person_list" placeholder="Responsible Employee(s)..."
+				                     defaultValue={responsible_person_list} className="col-lg-12 form-control"
+				                     onChange={this.form.onChange} showOtherPerson/>
+				<SelectUserInput name="responsible_user" placeholder="Responsible User..."
+				                     defaultValue={responsible_user} className="col-lg-12 form-control"
 				                     onChange={this.form.onChange}/>
 				<SelectDepartmentInput name="responsible_department" placeholder="Responsible Department..."
 				                       defaultValue={responsible_department} className="col-lg-12 form-control"

@@ -126,43 +126,11 @@ const mutation = graphql`
 export default async (attrs: EntityChemicalHazchemsheet) => {
     const {
         id,
-        name,
-        frequency,
-        sector_list,
-        provider,
-        job_position_list,
-        unit_standard,
-        unit_standard_desc,
         client_id, project_id, site_id,
     } = attrs;
 
     const item = await findByIdChemicalHazchemsheet(id);
     if (!item) return;
-
-    const promises = [];
-
-    if(sector_list) {
-        delete attrs.sector_list;
-        promises.push(Promise.all(sector_list.map(async (v, n) => {
-            if(v.id) {
-                return updateProxySectorChemicalHazchemsheet(v);
-            } else {
-                return insertProxySectorChemicalHazchemsheet({...v, course_id: id});
-            }
-        })));
-    }
-    if(job_position_list) {
-        delete attrs.job_position_list;
-        promises.push(Promise.all(job_position_list.map(async (v, n) => {
-            if(v.id) {
-                return updateProxyJobPositionChemicalHazchemsheet(v);
-            } else {
-                return insertProxyJobPositionChemicalHazchemsheet({...v, job_position_id: id});
-            }
-        })));
-    }
-
-    await Promise.all(promises);
 
     return updateMutationImpl({
         mutation,

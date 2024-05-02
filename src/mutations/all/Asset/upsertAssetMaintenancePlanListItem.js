@@ -8,14 +8,14 @@ import insertAssetMaintenancePlanListItem from "./insertAssetMaintenancePlanList
 export default async (attrs) => {
 	const {
 		id,
+		maintenance_plan_id,
 		reason_for_service,
 		service,
 		service_hrs_or_km,
 		service_date,
-		parts_used,
 		cost,
 		receipt,
-		maintenance_plan_id,
+		parts_used_list,
 	} = attrs;
 
 	if (id) {

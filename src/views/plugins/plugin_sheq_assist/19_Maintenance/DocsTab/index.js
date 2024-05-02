@@ -25,6 +25,7 @@ import AssetDocsRenderRow from "./AssetDocsRenderRow";
 import {renderLeftButtonsForExpiryOnly} from "utils/ComponentUtils";
 import ExportAssetsDialog from "../dialogs/ExportAssetsDialog";
 import ProfileToolDialog from "../ToolsTab/forms/ProfileToolDialog";
+import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
 
 // </editor-fold>
 
@@ -116,8 +117,10 @@ class DocsTab extends React.Component {
 			title,
 			asset_id,
 			//
+			name,
 			reg_num,
 			serial_num,
+			model,
 			manufacturer,
 			location,
 			asset_type,
@@ -143,8 +146,10 @@ class DocsTab extends React.Component {
 			title,
 			asset_id,
 			//
+			name,
 			reg_num,
 			serial_num,
+			model,
 			manufacturer,
 			location,
 			asset_type,
@@ -159,7 +164,6 @@ class DocsTab extends React.Component {
 			return res;
 		});
 	}
-	
 	//</editor-fold>
 
 	//<editor-fold desc="setView">
@@ -210,10 +214,10 @@ class DocsTab extends React.Component {
 		const dialog = this.refs.root.getDialogByRef('profileDialog');
 		if (dialog) {
 			if (this.isAsset) {
-				dialog.extraProp('rowIdx', 4).open(item);
+				dialog.extraProp('rowIdx', CONSTANTS.DOCUMENTS).open(item);
 			} else {
 				const {data: {asset: assetItem}} = item;
-				dialog.extraProp('rowIdx', 4).extraProp('docActiveId', item.id).open(assetItem);
+				dialog.extraProp('rowIdx', CONSTANTS.DOCUMENTS).extraProp('docActiveId', item.id).open(assetItem);
 			}
 		}
 	}
@@ -266,26 +270,31 @@ class DocsTab extends React.Component {
 		if (!this.state.loadedSelectLists) {
 			return <div className="col-lg-12 controls flex text-center">Loading...</div>;
 		}
-		return <div className="col-lg-12 controls">
+		return <div className="col-lg-12 controls -margin-b-35">
 			<SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." className="col-lg-4 form-control"
 			                      onChange={onChange}/>
+			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 form-control"
+			                onChange={onChange}/>
 			<SelectAssetInput name="asset" placeholder="Asset..." className="col-lg-4 form-control"
 			                      onChange={onChange}/>
-			<ClearableInput name="manufacturer" type="select" placeholder="Manufacturer..." className="col-lg-4 form-control"
+			
+			<ClearableInput name="manufacturer" type="select" placeholder="Manufacturer..." className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
-
 			<ClearableInput name="location" type="select" placeholder="Location..." className="col-lg-4 margin-t-10 form-control"
 			                onChange={onChange} values={this.state.lists.locations} returnValue/>
+			<ClearableInput name="model" type="text" placeholder="Model" className="col-lg-4 margin-t-10 form-control"
+			                onChange={onChange}/>
+			
 			<ClearableInput name="reg_num" type="text" placeholder="Registration No."
 							className="col-lg-4 margin-t-10 form-control"
 							onChange={onChange}/>
 			<ClearableInput name="serial_num" type="text" placeholder="Serial No."
 							className="col-lg-4 margin-t-10 form-control"
 							onChange={onChange}/>
-
 			<ClearableInput name="condition" type="select" placeholder="Condition..."
 							className="col-lg-4 margin-t-10 form-control" onChange={onChange}
 							values={this.state.lists.conditions} returnValue/>
+			
 			<ClearableInput name="title" type="text" placeholder="Document Title"
 							className="col-lg-4 margin-t-10 form-control" onChange={onChange}/>
 			<ClearableInput name="type" type="select" placeholder="Document Type..."

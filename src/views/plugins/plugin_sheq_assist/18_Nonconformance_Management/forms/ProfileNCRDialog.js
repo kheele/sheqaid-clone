@@ -217,6 +217,7 @@ const DialogTopButtons = observer((
 			selected_source,
 			assigned_job_position_list,
 			assigned_person_list,
+			assigned_person_other_list,
 			approving_person,
 			status_progress,
 			status_acceptance
@@ -471,6 +472,9 @@ class Controls extends React.Component {
 					selected_source_incident,
 					selected_source_inspection,
 					selected_source_site,
+					selected_source_item_compliance_audit_finding,
+					selected_source_item_incident,
+					selected_source_item_inspection_ques,
 					//2
 					desc,
 					process,
@@ -479,6 +483,7 @@ class Controls extends React.Component {
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,
+					assigned_person_other_list,
 					approving_person,
 					//4
 					document_list,
@@ -583,6 +588,12 @@ class Controls extends React.Component {
 					name="assigned_person_list"
 					placeholder="Assigned Person(s)"
 					value={assigned_person_list && assigned_person_list.map(({employee: {full_name}}) => full_name).join(', ')}
+					className="col-lg-12"
+				/>
+				<ProfileField
+					name="assigned_person_other_list"
+					placeholder="Assigned Person(s)"
+					value={assigned_person_other_list && assigned_person_other_list.map(({employee_other: {full_name}}) => full_name).join(', ')}
 					className="col-lg-12"
 				/>
 				

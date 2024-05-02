@@ -9,6 +9,7 @@ import updateEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/u
 import insertEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
 import updateNCRProgress from "../NCRProgress/updateNCRProgress";
 import insertNCRProgress from "../NCRProgress/insertNCRProgress";
+import findByIdNCR from "./findByIdNCR";
 
 // 2
 const mutation = graphql`
@@ -142,6 +143,7 @@ export default async (attrs: EntityNCR) => {
         responsible_party_list,
         assigned_job_position_list,
         assigned_person_list,
+        assigned_person_other_list,
         approving_person_id,
         //4
         document_list,
@@ -174,5 +176,5 @@ export default async (attrs: EntityNCR) => {
         mutation,
         id: attrs.id,
         attrs,
-    });
+    }).then(res => res && findByIdNCR(res.id));
 };

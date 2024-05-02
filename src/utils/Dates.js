@@ -68,9 +68,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -86,9 +83,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -109,9 +103,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -128,9 +119,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -151,9 +139,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -170,9 +155,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -199,9 +181,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -222,9 +201,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -248,9 +224,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -266,9 +239,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -290,9 +260,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -322,9 +289,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -352,9 +316,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date)) {
             return null;
         }
@@ -373,9 +334,6 @@ class Dates {
             date = new Date(date);
         }
         if (isString(date)) {
-            date = Dates.parse(date);
-        }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
             date = Dates.parse(date);
         }
         if (!isDate(date)) {
@@ -692,9 +650,6 @@ class Dates {
         if (isString(date)) {
             date = Dates.parse(date);
         }
-        if (isObject(date) && 'seconds' in date && 'nanoseconds' in date) {
-            date = Dates.parse(date);
-        }
         if (!isDate(date) && !isNumber(date)) {
             return null;
         }
@@ -718,10 +673,6 @@ class Dates {
         }
         if (!dateStr) {
             return null;
-        }
-
-        if (isObject(dateStr) && 'seconds' in dateStr && 'nanoseconds' in dateStr) {
-            return Dates.parse(dateStr.seconds * 1000);
         }
 
         if (typeof dateStr === 'number') {

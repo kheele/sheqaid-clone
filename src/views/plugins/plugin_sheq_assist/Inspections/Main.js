@@ -47,23 +47,39 @@ class Main extends APage {
         super.componentWillUnmount();
         style.unuse();
     }
+    
+    get tabs() {
+        const {isEmployee} = storage.is;
+        const w = $(window).width();
+        const list = [];
+        if(w > 767) {
+            list.push(<DashboardTab ref="dashboard" title="Dashboard"/>);
+        }
+        list.push(...[
+            <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>,
+            <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>,
+            <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>,
+            <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
+        ]);
+        if(w > 767) {
+            list.push(<InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>);
+        }
+        if(!isEmployee && w > 767) {
+            list.push(<TemplatesTab ref="forms" title="Templates" path={this.path}/>);
+        }
+        
+        return list;
+    }
 
     render() {
         const {permissionKey} = this.props;
-        const {isEmployee} = storage.is;
         return (<div key="Inspections-page" id="Inspections-page" className={this.classNames}>
             <div key="pageTitle" className="page-title">
                 {this.renderBackBtn()}
                 <h3 key="title">Inspections</h3>
             </div>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
-                <DashboardTab ref="dashboard" title="Dashboard"/>
-                <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>
-                <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>
-                <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>
-                <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
-                <InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>
-                {!isEmployee && <TemplatesTab ref="forms" title="Templates" path={this.path}/>}
+                {this.tabs}
             </Tabs>
         </div>);
     }

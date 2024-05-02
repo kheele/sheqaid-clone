@@ -48,7 +48,7 @@ class ExportIncidentsDialog extends AExportDialog {
 
 @observer
 class Controls extends AControls {
-	path = 'plugin_sheq_assist/17_Incident_Investigation/';
+	exportFn = sockets.of('incidents').fn('export-excel');
 	
 	//<editor-fold desc="state">
 	@observable

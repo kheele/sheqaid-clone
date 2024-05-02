@@ -38,7 +38,7 @@ exports.getVariablesAndQueryConfig = (
 			filter.push(`_or: [
 				{person_approving_procedure_id: {_eq: ${logged_employee_id}}},
 				{department:{employee_list:{id: {_eq: ${logged_employee_id}}}}},
-				{ppe_required_list:{ppe:{representative_list:{employee_id: {_eq: ${logged_employee_id}}}}}},
+				{ppe_type_required_list:{ppe:{representative_list:{employee_id: {_eq: ${logged_employee_id}}}}}},
 				{sign_sheet_employee_list:{employee_id: {_eq: ${logged_employee_id}}}},
 			]`);
 		}
@@ -126,9 +126,9 @@ exports.hira_swp_details_fragment = `
 			hazard
 			rating
 		}
-		ppe_required_list{
+		ppe_type_required_list{
 			id
-			ppe{
+			ppe_type{
 				id
 				name
 				profile_pic

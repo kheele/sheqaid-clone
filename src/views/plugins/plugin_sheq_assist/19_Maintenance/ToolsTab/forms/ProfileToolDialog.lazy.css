@@ -1,10 +1,38 @@
 @import '../../../../../../css/AProfileDialog.css';
 
+:root{
+    --ProfileToolDialog-dialog-width: 1100px;
+}
+
 #dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container{
     height: 100%;
-    width: 1100px;
+    width: var(--ProfileToolDialog-dialog-width);
     max-width: calc(100% - 30px);
 }
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-header > h3 {
+    margin: 8px 15px;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container .dialog-header > h3.green{
+    background: green;
+    color: white;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container .dialog-header > h3.yellow{
+    background: yellow;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container .dialog-header > h3.orange{
+    background: orange;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container .dialog-header > h3.removed{
+    background: red;
+    color: white;
+}
+#dialog-overlay.ProfileToolDialog-profile-dialog .dialog-container .dialog-header > h3.blue{
+    background: blue;
+    color: white;
+}
+
 #dialog-overlay.ProfileToolDialog-profile-dialog .NewMonitoringPlanTable > label {
     margin: 10px 0px 0;
     padding: 0 10px 5px;
@@ -34,11 +62,13 @@
     margin-top: 0 !important;
 }
 
-#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable {
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable,
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewRegisterTable {
     margin-top: 0 !important;
     min-height: 200px !important;
 }
-#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .results-none{
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .results-none,
+#dialog-overlay.ProfileToolDialog-profile-dialog .row .NewRegisterTable .results-none{
     margin-top: 100px !important;
 }
 #dialog-overlay.ProfileToolDialog-profile-dialog .row .NewDocumentTable .UploadButton{

@@ -143,7 +143,7 @@ exports.onResetPassword = async (data, access_type) => {
         ...queryData,
         variables: {reset_password_id},
     });
-    // console.log('CheckUserByResetPassId item', item)
+    console.log('CheckUserByResetPassId item', item)
     if (!item) {
         return "TOKEN_NOT_FOUND";
     }

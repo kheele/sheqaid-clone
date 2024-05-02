@@ -295,8 +295,7 @@ class NewMonitoringPlanWorkingHrsOrKmTable extends ATableSavable {
     render() {
         const {readonly} = this.props;
         return <Table
-            className="NewMonitoringPlanTable NewMonitoringPlanTable-WorkingHrsOrKm w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0">
-            <label className="">Working {this.selfState.units || 'Time/Distance'} Usage</label>
+            className="NewMonitoringPlanTable NewMonitoringPlanTable-WorkingHrsOrKm w-full-calc-add-10 min-h-90 h-auto padding-0">
             <THead className="align-left">
                 <div className="td fixed-flex min-w-30">#</div>
                 <div className="td font-size-14">Opening {this.selfState.units || 'Time/Distance'}</div>
@@ -604,8 +603,7 @@ class NewMonitoringPlanFuelUsageTable extends ATableSavable {
     render() {
         const {readonly} = this.props;
         return <Table
-            className="NewMonitoringPlanTable NewMonitoringPlanTable-FuelUsage w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0">
-            <label className="">Fuel Usage</label>
+            className="NewMonitoringPlanTable NewMonitoringPlanTable-FuelUsage w-full-calc-add-10 min-h-90 h-auto padding-0">
             <THead className="align-left">
                 <div className="td fixed-flex min-w-30">#</div>
                 <div className="td font-size-14">Refilled Fuel</div>
@@ -711,10 +709,9 @@ class NewMaintenancePlanTable extends ATableSavable {
                         service,
                         service_hrs_or_km,
                         service_date,
-                        parts_used,
                         cost: cost_and_receipt && cost_and_receipt.cost,
                         receipt: cost_and_receipt && cost_and_receipt.receipt,
-                        parts_used_list: parts_used || [],
+                        // parts_used_list: parts_used || [],
                     }).then(savedItem => {
                         if (!savedItem) {
                             if (id) {
@@ -842,23 +839,23 @@ class NewMaintenancePlanTable extends ATableSavable {
             } = item;
             return <TRow key={"item-" + n} className="min-h-60 tr-readonly w-full">
                 <div className="td fixed-flex min-w-30"><span className="counter">{n + 1}</span></div>
-                <div className="td">{reason_for_service}</div>
+                <div className="td fixed-flex min-w-200">{reason_for_service}</div>
                 <div className="td fixed-flex min-w-130">{service}</div>
                 <div
                     className="td fixed-flex min-w-150">{service_hrs_or_km}{unitsShort[this.selfState.units] || 'h/km'}</div>
                 <div className="td fixed-flex min-w-165">{Dates.formatDate(service_date)}</div>
-                <div className="td td-PartsUsed fixed-flex min-w-140">
-                    <PartsUsed
-                        name='parts_used'
-                        onEdit={this.onNewPartsUsedListDialog}
-                        onView={this.onViewPartDialog}
-                        item={item}
-                        parts_used={parts_used}
-                        readonly
-                        isEditable={!readonly}
-                    />
-                </div>
-                <div className="td td-CostAndReceipt fixed-flex min-w-135">
+                {/*<div className="td td-PartsUsed fixed-flex min-w-140">*/}
+                {/*    <PartsUsed*/}
+                {/*        name='parts_used'*/}
+                {/*        onEdit={this.onNewPartsUsedListDialog}*/}
+                {/*        onView={this.onViewPartDialog}*/}
+                {/*        item={item}*/}
+                {/*        parts_used={parts_used}*/}
+                {/*        readonly*/}
+                {/*        isEditable={!readonly}*/}
+                {/*    />*/}
+                {/*</div>*/}
+                <div className="td td-CostAndReceipt fixed-flex min-w-285">
                     <CostAndReceipt
                         name='cost_and_receipt'
                         onEdit={this.onNewPartCostAndReceiptDialog}
@@ -877,6 +874,7 @@ class NewMaintenancePlanTable extends ATableSavable {
                 {readonly && <div className="td fixed-flex min-w-0 padding-0"></div>}
             </TRow>;
         } else {
+            const units = unitsShort[this.selfState.units] || 'h/km';
             return <TRow key="item-new" className="w-full padding-t-10 padding-b-10 grid-1 grid-gap-10">
                 <div className="td w-full grid-1 grid-gap-10">
                     <ClearableInput ref={this.onSetRef} name="reason_for_service" type="select"
@@ -887,45 +885,51 @@ class NewMaintenancePlanTable extends ATableSavable {
                                     className="form-control margin-r-10" onChange={this.onChange}
                                     values={this.selfState.lists.service} returnValue/>
                     <div className="td fixed-flex min-w-150 td-number flex">
-                        <ClearableInput ref={this.onSetRef} name="service_hrs_or_km" type="number" isClearable={false}
+                        <ClearableInput ref={this.onSetRef} name="service_hrs_or_km" type="number"
+                                        placeholder={"Service " + units}
+                                        isClearable={false}
                                         defaultValue={CalculationUtils.getTimeOrDistanceTakenFromLastService(asset)}
                                         className="form-control" onChange={this.onChange}/>
                         <label
-                            className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{unitsShort[this.selfState.units] || 'h/km'}</label>
+                            className="fixed-flex min-w-45 margin-0 margin-r-10 text-center">{units}</label>
                     </div>
                     <ClearableInput ref={this.onSetRef} name="service_date" type="date" placeholder="Service Date..."
                                     required className="form-control margin-r-10" onChange={this.onChange}/>
-                    <div className="td td-PartsUsed fixed-flex grid-1 grid-gap-10 flex-center min-w-140">
-                        <PartsUsed
-                            ref={this.onSetRef}
-                            name='parts_used'
-                            onEdit={this.onNewPartsUsedListDialog}
-                            state={this.selfState}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className="td td-CostAndReceipt fixed-flex grid-1 grid-gap-10 padding-10 min-w-135">
-                        <div className="grid-1 flex-center h-90 bg-white padding-10">
-                            <label className="text-center padding-b-5">Cost & Receipt</label>
-                            <Divider sx={{m: 0, mb: '10px'}}/>
-                            <CostAndReceipt
-                                ref={this.onSetRef}
-                                name='cost_and_receipt'
-                                onEdit={this.onNewPartCostAndReceiptDialog}
-                                state={this.selfState}
-                                onChange={this.onChange}
-                            />
-                            {/*<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange} required*/}
-                            {/*              type={['Photo', 'Word', 'Excel', 'PDF']}*/}
-                            {/*              buttonTitle='Receipt'*/}
-                            {/*              showOnlyIcon*/}
-                            {/*              className="form-control"/>*/}
-                        </div>
-                    </div>
+                    {/*<div className="td td-PartsUsed fixed-flex grid-1 grid-gap-10 flex-center min-w-140">*/}
+                    {/*    <label className="text-center padding-b-5">Parts Used</label>*/}
+                    {/*    <PartsUsed*/}
+                    {/*      ref={this.onSetRef}*/}
+                    {/*      name='parts_used'*/}
+                    {/*      onEdit={this.onNewPartsUsedListDialog}*/}
+                    {/*      state={this.selfState}*/}
+                    {/*      onChange={this.onChange}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className="td td-CostAndReceipt fixed-flex grid-1 grid-gap-10 padding-10 min-w-135">*/}
+                    {/*    <div className="grid-1 flex-center h-90 bg-white padding-10">*/}
+                    {/*        <label className="text-center padding-b-5">Cost & Receipt</label>*/}
+                    {/*        <hr/>*/}
+                    {/*        <CostAndReceipt*/}
+                    {/*            ref={this.onSetRef}*/}
+                    {/*            name='cost_and_receipt'*/}
+                    {/*            onEdit={this.onNewPartCostAndReceiptDialog}*/}
+                    {/*            state={this.selfState}*/}
+                    {/*            onChange={this.onChange}*/}
+                    {/*        />*/}
+                    {/*        /!*<UploadButton ref={this.onSetRef} name='receipt' onChange={this.onChange} required*!/*/}
+                    {/*        /!*              type={['Photo', 'Word', 'Excel', 'PDF']}*!/*/}
+                    {/*        /!*              buttonTitle='Receipt'*!/*/}
+                    {/*        /!*              showOnlyIcon*!/*/}
+                    {/*        /!*              className="form-control"/>*!/*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="td w-full flex-center">
-                    <Button idx={n} action="save" className="btn btn-primary hor-center padding-0 w-100"
-                            onClick={onClick}>
+                    <Button
+                      idx={n}
+                      action="save"
+                      className="btn btn-primary hor-center padding-0 w-100"
+                      onClick={onClick}>
                         <i className="fa fa-plus"/> ADD
                     </Button>
                 </div>
@@ -939,13 +943,13 @@ class NewMaintenancePlanTable extends ATableSavable {
             className="NewMaintenancePlanTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0">
             <THead className="align-left">
                 <div className="td fixed-flex min-w-30">#</div>
-                <div className="td font-size-14">Reason For Service</div>
+                <div className="td fixed-flex min-w-200 font-size-14">Reason For Service</div>
                 <div className="td fixed-flex min-w-130 font-size-14">Service</div>
                 <div
                     className="td fixed-flex min-w-150 font-size-14">Service {this.selfState.units || 'Time/Distance'}</div>
                 <div className="td fixed-flex min-w-165 font-size-14">Service Date</div>
-                <div className="td fixed-flex min-w-140 font-size-14">Parts Used</div>
-                <div className="td fixed-flex min-w-135 font-size-14">Cost & Receipt</div>
+                {/*<div className="td fixed-flex min-w-140 font-size-14">Parts Used</div>*/}
+                <div className="td fixed-flex min-w-285 font-size-14">Cost & Receipt</div>
                 <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "60" : "10")}/>
             </THead>
             <TBody ref="body" title="Asset Maintenance Plan" renderItem={this.renderItem} onClick={this.onClick}
@@ -1348,7 +1352,7 @@ class NewDocumentTable extends ATableSavable {
             return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-t-10 padding-b-10">
                 <ClearableInput ref={this.onSetRef} name="type" type="select" placeholder="Document Type"
                                 className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}
-                                values={this.selfState.lists.type} returnValue/>
+                                values={this.selfState.lists.type} returnValue add/>
                 <ClearableInput ref={this.onSetRef} name="title" type="text" placeholder="Title"
                                 className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/>
                 <ClearableInput ref={this.onSetRef} name="desc" type="textarea" placeholder="Description"
@@ -1403,10 +1407,230 @@ class NewDocumentTable extends ATableSavable {
 
 //</editor-fold>
 
+//<editor-fold desc="NewRegisterTable">
+@observer
+class NewRegisterTable extends ATableSavable {
+
+    @observable
+    selfState = {
+    };
+
+    constructor(props) {
+        super(props);
+
+        const {defaultValue} = this.props;
+        if (defaultValue) {
+            this.state.list = defaultValue;
+        }
+
+        const {onChange, name} = this.props;
+        onChange && onChange(toJS(this.state.list.filter(v => !!v)), name, this);
+
+        this.insertAt = this.insertAt.bind(this);
+    }
+
+    insertAt(list, form) {
+        list.insertAt(list.length - 1, form);
+        this.ctrl_refs.doc.reset();
+    }
+
+    onClickComplete(e, el) {
+        let {savable, item: assetItem, onUpdated} = this.props;
+
+        if (savable && assetItem) {
+            let {action, idx, item} = el.props;
+            let {
+                // id,
+                data: old_data,
+                data: {doc_list}
+            } = assetItem;
+
+            const {id, type, title, expiry, desc, doc} = item;
+            console.log('onClickComplete item', item)
+
+            if (action === "save" || action === "saveEdit") {
+                progressDialog.open();
+                let promise;
+                if (id) {
+                    const attrs = {};
+                    ShouldUpdate.check(attrs, item, type, 'type');
+                    ShouldUpdate.check(attrs, item, title, 'title');
+                    ShouldUpdate.check(attrs, item, desc, 'desc');
+                    ShouldUpdate.checkDate(attrs, item, expiry, 'expiry');
+                    ShouldUpdate.checkFile(attrs, item, doc, 'doc');
+                    promise = updateAssetDoc({
+                        id, ...attrs,
+                    }).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be updated.");
+                        } else {
+                            infoDialog.open("Record successfully updated.");
+
+                            doc_list.replaceIf(savedItem.data, v => v.id === id);
+                        }
+
+                        infoDialog.close(2000);
+                    });
+                } else {
+                    promise = insertAssetDoc({
+                        asset_id: assetItem.id, ...item, expiry: Dates.formatDateSQL(item.expiry)
+                    }).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be added.");
+                        } else {
+                            infoDialog.open("Record successfully added.");
+                            if (doc_list) {
+                                doc_list.push(savedItem.data);
+                            } else {
+                                extendObservable(old_data, {
+                                    doc_list: [savedItem.data]
+                                });
+                            }
+                        }
+
+                        infoDialog.close(2000);
+                    });
+                }
+                promise.catch(err => {
+                    infoDialog.open("An error occurred. Please try again later.");
+                    infoDialog.close(2000);
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            } else if (action === "delete") {
+                confirmDialog.open("Are you sure you want to remove the item?").then(res => {
+                    if (!res) return;
+
+                    progressDialog.open();
+                    updateAssetDoc({
+                        id,
+                        removed: true,
+                    }).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be removed.");
+                        } else {
+                            infoDialog.open("Record successfully removed.");
+                            doc_list.removeIf(v => v.id === id);
+                        }
+
+                        infoDialog.close(2000);
+                    }).catch(err => {
+                        infoDialog.open("An error occurred. Please try again later.");
+                        infoDialog.close(2000);
+                        console.error(err);
+                    }).finally(() => {
+                        setTimeout(() => progressDialog.close());
+                    });
+                });
+            }
+            // onUpdate && onUpdate(e, el);
+        }
+    }
+
+    renderItem(n, onClick) {
+        const {readonly, docActiveId} = this.props;
+        const item = this.state.list[n];
+        if (item) {
+            const {employee_issued_by, employee_received_by, employee_returned_by, employee_return_accepted_by, due_return_date, returned_time, comments, status, condition, location, asset} = item;
+            return <TRow key={"item-" + n} className="tr-readonly w-full padding-v-10">
+                <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
+                <div className="td fixed-flex min-w-160">{employee_issued_by && employee_issued_by.full_name}</div>
+                <div className="td fixed-flex min-w-160">{employee_received_by && employee_received_by.full_name}</div>
+                <div className="td fixed-flex min-w-160">{employee_returned_by && employee_returned_by.full_name}</div>
+                <div className="td fixed-flex min-w-160">{employee_return_accepted_by && employee_return_accepted_by.full_name}</div>
+                <div className="td">{comments}</div>
+                <div className="td fixed-flex min-w-140">{location}</div>
+                <div className="td fixed-flex min-w-100">{condition}</div>
+                <div className="td fixed-flex min-w-100">{status}</div>
+                <div className="td fixed-flex min-w-140">{Dates.formatDate(due_return_date)}</div>
+                <div className={`td fixed-flex min-w-${readonly ? 100 : 110}`}>{Dates.formatDate(returned_time)}</div>
+                {!readonly ? <div className="td fixed-flex min-w-100 padding-l-0">
+                    <Button idx={n} action="edit" className="btn btn-primary margin-r-10 pull-right w-40"
+                            onClick={onClick}>
+                        <i className="fa fa-pen"/>
+                    </Button>
+                    <Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+                        <i className="fa fa-times-circle"/>
+                    </Button>
+                </div> : null}
+                {readonly ? <div className="td fixed-flex min-w-0 padding-0"/> : null}
+            </TRow>;
+        } else {
+            return null;
+            // alert(this.list.length)
+            {/*return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-t-10 padding-b-10">*/
+            }
+            {/*    <ClearableInput ref={this.onSetRef} name="type" type="select" placeholder="Document Type"*/
+            }
+            {/*                    className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}*/
+            }
+            {/*                    values={this.selfState.lists.type} returnValue/>*/
+            }
+            {/*    <ClearableInput ref={this.onSetRef} name="title" type="text" placeholder="Title"*/
+            }
+            {/*                    className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/>*/}
+            {/*    <ClearableInput ref={this.onSetRef} name="desc" type="textarea" placeholder="Description"*/}
+            {/*                    className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/>*/}
+            {/*    <UploadButton*/}
+            {/*        ref={this.onSetRef}*/}
+            {/*        name="doc"*/}
+            {/*        buttonTitle="Upload Document"*/}
+            {/*        type={['PDF', 'Word']}*/}
+            {/*        showOnlyIcon*/}
+            {/*        className="col-lg-12 w-full"*/}
+            {/*        onChange={this.onChange}*/}
+            {/*    />*/}
+            {/*    <ClearableInput ref={this.onSetRef} name="date" type="date" placeholder="Date"*/}
+            {/*                    className="col-lg-12 w-full form-control" onChange={this.onChange}/>*/}
+            {/*    <ClearableInput ref={this.onSetRef} name="expiry" type="date" placeholder="Expiry Date"*/}
+            {/*                    className="col-lg-12 w-full form-control" onChange={this.onChange}/>*/}
+            {/*    <Button idx={n} action="save" className="btn btn-primary hor-center border-radius-20 w-100"*/}
+            {/*            onClick={onClick}>*/}
+            {/*        <i className="fa fa-check"/> ADD*/}
+            {/*    </Button>*/}
+            {/*</TRow>;*/}
+        }
+    }
+
+    render() {
+        const {readonly} = this.props;
+        return (<Table
+            className={`NewRegisterTable w-full-calc-add-10 min-h-90 h-auto -margin-t-5 -margin-l-10 margin-b-10 padding-0`}>
+            <THead className="align-left">
+                <div className="td fixed-flex min-w-20">#</div>
+                <div className="td fixed-flex min-w-160 font-size-14">Issued By</div>
+                <div className="td fixed-flex min-w-160 font-size-14">Received By</div>
+                <div className="td fixed-flex min-w-160 font-size-14">Returned By</div>
+                <div className="td fixed-flex min-w-160 font-size-14">Accepted By</div>
+                <div className="td font-size-14">Comments</div>
+                <div className="td fixed-flex min-w-140 font-size-14">Location</div>
+                <div className="td fixed-flex min-w-100 font-size-14">Condition</div>
+                <div className="td fixed-flex min-w-100 font-size-14">Status</div>
+                <div className="td fixed-flex min-w-140 font-size-14">Return Due Date</div>
+                <div className="td fixed-flex min-w-110 font-size-14">Returned On</div>
+                <div className={"td fixed-flex padding-0 min-w-" + (!readonly ? "110" : "0")}/>
+            </THead>
+            <TBody
+                ref="body"
+                title="Asset Register"
+                renderItem={this.renderItem}
+                onClick={this.onClick}
+                state={this.state}
+                onLoadList={this.onLoadList}
+                disablePullToRefresh={false}
+            />
+        </Table>);
+    }
+}
+
+//</editor-fold>
+
 export {
     NewMonitoringPlanWorkingHrsOrKmTable,
     NewMonitoringPlanFuelUsageTable,
     NewMaintenancePlanTable,
     NewCalibrationRecordTable,
     NewDocumentTable,
+    NewRegisterTable,
 };

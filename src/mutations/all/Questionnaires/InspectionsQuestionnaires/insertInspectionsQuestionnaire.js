@@ -41,6 +41,7 @@ export default async (input: EntityInspectionsQuestionnaire) => {
 		question_list,
 	} = input;
 	
+	input.schedule_date = start_date;
 	
 	if(asset_type && !asset_id) {
 		const listByLogged = sockets.of("assets").fn('listByLogged');

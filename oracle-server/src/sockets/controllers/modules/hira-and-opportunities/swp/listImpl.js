@@ -11,6 +11,7 @@ module.exports = async (socket, data) => {
 		//
 		removed = false,
 		id,
+		id_list,
 		//
 		category,
 		work_task,
@@ -56,9 +57,43 @@ module.exports = async (socket, data) => {
 		exact_orgs
 	});
 	
-	return listGraphQL({
-		query: `
-			query listAllSWPByLoggedQuery {
+	if (id) {
+		return listGraphQL({
+			query: `
+        query listAllSWPByLoggedQuery {
+          hira_swp(
+            where: {
+              ${filter}
+            }
+          ) {
+              ${hira_swp_details_fragment}
+              ${orgs_fragment}
+          }
+        }
+			`,
+			operationName: `listAllSWPByLoggedQuery`,
+		});
+	} else if (id_list) {
+		return listGraphQL({
+			query: `
+					query listByIdsSWPByLoggedQuery {
+		        hira_swp(
+		          where: {
+		            id: {_in: [${id_list.join(',')}]}
+		          },
+	            order_by: {work_task: asc},
+		        ) {
+		          ${hira_swp_details_fragment}
+              ${orgs_fragment}
+		        }
+		      }
+				`,
+			operationName: "listAllNCRByLoggedQuery",
+		});
+	} else {
+		return listGraphQL({
+			query: `
+				query listAllSWPByLoggedQuery {
                 hira_swp(
                   where: {
                     removed: {_eq: ${removed}},
@@ -73,7 +108,8 @@ module.exports = async (socket, data) => {
                 }
             }
 		`,
-		operationName: "listAllSWPByLoggedQuery",
-	});
+			operationName: "listAllSWPByLoggedQuery",
+		});
+	}
 }
 //</editor-fold>

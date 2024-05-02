@@ -72,8 +72,10 @@ class AnswerSummary extends React.Component {
         const index = quesPath.filter(v => v.isNumeric()).map(v => parseInt(v) + 1).join('.');
         
 //        console.log('AnswerSummary quesPath', index, quesPath.slice())
+        
+        const questionImage = ques.questionImage;
 
-        // console.log('questionImage', ques);
+        console.log('questionImage', ques);
         return /*ques.open && */<AccordionSummary key={'AccordionSummary' + index} aria-controls="panel1a-content" id="panel1a-header" elevation={1} className={className}>
             <div className="w-full">
                 <Typography variant="subtitle1">
@@ -82,8 +84,8 @@ class AnswerSummary extends React.Component {
                     {ques.questionText || 'Type Question'}
                 </Typography>
 
-                {'questionImage' in ques && ques.questionImage && <div className="questionImage">
-                    <img src={ques.questionImage.dlUrls[0]} width="400px" height="auto" />
+                {!!questionImage && !!questionImage.dlUrls && <div className="questionImage">
+                    <img src={questionImage.dlUrls[0]} width="400px" height="auto" />
                     <br/><br/>
                 </div>}
                 

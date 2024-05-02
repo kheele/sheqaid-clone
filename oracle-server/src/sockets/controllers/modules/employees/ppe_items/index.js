@@ -19,6 +19,7 @@ eventManager.on("ppe-items/findById", findByIdImpl({
 eventManager.on("ppe-items/listByLogged", listImpl({
 	...args,
 	details_fragment,
+	orgs_fragment: null,
 	order_by: "order_by: {ppe_type:{name: asc}}",
 	getVariablesAndQueryConfig,
 }));

@@ -154,6 +154,8 @@ class Controls extends React.Component {
 			title,
 			doc,
 		} = form.data;
+		
+		console.log('doc', doc)
 
 		const data = {
 			doc_type,
@@ -173,7 +175,7 @@ class Controls extends React.Component {
 				data: [{
 					type,
 					expiry: Dates.formatDateSQL(expiry),
-					doc: (doc && !isString(doc)) ? {path: await toDataURI(doc)} : null,
+					doc: (doc && !isString(doc)) ? doc : null,
 					doc_docs_id: (doc && isString(doc)) ? doc : null,
 				}]
 			},

@@ -344,6 +344,8 @@ class IncidentInvestigationTableRow extends React.Component {
 					document_list,//
 					//4
 					severity,//{consequence, likelihood}
+					consequence,
+					likelihood,
 					//5
 					cause_analysis,//
 					//7

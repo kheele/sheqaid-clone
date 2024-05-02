@@ -15,7 +15,9 @@ class ButtonWrapper extends React.Component {
 	}
 
 	onChange(e, btn) {
-		const {item, onChange} = this.props;
+		const {readonly, item, onChange} = this.props;
+		if (readonly) return;
+		
 		item.checked = !item.checked;
 		onChange();
 	}
@@ -26,7 +28,8 @@ class ButtonWrapper extends React.Component {
 	}
 
 	render() {
-		return <Button className="btn btn-primary hor-center w-40" onClick={this.onChange}>
+		const {readonly} = this.props;
+		return <Button readonly={readonly} className="btn btn-primary hor-center w-40" onClick={this.onChange}>
 			{this.isChecked ? <i className="fa fa-check"/> : <i className="fa fa-square"/>}
 		</Button>;
 	}
@@ -58,26 +61,29 @@ class ANewListTable extends ATableSavable {
 	}
 
 	renderItem(n, onClick) {
+		const {readonly} = this.props;
 		const item = this.state.list[n];
 		if (item) {
-			return <TRow key={"item-" + n} className="tr-readonly">
-				<div className="td fixed-flex min-w-20"><span>{n + 1}.</span></div>
-				<div className="td"><span>{item.text}</span></div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+			return <TRow key={"item-" + n} className="tr-readonly w-full">
+				<div className="td fixed-flex min-w-20"><span>{n + 1}</span></div>
+				<div className="td">{item.text}</div>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="delete" shouldRender={!readonly} readonly={readonly} className="btn btn-primary pull-right w-40" onClick={onClick}>
 						<i className="fa fa-times-circle"/>
 					</Button>
 				</div>
 			</TRow>;
 		} else {
-			return <TRow key="item-new" className="padding-l-0">
+			if(readonly) return null;
+			
+			return <TRow key="item-new" className="padding-l-0 w-full">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">
-					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder="Type here" required
+					<ClearableInput ref={this.onSetRef} name="text" type="text" placeholder={this.title} required
 					                className="form-control" onChange={this.onChange}/>
 				</div>
-				<div className="td fixed-flex min-w-60">
-					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-t-10" onClick={onClick}>
+				<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+					<Button idx={n} action="save" className="btn btn-primary pull-right w-40 margin-v-10" onClick={onClick}>
 						<i className="fa fa-check"/>
 					</Button>
 				</div>
@@ -86,7 +92,7 @@ class ANewListTable extends ATableSavable {
 	}
 
 	render() {
-		return (<Table className="w-full padding-0 margin-0">
+		return (<Table className="w-full-calc-add-20 h-full padding-0 -margin-l-10">
 			<THead className="align-left">
 				<div className="td fixed-flex min-w-20"></div>
 				<div className="td">{this.title}</div>
@@ -152,17 +158,18 @@ class NewSafetyPreRequesiteListTable extends ATableSavable {
 	}
 
 	renderItem(n, onClick) {
+		const {readonly} = this.props;
 		const item = this.state.list[n];
-		return <TRow key={"item-" + n} className="tr-readonly">
+		return <TRow key={"item-" + n} className="tr-readonly w-full">
 			<div className="td td-question"><h5 className="no-margin">{item.desc}</h5></div>
-			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60">
-				<ButtonWrapper item={item} readonly={this.props.readonly} onChange={this.onChangeInternal}/>
+			<div className="td fixed-flex flex-center padding-h-0 min-w-60">
+				<ButtonWrapper item={item} readonly={readonly} onChange={this.onChangeInternal}/>
 			</div>
 		</TRow>;
 	}
 
 	render() {
-		return (<Table>
+		return (<Table className="w-full-calc-add-20 h-full padding-0 -margin-l-10">
 			<THead>
 				<div className="td">Safety Pre-requesite</div>
 				<div className="td fixed-flex text-center padding-l-0 padding-r-0 min-w-60"></div>

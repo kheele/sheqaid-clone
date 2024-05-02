@@ -105,7 +105,7 @@ class LinkedAssetsDetailsSection extends ASectionSection {
                 title="Asset Images"
                 className="h-160"
                 rowClassName="padding-l-10 padding-v-10"
-                renderer={v => <img src={v.doc.dlUrls[0]}/>}
+                renderer={v => <img src={v.doc.dlUrls && v.doc.dlUrls[0]}/>}
                 list={this.imageList}
             />,
 

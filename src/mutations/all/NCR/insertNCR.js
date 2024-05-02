@@ -10,6 +10,7 @@ import updateUser from "../User/updateUser";
 import {Dates} from "../../../utils/Dates";
 import updateEmployee from "../Employee/updateEmployee";
 import updateNCR from "./updateNCR";
+import findByIdNCR from "./findByIdNCR";
 
 // 2
 const mutation = graphql`
@@ -144,6 +145,7 @@ export default async (input: EntityNCR) => {
         responsible_party_list,
         assigned_job_position_list,
         assigned_person_list,
+        assigned_person_other_list,
         approving_person_id,
         //4
         document_list,
@@ -167,6 +169,11 @@ export default async (input: EntityNCR) => {
     //     document_list_doc = true;
     //     delete input.document_list;
     // }
+    
+    if(assigned_person_other_list) {
+        input.assigned_person_list = [...(assigned_person_list), ...assigned_person_other_list];
+        delete input.assigned_person_other_list;
+    }
 
     const res = await createMutationImpl({mutation, input});
     // if (res) {
@@ -208,5 +215,5 @@ export default async (input: EntityNCR) => {
         // }
     // }
 
-    return res;
+    return findByIdNCR(res.id);
 };

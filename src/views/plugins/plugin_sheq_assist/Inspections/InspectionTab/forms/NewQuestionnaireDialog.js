@@ -10,7 +10,7 @@ import {
 	RowOrgs,
 	SelectAssetInput,
 	SelectAssetTypeInput, SelectDepartmentInput, SelectEmployeeInput,
-	SelectQuestionnaireTemplateInput
+	SelectQuestionnaireTemplateInput, SelectUserInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import SelectEmployeesDialog from 'components/templates/SelectEmployeesDialog';
@@ -193,7 +193,9 @@ class Controls extends React.Component {
 			asset_type,
 			asset,
 			//
-			responsible_person,
+			responsible_person_list,
+			responsible_person_other_list,
+			responsible_user,
 			responsible_department,
 			interval,
 			start_date,
@@ -209,7 +211,24 @@ class Controls extends React.Component {
 			asset_type,
 			asset_id: asset && asset.id,
 			//
-			responsible_person_id: responsible_person && responsible_person.id,
+			responsible_person_list: {
+				data: [
+					...(responsible_person_list || []).map(({id: employee_id, is_external, ...attrs}) => ({employee_id})),
+				],
+			},
+			responsible_person_other_list: {
+				data: [
+					...(responsible_person_other_list || []).map(({id: employee_other_id, ...attrs}) => {
+						if(employee_other_id) {
+							return {employee_other_id};
+						}
+						const data = {...attrs};
+						// delete data.is_external;
+						return {employee_other: {data}};
+					}),
+				],
+			},
+			responsible_user_id: responsible_user && responsible_user.id,
 			responsible_department_id: responsible_department && responsible_department.id,
 			interval,
 			start_date: start_date && Dates.formatDateSQL(start_date),
@@ -275,7 +294,7 @@ class Controls extends React.Component {
 		} = this;
 		
 		let asset_type,
-			responsible_person, responsible_department, interval, start_date, time;
+			responsible_person_list, responsible_person_other_list, responsible_user, responsible_department, interval, start_date, time;
 		
 		if (asset) {
 			asset_type = asset.data.asset_detail.asset_type;
@@ -285,7 +304,9 @@ class Controls extends React.Component {
 			const {
 				asset_type: _asset_type,
 				asset: _asset,
-				responsible_person: _responsible_person,
+				responsible_person_list: _responsible_person_list,
+				responsible_person_other_list: _responsible_person_other_list,
+				responsible_user: _responsible_user,
 				responsible_department: _responsible_department,
 				interval: _interval,
 				start_date: _start_date,
@@ -295,7 +316,9 @@ class Controls extends React.Component {
 			asset = _asset;
 			asset_type = _asset_type;
 			//
-			responsible_person = _responsible_person;
+			responsible_person_list = _responsible_person_list;
+			responsible_person_other_list = _responsible_person_other_list;
+			responsible_user = _responsible_user;
 			responsible_department = _responsible_department;
 			interval = _interval;
 			start_date = _start_date;
@@ -344,8 +367,19 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
-				                     defaultValue={responsible_person}
+				<SelectEmployeeInput name="responsible_person_list" placeholder="Responsible Employee(s)..."
+				                     defaultValue={responsible_person_list}
+				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+				<SelectEmployeeInput
+					name="responsible_person_other_list" placeholder="Responsible External Person(s)..."
+					defaultValue={responsible_person_other_list}
+					type="select_multi"
+					className="col-lg-12 form-control"
+					onChange={this.form.onChange}
+					showOtherPersonsOnly
+				/>
+				<SelectUserInput name="responsible_user" placeholder="Responsible User..."
+				                     defaultValue={responsible_user}
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<SelectDepartmentInput name="responsible_department" placeholder="Responsible Department..."
 				                       defaultValue={responsible_department}

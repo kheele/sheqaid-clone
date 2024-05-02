@@ -69,7 +69,7 @@ class AControls extends React.Component {
 		const {execWhen, refs} = this.props.dialog;
 		execWhen(() => refs.infoB).then(async infoB => {
 			let {progress} = this;
-			infoB.text('Loading...');
+			infoB.text('Loading...');//
 
 			infoB.text((progress || 0).toFixed(1) + '% Complete');
 		});
@@ -220,7 +220,7 @@ class Stats extends React.Component {
 		return <div className={"margin-r-10 padding-10 Statistics ComplianceStats margin-t-5 " + className}>
 			<label className="text-center w-full margin-b-10">{title}</label>
 			<div className="content">
-				{value}
+				{isString(value) || isNumber(value) ? value : value && value.perc ? value.perc : "N/A"}
 			</div>
 		</div>;
 	}

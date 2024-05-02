@@ -65,7 +65,7 @@ class Controls extends React.Component {
 //        printPDF(this.props.dialog.url);
     }
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, extendObservable} from 'mobx';
 
 import style from "./InspectionTab.lazy.css";
 import APageListReadWrite from "views/APageListReadWrite";
@@ -17,7 +17,7 @@ import {
 } from "components/inputs";
 import {THead} from "components/tables";
 import InspectionTableRow from "./InspectionTableRow";
-import updateQuestionnaire from "../../../../../mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 
 @observer
 class InspectionTab extends React.Component {
@@ -105,13 +105,13 @@ class InspectionTab extends React.Component {
 	
 	onUpdateImpl(el, attrs) {
 		return confirmDialog.open("Are you sure you want to confirm this action?").then(res => {
-			if(res === 1) {
+			if (res === 1) {
 				const {idx} = el.props;
 				const item = this.refs.root.list[idx];
 				
 				progressDialog.open("Please wait...");
 				return updateQuestionnaire({id: item.id, ...attrs}).then(res => {
-					if(res && attrs.status === 'Seen') {
+					if (res && attrs.status === 'Seen') {
 						this.refs.root.list.removeIf((val, n) => n === idx);
 					}
 					
@@ -142,21 +142,29 @@ class InspectionTab extends React.Component {
 			id, data: {
 				status,
 				responsible_person,
+				responsible_user,
 			}
 		} = item;
 		
-		const {is:{isEmployee},loggedUser:{user}} = storage;
+		const {is: {isEmployee}, loggedUser: {user}} = storage;
 		
-		if(isEmployee) {
+		if (isEmployee) {
 			const isLoggedUser = responsible_person && responsible_person.id === user.id;
 			return <Options idx={idx}>
 				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 				{isLoggedUser && <hr action="writable"/>}
-				{isLoggedUser && <NavItem action="writable" status="Seen" idx={idx} onClick={this.onRemoveAsComplete} faIconLeft="ban" title="Unset As Complete"/>}
+				{isLoggedUser &&
+					<NavItem action="writable" status="Seen" idx={idx} onClick={this.onRemoveAsComplete} faIconLeft="ban"
+					         title="Unset As Complete"/>}
 			</Options>;
 		}
 		
-		const isLoggedUser = responsible_person && responsible_person.linked_user_id === user.id;
+		let isLoggedUser;
+		if (responsible_person) {
+			isLoggedUser = responsible_person.linked_user_id === user.id;
+		} else if (responsible_user) {
+			isLoggedUser = responsible_user.id === user.id;
+		}
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>
 			<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -164,6 +172,9 @@ class InspectionTab extends React.Component {
 			<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
 			<hr action="writable"/>
 			<NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
+			{isLoggedUser &&
+				<NavItem action="writable" status="Seen" idx={idx} onClick={this.onRemoveAsComplete} faIconLeft="ban"
+				         title="Unset As Complete"/>}
 		</Options>;
 	}
 	
@@ -204,6 +215,7 @@ class InspectionTab extends React.Component {
 			{!asset && <div className="td fixed-flex min-w-140">Asset Type</div>}
 			{!asset && <div className="td fixed-flex min-w-140">Asset</div>}
 			<div className="td fixed-flex min-w-180">Responsible Person</div>
+			<div className="td fixed-flex min-w-180">Responsible User</div>
 			<div className="td fixed-flex min-w-80">Interval</div>
 			<div className="td fixed-flex min-w-100">Start Date</div>
 			<div className="td fixed-flex min-w-120">Date Scheduled</div>
@@ -218,6 +230,13 @@ class InspectionTab extends React.Component {
 		const {item: asset} = this.props;
 		let item = this.refs.root.list[n];
 		return <InspectionTableRow key={item.id} idx={n} item={item} asset={asset} onClick={onClick}/>;
+	}
+	
+	get isRemovedAsset() {
+		const {children, pageId, pageTitle, pageTitleSingular, item: asset, type, NewDialog} = this.props;
+		if (!asset) return false;
+		const {written_off, data} = asset;
+		return written_off || (data && data.written_off);
 	}
 	
 	render() {
@@ -239,9 +258,13 @@ class InspectionTab extends React.Component {
 			renderTHead={this.renderTHead}
 			renderItem={this.renderItem}>
 			<ConfirmDialog ref="removeDialog"/>
-			<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
-			<EditResponseDialog ref="editDialog"/>
-			<ProfileResponseDialog ref="profileDialog"/>
+			
+			{!this.isRemovedAsset && <>
+				<NewQuestionnaireDialog ref="newDialog" asset={asset}/>
+				<EditResponseDialog ref="editDialog"/>
+				<ProfileResponseDialog ref="profileDialog"/>
+			</>}
+			
 			<Popover key="popover" ref="popover"/>
 		</APageListReadWrite>;
 	}

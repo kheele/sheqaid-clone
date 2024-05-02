@@ -57,12 +57,13 @@ module.exports = async (socket, data) => {
                     ${filter},
                     _and:{
                       _or:[
-	                      {investigation:{cause_analysis:{immediate_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}},
-	                      {investigation:{cause_analysis:{root_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}}
+	                      {investigation:{cause_analysis:{immediate_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}}},
+	                      {investigation:{cause_analysis:{root_analysis:{cause_analysis_cause_list:{corrective_action_list:{id:{_is_null: false}}}}}}}
                       ]
                     }
                   },
-	                order_by: {incident_date: desc, incident_time: desc, group: asc, short_desc: asc},
+					        order_by: {incident_date: desc},
+					        #order_by: {short_desc: asc, group: asc, incident_time: desc, incident_date: desc},
                     offset: ${offset},
                     ${limit > 0 ? `limit: ${limit}` : ''}
                 ) {

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable,} from 'mobx';
+import {observable, computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
@@ -26,6 +26,7 @@ import style from "./EditToolboxTalkDialog.lazy.css";
 import {NewEmployeeListTable} from "components/FormTableComponents";
 import {SelectTable} from "components/tables";
 import findByIdTrainingToolboxTalk from "mutations/all/TrainingToolboxTalk/findByIdTrainingToolboxTalk";
+import updateTrainingToolboxTalk from "mutations/all/TrainingToolboxTalk/updateTrainingToolboxTalk";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -34,6 +35,7 @@ class EditToolboxTalkDialog extends AEditDialog {
     pageKey = "EditToolboxTalkDialog";
     title = "Edit Toolbox Talk / Training Meeting";
     findById = findByIdTrainingToolboxTalk;
+    removeById = updateTrainingToolboxTalk;
 
     constructor(props) {
         super(props, style);
@@ -227,6 +229,10 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+    
+    @computed get item() {
+        return this.props.state.item;
+    }
     
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {

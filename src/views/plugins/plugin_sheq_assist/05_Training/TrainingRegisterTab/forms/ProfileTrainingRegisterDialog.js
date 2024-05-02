@@ -14,11 +14,13 @@ import style from "./ProfileTrainingRegisterDialog.lazy.css";
 import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
 import Divider from "@mui/material/Divider";
 import findByIdTrainingRegister from "mutations/all/TrainingRegister/findByIdTrainingRegister";
+import updateTrainingRegister from "mutations/all/TrainingRegister/updateTrainingRegister";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileTrainingRegisterDialog";
     findById = findByIdTrainingRegister;
+    removeById = updateTrainingRegister;
 
     constructor(props) {
         super(props, style);
