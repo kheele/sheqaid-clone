@@ -51,10 +51,10 @@ class AListTable extends ATableSavable {
     render() {
         if(!this.selfState.rendered) return null;
         let {title, readonly, disableRowHover, children, closeable, className = ''} = this.props;
-        className =  `ANewListTable h-auto min-h-120 col-lg-12 margin-0 padding-0${closeable ? " closeable" : ""} ${className} ${this.className}`;
+        className =  `ANewListTable h-auto min-h-180 col-lg-12 margin-0 padding-0${closeable ? " closeable" : ""} ${className} ${this.className}`;
 
         return (<Table className={className}>
-            {title && <h3 className="margin-0 padding-5 font-size-16 bg-eee">{title}</h3>}
+            {title && <h3 className="margin-0 padding-10 font-size-16 bg-eee">{title}</h3>}
             {closeable && <ActionsButton className="btn btn-primary closeable-btn" icon="times" onClick={this.hide}/>}
             {this.renderTHead()}
             <TBody ref="body" title={this.title} renderItem={this.renderItem} onClick={this.onClick} state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true} disableRowHover={disableRowHover}/>

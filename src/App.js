@@ -30,6 +30,7 @@ import {execWhen} from './utils/Utils';
 
 import storage from './storage/Storage';
 
+import manualManager from './app/ManualManager';
 import pluginManager from './app/PluginManager';
 import moduleManager from './app/ModuleManager';
 import staticModuleManager from './app/StaticModuleManager';
@@ -75,6 +76,7 @@ class App extends React.Component {
 		super();
 
 		window.app = this;
+		window.manualManager = manualManager;
 		window.pluginManager = pluginManager;
 		window.moduleManager = moduleManager;
 		window.staticModuleManager = staticModuleManager;
@@ -94,6 +96,7 @@ class App extends React.Component {
 	componentDidMount() {
 		// console.log(Dates.formatDate(1677758520136), );
 
+		window.manualManager.start();
 		window.pluginManager.start();
 		storage.load.loadPermissionOtherKeys();
 
@@ -298,7 +301,7 @@ class AppMainContent extends React.Component {
 		const {isLoggedUserAuthChecked, isLoadedCountries, isLoadedPermissionOtherKeys} = storage.is;
 		// alert(isLoggedUserAuthChecked)
 		// console.log('AppMainContent', isLoggedUserAuthChecked, isLoadedCountries, isLoadedPermissionOtherKeys)
-		if (isLoggedUserAuthChecked && isLoadedCountries && isLoadedPermissionOtherKeys && pluginManager.isLoaded) {
+		if (isLoggedUserAuthChecked && isLoadedCountries && isLoadedPermissionOtherKeys && manualManager.isLoaded && pluginManager.isLoaded) {
 			return <Suspense fallback={<PageLoadingProgress/>}>
 				<React.Fragment>
 					<LoggedInFormsApp/>

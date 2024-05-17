@@ -64,6 +64,8 @@ class AnswerPreviewReadonly extends React.Component {
 				responseAttachmentRequired,
 				hasExpiry,
 				expiry,
+				comments,
+				isEditableDoc,
 				isMultiAnswer,
 				options,
 				questionType
@@ -163,14 +165,25 @@ class AnswerPreviewReadonly extends React.Component {
 					}
 					if (answer) {
 						if (singleAnswer) {
-							node = <UploadButton
-								name={"answer_" + idx}
-								defaultValue={singleAnswer}
-								type={['PDF', 'Word', 'Excel']}
-								showOnlyIcon
-								readonly
-								className="w-340 pull-left margin-t-0"
-							/>;
+							if(isEditableDoc) {
+								node = <UploadButton
+									name={"answer_" + idx}
+									defaultValue={singleAnswer}
+									type={['Word', 'Excel']}
+									showOnlyIcon
+									readonly
+									className="w-340 pull-left margin-t-0"
+								/>;
+							} else {
+								node = <UploadButton
+									name={"answer_" + idx}
+									defaultValue={singleAnswer}
+									type={['PDF', 'Word', 'Excel']}
+									showOnlyIcon
+									readonly
+									className="w-340 pull-left margin-t-0"
+								/>;
+							}
 						}
 					} else {
 						node = 'No Answer';
@@ -216,8 +229,11 @@ class AnswerPreviewReadonly extends React.Component {
                     </span>}
 					{hasExpiry &&
 						<span className="expiry-date block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
-                    Expiry Date: {(expiry && Dates.formatDate(expiry)) || "N/A"}
-                </span>}
+						Expiry Date: {(expiry && Dates.formatDate(expiry)) || "N/A"}
+					</span>}
+					<span className="comments block-inline margin-l-10 margin-b-5 font-size-15 font-weight-bold">
+						Comments: {comments || "N/A"}
+					</span>
 				</React.Fragment>);
 
 			if (isMultiAnswer) {
@@ -258,6 +274,7 @@ class AnswerPreviewWritable extends React.Component {
 	wasChangedAnswer = false;
 	wasChangedResponseAttachment = false;
 	wasChangedAnswerExpiry = false;
+	wasChangedComments = false;
 
 	constructor(props) {
 		super(props);
@@ -273,6 +290,7 @@ class AnswerPreviewWritable extends React.Component {
 		this.form.addChangeOne("answer_employee_" + idx, debounce(this.onChangeAnswer.bind(this)).bind(this));
 		this.form.addChangeOne("response_attachment_" + idx, debounce(this.onChangeResponseAttachment.bind(this)).bind(this));
 		this.form.addChangeOne("answer_expiry_" + idx, this.onChangeAnswerExpiry.bind(this));
+		this.form.addChangeOne("comments_" + idx, this.onChangeComments.bind(this));
 	}
 
 	componentWillMount() {
@@ -290,6 +308,7 @@ class AnswerPreviewWritable extends React.Component {
 			this.wasChangedAnswer = true;
 			this.wasChangedResponseAttachment = true;
 			this.wasChangedAnswerExpiry = true;
+			this.wasChangedComments = true;
 		}, 2000);
 	}
 
@@ -414,6 +433,24 @@ class AnswerPreviewWritable extends React.Component {
 		});
 	}
 
+	onChangeComments(el, val) {
+		if (!this.wasChangedComments) {
+			this.wasChangedComments = true;
+			return;
+		}
+
+		const {mainQuestions, quesPath, parentId, idx, ques, notifyChange, onChange} = this.props;
+		ques.comments = val;
+		console.log('ques', ques)
+		onChange && onChange({parentId, ques, quesPath}).then(res => {
+			if (res) {
+				ques.open = true;
+				extendObservable(ques, res);
+				notifyChange && notifyChange({parentId, ques, quesPath})
+			}
+		});
+	}
+
 	onAddAnswer(evt, btn) {
 		this.answerList.push(null);
 	}
@@ -452,6 +489,8 @@ class AnswerPreviewWritable extends React.Component {
 				responseAttachmentRequired,
 				hasExpiry,
 				expiry,
+				comments,
+				isEditableDoc,
 				isMultiAnswer,
 				options,
 				questionType
@@ -560,15 +599,27 @@ class AnswerPreviewWritable extends React.Component {
 					}
 //                    console.log(questionType, answer)
 					//if (singleAnswer) {
-					node = <UploadButton
-						name={"answer_" + idx}
-						buttonTitle="Upload PDF/Word/Excel"
-						defaultValue={singleAnswer}
-						type={['PDF', 'Word', 'Excel']}
-						showOnlyIcon
-						onChange={onChange}
-						className="w-340 pull-left margin-t-0"
-					/>;
+					if(isEditableDoc) {
+						node = <UploadButton
+							name={"answer_" + idx}
+							buttonTitle="Upload Word/Excel"
+							defaultValue={singleAnswer}
+							type={['Word', 'Excel']}
+							showOnlyIcon
+							onChange={onChange}
+							className="w-340 pull-left margin-t-0"
+						/>;
+					} else {
+						node = <UploadButton
+							name={"answer_" + idx}
+							buttonTitle="Upload PDF/Word/Excel"
+							defaultValue={singleAnswer}
+							type={['PDF', 'Word', 'Excel']}
+							showOnlyIcon
+							onChange={onChange}
+							className="w-340 pull-left margin-t-0"
+						/>;
+					}
 					//}
 					if (answer) {
 						className = "margin-b-5";
@@ -645,8 +696,9 @@ class AnswerPreviewWritable extends React.Component {
 			return renderFrag({idx, node, responseAttachment, hasResponseAttachment, responseAttachmentRequired},);
 		};
 
+		let frag;
 		if (isMultiAnswer) {
-			return <React.Fragment>
+			frag = <React.Fragment>
 				<div
 					className="multi-answer row w-full margin-0 pos-relative">{this.answerList.map((answer, n) => createAnswerInputs(
 					{idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired, n}
@@ -656,8 +708,18 @@ class AnswerPreviewWritable extends React.Component {
 				</Button>
 			</React.Fragment>;
 		} else {
-			return createAnswerInputs({idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired,});
+			frag = createAnswerInputs({idx, questionType, answer, answer_asset, answer_employee, responseAttachment, hasResponseAttachment, responseAttachmentRequired,});
 		}
+		return <>
+			{frag}
+			<ClearableInput
+				name={"comments_" + idx}
+				placeholder="Comments"
+				defaultValue={comments}
+				className={"pull-left margin-b-5 form-control margin-t-5"}
+				onChange={onChange}
+			/>
+		</>;
 	}
 }
 

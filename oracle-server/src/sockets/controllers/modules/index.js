@@ -13,6 +13,7 @@ require("./incidents");
 require("./inspections");
 require("./ncr");
 require("./projects");
+require("./safety-files");
 require("./signature-settings");
 require("./sites");
 require("./structure-and-responsibility");

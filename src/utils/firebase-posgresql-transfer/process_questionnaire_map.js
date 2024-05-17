@@ -12,6 +12,7 @@ export const process_questionnaire_map = is_page_title => {
             answer,//
             expiry,//
             hasExpiry,//
+            isEditableDoc,
             isMandatory,//
             isMultiAnswer,//
             maxScore,//
@@ -78,6 +79,7 @@ export const process_questionnaire_map = is_page_title => {
             answer,//
             expiry: Dates.formatTimestampSQL(expiry),//
             hasExpiry,//
+            isEditableDoc,
             isMandatory,//
             isMultiAnswer,//
             maxScore,//

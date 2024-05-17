@@ -19,14 +19,30 @@ class ItemRenderer extends React.Component {
 				{!svgIconLeft && <i className={"fa fa-" + faIconLeft}/>}
 				{svgIconLeft && <img src={'img/svg/' + svgIconLeft + '.svg'} className="fa fa-"/>}
 				<h3>{title}</h3>
-				<div className="buttons">
-					<Button className="btn btn-primary" item={item} onClick={onInfo}>Info</Button>
-					{allow && <Button className="btn btn-primary" item={item} onClick={onClick}>Open</Button>}
-				</div>
+				<Buttons item={item} onInfo={onInfo} onClick={onClick} allow={allow}/>
 				{!allow && <p className="access-hint">No Access</p>}
 			</div>
 		</div>;
 	}
 }
+
+
+@observer
+class Buttons extends React.Component {
+	render() {
+		const {
+			allow,
+			onInfo,
+			onClick,
+			item,
+		} = this.props;
+		
+		return <div className="buttons">
+			<Button className="btn btn-primary" item={item} onClick={onInfo}>Info</Button>
+			{allow && <Button className="btn btn-primary" item={item} onClick={onClick}>Open</Button>}
+		</div>;
+	}
+}
+
 
 export default ItemRenderer;

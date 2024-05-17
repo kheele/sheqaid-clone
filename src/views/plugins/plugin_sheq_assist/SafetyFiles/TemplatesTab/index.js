@@ -5,16 +5,14 @@ import {observable, toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ClearableInput, SelectAssetTypeInput} from 'components/inputs';
+import {ClearableInput, Clickable} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
-import {NewScheduleDialog, NewQuestionnaireDialog} from '../InspectionTab/forms';
+import {NewQuestionnaireDialog} from '../SafetyFilesTab/forms';
 
 import style from "./TemplatesTab.lazy.css";
 import TemplateTableRow from "./TemplateTableRow";
-import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
-
 
 @observer
 class TemplatesTab extends React.Component {
@@ -23,11 +21,14 @@ class TemplatesTab extends React.Component {
     @observable
     state = {
         lists: {
-            scheduled: [{text: "Yes", value: "Yes"}, {text: "No", value: "No"}],
             visibility: [
-                {text: 'Private', value: 'Private', checked: false},
-                {text: 'Public', value: 'Public', checked: false}
+                {text: 'Only My Company', value: 'OnlyMyCompany', checked: false},
+                {text: 'Every Company', value: 'EveryCompany', checked: true}
             ],
+            answered_by: [
+                {text: 'Sender', value: 'Sender', checked: false},
+                {text: 'Recipient', value: 'Recipient', checked: false}
+            ]
         }
     }
 
@@ -37,13 +38,11 @@ class TemplatesTab extends React.Component {
 
         this.onLoadList = this.onLoadList.bind(this);
         
-        this.onRemoved = this.onRemoved.bind(this);
-
         this.onCopy = this.onCopy.bind(this);
-        this.onCreateQuestionnaire = this.onCreateQuestionnaire.bind(this);
-        // this.onSchedule = this.onSchedule.bind(this);
-        // this.onStart = this.onStart.bind(this);
+        this.onUseLibrary = this.onUseLibrary.bind(this);
         
+        this.onSaveAs = this.onSaveAs.bind(this);
+
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -62,24 +61,19 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
-        const {item: asset} = this.props;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            asset_type,
             name,
-            scheduled,
             visibility,
+            answered_by,
         } = filterData || {};
 
         const listByLogged = sockets.of('safety-files').fn('listTemplatesByLogged');
 
         return listByLogged({
-            asset_id: asset && asset.id,
-            //
-            asset_type,
             name,
-            scheduled,
             visibility,
+            answered_by,
             //
             exact_orgs: true,
             //
@@ -92,46 +86,48 @@ class TemplatesTab extends React.Component {
 
     //</editor-fold>
     
-    onRemoved(item) {
-        this.refs.root.list.removeIf((v, n) => v.id === item.id);
-    }
-
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
-        const {item: asset} = this.props;
         const {idx, action} = elem.props;
-        const {list} = this.refs.root;
+        const {list, onNew} = this.refs.root;
         const copy = toJS(list[idx]);
-
-        const newDialog = this.refs.root.getDialogByRef("newDialog");
-        newDialog.
-        extraProp('asset', asset).
-        open(copy);
+        onNew(evt, elem, copy);
     }
 
-    onCreateQuestionnaire(evt, elem) {
-        const {item: asset} = this.props;
+    onUseLibrary(evt, elem) {
+        // const {idx, action} = elem.props;
+        // const item = this.refs.root.list[idx];
+
+        // const newQuestionnaireDialog = this.refs.root.getDialogByRef("newQuestionnaireDialog");
+        // newQuestionnaireDialog.
+        // extraProp('template', item).
+        // open(item);
+        
+        const {isContractorView} = storage.is;
+        if (!isContractorView) {
+            const {onOpenContractorsTab} = this.props;
+            return infoDialog.open(<div>
+                Please first <b>
+                <Clickable onClick={onOpenContractorsTab}>
+                    <a href="#">Open Contractor</a>
+                </Clickable>
+            </b> tab
+            </div>);
+        }
         const {idx, action} = elem.props;
         const item = this.refs.root.list[idx];
-
-        const newQuestionnaireDialog = this.refs.root.getDialogByRef("newQuestionnaireDialog");
-        newQuestionnaireDialog.
-        extraProp('template', item).
-        extraProp('asset', asset).
-        open(item);
+        this.refs.newQuestionnaireDialog.open(item);
     }
 
-    // onSchedule(evt, elem) {
-    //     const {idx, action} = elem.props;
-    //     const item = this.refs.root.list[idx];
-    //     this.refs.newScheduleDialog.open(item);
-    // }
-    //
-    // onStart(evt, elem) {
-    //     const {idx, action} = elem.props;
-    //     const item = this.refs.root.list[idx];
-    //     this.refs.newQuestionnaireDialog.open(item);
-    // }
+    async onSaveAs(e, el) {
+        const {idx, type} = el.props;
+        const item = this.refs.root.list[idx];
+        if (type === 'PDF') {
+            // this.refs.pdfReader.open(item);
+        } else if (type === 'Excel') {
+
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="renderPopoverOptions">
@@ -145,7 +141,7 @@ class TemplatesTab extends React.Component {
                 desc,
                 status,
                 status_answered_by_sender,
-                answered_by = 'Sender',
+                answered_by,
                 is_template,
                 visibility,
                 page_title_list,
@@ -154,17 +150,20 @@ class TemplatesTab extends React.Component {
         } = item;
 
         const isPrivate = visibility === "Private";
+        const isAnsweredByRecipient = answered_by !== "Sender";
 
+        const permissionKey = !storage.is.isContractor && "Contractor Documents";
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             {isPrivate && <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>}
             {isPrivate && <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>}
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-            <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onCreateQuestionnaire} faIconLeft="plus" title={"Create Inspection"}/>
-            {/*<NavItem action="writable" idx={idx} onClick={this.onSchedule} faIconLeft="plus" title={"Schedule Inspection"}/>*/}
-            {/*<NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Inspection"}/>*/}
+            <NavItem action="writable" idx={idx} onClick={this.onUseLibrary} faIconLeft="plus"
+                     title="Use Template"/>
+            {/*<hr action="writable"/>
+            <NavItem action="writable" idx={idx} type='PDF' refName={`pdfReader`} onClick={this.onSaveAs} title='Save As PDF'/>
+            <NavItem action="writable" idx={idx} type='Excel' onClick={this.onSaveAs} title='Save As Spreadsheet'/>*/}
         </Options>;
     }
     //</editor-fold>
@@ -172,10 +171,12 @@ class TemplatesTab extends React.Component {
     //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-            <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>
-            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control" onChange={onChange} values={this.state.lists.visibility}/>
-            <SelectAssetTypeInput name="asset_type" type="select_multi" placeholder="Asset Type(s)..." className="form-control" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Questionnare Title" className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="visibility" type="radio" placeholder="Visible To" className="form-control"
+                            onChange={onChange} values={this.state.lists.visibility} returnValue/>
+            <ClearableInput name="answered_by" type="radio" placeholder="Needs Answers From" className="form-control"
+                            onChange={onChange} values={this.state.lists.answered_by} returnValue/>
         </div>;
     }
     //</editor-fold>
@@ -190,7 +191,7 @@ class TemplatesTab extends React.Component {
             <div className="td fixed-flex min-w-180">Questionnaires Used</div>
             <div className="td fixed-flex min-w-100">Questions</div>
             <div className="td fixed-flex min-w-80">Visibility</div>
-            <div className="td fixed-flex min-w-80">Scheduled</div>
+            <div className="td fixed-flex min-w-160">Needs Answers From</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -205,7 +206,7 @@ class TemplatesTab extends React.Component {
 
     //<editor-fold desc="render">
     render() {
-        const {asset} = this.props;
+        const {onOpenContractorsTab} = this.props;
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        const permissions_other_ContractorForms = (permissions_other || []).find(v => v.key === "Contractor Forms");
         return <APageListReadWrite 
@@ -222,13 +223,13 @@ class TemplatesTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDelete={updateQuestionnaire}/>
+            <ConfirmDialog ref="removeDialog"/>
             
-            <NewTemplateDialog ref="newDialog" asset={asset}/>
-            <EditTemplateDialog ref="editDialog" onRemoved={this.onRemoved}/>
-            <ProfileTemplateDialog ref="profileDialog" onRemoved={this.onRemoved}/>
+            <NewTemplateDialog ref="newDialog"/>
+            <EditTemplateDialog ref="editDialog"/>
+            <ProfileTemplateDialog ref="profileDialog" onOpenContractorsTab={onOpenContractorsTab}/>
             
-            <NewQuestionnaireDialog ref="newQuestionnaireDialog" asset={asset}/>
+            <NewQuestionnaireDialog ref="newQuestionnaireDialog"/>
         </APageListReadWrite>;
     }
     //</editor-fold>

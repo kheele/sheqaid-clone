@@ -9,33 +9,31 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 import {TemplateQuestions} from 'components/templates';
 
 import style from "./NewTemplateDialog.lazy.css";
-import insertInspectionsQuestionnaireTemplate
-	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/insertInspectionsQuestionnaireTemplate";
+import insertSafetyFilesQuestionnaireTemplate
+	from "mutations/all/Questionnaires/SafetyFilesQuestionnaireTemplate/insertSafetyFilesQuestionnaireTemplate";
 import {FormControls, Row} from "components/FormComponents";
-import {ClearableInput, SelectAssetInput, SelectAssetTypeInput} from "components/inputs";
+import {ClearableInput} from "components/inputs";
 import {execWhen} from "utils/UtilsFuns";
-import findByIdInspectionsQuestionnaireTemplate
-	from "mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/findByIdInspectionsQuestionnaireTemplate";
-import updateInspectionsQuestionnaireTemplate
-	from "../../../../../../mutations/all/Questionnaires/InspectionsQuestionnaireTemplate/updateInspectionsQuestionnaireTemplate";
+import findByIdSafetyFilesQuestionnaireTemplate
+	from "mutations/all/Questionnaires/SafetyFilesQuestionnaireTemplate/findByIdSafetyFilesQuestionnaireTemplate";
 
 //<editor-fold desc="Dialog">
 @observer
 class NewDialog extends ANewDialog {
 	pageKey = "NewTemplateDialog";
-	title = "Create Inspection Template";
+	title = "Create Safety File Template";
 	
-	findById = findByIdInspectionsQuestionnaireTemplate;
+	findById = findByIdSafetyFilesQuestionnaireTemplate;
 	
 	constructor(props) {
 		super(props, style);
 	}
 	
 	// get findById() {
-	// 	// if(!this.isOpen) return updateInspectionsQuestionnaireTemplate;
+	// 	// if(!this.isOpen) return updateSafetyFilesQuestionnaireTemplate;
 	//
 	// 	if (!this.state.item) return;
-	// 	return findByIdInspectionsQuestionnaireTemplate;
+	// 	return findByIdSafetyFilesQuestionnaireTemplate;
 	// }
 	
 	get controls() {
@@ -53,9 +51,13 @@ class Controls extends React.Component {
 	state = {
 		lists: {
 			visibility: [
-				{text: 'Private', value: 'Private', checked: false},
-				{text: 'Public', value: 'Public', checked: false}
-			],
+                {text: 'Private', value: 'Private', checked: false},
+                {text: 'Public', value: 'Public', checked: false}
+            ],
+            answered_by: [
+                {text: 'Sender', value: 'Sender', checked: false}, 
+                {text: 'Recipient', value: 'Recipient', checked: false}
+            ]
 		}
 	};
 	
@@ -88,10 +90,10 @@ class Controls extends React.Component {
 				infoDialog.open('Please select "Visibility" option');
 				return;
 			}
-			// if (!form.isValid('asset_type')) {
-			//     infoDialog.open('Asset Type is required');
-			//     return;
-			// }
+            if (!form.isValid('answered_by')) {
+                infoDialog.open('Please select "Needs Answers From" option');
+                return;
+            }
 		}
 		if (idx === 2) {
 			if (!questions.isValidForm()) {
@@ -112,10 +114,10 @@ class Controls extends React.Component {
 			infoDialog.open('Please select "Visibility" option');
 			return;
 		}
-		// if (!form.isValid('asset_type')) {
-		//     infoDialog.open('Asset Type is required');
-		//     return;
-		// }
+        if (!form.isValid('answered_by')) {
+            infoDialog.open('Please select "Needs Answers From" option');
+            return;
+        }
 		
 		if (!questionsRef.isValidForm()) {
 			return;
@@ -136,19 +138,17 @@ class Controls extends React.Component {
 			...question_list.map(v => ({is_page_title: false, ...v})),
 		];
 		
-		const {visibility, asset_type, asset} = form.data;
+		const {visibility, answered_by} = form.data;
 		const data = {
-			asset_type,
-			asset_id: asset && asset.id,
-			//
 			visibility,
 			name,
 			desc,
+			answered_by,
 			question_list: {data: question_list},
 		};
 		
 		btn.text("Saving...").disabled();
-		insertInspectionsQuestionnaireTemplate(data).then(res => {
+		insertSafetyFilesQuestionnaireTemplate(data).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully saved.");
@@ -171,10 +171,6 @@ class Controls extends React.Component {
 		return [{questionText: "Completed By", questionType: "Short Answer"}];
 	}
 	
-	get asset() {
-		return this.props.dialog.props.asset;
-	}
-	
 	@computed
 	get itemToView() {
 		return this.props.state.itemToView;
@@ -187,24 +183,13 @@ class Controls extends React.Component {
 	
 	//<editor-fold desc="render">
 	render() {
-		if (this.props.dialog.findById && this.itemToView && !this.item) {
-			return <CircularProgress className="fixed-center"/>;
-		}
-		
-		const {
-			item, props: {
-				onFormNext, onFormBack, onFormOpen
-			},
-			asset,
-		} = this;
-		
-		let visibility;
-		
-		if (asset) {
-			visibility = 'Private';
-		} else {
-			visibility = item ? item.data.visibility : null;
-		}
+        const {
+            item, props: {
+                onFormNext, onFormBack, onFormOpen
+            }
+        } = this;
+        const visibility = item ? item.data.visibility : null;
+        const answered_by = item ? item.data.answered_by : 'Recipient';
 		
 		return <FormControls>
 			<Row
@@ -215,20 +200,13 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 			>
-				<ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility}
-				                isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control"
-				                onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
-				<SelectAssetTypeInput name="asset_type" placeholder="Asset Type..."
-				                      defaultValue={asset && asset.asset_detail && asset.asset_detail.asset_type}
-				                      isEditable={!asset} readonly={!!asset} className="col-lg-12 form-control"
-				                      onChange={this.form.onChange}/>
-				<SelectAssetInput name="asset" placeholder="Asset..." defaultValue={asset} isEditable={!asset}
-				                  readonly={!!asset} className="col-lg-12 form-control" onChange={this.form.onChange}/>
-			</Row>
+			    <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} required className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
+                <ClearableInput name="answered_by" type="radio" placeholder="Needs Answers From" defaultValue={answered_by} required className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.answered_by} returnValue/>
+            </Row>
 			<Row
 				rendered
 				idx={2}
-				title="2. Inspection Questionnaire"
+				title="2. Safety File Questionnaire"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
@@ -236,8 +214,8 @@ class Controls extends React.Component {
 					ref="questions"
 					getDialogDOM={this.getDialogDOM}
 					isLibrary
-					defaultType="Inspections"
-					mainTitle="Inspection Template Questionnaire"
+					defaultType="Safety Files"
+					mainTitle="Safety File Template Questionnaire"
 					defaultDocTitle="Untitled Questionnaire"
 					defaultTitlePageQuestions={this.defaultTitlePageQuestions}
 					item={this.item}

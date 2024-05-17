@@ -1,7 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {execWhen, ShouldUpdate} from 'utils/Utils';
@@ -193,14 +194,16 @@ class Controls extends React.Component {
         return dialog.getDOMNode();
     }
     
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if (!this.item)
-            return null;
+        if (!this.item) {
+            return <CircularProgress className="fixed-center"/>;
+        }
+
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,
@@ -239,7 +242,7 @@ class Controls extends React.Component {
             <Row 
                 rendered 
                 idx={2}
-                title="2. Questionnaire" 
+                title="2. Contractor Questionnaire" 
                 onFormOpen={onFormOpen} 
                 onFormBack={onFormBack}
             >

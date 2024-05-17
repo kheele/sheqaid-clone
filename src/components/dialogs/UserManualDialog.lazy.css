@@ -1,0 +1,35 @@
+@import '../../css/AProfileDialog.css';
+
+
+#dialog-overlay.UserManualDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 35px);
+}
+#dialog-overlay.UserManualDialog-profile-dialog .controls-wrapper, 
+#dialog-overlay.UserManualDialog-profile-dialog .controls-wrapper > .controls,
+#dialog-overlay.UserManualDialog-profile-dialog .controls-wrapper > .controls > .row,
+#dialog-overlay.UserManualDialog-profile-dialog .controls-wrapper > .controls > .row > .sec-group {
+    width: 100% !important;
+    height: 100%;
+    padding: 0 !important;
+}
+
+#dialog-overlay.UserManualDialog-profile-dialog iframe{
+    border: none;
+}
+
+#dialog-overlay.UserManualDialog-profile-dialog .hide-brand {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    z-index: 2;
+    width: 205px;
+    height: 32px;
+    color: #fff;
+    background: rgb(2, 168, 168);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

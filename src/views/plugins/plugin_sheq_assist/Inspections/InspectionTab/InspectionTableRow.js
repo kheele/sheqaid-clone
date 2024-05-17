@@ -38,7 +38,8 @@ class InspectionTableRow extends React.Component {
                 time_completed,
                 schedule_date,
                 next_schedule_date,
-                responsible_person,
+                responsible_employee_list,
+                responsible_person_other_list,
                 responsible_user,
                 responsible_department,
                 asset_type,
@@ -48,6 +49,11 @@ class InspectionTableRow extends React.Component {
                 template
             }
         } = item;
+
+        const responsible_person_list = [
+            ...(responsible_employee_list || []),
+            ...(responsible_person_other_list || []),
+        ];
 
         // const getQuestions = async (question_list) => {
         //     return all_question_list(question_list);
@@ -81,21 +87,17 @@ class InspectionTableRow extends React.Component {
                 {asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num})` : 'N/A'}
             </div>}
             <div className="td fixed-flex min-w-180">
-                <h6 className="xs-shown font-size-13">Responsible Person</h6>
-                {responsible_person && responsible_person.full_name || 'N/A'}
-            </div>
-            <div className="td fixed-flex min-w-180">
-                <h6 className="xs-shown font-size-13">Responsible User</h6>
-                {responsible_user && responsible_user.full_name || 'N/A'}
+                <h6 className="xs-shown font-size-13">Responsible Person(s)</h6>
+                {responsible_person_list && responsible_person_list.map(v => v.full_name).join(', ') || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-80">
                 <h6 className="xs-shown font-size-13">Interval</h6>
                 {interval || "N/A"}
             </div>
-            <div className="td fixed-flex min-w-100">
+            {/* <div className="td fixed-flex min-w-100">
                 <h6 className="xs-shown font-size-13">Start Date</h6>
                 {Dates.formatDate(start_date) || "N/A"}
-            </div>
+            </div> */}
             <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Date Scheduled</h6>
                 {Dates.formatDate(schedule_date) || "N/A"}
@@ -108,7 +110,7 @@ class InspectionTableRow extends React.Component {
                 <h6 className="xs-shown font-size-13">Questions</h6>
                 {total_questions}
             </div>
-            {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-270 flex-center progress-bar">
+            {!isUpcoming && !unanswered && <div className="td fixed-flex min-w-200 flex-center progress-bar">
                 {progress.toFixed(1) + '% Complete'}
             </div>}
             {onRenderActionCell && onRenderActionCell(item, idx)}

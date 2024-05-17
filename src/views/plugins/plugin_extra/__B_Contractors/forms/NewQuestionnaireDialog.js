@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -141,7 +141,7 @@ class Controls extends React.Component {
         return storage.loggedContractor;
     }
 
-    get item() {
+    @computed get item() {
         return this.props.state.item;
     }
     
@@ -187,7 +187,7 @@ class Controls extends React.Component {
                     mainTitle="Contractor Questionnaire"
                     defaultDocTitle="Untitled"
                     defaultTitlePageQuestions={this.defaultTitlePageQuestions} 
-                    item={this.item}
+                    item={item}
                     SelectEmployeesDialog={SelectEmployeesDialog}
                 />
             </Row>

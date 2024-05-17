@@ -18,8 +18,8 @@ import style from "./ProfileResponseDialog.lazy.css";
 import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
 import subscribeByIdContractorQuestionnaire
 	from "../../../../plugin_extra/__B_Contractors/AQuestionnaireTab/Subscription/subscribeByIdContractorQuestionnaire";
-import findByIdInspectionsQuestionnaire
-	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import findByIdSafetyFilesQuestionnaire
+	from "mutations/all/Questionnaires/SafetyFilesQuestionnaires/findByIdSafetyFilesQuestionnaire";
 import {Dates} from "../../../../../../utils/Dates";
 // </editor-fold>
 
@@ -27,7 +27,7 @@ import {Dates} from "../../../../../../utils/Dates";
 @observer
 class ProfileDialog extends AEditDialog {
 	pageKey = "ProfileResponseDialog";
-	findById = findByIdInspectionsQuestionnaire;
+	findById = findByIdSafetyFilesQuestionnaire;
 	removeById = updateQuestionnaire ;
 
 	constructor(props) {
@@ -135,7 +135,7 @@ class ProfileDialog extends AEditDialog {
 @observer
 class Controls extends AControls {
 	path = "plugin_sheq_assist/contractors/questionnaires/";
-	group = "Inspections";
+	group = "SafetyFiles";
 
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
@@ -283,14 +283,11 @@ class Controls extends AControls {
 					total_questions,
 					total_unanswered,
 					//
-					interval,
-					start_date,
-					time,
+					due_date,
+					
 					responsible_person_list,
+					responsible_person_other_list,
 					responsible_user,
-					responsible_department,
-					asset_type,
-					asset,
 					//
 					template
 				}
@@ -323,9 +320,9 @@ class Controls extends AControls {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<ProfileField name="asset_type" placeholder="Asset Type" value={asset_type} className="col-lg-12"/>
-				<ProfileField name="asset" placeholder="Asset" value={asset} renderer={v => v.asset_detail.name}
-				              className="col-lg-12"/>
+				{/* <ProfileField name="asset_type" placeholder="Asset Type" value={asset_type} className="col-lg-12"/> */}
+				{/* <ProfileField name="asset" placeholder="Asset" value={asset} renderer={v => v.asset_detail.name}
+				              className="col-lg-12"/> */}
 			</Row>
 			<Row
 				rendered
@@ -337,29 +334,27 @@ class Controls extends AControls {
 			>
 				<ProfileField name="responsible_person_list" placeholder="Responsible Employee(s)" value={responsible_person_list || []}
 				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
+				<ProfileField name="responsible_person_other_list" placeholder="Responsible External Person(s)" value={responsible_person_other_list || []}
+				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
 				<ProfileField name="responsible_user" placeholder="Responsible User" value={responsible_user}
 				              renderer={v => v.full_name} className="col-lg-12"/>
-				<ProfileField name="responsible_department" placeholder="Responsible Department" value={responsible_department}
-				              renderer={v => v.name} className="col-lg-12"/>
-
-				<ProfileField name="interval" placeholder="Interval" value={interval} className="col-lg-4"/>
-				<ProfileField name="start_date" placeholder="Start Date" type="date" value={start_date} className="col-lg-4"/>
-				<ProfileField name="time" placeholder="Time" value={time} className="col-lg-4"/>
+							  
+				<ProfileField name="due_date" placeholder="Due Date" type="date" value={due_date} className="col-lg-4"/>
 			</Row>
 			<Row
 				rendered
 				idx={4}
-				title="4. Inspection Questionnaire"
+				title="4. Safety File Questionnaire"
 				sectionClassName="-margin-l-5"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
-				<ProfileField name="template" placeholder="Inspection Questionnaire Template" value={template}
+				<ProfileField name="template" placeholder="Safety File Questionnaire Template" value={template}
 				              renderer={v => v.name} className="col-lg-12 margin-l-5"/>
 				<AnswerQuestions
 					ref="questions"
-					defaultType="Inspections"
-					mainTitle="Inspection Questionnaire"
+					defaultType="Safety Files"
+					mainTitle="Safety File Questionnaire"
 					readonly
 					item={this.item}
 					onChange={this.onUpdateAnswer}

@@ -1,6 +1,6 @@
-import insertIncident from "mutations/all/Incident/insertIncident";
 import {Dates, toDataURI} from "utils/Utils";
 import {isObservableArray} from "mobx";
+import {insertIncident} from "mutations/create";
 
 export default async function onSubmitCreate(e, btn, onSaved) {
     const {form} = this;
@@ -270,7 +270,13 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         //5.3
         person_reported_to_id: person_reported_to && person_reported_to.id,
         person_reported_to_other: person_reported_to && !person_reported_to.id ? {
-            data: person_reported_to
+            data: (person_reported_to => {
+                if (person_reported_to.job_position) {
+                    person_reported_to.job_position_id = person_reported_to.job_position.id;
+                    delete person_reported_to.job_position;
+                }
+                return person_reported_to;
+            })(person_reported_to)
         } : null,
         //5.4
         witness_list: {

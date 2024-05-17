@@ -1,13 +1,14 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, extendObservable, observable} from 'mobx';
+import {computed, extendObservable, observable, toJS} from 'mobx';
 import Chip from "@material-ui/core/Chip";
 import Grid from "@mui/material/Grid";
 
 import {Dates} from 'utils/Utils';
-import {Button, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
-import {SelectTable, THead} from 'components/tables';
+import {Button, ClearableInput, UploadButton, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
+import {SelectTable, Table, TBody, THead, TRow} from 'components/tables';
+import {ANewListTable} from 'components/FormTableComponents';
 
 import {
 	IncidentInvestigationStatus,
@@ -16,6 +17,7 @@ import {
 
 import AuditItemTable from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/AuditItemTable';
 
+import docStyle from "./NewNCRDocumentTable.lazy.css";
 // </editor-fold>
 
 //<editor-fold desc="SourceBtnWrapper">
@@ -23,7 +25,8 @@ import AuditItemTable from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/A
 class SourceBtnWrapper extends React.Component {
 	@observable
 	state = {
-		source: null
+		source: null,
+		selected_source: null,
 	};
 	
 	@computed
@@ -35,17 +38,29 @@ class SourceBtnWrapper extends React.Component {
 		this.state.source = val;
 	}
 	
+	@computed
+	get selected_source() {
+		return this.state.selected_source;
+	}
+	
+	set selected_source(val) {
+		this.state.selected_source = val;
+	}
+	
 	render() {
 		const {onClick, onSelectSite} = this.props;
-		const {source} = this;
+		const {source, selected_source: selected_site} = this;
 		if (!source) return null;
 		if (source.label === 'Site Audit') {
+			let {project, client, data: _data} = selected_site || {};
+			client = client || (_data && _data.client);
+			project = project || (_data && _data.project);
 			return <React.Fragment>
-				<SelectClientInput name="client" placeholder="Company..." required group="NCRSiteAudit"
+				<SelectClientInput name="client" placeholder="Company..." defaultValue={client} group="NCRSiteAudit"
 				                   className="col-lg-12 form-control margin-b-10"/>
-				<SelectProjectInput name="project" placeholder="Project..." required group="NCRSiteAudit"
+				<SelectProjectInput name="project" placeholder="Project..." defaultValue={project} group="NCRSiteAudit"
 				                    className="col-lg-12 form-control margin-b-10"/>
-				<SelectSiteInput name="site" placeholder="Site..." required group="NCRSiteAudit"
+				<SelectSiteInput name="site" placeholder="Site..." defaultValue={selected_site} group="NCRSiteAudit"
 				                 className="col-lg-12 form-control margin-b-10" onChange={onSelectSite} returnValue/>
 			</React.Fragment>;
 		}
@@ -757,4 +772,181 @@ class SelectedSourceItemInspectionQuestion extends React.Component {
 }
 //</editor-fold>
 
-export {SourceBtnWrapper, SelectSourceTable, SelectAuditItemTable};
+//<editor-fold desc="NewDocumentTable">
+@observer
+class NewDocumentTable extends ANewListTable {
+    className = "NewDocumentTable";
+    title = "Job Positions";
+    style = docStyle;
+
+    constructor(props) {
+        super(props);
+    }
+
+    onClickComplete(e, el) {
+        let {savable, targetItem, type, insertFn, deleteFn, onAttrs, onUpdated} = this.props;
+
+        if (savable && targetItem) {
+            let {action, idx, item} = el.props;
+
+            if (action === "save" || action === "saveEdit") {
+				if(!item || !item.doc) {
+					this.list.removeAt(idx);
+					return infoDialog.open("Please select a file");
+				}
+
+                progressDialog.open();
+                insertFn({
+                    [targetItem.key]: targetItem.item.id,
+                    ...onAttrs({...item, type}),
+                }).then(savedItem => {
+                    if (!savedItem) {
+                        infoDialog.open("Sorry! Record couldn't be added.");
+                    } else {
+                        infoDialog.open("Record successfully added.");
+                    }
+
+                    infoDialog.close(2000);
+                }).catch(err => {
+                    infoDialog.open("An error occurred. Please try again later.");
+                    infoDialog.close(2000);
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            } else if (action === "delete") {
+                confirmDialog.open("Are you sure you want to remove the item?").then(res => {
+                    if (!res) return;
+
+                    if (!item.id) return;
+
+                    progressDialog.open();
+                    deleteFn(item.id).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be removed.");
+                        } else {
+                            infoDialog.open("Record successfully removed.");
+                        }
+
+                        infoDialog.close(2000);
+                    }).catch(err => {
+                        infoDialog.open("An error occurred. Please try again later.");
+                        infoDialog.close(2000);
+                        console.error(err);
+                    }).finally(() => {
+                        setTimeout(() => progressDialog.close());
+                    });
+                });
+            }
+            // onUpdate && onUpdate(e, el);
+        }
+    }
+
+	// onPostChange(val, name, el) {
+    //     if(!val) {
+    //         return;
+    //     }
+
+    //     const {idx} = el.props;
+    //     this.onClick(null, {
+    //         props: {action: "save", idx},
+    //     });
+    // }
+
+    renderItem(n, onClick) {
+        const {readonly, type, renderTable} = this.props;
+        const item = this.state.list[n];
+        if (item) {
+            const {
+				type: _type, 
+				// title, 
+				// date, 
+				// expiry, 
+				// desc, 
+				doc,
+			} = item;
+
+			const doc_type = type || _type;
+
+            return <TRow key={"item-" + n} className="tr-readonly w-full">
+                <div className="td fixed-flex min-w-20"><span className="counter">{n + 1}</span></div>
+                <div className="td fixed-flex min-w-160">{doc_type}</div>
+                {/* <div className="td fixed-flex min-w-190">{title}</div> */}
+                {/* <div className="td">{desc}</div> */}
+                <div className="td fixed-flex min-w-200">
+                    <UploadButton
+                        ref={this.onSetRef}
+                        name="doc"
+                        buttonTitle={!readonly && "Upload Document (PDF, Word, Image)"}
+                        type={['PDF', 'Word', 'Image']}
+                        defaultValue={doc}
+                        showOnlyIcon
+                        readonly={readonly}
+                        className="col-lg-12"
+                        onChange={this.onChange}
+                    />
+                </div>
+                {/* <div className="td fixed-flex min-w-110">{Dates.formatDate(date)}</div> */}
+                {/* <div className={`td fixed-flex min-w-${readonly ? 100 : 110}`}>{Dates.formatDate(expiry)}</div> */}
+                {!readonly ? <div className="td fixed-flex min-w-100 padding-l-0">
+                    <Button idx={n} action="edit" className="btn btn-primary margin-r-10 pull-right w-40"
+                            onClick={onClick}>
+                        <i className="fa fa-pen"/>
+                    </Button>
+                    <Button idx={n} action="delete" className="btn btn-primary pull-right w-40" onClick={onClick}>
+                        <i className="fa fa-times-circle"/>
+                    </Button>
+                </div> : null}
+                {readonly ? <div className="td fixed-flex min-w-0 padding-0"/> : null}
+            </TRow>;
+        } else {
+            // alert(this.list.length)
+            return <TRow key="item-new" className="w-full grid-1 grid-gap-10 padding-t-10 padding-b-10">
+                {/* <ClearableInput ref={this.onSetRef} name="type" type="select" placeholder="Document Type"
+                                className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}
+                                values={this.selfState.lists.type} returnValue add/> */}
+                {/* <ClearableInput ref={this.onSetRef} name="title" type="text" placeholder="Title"
+                                className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/>
+                <ClearableInput ref={this.onSetRef} name="desc" type="textarea" placeholder="Description"
+                                className="col-lg-12 w-full form-control margin-r-10" onChange={this.onChange}/> */}
+                <UploadButton
+                    ref={this.onSetRef}
+                    name="doc"
+                    buttonTitle="Upload Document (PDF, Word, Image)"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    className="col-lg-12 w-full"
+                    onChange={this.onChange}
+                />
+                {/* <ClearableInput ref={this.onSetRef} name="date" type="date" placeholder="Date"
+                                className="col-lg-12 w-full form-control" onChange={this.onChange}/>
+                <ClearableInput ref={this.onSetRef} name="expiry" type="date" placeholder="Expiry Date"
+                                className="col-lg-12 w-full form-control" onChange={this.onChange}/> */}
+                <Button idx={n} action="save" className="btn btn-primary hor-center border-radius-20 w-100"
+                        onClick={onClick}>
+                    <i className="fa fa-check"/> ADD
+                </Button>
+            </TRow>;
+        }
+    }
+
+	renderTHead() {
+        const {readonly} = this.props;
+        return <THead className="align-left">
+            <div className="td fixed-flex min-w-30">#</div>
+            <div className="td fixed-flex min-w-160 font-size-14">Document Type</div>
+            {/* <div className="td fixed-flex min-w-190 font-size-14">Title</div>
+            <div className="td font-size-14">Description</div> */}
+            <div className="td fixed-flex min-w-200 font-size-14">Document</div>
+            {/* <div className="td fixed-flex min-w-110 font-size-14">Date</div>
+            <div className="td fixed-flex min-w-110 font-size-14">Expiry</div> */}
+            {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
+            {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
+        </THead>;
+    }
+
+}
+
+//</editor-fold>
+
+export {SourceBtnWrapper, SelectSourceTable, SelectAuditItemTable, NewDocumentTable};

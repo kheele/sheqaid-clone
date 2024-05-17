@@ -5,9 +5,9 @@ exports.getVariablesAndQueryConfig = (
 		//
 		id,
 		//
-		status,
 		name,
-		scheduled,
+    visibility,
+    answered_by,
 		//
 		site_id, project_id, client_id,
 		//
@@ -20,14 +20,14 @@ exports.getVariablesAndQueryConfig = (
 	if(id) {
 		filter.push(`id: {_eq: ${id}}`);
 	} else {
-		if(status) {
-			filter.push(`status: {_eq: "${status}"}`);
-		}
 		if(name) {
 			filter.push(`name: {_ilike: "%${name}%"}`);
 		}
-		if(scheduled) {
-			filter.push(`scheduled: {_eq: ${scheduled === "Yes"}}`);
+		if(visibility) {
+			filter.push(`visibility: {_eq: "${visibility}"}`);
+		}
+		if(answered_by) {
+			filter.push(`answered_by: {_eq: "${answered_by}"}`);
 		}
 	}
 	
@@ -38,8 +38,8 @@ exports.getVariablesAndQueryConfig = (
 };
 //</editor-fold>
 
-//<editor-fold desc="inspection_template_question_find_fragment">
-const inspection_template_question_find_fragment = (deep = 3) => {
+//<editor-fold desc="contractor_questionnaire_library_question_find_fragment">
+const contractor_questionnaire_library_question_find_fragment = (deep = 3) => {
 	if (deep === 0) {
 		return `id`;
 	}
@@ -48,7 +48,9 @@ const inspection_template_question_find_fragment = (deep = 3) => {
     hasResponseAttachment
     responseAttachmentRequired
     expiry
+    comments
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     open
@@ -71,7 +73,7 @@ const inspection_template_question_find_fragment = (deep = 3) => {
     idx
     is_page_title
     question_list:question_list{
-        ${inspection_template_question_find_fragment(deep - 1)}
+        ${contractor_questionnaire_library_question_find_fragment(deep - 1)}
     }
     options{
       optionImage
@@ -101,8 +103,8 @@ const inspection_template_question_find_fragment = (deep = 3) => {
 };
 //</editor-fold>
 
-//<editor-fold desc="inspection_template_details_find_fragment">
-exports.inspection_template_details_find_fragment = `
+//<editor-fold desc="contractor_questionnaire_library_details_find_fragment">
+exports.contractor_questionnaire_library_details_find_fragment = `
     id
     created_at
     name
@@ -114,40 +116,6 @@ exports.inspection_template_details_find_fragment = `
     visibility
     scheduled
     
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-        location
-        toolkit
-        condition
-        owning_company
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        lname
-        fname
-        email
-        phone
-      }
-    }
-    
     total_questions #computed
     
     template_questionnaire_list_aggregate{
@@ -156,10 +124,10 @@ exports.inspection_template_details_find_fragment = `
       }
     }
     page_title_list:question_list(where: {is_page_title: {_eq: true}}){
-        ${inspection_template_question_find_fragment(3)}
+        ${contractor_questionnaire_library_question_find_fragment(3)}
     }
     question_list:question_list(where: {is_page_title: {_eq: false}}){
-        ${inspection_template_question_find_fragment(3)}
+        ${contractor_questionnaire_library_question_find_fragment(3)}
     }
     contractor_site{
         id
@@ -172,8 +140,8 @@ exports.inspection_template_details_find_fragment = `
 `;
 //</editor-fold>
 
-//<editor-fold desc="inspection_template_details_list_fragment">
-exports.inspection_template_details_list_fragment = `
+//<editor-fold desc="contractor_questionnaire_library_details_list_fragment">
+exports.contractor_questionnaire_library_details_list_fragment = `
     id
     created_at
     name
@@ -184,40 +152,6 @@ exports.inspection_template_details_list_fragment = `
     is_template
     visibility
     scheduled
-    
-    asset_type
-    asset{
-      id
-      asset_detail{
-        asset_type
-        name
-        reg_num
-        serial_num
-        manufacturer
-        model
-        location
-        toolkit
-        condition
-        owning_company
-      }
-      profile_pic:photo_list(where: {is_default: {_eq: true}}){
-          id
-          doc
-          is_default
-      }
-      photo_list{
-        id
-        is_default
-        doc
-      }
-      responsible_person{
-        id
-        lname
-        fname
-        email
-        phone
-      }
-    }
     
     total_questions #computed
     

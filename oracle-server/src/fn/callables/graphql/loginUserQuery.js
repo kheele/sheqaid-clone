@@ -82,6 +82,8 @@ exports.query = `
               no_projects
               phone
               profile_pic
+              trial_start_date
+              trial_max_days
               sector_list {
                 id
                 sector {

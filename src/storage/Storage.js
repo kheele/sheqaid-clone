@@ -182,7 +182,7 @@ class Storage {
             const startDate = (trial_start_date || created_at).toDayEndDate();
             let futureDate;
             if (is.isConsultant) {
-                futureDate = startDate.addDays(trial_max_days || 5);
+                futureDate = startDate.addDays(trial_max_days || 7);
                 const futureMonthEnd = futureDate.toMonthEndDate();
                 if (startDate.getDate() !== futureDate.getDate() && moment(futureDate).isSame(moment(futureMonthEnd).format('YYYY-MM-DD'))) {
                     futureDate = futureDate.addDays(1);

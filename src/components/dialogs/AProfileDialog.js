@@ -18,6 +18,7 @@ class AProfileDialog extends AFormDialog {
 		this.onSaveAsPDF && (this.onSaveAsPDF = this.onSaveAsPDF.bind(this));
 		this.onDownload && (this.onDownload = this.onDownload.bind(this));
 		this.onEdit && (this.onEdit = this.onEdit.bind(this));
+		this.onExport && (this.onExport = this.onExport.bind(this));
 		this.onDelete = this.onDelete.bind(this);
 		this.onRemoved = this.onRemoved.bind(this);
 	}

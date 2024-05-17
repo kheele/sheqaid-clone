@@ -82,6 +82,7 @@ class PartsTab extends React.Component {
             <div className="td">Asset Type</div>
             <div className="td">Name</div>
             <div className="td">Asset</div>
+			<div className="td">Location</div>
             <div className="td">Requested By</div>
             <div className="td fixed-flex min-w-140">Qty Requested</div>
             <div className="td fixed-flex min-w-140">Qty Ordered</div>
@@ -114,7 +115,8 @@ class PartsTab extends React.Component {
             <div className="td fixed-flex min-w-80">{RenderUtils.renderImage(part_photo)}</div>
             <div className="td">{asset_type}</div>
             <div className="td">{name}</div>
-            <div className="td">{asset ? asset.name || asset : 'N/A'}</div>
+            <div className="td">{asset && asset.asset_detail ?  asset.asset_detail.name : 'N/A'}</div>
+			<div className="td">{asset && asset.asset_detail ? asset.asset_detail.location || 'N/A' : 'N/A'}</div>
             <div className="td">{requested_by ? requested_by.lname + ' ' + requested_by.fname : 'N/A'}</div>
             <div className="td fixed-flex min-w-140">{qty_requested}</div>
             <div className="td fixed-flex min-w-140">{qty_ordered}</div>

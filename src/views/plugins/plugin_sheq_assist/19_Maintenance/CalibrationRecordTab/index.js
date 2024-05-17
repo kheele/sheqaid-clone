@@ -317,6 +317,7 @@ class CalibrationRecordTab extends React.Component {
 				<div className="td fixed-flex min-w-80">Photo</div>
 				<div className="td">Asset Type</div>
 				<div className="td">Asset</div>
+				<div className="td">Location</div>
 				<div className="td">Reg. No.</div>
 				<div className="td">Serial No.</div>
 				<div className="td">Responsible Person</div>
@@ -331,6 +332,7 @@ class CalibrationRecordTab extends React.Component {
 				<div className="td fixed-flex min-w-30">ID</div>
 				<div className="td">Type</div>
 				<div className="td">Name</div>
+				<div className="td">Location</div>
 				<div className="td fixed-flex min-w-280">Registration No.</div>
 				<div className="td fixed-flex min-w-120">Last Date</div>
 				<div className="td fixed-flex min-w-190">Next Date</div>
@@ -403,6 +405,7 @@ class CalibrationRecordTab extends React.Component {
 				</div>
 				<div className="td">{asset_type}</div>
 				<div className="td">{name || 'N/A'}</div>
+				<div className="td">{location || 'N/A'}</div>
 				<div className="td">{reg_num || 'N/A'}</div>
 				<div className="td">{serial_num || 'N/A'}</div>
 				<div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
@@ -484,6 +487,7 @@ class CalibrationRecordTab extends React.Component {
 			<div className="td fixed-flex min-w-30">{id}</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
+			<div className="td">{location || 'N/A'}</div>
 			<div className="td fixed-flex min-w-280">{reg_num}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(calibration_date) || 'N/A'}</div>
 			<div className="td fixed-flex min-w-190">{Dates.formatDate(next_calibration_date)} ({next_calibration_interval})

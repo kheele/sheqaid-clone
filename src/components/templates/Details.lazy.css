@@ -71,7 +71,8 @@
     padding: 0;
 }
 .Details > .Question .td-max-score .MuiFilledInput-input{
-    padding: 11px 10px 11px 20px;
+    padding: 0px 10px 0px 20px;
+    height: 53px;
 }
 .Details > .Question .MuiFilledInput-multiline:before,
 .Details > .Question .MuiInput-underline:before,

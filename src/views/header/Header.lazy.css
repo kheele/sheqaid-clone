@@ -27,7 +27,8 @@ header {
     left: 0 !important;
 }
 header > button.back-btn,
-header > button.nav-toggle{
+header > button.nav-toggle,
+header > button.user-manual-btn{
     box-sizing: border-box;
     display: inline-block;
     font-family: Roboto, sans-serif;
@@ -54,8 +55,16 @@ header > button.back-btn{
     margin: 13px 10px 0px 0px;
     padding: 4px 4px 3px;
 }
-header > button.nav-toggle{
+header > button.nav-toggle,
+header > button.user-manual-btn{
     margin: 13px 10px 0px 0px;
+}
+header > button.user-manual-btn{
+    padding: 0px;
+    color: none;
+    border: none;
+    background: #fff;
+
 }
 header > button.nav-toggle-menu.fa-times{
     font-size: 20px !important;
@@ -91,10 +100,14 @@ header > button.nav-toggle svg{
 header > button.back-btn,
 .InitView + header > button.nav-toggle .fa-home,
 .DefaultView + header > button.nav-toggle .fa-home,
-.MainView + header > button.nav-toggle .fa-home{
+.MainView + header > button.nav-toggle .fa-home,
+header > button.user-manual-btn .fa-question{
     display: block;
     font-size: 18px;
     color: #fff;
+}
+header > button.user-manual-btn .fa.fa-question{
+    color: #20911f;
 }
 .MainView + header > button.nav-toggle svg{
     display: block;

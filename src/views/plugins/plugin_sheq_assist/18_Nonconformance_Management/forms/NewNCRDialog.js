@@ -8,13 +8,14 @@ import {
 	AddFilesGridViewInput,
 	ClearableInput,
 	SelectClientInput,
-	SelectEmployeeInput, SelectJobPositionInput, SelectProjectInput, SelectSiteInput, SelectUserInput
+	SelectEmployeeInput, SelectProjectInput, SelectSiteInput, SelectUserInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
+import {NewEmployeeListTable, NewJobPositionListTable, NewUserListTable, NewNCRResponsiblePartyListTable} from 'components/FormTableComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import {toDataURI} from "utils/Utils";
-import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper} from '../dialogs/NCRComponents';
+import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
 
 import style from "./NewNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -273,8 +274,8 @@ class Controls extends React.Component {
 			responsible_party_list,
 			assigned_job_position_list,
 			assigned_person_list,
-			assigned_person_other_list,
-			approving_person,
+			assigned_user_list,
+			approving_person_list,
 			//4
 			document_list, document_proof_list,
 			//5
@@ -315,19 +316,16 @@ class Controls extends React.Component {
 					...(assigned_person_list || []).map(({id: employee_id}) => ({employee_id})),
 				],
 			},
-			assigned_person_other_list: {
+			assigned_user_list: {
 				data: [
-					...(assigned_person_other_list || []).map(({id: employee_other_id, ...attrs}) => {
-						if(employee_other_id) {
-							return {employee_other_id};
-						}
-						const data = {...attrs};
-						// delete data.is_external;
-						return {employee_other: {data}};
-					}),
+					...(assigned_user_list || []).map(({id: user_id}) => ({user_id})),
 				],
 			},
-			approving_person_id: approving_person && approving_person.id,
+			approving_person_list: {
+				data: [
+					...(approving_person_list || []).map(({id: employee_id}) => ({employee_id})),
+				]
+			},
 			//4
 			document_list: {
 				data: await Promise.all([
@@ -481,33 +479,53 @@ class Controls extends React.Component {
 				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 				
-				<ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Parties..."
+				{/* <ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Parties..."
 				                className="col-lg-12 form-control" onChange={this.form.onChange}
-				                values={this.state.lists.responsible_party_list} returnValue add/>
+				                values={this.state.lists.responsible_party_list} returnValue add/> */}
+				<NewNCRResponsiblePartyListTable
+					name="responsible_party_list"
+					title="Responsible Parties"
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+				/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 				
-				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Responsible Job Position(s)..."
-				                        type="select_multi"
-				                        required className="col-lg-12 form-control"
-				                        onChange={this.form.onChange}/>
-				<SelectEmployeeInput
-					name="assigned_person_list" placeholder="Responsible Employee(s)..."
-					type="select_multi"
-					required
-					className="col-lg-12 form-control"
+				<NewJobPositionListTable 
+					name="assigned_job_position_list"
+					title="Responsible Job Positions"
 					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
 				/>
-				<SelectEmployeeInput
-					name="assigned_person_other_list" placeholder="Responsible External Person(s)..."
-					type="select_multi"
-					required
-					className="col-lg-12 form-control"
-					onChange={this.form.onChange}
-					showOtherPersonsOnly
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+				
+				<NewEmployeeListTable 
+					name="assigned_person_list"
+					title="Responsible Persons"
+				    className="w-full-calc-add-10 -margin-l-10"
+				    onChange={this.form.onChange}
+					showOtherPerson
 				/>
-				<SelectUserInput name="responsible_user" placeholder="Responsible User(s)..."
-				                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-				<SelectEmployeeInput name="approving_person" placeholder="Approving Person..." required
-				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+				
+				<NewUserListTable 
+					name="assigned_user_list"
+					title="Responsible Users"
+				    className="w-full-calc-add-10 -margin-l-10"
+				    onChange={this.form.onChange}
+				/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewEmployeeListTable 
+					name="approving_person_list"
+					title="Approving Persons"
+				    className="w-full-calc-add-10 -margin-l-10"
+				    onChange={this.form.onChange}
+					disableOtherPerson
+				/>
 			</Row>
 			<Row
 				rendered
@@ -526,16 +544,26 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 					>
-						<AddFilesGridViewInput name="document_list" title="Add Document/Photo" onChange={this.form.onChange}/>
+						<NewDocumentTable 
+							ref="document_list" 
+							name="document_list" 
+							title="Documents/Photos"
+							onChange={this.form.onChange}
+						/>
 					</Row>
 					<Row
 						rendered
 						idx={4.2}
 						title="4.2. Document(s) (Proof of Correction)"
 						onFormOpen={onFormOpen}
-						onFormNext={onFormBack}
+						onFormBack={onFormBack}
 					>
-						<AddFilesGridViewInput name="document_proof_list" title="Add Document/Photo" onChange={this.form.onChange}/>
+						<NewDocumentTable 
+							ref="document_proof_list" 
+							name="document_proof_list" 
+							title="Documents/Photos"
+							onChange={this.form.onChange}
+						/>
 					</Row>
 				</FormControls>
 			</Row>

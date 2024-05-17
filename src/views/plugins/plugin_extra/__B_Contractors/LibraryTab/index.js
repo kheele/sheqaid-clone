@@ -20,8 +20,6 @@ import ProfilePDFReader from '../printers/ProfileLibraryPDFReader';
 import {LibraryTabTableRow} from '../forms/QuestionnaireAnswersComponents';
 
 import style from "./LibraryTab.lazy.css";
-import byLogged from "./Query/List/listAllContractorQuestionnaireLibraryByLogged";
-
 // </editor-fold>
 
 @observer
@@ -78,25 +76,23 @@ class LibraryTab extends React.Component {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             name,
+            visibility,
+            answered_by,
         } = filterData || {};
 
-        const limit = 50;
+        const listByLogged = sockets.of('contractors/library').fn('listByLogged');
 
-        const args = {
+        return listByLogged({
             name,
+            visibility,
+            answered_by,
             //
             limit,
             //
             exact_orgs: true,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -132,7 +128,7 @@ class LibraryTab extends React.Component {
         const {idx, type} = el.props;
         const item = this.refs.root.list[idx];
         if (type === 'PDF') {
-            this.refs.pdfReader.open(item);
+            // this.refs.pdfReader.open(item);
         } else if (type === 'Excel') {
 
         }
@@ -196,9 +192,11 @@ class LibraryTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
+            <div className="td fixed-flex min-w-40">ID</div>
             <div className="td fixed-flex min-w-120">Date Created</div>
-            <div className="td">Questionnaire</div>
+            <div className="td">Name</div>
             <div className="td">Description</div>
+            <div className="td fixed-flex min-w-180">Questionnaires Used</div>
             <div className="td fixed-flex min-w-100">Questions</div>
             <div className="td fixed-flex min-w-100">Visibility</div>
             <div className="td fixed-flex min-w-160">Needs Answers From</div>
@@ -243,8 +241,6 @@ class LibraryTab extends React.Component {
             <ProfileLibraryDialog ref="profileDialog" onOpenContractorsTab={onOpenContractorsTab}/>
 
             <NewQuestionnaireDialog ref="newQuestionnaireDialog"/>
-
-            <ProfilePDFReader ref="pdfReader"/>
         </APageListReadWrite>;
     }
 

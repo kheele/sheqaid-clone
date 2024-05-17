@@ -66,6 +66,7 @@ class NCRItemListDialog extends ADialogList {
 		this.onComplete = this.onComplete.bind(this);
 		
 		this.onExport = this.onExport.bind(this);
+		this.onExportSingle = this.onExportSingle.bind(this);
 		this.onViewItemSource = this.onViewItemSource.bind(this);
 		
 		this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -164,6 +165,51 @@ class NCRItemListDialog extends ADialogList {
 		const {source} = this.selfState;
 		const exportNCRDialog = getDialogByRef('exportNCRDialog');
 		exportNCRDialog.extraProp('source', source).open();
+	}
+	
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="onExportSingle">
+	onExportSingle(evt, btn) {
+		const {idx} = btn.props;
+		const item = this.refs.root.list[idx];
+		const {id} = item;
+		
+		const {selectedClient, selectedProject, selectedSite} = storage.selected;
+		
+		const client = selectedClient;
+		const project = selectedProject;
+		const site = selectedSite;
+
+		progressDialog.open();
+		const exportOne = sockets.of("ncr").fn("export-excel-one");
+		exportOne({
+			date: new Date().formatDate(), 
+			client,
+			project,
+			site,
+			id,
+		}).then(res => {
+			console.log('exportOne res', res);
+			if (!res) {
+				infoDialog.open(<>
+					<p>An error occurred. Please try again</p>
+				</>);
+			} else {
+				infoDialog.open(<>
+					<p>Non-conformance report successfully exported.</p>
+					<p><small>The file will be automatically downloaded</small></p>
+				</>);
+				saveFileAs(res, `NCR_Profile_Report_(${id})_${Dates.formatDate(new Date())}.xlsx`);
+			}
+		}).catch(err => {
+			console.error(err);
+			infoDialog.open(<>
+				<p>An error occurred. Please check your network connection and try again</p>
+			</>);
+		}).finally(() => {
+			progressDialog.close();
+		});
 	}
 	
 	// </editor-fold>
@@ -281,19 +327,19 @@ class NCRItemListDialog extends ADialogList {
 			selected_source_ref,
 			assigned_job_position_list,
 			assigned_person_list,
-			approving_person,
+			approving_person_list,
 			status_progress,
 			status_acceptance
 		} = item.data;
 		
-		const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
+		const {id: user_id, data: {linked_employee}} = storage.loggedUser.user;
 		
-		const {is:{isEmployee},loggedUser:{user}} = storage;
+		const {is:{isEmployee}, loggedUser:{user}} = storage;
 		
 		if(isEmployee) {
-			const isResponsible = (assigned_person_list && assigned_person_list.anyMatch(({employee: {id}}) => id === user.id)) ||
+			const isResponsible = (assigned_person_list && assigned_person_list.anyMatch(({employee: {id}}) => id === user_id)) ||
 				(assigned_job_position_list && assigned_job_position_list.anyMatch(({job_position_id}) => user.data.job_position_id === job_position_id));
-			const isApproving = approving_person && user.id === approving_person.id;
+			const isApproving = approving_person_list && approving_person_list.anyMatch(({employee: {id}}) => id === user_id);
 			return <Options idx={idx}>
 				<NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
 				<hr action="writable"/>
@@ -339,7 +385,7 @@ class NCRItemListDialog extends ADialogList {
 				) {
 					return true;
 				}
-				if (assigned_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_uid)) {
+				if (assigned_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_id)) {
 					return true;
 				}
 			}
@@ -347,7 +393,7 @@ class NCRItemListDialog extends ADialogList {
 		};
 		
 		const isApproving = () => {
-			return approving_person && user_uid === approving_person.id;
+			return approving_person_list && approving_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_id);
 		};
 		
 		return <Options idx={idx} permissionModKey={permissionKey}>
@@ -376,13 +422,14 @@ class NCRItemListDialog extends ADialogList {
 				}
 				{
 					status_acceptance !== 'Rejected' && (
-						<NavItem idx={idx} onClick={this.onReject} faIconLeft="check" title="Reject"/>
+						<NavItem idx={idx} onClick={this.onReject} faIconLeft="ban" title="Reject"/>
 					)
 				}
 			</>}
 			{selected_source_ref &&
 				<NavItem idx={idx} action="view" onClick={this.onViewItemSource} faIconLeft="eye" title="View NCR Source"/>}
-			{selected_source_ref && <hr/>}
+			<hr/>
+			<NavItem idx={idx} action="export" onClick={this.onExportSingle} faIconLeft="file-export" title="Export"/>
 		</Options>;
 	}
 	
@@ -549,7 +596,7 @@ class TitlePanel extends React.Component {
 				{source} Non-Comformances
 			</div>
 			<div className="TitlePanel-message text-center">
-				Non-Conformances below are are listed per <b>{source}</b>
+				Non-Conformances below are listed per <b>{source}</b>
 			</div>
 		</>;
 	}

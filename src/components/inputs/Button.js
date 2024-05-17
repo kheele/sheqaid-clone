@@ -53,17 +53,18 @@ class Button extends React.Component {
         if(isTouch()) {
             return;
         }
-        const {hoverText, onMouseOver} = this.props;
+        const {hoverText, hoverTextLeft, onMouseOver} = this.props;
         if(hoverText) {
             const target = this.getDOMNode();
             const jq = $(target);
             const w = jq.outerWidth();
             const h = jq.outerHeight();
-            const {top} = jq.offset();
-            const right = calculateRightPos(target);
+            const {left: _left, top} = jq.offset();
+            const right = hoverTextLeft ? 'auto' : calculateRightPos(target);
+            const left = hoverTextLeft ? _left: 'auto';
             popover.settings({
-                style: {left: "auto", right: right, top: top + h + 12, width: 'auto'},
-                contentNode: <div>{hoverText}</div>
+                style: {left, right, top: top + h + 12, width: 'auto'},
+                contentNode: <div>{hoverText}</div>,
             }).open();
         }
         onMouseOver && onMouseOver(e, this);

@@ -4,6 +4,7 @@ import {autorun} from 'mobx';
 
 import Popover from 'components/popovers/Popover';
 import {execWhen} from 'utils/Utils';
+import InitViewUserManual from './InitViewUserManual';
 import InitViewAdmin from './InitViewAdmin';
 import InitViewClientOrNonConsultant from './InitViewClientOrNonConsultant';
 import InitViewContractor from './InitViewContractor';
@@ -13,8 +14,6 @@ import InitViewNotSelected from './InitViewNotSelected';
 import Footer from '../Footer';
 
 import style from "./InitView.lazy.css";
-import DefaultView from "../DefaultView";
-import MainView from "../MainView";
 
 @observer
 class InitView extends React.Component {
@@ -101,6 +100,15 @@ class InitView extends React.Component {
 
 	render() {
 		const {loggedInApp, mainView} = window;
+		if(loggedInApp.isUserManualView) {
+			return <div ref="rootView" key="initView" className="InitView">
+				<div ref="contentView" className="view-content nice-scrollbars">
+					<InitViewUserManual/>
+					<Footer/>
+				</div>
+			</div>;
+		}
+
 		if((loggedInApp.defaultView && loggedInApp.defaultView.isOpen) || (mainView && mainView.isOpen)) {
 			return null;
 		}

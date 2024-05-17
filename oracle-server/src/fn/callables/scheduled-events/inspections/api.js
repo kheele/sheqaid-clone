@@ -9,13 +9,15 @@ const inspection_question_list_fragment = (deep = 3) => {
     return `
     id
     answer
-    answer_employee_id  
-    answer_asset_id  
+    answer_employee_id
+    answer_asset_id
+    comments
     responseAttachment
     hasResponseAttachment
     responseAttachmentRequired
     expiry
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     #open

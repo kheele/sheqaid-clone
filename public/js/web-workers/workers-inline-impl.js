@@ -200,6 +200,7 @@ class Utils {
                     v.answer = null;
                     v.answer_employee_id = null;
                     v.answer_asset_id = null;
+                    v.comments = null;
                     v.score = null;
                     v.responseAttachment = null;
                 }

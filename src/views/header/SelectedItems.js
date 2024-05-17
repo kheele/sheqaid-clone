@@ -32,6 +32,15 @@ class SelectedItems extends React.Component {
 
     render() {
         if (isAdminApp) return null;
+
+        if (loggedInApp.isUserManualView) {
+            return <div className="SelectedItems changeable-title flex">
+                <div className="SelectedItem fixed-flex readonly">
+                    USER MANUAL
+                </div>
+            </div>;
+        }
+
         const {isContractor, isContractorView} = storage.is;
 //        const {key} = pluginManager.selected;
         if (isContractor || isContractorView) return null;

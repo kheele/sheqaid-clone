@@ -47,7 +47,9 @@ const ques_list_fragment = (deep = 3, inc_expiry) => {
     id
     answer
     expiry
+    comments
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     linkDoc {

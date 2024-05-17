@@ -16,6 +16,75 @@ class ListTable extends ANewListTable {
     title = "Job Positions";
     style = style;
 
+    constructor(props) {
+        super(props);
+    }
+
+    onClickComplete(e, el) {
+        let {savable, targetItem, insertFn, deleteFn, onAttrs, onUpdated} = this.props;
+
+        if (savable && targetItem) {
+            let {action, idx, item} = el.props;
+
+            if (action === "save" || action === "saveEdit") {
+                progressDialog.open();
+                insertFn({
+                    [targetItem.key]: targetItem.item.id,
+                    ...onAttrs(item),
+                }).then(savedItem => {
+                    if (!savedItem) {
+                        infoDialog.open("Sorry! Record couldn't be added.");
+                    } else {
+                        infoDialog.open("Record successfully added.");
+                    }
+
+                    infoDialog.close(2000);
+                }).catch(err => {
+                    infoDialog.open("An error occurred. Please try again later.");
+                    infoDialog.close(2000);
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            } else if (action === "delete") {
+                confirmDialog.open("Are you sure you want to remove the item?").then(res => {
+                    if (!res) return;
+
+                    if (!item.id) return;
+
+                    progressDialog.open();
+                    deleteFn(item.id).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be removed.");
+                        } else {
+                            infoDialog.open("Record successfully removed.");
+                        }
+
+                        infoDialog.close(2000);
+                    }).catch(err => {
+                        infoDialog.open("An error occurred. Please try again later.");
+                        infoDialog.close(2000);
+                        console.error(err);
+                    }).finally(() => {
+                        setTimeout(() => progressDialog.close());
+                    });
+                });
+            }
+            // onUpdate && onUpdate(e, el);
+        }
+    }
+
+    onPostChange(val, name, el) {
+        if(!val) {
+            return;
+        }
+
+        const {idx} = el.props;
+        this.onClick(null, {
+            props: {action: "save", idx},
+        });
+    }
+
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
@@ -57,7 +126,7 @@ class ListTable extends ANewListTable {
             </TRow>;
         }
     }
-
+//
     renderTHead() {
         const {readonly} = this.props;
         return <THead className="align-left">

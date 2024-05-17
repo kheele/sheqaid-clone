@@ -6,8 +6,10 @@ const contractor_questionnaire_question_list_fragment = (deep = 3) => {
 	return `
     id
     answer
+	comments
     expiry
     hasExpiry
+	isEditableDoc
     isMandatory
     isMultiAnswer
     open

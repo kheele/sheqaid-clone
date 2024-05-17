@@ -36,6 +36,12 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/850%20G5/WebstormProjects/sheqaid/src/views/plugins/plugin_sheq_assist/SafetyFiles/SafetyFilesTab/forms/EditQuestionnaireDialog.js</file>
+            <file>file:/C:/Users/850%20G5/WebstormProjects/sheqaid/package.json</file>
+            <file>file:/C:/Users/850%20G5/WebstormProjects/sheqaid/src/mutations/all/Country/insertCountry.js</file>
+            <file>file:/C:/Users/850%20G5/WebstormProjects/sheqaid/src/mutations/all/Country/listAllCountry.js</file>
+            <file>file:/C:/Users/850%20G5/WebstormProjects/sheqaid/src/mutations/all/Country/updateCountry.js</file>
+        </group>
     </open-files>
 </project-private>

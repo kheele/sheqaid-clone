@@ -32,7 +32,7 @@ module.exports = (
 		} = data;
 		
 		const list = await listImpl(socket, {id_list});
-		const rows = list.map(mapRow);
+		const rows = list.map(mapRow).map((item, idx) => ({idx, ...item}));
 		
 		template.set('date', date);
 		

@@ -81,7 +81,7 @@ class DashboardBtn extends React.Component {
 	render() {
 		if (!loggedInApp.defaultView)
 			return null;
-		return <Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard"
+		return <Button ref="dashboard" className="fa fa-tachometer-alt btn" module="Dashboard" hoverText="Dashboard" hoverTextLeft
 		               onClick={defaultView.onOpenPage}/>;
 	}
 }
@@ -106,7 +106,7 @@ class AuditTrailBtn extends React.Component {
 				return null;
 			}
 		
-		return <Button className="fa fa-file-text btn" module="AuditTrail" hoverText="Audit Log"
+		return <Button className="fa fa-file-text btn" module="AuditTrail" hoverText="Audit Log" hoverTextLeft
 		               onClick={defaultView.onOpenPage}/>;
 	}
 }
@@ -161,7 +161,7 @@ class SelectOrgsBtn extends React.Component {
 		hoverText += 'Projects & Sites';
 		
 		return <React.Fragment>
-			<Button ref="more" className="fa fa-project-diagram btn" hoverText={hoverText}
+			<Button ref="more" className="fa fa-project-diagram btn" hoverText={hoverText} hoverTextLeft
 			        onClick={this.onPopoverSettings}/>
 			<Popover key="popover" ref="popover"/>
 		</React.Fragment>;
@@ -293,7 +293,7 @@ class SelectShortcutsBtn extends React.Component {
 			                    path={path + '21_Internal_Audit/inspection/'}/>
 			<NewAttendanceDialog ref="newAttendanceDialog"/>
 			<NewAttendanceSelfDialog ref="newAttendanceSelfDialog"/>
-			<Button ref="shortcuts" className="fa fa-share btn" hoverText="Shortcuts" onClick={this.onPopoverSettings}/>
+			<Button ref="shortcuts" className="fa fa-share btn" hoverText="Shortcuts" hoverTextLeft onClick={this.onPopoverSettings}/>
 			<Popover key="popover" ref="popover"/>
 		</React.Fragment>;
 	}
@@ -322,7 +322,7 @@ class UsersBtn extends React.Component {
 				return null;
 		}
 		
-		return <Button className="fa fa-users btn" module="Users" hoverText="Users" onClick={defaultView.onOpenPage}/>;
+		return <Button className="fa fa-users btn" module="Users" hoverText="Users" hoverTextLeft onClick={defaultView.onOpenPage}/>;
 	}
 }
 
@@ -337,7 +337,7 @@ class QuestionsBtn extends React.Component {
 		if ((!isContractor && !isContractorView) || (isContractorView && !isContractorViewIncContractorPack) || isEmployee)
 			return null;
 		
-		return <Button className="fa fa-question btn" module="__B_Contractors" hoverText="Questions"
+		return <Button className="fa fa-question btn" module="__B_Contractors" hoverText="Questions" hoverTextLeft
 		               onClick={defaultView.onOpenPage}/>;
 	}
 }
@@ -370,7 +370,7 @@ class EmployeesBtn extends React.Component {
 				return null;
 		}
 		
-		return <Button className="fa fa-user-tie btn" module="Employees" hoverText="Employees"
+		return <Button className="fa fa-user-tie btn" module="Employees" hoverText="Employees" hoverTextLeft
 		               onClick={defaultView.onOpenPage}/>;
 	}
 }

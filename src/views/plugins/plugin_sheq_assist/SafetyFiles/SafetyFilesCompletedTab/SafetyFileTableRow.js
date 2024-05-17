@@ -10,9 +10,9 @@ import {AsyncTD} from 'views/plugins/components';
 import {all_question_list} from "components/questionnaires/AResponseUtils";
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="InspectionTableRow">
+// <editor-fold defaultstate="collapsed" desc="SafetyFileTableRow">
 @observer
-class InspectionTableRow extends React.Component {
+class SafetyFileTableRow extends React.Component {
     render() {
         const {asset: mainAsset, item, idx, onRenderActionCell, onClick} = this.props;
         // const {id, data: {created_at, name, template: {name: template_name}, score, conducted, completed}} = item;
@@ -32,15 +32,12 @@ class InspectionTableRow extends React.Component {
                 progress,
                 total_questions,
                 //
-                interval,
-                start_date,
+                due_date,
                 date_completed,
                 time_completed,
-                schedule_date,
-                next_schedule_date,
+                
                 responsible_person,
                 responsible_user,
-                responsible_department,
                 asset_type,
                 asset,
                 schedule_list = [],
@@ -69,11 +66,8 @@ class InspectionTableRow extends React.Component {
             </div>}
             <div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
             <div className="td fixed-flex min-w-180">{responsible_user && responsible_user.full_name || 'N/A'}</div>
-            <div className="td fixed-flex min-w-80">{interval}</div>
-            <div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
-            <div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
+            <div className="td fixed-flex min-w-100">{Dates.formatDate(due_date)}</div>
             <div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {Dates.formatTime(time_completed)}</div>
-            <div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>
             <div className="td fixed-flex min-w-270 flex-center progress-bar">{progress.toFixed(1) + '% Complete'}</div>
             {onRenderActionCell && onRenderActionCell(item, idx)}
             {!onRenderActionCell && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
@@ -85,4 +79,4 @@ class InspectionTableRow extends React.Component {
 
 // </editor-fold>
 
-export default InspectionTableRow;
+export default SafetyFileTableRow;

@@ -23,8 +23,8 @@ import style from "./EditQuestionnaireDialog.lazy.css";
 import updateContractorsQuestionnaire
 	from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
 import {ShouldUpdate} from "utils/Utils";
-import updateInspectionsQuestionnaire
-	from "mutations/all/Questionnaires/InspectionsQuestionnaires/updateInspectionsQuestionnaire";
+import updateSafetyFilesQuestionnaire
+	from "mutations/all/Questionnaires/SafetyFilesQuestionnaires/updateSafetyFilesQuestionnaire";
 import Divider from "@mui/material/Divider";
 // </editor-fold>
 
@@ -38,7 +38,7 @@ class EditQuestionnaireDialog extends AEditDialog {
 	}
 
 	get title() {
-		return "Edit Questionnaire";
+		return "Edit Safety File Questionnaire";
 	}
 
 	get controls() {
@@ -132,7 +132,7 @@ class Controls extends React.Component {
 		const {
 			asset_type, asset,
 			//
-			responsible_person_list, responsible_user, responsible_department, interval, start_date, time,
+			responsible_person_list, responsible_user, due_date,
 		} = form.data;
 		const data = {
 			// is_template: false,
@@ -147,10 +147,7 @@ class Controls extends React.Component {
 		//
 		// ShouldUpdate.checkEmployee(data, old_data, responsible_person_list, 'responsible_person_list');
 		ShouldUpdate.checkUser(data, old_data, responsible_user, 'responsible_user');
-		ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
-		ShouldUpdate.check(data, old_data, interval, 'interval');
-		ShouldUpdate.checkDate(data, old_data, start_date, 'start_date');
-		ShouldUpdate.check(data, old_data, time, 'time');
+		ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
 
 		//
 		ShouldUpdate.check(data, old_data, name, 'name');
@@ -160,7 +157,7 @@ class Controls extends React.Component {
 		console.log(data)
 
 		btn.text("Saving...").disabled();
-		updateInspectionsQuestionnaire({id: this.item.id, ...data}).then(res => {
+		updateSafetyFilesQuestionnaire({id: this.item.id, ...data}).then(res => {
 			console.log("res", res)
 			onSaved && onSaved(res);
 			infoDialog.open("Record successfully updated.");
@@ -212,15 +209,10 @@ class Controls extends React.Component {
 					//
 					template,
 					//
-					asset_type,
-					asset,
-					//
 					responsible_person_list,
+					responsible_person_other_list,
 					responsible_user,
-					responsible_department,
-					interval,
-					start_date,
-					time,
+					due_date,
 				}
 			}
 		} = this;
@@ -238,7 +230,7 @@ class Controls extends React.Component {
 					idx={1}
 					title="1. Asset Details"
 				>
-					<SelectAssetTypeInput
+					{/* <SelectAssetTypeInput
 						ref="asset_type"
 						name="asset_type"
 						placeholder="Asset Type..."
@@ -253,46 +245,51 @@ class Controls extends React.Component {
 						defaultValue={asset}
 						onChange={this.form.onChange}
 						onLoadFilter={this.onFilterAsset}
-					/>
+					/> */}
 				</Row>
 			</RowOrgs>
 			<Row
 				rendered
 				idx={2}
-				title="2. Responsible Person/Department & Schedule"
+				title="2. Responsible Persons"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<SelectEmployeeInput name="responsible_person_list" placeholder="Responsible Employee(s)..."
-				                     defaultValue={responsible_person_list} className="col-lg-12 form-control"
-				                     onChange={this.form.onChange} showOtherPerson/>
+				<SelectEmployeeInput 
+					name="responsible_person_list" 
+					type="select_multi"
+					placeholder="Responsible Employee(s)..."
+					defaultValue={responsible_person_list}
+					className="col-lg-12 form-control" 
+					onChange={this.form.onChange}
+				/>
+				<SelectEmployeeInput 
+					name="responsible_person_other_list" 
+					type="select_multi"
+					placeholder="Responsible External Person(s)..."
+					defaultValue={responsible_person_other_list}
+					className="col-lg-12 form-control" 
+					onChange={this.form.onChange}
+					showOtherPersonsOnly
+				/>
 				<SelectUserInput name="responsible_user" placeholder="Responsible User..."
 				                     defaultValue={responsible_user} className="col-lg-12 form-control"
 				                     onChange={this.form.onChange}/>
-				<SelectDepartmentInput name="responsible_department" placeholder="Responsible Department..."
-				                       defaultValue={responsible_department} className="col-lg-12 form-control"
-				                       onChange={this.form.onChange}/>
 
-				<ClearableInput name="interval" type="select" placeholder="Interval..." defaultValue={interval}
-				                className="col-lg-4 form-control" onChange={this.form.onChange}
-				                values={this.state.lists.interval} returnValue/>
-				<ClearableInput name="start_date" type="date" placeholder="Start Date..." defaultValue={start_date}
+				<ClearableInput name="due_date" type="date" placeholder="Due Date..." defaultValue={due_date}
 				                className="col-lg-4 form-control" onChange={this.form.onChange}/>
-				<ClearableInput name="time" type="time" placeholder="Time..." defaultValue={time}
-				                className="col-lg-4 form-control"
-				                onChange={this.form.onChange}/>
 			</Row>
 			<Row
 				rendered
 				idx={3}
-				title="3. Inspection Questionnaire"
+				title="3. Safety File Questionnaire"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
 				<SelectQuestionnaireTemplateInput
 					name="template"
-					placeholder="Inspection Questionnaire Template"
+					placeholder="Safety File Questionnaire Template"
 					defaultValue={this.selectedTemplate}
 					className="col-lg-12 form-control"
 					onChange={this.form.onChange}
@@ -303,8 +300,8 @@ class Controls extends React.Component {
 					ref="questions"
 					getDialogDOM={this.getDialogDOM}
 					isEditting
-					defaultType="Inspections"
-					mainTitle="Inspection Questionnaire"
+					defaultType="Safety Files"
+					mainTitle="Safety File Questionnaire"
 					defaultDocTitle="Untitled Questionnaire"
 					item={this.item}
 					SelectEmployeesDialog={SelectEmployeesDialog}
@@ -316,6 +313,6 @@ class Controls extends React.Component {
 	// </editor-fold>
 }
 
-const byLogged = sockets.of('inspections').fn('listTemplatesByLogged');
+const byLogged = sockets.of('safety-files').fn('listTemplatesByLogged');
 
 export default EditQuestionnaireDialog;

@@ -10,9 +10,9 @@ import {AsyncTD} from 'views/plugins/components';
 import {all_question_list} from "components/questionnaires/AResponseUtils";
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="InspectionTableRow">
+// <editor-fold defaultstate="collapsed" desc="SafetyFileTableRow">
 @observer
-class InspectionTableRow extends React.Component {
+class SafetyFileTableRow extends React.Component {
 	render() {
 		const {asset: mainAsset, item, idx, onRenderActionCell, onClick} = this.props;
 		// const {id, data: {created_at, name, template: {name: template_name}, score, conducted, completed}} = item;
@@ -32,15 +32,11 @@ class InspectionTableRow extends React.Component {
 				progress,
 				total_questions,
 				//
-				interval,
 				start_date,
 				date_completed,
 				time_completed,
-				schedule_date,
-				next_schedule_date,
 				responsible_person,
 				responsible_user,
-				responsible_department,
 				asset_type,
 				asset,
 				schedule_list = [],
@@ -86,11 +82,8 @@ class InspectionTableRow extends React.Component {
 				className="td fixed-flex min-w-140">{asset ? `${asset.asset_detail.name} (${asset.asset_detail.reg_num || asset.asset_detail.serial_num })` : 'N/A'}</div>}
 			<div className="td fixed-flex min-w-180">{responsible_person && responsible_person.full_name || 'N/A'}</div>
 			<div className="td fixed-flex min-w-180">{responsible_user && responsible_user.full_name || 'N/A'}</div>
-			<div className="td fixed-flex min-w-80">{interval}</div>
 			<div className="td fixed-flex min-w-100">{Dates.formatDate(start_date)}</div>
-			<div className="td fixed-flex min-w-120">{Dates.formatDate(schedule_date)}</div>
 			<div className="td fixed-flex min-w-160">{Dates.formatDate(date_completed)} {time_completed}</div>
-			<div className="td fixed-flex min-w-120">{Dates.formatDate(next_schedule_date)}</div>
 			<div className="td fixed-flex min-w-250 flex-center progress-bar margin-r-20">{progress.toFixed(1) + '% Complete'}</div>
 			<div className="td fixed-flex min-w-140">{statusView}</div>
 			{onRenderActionCell && onRenderActionCell(item, idx)}
@@ -103,4 +96,4 @@ class InspectionTableRow extends React.Component {
 
 // </editor-fold>
 
-export default InspectionTableRow;
+export default SafetyFileTableRow;

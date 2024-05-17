@@ -29,6 +29,7 @@ import TermsAndConditionsDialog from './TermsAndConditionsDialog.js';
 
 import SupportDialog from './SupportDialog.js';
 import FeedbackDialog from './FeedbackDialog.js';
+import UserManualDialog from './UserManualDialog.js';
 
 export {
     ANewDialog, AProfileDialog, AEditDialog, 
@@ -38,5 +39,5 @@ export {
     SetupPhoneNumDialog, VerifyPhoneNumDialog,
     NoProjectsDialog,
     TermsAndConditionsDialog, PrivacyPolicyDialog,
-    SupportDialog, FeedbackDialog
+    SupportDialog, FeedbackDialog, UserManualDialog,
 };

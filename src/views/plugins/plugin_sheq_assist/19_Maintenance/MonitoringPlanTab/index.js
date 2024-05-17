@@ -264,6 +264,7 @@ class MonitoringPlanTab extends React.Component {
 				<div className="td fixed-flex min-w-80">Photo</div>
 				<div className="td">Asset Type</div>
 				<div className="td">Asset</div>
+				<div className="td">Location</div>
 				<div className="td">Reg. No.</div>
 				<div className="td">Serial No.</div>
 				<div className="td">Responsible Person</div>
@@ -278,6 +279,7 @@ class MonitoringPlanTab extends React.Component {
 				<div className="td fixed-flex min-w-30">ID</div>
 				<div className="td">Type</div>
 				<div className="td">Name</div>
+				<div className="td">Location</div>
 				<div className="td fixed-flex min-w-280">Registration No.</div>
 				<div className="td fixed-flex min-w-280">Last Fuel & Mileage Usage</div>
 				<div className="td fixed-flex min-w-160">Next Monitoring Date</div>
@@ -348,6 +350,7 @@ class MonitoringPlanTab extends React.Component {
 				</div>
 				<div className="td">{asset_type}</div>
 				<div className="td">{name || 'N/A'}</div>
+				<div className="td">{location || 'N/A'}</div>
 				<div className="td">{reg_num || 'N/A'}</div>
 				<div className="td">{serial_num || 'N/A'}</div>
 				<div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
@@ -440,6 +443,7 @@ class MonitoringPlanTab extends React.Component {
 			<div className="td fixed-flex min-w-30">{id}</div>
 			<div className="td">{asset_type}</div>
 			<div className="td">{name}</div>
+			<div className="td">{location || 'N/A'}</div>
 			<div className="td fixed-flex min-w-280">{reg_num}</div>
 			<div className="td fixed-flex min-w-280 flex padding-t-5 padding-b-5 padding-r-10">
 				{monitoring_plan_list.isEmpty() && 'N/A'}

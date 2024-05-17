@@ -79,7 +79,7 @@ class NotificationsButton extends React.Component {
 		if (isContractorView || isEmployee) return null;
 		if (isConsultant && clients.isEmpty()) return null;
 
-		return <Button ref="notifications" className="fa fa-bell btn" title="Notifications" hoverText="Notifications"
+		return <Button ref="notifications" className="fa fa-bell btn" title="Notifications" hoverText="Notifications" hoverTextLeft
 		               onClick={this.onPopoverNotifications}>
 			<Count ref="count"/>
 			<Popover ref="popover"/>

@@ -50,8 +50,8 @@ class RenderRow extends React.Component {
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,
-					// assigned_to_list,
-					approving_person,
+					assigned_user_list,
+					approving_person_list,
 					//4
 					document_list, document_proof_list,
 					//5
@@ -65,7 +65,8 @@ class RenderRow extends React.Component {
 			
 			const assigned_to_list = [
 				...(assigned_job_position_list ? assigned_job_position_list.map(({job_position: {name}}) => name) : []),
-				...(assigned_person_list ? assigned_person_list.map(({employee: {full_name}}) => full_name) : []),
+				...(assigned_person_list ? assigned_person_list.map(({employee, employee_other}) => (employee || employee_other).full_name) : []),
+				...(assigned_user_list ? assigned_user_list.map(({user: {full_name}}) => full_name) : []),
 			];
 			
 			const resultClass = result === 'Pass' ? 'green' : result === 'Fail' ? 'red' : 'none';

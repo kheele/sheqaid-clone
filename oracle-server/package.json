@@ -11,12 +11,12 @@
                 "docker:build:bun": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-server-bun",
                 "docker:push:node": "docker push rhespo/sheqaid-server",
                 "docker:push:bun": "docker push rhespo/sheqaid-server-bun",
-                "docker:build&push:node": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
-                "docker:build&push:bun": "docker build . -t rhespo/sheqaid-server-bun && docker push rhespo/sheqaid-server-bun",
+                "docker:buildANDpush:node": "docker build . -t rhespo/sheqaid-server && docker push rhespo/sheqaid-server",
+                "docker:buildANDpush:bun": "docker build . -t rhespo/sheqaid-server-bun && docker push rhespo/sheqaid-server-bun",
                 "add:cors": "gsutil cors set cors.json gs://sheqsolve.appspot.com",
                 "install:mod": "npm install -g npm@10.2.5",
                 "install:remove": "rm -rf node_modules package-lock.json",
-                "install:all": "npm uninstall html-pdf",
+                "install:all": "npm install --global yarn",
                 "neon:build": "npm run build"
         },
         "engines": {

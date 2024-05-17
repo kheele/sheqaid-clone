@@ -8,14 +8,15 @@ import {Dates, execWhen, ShouldUpdate} from 'utils/Utils';
 import {
 	AddFilesGridViewInput,
 	ClearableInput,
-	Clickable,
 	SelectClientInput,
-	SelectEmployeeInput, SelectJobPositionInput, SelectProjectInput, SelectSiteInput
+	SelectProjectInput, 
+	SelectSiteInput
 } from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {FormControls, Row} from 'components/FormComponents';
+import {NewEmployeeListTable, NewJobPositionListTable, NewUserListTable, NewNCRResponsiblePartyListTable} from 'components/FormTableComponents';
 import {AEditDialog} from 'components/dialogs';
 
-import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper} from '../dialogs/NCRComponents';
+import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
 
 import style from "./EditNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -28,6 +29,22 @@ import findByIdInspectionsQuestionnaire
 	from "../../../../../mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
 import findByIdSite from "../../../../../mutations/all/Site/findByIdSite";
 import findByIdQuestion from "../../../../../mutations/all/Questionnaires/Questions/findByIdQuestion";
+import {
+	insertProxyNCRAssignedPerson,
+	insertProxyNCRAssignedUser,
+	insertProxyNCRAssignedJobPosition,
+	insertProxyNCRApprovingPerson,
+	insertProxyNCRResponsibleParty,
+	insertProxyNCRDocument,
+} from "mutations/create";
+import {
+	deleteProxyNCRAssignedPerson,
+	deleteProxyNCRAssignedUser,
+	deleteProxyNCRAssignedJobPosition,
+	deleteProxyNCRApprovingPerson,
+	deleteProxyNCRResponsibleParty,
+	deleteProxyNCRDocument
+} from "mutations/delete";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="EditDialog">
@@ -122,7 +139,7 @@ class Controls extends React.Component {
 				}
 			} = this.item;
 			
-			const {selectSourceTable, selectSourceListTable} = this.refs;
+			const {sourceBtn, selectSourceTable, selectSourceListTable} = this.refs;
 			selectSourceListTable.selected_source_item = selected_source_item_compliance_audit_finding || selected_source_item_incident || selected_source_item_inspection_ques;
 			
 			try {
@@ -134,6 +151,7 @@ class Controls extends React.Component {
 					selectSourceTable.selected_source = await findByIdInspectionsQuestionnaire(selected_source_inspection.id);
 				} else if (selected_source_site) {
 					selectSourceTable.selected_source = await findByIdSite(selected_source_site.id);
+					sourceBtn.selected_source = selectSourceTable.selected_source;
 				}
 			} catch (e) {
 				selectSourceTable.is_error = true;
@@ -393,31 +411,30 @@ class Controls extends React.Component {
 				responsible_party_list,
 				assigned_job_position_list,
 				assigned_person_list,
-				assigned_person_other_list,
-				approving_person,
+				assigned_user_list,
+				approving_person_list,
 			} = form.data;
 
 			const data = {};
 			ShouldUpdate.checkDate(data, old_data, due_date, 'due_date');
-			ShouldUpdate.checkEmployee(data, old_data, approving_person, 'approving_person_id');
 
 			onSubmit(data);
 			return;
 		}
 
-		if (idx === 4) {
-			const {
-				document_list,
-				document_proof_list,
-			} = form.data;
+		// if (idx === 4) {
+		// 	const {
+		// 		document_list,
+		// 		document_proof_list,
+		// 	} = form.data;
 
-			const data = {};
-			ShouldUpdate.checkFileList(data, old_data, document_list, 'document_list');
-			ShouldUpdate.checkFileList(data, old_data, document_proof_list, 'document_proof_list');
+		// 	const data = {};
+		// 	ShouldUpdate.checkFileList(data, old_data, document_list, 'document_list');
+		// 	ShouldUpdate.checkFileList(data, old_data, document_proof_list, 'document_proof_list');
 
-			onSubmit(data);
-			return;
-		}
+		// 	onSubmit(data);
+		// 	return;
+		// }
 
 		if (idx === 5) {
 			const {
@@ -507,8 +524,8 @@ class Controls extends React.Component {
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,
-					assigned_person_other_list,
-					approving_person,
+					assigned_user_list,
+					approving_person_list,
 					//4
 					document_list, document_proof_list,
 					//5
@@ -601,27 +618,91 @@ class Controls extends React.Component {
 
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-				<ClearableInput name="responsible_party_list" type="select_multi" placeholder="Responsible Parties..."
-				                defaultValue={(responsible_party_list || []).map(({value}) => value)}
-				                className="col-lg-12 form-control" onChange={this.form.onChange}
-				                values={this.state.lists.responsible_party_list} returnValue add/>
+				<NewNCRResponsiblePartyListTable
+					name="responsible_party_list"
+					defaultValue={responsible_party_list ? [...responsible_party_list, null] : [null]}
+					title="Responsible Parties"
+					savable
+					targetItem={{key: "ncr_id", item}}
+					insertFn={insertProxyNCRResponsibleParty}
+					deleteFn={deleteProxyNCRResponsibleParty}
+					onAttrs={onNCRResponsiblePartyAttrs}
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+				/>
 
-				<SelectJobPositionInput name="assigned_job_position_list" placeholder="Responsible Job Position(s)..."
-				                        type="select_multi" defaultValue={(assigned_job_position_list || []).map(({job_position}) => job_position)}
-				                        required className="col-lg-12 form-control"
-				                        onChange={this.form.onChange}/>
-				<SelectEmployeeInput name="assigned_person_list" placeholder="Responsible Employee(s)..."
-				                     type="select_multi" defaultValue={(assigned_person_list || []).map(({employee}) => employee)}
-				                     required className="col-lg-12 form-control"
-				                     onChange={this.form.onChange}/>
-				<SelectEmployeeInput name="assigned_person_other_list" placeholder="Responsible External Person(s)..."
-				                     type="select_multi" defaultValue={(assigned_person_other_list || []).map(({employee_other}) => employee_other)}
-				                     required className="col-lg-12 form-control"
-				                     onChange={this.form.onChange}/>
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 
-				<SelectEmployeeInput name="approving_person" defaultValue={approving_person}
-				                     placeholder="Approving Person..." required
-				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+				<NewJobPositionListTable 
+					name="assigned_job_position_list"
+					defaultValue={assigned_job_position_list ? [...assigned_job_position_list, null] : [null]}
+					title="Responsible Job Positions"
+					savable
+					targetItem={{key: "ncr_id", item}}
+					insertFn={insertProxyNCRAssignedJobPosition}
+					deleteFn={deleteProxyNCRAssignedJobPosition}
+					onAttrs={onAssignedJobPositionAttrs}
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+				/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				{/* <NewEmployeeListTable 
+					name="assigned_person_list"
+				    className="w-full-calc-add-10 -margin-l-10"
+					defaultValue={[...(assigned_person_list || []).map(({
+						id,
+						employee,
+						employee_other
+					}) => employee || employee_other), null]}
+				    onChange={this.form.onChange}
+					showOtherPerson
+				/> */}
+				<NewEmployeeListTable
+					name="assigned_person_list"
+					defaultValue={assigned_person_list ? [...assigned_person_list, null] : [null]}
+					title="Responsible Persons"
+					savable
+					targetItem={{key: "ncr_id", item}}
+					insertFn={insertProxyNCRAssignedPerson}
+					deleteFn={deleteProxyNCRAssignedPerson}
+					onAttrs={onAssignedEmployeeAttrs}
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+					showOtherPerson
+				/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewUserListTable
+					name="assigned_user_list"
+					defaultValue={assigned_user_list ? [...assigned_user_list, null] : [null]}
+					title="Responsible Users"
+					savable
+					targetItem={{key: "ncr_id", item}}
+					insertFn={insertProxyNCRAssignedUser}
+					deleteFn={deleteProxyNCRAssignedUser}
+					onAttrs={onAssignedUserAttrs}
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+				/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewEmployeeListTable
+					name="approving_person_list"
+					defaultValue={approving_person_list ? [...approving_person_list, null] : [null]}
+					title="Approving Persons"
+					savable
+					targetItem={{key: "ncr_id", item}}
+					insertFn={insertProxyNCRApprovingPerson}
+					deleteFn={deleteProxyNCRApprovingPerson}
+					onAttrs={onApprovingEmployeeAttrs}
+					onChange={this.form.onChange}
+				    className="w-full-calc-add-10 -margin-l-10"
+					disableOtherPerson
+				/>
 			</Row>
 			<Row
 				rendered
@@ -630,7 +711,6 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
-				onFormSave={this.onFormSave}
 			>
 				<FormControls>
 					<Row
@@ -641,18 +721,38 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 					>
-						<AddFilesGridViewInput name="document_list" defaultValue={document_list} title="Add Document/Photo"
-						                       onChange={this.form.onChange}/>
+						<NewDocumentTable
+							ref="document_list"
+							name="document_list"
+							title="Documents/Photos"
+							defaultValue={[...(document_list || []), null]}
+							type="Document Incident"
+							savable
+							targetItem={{key: "non_conformance_id", item}}
+							insertFn={insertProxyNCRDocument}
+							deleteFn={deleteProxyNCRDocument}
+							onAttrs={onNCRDocumentAttrs}
+						/>
 					</Row>
 					<Row
 						rendered
 						idx={4.2}
 						title="4.2. Document(s) (Proof of Correction)"
 						onFormOpen={onFormOpen}
-						onFormNext={onFormBack}
+						onFormBack={onFormBack}
 					>
-						<AddFilesGridViewInput name="document_proof_list" defaultValue={document_proof_list}
-						                       title="Add Document/Photo" onChange={this.form.onChange}/>
+						<NewDocumentTable
+							ref="document_proof_list"
+							name="document_proof_list"
+							title="Documents/Photos"
+							defaultValue={[...(document_proof_list || []), null]}
+							type="Document Proof"
+							savable
+							targetItem={{key: "non_conformance_id", item}}
+							insertFn={insertProxyNCRDocument}
+							deleteFn={deleteProxyNCRDocument}
+							onAttrs={onNCRDocumentAttrs}
+						/>
 					</Row>
 				</FormControls>
 			</Row>
@@ -718,6 +818,52 @@ class Controls extends React.Component {
 	}
 
 	// </editor-fold>
+}
+
+function onNCRDocumentAttrs({doc, type}) {
+	return {
+		doc, type
+	};
+}
+
+function onNCRResponsiblePartyAttrs({value}) {
+	return {
+		value,
+	};
+}
+
+function onAssignedJobPositionAttrs({job_position}) {
+	return {
+		job_position_id: job_position && job_position.id,
+	};
+}
+
+function onAssignedUserAttrs({user}) {
+	return {
+		user_id: user && user.id,
+	};
+}
+
+function onAssignedEmployeeAttrs({employee, employee_other}) {
+	if (employee_other && !employee_other.id) {
+		const {job_position} = employee_other;
+		if (job_position) {
+			employee_other.job_position_id = job_position.id;
+			delete employee_other.job_position;
+		}
+	}
+	
+	return {
+		employee_id: employee && employee.id,
+		employee_other_id: employee_other && employee_other.id ? employee_other.id : null,
+		employee_other: employee_other && !employee_other.id ? {data: employee_other} : null
+	};
+}
+
+function onApprovingEmployeeAttrs({employee}) {
+	return {
+		employee_id: employee && employee.id,
+	};
 }
 
 export default EditDialog;

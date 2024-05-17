@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a1c690fce23ebfb894f574f09d5a6127>>
+ * @generated SignedSource<<640844b4b894e395837f78f4048a27f8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -295,7 +295,7 @@ v8 = [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "default_contractor_questionnaires_ques",
+                "concreteType": "default_contractor_questionnaires",
                 "kind": "LinkedField",
                 "name": "selected_source_inspection",
                 "plural": false,

@@ -60,7 +60,9 @@ const inspection_question_find_fragment = (deep = 3) => {
     hasResponseAttachment
     responseAttachmentRequired
     expiry
+    comments
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     open

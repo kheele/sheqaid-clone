@@ -194,6 +194,15 @@ class Actions extends React.Component {
                     onChange="handleHasExpiryValue"
                 />
                 <Option
+                    name='isEditableDoc'
+                    className='has-editable-doc'
+                    label='Is Editable Document'
+                    idx={idx}
+                    ques={ques}
+                    readonly={readonly}
+                    onChange="handleIsEditableDocValue"
+                />
+                <Option
                     name='isMultiAnswer'
                     className='is-multi-answer'
                     label="Multiple Answers"
@@ -284,6 +293,7 @@ class Option extends React.Component {
 
         this.handleMandatoryValue = this.handleMandatoryValue.bind(this);
         this.handleHasExpiryValue = this.handleHasExpiryValue.bind(this);
+        this.handleIsEditableDocValue = this.handleIsEditableDocValue.bind(this);
         this.handleMultiAnswerValue = this.handleMultiAnswerValue.bind(this);
         this.handleNotifyValue = this.handleNotifyValue.bind(this);
         this.handleLinkDoc = this.handleLinkDoc.bind(this);
@@ -299,6 +309,8 @@ class Option extends React.Component {
             this.checked = !!ques.isMandatory;
         } else if (name === 'hasExpiry') {
             this.checked = !!ques.hasExpiry;
+        } else if (name === 'isEditableDoc') {
+            this.checked = !!ques.isEditableDoc;
         } else if (name === 'isMultiAnswer') {
             this.checked = !!ques.isMultiAnswer;
         } else if (name === 'notify') {
@@ -322,6 +334,11 @@ class Option extends React.Component {
     handleHasExpiryValue(evt, i) {
         const {idx, ques} = this.props;
         this.checked = ques.hasExpiry = !ques.hasExpiry;
+    }
+
+    handleIsEditableDocValue(evt, i) {
+        const {idx, ques} = this.props;
+        this.checked = ques.isEditableDoc = !ques.isEditableDoc;
     }
 
     handleMultiAnswerValue(evt, i) {
@@ -456,6 +473,10 @@ class Option extends React.Component {
             addRightLine
         } = this.props;
         if (isConditional && (!showNotify && !showResponseAttachment && !showResponseAttachmentRequired && !showMultiple)) {
+            return null;
+        }
+
+        if(ques.questionType !== "Document" && name === "isEditableDoc") {
             return null;
         }
 

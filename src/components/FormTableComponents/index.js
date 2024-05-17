@@ -1,3 +1,4 @@
+import ANewListTable from './ANewListTable';
 import NewSignatureSettingsListTable from './NewSignatureSettingsListTable';
 import NewEmployeeListTable from './NewEmployeeListTable';
 import NewClientListTable from './NewClientListTable';
@@ -16,10 +17,13 @@ import NewPPEItemListTable from './NewPPEItemListTable';
 import NewChemicalStockItemListTable from './NewChemicalStockItemListTable';
 import NewIssuePPEListTable from './NewIssuePPEListTable';
 import NewModuleListTable from './NewModuleListTable';
+import NewUserListTable from './NewUserListTable';
+import NewNCRResponsiblePartyListTable from './NewNCRResponsiblePartyListTable';
 
 import NewBillableCompanyListTable from './NewBillableCompanyListTable';
 
 export {
+    ANewListTable,
     NewSignatureSettingsListTable,
     NewEmployeeListTable, 
     NewClientListTable,
@@ -38,6 +42,8 @@ export {
     NewChemicalStockItemListTable,
     NewIssuePPEListTable,
     NewModuleListTable,
+    NewUserListTable,
+    NewNCRResponsiblePartyListTable,
     
     NewBillableCompanyListTable
 };

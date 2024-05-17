@@ -4,6 +4,12 @@ import {convertMobx} from "utils/Utils";
 class Socket {
 	constructor(name) {
 		this.name = name;
+		
+		this.fn = this.fn.bind(this);
+		this.create = this.create.bind(this);
+		this.update = this.update.bind(this);
+		this.delete = this.delete.bind(this);
+		this.findById = this.findById.bind(this);
 	}
 	
 	fn(name) {
@@ -49,6 +55,32 @@ class Socket {
 			
 			return workers.emit('socket/emit', path, data);
 		};
+	}
+	
+	async create(data) {
+		data = await convertMobx(data);
+		const path = `${this.name}/create`;
+		
+		return workers.emit('socket/emit', path, data);
+	}
+	
+	async update(attrs) {
+		attrs = await convertMobx(attrs);
+		const path = `${this.name}/update`;
+		
+		return workers.emit('socket/emit', path, attrs);
+	}
+	
+	async delete(id) {
+		const path = `${this.name}/delete`;
+		
+		return workers.emit('socket/emit', path, id);
+	}
+	
+	async findById(id) {
+		const path = `${this.name}/findById`;
+		
+		return workers.emit('socket/emit', path, id);
 	}
 }
 

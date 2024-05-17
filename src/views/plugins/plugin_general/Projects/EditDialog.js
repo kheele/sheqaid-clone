@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import Form from 'utils/Form';
+import {ShouldUpdate} from "utils/Utils";
 import {ClearableInput, SelectClientInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
@@ -43,7 +44,7 @@ class Controls extends React.Component {
     }
     
     onSubmit(e, btn, onSaved) {
-        const {form} = this;
+		const {form, item: {data: old_data}} = this;
 
         if (!form.isValid('name')) {
             infoDialog.open('Project Name is required');
@@ -52,19 +53,10 @@ class Controls extends React.Component {
         
         const {name, address, client} = form.data;
         const data = {};
-        if(name) {
-            data.name = name;
-        }
-        if(address) {
-            data.address = address;
-        }
-        if(client) {
-            if(client.id) {
-                data.client = {id: client.id, name: client.name || client.data.name};
-            } else {
-                data.client = client;
-            }
-        }
+        
+		ShouldUpdate.check(data, old_data, name, 'name');
+		ShouldUpdate.check(data, old_data, address, 'address');
+		ShouldUpdate.checkClient(data, old_data, client, 'client_id');
         
         if(Object.keys(data).isEmpty()){
             infoDialog.open("Nothing changed!");

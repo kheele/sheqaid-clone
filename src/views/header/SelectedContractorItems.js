@@ -30,7 +30,7 @@ class SelectedContractorItems extends React.Component {
 	getPopover = () => this.refs.popover;
 
 	render() {
-		if (isAdminApp) return null;
+		if (isAdminApp || loggedInApp.isUserManualView) return null;
 		const {is: {isContractor, isContractorView}, loggedContractor} = storage;
 		if (!isContractorView) return null;
 

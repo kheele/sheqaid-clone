@@ -150,6 +150,8 @@ class InspectionTab extends React.Component {
 		const {
 			id, data: {
 				status,
+				responsible_employee_list,
+				responsible_person_other_list,
 				responsible_person,
 				responsible_user,
 			}
@@ -222,19 +224,16 @@ class InspectionTab extends React.Component {
 	
 	renderTHead() {
 		const {item: asset} = this.props;
-		const w = asset ? 170 : 270;
+		const w = asset ? 170 : 200;
 		return <THead>
 			<div className="td fixed-flex min-w-40">ID</div>
 			<div className="td">Name</div>
 			{!asset && <div className="td fixed-flex min-w-140">Asset Type</div>}
 			{!asset && <div className="td fixed-flex min-w-140">Asset</div>}
-			<div className="td fixed-flex min-w-180">Responsible Person</div>
-			<div className="td fixed-flex min-w-180">Responsible User</div>
+			<div className="td fixed-flex min-w-180">Responsible Person(s)</div>
 			<div className="td fixed-flex min-w-80">Interval</div>
-			<div className="td fixed-flex min-w-100">Start Date</div>
 			<div className="td fixed-flex min-w-120">Date Scheduled</div>
 			<div className="td fixed-flex min-w-160">Conducted On</div>
-			<div className="td fixed-flex min-w-120">Next Schedule</div>
 			<div className={`td fixed-flex min-w-${w}`}>Progress</div>
 			<div className="td fixed-flex min-w-140">Status</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

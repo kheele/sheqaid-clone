@@ -195,6 +195,7 @@ class ToolsWrittenOffTab extends React.Component {
 			<div className="td">Type</div>
 			<div className="td">Name</div>
 			<div className="td">Manufacturer</div>
+			<div className="td">Location</div>
 			<div className="td fixed-flex min-w-100">Reg No.</div>
 			<div className="td fixed-flex min-w-160">Serial No.</div>
 			<div className="td fixed-flex min-w-80">Condition</div>
@@ -274,6 +275,7 @@ class ToolsWrittenOffTab extends React.Component {
 			<div className="td">{asset_type}</div>
 			<div className="td">{name || 'N/A'}</div>
 			<div className="td">{manufacturer || 'N/A'}</div>
+			<div className="td">{location || 'N/A'}</div>
 			<div className="td fixed-flex min-w-100">{reg_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-160">{serial_num || 'N/A'}</div>
 			<div className="td fixed-flex min-w-80">{condition || 'N/A'}</div>

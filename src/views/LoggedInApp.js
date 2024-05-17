@@ -26,6 +26,7 @@ class LoggedInApp extends React.Component {
 		defaultView: null,
 		lastTimeActiveTO: null,
 		lastTimeActive: null,
+		isUserManualView: false,
 	};
 
 	constructor() {
@@ -88,6 +89,17 @@ class LoggedInApp extends React.Component {
 
 	componentWillUnmount() {
 //        style.unuse();
+	}
+
+	set isUserManualView(val) {
+		if(!val) {
+			manualManager.activeGroup = null;
+		}
+		this.state.isUserManualView = val;
+	}
+
+	@computed get isUserManualView() {
+		return this.state.isUserManualView;
 	}
 
 	set defaultView(val) {

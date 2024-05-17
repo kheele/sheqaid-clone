@@ -71,6 +71,10 @@ class RenderRow extends ARenderRow {
 				{name || "N/A"}
 			</div>
 			<div className="td">
+				<h6 className="xs-shown font-size-13">Location</h6>
+				{location || "N/A"}
+			</div>
+			<div className="td">
 				<h6 className="xs-shown font-size-13">Reg. No.</h6>
 				{reg_num || 'N/A'}
 			</div>

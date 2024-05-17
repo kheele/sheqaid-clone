@@ -12,6 +12,7 @@ const contractor_questionnaire_question_list_fragment = (deep = 3) => {
     responseAttachmentRequired
     expiry
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     open

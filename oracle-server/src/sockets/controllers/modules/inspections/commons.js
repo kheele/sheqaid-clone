@@ -76,7 +76,9 @@ const inspection_question_find_fragment = (deep = 3) => {
     hasResponseAttachment
     responseAttachmentRequired
     expiry
+    comments
     hasExpiry
+    isEditableDoc
     isMandatory
     isMultiAnswer
     open
@@ -250,12 +252,6 @@ exports.inspection_details_find_fragment = `
       questionnaire{
         id
       }
-      employee_other{
-	      id
-	      full_name
-	      email
-	      phone
-      }
       employee{
 	      id
 	      full_name
@@ -266,6 +262,19 @@ exports.inspection_details_find_fragment = `
 	        id
 	        username
 	      }
+      }
+    }
+    responsible_person_other_list{
+      id
+      questionnaire_id
+      questionnaire{
+        id
+      }
+      employee_other{
+	      id
+	      full_name
+	      email
+	      phone
       }
     }
     responsible_user{
@@ -369,12 +378,6 @@ exports.inspection_details_list_fragment = `
       questionnaire{
         id
       }
-      employee_other{
-	      id
-	      full_name
-	      email
-	      phone
-      }
       employee{
 	      id
 	      full_name
@@ -385,6 +388,19 @@ exports.inspection_details_list_fragment = `
 	        id
 	        username
 	      }
+      }
+    }
+    responsible_person_other_list{
+      id
+      questionnaire_id
+      questionnaire{
+        id
+      }
+      employee_other{
+	      id
+	      full_name
+	      email
+	      phone
       }
     }
     responsible_user{

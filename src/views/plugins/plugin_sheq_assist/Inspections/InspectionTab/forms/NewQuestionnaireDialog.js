@@ -367,13 +367,12 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<SelectEmployeeInput name="responsible_person_list" placeholder="Responsible Employee(s)..."
+				<SelectEmployeeInput name="responsible_person_list" type="select_multi" placeholder="Responsible Employee(s)..."
 				                     defaultValue={responsible_person_list}
 				                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
 				<SelectEmployeeInput
-					name="responsible_person_other_list" placeholder="Responsible External Person(s)..."
+					name="responsible_person_other_list" type="select_multi" placeholder="Responsible External Person(s)..."
 					defaultValue={responsible_person_other_list}
-					type="select_multi"
 					className="col-lg-12 form-control"
 					onChange={this.form.onChange}
 					showOtherPersonsOnly

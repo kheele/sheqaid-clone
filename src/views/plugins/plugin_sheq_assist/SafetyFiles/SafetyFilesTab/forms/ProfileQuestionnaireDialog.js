@@ -33,7 +33,7 @@ class ProfileDialog extends AProfileDialog {
 		super(props, style);
 
 		this.onCopy = this.onCopy.bind(this);
-		this.onStartInspection = this.onStartInspection.bind(this);
+		this.onStartSafetyFile = this.onStartSafetyFile.bind(this);
 		this.onViewResponses = this.onViewResponses.bind(this);
 		this.onEdit = this.onEdit.bind(this);
 
@@ -57,7 +57,7 @@ class ProfileDialog extends AProfileDialog {
 	}
 
 	title() {
-		return "Inspection Questionnaire";
+		return "Safety File Questionnaire";
 	}
 
 	@computed get topButtons() {
@@ -91,8 +91,8 @@ class ProfileDialog extends AProfileDialog {
 			<Button className="btn btn-primary" onClick={this.onExportOptions}>
 				Export <i className="fa fa-angle-down icon-right font-size-16"/>
 			</Button>
-			<Button className="btn btn-primary" onClick={this.onStartInspection}>
-				<i className="fa fa-plus icon-left"/>Start Inspection
+			<Button className="btn btn-primary" onClick={this.onStartSafetyFile}>
+				<i className="fa fa-plus icon-left"/>Start Safety File
 			</Button>
 			<Button className="btn btn-primary" onClick={this.onCopy}>
 				<i className="fa fa-copy icon-left"/>Copy
@@ -136,8 +136,8 @@ class Controls extends React.Component {
 		this.refs.newDialog.open(copy);
 	}
 
-	//<editor-fold desc="onStartInspection">
-	onStartInspection(evt, elem) {
+	//<editor-fold desc="onStartSafetyFile">
+	onStartSafetyFile(evt, elem) {
 		// this.refs.newDialog.open(this.item);
 	}
 
@@ -221,21 +221,16 @@ class Controls extends React.Component {
 					desc,
 					status,
 					status_answered_by_sender,
-					answered_by = 'Sender',
+					answered_by,
 					is_template,
 					visibility,
 					page_title_list,
 					question_list,
 					//
 					responsible_person_list,
+					responsible_person_other_list,
 					responsible_user,
-					responsible_department,
-					interval,
-					start_date,
-					time,
-					//
-					asset_type,
-					asset,
+					due_date,
 				}
 			}
 		} = this;
@@ -252,33 +247,31 @@ class Controls extends React.Component {
 					idx={1}
 					title="1. Basic Info"
 				>
-					<ProfileField name="asset_type" placeholder="Asset Type" value={asset_type} className="col-lg-12"/>
-					<ProfileField name="asset" placeholder="Asset" value={asset} renderer={v => v.name} className="col-lg-12"/>
+					{/* <ProfileField name="asset_type" placeholder="Asset Type" value={asset_type} className="col-lg-12"/> */}
+					{/* <ProfileField name="asset" placeholder="Asset" value={asset} renderer={v => v.name} className="col-lg-12"/> */}
 				</Row>
 			</RowOrgs>
 			<Row
 				rendered
 				idx={2}
-				title="2. Responsible Person/Department & Schedule"
+				title="2. Responsible Persons"
 				onFormOpen={onFormOpen}
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
 				<ProfileField name="responsible_person_list" placeholder="Responsible Employee(s)" value={responsible_person_list || []}
 				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
+				<ProfileField name="responsible_person_other_list" placeholder="Responsible External Person(s)" value={responsible_person_other_list || []}
+				              renderer={v => v.map(v => v.full_name).join(', ')} className="col-lg-12"/>
 				<ProfileField name="responsible_user" placeholder="Responsible User" value={responsible_user}
 				              renderer={v => v.full_name} className="col-lg-12"/>
-				<ProfileField name="responsible_department" placeholder="Responsible Department" value={responsible_department}
-				              renderer={v => v.name} className="col-lg-12"/>
 
-				<ProfileField name="interval" placeholder="Interval" value={interval} className="col-lg-4"/>
-				<ProfileField name="start_date" type="date" placeholder="Start Date" value={start_date} className="col-lg-4"/>
-				<ProfileField name="time" placeholder="Time" value={time} className="col-lg-4"/>
+				<ProfileField name="due_date" type="date" placeholder="Due Date" value={due_date} className="col-lg-4"/>
 			</Row>
 			<Row
 				rendered
 				idx={3}
-				title="3. Inspection Questionnaire"
+				title="3. Safety File Questionnaire"
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
@@ -286,8 +279,8 @@ class Controls extends React.Component {
 					ref="questions"
 					readonly
 					getDialogDOM={this.getDialogDOM}
-					defaultType="Inspections"
-					mainTitle="Inspection Questionnaire"
+					defaultType="Safety Files"
+					mainTitle="Safety File Questionnaire"
 					item={this.item}
 				/>
 			</Row>

@@ -61,10 +61,13 @@ class Details extends React.Component {
 			case "Dropdown":
 				extendObservable(ques, {options: [{optionText: "Option 1", optionImage: null, optionType: null}]});
 				break;
+			case "Document":
+				ques.isEditableDoc = false;
+				delete ques.options;
+				break;
 			case "Person":
 			case "Asset":
 			case "Signature":
-			case "Document":
 			case "Photo":
 			case "NoAnswer":
 				delete ques.options;
@@ -277,7 +280,7 @@ class Details extends React.Component {
 						<MenuItem value='Signature'>Signature</MenuItem>
 						<Divider/>
 						<MenuItem value='Photo'>Photo</MenuItem>
-						<MenuItem value='Document'>Document (PDF/Word/Spreadsheet)</MenuItem>
+						<MenuItem value='Document'>Document ({ques.isEditableDoc ? "" : "PDF/"}Word/Spreadsheet)</MenuItem>
 						<Divider/>
 						<MenuItem value='Date'>Date</MenuItem>
 						<MenuItem value='Time'>Time</MenuItem>
@@ -310,7 +313,8 @@ class Details extends React.Component {
 					ques={ques}
 					idx={idx}
 					uploadOptionImage={this.uploadOptionImage}
-					removeOptionImage={this.removeOptionImage}/>
+					removeOptionImage={this.removeOptionImage}
+				/>
 			</div>
 		</AccordionDetails>;
 	}

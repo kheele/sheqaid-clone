@@ -9,6 +9,9 @@ class SelectedPlugin extends React.Component {
     }
     
     render() {
+		if(loggedInApp.isUserManualView) 
+            return null;
+
         if(isAdminApp) 
             return <div className="SelectedPlugin changeable-title">Admin</div>;
         return <div className="SelectedPlugin"/>;

@@ -2,10 +2,10 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable, extendObservable} from 'mobx';
 
-import style from "./SafetyFileTab.lazy.css";
+import style from "./SafetyFilesTab.lazy.css";
 import APageListReadWrite from "views/APageListReadWrite";
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
-import {EditResponseDialog, NewQuestionnaireDialog, ProfileResponseDialog} from "../SafetyFileTab/forms";
+import {EditResponseDialog, NewQuestionnaireDialog, ProfileResponseDialog} from "../SafetyFilesTab/forms";
 import Popover from "components/popovers/Popover";
 import {toJS} from "mobx";
 import NavItem from "components/navs/NavItem";
@@ -25,11 +25,7 @@ class SafetyFileTab extends React.Component {
 	
 	@observable
 	state = {
-		lists: {
-			interval: ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually'].map(value => {
-				return {value, label: value}
-			})
-		}
+		
 	};
 	
 	constructor(props) {
@@ -61,7 +57,6 @@ class SafetyFileTab extends React.Component {
 		const {page, lastItem, filterData, filtered, isNew} = params;
 		const {
 			name,
-			interval,
 			template_id,
 			asset_type,
 			asset: asset2,
@@ -73,7 +68,6 @@ class SafetyFileTab extends React.Component {
 			asset_id: (asset2 || asset) && (asset || asset2).id,
 			//
 			name,
-			interval,
 			template_id,
 			asset_type,
 			//
@@ -183,16 +177,7 @@ class SafetyFileTab extends React.Component {
 		
 		return <div className="col-lg-12 controls flex">
 			<ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-			<ClearableInput
-				name="interval"
-				type="select"
-				placeholder="Interval..."
-				className="form-control"
-				onChange={onChange}
-				values={this.state.lists.interval}
-				returnValue
-			/>
-			<SelectQuestionnaireTemplateInput
+			 <SelectQuestionnaireTemplateInput
 				name="template"
 				placeholder="Template..."
 				className="form-control"
@@ -216,11 +201,8 @@ class SafetyFileTab extends React.Component {
 			{!asset && <div className="td fixed-flex min-w-140">Asset</div>}
 			<div className="td fixed-flex min-w-180">Responsible Person</div>
 			<div className="td fixed-flex min-w-180">Responsible User</div>
-			<div className="td fixed-flex min-w-80">Interval</div>
-			<div className="td fixed-flex min-w-100">Start Date</div>
-			<div className="td fixed-flex min-w-120">Date Scheduled</div>
+			<div className="td fixed-flex min-w-100">Due Date</div>
 			<div className="td fixed-flex min-w-160">Conducted On</div>
-			<div className="td fixed-flex min-w-120">Next Schedule</div>
 			<div className={`td fixed-flex min-w-${w}`}>Progress</div>
 			<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
 		</THead>;

@@ -1,6 +1,7 @@
 const {
 	employee_personal_details_fragment,
 	personal_details_other_fragment,
+	user_personal_details_fragment,
 } = require("../../../../graphql/Fragments");
 
 //<editor-fold desc="getVariablesAndQueryConfig">
@@ -16,6 +17,7 @@ exports.getVariablesAndQueryConfig = (
 		responsible_party_list,
 		assigned_job_position_list,
 		assigned_person_list,
+		assigned_user_list,
 		approving_person_list,
 		type,
 		priority,
@@ -41,8 +43,9 @@ exports.getVariablesAndQueryConfig = (
 	} else {
 		if (logged_employee_id) {
 			filter.push(`_or: [
-				{approving_person_id: {_eq: ${logged_employee_id}}},
+				{approving_person_list: {employee_id: {_eq: ${logged_employee_id}}}},
 				{assigned_person_list: {employee_id: {_eq: ${logged_employee_id}}}},
+				{assigned_user_list: {user: {linked_employee_id:{_eq: ${logged_employee_id}}}}},
 				{assigned_job_position_list: {employee_list:{id: {_eq: ${logged_employee_id}}}}},
 				
 				#For Site
@@ -103,8 +106,11 @@ exports.getVariablesAndQueryConfig = (
 		if (assigned_person_list && assigned_person_list.isNotEmpty()) {
 			filter.push(`assigned_person_list: {employee_id: {_in: [${assigned_person_list.join(',')}]}}`);
 		}
+		if (assigned_user_list && assigned_user_list.isNotEmpty()) {
+			filter.push(`assigned_user_list: {user_id: {_in: [${assigned_user_list.join(',')}]}}`);
+		}
 		if (approving_person_list && approving_person_list.isNotEmpty()) {
-			filter.push(`approving_person_id: {_in: [${approving_person_list.join(',')}]}`);
+			filter.push(`approving_person_list: {employee_id: {_in: [${approving_person_list.join(',')}]}}`);
 		}
 		
 		if (type) {
@@ -203,6 +209,11 @@ exports.ncr_details_fragment = `
   }
   assigned_job_position_list {
       id
+	  ncr_id
+	  ncr{
+		  id
+	  }
+	  job_position_id
       job_position{
           id
           name
@@ -210,15 +221,40 @@ exports.ncr_details_fragment = `
   }
   assigned_person_list {
       id
+	  ncr_id
+	  ncr{
+		  id
+	  }
+	  employee_id
       employee{
         ${employee_personal_details_fragment}
       }
+	  employee_other_id
       employee_other{
         ${personal_details_other_fragment}
       }
   }
-  approving_person{
-    ${employee_personal_details_fragment}
+  assigned_user_list {
+	id
+	ncr_id
+	ncr{
+		id
+	}
+	user_id
+	user{
+		${user_personal_details_fragment}
+	}
+  }
+  approving_person_list{
+	id
+	ncr_id
+	ncr{
+		id
+	}
+	employee_id
+	employee{
+	  ${employee_personal_details_fragment}
+	}
   }
   selected_source_site {
     id

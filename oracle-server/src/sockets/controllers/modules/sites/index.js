@@ -6,6 +6,20 @@ const args = {
 	name: "Sites",
 	tbl: "default_sites",
 	details_fragment,
+	orgs_fragment: `
+		company {
+			id
+			name
+		}
+		client {
+			id
+			name
+		}
+		project {
+			id
+			name
+		}
+	`,
 };
 
 eventManager.on("sites/findById", findByIdImpl(args));

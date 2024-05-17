@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<64302b3bf8513b3da3c7dcc20f765f6a>>
+ * @generated SignedSource<<beb394ecada80a90ebedc41187b41615>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -26,9 +26,9 @@ v1 = [
         "variableName": "object"
       }
     ],
-    "concreteType": "sheq_incident_investigation",
+    "concreteType": "default_contractor_questionnaires",
     "kind": "LinkedField",
-    "name": "insert_sheq_incident_investigation_one",
+    "name": "insert_default_contractor_questionnaires_one",
     "plural": false,
     "selections": [
       {
@@ -47,7 +47,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "insertIncidentMutation",
+    "name": "insertInspectionsQuestionnaireMutation",
     "selections": (v1/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
@@ -56,20 +56,20 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "insertIncidentMutation",
+    "name": "insertInspectionsQuestionnaireMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "217dfbdedb85ef7b70da6db8d8d48f9f",
+    "cacheID": "39506a8394fd5dfc841b10459b21f995",
     "id": null,
     "metadata": {},
-    "name": "insertIncidentMutation",
+    "name": "insertInspectionsQuestionnaireMutation",
     "operationKind": "mutation",
-    "text": "mutation insertIncidentMutation(\n  $object: sheq_incident_investigation_insert_input!\n) {\n  insert_sheq_incident_investigation_one(object: $object) {\n    id\n  }\n}\n"
+    "text": "mutation insertInspectionsQuestionnaireMutation(\n  $object: default_contractor_questionnaires_insert_input!\n) {\n  insert_default_contractor_questionnaires_one(object: $object) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "cdf8c07c2340cb16c31236315b3c766c";
+node.hash = "89a3974760664a24f33b2ef89ca07a86";
 
 module.exports = node;

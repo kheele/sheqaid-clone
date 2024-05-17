@@ -13,11 +13,13 @@ import {
 	ProfileField
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
+import {NewEmployeeListTable, NewJobPositionListTable, NewUserListTable, NewNCRResponsiblePartyListTable} from 'components/FormTableComponents';
 
 import InspectionTableRow from 'views/plugins/plugin_sheq_assist/Inspections/InspectionTab/InspectionTableRow';
 
 import AuditTableRow from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/AuditTableRow';
 import {IncidentTableRow} from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
+import {NewDocumentTable} from '../dialogs/NCRComponents';
 
 import ProfileSiteDialog from 'views/plugins/plugin_general/Sites/ProfileDialog.js';
 import ProfileAuditDialog from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
@@ -86,6 +88,49 @@ class ProfileDialog extends AProfileDialog {
 	onEdit(evt, btn) {
 		const {editDialog} = this.refs.controls.refs;
 		editDialog && editDialog.open(this.state.item);
+	}
+	
+	//</editor-fold>
+	
+	//<editor-fold desc="onExport">
+	onExport(evt, btn) {
+		btn.text("Exporting...").disabled();
+		const {id} = this.state.item;
+		
+		const {selectedClient, selectedProject, selectedSite} = storage.selected;
+		
+		const client = selectedClient;
+		const project = selectedProject;
+		const site = selectedSite;
+
+		const exportOne = sockets.of("ncr").fn("export-excel-one");
+		exportOne({
+			date: new Date().formatDate(), 
+			client,
+			project,
+			site,
+			id,
+		}).then(res => {
+			console.log('exportOne res', res);
+			if (!res) {
+				infoDialog.open(<>
+					<p>An error occurred. Please try again</p>
+				</>);
+			} else {
+				infoDialog.open(<>
+					<p>Non-conformance report successfully exported.</p>
+					<p><small>The file will be automatically downloaded</small></p>
+				</>);
+				saveFileAs(res, `NCR_Profile_Report_(${id})_${Dates.formatDate(new Date())}.xlsx`);
+			}
+		}).catch(err => {
+			console.error(err);
+			infoDialog.open(<>
+				<p>An error occurred. Please check your network connection and try again</p>
+			</>);
+		}).finally(() => {
+			btn.text("Export").enabled();
+		});
 	}
 	
 	//</editor-fold>
@@ -170,6 +215,7 @@ class ProfileDialog extends AProfileDialog {
 				onApprove={this.onApprove}
 				onReject={this.onReject}
 				onEdit={this.onEdit}
+				onExport={this.onExport}
 				onCancel={this.onCancel}
 			/>;
 		};
@@ -206,6 +252,7 @@ const DialogTopButtons = observer((
 		onApprove,
 		onReject,
 		onEdit,
+		onExport,
 		onCancel
 	}
 ) => {
@@ -217,8 +264,8 @@ const DialogTopButtons = observer((
 			selected_source,
 			assigned_job_position_list,
 			assigned_person_list,
-			assigned_person_other_list,
-			approving_person,
+			assigned_user_list,
+			approving_person_list,
 			status_progress,
 			status_acceptance
 		}
@@ -226,9 +273,43 @@ const DialogTopButtons = observer((
 	
 	const {view} = state;
 	
-	const {id: user_uid, data: {linked_employee}} = storage.loggedUser.user;
+	const {id: user_id, data: {linked_employee}} = storage.loggedUser.user;
+	const {is:{isEmployee}, loggedUser:{user}} = storage;
+
+	if(isEmployee) {
+		const isResponsible = (assigned_person_list && assigned_person_list.anyMatch(({employee: {id}}) => id === user_id)) ||
+			(assigned_job_position_list && assigned_job_position_list.anyMatch(({job_position_id}) => user.data.job_position_id === job_position_id));
+		const isApproving = approving_person_list && approving_person_list.anyMatch(({employee: {id}}) => id === user_id);
+		return <>
+			{isResponsible && <>
+				{status_progress !== 'Progressed' && status_progress !== 'Completed' && view !== "Progressed" &&
+					<Button className="btn btn-primary" onClick={onProgress}>
+						<i className="fa fa-check icon-left"/>Progress
+					</Button>}
+				{status_progress !== 'Completed' && view !== "Completed" &&
+					<Button className="btn btn-primary" onClick={onComplete}>
+						<i className="fa fa-check icon-left"/>Complete
+					</Button>}
+				{status_progress !== 'Progressed' && status_progress !== 'Completed' &&
+					view !== "Progressed" && view !== "Completed" && <hr/>}
+			</>}
+			{isApproving && <>
+				{status_acceptance !== 'Approved' && <Button className="btn btn-primary" onClick={onApprove}>
+					<i className="fa fa-check icon-left"/>Approve
+				</Button>}
+				{status_acceptance !== 'Rejected' && <Button className="btn btn-primary" onClick={onReject}>
+					<i className="fa fa-check icon-left"/>Reject
+				</Button>}
+				{status_acceptance !== 'Approved' && status_acceptance !== 'Rejected' && <hr/>}
+			</>}
+			<hr/>
+			<Button className="btn btn-primary export" onClick={onExport}>Export</Button>
+			<Button className="btn btn-primary cancel" onClick={onCancel}>Cancel</Button>
+		</>;
+	}
+
 	const isResponsible = () => {
-		if (assigned_job_position_list || assigned_person_list) {
+		if (assigned_job_position_list || assigned_person_list || assigned_user_list) {
 			if (
 				linked_employee &&
 				linked_employee.job_position &&
@@ -237,14 +318,17 @@ const DialogTopButtons = observer((
 			) {
 				return true;
 			}
-			if (assigned_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_uid)) {
+			if (assigned_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_id)) {
+				return true;
+			}
+			if (assigned_user_list.anyMatch(({user: {id}}) => id === user_id)) {
 				return true;
 			}
 		}
 		return false;
 	};
 	const isApproving = () => {
-		return approving_person && user_uid === approving_person.id;
+		return approving_person_list && approving_person_list.anyMatch(({employee: {linked_user_id}}) => linked_user_id === user_id);
 	};
 	
 	return <>
@@ -273,6 +357,7 @@ const DialogTopButtons = observer((
 			<i className="fa fa-pen icon-left"/>Edit
 		</Button>}
 		<hr/>
+		<Button className="btn btn-primary export" onClick={onExport}>Export</Button>
 		<Button className="btn btn-primary cancel" onClick={onCancel}>Cancel</Button>
 	</>;
 });
@@ -455,7 +540,7 @@ class Controls extends React.Component {
 		const {
 			props: {
 				onFormNext, onFormBack, onFormOpen,
-				dialog: {renderProfileCover}
+				dialog,
 			},
 			item, item: {
 				id, data: {
@@ -483,8 +568,8 @@ class Controls extends React.Component {
 					responsible_party_list,
 					assigned_job_position_list,
 					assigned_person_list,
-					assigned_person_other_list,
-					approving_person,
+					assigned_user_list,
+					approving_person_list,
 					//4
 					document_list,
 					document_proof_list,
@@ -505,6 +590,9 @@ class Controls extends React.Component {
 		} = this;
 		
 		const {isConsultant} = storage.is;
+		
+		const docActiveId = dialog.extraProp('docActiveId');
+		const docProofActiveId = dialog.extraProp('docProofActiveId');
 		
 		return <FormControls>
 			<Row
@@ -572,33 +660,59 @@ class Controls extends React.Component {
 				
 				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
 				
-				<ProfileField
+				{/* <ProfileField
 					name="responsible_party_list"
 					placeholder="Responsible Parties"
 					value={responsible_party_list && responsible_party_list.map(({value}) => value).join(', ')}
 					className="col-lg-12"
+				/> */}
+				<NewNCRResponsiblePartyListTable
+					name="responsible_party_list"
+					defaultValue={responsible_party_list}
+					title="Responsible Parties"
+				    className="w-full-calc-add-10 -margin-l-10"
+					readonly
 				/>
-				<ProfileField
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewJobPositionListTable 
 					name="assigned_job_position_list"
-					placeholder="Assigned Job Position(s)"
-					value={assigned_job_position_list && assigned_job_position_list.map(({job_position: {name}}) => name).join(', ')}
-					className="col-lg-12"
+					defaultValue={assigned_job_position_list}
+					title="Responsible Job Positions"
+				    className="w-full-calc-add-10 -margin-l-10"
+					readonly
 				/>
-				<ProfileField
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewEmployeeListTable
 					name="assigned_person_list"
-					placeholder="Assigned Person(s)"
-					value={assigned_person_list && assigned_person_list.map(({employee: {full_name}}) => full_name).join(', ')}
-					className="col-lg-12"
+					defaultValue={assigned_person_list}
+					title="Responsible Persons"
+				    className="w-full-calc-add-10 -margin-l-10"
+					readonly
 				/>
-				<ProfileField
-					name="assigned_person_other_list"
-					placeholder="Assigned Person(s)"
-					value={assigned_person_other_list && assigned_person_other_list.map(({employee_other: {full_name}}) => full_name).join(', ')}
-					className="col-lg-12"
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewUserListTable
+					name="assigned_user_list"
+					defaultValue={assigned_user_list}
+					title="Responsible Users"
+				    className="w-full-calc-add-10 -margin-l-10"
+					readonly
 				/>
-				
-				<ProfileField name="approving_person" placeholder="Approving Person" value={approving_person}
-				              renderer={v => v.full_name} className="col-lg-12"/>
+
+				<hr className="pull-left margin-0 margin-t-5 margin-b-10"/>
+
+				<NewEmployeeListTable
+					name="approving_person_list"
+					defaultValue={approving_person_list}
+					title="Approving Persons"
+				    className="w-full-calc-add-10 -margin-l-10"
+					readonly
+				/>
 			</Row>
 			<Row
 				rendered
@@ -617,16 +731,30 @@ class Controls extends React.Component {
 						onFormOpen={onFormOpen}
 						onFormNext={onFormNext}
 					>
-						<AddFilesGridViewInput name="document_list" defaultValue={document_list} readonly/>
+						<NewDocumentTable 
+							ref="document_list" 
+							name="document_list" 
+							title="Documents/Photos"
+							defaultValue={document_list || []} 
+							docActiveId={docActiveId}
+							readonly
+						/>
 					</Row>
 					<Row
 						rendered
 						idx={4.2}
 						title="4.2. Document(s) (Proof of Correction)"
 						onFormOpen={onFormOpen}
-						onFormNext={onFormBack}
+						onFormBack={onFormBack}
 					>
-						<AddFilesGridViewInput name="document_proof_list" defaultValue={document_proof_list} readonly/>
+						<NewDocumentTable 
+							ref="document_proof_list" 
+							name="document_proof_list" 
+							title="Documents/Photos"
+							defaultValue={document_proof_list || []} 
+							docActiveId={docProofActiveId}
+							readonly
+						/>
 					</Row>
 				</FormControls>
 			</Row>

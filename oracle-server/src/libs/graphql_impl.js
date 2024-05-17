@@ -311,6 +311,18 @@ global.updateGraphQL = async ({mutation, operationName, id, attrs}) => {
 };
 //</editor-fold>
 
+//<editor-fold desc="deleteGraphQL">
+global.deleteGraphQL = async ({mutation, operationName, id}) => {
+    return await sendGraphQL({
+        mutation,
+        operationName,
+        variables: {
+            id
+        },
+    });
+};
+//</editor-fold>
+
 // const {fileTypeFromBuffer} = require('./file-type');
 
 // listGraphQL({

@@ -3,7 +3,7 @@
 #dialog-overlay.NewNCRDialog-new-dialog .dialog-container{
     height: calc(100% - 35px);
     max-width: calc(100% - 30px);
-    width: 800px !important;
+    width: 1000px !important;
 }
 
 #dialog-overlay.NewNCRDialog-new-dialog .dialog-content .AddFilesGridViewInput {

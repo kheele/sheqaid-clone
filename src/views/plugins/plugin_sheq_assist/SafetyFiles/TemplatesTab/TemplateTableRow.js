@@ -22,10 +22,9 @@ class TemplateTableRow extends React.Component {
                 desc,
                 status,
                 status_answered_by_sender,
+                answered_by,
                 is_template,
-                type,
                 visibility,
-                scheduled,
                 page_title_list,
                 question_list,
                 total_questions,
@@ -43,7 +42,7 @@ class TemplateTableRow extends React.Component {
             <div className="td fixed-flex min-w-180">{template_questionnaire_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex min-w-100">{total_questions}</div>
             <div className="td fixed-flex min-w-80">{visibility}</div>
-            <div className="td fixed-flex min-w-80">{scheduled ? "Yes" : "No"}</div>
+			<div className="td fixed-flex min-w-160">{answered_by}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>

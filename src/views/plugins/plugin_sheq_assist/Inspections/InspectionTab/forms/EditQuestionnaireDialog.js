@@ -216,6 +216,7 @@ class Controls extends React.Component {
 					asset,
 					//
 					responsible_person_list,
+					responsible_person_other_list,
 					responsible_user,
 					responsible_department,
 					interval,
@@ -264,9 +265,18 @@ class Controls extends React.Component {
 				onFormNext={onFormNext}
 				onFormBack={onFormBack}
 			>
-				<SelectEmployeeInput name="responsible_person_list" placeholder="Responsible Employee(s)..."
+				<SelectEmployeeInput name="responsible_person_list" type="select_multi" placeholder="Responsible Employee(s)..."
 				                     defaultValue={responsible_person_list} className="col-lg-12 form-control"
-				                     onChange={this.form.onChange} showOtherPerson/>
+				                     onChange={this.form.onChange}/>
+				<SelectEmployeeInput 
+										 name="responsible_person_other_list" 
+										 type="select_multi"
+										 placeholder="Responsible External Person(s)..."
+										 defaultValue={responsible_person_other_list}
+										 className="col-lg-12 form-control" 
+										 onChange={this.form.onChange}
+										 showOtherPersonsOnly
+				/>
 				<SelectUserInput name="responsible_user" placeholder="Responsible User..."
 				                     defaultValue={responsible_user} className="col-lg-12 form-control"
 				                     onChange={this.form.onChange}/>

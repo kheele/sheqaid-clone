@@ -86,6 +86,7 @@ class Header extends React.Component {
 			<BackButton/>
 			<MenuButton/>
 			<HomeButton/>
+			<UserManualButton/>
 			<SelectedPlugin/>
 			<SelectedItems
 				onPopoverNotifications={(e) => this.refs.multipleBtnActions.refs.notificationsButton.onPopoverNotifications(e)}/>
@@ -94,12 +95,26 @@ class Header extends React.Component {
 				<ProfileButton/>
 			</div>
 			<MultipleBtnActions ref="multipleBtnActions"/>
-			<div className="right-actions people-btn-actions">
-				<UsersBtn/>
-				<EmployeesBtn/>
-			</div>
+			<PersonsButtons />
 			<SupportDialog ref="supportDialog"/>
 		</header>);
+	}
+}
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="PersonsButtons">
+@observer
+class PersonsButtons extends React.Component {
+
+	render() {
+		if (loggedInApp.isUserManualView)
+			return null;
+		
+		return <div className="right-actions people-btn-actions">
+			<UsersBtn/>
+			<EmployeesBtn/>
+		</div>;
 	}
 }
 
@@ -127,6 +142,9 @@ class MultipleBtnActions extends React.Component {
 	}
 
 	render() {
+		if(loggedInApp.isUserManualView) 
+            return null;
+
 		if (isAdminApp) {
 			if (isWeb()) {
 				return null;
@@ -192,6 +210,7 @@ class MenuButton extends React.Component {
 class HomeButton extends React.Component {
 
 	onClick() {
+		loggedInApp.isUserManualView = false;
 		defaultView.isOpen = false;
 		mainView.isOpen = false;
 	}
@@ -216,11 +235,12 @@ class HomeButton extends React.Component {
 class BackButton extends React.Component {
 
 	onBack(e, el) {
+		loggedInApp.isUserManualView = false;
 		defaultView.isOpen = false;
 	}
 
 	render() {
-		if (!loggedInApp.isDefaultOverMainView)
+		if (!loggedInApp.isUserManualView && !loggedInApp.isDefaultOverMainView)
 			return null;
 		const {isContractorView, isContractorViewIncContractorPack} = storage.is;
 		if (isContractorView && !isContractorViewIncContractorPack)
@@ -228,6 +248,37 @@ class BackButton extends React.Component {
 
 		return <Button className="back-btn" onClick={this.onBack}>
 			<i key="backButtonIcon" className="page-back-btn fa fa-arrow-left"/>
+		</Button>;
+	}
+}
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="UserManualButton">
+@observer
+class UserManualButton extends React.Component {
+
+	constructor() {
+		super();
+
+		this.onClick = this.onClick.bind(this);
+	}
+
+	onClick(evt) {
+		defaultView.isOpen = false;
+		mainView.isOpen = false;
+		loggedInApp.isUserManualView = true;
+	}
+
+	render() {
+		if (loggedInApp.isUserManualView)
+			return null;
+		// const {isContractorView, isContractorViewIncContractorPack} = storage.is;
+		// if (isContractorView && !isContractorViewIncContractorPack)
+		// 	return null;
+
+		return <Button className="user-manual-btn" hoverText="User Manual" hoverTextLeft onClick={this.onClick}>
+			<i className="fa fa-question"/>
 		</Button>;
 	}
 }

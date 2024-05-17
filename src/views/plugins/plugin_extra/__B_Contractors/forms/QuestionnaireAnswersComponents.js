@@ -52,7 +52,7 @@ class LibraryTabTableRow extends React.Component {
 		let {
 			id, data: {
 				created_at,
-				name: formName,
+				name,
 				desc,
 				status,
 				status_answered_by_sender,
@@ -61,6 +61,9 @@ class LibraryTabTableRow extends React.Component {
 				visibility,
 				page_title_list,
 				question_list,
+                total_questions,
+              //
+                template_questionnaire_list_aggregate
 			}
 		} = item;
 //        console.log('form', item)
@@ -71,15 +74,13 @@ class LibraryTabTableRow extends React.Component {
 		};
 		
 		return <TRow key={id} className="w-full">
+			<div className="td fixed-flex min-w-40">{id}</div>
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-			<div className="td">{formName}</div>
+			<div className="td">{name}</div>
 			<div className="td padding-r-10">{desc || 'N/A'}</div>
-			<AsyncTD
-				title="Questions"
-				defaultValue={getLength(question_list)} renderer={v => v}
-				className="td fixed-flex min-w-100"
-			/>
-			<div className="td fixed-flex min-w-100">{visibility}</div>
+			<div className="td fixed-flex min-w-180">{template_questionnaire_list_aggregate.aggregate.count}</div>
+            <div className="td fixed-flex min-w-100">{total_questions}</div>
+            <div className="td fixed-flex min-w-100">{visibility}</div>
 			<div className="td fixed-flex min-w-160">{answered_by}</div>
 			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
 				<ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
@@ -99,7 +100,7 @@ class ActiveTabTableRow extends React.Component {
 		let {
 			id, data: {
 				created_at,
-				name: formName,
+				name,
 				desc,
 				status = "New",
 				status_answered_by_sender,
@@ -175,7 +176,7 @@ class ActiveTabTableRow extends React.Component {
 		
 		return <TRow key={id} className="w-full">
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-			<div className="td">{formName}</div>
+			<div className="td">{name}</div>
 			<AsyncTD
 				title="Questions"
 				defaultValue={getQuestions(question_list)}
@@ -213,7 +214,7 @@ class CompleteTabTableRow extends React.Component {
 		let {
 			id, data: {
 				created_at,
-				name: formName,
+				name,
 				desc,
 				status,
 				status_answered_by_sender,
@@ -278,7 +279,7 @@ class CompleteTabTableRow extends React.Component {
 		
 		return <TRow key={id} className="w-full">
 			<div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-			<div className="td">{formName}</div>
+			<div className="td">{name}</div>
 			<AsyncTD
 				title="Questions"
 				defaultValue={getQuestions(question_list)}

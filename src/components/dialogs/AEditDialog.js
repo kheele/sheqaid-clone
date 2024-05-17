@@ -15,6 +15,7 @@ class AEditDialog extends AFormDialog {
 	constructor(props, style) {
 		super(props, style);
 
+		this.onExport && (this.onExport = this.onExport.bind(this));
 		this.onView && (this.onView = this.onView.bind(this));
 		this.onDelete = this.onDelete.bind(this);
 		this.onRemoved = this.onRemoved.bind(this);
