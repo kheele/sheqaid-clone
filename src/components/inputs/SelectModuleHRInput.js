@@ -18,6 +18,16 @@ class SelectInput extends ASelectModuleInput {
         'Meetings',
     ];
 
+    includedOHSDocList = [
+        'Employees',
+        'Contracts',
+        'Warnings',
+        'Counsellings',
+        'Leaves',
+        'PPE',
+        'Meetings',
+    ];
+
     constructor(props) {
         super(props);
     }

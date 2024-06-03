@@ -4,14 +4,16 @@ const {employee_basic_personal_details_fragment, orgs_fragment} = require("../..
 exports.inc_fragment = ({removed, inc_employee = false, }) => `
     id
     created_at
+    removed
     days_booked
     due_to
-    removed
+    status
     type
     employee_comments
     reason
     notes
     doc
+    date_approved
     date
     expiry_date
     expiry_updated
@@ -28,6 +30,9 @@ exports.inc_fragment = ({removed, inc_employee = false, }) => `
         ` : `
             id
         `}
+    }
+    approver{
+        ${employee_basic_personal_details_fragment}
     }
     
     ${orgs_fragment}

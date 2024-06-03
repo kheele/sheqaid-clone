@@ -293,10 +293,10 @@ class SelectedItem extends React.Component {
             actions.push(this.select(item, true));
         }
         if (path === 'clients') {
-            actions.push(storage.logout.logoutSite());
-            actions.push(storage.logout.logoutProject());
+            // actions.push(storage.logout.logoutSite());
+            // actions.push(storage.logout.logoutProject());
         } else if (path === 'projects') {
-            actions.push(storage.logout.logoutSite());
+            // actions.push(storage.logout.logoutSite());
         }
 
         Promise.all(actions).then(async res => {

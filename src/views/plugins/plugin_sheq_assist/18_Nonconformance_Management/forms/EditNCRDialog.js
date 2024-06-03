@@ -16,7 +16,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable, NewJobPositionListTable, NewUserListTable, NewNCRResponsiblePartyListTable} from 'components/FormTableComponents';
 import {AEditDialog} from 'components/dialogs';
 
-import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
+import {SelectSourceItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
 
 import style from "./EditNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -94,10 +94,10 @@ class Controls extends React.Component {
 			}),
 			selected_source: [],
 			source: [
-				{label: 'Site Audit', value: 'N/A'},
-				{label: 'Compliance Audit', value: '21_Internal_Audit/audit/'},
-				{label: 'Inspection', value: '21_Internal_Audit/inspection/'},
-				{label: 'Incident Investigation', value: '17_Incident_Investigation/'}
+				{label: "Site Audit", value: 'N/A'},
+				{label: 'Compliance Audit', value: sockets.of('audits').fn('listByLogged')},
+				{label: 'Inspection', value: sockets.of('inspections').fn('listCompletedByLogged')},
+				{label: 'Incident Investigation', value: sockets.of('incidents/investigations').fn('listByLogged')}
 			]
 		},
 	};
@@ -587,7 +587,7 @@ class Controls extends React.Component {
 				<SourceBtnWrapper ref="sourceBtn" onClick={this.onSelectSource} onSelectSite={this.onSelectSite}/>
 				<SelectSourceTable ref="selectSourceTable" onSelectSourceItem={this.onSelectSourceItem}
 				                   onChange={this.form.onChange}/>
-				<SelectAuditItemTable ref="selectSourceListTable" onChange={this.form.onChange}/>
+				<SelectSourceItemTable ref="selectSourceListTable" onChange={this.form.onChange}/>
 			</Row>
 			<Row
 				rendered

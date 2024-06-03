@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f3b99916a97f2966e536bda93a3c76dc>>
+ * @generated SignedSource<<043f0b1a135492e38a94bb81955a3805>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -67,123 +67,130 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "date",
+  "name": "category_of_misconduct",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "expiry_date",
+  "name": "date",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "expiry_updated",
+  "name": "expiry_date",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "removed",
+  "name": "expiry_updated",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "details",
+  "name": "removed",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "employee_comments",
+  "name": "details",
   "storageKey": null
 },
 v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "notes",
+  "name": "employee_comments",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "fname",
+  "name": "notes",
   "storageKey": null
 },
 v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "lname",
+  "name": "fname",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "phone",
+  "name": "lname",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "email",
+  "name": "phone",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id_num",
+  "name": "email",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "id_num",
+  "storageKey": null
+},
+v19 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "passport_num",
   "storageKey": null
 },
-v19 = [
+v20 = [
   (v2/*: any*/),
-  (v13/*: any*/),
   (v14/*: any*/),
   (v15/*: any*/),
   (v16/*: any*/),
   (v17/*: any*/),
-  (v18/*: any*/)
+  (v18/*: any*/),
+  (v19/*: any*/)
 ],
-v20 = {
+v21 = {
   "alias": null,
   "args": null,
   "concreteType": "hr_employees",
   "kind": "LinkedField",
   "name": "issued_by",
   "plural": false,
-  "selections": (v19/*: any*/),
+  "selections": (v20/*: any*/),
   "storageKey": null
 },
-v21 = {
+v22 = {
   "alias": null,
   "args": null,
   "concreteType": "hr_employees",
   "kind": "LinkedField",
   "name": "employee",
   "plural": false,
-  "selections": (v19/*: any*/),
+  "selections": (v20/*: any*/),
   "storageKey": null
 },
-v22 = [
+v23 = [
   (v2/*: any*/),
   {
     "alias": null,
@@ -193,44 +200,44 @@ v22 = [
     "storageKey": null
   }
 ],
-v23 = {
+v24 = {
   "alias": null,
   "args": null,
   "concreteType": "default_companies",
   "kind": "LinkedField",
   "name": "company",
   "plural": false,
-  "selections": (v22/*: any*/),
+  "selections": (v23/*: any*/),
   "storageKey": null
 },
-v24 = {
+v25 = {
   "alias": null,
   "args": null,
   "concreteType": "default_clients",
   "kind": "LinkedField",
   "name": "client",
   "plural": false,
-  "selections": (v22/*: any*/),
+  "selections": (v23/*: any*/),
   "storageKey": null
 },
-v25 = {
+v26 = {
   "alias": null,
   "args": null,
   "concreteType": "default_projects",
   "kind": "LinkedField",
   "name": "project",
   "plural": false,
-  "selections": (v22/*: any*/),
+  "selections": (v23/*: any*/),
   "storageKey": null
 },
-v26 = {
+v27 = {
   "alias": null,
   "args": null,
   "concreteType": "default_sites",
   "kind": "LinkedField",
   "name": "site",
   "plural": false,
-  "selections": (v22/*: any*/),
+  "selections": (v23/*: any*/),
   "storageKey": null
 };
 return {
@@ -275,6 +282,7 @@ return {
                   (v10/*: any*/),
                   (v11/*: any*/),
                   (v12/*: any*/),
+                  (v13/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -292,24 +300,24 @@ return {
                         "name": "witness",
                         "plural": false,
                         "selections": [
-                          (v13/*: any*/),
                           (v14/*: any*/),
                           (v15/*: any*/),
                           (v16/*: any*/),
                           (v17/*: any*/),
-                          (v18/*: any*/)
+                          (v18/*: any*/),
+                          (v19/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v20/*: any*/),
                   (v21/*: any*/),
-                  (v23/*: any*/),
+                  (v22/*: any*/),
                   (v24/*: any*/),
                   (v25/*: any*/),
-                  (v26/*: any*/)
+                  (v26/*: any*/),
+                  (v27/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -364,6 +372,7 @@ return {
                   (v10/*: any*/),
                   (v11/*: any*/),
                   (v12/*: any*/),
+                  (v13/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -381,12 +390,12 @@ return {
                         "name": "witness",
                         "plural": false,
                         "selections": [
-                          (v13/*: any*/),
                           (v14/*: any*/),
                           (v15/*: any*/),
                           (v16/*: any*/),
                           (v17/*: any*/),
                           (v18/*: any*/),
+                          (v19/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -394,12 +403,12 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v20/*: any*/),
                   (v21/*: any*/),
-                  (v23/*: any*/),
+                  (v22/*: any*/),
                   (v24/*: any*/),
                   (v25/*: any*/),
-                  (v26/*: any*/)
+                  (v26/*: any*/),
+                  (v27/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -412,16 +421,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6762f1d578c467bc450d184fab947fed",
+    "cacheID": "899addaa206846f867325b2454e483a8",
     "id": null,
     "metadata": {},
     "name": "findByIdEmployeeWarningQuery",
     "operationKind": "query",
-    "text": "query findByIdEmployeeWarningQuery(\n  $id: bigint\n) {\n  hr_employees_docs_warnings_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        doc\n        type\n        date\n        expiry_date\n        expiry_updated\n        removed\n        details\n        employee_comments\n        notes\n        witness_list {\n          id\n          witness {\n            fname\n            lname\n            phone\n            email\n            id_num\n            passport_num\n            id\n          }\n        }\n        issued_by {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        employee {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdEmployeeWarningQuery(\n  $id: bigint\n) {\n  hr_employees_docs_warnings_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        doc\n        type\n        category_of_misconduct\n        date\n        expiry_date\n        expiry_updated\n        removed\n        details\n        employee_comments\n        notes\n        witness_list {\n          id\n          witness {\n            fname\n            lname\n            phone\n            email\n            id_num\n            passport_num\n            id\n          }\n        }\n        issued_by {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        employee {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "0d535eaaa169df0df606591828630a8a";
+node.hash = "330db596fdabf83195c897aee4e961e8";
 
 module.exports = node;

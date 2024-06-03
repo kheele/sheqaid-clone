@@ -22,6 +22,8 @@ class APage extends React.Component {
 
         this.renderBackBtn = this.renderBackBtn.bind(this);
         this.onClose = this.onClose.bind(this);
+        
+        this.onViewOHSDocuments = this.onViewOHSDocuments.bind(this);
     }
 
     componentWillMount() {
@@ -51,6 +53,11 @@ class APage extends React.Component {
             console.log(e.target.localName)
             cb(e);
         }
+    }
+
+    onViewOHSDocuments(evt, btn) {
+        const {ohsDocListDialog} = this.refs;
+        ohsDocListDialog && ohsDocListDialog.open();
     }
 
     renderBackBtn() {

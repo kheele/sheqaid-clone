@@ -1,5 +1,5 @@
 import mime from 'mime';
-import {isWeb} from './Utils';
+import { isWeb } from './Utils';
 
 const file_types = {
 	PDF: {
@@ -13,6 +13,10 @@ const file_types = {
 	Excel: {
 		extensions: ['xls', 'xlsx'],
 		name: 'Spreadsheet'
+	},
+	PPT: {
+		extensions: ['ppt', 'pptx'],
+		name: 'PowerPoint'
 	},
 	Image: {
 		extensions: ['png', 'gif', 'jpg', 'jpeg', 'tiff'],
@@ -44,24 +48,24 @@ const openFileImpl = (name, extensions) => {
 				input.attr("id", id).attr("type", "file").attr("accept", [...extensions, ...mimes]);
 			}
 			input.change(evt => {
-				const {files, multiple} = evt.target;
+				const { files, multiple } = evt.target;
 				const file = files[0];
-//                alert(file)
+				//                alert(file)
 				resolve(file);
 				setTimeout(() => input.remove());
 			}).click();
 		});
 	} else {
 		const fs = electronRemote.require('fs');
-		const {dialog} = electronRemote;
+		const { dialog } = electronRemote;
 		return dialog.showOpenDialog(electronRemote.getCurrentWindow(), {
 			properties: ['openFile'], // set to use openFileDialog
-			filters: [{name: name + " Files", extensions}] // limit the picker to just pdfs
+			filters: [{ name: name + " Files", extensions }] // limit the picker to just pdfs
 		}).then(result => {
 			if (result.canceled) {
 				return;
 			}
-			const {filePaths} = result;
+			const { filePaths } = result;
 			if (!!filePaths) {
 				// Since we only allow one file, just use the first one
 				const filePath = filePaths[0];
@@ -79,7 +83,7 @@ window.electronDialog = {
 		return electronDialog.showOpenDialogDocs(['Word']);
 	},
 	showOpenDialogWordRaw: () => {
-		const {extensions, name} = file_types['Word'];
+		const { extensions, name } = file_types['Word'];
 		return openFileImpl(name, extensions).then(filePath => {
 			return {
 				isPDF: false,
@@ -91,7 +95,7 @@ window.electronDialog = {
 		return electronDialog.showOpenDialogDocs(['Excel']);
 	},
 	showOpenDialogSpreadsheetRaw: () => {
-		const {extensions, name} = file_types['Excel'];
+		const { extensions, name } = file_types['Excel'];
 		return openFileImpl(name, extensions).then(filePath => {
 			return {
 				isPDF: false,
@@ -124,28 +128,29 @@ window.electronDialog = {
 				extensions.push(...o.extensions);
 				name.push(o.name);
 			});
-			return {extensions, name: name.join(' / ')};
+			return { extensions, name: name.join(' / ') };
 		};
-		const {extensions, name} = createOpts();
+		const { extensions, name } = createOpts();
 		return openFileImpl(name, extensions).then(async filePath => {
 			let isPDF = FileTypes.isPDF(filePath);
 			let isWord = FileTypes.isWord(filePath);
 			let isExcel = FileTypes.isExcel(filePath);
+			let isPPT = FileTypes.isPPT(filePath);
 			let isPic = FileTypes.isPic(filePath);
 			let isVideo = FileTypes.isVideo(filePath);
-			
+
 			const createPreviewPath = async (filePath) => {
 				let dataUri;
 				if (isWeb() && filePath instanceof File) {
 					dataUri = await FileConverters.asDataUrl(filePath);
 				} else {
 					const fs = electronRemote.require('fs');
-					const base64 = fs.readFileSync(filePath, {encoding: 'base64'});
+					const base64 = fs.readFileSync(filePath, { encoding: 'base64' });
 					dataUri = `data:${mime.getType(filePath)};base64,${base64}`;
 				}
 				return dataUriToUrl(dataUri);
 			};
-			
+
 			let previewPath;
 			if (isPDF) {
 				if (filePath instanceof File) {
@@ -154,11 +159,10 @@ window.electronDialog = {
 					previewPath = await createPreviewPath(filePath);
 				}
 				previewPath = createReactPDFPreviewUrl(previewPath);
-			} else if (isWord || isExcel) {
+			} else if (isWord || isExcel || isPPT) {
 				if (filePath instanceof File) {
-					previewPath = await FileConverters.asDataUrl(filePath);
-					const fn = isWord ? 'word-preview-url' : 'excel-preview-url';
-					previewPath = await neonBinding.events.emit(`default/docs/doc/${fn}`, previewPath);
+					const upload = sockets.of('ms-docs-preview').fn('upload');
+					previewPath = await upload(filePath);
 				} else {
 					const filePathDest = filePath.replace(mime.getExtension(filePath), "pdf");
 					const fn = isWord ? 'wordToPDF' : 'excelToPDF';
@@ -169,11 +173,12 @@ window.electronDialog = {
 			} else {
 				previewPath = await createPreviewPath(filePath);
 			}
-			
+
 			return {
 				isPDF,
 				isWord,
 				isExcel,
+				isPPT,
 				isPic,
 				isVideo,
 				previewPath,
@@ -186,7 +191,7 @@ window.electronDialog = {
 window.createPDFPreviewUrlFromRemote = filePath => {
 	if (!filePath)
 		return null;
-	
+
 	let loc = document.location.toString().replace("index.html", "");
 	if (loc.contains('#')) {
 		loc = loc.replace(document.location.hash, "").replace("#", "");
@@ -217,7 +222,7 @@ window.FileTypes = {
 			return false;
 		return exts.map(ext => ext.startsWith('.') ? ext : ('.' + ext)).anyMatch(ext => {
 			if (isObject(filePath)) {
-				if ('isPDF' in filePath && 'isWord' in filePath && 'isExcel' in filePath && 'isPic' in filePath && 'isVideo' in filePath && 'previewPath' in filePath && 'path' in filePath) {
+				if ('isPDF' in filePath && 'isWord' in filePath && 'isExcel' in filePath && 'isPPT' in filePath && 'isPic' in filePath && 'isVideo' in filePath && 'previewPath' in filePath && 'path' in filePath) {
 					return FileTypes.isFileType(filePath.path, exts);
 				}
 			}
@@ -236,7 +241,7 @@ window.FileTypes = {
 			} else if (filePath instanceof File) {
 				return mime.getExtension(filePath.type) === ext.substring(1) || mime.getType(ext) === filePath.type;
 			} else if (filePath.path) {
-				const {path} = filePath;
+				const { path } = filePath;
 				if (FileTypes.isDataURI(path)) {
 					// base64 encoded data doesn't contain commas
 					let base64ContentArray = path.split(",")
@@ -256,7 +261,10 @@ window.FileTypes = {
 		return FileTypes.isFileType(filePath, ['doc', 'docx']);
 	},
 	isExcel: (filePath) => {
-		return FileTypes.isFileType(filePath, ['xsl', 'xsls']);
+		return FileTypes.isFileType(filePath, ['xsl', 'xslx']);
+	},
+	isPPT: (filePath) => {
+		return FileTypes.isFileType(filePath, ['ppt', 'pptx']);
 	},
 	isPic: (filePath) => {
 		return FileTypes.isFileType(filePath, ['png', 'gif', 'jpg', 'jpeg', 'tiff']);

@@ -87,8 +87,6 @@ class LibraryTab extends React.Component {
             visibility,
             answered_by,
             //
-            limit,
-            //
             exact_orgs: true,
             //
             offset: isNew ? 0 : this.refs.root.list.length,

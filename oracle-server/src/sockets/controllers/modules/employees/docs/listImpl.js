@@ -12,7 +12,8 @@ module.exports = async (
 		inc_fragment,
 		singular,
 		attrs,
-		isContract = false
+		isContract = false,
+		isExpense = false,
 	}
 ) => {
 	console.log('data', data);
@@ -70,6 +71,7 @@ module.exports = async (
 		//
 		exact_orgs,
 		isContract,
+		isExpense,
 	});
 	
 	const singularQueryName = singular.replace('/', '_').replace(' ', '');
@@ -151,7 +153,59 @@ module.exports = async (
                                   count
                               }
                           }
-                      ` : `
+                      ` :
+											isExpense ? `
+													${listRename ? `${listRename}:` : ``}${listName}(
+                            where: {
+                                removed: {_eq: ${removed}}
+                            },
+                            order_by: {date_submitted: desc_nulls_last}
+                          ){
+                              ${inc_fragment({removed})}
+                          }
+                          ${listRename || listName}_no_expiry_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_is_null: true}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+                          ${listRename || listName}_expired_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_lte: "now()"}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+                          ${listRename || listName}_mon_expiry_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_gt: "now()", _lte: "${mon}"}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+                          ${listRename || listName}_2mon_expiry_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_gt: "${mon}", _lte: "${mon2}"}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+                          ${listRename || listName}_3mon_expiry_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_gt: "${mon2}", _lte: "${mon3}"}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+                          ${listRename || listName}_4mon_expiry_aggregate:${listName}_aggregate(where: {
+                              removed: {_eq: ${removed}}, date_submitted: {_gt: "${mon3}"}
+                          }){
+                              aggregate{
+                                  count
+                              }
+                          }
+											` : `
                           ${listRename ? `${listRename}:` : ``}${listName}(
                             where: {
                                 removed: {_eq: ${removed}}

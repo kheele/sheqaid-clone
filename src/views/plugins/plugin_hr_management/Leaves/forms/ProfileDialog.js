@@ -80,6 +80,7 @@ class Controls extends AEmployeeDocControls {
 		const {
 			created_at,
 			doc,
+			doc_fitness_certificate,
 			employee,
 			type,
 			due_to,
@@ -111,7 +112,16 @@ class Controls extends AEmployeeDocControls {
 					type={['PDF', 'Word', 'Image']}
 					showOnlyIcon
 					readonly
-					className="col-lg-6 pull-left-3"
+					className="col-lg-6"
+				/>
+				<UploadButton
+					name="doc_fitness_certificate"
+					defaultValue={doc_fitness_certificate}
+					buttonTitle="Certificate Of Fitness"
+					type={['PDF', 'Word', 'Image']}
+					showOnlyIcon
+					readonly
+					className="col-lg-6"
 				/>
 			</div>
 		</div>;

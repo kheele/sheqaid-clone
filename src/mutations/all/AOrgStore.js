@@ -22,17 +22,23 @@ class AOrgStore extends AStore {
     async findByIdHRModuleDashboardStatsByLoggedImpl(selectedOrg, path, overridePath) {
         const {[this.key]: sess_my_org_id, org} = this;
         
-        const mon = Dates.formatDateSQL(new Date().addMonths(1));
-        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        const id = sess_my_org_id || selectedOrg.id;
+        const args = {
+            id
+        };
+        
+        if(path !== "expenses") {
+            args.mon = Dates.formatDateSQL(new Date().addMonths(1));
+            args.mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+            args.mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        }
         
         if (!overridePath) {
             path = `employees/docs/${path}`;
         }
         
         const findDashboard = sockets.of(`${path}/${org}`).fn('dashboard');
-        const id = sess_my_org_id || selectedOrg.id;
-        return findDashboard({id, mon, mon2, mon3}).then(res => {
+        return findDashboard(args).then(res => {
             console.log('findByIdHRModuleDashboardStatsByLoggedImpl', path, res);
             return res;
         });
@@ -56,6 +62,10 @@ class AOrgStore extends AStore {
     
     async findByIdHRLeavesDashboardStatsByLogged(selectedOrg) {
         return this.findByIdHRModuleDashboardStatsByLoggedImpl(selectedOrg, 'leaves');
+    }
+    
+    async findByIdHRExpensesDashboardStatsByLogged(selectedOrg) {
+        return this.findByIdHRModuleDashboardStatsByLoggedImpl(selectedOrg, 'expenses');
     }
     
     async findByIdHRLicensesDashboardStatsByLogged(selectedOrg) {
@@ -87,8 +97,8 @@ class AOrgStore extends AStore {
     async findByIdHRModuleDateRangeDashboardStatsByLoggedImpl(selectedOrg, path, overridePath) {
         const {[this.key]: sess_my_org_id, org} = this;
         
-        const monStart = new Date().addMonths(-4);
-        const monEnd = new Date().addMonths(12);
+        const monStart = new Date().addMonths(path === "expenses" ? -12 : -4);
+        const monEnd = path === "expenses" ? new Date() : new Date().addMonths(12);
         
         const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
         
@@ -119,6 +129,10 @@ class AOrgStore extends AStore {
     
     async findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedOrg) {
         return this.findByIdHRModuleDateRangeDashboardStatsByLoggedImpl(selectedOrg, 'leaves');
+    }
+    
+    async findByIdHRExpensesDateRangeDashboardStatsByLogged(selectedOrg) {
+        return this.findByIdHRModuleDateRangeDashboardStatsByLoggedImpl(selectedOrg, 'expenses');
     }
     
     async findByIdHRLicensesDateRangeDashboardStatsByLogged(selectedOrg) {

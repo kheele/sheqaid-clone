@@ -5,6 +5,7 @@ const findByIdEmployeeDateRangeDashboardStats = (
 		listName,
 		isContract,
 		type,
+		onCreateQuery,
 	}
 ) => {
 	const operationName = `findByIdEmployeeHR${name}DateRangeDashboardStatsQuery`;
@@ -28,6 +29,10 @@ const findByIdEmployeeDateRangeDashboardStats = (
 		// } else {
 		// 	tbl = "default_companies";
 		// }
+		
+		if(onCreateQuery) {
+			return onCreateQuery(data, operationName);
+		}
 		
 		return Promise.all(
 			dates.map(async date => {

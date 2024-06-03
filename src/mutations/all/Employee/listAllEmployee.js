@@ -12,7 +12,8 @@ const query = graphql`
     hr_employees_connection {
       edges {
         node {
-          ...EmployeeFragment
+          id
+#          ...EmployeeFragment
         }
       }
     }

@@ -9,7 +9,7 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {ANewDialog} from 'components/dialogs';
 
-import AuditItemTable from './AuditItemTable';
+import AuditFindingItemTable from './AuditFindingItemTable';
 
 import style from "./NewAuditDialog.lazy.css";
 import {Dates} from "utils/Dates";
@@ -339,7 +339,7 @@ class Controls extends React.Component {
 				className="row-table"
 				sectionClassName="row-findings"
 			>
-				<AuditItemTable ref="list" name="list" defaultValue={_list} isNew={!item}
+				<AuditFindingItemTable ref="list" name="list" defaultValue={_list} isNew={!item}
 				                onChange={this.form.onChange}/>
 			</Row>
 		</FormControls>);

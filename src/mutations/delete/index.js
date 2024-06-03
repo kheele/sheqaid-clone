@@ -18,3 +18,4 @@ export const deleteProxyNCRApprovingPerson = _delete("ncr/proxy/approving-person
 export const deleteProxyNCRResponsibleParty = _delete("ncr/proxy/responsible-party");
 export const deleteProxyNCRDocument = _delete("ncr/proxy/document");
 
+export const deleteOHSDoc = _delete("documents/ohs-docs");

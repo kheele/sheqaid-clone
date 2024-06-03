@@ -30,7 +30,7 @@ import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeM
 @observer
 class Dialog extends AEmployeeDocDialog {
     pageKey = "MedicalsDialog";
-    title = "Medicals";
+    title = "Medical Management";
     titleSingular = "Medical";
     permissionKey = "Medicals";
     module = "Medicals";

@@ -33,7 +33,7 @@ global.sendRelay = async (args) => {
     if(!args) return null;
     const {query, variables, operationName} = args;
 
-    const API_URL = process.env.HASURA_RELAY_ENDPOINT;
+    const API_URL = process.env.ENDPOINT_HASURA_RELAY;
     const result = await fetch(API_URL, {
         method: "POST",
         headers: {

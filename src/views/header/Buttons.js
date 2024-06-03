@@ -257,6 +257,8 @@ class SelectShortcutsBtn extends React.Component {
 					<NavItem action="Attendance" onClick={this.onClick} title="+ Attendance"/>}
 				{Permissions.allowMod("PPE") &&
 					<NavItem action="PPE" onClick={this.onClick} title="+ PPE"/>}
+				{Permissions.allowMod("PPE") &&
+					<NavItem action="PPE" onClick={this.onClick} title="+ Request "/>}
 				{/*Permissions.allowOther("Planned Job Observations") && <NavItem action="Job Observation" onClick={this.onClick} title="+ Planned Job Observation"/>*/}
 			</div>
 		}).open();

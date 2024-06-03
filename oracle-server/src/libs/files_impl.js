@@ -1,9 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-const {fileTypeFromBuffer} = require('./file-type');
+// const { fileTypeFromBuffer } = require('./file-type');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const mime = require('mime');
+const { Readable } = require('stream');
 // const faceapi = require('face-api.js');
 // const canvas = require('canvas');
 // patch nodejs environment, we need to provide an implementation of
@@ -25,42 +26,27 @@ const createBuffer = (datauri_or_buffer) => {
 	}
 };
 
-const getContentType = async (datauri_or_buffer) => {
-	if (typeof datauri_or_buffer === 'string') {
-		const parts = datauri_or_buffer.split(',');
-		return parts[0].replace('data:', '').split(';')[0];
-	} else {
-		try {
-			const res = await fileTypeFromBuffer(datauri_or_buffer);
-			return res.contentType;
-		} catch (err) {
-			console.log('getContentType err', err);
-		}
-	}
+const getContentType = (datauri_or_buffer) => {
+	// if (typeof datauri_or_buffer === 'string') {
+	const parts = datauri_or_buffer.split(',');
+	return parts[0].replace('data:', '').split(';')[0];
+	// } else {
+	// 	try {
+	// 		const res = await fileTypeFromBuffer(datauri_or_buffer);
+	// 		return res.contentType;
+	// 	} catch (err) {
+	// 		console.log('getContentType err', err);
+	// 	}
+	// }
 };
 
 global.uploadFile = async (doc, filePath) => {
-	const {buffer, contentType} = doc;
-	const ext = mime.getExtension(contentType);
-	console.log('uploadFile', ext, contentType, buffer);
-	
-	const options = {
-		metadata: {
-			contentType,
-		}
-	};
-	
-	const newName = `${filePath}/doc.${ext}`;
-	
-	const storageBucket = admin.storage().bucket(DEFAULT_BUCKET);
-	let bucketFile = await storageBucket.file(newName);
-	return bucketFile.save(buffer, options).then(async () => {
-		const gcsUri = "gs://" + DEFAULT_BUCKET + "/" + newName;
-		const dlUrls = await bucketFile.getSignedUrl({
-			action: 'read',
-			expires: '03-17-2099',
-		});
-		return {gcsUri, dlUrls};
+	return socketFileUploader.emit('emit', {
+		path: 'uploadFile',
+		data: [doc, filePath],
+	}).then(res => {
+		console.log('uploadFile res', res);
+		return res;
 	});
 };
 //</editor-fold>
@@ -75,14 +61,14 @@ exports.loadFaceModels = () => {
 		faceapi.nets.tinyFaceDetector.loadFromDisk('./models'),
 		faceapi.nets.mtcnn.loadFromDisk('./models'),
 		//others
-//        faceapi.nets.faceLandmark.loadFromDisk('./models'),
-//        faceapi.nets.faceLandmarkTinyModel.loadFromDisk('./models'),
-//        faceapi.nets.faceRecognition.loadFromDisk('./models'),
-//        faceapi.nets.faceExpression.loadFromDisk('./models')
+		//        faceapi.nets.faceLandmark.loadFromDisk('./models'),
+		//        faceapi.nets.faceLandmarkTinyModel.loadFromDisk('./models'),
+		//        faceapi.nets.faceRecognition.loadFromDisk('./models'),
+		//        faceapi.nets.faceExpression.loadFromDisk('./models')
 
-//        faceapi.nets.faceRecognitionNet.loadFromDisk('./models'),
-//        faceapi.nets.faceLandmark68Net.loadFromDisk('./models'),
-//        faceapi.nets.ssdMobilenetv1.loadFromDisk('./models')
+		//        faceapi.nets.faceRecognitionNet.loadFromDisk('./models'),
+		//        faceapi.nets.faceLandmark68Net.loadFromDisk('./models'),
+		//        faceapi.nets.ssdMobilenetv1.loadFromDisk('./models')
 	]);
 };
 // </editor-fold>
@@ -100,7 +86,7 @@ exports.loadImage = async (bucketFile, uid) => {
 			resolve();
 		}).pipe(fs.createWriteStream(tempFile));
 	});
-	
+
 	const userImage = await canvas.loadImage(tempFile);
 	return userImage;
 };
@@ -123,10 +109,10 @@ exports.deleteTmpImage = (uid) => {
 
 //<editor-fold desc="wordPreviewUrl">
 global.wordPreviewUrl = async (dataUrl) => {
-	console.log('wordPreviewUrl', dataUrl)
+	// console.log('wordPreviewUrl', dataUrl)
 	if (!dataUrl)
 		throw new Error('No source file supplied.');
-	
+
 	const new_name = `docs-office-preview/docx`;
 	return uploadFile(dataUrl, new_name);
 };
@@ -134,35 +120,45 @@ global.wordPreviewUrl = async (dataUrl) => {
 
 //<editor-fold desc="excelPreviewUrl">
 global.excelPreviewUrl = async (dataUrl) => {
-	console.log('excelPreviewUrl', dataUrl)
+	// console.log('excelPreviewUrl', dataUrl)
 	if (!dataUrl)
 		throw new Error('No source file supplied.');
-	
+
 	const new_name = `docs-office-preview/excel`;
 	return uploadFile(dataUrl, new_name);
 };
 //</editor-fold>
 
+//<editor-fold desc="pptPreviewUrl">
+global.pptPreviewUrl = async (dataUrl) => {
+	// console.log('pptPreviewUrl', dataUrl)
+	if (!dataUrl)
+		throw new Error('No source file supplied.');
+
+	const new_name = `docs-office-preview/ppt`;
+	return uploadFile(dataUrl, new_name);
+};
+//</editor-fold>
+
 //<editor-fold desc="uploadFilesUpdate">
-global.uploadFilesUpdate = async ({id, doc, key, new_name, onUpdate}) => {
+global.uploadFilesUpdate = async ({ id, doc, key, new_name, onUpdate }) => {
 	if (!doc || !new_name) {
 		return;
 	}
-	
+
 	const attrs = {};
-	
-	console.log('uploadFilesUpdate', doc);
-	
-	if (doc.buffer) {
-		const {buffer, contentType} = doc;
-		doc.buffer = Buffer.from(buffer.data);
+
+	// console.log('uploadFilesUpdate', doc);
+
+	const { buffer } = doc;
+	if (buffer) {
 		key = key || 'doc';
-		
+
 		attrs[key] = await uploadFile(doc, new_name);
 	}
-	
+
 	if (Object.keys(attrs).isNotEmpty()) {
-		await onUpdate({id, ...attrs});
+		await onUpdate({ id, ...attrs });
 	}
 };
 //</editor-fold>

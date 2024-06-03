@@ -5,6 +5,7 @@ const findByIdEmployeeDashboardStats = (
 		listName,
 		isContract,
 		type,
+		onCreateQuery,
 		mapResults,
 	}
 ) => {
@@ -32,9 +33,15 @@ const findByIdEmployeeDashboardStats = (
 		// 	tbl = "default_companies";
 		// }
 		
-		let promise = getGraphQLOne({
-			variables: {id, mon, mon2, mon3},
-			query: `
+		console.log('socket.decodedIdToken', socket.request.session.decodedIdToken)
+		
+		let promise;
+		if(onCreateQuery) {
+			promise = onCreateQuery(data, operationName);
+		} else {
+			promise = getGraphQLOne({
+				variables: {id, mon, mon2, mon3},
+				query: `
 	      query ${operationName}($id: bigint, $mon: date, $mon2: date, $mon3: date) {
 	        hr_employees(where: {id: {_eq: $id}}) {
             id
@@ -107,8 +114,9 @@ const findByIdEmployeeDashboardStats = (
           }
 	      }
 	    `,
-			operationName,
-		});
+				operationName,
+			});
+		}
 		
 		if (mapResults) {
 			promise = promise.then(mapResults(id));

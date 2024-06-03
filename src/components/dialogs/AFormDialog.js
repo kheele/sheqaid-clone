@@ -343,6 +343,20 @@ class AFormDialog extends React.Component {
 		const {style} = document.documentElement;
 		const attr = `--${this.pageKey}-dialog-width`;
 		style.setProperty(attr, w);
+		// this.setCssVar(`${this.pageKey}-dialog-width`, w);
+	}
+	
+	set cssHeight(w) {
+		const {style} = document.documentElement;
+		const attr = `--${this.pageKey}-dialog-height`;
+		style.setProperty(attr, w);
+		// this.setCssVar(`${this.pageKey}-dialog-height`, w);
+	}
+	
+	setCssVar(attr, val) {
+		const {style} = document.documentElement;
+		attr = `--${attr}`;
+		style.setProperty(attr, val);
 	}
 }
 

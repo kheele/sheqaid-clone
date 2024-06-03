@@ -96,12 +96,19 @@ class Storage {
 //                    }
 	    if(currentUser) {
 		    this.attrs.set("loggedUserAuth", currentUser);
-		    return currentUser.getIdTokenResult(true).then(idTokenResult => {
-			    this.idTokenResult = idTokenResult;
-		    }).catch(async err => {
-			    console.error(err)
-		    });
+		    return this.updateIdTokenResult(currentUser);
 	    }
+    }
+    
+    async updateIdTokenResult(currentUser) {
+        if(currentUser) {
+            return currentUser.getIdTokenResult(true).then(idTokenResult => {
+                this.idTokenResult = idTokenResult;
+                return idTokenResult;
+            }).catch(async err => {
+                console.error(err)
+            });
+        }
     }
 
     set loggedUserAuthChecked(val) {

@@ -78,3 +78,5 @@ export const insertProxyNCRResponsibleParty = create("ncr/proxy/responsible-part
 export const insertProxyNCRDocument = create("ncr/proxy/document");
 // export const insertProxyJobPositionNCRAssignedPerson = create("ncr/proxy/job-position_assigned-person", crudUtils);
 
+export const insertOHSDoc = create("documents/ohs-docs");
+

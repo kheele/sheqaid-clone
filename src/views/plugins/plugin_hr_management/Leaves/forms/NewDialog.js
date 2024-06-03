@@ -116,6 +116,7 @@ class Controls extends React.Component {
 
 		const {
 			doc, //
+			doc_fitness_certificate, //
 			employee,//
 			type,//
 			due_to,//
@@ -129,6 +130,7 @@ class Controls extends React.Component {
 		const data = {
 			employee_id: (embeddedEmployee || employee).id,
 			doc: doc && doc.path,
+			doc_fitness_certificate: doc_fitness_certificate && doc_fitness_certificate.path,
 
 			date: Dates.formatTimestampSQL(date),
 			days_booked,
@@ -229,14 +231,22 @@ class Controls extends React.Component {
 			<Row
 				rendered
 				idx={3}
-				title={`${++idx}. Proof Of Sick Note`}
+				title={`${++idx}. Documents`}
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 				onFormNext={onFormNext}
 			>
 				<UploadButton
 					name="doc"
-					buttonTitle="Upload File (PDF, Word or Photo)"
+					buttonTitle="Proof Of Sick Note (PDF, Word or Photo)"
+					type={['PDF', 'Word', 'Image']}
+					showOnlyIcon
+					className="col-lg-12"
+					onChange={this.form.onChange}
+				/>
+				<UploadButton
+					name="doc_fitness_certificate"
+					buttonTitle="Certificate Of Fitness (PDF, Word or Photo)"
 					type={['PDF', 'Word', 'Image']}
 					showOnlyIcon
 					className="col-lg-12"

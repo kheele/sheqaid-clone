@@ -1,5 +1,4 @@
 let {orgs_fragment} = require("../../../graphql/Fragments");
-const {audit_details_fragment} = require("./audits/commons");
 
 //<editor-fold desc="listImpl">
 module.exports = (
@@ -14,7 +13,7 @@ module.exports = (
 	}
 ) => {
 	return async (socket, data) => {
-		console.log('data', data)
+		console.log('data', data);
 		
 		let {
 			offset = 0,

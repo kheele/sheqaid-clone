@@ -29,7 +29,7 @@ import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave
 @observer
 class Dialog extends AEmployeeDocDialog {
     pageKey = "LeavesDialog";
-    title = "Leaves";
+    title = "Leave Management";
     titleSingular = "Leave";
     permissionKey = "Leaves";
     module = "Leaves";

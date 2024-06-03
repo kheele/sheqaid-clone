@@ -198,8 +198,16 @@ exports.user_personal_details_fragment = user_personal_details_fragment;
 const asset_basic_details_fragment = `
     id
     created_at
-    status
     written_off
+    
+    #computeds
+    status
+    monitoring_measurement_type
+    monitoring_measurement_unit
+    maintenance_plan_cost
+    maintenance_last_completed_date
+    calibration_last_completed_date
+
     profile_pic:photo_list(where: {removed: {_eq: false}, is_default: {_eq: true}}){
         id
         doc    

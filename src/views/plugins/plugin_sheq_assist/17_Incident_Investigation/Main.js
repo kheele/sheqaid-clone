@@ -2,6 +2,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
+import { Button } from "components/inputs";
+import { PageTitle } from "components";
+import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
 import APage from "views/APage";
 
 import DashboardTab from './DashboardTab';
@@ -53,11 +56,15 @@ class Main extends APage {
 		const {permissionKey} = this.props;
 		const {isEmployee} = storage.is;
 		return (<div key="_17_Incident_Investigation-page" id="_17_Incident_Investigation-page" className={this.classNames}>
-			<div key="pageTitle" className="page-title">
-				{this.renderBackBtn()}
-				<h3 key="title">Incident Investigation</h3>
-			</div>
-			<Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
+			<PageTitle title="Incident Investigation" renderBackBtn={this.renderBackBtn}>
+                <Button
+                    text="OHS Documents"
+                    hoverText="OHS Act, Legal register, etc"
+                    className="btn btn-primary pull-right"
+                    onClick={this.onViewOHSDocuments}
+                />
+            </PageTitle>
+            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
 			      onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
 				{!isEmployee && <DashboardTab ref="dashboard" title="Dashboard" path={this.path}/>}
 				<QuickIncidentsTab ref="quickIncidents" title="Quick Incidents" path={this.path}/>
@@ -66,6 +73,7 @@ class Main extends APage {
 				{!isEmployee && <CorrectiveActionsTab ref="correctiveActions" title="Corrective Actions" path={this.path}/>}
 				<ManHoursTab ref="manHoursTab" title="Man Hours" path={this.path}/>
 			</Tabs>
+            <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist" module="_17_Incident_Investigation"/>
 		</div>);
 	}
 }

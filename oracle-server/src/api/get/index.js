@@ -1,15 +1,15 @@
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT} = process.env;
+const {ENDPOINT_CONTRACTORS, ENDPOINT_HR} = process.env;
 
 const getUserUidByUsername = async (username, access_type) => {
     if(access_type === 'ContractorUser') {
-        return fetch(`${CONTRACTORS_ENDPOINT}api/callables/get/getUserUidByUsername`, {
+        return fetch(`${ENDPOINT_CONTRACTORS}api/callables/get/getUserUidByUsername`, {
             method: "POST",
             body: username,
         }).then(res => res.json());
     }
     if(access_type === 'Staff') {
         return null;//TODO: deploy HR Server
-        // return fetch(`${HR_ENDPOINT}api/callables/get/getUserUidByUsername`, {
+        // return fetch(`${ENDPOINT_HR}api/callables/get/getUserUidByUsername`, {
         //     method: "POST",
         //     body: username,
         // }).then(res => res.json());

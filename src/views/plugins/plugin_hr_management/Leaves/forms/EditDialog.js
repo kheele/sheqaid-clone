@@ -129,6 +129,7 @@ class Controls extends React.Component {
 
 		const {
 			doc,
+			doc_fitness_certificate,
 			employee,
 			type,
 			due_to,
@@ -154,6 +155,7 @@ class Controls extends React.Component {
 		ShouldUpdate.check(data, old_data, employee_comments, 'employee_comments');
 		ShouldUpdate.check(data, old_data, notes, 'notes');
 		ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+		ShouldUpdate.checkFile(data, old_data, doc_fitness_certificate, 'doc_fitness_certificate');
 
 		if (Object.keys(data).isEmpty()) {
 			infoDialog.open("Nothing changed!");
@@ -200,6 +202,7 @@ class Controls extends React.Component {
 				id, data: {
 					created_at,
 					doc,
+					doc_fitness_certificate,
 					employee,
 					type, due_to, date, expiry_date, days_booked, reason,
 					employee_comments, notes
@@ -253,14 +256,23 @@ class Controls extends React.Component {
 				</div>
 				<div className="row row-doc">
 					<label>
-						{++idx}. Proof Of Sick Note
+						{++idx}. Documents
 						<Clickable idx={3} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
 					</label>
 					<div className="row sec-group">
 						<UploadButton
 							name="doc"
 							defaultValue={doc}
-							buttonTitle="Upload File (PDF, Word or Photo)"
+							buttonTitle="Proof Of Sick Note (PDF, Word or Photo)"
+							type={['PDF', 'Word', 'Image']}
+							showOnlyIcon
+							className="col-lg-12"
+							onChange={this.form.onChange}
+						/>
+						<UploadButton
+							name="doc_fitness_certificate"
+							defaultValue={doc_fitness_certificate}
+							buttonTitle="Certificate Of Fitness (PDF, Word or Photo)"
 							type={['PDF', 'Word', 'Image']}
 							showOnlyIcon
 							className="col-lg-12"

@@ -1,6 +1,6 @@
 const io = require('socket.io-client');
 
-const {CONTRACTORS_ENDPOINT, HR_ENDPOINT, CONVERT_BINARY_ENDPOINT} = process.env;
+const {ENDPOINT_CONTRACTORS, ENDPOINT_HR, ENDPOINT_FILE_UPLOADER} = process.env;
 
 const connectSocket = (key, domain) => {
     global[key] = io(domain, {
@@ -27,7 +27,7 @@ const connectSocket = (key, domain) => {
     });
 
     socket.on('connect_error', (err) => {
-        console.log(`Connection error to ${key} server:`, err);
+        console.log(`Connection error to ${key} server:`, domain, err.message);
     });
 
     socket.on('disconnect', () => {
@@ -55,8 +55,8 @@ const connectSocket = (key, domain) => {
     };
 };
 
-connectSocket('socketClientContractor', CONTRACTORS_ENDPOINT);
-connectSocket('socketClientHR', HR_ENDPOINT);
-// connectSocket('socketConvertBinary', CONVERT_BINARY_ENDPOINT);
+connectSocket('socketClientContractor', ENDPOINT_CONTRACTORS);
+connectSocket('socketClientHR', ENDPOINT_HR);
+connectSocket('socketFileUploader', ENDPOINT_FILE_UPLOADER);
 
 // require('./client-sockets-test-kompanion')(connectSocket);

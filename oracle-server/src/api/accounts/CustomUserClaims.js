@@ -17,12 +17,12 @@ global.onSetCustomUserClaims = async ({idToken, csrfToken, access_type}) => {
         });
     }
 
-    let res = await loginSession({idToken, csrfToken, access_type});
+    let res = await loginSession({idToken, csrfToken});//{sessionCookie, options, decodedIdToken}
     // console.log(`/${access_type} decodedIdToken`, decodedIdToken)
     if (!res) return;
     const {sessionCookie, options, decodedIdToken} = res;
 
-    res = await onSetCustomUserClaims({idToken, csrfToken}, decodedIdToken, access_type);
+    res = await onSetCustomUserClaims(decodedIdToken, access_type);//{loggedUser, customToken, customClaims}
     // console.log('/User data', data)
-    return {sessionCookie, options, ...res};
+    return {sessionCookie, options, decodedIdToken, ...res};
 };

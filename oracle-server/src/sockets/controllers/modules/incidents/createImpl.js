@@ -116,33 +116,33 @@ module.exports = async (socket, input) => {
     if(person_involved_list) {
         person_involved_list.data.forEach(({person_involved_other}) => {
         if(person_involved_other) {
-            crudUtils.injectCreate(person_involved_other.data);
+            socket.injectCreate(person_involved_other.data);
         }
         });
     }
     if(witness_list) {
         witness_list.data.forEach(({witness_other}) => {
         if(witness_other) {
-            crudUtils.injectCreate(witness_other.data);
+            socket.injectCreate(witness_other.data);
         }
         });
     }
     if(distribution_list) {
         distribution_list.data.forEach(({other_person}) => {
         if(other_person) {
-            crudUtils.injectCreate(other_person.data);
+            socket.injectCreate(other_person.data);
         }
         });
     }
 
     if(person_reported_to_other && person_reported_to_other.data) {
-        crudUtils.injectCreate(person_reported_to_other.data);
+        socket.injectCreate(person_reported_to_other.data);
     }
     if(person_reporting_other && person_reporting_other.data) {
-        crudUtils.injectCreate(person_reporting_other.data);
+        socket.injectCreate(person_reporting_other.data);
     }
     if(person_injured_other && person_injured_other.data) {
-        crudUtils.injectCreate(person_injured_other.data);
+        socket.injectCreate(person_injured_other.data);
     }
 
     const res = await insertGraphQL({

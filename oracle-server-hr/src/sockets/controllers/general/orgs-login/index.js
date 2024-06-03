@@ -2,7 +2,7 @@
 eventManager.on("orgs/login", (socket, data = {}) => {
 	// console.log('data', data)
 	
-	const {auth_id, access_type} = socket.handshake.session;
+	const {auth_id, access_type} = socket.request.session;
 	
 	// const {client_id, project_id, site_id} = data;
 	

@@ -1,8 +1,8 @@
 import React from "react";
-import {observer} from 'mobx-react';
-import {computed, observable} from 'mobx';
+import { observer } from 'mobx-react';
+import { computed, observable } from 'mobx';
 
-import {ClearableInput} from './';
+import { ClearableInput } from './';
 
 import ASelectInput from './ASelectInput';
 
@@ -16,17 +16,22 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        let {className = ''} = this.props;
+        let { className = '', type, isOHSDocs } = this.props;
         className += ` SelectModuleInput form-control clearable-form-control`;
 
-        const {selectedClientModules: {[this.key]: list}} = storage.selected;
-        this.state.lists.list = list.filter(({module:{key}}) => this.includedList.contains(key)).map(value => ({label: value.module.title, value}));
+        const { selectedClientModules: { [this.key]: list } } = storage.selected;
+
+        if (isOHSDocs) {
+            this.state.lists.list = list.filter(({ module: { key } }) => this.includedOHSDocList.contains(key)).map(value => ({ label: value.module.title, value }));
+        } else {
+            this.state.lists.list = list.filter(({ module: { key } }) => this.includedList.contains(key)).map(value => ({ label: value.module.title, value }));
+        }
 
         console.log('list', this.list.slice())
 
@@ -34,8 +39,8 @@ class SelectInput extends ASelectInput {
             ref: "input",
             key: new Date().getTime(),
             name: "module",
-            type: "select",
-            placeholder: "Module...",
+            type: type || "select",
+            placeholder: "Module(s)...",
             values: this.list,
             returnValue: true,
             add: false,
@@ -47,28 +52,33 @@ class SelectInput extends ASelectInput {
 
     @computed
     get selectedItem() {
-        const {defaultValue} = this.props;
-        if(defaultValue) {
-            if(defaultValue.label && defaultValue.value) {
+        const { defaultValue } = this.props;
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
-            if(isString(defaultValue)) {
-                return this.list.find(({label, value: {module: {key}}}) => key === defaultValue);
+            if (isString(defaultValue)) {
+                return this.list.find(({ label, value: { module: { key } } }) => key === defaultValue);
             }
-            let {title} = defaultValue.module;
+            let { title } = defaultValue.module;
             const label = title;
             console.log('selectedVal', label)
-            return {value: defaultValue, label};
+            return { value: defaultValue, label };
         }
         return null;
     }
 
     render() {
-        const {props} = this.state;
-        if(!props) return null;
-        if(this.includedList.isEmpty()) return null;
+        const { props } = this.state;
+        if (!props) return null;
+        const { isOHSDocs } = props;
+        if (isOHSDocs) {
+            if (this.includedOHSDocList.isEmpty()) return null;
+        } else {
+            if (this.includedList.isEmpty()) return null;
+        }
 
-        return <ClearableInput {...props}/>;
+        return <ClearableInput {...props} />;
     }
 }
 

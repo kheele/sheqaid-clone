@@ -13,7 +13,7 @@ process.on('uncaughtException', async (err) => {
             <p><b>------Error Stack Details------</b></p>\n
             <p>${err.stack}</p>`
     };
-    EmailUtils.send(opts);
+    // EmailUtils.send(opts);
 });
 
 require('./globals.js');

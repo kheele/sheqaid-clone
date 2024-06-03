@@ -3,26 +3,44 @@ const findByIdImpl = require("./findByIdImpl");
 //<editor-fold desc="updateImpl">
 module.exports = (
     {
-        name, 
-        tbl, 
-        details_fragment, 
+        name,
+        tbl,
+        details_fragment,
         orgs_fragment,
+        uploadUpdate,
     }
 ) => {
-	return async (socket, attrs) => {
-		console.log('updateImpl:', attrs);
-        const {id} = attrs;
+    return async (socket, attrs) => {
+        console.log('updateImpl:', attrs);
+        const { id } = attrs;
         delete attrs.id;
-        
+
         const findById = findByIdImpl({
-            name, 
-            tbl, 
+            name,
+            tbl,
             details_fragment,
             orgs_fragment,
         })
-        
+
         const item = await findById(socket, id);
         if (!item) return;
+
+        if (isFunction(uploadUpdate)) {
+            const { new_name, key } = uploadUpdate(id);
+            const docKey = key || 'doc';
+            let { [docKey]: doc } = attrs;
+
+            if (doc) {
+                await uploadFilesUpdate({
+                    id,
+                    doc,
+                    new_name,
+                    onUpdate: async ({ id, ...attrsUpdate }) => {
+                        attrs[docKey] = attrsUpdate[docKey];
+                    }
+                });
+            }
+        }
 
         const res = await updateGraphQL({
             mutation: `
@@ -34,10 +52,10 @@ module.exports = (
             `,
             operationName: `update${name}Mutation`,
             id,
-		    attrs,
+            attrs,
         });
 
-        if(res) {
+        if (res) {
             return findById(socket, res.id);
         }
     };

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {forwardRef, useImperativeHandle, useState} from "react";
 import {Button} from "./inputs";
 
-const Comp = forwardRef(({expiry_date, value, text, name, onChange, items}, ref) => {
+const Comp = forwardRef(({expiry_date, value, text: defaultName, name, onChange, items}, ref) => {
 	const [view, setView] = useState(value);
 	
 	// <editor-fold desc="useImperativeHandle funs">
@@ -19,7 +19,7 @@ const Comp = forwardRef(({expiry_date, value, text, name, onChange, items}, ref)
 	return (
 		<ButtonGroup variant="contained" color="white" ariaLabel="elevation buttons" className="border-radius-20">
 			{!items && <>
-				<ViewBtn expiry_date={expiry_date} text={text} value={view} onChange={onChange}
+				<ViewBtn expiry_date={expiry_date} text={defaultName} value={view} onChange={onChange}
 				         className="no-border border-radius-l-20 bg-white color-888"/>
 				<ViewBtn expiry_date={expiry_date} text={name} value={view} onChange={onChange}
 				         className="no-border border-l-1 border-radius-r-20 bg-white color-888"/>
@@ -29,7 +29,7 @@ const Comp = forwardRef(({expiry_date, value, text, name, onChange, items}, ref)
 				text={text}
 				value={view}
 				onChange={onChange}
-				className={`no-border border-radius-l-${n === 0 ? 20 : 0} border-radius-r-${n === items.length-1 ? 20 : 0} bg-white color-888`}
+				className={`no-border ${n > 0 && n < items.length-1 ? 'no-border-radius' : ''} border-radius-l-${n === 0 ? 20 : 0} border-radius-r-${n === items.length-1 ? 20 : 0} bg-white color-888`}
 			/>)}
 		</ButtonGroup>
 	);

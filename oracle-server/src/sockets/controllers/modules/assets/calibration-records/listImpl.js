@@ -77,111 +77,224 @@ module.exports = async (socket, data) => {
 	});
 	
 	if (view === 'Asset') {
-		//<editor-fold desc="ByGroup">
-		return listGraphQL({
-			query: `
-                query listAllByGroupAssetCalibrationRecordByLoggedQuery {
-                  assets(
-                    where: {
-                      calibration_record_list_aggregate: {
-                        count: {
-                          predicate: {_gt: 0},
-                          filter: {removed: {_eq: ${removed}}${filter}}
-                        }
-                      },
-                      calibration_record_list: {removed: {_eq: ${removed}}${filter}}
-                      ${filterAsset}
-                    }
-                    order_by: {asset_detail:{name: asc}},
-                    offset: ${offset},
-                    ${limit > 0 ? `,limit: ${limit}` : ''}
-                  ) {
-                    ${asset_basic_details_fragment}
-                    calibration_record_list(where: {removed: {_eq: ${removed}}}, order_by: {next_calibration_date: desc_nulls_last}){
-                      ${calibration_record_inc_fragment}
-                    }
-                    calibration_record_list_no_expiry_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_is_null: true}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    calibration_record_list_expired_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_lte: "now()"}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    calibration_record_list_mon_expiry_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_gt: "now()", _lte: "${mon}"}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    calibration_record_list_2mon_expiry_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_gt: "${mon}", _lte: "${mon2}"}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    calibration_record_list_3mon_expiry_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_gt: "${mon2}", _lte: "${mon3}"}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    calibration_record_list_4mon_expiry_aggregate:calibration_record_list_aggregate(where: {
-                      removed: {_eq: ${removed}}, next_calibration_date: {_gt: "${mon3}"}
-                    }){
-                      aggregate{
-                        count
-                      }
-                    }
-                    ${orgs_fragment}
-                  }
-                }
-            `,
-		});
-		//</editor-fold>
-	} else {
-		//<editor-fold desc="ByEach">
-		return listGraphQL({
-			query: `
-                query listAllByEachAssetCalibrationRecordByLoggedQuery {
-                  asset_calibration_record(
-                    where: {
-                      removed: {_eq: ${removed}},
-                      ${filter},
-                      ${filterAsset}
-                    },
-                    order_by: {next_calibration_date: asc},
-                    offset: ${offset},
-                    ${limit > 0 ? `,limit: ${limit}` : ''}
-                  ) {
-                    id
-                    removed
-                    next_calibration_interval
-                    next_calibration_date
-                    
-                    asset{
-                      ${asset_basic_details_fragment}
-                      calibration_record_list(where: {removed: {_eq: ${removed}}}){
-                        id
-                        next_calibration_interval
-                        next_calibration_date
-                      }
-                      ${orgs_fragment}
-                    }
-                  }
-                }
-            `,
-		});
-		//</editor-fold>
-	}
+		return viewByAsset({removed, filter, filterAsset, offset, limit, mon, mon2, mon3});
+	} else if(view === 'Upcoming Calibrations') {
+		return viewUpcomingCalibrations({removed, filter, filterAsset, offset, limit, mon, mon2, mon3});
+  } else if(view === 'Past Calibrations') {
+		return viewPastCalibrations({removed, filter, filterAsset, offset, limit, mon, mon2, mon3});
+  } else if(view === 'Calibration History') {
+		return viewCalibrationHistory({removed, filter, filterAsset, offset, limit, mon, mon2, mon3});
+  }
 }
 //</editor-fold>
+
+function viewByAsset({removed, filter, filterAsset, offset, limit, mon, mon2, mon3}) {
+  return listGraphQL({
+    query: `
+      query listAllByGroupAssetCalibrationRecordByLoggedQuery {
+        assets(
+          where: {
+            calibration_record_list_aggregate: {
+              count: {
+                predicate: {_gt: 0},
+                filter: {removed: {_eq: ${removed}}${filter}}
+              }
+            },
+            calibration_record_list: {removed: {_eq: ${removed}}${filter}}
+            ${filterAsset}
+          }
+          order_by: {asset_detail:{name: asc}},
+          offset: ${offset},
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          ${asset_basic_details_fragment}
+
+          calibration_last_completed_date
+
+          upcoming_calibration_list:calibration_record_list(
+            where: {
+              removed: {_eq: false}, 
+              next_calibration_date: {_gt: "now()"}, 
+              is_completed:{_eq: false}
+            }, 
+            order_by: {next_calibration_date: desc_nulls_last}
+          ){
+            ${calibration_record_inc_fragment}
+          }
+          last_calibration_list:calibration_record_list(
+            where: {removed: {_eq: false}, next_calibration_date: {_lte: "now()"}},
+            order_by: {next_calibration_date: desc_nulls_last},
+            limit: 1
+          ){
+            ${calibration_record_inc_fragment}
+          }
+
+          past_calibration_list_aggregate:calibration_record_list_aggregate(
+            where: {removed: {_eq: false}, next_calibration_date: {_lte: "now()"}}
+          ){
+            aggregate{
+              count
+            }
+          }
+          past_completed_before_calibration_list_aggregate:calibration_record_list_aggregate(
+            where: {
+              removed: {_eq: false}, 
+              next_calibration_date: {_lte: "now()"},
+              is_completed_before: {_eq: true}
+            }
+          ){
+            aggregate{
+              count
+            }
+          }
+          past_completed_after_calibration_list_aggregate:calibration_record_list_aggregate(
+            where: {
+              removed: {_eq: false}, 
+              next_calibration_date: {_lte: "now()"},
+              is_completed_after: {_eq: true}
+            }
+          ){
+            aggregate{
+              count
+            }
+          }
+
+          ${orgs_fragment}
+        }
+      }
+    `,
+  });
+}
+
+function viewUpcomingCalibrations({removed, filter, filterAsset, offset, limit, mon, mon2, mon3}) {
+  return listGraphQL({
+    query: `
+      query listAllUpcomingCalibrationsByLoggedQuery {
+        asset_calibration_record(
+          where: {
+            removed: {_eq: ${removed}},
+            next_calibration_date: {_gt: "now()"},
+            is_completed:{_eq: false},
+            ${filter},
+            ${filterAsset}
+          },
+          order_by: {next_calibration_date: asc},
+          offset: ${offset},
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          id
+          removed
+          next_calibration_interval
+          next_calibration_date
+          
+          asset{
+            ${asset_basic_details_fragment}
+            calibration_record_list(where: {removed: {_eq: false}}){
+              id
+              next_calibration_interval
+              next_calibration_date
+            }
+            ${orgs_fragment}
+          }
+        }
+      }
+    `,
+  });
+}
+
+function viewPastCalibrations({removed, filter, filterAsset, offset, limit, mon, mon2, mon3}) {
+  return listGraphQL({
+    query: `
+      query listAllPastCalibrationsByLoggedQuery {
+        asset_calibration_record(
+          where: {
+            removed: {_eq: ${removed}},
+            next_calibration_date: {_lte: "now()"},
+            ${filter},
+            ${filterAsset}
+          },
+          order_by: {next_calibration_date: asc},
+          offset: ${offset},
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          id
+          removed
+          next_calibration_interval
+          next_calibration_date
+
+          is_completed
+          is_completed_before
+          is_completed_after
+          completed_date
+          completed_day_count
+
+          calibration_list(where: {removed: {_eq: false}}, order_by: {calibration_date: desc}){
+            id
+            removed
+            calibrating_company
+            reference_standard
+            certificate_num
+            calibration_date
+          }
+          
+          asset{
+            ${asset_basic_details_fragment}
+            calibration_record_list(where: {removed: {_eq: false}}){
+              id
+              next_calibration_interval
+              next_calibration_date
+            }
+            ${orgs_fragment}
+          }
+        }
+      }
+    `,
+  });
+}
+
+function viewCalibrationHistory({removed, filter, filterAsset, offset, limit, mon, mon2, mon3}) {
+  return listGraphQL({
+    query: `
+      query listAllCalibrationHistoryByLoggedQuery {
+        asset_calibration_record_list(
+          where: {
+            removed: {_eq: ${removed}},
+            ${filter},
+            ${filterAsset}
+          },
+          order_by: {calibration_date: desc},
+          offset: ${offset},
+          ${limit > 0 ? `,limit: ${limit}` : ''}
+        ) {
+          id
+          removed
+          calibrating_company
+          reference_standard
+          certificate_num
+          calibration_date
+
+          scheduled_date
+          is_completed_after
+          is_completed_before
+          completed_day_count
+
+          calibration_record_id
+          calibration_record{
+            next_calibration_interval
+            next_calibration_date
+            
+            asset{
+              ${asset_basic_details_fragment}
+              calibration_record_list(where: {removed: {_eq: ${removed}}}){
+                id
+                next_calibration_interval
+                next_calibration_date
+              }
+              ${orgs_fragment}
+            }
+          }
+        }
+      }
+    `,
+  });
+}

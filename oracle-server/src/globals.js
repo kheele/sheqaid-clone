@@ -6,7 +6,7 @@ global.atob = require("atob");
 global.Blob = require('node-blob');
 global.ejs = require("ejs");
 global.fetch = require('node-fetch');
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 global.google = google;
 
 global.functions = require('firebase-functions');
@@ -62,6 +62,12 @@ global.admin = require('firebase-admin');
 admin.initializeApp();
 global.admin2 = admin.initializeApp(config2, 'admin2');
 global.admin_hr = admin.initializeApp(config_hr, 'admin_hr');
+
+const { Storage } = require("@google-cloud/storage");
+global.adminStorage = new Storage({
+	keyFilename: path.join(__dirname, "./firebase/service-account.json"),
+	projectId: "sheqsolve",
+});
 
 require('./libs/objects.util');
 require('./libs/date-utils');

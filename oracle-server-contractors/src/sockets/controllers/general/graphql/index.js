@@ -1,7 +1,7 @@
 
 eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
     // console.log('data', data)
-    const {auth_id} = socket.handshake.session;
+    const {auth_id} = socket.request.session;
     
     let {query, variables, token} = data;
     
@@ -31,7 +31,7 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
         delete variables.headers;
     }
     
-    return fetch(process.env.HASURA_RELAY_ENDPOINT, {
+    return fetch(process.env.ENDPOINT_HASURA_RELAY, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ eventManager.on("graphql/v1beta1/relay", (socket, data = {}) => {
 
 eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
     // console.log('data', data)
-    const {auth_id} = socket.handshake.session;
+    const {auth_id} = socket.request.session;
     
     const {mutation, query, variables, operationName, multi_queries, count, token} = data;
     
@@ -84,7 +84,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
     }
     
     if (mutation) {
-        return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+        return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +126,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
           });
     }
     
-    return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+    return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -142,7 +142,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
             throw err;
         }
     }).then(res => {
-        // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+        // console.log(process.env.ENDPOINT_HASURA_GRAPHQL, JSON.stringify(res)); // { data: ... }
         const {errors, data} = res;
         
         if (errors) {
@@ -191,7 +191,7 @@ eventManager.on("graphql/v1/graphql", (socket, data = {}) => {
 
 eventManager.on("graphql/api/rest/views", (socket, path) => {
     // console.log('data', path)
-    const {auth_id} = socket.handshake.session;
+    const {auth_id} = socket.request.session;
     
     let headers = {};
     
@@ -209,7 +209,7 @@ eventManager.on("graphql/api/rest/views", (socket, path) => {
         headers["X-Hasura-Role"] = "user";
     }
     
-    return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
+    return fetch(`${process.env.ENDPOINT_HASURA_REST}/${path}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

@@ -225,7 +225,7 @@ module.exports = async (socket, data) => {
                             count
                           }
                         }
-                        next_service_expired_list_aggregate: asset_maintenance_plan_aggregate(where: {asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, expired_service_hrs_or_km: {_eq: true}}) {
+                        next_service_expired_list_aggregate: asset_maintenance_plan_aggregate(where: {asset:{written_off: {_eq: false}, ${org_key}: {_eq: ${id}}}, is_expired_service_hrs_or_km: {_eq: true}}) {
                          aggregate {
                            count
                          }

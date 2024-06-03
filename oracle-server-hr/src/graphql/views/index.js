@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 
     const {body: path} = req;
 
-    fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
+    fetch(`${process.env.ENDPOINT_HASURA_REST}/${path}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

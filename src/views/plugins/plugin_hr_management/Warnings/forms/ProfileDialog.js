@@ -82,6 +82,7 @@ class Controls extends AEmployeeDocControls {
 			created_at,
 			issued_by,
 			type,
+			category_of_misconduct,
 			date,
 			expiry_date,
 			details,
@@ -94,10 +95,11 @@ class Controls extends AEmployeeDocControls {
 		return <div className="row item-wrapper padding-t-10 h-full">
 			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Warning Details</label>
 			<div className="row margin-l-10 margin-r-10 row-details">
-				<ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-4"/>
-				<ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-4"/>
+				<ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-12"/>
+				<ProfileField title="Category of Misconduct" name="category_of_misconduct" value={category_of_misconduct} type="select" className="col-lg-12"/>
+				<ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-6"/>
 				<ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date}
-				              className="col-lg-4"/>
+				              className="col-lg-6"/>
 				<ProfileField title="Warning Issued By" name="issued_by" value={issued_by}
 				              renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
 				<UploadButton

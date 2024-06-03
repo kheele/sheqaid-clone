@@ -32,7 +32,7 @@ class Cntr extends ACntr {
 			delete variables.headers;
 		}
 
-		return fetch(process.env.HASURA_RELAY_ENDPOINT, {
+		return fetch(process.env.ENDPOINT_HASURA_RELAY, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -71,7 +71,7 @@ class Cntr extends ACntr {
 		}
 
 		if (mutation) {
-			return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+			return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -108,7 +108,7 @@ class Cntr extends ACntr {
 			});
 		}
 
-		return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+		return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -117,7 +117,7 @@ class Cntr extends ACntr {
 			},
 			body: JSON.stringify({query, variables}),
 		}).then(res => res.json()).then(res => {
-			// console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+			// console.log(process.env.ENDPOINT_HASURA_GRAPHQL, JSON.stringify(res)); // { data: ... }
 			const {errors, data} = res;
 
 			if(errors) {
@@ -171,7 +171,7 @@ class Cntr extends ACntr {
 			}
 		}
 
-		return fetch(`${process.env.HASURA_REST_ENDPOINT}/${path}`, {
+		return fetch(`${process.env.ENDPOINT_HASURA_REST}/${path}`, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",

@@ -1,17 +1,11 @@
-
-
 const {Server} = require("socket.io");
-// const {createShardedAdapter } = require("@socket.io/redis-adapter");
-// const {createClient} = require("redis");
-const sharedSession = require("express-socket.io-session");
+const {createShardedAdapter,createAdapter } = require("@socket.io/redis-adapter");
+// const {createAdapter } = require("@socket.io/redis-streams-adapter");
 
 const controllers = require("./controllers");
 //api/accounts/sign: add catch and throw: 177
 
-// const pubClient = createClient({url: "redis://redis-server:6379"});
-// const subClient = pubClient.duplicate();
-
-exports.start = ({server, corsOptions, sessionMiddleware}) => {
+exports.start = async ({server, corsOptions, getRedisClient, sessionMiddleware, helmetMiddleware}) => {
 	// Handle server errors
 	server.on('error', (error) => {
 		if (error.syscall !== 'listen') {
@@ -35,29 +29,39 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 	server.on('listening', () => {
 		console.log('Server is now listening');
 	});
-
+	
+	const {pubClient, subClient} = getRedisClient();
+	
+	await Promise.all([
+		pubClient.connect(),
+		subClient.connect()
+	]);
+	
 	global.io = new Server(server, {
+		adapter: createAdapter(pubClient, subClient),
+		// adapter: createShardedAdapter(pubClient, subClient),
 		cors: corsOptions,
 		transports: ['websocket'],
-		// adapter: createShardedAdapter(pubClient, subClient),
 		connectionStateRecovery: {
 			// the backup duration of the sessions and the packets
 			maxDisconnectionDuration: 2 * 60 * 1000,
 			// whether to skip middlewares upon successful recovery
-			skipMiddlewares: true,
+			skipMiddlewares: false,
 		}
 	});
-	// io.engine.use(sessionMiddleware);
-	io.use(sharedSession(sessionMiddleware, {
-		autoSave:true
-	}));
+	
+	io.engine.use(helmetMiddleware);
+	io.engine.use(sessionMiddleware);
+	
 	io.use((socket, next) => {
-		// console.log('socket.handshake', socket.handshake);//
-		if(socket.handshake) {
-			const {session: {req: {headers, auth}}} = socket.handshake;
-			console.log('io.use session ip', headers);
-			console.log('io.use session token', auth);
-			const {token = null} = auth || {};
+		const {request, handshake} = socket;
+		if (handshake) {
+			// if (request) {
+			const {headers, auth} = handshake;
+			const {session} = request;
+			const {auth_id} = session;
+			// console.log('io.use session auth', auth);
+			const {token = null, uid, access_type} = auth || {};
 			if (token) {
 				// admin.auth().verifyIdToken(token).then(decodedIdToken => {
 				// 	console.log("decodedIdToken", decodedIdToken);
@@ -89,10 +93,11 @@ exports.start = ({server, corsOptions, sessionMiddleware}) => {
 
 		next();
 	});
-	// io.adapter(createAdapter(pubClient, subClient));
 
 	io.on('connection', (socket) => {
-		const {session} = socket.handshake;
+		// const {auth} = socket.handshake;
+		const {session} = socket.request;
+		// console.log(session);
 
 		const sessionId = session.id;
 		// the session ID is used as a room

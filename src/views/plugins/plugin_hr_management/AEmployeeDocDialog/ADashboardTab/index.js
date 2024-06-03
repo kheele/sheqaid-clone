@@ -9,8 +9,8 @@ import GridReportsLineChart from "./GridReportsLineChart";
 import MKBox from "components/MK/MKBox";
 import {findDOMNode} from "react-dom";
 import {execWhen} from "utils/UtilsFuns";
-import {TabledTopPanel} from "../../../../../components/tables";
-import {Button} from "../../../../../components/inputs";
+import {TabledTopPanel} from "components/tables";
+import {Button} from "components/inputs";
 
 @observer
 class DashboardTab extends React.Component {

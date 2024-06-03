@@ -14,7 +14,6 @@ import ExportNCRByGroupDialog from '../dialogs/ExportNCRDialog.js';
 
 import {NewNCRDialog, EditNCRDialog, ProfileNCRDialog} from '../forms';
 
-
 import style from "./NCRTab.lazy.css";
 import updateNCR from "mutations/all/NCR/updateNCR";
 

@@ -45,6 +45,7 @@ class Dialog extends ADialogTab {
 		this.onFilter = this.onFilter.bind(this);
 		this.onChangeViewExpiryDate = this.onChangeViewExpiryDate.bind(this);
 		
+		this.onBuildQuery && (this.onBuildQuery = this.onBuildQuery.bind(this));
 		this.loadDashboard && (this.loadDashboard = this.loadDashboard.bind(this));
 		
 		this.renderFilterNodeActive && (this.renderFilterNodeActive = this.renderFilterNodeActive.bind(this));
@@ -60,6 +61,9 @@ class Dialog extends ADialogTab {
 	// <editor-fold defaultstate="collapsed" desc="componentWillMount">
 	componentWillMount() {
 		style.use();
+		if(this.style) {
+			this.style.use();
+		}
 	}
 	
 	// </editor-fold>
@@ -67,6 +71,9 @@ class Dialog extends ADialogTab {
 	// <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
 	componentWillUnmount() {
 		style.unuse();
+		if(this.style) {
+			this.style.unuse();
+		}
 	}
 	
 	// </editor-fold>
@@ -190,12 +197,15 @@ class Dialog extends ADialogTab {
 	renderPage() {
 		const {hasSignatures, permissionKey, module} = this;
 		const {isRemoved} = this.props;
-		const {NewDialog, ProfileDialog, EditDialog, ExportDialog,} = this.dialogs;
+		const {NewDialog, ProfileDialog, EditDialog, ExportDialog, TabView: TabViewOverride} = this.dialogs;
+		
+		const TabViewComp = TabViewOverride || TabView;
 		
 		return (<>
-			<TabWrapper
-				ref="tabWrapper"
+			<TabViewComp
+				ref="tabView"
 				onUpdate={this.onUpdate}
+				onRemove={this.onRemove}
 				title={this.title}
 				titleSingular={this.titleSingular}
 				permissionKey={permissionKey}
@@ -228,9 +238,9 @@ class Dialog extends ADialogTab {
 	
 }
 
-// <editor-fold defaultstate="collapsed" desc="TabWrapper">
+// <editor-fold defaultstate="collapsed" desc="TabView">
 @observer
-class TabWrapper extends React.Component {
+class TabView extends React.Component {
 	
 	@observable
 	state = {index: 0};

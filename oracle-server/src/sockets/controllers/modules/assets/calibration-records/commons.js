@@ -30,6 +30,12 @@ exports.getVariablesAndQueryConfig = (
   let filterAsset = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
   let asset_detail_filter = [];
   
+  const isAsset = view === "Asset";
+  const isUpcoming = view === "Upcoming Calibrations";
+  const isPast = view === "Past Calibrations";
+  const isHistory = view === "Calibration History";
+  const isNotHistory = isAsset || isUpcoming || isPast;
+  
   if (name) {
     asset_detail_filter.push(`name: {_ilike: "%${name}%"}`);
   }
@@ -63,26 +69,49 @@ exports.getVariablesAndQueryConfig = (
     filterAsset.push(`status: {_eq: "${status}"}`);
   }
   
-  if (view === "Asset") {
+  if (isAsset) {
     if (asset_id) {
       filterAsset.push(`id: {_eq: ${asset_id}}`);
     }
     filterAsset = `,${filterAsset.join(',')}`;
-  } else {
+  } else if(isUpcoming) {
     if (asset_id) {
       filterAsset.push(`asset_id: {_eq: ${asset_id}}`);
       filterAsset = `,${filterAsset.join(',')}`;
     } else {
       filterAsset = `,asset: {${filterAsset.join(',')}}`;
     }
+  } else if(isPast) {
+    if (asset_id) {
+      filterAsset.push(`asset_id: {_eq: ${asset_id}}`);
+      filterAsset = `,${filterAsset.join(',')}`;
+    } else {
+      filterAsset = `,asset: {${filterAsset.join(',')}}`;
+    }
+  } else if(isHistory) {
+    if (asset_id) {
+      filterAsset.push(`asset_id: {_eq: ${asset_id}}`);
+      filterAsset = `,calibration_record: {${filterAsset.join(',')}}`;
+    } else {
+      filterAsset = `,calibration_record: {asset: {${filterAsset.join(',')}}}`;
+    }
+  } else {
+    // if (asset_id) {
+    //   filterAsset.push(`asset_id: {_eq: ${asset_id}}`);
+    //   filterAsset = `,${filterAsset.join(',')}`;
+    // } else {
+    //   filterAsset = `,asset: {${filterAsset.join(',')}}`;
+    // }
   }
   
   let filter = [];
+
   
   if (date_range) {
     const {start, end} = date_range;
-    filter.push(`next_calibration_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
-  } else {
+    const dateKey = isHistory ? "calibration_date" : isNotHistory ? "next_calibration_date" : null;
+    filter.push(`${dateKey}: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`);
+  } else if(isAsset || isUpcoming) {
     if (expiry_date === null) {//expiry_no
       filter.push(`next_calibration_date: {_is_null: true}`);
     } else if (expiry_date === -1) {//expired

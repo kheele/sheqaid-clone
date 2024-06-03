@@ -1,0 +1,31 @@
+.HRDocsDialog-dialog .dialog-container {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    height: calc(100% - 1px) !important;
+}
+
+.HRDocsDialog-dialog .dialog-content {
+    overflow: visible !important;
+}
+
+.HRDocsDialog-dialog .page-title {
+    height: 0;
+    margin: -15px 10px 0 0;
+    border: none;
+    float: right;
+}
+
+.HRDocsDialog-dialog .page-title>h3 {
+    display: none;
+}
+
+.HRDocsDialog-dialog .page-title>.tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+
+.HRDocsDialog-dialog .page-title>.tabled-top-panel>.buttons>.left-buttons {
+    border-right: none !important;
+    padding-right: 0 !important;
+}

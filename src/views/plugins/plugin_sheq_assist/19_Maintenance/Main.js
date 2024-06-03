@@ -4,6 +4,9 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
+import { Button } from "components/inputs";
+import { PageTitle } from "components";
+import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
 import APage from "views/APage";
 
 import DashboardTab from './DashboardTab';
@@ -63,10 +66,14 @@ class Main extends APage {
     render() {
         const {permissionKey} = this.props;
         return (<div key="_19_Maintenance-page" id="_19_Maintenance-page" className={this.classNames}>
-            <div key="pageTitle" className="page-title">
-                {this.renderBackBtn()}
-                <h3 key="title">Asset Management</h3>
-            </div>
+            <PageTitle title="Asset Management" renderBackBtn={this.renderBackBtn}>
+                <Button
+                    text="OHS Documents"
+                    hoverText="OHS Act, Legal register, etc"
+                    className="btn btn-primary pull-right"
+                    onClick={this.onViewOHSDocuments}
+                />
+            </PageTitle>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}>
                 <DashboardTab ref="dashboard" title="Dashboard" path={this.path} onFilter={this.onFilter}/>
                 <ToolsTab ref="tools" title="Assets" path={this.path}/>
@@ -83,6 +90,7 @@ class Main extends APage {
                 <CalibrationRecordTab ref="calibrationRecord" title="Calibration Record" path={this.path}/>
                 <DocsTab ref="docsTab" title="Documents" path={this.path}/>
             </Tabs>
+            <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist" module="_19_Maintenance"/>
         </div>);
     }
 }

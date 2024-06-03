@@ -1,12 +1,20 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {extendObservable, observable} from 'mobx';
+import PropTypes from "prop-types";
+import EventListener from 'react-event-listener';
 
 import Dialog from 'components/dialogs/Dialog';
 
 @observer
 class ADialogList extends React.Component {
     _classNames = "ADialogList";
+    static propTypes = {
+        hasBackBtn: PropTypes.bool.isRequired
+    }
+    static defaultProps = {
+        hasBackBtn: true
+    }
     
     @observable
     state = {
@@ -46,6 +54,7 @@ class ADialogList extends React.Component {
 
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
+        this.renderBackBtn = this.renderBackBtn.bind(this);
     }
     
     set classNames(val) {
@@ -91,6 +100,12 @@ class ADialogList extends React.Component {
         return this.refs.root.refs;
     }
 
+    renderBackBtn() {
+        return this.props.hasBackBtn && <BackButton key="backButton" onClose={this.onClose}>
+            <EventListener target={window} onKeyDown={this.onClose} />
+        </BackButton>;
+    }
+
     render() {
         return (<Dialog
             key={this.pageKey + '-dialog-' + new Date().getTime()}
@@ -102,6 +117,16 @@ class ADialogList extends React.Component {
         </Dialog>);
     }
 
+}
+
+@observer
+class BackButton extends React.Component {
+
+    render() {
+        return <i key="backButtonIcon" className="page-back-btn fa fa-arrow-left" onClick={this.props.onClose}>
+            {this.props.children}
+        </i>;
+    }
 }
 
 export default ADialogList;

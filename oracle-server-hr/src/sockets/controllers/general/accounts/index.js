@@ -26,7 +26,7 @@ class Cntr extends ACntr {
     async signOut(socket) {
         // console.log('data', data)
 
-        const {session, session: {auth_id}} = socket.handshake;
+        const {session, session: {auth_id}} = socket.request;
 
         return signOut({
             session,
@@ -59,7 +59,7 @@ class Cntr extends ACntr {
         // console.log('data', data)
 
         const {idToken, csrfToken} = data;
-        const {session} = socket.handshake;
+        const {session} = socket.request;
 
         console.log('onSetCustomUserClaims', idToken, csrfToken);
 

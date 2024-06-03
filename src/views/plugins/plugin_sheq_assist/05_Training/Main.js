@@ -5,7 +5,9 @@ import {observable} from 'mobx';
 
 import {Permissions} from 'utils/Utils';
 
-import {Button} from 'components/inputs';
+import { Button } from "components/inputs";
+import { PageTitle } from "components";
+import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
 
 import {CompetenciesDialog} from "../../plugin_hr_management/Competencies";
 import TrainingRegistryTab from './TrainingRegistryTab';
@@ -91,10 +93,14 @@ class Main extends APage {
         const {onRenderCompetenciesBtb, path, props: {permissionKey}} = this;
         
         return (<div key={this.pageKey} id={this.pageKey + '-page'} className={this.classNames}>
-            <div key="pageTitle" className="page-title">
-                {this.renderBackBtn()}
-                <h3 key="title">Trainings</h3>
-            </div>
+            <PageTitle title="Training" renderBackBtn={this.renderBackBtn}>
+                <Button
+                    text="OHS Documents"
+                    hoverText="OHS Act, Legal register, etc"
+                    className="btn btn-primary pull-right"
+                    onClick={this.onViewOHSDocuments}
+                />
+            </PageTitle>
             <Tabs key="tabs" permissionKey={permissionKey} index={this.state.index}>
                 <DashboardTab ref="dashboard" title="Dashboard"/>
                 {/*<TrainingTab ref="training" title="Training Manuals" path={path} onRenderCompetenciesBtb={onRenderCompetenciesBtb}/>*/}
@@ -106,6 +112,7 @@ class Main extends APage {
             </Tabs>
             
             <CompetenciesDialog ref="competenciesDialog"/>
+            <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist" module="Trainings"/>
         </div>);
     }
     // </editor-fold>

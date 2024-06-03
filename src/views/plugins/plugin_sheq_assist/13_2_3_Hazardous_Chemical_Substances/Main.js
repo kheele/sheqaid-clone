@@ -4,6 +4,10 @@ import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
 
+import { Button } from "components/inputs";
+import { PageTitle } from "components";
+import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
+
 import APage from "views/APage";
 import Tabs from 'components/tabs/Tabs';
 
@@ -45,10 +49,14 @@ class Main extends APage {
     render() {
         const {permissionKey} = this.props;
         return (<div key="Hazardous_Chemical_Substances-page" id="Hazardous_Chemical_Substances-page" className={this.classNames}>
-            <div key="pageTitle" className="page-title">
-                {this.renderBackBtn()}
-                <h3 key="title">Hazardous Chemical Substances</h3>
-            </div>
+            <PageTitle title="Hazardous Chemical Substances" renderBackBtn={this.renderBackBtn}>
+                <Button
+                    text="OHS Documents"
+                    hoverText="OHS Act, Legal register, etc"
+                    className="btn btn-primary pull-right"
+                    onClick={this.onViewOHSDocuments}
+                />
+            </PageTitle>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardTab ref="dashboard" title="Dashboard" path={this.path}/>
                 <InventoryProductTab ref="inventoryProduct" title="Chemical Inventory" path={this.path}/>
@@ -57,6 +65,7 @@ class Main extends APage {
                 <HazchemSheetTab ref="hazchemSheet" title="Hazchem Sheets" path={this.path}/>
                 {/*<TemplatesTab ref="forms" title="SDS Templates" path={this.path}/>*/}
             </Tabs>
+            <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist" module="_13_2_3_Hazardous_Chemical_Substances"/>
         </div>);
     }
 }

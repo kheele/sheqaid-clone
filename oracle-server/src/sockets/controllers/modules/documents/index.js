@@ -1,4 +1,5 @@
 require('./categories');
+require('./ohs-docs');
 
 const findByIdImpl = require('../findByIdImpl');
 const listImpl = require('../listImpl');

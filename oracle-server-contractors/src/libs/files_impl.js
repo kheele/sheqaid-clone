@@ -1,5 +1,5 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-const {fileTypeFromBuffer} = require('./file-type');
+// const {fileTypeFromBuffer} = require('./file-type');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -30,12 +30,12 @@ const getContentType = async (datauri_or_buffer) => {
         const parts = datauri_or_buffer.split(',');
         return parts[0].replace('data:', '').split(';')[0];
     } else {
-        try {
-            const res = await fileTypeFromBuffer(datauri_or_buffer);
-            return res.contentType;
-        } catch (err) {
-
-        }
+        // try {
+        //     const res = await fileTypeFromBuffer(datauri_or_buffer);
+        //     return res.contentType;
+        // } catch (err) {
+        //
+        // }
     }
 };
 

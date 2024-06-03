@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3d857c13ccd62958aa8b181d62e62acd>>
+ * @generated SignedSource<<3717a6fc6d0e48524c298e76009ec563>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -61,6 +61,13 @@ v3 = [
         "args": null,
         "kind": "ScalarField",
         "name": "doc",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "doc_fitness_certificate",
         "storageKey": null
       },
       {
@@ -249,16 +256,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "b4e583a8f9279bd2d7ee5fa2bb9a6522",
+    "cacheID": "6d4bd964960150f9c09067d16ab9e8b6",
     "id": null,
     "metadata": {},
     "name": "insertEmployeeLeaveMutation",
     "operationKind": "mutation",
-    "text": "mutation insertEmployeeLeaveMutation(\n  $object: hr_employees_docs_leaves_insert_input!\n) {\n  insert_hr_employees_docs_leaves_one(object: $object) {\n    id\n    created_at\n    doc\n    days_booked\n    due_to\n    date\n    expiry_date\n    expiry_updated\n    removed\n    employee_comments\n    type\n    notes\n    reason\n    employee {\n      id\n      fname\n      lname\n      phone\n      email\n      id_num\n      passport_num\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation insertEmployeeLeaveMutation(\n  $object: hr_employees_docs_leaves_insert_input!\n) {\n  insert_hr_employees_docs_leaves_one(object: $object) {\n    id\n    created_at\n    doc\n    doc_fitness_certificate\n    days_booked\n    due_to\n    date\n    expiry_date\n    expiry_updated\n    removed\n    employee_comments\n    type\n    notes\n    reason\n    employee {\n      id\n      fname\n      lname\n      phone\n      email\n      id_num\n      passport_num\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "3edc647c93deb9d631e10c6862f60539";
+node.hash = "b7a364191e27d17c2da873dc2c835049";
 
 module.exports = node;

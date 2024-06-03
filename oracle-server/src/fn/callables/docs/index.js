@@ -10,6 +10,7 @@ const {
 	viewDoc,
 	wordPreviewUrl,
 	excelPreviewUrl,
+	pptPreviewUrl,
 } = require('./api.js');
 
 router.post('/create', async (req, res) => {
@@ -49,6 +50,11 @@ router.post('/word-preview-url', async (req, res) => {
 
 router.post('/excel-preview-url', async (req, res) => {
 	const data = await excelPreviewUrl(req.body);
+	res.json(data);
+});
+
+router.post('/ppt-preview-url', async (req, res) => {
+	const data = await pptPreviewUrl(req.body);
 	res.json(data);
 });
 

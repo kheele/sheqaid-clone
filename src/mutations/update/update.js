@@ -17,3 +17,5 @@ export const updateProxyNCRAssignedUser = update("ncr/proxy/assigned-user");
 export const updateProxyNCRApprovingPerson = update("ncr/proxy/approving-person");
 export const updateProxyNCRResponsibleParty = update("ncr/proxy/responsible-party");
 export const updateProxyNCRDocument = update("ncr/proxy/document");
+
+export const updateOHSDoc = update("documents/ohs-docs");

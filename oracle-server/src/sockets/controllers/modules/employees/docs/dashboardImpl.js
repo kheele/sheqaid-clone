@@ -81,62 +81,68 @@ const mapResults = id => {
 };
 
 //<editor-fold desc="findByIdEmployeeDashboardStats">
-module.exports.findByIdEmployeeDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdEmployeeDashboardStats = ({name, listName, onCreateQuery, isContract}) => {
 	return findByIdEmployeeDashboardStats({
 		name,
 		listName,
 		isContract,
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>
 
 //<editor-fold desc="findByIdCompanyDashboardStatsImpl">
-module.exports.findByIdCompanyDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdCompanyDashboardStats = ({name, listName, details_fragment, onCreateQuery, isContract}) => {
 	return findByIdCompanyDashboardStatsImpl({
 		name: `HR${name}`,
-		details_fragment: getFragment(listName, isContract),
+		details_fragment: details_fragment || getFragment(listName, isContract),
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>
 
 //<editor-fold desc="findByIdClientDashboardStatsImpl">
-module.exports.findByIdClientDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdClientDashboardStats = ({name, listName, details_fragment, onCreateQuery, isContract}) => {
 	return findByIdClientDashboardStatsImpl({
 		name: `HR${name}`,
-		details_fragment: getFragment(listName, isContract),
+		details_fragment: details_fragment || getFragment(listName, isContract),
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>
 
 //<editor-fold desc="findByIdProjectDashboardStatsImpl">
-module.exports.findByIdProjectDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdProjectDashboardStats = ({name, listName, details_fragment, onCreateQuery, isContract}) => {
 	return findByIdProjectDashboardStatsImpl({
 		name: `HR${name}`,
-		details_fragment: getFragment(listName, isContract),
+		details_fragment: details_fragment || getFragment(listName, isContract),
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>
 
 //<editor-fold desc="findByIdSiteDashboardStatsImpl">
-module.exports.findByIdSiteDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdSiteDashboardStats = ({name, listName, details_fragment, onCreateQuery, isContract}) => {
 	return findByIdSiteDashboardStatsImpl({
 		name: `HR${name}`,
-		details_fragment: getFragment(listName, isContract),
+		details_fragment: details_fragment || getFragment(listName, isContract),
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>
 
 //<editor-fold desc="findByIdContractorDashboardStatsImpl">
-module.exports.findByIdContractorDashboardStats = ({name, listName, isContract}) => {
+module.exports.findByIdContractorDashboardStats = ({name, listName, details_fragment, onCreateQuery, isContract}) => {
 	return findByIdContractorDashboardStatsImpl({
 		name: `HR${name}`,
-		details_fragment: getFragment(listName, isContract),
+		details_fragment: details_fragment || getFragment(listName, isContract),
 		mapResults,
+		onCreateQuery,
 	});
 }
 //</editor-fold>

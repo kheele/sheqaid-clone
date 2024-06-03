@@ -6,6 +6,7 @@ const findByIdOrgDashboardStatsImpl = (
 		tbl,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	}
 ) => {
 	const operationName = `findById${org}${name}DashboardStatsQuery`;
@@ -32,9 +33,15 @@ const findByIdOrgDashboardStatsImpl = (
 		// 	tbl = "default_companies";
 		// }
 		
-		let promise = getGraphQLOne({
-			variables: {id, mon, mon2, mon3},
-			query: `
+		console.log('socket.decodedIdToken', socket.request.session.decodedIdToken)
+		
+		let promise;
+		if(onCreateQuery) {
+			promise = onCreateQuery(data, operationName, tbl);
+		} else {
+			promise = getGraphQLOne({
+				variables: {id, mon, mon2, mon3},
+				query: `
 	      query ${operationName}($id: bigint, $mon: date, $mon2: date, $mon3: date) {
 	        ${tbl}(
 	            where: {id: {_eq: $id},},
@@ -43,8 +50,9 @@ const findByIdOrgDashboardStatsImpl = (
 	        }
 	      }
 	    `,
-			operationName,
-		});
+				operationName,
+			});
+		}
 		
 		if (mapResults) {
 			promise = promise.then(mapResults(id));
@@ -55,52 +63,57 @@ const findByIdOrgDashboardStatsImpl = (
 };
 //</editor-fold>
 
-exports.findByIdCompanyDashboardStatsImpl = ({name, details_fragment, mapResults,}) => {
+exports.findByIdCompanyDashboardStatsImpl = ({name, details_fragment, onCreateQuery, mapResults,}) => {
 	return findByIdOrgDashboardStatsImpl({
 		org: "Company",
 		tbl: "default_companies",
 		name,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdClientDashboardStatsImpl = ({name, details_fragment, mapResults,}) => {
+exports.findByIdClientDashboardStatsImpl = ({name, details_fragment, onCreateQuery, mapResults,}) => {
 	return findByIdOrgDashboardStatsImpl({
 		org: "Client",
 		tbl: "default_clients",
 		name,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdProjectDashboardStatsImpl = ({name, details_fragment, mapResults,}) => {
+exports.findByIdProjectDashboardStatsImpl = ({name, details_fragment, onCreateQuery, mapResults,}) => {
 	return findByIdOrgDashboardStatsImpl({
 		org: "Project",
 		tbl: "default_projects",
 		name,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdSiteDashboardStatsImpl = ({name, details_fragment, mapResults,}) => {
+exports.findByIdSiteDashboardStatsImpl = ({name, details_fragment, onCreateQuery, mapResults,}) => {
 	return findByIdOrgDashboardStatsImpl({
 		org: "Site",
 		tbl: "default_sites",
 		name,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdContractorDashboardStatsImpl = ({name, details_fragment, mapResults,}) => {
+exports.findByIdContractorDashboardStatsImpl = ({name, details_fragment, onCreateQuery, mapResults,}) => {
 	return findByIdOrgDashboardStatsImpl({
 		org: "Contractor",
 		tbl: "default_contractors",
 		name,
 		details_fragment,
 		mapResults,
+		onCreateQuery,
 	});
 };

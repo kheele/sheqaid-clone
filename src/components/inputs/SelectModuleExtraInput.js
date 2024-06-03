@@ -14,6 +14,11 @@ class SelectInput extends ASelectModuleInput {
         // '__B_Contractors',Later
     ];
 
+    includedOHSDocList = [
+        'Job Appointments',
+        '__B_Contractors',
+    ];
+
     constructor(props) {
         super(props);
     }

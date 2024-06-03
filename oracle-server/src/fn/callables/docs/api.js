@@ -125,3 +125,13 @@ exports.excelPreviewUrl = async (dataUrl) => {
 	});
 };
 // </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="pptPreviewUrl">
+exports.pptPreviewUrl = async (dataUrl) => {
+	if (!dataUrl) return;
+
+	return authorize().then(auth => {
+		return pptPreviewUrl(dataUrl);
+	});
+};
+// </editor-fold>

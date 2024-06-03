@@ -39,13 +39,13 @@
 #Employees-page > .page-title > .tabled-top-panel > .buttons > .right-buttons > button {
     font-size: 13px;
 }
-#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(2)
+/* #Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(2) */
 /*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(3)*/
 /*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(4)*/
 /*#Employees-page > .page-title > .tabled-top-panel > .buttons > .left-buttons > button:nth-of-type(5) */
-{
+/* {
     display: none;
-}
+} */
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(2).allowed,
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(3).allowed,
 .EmployeeDialogActionsPopover .main-actions > *:nth-child(4).allowed,

@@ -20,7 +20,7 @@
 }
 
 #CalibrationRecordTab-tab .table{
-
+    /* max-height: calc(100% - 45px); */
 }
 #CalibrationRecordTab-tab .filter-wrapper {
     margin: 0 !important;

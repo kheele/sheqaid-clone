@@ -32,7 +32,7 @@ async function convertMobx(arg) {
         const file = isFile(arg) ? arg : arg.path;
         const {type: contentType} = file;
         return {contentType, buffer: file};
-        // return {contentType, datauri: await toDataURI(arg)};
+        // return {contentType, datauri: await toDataURI(file)};
     }
     if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);

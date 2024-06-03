@@ -14,6 +14,7 @@ const mutation = graphql`
         id
         created_at
         doc
+        doc_fitness_certificate
         days_booked
         due_to
         date

@@ -10,6 +10,7 @@ export default async (
         mutation,
         input,
         updateEmployeeDocFn,
+        findByIdEmployeeDocFn,
         name,
         plural,
     }
@@ -64,6 +65,10 @@ export default async (
             await Promise.all(promises);
 
             return updateEmployeeDocFn({id, ...updateAttrs});
+        }
+
+        if(findByIdEmployeeDocFn) {
+            return findByIdEmployeeDocFn(res.id);
         }
     }
 

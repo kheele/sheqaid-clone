@@ -10,11 +10,14 @@ import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import {
 	JobAppointmentControls
 } from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/JobAppointments/forms/ProfileDialog";
+
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
-import {LicenseControls} from "../../Licenses/forms/ProfileDialog";
 import {MedicalControls} from "../../Medicals/forms/ProfileDialog";
 import {WarningControls} from "../../Warnings/forms/ProfileDialog";
-import {WorkPermitControls} from "../../WorkPermits/forms/ProfileDialog";
+
+import {LicenseControls} from "../../HRDocs/Licenses/forms/ProfileDialog";
+import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
+
 import {Dates} from "utils/Dates";
 import PrDPSection from "./PrDPSection";
 import IDOrPassportSection from "./IDOrPassportSection";

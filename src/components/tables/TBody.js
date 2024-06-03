@@ -9,6 +9,7 @@ import LazyList from '../../onsenui/LazyList.jsx';
 import {ListLoaderState, PullHookState} from '../lists';
 import {NavigateTop} from '../';
 import {Button} from '../inputs';
+import ErrorBoundary from '../ErrorBoundary';
 
 import * as Utils from 'utils/Utils';
 import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
@@ -251,14 +252,16 @@ class TBody extends React.Component {
         }
         
         const _className = 'tbody page__content nice-scrollbars' + (className ? (' ' + className) : '');
-        return (<div ref="tbody" className={_className}>
-            {!disablePullToRefresh && <PullHookState onChange={this.onChange} onLoad={this.onLoad} state={this.state} listName={listName}/>}
-            <LazyList ref="lazyList" length={this.list.length} renderRow={this.renderItem} calculateItemHeight={() => 44}/>
-            <PullHookStateBottom state={this.state} message={'No ' + title.toLowerCase() + ' to load'}/>
-            <NavigateTop ref="navigateTop" delay={1000} getTargetNode={() => this.refs.tbody}/>
-            {children}
-            {/*<p className="load-more text-center hor-center padding-15 padding-t-10 w-120">load more</p>*/}
-        </div>);
+        return <ErrorBoundary>
+            <div ref="tbody" className={_className}>
+                {!disablePullToRefresh && <PullHookState onChange={this.onChange} onLoad={this.onLoad} state={this.state} listName={listName}/>}
+                <LazyList ref="lazyList" length={this.list.length} renderRow={this.renderItem} calculateItemHeight={() => 44}/>
+                <PullHookStateBottom state={this.state} message={'No ' + title.toLowerCase() + ' to load'}/>
+                <NavigateTop ref="navigateTop" delay={1000} getTargetNode={() => this.refs.tbody}/>
+                {children}
+                {/*<p className="load-more text-center hor-center padding-15 padding-t-10 w-120">load more</p>*/}
+            </div>
+        </ErrorBoundary>;
     }
 }
 

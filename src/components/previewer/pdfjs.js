@@ -8,8 +8,9 @@ export default class PDFJs {
         const isPDF = FileTypes.isPDF(previewPath);
         const isWord = FileTypes.isWord(previewPath);
         const isExcel = FileTypes.isExcel(previewPath);
+        const isPPT = FileTypes.isPPT(previewPath);
 
-        if(isWord || isExcel) {
+        if(isWord || isExcel || isPPT) {
             $(element).html(webview);
             setTimeout(() => {
                 webview.src = `https://view.officeapps.live.com/op/embed.aspx?src=${previewPath.dlUrls[0]}`;

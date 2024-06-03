@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7b01c84538cd057024609171b4ebea47>>
+ * @generated SignedSource<<d475593b4b676cdb0c228d88379e608e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -69,6 +69,13 @@ v4 = [
         "args": null,
         "kind": "ScalarField",
         "name": "doc",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "doc_fitness_certificate",
         "storageKey": null
       },
       {
@@ -263,16 +270,16 @@ return {
     "selections": (v4/*: any*/)
   },
   "params": {
-    "cacheID": "d64637d545788352c48b744fba86b423",
+    "cacheID": "d130b344f8aaac150406e52b83961590",
     "id": null,
     "metadata": {},
     "name": "updateEmployeeLeaveMutation",
     "operationKind": "mutation",
-    "text": "mutation updateEmployeeLeaveMutation(\n  $id: hr_employees_docs_leaves_pk_columns_input!\n  $_set: hr_employees_docs_leaves_set_input!\n) {\n  update_hr_employees_docs_leaves_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    doc\n    days_booked\n    due_to\n    date\n    expiry_date\n    expiry_updated\n    removed\n    employee_comments\n    type\n    notes\n    reason\n    employee {\n      id\n      fname\n      lname\n      phone\n      email\n      id_num\n      passport_num\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation updateEmployeeLeaveMutation(\n  $id: hr_employees_docs_leaves_pk_columns_input!\n  $_set: hr_employees_docs_leaves_set_input!\n) {\n  update_hr_employees_docs_leaves_by_pk(pk_columns: $id, _set: $_set) {\n    id\n    created_at\n    doc\n    doc_fitness_certificate\n    days_booked\n    due_to\n    date\n    expiry_date\n    expiry_updated\n    removed\n    employee_comments\n    type\n    notes\n    reason\n    employee {\n      id\n      fname\n      lname\n      phone\n      email\n      id_num\n      passport_num\n    }\n    company {\n      id\n      name\n    }\n    client {\n      id\n      name\n    }\n    project {\n      id\n      name\n    }\n    site {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "2ecfec98ff3d17eeaa3b64323d2ed332";
+node.hash = "8897de13f13297f3433290cb4847f73b";
 
 module.exports = node;

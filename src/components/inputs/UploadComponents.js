@@ -21,6 +21,7 @@ class AShowFile extends React.Component {
 		isPDF: false,
 		isWord: false,
 		isExcel: false,
+		isPPT: false,
 		isPic: false,
 		isVideo: false,
 
@@ -49,7 +50,7 @@ class AShowFile extends React.Component {
 			} else {
 				let url = defaultValue.path ? defaultValue.path : defaultValue.dlUrls[0];
 
-//            url = createPDFPreviewUrl(url);
+//            url = createPDFPreviewUrl(url);//
 //            if(url instanceof Promise) {
 //                url = await url.then(res => res);
 //            }
@@ -57,19 +58,20 @@ class AShowFile extends React.Component {
 				const isPDF = FileTypes.isPDF(defaultValue);
 				const isWord = FileTypes.isWord(defaultValue);
 				const isExcel = FileTypes.isExcel(defaultValue);
+				const isPPT = FileTypes.isPPT(defaultValue);
 				const isPic = FileTypes.isPic(defaultValue);
 				const isVideo = FileTypes.isVideo(defaultValue);
 				
 				if (isPDF) {
 					this.state.previewPath = createPDFPreviewUrl(url);
-				} else if (isWord || isExcel) {
+				} else if (isWord || isExcel || isPPT) {
 					this.state.previewPath = `https://docs.google.com/gview?url=${url}&embedded=true`;
 				} else if (isPic || isVideo) {
 					this.state.previewPath = url;
 				}
 
 				extendObservable(this.state, {
-					isPDF, isWord, isExcel, isPic, isVideo,
+					isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 					path: defaultValue
 				});
 
@@ -92,12 +94,12 @@ class AShowFile extends React.Component {
 				this.state.previewPath = null;
 
 				const {
-					isPDF, isWord, isExcel, isPic, isVideo,
+					isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 					previewPath, path
 				} = res;
 
 				extendObservable(this.state, {
-					isPDF, isWord, isExcel, isPic, isVideo,
+					isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 					previewPath, path
 				});
 
@@ -125,7 +127,7 @@ class AShowFile extends React.Component {
 	// <editor-fold defaultstate="collapsed" desc="reset">
 	reset() {
 		extendObservable(this.state, {
-			isPDF: false, isWord: false, isExcel: false, isPic: false, isVideo: false,
+			isPDF: false, isWord: false, isExcel: false, isPPT: false, isPic: false, isVideo: false,
 			previewPath: null, path: null,
 			rotating: false,
 			loadStatus: null
@@ -167,7 +169,7 @@ class AShowFile extends React.Component {
 
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="isPDF, isWord, isExcel, isPic, isVideo">
+	// <editor-fold defaultstate="collapsed" desc="isPDF, isWord, isExcel, isPPT, isPic, isVideo">
 	@computed
 	get isPDF() {
 		return this.state.isPDF;
@@ -181,6 +183,11 @@ class AShowFile extends React.Component {
 	@computed
 	get isExcel() {
 		return this.state.isExcel;
+	}
+
+	@computed
+	get isPPT() {
+		return this.state.isPPT;
 	}
 
 	@computed
@@ -239,7 +246,7 @@ class ShowOnlyIcon extends AShowFile {
 	get fileIcon() {
 		const {
 			props: {onUpload, showOnlyIcon, readonly, title, buttonTitle, defaultValue},
-			isPDF, isWord, isExcel, isPic, isVideo,
+			isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 			isLoading, isLoadedError
 		} = this;
 		if (!showOnlyIcon)
@@ -279,6 +286,13 @@ class ShowOnlyIcon extends AShowFile {
 				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
 				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
 			</i>;
+		} else if (isPPT) {
+			return <i className={"fa fa-file-excel-o fixed-flex flex"}>
+				{!hasTitle && <span>PowerPoint Document</span>}
+				{this.showTrashIcon}
+				<Button className="btn btn-primary fixed-flex" onClick={this.onView}>View</Button>
+				{!readonly && <Button className="btn btn-primary fixed-flex" onClick={this.onUpload}>Change</Button>}
+			</i>;
 		} else if (isPic) {
 			return <i className={"fa fa-file-image fixed-flex flex"}>
 				{!hasTitle && <span>Photo Document</span>}
@@ -314,7 +328,7 @@ class ShowOnlyIcon extends AShowFile {
 		let {
 			props: {readonly, showDownload, fileName, title, buttonTitle, className, showOnlyIcon},
 			state: {previewPath},
-			isPDF, isWord, isExcel, isPic, isVideo,
+			isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 			fileIcon,
 			isLoaded, isLoadedError
 		} = this;
@@ -335,6 +349,8 @@ class ShowOnlyIcon extends AShowFile {
 			type = 'Word ';
 		} else if (isExcel) {
 			type = 'Spreadsheet ';
+		} else if (isPPT) {
+			type = 'PowerPoint ';
 		} else if (isPic) {
 			type = 'Photo ';
 		} else if (isVideo) {
@@ -391,7 +407,7 @@ class ShowFile extends AShowFile {
 				readonly, className, buttonTitle, showOnlyIcon
 			},
 			state, state: {previewPath},
-			isPDF, isWord, isExcel, isPic, isVideo,
+			isPDF, isWord, isExcel, isPPT, isPic, isVideo,
 			isLoading, isLoadedError
 		} = this;
 
@@ -415,7 +431,7 @@ class ShowFile extends AShowFile {
 			</div>;
 		}
 
-		if (isPDF || isWord || isExcel) {
+		if (isPDF || isWord || isExcel || isPPT) {
 			return <div className={className}>
 				{!readonly && <>
 					<Button

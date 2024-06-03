@@ -9,6 +9,9 @@ class SelectInput extends ASelectModuleInput {
     key = 'listClaim';
     includedList = [];
 
+    includedOHSDocList = [
+    ];
+
     constructor(props) {
         super(props);
     }

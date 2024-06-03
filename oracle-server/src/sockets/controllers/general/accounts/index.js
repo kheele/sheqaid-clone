@@ -27,21 +27,18 @@ class Cntr extends ACntr {
 		// console.log('data', data)
 		
 		let {access_type} = data;
-		const {session, session: {auth_id}} = socket.handshake;
+		const {session, session: {decodedIdToken, sessionCookie}} = socket.request;
+		const {auth_id} = decodedIdToken || {};
 		
 		return signOut({
 			session,
-			sessionCookie: session.sessionCookie || '',
-			// sessionCookie: socket.request.cookies.session || '',
+			sessionCookie: sessionCookie || '',
 			access_type,
 		}).then((res) => {
 			if (res) {
 				socket.leave(auth_id);
 				
 				delete session.sessionCookie;
-				delete session.auth_id;
-				delete session.access_type;
-				delete session.customClaims;
 				session.save();
 				
 				return res;
@@ -68,7 +65,8 @@ class Cntr extends ACntr {
 		// console.log('data', data)
 		
 		const {access_type, idToken, csrfToken} = data;
-		const {session} = socket.handshake;
+		// const {auth} = socket.handshake;
+		const {session} = socket.request;
 		
 		console.log('_onSetCustomUserClaims', access_type, idToken, csrfToken);
 		
@@ -76,26 +74,27 @@ class Cntr extends ACntr {
 			idToken,
 			csrfToken,
 			access_type,
-		}).then(res => {
-			console.log('_onSetCustomUserClaims user logged', socket.id, session.auth_id);
+		}).then(async res => {//{sessionCookie, options, loggedUser, customToken, customClaims}
+			console.log('_onSetCustomUserClaims user logged', socket.id);
 			if (res && res.customToken) {
-				const {loggedUser, customToken, customClaims, sessionCookie, options} = res;
+				const {customClaims, sessionCookie, decodedIdToken} = res;
 				
+				const {
+					// access_type,
+					loggedUser: {
+						user: {id: user_id, auth_id}
+					},
+				} = customClaims;
+				
+				session.decodedIdToken = customClaims;
 				session.sessionCookie = sessionCookie;
-				
-				session.auth_id = customClaims.loggedUser.user.auth_id;
-				session.access_type = access_type;
-				session.customClaims = customClaims;
 				session.save();
 				
-				socket.join(session.auth_id);
+				socket.join(auth_id);
 				
-				console.log('user logged', socket.id, session.auth_id);
+				console.log('user logged', socket.id, auth_id);
 				
-				// socket.auth_id = customClaims.loggedUser.user.auth_id;
-				// socket.token = token;
-				// socket.customClaims = customClaims;
-				// console.log('user logged', socket.id, socket.auth_id);
+				const {loggedUser, customToken} = res;
 				return {loggedUser, customToken};
 			}
 			return res;

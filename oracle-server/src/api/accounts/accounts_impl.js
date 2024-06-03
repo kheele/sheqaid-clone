@@ -22,7 +22,7 @@ global.convertIdToBigint = (encodedHasuraRelayID) => {
 //</editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="onSetCustomUserClaims">
-exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
+exports.onSetCustomUserClaims = async (decodedIdToken, access_type) => {
     await authorize(access_type);
 
     const queryData = CustomUserClaims[access_type];
@@ -52,8 +52,11 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
     const {
         data: user_data,
         data: {
-            company, contractor,
-            client: my_client, project: my_project, site: my_site
+            company,
+            contractor,
+            client: my_client,
+            project: my_project,
+            site: my_site,
         }
     } = loggedUser.user;
     company && (company.id = convertIdToBigint(company.id));
@@ -89,10 +92,15 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
     };
 
     if(company) {
-        currentCustomClaims.loggedUser.company = {id: company.id};
+        currentCustomClaims.loggedUser.company = {
+            id: company.id,
+        };
+        currentCustomClaims.isNoProjects = company.no_projects;
+        currentCustomClaims.isConsultant = company.consultant;
     }
 
     if (access_type === 'ContractorUser' || contractor) {
+        currentCustomClaims.isContractor = true;
         currentCustomClaims.contractor_id = contractor.id;
     }
 
@@ -107,7 +115,7 @@ exports.onSetCustomUserClaims = async (data, decodedIdToken, access_type) => {
     }
 
     console.log('currentCustomClaims', JSON.stringify(currentCustomClaims).length, JSON.stringify(currentCustomClaims))
-    return setCustomUserClaims(uid, currentCustomClaims, access_type).then(async () => {
+    return addCustomUserClaims(uid, currentCustomClaims, access_type).then(async () => {
         try {
             const customToken = await createCustomToken(uid, {access_type});
             return {loggedUser, customToken, customClaims: currentCustomClaims};

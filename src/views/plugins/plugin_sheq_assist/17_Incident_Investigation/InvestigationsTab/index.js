@@ -1,9 +1,9 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
-import {observer} from 'mobx-react';
-import {observable, extendObservable} from 'mobx';
+import { observer } from 'mobx-react';
+import { observable, extendObservable } from 'mobx';
 
-import {execWhen} from "utils/Utils";
+import { execWhen } from "utils/Utils";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {
@@ -14,7 +14,7 @@ import {
     SelectIncidentActivityList,
     SelectIncidentSubCategoryList, SelectIncidentCategoryList, SelectEmployeeInput
 } from 'components/inputs';
-import {THead} from 'components/tables';
+import { THead } from 'components/tables';
 
 import NewIncidentAssignInvestigatorsDialog from '../dialogs/NewIncidentAssignInvestigatorsDialog.js';
 import NewIncidentInvestigationDialog from '../dialogs/NewIncidentInvestigationDialog.js';
@@ -23,7 +23,7 @@ import ProfilePDFReader from '../printers/ProfilePDFReader';
 
 import style from "./InvestigationsTab.lazy.css";
 import StateLists from "../dialogs/IncidentForms/StateLists";
-import {IncidentInvestigationTableRow,} from "../dialogs/IncidentComponentRows";
+import { IncidentInvestigationTableRow, } from "../dialogs/IncidentComponentRows";
 import updateIncident from "mutations/all/Incident/updateIncident";
 import ExportInvestigationsDialog from "../dialogs/ExportInvestigationsDialog";
 
@@ -40,16 +40,16 @@ class InvestigationsTab extends React.Component {
         lists: {
             ...StateLists,
             incident_status: [
-               {label: 'Awaiting Approval', value: 'AwaitingApproval', checked: false},
-                {label: 'Approved Incident', value: 'ApprovedIncident', checked: false},
-                {label: 'Assigned Investigator', value: 'AssignedInvestigator', checked: false},
-               {label: 'Investigating', value: 'Investigating', checked: false},
-                {label: 'Closed Incident', value: 'ClosedIncident', checked: false}
+                { label: 'Awaiting Approval', value: 'AwaitingApproval', checked: false },
+                { label: 'Approved Incident', value: 'ApprovedIncident', checked: false },
+                { label: 'Assigned Investigator', value: 'AssignedInvestigator', checked: false },
+                { label: 'Investigating', value: 'Investigating', checked: false },
+                { label: 'Closed Incident', value: 'ClosedIncident', checked: false }
             ],
             investigation_status: [
-                {label: 'Awaiting Investigation Approval', value: 'AwaitingInvestigationApproval', checked: false},
-                {label: 'Approved Investigation', value: 'ApprovedInvestigation', checked: false},
-                {label: 'Closed Investigation', value: 'ClosedInvestigation', checked: false},
+                { label: 'Awaiting Investigation Approval', value: 'AwaitingInvestigationApproval', checked: false },
+                { label: 'Approved Investigation', value: 'ApprovedInvestigation', checked: false },
+                { label: 'Closed Investigation', value: 'ClosedInvestigation', checked: false },
             ]
         }
     }
@@ -62,8 +62,8 @@ class InvestigationsTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
-      
+
+
 
         this.onSetCategoryRef = this.onSetCategoryRef.bind(this);
 
@@ -80,7 +80,7 @@ class InvestigationsTab extends React.Component {
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
-        
+
         this.onExport = this.onExport.bind(this);
     }
 
@@ -102,7 +102,7 @@ class InvestigationsTab extends React.Component {
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
-        const {page, lastItem, filterData, filtered, isNew} = params;
+        const { page, lastItem, filterData, filtered, isNew } = params;
         const {
             id,
             //
@@ -179,19 +179,19 @@ class InvestigationsTab extends React.Component {
         });
     }
     //</editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="actions">
     onApproveInvestigation(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
+        const { idx } = el.props;
+        const { list } = this.refs.root;
         const item = list[idx];
         confirmDialog.open("Are you sure you want to approve the investigation?").then(res => {
             if (res === 1) {
                 progressDialog.open("Approving the investigation...");
-                updateIncident({id: item.id, status_approved_investigation: true}).then(res => {
+                updateIncident({ id: item.id, status_approved_investigation: true }).then(res => {
                     console.log("res", res)
                     if (!('status_approved_investigation' in item.data)) {
-                        extendObservable(item.data, {status_approved_investigation: true});
+                        extendObservable(item.data, { status_approved_investigation: true });
                     } else {
                         item.data.status_approved_investigation = true;
                     }
@@ -209,28 +209,28 @@ class InvestigationsTab extends React.Component {
     }
 
     onAssignInvestigator(e, el) {
-        const {idx} = el.props;
+        const { idx } = el.props;
         const item = this.refs.root.list[idx];
         this.refs.newIncidentAssignInvestigatorsDialog.open(item);
     }
 
     onInvestigate(e, el) {
-        const {idx} = el.props;
+        const { idx } = el.props;
         const item = this.refs.root.list[idx];
         this.refs.newInvestigationDialog.extraProp('incident', item).open(item.data.investigation);
     }
 
     onCloseIncident(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
+        const { idx } = el.props;
+        const { list } = this.refs.root;
         const item = list[idx];
         confirmDialog.open("Are you sure you want to close the incident?").then(res => {
             if (res === 1) {
                 progressDialog.open("Closing the incident...");
-                updateIncident({id: item.id, status_closed: true}).then(res => {
+                updateIncident({ id: item.id, status_closed: true }).then(res => {
                     console.log("res", res)
                     if (!('status_closed' in item.data)) {
-                        extendObservable(item.data, {status_closed: true});
+                        extendObservable(item.data, { status_closed: true });
                     } else {
                         item.data.status_closed = true;
                     }
@@ -248,17 +248,17 @@ class InvestigationsTab extends React.Component {
     }
 
     onReOpen(e, el) {
-        const {idx} = el.props;
-        const {list} = this.refs.root;
+        const { idx } = el.props;
+        const { list } = this.refs.root;
         const item = list[idx];
-        const {investigation} = item.data;
+        const { investigation } = item.data;
         confirmDialog.open("Are you sure you want to re-open the incident?").then(res => {
             if (res === 1) {
                 progressDialog.open("Re-opening the incident...");
-                updateIncident({id: item.id, status_closed: false}).then(res => {
+                updateIncident({ id: item.id, status_closed: false }).then(res => {
                     console.log("res", res)
                     if (!('status_closed' in item.data)) {
-                        extendObservable(item.data, {status_closed: false});
+                        extendObservable(item.data, { status_closed: false });
                     } else {
                         item.data.status_closed = false;
                     }
@@ -276,17 +276,17 @@ class InvestigationsTab extends React.Component {
     }
 
     async onSaveAsPDF(e, btn) {
-        const {idx} = btn.props;
+        const { idx } = btn.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
 
     onViewReport(e, el) {
-        const {idx} = el.props;
+        const { idx } = el.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
-    
+
     onExport(e, btn) {
         this.refs.exportInvestigationsDialog.open();
     }
@@ -304,23 +304,23 @@ class InvestigationsTab extends React.Component {
     onChangeCategory(el, val) {
         execWhen(() => this.innerRefs.sub_category).then(ref => {
             if (val) {
-                const {[val]: list, options} = this.state.lists.sub_category_list;
+                const { [val]: list, options } = this.state.lists.sub_category_list;
                 if (list) {
                     options.clear();
                     options.push(...list);
                 }
             } else {
-                const {options} = this.state.lists.sub_category_list;
+                const { options } = this.state.lists.sub_category_list;
                 options.clear();
             }
         });
     }
 
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
     renderLeftButtons() {
-        const {isEmployee, isContractorView} = storage.is;
+        const { isEmployee, isContractorView } = storage.is;
         const isReadonly = isEmployee || isContractorView;
         return !isReadonly && <div className="left-buttons pull-left">
             <Button className="btn btn-primary pull-right" onClick={this.onExport}>
@@ -328,11 +328,11 @@ class InvestigationsTab extends React.Component {
             </Button>
         </div>;
     }
-    
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
-    renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
+    renderPopoverOptions(idx, { onView, onEdit, onRemove, Options }) {
         const item = this.refs.root.list[idx];
 
         const {
@@ -350,57 +350,57 @@ class InvestigationsTab extends React.Component {
         } = item;
 
         console.log('this.props.permissionKey', this.props.permissionKey)
-        
-        const {is: {isEmployee}, loggedUser: {user}} = storage;
-        
+
+        const { is: { isEmployee }, loggedUser: { user } } = storage;
+
         if (isEmployee) {
             //TODO: Determine who is an approver
             // const isInvestigationApprover = distribution_list && distribution_list.anyMatch(({employee: {id}}) => id === user.id);
-            const isInvestigator = investigation && investigation.investigation_team_list && investigation.investigation_team_list.anyMatch(({investigator: {id}}) => id === user.id);
+            const isInvestigator = investigation && investigation.investigation_team_list && investigation.investigation_team_list.anyMatch(({ investigator: { id } }) => id === user.id);
             return <Options idx={idx}>
-                <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-                <hr action="writable"/>
+                <NavItem action="view" onClick={onView} faIconLeft="eye" title="View" />
+                <hr action="writable" />
                 {/*{isInvestigationApprover && !status_approved_investigation &&*/}
                 {/*  <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check"*/}
                 {/*           title="Approve Investigation"/>}*/}
-                
+
                 {isInvestigator && <>
                     {!status_closed && <>
                         <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
-                                 title="Investigate"/>
+                            title="Investigate" />
                         {status_approved_investigation &&
-                          <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
-                                   title="Close Incident"/>}
+                            <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
+                                title="Close Incident" />}
                     </>}
                     {status_closed &&
-                      <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
-                               title="Re-Open Incident"/>}
+                        <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
+                            title="Re-Open Incident" />}
                 </>}
                 {/*<hr action="writable"/>*/}
                 {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
                 {/*<NavItem action="print" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>*/}
             </Options>;
         }
-        
+
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
-            <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-            <hr action="writable"/>
+            <NavItem action="view" onClick={onView} faIconLeft="eye" title="View" />
+            <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove" />
+            <hr action="writable" />
             {!status_closed && <>
                 <NavItem action="writable" idx={idx} onClick={this.onAssignInvestigator} faIconLeft="edit"
-                         title="Re-Assign Investigator(s)"/>
+                    title="Re-Assign Investigator(s)" />
                 <NavItem action="writable" idx={idx} onClick={this.onInvestigate} faIconLeft="edit"
-                         title="Investigate"/>
+                    title="Investigate" />
                 {!status_approved_investigation &&
                     <NavItem action="writable" idx={idx} onClick={this.onApproveInvestigation} faIconLeft="check"
-                             title="Approve Investigation"/>}
+                        title="Approve Investigation" />}
                 {status_approved_investigation &&
                     <NavItem action="writable" idx={idx} onClick={this.onCloseIncident} faIconLeft="ban"
-                             title="Close Incident"/>}
+                        title="Close Incident" />}
             </>}
             {status_closed &&
                 <NavItem action="writable" idx={idx} onClick={this.onReOpen} faIconLeft="edit"
-                         title="Re-Open Incident"/>}
+                    title="Re-Open Incident" />}
 
             {/*<hr action="writable"/>*/}
             {/*<NavItem action="print" idx={idx} onClick={this.onViewReport} faIconLeft="file-text" title="View Report"/>*/}
@@ -485,11 +485,11 @@ class InvestigationsTab extends React.Component {
             {/*    add={false}*/}
             {/*/>*/}
             <ClearableInput name="day_group" type="radio" placeholder="Morning / Afternoon"
-                            className="form-control" onChange={onChange}
-                            values={this.state.lists.day_group} returnValue/>
+                className="form-control" onChange={onChange}
+                values={this.state.lists.day_group} returnValue />
             <ClearableInput name="time_shift" type="radio" placeholder="Time Shift"
-                            className="form-control" onChange={onChange}
-                            values={this.state.lists.time_shift} returnValue/>
+                className="form-control" onChange={onChange}
+                values={this.state.lists.time_shift} returnValue />
             <ClearableInput
                 name="exact_location"
                 type="text"
@@ -497,20 +497,20 @@ class InvestigationsTab extends React.Component {
                 className="form-control"
                 onChange={onChange}
             />
-            
+
             <ClearableInput name="is_vehicle_incident" type="select" placeholder="Vehicle Incident?"
-                            className="form-control" onChange={onChange}
-                            values={this.state.lists.is_vehicle_incident.map(({text: label, value}) => ({label, value: value === "Yes"}))} returnValue/>
+                className="form-control" onChange={onChange}
+                values={this.state.lists.is_vehicle_incident.map(({ text: label, value }) => ({ label, value: value === "Yes" }))} returnValue />
             <ClearableInput name="vehicle_make" type="text" placeholder="Vehicle Make"
-                            className="form-control" onChange={onChange}/>
+                className="form-control" onChange={onChange} />
             <ClearableInput name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
-                            className="form-control" onChange={onChange}/>
+                className="form-control" onChange={onChange} />
             <ClearableInput name="incident_status" type="select" placeholder="Incident Status..."
-                            className="form-control" onChange={onChange}
-                            values={this.state.lists.incident_status} returnValue/>
+                className="form-control" onChange={onChange}
+                values={this.state.lists.incident_status} returnValue />
             <ClearableInput name="investigation_status" type="select" placeholder="Investigation Status..."
-                            className="form-control" onChange={onChange}
-                            values={this.state.lists.investigation_status} returnValue/>
+                className="form-control" onChange={onChange}
+                values={this.state.lists.investigation_status} returnValue />
 
             <ClearableInput
                 name="group"
@@ -518,7 +518,7 @@ class InvestigationsTab extends React.Component {
                 placeholder="Incident Group"
                 className="form-control"
                 onChange={onChange}
-                values={this.state.lists.group.map(({text: label, value}) => ({label, value}))}
+                values={this.state.lists.group.map(({ text: label, value }) => ({ label, value }))}
                 returnValue
             />
             <ClearableInput
@@ -527,7 +527,7 @@ class InvestigationsTab extends React.Component {
                 placeholder="Consequence / Severity"
                 className="form-control"
                 onChange={onChange}
-                values={this.state.lists.consequence.map(({text: label, value}) => ({label, value}))}
+                values={this.state.lists.consequence.map(({ text: label, value }) => ({ label, value }))}
                 returnValue
             />
             <ClearableInput
@@ -536,7 +536,7 @@ class InvestigationsTab extends React.Component {
                 placeholder="Likelihood / Probability"
                 className="form-control"
                 onChange={onChange}
-                values={this.state.lists.likelihood.map(({text: label, value}) => ({label, value}))}
+                values={this.state.lists.likelihood.map(({ text: label, value }) => ({ label, value }))}
                 returnValue
             />
             <ClearableInput
@@ -545,14 +545,14 @@ class InvestigationsTab extends React.Component {
                 placeholder="Risk Rating"
                 className="form-control"
                 onChange={onChange}
-                values={[...this.state.lists.risk_rating.map(({text: label, value}) => ({label, value})), {label: 'N/A', value: 'N/A'}]}
+                values={[...this.state.lists.risk_rating.map(({ text: label, value }) => ({ label, value })), { label: 'N/A', value: 'N/A' }]}
                 returnValue
             />
 
             <DateRangeInput name="incident_date_range" className="form-control"
-                            placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange}/>
+                placeholder="Date of Incident" placeholderWidthClass="min-w-135" onChange={onChange} />
             <DateRangeInput name="date_reported_range" className="form-control"
-                            placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange}/>
+                placeholder="Date Reported" placeholderWidthClass="min-w-135" onChange={onChange} />
         </div>;
     }
     // </editor-fold>
@@ -578,7 +578,7 @@ class InvestigationsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        return <IncidentInvestigationTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
+        return <IncidentInvestigationTableRow key={item.id} idx={n} item={item} onClick={onClick} />;
     }
 
     // </editor-fold>
@@ -600,10 +600,10 @@ class InvestigationsTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>
-            <NewIncidentInvestigationDialog ref="newInvestigationDialog"/>
-            <ProfilePDFReader ref="pdfReader"/>
-            <ExportInvestigationsDialog ref="exportInvestigationsDialog"/>
+            <NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog" />
+            <NewIncidentInvestigationDialog ref="newInvestigationDialog" />
+            <ProfilePDFReader ref="pdfReader" />
+            <ExportInvestigationsDialog ref="exportInvestigationsDialog" />
         </APageListReadWrite>;
     }
 

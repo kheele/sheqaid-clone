@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
         headers["Authorization"] = Authorization;
     }
 
-    fetch(process.env.HASURA_RELAY_ENDPOINT, {
+    fetch(process.env.ENDPOINT_HASURA_RELAY, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -5,16 +5,19 @@ import {observable} from 'mobx';
 import {FormControls, Row} from 'components/FormComponents';
 
 import {WarningControls} from "../../Warnings/forms/ProfileDialog";
-import {WorkPermitControls} from "../../WorkPermits/forms/ProfileDialog";
 import {MedicalControls} from "../../Medicals/forms/ProfileDialog";
 import {
     JobAppointmentControls
 } from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/JobAppointments/forms/ProfileDialog";
-import {LicenseControls} from "../../Licenses/forms/ProfileDialog";
+
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
 import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import {ContractControls} from "../../Contracts/forms/ProfileDialog";
 import {CompetencyControls} from "../../Competencies/forms/ProfileDialog";
+
+import {LicenseControls} from "../../HRDocs/Licenses/forms/ProfileDialog";
+import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
+
 import IDOrPassportSection from "./IDOrPassportSection";
 import PrDPSection from "./PrDPSection";
 

@@ -13,6 +13,7 @@ import SelectCityInput from "./SelectCityInput";
 import SelectZoneInput from "./SelectZoneInput";
 import SelectCountryInput from "./SelectCountryInput";
 import SelectCountryCodeInput from "./SelectCountryCodeInput";
+import SelectCountryCurrencyInput from "./SelectCountryCurrencyInput";
 import SelectBillableCompanyInput from "./SelectBillableCompanyInput";
 import SelectClientInput from "./SelectClientInput";
 import SelectProjectInput from "./SelectProjectInput";
@@ -83,7 +84,7 @@ export {
     SelectGenderInput,
     SelectCompanyCategoryInput,
 
-    SelectCityInput, SelectZoneInput, SelectCountryInput, SelectCountryCodeInput,
+    SelectCityInput, SelectZoneInput, SelectCountryInput, SelectCountryCodeInput, SelectCountryCurrencyInput,
 
     SelectBillableCompanyInput, SelectClientInput, SelectProjectInput, SelectSiteInput,
     SelectDocumentCategoryInput,

@@ -17,3 +17,5 @@ export const findByIdProxyNCRAssignedUser = findById("ncr/proxy/assigned-user");
 export const findByIdProxyNCRApprovingPerson = findById("ncr/proxy/approving-person");
 export const findByIdProxyNCRResponsibleParty = findById("ncr/proxy/responsible-party");
 export const findByIdProxyNCRDocument = findById("ncr/proxy/document");
+
+export const findByIdOHSDoc = findById("documents/ohs-docs");

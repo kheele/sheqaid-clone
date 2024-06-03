@@ -10,7 +10,7 @@ import {Clickable, ProfileField} from 'components/inputs';
 import {NavButtons} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 
-import AuditItemTable from './AuditItemTable';
+import AuditFindingItemTable from './AuditFindingItemTable';
 
 import style from "./ProfileAuditDialog.lazy.css";
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
@@ -146,7 +146,7 @@ class Controls extends React.Component {
                         <Clickable idx={5} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group row-findings">
-                        <AuditItemTable ref="list" name="list" defaultValue={list} readonly/>
+                        <AuditFindingItemTable ref="list" name="list" defaultValue={list} readonly/>
                     </div>
                     <NavButtons idx={5} onBack={onFormBack}/>
                 </div>

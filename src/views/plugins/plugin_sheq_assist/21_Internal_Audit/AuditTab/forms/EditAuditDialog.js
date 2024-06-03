@@ -11,7 +11,7 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {AEditDialog} from 'components/dialogs';
 
-import AuditItemTable from './AuditItemTable';
+import AuditFindingItemTable from './AuditFindingItemTable';
 
 import style from "./EditAuditDialog.lazy.css";
 import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
@@ -254,7 +254,7 @@ class Controls extends React.Component {
 				onFormOpen={onFormOpen}
 				onFormBack={onFormBack}
 			>
-				<AuditItemTable
+				<AuditFindingItemTable
 					ref="list"
 					name="list"
 					defaultValue={list}

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f183eb56cadc0c7baf20209ef702510d>>
+ * @generated SignedSource<<18d39063579b3490dcc582d163b74b8e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -89,6 +89,13 @@ v3 = [
                 "args": null,
                 "kind": "ScalarField",
                 "name": "doc",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "doc_fitness_certificate",
                 "storageKey": null
               },
               {
@@ -283,16 +290,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "dea081839bc8febb71b8249d6d8b4099",
+    "cacheID": "783ad41cba313af4dbd8df2aa96d63ca",
     "id": null,
     "metadata": {},
     "name": "findByIdEmployeeLeaveQuery",
     "operationKind": "query",
-    "text": "query findByIdEmployeeLeaveQuery(\n  $id: bigint\n) {\n  hr_employees_docs_leaves_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        doc\n        days_booked\n        due_to\n        date\n        expiry_date\n        expiry_updated\n        removed\n        employee_comments\n        type\n        notes\n        reason\n        employee {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query findByIdEmployeeLeaveQuery(\n  $id: bigint\n) {\n  hr_employees_docs_leaves_connection(where: {id: {_eq: $id}}) {\n    edges {\n      node {\n        id\n        created_at\n        doc\n        doc_fitness_certificate\n        days_booked\n        due_to\n        date\n        expiry_date\n        expiry_updated\n        removed\n        employee_comments\n        type\n        notes\n        reason\n        employee {\n          id\n          fname\n          lname\n          phone\n          email\n          id_num\n          passport_num\n        }\n        company {\n          id\n          name\n        }\n        client {\n          id\n          name\n        }\n        project {\n          id\n          name\n        }\n        site {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "de251724896cbffe1a8b136cd5908b9f";
+node.hash = "a3ee3f43da3abf1156b449d039147267";
 
 module.exports = node;

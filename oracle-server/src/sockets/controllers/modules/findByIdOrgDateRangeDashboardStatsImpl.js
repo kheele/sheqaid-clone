@@ -5,6 +5,7 @@ const findByIdOrgDateRangeDashboardStatsImpl = (
 		org,
 		tbl,
 		details_fragment,
+		onCreateQuery,
 	}
 ) => {
 	const operationName = `findById${org}${name}DateRangeDashboardStatsQuery`;
@@ -28,6 +29,10 @@ const findByIdOrgDateRangeDashboardStatsImpl = (
 		// } else {
 		// 	tbl = "default_companies";
 		// }
+		
+		if(onCreateQuery) {
+			return onCreateQuery(data, operationName, tbl);
+		}
 		
 		return Promise.all(
 			dates.map(async date => {
@@ -56,47 +61,52 @@ const findByIdOrgDateRangeDashboardStatsImpl = (
 };
 //</editor-fold>
 
-exports.findByIdCompanyDateRangeDashboardStatsImpl = ({name, details_fragment,}) => {
+exports.findByIdCompanyDateRangeDashboardStatsImpl = ({name, details_fragment, onCreateQuery}) => {
 	return findByIdOrgDateRangeDashboardStatsImpl({
 		org: "Company",
 		tbl: "default_companies",
 		name,
 		details_fragment,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdClientDateRangeDashboardStatsImpl = ({name, details_fragment,}) => {
+exports.findByIdClientDateRangeDashboardStatsImpl = ({name, details_fragment, onCreateQuery}) => {
 	return findByIdOrgDateRangeDashboardStatsImpl({
 		org: "Client",
 		tbl: "default_clients",
 		name,
 		details_fragment,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdProjectDateRangeDashboardStatsImpl = ({name, details_fragment,}) => {
+exports.findByIdProjectDateRangeDashboardStatsImpl = ({name, details_fragment, onCreateQuery}) => {
 	return findByIdOrgDateRangeDashboardStatsImpl({
 		org: "Project",
 		tbl: "default_projects",
 		name,
 		details_fragment,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdSiteDateRangeDashboardStatsImpl = ({name, details_fragment,}) => {
+exports.findByIdSiteDateRangeDashboardStatsImpl = ({name, details_fragment, onCreateQuery}) => {
 	return findByIdOrgDateRangeDashboardStatsImpl({
 		org: "Site",
 		tbl: "default_sites",
 		name,
 		details_fragment,
+		onCreateQuery,
 	});
 };
 
-exports.findByIdContractorDateRangeDashboardStatsImpl = ({name, details_fragment,}) => {
+exports.findByIdContractorDateRangeDashboardStatsImpl = ({name, details_fragment, onCreateQuery}) => {
 	return findByIdOrgDateRangeDashboardStatsImpl({
 		org: "Contractor",
 		tbl: "default_contractors",
 		name,
 		details_fragment,
+		onCreateQuery,
 	});
 };

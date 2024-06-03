@@ -1,5 +1,3 @@
-# Use Node 16 alpine as parent image
-#FROM --platform=linux/arm64/v8 node:20-alpine
 FROM --platform=linux/arm64/v8 oven/bun
 
 # Change the working directory on the Docker image to /app
@@ -11,14 +9,12 @@ COPY package.json ./
 
 # Install dependencies
 RUN bun install
-#RUN npm install
 
 # Copy the rest of project files into this image
 COPY . .
 
 # Expose application port
-EXPOSE 5500
+EXPOSE 5000
 
 # Start the application
-CMD bun run start:bun
-#CMD npm start:node
+CMD bun run start

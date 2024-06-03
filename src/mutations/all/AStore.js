@@ -134,8 +134,8 @@ class AStore {
         const {sess_claims} = this;
         if (!sess_claims) return null;
         const {access_type, user_id, company_id} = sess_claims;
-        if (!company_id) return null;
-        return company_id;
+        if (!user_id) return null;
+        return user_id;
     }
 
     get sess_company_id() {
@@ -173,9 +173,8 @@ class AStore {
     get sess_my_contractor_id() {
         const {sess_claims} = this;
         if (!sess_claims) return null;
-        const {access_type, user_id, my_contractor} = sess_claims;
-        if (!my_contractor) return null;
-        return my_contractor.id;
+        const {access_type, user_id, contractor_id} = sess_claims;
+        return contractor_id;
     }
 
     async extractId(item) {

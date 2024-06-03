@@ -15,7 +15,7 @@ import {NewEmployeeListTable, NewJobPositionListTable, NewUserListTable, NewNCRR
 import {ANewDialog} from 'components/dialogs';
 
 import {toDataURI} from "utils/Utils";
-import {SelectAuditItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
+import {SelectSourceItemTable, SelectSourceTable, SourceBtnWrapper, NewDocumentTable} from '../dialogs/NCRComponents';
 
 import style from "./NewNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -67,7 +67,7 @@ class Controls extends React.Component {
 				{label: "Site Audit", value: 'N/A'},
 				{label: 'Compliance Audit', value: sockets.of('audits').fn('listByLogged')},
 				{label: 'Inspection', value: sockets.of('inspections').fn('listCompletedByLogged')},
-				{label: 'Incident Investigation', value: sockets.of('incidents').fn('listByLogged')}
+				{label: 'Incident Investigation', value: sockets.of('incidents/investigations').fn('listByLogged')}
 			]
 		},
 	};
@@ -138,11 +138,21 @@ class Controls extends React.Component {
 						break;
 					}
 					case "Inspection": {
-						//                    list = ;
+						// const search = ['Major NCR', 'Minor NCR', 'Complaint', 'Observation'];
+						list = selected_source.data.question_list;//.filter(({audit_summary}) => search.contains(audit_summary));
+						selectSourceListTable && selectSourceListTable.setOnCancel(() => {
+							selectSourceTable.clearSelection();
+						}).open(list);
 						break;
 					}
 					case "Incident Investigation": {
-						//                    list = ;
+						// const search = ['Major NCR', 'Minor NCR', 'Complaint', 'Observation'];
+						const {id, data:{investigation:{cause_analysis:{immediate_analysis, root_analysis}}}} = selected_source;
+						list = immediate_analysis.cause_analysis_cause_list;
+						list = root_analysis.cause_analysis_cause_list;
+						selectSourceListTable && selectSourceListTable.setOnCancel(() => {
+							selectSourceTable.clearSelection();
+						}).open(list);
 						break;
 					}
 				}
@@ -451,7 +461,7 @@ class Controls extends React.Component {
 				<SourceBtnWrapper ref="sourceBtn" onClick={this.onSelectSource} onSelectSite={this.onSelectSite}/>
 				<SelectSourceTable ref="selectSourceTable" onSelectSourceItem={this.onSelectSourceItem}
 				                   onChange={this.form.onChange}/>
-				<SelectAuditItemTable ref="selectSourceListTable" onChange={this.form.onChange}/>
+				<SelectSourceItemTable ref="selectSourceListTable" onChange={this.form.onChange}/>
 			</Row>
 			<Row
 				rendered

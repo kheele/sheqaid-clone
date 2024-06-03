@@ -2,7 +2,7 @@ import React from "react";
 import {findDOMNode} from 'react-dom';
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {observable, computed} from 'mobx';
 
 import {ErrorBoundary} from '../';
 
@@ -46,6 +46,10 @@ class Tabs extends React.Component {
         this.state.activeIndex = index;
         const {onChange} = this.props;
         onChange && onChange(index);
+    }
+    
+    @computed get activeIndex() {
+        return this.state.activeIndex;
     }
 
     getTabByRef(ref) {

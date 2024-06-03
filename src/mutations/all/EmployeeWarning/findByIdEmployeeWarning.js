@@ -16,6 +16,7 @@ const query = graphql`
           created_at
           doc
           type
+          category_of_misconduct
           date
           expiry_date
           expiry_updated

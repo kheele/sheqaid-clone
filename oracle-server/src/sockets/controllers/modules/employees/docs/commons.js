@@ -1,6 +1,9 @@
 //<editor-fold desc="getVariablesAndQueryConfig">
 exports.getVariablesAndQueryConfig = (
 	{
+		//
+		module_name,
+		//
 		orgs_filter = [],
 		//
 		id,
@@ -12,6 +15,7 @@ exports.getVariablesAndQueryConfig = (
 		issued_date,
 		date,
 		isContract = false,
+		isExpense = false,
 		//
 		type,
 		//
@@ -99,50 +103,52 @@ exports.getVariablesAndQueryConfig = (
 			}
 		}
 		
-		if (date_range) {
-			const {start, end} = date_range;
-			
-			let __filter;
-			if (start && end) {
-				__filter = `expiry_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`;
-			} else if (start) {
-				__filter = `expiry_date: {_gte: "${Dates.formatDateSQL(start)}"}`;
-			} else if (end) {
-				__filter = `expiry_date: {_lte: "${Dates.formatDateSQL(end)}"}`;
-			}
-			
-			if (__filter) {
-				if (isContract) {
-					filter.push(`contract_details:{${__filter}}`);
-				} else {
-					filter.push(__filter);
+		if(!isExpense) {
+			if (date_range) {
+				const {start, end} = date_range;
+				
+				let __filter;
+				if (start && end) {
+					__filter = `expiry_date: {_gte: "${Dates.formatDateSQL(start)}", _lte: "${Dates.formatDateSQL(end)}"}`;
+				} else if (start) {
+					__filter = `expiry_date: {_gte: "${Dates.formatDateSQL(start)}"}`;
+				} else if (end) {
+					__filter = `expiry_date: {_lte: "${Dates.formatDateSQL(end)}"}`;
 				}
-			}
-		} else {
-			mon = mon || Dates.formatDateSQL(new Date().addMonths(1));
-			mon2 = mon2 || Dates.formatDateSQL(new Date().addMonths(2));
-			mon3 = mon3 || Dates.formatDateSQL(new Date().addMonths(3));
-			
-			let __filter;
-			if (expiry_date === null || expiry_date === 'null') {//expiry_no
-				__filter = `expiry_date: {_is_null: true}`;
-			} else if (expiry_date === -1) {//expired
-				__filter = `expiry_date: {_lte: "now()"}`;
-			} else if (expiry_date === 1) {//expired_1mon
-				__filter = `expiry_date: {_gt: "now()", _lte: "${mon}"}`;
-			} else if (expiry_date === 2) {//expired_2mon
-				__filter = `expiry_date: {_gt: "${mon}", _lte: "${mon2}"}`;
-			} else if (expiry_date === 3) {//expired_3mon
-				__filter = `expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}`;
-			} else if (expiry_date === 4) {//expired_4mon
-				__filter = `expiry_date: {_gt: "${mon3}"}`;
-			}
-			
-			if (__filter) {
-				if (isContract) {
-					filter.push(`contract_details:{${__filter}}`);
-				} else {
-					filter.push(__filter);
+				
+				if (__filter) {
+					if (isContract) {
+						filter.push(`contract_details:{${__filter}}`);
+					} else {
+						filter.push(__filter);
+					}
+				}
+			} else {
+				mon = mon || Dates.formatDateSQL(new Date().addMonths(1));
+				mon2 = mon2 || Dates.formatDateSQL(new Date().addMonths(2));
+				mon3 = mon3 || Dates.formatDateSQL(new Date().addMonths(3));
+				
+				let __filter;
+				if (expiry_date === null || expiry_date === 'null') {//expiry_no
+					__filter = `expiry_date: {_is_null: true}`;
+				} else if (expiry_date === -1) {//expired
+					__filter = `expiry_date: {_lte: "now()"}`;
+				} else if (expiry_date === 1) {//expired_1mon
+					__filter = `expiry_date: {_gt: "now()", _lte: "${mon}"}`;
+				} else if (expiry_date === 2) {//expired_2mon
+					__filter = `expiry_date: {_gt: "${mon}", _lte: "${mon2}"}`;
+				} else if (expiry_date === 3) {//expired_3mon
+					__filter = `expiry_date: {_gt: "${mon2}", _lte: "${mon3}"}`;
+				} else if (expiry_date === 4) {//expired_4mon
+					__filter = `expiry_date: {_gt: "${mon3}"}`;
+				}
+				
+				if (__filter) {
+					if (isContract) {
+						filter.push(`contract_details:{${__filter}}`);
+					} else {
+						filter.push(__filter);
+					}
 				}
 			}
 		}

@@ -1,36 +1,36 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
-import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import { observer } from 'mobx-react';
+import { observable, computed } from 'mobx';
 
-import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from 'views/plugins/utils';
+import { onSelectLoadAssetLocations, onSelectLoadAssetManufacturers } from 'views/plugins/utils';
 
-import {CalculationUtils, Dates, execWhen} from "utils/Utils";
+import { CalculationUtils, Dates, execWhen } from "utils/Utils";
 
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ActionsButton, ClearableInput, Clickable, SelectAssetTypeInput} from 'components/inputs';
-import {THead, TRow} from 'components/tables';
+import { ActionsButton, ClearableInput, Clickable, SelectAssetTypeInput } from 'components/inputs';
+import { THead, TRow } from 'components/tables';
 
 import ProfileToolDialog from '../ToolsTab/forms/ProfileToolDialog.js';
 import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 
 import style from "./MaintenancePlanTab.lazy.css";
-import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
+import { CONSTANTS } from "../ToolsTab/forms/AssetComponents";
 import byLogged from "./Query/List/listAllMaintanancePlansByLogged";
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "../../../../../components/ViewByButtons";
 import assetProfilePic from "../../../../../assets/images/vehicle-image-loading.png";
-import {ExpiryButtons, renderExpiryDateSpan} from "../../../../../utils/ComponentUtils";
+import { ExpiryButtons, renderExpiryDateSpan } from "../../../../../utils/ComponentUtils";
+import AssetMaintenanceRenderRow from "./AssetMaintenanceRenderRow";
 
 // </editor-fold>
 
 @observer
 class MaintenancePlanTab extends React.Component {
-	
 	pageKey = "MaintenancePlanTab";
-	
+
 	// <editor-fold defaultstate="collapsed" desc="state">
 	@observable
 	state = {
@@ -44,20 +44,20 @@ class MaintenancePlanTab extends React.Component {
 		expiry_date: 'ALL',
 	};
 	// </editor-fold>
-	
+
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-		
+
 		this.onLoadList = this.onLoadList.bind(this);
-		
+
 		this.setView = this.setView.bind(this);
 		this.onViewAsset = this.onViewAsset.bind(this);
-		this.onViewDocuments = this.onViewDocuments.bind(this);
-		
+		this.onViewMaintenanceService = this.onViewMaintenanceService.bind(this);
+
 		this.onView = this.onView.bind(this);
 		this.onAddMaintenanceService = this.onAddMaintenanceService.bind(this);
-		
+
 		this.onPrintForm = this.onPrintForm.bind(this);
 		this.renderLeftButtons = this.renderLeftButtons.bind(this);
 		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -65,16 +65,16 @@ class MaintenancePlanTab extends React.Component {
 		this.renderTHead = this.renderTHead.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 	}
-	
+
 	// </editor-fold>
-	
+
 	// <editor-fold defaultstate="collapsed" desc="componentWillMount, componentMount, componentWillUnmount">
 	componentWillMount() {
 		style.use();
 	}
-	
+
 	componentDidMount() {
-		const loads = {manufacturers: onSelectLoadAssetManufacturers, locations: onSelectLoadAssetLocations};
+		const loads = { manufacturers: onSelectLoadAssetManufacturers, locations: onSelectLoadAssetLocations };
 		Promise.all(Object.keys(loads).map(k => {
 			return loads[k]().then(res => {
 				this.state.lists[k] = res.distinct();
@@ -83,21 +83,33 @@ class MaintenancePlanTab extends React.Component {
 			this.state.loadedSelectLists = true;
 		});
 	}
-	
+
 	componentWillUnmount() {
 		style.unuse();
 	}
-	
+
 	// </editor-fold>
-	
+
 	@computed get isAsset() {
 		return this.state.view === "Asset";
 	}
-	
+
+	@computed get isUpcoming() {
+		return this.state.view === "Upcoming Maintenances";
+	}
+
+	@computed get isPast() {
+		return this.state.view === "Past Maintenances";
+	}
+
+	@computed get isHistory() {
+		return this.state.view === "Maintenance History";
+	}
+
 	//<editor-fold desc="onLoadList">
 	onLoadList(params = {}) {
-		const {state: {view, expiry_date}} = this;
-		const {page, lastItem, filterData, filtered, isNew} = params;
+		const { state: { view, expiry_date } } = this;
+		const { page, lastItem, filterData, filtered, isNew } = params;
 		const {
 			asset_id,
 			//
@@ -111,13 +123,13 @@ class MaintenancePlanTab extends React.Component {
 			asset_type,
 			status,
 		} = filterData || {};
-		
+
 		const mon = Dates.formatDateSQL(new Date().addMonths(1));
 		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
 		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
-		
-		const listByLogged = sockets.of('assets/maintenance-plan-list').fn('listByLogged');
-		
+
+		const listByLogged = sockets.of('assets/maintenance-plans').fn('listByLogged');
+
 		return listByLogged({
 			view, expiry_date,
 			mon, mon2, mon3,
@@ -142,33 +154,33 @@ class MaintenancePlanTab extends React.Component {
 			return res;
 		});
 	}
-	
+
 	//</editor-fold>
-	
+
 	//<editor-fold desc="setView">
-	async setView({view = 'Asset', expiry_date = 'ALL', load = true}) {
+	async setView({ view = 'Asset', expiry_date = 'ALL', load = true }) {
 		let ref;
 		if (this.refs.viewButtonsRefBox) {
 			ref = this.refs.viewButtonsRefBox;
 		} else {
 			ref = await execWhen(() => this.refs.viewButtonsRefBox);
 		}
-		
+
 		ref.setView(view);
 		this.state.view = view;
 		this.state.expiry_date = expiry_date;
-		
+
 		if (load) {
 			this.refs.root.load();
 		}
 	}
-	
+
 	//</editor-fold>
-	
+
 	// <editor-fold defaultstate="collapsed" desc="onViewAsset">
 	onViewAsset(e, el) {
-		const {idx} = el.props;
-		const {list} = this.refs.root;
+		const { idx } = el.props;
+		const { list } = this.refs.root;
 		const item = list[idx];
 		console.log("list", this.isAsset, list.slice())
 		const dialog = this.refs.root.getDialogByRef('profileDialog');
@@ -176,18 +188,18 @@ class MaintenancePlanTab extends React.Component {
 			if (this.isAsset) {
 				dialog.open(item);
 			} else {
-				const {data: {asset: assetItem}} = item;
+				const { data: { asset: assetItem } } = item;
 				dialog.open(assetItem);
 			}
 		}
 	}
-	
+
 	// </editor-fold>
-	
-	// <editor-fold defaultstate="collapsed" desc="onViewDocuments">
-	onViewDocuments(e, el) {
-		const {idx} = el.props;
-		const {list} = this.refs.root;
+
+	// <editor-fold defaultstate="collapsed" desc="onViewMaintenanceService">
+	onViewMaintenanceService(e, el) {
+		const { idx } = el.props;
+		const { list } = this.refs.root;
 		const item = list[idx];
 		// console.log("list", this.isAsset, list.slice())
 		const dialog = this.refs.root.getDialogByRef('profileDialog');
@@ -195,36 +207,36 @@ class MaintenancePlanTab extends React.Component {
 			if (this.isAsset) {
 				dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
 			} else {
-				const {data: {asset: assetItem}} = item;
+				const { data: { asset: assetItem } } = item;
 				dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).extraProp('docActiveId', item.id).open(assetItem);
 			}
 		}
 	}
-	
+
 	// </editor-fold>
-//
+	//
 	onPrintForm() {
 		this.refs.newMaintenancePlanPrintDialog.open();
 	}
-	
+
 	onView(e, el) {
-		const {idx} = el.props;
-		const {list} = this.refs.root;
+		const { idx } = el.props;
+		const { list } = this.refs.root;
 		const item = list[idx];
 		if (item) {
 			this.refs.profileDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
 		}
 	}
-	
+
 	onAddMaintenanceService(e, el) {
-		const {idx} = el.props;
-		const {list} = this.refs.root;
+		const { idx } = el.props;
+		const { list } = this.refs.root;
 		const item = list[idx];
 		if (item) {
 			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
 		}
 	}
-	
+
 	renderLeftButtons() {
 		return null/*<div className="left-buttons pull-left">
             <Button key="buttonPrintForm" className="btn btn-primary pull-right _888" onClick={this.onPrintForm}>
@@ -232,269 +244,123 @@ class MaintenancePlanTab extends React.Component {
             </Button>
         </div>*/;
 	}
-	
-	renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
+
+	renderPopoverOptions(idx, { onView, onEdit, onRemove, Options }) {
 		return <Options idx={idx} permissionModKey={this.props.permissionKey}>
-			<NavItem action="view" onClick={this.onViewAsset} faIconLeft="eye" title="View Asset"/>
-			{!this.isAsset && <NavItem action="view" onClick={this.onViewDocuments} faIconLeft="eye" title="View Maintenance Service"/>}
+			<NavItem action="view" onClick={this.onViewAsset} faIconLeft="eye" title="View Asset" />
+			{!this.isAsset && <NavItem action="view" onClick={this.onViewMaintenanceService} faIconLeft="eye" title="View Maintenance Service" />}
 			<NavItem action="writable" idx={idx} onClick={this.onAddMaintenanceService} faIconLeft="plus"
-			         title="Add Maintenance Service"/>
+				title="Add Maintenance Service" />
 		</Options>;
 	}
-	
+
 	renderFilterNode(onChange) {
 		if (!this.state.loadedSelectLists) {
 			return <div className="col-lg-12 controls flex text-center">Loading...</div>;
 		}
 		return <div className="col-lg-12 controls -margin-b-35">
 			<SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." className="col-lg-4 form-control"
-			                      onChange={onChange}/>
+				onChange={onChange} />
 			<ClearableInput name="manufacturer" type="select" placeholder="Manufacturer..." className="col-lg-4 form-control"
-			                onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
+				onChange={onChange} values={this.state.lists.manufacturers} returnValue />
 			<ClearableInput name="location" type="select" placeholder="Location..." className="col-lg-4 form-control"
-			                onChange={onChange} values={this.state.lists.locations} returnValue/>
+				onChange={onChange} values={this.state.lists.locations} returnValue />
 			<ClearableInput name="condition" type="select" placeholder="Condition..."
-			                className="col-lg-4 margin-t-10 form-control" onChange={onChange}
-			                values={this.state.lists.conditions} returnValue/>
+				className="col-lg-4 margin-t-10 form-control" onChange={onChange}
+				values={this.state.lists.conditions} returnValue />
 			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 margin-t-10 form-control"
-			                onChange={onChange}/>
+				onChange={onChange} />
 			{/*<Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
                 <i className="fa fa-barcode icon-left"/>Scan Barcode
             </Button>*/}
 		</div>;
 	}
-	
+
 	renderTHead() {
-		const {isConsultant, hasProjects, isContractor} = storage.is;
-		if(this.isAsset) {
+		const { isConsultant, hasProjects, isContractor } = storage.is;
+		const frag = <>
+			<div className="td fixed-flex min-w-50">ID</div>
+			<div className="td fixed-flex min-w-80">Photo</div>
+			<div className="td fixed-flex min-w-140">Asset Type</div>
+			<div className="td">Asset</div>
+			<div className="td">Location</div>
+			<div className="td fixed-flex min-w-140">Reg. No.</div>
+			<div className="td fixed-flex min-w-140">Serial No.</div>
+		</>;
+		if (this.isAsset) {
 			return <THead>
-				<div className="td fixed-flex min-w-50">ID</div>
-				<div className="td fixed-flex min-w-80">Photo</div>
-				<div className="td">Asset Type</div>
-				<div className="td">Asset</div>
-				<div className="td">Location</div>
-				<div className="td">Reg. No.</div>
-				<div className="td">Serial No.</div>
-				<div className="td">Responsible Person</div>
-				<div className="td">Job Position</div>
-				{hasProjects && <div className="td sm-hidden">Location</div>}
-				<div className="td fixed-flex min-w-105">Latest On</div>
+				{frag}
+				<div className="td fixed-flex min-w-140">Last Service</div>
+				<div className="td fixed-flex min-w-160">Previous Schedule</div>
+				<div className="td fixed-flex min-w-140">Next Service</div>
 				<div className="td fixed-flex min-w-240">Stats</div>
 				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
 			</THead>;
-		} else {
+		} else if (this.isUpcoming) {
 			return <THead>
-				<div className="td fixed-flex min-w-30">ID</div>
-				<div className="td">Type</div>
-				<div className="td">Name</div>
-				<div className="td">Location</div>
-				<div className="td fixed-flex min-w-280">Registration No.</div>
-				<div className="td fixed-flex min-w-220">Last Service</div>
-				<div className="td fixed-flex min-w-220">Next Service</div>
-				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+				{frag}
+				<div className="td fixed-flex min-w-160">Next Service</div>
+				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+			</THead>;
+		} else if (this.isPast) {
+			return <THead>
+				{frag}
+				<div className="td fixed-flex min-w-140">Date Scheduled</div>
+				<div className="td fixed-flex min-w-140">Completed On</div>
+				<div className="td fixed-flex min-w-140">Hrs/KMs Completed</div>
+				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+			</THead>;
+		} else if (this.isHistory) {
+			return <THead>
+				{frag}
+				<div className="td fixed-flex min-w-160">Reason For Servive</div>
+				<div className="td fixed-flex min-w-100">Service</div>
+				<div className="td fixed-flex min-w-170">Service Time/Distance</div>
+				<div className="td fixed-flex min-w-120">Service Date</div>
+				{/* <div className="td fixed-flex min-w-140">Cost & Receipt</div> */}
+				<div className="td fixed-flex min-w-180">Distance/Time Scheduled</div>
+				{/* <div className="td fixed-flex min-w-140">Days Completed</div> */}
+				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
 			</THead>;
 		}
+
+		return null;
 	}
-	
+
 	renderItem(n, onClick) {
 		const item = this.refs.root.list[n];
-		const {isConsultant, hasProjects, isContractor} = storage.is;
-		if (this.isAsset) {
-			
-			let listName = 'maintenance_plan_list';
-			
-			let {
-				id,
-				data: {
-					client, project, site,
-					status,
-					written_off,
-					profile_pic: profile_pic_list,
-					photo_list,
-					responsible_person,
-					asset_detail: {
-						owning_company,
-						name,
-						asset_type,
-						desc,
-						manufacturer,
-						model,
-						reg_num,
-						serial_num,
-						location,
-						toolkit,
-						condition,
-						barcode,
-						qr_code,
-						notes,
-					},
-					
-					[listName]: list,
-					[`${listName}_no_expiry_aggregate`]: list_no_expiry_aggregate,
-					[`${listName}_expired_aggregate`]: list_expired_aggregate,
-					[`${listName}_mon_expiry_aggregate`]: list_mon_expiry_aggregate,
-					[`${listName}_2mon_expiry_aggregate`]: list_2mon_expiry_aggregate,
-					[`${listName}_3mon_expiry_aggregate`]: list_3mon_expiry_aggregate,
-					[`${listName}_4mon_expiry_aggregate`]: list_4mon_expiry_aggregate,
-				},
-			} = item;
-			
-			const latest = list.getFirstElement();
-			
-			let [profile_pic] = profile_pic_list || [];
-			if (!profile_pic) {
-				profile_pic = (photo_list || [])[0];
-			}
-			
-			return <TRow key={id} className="w-full tr-header">
-				<div className="td fixed-flex min-w-50">
-					<h6 className="xs-shown font-size-13">ID</h6>
-					{id}
-				</div>
-				<div className="td fixed-flex min-w-80">
-					<Clickable idx={idx} viewByImage onClick={onView}>
-						{RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
-					</Clickable>
-				</div>
-				<div className="td">{asset_type}</div>
-				<div className="td">{name || 'N/A'}</div>
-				<div className="td">{location || 'N/A'}</div>
-				<div className="td">{reg_num || 'N/A'}</div>
-				<div className="td">{serial_num || 'N/A'}</div>
-				<div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
-				<div className="td">{responsible_person && responsible_person.job_position && responsible_person.job_position.name || 'N/A'}</div>
-				<div className="td"></div>
-				<div className="td fixed-flex min-w-105">{latest && renderExpiryDateSpan(latest.expiry)}</div>
-				<div className="td fixed-flex flex grid-gap-5 min-w-240">
-					<ExpiryButtons item={item} listName={listName}/>
-				</div>
-				{renderActionsCol && renderActionsCol(item, idx, onClick)}
-				{!renderActionsCol && <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-					<ActionsButton idx={idx} isEmployee className="btn btn-primary pull-right min-w-40"
-					               onClick={onClick}/>
-				</div>}
-			</TRow>;
-		}
-//        const {id, data: {service_date, service_hrs_or_km, next_service_hrs_or_km, reason_for_service}} = item;
-		const {
-			id, data: {
-            created_at, status/*In Storage | Checked Out | Loaned Out | Out For Repair*/, statusVal,
-            client, project, site,
-            //1 done
-            asset_detail: {
-                owning_company,
-                name,
-                asset_type,
-                desc,
-                manufacturer,
-                model,
-                reg_num,
-                serial_num,
-                location,
-                toolkit,
-                condition,
-                barcode,
-                qr_code,
-                notes,
-            },
-            //2 done
-            photo_list,
-            profile_pic: profile_pic_list,
-            //3 done
-            responsible_person,
-            // //4 done
-            // doc_list,
-            // //5 done
-            // purchase_info,
-            // //6 done
-            // depreciation,
-            // //7 done
-            // monitoring_plan_list,
-            // //8 done
-            maintenance_plan_list,
-            // //9 done
-            // calibration_record_list,
-            // //10
-            // inspection_template_list = [],
-            // inspection_list = [],
-        }
-		} = item;
-		
-		//8 done
-		const lastMaintenancePlan = (maintenance_plan_list || []).getLastElement();
-		const {
-			// id,
-			next_service_hrs_or_km,
-			plan_list = [],
-		} = lastMaintenancePlan || {};
-		
-		plan_list.sortBy('service_date');
-		const {
-			reason_for_service,
-			service,
-			service_hrs_or_km,
-			service_date,
-		} = plan_list.getLastElement() || {};
-		
-		const isHours = !['Vehicles', 'Small Plant'].contains(asset_type);
-		return <TRow key={"item-" + n}>
-			<div className="td fixed-flex min-w-30">{id}</div>
-			<div className="td">{asset_type}</div>
-			<div className="td">{name || 'N/A'}</div>
-			<div className="td">{location || 'N/A'}</div>
-			<div className="td fixed-flex min-w-280">{reg_num}</div>
-			<div className="td fixed-flex min-w-220 flex flex padding-t-5 padding-b-5 padding-r-10">
-				{plan_list.isEmpty() && 'N/A'}
-				{service_date && <span className="text-center">Date<br/>{Dates.formatDate(service_date)}</span>}
-				{service_hrs_or_km &&
-					<span className="text-center">{isHours ? 'Time' : 'Distance'}<br/>{service_hrs_or_km}{isHours ? 'hrs' : 'km'}</span>}
-			</div>
-			<div className="td fixed-flex min-w-220 flex padding-t-5 padding-b-5">
-				<MKBox sx={{background: '#ddd', borderRadius: '0'}} className="text-center">
-					Total {isHours ? 'Time' : 'Distance'}<br/>
-					{next_service_hrs_or_km}{isHours ? 'hrs' : 'km'}
-				</MKBox>
-				<MKBox sx={{background: '#ddd', borderRadius: '0'}} className="text-center">
-					{isHours ? 'Time' : 'Distance'} left<br/>
-					{CalculationUtils.getTimeOrDistanceLeftToNextService(item)}{isHours ? 'hrs' : 'km'}
-				</MKBox>
-			</div>
-			<div className="td fixed-flex padding-l-10 padding-r-0 min-w-60">
-				<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-			</div>
-		</TRow>;
+		return <AssetMaintenanceRenderRow key={item.id} idx={n} item={item} view={this.state.view} onClick={onClick} onView={this.onViewAsset} />;
 	}
-	
+
 	render() {
-		const {state, state: {expiry_date}} = this;
+		const { state, state: { expiry_date } } = this;
 		return <>
 			<ViewByButtonsBox
 				ref="viewButtonsRefBox"
 				state={state}
-				titleSingular="Maintenance Plan"
 				expiry_date={expiry_date}
 				onChange={this.setView}
 			/>
 			<APageListReadWrite
-			hasBackBtn={false}
-			ref="root"
-			page={this}
-			createBtnTitle="Create"
-			pageId={this.pageKey + "-tab"}
-			pageTitle="Maintenance Plan"
-			pageTitleSingular="maintenance plan"
-			onLoadList={this.onLoadList}
-			noAnimation={true}
-			renderLeftButtons={this.renderLeftButtons}
-			renderPopoverOptions={this.renderPopoverOptions}
-			renderFilterNode={this.renderFilterNode}
-			renderTHead={this.renderTHead}
-			renderItem={this.renderItem}>
-			<ConfirmDialog ref="removeDialog"/>
-			
-			<EditToolDialog ref="editDialog"/>
-			<ProfileToolDialog ref="profileDialog"/>
-		</APageListReadWrite>
+				hasBackBtn={false}
+				ref="root"
+				page={this}
+				createBtnTitle="Create"
+				pageId={this.pageKey + "-tab"}
+				pageTitle="Maintenance Plan"
+				pageTitleSingular="maintenance plan"
+				onLoadList={this.onLoadList}
+				noAnimation={true}
+				renderLeftButtons={this.renderLeftButtons}
+				renderPopoverOptions={this.renderPopoverOptions}
+				renderFilterNode={this.renderFilterNode}
+				renderTHead={this.renderTHead}
+				renderItem={this.renderItem}>
+				<ConfirmDialog ref="removeDialog" />
+
+				<EditToolDialog ref="editDialog" />
+				<ProfileToolDialog ref="profileDialog" />
+			</APageListReadWrite>
 		</>;
 	}
 }
@@ -502,24 +368,31 @@ class MaintenancePlanTab extends React.Component {
 // <editor-fold defaultstate="collapsed" desc="ViewByButtonsBox">
 @observer
 class ViewByButtonsBox extends React.Component {
-	
+
+	items = [
+		"Asset",
+		"Maintenance History",
+		"Past Maintenances",
+		"Upcoming Maintenances",
+	];
+
 	// <editor-fold defaultstate="collapsed" desc="constructor">
 	constructor(props) {
 		super(props);
-		
+
 		this.setView = this.setView.bind(this);
 	}
-	
+
 	// </editor-fold>
-	
+
 	setView(value) {
 		execWhen(() => this.viewButtonsRef).then(ref => {
 			ref.setView(value);
 		});
 	}
-	
+
 	render() {
-		const {state: {view}, expiry_date, titleSingular, onChange} = this.props;
+		const { state: { view }, expiry_date, titleSingular, onChange } = this.props;
 		return <MKBox
 			width="100%"
 			display="flex"
@@ -531,7 +404,7 @@ class ViewByButtonsBox extends React.Component {
 		>
 			<ViewByButtons ref={ref => {
 				this.viewButtonsRef = ref;
-			}} text="Asset" expiry_date={expiry_date} value={view} name={titleSingular} onChange={onChange}/>
+			}} text="Asset" expiry_date={expiry_date} value={view} items={this.items} onChange={onChange} />
 		</MKBox>
 	}
 }

@@ -1,12 +1,27 @@
 const listImpl = require('../listImpl');
-const {inc_fragment} = require("./commons");
+const { inc_fragment } = require("./commons");
 
 //<editor-fold desc="listImpl">
 module.exports = async (socket, data) => {
     const {
         type,
+        status,
         due_to,
+        date_approved,
         date,
+
+        // days_booked,
+        // due_to
+        // status
+        // type
+        // employee_comments
+        // reason
+        // notes
+        // doc
+        // date_approved
+        // date
+        // expiry_date
+        // expiry_updated
     } = data;
     return listImpl({
         socket,
@@ -17,7 +32,9 @@ module.exports = async (socket, data) => {
         inc_fragment,
         attrs: {
             type,
+            status,
             due_to,
+            date_approved,
             date,
         },
     });

@@ -1,0 +1,1945 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+scalar account_type
+
+"""
+Boolean expression to compare columns of type "account_type". All fields are combined with logical 'AND'.
+"""
+input account_type_comparison_exp {
+  _eq: account_type
+  _gt: account_type
+  _gte: account_type
+  _in: [account_type!]
+  _is_null: Boolean
+  _lt: account_type
+  _lte: account_type
+  _neq: account_type
+  _nin: [account_type!]
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+scalar date
+
+"""
+Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
+"""
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+"""
+columns and relationships of "default_cities"
+"""
+type default_cities implements Node {
+  """An array relationship"""
+  company_list(
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): [default_companies!]!
+
+  """An array relationship connection"""
+  company_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+
+  """An object relationship"""
+  country: default_countries!
+  country_iso2: String!
+  id: ID!
+  latitude: String
+  longitude: String
+  name: String!
+  wikiDataId: String
+
+  """An object relationship"""
+  zone: default_zones!
+  zone_code: String
+  zone_id: bigint!
+}
+
+"""
+order by aggregate values of table "default_cities"
+"""
+input default_cities_aggregate_order_by {
+  avg: default_cities_avg_order_by
+  count: order_by
+  max: default_cities_max_order_by
+  min: default_cities_min_order_by
+  stddev: default_cities_stddev_order_by
+  stddev_pop: default_cities_stddev_pop_order_by
+  stddev_samp: default_cities_stddev_samp_order_by
+  sum: default_cities_sum_order_by
+  var_pop: default_cities_var_pop_order_by
+  var_samp: default_cities_var_samp_order_by
+  variance: default_cities_variance_order_by
+}
+
+"""
+order by avg() on columns of table "default_cities"
+"""
+input default_cities_avg_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "default_cities". All fields are combined with a logical 'AND'.
+"""
+input default_cities_bool_exp {
+  _and: [default_cities_bool_exp!]
+  _not: default_cities_bool_exp
+  _or: [default_cities_bool_exp!]
+  company_list: default_companies_bool_exp
+  country: default_countries_bool_exp
+  country_iso2: String_comparison_exp
+  id: bigint_comparison_exp
+  latitude: String_comparison_exp
+  longitude: String_comparison_exp
+  name: String_comparison_exp
+  wikiDataId: String_comparison_exp
+  zone: default_zones_bool_exp
+  zone_code: String_comparison_exp
+  zone_id: bigint_comparison_exp
+}
+
+"""
+order by max() on columns of table "default_cities"
+"""
+input default_cities_max_order_by {
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  wikiDataId: order_by
+  zone_code: order_by
+  zone_id: order_by
+}
+
+"""
+order by min() on columns of table "default_cities"
+"""
+input default_cities_min_order_by {
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  wikiDataId: order_by
+  zone_code: order_by
+  zone_id: order_by
+}
+
+"""Ordering options when selecting data from "default_cities"."""
+input default_cities_order_by {
+  company_list_aggregate: default_companies_aggregate_order_by
+  country: default_countries_order_by
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  wikiDataId: order_by
+  zone: default_zones_order_by
+  zone_code: order_by
+  zone_id: order_by
+}
+
+"""
+select columns of table "default_cities"
+"""
+enum default_cities_select_column {
+  """column name"""
+  country_iso2
+
+  """column name"""
+  id
+
+  """column name"""
+  latitude
+
+  """column name"""
+  longitude
+
+  """column name"""
+  name
+
+  """column name"""
+  wikiDataId
+
+  """column name"""
+  zone_code
+
+  """column name"""
+  zone_id
+}
+
+"""
+order by stddev() on columns of table "default_cities"
+"""
+input default_cities_stddev_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "default_cities"
+"""
+input default_cities_stddev_pop_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "default_cities"
+"""
+input default_cities_stddev_samp_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by sum() on columns of table "default_cities"
+"""
+input default_cities_sum_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by var_pop() on columns of table "default_cities"
+"""
+input default_cities_var_pop_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by var_samp() on columns of table "default_cities"
+"""
+input default_cities_var_samp_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+order by variance() on columns of table "default_cities"
+"""
+input default_cities_variance_order_by {
+  id: order_by
+  zone_id: order_by
+}
+
+"""
+A Relay connection object on "default_cities"
+"""
+type default_citiesConnection {
+  edges: [default_citiesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_citiesEdge {
+  cursor: String!
+  node: default_cities!
+}
+
+"""
+columns and relationships of "default_companies"
+"""
+type default_companies implements Node {
+  account_type: account_type!
+  address: String
+  business_id: String
+
+  """An object relationship"""
+  category: default_company_categories
+  category_id: bigint
+
+  """An object relationship"""
+  city: default_cities
+  city_id: bigint
+  consultant: Boolean!
+
+  """An object relationship"""
+  country: default_countries!
+  country_iso2: String!
+  created_at: timestamptz!
+  email: String!
+  firestore_id: String
+  id: ID!
+  name: String!
+  no_projects: Boolean!
+  phone: String!
+  profile_pic(
+    """JSON select path"""
+    path: String
+  ): json
+  trial_max_days: Int!
+  trial_start_date: date
+
+  """An object relationship"""
+  zone: default_zones
+  zone_id: bigint
+}
+
+"""
+order by aggregate values of table "default_companies"
+"""
+input default_companies_aggregate_order_by {
+  avg: default_companies_avg_order_by
+  count: order_by
+  max: default_companies_max_order_by
+  min: default_companies_min_order_by
+  stddev: default_companies_stddev_order_by
+  stddev_pop: default_companies_stddev_pop_order_by
+  stddev_samp: default_companies_stddev_samp_order_by
+  sum: default_companies_sum_order_by
+  var_pop: default_companies_var_pop_order_by
+  var_samp: default_companies_var_samp_order_by
+  variance: default_companies_variance_order_by
+}
+
+"""
+order by avg() on columns of table "default_companies"
+"""
+input default_companies_avg_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "default_companies". All fields are combined with a logical 'AND'.
+"""
+input default_companies_bool_exp {
+  _and: [default_companies_bool_exp!]
+  _not: default_companies_bool_exp
+  _or: [default_companies_bool_exp!]
+  account_type: account_type_comparison_exp
+  address: String_comparison_exp
+  business_id: String_comparison_exp
+  category: default_company_categories_bool_exp
+  category_id: bigint_comparison_exp
+  city: default_cities_bool_exp
+  city_id: bigint_comparison_exp
+  consultant: Boolean_comparison_exp
+  country: default_countries_bool_exp
+  country_iso2: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  email: String_comparison_exp
+  firestore_id: String_comparison_exp
+  id: bigint_comparison_exp
+  name: String_comparison_exp
+  no_projects: Boolean_comparison_exp
+  phone: String_comparison_exp
+  profile_pic: json_comparison_exp
+  trial_max_days: Int_comparison_exp
+  trial_start_date: date_comparison_exp
+  zone: default_zones_bool_exp
+  zone_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "default_companies"
+"""
+enum default_companies_constraint {
+  """
+  unique or primary key constraint on columns "firestore_id"
+  """
+  default_companies_firestore_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  default_companies_pkey
+}
+
+"""
+input type for inserting data into table "default_companies"
+"""
+input default_companies_insert_input {
+  account_type: account_type
+  address: String
+  business_id: String
+  category_id: bigint
+  city_id: bigint
+  consultant: Boolean
+  country_iso2: String
+  created_at: timestamptz
+  email: String
+  error_reporting_list: default_error_reporting_arr_rel_insert_input
+  firestore_id: String
+  name: String
+  no_projects: Boolean
+  phone: String
+  profile_pic: json
+  trial_max_days: Int
+  trial_start_date: date
+  zone_id: bigint
+}
+
+"""
+order by max() on columns of table "default_companies"
+"""
+input default_companies_max_order_by {
+  account_type: order_by
+  address: order_by
+  business_id: order_by
+  category_id: order_by
+  city_id: order_by
+  country_iso2: order_by
+  created_at: order_by
+  email: order_by
+  firestore_id: order_by
+  id: order_by
+  name: order_by
+  phone: order_by
+  trial_max_days: order_by
+  trial_start_date: order_by
+  zone_id: order_by
+}
+
+"""
+order by min() on columns of table "default_companies"
+"""
+input default_companies_min_order_by {
+  account_type: order_by
+  address: order_by
+  business_id: order_by
+  category_id: order_by
+  city_id: order_by
+  country_iso2: order_by
+  created_at: order_by
+  email: order_by
+  firestore_id: order_by
+  id: order_by
+  name: order_by
+  phone: order_by
+  trial_max_days: order_by
+  trial_start_date: order_by
+  zone_id: order_by
+}
+
+"""
+response of any mutation on the table "default_companies"
+"""
+type default_companies_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [default_companies!]!
+}
+
+"""
+input type for inserting object relation for remote table "default_companies"
+"""
+input default_companies_obj_rel_insert_input {
+  data: default_companies_insert_input!
+
+  """upsert condition"""
+  on_conflict: default_companies_on_conflict
+}
+
+"""
+on_conflict condition type for table "default_companies"
+"""
+input default_companies_on_conflict {
+  constraint: default_companies_constraint!
+  update_columns: [default_companies_update_column!]! = []
+  where: default_companies_bool_exp
+}
+
+"""Ordering options when selecting data from "default_companies"."""
+input default_companies_order_by {
+  account_type: order_by
+  address: order_by
+  business_id: order_by
+  category: default_company_categories_order_by
+  category_id: order_by
+  city: default_cities_order_by
+  city_id: order_by
+  consultant: order_by
+  country: default_countries_order_by
+  country_iso2: order_by
+  created_at: order_by
+  email: order_by
+  firestore_id: order_by
+  id: order_by
+  name: order_by
+  no_projects: order_by
+  phone: order_by
+  profile_pic: order_by
+  trial_max_days: order_by
+  trial_start_date: order_by
+  zone: default_zones_order_by
+  zone_id: order_by
+}
+
+"""
+select columns of table "default_companies"
+"""
+enum default_companies_select_column {
+  """column name"""
+  account_type
+
+  """column name"""
+  address
+
+  """column name"""
+  business_id
+
+  """column name"""
+  category_id
+
+  """column name"""
+  city_id
+
+  """column name"""
+  consultant
+
+  """column name"""
+  country_iso2
+
+  """column name"""
+  created_at
+
+  """column name"""
+  email
+
+  """column name"""
+  firestore_id
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  no_projects
+
+  """column name"""
+  phone
+
+  """column name"""
+  profile_pic
+
+  """column name"""
+  trial_max_days
+
+  """column name"""
+  trial_start_date
+
+  """column name"""
+  zone_id
+}
+
+"""
+order by stddev() on columns of table "default_companies"
+"""
+input default_companies_stddev_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "default_companies"
+"""
+input default_companies_stddev_pop_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "default_companies"
+"""
+input default_companies_stddev_samp_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+order by sum() on columns of table "default_companies"
+"""
+input default_companies_sum_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+placeholder for update columns of table "default_companies" (current role has no relevant permissions)
+"""
+enum default_companies_update_column {
+  """placeholder (do not use)"""
+  _PLACEHOLDER
+}
+
+"""
+order by var_pop() on columns of table "default_companies"
+"""
+input default_companies_var_pop_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+order by var_samp() on columns of table "default_companies"
+"""
+input default_companies_var_samp_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+order by variance() on columns of table "default_companies"
+"""
+input default_companies_variance_order_by {
+  category_id: order_by
+  city_id: order_by
+  id: order_by
+  trial_max_days: order_by
+  zone_id: order_by
+}
+
+"""
+A Relay connection object on "default_companies"
+"""
+type default_companiesConnection {
+  edges: [default_companiesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_companiesEdge {
+  cursor: String!
+  node: default_companies!
+}
+
+"""
+columns and relationships of "default_company_categories"
+"""
+type default_company_categories implements Node {
+  """An array relationship"""
+  company_list(
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): [default_companies!]!
+
+  """An array relationship connection"""
+  company_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+  created_at: timestamptz!
+  id: ID!
+  name: String!
+}
+
+"""
+Boolean expression to filter rows from the table "default_company_categories". All fields are combined with a logical 'AND'.
+"""
+input default_company_categories_bool_exp {
+  _and: [default_company_categories_bool_exp!]
+  _not: default_company_categories_bool_exp
+  _or: [default_company_categories_bool_exp!]
+  company_list: default_companies_bool_exp
+  created_at: timestamptz_comparison_exp
+  id: bigint_comparison_exp
+  name: String_comparison_exp
+}
+
+"""
+Ordering options when selecting data from "default_company_categories".
+"""
+input default_company_categories_order_by {
+  company_list_aggregate: default_companies_aggregate_order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+}
+
+"""
+select columns of table "default_company_categories"
+"""
+enum default_company_categories_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+A Relay connection object on "default_company_categories"
+"""
+type default_company_categoriesConnection {
+  edges: [default_company_categoriesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_company_categoriesEdge {
+  cursor: String!
+  node: default_company_categories!
+}
+
+"""
+columns and relationships of "default_countries"
+"""
+type default_countries implements Node {
+  capital: String
+
+  """An array relationship"""
+  city_list(
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): [default_cities!]!
+
+  """An array relationship connection"""
+  city_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): default_citiesConnection!
+
+  """An array relationship"""
+  company_list(
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): [default_companies!]!
+
+  """An array relationship connection"""
+  company_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+  currency: String
+  currency_name: String
+  currency_symbol: String
+  date_format: String
+  emoji: String
+  emojiU: String
+  id: ID!
+  iso2: String!
+  iso3: String!
+  latitude: String
+  longitude: String
+  name: String!
+  native: String
+  numeric_code: String
+  phone_code: String!
+  region: String
+  subregion: String
+  symbol: String
+  timezones(
+    """JSON select path"""
+    path: String
+  ): json
+  tld: String
+  translations(
+    """JSON select path"""
+    path: String
+  ): json
+
+  """An array relationship"""
+  zone_list(
+    """distinct select on columns"""
+    distinct_on: [default_zones_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_zones_order_by!]
+
+    """filter the rows returned"""
+    where: default_zones_bool_exp
+  ): [default_zones!]!
+
+  """An array relationship connection"""
+  zone_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_zones_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_zones_order_by!]
+
+    """filter the rows returned"""
+    where: default_zones_bool_exp
+  ): default_zonesConnection!
+}
+
+"""
+Boolean expression to filter rows from the table "default_countries". All fields are combined with a logical 'AND'.
+"""
+input default_countries_bool_exp {
+  _and: [default_countries_bool_exp!]
+  _not: default_countries_bool_exp
+  _or: [default_countries_bool_exp!]
+  capital: String_comparison_exp
+  city_list: default_cities_bool_exp
+  company_list: default_companies_bool_exp
+  currency: String_comparison_exp
+  currency_name: String_comparison_exp
+  currency_symbol: String_comparison_exp
+  date_format: String_comparison_exp
+  emoji: String_comparison_exp
+  emojiU: String_comparison_exp
+  id: bigint_comparison_exp
+  iso2: String_comparison_exp
+  iso3: String_comparison_exp
+  latitude: String_comparison_exp
+  longitude: String_comparison_exp
+  name: String_comparison_exp
+  native: String_comparison_exp
+  numeric_code: String_comparison_exp
+  phone_code: String_comparison_exp
+  region: String_comparison_exp
+  subregion: String_comparison_exp
+  symbol: String_comparison_exp
+  timezones: json_comparison_exp
+  tld: String_comparison_exp
+  translations: json_comparison_exp
+  zone_list: default_zones_bool_exp
+}
+
+"""Ordering options when selecting data from "default_countries"."""
+input default_countries_order_by {
+  capital: order_by
+  city_list_aggregate: default_cities_aggregate_order_by
+  company_list_aggregate: default_companies_aggregate_order_by
+  currency: order_by
+  currency_name: order_by
+  currency_symbol: order_by
+  date_format: order_by
+  emoji: order_by
+  emojiU: order_by
+  id: order_by
+  iso2: order_by
+  iso3: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  native: order_by
+  numeric_code: order_by
+  phone_code: order_by
+  region: order_by
+  subregion: order_by
+  symbol: order_by
+  timezones: order_by
+  tld: order_by
+  translations: order_by
+  zone_list_aggregate: default_zones_aggregate_order_by
+}
+
+"""
+select columns of table "default_countries"
+"""
+enum default_countries_select_column {
+  """column name"""
+  capital
+
+  """column name"""
+  currency
+
+  """column name"""
+  currency_name
+
+  """column name"""
+  currency_symbol
+
+  """column name"""
+  date_format
+
+  """column name"""
+  emoji
+
+  """column name"""
+  emojiU
+
+  """column name"""
+  id
+
+  """column name"""
+  iso2
+
+  """column name"""
+  iso3
+
+  """column name"""
+  latitude
+
+  """column name"""
+  longitude
+
+  """column name"""
+  name
+
+  """column name"""
+  native
+
+  """column name"""
+  numeric_code
+
+  """column name"""
+  phone_code
+
+  """column name"""
+  region
+
+  """column name"""
+  subregion
+
+  """column name"""
+  symbol
+
+  """column name"""
+  timezones
+
+  """column name"""
+  tld
+
+  """column name"""
+  translations
+}
+
+"""
+A Relay connection object on "default_countries"
+"""
+type default_countriesConnection {
+  edges: [default_countriesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_countriesEdge {
+  cursor: String!
+  node: default_countries!
+}
+
+"""
+input type for inserting array relation for remote table "default_error_reporting"
+"""
+input default_error_reporting_arr_rel_insert_input {
+  data: [default_error_reporting_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: default_error_reporting_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "default_error_reporting". All fields are combined with a logical 'AND'.
+"""
+input default_error_reporting_bool_exp {
+  _and: [default_error_reporting_bool_exp!]
+  _not: default_error_reporting_bool_exp
+  _or: [default_error_reporting_bool_exp!]
+}
+
+"""
+unique or primary key constraints on table "default_error_reporting"
+"""
+enum default_error_reporting_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  default_error_reporting_pkey
+}
+
+"""
+input type for inserting data into table "default_error_reporting"
+"""
+input default_error_reporting_insert_input {
+  client_id: bigint
+  company: default_companies_obj_rel_insert_input
+  company_id: bigint
+  contractor_id: bigint
+  contractor_site_id: bigint
+  contractor_user_id: bigint
+  created_at: timestamptz
+  error_info: String
+  logged_contractor_id: bigint
+  message: String
+  project_id: bigint
+  selected_client_id: bigint
+  selected_contractor_site_id: bigint
+  selected_project_id: bigint
+  selected_site_id: bigint
+  site_id: bigint
+  stack: String
+  user_id: bigint
+}
+
+"""
+response of any mutation on the table "default_error_reporting"
+"""
+type default_error_reporting_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+}
+
+"""
+on_conflict condition type for table "default_error_reporting"
+"""
+input default_error_reporting_on_conflict {
+  constraint: default_error_reporting_constraint!
+  update_columns: [default_error_reporting_update_column!]! = []
+  where: default_error_reporting_bool_exp
+}
+
+"""
+placeholder for update columns of table "default_error_reporting" (current role has no relevant permissions)
+"""
+enum default_error_reporting_update_column {
+  """placeholder (do not use)"""
+  _PLACEHOLDER
+}
+
+"""
+columns and relationships of "default_manager_plugin"
+"""
+type default_manager_plugin implements Node {
+  app: manager_plugin_app!
+  desc: String
+  id: ID!
+  key: String!
+  status: manager_plugin_status!
+  title: String!
+}
+
+"""
+Boolean expression to filter rows from the table "default_manager_plugin". All fields are combined with a logical 'AND'.
+"""
+input default_manager_plugin_bool_exp {
+  _and: [default_manager_plugin_bool_exp!]
+  _not: default_manager_plugin_bool_exp
+  _or: [default_manager_plugin_bool_exp!]
+  app: manager_plugin_app_comparison_exp
+  desc: String_comparison_exp
+  id: bigint_comparison_exp
+  key: String_comparison_exp
+  status: manager_plugin_status_comparison_exp
+  title: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "default_manager_plugin"."""
+input default_manager_plugin_order_by {
+  app: order_by
+  desc: order_by
+  id: order_by
+  key: order_by
+  status: order_by
+  title: order_by
+}
+
+"""
+select columns of table "default_manager_plugin"
+"""
+enum default_manager_plugin_select_column {
+  """column name"""
+  app
+
+  """column name"""
+  desc
+
+  """column name"""
+  id
+
+  """column name"""
+  key
+
+  """column name"""
+  status
+
+  """column name"""
+  title
+}
+
+"""
+A Relay connection object on "default_manager_plugin"
+"""
+type default_manager_pluginConnection {
+  edges: [default_manager_pluginEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_manager_pluginEdge {
+  cursor: String!
+  node: default_manager_plugin!
+}
+
+"""
+columns and relationships of "default_zones"
+"""
+type default_zones implements Node {
+  """An array relationship"""
+  city_list(
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): [default_cities!]!
+
+  """An array relationship connection"""
+  city_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): default_citiesConnection!
+  code: String
+
+  """An array relationship"""
+  company_list(
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): [default_companies!]!
+
+  """An array relationship connection"""
+  company_list_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+
+  """An object relationship"""
+  country: default_countries!
+  country_iso2: String!
+  id: ID!
+  latitude: String
+  longitude: String
+  name: String!
+  type: String
+}
+
+"""
+order by aggregate values of table "default_zones"
+"""
+input default_zones_aggregate_order_by {
+  avg: default_zones_avg_order_by
+  count: order_by
+  max: default_zones_max_order_by
+  min: default_zones_min_order_by
+  stddev: default_zones_stddev_order_by
+  stddev_pop: default_zones_stddev_pop_order_by
+  stddev_samp: default_zones_stddev_samp_order_by
+  sum: default_zones_sum_order_by
+  var_pop: default_zones_var_pop_order_by
+  var_samp: default_zones_var_samp_order_by
+  variance: default_zones_variance_order_by
+}
+
+"""
+order by avg() on columns of table "default_zones"
+"""
+input default_zones_avg_order_by {
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "default_zones". All fields are combined with a logical 'AND'.
+"""
+input default_zones_bool_exp {
+  _and: [default_zones_bool_exp!]
+  _not: default_zones_bool_exp
+  _or: [default_zones_bool_exp!]
+  city_list: default_cities_bool_exp
+  code: String_comparison_exp
+  company_list: default_companies_bool_exp
+  country: default_countries_bool_exp
+  country_iso2: String_comparison_exp
+  id: bigint_comparison_exp
+  latitude: String_comparison_exp
+  longitude: String_comparison_exp
+  name: String_comparison_exp
+  type: String_comparison_exp
+}
+
+"""
+order by max() on columns of table "default_zones"
+"""
+input default_zones_max_order_by {
+  code: order_by
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+order by min() on columns of table "default_zones"
+"""
+input default_zones_min_order_by {
+  code: order_by
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  type: order_by
+}
+
+"""Ordering options when selecting data from "default_zones"."""
+input default_zones_order_by {
+  city_list_aggregate: default_cities_aggregate_order_by
+  code: order_by
+  company_list_aggregate: default_companies_aggregate_order_by
+  country: default_countries_order_by
+  country_iso2: order_by
+  id: order_by
+  latitude: order_by
+  longitude: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+select columns of table "default_zones"
+"""
+enum default_zones_select_column {
+  """column name"""
+  code
+
+  """column name"""
+  country_iso2
+
+  """column name"""
+  id
+
+  """column name"""
+  latitude
+
+  """column name"""
+  longitude
+
+  """column name"""
+  name
+
+  """column name"""
+  type
+}
+
+"""
+order by stddev() on columns of table "default_zones"
+"""
+input default_zones_stddev_order_by {
+  id: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "default_zones"
+"""
+input default_zones_stddev_pop_order_by {
+  id: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "default_zones"
+"""
+input default_zones_stddev_samp_order_by {
+  id: order_by
+}
+
+"""
+order by sum() on columns of table "default_zones"
+"""
+input default_zones_sum_order_by {
+  id: order_by
+}
+
+"""
+order by var_pop() on columns of table "default_zones"
+"""
+input default_zones_var_pop_order_by {
+  id: order_by
+}
+
+"""
+order by var_samp() on columns of table "default_zones"
+"""
+input default_zones_var_samp_order_by {
+  id: order_by
+}
+
+"""
+order by variance() on columns of table "default_zones"
+"""
+input default_zones_variance_order_by {
+  id: order_by
+}
+
+"""
+A Relay connection object on "default_zones"
+"""
+type default_zonesConnection {
+  edges: [default_zonesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type default_zonesEdge {
+  cursor: String!
+  node: default_zones!
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+scalar json
+
+"""
+Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'.
+"""
+input json_comparison_exp {
+  _eq: json
+  _gt: json
+  _gte: json
+  _in: [json!]
+  _is_null: Boolean
+  _lt: json
+  _lte: json
+  _neq: json
+  _nin: [json!]
+}
+
+scalar manager_plugin_app
+
+"""
+Boolean expression to compare columns of type "manager_plugin_app". All fields are combined with logical 'AND'.
+"""
+input manager_plugin_app_comparison_exp {
+  _eq: manager_plugin_app
+  _gt: manager_plugin_app
+  _gte: manager_plugin_app
+  _in: [manager_plugin_app!]
+  _is_null: Boolean
+  _lt: manager_plugin_app
+  _lte: manager_plugin_app
+  _neq: manager_plugin_app
+  _nin: [manager_plugin_app!]
+}
+
+scalar manager_plugin_status
+
+"""
+Boolean expression to compare columns of type "manager_plugin_status". All fields are combined with logical 'AND'.
+"""
+input manager_plugin_status_comparison_exp {
+  _eq: manager_plugin_status
+  _gt: manager_plugin_status
+  _gte: manager_plugin_status
+  _in: [manager_plugin_status!]
+  _is_null: Boolean
+  _lt: manager_plugin_status
+  _lte: manager_plugin_status
+  _neq: manager_plugin_status
+  _nin: [manager_plugin_status!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  insert data into the table: "default_companies"
+  """
+  insert_default_companies(
+    """the rows to be inserted"""
+    objects: [default_companies_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: default_companies_on_conflict
+  ): default_companies_mutation_response
+
+  """
+  insert a single row into the table: "default_companies"
+  """
+  insert_default_companies_one(
+    """the row to be inserted"""
+    object: default_companies_insert_input!
+
+    """upsert condition"""
+    on_conflict: default_companies_on_conflict
+  ): default_companies
+
+  """
+  insert data into the table: "default_error_reporting"
+  """
+  insert_default_error_reporting(
+    """the rows to be inserted"""
+    objects: [default_error_reporting_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: default_error_reporting_on_conflict
+  ): default_error_reporting_mutation_response
+}
+
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
+type query_root {
+  """
+  fetch data from the table: "default_cities"
+  """
+  default_cities_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): default_citiesConnection!
+
+  """
+  fetch data from the table: "default_companies"
+  """
+  default_companies_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+
+  """
+  fetch data from the table: "default_company_categories"
+  """
+  default_company_categories_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_company_categories_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_company_categories_order_by!]
+
+    """filter the rows returned"""
+    where: default_company_categories_bool_exp
+  ): default_company_categoriesConnection!
+
+  """
+  fetch data from the table: "default_countries"
+  """
+  default_countries_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_countries_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_countries_order_by!]
+
+    """filter the rows returned"""
+    where: default_countries_bool_exp
+  ): default_countriesConnection!
+
+  """
+  fetch data from the table: "default_manager_plugin"
+  """
+  default_manager_plugin_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_manager_plugin_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_manager_plugin_order_by!]
+
+    """filter the rows returned"""
+    where: default_manager_plugin_bool_exp
+  ): default_manager_pluginConnection!
+
+  """
+  fetch data from the table: "default_zones"
+  """
+  default_zones_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_zones_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_zones_order_by!]
+
+    """filter the rows returned"""
+    where: default_zones_bool_exp
+  ): default_zonesConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "default_cities"
+  """
+  default_cities_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_cities_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_cities_order_by!]
+
+    """filter the rows returned"""
+    where: default_cities_bool_exp
+  ): default_citiesConnection!
+
+  """
+  fetch data from the table: "default_companies"
+  """
+  default_companies_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_companies_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_companies_order_by!]
+
+    """filter the rows returned"""
+    where: default_companies_bool_exp
+  ): default_companiesConnection!
+
+  """
+  fetch data from the table: "default_company_categories"
+  """
+  default_company_categories_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_company_categories_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_company_categories_order_by!]
+
+    """filter the rows returned"""
+    where: default_company_categories_bool_exp
+  ): default_company_categoriesConnection!
+
+  """
+  fetch data from the table: "default_countries"
+  """
+  default_countries_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_countries_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_countries_order_by!]
+
+    """filter the rows returned"""
+    where: default_countries_bool_exp
+  ): default_countriesConnection!
+
+  """
+  fetch data from the table: "default_manager_plugin"
+  """
+  default_manager_plugin_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_manager_plugin_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_manager_plugin_order_by!]
+
+    """filter the rows returned"""
+    where: default_manager_plugin_bool_exp
+  ): default_manager_pluginConnection!
+
+  """
+  fetch data from the table: "default_zones"
+  """
+  default_zones_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [default_zones_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [default_zones_order_by!]
+
+    """filter the rows returned"""
+    where: default_zones_bool_exp
+  ): default_zonesConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+

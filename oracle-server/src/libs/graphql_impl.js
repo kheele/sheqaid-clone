@@ -3,7 +3,7 @@ global.sendRelay = async (args) => {
     if (!args) return null;
     const {query, variables, operationName} = args;
 
-    const result = await fetch(process.env.HASURA_RELAY_ENDPOINT, {
+    const result = await fetch(process.env.ENDPOINT_HASURA_RELAY, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -41,7 +41,7 @@ global.sendGraphQL = async (args) => {
     }
 
     if (mutation) {
-        return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+        return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -84,7 +84,7 @@ global.sendGraphQL = async (args) => {
         });
     }
 
-    return fetch(process.env.HASURA_GRAPHQL_ENDPOINT, {
+    return fetch(process.env.ENDPOINT_HASURA_GRAPHQL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -101,7 +101,7 @@ global.sendGraphQL = async (args) => {
             throw err;
         }
     }).then(res => {
-        // console.log(process.env.HASURA_GRAPHQL_ENDPOINT, JSON.stringify(res)); // { data: ... }
+        // console.log(process.env.ENDPOINT_HASURA_GRAPHQL, JSON.stringify(res)); // { data: ... }
         const {errors, data} = res;
 
         if (errors) {
