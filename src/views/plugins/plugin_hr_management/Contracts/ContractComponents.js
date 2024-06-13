@@ -33,22 +33,25 @@ class ContractDetails extends React.Component {
         return <>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
-                <label className="margin-b-0 w-full text-center">Contract Terms</label>
-                <ProfileField title="Contract Type" name="contract_type" value={contract_type} className="col-lg-6 pull-left-3"/>
-                <ProfileField title="Start Date" name="start_date" value={start_date} type="date" className="col-lg-4"/>
-                <ProfileField title="End Date" name="expiry_date" value={expiry_date} type="date" className="col-lg-4"/>
-                <ProfileField title="End Of Trial Period" name="end_of_trial_period" value={end_of_trial_period} type="date" className="col-lg-4"/>
+                <label className="margin-b-0 w-full bg-white padding-10">Contract Terms</label>
+                <ProfileField title="Contract Type" name="contract_type" value={contract_type} className="col-lg-12"/>
+                <ProfileField title="Start Date" name="start_date" value={start_date} type="date" className="col-lg-6"/>
+                <ProfileField title="End Date" name="expiry_date" value={expiry_date} type="date" className="col-lg-6"/>
+                <ProfileField title="End Of Trial Period" name="end_of_trial_period" value={end_of_trial_period}
+                              type="date" className="col-lg-6"/>
             </div>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
-                <label className="margin-b-0 w-full text-center">Working Schedule</label>
-                <ProfileField name="start_time" type="time" placeholder="Start Time" value={start_time} className="col-lg-4"/>
-                <ProfileField name="end_time" type="time" placeholder="End Time" value={end_time} className="col-lg-4"/>
-                <ProfileField name="daily_working_hours" type="number" placeholder="Daily Working Hours" value={daily_working_hours} className="col-lg-4"/>
+                <label className="margin-b-0 w-full bg-white padding-10">Working Schedule</label>
+                <ProfileField name="start_time" type="time" placeholder="Start Time" value={start_time}
+                              className="col-lg-6"/>
+                <ProfileField name="end_time" type="time" placeholder="End Time" value={end_time} className="col-lg-6"/>
+                <ProfileField name="daily_working_hours" type="number" placeholder="Daily Working Hours"
+                              value={daily_working_hours} className="col-lg-6"/>
             </div>
             <div className="row sec-group margin-0">
                 <hr className="margin-b-10 hor-center w-200"/>
-                <label className="margin-b-0 w-full text-center">Notes</label>
+                <label className="margin-b-0 w-full bg-white padding-10">Notes</label>
                 <ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
             </div>
         </>;
@@ -61,10 +64,14 @@ class SalaryInfo extends React.Component {
     @observable
     state = {
         lists: {
-            payment_types: [{text: 'Salary (Fixed Payment)', value: 'Salary', checked: false}, {text: 'Hourly Wage', value: 'Wage', checked: false}],
+            payment_types: [{text: 'Salary (Fixed Payment)', value: 'Salary', checked: false}, {
+                text: 'Hourly Wage',
+                value: 'Wage',
+                checked: false
+            }],
             salary_intervals: [
-                {text: 'Weekly', value: 'Weekly', checked: false}, 
-                {text: 'Bi-Weekly', value: 'Bi-Weekly', checked: false}, 
+                {text: 'Weekly', value: 'Weekly', checked: false},
+                {text: 'Bi-Weekly', value: 'Bi-Weekly', checked: false},
                 {text: 'Monthly', value: 'Monthly', checked: false}
             ],
             wage_types: []
@@ -93,10 +100,14 @@ class SalaryInfo extends React.Component {
 
         return <>
             <div className="row sec-group margin-0">
-                <ProfileField title="Payment Type" name="payment_type" value={payment_type} className={"col-lg-" + (payment_type==="Salary" ? "4" : "6")}/>
-                {payment_type==="Salary" && <ProfileField title="Salary Interval" name="salary_interval" value={salary_interval} className="col-lg-4"/>}
-                {payment_type==="Salary" && <ProfileField title="Salary" name="salary" value={salary} className="col-lg-4"/>}
-                {payment_type==="Wage" && <ProfileField title="Wage" name="wage" value={wage} className="col-lg-6"/>}
+                <ProfileField title="Payment Type" name="payment_type" value={payment_type}
+                              className={"col-lg-" + (payment_type === "Salary" ? "6" : "6")}/>
+                {payment_type === "Salary" &&
+                    <ProfileField title="Salary Interval" name="salary_interval" value={salary_interval}
+                                  className="col-lg-6"/>}
+                {payment_type === "Salary" &&
+                    <ProfileField title="Salary" name="salary" value={salary} className="col-lg-6"/>}
+                {payment_type === "Wage" && <ProfileField title="Wage" name="wage" value={wage} className="col-lg-6"/>}
             </div>
             <Deductibles defaultValue={deductible && deductible.list}/>
         </>;
@@ -109,12 +120,12 @@ class Deductibles extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     @computed
     get list() {
         return (this.props.defaultValue || []).filter(v => !!v && !!v.value);
     }
-    
+
     @computed
     get calculate() {
         const {list} = this;
@@ -122,17 +133,18 @@ class Deductibles extends React.Component {
         const total = l.reduce((n1, n2) => n1 + n2, 0);
         return total;
     }
-    
+
     render() {
         return <div className="row sec-group margin-0">
             <hr className="margin-r-10"/>
-            <label className="hor-center margin-b-0">Deductibles</label>
+            <label className="w-full bg-white padding-10">Deductibles</label>
             <div className="row margin-l-0 margin-r-0">
                 {this.list.isEmpty() && "N/A"}
                 {this.list.map((item, n) => <Deductible item={item}/>)}
             </div>
-            {!this.list.isEmpty() && <hr  className="hor-center w-100"/>}
-            {!this.list.isEmpty() && <label className="hor-center margin-b-15">Deductibles Total : {this.calculate.toCurrency('R')}</label>}
+            {!this.list.isEmpty() && <hr className="hor-center w-100"/>}
+            {!this.list.isEmpty() &&
+                <label className="hor-center margin-b-15">Deductibles Total : {this.calculate.toCurrency('R')}</label>}
         </div>;
     }
 }

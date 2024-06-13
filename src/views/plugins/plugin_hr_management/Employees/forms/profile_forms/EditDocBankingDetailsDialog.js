@@ -1,5 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import {extendObservable} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -43,6 +44,19 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    get item() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="onNext">
     onNext(e, btn) {
         const {form} = this;
@@ -68,8 +82,6 @@ class Controls extends React.Component {
 
         return true;
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
@@ -99,7 +111,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -136,6 +148,9 @@ class Controls extends React.Component {
         progressDialog.open();
         updateEmployeeDocBankingDetail({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
+            if (res) {
+                extendObservable(old_data, res.data);
+            }
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
@@ -144,16 +159,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
-    }
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     //<editor-fold desc="render">
@@ -222,6 +227,7 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
+
     //</editor-fold>
 }
 

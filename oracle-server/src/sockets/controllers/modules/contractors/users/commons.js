@@ -62,6 +62,7 @@ const user_details_fragment = `
       receive_training_management_notifs
       receive_expired_docs_notifs
     }
+    linked_employee_id
     linked_employee {
       id
       fname

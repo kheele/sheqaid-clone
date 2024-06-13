@@ -1,18 +1,14 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {autorun, computed, observable} from 'mobx';
-
-import {Dates} from 'utils/Utils';
+import {autorun, computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
-import {ClearableInput, ProfileField, ProfilePic, RowOrgs, SelectGenderInput} from 'components/inputs';
+import {ProfileField, RowOrgs} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import OptionalInfoSection from './ViewOptionalInfoSection';
 import ViewDocumentsSection from './ViewDocumentsSection';
 import DependentsAndNextOfKinSection from './ViewDependentsAndNextOfKinSection';
-
-import ViewNotificationSettingsTab from './ViewNotificationSettingsTab';
 
 import DashboardSection from "./DashboardSection";
 
@@ -20,8 +16,7 @@ import style from "./ProfileDialog.lazy.css";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
-import JobObservationsSection from "./ViewJobObservationsSection";
-import TrainingsSection from "./ViewTrainingsSection";
+import ViewTimeoffSection from "./ViewTimeoffSection";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -93,6 +88,12 @@ class Controls extends React.Component {
     components = [
         {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoTab"},
         {title: 'Documents', comp: ViewDocumentsSection, ref: "documentsTab"},
+        {
+            title: 'Time-off',
+            comp: ViewTimeoffSection,
+            ref: "timeOffTab",
+            sectionClassName: "-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+        },
         {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependentsAndNextOfKinTab"},
         // {title: 'Job Observations', comp: JobObservationsSection, ref: "jobObservationsSection"},
         // {title: 'Trainings', comp: TrainingsSection, ref: "trainingsTab"},
@@ -141,6 +142,12 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
         const {dialog} = this.props;
@@ -180,7 +187,7 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
-    renderComponent({title, comp: Comp, ref, activeAlways = false, isLast}, n) {
+    renderComponent({title, comp: Comp, sectionClassName, ref, activeAlways = false, isLast}, n) {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
         n += 3;
         return <Row
@@ -188,6 +195,7 @@ class Controls extends React.Component {
             rendered
             idx={n}
             title={n + '. ' + title}
+            sectionClassName={sectionClassName}
             onFormOpen={onFormOpen}
             onFormBack={onFormBack}
             onFormNext={!isLast && onFormNext}
@@ -202,12 +210,6 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
             />
         </Row>;
-    }
-
-    // </editor-fold>
-
-    @computed get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

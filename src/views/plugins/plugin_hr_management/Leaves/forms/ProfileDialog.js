@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {AProfileDialog} from 'components/dialogs';
-import {ProfileField, UploadButton} from 'components/inputs';
+import {Button, ProfileField, UploadButton} from 'components/inputs';
 
 import ProfilePDFReader from '../printers/ProfilePDFReader';
 
@@ -17,29 +17,29 @@ import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-	pageKey = "ProfileLeaveDialog";
-	className = "AProfileEmployeeDocDialog";
-	findById = findByIdEmployee;
+    pageKey = "ProfileLeaveDialog";
+    className = "AProfileEmployeeDocDialog";
+    findById = findByIdEmployee;
 
-	constructor(props) {
-		super(props, style);
-	}
+    constructor(props) {
+        super(props, style);
+    }
 
-	title() {
-		return "Leaves";
-	}
+    get topButtonsHiddenDelete() {
+        return true;
+    }
 
-	onSaveAsPDF(e, btn) {
-		this.refs.controls.onSaveAsPDF(e, btn);
-	}
+    get controls() {
+        return Controls;
+    }
 
-	get topButtonsHiddenDelete() {
-		return true;
-	}
+    title() {
+        return "Leaves";
+    }
 
-	get controls() {
-		return Controls;
-	}
+    onSaveAsPDF(e, btn) {
+        this.refs.controls.onSaveAsPDF(e, btn);
+    }
 }
 
 //</editor-fold>
@@ -47,85 +47,127 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-	listName = "leave_list";
-	onUpdate = updateEmployeeLeave;
-	NewDialog = NewDialog;
-	EditDialog = EditDialog;
-	ProfilePDFReader = ProfilePDFReader;
+    listName = "leave_list";
+    onUpdate = updateEmployeeLeave;
+    NewDialog = NewDialog;
+    EditDialog = EditDialog;
+    ProfilePDFReader = ProfilePDFReader;
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
 
-	//<editor-fold desc="loadDashboardTopStats">
-	async loadDashboardTopStats(id) {
-		return employeeStore.findByIdHRLeavesDashboardStats(id);
-	}
+        this.onRequestTimeOff = this.onRequestTimeOff.bind(this);
+    }
 
-	//</editor-fold>
+    get renderBarActions() {
+        const {item} = this.props;
+        const {is: {isEmployee}, loggedUser: {user, user: {data: {linked_employee_id}}}} = storage;
 
-	//<editor-fold desc="loadDashboardBottomStats">
-	async loadDashboardBottomStats(id) {
-		return employeeStore.findByIdHRLeavesDateRangeDashboardStats(id);
-	}
+        const isLoggedUser = (isEmployee, employee_id, linked_employee_id, user_id) => {
+            if (isEmployee) return employee_id === user_id;
+            return employee_id === linked_employee_id;
+        };
 
-	//</editor-fold>
+        if (!isLoggedUser(isEmployee, item.id, linked_employee_id, user.id)) {
+            return null;
+        }
 
-	renderItem(item, n, onClick) {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			}
-		} = this;
-		const {
-			created_at,
-			doc,
-			doc_fitness_certificate,
-			employee,
-			type,
-			due_to,
-			date,
-			expiry_date,
-			days_booked,
-			reason,
-			employee_comments,
-			notes
-		} = item.data || item;
+        return <>
+            <Button
+                className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+                onClick={this.onRequestTimeOff}
+            >
+                Request Time-off
+            </Button>
+            <NewDialog ref="newDialog" isSelfRequest/>
+        </>;
+    }
 
-		return <div className="row item-wrapper padding-t-10 h-full">
-			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Leave Details</label>
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<ProfileField title="Leave Type" name="type" value={type} type="select" className="col-lg-6"/>
-				<ProfileField title="Leave Due To" name="due_to" value={due_to} className="col-lg-6"/>
-				<ProfileField title="Leave Start Date" name="date" type="date" value={date} className="col-lg-6"/>
-				<ProfileField title="Leave Expiry Date" name="expiry_date" type="date" value={expiry_date}
-				              className="col-lg-6"/>
-				<ProfileField title="No. Of Days Booked" name="days_booked" value={days_booked} className="col-lg-12"/>
-				<ProfileField title="Reason Of Leave" name="reason" value={reason} type="textarea" className="col-lg-12"/>
-				<ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments} type="textarea"
-				              className="col-lg-12"/>
-				<ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
-				<UploadButton
-					name="doc"
-					defaultValue={doc}
-					buttonTitle="Proof Of Sick Note"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-6"
-				/>
-				<UploadButton
-					name="doc_fitness_certificate"
-					defaultValue={doc_fitness_certificate}
-					buttonTitle="Certificate Of Fitness"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-6"
-				/>
-			</div>
-		</div>;
-	}
+    onRequestTimeOff(evt, btn) {
+        const {isEmployee} = storage.is;
+        const {item} = this.props;
+        if (isEmployee) {
+            this.refs.newDialog.open(item);
+        } else {
+            const {loggedUser: {user: {data: {linked_employee_id}}}} = storage;
+            if (!linked_employee_id) {
+                return infoDialog.open("You have not been registered as an employee. Please link your account with your employee account.");
+            }
+            this.refs.newDialog.open(item);
+        }
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats(id) {
+        return employeeStore.findByIdHRLeavesDashboardStats(id);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats(id) {
+        return employeeStore.findByIdHRLeavesDateRangeDashboardStats(id);
+    }
+
+    renderItem(item, n, onClick) {
+        const {
+            props: {
+                onFormNext, onFormBack, onFormOpen
+            }
+        } = this;
+        const {
+            created_at,
+            doc,
+            doc_fitness_certificate,
+            employee,
+            type,
+            due_to,
+            date,
+            expiry_date,
+            days_booked,
+            reason,
+            employee_comments,
+            notes
+        } = item.data || item;
+
+        return <div className="row item-wrapper padding-t-10 h-full">
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Leave Details</label>
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <ProfileField title="Leave Type" name="type" value={type} type="select" className="col-lg-6"/>
+                <ProfileField title="Leave Due To" name="due_to" value={due_to} className="col-lg-6"/>
+                <ProfileField title="Leave Start Date" name="date" type="date" value={date} className="col-lg-6"/>
+                <ProfileField title="Leave Expiry Date" name="expiry_date" type="date" value={expiry_date}
+                              className="col-lg-6"/>
+                <ProfileField title="No. Of Days Booked" name="days_booked" value={days_booked} className="col-lg-12"/>
+                <ProfileField title="Reason Of Leave" name="reason" value={reason} type="textarea"
+                              className="col-lg-12"/>
+                <ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments}
+                              type="textarea"
+                              className="col-lg-12"/>
+                <ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
+                <UploadButton
+                    name="doc"
+                    defaultValue={doc}
+                    buttonTitle="Proof Of Sick Note"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
+                />
+                <UploadButton
+                    name="doc_fitness_certificate"
+                    defaultValue={doc_fitness_certificate}
+                    buttonTitle="Certificate Of Fitness"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
+                />
+            </div>
+        </div>;
+    }
 
 }
 

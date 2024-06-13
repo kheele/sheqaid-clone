@@ -9,8 +9,6 @@ import {MedicalControls} from "../../Medicals/forms/ProfileDialog";
 import {
     JobAppointmentControls
 } from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/JobAppointments/forms/ProfileDialog";
-
-import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
 import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import {ContractControls} from "../../Contracts/forms/ProfileDialog";
 import {CompetencyControls} from "../../Competencies/forms/ProfileDialog";
@@ -20,6 +18,7 @@ import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 
 import IDOrPassportSection from "./IDOrPassportSection";
 import PrDPSection from "./PrDPSection";
+import SignableDocumentsSection from "./SignableDocumentsSection";
 
 @observer
 class ViewDocumentsSection extends React.Component {
@@ -54,7 +53,7 @@ class ViewDocumentsSection extends React.Component {
                 trainer_training_list,
             }
         } = item;
-        
+
         let __idx = 0;
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
@@ -62,12 +61,65 @@ class ViewDocumentsSection extends React.Component {
                 <Row
                     rendered
                     idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} ID / Passport`}
-                    sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    title={idx + `.${__idx} Signable Documents`}
+                    sectionClassName="h-500 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormNext={onFormNext}
                 >
-                    <IDOrPassportSection item={item} isEmbedded/>
+                    <SignableDocumentsSection item={item} tabsHeight="530px"/>
+                </Row>
+                <Row
+                    rendered
+                    idx={idx + `.${__idx++}`}
+                    title={idx + `.${__idx} Personal Documents`}
+                    onFormOpen={onFormOpen}
+                    onFormBack={onFormBack}
+                    onFormNext={onFormNext}
+                >
+                    <FormControls lazyLoad>
+                        <Row
+                            rendered
+                            idx={idx + `.${__idx}.1`}
+                            title={idx + `.${__idx}.1 ID / Passport`}
+                            sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            onFormOpen={onFormOpen}
+                            onFormNext={onFormNext}
+                        >
+                            <IDOrPassportSection item={item} isEmbedded/>
+                        </Row>
+                        <Row
+                            rendered
+                            idx={idx + `.${__idx}.2`}
+                            title={idx + `.${__idx}.2 Work Permit`}
+                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            onFormOpen={onFormOpen}
+                            onFormNext={onFormNext}
+                            onFormBack={onFormBack}
+                        >
+                            <WorkPermitControls item={item} isEmbedded tabsHeight="530px"/>
+                        </Row>
+                        <Row
+                            rendered
+                            idx={idx + `.${__idx}.3`}
+                            title={idx + `.${__idx}.3 Licenses`}
+                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            onFormOpen={onFormOpen}
+                            onFormNext={onFormNext}
+                            onFormBack={onFormBack}
+                        >
+                            <LicenseControls item={item} isEmbedded tabsHeight="530px"/>
+                        </Row>
+                        <Row
+                            rendered
+                            idx={idx + `.${__idx}.4`}
+                            title={idx + `.${__idx}.4 PrDP`}
+                            sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            onFormOpen={onFormOpen}
+                            onFormBack={onFormBack}
+                        >
+                            <PrDPSection item={item} isEmbedded/>
+                        </Row>
+                    </FormControls>
                 </Row>
                 <Row
                     rendered
@@ -106,55 +158,13 @@ class ViewDocumentsSection extends React.Component {
                 <Row
                     rendered
                     idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Counselling`}
+                    title={idx + `.${__idx} Counseling`}
                     sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
                     <CounselingControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Leaves`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                    onFormNext={onFormNext}
-                >
-                    <LeaveControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Licenses & PrDP`}
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                    onFormNext={onFormNext}
-                >
-                    <FormControls lazyLoad>
-                        <Row
-                            rendered
-                            idx={idx + `.${__idx}.1`}
-                            title={idx + `.${__idx}.1 Licenses`}
-                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                            onFormOpen={onFormOpen}
-                            onFormNext={onFormNext}
-                        >
-                            <LicenseControls item={item} isEmbedded tabsHeight="530px"/>
-                        </Row>
-                        <Row
-                            rendered
-                            idx={idx + `.${__idx}.2`}
-                            title={idx + `.${__idx}.2 PrDP`}
-                            sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                            onFormOpen={onFormOpen}
-                            onFormBack={onFormBack}
-                        >
-                            <PrDPSection item={item} isEmbedded/>
-                        </Row>
-                    </FormControls>
                 </Row>
                 <Row
                     rendered
@@ -174,19 +184,8 @@ class ViewDocumentsSection extends React.Component {
                     sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
-                    onFormNext={onFormNext}
                 >
                     <WarningControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Work Permit`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                >
-                    <WorkPermitControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>
             </FormControls>
         </div>

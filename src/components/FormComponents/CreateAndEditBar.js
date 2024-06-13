@@ -7,85 +7,92 @@ import {execWhen} from "utils/Utils";
 @observer
 class Comp extends React.Component {
 
-	hideEditableButtons() {
-		execWhen(() => this.refs.editB).then(ref => {
-			ref.hide();
-		});
-		execWhen(() => this.refs.removeB).then(ref => {
-			ref.hide();
-		});
-	}
+    hideEditableButtons() {
+        execWhen(() => this.refs.editB).then(ref => {
+            ref.hide();
+        });
+        execWhen(() => this.refs.removeB).then(ref => {
+            ref.hide();
+        });
+    }
 
-	showEditableButtons() {
-		execWhen(() => this.refs.editB).then(ref => {
-			ref.show();
-		});
-		execWhen(() => this.refs.removeB).then(ref => {
-			ref.show();
-		});
-	}
+    showEditableButtons() {
+        execWhen(() => this.refs.editB).then(ref => {
+            ref.show();
+        });
+        execWhen(() => this.refs.removeB).then(ref => {
+            ref.show();
+        });
+    }
 
-	render() {
-		const {onRemove, onView, onEdit, onCreate, list: _list, type, isEmbedded, isContained} = this.props;
-		const {isEmployee} = storage.is;
-		const sx = {};
+    render() {
+        const {onRemove, onView, onEdit, onCreate, list: _list, type, isEmbedded, isContained, children} = this.props;
+        const {isEmployee} = storage.is;
+        const sx = {};
 
-		const list = (_list || []).filter(v => !!v);
-		if (list.isEmpty()) {
-			sx.position = "absolute";
-			sx.left = "0";
-			sx.top = "0";
-			sx.right = "0";
-			sx.zIndex = "1";
-		}
+        const list = (_list || []).filter(v => !!v);
+        if (list.isEmpty()) {
+            sx.position = "absolute";
+            sx.left = "0";
+            sx.top = "0";
+            sx.right = "0";
+            sx.zIndex = "1";
+        }
 
-		const node = <>
-			{!isEmployee && list.isNotEmpty() && onView && <Button
-				ref="viewB"
-				type={type}
-				className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-				onClick={onView}>
-				View
-			</Button>}
-			{!isEmployee && list.isNotEmpty() && <Button
-				ref="removeB"
-				type={type}
-				className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-				onClick={onRemove}>
-				Remove
-			</Button>}
-			{!isEmployee && list.isNotEmpty() && <Button
-				ref="editB"
-				type={type}
-				className="btn btn-primary pull-right btn-edit border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-				onClick={onEdit}>
-				Edit
-			</Button>}
-			{!isEmployee && <Button
-				type={type}
-				className="btn btn-primary pull-right btn-create border-radius-20 padding-v-5 padding-h-15 margin-r-15"
-				onClick={onCreate}>
-				Create
-			</Button>}
-		</>;
+        const node = <>
+            {children}
+            {!isEmployee && list.isNotEmpty() && onView && <Button
+                ref="viewB"
+                type={type}
+                className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+                onClick={onView}>
+                View
+            </Button>}
+            {!isEmployee && list.isNotEmpty() && <Button
+                ref="removeB"
+                type={type}
+                className="btn btn-primary pull-right btn-remove border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+                onClick={onRemove}>
+                Remove
+            </Button>}
+            {!isEmployee && list.isNotEmpty() && <Button
+                ref="editB"
+                type={type}
+                className="btn btn-primary pull-right btn-edit border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+                onClick={onEdit}>
+                Edit
+            </Button>}
+            {!isEmployee && <Button
+                type={type}
+                className="btn btn-primary pull-right btn-create border-radius-20 padding-v-5 padding-h-15 margin-r-15"
+                onClick={onCreate}>
+                Create
+            </Button>}
+        </>;
 
-		if(isContained) {
-			return node;
-		}
+        if (isContained) {
+            return node;
+        }
 
-		return <MKBox
-			className={isEmbedded ? 'EmbeddedBtnBar' : ''}
-			sx={{
-				background: "#fafafa",
-				borderBottom: "1px solid #ddd",
-				p: "3px",
-				height: "40px",
-				marginBottom: "-40px",
-				...sx,
-			}}>
-			{node}
-		</MKBox>;
-	}
+        return <MKBox
+            className={isEmbedded ? 'EmbeddedBtnBar' : ''}
+            sx={{
+                background: "#fafafa",
+                borderBottom: "1px solid #ddd",
+                p: "3px",
+                height: "40px",
+                alignItems: "end",
+                justifyContent: "center",
+                margin: "0",
+                zIndex: "1",
+                top: "4px",
+                position: "relative",
+                border: "none",
+                ...sx,
+            }}>
+            {node}
+        </MKBox>;
+    }
 }
 
 export default Comp;

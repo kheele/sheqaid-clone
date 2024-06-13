@@ -26,8 +26,10 @@ module.exports = async (socket, data) => {
 		exact_orgs = false,
 		//
 		client_filter,
-		orgs_filter = [],
+		// orgs_filter = [],
 	} = data;
+
+	const orgs_filter = socket.orgsFilter(data);
 	
 	const {filter} = getVariablesAndQueryConfig({
 		orgs_filter,

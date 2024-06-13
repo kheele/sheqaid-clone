@@ -1,5 +1,7 @@
 
 //<editor-fold desc="getVariablesAndQueryConfig">
+const {signable_doc_template_details_fragment} = require("../../../general/doc-signing-settings/templates/commons");
+const {signable_doc_submitter_details_fragment} = require("../../../general/doc-signing-settings/submitters/commons");
 exports.getVariablesAndQueryConfig = (
     {
         orgs_filter = [],
@@ -20,6 +22,7 @@ exports.getVariablesAndQueryConfig = (
         exact_orgs = false,
     }
 ) => {
+    console.log("orgsFilter orgs_filter", orgs_filter);
     //<editor-fold desc="variables, filters">
     let filter = orgs_filter || [];//orgsFilter({socket, site_id, project_id, client_id, exact_orgs});
 
@@ -185,6 +188,10 @@ exports.employee_details_fragment = `
     relationship
     
   }
+  
+  signable_doc_submitter_list{
+    ${signable_doc_submitter_details_fragment}
+  }
 
   training_course_list_aggregate: training_plan_list_aggregate {
     aggregate {
@@ -321,6 +328,9 @@ exports.employee_details_fragment = `
       salary_interval
       wage
     }
+    signable_doc_template_list{
+        ${signable_doc_template_details_fragment}
+    }
   }
   counselling_list_aggregate(where: {removed: {_eq: false}}){
     aggregate{
@@ -363,6 +373,9 @@ exports.employee_details_fragment = `
         profile_pic
         employment_num
       }
+    }
+    signable_doc_template_list{
+        ${signable_doc_template_details_fragment}
     }
   }
   job_appointment_list_aggregate(where: {removed: {_eq: false}}){
@@ -471,6 +484,9 @@ exports.employee_details_fragment = `
       passport_num
       profile_pic
       employment_num
+    }
+    signable_doc_template_list{
+        ${signable_doc_template_details_fragment}
     }
   }
   work_permit_list_aggregate{

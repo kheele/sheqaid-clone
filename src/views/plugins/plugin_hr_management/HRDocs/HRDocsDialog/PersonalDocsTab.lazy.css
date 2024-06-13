@@ -1,0 +1,10 @@
+.PersonalDocsTab .page-title {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translate(-50%, 0px);
+}
+
+.PersonalDocsTab > .MuiGrid-container {
+    margin-top: 10px;
+}

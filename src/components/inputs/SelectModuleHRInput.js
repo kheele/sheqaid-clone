@@ -1,4 +1,3 @@
-import React from "react";
 import {observer} from 'mobx-react';
 
 import ASelectModuleInput from './ASelectModuleInput';
@@ -12,7 +11,7 @@ class SelectInput extends ASelectModuleInput {
         'Contracts',
         //Non-Templates
         'Warnings',
-        'Counsellings',
+        'Counseling',
         'Leaves',
         'PPE',
         'Meetings',
@@ -22,7 +21,7 @@ class SelectInput extends ASelectModuleInput {
         'Employees',
         'Contracts',
         'Warnings',
-        'Counsellings',
+        'Counseling',
         'Leaves',
         'PPE',
         'Meetings',

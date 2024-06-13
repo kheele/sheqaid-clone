@@ -1,4 +1,5 @@
 const {employee_basic_personal_details_fragment, orgs_fragment} = require("../../../../../../graphql/Fragments");
+const {signable_doc_template_details_fragment} = require("../../../../general/doc-signing-settings/templates/commons");
 
 //<editor-fold desc="inc_fragment">
 exports.inc_fragment = ({removed, inc_employee = false, }) => `
@@ -48,6 +49,10 @@ exports.inc_fragment = ({removed, inc_employee = false, }) => `
         ` : `
             id
         `}
+    }
+    
+    signable_doc_template_list{
+        ${signable_doc_template_details_fragment}
     }
     
     ${orgs_fragment}

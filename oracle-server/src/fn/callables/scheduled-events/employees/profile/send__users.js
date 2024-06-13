@@ -46,13 +46,16 @@ const send_final = async ({email, name, company_name, item}) => {
 	}
 	// email = 'kheelet@gmail.com';
 
+	const {length} = attachments;
+	const title = `Employee Incomplete Profile Spreadsheet${length > 0 ? "s":""}`;
+
 	const notifMsg = `
-			<p>As a valued user of our platform, we would like to notify you that <b>${attachments.length} Employees Incomplete Profiles Spreadsheets</b> are now available for your reference.</p>\n
+			<p>As a valued user of our platform, we would like to notify you that <b>${length} ${title}</b> are now available for your reference.</p>\n
 
 			<p>Please find the aforementioned attachments enclosed with this email. They contain crucial information regarding the expiration dates of various documents, which are essential for the smooth functioning of your organization. 
 			We highly recommend that you review these spreadsheets carefully and take appropriate actions in a timely manner to ensure that all necessary documents are updated and renewed accordingly.</p>\n
 
-			<p>If you have any queries or concerns regarding the <b>Employees Incomplete Profiles Spreadsheets</b>, please do not hesitate to contact us. 
+			<p>If you have any queries or concerns regarding the <b>${title}</b>, please do not hesitate to contact us. 
 			We are always here to assist you in any way we can.</p>\n
 
 			<p>Thank you for your continued support and trust in our services.</p>\n

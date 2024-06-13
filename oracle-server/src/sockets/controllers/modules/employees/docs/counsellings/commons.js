@@ -1,4 +1,5 @@
 const {employee_basic_personal_details_fragment, orgs_fragment, personal_details_other_fragment} = require("../../../../../../graphql/Fragments");
+const {signable_doc_template_details_fragment} = require("../../../../general/doc-signing-settings/templates/commons");
 
 //<editor-fold desc="inc_fragment">
 exports.inc_fragment = ({removed, inc_employee = false, }) => `
@@ -37,6 +38,9 @@ exports.inc_fragment = ({removed, inc_employee = false, }) => `
         witness_external{
             ${personal_details_other_fragment}
         }
+    }
+    signable_doc_template_list{
+        ${signable_doc_template_details_fragment}
     }
     ${orgs_fragment}
 `;

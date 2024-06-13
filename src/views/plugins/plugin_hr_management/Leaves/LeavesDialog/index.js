@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
@@ -14,9 +14,7 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import LeavesRenderRow from "./LeavesRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput
-} from "components/inputs";
+import {Button, ClearableInput} from "components/inputs";
 
 import findByIdContractorHRLeavesDashboardStatsByLogged
     from "./Query/List/findByIdContractorHRLeavesDashboardStatsByLogged";
@@ -29,8 +27,8 @@ import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave
 @observer
 class Dialog extends AEmployeeDocDialog {
     pageKey = "LeavesDialog";
-    title = "Leave Management";
-    titleSingular = "Leave";
+    title = "Time-Off";
+    titleSingular = "Time-Off";
     permissionKey = "Leaves";
     module = "Leaves";
     onUpdate = updateEmployeeLeave;
@@ -45,8 +43,39 @@ class Dialog extends AEmployeeDocDialog {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+
+        this.onRequestTimeOff = this.onRequestTimeOff.bind(this);
     }
+
     // </editor-fold>
+
+    get renderTopActions() {
+        return <>
+            <Button
+                className="btn btn-primary pull-right btn-remove padding-h-15 margin-r-5"
+                onClick={this.onRequestTimeOff}
+            >
+                Request Time-off
+            </Button>
+            <NewDialog ref="newDialog" isSelfRequest/>
+        </>;
+    }
+
+    onRequestTimeOff(evt, btn) {
+        const {isEmployee} = storage.is;
+        if (isEmployee) {
+            const {loggedUser: {user}} = storage;
+            this.refs.newDialog.open(user);
+        } else {
+            const {loggedUser: {user: {data: {linked_employee_id}}}} = storage;
+            if (!linked_employee_id) {
+                return infoDialog.open("You have not been registered as an employee. Please link your account with your employee account.");
+            }
+            this.refs.newDialog.open({id: linked_employee_id});
+        }
+    }
+
+    //</editor-fold>
 
     //<editor-fold desc="onBuildQuery">
     onBuildQuery(params) {
@@ -63,6 +92,7 @@ class Dialog extends AEmployeeDocDialog {
             date,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -101,6 +131,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
@@ -138,6 +169,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNodeAll">
@@ -145,17 +177,21 @@ class Dialog extends AEmployeeDocDialog {
         const types = ['Annual', 'Sick', 'Unpaid', 'Maternity', 'Family Responsibility'];
         const due_to = [{label: 'Occurred Incident', value: 'Occurred Incident'}, {label: 'Other', value: 'Other'}];
         return <>
-            <ClearableInput name="type" type="select" placeholder="Leave Type..." className="form-control" onChange={onChange} values={types} returnValue/>
-            <ClearableInput name="due_to" type="select" placeholder="Leave Due To..." className="form-control" onChange={onChange} values={due_to} returnValue/>
-            <ClearableInput name="date" type="date" placeholder="Start Date..." className="form-control" onChange={onChange}/>
+            <ClearableInput name="type" type="select" placeholder="Leave Type..." className="form-control"
+                            onChange={onChange} values={types} returnValue/>
+            <ClearableInput name="due_to" type="select" placeholder="Leave Due To..." className="form-control"
+                            onChange={onChange} values={due_to} returnValue/>
+            <ClearableInput name="date" type="date" placeholder="Start Date..." className="form-control"
+                            onChange={onChange}/>
         </>;
     }
-    //</editor-fold>
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -187,8 +223,6 @@ class Dialog extends AEmployeeDocDialog {
     renderItemAll({item, idx, view, onClick}) {
         return <LeavesRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
-    // </editor-fold>
-
 }
 
 export default Dialog;

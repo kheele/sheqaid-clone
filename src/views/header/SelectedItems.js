@@ -1,7 +1,8 @@
 import React from "react";
 import {findDOMNode} from "react-dom";
 import {observer} from 'mobx-react';
-import {computed} from 'mobx';
+import {computed, observable} from 'mobx';
+import {CircularProgress} from "@mui/material";
 
 import NavItem from 'components/navs/NavItem';
 import Popover from 'components/popovers/Popover';
@@ -104,6 +105,45 @@ class SelectedItem extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.renderItem = this.renderItem.bind(this);
+    }
+
+    @computed get isReadonly() {
+        const {path} = this.props;
+        return (path === 'clients' && !Permissions.allowOther("Clients")) ||
+            (path === 'projects' && !Permissions.allowOther("Projects")) ||
+            (path === 'sites' && !Permissions.allowOther("Sites"));
+    }
+
+    @computed get selectedList() {
+        const {path} = this.props;
+        const list = storage.list[path + (path === 'clients' ? '' : 'Filtered')];
+        if (path === 'clients') {
+            const {isClientBlacklisted} = storage.is;
+            return list.filter(v => !isClientBlacklisted(v));
+        }
+        if (path === 'projects') {
+            const {isProjectBlacklisted} = storage.is;
+            return list.filter(v => !isProjectBlacklisted(v));
+        }
+        if (path === 'sites') {
+            const {isSiteBlacklisted} = storage.is;
+            return list.filter(v => !isSiteBlacklisted(v));
+        }
+        return list;
+    }
+
+    @computed get selected() {
+        const {selectedKey} = this.props;
+        return storage.selected[selectedKey];
+    }
+
+    @computed get selectedName() {
+        const {selected} = this;
+        if (!selected) {
+            return null;
+        }
+        const {data, name} = selected;
+        return name || data.name;
     }
 
     doClick(resolve) {
@@ -244,7 +284,8 @@ class SelectedItem extends React.Component {
             contentNode: <div>{
                 list.isEmpty() ?
                     <>
-                        <p key={Math.random()} className="text-center padding-t-20 padding-b-10"><i>No {path} available</i></p>
+                        <p key={Math.random()} className="text-center padding-t-20 padding-b-10">
+                            <i>No {path} available</i></p>
                         <Divider/>
                         {createNav}
                     </> :
@@ -325,45 +366,6 @@ class SelectedItem extends React.Component {
         />;
     }
 
-    @computed get isReadonly() {
-        const {path} = this.props;
-        return (path === 'clients' && !Permissions.allowOther("Clients")) ||
-            (path === 'projects' && !Permissions.allowOther("Projects")) ||
-            (path === 'sites' && !Permissions.allowOther("Sites"));
-    }
-
-    @computed get selectedList() {
-        const {path} = this.props;
-        const list = storage.list[path + (path === 'clients' ? '' : 'Filtered')];
-        if (path === 'clients') {
-            const {isClientBlacklisted} = storage.is;
-            return list.filter(v => !isClientBlacklisted(v));
-        }
-        if (path === 'projects') {
-            const {isProjectBlacklisted} = storage.is;
-            return list.filter(v => !isProjectBlacklisted(v));
-        }
-        if (path === 'sites') {
-            const {isSiteBlacklisted} = storage.is;
-            return list.filter(v => !isSiteBlacklisted(v));
-        }
-        return list;
-    }
-
-    @computed get selected() {
-        const {selectedKey} = this.props;
-        return storage.selected[selectedKey];
-    }
-
-    @computed get selectedName() {
-        const {selected} = this;
-        if (!selected) {
-            return null;
-        }
-        const {data, name} = selected;
-        return name || data.name;
-    }
-
     render() {
         const {selectedName, isReadonly} = this;
         return <div className={"SelectedItem fixed-flex" + (isReadonly ? " readonly" : "")} onClick={this.onClick}>
@@ -374,9 +376,23 @@ class SelectedItem extends React.Component {
 
 @observer
 class SelectedItemRenderer extends React.Component {
+    @observable clicked = false;
+
+    constructor() {
+        super();
+
+        this.onClick = this.onClick.bind(this);
+    }
+
     @computed get selected() {
         const {selectedKey} = this.props;
         return storage.selected[selectedKey];
+    }
+
+    onClick(evt, el) {
+        const {onSelect} = this.props;
+        this.clicked = true;
+        onSelect(evt, el);
     }
 
     render() {
@@ -407,7 +423,9 @@ class SelectedItemRenderer extends React.Component {
                 <small>{count}</small>
             </Button>}
         </div>;
-        return <NavItem key={item.id} idx={idx} onClick={onSelect} title={node} className={className}/>;
+        return <NavItem key={item.id} idx={idx} onClick={this.onClick} title={node} className={className}>
+            {this.clicked && <CircularProgress size="1.4em" sx={{mt: '-21px', 'float': 'right'}}/>}
+        </NavItem>;
     }
 }
 

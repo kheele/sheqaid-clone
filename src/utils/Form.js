@@ -1,4 +1,4 @@
-import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
+import {isObservable, isObservableArray, isObservableMap, isObservableObject} from "mobx";
 import {convertMobxForFilter, Dates} from "./Utils";
 
 class Form {
@@ -17,6 +17,42 @@ class Form {
         this.getFormData = this.getFormData.bind(this);
     }
 
+    get formData() {
+        if (this.hasData) {
+            return this.getFormData(this.toKeys);
+        }
+    }
+
+    get hasData() {
+        return !Object.keys(this.data).isEmpty();
+    }
+
+    get toArray() {
+        return Object.keys(this.data).map(key => this.data[key]);
+    }
+
+    get toKeys() {
+        return Object.keys(this.data);
+    }
+
+    static hasVal(val) {
+        if (isNullable(val)) {
+            return false;
+        }
+
+        if (isString(val)) {
+            return !val.isEmpty();
+        }
+
+        if (isNumber(val) || isBoolean(val) || isDate(val) ||
+            isArray(val) || isObject(val) || isObservable(val)
+        ) {
+            return true;
+        }
+
+        return !!val;
+    }
+
     onChange(val, name, el) {
         const {type} = el.props;
         const eventOne = this.oneEvents[name];
@@ -33,20 +69,23 @@ class Form {
             }
             this.data[name] = val;
             this.fields[name] = el;
-            eventOne && eventOne(el, val);
+            eventOne && eventOne.forEach(fn => fn(el, val));
             eventMany && eventMany(el, name, val);
             anyEvents && anyEvents(el, name, val);
         } else if (isNullable(val) || isString(val)) {
             delete this.data[name];
             delete this.fields[name];
-            eventOne && eventOne(el);
+            eventOne && eventOne.forEach(fn => fn(el));
             eventMany && eventMany(el, name);
             anyEvents && anyEvents(el, name);
         }
     }
 
     addChangeOne(name, event) {
-        this.oneEvents[name] = event;
+        if (!this.oneEvents[name]) {
+            this.oneEvents[name] = [];
+        }
+        this.oneEvents[name].push(event);
     }
 
     addChangeMany(names, event) {
@@ -110,46 +149,10 @@ class Form {
         return filterData;
     }
 
-    get formData() {
-        if (this.hasData) {
-            return this.getFormData(this.toKeys);
-        }
-    }
-
-    get hasData() {
-        return !Object.keys(this.data).isEmpty();
-    }
-
-    get toArray() {
-        return Object.keys(this.data).map(key => this.data[key]);
-    }
-
-    get toKeys() {
-        return Object.keys(this.data);
-    }
-
     reset() {
         this.data = {};
         Object.values(this.fields).forEach(el => el.reset && el.reset());
         this.fields = {};
-    }
-
-    static hasVal(val) {
-        if (isNullable(val)) {
-            return false;
-        }
-
-        if (isString(val)) {
-            return !val.isEmpty();
-        }
-
-        if (isNumber(val) || isBoolean(val) || isDate(val) ||
-            isArray(val) || isObject(val) || isObservable(val)
-        ) {
-            return true;
-        }
-
-        return !!val;
     }
 }
 

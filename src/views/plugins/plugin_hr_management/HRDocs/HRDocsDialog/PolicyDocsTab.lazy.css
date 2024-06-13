@@ -1,0 +1,10 @@
+.PolicyDocsTab .page-title {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    transform: translate(-50%, 0px);
+}
+
+.PolicyDocsTab > .MuiGrid-container {
+    margin-top: 45px;
+}

@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import theme from "assets/theme";
 
 import {execWhen} from '../../utils/Utils';
@@ -295,7 +294,7 @@ class DialogInline extends React.Component {
                 <div ref="dialogRef" key="dialog" id="dialog-overlay" className={className}>
                     <div className="dialog-container">
                         <Header
-                          ref="header"
+                            ref="header"
                             dialog={dialog}
                             onCancel={onCancel}
                             onClose={onClose}
@@ -337,6 +336,17 @@ class Dialog extends React.Component {
         this.renderLayer = () => {
             return React.createElement(DialogInline, _props);
         };
+    }
+
+    get isOpen() {
+        return this.layerState.isOpen;
+    }
+
+    componentDidMount() {
+        const {open} = this.props;
+        if (open) {
+            this.layerState.isOpen = open;
+        }
     }
 
     setTitle(title) {
@@ -410,13 +420,9 @@ class Dialog extends React.Component {
     getTitleDOMNode() {
         return this.dialogInline && this.dialogInline.getTitleDOMNode();
     }
-    
-    get isOpen() {
-        return this.layerState.isOpen;
-    }
 
     render() {
-        const {preventEsc, noBackAction} = this.props;
+        const {preventEsc, noBackAction, open} = this.props;
         // MaterialUIControllerProvider
         // return React.createElement(RenderToLayer, {
         //     render: this.renderLayer,

@@ -79,7 +79,7 @@ global.sendGraphQL = async (args) => {
                 }
             }
         }).catch(err => {
-            console.error("response err", err, 'query', query)
+            // console.error("response err", err, 'query', query)
             throw err;
         });
     }
@@ -155,7 +155,7 @@ global.sendGraphQL = async (args) => {
             }
         }
     }).catch(err => {
-        console.error("response err", err, 'query', query)
+        // console.error("response err", err, 'query', query)
         throw err;
     });
 };

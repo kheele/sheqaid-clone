@@ -5,13 +5,11 @@ import {observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
-import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
-import {mapPersonDetails} from 'utils/ArrayMapperUtils';
-import {FormControls, Row} from 'components/FormComponents';
+import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
-import {SignatureListRow} from "components/SignatureComponents";
 import {Dates} from "utils/Dates";
 import insertEmployeeCounselling from "mutations/all/EmployeeCounselling/insertEmployeeCounselling";
 
@@ -26,7 +24,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -37,25 +35,25 @@ class Controls extends React.Component {
     state = {
         lists: {
             types: [
-                'Directive Counseling', 
-                'Nondirective Counseling', 
-                'Cooperative Counseling', 
-                'Participative Counseling', 
-                'Desensitization', 
-                'Catharsis', 
-                'Insight', 
+                'Directive Counseling',
+                'Nondirective Counseling',
+                'Cooperative Counseling',
+                'Participative Counseling',
+                'Desensitization',
+                'Catharsis',
+                'Insight',
                 'Developing the new patterns'
             ].map(label => {
                 return {label, value: label};
             }),
             reasons: [
-                'Attendance', 
-                'Behaviour / Teamwork', 
-                'Inappropriate Conduct', 
-                'Inappropriate Dress', 
-                'Safety Violation', 
-                'Sleeping On The Job', 
-                'Substandard Work', 
+                'Attendance',
+                'Behaviour / Teamwork',
+                'Inappropriate Conduct',
+                'Inappropriate Dress',
+                'Safety Violation',
+                'Sleeping On The Job',
+                'Substandard Work',
                 'Violence'
             ].map(label => {
                 return {label, value: label};
@@ -65,25 +63,44 @@ class Controls extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
+    }
+
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get employeeItem() {
+        return this.props.state.item;
     }
 
     onNext(e, btn) {
         const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
         }
-        
+
         return true;
     }
-    
+
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, embeddedEmployee} = this;
 
@@ -92,7 +109,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -131,11 +148,11 @@ class Controls extends React.Component {
             witness_list: {
                 data: witness_list ? witness_list.map(({employee, other_person}) => {
                     console.log('witness_list', employee, other_person)
-                    if(employee) {
+                    if (employee) {
                         return {witness_id: employee.id};
                     }
                     const {job_position} = other_person;
-                    if(job_position) {
+                    if (job_position) {
                         delete other_person.job_position;
                         other_person.job_position_id = job_position.id;
                     }
@@ -160,27 +177,13 @@ class Controls extends React.Component {
         });
     }
 
-    get onSetSignatureSettings() {
-        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
-        return onSetSignatureSettings;
-    }
-
-    get embeddedEmployee() {
-        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
-        return embeddedEmployee;
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
-
     render() {
-        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
+        const {
+            isNewEmployee,
+            embeddedEmployee,
+            onSetSignatureSettings,
+            props: {onFormNext, onFormBack, onFormOpen}
+        } = this;
 
         return <FormControls>
             <Row
@@ -191,8 +194,11 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." defaultUser className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {!isNewEmployee && !embeddedEmployee &&
+                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." defaultUser
+                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -202,12 +208,21 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="types" type="select_multi" placeholder="Counseling Types..." required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.types} returnValue add/>
-                <ClearableInput name="reasons" type="select_multi" placeholder="Reasons For Counseling..." required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.reasons} returnValue add/>
-                <ClearableInput name="incident_desc" type="textarea" placeholder="Description Of Incident" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="corrective_actions" type="textarea" placeholder="Corrective Actions" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="counselling_hrs_to_complete" type="number" placeholder="Counseling Hours To Complete" className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Completion Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="types" type="select_multi" placeholder="Counseling Types..." required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.types} returnValue add/>
+                <ClearableInput name="reasons" type="select_multi" placeholder="Reasons For Counseling..." required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.reasons} returnValue add/>
+                <ClearableInput name="incident_desc" type="textarea" placeholder="Description Of Incident"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="corrective_actions" type="textarea" placeholder="Corrective Actions"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="counselling_hrs_to_complete" type="number"
+                                placeholder="Counseling Hours To Complete" className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="expiry_date" type="date" placeholder="Completion Date..." required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
                 <NewEmployeeListTable name="witness_list" onChange={this.form.onChange}/>
             </Row>
@@ -217,27 +232,16 @@ class Controls extends React.Component {
                 title="3. Document"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}
             >
-                <UploadButton
+                <DocUploadOption
                     name="doc"
-                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    plugin="plugin_hr_management"
+                    module="Counseling"
                     type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon
-                    className="col-lg-12"
                     onChange={this.form.onChange}
+                    addChangeOne={this.form.addChangeOne}
                 />
             </Row>
-            <SignatureListRow
-                idx={4}
-                pluginKey="HR"
-                module="Counseling"
-                onSetSignatureSettings={onSetSignatureSettings}
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-            >
-
-            </SignatureListRow>
         </FormControls>;
     }
 }

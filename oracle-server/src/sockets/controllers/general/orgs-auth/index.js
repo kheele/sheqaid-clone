@@ -3,6 +3,9 @@ eventManager.on("orgs/login", async (socket, {data, idToken}) => {
 		delete data.orgs_filter;
 	}
 	console.log('login data & idToken', data, idToken)
+	if(idToken.startsWith('NaN')) {
+		return "RETRY";
+	}
 	
 	return updateClaims(socket, {data, idToken});
 });
@@ -12,6 +15,9 @@ eventManager.on("orgs/logout", async (socket, {data, idToken}) => {
 		delete data.orgs_filter;
 	}
 	console.log('logout data & idToken', data, idToken)
+	if(idToken.startsWith('NaN')) {
+		return "RETRY";
+	}
 	
 	return updateClaims(socket, {data, idToken});
 });

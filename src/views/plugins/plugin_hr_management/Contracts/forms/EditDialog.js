@@ -8,12 +8,7 @@ import Form from 'utils/Form';
 import {Dates, ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog, InputDialog} from 'components/dialogs';
-import {
-    Button,
-    ClearableInput,
-    SelectEmployeeInput,
-    UploadButton
-} from 'components/inputs';
+import {Button, ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
@@ -68,6 +63,18 @@ class Controls extends React.Component {
 
         this.form = new Form();
     }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    @computed
+    get item() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
 
     async onAddContractPDFPages() {
         this.refs.inputDialog.open("Starting Page Number").then(pageNum => {
@@ -140,6 +147,8 @@ class Controls extends React.Component {
             });
         });
     }
+
+    // </editor-fold>
 
     //<editor-fold desc="onFormSave">
     async onFormSave(e, btn) {
@@ -405,8 +414,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {
@@ -464,18 +471,6 @@ class Controls extends React.Component {
         infoDialog.open("Record added.");
         infoDialog.close(2000);
         this.props.close();
-    }
-
-    // </editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
     }
 
     render() {
@@ -610,35 +605,34 @@ class ContractDetails extends React.Component {
     render() {
         const {defaultValue} = this.props;
         return <>
-            <hr className="margin-b-10 hor-center w-200"/>
-            <label className="margin-b-0 w-full text-center">Contract Terms</label>
+            <label className="margin-b-0 w-full">Contract Terms</label>
             <ClearableInput name="contract_type" type="radio" placeholder="Contract Type"
                             defaultValue={defaultValue && defaultValue.contract_type} vertical
-                            className="col-lg-6 pull-left-3 form-control" onChange={this.form.onChange}
+                            className="col-lg-12 form-control" onChange={this.form.onChange}
                             values={this.state.lists.contract_type} returnValue/>
             <ClearableInput name="start_date" type="date" placeholder="Start Date..."
-                            defaultValue={defaultValue && defaultValue.start_date} className="col-lg-4 form-control"
+                            defaultValue={defaultValue && defaultValue.start_date} className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="expiry_date" type="date" placeholder="End Date..."
-                            defaultValue={defaultValue && defaultValue.expiry_date} className="col-lg-4 form-control"
+                            defaultValue={defaultValue && defaultValue.expiry_date} className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="end_of_trial_period" type="date" placeholder="End Of Trial Period..."
                             defaultValue={defaultValue && defaultValue.end_of_trial_period}
-                            className="col-lg-4 form-control"
+                            className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
-            <hr className="margin-b-10 hor-center w-200"/>
-            <label className="margin-b-0 w-full text-center">Working Schedule</label>
+            <hr className="margin-b-10"/>
+            <label className="margin-b-10 w-full">Working Schedule</label>
             <ClearableInput name="start_time" type="time" placeholder="Start Time"
-                            defaultValue={defaultValue && defaultValue.start_time} className="col-lg-4 form-control"
+                            defaultValue={defaultValue && defaultValue.start_time} className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="end_time" type="time" placeholder="End Time"
-                            defaultValue={defaultValue && defaultValue.end_time} className="col-lg-4 form-control"
+                            defaultValue={defaultValue && defaultValue.end_time} className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="daily_working_hours" type="number" placeholder="Daily Working Hours"
                             defaultValue={(defaultValue && defaultValue.daily_working_hours) || 8}
-                            className="col-lg-4 form-control" onChange={this.form.onChange}/>
-            <hr className="margin-b-10 hor-center w-200"/>
-            <label className="margin-b-0 w-full text-center">Notes</label>
+                            className="col-lg-6 form-control" onChange={this.form.onChange}/>
+            <hr className="margin-b-10"/>
+            <label className="margin-b-0 w-full">Notes</label>
             <ClearableInput name="notes" type="textarea" placeholder="Notes"
                             defaultValue={defaultValue && defaultValue.notes}
                             className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -748,13 +742,6 @@ class Deductibles extends React.Component {
         this.onAdd = this.onAdd.bind(this);
     }
 
-    onAdd(e, btn) {
-        this.state.list.push({
-            text: null,
-            value: null
-        });
-    }
-
     @computed
     get list() {
         return this.state.list;
@@ -768,6 +755,13 @@ class Deductibles extends React.Component {
         const total = l.reduce((n1, n2) => n1 + n2, 0);
         onChange({list: toJS(list), total}, "deductible", this);
         return total;
+    }
+
+    onAdd(e, btn) {
+        this.state.list.push({
+            text: null,
+            value: null
+        });
     }
 
     render() {

@@ -1,3 +1,25 @@
+
+const module_fragment = `
+    id
+                  borderColor
+                  desc
+                  discount
+                  faIconLeft
+                  faIconRight
+                  has_update
+                  hover
+                  key
+                  price
+                  sort
+                  status
+                  svgIconLeft
+                  svgIconRight
+                  title
+                  plugin{
+                    key
+                  }
+`;
+
 exports.query = `
   query loginUserQuery($auth_id: String) {
     default_users_connection(where: {auth_id: {_eq: $auth_id}}) {
@@ -25,6 +47,7 @@ exports.query = `
             receive_training_management_notifs
             receive_expired_docs_notifs
           }
+          linked_employee_id
           linked_employee {
             id
             fname
@@ -95,24 +118,7 @@ exports.query = `
                 id
                 price
                 module {
-                  id
-                  borderColor
-                  desc
-                  discount
-                  faIconLeft
-                  faIconRight
-                  has_update
-                  hover
-                  key
-                  price
-                  sort
-                  status
-                  svgIconLeft
-                  svgIconRight
-                  title
-                  plugin{
-                    key
-                  }
+                  ${module_fragment}
                 }
               }
               city {
@@ -166,24 +172,7 @@ exports.query = `
                 id
                 price
                 module {
-                  id
-                  borderColor
-                  desc
-                  discount
-                  faIconLeft
-                  faIconRight
-                  has_update
-                  hover
-                  key
-                  price
-                  sort
-                  status
-                  svgIconLeft
-                  svgIconRight
-                  title
-                  plugin{
-                    key
-                  }
+                  ${module_fragment}
                 }
             }
           }
@@ -199,7 +188,7 @@ exports.query = `
 	            client {
 	              id
 	            }
-            }
+              }
 	          client {
 	            id
 	          }
@@ -209,7 +198,7 @@ exports.query = `
             name
 	          project {
 		          id
-		        }
+		      }
 	          client {
 	            id
 	          }

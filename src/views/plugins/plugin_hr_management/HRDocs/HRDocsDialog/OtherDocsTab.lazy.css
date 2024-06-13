@@ -1,0 +1,10 @@
+.OtherDocsTab .page-title {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    transform: translate(-50%, 0px);
+}
+
+.OtherDocsTab > .MuiGrid-container {
+    margin-top: 45px;
+}

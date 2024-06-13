@@ -14,33 +14,34 @@ import AEmployeeDocControls from "../../AEmployeeDocControls";
 import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
+import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-	pageKey = "ProfileWarningDialog";
-	className = "AProfileEmployeeDocDialog";
-	findById = findByIdEmployee;
+    pageKey = "ProfileWarningDialog";
+    className = "AProfileEmployeeDocDialog";
+    findById = findByIdEmployee;
 
-	constructor(props) {
-		super(props, style);
-	}
+    constructor(props) {
+        super(props, style);
+    }
 
-	title() {
-		return "Warnings";
-	}
+    get topButtonsHiddenDelete() {
+        return true;
+    }
 
-	onSaveAsPDF(e, btn) {
-		this.refs.controls.onSaveAsPDF(e, btn);
-	}
+    get controls() {
+        return Controls;
+    }
 
-	get topButtonsHiddenDelete() {
-		return true;
-	}
+    title() {
+        return "Warnings";
+    }
 
-	get controls() {
-		return Controls;
-	}
+    onSaveAsPDF(e, btn) {
+        this.refs.controls.onSaveAsPDF(e, btn);
+    }
 }
 
 //</editor-fold>
@@ -48,79 +49,93 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-	listName = "warning_list";
-	onUpdate = updateEmployeeWarning;
-	NewDialog = NewDialog;
-	EditDialog = EditDialog;
-	ProfilePDFReader = ProfilePDFReader;
+    listName = "warning_list";
+    onUpdate = updateEmployeeWarning;
+    NewDialog = NewDialog;
+    EditDialog = EditDialog;
+    ProfilePDFReader = ProfilePDFReader;
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	//<editor-fold desc="loadDashboardTopStats">
-	async loadDashboardTopStats(id) {
-		return employeeStore.findByIdHRWarningsDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats(id) {
+        return employeeStore.findByIdHRWarningsDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="loadDashboardBottomStats">
-	async loadDashboardBottomStats(id) {
-		return employeeStore.findByIdHRWarningsDateRangeDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats(id) {
+        return employeeStore.findByIdHRWarningsDateRangeDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	renderItem(item, n, onClick) {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			}
-		} = this;
-		const {
-			created_at,
-			issued_by,
-			type,
-			category_of_misconduct,
-			date,
-			expiry_date,
-			details,
-			employee_comments,
-			notes,
-			witness_list,
-			doc
-		} = item.data || item;
+    renderItem(item, n, onClick) {
+        const {
+            props: {
+                onFormNext, onFormBack, onFormOpen
+            }
+        } = this;
+        const {
+            created_at,
+            issued_by,
+            type,
+            category_of_misconduct,
+            date,
+            expiry_date,
+            details,
+            employee_comments,
+            notes,
+            witness_list,
+            doc,
+            signable_doc_template_list,
+        } = item.data || item;
 
-		return <div className="row item-wrapper padding-t-10 h-full">
-			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Warning Details</label>
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-12"/>
-				<ProfileField title="Category of Misconduct" name="category_of_misconduct" value={category_of_misconduct} type="select" className="col-lg-12"/>
-				<ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-6"/>
-				<ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date}
-				              className="col-lg-6"/>
-				<ProfileField title="Warning Issued By" name="issued_by" value={issued_by}
-				              renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
-				<UploadButton
-					name="doc"
-					defaultValue={doc}
-					buttonTitle="Warning Attachment"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-6"
-				/>
-				<ProfileField title="Details Of Misconduct" name="details" value={details} type="textarea"
-				              className="col-lg-12"/>
-				<ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments} type="textarea"
-				              className="col-lg-12"/>
-				<ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
-				<label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
-				<NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
-			</div>
-		</div>;
-	}
+        const [signable_doc_template] = signable_doc_template_list || [];
+
+        return <div className="row item-wrapper padding-t-10 h-full">
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Warning Details</label>
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <ProfileField title="Warning Type" name="type" value={type} type="select" className="col-lg-12"/>
+                <ProfileField title="Category of Misconduct" name="category_of_misconduct"
+                              value={category_of_misconduct} type="select" className="col-lg-12"/>
+                <ProfileField title="Warning Date" name="date" type="date" value={date} className="col-lg-6"/>
+                <ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date}
+                              className="col-lg-6"/>
+                <ProfileField title="Warning Issued By" name="issued_by" value={issued_by}
+                              renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
+                <UploadButton
+                    name="doc"
+                    defaultValue={doc}
+                    buttonTitle="Warning Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
+                />
+                <ProfileField title="Details Of Misconduct" name="details" value={details} type="textarea"
+                              className="col-lg-12"/>
+                <ProfileField title="Employee's Comments" name="employee_comments" value={employee_comments}
+                              type="textarea"
+                              className="col-lg-12"/>
+                <ProfileField title="Notes" name="notes" value={notes} type="textarea" className="col-lg-12"/>
+                <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
+                <NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
+                <div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">
+                    {signable_doc_template && <img
+                        src={signable_doc_template.preview_image_url}
+                    />}
+                    {signable_doc_template && <DocSignButton
+                        doc={signable_doc_template}
+                    />}
+                    {!signable_doc_template && "N/A"}
+                </div>
+            </div>
+        </div>;
+    }
 
 }
 

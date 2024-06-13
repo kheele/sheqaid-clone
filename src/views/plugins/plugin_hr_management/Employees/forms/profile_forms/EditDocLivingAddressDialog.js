@@ -1,15 +1,11 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import {extendObservable} from 'mobx';
 
 import Form from 'utils/Form';
 
 import {ShouldUpdate} from 'utils/Utils';
-import {
-    ClearableInput, SelectCityInput,
-    SelectCountryInput,
-    SelectZoneInput,
-    UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectCityInput, SelectCountryInput, SelectZoneInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
@@ -46,6 +42,24 @@ class Controls extends React.Component {
         this.form = new Form();
         this.form.addChangeOne('country', this.onChangeCountry.bind(this));
         this.form.addChangeOne('zone', this.onChangeProvince.bind(this));
+    }
+
+    //</editor-fold>
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get item() {
+        return this.props.state.item;
+    }
+
+    get itemData() {
+        if (this.isNewEmployee) {
+            return this.item.data || this.item;
+        }
+        return this.item.data;
     }
 
     //</editor-fold>
@@ -91,8 +105,6 @@ class Controls extends React.Component {
 
         return true;
     }
-
-    //</editor-fold>
 
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, item: {data: old_data}} = this;
@@ -165,6 +177,9 @@ class Controls extends React.Component {
         progressDialog.open();
         updateEmployeeDocLivingAddress({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
+            if (res) {
+                extendObservable(old_data, res.data);
+            }
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
@@ -173,22 +188,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get item() {
-        return this.props.state.item;
-    }
-
-    get itemData() {
-        if (this.isNewEmployee) {
-            return this.item.data || this.item;
-        }
-        return this.item.data;
     }
 
     render() {

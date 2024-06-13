@@ -45,8 +45,10 @@ module.exports = async (
 		exact_orgs = false,
 		//
 		client_filter,
-		orgs_filter = [],
+		// orgs_filter = [],
 	} = data;
+
+	const orgs_filter = socket.orgsFilter(data);
 	
 	const {filter, filterEmployee} = getVariablesAndQueryConfig({
 		orgs_filter,
