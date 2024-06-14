@@ -1,8 +1,0 @@
-#MatrixTab-tab > .table > .thead > .td.td-hr,
-#MatrixTab-tab > .table > .tbody .tr > .td-hr{
-    min-width: 200px;
-}
-#MatrixTab-tab > .table > .thead > .td.td-job_title,
-#MatrixTab-tab > .table > .tbody .tr > .td.td-job_title{
-    min-width: 200px;
-}

@@ -95,13 +95,7 @@ class Login {
                     return this.loginOrg(data);
                 }
 
-                return this.storage.updateIdTokenResult(currentUser)
-                    .then((idTokenResult) => {
-                        console.log(`loginOrg custom claims`, idTokenResult);
-                        // 	res && this.storage.attrs.set("loggedClient", selected_client_id);
-                        // this.storage.attrs.set("loggedClient", selected_client_id);
-                        return idTokenResult;
-                    });
+                return this.storage.updateSessionByIdToken();
             });
         }).catch(err => {
             console.error(err)

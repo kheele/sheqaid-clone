@@ -6,14 +6,14 @@ import {observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {
-	ClearableInput,
-	SelectClientInput,
-	SelectDepartmentInput,
-	SelectDocumentCategoryInput,
-	SelectEmployeeInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton
+    ClearableInput,
+    SelectClientInput,
+    SelectDepartmentInput,
+    SelectDocumentCategoryInput,
+    SelectEmployeeInput,
+    SelectProjectInput,
+    SelectSiteInput,
+    UploadButton
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
@@ -99,7 +99,7 @@ class Controls extends React.Component {
                 return;
             }
 
-            doc.refresh();
+            // doc.refresh();
         } else if (idx === 2) {
             if (!form.isValid('title')) {
                 infoDialog.open('Document Title is required');

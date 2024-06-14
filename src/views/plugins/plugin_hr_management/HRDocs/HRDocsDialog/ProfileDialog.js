@@ -3,7 +3,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import Form from 'utils/Form';
-import {GDocEditor} from 'components/documents';
 
 import {Dates} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
@@ -129,7 +128,7 @@ class Controls extends React.Component {
         const {form, refs: {gdoc}} = this;
         const {idx} = btn.props;
         if (idx === 1) {
-            gdoc && gdoc.refresh();
+            // gdoc && gdoc.refresh();
         }
 
         return true;
@@ -234,19 +233,12 @@ class Controls extends React.Component {
             }
         } = this;
 
+        const {isConsultant, isNoProjects} = storage.is;
+
         const [latest_version] = _latest_version || [];
         const {doc, doc_docs_id} = latest_version || {};
 
         // console.log(doc, doc_old && doc_old.dlUrls && doc_old.dlUrls[0])
-
-        const {isConsultant, isNoProjects} = storage.is;
-        let companyName;
-        if (company) {
-            const {name} = company;
-            companyName = name;
-        }
-
-        // const isBtnPreview = doc_old && isObject(doc_old);
 
         return <FormControls>
             {!isNoProjects && <Row
@@ -300,19 +292,21 @@ class Controls extends React.Component {
                 {/*	className="col-lg-12 document-preview margin-t-10"*/}
                 {/*	dangerouslySetInnerHTML={{__html: doc_old}}*/}
                 {/*/>}*/}
-                {doc_docs_id && <GDocEditor
-                    ref="gdoc"
-                    item={item}
-                    doc_docs_id={doc_docs_id}
-                    readonly
-                />}
-                {doc && <UploadButton
-                    buttonTitle="PDF/Word/Spreadsheet"
+                {/*{doc_docs_id && <GDocEditor*/}
+                {/*    ref="gdoc"*/}
+                {/*    item={item}*/}
+                {/*    doc_docs_id={doc_docs_id}*/}
+                {/*    readonly*/}
+                {/*/>}*/}
+                <UploadButton
+                    name="doc"
+                    type={['PDF', 'Word', 'Excel']}
+                    buttonTitle="Upload Document (PDF/Word/Excel)"
                     defaultValue={doc}
                     showOnlyIcon
                     readonly
-                    className="flex"
-                />}
+                    className="col-lg-12 hor-center"
+                />
             </Row>
             {/*<ProfilePDFReader ref="pdfReader" title={dialog.title()} showCategory={showCategory}/>*/}
         </FormControls>;

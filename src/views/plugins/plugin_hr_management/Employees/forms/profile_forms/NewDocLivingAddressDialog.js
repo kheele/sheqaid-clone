@@ -44,17 +44,30 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
     onChangeCountry(el, val) {
         this.props.execWhen(() => this.refs.zone).then(ref => {
             ref.country = val;
         });
     }
 
+    //</editor-fold>
+
     onChangeProvince(el, val) {
         this.props.execWhen(() => this.refs.city).then(ref => {
             ref.zone = val;
         });
     }
+
+    //</editor-fold>
 
     //<editor-fold desc="onNext">
     onNext(e, btn) {
@@ -86,8 +99,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee} = this;
@@ -115,12 +126,12 @@ class Controls extends React.Component {
         // }
 
         //2
-        if (!form.isValid('doc')) {
-            infoDialog.open("Proof of Living Address is required");
-            return;
-        }
+        // if (!form.isValid('doc')) {
+        //     infoDialog.open("Proof of Living Address is required");
+        //     return;
+        // }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -166,17 +177,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
-    }
-
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
     }
 
     //<editor-fold desc="render">

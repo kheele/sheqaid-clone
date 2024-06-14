@@ -9,8 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDocumentDialog.lazy.css";
-import updateEmployeeDocDocument
-    from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
 
 //<editor-fold desc="EditDialog">
 @observer
@@ -47,6 +46,19 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    get item() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="onNext">
     onNext(e, btn) {
         const {form} = this;
@@ -56,16 +68,14 @@ class Controls extends React.Component {
                 infoDialog.open("Document Type is required");
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open("Expiry Date is required");
-                return;
-            }
+            // if (!form.isValid('expiry_date')) {
+            //     infoDialog.open("Expiry Date is required");
+            //     return;
+            // }
         }
 
         return true;
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
@@ -76,10 +86,10 @@ class Controls extends React.Component {
             infoDialog.open("Document Type is required");
             return;
         }
-        if (!form.isValid('expiry_date')) {
-            infoDialog.open("Expiry Date is required");
-            return;
-        }
+        // if (!form.isValid('expiry_date')) {
+        //     infoDialog.open("Expiry Date is required");
+        //     return;
+        // }
 
         //2
         if (!form.isValid('doc')) {
@@ -87,7 +97,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -128,16 +138,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
-    }
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     //<editor-fold desc="render">
@@ -200,6 +200,7 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
+
     //</editor-fold>
 }
 

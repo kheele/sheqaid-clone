@@ -132,10 +132,10 @@ class Controls extends React.Component {
         // }
 
         //2
-        if (!form.isValid('doc')) {
-            infoDialog.open("Proof of Living Address is required");
-            return;
-        }
+        // if (!form.isValid('doc')) {
+        //     infoDialog.open("Proof of Living Address is required");
+        //     return;
+        // }
 
         if (isNewEmployee) {
             console.log("res", form.data)

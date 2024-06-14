@@ -42,6 +42,19 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="onNext">
     onNext(e, btn) {
         const {form} = this;
@@ -51,10 +64,10 @@ class Controls extends React.Component {
                 infoDialog.open('Bank Name is required');
                 return;
             }
-            if (!form.isValid('branch')) {
-                infoDialog.open('Branch is required');
-                return;
-            }
+            // if (!form.isValid('branch')) {
+            //     infoDialog.open('Branch is required');
+            //     return;
+            // }
             if (!form.isValid('code')) {
                 infoDialog.open("Branch Code is required");
                 return;
@@ -68,8 +81,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee} = this;
@@ -79,10 +90,10 @@ class Controls extends React.Component {
             infoDialog.open('Bank Name is required');
             return;
         }
-        if (!form.isValid('branch')) {
-            infoDialog.open('Branch is required');
-            return;
-        }
+        // if (!form.isValid('branch')) {
+        //     infoDialog.open('Branch is required');
+        //     return;
+        // }
         if (!form.isValid('code')) {
             infoDialog.open("Branch Code is required");
             return;
@@ -93,12 +104,12 @@ class Controls extends React.Component {
         }
 
         //2
-        if (!form.isValid('doc')) {
-            infoDialog.open("Proof of Banking Details is required");
-            return;
-        }
+        // if (!form.isValid('doc')) {
+        //     infoDialog.open("Proof of Banking Details is required");
+        //     return;
+        // }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -142,17 +153,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close(), 0);
         });
-    }
-
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
     }
 
     //<editor-fold desc="render">

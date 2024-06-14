@@ -7,7 +7,8 @@ import {ProfileField, RowOrgs} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import OptionalInfoSection from './ViewOptionalInfoSection';
-import ViewDocumentsSection from './ViewDocumentsSection';
+import DocumentsSection from './ViewDocumentsSection';
+import TimeoffSection from "./ViewTimeoffSection";
 import DependentsAndNextOfKinSection from './ViewDependentsAndNextOfKinSection';
 
 import DashboardSection from "./DashboardSection";
@@ -16,7 +17,6 @@ import style from "./ProfileDialog.lazy.css";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
-import ViewTimeoffSection from "./ViewTimeoffSection";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -87,10 +87,10 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="fields">
     components = [
         {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoTab"},
-        {title: 'Documents', comp: ViewDocumentsSection, ref: "documentsTab"},
+        {title: 'Documents', comp: DocumentsSection, ref: "documentsTab"},
         {
             title: 'Time-off',
-            comp: ViewTimeoffSection,
+            comp: TimeoffSection,
             ref: "timeOffTab",
             sectionClassName: "-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
         },

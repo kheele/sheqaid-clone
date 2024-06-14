@@ -8,8 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDocumentDialog.lazy.css";
-import insertEmployeeDocDocument
-    from "mutations/all/EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
+import insertEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
 import {Dates} from "utils/Dates";
 
 //<editor-fold desc="NewDialog">
@@ -47,6 +46,19 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="onNext">
     onNext(e, btn) {
         const {form} = this;
@@ -56,16 +68,14 @@ class Controls extends React.Component {
                 infoDialog.open("Document Type is required");
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open("Expiry Date is required");
-                return;
-            }
+            // if (!form.isValid('expiry_date')) {
+            //     infoDialog.open("Expiry Date is required");
+            //     return;
+            // }
         }
 
         return true;
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
@@ -76,10 +86,10 @@ class Controls extends React.Component {
             infoDialog.open("Document Type is required");
             return;
         }
-        if (!form.isValid('expiry_date')) {
-            infoDialog.open("Expiry Date is required");
-            return;
-        }
+        // if (!form.isValid('expiry_date')) {
+        //     infoDialog.open("Expiry Date is required");
+        //     return;
+        // }
 
         //2
         if (!form.isValid('doc')) {
@@ -87,7 +97,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -129,17 +139,6 @@ class Controls extends React.Component {
         });
     }
 
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
-
     //<editor-fold desc="render">
     render() {
         let {props: {onFormNext, onFormBack, onFormOpen, dialog}} = this;
@@ -157,7 +156,8 @@ class Controls extends React.Component {
                 <ClearableInput name="type" type="select" placeholder="Document Type..."
                                 defaultValue={type__} className="col-lg-6 form-control"
                                 onChange={this.form.onChange} values={this.state.lists.type} returnValue/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." className="col-lg-6 form-control"
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
+                                className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
             </Row>
             <Row

@@ -2,12 +2,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, isObservableArray, observable} from 'mobx';
 
-import {ClearableInput} from './';
+import {Button, ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
 import {execWhen} from "../../utils/UtilsFuns";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import NewJobCategoryDialog
+    from "../../views/plugins/plugin_hr_management/Employees/dialogs/JobCategoriesDialog/NewJobCategoryDialog";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -23,8 +25,42 @@ class SelectInput extends ASelectInput {
     constructor(props) {
         super(props);
 
+        this.onAdd = this.onAdd.bind(this);
+
         this.onProcessValue = this.onProcessValue.bind(this);
         this.renderer = this.renderer.bind(this);
+    }
+
+    @computed
+    get selectedItem() {
+        const {defaultValue} = this.props;
+        if (defaultValue) {
+            if (isArray(defaultValue) || isObservableArray(defaultValue)) {
+                return defaultValue.map(value => {
+                    if (isString(value)) {
+                        return {value, label: value};
+                    }
+                    if (value.label && value.value) {
+                        return value;
+                    }
+                    let {name, data} = value;
+                    const label = name || data.name;
+//                        console.log('selectedVal', label)
+                    return {value, label};
+                });
+            } else {
+                if (isString(defaultValue)) {
+                    return {defaultValue, label: defaultValue};
+                }
+                if (defaultValue.label && defaultValue.value) {
+                    return defaultValue;
+                }
+                let {name, data} = defaultValue;
+                const label = name || data.name;
+                return {value: defaultValue, label};
+            }
+        }
+        return null;
     }
 
     async componentDidMount() {
@@ -55,8 +91,15 @@ class SelectInput extends ASelectInput {
         this.state.loaded = true;
     }
 
+    onAdd(e, btn) {
+        this.refs.newDialog.open().then(value => {
+            this.list.push(value);
+            this.refs.input.onChange({label: value.data.name, value});
+        });
+    }
+
     onProcessValue(_v) {
-       console.log('_v', this.props.name, _v)
+        console.log('_v', this.props.name, _v)
         return execWhen(() => !!this.state.loaded && !!_v).then(() => {
             const {list} = this;
 //            console.log('_v list', this.props.name, list.slice())
@@ -108,43 +151,20 @@ class SelectInput extends ASelectInput {
         return name || data.name;
     }
 
-    @computed
-    get selectedItem() {
-        const {defaultValue} = this.props;
-        if (defaultValue) {
-            if (isArray(defaultValue) || isObservableArray(defaultValue)) {
-                return defaultValue.map(value => {
-                    if (isString(value)) {
-                        return {value, label: value};
-                    }
-                    if (value.label && value.value) {
-                        return value;
-                    }
-                    let {name, data} = value;
-                    const label = name || data.name;
-//                        console.log('selectedVal', label)
-                    return {value, label};
-                });
-            } else {
-                if (isString(defaultValue)) {
-                    return {defaultValue, label: defaultValue};
-                }
-                if (defaultValue.label && defaultValue.value) {
-                    return defaultValue;
-                }
-                let {name, data} = defaultValue;
-                const label = name || data.name;
-                return {value: defaultValue, label};
-            }
-        }
-        return null;
-    }
-
     render() {
         const {props} = this.state;
         if (!props) return null;
 
-        return <ClearableInput {...props}/>;
+        const {parentClassName} = this.props;
+
+        return <div
+            className={'col-lg-12 form-control-add-btn h-auto padding-0 no-border pull-left flex' + (parentClassName ? ` ${parentClassName}` : '')}>
+            <ClearableInput {...props}/>
+            <NewJobCategoryDialog ref="newDialog"/>
+            <Button className="btn btn-primary fixed-flex" onClick={this.onAdd}>
+                <i className="fa fa-plus"/> Add New
+            </Button>
+        </div>;
     }
 }
 

@@ -1,8 +1,8 @@
 @import '../../../../../css/AProfileDialog.css';
 
 #dialog-overlay.ADocumentProfile-profile-dialog .dialog-container {
-    height: calc(100% - 35px);
-    max-height: 100%;
+    height: 600px;
+    max-height: calc(100% - 30px);
     width: 800px;
     max-width: calc(100% - 30px);
     border-radius: 0;

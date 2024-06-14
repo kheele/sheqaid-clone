@@ -2,9 +2,7 @@ import moment from 'moment';
 import {autorun, computed, observable, toJS} from 'mobx';
 
 // import indexedStorage from '../utils/StorageCreator';
-
 import * as storageUtils from './';
-import {execWhen} from "../utils/UtilsFuns";
 
 const {is, load} = storageUtils;
 
@@ -71,7 +69,7 @@ class Storage {
             });
         };
         listenAuth();
-        
+
         // workers.on("getIdTokenResult", () => {
         //     this.loggedUserAuth.getIdTokenResult(true).then(idTokenResult => {
         //         this.idTokenResult = idTokenResult;
@@ -88,27 +86,6 @@ class Storage {
 //        _toJS.eftDetailList = this.eftDetailListView.map(val => val.asJSON);
 //        _toJS.paymentHistoryList = this.paymentHistoryListView.map(val => val.asJSON);
         return _toJS;
-    }
-
-    async onLogin(currentUser) {
-//                    if(access_type === 'User' && currentUser.email === 'kheelet@gmail.com') {
-//                        currentUser.unlink(firebase.auth.PhoneAuthProvider.PROVIDER_ID);
-//                    }
-	    if(currentUser) {
-		    this.attrs.set("loggedUserAuth", currentUser);
-		    return this.updateIdTokenResult(currentUser);
-	    }
-    }
-    
-    async updateIdTokenResult(currentUser) {
-        if(currentUser) {
-            return currentUser.getIdTokenResult(true).then(idTokenResult => {
-                this.idTokenResult = idTokenResult;
-                return idTokenResult;
-            }).catch(async err => {
-                console.error(err)
-            });
-        }
     }
 
     set loggedUserAuthChecked(val) {
@@ -159,17 +136,9 @@ class Storage {
     set idTokenResult(idTokenResult) {
         this.attrs.set("idTokenResult", idTokenResult);
     }
-    
+
     set isNewContractorUserOTPStatus(val) {
         this.attrs.set("isNewContractorUserOTPStatus", val);
-    }
-
-    setIsNewContractorUserOTPStatusVerified() {
-        this.isNewContractorUserOTPStatus = 'Verified';
-    }
-
-    setIsNewContractorUserOTPStatusSent() {
-        this.isNewContractorUserOTPStatus = 'Sent';
     }
 
     @computed
@@ -210,6 +179,57 @@ class Storage {
             return days;
         }
         return 0;
+    }
+
+    async onLogin(currentUser) {
+//                    if(access_type === 'User' && currentUser.email === 'kheelet@gmail.com') {
+//                        currentUser.unlink(firebase.auth.PhoneAuthProvider.PROVIDER_ID);
+//                    }
+        if (currentUser) {
+            this.attrs.set("loggedUserAuth", currentUser);
+            return this.updateIdTokenResult(currentUser);
+        }
+    }
+
+    async updateSessionByIdToken() {
+        const {currentUser} = this.login.currAuth;
+
+        return currentUser.getIdToken(true).then(idToken => {
+            const onUpdateSession = async (idToken) => {
+                const updateSession = sockets.of('orgs').fn('updateSession');
+                return updateSession({idToken}).then(res => {
+                    if (res === "RETRY") {
+                        return this.updateSessionByIdToken(idToken);
+                    }
+                    return this.updateIdTokenResult(currentUser)
+                        .then((idTokenResult) => {
+                            console.log(`updateSessionByIdToken custom claims`, idTokenResult);
+                            return idTokenResult;
+                        });
+                });
+            };
+
+            return onUpdateSession(idToken);
+        });
+    }
+
+    async updateIdTokenResult(currentUser) {
+        if (currentUser) {
+            return currentUser.getIdTokenResult(true).then(idTokenResult => {
+                this.idTokenResult = idTokenResult;
+                return idTokenResult;
+            }).catch(async err => {
+                console.error(err)
+            });
+        }
+    }
+
+    setIsNewContractorUserOTPStatusVerified() {
+        this.isNewContractorUserOTPStatus = 'Verified';
+    }
+
+    setIsNewContractorUserOTPStatusSent() {
+        this.isNewContractorUserOTPStatus = 'Sent';
     }
 
 }

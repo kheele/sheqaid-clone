@@ -1,9 +1,0 @@
-#NewEmergencyRollCallRegisterSec .table > .thead {
-    background: rgb(234, 234, 234);
-}
-#NewEmergencyRollCallRegisterSec .table > .thead > .td{
-    color: #888;
-}
-#NewEmergencyRollCallRegisterSec .table > .thead > .td-tr > .td:first-of-type{
-    margin-bottom: 5px;
-}

@@ -1,8 +1,0 @@
-
-#StructureAndResponsibility-page{
-    height: 100%;
-}
-#StructureAndResponsibility-page > .tabs {
-    margin: 0 10px 0 0px;
-    height: calc(100% - 20px);
-}

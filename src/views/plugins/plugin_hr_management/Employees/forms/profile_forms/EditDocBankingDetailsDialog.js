@@ -66,10 +66,10 @@ class Controls extends React.Component {
                 infoDialog.open('Bank Name is required');
                 return;
             }
-            if (!form.isValid('branch')) {
-                infoDialog.open('Branch is required');
-                return;
-            }
+            // if (!form.isValid('branch')) {
+            //     infoDialog.open('Branch is required');
+            //     return;
+            // }
             if (!form.isValid('code')) {
                 infoDialog.open("Branch Code is required");
                 return;
@@ -92,10 +92,10 @@ class Controls extends React.Component {
             infoDialog.open('Bank Name is required');
             return;
         }
-        if (!form.isValid('branch')) {
-            infoDialog.open('Branch is required');
-            return;
-        }
+        // if (!form.isValid('branch')) {
+        //     infoDialog.open('Branch is required');
+        //     return;
+        // }
         if (!form.isValid('code')) {
             infoDialog.open("Branch Code is required");
             return;
@@ -106,10 +106,10 @@ class Controls extends React.Component {
         }
 
         //2
-        if (!form.isValid('doc')) {
-            infoDialog.open("Proof of Banking Details is required");
-            return;
-        }
+        // if (!form.isValid('doc')) {
+        //     infoDialog.open("Proof of Banking Details is required");
+        //     return;
+        // }
 
         if (isNewEmployee) {
             console.log("res", form.data)

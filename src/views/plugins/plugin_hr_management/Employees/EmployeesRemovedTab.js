@@ -7,9 +7,12 @@ import NavItem from 'components/navs/NavItem';
 import Popover from 'components/popovers/Popover';
 import {
     ActionsButton,
-    ClearableInput, Clickable,
-    SelectDepartmentInput, SelectEmployeeInput,
-    SelectJobPositionInput, SelectTeamInput
+    ClearableInput,
+    Clickable,
+    SelectDepartmentInput,
+    SelectEmployeeInput,
+    SelectJobPositionInput,
+    SelectTeamInput
 } from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
@@ -21,7 +24,6 @@ import ProfilePDFReader from './printers/ProfilePDFReader';
 import style from "./EmployeesRemovedTab.lazy.css";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
-import employeeInactiveStore from "mutations/all/EmployeeInactive";
 import findByIdsInactiveEmployee from "mutations/all/EmployeeInactive/findByIdsInactiveEmployee";
 import AEmployeeListTab, {StatsPanel} from "./AEmployeeListTab";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
@@ -134,16 +136,18 @@ class Main extends AEmployeeListTab {
         const {department_id, job_position_id} = filterData || {};
         return <THead>
             <div className="td fixed-flex min-w-50">ID</div>
+            <div className="td fixed-flex min-w-140">Company No.</div>
             <div className="td">Name</div>
             {!department_id && <div className="td">Department</div>}
             {!job_position_id && <div className="td">Job Position</div>}
             {(hasProjects || isContractorView) && <>
                 {/*isConsultant && <div className="td sm-hidden">Company Name</div>*/}
                 {isContractorView && <div className="td">Company Name</div>}
-                {!isContractorView && <div className="td">Project Name</div>}
-                <div className="td">Site Name</div>
+                <div className="td">
+                    {!isContractorView && "Project / "}Site
+                </div>
             </>}
-            <div className="td fixed-flex min-w-500">Stats</div>
+            <div className="td fixed-flex min-w-420">Stats</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -164,14 +168,16 @@ class Main extends AEmployeeListTab {
                 created_at, fname, lname, profile_pic,
                 department, job_position, supervisor,
                 client, project, site,
+                employment_num,
                 medical_list_aggregate, leave_list_aggregate, ppe_type_list_aggregate,
                 trainer_training_list_aggregate, warning_list_aggregate,
                 supervisor_employee_list_aggregate,
             }
         } = item;
-       console.log('employee', item)
+        console.log('employee', item)
         return <TRow key={id}>
             <div className="td fixed-flex min-w-50">{id}</div>
+            <div className="td fixed-flex min-w-140">{employment_num}</div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Name</h6>
                 <Clickable
@@ -192,11 +198,12 @@ class Main extends AEmployeeListTab {
             {(hasProjects || isContractorView) && <>
                 {/*isConsultant && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')*/}
                 {isContractorView && RenderUtils.renderOrgTD(client, null, 'Company Name', 'sm-hidden')}
-                {!isContractorView && RenderUtils.renderOrgTD(project, null, 'Project Name')}
-                {RenderUtils.renderOrgTD(site, null, 'Site Name')}
+                <div className="td">
+                    {!isContractorView && (project && `${project.name} / `)}{site && site.name}
+                </div>
             </>}
 
-            <div className="td fixed-flex min-w-500 padding-r-10 flex td-stats">
+            <div className="td fixed-flex min-w-420 padding-r-10 flex td-stats">
                 <StatsPanel item={item}/>
             </div>
 
