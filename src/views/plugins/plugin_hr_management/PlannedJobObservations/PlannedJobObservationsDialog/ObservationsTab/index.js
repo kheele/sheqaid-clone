@@ -6,17 +6,13 @@ import {observable, toJS} from "mobx";
 import NavItem from "components/navs/NavItem";
 import {
     ClearableInput,
-    SelectContractorQuestionnaireTemplateInput,
     SelectEmployeeInput,
-    SelectJobPositionInput, SelectQuestionnaireTemplateInput
+    SelectJobPositionInput,
+    SelectQuestionnaireTemplateInput
 } from "components/inputs";
 import {THead} from "components/tables";
 import APageListReadWrite from "views/APageListReadWrite";
-import {
-    EditQuestionnaireDialog,
-    EditResponseDialog,
-    NewQuestionnaireDialog, ProfileResponseDialog
-} from "./forms";
+import {EditQuestionnaireDialog, EditResponseDialog, NewQuestionnaireDialog, ProfileResponseDialog} from "./forms";
 import Popover from "components/popovers/Popover";
 import ObservationTableRow from "./ObservationTableRow";
 
@@ -69,6 +65,7 @@ class ObservationsTab extends React.Component {
         const item = this.refs.root.list[idx];
         this.refs.newDialog.open(item);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="onLoadList">
@@ -82,9 +79,9 @@ class ObservationsTab extends React.Component {
             job_position_list,
             employee: employee2,
         } = filterData || {};
-        
+
         const listByLogged = sockets.of('job-observations').fn('listByLogged');
-        
+
         return listByLogged({
             employee_id: (employee2 || employee) && (employee || employee2).id,
             //
@@ -106,7 +103,7 @@ class ObservationsTab extends React.Component {
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const {renderPopoverOptions} = this.props;
-        if(renderPopoverOptions) {
+        if (renderPopoverOptions) {
             return renderPopoverOptions(idx, {onView, onEdit, onRemove, Options});
         }
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
@@ -115,44 +112,47 @@ class ObservationsTab extends React.Component {
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
-            <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Job Observation"}/>
+            <NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus"
+                     title={"Start Job Observation"}/>
         </Options>;
     }
 
     renderFilterNode(onChange) {
         const listByLogged = sockets.of('job-observations').fn('listTemplatesByLogged');
-        
+
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
             <ClearableInput
-              name="interval"
-              type="select"
-              placeholder="Interval..."
-              className="form-control"
-              onChange={onChange}
-              values={this.state.lists.interval}
-              returnValue
+                name="interval"
+                type="select"
+                placeholder="Interval..."
+                className="form-control"
+                onChange={onChange}
+                values={this.state.lists.interval}
+                returnValue
             />
             <SelectQuestionnaireTemplateInput
-              name="template"
-              placeholder="Template..."
-              className="form-control"
-              byLogged={listByLogged}
-              onChange={onChange}
+                name="template"
+                placeholder="Template..."
+                className="form-control"
+                byLogged={listByLogged}
+                onChange={onChange}
             />
-            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
+            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
+                                    className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+                                 onChange={onChange}/>
         </div>;
     }
 
     renderTHead() {
         const {item: employee} = this.props;
         return <THead>
-            <div className="td fixed-flex min-w-40">ID</div>
+            <div className="td fixed-flex min-w-60">ID</div>
             {/*<div className="td fixed-flex min-w-140">Score</div>*/}
-            {!employee && <div className="td">Job Position</div>}
-            {!employee && <div className="td">Employee</div>}
-            <div className="td">Responsible Person</div>
+            {!employee && <div className="td">Employee Observed</div>}
+            <div className="td">Observer</div>
+            <div className="td">Task Observed</div>
             <div className="td fixed-flex min-w-160">Interval</div>
             <div className="td fixed-flex min-w-160">Start Date</div>
             <div className="td fixed-flex min-w-160">Scheduled Date</div>
@@ -175,22 +175,22 @@ class ObservationsTab extends React.Component {
 
         const {children, onLoadList, pageId, pageTitle, pageTitleSingular, type, NewDialog} = this.props;
         return <APageListReadWrite
-          hasBackBtn={false}
-          ref="root"
-          page={this}
-          // createBtnTitle="Create"
-          hasCreateBtn={() => false}
-          pageId={pageId}
-          pageTitle={pageTitle}
-          pageTitleSingular={pageTitleSingular}
-          onLoadList={this.onLoadList}
-          noAnimation={true}
-          onLoaded={this.onLoaded}
-          renderLeftButtons={this.renderLeftButtons}
-          renderPopoverOptions={this.renderPopoverOptions}
-          renderFilterNode={this.renderFilterNode}
-          renderTHead={this.renderTHead}
-          renderItem={this.renderItem}
+            hasBackBtn={false}
+            ref="root"
+            page={this}
+            // createBtnTitle="Create"
+            hasCreateBtn={() => false}
+            pageId={pageId}
+            pageTitle={pageTitle}
+            pageTitleSingular={pageTitleSingular}
+            onLoadList={this.onLoadList}
+            noAnimation={true}
+            onLoaded={this.onLoaded}
+            renderLeftButtons={this.renderLeftButtons}
+            renderPopoverOptions={this.renderPopoverOptions}
+            renderFilterNode={this.renderFilterNode}
+            renderTHead={this.renderTHead}
+            renderItem={this.renderItem}
         >
             <NewQuestionnaireDialog ref="copyDialog"/>
             <ProfileResponseDialog ref="profileDialog"/>

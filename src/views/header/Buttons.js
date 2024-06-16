@@ -102,13 +102,38 @@ class AuditTrailBtn extends React.Component {
         if (isConsultant && clients.isEmpty()) return null;
 
         if (Permissions.disallowOther("Audit Logs"))
-//            return null;
+            return null;
 
-            if (storage.is.isEmployee) {
-                return null;
-            }
+        if (storage.is.isEmployee) {
+            return null;
+        }
 
         return <Button className="fa fa-file-text btn" module="AuditTrail" hoverText="Audit Log" hoverTextLeft
+                       onClick={defaultView.onOpenPage}/>;
+    }
+}
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="SettingsBtn">
+@observer
+class SettingsBtn extends React.Component {
+
+    render() {
+        const {isConsultant} = storage.is;
+        const {clients} = storage.list;
+//        if (!loggedInApp.defaultView)
+//            return null;
+        if (isConsultant && clients.isEmpty()) return null;
+
+        if (Permissions.disallowOther("Settings"))
+            return null;
+
+        if (storage.is.isEmployee) {
+            return null;
+        }
+
+        return <Button className="fa fa-gear btn" module="Settings" hoverText="Settings" hoverTextLeft
                        onClick={defaultView.onOpenPage}/>;
     }
 }
@@ -327,8 +352,14 @@ class UsersBtn extends React.Component {
             if (Permissions.disallowOther("Users"))
                 return null;
 
-            return <Button className="fa fa-users btn" module="Users" hoverText="Users"
-                           onClick={defaultView.onOpenPage}/>;
+            return <Button
+                className="btn w-auto h-35 flex flex-center"
+                module="Users"
+                hoverText="Users" hoverTextLeft
+                onClick={defaultView.onOpenPage}
+            >
+                <i className="fa fa-users font-size-20 margin-r-5"/> Users
+            </Button>;
         }
         const {isContractorViewVisited, isContractor, isEmployee} = storage.is;
         if (isContractorViewVisited || !loggedInApp.defaultView || isEmployee)
@@ -339,8 +370,14 @@ class UsersBtn extends React.Component {
                 return null;
         }
 
-        return <Button className="fa fa-users btn" module="Users" hoverText="Users" hoverTextLeft
-                       onClick={defaultView.onOpenPage}/>;
+        return <Button
+            className="btn w-auto h-35 flex flex-center"
+            module="Users"
+            hoverText="Users" hoverTextLeft
+            onClick={defaultView.onOpenPage}
+        >
+            <i className="fa fa-users font-size-20 margin-r-5"/> Users
+        </Button>;
     }
 }
 
@@ -388,8 +425,14 @@ class EmployeesBtn extends React.Component {
                 return null;
         }
 
-        return <Button className="fa fa-user-tie btn" module="Employees" hoverText="Employees" hoverTextLeft
-                       onClick={defaultView.onOpenPage}/>;
+        return <Button
+            className="btn w-auto h-35 flex flex-center"
+            module="Employees"
+            hoverText="Employees" hoverTextLeft
+            onClick={defaultView.onOpenPage}
+        >
+            <i className="fa fa-user-tie font-size-20 margin-r-5"/> Employees
+        </Button>;
     }
 }
 
@@ -401,6 +444,7 @@ export {
     ChatsBtn,
     DashboardBtn,
     AuditTrailBtn,
+    SettingsBtn,
     SelectOrgsBtn,
     SelectShortcutsBtn,
     UsersBtn,

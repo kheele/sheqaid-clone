@@ -1,0 +1,59 @@
+
+#settings-page {
+    height: 100%;
+}
+
+#settings-page .page-content {
+    height: calc(100% - 20px);
+    width: 100%;
+    padding: 10px 0 0;
+}
+
+#settings-page .page-content:before,
+#settings-page .page-content:after {
+    display: none !important;
+}
+
+#settings-page .page-title > h3 {
+    flex: 1
+}
+
+#settings-page .page-content > .MuiAccordion-root {
+    margin-top: 0;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px #ddd !important;
+    border-radius: 5px;
+}
+
+#settings-page .page-content .MuiAccordion-root .MuiAccordionSummary-root {
+    min-height: 40px;
+    height: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+#settings-page .page-content .MuiAccordion-root .MuiAccordionDetails-root {
+    padding: 10px;
+}
+
+#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container {
+    min-height: 0px;
+    height: calc(100% - 40px);
+    position: relative;
+}
+
+#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container > .MuiCollapse-wrapper {
+    overflow: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container > .MuiCollapse-wrapper,
+#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner
+    /*#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > div[role="region"],*/
+    /*#settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > div[role="region"] > .MuiAccordionDetails-root */
+{
+    height: 100%;
+}

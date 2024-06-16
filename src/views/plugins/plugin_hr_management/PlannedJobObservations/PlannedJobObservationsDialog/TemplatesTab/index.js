@@ -5,17 +5,11 @@ import {observable, toJS} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {
-    ActionsButton,
-    ClearableInput,
-    Clickable,
-    SelectAssetTypeInput,
-    SelectJobPositionInput
-} from 'components/inputs';
-import {THead, TRow} from 'components/tables';
+import {ClearableInput, SelectJobPositionInput} from 'components/inputs';
+import {THead} from 'components/tables';
 
-import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
-import {EditResponseDialog, NewQuestionnaireDialog} from '../ObservationsTab/forms';
+import {EditTemplateDialog, NewTemplateDialog, ProfileTemplateDialog,} from './forms';
+import {NewQuestionnaireDialog} from '../ObservationsTab/forms';
 
 import style from "./TemplatesTab.lazy.css";
 import TemplateTableRow from "./TemplateTableRow";
@@ -25,7 +19,7 @@ import updateJobObservationsQuestionnaireTemplate
 @observer
 class TemplatesTab extends React.Component {
     pageKey = "TemplatesTab";
-    
+
     @observable
     state = {
         lists: {
@@ -42,18 +36,19 @@ class TemplatesTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onCreateQuestionnaire = this.onCreateQuestionnaire.bind(this);
         // this.onSchedule = this.onSchedule.bind(this);
         // this.onStart = this.onStart.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="componentWillMount, componentWillUnmount">
@@ -64,6 +59,7 @@ class TemplatesTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     //</editor-fold>
 
     //<editor-fold desc="onLoadList">
@@ -76,9 +72,9 @@ class TemplatesTab extends React.Component {
             scheduled,
             visibility,
         } = filterData || {};
-        
+
         const listByLogged = sockets.of('job-observations').fn('listTemplatesByLogged');
-        
+
         return listByLogged({
             employee_id: employee && employee.id,
             //
@@ -95,13 +91,13 @@ class TemplatesTab extends React.Component {
             return res;
         });
     }
-    
+
     //</editor-fold>
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
-    
+
     //<editor-fold desc="actions">
     onCopy(evt, elem) {
         const {idx, action} = elem.props;
@@ -157,32 +153,38 @@ class TemplatesTab extends React.Component {
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onCreateQuestionnaire} faIconLeft="plus" title={"Create Job Observation"}/>
+            <NavItem action="writable" idx={idx} onClick={this.onCreateQuestionnaire} faIconLeft="plus"
+                     title={"Create Job Observation"}/>
             {/*<NavItem action="writable" idx={idx} onClick={this.onSchedule} faIconLeft="plus" title={"Schedule Job Observation"}/>*/}
             {/*<NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Job Observation"}/>*/}
         </Options>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-            <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>
-            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control" onChange={onChange} values={this.state.lists.visibility}/>
-            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..." className="form-control" onChange={onChange}/>
+            <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control"
+                            onChange={onChange} values={this.state.lists.scheduled}/>
+            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control"
+                            onChange={onChange} values={this.state.lists.visibility}/>
+            <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
+                                    className="form-control" onChange={onChange}/>
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderTHead">
     renderTHead() {
         return <THead>
-            <div className="td fixed-flex min-w-40">ID</div>
+            <div className="td fixed-flex min-w-60">ID</div>
             <div className="td fixed-flex min-w-120">Date Created</div>
-            <div className="td">Job Position</div>
             <div className="td">Name</div>
             <div className="td">Description</div>
+            <div className="td">Task Observed</div>
             <div className="td fixed-flex min-w-180">Questionnaires Used</div>
             <div className="td fixed-flex min-w-100">Questions</div>
             <div className="td fixed-flex min-w-80">Visibility</div>
@@ -190,6 +192,7 @@ class TemplatesTab extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderItem">
@@ -197,6 +200,7 @@ class TemplatesTab extends React.Component {
         const item = this.refs.root.list[n];
         return <TemplateTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
@@ -218,15 +222,16 @@ class TemplatesTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateJobObservationsQuestionnaireTemplate}/>
-            
+
             <NewTemplateDialog ref="newDialog"/>
             <EditTemplateDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileTemplateDialog ref="profileDialog" onRemoved={this.onRemoved}/>
-            
+
             <NewQuestionnaireDialog ref="newQuestionnaireDialog"/>
             {/*<EditResponseDialog ref="editResponseDialog"/>*/}
         </APageListReadWrite>;
     }
+
     //</editor-fold>
 }
 

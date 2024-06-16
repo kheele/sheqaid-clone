@@ -25,9 +25,10 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 //</editor-fold>
 
 @observer
@@ -37,6 +38,10 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
+            job_observation_type: [
+                {text: 'Private', value: 'Private', checked: false},
+                {text: 'Public', value: 'Public', checked: false}
+            ].map(text),
             visibility: [
                 {text: 'Private', value: 'Private', checked: false},
                 {text: 'Public', value: 'Public', checked: false}
@@ -51,11 +56,22 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.getDialogDOM = this.getDialogDOM.bind(this);
-        
+
         this.form = new Form();
         this.form.addChangeOne("visibility", this.onChangeVisibility.bind(this));
     }
+
     //</editor-fold>
+
+    get defaultTitlePageQuestions() {
+        return [{questionText: "Completed By", questionType: "Short Answer"}];
+    }
+
+    get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
 
     onChangeVisibility(el, val) {
         execWhen(() => this.refs.questions).then(ref => {
@@ -63,17 +79,19 @@ class Controls extends React.Component {
         });
     }
 
+    //</editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form, refs: {questions}} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('visibility')) {
                 infoDialog.open('Please select "Visibility" option');
                 return;
             }
         }
-        if(idx === 2) {
+        if (idx === 2) {
             if (!questions.isValidForm()) {
                 return;
             }
@@ -81,7 +99,6 @@ class Controls extends React.Component {
 
         return true;
     }
-    // </editor-fold>
 
     //<editor-fold desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
@@ -133,19 +150,10 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
-    //</editor-fold>
-    
+
     getDialogDOM() {
         const {props: {dialog}} = this;
         return dialog.getDOMNode();
-    }
-
-    get defaultTitlePageQuestions() {
-        return [{questionText: "Completed By", questionType: "Short Answer"}];
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     //<editor-fold desc="render">
@@ -161,42 +169,45 @@ class Controls extends React.Component {
 
         return <FormControls>
             <Row
-              rendered
-              active
-              idx={1}
-              title="1. Basic Info"
-              onFormOpen={onFormOpen}
-              onFormNext={onFormNext}
+                rendered
+                active
+                idx={1}
+                title="1. Basic Info"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
             >
-                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.visibility} returnValue/>
+                <ClearableInput name="visibility" type="radio" placeholder="Visibility" defaultValue={visibility}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.visibility} returnValue/>
                 <SelectJobPositionInput
-                  ref="job_position"
-                  name="job_position" placeholder="Job Position..."
-                  defaultValue={job_position}
-                  className="col-lg-12 form-control"
-                  onChange={this.form.onChange}
+                    ref="job_position"
+                    name="job_position" placeholder="Job Position..."
+                    defaultValue={job_position}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
                 />
             </Row>
             <Row
-              rendered
-              idx={2}
-              title="2. Job Observation Questionnaire"
-              onFormOpen={onFormOpen}
-              onFormBack={onFormBack}
+                rendered
+                idx={2}
+                title="2. Job Observation Questionnaire"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
             >
                 <TemplateQuestions
-                  ref="questions"
-                  getDialogDOM={this.getDialogDOM}
-                  isLibrary
-                  defaultType="Job Observations"
-                  mainTitle="Job Observation Template Questionnaire"
-                  defaultDocTitle="Untitled Questionnaire"
-                  defaultTitlePageQuestions={this.defaultTitlePageQuestions}
-                  item={this.item}
+                    ref="questions"
+                    getDialogDOM={this.getDialogDOM}
+                    isLibrary
+                    defaultType="Job Observations"
+                    mainTitle="Job Observation Template Questionnaire"
+                    defaultDocTitle="Untitled Questionnaire"
+                    defaultTitlePageQuestions={this.defaultTitlePageQuestions}
+                    item={this.item}
                 />
             </Row>
         </FormControls>;
     }
+
     //</editor-fold>
 }
 

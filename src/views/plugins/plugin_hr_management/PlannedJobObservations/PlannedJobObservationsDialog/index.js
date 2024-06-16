@@ -21,6 +21,7 @@ class Dialog extends ADialogTab {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentWillMount">
@@ -41,28 +42,28 @@ class Dialog extends ADialogTab {
         const {permissionKey} = this.props;
         const {isEmployee} = storage.is;
         return (<TabWrapper
-          ref="tabWrapper"
-          // store={this.store}
-          // title={this.title}
-          // titleSingular={this.titleSingular}
-          // permissionKey={permissionKey}
-          // isRemoved={isRemoved}
-          // NewDialog={NewDialog}
-          // ProfileDialog={ProfileDialog}
-          // EditDialog={EditDialog}
-          // ExportDialog={ExportDialog}
-          // module={module}
-          //
-          // loadDashboard={this.loadDashboard}
-          // onBuildQuery={this.onBuildQuery}
-          // renderFilterNodeActive={this.renderFilterNodeActive}
-          // renderFilterNodeRemoved={this.renderFilterNodeRemoved}
-          // renderTHeadActive={this.renderTHeadActive}
-          // renderTHeadRemoved={this.renderTHeadRemoved}
-          // renderItemActive={this.renderItemActive}
-          // renderItemRemoved={this.renderItemRemoved}
-          //
-          // onViewDialog={this.onViewDialog}
+            ref="tabWrapper"
+            // store={this.store}
+            // title={this.title}
+            // titleSingular={this.titleSingular}
+            // permissionKey={permissionKey}
+            // isRemoved={isRemoved}
+            // NewDialog={NewDialog}
+            // ProfileDialog={ProfileDialog}
+            // EditDialog={EditDialog}
+            // ExportDialog={ExportDialog}
+            // module={module}
+            //
+            // loadDashboard={this.loadDashboard}
+            // onBuildQuery={this.onBuildQuery}
+            // renderFilterNodeActive={this.renderFilterNodeActive}
+            // renderFilterNodeRemoved={this.renderFilterNodeRemoved}
+            // renderTHeadActive={this.renderTHeadActive}
+            // renderTHeadRemoved={this.renderTHeadRemoved}
+            // renderItemActive={this.renderItemActive}
+            // renderItemRemoved={this.renderItemRemoved}
+            //
+            // onViewDialog={this.onViewDialog}
         />);
     }
 }
@@ -180,34 +181,34 @@ class TabWrapper extends React.Component {
 
             {/*  onViewDialog={onViewDialog}*/}
             {/*/>*/}
-            <TemplatesTab
-              ref="templatesTab"
-              title="Templates"
-              // titleSingular={titleSingular}
-              // titlePlural={title}
-              // renderFilterNode={renderFilterNodeActive}
-              // renderTHead={renderTHeadActive}
-              // renderItem={renderItemActive}
-              // NewDialog={NewDialog}
-              // ProfileDialog={ProfileDialog}
-              // EditDialog={EditDialog}
-              // ExportDialog={ExportDialog}
-              // module={module}
-              // onBuildQuery={onBuildQuery}
-            />
             <ObservationsTab
-              ref="observationsTab"
-              title="Observations"
-              // titleSingular={titleSingular}
-              // titlePlural={title}
-              // renderFilterNode={renderFilterNodeRemoved}
-              // renderTHead={renderTHeadRemoved}
-              // renderItem={renderItemRemoved}
-              // NewDialog={NewDialog}
-              // ProfileDialog={ProfileDialog}
-              // ExportDialog={ExportDialog}
-              // module={module}
-              // onBuildQuery={onBuildQuery}
+                ref="observationsTab"
+                title="Observations"
+                // titleSingular={titleSingular}
+                // titlePlural={title}
+                // renderFilterNode={renderFilterNodeRemoved}
+                // renderTHead={renderTHeadRemoved}
+                // renderItem={renderItemRemoved}
+                // NewDialog={NewDialog}
+                // ProfileDialog={ProfileDialog}
+                // ExportDialog={ExportDialog}
+                // module={module}
+                // onBuildQuery={onBuildQuery}
+            />
+            <TemplatesTab
+                ref="templatesTab"
+                title="Templates"
+                // titleSingular={titleSingular}
+                // titlePlural={title}
+                // renderFilterNode={renderFilterNodeActive}
+                // renderTHead={renderTHeadActive}
+                // renderItem={renderItemActive}
+                // NewDialog={NewDialog}
+                // ProfileDialog={ProfileDialog}
+                // EditDialog={EditDialog}
+                // ExportDialog={ExportDialog}
+                // module={module}
+                // onBuildQuery={onBuildQuery}
             />
         </Tabs>);
     }

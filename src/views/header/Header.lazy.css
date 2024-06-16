@@ -16,19 +16,23 @@ header {
     padding-left: 12px;
     padding-right: 12px;
 }
-.InitView + header{
+
+.InitView + header {
     background-color: rgba(255, 255, 255, 0.05) !important;
     /*box-shadow: none;*/
 }
-.MainView + header{
+
+.MainView + header {
     left: 0;
 }
+
 .MainView + header.header-wide {
     left: 0 !important;
 }
+
 header > button.back-btn,
 header > button.nav-toggle,
-header > button.user-manual-btn{
+header > button.user-manual-btn {
     box-sizing: border-box;
     display: inline-block;
     font-family: Roboto, sans-serif;
@@ -51,39 +55,46 @@ header > button.user-manual-btn{
     border: 1px solid rgba(221, 221, 221, 0.1);
     overflow: hidden;
 }
-header > button.back-btn{
+
+header > button.back-btn {
     margin: 13px 10px 0px 0px;
     padding: 4px 4px 3px;
 }
+
 header > button.nav-toggle,
-header > button.user-manual-btn{
+header > button.user-manual-btn {
     margin: 13px 10px 0px 0px;
 }
-header > button.user-manual-btn{
+
+header > button.user-manual-btn {
     padding: 0px;
     color: none;
     border: none;
     background: #fff;
 
 }
-header > button.nav-toggle-menu.fa-times{
+
+header > button.nav-toggle-menu.fa-times {
     font-size: 20px !important;
     padding-top: 3px !important;
     font-weight: 900 !important;
     font-family: "Font Awesome 5 Free" !important;
 }
-header > button.nav-toggle-menu.fa-times > div{
+
+header > button.nav-toggle-menu.fa-times > div {
     display: none !important;
 }
-header > button.nav-toggle span{
-    height: 100%; 
-    width: 100%; 
-    position: absolute; 
-    top: 0px; 
-    left: 0px; 
+
+header > button.nav-toggle span {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
     overflow: hidden;
 }
-header > button.nav-toggle svg{
+
+header > button.nav-toggle svg {
     display: inline-block;
     color: #ddd;
     fill: #ddd;
@@ -94,59 +105,72 @@ header > button.nav-toggle svg{
 }
 
 .InitView + header > button.nav-toggle,
-.DefaultView + header > button.nav-toggle svg{
+.DefaultView + header > button.nav-toggle svg {
     display: none;
 }
+
 header > button.back-btn,
 .InitView + header > button.nav-toggle .fa-home,
 .DefaultView + header > button.nav-toggle .fa-home,
 .MainView + header > button.nav-toggle .fa-home,
-header > button.user-manual-btn .fa-question{
+header > button.user-manual-btn .fa-question {
     display: block;
     font-size: 18px;
     color: #fff;
 }
-header > button.user-manual-btn .fa.fa-question{
+
+header > button.user-manual-btn .fa.fa-question {
     color: #20911f;
 }
-.MainView + header > button.nav-toggle svg{
+
+.MainView + header > button.nav-toggle svg {
     display: block;
 }
-.DefaultView + header > button.nav-toggle-menu{
+
+.DefaultView + header > button.nav-toggle-menu {
     display: none;
 }
+
 header > .SelectedPlugin,
-header > .SelectedItems{
+header > .SelectedItems {
     margin: 13px 0 0px;
     float: left;
 }
-header > .SelectedPlugin{
+
+header > .SelectedPlugin {
     display: inline-block;
 }
+
 header > .SelectedItems {
     /*margin-left: 5px;*/
     overflow: visible;
     transition: 1s all;
 }
+
 .DefaultView + header > .SelectedItems {
     width: auto;
 }
-header > .SelectedItems > *{
+
+header > .SelectedItems > * {
     /*display: inline;*/
 }
-header > .SelectedItems > .SelectedItem{
+
+header > .SelectedItems > .SelectedItem {
     padding: 0;
     white-space: nowrap;
     /*overflow: hidden;*/
     text-overflow: ellipsis;
 }
-header > .SelectedItems > .SelectedItem:not(.readonly){
+
+header > .SelectedItems > .SelectedItem:not(.readonly) {
     cursor: pointer !important;
 }
-header > .SelectedItems > .SelectedItem.readonly{
+
+header > .SelectedItems > .SelectedItem.readonly {
     cursor: default !important;
 }
-header > .SelectedItems > .SelectedItem.contractors-pack-title{
+
+header > .SelectedItems > .SelectedItem.contractors-pack-title {
     color: #ddd;
     background-color: rgba(30, 30, 30, 1) !important;
     font-size: 20px;
@@ -157,29 +181,35 @@ header > .SelectedItems > .SelectedItem.contractors-pack-title{
     z-index: 1;
     border-right: 2px solid #555;
 }
-header > .SelectedItems > .SelectedItem.contractors-pack-title + .SelectedItem{
+
+header > .SelectedItems > .SelectedItem.contractors-pack-title + .SelectedItem {
     background: rgba(0, 0, 0, 0.5) !important;
     padding: 0 10px 0 25px;
     margin-left: -15px;
     z-index: 0;
 }
-header > .SelectedItems > .ProfilePic{
+
+header > .SelectedItems > .ProfilePic {
     min-width: 50px;
     border: 2px solid #ddd;
     margin: -8px 8px 0 -15px;
     transition: 1s all;
 }
-header > .SelectedPlugin{
+
+header > .SelectedPlugin {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.3);
 }
-header > .SelectedPlugin > .fa{
+
+header > .SelectedPlugin > .fa {
     margin-left: 8px;
 }
-header > .SelectedItems > .fa{
+
+header > .SelectedItems > .fa {
     margin: 8px;
 }
-header > .SelectedItems > .trial-bar{
+
+header > .SelectedItems > .trial-bar {
     position: absolute;
     left: 46px;
     top: 39px;
@@ -193,20 +223,24 @@ header > .SelectedItems > .trial-bar{
     color: #fff;
     font-weight: bold;
 }
-header > .SelectedItems > .trial-bar > span.fixed-flex{
+
+header > .SelectedItems > .trial-bar > span.fixed-flex {
     background: rgba(255, 255, 255, 0.2);
 }
+
 header > .search {
     width: 300px;
     margin: 14px 25px 0;
     float: right;
     border-radius: 20px;
 }
+
 header > .right-actions {
     float: right;
     display: inline-flex;
 }
-header > .right-actions > .fa{
+
+header > .right-actions > .fa {
     color: #ddd;
     font-size: 20px;
     margin: 12px 12px 0 0;
@@ -218,34 +252,43 @@ header > .right-actions > .fa{
     overflow: hidden;
     position: relative;
 }
-header > .right-actions > .btn{
+
+header > .right-actions > .btn {
     width: 50px;
+    color: #ddd;
     background: rgba(136, 136, 136, 0.1);
     border-radius: 0px;
     margin: 13px 1px 0 0px;
+    text-transform: uppercase;
 }
-header > .right-actions.text-actions > .btn{
+
+header > .right-actions.text-actions > .btn {
     color: #eee;
 }
-header > .right-actions > .btn:first-of-type{
+
+header > .right-actions > .btn:first-of-type {
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
-header > .right-actions > .btn:last-of-type{
+
+header > .right-actions > .btn:last-of-type {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     margin-right: 15px;
 }
-header > .right-actions > .fa-users{
+
+header > .right-actions > .fa-users {
     /*    border-radius: 0 20px 20px 0 !important;
         margin-right: 15px;*/
 }
-header > .right-actions > button.btn > span{
+
+header > .right-actions > button.btn > span {
     font-size: 14px;
     font-weight: normal;
     margin: 1px 0 0 6px;
 }
-header > .right-actions > .fa > small{
+
+header > .right-actions > .fa > small {
     color: #fff;
     background: red;
     font-size: 11px;
@@ -260,7 +303,8 @@ header > .right-actions > .fa > small{
     right: 10px;
     top: 5px;
 }
-header > .right-actions > .avatar{
+
+header > .right-actions > .avatar {
     cursor: pointer;
     color: rgb(2, 168, 168);
     display: inline-flex;
@@ -271,11 +315,13 @@ header > .right-actions > .avatar{
     padding-left: 20px;
     position: relative;
 }
+
 header > .right-actions > .avatar.contractor > .fa-close {
     color: #ff6000;
     font-size: 48px;
 }
-header > .right-actions > .avatar > hr{
+
+header > .right-actions > .avatar > hr {
     width: 1px;
     height: 25px;
     margin-right: 15px;
@@ -284,7 +330,8 @@ header > .right-actions > .avatar > hr{
     left: 0;
     top: -8px;
 }
-header > .right-actions > .avatar::after{
+
+header > .right-actions > .avatar::after {
     /*    content: " ";
         background-color: #ddd;
         border-radius: 50%;
@@ -297,10 +344,12 @@ header > .right-actions > .avatar::after{
         bottom: 0;
         z-index: -1;*/
 }
+
 .popover-account-options .btn-action {
     border: 1px solid #ddd;
 }
-header > .right-actions > hr{
+
+header > .right-actions > hr {
     height: 26px;
     width: 1px;
     background: #eee;
@@ -311,19 +360,22 @@ header > .right-actions > hr{
     position: relative;
     height: 100%;
 }
+
 .search-results {
     position: relative;
     height: calc(100% - 43px);
     margin-top: 10px;
 }
-.search-results > h5{
+
+.search-results > h5 {
     margin: 0;
     padding-bottom: 5px;
     border-bottom: 1px solid #ddd;
     text-align: center;
 }
+
 .search-results > .search-results-loading,
-.search-results > .search-results-none{
+.search-results > .search-results-none {
     transform: translate(-50%, 0%);
     position: absolute;
     left: 50%;
@@ -331,43 +383,50 @@ header > .right-actions > hr{
     color: #999;
     font-size: 17px;
 }
-.search-results > .page__content{
+
+.search-results > .page__content {
     height: calc(100% - 26px) !important;
     top: 26px;
     margin: 0 -10px;
 }
-.search-results > .page__content > .list{
+
+.search-results > .page__content > .list {
     border: none;
     background: none;
 }
-.search-results > .page__content > .list > div{
+
+.search-results > .page__content > .list > div {
     padding: 8px 10px 6px;
     color: #888;
     font-size: 15px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
 }
-.search-results > .page__content > .list > div:hover{
+
+.search-results > .page__content > .list > div:hover {
     background: #eee;
 }
 
-.notifications h4{
+.notifications h4 {
     background: #eee;
     font-size: 14px;
     height: 35px;
     padding: 10px !important;
     margin: -10px -10px 5px !important;
 }
-.notifications .nav-item{
+
+.notifications .nav-item {
     font-size: 12px;
     /* line-height: 1.2; */
     padding: 10px;
 }
-.notifications .nav-item:last-of-type{
+
+.notifications .nav-item:last-of-type {
     border-bottom: 1px solid #eaeaea !important;
 }
+
 .notifications h4 > .counter,
-.notifications .nav-item p > .counter{
+.notifications .nav-item p > .counter {
     border: 2px solid rgb(2, 168, 168);
     background: #fff;
     min-width: 17px;
@@ -378,49 +437,58 @@ header > .right-actions > hr{
     text-align: center;
     float: left;
 }
+
 .notifications .nav-item p {
     align-items: center;
 }
-.notifications .nav-item p > .counter{
+
+.notifications .nav-item p > .counter {
     margin: -2px 5px 0 0;
     background: rgb(2, 168, 168);
     color: #fff;
     padding: 1px !important;
 }
-.notifications h4 > span:not(.counter){
+
+.notifications h4 > span:not(.counter) {
     float: left;
     font-size: 15px;
 }
-.notifications h4 > .counter{
+
+.notifications h4 > .counter {
     margin: 0px 5px 0 0px;
     padding: 1px;
     background: rgb(2, 168, 168);
     color: #fff;
 }
 
-@media (max-width:1199px){
+@media (max-width: 1199px) {
     header {
         left: 0 !important;
         padding-left: 12px;
     }
-    header > button.nav-toggle-menu{
+
+    header > button.nav-toggle-menu {
         display: inline-block;
     }
-    /*    header > button.back-btn, 
+
+    /*    header > button.back-btn,
         header > button.nav-toggle-home {
             display: none;
         }*/
 }
-@media (max-width:991px){
+
+@media (max-width: 991px) {
     header > .SelectedItems {
         width: 50px !important;
         height: 50px;
         overflow: hidden;
         top: -8px;
     }
-    header > .SelectedItems .ProfilePic{
+
+    header > .SelectedItems .ProfilePic {
         margin: 0 0 0 -15px;
     }
+
     header > .SelectedItems:hover {
         width: auto !important;
         height: 34px;
@@ -431,23 +499,28 @@ header > .right-actions > hr{
         box-shadow: 0 0 3px #000;
         left: -89px;
     }
+
     header > .SelectedItems:hover .ProfilePic {
         margin: -53px -125px 0 75px;
         box-shadow: 0 0 3px #000;
     }
+
     .InitView + header > .SelectedItems:hover {
         top: 47px;
         left: 0;
     }
+
     .InitView + header > .SelectedItems:hover .ProfilePic {
         margin: -55px -30px 0 -15px;
     }
 }
-@media (max-width:767px){
+
+@media (max-width: 767px) {
     header {
         position: absolute;
         height: 110px;
     }
+
     header > .right-actions.multiple-btn-actions {
         position: absolute;
         left: 0;
@@ -458,6 +531,7 @@ header > .right-actions > hr{
         align-items: center;
         justify-content: center;
     }
+
     header > .right-actions.people-btn-actions {
         float: none;
         width: auto;
@@ -466,18 +540,20 @@ header > .right-actions > hr{
         align-self: center;
         display: table;
     }
+
     header > .right-actions.multiple-btn-actions > .btn,
-    header > .right-actions.people-btn-actions > .btn{
+    header > .right-actions.people-btn-actions > .btn {
         margin-right: 0;
     }
 }
-@media (max-width:539px){
+
+@media (max-width: 539px) {
     header > .right-actions {
         /*display: none !important;*/
     }
 }
 
-@media (max-width:389px){
+@media (max-width: 389px) {
     header > .SelectedItems {
         width: 40px !important;
         height: 40px;
@@ -485,26 +561,31 @@ header > .right-actions > hr{
         top: -3px;
         margin-right: 10px;
     }
+
     header > .SelectedItems > .ProfilePic {
         min-width: 40px;
         height: 40px;
         margin: 0 0 0 -15px;
     }
+
     header > .right-actions.profile-btn-actions > .avatar {
         font-size: 24px;
         padding-left: 10px;
         margin: 10px 0 0 0px;
     }
+
     header > .right-actions > .avatar > hr {
         margin-right: 10px;
         top: -13px;
         display: none;
     }
+
     header > .right-actions > .avatar > .ProfilePic {
         width: 40px;
         height: 40px;
     }
 }
+
 /*
 @media (max-width:1199px){
     header {

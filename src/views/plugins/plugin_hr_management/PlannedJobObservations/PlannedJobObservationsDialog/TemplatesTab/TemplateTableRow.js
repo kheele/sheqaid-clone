@@ -6,8 +6,6 @@ import {Dates} from 'utils/Utils';
 
 import {ActionsButton} from 'components/inputs';
 import {TRow} from 'components/tables';
-import {all_question_list} from "components/questionnaires/AResponseUtils";
-import {AsyncTD} from "../../../../components";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="TemplateTableRow">
@@ -29,19 +27,20 @@ class TemplateTableRow extends React.Component {
                 page_title_list,
                 question_list,
                 total_questions,
-              //
+                //
                 template_questionnaire_list_aggregate,
-                job_position
+                team_observed,
+                task_observed,
             }
         } = item;
 //        console.log('form', item)
 
         return <TRow key={id} className="w-full">
-            <div className="td fixed-flex min-w-40">{id}</div>
+            <div className="td fixed-flex min-w-60">{id}</div>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-            <div className="td">{job_position && job_position.name || "Any"}</div>
             <div className="td">{name}</div>
             <div className="td">{desc || 'N/A'}</div>
+            <div className="td">{task_observed || 'N/A'}</div>
             <div className="td fixed-flex min-w-180">{template_questionnaire_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex min-w-100">{total_questions}</div>
             <div className="td fixed-flex min-w-80">{visibility}</div>
@@ -52,6 +51,7 @@ class TemplateTableRow extends React.Component {
         </TRow>;
     }
 }
+
 // </editor-fold>
 
 export default TemplateTableRow;
