@@ -4,23 +4,25 @@ import {observer} from 'mobx-react';
 import {Row} from 'components/FormComponents';
 import NextOfKinSection from "./NextOfKinSection";
 import DependantSection from "./DependantSection";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class ViewDependentsAndNextOfKinSection extends React.Component {
     pageKey = "DependentsAndNextOfKinSection";
+    isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
 
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         const {onFormNext, onFormBack, onFormOpen, item, idx} = this.props;
-        
+
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls pos-relative">
-                    <Row
+                    {Settings.isValidEmployeeNextOfKinViewers(item) && <Row
                         rendered
                         idx={idx + ".1"}
                         title={idx + ".1 Next Of Kin"}
@@ -29,8 +31,8 @@ class ViewDependentsAndNextOfKinSection extends React.Component {
                         onFormNext={onFormNext}
                     >
                         <NextOfKinSection item={item} isEmbedded/>
-                    </Row>
-                    <Row
+                    </Row>}
+                    {Settings.isValidEmployeeDependantsViewers(item) && <Row
                         rendered
                         idx={idx + ".2"}
                         title={idx + ".2 Dependant(s)"}
@@ -39,7 +41,7 @@ class ViewDependentsAndNextOfKinSection extends React.Component {
                         onFormBack={onFormBack}
                     >
                         <DependantSection item={item} isEmbedded/>
-                    </Row>
+                    </Row>}
                 </div>
             </div>
         </div>;

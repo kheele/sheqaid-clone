@@ -19,10 +19,12 @@ import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 import IDOrPassportSection from "./IDOrPassportSection";
 import PrDPSection from "./PrDPSection";
 import SignableDocumentsSection from "./SignableDocumentsSection";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class ViewDocumentsSection extends React.Component {
     pageKey = "ViewDocumentsSection";
+    isValid = Settings.isValidEmployeeAllDocumentsViewers;
 
     @observable
     state = {};
@@ -58,7 +60,7 @@ class ViewDocumentsSection extends React.Component {
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <FormControls lazyLoad>
-                <Row
+                {Settings.isValidEmployeeSignableDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Signable Documents`}
@@ -67,8 +69,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <SignableDocumentsSection item={item} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isValidEmployeePersonalDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Personal Documents`}
@@ -120,8 +122,8 @@ class ViewDocumentsSection extends React.Component {
                             <PrDPSection item={item} isEmbedded/>
                         </Row>
                     </FormControls>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeCompetencyViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Competencies`}
@@ -131,8 +133,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <CompetencyControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeContractsViewers(item) && <Row
                     lazyLoad={false}
                     rendered
                     idx={idx + `.${__idx++}`}
@@ -143,8 +145,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <ContractControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeJobAppointmentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Job Appointments`}
@@ -154,8 +156,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <JobAppointmentControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeCounselingViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Counseling`}
@@ -165,8 +167,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <CounselingControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeMedicalFitnessViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Medical Fitness`}
@@ -176,8 +178,8 @@ class ViewDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <MedicalControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeWarningViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Warnings`}
@@ -186,7 +188,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                 >
                     <WarningControls item={item} isEmbedded tabsHeight="530px"/>
-                </Row>
+                </Row>}
             </FormControls>
         </div>
     }

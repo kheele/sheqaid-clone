@@ -1,19 +1,24 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed, observable} from 'mobx';
 import {
     ActionsButton,
     ClearableInput,
     SelectDepartmentInput,
     SelectEmployeeInput,
     SelectJobPositionInput,
-    SelectTeamInput
+    SelectTeamInput,
+    UploadButton,
 } from 'components/inputs';
 
 import NavItem from "components/navs/NavItem";
 import {THead, TRow} from "components/tables";
 import APageListReadWrite from "views/APageListReadWrite";
 import Popover from "components/popovers/Popover";
+import {execWhen} from "utils/UtilsFuns";
+import MKBox from "components/MK/MKBox";
+import ViewByButtons from "components/ViewByButtons";
 
 // </editor-fold>
 
@@ -22,11 +27,20 @@ class Dialog extends React.Component {
     pageKey = "HRDocsDialog";
     title = "Signable Documents";
 
+    // <editor-fold defaultstate="collapsed" desc="state">
+    @observable
+    state = {
+        view: 'Documents',
+    };
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+
+        this.setView = this.setView.bind(this);
 
         this.renderTHead = this.renderTHead.bind(this);
         this.renderItem = this.renderItem.bind(this);
@@ -36,11 +50,6 @@ class Dialog extends React.Component {
 
     // </editor-fold>
 
-    // // <editor-fold defaultstate="collapsed" desc="componentWillMount">
-    // componentWillMount() {
-    //     style.use();
-    // }
-    //
     // // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
     // componentWillUnmount() {
     //     style.unuse();
@@ -48,40 +57,24 @@ class Dialog extends React.Component {
     //
     // // </editor-fold>
 
+    @computed get isDocuments() {
+        return this.state.view === "Documents";
+    }
+
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
-        const {list} = this.props;
-        if (list) {
-            return this.findByIdsEmployees(list.map(({id}) => id));
-        }
-
-        const paramsProps = this.props.params || {};
-
-        params = {...params, ...paramsProps};
-
+        const {state: {view}} = this;
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            department_id,
-            job_position_id,
-            job_category_id,
-            team_id,
-            supervisor_id,
             name,
-            id_or_pass_num,
         } = filterData || {};
 
-        const listByLogged = sockets.of('employees').fn('listByLogged');
+        const listByLogged = sockets.of('doc-signing-settings/api/docuseal/templates').fn('listByLogged');
 
         return listByLogged({
-            removed: this.removed,
+            view,
             //
-            department_id,
-            job_position_id,
-            job_category_id,
-            team_id,
-            supervisor_id,
             name,
-            id_or_pass_num,
             //
             exact_orgs: true,
             //
@@ -90,6 +83,25 @@ class Dialog extends React.Component {
             console.log('onLoadList res', res)
             return res;
         });
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="setView">
+    async setView({view = 'Documents', load = true}) {
+        let ref;
+        if (this.refs.viewButtonsRefBox) {
+            ref = this.refs.viewButtonsRefBox;
+        } else {
+            ref = await execWhen(() => this.refs.viewButtonsRefBox);
+        }
+
+        ref.setView(view);
+        this.state.view = view;
+
+        if (load) {
+            this.refs.root.load();
+        }
     }
 
     //</editor-fold>
@@ -128,23 +140,27 @@ class Dialog extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
-        const {isConsultant, hasProjects, isContractorView} = storage.is;
-        const {filterData} = this.props.params || {};
-        const {department_id, job_position_id, job_category_id, team_id} = filterData || {};
+        if (this.isDocuments) {
+            return <THead>
+                <div className="td fixed-flex min-w-60">ID</div>
+                <div className="td fixed-flex min-w-280">Name</div>
+                <div className="td fixed-flex min-w-260">Module</div>
+                <div className="td fixed-flex min-w-260">Document Type</div>
+                <div className="td">Submitters</div>
+                <div className="td fixed-flex min-w-180">No. Of Submissions</div>
+                <div className="td fixed-flex min-w-100">Preview</div>
+                <div className="td fixed-flex min-w-200">Document</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+            </THead>;
+        }
         return <THead>
-            <div className="td fixed-flex min-w-50">ID</div>
-            <div className="td">Name</div>
-            {!department_id && <div className="td">Department</div>}
-            {!job_position_id && <div className="td">Job Position</div>}
-            {/*{!job_category_id && <div className="td">Job Category</div>}*/}
-            {/*{!team_id && <div className="td">Team</div>}*/}
-            {(hasProjects || isContractorView) && <>
-                {/*isConsultant && <div className="td sm-hidden">Company Name</div>*/}
-                {isContractorView && <div className="td">Company Name</div>}
-                {!isContractorView && <div className="td">Project Name</div>}
-                <div className="td">Site Name</div>
-            </>}
-            <div className="td fixed-flex min-w-500">Stats</div>
+            <div className="td fixed-flex min-w-60">ID</div>
+            <div className="td fixed-flex min-w-280">Name</div>
+            <div className="td fixed-flex min-w-260">Module</div>
+            <div className="td fixed-flex min-w-260">Document Type</div>
+            <div className="td">Submitters</div>
+            <div className="td fixed-flex min-w-100">Preview</div>
+            <div className="td fixed-flex min-w-200">Document</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -153,34 +169,67 @@ class Dialog extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
-        const {isConsultant, hasProjects, isContractorView} = storage.is;
-
-        const {filterData} = this.props.params || {};
-        const {department_id, job_position_id, job_category_id, team_id} = filterData || {};
-
         const item = this.refs.root.list[n];
         let {
             id,
             data: {
-                created_at, fname, lname, profile_pic,
-                department, job_position, team, supervisor,
-                client, project, site,
-                medical_list_aggregate, leave_list_aggregate, ppe_type_list_aggregate,
-                trainer_training_list_aggregate, warning_list_aggregate,
-                supervisor_employee_list_aggregate,
+                created_at,
+                name,
+                doc,
+                preview_image_url,
+                module,
+                doc_type,
+                employee_submitter_list,
+                employee_submission_list,
+                employee_submitter_list_aggregate,
+                employee_submission_list_aggregate,
             }
         } = item;
 
-        return <TRow key={id}>
-            <div className="td fixed-flex min-w-50">{id}</div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Name</h6>
-            </div>
+        if (this.isDocuments) {
+            return <TRow key={id}>
+                <div className="td fixed-flex min-w-60">{id}</div>
+                <div className="td fixed-flex min-w-280">{name}</div>
+                <div className="td fixed-flex min-w-260">{module && module.title}</div>
+                <div className="td fixed-flex min-w-260">{doc_type}</div>
+                <div className="td">{(employee_submitter_list || []).map(v => v.employee.full_name).join(', ')}</div>
+                <div className="td fixed-flex min-w-180">{employee_submission_list_aggregate.aggregate.count}</div>
+                <div className="td fixed-flex min-w-100">
+                    {preview_image_url && <img src={preview_image_url} className="h-full"/>}
+                </div>
+                <div className="td fixed-flex min-w-200">
+                    {doc && <UploadButton
+                        defaultValue={doc}
+                        showOnlyIcon
+                        readonly
+                        className="flex min-w-180"
+                    />}
+                </div>
+                <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+                    <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                </div>
+            </TRow>;
+        }
 
+        return <TRow key={id} className="w-ful">
+            <div className="td fixed-flex min-w-60">{id}</div>
+            <div className="td fixed-flex min-w-280">{name}</div>
+            <div className="td fixed-flex min-w-260">{module && module.title}</div>
+            <div className="td fixed-flex min-w-260">{doc_type}</div>
+            <div className="td">{(employee_submitter_list || []).map(v => v.employee.full_name).join(', ')}</div>
+            <div className="td fixed-flex min-w-100">
+                {preview_image_url && <img src={preview_image_url} className="h-full"/>}
+            </div>
+            <div className="td fixed-flex min-w-200">
+                {doc && <UploadButton
+                    defaultValue={doc}
+                    showOnlyIcon
+                    readonly
+                    className="flex min-w-180"
+                />}
+            </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                {hasProjects && (!site || !project || (isConsultant && !client)) &&
-                    <i className="fa fa-warning" idx={n} onClick={this.onCompleteEmploymentDetailsShowWarningMsg}/>}
             </div>
         </TRow>;
     }
@@ -190,32 +239,80 @@ class Dialog extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return <APageListReadWrite
-            ref="root"
-            page={this}
-            pageId={this.pageKey + "-tab"}
-            pageTitle="Signable Documents"
-            pageTitleSingular="signable document"
-            onLoadList={this.onLoadList}
-            noAnimation={true}
-            renderPopoverOptions={this.renderPopoverOptions}
-            renderFilterNode={this.renderFilterNode}
-            renderTHead={this.renderTHead}
-            renderItem={this.renderItem}>
-            {/*<ConfirmDialog ref="removeDialog" onSoftDelete={updateEmployee}/>*/}
+        const {state, state: {expiry_date}} = this;
+        return <>
+            <ViewByButtonsBox
+                ref="viewButtonsRefBox"
+                state={state}
+                titleSingular="Templates"
+                onChange={this.setView}
+            />
+            <APageListReadWrite
+                ref="root"
+                page={this}
+                pageId={this.pageKey + "-tab"}
+                pageTitle="Signable Documents"
+                pageTitleSingular="signable document"
+                onLoadList={this.onLoadList}
+                noAnimation={true}
+                renderPopoverOptions={this.renderPopoverOptions}
+                renderFilterNode={this.renderFilterNode}
+                renderTHead={this.renderTHead}
+                renderItem={this.renderItem}>
+                {/*<ConfirmDialog ref="removeDialog" onSoftDelete={updateEmployee}/>*/}
 
-            {/*<NewDialog ref="newDialog" path={this.path}/>*/}
-            {/*<ProfileDialog ref="profileDialog" path={this.path}/>*/}
-            {/*<EditDialog ref="editDialog" path={this.path}/>*/}
+                {/*<NewDialog ref="newDialog" path={this.path}/>*/}
+                {/*<ProfileDialog ref="profileDialog" path={this.path}/>*/}
+                {/*<EditDialog ref="editDialog" path={this.path}/>*/}
 
-            {/*<ProfilePDFReader ref="pdfReader"/>*/}
-            {/*<PrintCardsPDFReader ref="printCardsPDFReader"/>*/}
+                {/*<ProfilePDFReader ref="pdfReader"/>*/}
+                {/*<PrintCardsPDFReader ref="printCardsPDFReader"/>*/}
 
-            <Popover ref="popover"/>
-        </APageListReadWrite>;
+                <Popover ref="popover"/>
+            </APageListReadWrite>
+        </>;
     }
 
     // </editor-fold>
 }
+
+// <editor-fold defaultstate="collapsed" desc="ViewByButtonsBox">
+@observer
+class ViewByButtonsBox extends React.Component {
+
+    // <editor-fold defaultstate="collapsed" desc="constructor">
+    constructor(props) {
+        super(props);
+
+        this.setView = this.setView.bind(this);
+    }
+
+    // </editor-fold>
+
+    setView(value) {
+        execWhen(() => this.viewButtonsRef).then(ref => {
+            ref.setView(value);
+        });
+    }
+
+    render() {
+        const {state: {view}, titleSingular, onChange} = this.props;
+        return <MKBox
+            width="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            margin='10px 0 0px'
+            padding="0 0 10px"
+            borderBottom="2px solid #ebebeb"
+        >
+            <ViewByButtons ref={ref => {
+                this.viewButtonsRef = ref;
+            }} text="Documents" value={view} name={titleSingular} replaceBy onChange={onChange}/>
+        </MKBox>
+    }
+}
+
+// </editor-fold>
 
 export default Dialog;

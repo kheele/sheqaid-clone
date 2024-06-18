@@ -10,12 +10,6 @@ import {THead, TRow} from '../tables';
 import CustomPersonalInfoDialog from '../../components/dialogs/CustomPersonalInfoDialog';
 
 import style from "./NewEmployeeListTable.lazy.css";
-import upsertAssetMonitoringPlanFuelUsageListItem
-    from "../../mutations/all/Asset/upsertAssetMonitoringPlanFuelUsageListItem";
-import insertAssetMonitoringPlan from "../../mutations/all/Asset/insertAssetMonitoringPlan";
-import {Dates} from "../../utils/Dates";
-import deleteAssetMonitoringPlanFuelUsageListItem
-    from "../../mutations/all/Asset/deleteAssetMonitoringPlanFuelUsageListItem";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -28,6 +22,7 @@ class ListTable extends ANewListTable {
     constructor(props) {
         super(props);
         this.onAddOtherPerson = this.onAddOtherPerson.bind(this);
+        this.excludeIds = this.excludeIds.bind(this);
     }
 
     onClickComplete(e, el) {
@@ -50,6 +45,7 @@ class ListTable extends ANewListTable {
 
                     infoDialog.close(2000);
                 }).catch(err => {
+                    this.removeAt(idx);
                     infoDialog.open("An error occurred. Please try again later.");
                     infoDialog.close(2000);
                     console.error(err);
@@ -85,7 +81,7 @@ class ListTable extends ANewListTable {
     }
 
     onPostChange(val, name, el) {
-        if(!val) {
+        if (!val) {
             return;
         }
 
@@ -103,27 +99,53 @@ class ListTable extends ANewListTable {
         });
     }
 
+    excludeIds() {
+        const {list} = this;
+        return list.filter(item => {
+            if (!item) return false;
+
+            const {id} = item;
+            if (id) return true;
+
+            const {employee, investigator, person_involved, witness} = item;
+            const v = employee || investigator || person_involved || witness;
+            if (v && v.id) return true;
+        }).map(item => {
+            const {id} = item;
+            if (id) return id;
+
+            const {employee, investigator, person_involved, witness} = item;
+            const v = employee || investigator || person_involved || witness;
+            return v.id;
+        });
+    }
+
     renderItem(n, onClick) {
-        const {readonly, renderTable, disableOtherPerson} = this.props;
+        const {readonly, placeholder, renderTable, disableOtherPerson} = this.props;
         const item = this.state.list[n];
 //        console.log('item', item)
         if (item && (
             item.id ||
-            item.other_person ||
             item.employee ||
+            item.investigator ||
+            item.person_involved ||
             item.witness ||
+            item.other_person ||
+            item.investigator_other ||
+            item.person_involved_other ||
+            item.witness_other ||
             (item.id_num || item.passport_num)
         )) {
             const {
-                employee, witness, person_involved, investigator,
-                other_person, witness_other, person_involved_other, investigator_other,
+                employee, investigator, person_involved, witness,
+                other_person, investigator_other, person_involved_other, witness_other,
             } = item;
 
             let id, lname, fname, email;
             if (
-                employee || witness || person_involved || investigator
+                employee || investigator || person_involved || witness
             ) {
-                let v = employee || witness || person_involved || investigator;
+                let v = employee || investigator || person_involved || witness;
                 id = v.id;
                 if (v.data) {
                     v = v.data;
@@ -132,9 +154,9 @@ class ListTable extends ANewListTable {
                 fname = v.fname;
                 email = v.email;
             } else if (
-                other_person || witness_other || person_involved_other || investigator_other
+                other_person || investigator_other || person_involved_other || witness_other
             ) {
-                let v = other_person || witness_other || person_involved_other || investigator_other;
+                let v = other_person || investigator_other || person_involved_other || witness_other;
                 lname = v.lname;
                 fname = v.fname;
                 email = v.email;
@@ -154,10 +176,10 @@ class ListTable extends ANewListTable {
             }
 
             const tr = <>
-                <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
+                <div className="td fixed-flex min-w-35"><span>{n + 1}</span></div>
                 <div className="td">{lname + ' ' + fname}</div>
                 <div className="td">{email}</div>
-                {!readonly && <div className="td fixed-flex min-w-60">
+                {!readonly && <div className="td fixed-flex min-w-40">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
                     </Button>
@@ -176,9 +198,10 @@ class ListTable extends ANewListTable {
                     <SelectEmployeeInput
                         ref={this.onSetRef}
                         name="employee"
-                        placeholder="Add Existing Employee..."
+                        placeholder={placeholder || "Add Existing Employee..."}
                         idx={n}
                         required
+                        excludeIds={this.excludeIds}
                         className="form-control"
                         onChange={this.onChange}
                     />
@@ -197,14 +220,14 @@ class ListTable extends ANewListTable {
     }
 
     renderTHead() {
-        const {readonly} = this.props;
+        const {readonly, disableOtherPerson, employeeCol} = this.props;
         return <THead className="align-left">
             <div className="td fixed-flex min-w-30">#</div>
-            <div className="td">Employee / Other Person</div>
+            <div className="td">{employeeCol || "Employee / Other Person"}</div>
             <div className="td">Email Address</div>
-            {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
+            {!readonly && <div className="td fixed-flex min-w-40 padding-0"/>}
             {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
-            <CustomPersonalInfoDialog ref="otherPersonDialog"/>
+            {!disableOtherPerson && <CustomPersonalInfoDialog ref="otherPersonDialog"/>}
         </THead>;
     }
 

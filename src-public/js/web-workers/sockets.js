@@ -1,7 +1,7 @@
 importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 
-self.SERVER_HOST = "http://localhost:5000";
-// self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
+// self.SERVER_HOST = "http://localhost:5000";
+self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
 // self.SERVER_HOST = "https://server.cloud.sheqaid.com";
 
 self.socket = io(SERVER_HOST, {

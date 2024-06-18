@@ -80,4 +80,6 @@ export const insertProxyNCRDocument = create("ncr/proxy/document");
 
 export const insertOHSDoc = create("documents/ohs-docs");
 export const insertSignableDocTemplate = create("doc-signing-settings/api/docuseal/templates");
+export const insertSettings = create("settings");
+export const insertNotificationSettings = create("notification-settings");
 

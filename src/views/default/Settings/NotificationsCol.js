@@ -1,41 +1,26 @@
 import {observer} from 'mobx-react';
 import ACol from "./ACol";
-
+import ARow from "./ARow";
+import {NewUserListTable} from "../../../components/FormTableComponents";
+import {insertNotificationSettings} from "../../../mutations/create";
+import {deleteNotificationSettings} from "../../../mutations/delete";
 
 @observer
 class NotificationsCol extends ACol {
 
     title = "Notification Settings";
-    sockets = sockets.of("settings-categories");
+    sockets = sockets.of("notification-settings-categories");
 
     constructor(props) {
         super(props);
     }
 
-    get list() {
-        return [
-            'Asset Management',
-            'Chemicals Management',
-            'Contractor Management',
-            'Employee Expired Documents',
-            'Employee Profile',
-            'Incident Management',
-            'Inspection Management',
-            'None-Conformance Management',
-            'Training Management',
-            'Expired Documents',
-        ]
-    }
-
     renderAccordionSummary(item, idx) {
-        return `${item} Notifications`;
+        return `${item.text} Notifications`;
     }
 
     renderAccordionDetails(item, idx) {
-        return `
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-        `;
+        return <Row item={item} idx={idx}/>;
     }
 
     onAdd(evt, btn) {
@@ -44,6 +29,44 @@ class NotificationsCol extends ACol {
 
     onRemove(evt, btn) {
         const {idx} = btn.props;
+    }
+}
+
+@observer
+class Row extends ARow {
+    listFn = sockets.of("notification-settings").fn('listByLogged');
+
+    constructor(props) {
+        super(props);
+    }
+
+    getArgs() {
+        const {item: {key}} = this.props;
+
+        return {key, exact_orgs: false, limit: 0,};
+    }
+
+    renderList() {
+        const {item} = this.props;
+
+        console.log(item);
+
+        return <>
+            <NewUserListTable
+                name="list"
+                defaultValue={[...this.list, null]}
+                savable
+                targetItem={{key: "notification_settings_id", item}}
+                insertFn={insertNotificationSettings}
+                deleteFn={deleteNotificationSettings}
+                onAttrs={({user}) => ({
+                    user_id: user.id,
+                    key: item.key,
+                })}
+                placeholder="Add User..."
+                className="w-full margin-0"
+            />
+        </>;
     }
 }
 

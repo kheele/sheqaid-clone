@@ -1,9 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
-import {CircularProgress} from "@mui/material";
 import {Grid} from "@material-ui/core";
-import MKBox from "../MK/MKBox";
 import Chip from "@mui/material/Chip";
 
 import CustomPersonalInfoDialog from '../dialogs/CustomPersonalInfoDialog';
@@ -30,28 +28,59 @@ class SelectInput extends ASelectInput {
         super(props);
 
         this.onAddOtherPerson = this.onAddOtherPerson.bind(this);
-        
+
         this.onProcessValue = this.onProcessValue.bind(this);
         this.renderer = this.renderer.bind(this);
     }
 
+    get isOtherPerson() {
+        return this.showOtherPerson;
+    }
+
+    @computed
+    get selectedItem() {
+        const {selectedVal} = this.state;
+        const {defaultValue, defaultUser} = this.props;
+//        if(selectedVal) {
+//            const {fname, lname, data} = selectedVal;
+//            const label = `${fname || data.fname} ${lname || data.lname}`;
+//            return {value: selectedVal, label};
+//        } else {
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            let {fname, lname, data} = defaultValue;
+            const label = data ? (data.fname + ' ' + data.lname) : (fname + ' ' + lname);
+//            console.log('selectedVal', label)
+            return {value: defaultValue, label};
+        } else if (defaultUser) {
+//            const {user: value} = storage.loggedUser;
+//            const {fname, lname} = value.data;
+//            const label = (fname + ' ' + lname);
+//            return {value, label};
+        }
+//        }
+        return null;
+    }
+
     async componentDidMount() {
-        let {incContractors: prop_incContractors = false,} = this.props;
-        
+        let {incContractors: prop_incContractors = false, excludeIds} = this.props;
+
         this.state.incContractors = prop_incContractors;
-        
-        const res = await onAsyncSelectLoad(prop_incContractors);
+
+        const res = await onAsyncSelectLoad(prop_incContractors, excludeIds);
         this.state.lists.list = res.distinct();
         const {defaultValue, defaultUser} = this.props;
-        
+
         console.log('defaultValue', defaultValue)
         if (defaultValue && defaultValue.id) {
             this.state.newDefaultValue = await findByIdUser(defaultValue.id);
         }
-        
+
         this.state.props = this._createProps();
     }
-    
+
     _createProps() {
         let {name, type, className = ''} = this.props;
         className += ` SelectUserInput`;
@@ -100,20 +129,16 @@ class SelectInput extends ASelectInput {
         return this;
     }
 
-    get isOtherPerson() {
-        return this.showOtherPerson;
-    }
-    
     renderItem(option, n) {
         if (!option) return null;
-        
+
         let value;
-        if(option.value) {
+        if (option.value) {
             value = option.value;
         } else {
             value = option;
         }
-        
+
         let {id, data, fname, lname, contractor} = value;
         contractor = contractor || data && data.contractor;
         return {
@@ -126,7 +151,7 @@ class SelectInput extends ASelectInput {
             value
         };
     }
-    
+
     onProcessValue(_v) {
 //        console.log('_v', this.props.name, _v)
         return execWhen(() => !!this.state.loaded && !!_v).then(() => {
@@ -149,7 +174,7 @@ class SelectInput extends ASelectInput {
             return item;
         });
     }
-    
+
     renderer(v) {
         if (isNullable(v)) {
             return null;
@@ -176,7 +201,7 @@ class SelectInput extends ASelectInput {
                 })}
             </>
         }
-        
+
         let {id, data, fname, lname, contractor} = v;
         contractor = contractor || data && data.contractor;
         return <div className="SelectEmployeeInput-label flex-left">
@@ -187,43 +212,17 @@ class SelectInput extends ASelectInput {
         </div>;
     }
 
-    @computed
-    get selectedItem() {
-        const {selectedVal} = this.state;
-        const {defaultValue, defaultUser} = this.props;
-//        if(selectedVal) {
-//            const {fname, lname, data} = selectedVal;
-//            const label = `${fname || data.fname} ${lname || data.lname}`;
-//            return {value: selectedVal, label};
-//        } else {
-        if (defaultValue) {
-            if (defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            let {fname, lname, data} = defaultValue;
-            const label = data ? (data.fname + ' ' + data.lname) : (fname + ' ' + lname);
-//            console.log('selectedVal', label)
-            return {value: defaultValue, label};
-        } else if (defaultUser) {
-//            const {user: value} = storage.loggedUser;
-//            const {fname, lname} = value.data;
-//            const label = (fname + ' ' + lname);
-//            return {value, label};
-        }
-//        }
-        return null;
-    }
-
     render() {
         const {props} = this.state;
-        if(!props) return null;
+        if (!props) return null;
         const {parentClassName} = this.props;
 
         delete props.parentClassName;
 
         const {showOtherPerson = false} = this.props;
         if (showOtherPerson) {
-            return <div className={'CustomPersonalInfoDialog SelectUserInput-CustomPersonalInfoDialog col-lg-12 flex' + (parentClassName ? ` ${parentClassName}` : '')}>
+            return <div
+                className={'CustomPersonalInfoDialog SelectUserInput-CustomPersonalInfoDialog col-lg-12 flex' + (parentClassName ? ` ${parentClassName}` : '')}>
                 <ClearableInput {...props}/>
                 <React.Fragment>
                     <CustomPersonalInfoDialog ref="otherPersonDialog"/>
@@ -238,10 +237,10 @@ class SelectInput extends ASelectInput {
     }
 }
 
-function onAsyncSelectLoad(incContractors = false) {
+function onAsyncSelectLoad(incContractors = false, excludeIds) {
     const listByLogged = sockets.of('users').fn('listByLogged');
-    
-    return listByLogged({
+
+    const args = {
         removed: false,
         //
         incContractors,
@@ -250,7 +249,13 @@ function onAsyncSelectLoad(incContractors = false) {
         //
         limit: 0,
         offset: 0,
-    }).then(list => {
+    };
+
+    if (excludeIds) {
+        args.excludeIds = excludeIds();
+    }
+
+    return listByLogged(args).then(list => {
         // console.log('listForSelectionByLogged', list)
         return list.map((value) => {
             const {id, data: {fname, lname, username, contractor}} = value;

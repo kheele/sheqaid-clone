@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {autorun, computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
-import {ProfileField, RowOrgs} from 'components/inputs';
+import {ProfileField, ProfilePic, RowOrgs} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import OptionalInfoSection from './ViewOptionalInfoSection';
@@ -17,6 +17,7 @@ import style from "./ProfileDialog.lazy.css";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
+import Settings from "../../../../../utils/Settings";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -138,6 +139,7 @@ class Controls extends React.Component {
 
         this.onViewOtherInfo = this.onViewOtherInfo.bind(this);
         this.renderComponent = this.renderComponent.bind(this);
+        this.onUploaded = this.onUploaded.bind(this);
     }
 
     // </editor-fold>
@@ -171,6 +173,10 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    onUploaded(path) {
+        this.item.data.profile_pic = path;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="onSaveAsPDF">
     onSaveAsPDF(e, btn) {
         this.refs.profilePDFReport.open(this.item);
@@ -184,13 +190,12 @@ class Controls extends React.Component {
         this.refs[action + "Dialog"].open('employee.id', this.item);
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
     renderComponent({title, comp: Comp, sectionClassName, ref, activeAlways = false, isLast}, n) {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
         n += 3;
-        return <Row
+
+        const row = <Row
             activeAlways={activeAlways}
             rendered
             idx={n}
@@ -210,6 +215,9 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
             />
         </Row>;
+
+        if (!Comp.isValid || Comp.isValid(this.item)) return row;
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -251,6 +259,8 @@ class Controls extends React.Component {
                     idx={1}
                     title="1. Basic Info"
                 >
+                    <ProfilePic role="Staff" id={item.id} profilePic={profile_pic}
+                                onUploaded={this.onUploaded}/>
                     <ProfileField name="fname" title="First Name" value={fname} className="col-lg-6"/>
                     <ProfileField name="lname" title="Last Name" value={lname} className="col-lg-6"/>
                     <ProfileField name="id_num" title="Identification No." value={id_num} className="col-lg-6"/>
@@ -259,7 +269,7 @@ class Controls extends React.Component {
                     <ProfileField name="sex" title="Gender" value={sex} className="col-lg-6"/>
                 </Row>
             </RowOrgs>
-            <Row
+            {Settings.isEmployeeContactDetailsViewers(item) && <Row
                 rendered
                 idx={2}
                 title="2. Contact Details"
@@ -269,7 +279,7 @@ class Controls extends React.Component {
             >
                 <ProfileField name="phone" title="Phone No." value={phone} className="col-lg-6"/>
                 <ProfileField name="email" title="Email Address" value={email} className="col-lg-6"/>
-            </Row>
+            </Row>}
             {this.components.map(this.renderComponent)}
             <ProfilePDFReport ref="profilePDFReport"/>
         </FormControls>;

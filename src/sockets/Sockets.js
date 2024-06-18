@@ -1,5 +1,5 @@
 import {convertMobx} from "utils/Utils";
-import {orgsFilter} from "graphql/Filters";
+import {orgsFilter} from "../graphql/Filters";
 
 class Socket {
     constructor(name) {
@@ -14,8 +14,8 @@ class Socket {
 
     fn(name) {
         return async (data) => {
-            if (data === undefined || data === null) {
-                data = {};
+            if (data === undefined || data === null || (Object.keys(data).length === 1 && 'limit' in data)) {
+                data = {...data, noFilter: true};
             } else {
                 if (!isNumber(data) && !isBoolean(data)) {
                     data = await convertMobx(data);

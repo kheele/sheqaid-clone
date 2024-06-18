@@ -2,9 +2,11 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class ViewTimeoffSection extends React.Component {
+    static isValid = Settings.isEmployeeTimeOffViewers;
     pageKey = "TimeoffSection";
 
     constructor(props) {

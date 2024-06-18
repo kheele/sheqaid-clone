@@ -21,6 +21,7 @@ import style from "./EditDialog.lazy.css";
 import {CircularProgress} from "@mui/material";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
+import Settings from "../../../../../utils/Settings";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -130,6 +131,7 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
@@ -152,8 +154,6 @@ class Controls extends React.Component {
         });
     }
 
-    //</editor-fold>
-
     //<editor-fold desc="onChangeIdNum">
     onChangeIdNum(el, val) {
         execWhen(() => this.refs.dob && this.refs.sex).then(() => {
@@ -170,11 +170,13 @@ class Controls extends React.Component {
         });
     }
 
+    //</editor-fold>
+
     onUploaded(path) {
         this.item.data.profile_pic = path;
     }
 
-    //</editor-fold>
+    // </editor-fold>
 
     //<editor-fold desc="onFormSave">
     async onFormSave(e, btn) {
@@ -503,13 +505,12 @@ class Controls extends React.Component {
         return true;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
     renderComponent({title, comp: Comp, ref, activeAlways = false, isLast}, n) {
-        const {props: {onFormNext, onFormBack, onFormOpen}, onFormSave} = this;
+        const {props: {onFormNext, onFormBack, onFormOpen}, onFormSave,} = this;
         n += 3;
-        return <Row
+
+        const row = <Row
             activeAlways={activeAlways}
             rendered
             idx={n}
@@ -529,6 +530,9 @@ class Controls extends React.Component {
                 onFormSave={onFormSave}
             />
         </Row>;
+
+        if (!Comp.isValid || Comp.isValid(this.item)) return row;
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -570,7 +574,7 @@ class Controls extends React.Component {
                     idx={1}
                     title="1. Basic Info"
                 >
-                    <ProfilePic path={this.path + "upload/profile-pic"} id={item.id} profilePic={profile_pic}
+                    <ProfilePic role="Staff" id={item.id} profilePic={profile_pic}
                                 onUploaded={this.onUploaded}/>
                     <ClearableInput name="fname" type="text" placeholder="First Name" defaultValue={fname} required
                                     className="col-lg-6 form-control" onChange={this.form.onChange}/>
@@ -587,7 +591,7 @@ class Controls extends React.Component {
                                        onChange={this.form.onChange}/>
                 </Row>
             </RowOrgs>
-            <Row
+            {Settings.isEmployeeContactDetailsViewers(item) && <Row
                 rendered
                 idx={2}
                 title="2. Contact Details"
@@ -601,7 +605,7 @@ class Controls extends React.Component {
                 <ClearableInput name="email" type="email" placeholder="Email Address / Username"
                                 defaultValue={email} className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
-            </Row>
+            </Row>}
             {/*<Row*/}
             {/*    rendered*/}
             {/*    idx={3}*/}

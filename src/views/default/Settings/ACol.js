@@ -5,13 +5,12 @@ import Accordion from '@material-ui/core/Accordion';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {Button} from "components/inputs";
+import {execWhen} from "utils/UtilsFuns";
 
 const LoadingStatus = {
-    LOADING: 0,
-    LOADED: 0,
+    LOADING: -1,
+    LOADED: 1,
     ERROR: 0,
 };
 
@@ -37,6 +36,10 @@ class ACol extends React.Component {
         return this.state.list;
     }
 
+    update() {
+        execWhen(() => this.refs.details).then(ref => ref.update());
+    }
+
     setList(list) {
         this.state.list = list;
     }
@@ -51,15 +54,19 @@ class ACol extends React.Component {
                 {this.title}
             </AccordionSummary>
             <AccordionDetails>
-                <Details
-                    state={this.state}
-                    sockets={this.sockets}
-                    setList={this.setList}
-                    renderAccordionSummary={this.renderAccordionSummary}
-                    renderAccordionDetails={this.renderAccordionDetails}
-                    onAdd={this.onAdd}
-                    onRemove={this.onRemove}
-                />
+                <div>
+                    <Details
+                        ref="details"
+                        state={this.state}
+                        sockets={this.sockets}
+                        setList={this.setList}
+                        getArgs={this.getArgs}
+                        renderAccordionSummary={this.renderAccordionSummary}
+                        renderAccordionDetails={this.renderAccordionDetails}
+                        onAdd={this.onAdd}
+                        onRemove={this.onRemove}
+                    />
+                </div>
             </AccordionDetails>
         </Accordion>;
     }
@@ -76,6 +83,7 @@ class Details extends React.Component {
     constructor(props) {
         super(props);
 
+        this.update = this.update.bind(this);
         this.renderItem = this.renderItem.bind(this);
     }
 
@@ -92,11 +100,18 @@ class Details extends React.Component {
     }
 
     componentDidMount() {
-        const {sockets, setList} = this.props;
+        this.update();
+    }
+
+    update() {
+        const {sockets, setList, getArgs} = this.props;
+
+        this.loadingStatus = LoadingStatus.LOADING;
 
         const listAll = sockets.fn('listAll');
         listAll({
-            exact_orgs: false,
+            limit: 0,
+            ...(getArgs ? getArgs() : {}),
         }).then(res => {
             setList(res);
             this.loadingStatus = LoadingStatus.LOADED;
@@ -121,12 +136,17 @@ class Details extends React.Component {
 
     render() {
         const {loadingStatus} = this;
-        if (loadingStatus === LoadingStatus.LOADING) return <CircularProgress/>;
-        if (loadingStatus === LoadingStatus.ERROR) return <></>;
+        if (loadingStatus === LoadingStatus.LOADING) return <CircularProgress className="fixed-center"/>;
+        if (loadingStatus === LoadingStatus.ERROR) return <p className="fixed-center">
+            Sorry! Couldn't load results. Please check internet connection or reload the page.
+        </p>;
+        if (this.list.isEmpty()) return <p className="fixed-center">
+            No results available.
+        </p>;
 
-        return <div>
+        return <>
             {this.list.map(this.renderItem)}
-        </div>;
+        </>;
     }
 }
 
@@ -165,15 +185,16 @@ class Item extends React.Component {
             >
                 {renderAccordionSummary(item, idx)}
             </AccordionSummary>
-            <AccordionDetails>
-                {renderAccordionDetails(item, idx)}
+            <AccordionDetails className="pos-relative min-h-140">
+                {idx === selectedIdx && renderAccordionDetails(item, idx)}
             </AccordionDetails>
-            <AccordionActions>
-                <Button idx={idx} onClick={onRemove}>Remove</Button>
-                <Button idx={idx} onClick={onAdd}>Add</Button>
-            </AccordionActions>
+            {/*<AccordionActions>*/}
+            {/*    <Button idx={idx} onClick={onRemove}>Remove</Button>*/}
+            {/*    <Button idx={idx} onClick={onAdd}>Add</Button>*/}
+            {/*</AccordionActions>*/}
         </Accordion>;
     }
 }
 
 export default ACol;
+export {LoadingStatus};

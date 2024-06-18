@@ -7,10 +7,12 @@ import {Dates} from 'utils/Utils';
 import {Row} from 'components/FormComponents';
 import NextOfKinSection from "./NextOfKinSection";
 import DependantSection from "./DependantSection";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class EditDependentsAndNextOfKinSection extends React.Component {
     pageKey = "NewDependentsAndNextOfKinTab";
+    isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
 
     //<editor-fold desc="constructor">
     constructor(props) {
@@ -18,6 +20,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
 
         this.form = new Form();
     }
+
     //</editor-fold>
 
     //<editor-fold desc="formData">
@@ -36,6 +39,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
             dependent_list: {data: (dependent_list || []).map(v => ({...v, dob: Dates.formatTimestampSQL(v.dob)}))},
         }
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
@@ -51,7 +55,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
         return <div id={this.pageKey + "-tab"} className={className}>
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls">
-                    <Row
+                    {Settings.isValidEmployeeNextOfKinViewers(item) && <Row
                         rendered
                         idx={idx + ".1"}
                         title={idx + ".1 Next Of Kin"}
@@ -59,9 +63,10 @@ class EditDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                     >
-                        <NextOfKinSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
-                    </Row>
-                    <Row
+                        <NextOfKinSection item={item} isNewEmployee={isNewEmployee} isEmbedded
+                                          onChange={this.form.onChange}/>
+                    </Row>}
+                    {Settings.isValidEmployeeDependantsViewers(item) && <Row
                         rendered
                         idx={idx + ".2"}
                         title={idx + ".2 Dependant(s)"}
@@ -69,12 +74,14 @@ class EditDependentsAndNextOfKinSection extends React.Component {
                         onFormOpen={onFormOpen}
                         onFormBack={onFormBack}
                     >
-                        <DependantSection item={item} isNewEmployee={isNewEmployee} isEmbedded onChange={this.form.onChange}/>
-                    </Row>
+                        <DependantSection item={item} isNewEmployee={isNewEmployee} isEmbedded
+                                          onChange={this.form.onChange}/>
+                    </Row>}
                 </div>
             </div>
         </div>
     }
+
     //</editor-fold>
 }
 

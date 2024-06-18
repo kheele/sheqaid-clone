@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 
 const _delete = path => async (id) => {
-    try{
-        const {delete:_delete} = sockets.of(path);
+    try {
+        const {delete: _delete} = sockets.of(path);
         return await _delete(id);
-    } catch(err) {
+    } catch (err) {
         throw err;
     }
 };
@@ -19,3 +19,5 @@ export const deleteProxyNCRResponsibleParty = _delete("ncr/proxy/responsible-par
 export const deleteProxyNCRDocument = _delete("ncr/proxy/document");
 
 export const deleteOHSDoc = _delete("documents/ohs-docs");
+export const deleteSettings = _delete("settings");
+export const deleteNotificationSettings = _delete("notification-settings");

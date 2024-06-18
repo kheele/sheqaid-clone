@@ -21,7 +21,7 @@ import Form from "utils/Form";
 
 @observer
 class Dialog extends AList {
-    pageKey = "HRDocsDialog";
+    pageKey = "OtherDocsTab";
     title = "Other Documents";
     type = "General Document";
 

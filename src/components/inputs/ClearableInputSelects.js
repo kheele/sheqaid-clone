@@ -1,7 +1,7 @@
 import React from "react";
 import {findDOMNode} from 'react-dom';
 import {observer} from 'mobx-react';
-import {action, isObservableArray, isObservableObject, observable, toJS} from 'mobx';
+import {action, isObservableArray, observable, toJS} from 'mobx';
 
 // import Chip from '@material-ui/core/Chip';
 import Chip from '@mui/material/Chip';
@@ -24,16 +24,16 @@ class ClearableInputSelects extends React.Component {
         options: [],
         selected: [],
     };
-    
+
     constructor(props) {
         super(props);
-        
+
         this.onLoadList = this.onLoadList.bind(this);
         this.renderTextField = this.renderTextField.bind(this);
         this.renderSelectItem = this.renderSelectItem.bind(this);
         this.renderTags = this.renderTags.bind(this);
 
-        if(!props.onAsyncSelectLoad) {
+        if (!props.onAsyncSelectLoad) {
             const {values} = props;
             this.state.options = ('values' in props && values) ? values.map(this.renderSelectItem) : [];
         }
@@ -41,9 +41,9 @@ class ClearableInputSelects extends React.Component {
 
     componentWillMount() {
         let {inputProps: {multiple}, state: {value}} = this.props;
-        if(multiple) {
-            if(!isArray(value) && !isObservableArray(value)) {
-                if(isNullable(value) || value.isEmpty()) {
+        if (multiple) {
+            if (!isArray(value) && !isObservableArray(value)) {
+                if (isNullable(value) || value.isEmpty()) {
                     value = [];
                 } else {
                     value = [value];
@@ -55,58 +55,59 @@ class ClearableInputSelects extends React.Component {
             console.log('this.state.selected', this.state.selected)
         }
     }
-    
+
     open() {
 //        if(!this.props.onAsyncSelectLoad) {
-            $(findDOMNode(this).querySelector('input')).click();
+        $(findDOMNode(this).querySelector('input')).click();
 //        }
     }
-            
+
     renderSelectItem(value, n) {
         const {renderItem} = this.props;
-        if(renderItem) return renderItem(value, n);
-        if(!isObject(value)) return {label: isString(value) ? value : String(value), value};
+        if (renderItem) return renderItem(value, n);
+        if (!isObject(value)) return {label: isString(value) ? value : String(value), value};
         return value;
     }
-    
+
     renderTags(tagValue, getTagProps) {
         const {state, inputProps: {readonly, onChange}} = this.props;
-       // console.log('renderTags', tagValue)
+        // console.log('renderTags', tagValue)
         return tagValue.map((option, index) => {
-            return <Tag index={index} readonly={readonly} option={option} getTagProps={getTagProps} state={this.state} valueState={state} onChange={onChange}/>;
-        });                        
+            return <Tag index={index} readonly={readonly} option={option} getTagProps={getTagProps} state={this.state}
+                        valueState={state} onChange={onChange}/>;
+        });
     }
-    
+
     renderTextField(params) {
-        const InputProps= {
+        const InputProps = {
             ...params.InputProps,
             endAdornment: <React.Fragment>
-                {this.state.loading && <CircularProgress color="inherit" size={20} />}
+                {this.state.loading && <CircularProgress color="inherit" size={20}/>}
                 {params.InputProps.endAdornment}
             </React.Fragment>
         };
-        return <TextField {...params} placeholder={this.props.inputProps.placeholder} />
+        return <TextField {...params} placeholder={this.props.inputProps.placeholder}/>
     }
-    
+
     @action
     setOptions(list) {
         this.state.options = list;
     }
-    
+
     @action
-    async onLoadList(promise){
-        if(promise && (promise instanceof Promise || isFunction(promise))) {
+    async onLoadList(promise) {
+        if (promise && (promise instanceof Promise || isFunction(promise))) {
             this.state.loading = true;
             this.state.options.clear();
-            const list = isFunction(promise) ? await promise() : await promise.then(res => res);
-            this.setOptions(list); 
+            const list = isFunction(promise) ? await promise() : await promise;
+            this.setOptions(list);
             this.state.loading = false;
         }
     }
-    
+
     render() {
         const {
-            inputProps, 
+            inputProps,
             inputProps: {
                 id, style,//used//inputProps
                 className,//
@@ -117,17 +118,17 @@ class ClearableInputSelects extends React.Component {
 //                isSearchable,// unused,
 //                onClick,// unused,
                 defaultValue
-            }, 
+            },
             onAsyncSelectLoad, onShowAddInput, add, create, save, values, state
         } = this.props;
-        
+
         const props = {
             id, style,//
             defaultValue,
             value: defaultValue,
             openOnFocus: true,
             getOptionLabel: option => {
-                if(option === null || option === undefined) {
+                if (option === null || option === undefined) {
                     return "";
                 }
 //                console.log('getOptionLabel', option)
@@ -137,15 +138,15 @@ class ClearableInputSelects extends React.Component {
                 // Add "xxx" option created dynamically
                 if (option.inputValue) return option.inputValue;
                 if (option.create) return option.value;
-                
-                if(onFilter && isFunction(onFilter)) {
+
+                if (onFilter && isFunction(onFilter)) {
                     return onFilter(option);
                 }
                 // Regular option
                 return isString(option.label) ? option.label : String(option.label);
             },
             renderOption: option => {
-                if(option === null || option === undefined) {
+                if (option === null || option === undefined) {
                     return null;
                 }
 //                console.log('renderOption', option)
@@ -158,15 +159,15 @@ class ClearableInputSelects extends React.Component {
             },
             renderInput: this.renderTextField
         };
-        
-        if(isMulti || multiple) {
+
+        if (isMulti || multiple) {
             props.multiple = true;
             props.renderTags = this.renderTags;
             props.onChange = (evt, newValue, action, value) => {
                 // console.log('onChange', newValue, action, value)
 
                 const {selected} = this.state;
-                if(action === "remove-option") {
+                if (action === "remove-option") {
                     selected.removeIf(v1 => {
                         return JSON.stringify(v1) === JSON.stringify(value.option);
                     });
@@ -206,7 +207,7 @@ class ClearableInputSelects extends React.Component {
             };
         } else {
             props.onChange = (evt, newValue) => {
-                if((onShowAddInput || add || create || save) && newValue && newValue.create) {
+                if ((onShowAddInput || add || create || save) && newValue && newValue.create) {
                     newValue = newValue.value;
                 }
 
@@ -214,14 +215,14 @@ class ClearableInputSelects extends React.Component {
 //                console.log('newValue', newValue)
             };
         }
-        
+
         props.onInputChange = async (evt, value) => {
-            if(onAsyncSelectLoad) {
+            if (onAsyncSelectLoad) {
                 await this.onLoadList(onAsyncSelectLoad(value));
             }
             onInputChange(evt, value);
         };
-        
+
         const hasNew = onShowAddInput || add || create || save;
         props.filterOptions = (options, params) => {
             const filtered = filter(options, params);
@@ -234,12 +235,12 @@ class ClearableInputSelects extends React.Component {
             }
             return filtered.filter(v => !(v === null || v === undefined));
         };
-        props.getOptionSelected = function(option, value) {
+        props.getOptionSelected = function (option, value) {
             // console.log('getOptionSelected', 'option', 'value', option, value)
-            if(option === null || option === undefined) {
+            if (option === null || option === undefined) {
                 return false;
             }
-            if(value === null || value === undefined) {
+            if (value === null || value === undefined) {
                 return false;
             }
 
@@ -251,17 +252,17 @@ class ClearableInputSelects extends React.Component {
             //     return false;
             // }
 
-            if(value === option) {
+            if (value === option) {
                 return true;
             }
 
-            if(isString(value) && isObject(option)) {
+            if (isString(value) && isObject(option)) {
                 return value === option.label || value === option.value;
             }
-            if(isObject(value) && isObject(option)) {
+            if (isObject(value) && isObject(option)) {
                 return value.label === option.label || value.value === option.value;
             }
-            if((!isArray(value) && !isObservableArray(value)) && (isObject(value) && isString(option))) {
+            if ((!isArray(value) && !isObservableArray(value)) && (isObject(value) && isString(option))) {
                 return option === value.label || option === value.value;
             }
 
@@ -289,7 +290,7 @@ class ClearableInputSelects extends React.Component {
             //     return false;
             // });
         };
-        if(hasNew) {
+        if (hasNew) {
             props.selectOnFocus = true;
             props.clearOnBlur = true;
         }
@@ -299,7 +300,7 @@ class ClearableInputSelects extends React.Component {
 
         let {options} = this.state;
         options = isObservableArray(options) ? toJS(options) : options;
-        
+
         return <AutocompleteWrapper props={props} options={options} state={this.state} valueState={state}/>;
     }
 
@@ -320,7 +321,7 @@ class Tag extends React.Component {
 
     onDelete() {
         const {index, readonly, option, getTagProps, state, valueState, onChange} = this.props;
-        if(readonly) return;
+        if (readonly) return;
 
         const {selected} = state;
         selected.removeIf(v1 => {
@@ -334,7 +335,7 @@ class Tag extends React.Component {
     }
 
     render() {
-        if(this.state.removed) return null;
+        if (this.state.removed) return null;
 
         const {index, option, getTagProps} = this.props;
         const label = isString(option) ? option : (option.create ? option.value : option.label);
@@ -356,7 +357,7 @@ class AutocompleteWrapper extends React.Component {
     render() {
         let {props, props: {multiple}, options, state: {selected, loading}, valueState: {value}} = this.props;
         // console.log('AutocompleteWrapper', options)
-        if(multiple) {
+        if (multiple) {
             value = selected;
         }
         return <Autocomplete
@@ -371,8 +372,9 @@ class AutocompleteWrapper extends React.Component {
     }
 
 }
+
 const PopperWrapper = function (props) {
-   return <Popper {...props} style={{width: 'fit-content', maxWidth: 480}} placement="bottom-start" />;
+    return <Popper {...props} style={{width: 'fit-content', maxWidth: 480}} placement="bottom-start"/>;
 };
 
 export default ClearableInputSelects;

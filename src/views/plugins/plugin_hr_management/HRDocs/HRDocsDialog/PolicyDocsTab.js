@@ -19,7 +19,7 @@ import updateDocument from "mutations/all/Document/updateDocument";
 
 @observer
 class Dialog extends AList {
-    pageKey = "HRDocsDialog";
+    pageKey = "PolicyDocsTab";
     title = "Policies";
     type = "IMS Policy";
 

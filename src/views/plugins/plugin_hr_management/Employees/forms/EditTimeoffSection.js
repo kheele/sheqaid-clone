@@ -5,9 +5,11 @@ import Form from 'utils/Form';
 import {Dates, toDataURI} from 'utils/Utils';
 
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class EditTimeoffSection extends React.Component {
+    static isValid = Settings.isEmployeeTimeOffViewers;
     pageKey = "EditTimeoffSection";
 
     //<editor-fold desc="constructor">

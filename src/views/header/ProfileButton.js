@@ -66,6 +66,7 @@ class ProfileAvatar extends React.Component {
 
         this.onRegisterAsContractor = this.onRegisterAsContractor.bind(this);
         this.onViewUserProfile = this.onViewUserProfile.bind(this);
+        this.onViewMyEmploymentProfile = this.onViewMyEmploymentProfile.bind(this);
         this.onPopoverProfile = this.onPopoverProfile.bind(this);
         this.onLogout = this.onLogout.bind(this);
     }
@@ -104,18 +105,33 @@ class ProfileAvatar extends React.Component {
         }
     }
 
+    onViewMyEmploymentProfile() {
+        const {onRef} = this.props;
+
+        const refs = onRef && onRef();
+        if (!refs) return;
+
+        const {user, user: {data: {linked_employee_id}}} = storage.loggedUser;
+        const {isEmployee, isUser, isContractor} = storage.is;
+        if (linked_employee_id) {
+            refs.profileEmployeeDialog.open({id: linked_employee_id});
+        } else {
+            infoDialog.open("You do not have Employment Profile. Please request the administrator to set up your Employment Profile.");
+        }
+    }
+
     onPopoverProfile(e) {
         const {isEmployee, isUser, isContractor, isContractorViewVisited} = storage.is;
-        let path, name, email;
+        let role, name, email;
         if (isAdminApp) {
-            path = 'admin/users/update/upload/profile-pic/user';
+            role = 'AdminUser';
         } else {
             if (isEmployee) {
-                path = 'plugin_sheq_assist/employees/upload/profile-pic';
+                role = 'Staff';
             } else if (isUser) {
-                path = 'users/update/upload/profile-pic/user';
+                role = 'User';
             } else if (isContractor) {
-                path = "plugin_sheq_assist/contractors/upload/profile-pic";
+                role = "Contractor";
             } else {
                 return;
             }
@@ -133,7 +149,7 @@ class ProfileAvatar extends React.Component {
         this.refs.popover.settings({
             style: {left: "auto", right: calculateRightPos(this.refs.profile), top: 60, width: 350},
             contentNode: <div key="profile" className="popover-account-options">
-                <ProfilePic path={path} profilePic={profile_pic} id={id} onUploaded={this.onUploaded}
+                <ProfilePic role={role} profilePic={profile_pic} id={id} onUploaded={this.onUploaded}
                             className="margin-t-5">
                     <h2 className="fixed-center margin-0">{name.charAt(0).toUpperCase()}</h2>
                 </ProfilePic>
@@ -144,7 +160,10 @@ class ProfileAvatar extends React.Component {
                 {!isContractorViewVisited && <hr/>}
                 {!isContractorViewVisited && <Button module="Profile" onClick={this.onViewUserProfile}
                                                      className="btn btn-action hor-center w-260 margin-b-15 border-radius-20 no-background"
-                                                     text="View My Account"/>}
+                                                     text="My User Profile"/>}
+                {!isContractorViewVisited && !isEmployee && <Button onClick={this.onViewMyEmploymentProfile}
+                                                                    className="btn btn-action hor-center w-260 margin-b-15 border-radius-20 no-background"
+                                                                    text="My Employment Profile"/>}
                 {!isContractorViewVisited && <Button module="Profile" onClick={defaultView.onOpenPage}
                                                      className="btn btn-action hor-center w-260 margin-b-15 border-radius-20 no-background"
                                                      text="View Company Account"/>}

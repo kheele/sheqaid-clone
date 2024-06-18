@@ -122,10 +122,10 @@ class Events {
                     // console.log('events the:', packet, res)
                     postMessage(packet);
                 }).catch(e => {
-                    console.log('events err:', packet,  e.toString(), e)
+                    console.log('events err:', packet, e.toString(), e)
 //                    e = e.stack;//toString();
                     packet.error = e;//e.startsWith("Error: ") ? e.replace("Error: ", "") : e;
-                    // postMessage(packet);
+                    postMessage(packet);
                 });
             });
         } else {

@@ -22,10 +22,12 @@ import PrDPSection from "./PrDPSection";
 import IDOrPassportSection from "./IDOrPassportSection";
 import {toDataURI} from "utils/UtilsFuns";
 import SignableDocumentsSection from "./SignableDocumentsSection";
+import Settings from "../../../../../utils/Settings";
 
 @observer
 class EditDocumentsSection extends React.Component {
     pageKey = "NewDocumentsTab";
+    isValid = Settings.isValidEmployeeAllDocumentsViewers;
 
     //<editor-fold desc="constructor">
     constructor(props) {
@@ -351,7 +353,7 @@ class EditDocumentsSection extends React.Component {
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <FormControls lazyLoad>
-                <Row
+                {Settings.isValidEmployeeSignableDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Signable Documents`}
@@ -360,8 +362,8 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <SignableDocumentsSection {...props} defaultValue={signable_doc_submitter_list} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isValidEmployeePersonalDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Personal Documents`}
@@ -414,8 +416,8 @@ class EditDocumentsSection extends React.Component {
                             <PrDPSection {...props} defaultValue={document_list__prdp}/>
                         </Row>
                     </FormControls>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeCompetencyViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Competencies`}
@@ -425,8 +427,8 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <CompetencyControls {...props} defaultValue={competency_list} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeContractsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Contracts`}
@@ -436,8 +438,8 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <ContractControls {...props} defaultValue={contract_list} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeJobAppointmentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Job Appointments`}
@@ -447,8 +449,8 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <JobAppointmentControls {...props} defaultValue={job_appointment_list} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeCounselingViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Counseling`}
@@ -458,8 +460,8 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <CounselingControls {...props} defaultValue={counselling_list} tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeMedicalFitnessViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Medical Fitness`}
@@ -470,8 +472,8 @@ class EditDocumentsSection extends React.Component {
                 >
                     <MedicalControls {...props} defaultValue={medical_list}
                                      tabsHeight="530px"/>
-                </Row>
-                <Row
+                </Row>}
+                {Settings.isEmployeeWarningViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Warnings`}
@@ -481,7 +483,7 @@ class EditDocumentsSection extends React.Component {
                     onFormNext={onFormNext}
                 >
                     <WarningControls {...props} defaultValue={warning_list} tabsHeight="530px"/>
-                </Row>
+                </Row>}
             </FormControls>
         </div>
     }

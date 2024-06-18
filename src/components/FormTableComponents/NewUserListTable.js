@@ -18,6 +18,7 @@ class ListTable extends ANewListTable {
 
     constructor(props) {
         super(props);
+        this.excludeIds = this.excludeIds.bind(this);
     }
 
     onClickComplete(e, el) {
@@ -40,6 +41,7 @@ class ListTable extends ANewListTable {
 
                     infoDialog.close(2000);
                 }).catch(err => {
+                    this.removeAt(idx);
                     infoDialog.open("An error occurred. Please try again later.");
                     infoDialog.close(2000);
                     console.error(err);
@@ -75,7 +77,7 @@ class ListTable extends ANewListTable {
     }
 
     onPostChange(val, name, el) {
-        if(!val) {
+        if (!val) {
             return;
         }
 
@@ -85,8 +87,27 @@ class ListTable extends ANewListTable {
         });
     }
 
+    excludeIds() {
+        const {list} = this;
+        return list.filter(item => {
+            if (!item) return false;
+
+            const {id} = item;
+            if (id) return true;
+
+            const {user} = item;
+            if (user && user.id) return true;
+        }).map(item => {
+            const {id} = item;
+            if (id) return id;
+
+            const {user} = item;
+            return user.id;
+        });
+    }
+
     renderItem(n, onClick) {
-        const {readonly, renderTable} = this.props;
+        const {readonly, renderTable, placeholder} = this.props;
         const item = this.state.list[n];
 //        console.log('item', item)
         if (item && (
@@ -125,10 +146,10 @@ class ListTable extends ANewListTable {
             }
 
             const tr = <>
-                <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
+                <div className="td fixed-flex min-w-35"><span>{n + 1}</span></div>
                 <div className="td">{lname + ' ' + fname}</div>
                 <div className="td">{username}</div>
-                {!readonly && <div className="td fixed-flex min-w-60">
+                {!readonly && <div className="td fixed-flex min-w-40">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
                     </Button>
@@ -136,8 +157,10 @@ class ListTable extends ANewListTable {
                 {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
             </>;
 
-            return <TRow key={id}
-                         className={"tr-readonly w-full padding-l-5 margin-r-0" + (renderTable ? " tr-table" : "")}>
+            return <TRow
+                key={id}
+                className={"tr-readonly w-full padding-l-5 margin-r-0" + (renderTable ? " tr-table" : "")}
+            >
                 {renderTable ? <TRow>{tr}</TRow> : tr}
                 {renderTable && renderTable(item, n)}
             </TRow>;
@@ -147,9 +170,10 @@ class ListTable extends ANewListTable {
                     <SelectUserInput
                         ref={this.onSetRef}
                         name="user"
-                        placeholder="Add Existing System User..."
+                        placeholder={placeholder || `Add Existing System User...`}
                         idx={n}
                         required
+                        excludeIds={this.excludeIds}
                         className="form-control"
                         onChange={this.onChange}
                     />
@@ -164,7 +188,7 @@ class ListTable extends ANewListTable {
             <div className="td fixed-flex min-w-30">#</div>
             <div className="td">System User</div>
             <div className="td">Username</div>
-            {!readonly && <div className="td fixed-flex min-w-60 padding-0"/>}
+            {!readonly && <div className="td fixed-flex min-w-40 padding-0"/>}
             {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
         </THead>;
     }

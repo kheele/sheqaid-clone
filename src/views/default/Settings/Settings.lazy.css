@@ -35,6 +35,10 @@
     padding: 10px;
 }
 
+#settings-page .page-content .MuiAccordion-root .MuiAccordionDetails-root > div {
+    width: 100%;
+}
+
 #settings-page .page-content > .MuiAccordion-root > .MuiCollapse-container {
     min-height: 0px;
     height: calc(100% - 40px);

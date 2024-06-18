@@ -10,9 +10,21 @@
 
 .DocsDialog-dialog .page-title {
     height: 0;
-    margin: -15px 10px 0 0;
     border: none;
     float: right;
+    position: absolute;
+    top: -56px;
+    right: 0;
+}
+
+.DocsDialog-dialog #PolicyDocsTab-tab .page-title,
+.DocsDialog-dialog #OtherDocsTab-tab .page-title,
+.DocsDialog-dialog #ProcedureDocsTab-tab .page-title {
+    top: -47px;
+}
+
+.DocsDialog-dialog .PersonalDocsTab .page-title {
+    top: 6px !important;
 }
 
 .DocsDialog-dialog .page-title > h3 {
