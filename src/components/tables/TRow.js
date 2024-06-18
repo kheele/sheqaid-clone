@@ -22,46 +22,46 @@ class TRow extends React.Component {
 
     componentDidMount() {
         const {onDidMount, widthsState} = this.props;
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 let node = findDOMNode(this);
                 onDidMount && onDidMount(node);
-                widthsState && this.resizeCols($(node), widthsState);
-            } catch(e) {
+                // widthsState && this.resizeCols($(node), widthsState);
+            } catch (e) {
             }
         }.bind(this), 0);
     }
-    
-    componentWillUpdate() {
-        const {widthsState} = this.props;
-        setTimeout(function() {
-            if(widthsState) {
-                try{
-                    const node = $(findDOMNode(this));
-                    this.resizeCols(node, widthsState);
-                }catch(e) {
 
-                }
-            }
-        }.bind(this), 0);
+    componentWillUpdate() {
+        // const {widthsState} = this.props;
+        // setTimeout(function() {
+        //     if(widthsState) {
+        //         try{
+        //             const node = $(findDOMNode(this));
+        //             this.resizeCols(node, widthsState);
+        //         }catch(e) {
+        //
+        //         }
+        //     }
+        // }.bind(this), 0);
     }
 
     componentWillUnmount() {
         const {onWillUnmount} = this.props;
-        try{
+        try {
             onWillUnmount && onWillUnmount(findDOMNode(this));
-        }catch(e) {
+        } catch (e) {
 
         }
     }
-    
+
     resizeCols(node, widthsState) {
         const {ignoreResize} = this.props;
-        if(ignoreResize) return;
-        
-        if(widthsState) {
+        if (ignoreResize) return;
+
+        if (widthsState) {
             const {widths} = widthsState;
-            node.children().each(function(n) {
+            node.children().each(function (n) {
                 const el = $(this);
                 el.width(widths[n]);
             });
@@ -71,7 +71,7 @@ class TRow extends React.Component {
     renderChildren() {
         const siblings = React.Children.toArray(this.props.children).filter(child => !child.props.action);
         return React.Children.map(this.props.children, (child, index) => {
-            if(!child) return null;
+            if (!child) return null;
             const {props: {printPDF, tblWidth}} = this;
             return React.cloneElement(child, {printPDF, tblWidth, siblings});
         }).filter(child => !!child && !child.props.action);
@@ -86,19 +86,17 @@ class TRow extends React.Component {
         }
         let {className, style, disableRowHover, children} = this.props;
         className = 'tr' + (className ? (' ' + className) : '');
-        if(disableRowHover) {
+        if (disableRowHover) {
             className += ' no-row-hover';
         }
         const props = {className, onClick};
-        if(style) {
+        if (style) {
             props.style = style;
         }
         return (<div {...props}>{children}</div>);
     }
 }
 
-TRow.propTypes = {
-
-};
+TRow.propTypes = {};
 
 export default TRow;

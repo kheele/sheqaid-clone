@@ -246,6 +246,7 @@ class Controls extends React.Component {
 
         return <FormControls>
             <RowOrgs
+                active={false}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}

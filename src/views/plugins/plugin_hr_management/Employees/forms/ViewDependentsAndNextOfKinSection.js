@@ -8,8 +8,8 @@ import Settings from "../../../../../utils/Settings";
 
 @observer
 class ViewDependentsAndNextOfKinSection extends React.Component {
+    static isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
     pageKey = "DependentsAndNextOfKinSection";
-    isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
 
     constructor(props) {
         super(props);

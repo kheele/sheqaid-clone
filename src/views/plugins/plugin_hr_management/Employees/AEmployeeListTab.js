@@ -19,7 +19,7 @@ class AListTab extends React.Component {
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
         const {list} = this.props;
-        if(list) {
+        if (list) {
             return this.findByIdsEmployees(list.map(({id}) => id));
         }
 
@@ -59,8 +59,9 @@ class AListTab extends React.Component {
             return res;
         });
     }
+
     //</editor-fold>
-    
+
 }
 
 // <editor-fold defaultstate="collapsed" desc="StatsPanel">
@@ -77,12 +78,12 @@ class StatsPanel extends React.Component {
         } = this.props.item;
 
         return <>
-            {/*<AggregateStat title="Employees" value={supervisor_employee_list_aggregate}/>*/}
-            <AggregateStat title="PPE" value={ppe_type_list_aggregate}/>
-            <AggregateStat title="Trainings" value={trainer_training_list_aggregate}/>
-            <AggregateStat title="Leaves" value={leave_list_aggregate}/>
-            <AggregateStat title="Medicals" value={medical_list_aggregate}/>
-            <AggregateStat title="Warnings" value={warning_list_aggregate}/>
+            {/*<AggregateStat title="Employees" value={supervisor_employee_list_aggregate} color=""/>*/}
+            <AggregateStat title="PPE" value={ppe_type_list_aggregate} color="rgb(90, 106, 116)"/>
+            <AggregateStat title="Competencies" value={trainer_training_list_aggregate} color="rgb(1, 100, 93)"/>
+            <AggregateStat title="Sign-Off" value={leave_list_aggregate} color="rgb(11, 126, 145)"/>
+            <AggregateStat title="Medicals" value={medical_list_aggregate} color="rgb(76, 121, 129)"/>
+            {/*<AggregateStat title="Warnings" value={warning_list_aggregate} color=""/>*/}
         </>;
     }
 }

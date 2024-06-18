@@ -23,9 +23,8 @@ import Settings from "../../../../../utils/Settings";
 
 @observer
 class ViewDocumentsSection extends React.Component {
+    static isValid = Settings.isValidEmployeeAllDocumentsViewers;
     pageKey = "ViewDocumentsSection";
-    isValid = Settings.isValidEmployeeAllDocumentsViewers;
-
     @observable
     state = {};
 

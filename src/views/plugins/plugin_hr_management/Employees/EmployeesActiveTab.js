@@ -197,8 +197,8 @@ class Main extends AEmployeeListTab {
             <div className="td fixed-flex min-w-50">ID</div>
             <div className="td fixed-flex min-w-140">Company No.</div>
             <div className="td">Name</div>
-            {!department_id && <div className="td fixed-flex min-w-280">Department</div>}
-            {!job_position_id && <div className="td fixed-flex min-w-280">Job Position</div>}
+            {!department_id && <div className="td fixed-flex min-w-250">Department</div>}
+            {!job_position_id && <div className="td fixed-flex min-w-250">Job Position</div>}
             {/*{!job_category_id && <div className="td">Job Category</div>}*/}
             {/*{!team_id && <div className="td">Team</div>}*/}
             {(hasProjects || isContractorView) && <>
@@ -208,7 +208,7 @@ class Main extends AEmployeeListTab {
                     {!isContractorView && "Project / "}Site
                 </div>
             </>}
-            <div className="td fixed-flex min-w-400">Stats</div>
+            <div className="td fixed-flex min-w-300">Stats</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -236,7 +236,7 @@ class Main extends AEmployeeListTab {
             }
         } = item;
 
-        return <TRow key={id}>
+        return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-50">{id}</div>
             <div className="td fixed-flex min-w-140">{employment_num}</div>
             <div className="td">
@@ -253,10 +253,10 @@ class Main extends AEmployeeListTab {
                     />
                 </Clickable>
             </div>
-            <div className="td fixed-flex min-w-280">
+            <div className="td fixed-flex min-w-250">
                 {department && department.name}
             </div>
-            <div className="td fixed-flex min-w-280">
+            <div className="td fixed-flex min-w-250">
                 {job_position && job_position.name}
             </div>
             {/*{!job_category_id && <AsyncTD title="Job Category" defaultValue={job_position && job_position.job_category}*/}
@@ -272,7 +272,7 @@ class Main extends AEmployeeListTab {
                 </div>
             </>}
 
-            <div className="td fixed-flex min-w-400 padding-r-10 flex td-stats">
+            <div className="td fixed-flex min-w-300 padding-r-10 flex td-stats">
                 <StatsPanel item={item}/>
             </div>
 

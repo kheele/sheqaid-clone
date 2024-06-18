@@ -26,8 +26,8 @@ import Settings from "../../../../../utils/Settings";
 
 @observer
 class EditDocumentsSection extends React.Component {
+    static isValid = Settings.isValidEmployeeAllDocumentsViewers;
     pageKey = "NewDocumentsTab";
-    isValid = Settings.isValidEmployeeAllDocumentsViewers;
 
     //<editor-fold desc="constructor">
     constructor(props) {

@@ -11,8 +11,8 @@ import Settings from "../../../../../utils/Settings";
 
 @observer
 class EditDependentsAndNextOfKinSection extends React.Component {
+    static isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
     pageKey = "NewDependentsAndNextOfKinTab";
-    isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
 
     //<editor-fold desc="constructor">
     constructor(props) {
