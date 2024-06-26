@@ -18,16 +18,13 @@ import {THead, TRow} from 'components/tables';
 //import NewTemplateDialog from './dialogs/NewTemplateDialog.js';
 //import EditTemplateDialog from './dialogs/EditTemplateDialog.js';
 //import ProfileTemplateDialog from './dialogs/ProfileTemplateDialog.js';
-//
-//import NewScheduleDialog from './dialogs/NewScheduleDialog.js';
-import {byClient, byCompany, byProject, bySite} from "./Query/List/listAllInspectionByLogged";
 import style from "./TemplatesTab.lazy.css";
 
 @observer
 class TemplatesTab extends React.Component {
     path;
     pageKey = "TemplatesTab";
-    
+
     @observable
     state = {
         lists: {
@@ -39,11 +36,11 @@ class TemplatesTab extends React.Component {
     constructor(props) {
         super(props);
 
-        this.path = props.path + 'msds/templates/';
+        this.onLoadList = this.onLoadList.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onUse = this.onUse.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -58,26 +55,27 @@ class TemplatesTab extends React.Component {
     }
 
     //<editor-fold desc="onLoadList">
-    onLoadList(page, isNew) {
-        const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+            category,
+            manufacturer,
+            risk_level,
+        } = filterData || {};
 
-        let fn;
+        const listByLogged = sockets.of('chemicals/msds/templates').fn('listByLogged');
 
-        const args = {};
-
-        if (selectedProject) {
-            args.project_id = selectedProject.id;
-            fn = byProject;
-        } else if (selectedClient) {
-            args.client_id = selectedClient.id;
-            fn = byClient;
-        } else {
-            args.company_id = sess_company_id;
-            fn = byCompany;
-        }
-
-        return fn(args).then((res) => {
+        return listByLogged({
+            name,
+            category,
+            manufacturer,
+            risk_level,
+            //
+            exact_orgs: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
@@ -91,17 +89,17 @@ class TemplatesTab extends React.Component {
         const copy = toJS(list[idx]);
         onNew(evt, elem, copy);
     }
-    
+
     onUse(evt, elem) {
         const {idx, action} = elem.props;
         const item = this.refs.root.list[idx];
         this.refs.newScheduleDialog.open(item);
     }
-    
+
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const item = this.refs.root.list[idx];
         const {id, data: {created_at, form: {name, type, desc, questions}, scheduled}} = item;
-        
+
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
@@ -115,11 +113,18 @@ class TemplatesTab extends React.Component {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control" onChange={onChange}/>
-            <SelectChemicalCategoryInput name="category" placeholder="Category..." className="form-control" onChange={onChange}/>
-            <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..." className="fixed-flex min-w-200 form-control" onChange={onChange} values={this.state.lists.risk_level} returnValue/>
-            <ClearableInput name="visibility" type="select" placeholder="Visibility..." className="fixed-flex min-w-200 form-control" onChange={onChange} values={this.state.lists.visibility} returnValue/>
+            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control"
+                            onChange={onChange}/>
+            <SelectChemicalCategoryInput name="category" placeholder="Category..." className="form-control"
+                                         onChange={onChange}/>
+            <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..." className="form-control"
+                                             onChange={onChange}/>
+            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..."
+                            className="fixed-flex min-w-200 form-control" onChange={onChange}
+                            values={this.state.lists.risk_level} returnValue/>
+            <ClearableInput name="visibility" type="select" placeholder="Visibility..."
+                            className="fixed-flex min-w-200 form-control" onChange={onChange}
+                            values={this.state.lists.visibility} returnValue/>
         </div>;
     }
 
@@ -139,7 +144,10 @@ class TemplatesTab extends React.Component {
 
     renderItem(idx, onClick) {
         const item = this.refs.root.list[idx];
-        const {id, data: {created_at, name, category, manufacturer, risk_level, emergency_phone, date_identified, doc, company}} = item;
+        const {
+            id,
+            data: {created_at, name, category, manufacturer, risk_level, emergency_phone, date_identified, doc, company}
+        } = item;
 //        console.log('form', item)
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-120 md-hidden">
@@ -183,7 +191,7 @@ class TemplatesTab extends React.Component {
     render() {
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        const permissions_other_ContractorForms = (permissions_other || []).find(v => v.key === "Contractor Forms");
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -198,7 +206,7 @@ class TemplatesTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
-            
+
             {/*<NewTemplateDialog ref="newDialog"/>
             <EditTemplateDialog ref="editDialog"/>
             <ProfileTemplateDialog ref="profileDialog"/>

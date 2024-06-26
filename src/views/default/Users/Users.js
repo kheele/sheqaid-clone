@@ -16,9 +16,6 @@ import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Users.lazy.css";
-
-import listAllUserByLogged from "./Query/List/listAllUserByLogged";
-import listAllContractorUserByLogged from "./Query/List/listAllContractorUserByLogged";
 import MKBox from "components/MK/MKBox";
 
 @observer
@@ -35,6 +32,8 @@ class Users extends React.Component {
 
         this.path = storage.is.isContractor ? 'plugin_sheq_assist/contractors/users/' : 'users/';
 
+        this.onLoadList = this.onLoadList.bind(this);
+
         this.onSendApplicationLink = this.onSendApplicationLink.bind(this);
         this.onCompleteEmploymentDetailsShowWarningMsg = this.onCompleteEmploymentDetailsShowWarningMsg.bind(this);
         this.onCreateCompleteUser = this.onCreateCompleteUser.bind(this);
@@ -45,6 +44,7 @@ class Users extends React.Component {
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+
     //</editor-fold>
 
     componentWillMount() {
@@ -68,32 +68,24 @@ class Users extends React.Component {
             name,
         } = filterData || {};
 
-        const limit = 50;
+        const path = isContractor ? "contractors/users" : "users";
+        const listByLogged = sockets.of(path).fn("listByLogged");
 
-        const args = {
+        return listByLogged({
             // removed: this.removed,
             removed: false,
             //
             name,
             //
-            limit,
-            //
             exact_orgs: false,
-        };
-
-        if(!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        const byLogged = isContractor ? listAllContractorUserByLogged : listAllUserByLogged;
-
-        return byLogged(args).then((res) => {
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
             console.log('onLoadList res', res)
             return res;
         });
     }
+
     //</editor-fold>
 
     //<editor-fold desc="onCompleteEmploymentDetailsShowWarningMsg">
@@ -110,13 +102,13 @@ class Users extends React.Component {
             isDialog: false,
             contentNode: <div>
                 <MKBox
-                  className="nav-item font-size-12 padding-10 margin-b-10 margin-h-0 text-center"
-                  sx={{
-                      borderRadius: '3px',
-                      boxShadow: '0 0 3px #ddd',
-                      background: '#f5f5f5',
-                      textTransform: 'uppercase',
-                  }}
+                    className="nav-item font-size-12 padding-10 margin-b-10 margin-h-0 text-center"
+                    sx={{
+                        borderRadius: '3px',
+                        boxShadow: '0 0 3px #ddd',
+                        background: '#f5f5f5',
+                        textTransform: 'uppercase',
+                    }}
                 >
                     Please complete the following actions:
                 </MKBox>
@@ -132,7 +124,7 @@ class Users extends React.Component {
     onCreateCompleteUser(evt, el) {
         const {idx} = el.props;
         const item = this.refs.root.list[idx];
-        if(!item) return;
+        if (!item) return;
 
         const {root} = this.refs;
         const dialog = root.getDialogByRef("profileDialog");
@@ -146,9 +138,9 @@ class Users extends React.Component {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         const {id, data: {username}} = item;
-        
+
         const {isContractor} = storage.is;
-        
+
         if (username) {
             progressDialog.open("Please wait...");
             const sendAppLink = sockets.of("send").fn("sendAppLink");
@@ -183,6 +175,7 @@ class Users extends React.Component {
             return true;
         }
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderLeftButtons">
@@ -194,6 +187,7 @@ class Users extends React.Component {
             </label>}
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderPopoverOptions">
@@ -223,6 +217,7 @@ class Users extends React.Component {
                      title="Send Application Link"/>
         </Options>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNode">
@@ -231,13 +226,14 @@ class Users extends React.Component {
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderTHead">
     renderTHead() {
         const {isConsultant, hasProjects, isContractor} = storage.is;
         return <THead>
-            <div className="td fixed-flex min-w-30">ID</div>
+            <div className="td fixed-flex min-w-60">ID</div>
             <div className="td">Name</div>
             <div className="td">Username</div>
             {hasProjects && <React.Fragment>
@@ -248,6 +244,7 @@ class Users extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderItem">
@@ -269,8 +266,8 @@ class Users extends React.Component {
             return site_list.length;
         };
 
-        return <TRow key={id}>
-            <div className="td fixed-flex min-w-30">{id}</div>
+        return <TRow key={id} className="w-full">
+            <div className="td fixed-flex min-w-60">{id}</div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Name</h6>
                 {lname + ' ' + fname}
@@ -297,6 +294,7 @@ class Users extends React.Component {
             </div>
         </TRow>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
@@ -322,6 +320,7 @@ class Users extends React.Component {
             <EditDialog ref="editDialog"/>
         </APageListReadWrite>;
     }
+
     //</editor-fold>
 }
 

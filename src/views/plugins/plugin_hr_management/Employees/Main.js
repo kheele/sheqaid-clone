@@ -35,8 +35,6 @@ import JobCategoriesDialog from "./dialogs/JobCategoriesDialog";
 import {JobAppointmentsDialog} from "../../plugin_extra/__C_Structure_And_Responsibility/JobAppointments";
 import {HRDocsDialog} from "../HRDocs";
 import {PlannedJobObservationsDialog} from "../PlannedJobObservations";
-import {AttendanceDialog} from "../other_modules/Attendances";
-import {ContactsDialog} from "../external_modules/Contacts";
 
 // </editor-fold>
 
@@ -142,8 +140,8 @@ class Main extends APage {
             {key: 'Expenses', listName: 'expense_list', text: 'Expenses', Comp: ExpensesDialog},
             {key: 'HRDocs', text: 'Documents', Comp: HRDocsDialog, noExpiry: true, override: true},
 
-            {key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
-            {key: 'Contacts', listName: '', text: 'Contacts', Comp: ContactsDialog, noExpiry: true},
+            // {key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
+            // {key: 'Contacts', listName: '', text: 'Contacts', Comp: ContactsDialog, noExpiry: true},
             // {key: 'KPI', listName: '', text: 'KPI', Comp: KPIDialog, noExpiry: true},
             // {key: 'Meetings', listName: '', text: 'Meetings', Comp: MeetingsDialog, noExpiry: true},
             {key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true},

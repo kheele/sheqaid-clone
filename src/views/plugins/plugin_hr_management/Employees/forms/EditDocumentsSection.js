@@ -22,11 +22,11 @@ import PrDPSection from "./PrDPSection";
 import IDOrPassportSection from "./IDOrPassportSection";
 import {toDataURI} from "utils/UtilsFuns";
 import SignableDocumentsSection from "./SignableDocumentsSection";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
 class EditDocumentsSection extends React.Component {
-    static isValid = Settings.isValidEmployeeAllDocumentsViewers;
+    static isValid = EmployeeProfileSettings.isValidEmployeeAllDocumentsViewers;
     pageKey = "NewDocumentsTab";
 
     //<editor-fold desc="constructor">
@@ -353,7 +353,7 @@ class EditDocumentsSection extends React.Component {
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <FormControls lazyLoad>
-                {Settings.isValidEmployeeSignableDocumentsViewers(item) && <Row
+                {EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Signable Documents`}
@@ -363,7 +363,7 @@ class EditDocumentsSection extends React.Component {
                 >
                     <SignableDocumentsSection {...props} defaultValue={signable_doc_submitter_list} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isValidEmployeePersonalDocumentsViewers(item) && <Row
+                {EmployeeProfileSettings.isValidEmployeePersonalDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Personal Documents`}
@@ -417,7 +417,7 @@ class EditDocumentsSection extends React.Component {
                         </Row>
                     </FormControls>
                 </Row>}
-                {Settings.isEmployeeCompetencyViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Competencies`}
@@ -428,7 +428,7 @@ class EditDocumentsSection extends React.Component {
                 >
                     <CompetencyControls {...props} defaultValue={competency_list} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeContractsViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeContractsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Contracts`}
@@ -439,7 +439,7 @@ class EditDocumentsSection extends React.Component {
                 >
                     <ContractControls {...props} defaultValue={contract_list} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeJobAppointmentsViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeJobAppointmentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Job Appointments`}
@@ -450,7 +450,7 @@ class EditDocumentsSection extends React.Component {
                 >
                     <JobAppointmentControls {...props} defaultValue={job_appointment_list} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeCounselingViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeCounselingViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Counseling`}
@@ -461,7 +461,7 @@ class EditDocumentsSection extends React.Component {
                 >
                     <CounselingControls {...props} defaultValue={counselling_list} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeMedicalFitnessViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Medical Fitness`}
@@ -473,7 +473,7 @@ class EditDocumentsSection extends React.Component {
                     <MedicalControls {...props} defaultValue={medical_list}
                                      tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeWarningViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeWarningViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Warnings`}

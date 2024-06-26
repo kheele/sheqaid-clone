@@ -1,54 +1,65 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {extendObservable, observable} from 'mobx';
-
-import Dialog from 'components/dialogs/Dialog';
 
 @observer
 class AList extends React.Component {
-    
-    constructor(props) {
+
+    constructor(props, style) {
         super(props);
-        
-        if(this.onLoadList) {
+        this.style = style;
+
+        if (this.onLoadList) {
             this.onLoadList = this.onLoadList.bind(this);
         }
-        
-        if(this.onExport) {
+
+        if (this.onExport) {
             this.onExport = this.onExport.bind(this);
         }
-        if(this.onSaveAsPDF) {
+        if (this.onSaveAsPDF) {
             this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         }
-        if(this.onDownload) {
+        if (this.onDownload) {
             this.onDownload = this.onDownload.bind(this);
         }
-        
-        if(this.renderTHead) {
+
+        if (this.renderTHead) {
             this.renderTHead = this.renderTHead.bind(this);
         }
-        if(this.renderItem) {
+        if (this.renderItem) {
             this.renderItem = this.renderItem.bind(this);
         }
-        
-        if(this.renderPopoverOptions) {
+
+        if (this.renderPopoverOptions) {
             this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         }
-        if(this.renderFilterNode) {
+        if (this.renderFilterNode) {
             this.renderFilterNode = this.renderFilterNode.bind(this);
         }
-        
-        if(this.renderDefaultLeftButtons) {
+
+        if (this.renderDefaultLeftButtons) {
             this.renderDefaultLeftButtons = this.renderDefaultLeftButtons.bind(this);
         }
-        if(this.renderLeftButtons) {
+        if (this.renderLeftButtons) {
             this.renderLeftButtons = this.renderLeftButtons.bind(this);
         }
-        if(this.renderRightButtons) {
+        if (this.renderRightButtons) {
             this.renderRightButtons = this.renderRightButtons.bind(this);
         }
     }
-    
+
+
+    // <editor-fold defaultstate="collapsed" desc="componentWillMount">
+    componentWillMount() {
+        this.style && this.style.use();
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
+    componentWillUnmount() {
+        this.style && this.style.unuse();
+    }
+
+    // </editor-fold>
+
 }
 
 export default AList;

@@ -1,5 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import {computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
 import {Button, ProfileField, UploadButton} from 'components/inputs';
 
@@ -13,6 +14,9 @@ import AEmployeeDocControls from "../../AEmployeeDocControls";
 import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
+import ProfileUserDialog from "../../../../default/Users/ProfileDialog";
+import EditUserDialog from "../../../../default/Users/EditDialog";
+import NewEmployeeDialog from "../../Employees/forms/NewDialog";
 
 //<editor-fold desc="ProfileDialog">
 @observer
@@ -34,7 +38,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "Leaves";
+        return "Time-Off(s)";
     }
 
     onSaveAsPDF(e, btn) {
@@ -59,8 +63,10 @@ class Controls extends AEmployeeDocControls {
         this.onRequestTimeOff = this.onRequestTimeOff.bind(this);
     }
 
-    get renderBarActions() {
+    @computed get renderBarActions() {
         const {item} = this.props;
+        if (!item) return null;
+
         const {is: {isEmployee}, loggedUser: {user, user: {data: {linked_employee_id}}}} = storage;
 
         const isLoggedUser = (isEmployee, employee_id, linked_employee_id, user_id) => {
@@ -80,6 +86,8 @@ class Controls extends AEmployeeDocControls {
                 Request Time-off
             </Button>
             <NewDialog ref="newDialog" isSelfRequest/>
+            <ProfileUserDialog ref="profileUserDialog" EditDialog={EditUserDialog}
+                               NewEmployeeDialog={NewEmployeeDialog}/>
         </>;
     }
 
@@ -89,9 +97,16 @@ class Controls extends AEmployeeDocControls {
         if (isEmployee) {
             this.refs.newDialog.open(item);
         } else {
-            const {loggedUser: {user: {data: {linked_employee_id}}}} = storage;
+            const {loggedUser: {user, user: {data: {linked_employee_id}}}} = storage;
             if (!linked_employee_id) {
-                return infoDialog.open("You have not been registered as an employee. Please link your account with your employee account.");
+                return infoDialog.action("Register As Employee", () => {
+                    infoDialog.close();
+                    this.refs.profileUserDialog.extraProp('linked_employee', true).open(user).then(() => {
+                    });
+                }).open(<p>
+                    Your Account is not linked to any Employee Profile.<br/>
+                    Please link your account with your Employee Profile.
+                </p>);
             }
             this.refs.newDialog.open(item);
         }

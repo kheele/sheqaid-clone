@@ -21,6 +21,9 @@ import NewIncidentDialog from 'views/plugins/plugin_sheq_assist/17_Incident_Inve
 import NewCheckableDialog from 'views/plugins/plugin_sheq_assist/Inspections/InspectionTab/forms/NewCheckableDialog.js';
 import Divider from "@mui/material/Divider";
 import {NewDialog as NewLeaveDialog} from "../plugins/plugin_hr_management/Leaves/forms";
+import ProfileUserDialog from "../default/Users/ProfileDialog";
+import EditUserDialog from '../default/Users/EditDialog';
+import NewEmployeeDialog from 'views/plugins/plugin_hr_management/Employees/forms/NewDialog';
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PluginsBtn">
@@ -246,9 +249,17 @@ class SelectShortcutsBtn extends React.Component {
                     const {loggedUser: {user}} = storage;
                     this.refs.newLeaveDialog.open(user);
                 } else {
-                    const {loggedUser: {user: {data: {linked_employee_id}}}} = storage;
+                    const {loggedUser: {user, user: {data: {linked_employee_id}}}} = storage;
                     if (!linked_employee_id) {
-                        return infoDialog.open("You have not been registered as an employee. Please link your account with your employee account.");
+                        return infoDialog.action("Register As Employee", () => {
+                            infoDialog.close();
+                            this.refs.profileUserDialog.extraProp('linked_employee', true).open(user).then(() => {
+
+                            });
+                        }).open(<p>
+                            Your Account is not linked to any Employee Profile.<br/>
+                            Please link your account with your Employee Profile.
+                        </p>);
                     }
                     this.refs.newLeaveDialog.open({id: linked_employee_id});
                 }
@@ -334,6 +345,8 @@ class SelectShortcutsBtn extends React.Component {
                                 path={path + '21_Internal_Audit/inspection/'}/>
             <NewAttendanceDialog ref="newAttendanceDialog"/>
             <NewAttendanceSelfDialog ref="newAttendanceSelfDialog"/>
+            <ProfileUserDialog ref="profileUserDialog" EditDialog={EditUserDialog}
+                               NewEmployeeDialog={NewEmployeeDialog}/>
             <Button ref="shortcuts" className="fa fa-share btn" hoverText="Shortcuts" hoverTextLeft
                     onClick={this.onPopoverSettings}/>
             <Popover key="popover" ref="popover"/>

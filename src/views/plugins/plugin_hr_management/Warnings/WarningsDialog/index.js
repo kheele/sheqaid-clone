@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
@@ -14,16 +14,10 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import WarningsRenderRow from "./WarningsRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput,
-    SelectEmployeeInput,
-} from "components/inputs";
+import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 
-import findByIdContractorHRWarningsDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRWarningsDashboardStatsByLogged";
-import findByIdContractorHRWarningsDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRWarningsDateRangeDashboardStatsByLogged";
 import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
+import contractorStore from "../../../../../mutations/all/Contractor";
 
 // </editor-fold>
 
@@ -46,6 +40,7 @@ class Dialog extends AEmployeeDocDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
@@ -65,6 +60,7 @@ class Dialog extends AEmployeeDocDialog {
             date,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -73,7 +69,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRWarningsDashboardStatsByLogged();
+            return contractorStore.findByIdHRWarningsDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -103,6 +99,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
@@ -110,7 +107,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRWarningsDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRWarningsDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -140,24 +137,30 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
         const warning_types = ['Verbal', 'Written', 'Final'];
         return <>
-            <SelectEmployeeInput ref="issued_by" name="issued_by" placeholder="Issued By..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput ref="witness" name="witness" placeholder="Witness..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="type" type="select" placeholder="Warning Type..." className="form-control" onChange={onChange} values={warning_types} returnValue/>
-            <ClearableInput name="date" type="date" placeholder="Warning Date..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput ref="issued_by" name="issued_by" placeholder="Issued By..." className="form-control"
+                                 onChange={onChange}/>
+            <SelectEmployeeInput ref="witness" name="witness" placeholder="Witness..." className="form-control"
+                                 onChange={onChange}/>
+            <ClearableInput name="type" type="select" placeholder="Warning Type..." className="form-control"
+                            onChange={onChange} values={warning_types} returnValue/>
+            <ClearableInput name="date" type="date" placeholder="Warning Date..." className="form-control"
+                            onChange={onChange}/>
         </>;
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -189,6 +192,7 @@ class Dialog extends AEmployeeDocDialog {
     renderItemAll({item, idx, view, onClick}) {
         return <WarningsRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
 }

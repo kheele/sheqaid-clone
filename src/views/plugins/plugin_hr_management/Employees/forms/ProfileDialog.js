@@ -17,7 +17,7 @@ import style from "./ProfileDialog.lazy.css";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -270,7 +270,7 @@ class Controls extends React.Component {
                     <ProfileField name="sex" title="Gender" value={sex} className="col-lg-6"/>
                 </Row>
             </RowOrgs>
-            {Settings.isEmployeeContactDetailsViewers(item) && <Row
+            {EmployeeProfileSettings.isEmployeeContactDetailsViewers(item) && <Row
                 rendered
                 idx={2}
                 title="2. Contact Details"

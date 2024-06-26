@@ -19,6 +19,7 @@ import Popover from "components/popovers/Popover";
 import {execWhen} from "utils/UtilsFuns";
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "components/ViewByButtons";
+import ProfileSignableDocDialog from "./ProfileSignableDocDialog";
 
 // </editor-fold>
 
@@ -109,8 +110,9 @@ class Dialog extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
-        const permissionKey = "Employees";
-        return <Options idx={idx} permissionModKey={permissionKey}>
+        const perm = "_00_Document_and_Record_Control";
+        // return <Options idx={idx}>
+        return <Options idx={idx} permissionModKey={perm}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
@@ -187,7 +189,7 @@ class Dialog extends React.Component {
         } = item;
 
         if (this.isDocuments) {
-            return <TRow key={id}>
+            return <TRow key={id} className="w-full">
                 <div className="td fixed-flex min-w-60">{id}</div>
                 <div className="td fixed-flex min-w-280">{name}</div>
                 <div className="td fixed-flex min-w-260">{module && module.title}</div>
@@ -211,7 +213,7 @@ class Dialog extends React.Component {
             </TRow>;
         }
 
-        return <TRow key={id} className="w-ful">
+        return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-60">{id}</div>
             <div className="td fixed-flex min-w-280">{name}</div>
             <div className="td fixed-flex min-w-260">{module && module.title}</div>
@@ -261,9 +263,9 @@ class Dialog extends React.Component {
                 renderItem={this.renderItem}>
                 {/*<ConfirmDialog ref="removeDialog" onSoftDelete={updateEmployee}/>*/}
 
-                {/*<NewDialog ref="newDialog" path={this.path}/>*/}
-                {/*<ProfileDialog ref="profileDialog" path={this.path}/>*/}
-                {/*<EditDialog ref="editDialog" path={this.path}/>*/}
+                {/*<NewDialog ref="newDialog"/>*/}
+                <ProfileSignableDocDialog ref="profileDialog"/>
+                {/*<EditDialog ref="editDialog"/>*/}
 
                 {/*<ProfilePDFReader ref="pdfReader"/>*/}
                 {/*<PrintCardsPDFReader ref="printCardsPDFReader"/>*/}

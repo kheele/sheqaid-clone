@@ -1,11 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
@@ -15,15 +14,10 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import ContractsRenderRow from "./ContractsRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput,
-} from "components/inputs";
+import {ClearableInput,} from "components/inputs";
 
-import findByIdContractorHRContractsDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRContractsDashboardStatsByLogged";
-import findByIdContractorHRContractsDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRContractsDateRangeDashboardStatsByLogged";
 import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
+import contractorStore from "../../../../../mutations/all/Contractor";
 
 // </editor-fold>
 
@@ -65,6 +59,7 @@ class Dialog extends AEmployeeDocDialog {
             salary_interval,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -73,7 +68,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRContractsDashboardStatsByLogged();
+            return contractorStore.findByIdHRContractsDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -111,7 +106,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRContractsDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRContractsDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')

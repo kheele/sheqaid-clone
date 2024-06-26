@@ -104,13 +104,18 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get doc_type() {
+        const {doc_type} = this.props.dialog.props;
+        return doc_type;
+    }
+
+    // </editor-fold>
+
     componentWillMount() {
         this.state.lists.plugin = pluginManager.listAll.filter(({data: {status}}) => status === "Installed").map((value) => ({
             label: value.data.title, value,
         }));
     }
-
-    // </editor-fold>
 
     //<editor-fold desc="onChanges">
     onChangePlugin(el, val) {
@@ -118,7 +123,8 @@ class Controls extends React.Component {
     }
 
     onCreateTemplate(evt, btn) {
-        const {form, props: {doc_type}} = this;
+        const {form, doc_type} = this;
+        
         //1
         if (!form.isValid('plugin')) {
             infoDialog.open('Plugin is required');
@@ -200,6 +206,8 @@ class Controls extends React.Component {
         });
     }
 
+    // </editor-fold>
+
     onSaveTemplate(detail) {
         const {form, template} = this;
         const {
@@ -222,7 +230,7 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onFormChange">
     onFormChange(idx) {
@@ -274,6 +282,8 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    //<editor-fold desc="render">
+
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form} = this;
@@ -297,10 +307,6 @@ class Controls extends React.Component {
         this.props.close();
     }
 
-    //</editor-fold>
-
-    //<editor-fold desc="render">
-
     render() {
         if (this.state.lists.plugin.isEmpty()) {
             return <CircularProgress className="fixed-center"/>;
@@ -309,6 +315,7 @@ class Controls extends React.Component {
         const {onFormNext, onFormBack, onFormOpen, onFormChange} = this.props;
 
         const {module} = this.props.dialog.props;
+
         return <FormControls>
             <Row
                 active

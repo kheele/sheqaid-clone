@@ -1,4 +1,3 @@
-
 class Permissions {
     //<editor-fold desc="hasModule, isValidPerm, isModulePerm, isOtherPerm">
     static hasModule(key) {
@@ -7,17 +6,17 @@ class Permissions {
             list: {permissionOtherKeys}
         } = storage;
         return module_list.anyMatch(({key: __key, module}) => {
-            if(module) return module.key === key;
-            return __key === key;
-        }) ||
-          permissionOtherKeys.anyMatch(({id, value}) => value === key);
+                if (module) return module.key === key;
+                return __key === key;
+            }) ||
+            permissionOtherKeys.anyMatch(({id, value}) => value === key);
     }
 
     static isValidPerm(perm) {
         if (!perm) return false;
-        if(perm.module || (perm.key && !perm.key.value)) {
+        if (perm.module || (perm.key && !perm.key.value)) {
             return Permissions.hasModule(perm.module.key);
-        } else if(perm.key && perm.key.value) {
+        } else if (perm.key && perm.key.value) {
             return Permissions.hasModule(perm.key.value);
         }
     }
@@ -28,7 +27,7 @@ class Permissions {
         const {selectedClientModules: {list: module_list}} = storage.selected;
         return (perm.module || perm.key) && module_list.anyMatch(({key: __key, module}) => {
             const key = perm.key || perm.module.key;
-            if(module) return module.key === key;
+            if (module) return module.key === key;
             return __key === key;
         });
     }
@@ -39,11 +38,12 @@ class Permissions {
         const {list: {permissionOtherKeys}} = storage;
         return perm.key && permissionOtherKeys.anyMatch(({id, value}) => value === perm.key.value);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allow, disallow">
     static allow(perm) {
-        if (Permissions.isOtherPerm(perm) || Permissions.isModulePerm(perm)) {
+        if (perm && (Permissions.isOtherPerm(perm) || Permissions.isModulePerm(perm))) {
 //            const {selectedClientModules: {list}} = storage.selected;
             const {isConsultant, isNoProjects} = storage.is;
             const {create, view, edit, remove, share, print} = perm.actions;
@@ -55,7 +55,7 @@ class Permissions {
     }
 
     static disallow(perm) {
-        if (Permissions.isOtherPerm(perm) || Permissions.isModulePerm(perm)) {
+        if (perm && (Permissions.isOtherPerm(perm) || Permissions.isModulePerm(perm))) {
 //            const {selectedClientModules: {list}} = storage.selected;
             const {isConsultant, isNoProjects} = storage.is;
             const {create, view, edit, remove, share, print} = perm.actions;
@@ -65,6 +65,7 @@ class Permissions {
 
         return true;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allowType, disallowType">
@@ -82,6 +83,7 @@ class Permissions {
     static disallowType(perm, type) {
         return !Permissions.allowType(perm, type);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allow*">
@@ -108,6 +110,7 @@ class Permissions {
     static allowPrint(perm) {
         return Permissions.allowType(perm, "print");
     }
+
     //</editor-fold>
 
     //<editor-fold desc="disallow*">
@@ -134,63 +137,65 @@ class Permissions {
     static disallowPrint(perm) {
         return Permissions.disallowType(perm, "print");
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allowOther, allowMod, disallowOther, disallowMod">
     static allowOther(key) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_other_list} = storage.loggedUser.user.data;
         const perm = (permissions_other_list || []).find(({key: {value}}) => value === key);
         return Permissions.allow(perm);
     }
 
     static allowMod(key) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_module_list} = storage.loggedUser.user.data;
         const perm = (permissions_module_list || []).find(({key: __key, module}) => {
-            if(module) return module.key === key;
+            if (module) return module.key === key;
             return __key === key;
         });
         return Permissions.allow(perm);
     }
 
     static disallowOther(key) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_other_list} = storage.loggedUser.user.data;
         const perm = (permissions_other_list || []).find(({key: {value}}) => value === key);
         return Permissions.disallow(perm);
     }
 
     static disallowMod(key) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_module_list} = storage.loggedUser.user.data;
         const perm = (permissions_module_list || []).find(({key: __key, module}) => {
-            if(module) return module.key === key;
+            if (module) return module.key === key;
             return __key === key;
         });
         return Permissions.disallow(perm);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allowTypeOther, disallowTypeOther, allowTypeMod, disallowTypeMod">
     static allowTypeOther(key, type) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_other_list} = storage.loggedUser.user.data;
         const perm = (permissions_other_list || []).find(({key: {value}}) => value === key);
         return Permissions.allowType(perm, type);
     }
 
     static disallowTypeOther(key, type) {
-        if(!key) return;
+        if (!key) return;
         return !Permissions.allowTypeOther(key, type);
     }
 
     static allowTypeMod(key, type) {
-        if(!key) return;
+        if (!key) return;
         const {permissions_module_list} = storage.loggedUser.user.data;
         // console.log('allowTypeMod', key, type);
         const perm = (permissions_module_list || []).find(({key: __key, module}) => {
-            if(module) return module.key === key;
+            if (module) return module.key === key;
             return __key === key;
         });
         // console.log('allowTypeMod perm', perm);
@@ -198,9 +203,10 @@ class Permissions {
     }
 
     static disallowTypeMod(key, type) {
-        if(!key) return;
+        if (!key) return;
         return !Permissions.allowTypeMod(key, type);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allow*Other">
@@ -227,6 +233,7 @@ class Permissions {
     static allowPrintOther(key) {
         return Permissions.allowTypeOther(key, "print");
     }
+
     //</editor-fold>
 
     //<editor-fold desc="disallow*Other">
@@ -253,6 +260,7 @@ class Permissions {
     static disallowPrintOther(key) {
         return Permissions.disallowTypeOther(key, "print");
     }
+
     //</editor-fold>
 
     //<editor-fold desc="allow*Mod">
@@ -279,6 +287,7 @@ class Permissions {
     static allowPrintMod(key) {
         return Permissions.allowTypeMod(key, "print");
     }
+
     //</editor-fold>
 
     //<editor-fold desc="disallow*Mod">
@@ -305,6 +314,7 @@ class Permissions {
     static disallowPrintMod(key) {
         return Permissions.disallowTypeMod(key, "print");
     }
+
     //</editor-fold>
 
 }

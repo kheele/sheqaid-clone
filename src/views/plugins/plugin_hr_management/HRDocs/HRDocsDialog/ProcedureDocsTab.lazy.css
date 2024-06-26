@@ -1,10 +1,3 @@
-.ProcedureDocsTab .page-title {
-    position: absolute;
-    left: 50%;
-    top: 60px;
-    transform: translate(-50%, 0px);
-}
-
-.ProcedureDocsTab > .MuiGrid-container {
-    margin-top: 45px;
+#ProcedureDocsTab .page-title > .page-back-btn {
+    display: none;
 }

@@ -2,6 +2,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
+import style from "./LeavesDialog.lazy.css";
+
 import ExportDialog from '../ExportDialog.js';
 
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
@@ -16,11 +18,12 @@ import LeavesRenderRow from "./LeavesRenderRow";
 import {THead} from "components/tables";
 import {Button, ClearableInput} from "components/inputs";
 
-import findByIdContractorHRLeavesDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRLeavesDashboardStatsByLogged";
-import findByIdContractorHRLeavesDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRLeavesDateRangeDashboardStatsByLogged";
 import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
+import ProfileUserDialog from "../../../../default/Users/ProfileDialog";
+import EditUserDialog from "../../../../default/Users/EditDialog";
+import NewEmployeeDialog from "../../Employees/forms/NewDialog";
+import contractorStore from "mutations/all/Contractor";
+import TabView from "./TabView";
 
 // </editor-fold>
 
@@ -32,12 +35,12 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Leaves";
     module = "Leaves";
     onUpdate = updateEmployeeLeave;
-    hasSignatures = true;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
+    style = style;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog, ExportDialog, TabView,
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -58,6 +61,8 @@ class Dialog extends AEmployeeDocDialog {
                 Request Time-off
             </Button>
             <NewDialog ref="newDialog" isSelfRequest/>
+            <ProfileUserDialog ref="profileUserDialog" EditDialog={EditUserDialog}
+                               NewEmployeeDialog={NewEmployeeDialog}/>
         </>;
     }
 
@@ -67,9 +72,16 @@ class Dialog extends AEmployeeDocDialog {
             const {loggedUser: {user}} = storage;
             this.refs.newDialog.open(user);
         } else {
-            const {loggedUser: {user: {data: {linked_employee_id}}}} = storage;
+            const {loggedUser: {user, user: {data: {linked_employee_id}}}} = storage;
             if (!linked_employee_id) {
-                return infoDialog.open("You have not been registered as an employee. Please link your account with your employee account.");
+                return infoDialog.action("Register As Employee", () => {
+                    infoDialog.close();
+                    this.refs.profileUserDialog.extraProp('linked_employee', true).open(user).then(() => {
+                    });
+                }).open(<p>
+                    Your Account is not linked to any Employee Profile.<br/>
+                    Please link your account with your Employee Profile.
+                </p>);
             }
             this.refs.newDialog.open({id: linked_employee_id});
         }
@@ -80,17 +92,24 @@ class Dialog extends AEmployeeDocDialog {
     //<editor-fold desc="onBuildQuery">
     onBuildQuery(params) {
         const {page, lastItem, filterData, filtered, isNew} = params;
+        const {tabView: {status}} = this.refs;
         const {
             type,
             due_to,
             date,
         } = filterData || {};
-        return {
+
+        const args = {
             path: 'employees/docs/leaves',
             type,
             due_to,
             date,
         };
+
+        if (status) {
+            args.status = status;
+        }
+        return args;
     }
 
     //</editor-fold>
@@ -101,7 +120,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRLeavesDashboardStatsByLogged();
+            return contractorStore.findByIdHRLeavesDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -139,7 +158,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRLeavesDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRLeavesDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')

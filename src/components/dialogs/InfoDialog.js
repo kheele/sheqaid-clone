@@ -11,15 +11,13 @@ import Dialog from './Dialog';
 @observer
 class InfoDialog extends React.Component {
     static propTypes = {
-        title: PropTypes.string,
-        message: PropTypes.string
+        title: PropTypes.string, message: PropTypes.string
     };
 
     onResponse;
     @observable
     state = {
-        actions: [], 
-        msg: null
+        actions: [], msg: null
     };
 
     constructor(props) {
@@ -59,6 +57,7 @@ class InfoDialog extends React.Component {
     }
 
     close(delay) {
+        this.state.actions.clear();
         this.onResponse && this.onResponse();
         if (isNumber(delay)) {
             setTimeout(() => this.refs.dialog.close(), delay);
@@ -76,12 +75,29 @@ class InfoDialog extends React.Component {
         >
             <Msg state={this.state}/>
             <div className="controls">
-                {this.state.actions.map(v => {
-                    return <Button key={v.action} className="btn btn-primary pull-right" text={v.action} onClick={v.fn}/>;
-                })}
                 <Button className="btn btn-primary pull-right" text="Close" onClick={this.onCancel}/>
+                <Buttons state={this.state}/>
             </div>
         </Dialog>);
+    }
+}
+
+@observer
+class Buttons extends React.Component {
+    render() {
+        const {actions} = this.props.state;
+        if (!actions || actions.isEmpty()) return null;
+
+        return <>
+            {actions.map(v => {
+                return <Button
+                    key={v.action}
+                    className="btn btn-primary pull-right"
+                    text={v.action}
+                    onClick={v.fn}
+                />;
+            })}
+        </>;
     }
 }
 

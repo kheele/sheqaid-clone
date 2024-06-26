@@ -44,30 +44,26 @@ class DocSignButton extends React.Component {
         const {employee_id} = this;
 
         const {doc} = this.props;
-        const {employee_submitter_list} = doc;
-        const employee = employee_submitter_list.find(v => v.is_owning);
-        if (employee) {
+        const {employee_submitter_list} = doc.data || doc;
+        const employee_submitter = employee_submitter_list.find(({employee}) => employee.id === employee_id);
+        if (employee_submitter) {
+            const {employee, role} = employee_submitter;
             if (employee.id === employee_id) {
                 return true;
             }
         }
-
-
     }
 
     get submitter() {
         const {employee_id} = this;
 
         const {doc} = this.props;
-        const {employee_submitter_list} = doc;
-        const employee = employee_submitter_list.find(v => v.is_owning);
-        if (employee) {
-            if (employee.id === employee_id) {
-                return "Employee";
-            }
+        const {employee_submitter_list} = doc.data || doc;
+        const employee_submitter = employee_submitter_list.find(({employee}) => employee.id === employee_id);
+        if (employee_submitter) {
+            const {employee, role} = employee_submitter;
+            return role;
         }
-
-
     }
 
     componentWillMount() {
@@ -86,9 +82,9 @@ class DocSignButton extends React.Component {
         const {doc} = this.props;
         if (!doc) return <CircularProgress className="fixed-center"/>;
 
-        // if (!this.isSubmitter) return null;
+        if (!this.isSubmitter) return null;
 
-        const {slug} = doc;
+        const {slug} = doc.data || doc;
 
         return <>
             <Button
@@ -107,7 +103,7 @@ class DocSignButton extends React.Component {
             >
                 <DocusealForm
                     src={`https://docuseal.co/s/${slug}`}
-                    submitter="General Manager"
+                    submitter={this.submitter}
                     customCss={this.customCss}
                 />
             </Dialog>

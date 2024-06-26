@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 
 const findById = path => async (id) => {
-    try{
+    try {
         const {findById} = sockets.of(path);
         return await findById(id);
-    } catch(err) {
+    } catch (err) {
         throw err;
     }
 };
@@ -19,3 +19,4 @@ export const findByIdProxyNCRResponsibleParty = findById("ncr/proxy/responsible-
 export const findByIdProxyNCRDocument = findById("ncr/proxy/document");
 
 export const findByIdOHSDoc = findById("documents/ohs-docs");
+export const findByIdSignableDoc = findById("doc-signing-settings/api/docuseal/templates");

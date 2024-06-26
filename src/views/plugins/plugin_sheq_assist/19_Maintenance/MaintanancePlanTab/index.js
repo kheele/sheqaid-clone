@@ -1,412 +1,413 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
-import { observer } from 'mobx-react';
-import { observable, computed } from 'mobx';
+import {observer} from 'mobx-react';
+import {computed, observable} from 'mobx';
 
-import { onSelectLoadAssetLocations, onSelectLoadAssetManufacturers } from 'views/plugins/utils';
+import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from 'views/plugins/utils';
 
-import { CalculationUtils, Dates, execWhen } from "utils/Utils";
+import {Dates, execWhen} from "utils/Utils";
 
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import { ActionsButton, ClearableInput, Clickable, SelectAssetTypeInput } from 'components/inputs';
-import { THead, TRow } from 'components/tables';
+import {ClearableInput, SelectAssetTypeInput} from 'components/inputs';
+import {THead} from 'components/tables';
 
 import ProfileToolDialog from '../ToolsTab/forms/ProfileToolDialog.js';
 import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 
 import style from "./MaintenancePlanTab.lazy.css";
-import { CONSTANTS } from "../ToolsTab/forms/AssetComponents";
-import byLogged from "./Query/List/listAllMaintanancePlansByLogged";
+import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "../../../../../components/ViewByButtons";
-import assetProfilePic from "../../../../../assets/images/vehicle-image-loading.png";
-import { ExpiryButtons, renderExpiryDateSpan } from "../../../../../utils/ComponentUtils";
 import AssetMaintenanceRenderRow from "./AssetMaintenanceRenderRow";
 
 // </editor-fold>
 
 @observer
 class MaintenancePlanTab extends React.Component {
-	pageKey = "MaintenancePlanTab";
+    pageKey = "MaintenancePlanTab";
 
-	// <editor-fold defaultstate="collapsed" desc="state">
-	@observable
-	state = {
-		lists: {
-			manufacturers: [],
-			locations: [],
-			conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap']
-		},
-		loadedSelectLists: false,
-		view: 'Asset',
-		expiry_date: 'ALL',
-	};
-	// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="state">
+    @observable
+    state = {
+        lists: {
+            manufacturers: [],
+            locations: [],
+            conditions: ['New', 'Good', 'Fair', 'Poor', 'Scrap']
+        },
+        loadedSelectLists: false,
+        view: 'Asset',
+        expiry_date: 'ALL',
+    };
+    // </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="constructor">
-	constructor(props) {
-		super(props);
+    // <editor-fold defaultstate="collapsed" desc="constructor">
+    constructor(props) {
+        super(props);
 
-		this.onLoadList = this.onLoadList.bind(this);
+        this.onLoadList = this.onLoadList.bind(this);
 
-		this.setView = this.setView.bind(this);
-		this.onViewAsset = this.onViewAsset.bind(this);
-		this.onViewMaintenanceService = this.onViewMaintenanceService.bind(this);
+        this.setView = this.setView.bind(this);
+        this.onViewAsset = this.onViewAsset.bind(this);
+        this.onViewMaintenanceService = this.onViewMaintenanceService.bind(this);
 
-		this.onView = this.onView.bind(this);
-		this.onAddMaintenanceService = this.onAddMaintenanceService.bind(this);
+        this.onView = this.onView.bind(this);
+        this.onAddMaintenanceService = this.onAddMaintenanceService.bind(this);
 
-		this.onPrintForm = this.onPrintForm.bind(this);
-		this.renderLeftButtons = this.renderLeftButtons.bind(this);
-		this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
-		this.renderFilterNode = this.renderFilterNode.bind(this);
-		this.renderTHead = this.renderTHead.bind(this);
-		this.renderItem = this.renderItem.bind(this);
-	}
+        this.onPrintForm = this.onPrintForm.bind(this);
+        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
+        this.renderFilterNode = this.renderFilterNode.bind(this);
+        this.renderTHead = this.renderTHead.bind(this);
+        this.renderItem = this.renderItem.bind(this);
+    }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="componentWillMount, componentMount, componentWillUnmount">
-	componentWillMount() {
-		style.use();
-	}
+    @computed get isAsset() {
+        return this.state.view === "Asset";
+    }
 
-	componentDidMount() {
-		const loads = { manufacturers: onSelectLoadAssetManufacturers, locations: onSelectLoadAssetLocations };
-		Promise.all(Object.keys(loads).map(k => {
-			return loads[k]().then(res => {
-				this.state.lists[k] = res.distinct();
-			});
-		})).then(res => {
-			this.state.loadedSelectLists = true;
-		});
-	}
+    @computed get isUpcoming() {
+        return this.state.view === "Upcoming Maintenances";
+    }
 
-	componentWillUnmount() {
-		style.unuse();
-	}
+    @computed get isPast() {
+        return this.state.view === "Past Maintenances";
+    }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	@computed get isAsset() {
-		return this.state.view === "Asset";
-	}
+    @computed get isHistory() {
+        return this.state.view === "Maintenance History";
+    }
 
-	@computed get isUpcoming() {
-		return this.state.view === "Upcoming Maintenances";
-	}
+    // <editor-fold defaultstate="collapsed" desc="componentWillMount, componentMount, componentWillUnmount">
+    componentWillMount() {
+        style.use();
+    }
 
-	@computed get isPast() {
-		return this.state.view === "Past Maintenances";
-	}
+    componentDidMount() {
+        const loads = {manufacturers: onSelectLoadAssetManufacturers, locations: onSelectLoadAssetLocations};
+        Promise.all(Object.keys(loads).map(k => {
+            return loads[k]().then(res => {
+                this.state.lists[k] = res.distinct();
+            });
+        })).then(res => {
+            this.state.loadedSelectLists = true;
+        });
+    }
 
-	@computed get isHistory() {
-		return this.state.view === "Maintenance History";
-	}
+    componentWillUnmount() {
+        style.unuse();
+    }
 
-	//<editor-fold desc="onLoadList">
-	onLoadList(params = {}) {
-		const { state: { view, expiry_date } } = this;
-		const { page, lastItem, filterData, filtered, isNew } = params;
-		const {
-			asset_id,
-			//
-			name,
-			reg_num,
-			serial_num,
-			model,
-			condition,
-			location,
-			manufacturer,
-			asset_type,
-			status,
-		} = filterData || {};
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {state: {view, expiry_date}} = this;
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            asset_id,
+            //
+            name,
+            reg_num,
+            serial_num,
+            model,
+            condition,
+            location,
+            manufacturer,
+            asset_type,
+            status,
+        } = filterData || {};
 
-		const mon = Dates.formatDateSQL(new Date().addMonths(1));
-		const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
-		const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
+        const mon = Dates.formatDateSQL(new Date().addMonths(1));
+        const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
+        const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 
-		const listByLogged = sockets.of('assets/maintenance-plans').fn('listByLogged');
+        const listByLogged = sockets.of('assets/maintenance-plans').fn('listByLogged');
 
-		return listByLogged({
-			view, expiry_date,
-			mon, mon2, mon3,
-			//
-			asset_id,
-			//
-			name,
-			reg_num,
-			serial_num,
-			model,
-			condition,
-			location,
-			manufacturer,
-			asset_type,
-			status,
-			//
-			exact_orgs: true,
-			//
-			offset: isNew ? 0 : this.refs.root.list.length,
-		}).then((res) => {
-			console.log('onLoadList res', res)
-			return res;
-		});
-	}
+        return listByLogged({
+            view, expiry_date,
+            mon, mon2, mon3,
+            //
+            asset_id,
+            //
+            name,
+            reg_num,
+            serial_num,
+            model,
+            condition,
+            location,
+            manufacturer,
+            asset_type,
+            status,
+            //
+            exact_orgs: true,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="setView">
-	async setView({ view = 'Asset', expiry_date = 'ALL', load = true }) {
-		let ref;
-		if (this.refs.viewButtonsRefBox) {
-			ref = this.refs.viewButtonsRefBox;
-		} else {
-			ref = await execWhen(() => this.refs.viewButtonsRefBox);
-		}
+    //<editor-fold desc="setView">
+    async setView({view = 'Asset', expiry_date = 'ALL', load = true}) {
+        let ref;
+        if (this.refs.viewButtonsRefBox) {
+            ref = this.refs.viewButtonsRefBox;
+        } else {
+            ref = await execWhen(() => this.refs.viewButtonsRefBox);
+        }
 
-		ref.setView(view);
-		this.state.view = view;
-		this.state.expiry_date = expiry_date;
+        ref.setView(view);
+        this.state.view = view;
+        this.state.expiry_date = expiry_date;
 
-		if (load) {
-			this.refs.root.load();
-		}
-	}
+        if (load) {
+            this.refs.root.load();
+        }
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="onViewAsset">
-	onViewAsset(e, el) {
-		const { idx } = el.props;
-		const { list } = this.refs.root;
-		const item = list[idx];
-		console.log("list", this.isAsset, list.slice())
-		const dialog = this.refs.root.getDialogByRef('profileDialog');
-		if (dialog) {
-			if (this.isAsset) {
-				dialog.open(item);
-			} else {
-				const { data: { asset: assetItem } } = item;
-				dialog.open(assetItem);
-			}
-		}
-	}
+    // <editor-fold defaultstate="collapsed" desc="onViewAsset">
+    onViewAsset(e, el) {
+        const {idx} = el.props;
+        const {list} = this.refs.root;
+        const item = list[idx];
+        console.log("list", this.isAsset, list.slice())
+        const dialog = this.refs.root.getDialogByRef('profileDialog');
+        if (dialog) {
+            if (this.isAsset) {
+                dialog.open(item);
+            } else {
+                const {data: {asset: assetItem}} = item;
+                dialog.open(assetItem);
+            }
+        }
+    }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="onViewMaintenanceService">
-	onViewMaintenanceService(e, el) {
-		const { idx } = el.props;
-		const { list } = this.refs.root;
-		const item = list[idx];
-		// console.log("list", this.isAsset, list.slice())
-		const dialog = this.refs.root.getDialogByRef('profileDialog');
-		if (dialog) {
-			if (this.isAsset) {
-				dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
-			} else {
-				const { data: { asset: assetItem } } = item;
-				dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).extraProp('docActiveId', item.id).open(assetItem);
-			}
-		}
-	}
+    // <editor-fold defaultstate="collapsed" desc="onViewMaintenanceService">
+    onViewMaintenanceService(e, el) {
+        const {idx} = el.props;
+        const {list} = this.refs.root;
+        const item = list[idx];
+        // console.log("list", this.isAsset, list.slice())
+        const dialog = this.refs.root.getDialogByRef('profileDialog');
+        if (dialog) {
+            if (this.isAsset) {
+                dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
+            } else {
+                const {data: {asset: assetItem}} = item;
+                dialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).extraProp('docActiveId', item.id).open(assetItem);
+            }
+        }
+    }
 
-	// </editor-fold>
-	//
-	onPrintForm() {
-		this.refs.newMaintenancePlanPrintDialog.open();
-	}
+    // </editor-fold>
+    //
+    onPrintForm() {
+        this.refs.newMaintenancePlanPrintDialog.open();
+    }
 
-	onView(e, el) {
-		const { idx } = el.props;
-		const { list } = this.refs.root;
-		const item = list[idx];
-		if (item) {
-			this.refs.profileDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
-		}
-	}
+    onView(e, el) {
+        const {idx} = el.props;
+        const {list} = this.refs.root;
+        const item = list[idx];
+        if (item) {
+            this.refs.profileDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
+        }
+    }
 
-	onAddMaintenanceService(e, el) {
-		const { idx } = el.props;
-		const { list } = this.refs.root;
-		const item = list[idx];
-		if (item) {
-			this.refs.editDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
-		}
-	}
+    onAddMaintenanceService(e, el) {
+        const {idx} = el.props;
+        const {list} = this.refs.root;
+        const item = list[idx];
+        if (item) {
+            this.refs.editDialog.extraProp('rowIdx', CONSTANTS.MAINTENANCE).open(item);
+        }
+    }
 
-	renderLeftButtons() {
-		return null/*<div className="left-buttons pull-left">
+    renderLeftButtons() {
+        return null/*<div className="left-buttons pull-left">
             <Button key="buttonPrintForm" className="btn btn-primary pull-right _888" onClick={this.onPrintForm}>
                 <i key="buttonPrintFormIcon" className="fa fa-chart-bar icon-left"/>Print Form
             </Button>
         </div>*/;
-	}
+    }
 
-	renderPopoverOptions(idx, { onView, onEdit, onRemove, Options }) {
-		return <Options idx={idx} permissionModKey={this.props.permissionKey}>
-			<NavItem action="view" onClick={this.onViewAsset} faIconLeft="eye" title="View Asset" />
-			{!this.isAsset && <NavItem action="view" onClick={this.onViewMaintenanceService} faIconLeft="eye" title="View Maintenance Service" />}
-			<NavItem action="writable" idx={idx} onClick={this.onAddMaintenanceService} faIconLeft="plus"
-				title="Add Maintenance Service" />
-		</Options>;
-	}
+    renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
+        return <Options idx={idx} permissionModKey={this.props.permissionKey}>
+            <NavItem action="view" onClick={this.onViewAsset} faIconLeft="eye" title="View Asset"/>
+            {!this.isAsset && <NavItem action="view" onClick={this.onViewMaintenanceService} faIconLeft="eye"
+                                       title="View Maintenance Service"/>}
+            <NavItem action="writable" idx={idx} onClick={this.onAddMaintenanceService} faIconLeft="plus"
+                     title="Add Maintenance Service"/>
+        </Options>;
+    }
 
-	renderFilterNode(onChange) {
-		if (!this.state.loadedSelectLists) {
-			return <div className="col-lg-12 controls flex text-center">Loading...</div>;
-		}
-		return <div className="col-lg-12 controls -margin-b-35">
-			<SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." className="col-lg-4 form-control"
-				onChange={onChange} />
-			<ClearableInput name="manufacturer" type="select" placeholder="Manufacturer..." className="col-lg-4 form-control"
-				onChange={onChange} values={this.state.lists.manufacturers} returnValue />
-			<ClearableInput name="location" type="select" placeholder="Location..." className="col-lg-4 form-control"
-				onChange={onChange} values={this.state.lists.locations} returnValue />
-			<ClearableInput name="condition" type="select" placeholder="Condition..."
-				className="col-lg-4 margin-t-10 form-control" onChange={onChange}
-				values={this.state.lists.conditions} returnValue />
-			<ClearableInput name="name" type="text" placeholder="Asset Name" className="col-lg-4 margin-t-10 form-control"
-				onChange={onChange} />
-			{/*<Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
+    renderFilterNode(onChange) {
+        if (!this.state.loadedSelectLists) {
+            return <div className="col-lg-12 controls flex text-center">Loading...</div>;
+        }
+        return <div className="col-lg-12 controls -margin-b-35">
+            <SelectAssetTypeInput name="asset_type" placeholder="Asset Type..." className="col-lg-4 form-control"
+                                  onChange={onChange}/>
+            <ClearableInput name="manufacturer" type="select" placeholder="Manufacturer..."
+                            className="col-lg-4 form-control"
+                            onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
+            <ClearableInput name="location" type="select" placeholder="Location..." className="col-lg-4 form-control"
+                            onChange={onChange} values={this.state.lists.locations} returnValue/>
+            <ClearableInput name="condition" type="select" placeholder="Condition..."
+                            className="col-lg-4 margin-t-10 form-control" onChange={onChange}
+                            values={this.state.lists.conditions} returnValue/>
+            <ClearableInput name="name" type="text" placeholder="Asset Name"
+                            className="col-lg-4 margin-t-10 form-control"
+                            onChange={onChange}/>
+            {/*<Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
                 <i className="fa fa-barcode icon-left"/>Scan Barcode
             </Button>*/}
-		</div>;
-	}
+        </div>;
+    }
 
-	renderTHead() {
-		const { isConsultant, hasProjects, isContractor } = storage.is;
-		const frag = <>
-			<div className="td fixed-flex min-w-50">ID</div>
-			<div className="td fixed-flex min-w-80">Photo</div>
-			<div className="td fixed-flex min-w-140">Asset Type</div>
-			<div className="td">Asset</div>
-			<div className="td">Location</div>
-			<div className="td fixed-flex min-w-140">Reg. No.</div>
-			<div className="td fixed-flex min-w-140">Serial No.</div>
-		</>;
-		if (this.isAsset) {
-			return <THead>
-				{frag}
-				<div className="td fixed-flex min-w-140">Last Service</div>
-				<div className="td fixed-flex min-w-160">Previous Schedule</div>
-				<div className="td fixed-flex min-w-140">Next Service</div>
-				<div className="td fixed-flex min-w-240">Stats</div>
-				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
-			</THead>;
-		} else if (this.isUpcoming) {
-			return <THead>
-				{frag}
-				<div className="td fixed-flex min-w-160">Next Service</div>
-				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
-			</THead>;
-		} else if (this.isPast) {
-			return <THead>
-				{frag}
-				<div className="td fixed-flex min-w-140">Date Scheduled</div>
-				<div className="td fixed-flex min-w-140">Completed On</div>
-				<div className="td fixed-flex min-w-140">Hrs/KMs Completed</div>
-				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
-			</THead>;
-		} else if (this.isHistory) {
-			return <THead>
-				{frag}
-				<div className="td fixed-flex min-w-160">Reason For Servive</div>
-				<div className="td fixed-flex min-w-100">Service</div>
-				<div className="td fixed-flex min-w-170">Service Time/Distance</div>
-				<div className="td fixed-flex min-w-120">Service Date</div>
-				{/* <div className="td fixed-flex min-w-140">Cost & Receipt</div> */}
-				<div className="td fixed-flex min-w-180">Distance/Time Scheduled</div>
-				{/* <div className="td fixed-flex min-w-140">Days Completed</div> */}
-				<div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
-			</THead>;
-		}
+    renderTHead() {
+        const {isConsultant, hasProjects, isContractor} = storage.is;
+        const frag = <>
+            <div className="td fixed-flex min-w-50">ID</div>
+            <div className="td fixed-flex min-w-80">Photo</div>
+            <div className="td fixed-flex min-w-140">Asset Type</div>
+            <div className="td">Asset</div>
+            <div className="td">Location</div>
+            <div className="td fixed-flex min-w-140">Reg. No.</div>
+            <div className="td fixed-flex min-w-140">Serial No.</div>
+        </>;
+        if (this.isAsset) {
+            return <THead>
+                {frag}
+                <div className="td fixed-flex min-w-140">Last Service</div>
+                <div className="td fixed-flex min-w-160">Previous Schedule</div>
+                <div className="td fixed-flex min-w-140">Next Service</div>
+                <div className="td fixed-flex min-w-240">Stats</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+            </THead>;
+        } else if (this.isUpcoming) {
+            return <THead>
+                {frag}
+                <div className="td fixed-flex min-w-160">Next Service</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+            </THead>;
+        } else if (this.isPast) {
+            return <THead>
+                {frag}
+                <div className="td fixed-flex min-w-140">Date Scheduled</div>
+                <div className="td fixed-flex min-w-140">Completed On</div>
+                <div className="td fixed-flex min-w-140">Hrs/KMs Completed</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+            </THead>;
+        } else if (this.isHistory) {
+            return <THead>
+                {frag}
+                <div className="td fixed-flex min-w-160">Reason For Servive</div>
+                <div className="td fixed-flex min-w-100">Service</div>
+                <div className="td fixed-flex min-w-170">Service Time/Distance</div>
+                <div className="td fixed-flex min-w-120">Service Date</div>
+                {/* <div className="td fixed-flex min-w-140">Cost & Receipt</div> */}
+                <div className="td fixed-flex min-w-180">Distance/Time Scheduled</div>
+                {/* <div className="td fixed-flex min-w-140">Days Completed</div> */}
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
+            </THead>;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	renderItem(n, onClick) {
-		const item = this.refs.root.list[n];
-		return <AssetMaintenanceRenderRow key={item.id} idx={n} item={item} view={this.state.view} onClick={onClick} onView={this.onViewAsset} />;
-	}
+    renderItem(n, onClick) {
+        const item = this.refs.root.list[n];
+        return <AssetMaintenanceRenderRow key={item.id} idx={n} item={item} view={this.state.view} onClick={onClick}
+                                          onView={this.onViewAsset}/>;
+    }
 
-	render() {
-		const { state, state: { expiry_date } } = this;
-		return <>
-			<ViewByButtonsBox
-				ref="viewButtonsRefBox"
-				state={state}
-				expiry_date={expiry_date}
-				onChange={this.setView}
-			/>
-			<APageListReadWrite
-				hasBackBtn={false}
-				ref="root"
-				page={this}
-				createBtnTitle="Create"
-				pageId={this.pageKey + "-tab"}
-				pageTitle="Maintenance Plan"
-				pageTitleSingular="maintenance plan"
-				onLoadList={this.onLoadList}
-				noAnimation={true}
-				renderLeftButtons={this.renderLeftButtons}
-				renderPopoverOptions={this.renderPopoverOptions}
-				renderFilterNode={this.renderFilterNode}
-				renderTHead={this.renderTHead}
-				renderItem={this.renderItem}>
-				<ConfirmDialog ref="removeDialog" />
+    render() {
+        const {state, state: {expiry_date}} = this;
+        return <>
+            <ViewByButtonsBox
+                ref="viewButtonsRefBox"
+                state={state}
+                expiry_date={expiry_date}
+                onChange={this.setView}
+            />
+            <APageListReadWrite
+                hasBackBtn={false}
+                ref="root"
+                page={this}
+                createBtnTitle="Create"
+                pageId={this.pageKey + "-tab"}
+                pageTitle="Maintenance Plan"
+                pageTitleSingular="maintenance plan"
+                onLoadList={this.onLoadList}
+                noAnimation={true}
+                renderLeftButtons={this.renderLeftButtons}
+                renderPopoverOptions={this.renderPopoverOptions}
+                renderFilterNode={this.renderFilterNode}
+                renderTHead={this.renderTHead}
+                renderItem={this.renderItem}>
+                <ConfirmDialog ref="removeDialog"/>
 
-				<EditToolDialog ref="editDialog" />
-				<ProfileToolDialog ref="profileDialog" />
-			</APageListReadWrite>
-		</>;
-	}
+                <EditToolDialog ref="editDialog"/>
+                <ProfileToolDialog ref="profileDialog"/>
+            </APageListReadWrite>
+        </>;
+    }
 }
 
 // <editor-fold defaultstate="collapsed" desc="ViewByButtonsBox">
 @observer
 class ViewByButtonsBox extends React.Component {
 
-	items = [
-		"Asset",
-		"Maintenance History",
-		"Past Maintenances",
-		"Upcoming Maintenances",
-	];
+    items = [
+        "Asset",
+        "Maintenance History",
+        "Past Maintenances",
+        "Upcoming Maintenances",
+    ];
 
-	// <editor-fold defaultstate="collapsed" desc="constructor">
-	constructor(props) {
-		super(props);
+    // <editor-fold defaultstate="collapsed" desc="constructor">
+    constructor(props) {
+        super(props);
 
-		this.setView = this.setView.bind(this);
-	}
+        this.setView = this.setView.bind(this);
+    }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	setView(value) {
-		execWhen(() => this.viewButtonsRef).then(ref => {
-			ref.setView(value);
-		});
-	}
+    setView(value) {
+        execWhen(() => this.viewButtonsRef).then(ref => {
+            ref.setView(value);
+        });
+    }
 
-	render() {
-		const { state: { view }, expiry_date, titleSingular, onChange } = this.props;
-		return <MKBox
-			width="100%"
-			display="flex"
-			alignItems="center"
-			justifyContent="center"
-			margin='10px 0 0px'
-			padding="0 0 10px"
-			borderBottom="2px solid #ebebeb"
-		>
-			<ViewByButtons ref={ref => {
-				this.viewButtonsRef = ref;
-			}} text="Asset" expiry_date={expiry_date} value={view} items={this.items} onChange={onChange} />
-		</MKBox>
-	}
+    render() {
+        const {state: {view}, expiry_date, titleSingular, onChange} = this.props;
+        return <MKBox
+            width="100%"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            margin='10px 0 0px'
+            padding="0 0 10px"
+            borderBottom="2px solid #ebebeb"
+        >
+            <ViewByButtons ref={ref => {
+                this.viewButtonsRef = ref;
+            }} text="Asset" expiry_date={expiry_date} value={view} items={this.items} onChange={onChange}/>
+        </MKBox>
+    }
 }
 
 // </editor-fold>

@@ -14,10 +14,9 @@ import {
     SelectDocumentCategoryInput,
     SelectEmployeeInput,
     SelectProjectInput,
-    SelectSiteInput,
-    UploadButton
+    SelectSiteInput
 } from 'components/inputs';
-import {FormControls, Row} from 'components/FormComponents';
+import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
@@ -164,6 +163,10 @@ class Controls extends React.Component {
         }
 
         if (idx === 1) {
+            if (!form.isValid('is_template')) {
+                infoDialog.open('Select if document is template or not');
+                return;
+            }
             if (!form.isValid('internal_or_external')) {
                 infoDialog.open('Please check if a document is Internal / External');
                 return;
@@ -173,7 +176,9 @@ class Controls extends React.Component {
                 //1
                 responsible_department,
                 responsible_person,
+                employee,
                 expiry,
+                is_template,
                 internal_or_external,
                 category,
                 desc,
@@ -182,7 +187,9 @@ class Controls extends React.Component {
             const data = {};
             ShouldUpdate.checkDepartment(data, old_data, responsible_department, 'responsible_department');
             ShouldUpdate.checkEmployee(data, old_data, responsible_person, 'responsible_person');
+            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee');
             ShouldUpdate.checkDate(data, old_data, expiry, 'expiry');
+            ShouldUpdate.check(data, old_data, is_template, 'is_template');
             ShouldUpdate.check(data, old_data, internal_or_external, 'internal_or_external');
             ShouldUpdate.check(data, old_data, category && category.id, 'category_id');
             ShouldUpdate.check(data, old_data, desc, 'desc');
@@ -196,10 +203,10 @@ class Controls extends React.Component {
                 infoDialog.open('Document Title is required');
                 return;
             }
-            if (!form.isValid('doc')) {
-                infoDialog.open('Document is required (Please upload/type)');
-                return;
-            }
+            // if (!form.isValid('doc')) {
+            //     infoDialog.open('Document is required (Please upload/type)');
+            //     return;
+            // }
 
             const {
                 //2
@@ -241,7 +248,7 @@ class Controls extends React.Component {
         let {
             props: {
                 onFormNext, onFormBack, onFormOpen,
-                dialog: {props: {showCategory}}
+                dialog: {props: {showCategory, module, doc_type: doc_type_prop}}
             },
             item, item: {
                 id, data: {
@@ -250,15 +257,16 @@ class Controls extends React.Component {
                     client,
                     project,
                     site,
+                    is_template,
                     internal_or_external,
                     title,
                     desc,
                     responsible_department,
                     responsible_person,
+                    employee,
                     contractor,
                     contractor_site,
                     contractor_user,
-                    employee,
                     doc_type,
                     category,
                     removed,
@@ -317,11 +325,21 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormBack={!isNoProjects && onFormBack}
                 onFormSave={this.onFormSave}>
+                <ClearableInput name="title" type="text" placeholder="Document Title"
+                                defaultValue={title}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="is_template" type="radio" placeholder="Is Template?"
+                                defaultValue={is_template}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.is_template}/>
                 <SelectDepartmentInput name="responsible_department" placeholder="Department..."
                                        defaultValue={responsible_department} required
                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..."
                                      defaultValue={responsible_person} required
+                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectEmployeeInput name="employee" placeholder="Employee..."
+                                     defaultValue={employee} required
                                      className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry" type="date" placeholder="Expiry Date..." defaultValue={expiry} required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -354,15 +372,26 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormSave={this.onFormSave}>
-                <UploadButton
+                <DocUploadOption
                     name="doc"
-                    type={['PDF', 'Word', 'Excel']}
-                    buttonTitle="Upload Document (PDF/Word/Excel)"
+                    plugin="plugin_sheq_assist"
+                    module={module}
+                    doc_type={doc_type || doc_type_prop}
+                    setupNew
                     defaultValue={doc}
-                    showOnlyIcon
-                    className="col-lg-12 hor-center"
+                    type={['PDF', 'Word', 'Image']}
                     onChange={this.form.onChange}
+                    addChangeOne={this.form.addChangeOne}
                 />
+                {/*<UploadButton*/}
+                {/*    name="doc"*/}
+                {/*    type={['PDF', 'Word', 'Excel']}*/}
+                {/*    buttonTitle="Upload Document (PDF/Word/Excel)"*/}
+                {/*    defaultValue={doc}*/}
+                {/*    showOnlyIcon*/}
+                {/*    className="col-lg-12 hor-center"*/}
+                {/*    onChange={this.form.onChange}*/}
+                {/*/>*/}
                 {/*<GDocEditor*/}
                 {/*	ref="doc"*/}
                 {/*	name="doc"*/}

@@ -6,8 +6,8 @@ import NavItem from 'components/navs/NavItem';
 import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 
 // import style from "./AwaitingApprovalTab.lazy.css";
-
-import {extendObservable} from "mobx";
+import LoggedUserSettings from "utils/LoggedUserSettings";
+import updateEmployeeExpense from "mutations/all/EmployeeExpense/updateEmployeeExpense";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ActiveTab">
@@ -19,11 +19,50 @@ class AwaitingApprovalTab extends ActiveTab {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-        
+
         this.state.view = "Expense";
+
+        this.updateStatus = this.updateStatus.bind(this);
+        this.onApprove = this.onApprove.bind(this);
+        this.onReject = this.onReject.bind(this);
     }
 
     // </editor-fold>
+
+    updateStatus(evt, btn, status) {
+        const {idx} = btn.props;
+        const {list} = this.refs.root;
+        const item = list[idx];
+        const {id, data} = item;
+
+        confirmDialog.open("Do you want to proceed?").then(res => {
+            if (res) {
+                progressDialog.open();
+                updateEmployeeExpense({id, status}).then(res => {
+                    if (res) {
+                        data.status = status;
+                        list.removeAt(idx);
+                        infoDialog.open(`Expense successfully ${status.toLowerCase()}.`);
+                    } else {
+                        infoDialog.open(`Expense couldn't be ${status.toLowerCase()}. Please try again later.`);
+                    }
+                }).catch(err => {
+                    infoDialog.open("An error occurred. Please try again.");
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            }
+        });
+    }
+
+    onApprove(evt, btn) {
+        this.updateStatus(evt, btn, "Awaiting Payment");
+    }
+
+    onReject(evt, btn) {
+        this.updateStatus(evt, btn, "Rejected");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
@@ -31,12 +70,20 @@ class AwaitingApprovalTab extends ActiveTab {
         const {permissionKey, titleSingular} = this.props;
         const {isEmployee} = this;
         const isEditable = !isEmployee;
+
+        const isApprover = LoggedUserSettings.isExpenseApprovers();
+
         return <Options idx={idx} permissionModKey={permissionKey}>
             <NavItem action="view" isEmployee={isEmployee} onClick={this.onView} faIconLeft="eye" title="View"/>
             {isEmployee && <NavItem action="add" btn={btn} onClick={this.onAdd} faIconLeft="plus"
                                     title={`Add ${titleSingular}`}/>}
             {isEditable && <NavItem action="edit" btn={btn} onClick={this.onEdit} faIconLeft="edit" title="Edit"/>}
             {isEditable && <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>}
+            {isApprover && <>
+                <hr action="writable"/>
+                <NavItem idx={idx} action="edit" btn={btn} onClick={this.onApprove} faIconLeft="check" title="Approve"/>
+                <NavItem idx={idx} action="edit" btn={btn} onClick={this.onReject} faIconLeft="cancel" title="Reject"/>
+            </>}
             {/*<hr action="writable"/>*/}
             {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
             {/*         title="Save As PDF"/>*/}

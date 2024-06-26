@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 
@@ -15,12 +15,9 @@ import companyStore from "mutations/all/Company";
 import IDOrPassportRenderRow from "./IDOrPassportRenderRow";
 import {THead} from "components/tables";
 
-import findByIdContractorHRIDOrPassportDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRIDOrPassportDashboardStatsByLogged";
-import findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged";
-import updateEmployeeDocDocument
-    from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import contractorStore from "../../../../../../mutations/all/Contractor";
+
 // </editor-fold>
 
 @observer
@@ -41,6 +38,7 @@ class Dialog extends AEmployeeDocDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
@@ -54,6 +52,7 @@ class Dialog extends AEmployeeDocDialog {
             desc,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -62,7 +61,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRIDOrPassportDashboardStatsByLogged();
+            return contractorStore.findByIdHRIDOrPassportDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -92,6 +91,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
@@ -99,7 +99,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRIDOrPassportDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -129,12 +129,13 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -155,12 +156,14 @@ class Dialog extends AEmployeeDocDialog {
             </THead>;
         }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItemAll">
     renderItemAll({item, idx, view, onClick}) {
         return <IDOrPassportRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
 }

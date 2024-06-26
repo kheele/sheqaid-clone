@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -12,15 +12,14 @@ import {
     SelectDocumentCategoryInput,
     SelectEmployeeInput,
     SelectProjectInput,
-    SelectSiteInput,
-    UploadButton
+    SelectSiteInput
 } from 'components/inputs';
-import {FormControls, Row} from 'components/FormComponents';
+import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertDocument from "mutations/all/Document/insertDocument";
+import {insertDocument} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -37,11 +36,11 @@ class NewDialog extends ANewDialog {
         return Controls;
     }
 
-    onCancel(e, btn) {
-        this.refs.controls.onRemoveDoc().then(() => {
-            super.onCancel(e, btn);
-        });
-    }
+    // onCancel(e, btn) {
+    //     this.refs.controls.onRemoveDoc().then(() => {
+    //         super.onCancel(e, btn);
+    //     });
+    // }
 }
 
 // </editor-fold>
@@ -56,6 +55,11 @@ class Controls extends React.Component {
             internal_or_external: [{value: "Internal", text: "Internal", checked: false}, {
                 value: "External",
                 text: "External",
+                checked: false
+            }],
+            is_template: [{value: true, text: "Yes", checked: false}, {
+                value: false,
+                text: "No",
                 checked: false
             }],
         },
@@ -83,6 +87,29 @@ class Controls extends React.Component {
     // 	return this.refs.doc.removeDoc();
     // }
 
+    get showCategory() {
+        const {showCategory} = this.props.dialog.props;
+        return showCategory;
+    }
+
+    // </editor-fold>
+
+    get module() {
+        const {module} = this.props.dialog.props;
+        return module;
+    }
+
+    // </editor-fold>
+
+    get doc_type() {
+        const {doc_type} = this.props.dialog.props;
+        return doc_type;
+    }
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form, refs: {doc}} = this;
@@ -94,6 +121,10 @@ class Controls extends React.Component {
                 return;
             }
         } else if (idx === 1) {
+            if (!form.isValid('is_template')) {
+                infoDialog.open('Select if document is template or not');
+                return;
+            }
             if (!form.isValid('internal_or_external')) {
                 infoDialog.open('Please check if a document is Internal / External');
                 return;
@@ -114,13 +145,11 @@ class Controls extends React.Component {
         return true;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
         const {form} = this;
         const {isConsultant} = storage.is;
-        const {doc_type} = this.props.dialog.props;
+        const {showCategory, module, doc_type} = this;
 
         if (isConsultant && !form.isValid('client')) {
             infoDialog.open('Company is required');
@@ -131,11 +160,15 @@ class Controls extends React.Component {
             infoDialog.open('Document Title is required');
             return;
         }
-
-        if (!form.isValid('doc')) {
-            infoDialog.open('Document is required');
+        if (!form.isValid('is_template')) {
+            infoDialog.open('Select if document is template or not');
             return;
         }
+
+        // if (!form.isValid('doc')) {
+        //     infoDialog.open('Document is required');
+        //     return;
+        // }
 
         const {
             //0
@@ -145,7 +178,9 @@ class Controls extends React.Component {
             //1
             responsible_department,
             responsible_person,
+            employee,
             expiry,
+            is_template,
             internal_or_external,
             category,
             desc,
@@ -167,6 +202,8 @@ class Controls extends React.Component {
             //1
             responsible_department_id: responsible_department && responsible_department.id,
             responsible_person_id: responsible_person && responsible_person.id,
+            employee_id: employee && employee.id,
+            is_template,
             internal_or_external,
             category_id: category && category.id,
             desc,
@@ -200,12 +237,29 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {onFormNext, onFormBack, onFormOpen, dialog: {props: {showCategory}}} = this.props;
+        const {item, props: {onFormNext, onFormBack, onFormOpen}} = this;
+        const {showCategory, module, doc_type} = this;
         const {isConsultant, isNoProjects} = storage.is;
+
+        const {
+            data,
+        } = item || {};
+        const {
+            created_at,
+            client, project, site,
+            date, expiry, employee,
+            title,
+            responsible_department,
+            responsible_person,
+            internal_or_external,
+            category,
+            desc,
+            doc_version_list,
+        } = data || {};
+
+        const latest_version = (doc_version_list || []).getLastElement();
 
         return <FormControls onChange={this.form.onChange}>
             {!isNoProjects && <Row
@@ -218,12 +272,14 @@ class Controls extends React.Component {
                 {isConsultant && <SelectClientInput
                     name="client"
                     placeholder="Company..."
+                    defaultValue={client}
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
                 />}
                 <SelectProjectInput
                     name="project"
                     placeholder="Project..."
+                    defaultValue={project}
                     showAll
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
@@ -231,6 +287,7 @@ class Controls extends React.Component {
                 <SelectSiteInput
                     name="site"
                     placeholder="Site..."
+                    defaultValue={site}
                     showAll
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
@@ -244,22 +301,38 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={!isNoProjects && onFormBack}>
+                <ClearableInput name="title" type="text" placeholder="Document Title"
+                                defaultValue={title}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {!item && <ClearableInput name="is_template" type="radio" placeholder="Is Template?"
+                                          required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                          values={this.state.lists.is_template}/>}
                 <SelectDepartmentInput name="responsible_department" placeholder="Department..." required
+                                       defaultValue={responsible_department}
                                        className="col-lg-12 form-control"
                                        onChange={this.form.onChange}/>
                 <SelectEmployeeInput name="responsible_person" placeholder="Responsible Person..." required
+                                     defaultValue={responsible_person}
+                                     className="col-lg-12 form-control"
+                                     onChange={this.form.onChange}/>
+                <SelectEmployeeInput name="employee" placeholder="Employee..." required
+                                     defaultValue={employee}
                                      className="col-lg-12 form-control"
                                      onChange={this.form.onChange}/>
                 <ClearableInput name="expiry" type="date" placeholder="Expiry Date..." required
+                                defaultValue={expiry}
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="internal_or_external" type="radio" placeholder="Internal / External Document?"
+                                defaultValue={internal_or_external}
                                 required className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.internal_or_external}/>
                 {showCategory &&
                     <SelectDocumentCategoryInput ref="category" name="category" placeholder="Document Category..."
+                                                 defaultValue={category}
                                                  className="col-lg-12 form-control"
                                                  onChange={this.form.onChange}/>}
                 <ClearableInput name="desc" type="textarea" placeholder="Document Description" required
+                                defaultValue={desc}
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             {/*<Row
@@ -276,14 +349,18 @@ class Controls extends React.Component {
                 idx={2}
                 title="2. Document"
                 onFormOpen={onFormOpen}
-                onFormBack={onFormBack}>
-                <UploadButton
+                onFormBack={onFormBack}
+            >
+                <DocUploadOption
                     name="doc"
-                    type={['PDF', 'Word', 'Excel']}
-                    buttonTitle="Upload Document (PDF/Word/Excel)"
-                    showOnlyIcon
-                    className="col-lg-12 hor-center"
+                    plugin="plugin_sheq_assist"
+                    module={module}
+                    doc_type={doc_type}
+                    defaultValue={latest_version && latest_version.doc}
+                    setupNew
+                    type={['PDF', 'Word', 'Image']}
                     onChange={this.form.onChange}
+                    addChangeOne={this.form.addChangeOne}
                 />
                 {/*<GDocEditor*/}
                 {/*	ref="doc"*/}
@@ -296,7 +373,7 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
-
+    
     // </editor-fold>
 }
 

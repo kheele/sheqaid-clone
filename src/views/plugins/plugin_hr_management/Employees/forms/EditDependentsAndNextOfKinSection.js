@@ -7,11 +7,11 @@ import {Dates} from 'utils/Utils';
 import {Row} from 'components/FormComponents';
 import NextOfKinSection from "./NextOfKinSection";
 import DependantSection from "./DependantSection";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
 class EditDependentsAndNextOfKinSection extends React.Component {
-    static isValid = Settings.isValidEmployeeDependantsAndNextOfKinViewers;
+    static isValid = EmployeeProfileSettings.isValidEmployeeDependantsAndNextOfKinViewers;
     pageKey = "NewDependentsAndNextOfKinTab";
 
     //<editor-fold desc="constructor">
@@ -55,7 +55,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
         return <div id={this.pageKey + "-tab"} className={className}>
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls">
-                    {Settings.isValidEmployeeNextOfKinViewers(item) && <Row
+                    {EmployeeProfileSettings.isValidEmployeeNextOfKinViewers(item) && <Row
                         rendered
                         idx={idx + ".1"}
                         title={idx + ".1 Next Of Kin"}
@@ -66,7 +66,7 @@ class EditDependentsAndNextOfKinSection extends React.Component {
                         <NextOfKinSection item={item} isNewEmployee={isNewEmployee} isEmbedded
                                           onChange={this.form.onChange}/>
                     </Row>}
-                    {Settings.isValidEmployeeDependantsViewers(item) && <Row
+                    {EmployeeProfileSettings.isValidEmployeeDependantsViewers(item) && <Row
                         rendered
                         idx={idx + ".2"}
                         title={idx + ".2 Dependant(s)"}

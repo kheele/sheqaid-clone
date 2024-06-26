@@ -16,6 +16,7 @@ import {computed, observable} from "mobx";
 import {CircularProgress} from "@mui/material";
 
 import updateDocument from "mutations/all/Document/updateDocument";
+import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -229,6 +230,7 @@ class Controls extends React.Component {
 
                     doc_version_list,
                     latest_version: _latest_version,
+                    signable_doc_template_list,
                 }
             }
         } = this;
@@ -239,6 +241,8 @@ class Controls extends React.Component {
         const {doc, doc_docs_id} = latest_version || {};
 
         // console.log(doc, doc_old && doc_old.dlUrls && doc_old.dlUrls[0])
+
+        const [signable_doc_template] = signable_doc_template_list || [];//
 
         return <FormControls>
             {!isNoProjects && <Row
@@ -307,6 +311,14 @@ class Controls extends React.Component {
                     readonly
                     className="col-lg-12 hor-center"
                 />
+                <label className="w-full margin-l-10 margin-r-10 bg-white padding-10">Signable Document</label>
+                {signable_doc_template && <img
+                    src={signable_doc_template.preview_image_url}
+                />}
+                {signable_doc_template && <DocSignButton
+                    doc={signable_doc_template}
+                />}
+                {!signable_doc_template && "N/A"}
             </Row>
             {/*<ProfilePDFReader ref="pdfReader" title={dialog.title()} showCategory={showCategory}/>*/}
         </FormControls>;

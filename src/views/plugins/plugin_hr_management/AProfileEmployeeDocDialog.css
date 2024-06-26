@@ -19,7 +19,7 @@
     margin: -40px 0px 0;
 }
 
-#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .DashboardTab > .page-title {
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs .DashboardTab > .page-title {
     display: none;
 }
 

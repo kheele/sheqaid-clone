@@ -68,7 +68,15 @@ class Controls extends React.Component {
     }
 
     get embeddedEmployee() {
-        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        const {props: {dialog: {props: {embeddedEmployee}}}, isSelfRequest} = this;
+        const {isEmployee} = storage.is;
+        if (isSelfRequest) {
+            const {user, user: {data: {linked_employee}}} = storage.loggedUser;
+            if (isEmployee) {
+                return user;
+            }
+            return linked_employee;
+        }
         return embeddedEmployee;
     }
 
@@ -86,10 +94,10 @@ class Controls extends React.Component {
     }
 
     onNext(e, btn) {
-        const {form, isNewEmployee, embeddedEmployee} = this;
+        const {form, isNewEmployee, embeddedEmployee, isSelfRequest} = this;
         const {idx} = btn.props;
         if (idx === 1) {
-            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+            if (!isNewEmployee && !embeddedEmployee && !isSelfRequest && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
@@ -118,7 +126,7 @@ class Controls extends React.Component {
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, embeddedEmployee, isSelfRequest} = this;
 
-        if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+        if (!isNewEmployee && !embeddedEmployee && !isSelfRequest && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
             return;
         }

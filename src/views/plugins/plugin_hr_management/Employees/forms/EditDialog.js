@@ -21,7 +21,7 @@ import style from "./EditDialog.lazy.css";
 import {CircularProgress} from "@mui/material";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -592,7 +592,7 @@ class Controls extends React.Component {
                                        onChange={this.form.onChange}/>
                 </Row>
             </RowOrgs>
-            {Settings.isEmployeeContactDetailsViewers(item) && <Row
+            {EmployeeProfileSettings.isEmployeeContactDetailsViewers(item) && <Row
                 rendered
                 idx={2}
                 title="2. Contact Details"

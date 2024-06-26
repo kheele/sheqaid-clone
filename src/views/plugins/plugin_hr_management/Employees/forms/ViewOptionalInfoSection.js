@@ -6,7 +6,7 @@ import {Row} from 'components/FormComponents';
 import {ProfileField,} from 'components/inputs';
 import LivingAddressSection from "./LivingAddressSection";
 import BankingDetailsSection from "./BankingDetailsSection";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
 class ViewOptionalInfoSection extends React.Component {
@@ -68,7 +68,7 @@ class ViewOptionalInfoSection extends React.Component {
                         <ProfileField name="supervisor_email" type="email" placeholder="Supervisor Email Address"
                                       value={supervisor && supervisor.email} className="col-lg-6"/>
                     </Row>
-                    {Settings.isEmployeeLivingAddressViewers(item) && <Row
+                    {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
                         rendered
                         idx={parseFloat(idx + ".3").toFixed(1)}
                         title={idx + ".3 Living Address"}
@@ -79,7 +79,7 @@ class ViewOptionalInfoSection extends React.Component {
                     >
                         <LivingAddressSection item={item} isEmbedded/>
                     </Row>}
-                    {Settings.isEmployeeBankingDetailsViewers(item) && <Row
+                    {EmployeeProfileSettings.isEmployeeBankingDetailsViewers(item) && <Row
                         rendered
                         idx={parseFloat(idx + ".4").toFixed(1)}
                         title={idx + ".4 Banking Details"}

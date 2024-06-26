@@ -5,11 +5,6 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityUser} from "mutations/types.d.ts";
-import insertNotificationSetting from "../NotificationSetting/insertNotificationSetting";
-import updateNotificationSetting from "../NotificationSetting/updateNotificationSetting";
-import findByIdEmployee from "../Employee/findByIdEmployee";
-import findByEmailDuplicateEmployee from "../Employee/findByEmailDuplicateEmployee";
-import findByPhoneDuplicateEmployee from "../Employee/findByPhoneDuplicateEmployee";
 import findByIdUser from "./findByIdUser";
 import findByUsernameDuplicateUser from "./findByUsernameDuplicateUser";
 import findByPhoneDuplicateUser from "./findByPhoneDuplicateUser";
@@ -117,17 +112,21 @@ export default async (attrs: EntityUser) => {
         // permissions_other,
         //
         password_conf,
-      //
+        passwordVerified,
+        //
         checkLogin = true,
     } = attrs;
-    
+
     delete attrs.checkLogin;
 
     const item = await findByIdUser(id);
     if (!item) return;
 
-    if(password_conf) {
+    if (password_conf) {
         delete attrs.password_conf;
+    }
+    if ('passwordVerified' in attrs) {
+        delete attrs.passwordVerified;
     }
 
     if (username) {
@@ -149,7 +148,7 @@ export default async (attrs: EntityUser) => {
         const {username: new_username, phone: new_phone} = attrs;
         console.log('users update new_username new_phone', new_username, new_phone)
         if (loggedUser.user.id === id) {
-            if(!password_conf) {
+            if (!password_conf) {
                 return "PASSWORD_CONF_REQUIRED";
             }
 
@@ -170,9 +169,9 @@ export default async (attrs: EntityUser) => {
             if (username) {
                 try {
                     const new_username_res = await updateUsernameImpl(
-                      'updateEmail',
-                      new_username,
-                      firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
+                        'updateEmail',
+                        new_username,
+                        firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
                     );
                     loggedUser.user.data.username = new_username_res;
                 } catch (err) {
@@ -183,9 +182,9 @@ export default async (attrs: EntityUser) => {
             if (phone) {
                 try {
                     const new_phone_res = await updateUsernameImpl(
-                      'updatePhoneNumber',
-                      new_phone,
-                      firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
+                        'updatePhoneNumber',
+                        new_phone,
+                        firebase.auth.EmailAuthProvider.credential(old_username, password_conf)
                     );
                     loggedUser.user.data.phone = new_phone_res;
                 } catch (err) {

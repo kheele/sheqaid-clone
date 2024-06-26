@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Counter from "containers/Cards/CounterCards/DefaultCounterCard";
 import {getRandomRolor} from "utils/UtilsFuns";
 import PropTypes from "prop-types";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 //</editor-fold>
 
 //<editor-fold desc="GridCounter">
@@ -51,37 +51,40 @@ const Comp = forwardRef((
                   title={<b className="color-white font-size-14">ID/Passports</b>}
                   count={document_id_passport_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeBankingDetailsViewers(item) && <Counter size={topStatsSize}
-                                                                    color="white"
-                                                                    countUpClass="color-white"
-                                                                    background={getRandomRolor()}
-                                                                    title={<b className="color-white font-size-14">Banking
-                                                                        Details</b>}
-                                                                    count={banking_detail_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeBankingDetailsViewers(item) && <Counter size={topStatsSize}
+                                                                                   color="white"
+                                                                                   countUpClass="color-white"
+                                                                                   background={getRandomRolor()}
+                                                                                   title={<b
+                                                                                       className="color-white font-size-14">Banking
+                                                                                       Details</b>}
+                                                                                   count={banking_detail_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeLivingAddressViewers(item) && <Counter size={topStatsSize}
-                                                                   color="white"
-                                                                   countUpClass="color-white"
-                                                                   background={getRandomRolor()}
-                                                                   title={<b className="color-white font-size-14">Living
-                                                                       Addresses</b>}
-                                                                   count={living_address_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Counter size={topStatsSize}
+                                                                                  color="white"
+                                                                                  countUpClass="color-white"
+                                                                                  background={getRandomRolor()}
+                                                                                  title={<b
+                                                                                      className="color-white font-size-14">Living
+                                                                                      Addresses</b>}
+                                                                                  count={living_address_list_aggregate.aggregate.count}
         />}
-        {Settings.isValidEmployeeDependantsViewers(item) && <Counter size={topStatsSize}
-                                                                     color="white"
-                                                                     countUpClass="color-white"
-                                                                     background={getRandomRolor()}
-                                                                     title={<b
-                                                                         className="color-white font-size-14">Dependents</b>}
-                                                                     count={dependent_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isValidEmployeeDependantsViewers(item) && <Counter size={topStatsSize}
+                                                                                    color="white"
+                                                                                    countUpClass="color-white"
+                                                                                    background={getRandomRolor()}
+                                                                                    title={<b
+                                                                                        className="color-white font-size-14">Dependents</b>}
+                                                                                    count={dependent_list_aggregate.aggregate.count}
         />}
-        {Settings.isValidEmployeeNextOfKinViewers(item) && <Counter size={topStatsSize}
-                                                                    color="white"
-                                                                    countUpClass="color-white"
-                                                                    background={getRandomRolor()}
-                                                                    title={<b className="color-white font-size-14">Next
-                                                                        Of Kins</b>}
-                                                                    count={next_of_kin_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isValidEmployeeNextOfKinViewers(item) && <Counter size={topStatsSize}
+                                                                                   color="white"
+                                                                                   countUpClass="color-white"
+                                                                                   background={getRandomRolor()}
+                                                                                   title={<b
+                                                                                       className="color-white font-size-14">Next
+                                                                                       Of Kins</b>}
+                                                                                   count={next_of_kin_list_aggregate.aggregate.count}
         />}
         {<Counter size={topStatsSize}
                   color="white"
@@ -105,62 +108,63 @@ const Comp = forwardRef((
                   title={<b className="color-white font-size-14">Licenses</b>}
                   count={license_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeCompetencyViewers(item) && <Counter size={topStatsSize}
-                                                                color="white"
-                                                                countUpClass="color-white"
-                                                                background={getRandomRolor()}
-                                                                title={<b
-                                                                    className="color-white font-size-14">Competencies</b>}
-                                                                count={competency_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Counter size={topStatsSize}
+                                                                               color="white"
+                                                                               countUpClass="color-white"
+                                                                               background={getRandomRolor()}
+                                                                               title={<b
+                                                                                   className="color-white font-size-14">Competencies</b>}
+                                                                               count={competency_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeWarningViewers(item) && <Counter size={topStatsSize}
-                                                             color="white"
-                                                             countUpClass="color-white"
-                                                             background={getRandomRolor()}
-                                                             title={<b
-                                                                 className="color-white font-size-14">Warnings</b>}
-                                                             count={warning_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeWarningViewers(item) && <Counter size={topStatsSize}
+                                                                            color="white"
+                                                                            countUpClass="color-white"
+                                                                            background={getRandomRolor()}
+                                                                            title={<b
+                                                                                className="color-white font-size-14">Warnings</b>}
+                                                                            count={warning_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeContractsViewers(item) && <Counter size={topStatsSize}
-                                                               color="white"
-                                                               countUpClass="color-white"
-                                                               background={getRandomRolor()}
-                                                               title={<b
-                                                                   className="color-white font-size-14">Contracts</b>}
-                                                               count={contract_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeContractsViewers(item) && <Counter size={topStatsSize}
+                                                                              color="white"
+                                                                              countUpClass="color-white"
+                                                                              background={getRandomRolor()}
+                                                                              title={<b
+                                                                                  className="color-white font-size-14">Contracts</b>}
+                                                                              count={contract_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeJobAppointmentsViewers(item) && <Counter size={topStatsSize}
-                                                                     color="white"
-                                                                     countUpClass="color-white"
-                                                                     background={getRandomRolor()}
-                                                                     title={<b className="color-white font-size-14">Job
-                                                                         Appointments</b>}
-                                                                     count={job_appointment_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeJobAppointmentsViewers(item) && <Counter size={topStatsSize}
+                                                                                    color="white"
+                                                                                    countUpClass="color-white"
+                                                                                    background={getRandomRolor()}
+                                                                                    title={<b
+                                                                                        className="color-white font-size-14">Job
+                                                                                        Appointments</b>}
+                                                                                    count={job_appointment_list_aggregate.aggregate.count}
         />}
 
-        {Settings.isEmployeeCounselingViewers(item) && <Counter size={topStatsSize}
-                                                                color="white"
-                                                                countUpClass="color-white"
-                                                                background={getRandomRolor()}
-                                                                title={<b
-                                                                    className="color-white font-size-14">Counselings</b>}
-                                                                count={counselling_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeCounselingViewers(item) && <Counter size={topStatsSize}
+                                                                               color="white"
+                                                                               countUpClass="color-white"
+                                                                               background={getRandomRolor()}
+                                                                               title={<b
+                                                                                   className="color-white font-size-14">Counselings</b>}
+                                                                               count={counselling_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeMedicalFitnessViewers(item) && <Counter size={topStatsSize}
-                                                                    color="white"
-                                                                    countUpClass="color-white"
-                                                                    background={getRandomRolor()}
-                                                                    title={<b
-                                                                        className="color-white font-size-14">Medicals</b>}
-                                                                    count={medical_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Counter size={topStatsSize}
+                                                                                   color="white"
+                                                                                   countUpClass="color-white"
+                                                                                   background={getRandomRolor()}
+                                                                                   title={<b
+                                                                                       className="color-white font-size-14">Medicals</b>}
+                                                                                   count={medical_list_aggregate.aggregate.count}
         />}
-        {Settings.isEmployeeTimeOffViewers(item) && <Counter size={topStatsSize}
-                                                             color="white"
-                                                             countUpClass="color-white"
-                                                             background={getRandomRolor()}
-                                                             title={<b
-                                                                 className="color-white font-size-14">Sign-Off</b>}
-                                                             count={leave_list_aggregate.aggregate.count}
+        {EmployeeProfileSettings.isEmployeeTimeOffViewers(item) && <Counter size={topStatsSize}
+                                                                            color="white"
+                                                                            countUpClass="color-white"
+                                                                            background={getRandomRolor()}
+                                                                            title={<b
+                                                                                className="color-white font-size-14">Sign-Off</b>}
+                                                                            count={leave_list_aggregate.aggregate.count}
         />}
         {/*{<Counter size={topStatsSize}*/}
         {/*          color="white"*/}

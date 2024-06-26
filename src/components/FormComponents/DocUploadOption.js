@@ -56,7 +56,7 @@ class DocUploadOption extends React.Component {
     // </editor-fold>
 
     render() {
-        const {type, name, doc_type, defaultValue, plugin, module, onChange} = this.props;
+        const {type, name, setupNew, doc_type, defaultValue, plugin, module, onChange} = this.props;
 
         return <>
             <ClearableInput
@@ -73,6 +73,7 @@ class DocUploadOption extends React.Component {
                 state={this.state}
                 type={type}
                 name={name}
+                setupNew={setupNew}
                 doc_type={doc_type}
                 defaultValue={defaultValue}
                 plugin={plugin}
@@ -144,7 +145,7 @@ class DocUploadOptionWrapper extends React.Component {
     }
 
     loadTemplate() {
-        const {module, doc_type} = this.props;
+        const {module, doc_type, setupNew} = this.props;
         this.loadStatus = LoadStatus.LOADING;
         this.template = null;
 

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 
@@ -14,12 +14,9 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import WorkPermitsRenderRow from "./WorkPermitsRenderRow";
 import {THead} from "components/tables";
-
-import findByIdContractorHRWorkPermitsDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRWorkPermitsDashboardStatsByLogged";
-import findByIdContractorHRWorkPermitsDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRWorkPermitsDateRangeDashboardStatsByLogged";
 import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
+import contractorStore from "../../../../../../mutations/all/Contractor";
+
 // </editor-fold>
 
 @observer
@@ -40,6 +37,7 @@ class Dialog extends AEmployeeDocDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
@@ -53,6 +51,7 @@ class Dialog extends AEmployeeDocDialog {
             notes,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -61,7 +60,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRWorkPermitsDashboardStatsByLogged();
+            return contractorStore.findByIdHRWorkPermitsDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -91,6 +90,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
@@ -98,7 +98,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRWorkPermitsDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -128,12 +128,13 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -162,6 +163,7 @@ class Dialog extends AEmployeeDocDialog {
     renderItemAll({item, idx, view, onClick}) {
         return <WorkPermitsRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
 }

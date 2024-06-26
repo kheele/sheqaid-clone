@@ -1,11 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
@@ -15,15 +14,10 @@ import clientStore from "mutations/all/Client";
 import companyStore from "mutations/all/Company";
 import MedicalsRenderRow from "./MedicalsRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput,
-} from "components/inputs";
+import {ClearableInput,} from "components/inputs";
 
-import findByIdContractorHRMedicalsDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRMedicalsDashboardStatsByLogged";
-import findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged
-    from "./Query/List/findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged";
 import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeMedical";
+import contractorStore from "../../../../../mutations/all/Contractor";
 
 // </editor-fold>
 
@@ -45,6 +39,7 @@ class Dialog extends AEmployeeDocDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
@@ -58,6 +53,7 @@ class Dialog extends AEmployeeDocDialog {
             annexture_3,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
@@ -66,7 +62,7 @@ class Dialog extends AEmployeeDocDialog {
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
 
         if (isContractorView) {
-            return findByIdContractorHRMedicalsDashboardStatsByLogged();
+            return contractorStore.findByIdHRMedicalsDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -96,6 +92,7 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
@@ -103,7 +100,7 @@ class Dialog extends AEmployeeDocDialog {
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
         const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
         if (isContractorView) {
-            return findByIdContractorHRMedicalsDateRangeDashboardStatsByLogged();
+            return contractorStore.findByIdHRMedicalsDateRangeDashboardStatsByLogged();
         } else {
             if (isConsultant) {
                 console.log('load', 'isConsultant')
@@ -133,21 +130,24 @@ class Dialog extends AEmployeeDocDialog {
             }
         }
     };
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
         const annexture_3 = [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}];
         return <>
-            <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" className="form-control" onChange={onChange} values={annexture_3} returnValue/>
+            <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" className="form-control"
+                            onChange={onChange} values={annexture_3} returnValue/>
         </>;
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -176,6 +176,7 @@ class Dialog extends AEmployeeDocDialog {
     renderItemAll({item, idx, view, onClick}) {
         return <MedicalsRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
 }

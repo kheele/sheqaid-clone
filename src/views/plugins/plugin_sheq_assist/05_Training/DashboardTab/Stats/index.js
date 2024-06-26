@@ -1,15 +1,12 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {createRef} from "react";
 import PropTypes from "prop-types";
 import GridCounter from "./GridCounter";
 import GridDoughnutChart from "./GridDoughnutChart";
-import GridTrainingsTables from "./GridTrainingsTables";
-import GridFrequencyVerticalBarChart from "./GridFrequencyVerticalBarChart";
-import GridReportsLineChart from "./GridReportsLineChart";
 
 import * as findByIdTrainingDashboardStatsByLogged from "../Query/List/findByIdTrainingDashboardStatsByLogged";
 import {observer} from "mobx-react";
-import {createRef} from "react";
 import {observable} from "mobx";
 import {execWhen} from "utils/UtilsFuns";
 

@@ -39,7 +39,7 @@ class Tab extends AList {
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
-        super(props);
+        super(props, style);
 
         this.onViewDialog = this.onViewDialog.bind(this);
 
@@ -102,18 +102,6 @@ class Tab extends AList {
     @computed get tiles() {
         return this.elements.filter(({c}) => c === 'allowed');
     }
-
-    // <editor-fold defaultstate="collapsed" desc="componentWillMount">
-    componentWillMount() {
-        style.use();
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
-    componentWillUnmount() {
-        style.unuse();
-    }
-
-    // </editor-fold>
 
     componentDidMount() {
         this.update();

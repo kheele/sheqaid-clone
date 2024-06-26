@@ -3,7 +3,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {calculateRightPos, Dates, execWhen, Permissions} from 'utils/Utils';
+import {calculateRightPos, execWhen, Permissions} from 'utils/Utils';
 
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
@@ -17,14 +17,13 @@ import EditDialog from './EditDialog';
 
 import style from "./Users.lazy.css";
 import PageListWritable from "page-templates/PageListWritable";
-import listAllUser from "mutations/all/User/listAllUser";
-import {listAllUserByQuery} from "./queries/listAllUserBy";
 import listAllUserByLoggedSite from "mutations/all/User/listAllUserByLoggedSite";
 import listAllUserByLoggedProject from "mutations/all/User/listAllUserByLoggedProject";
 import listAllUserByLoggedClient from "mutations/all/User/listAllUserByLoggedClient";
 import listAllContractorUserByLoggedSite from "mutations/all/ContractorUser/listAllContractorUserByLoggedSite";
 import listAllContractorUserByLoggedContractor
     from "mutations/all/ContractorUser/listAllContractorUserByLoggedContractor";
+
 //</editor-fold>
 
 @observer
@@ -52,92 +51,7 @@ class Users extends React.Component {
 
         this.actions = this.actions.bind(this);
     }
-    //</editor-fold>
 
-    //<editor-fold desc="componentWillMount">
-    componentWillMount() {
-        style.use();
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="componentWillUnmount">
-    componentWillUnmount() {
-        style.unuse();
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="loader">
-    @computed loader() {
-        const {page_size} = this.state;
-        const {isConsultant, hasProjects} = storage.is;
-        const {isLoggedClient, isLoggedProject, isLoggedSite, isContractor, isContractorViewVisited} = storage.is;
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {selectedContractorSite} = storage.selected;
-
-        let rows;
-
-        if(isContractor) {
-            if(selectedContractorSite) {
-                rows = listAllContractorUserByLoggedSite(page_size, selectedContractorSite.id);
-            } else {
-                rows = listAllContractorUserByLoggedContractor(page_size, );
-            }
-        } else if(isContractorViewVisited) {
-            if(selectedContractorSite) {
-                rows = listAllContractorUserByLoggedSite(page_size, selectedContractorSite.id);
-            } else {
-                rows = listAllContractorUserByLoggedContractor(page_size, );
-            }
-        } else if(isConsultant) {
-            if(isLoggedSite) {
-                rows = listAllUserByLoggedSite(page_size, selectedSite.id);
-            } else if(isLoggedProject) {
-                rows = listAllUserByLoggedProject(page_size, selectedProject.id);
-            } else {//isLoggedClient
-                rows = listAllUserByLoggedClient(page_size, selectedClient.id);
-            }
-        } else if(hasProjects) {
-            if(isLoggedSite) {
-                rows = listAllUserByLoggedSite(page_size, selectedSite.id);
-            } else if(isLoggedProject) {
-                rows = listAllUserByLoggedProject(page_size, selectedProject.id);
-            } else {
-                // rows = listAllUserByLoggedCompany(page_size, selectedClient.id);
-            }
-        } else {
-            // rows = listAllUserByLoggedCompany(page_size, selectedClient.id);
-        }
-
-        return {rows};
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="actions">
-    actions(item) {
-        const permissionKey = "Users";
-        const {user} = storage.loggedUser;
-        const {permissions_other} = user.data;
-        const permissions_other_Users = (permissions_other || []).find(v => v.key === permissionKey);
-
-        const isLoggedUser = item.id === user.id;
-
-        const allowView = () => {
-            return isLoggedUser || Permissions.allowView(permissions_other_Users);
-        };
-        const allowEdit = () => {
-            return isLoggedUser || Permissions.allowEdit(permissions_other_Users);
-        };
-        const allowRemove = () => {
-            return !isLoggedUser && Permissions.allowRemove(permissions_other_Users);
-        };
-
-        return [
-            allowView() && {action: "view", title: "View"},
-            allowEdit() && {action: "edit", title: "Edit"},
-            allowRemove() && {action: "remove", title: "Remove"},
-            {title: "Send Application Link", onClick: this.onSendApplicationLink}
-        ]
-    }
     //</editor-fold>
 
     //<editor-fold desc="columns">
@@ -178,6 +92,97 @@ class Users extends React.Component {
         });
         return cols;
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="componentWillMount">
+    componentWillMount() {
+        style.use();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="componentWillUnmount">
+    componentWillUnmount() {
+        style.unuse();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="loader">
+    @computed loader() {
+        const {page_size} = this.state;
+        const {isConsultant, hasProjects} = storage.is;
+        const {isLoggedClient, isLoggedProject, isLoggedSite, isContractor, isContractorViewVisited} = storage.is;
+        const {selectedClient, selectedProject, selectedSite} = storage.selected;
+        const {selectedContractorSite} = storage.selected;
+
+        let rows;
+
+        if (isContractor) {
+            if (selectedContractorSite) {
+                rows = listAllContractorUserByLoggedSite(page_size, selectedContractorSite.id);
+            } else {
+                rows = listAllContractorUserByLoggedContractor(page_size,);
+            }
+        } else if (isContractorViewVisited) {
+            if (selectedContractorSite) {
+                rows = listAllContractorUserByLoggedSite(page_size, selectedContractorSite.id);
+            } else {
+                rows = listAllContractorUserByLoggedContractor(page_size,);
+            }
+        } else if (isConsultant) {
+            if (isLoggedSite) {
+                rows = listAllUserByLoggedSite(page_size, selectedSite.id);
+            } else if (isLoggedProject) {
+                rows = listAllUserByLoggedProject(page_size, selectedProject.id);
+            } else {//isLoggedClient
+                rows = listAllUserByLoggedClient(page_size, selectedClient.id);
+            }
+        } else if (hasProjects) {
+            if (isLoggedSite) {
+                rows = listAllUserByLoggedSite(page_size, selectedSite.id);
+            } else if (isLoggedProject) {
+                rows = listAllUserByLoggedProject(page_size, selectedProject.id);
+            } else {
+                // rows = listAllUserByLoggedCompany(page_size, selectedClient.id);
+            }
+        } else {
+            // rows = listAllUserByLoggedCompany(page_size, selectedClient.id);
+        }
+
+        return {rows};
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="actions">
+    actions(item) {
+        const permissionKey = "Users";
+        const {user} = storage.loggedUser;
+        const {permissions_other} = user.data;
+        const permissions_other_Users = (permissions_other || []).find(v => v.key === permissionKey);
+
+        const isLoggedUser = item.id === user.id;
+
+        const allowView = () => {
+            return isLoggedUser || Permissions.allowView(permissions_other_Users);
+        };
+        const allowEdit = () => {
+            return isLoggedUser || Permissions.allowEdit(permissions_other_Users);
+        };
+        const allowRemove = () => {
+            return !isLoggedUser && Permissions.allowRemove(permissions_other_Users);
+        };
+
+        return [
+            allowView() && {action: "view", title: "View"},
+            allowEdit() && {action: "edit", title: "Edit"},
+            allowRemove() && {action: "remove", title: "Remove"},
+            {title: "Send Application Link", onClick: this.onSendApplicationLink}
+        ]
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="onCompleteEmploymentDetailsShowWarningMsg">
@@ -206,6 +211,7 @@ class Users extends React.Component {
             </div>
         }).open();
     }
+
     //</editor-fold>
 
     //<editor-fold desc="onSendApplicationLink">
@@ -226,6 +232,7 @@ class Users extends React.Component {
             </React.Fragment>);
         }
     }
+
     //</editor-fold>
 
     //<editor-fold desc="hasCreateBtn">
@@ -243,6 +250,7 @@ class Users extends React.Component {
             return true;
         }
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderLeftButtons">
@@ -254,6 +262,7 @@ class Users extends React.Component {
             </label>}
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNode">
@@ -262,6 +271,7 @@ class Users extends React.Component {
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
@@ -289,6 +299,7 @@ class Users extends React.Component {
             <EditDialog ref="editDialog"/>
         </PageListWritable>;
     }
+
     //</editor-fold>
 }
 

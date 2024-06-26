@@ -116,7 +116,15 @@ class ProfileAvatar extends React.Component {
         if (linked_employee_id) {
             refs.profileEmployeeDialog.open({id: linked_employee_id});
         } else {
-            infoDialog.open("You do not have Employment Profile. Please request the administrator to set up your Employment Profile.");
+            infoDialog.action("Register As Employee", () => {
+                infoDialog.close();
+                refs.profileUserDialog.extraProp('linked_employee', true).open(user).then(() => {
+
+                });
+            }).open(<p>
+                Your Account is not linked to any Employee Profile.<br/>
+                Please link your account with your Employee Profile.
+            </p>);
         }
     }
 

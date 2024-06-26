@@ -19,11 +19,11 @@ import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 import IDOrPassportSection from "./IDOrPassportSection";
 import PrDPSection from "./PrDPSection";
 import SignableDocumentsSection from "./SignableDocumentsSection";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
 class ViewDocumentsSection extends React.Component {
-    static isValid = Settings.isValidEmployeeAllDocumentsViewers;
+    static isValid = EmployeeProfileSettings.isValidEmployeeAllDocumentsViewers;
     pageKey = "ViewDocumentsSection";
     @observable
     state = {};
@@ -59,7 +59,7 @@ class ViewDocumentsSection extends React.Component {
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <FormControls lazyLoad>
-                {Settings.isValidEmployeeSignableDocumentsViewers(item) && <Row
+                {EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Signable Documents`}
@@ -69,7 +69,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <SignableDocumentsSection item={item} tabsHeight="530px"/>
                 </Row>}
-                {Settings.isValidEmployeePersonalDocumentsViewers(item) && <Row
+                {EmployeeProfileSettings.isValidEmployeePersonalDocumentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Personal Documents`}
@@ -122,7 +122,7 @@ class ViewDocumentsSection extends React.Component {
                         </Row>
                     </FormControls>
                 </Row>}
-                {Settings.isEmployeeCompetencyViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Competencies`}
@@ -133,7 +133,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <CompetencyControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeContractsViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeContractsViewers(item) && <Row
                     lazyLoad={false}
                     rendered
                     idx={idx + `.${__idx++}`}
@@ -145,7 +145,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <ContractControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeJobAppointmentsViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeJobAppointmentsViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Job Appointments`}
@@ -156,7 +156,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <JobAppointmentControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeCounselingViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeCounselingViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Counseling`}
@@ -167,7 +167,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <CounselingControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeMedicalFitnessViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Medical Fitness`}
@@ -178,7 +178,7 @@ class ViewDocumentsSection extends React.Component {
                 >
                     <MedicalControls item={item} isEmbedded tabsHeight="530px"/>
                 </Row>}
-                {Settings.isEmployeeWarningViewers(item) && <Row
+                {EmployeeProfileSettings.isEmployeeWarningViewers(item) && <Row
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Warnings`}

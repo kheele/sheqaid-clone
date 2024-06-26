@@ -9,7 +9,7 @@ import {ClearableInput, SelectDepartmentInput, SelectEmployeeInput, SelectJobPos
 import {Row} from 'components/FormComponents';
 import LivingAddressSection from "./LivingAddressSection";
 import BankingDetailsSection from "./BankingDetailsSection";
-import Settings from "../../../../../utils/Settings";
+import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
 class EditOptionalInfoSection extends React.Component {
@@ -201,7 +201,7 @@ class EditOptionalInfoSection extends React.Component {
                                         defaultValue={supervisor && supervisor.email} className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
                     </Row>
-                    {Settings.Settings.isEmployeeLivingAddressViewers(item) && <Row
+                    {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
                         rendered
                         idx={parseFloat(idx + ".3").toFixed(1)}
                         title={idx + ".3 Living Address"}
@@ -214,7 +214,7 @@ class EditOptionalInfoSection extends React.Component {
                         <LivingAddressSection item={item} isNewEmployee={isNewEmployee} isEmbedded
                                               onChange={this.form.onChange}/>
                     </Row>}
-                    {Settings.isEmployeeBankingDetailsViewers(item) && <Row
+                    {EmployeeProfileSettings.isEmployeeBankingDetailsViewers(item) && <Row
                         rendered
                         idx={parseFloat(idx + ".4").toFixed(1)}
                         title={idx + ".4 Banking Details"}
