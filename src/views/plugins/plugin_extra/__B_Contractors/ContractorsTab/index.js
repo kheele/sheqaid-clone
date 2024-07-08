@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {CircularProgress} from '@material-ui/core';
 
-import {Dates, getRandomRolor, Permissions} from "utils/Utils";
+import {getRandomRolor} from "utils/Utils";
 
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
@@ -12,7 +12,7 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {ActionsButton, ClearableInput, Clickable} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
-import {NewContractorDialog, EditContractorDialog, ProfileContractorDialog} from '../forms';
+import {EditContractorDialog, NewContractorDialog, ProfileContractorDialog} from '../forms';
 
 import style from "./ContractorsTab.lazy.css";
 
@@ -64,17 +64,17 @@ class ContractorsTab extends React.Component {
             name,
             username,
         } = filterData || {};
-        
+
         const {hasProjects, isConsultant,} = storage.is;
         const {sess_company_id, sess_my_client_id, sess_my_project_id, sess_my_site_id} = storage.sessionIds;
         const {selectedClient, selectedProject, selectedSite,} = storage.selected;
-        
+
         const client_id = selectedClient && selectedClient.id;
         const project_id = selectedProject && selectedProject.id;
         const site_id = selectedSite && selectedSite.id;
-        
+
         const listByLogged = sockets.of('contractors').fn('listByLogged');
-        
+
         return listByLogged({
             contractor_site_id_key: selectedSite ? "id" : "site_id",
             hasProjects,
@@ -100,6 +100,7 @@ class ContractorsTab extends React.Component {
             return res;
         });
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onAccept">
@@ -250,10 +251,11 @@ class ContractorsTab extends React.Component {
                             onChange={onChange}/>
             <ClearableInput name="username" type="text" placeholder="Email Address" className="form-control"
                             onChange={onChange}/>
-            {isConsultant && <ClearableInput name="client_name" type="text" placeholder="Client" className="form-control"
-                                              onChange={onChange}/>}
+            {isConsultant &&
+                <ClearableInput name="client_name" type="text" placeholder="Client" className="form-control"
+                                onChange={onChange}/>}
             {hasProjects && <ClearableInput name="site_name" type="text" placeholder="Site" className="form-control"
-                                              onChange={onChange}/>}
+                                            onChange={onChange}/>}
         </div>;
     }
 

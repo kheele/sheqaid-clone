@@ -1,10 +1,11 @@
-.OtherDocsTab .page-title {
-    position: absolute;
-    left: 50%;
-    top: 60px;
-    transform: translate(-50%, 0px);
+#OtherDocsTab .page-title > .page-back-btn {
+    display: none;
 }
 
-.OtherDocsTab > .MuiGrid-container {
-    margin-top: 45px;
+#OtherDocsTab.tab-content > .active > .page-content {
+    height: calc(100% - 59px) !important;
+}
+
+#OtherDocsTab.tab-content > .active > .page-content .table {
+    height: 100% !important;
 }

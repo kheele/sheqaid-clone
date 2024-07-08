@@ -226,7 +226,7 @@ class Controls extends React.Component {
                 rendered
                 active={isNewEmployee || embeddedEmployee || isSelfRequest}
                 idx={2}
-                title={`${++idx}. Leave Details`}
+                title={`${++idx}. Time-Off Details`}
                 onFormOpen={onFormOpen}
                 onFormBack={!isNewEmployee && !embeddedEmployee && !isSelfRequest && onFormBack}
                 onFormNext={onFormNext}

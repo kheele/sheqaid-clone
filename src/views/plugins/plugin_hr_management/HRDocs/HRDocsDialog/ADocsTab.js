@@ -1,8 +1,8 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, observable} from 'mobx';
-import {ActionsButton, ClearableInput} from 'components/inputs';
+import {computed, observable, toJS} from 'mobx';
+import {ActionsButton, ClearableInput, UploadButton} from 'components/inputs';
 
 import NavItem from "components/navs/NavItem";
 import {THead, TRow} from "components/tables";
@@ -136,18 +136,18 @@ class ADocsTab extends AList {
             {!this.notHasWritePermission && <>
                 <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
                 <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
-                <hr/>
-                <NavItem idx={idx} action="edit" onClick={this.onUpdateReview} faIconLeft="edit" title="Update Review"/>
+                {/*<hr/>*/}
+                {/*<NavItem idx={idx} action="edit" onClick={this.onUpdateReview} faIconLeft="edit" title="Update Review"/>*/}
                 <hr/>
                 <NavItem idx={idx} action="edit" onClick={this.onSendForSigning} faIconLeft="edit"
                          title="Send For Signing"/>
             </>}
-            <hr/>
-            <NavItem idx={idx} action="download" onClick={this.onDownload} faIconLeft="download" title="Download"/>
-            <NavItem idx={idx} action="save-pdf" onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
-                     title="Save As PDF"/>
-            <hr/>
-            <NavItem idx={idx} action="share" onClick={this.onShare} faIconLeft="share" title="Share"/>
+            {/*<hr/>*/}
+            {/*<NavItem idx={idx} action="download" onClick={this.onDownload} faIconLeft="download" title="Download"/>*/}
+            {/*<NavItem idx={idx} action="save-pdf" onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
+            {/*         title="Save As PDF"/>*/}
+            {/*<hr/>*/}
+            {/*<NavItem idx={idx} action="share" onClick={this.onShare} faIconLeft="share" title="Share"/>*/}
         </Options>;
     }
 
@@ -167,7 +167,7 @@ class ADocsTab extends AList {
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
-        const tr = <>
+        let tr = <>
             <div className="td fixed-flex min-w-30"/>
             <div className="td fixed-flex min-w-50">No.</div>
             <div className="td fixed-flex min-w-80">Code</div>
@@ -177,15 +177,15 @@ class ADocsTab extends AList {
             <div className="td">Responsible Person</div>
         </>;
         if (this.isDocuments) {
-            return <THead>
+            tr = <>
                 {tr}
                 <div className="td fixed-flex min-w-140">Revisions</div>
                 <div className="td fixed-flex min-w-120">Review Date</div>
-                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
-            </THead>;
+            </>;
         }
         return <THead>
             {tr}
+            <div className="td fixed-flex min-w-220">Document</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
@@ -219,12 +219,17 @@ class ADocsTab extends AList {
                 category,
                 removed,
 
-                doc_version_list,
+                doc_version_list = [],
                 latest_version: _latest_version,
+                signable_doc_template_list,
             }
         } = item;
 
         const [latest_version] = _latest_version || [];
+        const {doc: doc1, doc_docs_id, doc_num, type, expiry} = latest_version || {};
+        const [signable_doc_template] = signable_doc_template_list || [];
+        const {doc: doc2} = signable_doc_template || {};
+        const doc = doc1 || doc2;
 
         const getFileType = (type) => {
             if (type) return type.toLowerCase();
@@ -236,17 +241,17 @@ class ADocsTab extends AList {
             return <i className="fa fa-solid fa-paperclip"></i>;
         };
 
-        console.log('doc', latest_version.doc);
+        console.log('doc', doc);
 
-        const tr = <>
-            <div className="td fixed-flex min-w-30 td-filetype">{getFileTypeIcon(latest_version.type)}</div>
+        let tr = <>
+            <div className="td fixed-flex min-w-30 td-filetype">{getFileTypeIcon(type)}</div>
             <div className={"td fixed-flex min-w-50"}>
                 <h6 className="xs-shown font-size-13">No.</h6>
                 {id}
             </div>
             <div className="td fixed-flex min-w-80">
                 <h6 className="xs-shown font-size-13">Code</h6>
-                {latest_version.doc_num || 'N/A'}
+                {doc_num || 'N/A'}
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Document Name</h6>
@@ -267,7 +272,7 @@ class ADocsTab extends AList {
         </>;
 
         if (this.isDocuments) {
-            return <TRow key={id} className="w-full">
+            tr = <>
                 {tr}
                 <div className="td fixed-flex min-w-140">
                     <h6 className="xs-shown font-size-13">Revisions</h6>
@@ -275,16 +280,24 @@ class ADocsTab extends AList {
                 </div>
                 <div className="td fixed-flex min-w-120">
                     <h6 className="xs-shown font-size-13">Review Date</h6>
-                    {renderExpiryDateSpan(latest_version.expiry)}
+                    {renderExpiryDateSpan(expiry)}
                 </div>
-                <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-                    <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
-                </div>
-            </TRow>;
+            </>;
         }
 
         return <TRow key={id} className="w-full">
             {tr}
+            <div className="td fixed-flex min-w-220">
+                <h6 className="xs-shown font-size-13">Document</h6>
+                {doc && <UploadButton
+                    name="doc"
+                    type={['PDF', 'Word', 'Excel']}
+                    defaultValue={doc}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-12 hor-center"
+                />}
+            </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
                 <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>

@@ -12,6 +12,8 @@ import {ANewDialog} from 'components/dialogs';
 import style from "./NewContractorDialog.lazy.css";
 import insertContractor from "mutations/all/Contractor/insertContractor";
 
+// import {insertContractor} from "mutations/create";
+
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewContractorDialog";
@@ -22,7 +24,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -33,24 +35,24 @@ class Controls extends React.Component {
     state = {
         lists: {
             inc_contractor_pack: [
-                {text: 'Yes', value: 'Yes', checked: false}, 
+                {text: 'Yes', value: 'Yes', checked: false},
                 {text: 'No', value: 'No', checked: false}
             ]
         }
     };
-    
+
     constructor() {
         super();
-        
+
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
     }
 
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('name')) {
                 infoDialog.open('Contractor Name is required');
                 return;
@@ -67,7 +69,7 @@ class Controls extends React.Component {
                 return;
             }
         }
-        
+
         return true;
     }
 
@@ -92,15 +94,15 @@ class Controls extends React.Component {
             infoDialog.open("Include Contractor's Pack is required");
             return;
         }
-           
+
         //2
-        if(hasProjects) {
+        if (hasProjects) {
             if (!form.isValid('site_list') || form.get('site_list').isEmpty()) {
                 infoDialog.open('At least one Site is required');
                 return;
             }
         }
-        
+
         const {
             //1
             name, username, inc_contractor_pack, site_list,
@@ -110,13 +112,15 @@ class Controls extends React.Component {
             name,
             username,
         };
-        
-        if(hasProjects) {
-            data.site_list = {data: site_list.map(({inc_contractor_pack, site: {id: site_id}}) => {
-                return {site_id, inc_contractor_pack,};
-            })};
-        }        
-        
+
+        if (hasProjects) {
+            data.site_list = {
+                data: site_list.map(({inc_contractor_pack, site: {id: site_id}}) => {
+                    return {site_id, inc_contractor_pack,};
+                })
+            };
+        }
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -140,29 +144,35 @@ class Controls extends React.Component {
     render() {
         let {props: {onFormNext, onFormBack, onFormOpen}} = this;
         const {isConsultant, hasProjects} = storage.is;
-        
+
         return <FormControls>
             <Row
                 rendered
                 active
                 idx={1}
-                title="1. Employer Details" 
-                onFormOpen={onFormOpen} 
+                title="1. Employer Details"
+                onFormOpen={onFormOpen}
                 onFormNext={hasProjects && onFormNext}
             >
-                <ClearableInput name="name" placeholder="Contractor Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="username" type="email" placeholder="Email Address" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="inc_contractor_pack" type="radio" placeholder="Include Contractor's Pack?" required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.inc_contractor_pack} returnValue/>
-           </Row>
+                <ClearableInput name="name" placeholder="Contractor Name" required className="col-lg-12 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="username" type="email" placeholder="Email Address" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="inc_contractor_pack" type="radio" placeholder="Include Contractor's Pack?"
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.inc_contractor_pack} returnValue/>
+            </Row>
             {hasProjects && <Row
-                rendered 
+                rendered
                 idx={2}
-                title="2. Add Site(s)" 
-                onFormOpen={onFormOpen} 
+                title="2. Add Site(s)"
+                onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                {isConsultant && <SelectClientInput name="client" placeholder="Company..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {isConsultant && <SelectClientInput name="client" placeholder="Company..." required
+                                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectProjectInput name="project" placeholder="Project..." required className="col-lg-12 form-control"
+                                    onChange={this.form.onChange}/>
                 <NewSiteListTable name="site_list" onChange={this.form.onChange}/>
             </Row>}
         </FormControls>;

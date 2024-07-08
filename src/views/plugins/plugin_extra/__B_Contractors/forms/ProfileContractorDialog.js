@@ -16,8 +16,8 @@ import updateProxyContractorSite from "mutations/all/ProxyContractorSite/updateP
 import Popover from "components/popovers/Popover";
 import NavItem from "components/navs/NavItem";
 import {CircularProgress} from "@mui/material";
-import findByIdContractor from "mutations/all/Contractor/findByIdContractor";
-import updateContractor from "mutations/all/Contractor/updateContractor";
+import {updateContractor} from "mutations/update";
+import {findByIdContractor} from "mutations/findById";
 
 //<editor-fold desc="ProfileDialog">
 @observer
@@ -28,14 +28,6 @@ class ProfileDialog extends AProfileDialog {
 
     constructor(props) {
         super(props, style);
-    }
-
-    title() {
-        return "Contractor";
-    }
-
-    onEdit(evt, btn) {
-        this.refs.controls.onEdit(evt, btn);
     }
 
     get topButtonsHiddenDelete() {
@@ -66,6 +58,14 @@ class ProfileDialog extends AProfileDialog {
     get controls() {
         return Controls;
     }
+
+    title() {
+        return "Contractor";
+    }
+
+    onEdit(evt, btn) {
+        this.refs.controls.onEdit(evt, btn);
+    }
 }
 
 //</editor-fold>
@@ -74,8 +74,7 @@ class ProfileDialog extends AProfileDialog {
 class Controls extends React.Component {
 
     @observable
-    state = {
-    };
+    state = {};
 
     constructor(props) {
         super(props);
@@ -83,6 +82,12 @@ class Controls extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.renderActions = this.renderActions.bind(this);
     }
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
@@ -97,7 +102,7 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="onClick">
     onClick(evt, btn) {
@@ -169,15 +174,9 @@ class Controls extends React.Component {
         }
     }
 
-    //</editor-fold>
-
     onEdit(evt, btn) {
         this.refs.editDialog.open(this.item);
     }
-
-    @computed get item() {
-		return this.props.state.item;
-	}
 
     //<editor-fold desc="renderActions">
     renderActions(item, n) {

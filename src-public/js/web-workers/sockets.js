@@ -12,12 +12,12 @@ self.socket = io(SERVER_HOST, {
         if (session.isLoggedIn) {
             const {currentUser} = session.auth;
             const {uid} = currentUser;
-            console.log('currentUser', currentUser)
+            // console.log('currentUser', currentUser)
             currentUser.getIdToken(true).then(token => {
-                cb({token, uid, access_type: "t"});
+                cb({token, uid});
             });
         } else {
-            cb({token: null, uid: null, access_type: null});
+            cb({token: null, uid: null});
         }
     },
 });
@@ -25,6 +25,27 @@ self.socket = io(SERVER_HOST, {
 socket.on('connect', () => {
     console.log('Connected to server', socket.id);
     Events.emit('connection', "CONNECTED");
+
+    const {session} = self;
+    if (session.isLoggedIn) {
+        const {currentUser} = session.auth;
+        const {uid} = currentUser;
+        console.log('auth currentUser', currentUser)
+        currentUser.getIdToken(true).then(token => {
+            socket.emit('emit', {
+                path: 'auth',
+                data: {token, uid},
+            }, (res, err) => {
+                if (err) {
+                    err = JSON.parse(err);
+                    console.log('auth emit err', err)
+                    return;
+                }
+
+                console.log('auth emit res', res)
+            });
+        });
+    }
 });
 
 socket.on('disconnect', () => {

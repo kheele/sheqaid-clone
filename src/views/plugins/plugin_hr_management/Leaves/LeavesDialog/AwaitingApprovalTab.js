@@ -77,8 +77,8 @@ class AwaitingApprovalTab extends ActiveTab {
             {isEditable && <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>}
             {isApprover && <>
                 <hr action="writable"/>
-                <NavItem action="edit" btn={btn} onClick={this.onApprove} faIconLeft="check" title="Approve"/>
-                <NavItem action="edit" btn={btn} onClick={this.onReject} faIconLeft="cancel" title="Reject"/>
+                <NavItem idx={idx} action="edit" btn={btn} onClick={this.onApprove} faIconLeft="check" title="Approve"/>
+                <NavItem idx={idx} action="edit" btn={btn} onClick={this.onReject} faIconLeft="ban" title="Reject"/>
             </>}
             {/*<NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"*/}
             {/*         title="Save As PDF"/>*/}

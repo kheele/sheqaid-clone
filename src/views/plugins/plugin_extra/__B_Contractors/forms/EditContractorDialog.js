@@ -5,19 +5,19 @@ import {computed, observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {Permissions, ShouldUpdate} from 'utils/Utils';
-import {ClearableInput, SelectClientInput, SelectProjectInput} from 'components/inputs';
+import {ClearableInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {NewSiteListTable} from 'components/FormTableComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditContractorDialog.lazy.css";
-import updateContractor from "mutations/all/Contractor/updateContractor";
-import findByIdContractor from "mutations/all/Contractor/findByIdContractor";
 import {CircularProgress} from "@mui/material";
 import Popover from "components/popovers/Popover";
 import Tabs from "components/tabs/Tabs";
 import updateProxyContractorSite from "mutations/all/ProxyContractorSite/updateProxyContractorSite";
 import NavItem from "components/navs/NavItem";
+import {updateContractor} from "mutations/update";
+import {findByIdContractor} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -29,20 +29,20 @@ class EditDialog extends AEditDialog {
     constructor(props) {
         super(props, style);
     }
-    
+
     get topButtonsHiddenDelete() {
         const {user} = storage.loggedUser;
         const {permissions_modules} = user.data;
         const permissions_mod = (permissions_modules || []).find(v => v.key === "__B_Contractors");
-        if(!Permissions.allowRemove(permissions_mod)) {
+        if (!Permissions.allowRemove(permissions_mod)) {
             return true;
         }
-        
+
         return false;
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -53,20 +53,26 @@ class Controls extends React.Component {
     state = {
         lists: {
             inc_contractor_pack: [
-                {text: 'Yes', value: 'Yes', checked: false}, 
+                {text: 'Yes', value: 'Yes', checked: false},
                 {text: 'No', value: 'No', checked: false}
             ]
         },
     };
-    
+
     constructor() {
         super();
 
         this.onClick = this.onClick.bind(this);
         this.onFormSave = this.onFormSave.bind(this);
-        
+
         this.form = new Form();
     }
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
@@ -81,7 +87,7 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="onClick">
     onClick(evt, btn) {
@@ -223,7 +229,7 @@ class Controls extends React.Component {
         }
 
         if (idx === 2) {
-            if(hasProjects) {
+            if (hasProjects) {
                 if (!form.isValid('site_list') || form.get('site_list').isEmpty()) {
                     infoDialog.open('At least one Site is required');
                     return;
@@ -234,7 +240,7 @@ class Controls extends React.Component {
                 site_list
             } = form.data;
             const data = {};
-            if(hasProjects) {
+            if (hasProjects) {
                 ShouldUpdate.checkSiteList(data, old_data, site_list, 'site_list');
             }
 
@@ -244,12 +250,6 @@ class Controls extends React.Component {
 
         return true;
     }
-
-    //</editor-fold>
-
-    @computed get item() {
-		return this.props.state.item;
-	}
 
     //<editor-fold desc="render">
     render() {
@@ -268,9 +268,9 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         const {isConsultant, hasProjects} = storage.is;
-        
+
         console.log(this.item)
 
         let index;
@@ -286,20 +286,25 @@ class Controls extends React.Component {
         } else {
             index = 0;
         }
-        
+
         return <FormControls>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 active
                 idx={1}
-                title="1. Employer Details" 
-                onFormOpen={onFormOpen} 
+                title="1. Employer Details"
+                onFormOpen={onFormOpen}
                 onFormNext={hasProjects && onFormNext}
                 onFormSave={this.onFormSave}
             >
-                <ClearableInput name="name" placeholder="Contractor Name" defaultValue={name} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="username" type="email" placeholder="Email Address" defaultValue={username} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="inc_contractor_pack" type="radio"  placeholder="Include Contractor's Pack" defaultValue={inc_contractor_pack} required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.inc_contractor_pack} returnValue/>
+                <ClearableInput name="name" placeholder="Contractor Name" defaultValue={name} required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="username" type="email" placeholder="Email Address" defaultValue={username}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="inc_contractor_pack" type="radio" placeholder="Include Contractor's Pack"
+                                defaultValue={inc_contractor_pack} required className="col-lg-12 form-control"
+                                onChange={this.form.onChange} values={this.state.lists.inc_contractor_pack}
+                                returnValue/>
             </Row>
             {hasProjects && <Row
                 rendered
@@ -350,6 +355,7 @@ class Controls extends React.Component {
             <Popover ref="popover"/>
         </FormControls>;
     }
+
     //</editor-fold>
 }
 

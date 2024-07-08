@@ -84,6 +84,8 @@
 .UploadButton .fa:before {
     margin: 2px 0 0 5px;
     flex: 1 1;
+    min-width: 24px;
+    flex-grow: initial !important;
 }
 
 .UploadButton .fa-file-word-o {

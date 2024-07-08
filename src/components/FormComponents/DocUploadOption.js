@@ -40,6 +40,45 @@ class DocUploadOption extends React.Component {
 
     //</editor-fold>
 
+    get defaultOptionValue() {
+        const {itemDoc, itemTemplate} = this;
+        return itemDoc ? "Upload" : itemTemplate ? "Template" : null;
+    }
+
+    @computed get itemTemplate() {
+        const {item} = this;
+        if (!item) return null;
+        const {
+            data: {
+                // doc_version_list,
+                // latest_version: _latest_version,
+            }
+        } = item;
+        // const [latest_version] = _latest_version || [];
+        // const {doc, doc_docs_id} = latest_version || {};
+        // return doc;
+    }
+
+    @computed get itemDoc() {
+        const {item} = this;
+        if (!item) return null;
+        const {
+            data: {
+                doc_version_list,
+                latest_version: _latest_version,
+            }
+        } = item;
+        const [latest_version] = _latest_version || [];
+        const {doc, doc_docs_id} = latest_version || {};
+        return doc;
+    }
+
+    // </editor-fold>
+
+    @computed get item() {
+        return this.props.item;
+    }
+
     componentWillMount() {
         style.use();
     }
@@ -53,8 +92,6 @@ class DocUploadOption extends React.Component {
         this.state.doc_option = val;
     }
 
-    // </editor-fold>
-
     render() {
         const {type, name, setupNew, doc_type, defaultValue, plugin, module, onChange} = this.props;
 
@@ -63,6 +100,7 @@ class DocUploadOption extends React.Component {
                 name="doc_option"
                 type="radio"
                 placeholder="Select Option"
+                defaultValue={this.defaultOptionValue}
                 vertical
                 className="col-lg-12 margin-b-15 form-control"
                 onChange={onChange}
@@ -71,6 +109,7 @@ class DocUploadOption extends React.Component {
             />
             <DocUploadOptionWrapper
                 state={this.state}
+                item={this.item}
                 type={type}
                 name={name}
                 setupNew={setupNew}
@@ -89,6 +128,10 @@ class DocUploadOptionWrapper extends React.Component {
 
     @observable
     state = {
+        is_employee_owning: [
+            {text: 'Yes', value: true, checked: false},
+            {text: 'No', value: false, checked: false},
+        ],
         template: null,
         loadStatus: LoadStatus.LOADING,
     };
@@ -99,6 +142,7 @@ class DocUploadOptionWrapper extends React.Component {
 
         this.loadTemplate = this.loadTemplate.bind(this);
         this.onCreateTemplateDocument = this.onCreateTemplateDocument.bind(this);
+        this.onSetUpDocumentSigning = this.onSetUpDocumentSigning.bind(this);
         this.onViewTemplateDocument = this.onViewTemplateDocument.bind(this);
     }
 
@@ -117,11 +161,15 @@ class DocUploadOptionWrapper extends React.Component {
     }
 
     @computed get isUpload() {
-        return this.doc_option === "Upload";
+        return !this.item && this.doc_option === "Upload";
     }
 
     @computed get isTemplate() {
         return this.doc_option === "Template";
+    }
+
+    @computed get isItem() {
+        return !!this.item;
     }
 
     @computed get loadStatus() {
@@ -140,40 +188,97 @@ class DocUploadOptionWrapper extends React.Component {
         `;
     }
 
+    @computed get itemTemplate() {
+        const {item} = this;
+        if (!item) return null;
+        const {
+            data: {
+                // doc_version_list,
+                // latest_version: _latest_version,
+            }
+        } = item;
+        // const [latest_version] = _latest_version || [];
+        // const {doc, doc_docs_id} = latest_version || {};
+        // return doc;
+    }
+
+    @computed get itemDoc() {
+        const {item} = this;
+        if (!item) return null;
+        const {
+            data: {
+                doc_version_list,
+                latest_version: _latest_version,
+            }
+        } = item;
+        const [latest_version] = _latest_version || [];
+        const {doc, doc_docs_id} = latest_version || {};
+        return doc;
+    }
+
+    @computed get item() {
+        return this.props.item;
+    }
+
     componentDidMount() {
+        const {item} = this;
+        if (item) {
+
+            return;
+        }
+
         this.loadTemplate();
     }
 
-    loadTemplate() {
-        const {module, doc_type, setupNew} = this.props;
-        this.loadStatus = LoadStatus.LOADING;
-        this.template = null;
+    loadTemplate(newTemplateRes) {
+        const {name, onChange} = this.props;
 
-        const findByModuleKey = sockets.of('doc-signing-settings/api/docuseal/templates').fn('findByModuleKey');
-        findByModuleKey({
-            module_key: module,
-            doc_type: doc_type,
-        }).then(res => {
-            console.log('template', res);
-            if (res) {
-                this.template = res;
-                this.loadStatus = LoadStatus.LOADED_DATA;
-            } else {
-                this.loadStatus = LoadStatus.LOADED_EMPTY;
-            }
-        }).catch(err => {
-            console.error(err);
-            this.loadStatus = LoadStatus.ERROR;
-        }).finally(() => {
+        if (newTemplateRes) {
+            this.template = newTemplateRes;
+            onChange && onChange(newTemplateRes, name, this);
+        } else {
+            const {module, doc_type, setupNew} = this.props;
+            this.loadStatus = LoadStatus.LOADING;
+            this.template = null;
 
-        });
+            const findByModuleKey = sockets.of('doc-signing-settings/api/docuseal/templates').fn('findByModuleKey');
+            findByModuleKey({
+                module_key: module,
+                doc_type: doc_type,
+            }).then(res => {
+                console.log('template', res);
+                if (res) {
+                    this.template = res;
+                    onChange && onChange(newTemplateRes, name, this);
+                    this.loadStatus = LoadStatus.LOADED_DATA;
+                } else {
+                    this.loadStatus = LoadStatus.LOADED_EMPTY;
+                }
+            }).catch(err => {
+                console.error(err);
+                this.loadStatus = LoadStatus.ERROR;
+            }).finally(() => {
+
+            });
+        }
     }
 
     onCreateTemplateDocument() {
-        this.refs.signaturesDialog.open().then(res => {
-            console.log('onCreateTemplateDocument template', res);
-            if (res) {
-                this.loadTemplate();
+        this.refs.signaturesDialog.open().then(newTemplateRes => {
+            console.log('onCreateTemplateDocument newTemplateRes', newTemplateRes);
+            if (newTemplateRes) {
+                this.loadTemplate(newTemplateRes);
+            } else {
+                this.loadStatus = LoadStatus.LOADED_EMPTY;
+            }
+        });
+    }
+
+    onSetUpDocumentSigning() {
+        this.refs.signaturesDialog.open(this.item).then(newTemplateRes => {
+            console.log('onSetUpDocumentSigning newTemplateRes', newTemplateRes);
+            if (newTemplateRes) {
+                this.loadTemplate(newTemplateRes);
             } else {
                 this.loadStatus = LoadStatus.LOADED_EMPTY;
             }
@@ -188,7 +293,13 @@ class DocUploadOptionWrapper extends React.Component {
         const {doc_option} = this;
         if (!doc_option) return null;
 
-        const {isUpload, isTemplate, props: {type, name, doc_type, plugin, module, defaultValue, onChange}} = this;
+        const {
+            isUpload,
+            isTemplate,
+            isItem,
+            template,
+            props: {type, name, doc_type, plugin, module, defaultValue, onChange}
+        } = this;
 
         if (isUpload) {
             return <UploadButton
@@ -202,19 +313,63 @@ class DocUploadOptionWrapper extends React.Component {
             />;
         }
 
-        if (isTemplate) {
-            const {template} = this;
-            if (this.loadStatus === LoadStatus.LOADING) return <CircularProgress className="fixed-center"/>;
-            if (this.loadStatus === LoadStatus.LOADED_EMPTY) {
-                return <>
-                    <Button
-                        className="btn btn-primary margin-b-10 hor-center border-radius-20"
-                        onClick={this.onCreateTemplateDocument}
-                    >
-                        <i className="fa fa-plus"/> Create Template Document
-                    </Button>
-                    <SignatureDialog ref="signaturesDialog" plugin={plugin} module={module} doc_type={doc_type}/>
-                </>;
+        if (isItem && !template) {
+            const {item} = this;
+            return <>
+                <Button
+                    className="btn btn-primary margin-b-10 hor-center border-radius-20"
+                    onClick={this.onSetUpDocumentSigning}
+                >
+                    <i className="fa fa-plus"/> Set Up Document Signing
+                </Button>
+                <SignatureDialog ref="signaturesDialog" plugin={plugin} module={module} doc_type={doc_type}/>
+                {/*<ClearableInput*/}
+                {/*    name="is_employee_owning"*/}
+                {/*    type="radio"*/}
+                {/*    placeholder="Recipient Employee Must Sign?"*/}
+                {/*    defaultValue=/!*itemEmployee ? true : null*/}
+                {/*    vertical*/}
+                {/*    className="col-lg-12 form-control"*/}
+                {/*    onChange={onChange}*/}
+                {/*    values={this.state.lists.is_employee_owning}*/}
+                {/*    returnValue*/}
+                {/*/>*/}
+                {/*<hr/>*/}
+                {/*<FormControls>*/}
+                {/*    <Row*/}
+                {/*        rendered*/}
+                {/*        activeAlways*/}
+                {/*        idx={2.1}*/}
+                {/*        title="2.1. Specific Employee(s) To Sign"*/}
+                {/*    >*/}
+                {/*        <NewEmployeeListTable name="signing_employee_list" onChange={onChange}/>*/}
+                {/*    </Row>*/}
+                {/*    <Row*/}
+                {/*        rendered*/}
+                {/*        activeAlways*/}
+                {/*        idx={2.2}*/}
+                {/*        title="2.2. Specific Job Position(s) To Sign"*/}
+                {/*    >*/}
+                {/*        <NewJobPositionListTable name="signing_job_position_list" onChange={onChange}/>*/}
+                {/*    </Row>*/}
+                {/*</FormControls>*/}
+            </>;
+        }
+
+        if (isTemplate || template) {
+            if (!template) {
+                if (this.loadStatus === LoadStatus.LOADING) return <CircularProgress className="fixed-center"/>;
+                if (this.loadStatus === LoadStatus.LOADED_EMPTY) {
+                    return <>
+                        <Button
+                            className="btn btn-primary margin-b-10 hor-center border-radius-20"
+                            onClick={this.onCreateTemplateDocument}
+                        >
+                            <i className="fa fa-plus"/> Create Template Document
+                        </Button>
+                        <SignatureDialog ref="signaturesDialog" plugin={plugin} module={module} doc_type={doc_type}/>
+                    </>;
+                }
             }
 
             const {id, data: {slug}} = template;

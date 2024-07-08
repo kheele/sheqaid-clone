@@ -1,7 +1,7 @@
 @import '../../../../../css/ANewDialog.css';
 
 #dialog-overlay.ADocumentNew-new-dialog .dialog-container {
-    height: 600px;
+    height: 620px;
     max-height: calc(100% - 30px);
     width: 800px;
     max-width: calc(100% - 30px);

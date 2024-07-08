@@ -240,6 +240,7 @@ class Controls extends React.Component {
         const [latest_version] = _latest_version || [];
         const {doc, doc_docs_id} = latest_version || {};
 
+        console.log("doc", doc)
         // console.log(doc, doc_old && doc_old.dlUrls && doc_old.dlUrls[0])
 
         const [signable_doc_template] = signable_doc_template_list || [];//
@@ -305,7 +306,6 @@ class Controls extends React.Component {
                 <UploadButton
                     name="doc"
                     type={['PDF', 'Word', 'Excel']}
-                    buttonTitle="Upload Document (PDF/Word/Excel)"
                     defaultValue={doc}
                     showOnlyIcon
                     readonly

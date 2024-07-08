@@ -81,7 +81,6 @@ class RenderRow extends ARenderRow {
                 {doc && <UploadButton
                     name="doc"
                     defaultValue={doc}
-                    buttonTitle="Attachment"
                     type={['PDF', 'Image']}
                     showOnlyIcon
                     readonly

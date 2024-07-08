@@ -35,6 +35,8 @@ class AwaitingApprovalTab extends ActiveTab {
         const item = list[idx];
         const {id, data} = item;
 
+        const msg = status === "Awaiting Payment" ? "submitted" : status.toLowerCase();
+
         confirmDialog.open("Do you want to proceed?").then(res => {
             if (res) {
                 progressDialog.open();
@@ -42,9 +44,9 @@ class AwaitingApprovalTab extends ActiveTab {
                     if (res) {
                         data.status = status;
                         list.removeAt(idx);
-                        infoDialog.open(`Expense successfully ${status.toLowerCase()}.`);
+                        infoDialog.open(`Expense successfully ${msg}.`);
                     } else {
-                        infoDialog.open(`Expense couldn't be ${status.toLowerCase()}. Please try again later.`);
+                        infoDialog.open(`Expense couldn't be ${msg}. Please try again later.`);
                     }
                 }).catch(err => {
                     infoDialog.open("An error occurred. Please try again.");
@@ -63,7 +65,7 @@ class AwaitingApprovalTab extends ActiveTab {
     onReject(evt, btn) {
         this.updateStatus(evt, btn, "Rejected");
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}, evt, btn) {

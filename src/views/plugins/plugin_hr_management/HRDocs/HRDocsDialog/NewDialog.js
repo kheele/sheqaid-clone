@@ -112,7 +112,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
-        const {form, refs: {doc}} = this;
+        const {form, item, refs: {doc}} = this;
         const {idx} = btn.props;
         if (idx === 0) {
             const {isConsultant} = storage.is;
@@ -121,7 +121,7 @@ class Controls extends React.Component {
                 return;
             }
         } else if (idx === 1) {
-            if (!form.isValid('is_template')) {
+            if (!item && !form.isValid('is_template')) {
                 infoDialog.open('Select if document is template or not');
                 return;
             }
@@ -147,7 +147,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
-        const {form} = this;
+        const {form, item} = this;
         const {isConsultant} = storage.is;
         const {showCategory, module, doc_type} = this;
 
@@ -160,15 +160,15 @@ class Controls extends React.Component {
             infoDialog.open('Document Title is required');
             return;
         }
-        if (!form.isValid('is_template')) {
+        if (!item && !form.isValid('is_template')) {
             infoDialog.open('Select if document is template or not');
             return;
         }
 
-        // if (!form.isValid('doc')) {
-        //     infoDialog.open('Document is required');
-        //     return;
-        // }
+        if (!form.isValid('doc')) {
+            infoDialog.open('Document is required');
+            return;
+        }
 
         const {
             //0
@@ -203,19 +203,20 @@ class Controls extends React.Component {
             responsible_department_id: responsible_department && responsible_department.id,
             responsible_person_id: responsible_person && responsible_person.id,
             employee_id: employee && employee.id,
-            is_template,
+            is_template: item ? false : is_template,
             internal_or_external,
             category_id: category && category.id,
             desc,
             //2
             title,
+            doc_template_id: item && doc && doc.id,//doc is template
             doc_version_list: {//[{type,expiry,doc,doc_docs_id,doc_num}]
-                data: [{
+                data: item ? [] : [{
                     type,
                     expiry: Dates.formatDateSQL(expiry),
                     doc: (doc && !isString(doc)) ? doc : null,
                     doc_docs_id: (doc && isString(doc)) ? doc : null,
-                }]
+                }],
             },
         };
 
@@ -259,8 +260,6 @@ class Controls extends React.Component {
             doc_version_list,
         } = data || {};
 
-        const latest_version = (doc_version_list || []).getLastElement();
-
         return <FormControls onChange={this.form.onChange}>
             {!isNoProjects && <Row
                 rendered
@@ -268,7 +267,8 @@ class Controls extends React.Component {
                 idx={0}
                 title="Company / Project / Site"
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}>
+                onFormNext={onFormNext}
+            >
                 {isConsultant && <SelectClientInput
                     name="client"
                     placeholder="Company..."
@@ -300,7 +300,8 @@ class Controls extends React.Component {
                 title="1. Basic Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
-                onFormBack={!isNoProjects && onFormBack}>
+                onFormBack={!isNoProjects && onFormBack}
+            >
                 <ClearableInput name="title" type="text" placeholder="Document Title"
                                 defaultValue={title}
                                 required className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -356,7 +357,7 @@ class Controls extends React.Component {
                     plugin="plugin_sheq_assist"
                     module={module}
                     doc_type={doc_type}
-                    defaultValue={latest_version && latest_version.doc}
+                    item={item}
                     setupNew
                     type={['PDF', 'Word', 'Image']}
                     onChange={this.form.onChange}
@@ -373,7 +374,7 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
-    
+
     // </editor-fold>
 }
 

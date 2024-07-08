@@ -20,3 +20,4 @@ export const updateProxyNCRDocument = update("ncr/proxy/document");
 
 export const updateOHSDoc = update("documents/ohs-docs");
 export const updateSignableDocTemplate = update("doc-signing-settings/api/docuseal/templates");
+export const updateContractor = update("contractors");

@@ -80,7 +80,7 @@ class LoggedUserSettings {
     }
 
     static isExpenseApprovers() {
-        return LoggedUserSettings.isValid("Employee Contact Details Viewers");
+        return LoggedUserSettings.isValid("Expense Approvers");
     }
 }
 
