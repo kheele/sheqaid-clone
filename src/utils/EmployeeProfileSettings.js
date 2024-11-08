@@ -1,6 +1,6 @@
 class EmployeeProfileSettings {
     static isValid(item, k) {
-        if (storage.is.isEmployee) return true;
+        if (!item || storage.is.isEmployee) return true;
 
         const {user: {data: {settings_list, linked_employee_id}},} = storage.loggedUser;
         if (linked_employee_id === item.id) return true;

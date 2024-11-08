@@ -3,23 +3,24 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
+import Form from 'utils/Form';
 import {onSelectLoadTrainingFrequencies} from '../../../../utils';
 
 import {
     ClearableInput,
     SelectClientInput,
     SelectJobPositionInput,
-    SelectProjectInput, SelectSectorInput,
+    SelectProjectInput,
+    SelectSectorInput,
     SelectSiteInput
-} from '../../../../../../components/inputs';
-import {Row} from '../../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../../components/dialogs';
+} from 'components/inputs';
+import {Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewTrainingRegistryDialog.lazy.css";
-import insertTrainingCourse from "../../../../../../mutations/all/TrainingCourse/insertTrainingCourse";
-import {execWhen} from "../../../../../../utils/UtilsFuns";
-import findByIdClient from "../../../../../../mutations/all/Client/findByIdClient";
+import insertTrainingCourse from "mutations/all/TrainingCourse/insertTrainingCourse";
+import {execWhen} from "utils/UtilsFuns";
+import {findByIdClient} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -96,11 +97,11 @@ class Controls extends React.Component {
                     }
                 };
 
-                if(data) {
+                if (data) {
                     set(data);
                 } else {
                     findByIdClient(id).then(val => {
-                        if(val) {
+                        if (val) {
                             const {id, data} = val;
                             set(data);
                         }

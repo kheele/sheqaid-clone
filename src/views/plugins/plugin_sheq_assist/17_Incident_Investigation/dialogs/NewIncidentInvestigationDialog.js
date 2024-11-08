@@ -6,27 +6,21 @@ import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {getRiskRatingConsequenceList, getRiskRatingLikelihoodList} from 'views/plugins/utils';
-import {Dates, execWhen, ShouldUpdate, toDataURI} from 'utils/Utils';
-import {ClearableInput, Clickable, ProfileField, RowOrgs} from 'components/inputs';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
+import {ClearableInput, ProfileField, RowOrgs} from 'components/inputs';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import {CauseAnalysisPanel, RemedialOrCorrectiveActionPanel} from './IncidentComponents';
-import {
-    CorrectiveActionListByCauseTable,
-    InvestigationFindingsTable,
-    NewDocumentTable
-} from './IncidentComponentTables';
-import {FormControls, NavButtons, RiskRating, Row} from 'components/FormComponents';
+import {InvestigationFindingsTable, NewDocumentTable} from './IncidentComponentTables';
+import {FormControls, RiskRating, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 import style from "./NewIncidentInvestigationDialog.lazy.css";
 import insertProxyEmployeeIncidentInvestigator
     from "mutations/all/ProxyEmployeeIncidentInvestigator/insertProxyEmployeeIncidentInvestigator";
 import deleteProxyEmployeeIncidentInvestigator
     from "mutations/all/ProxyEmployeeIncidentInvestigator/deleteProxyEmployeeIncidentInvestigator";
-import findByIdIncidentInvestigation
-    from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
-import updateIncidentInvestigation
-    from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
+import findByIdIncidentInvestigation from "mutations/all/Incident/IncidentInvestigation/findByIdIncidentInvestigation";
+import updateIncidentInvestigation from "mutations/all/Incident/IncidentInvestigation/updateIncidentInvestigation";
 import insertIncidentSeverity from "mutations/all/Incident/IncidentSeverity/insertIncidentSeverity";
 import updateIncidentSeverity from "mutations/all/Incident/IncidentSeverity/updateIncidentSeverity";
 // </editor-fold>
@@ -98,6 +92,14 @@ class Controls extends React.Component {
         this.form.addChangeOne("cause_analysis", this.onChangeCauseAnalysis.bind(this));
     }
 
+    get incident() {
+        return this.props.dialog.extraProp('incident');
+    }
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="onChange">
     onChangeConsequence(el, val) {
         if (val) {
@@ -123,6 +125,8 @@ class Controls extends React.Component {
         }
     }
 
+    // </editor-fold>
+
     onChangeRiskRating(el, val) {
         if (val) {
             const {consequence: consequence_ref, likelihood: likelihood_ref} = this.refs;
@@ -135,6 +139,8 @@ class Controls extends React.Component {
             likelihood && likelihood_ref.onChange(likelihood);
         }
     }
+
+    // </editor-fold>
 
     onChangeCauseAnalysis(el, val) {
         if (val) {
@@ -388,8 +394,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
         let {
@@ -504,16 +508,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-    }
-
-    // </editor-fold>
-
-    get incident() {
-        return this.props.dialog.extraProp('incident');
-    }
-
-    @computed get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -748,7 +742,8 @@ class Controls extends React.Component {
                         activeAlways
                         title={`Details Of Investigation`}
                     >
-                        <ClearableInput name="investigation_details" type="textarea" defaultValue={investigation_details}
+                        <ClearableInput name="investigation_details" type="textarea"
+                                        defaultValue={investigation_details}
                                         placeholder="Details Of Investigation" className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
                     </Row>
@@ -767,7 +762,8 @@ class Controls extends React.Component {
                         />
                         <ClearableInput name="investigation_findings_further_desc" type="textarea"
                                         defaultValue={investigation_findings_further_desc}
-                                        placeholder="Further Incident Investigation Findings" className="col-lg-12 form-control"
+                                        placeholder="Further Incident Investigation Findings"
+                                        className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
                     </Row>
                     <Row

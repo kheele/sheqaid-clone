@@ -82,7 +82,7 @@ class ViewDocumentsSection extends React.Component {
                             rendered
                             idx={idx + `.${__idx}.1`}
                             title={idx + `.${__idx}.1 ID / Passport`}
-                            sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="h-300 -margin-l-10 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                         >
@@ -92,7 +92,7 @@ class ViewDocumentsSection extends React.Component {
                             rendered
                             idx={idx + `.${__idx}.2`}
                             title={idx + `.${__idx}.2 Work Permit`}
-                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                             onFormBack={onFormBack}
@@ -103,7 +103,7 @@ class ViewDocumentsSection extends React.Component {
                             rendered
                             idx={idx + `.${__idx}.3`}
                             title={idx + `.${__idx}.3 Licenses`}
-                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                             onFormBack={onFormBack}
@@ -114,7 +114,7 @@ class ViewDocumentsSection extends React.Component {
                             rendered
                             idx={idx + `.${__idx}.4`}
                             title={idx + `.${__idx}.4 PrDP`}
-                            sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="h-300 -margin-l-10 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormBack={onFormBack}
                         >
@@ -126,7 +126,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Competencies`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -138,7 +138,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Contracts`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -149,7 +149,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Job Appointments`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -160,7 +160,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Counseling`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -171,7 +171,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Medical Fitness`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -182,7 +182,7 @@ class ViewDocumentsSection extends React.Component {
                     rendered
                     idx={idx + `.${__idx++}`}
                     title={idx + `.${__idx} Warnings`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                 >

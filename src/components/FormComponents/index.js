@@ -4,6 +4,7 @@ import {FormControls, NavButtons, Row, RowSecGroup,} from './Forms';
 import AControls from './AControls';
 import Fragment from './Fragment';
 import ASectionSection from './ASectionSection';
+import DocSubmissionPreviewDialog from './DocSubmissionPreviewDialog';
 import DocUploadDialog from './DocUploadDialog';
 import DocUploadOption from './DocUploadOption';
 import DocSignButton from './DocSignButton';
@@ -18,7 +19,7 @@ import ModuleRenderer from './ModuleRenderer';
 
 export {
     AControls,
-    DocUploadDialog, DocUploadOption, DocSignButton,
+    DocSubmissionPreviewDialog, DocUploadDialog, DocUploadOption, DocSignButton,
     ASectionSection, CreateAndEditBar, ImageSection,
     FormControls, Row, RowSecGroup, Fragment, NavButtons,
     RiskRating,

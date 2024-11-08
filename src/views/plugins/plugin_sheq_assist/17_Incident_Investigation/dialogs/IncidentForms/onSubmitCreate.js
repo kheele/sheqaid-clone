@@ -1,4 +1,4 @@
-import {Dates, toDataURI} from "utils/Utils";
+import {Dates} from "utils/Utils";
 import {isObservableArray} from "mobx";
 import {insertIncident} from "mutations/create";
 
@@ -180,7 +180,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         liability_admitted_to_name,
         third_party_opinion,
         third_party_document_list: {
-            data: await Promise.all([...(third_party_document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc)}}))),
+            data: third_party_document_list || [],
         },
         //
         is_infringement_issued,
@@ -218,7 +218,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         location,
         exact_location,
         document_list: {
-            data: await Promise.all([...(document_list || [])].map(async doc => ({doc: {path: await toDataURI(doc.path)}})))
+            data: document_list || [],
         },
         //2
         incident_date: Dates.formatDateSQL(incident_date),
@@ -232,16 +232,15 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         },
         sub_category_list: {
             data: (sub_category_list && (isArray(sub_category_list) || isObservableArray(sub_category_list)) ? sub_category_list : sub_category_list ? [sub_category_list] : [])
-              .map(({id: sub_category_id}) => ({sub_category_id}))
+                .map(({id: sub_category_id}) => ({sub_category_id}))
         },
         //4
         sector_list: {
-            data: (sector_list && (isArray(sector_list) || isObservableArray(sector_list)) ? sector_list : sector_list ? [sector_list] : []).
-            map(({id: sector_id}) => ({sector_id}))
+            data: (sector_list && (isArray(sector_list) || isObservableArray(sector_list)) ? sector_list : sector_list ? [sector_list] : []).map(({id: sector_id}) => ({sector_id}))
         },
         activity_list: {
             data: (activity_list && (isArray(activity_list) || isObservableArray(activity_list)) ? activity_list : activity_list ? [activity_list] : [])
-            .map(({id: activity_id}) => ({activity_id}))
+                .map(({id: activity_id}) => ({activity_id}))
         },
         //5
         //5.1
@@ -338,7 +337,7 @@ export default async function onSubmitCreate(e, btn, onSaved) {
         //8
         test_undertaken,
         test_type_list: {
-        	data: (test_type_list || []).map((name) => ({name})),
+            data: (test_type_list || []).map((name) => ({name})),
         },
         test_type_drug_undertaken,
         test_type_alcohol_undertaken,

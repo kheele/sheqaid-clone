@@ -5,7 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import listAllCountry from "../../mutations/all/Country/listAllCountry";
+import {listCountries} from "mutations/list";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -17,18 +17,47 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
     }
-    
+
+    @computed
+    get selectedItem() {
+        let {defaultValue} = this.props;
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            const defCountry = this.list.find(({value: {id, data: {iso2, name, phone_code}}}) => {
+                if (defaultValue === iso2 || defaultValue === name || defaultValue === phone_code || defaultValue === `+${phone_code}`) {
+                    return true;
+                }
+                if (defaultValue.id === id) {
+                    return true;
+                }
+            });
+            if (defCountry) {
+                defaultValue = defCountry.value;
+            }
+            let {name, phone_code, iso2} = defaultValue.data || defaultValue;
+            const label = <div className="SelectCountryCodeInput-label flex flex-left">
+                <img src={getFlag(iso2)} className="fixed-flex min-w-30"/>
+                <span className="flex flex-left font-size-16">({iso2.toUpperCase()}) {name}</span>
+            </div>;
+            return {value: {...defaultValue}, label};
+        }
+        return null;
+    }
+
     async componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectCountryInput`;
-        
+
         const res = await onSelectLoad();
         this.state.lists.list = res.distinct();
-        
+        console.log('SelectCountryInput', this.state.lists.list.length);
+
         this.state.props = {
             ref: "input",
             key: new Date().getTime(),
@@ -44,37 +73,9 @@ class SelectInput extends ASelectInput {
         };
     }
 
-    @computed
-    get selectedItem() {
-        let {defaultValue} = this.props;
-        if(defaultValue) {
-            if(defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            const defCountry = this.list.find(({value: {id, data: {iso2, name, phone_code}}}) => {
-                if (defaultValue === iso2 || defaultValue === name || defaultValue === phone_code || defaultValue === `+${phone_code}`){
-                    return true;
-                }
-                if (defaultValue.id === id){
-                    return true;
-                }
-            });
-            if(defCountry) {
-                defaultValue = defCountry.value;
-            }
-            let {name, phone_code, iso2} = defaultValue.data || defaultValue;
-            const label = <div className="SelectCountryCodeInput-label flex flex-left">
-                <img src={getFlag(iso2)} className="fixed-flex min-w-30"/>
-                <span className="flex flex-left font-size-16">({iso2.toUpperCase()}) {name}</span>
-            </div>;
-            return {value: {...defaultValue}, label};
-        }
-        return null;
-    }
-
     render() {
         const {props} = this.state;
-        if(!props) return null;
+        if (!props) return null;
 
         return <ClearableInput {...props}/>;
     }
@@ -85,7 +86,7 @@ function getFlag(iso2) {
 }
 
 function onSelectLoad() {
-    return listAllCountry().then(res => {
+    return listCountries().then(res => {
         return res.map(value => {
             return {label: value.data.name, value};
         });

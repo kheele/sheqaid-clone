@@ -9,9 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileTrainingPlanDialog.lazy.css";
-import findByIdClient from "mutations/all/Client/findByIdClient";
-import findByIdProject from "mutations/all/Project/findByIdProject";
-import findByIdSite from "mutations/all/Site/findByIdSite";
+import {findByIdClient, findByIdProject, findByIdSite} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -23,16 +21,16 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "Training Plan";
-    }
-
     get topButtonsHiddenDelete() {
         return true;
     }
 
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "Training Plan";
     }
 }
 
@@ -82,6 +80,7 @@ class Controls extends React.Component {
         const {id, target} = target_view || {};
         return view === 'Employee';
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderByCourse">
@@ -120,6 +119,7 @@ class Controls extends React.Component {
             <ProfileField title="Course" value={name} className="col-lg-12"/>
         </>
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderByYear">
@@ -154,6 +154,7 @@ class Controls extends React.Component {
             <ProfileField title="Year" value={year} className="col-lg-12"/>
         </>
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderByJobPosition">
@@ -187,6 +188,7 @@ class Controls extends React.Component {
             <ProfileField title="Job Position" value={name} className="col-lg-12"/>
         </>
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderByEmployee">
@@ -222,6 +224,7 @@ class Controls extends React.Component {
             <ProfileField title="Employee" value={`${lname} ${fname}`} className="col-lg-12"/>
         </>
     }
+
     //</editor-fold>
 
     //<editor-fold desc="orgs">
@@ -300,13 +303,6 @@ class ProfileFieldLoader extends React.Component {
         loaded: false,
     };
 
-    async componentDidMount() {
-        const {value} = this.props;
-        this.state.loaded = false;
-        this.state.value = await value;
-        this.state.loaded = true;
-    }
-
     get children() {
         const {value, props: {children}} = this;
         return React.Children.map(children, (child, index) => {
@@ -321,6 +317,13 @@ class ProfileFieldLoader extends React.Component {
 
     @computed get value() {
         return this.state.value;
+    }
+
+    async componentDidMount() {
+        const {value} = this.props;
+        this.state.loaded = false;
+        this.state.value = await value;
+        this.state.loaded = true;
     }
 
     render() {

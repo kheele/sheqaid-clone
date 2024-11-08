@@ -158,7 +158,7 @@ class SelectInput extends ASelectInput {
         const {parentClassName} = this.props;
 
         return <div
-            className={'col-lg-12 form-control-add-btn h-auto padding-0 no-border pull-left flex' + (parentClassName ? ` ${parentClassName}` : '')}>
+            className={'col-lg-12 clearable-field-control form-control select_multiple form-control-add-btn h-auto padding-0 no-border pull-left flex' + (parentClassName ? ` ${parentClassName}` : '')}>
             <ClearableInput {...props}/>
             <NewJobCategoryDialog ref="newDialog"/>
             <Button className="btn btn-primary fixed-flex" onClick={this.onAdd}>

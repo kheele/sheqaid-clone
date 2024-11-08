@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {Tabs} from "components/tabs";
 import Tab from "./Tab";
@@ -24,6 +24,10 @@ class TabWrapper extends React.Component {
         return this.state.index;
     }
 
+    @computed get item() {
+        return this.props.item;
+    }
+
     componentDidMount() {
         this.onChange(this.props.tabIndex || 0);
     }
@@ -35,14 +39,21 @@ class TabWrapper extends React.Component {
     }
 
     render() {
+        if (!this.item) {
+            return null;
+        }
+
         const {
-            permissionKey,
-            tabsHeight,
             item, item: {
                 id, data: {
                     signable_doc_submitter_list = [],
                 }
             }
+        } = this;
+
+        const {
+            permissionKey,
+            tabsHeight,
         } = this.props;
 
         const {isEmployee} = storage.is;

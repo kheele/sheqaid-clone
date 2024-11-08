@@ -89,12 +89,13 @@ class DocusealBuilderWrapper extends React.Component {
 
     get customCss() {
         return `
-            .sticky.bg-yellow-100:first-of-type, 
+            .sticky.bg-yellow-100:first-of-type,
+            svg, 
             #sign_yourself_button, 
             #send_button{
+                visibility: hidden !important;
                 display: none !important;
             }
-            
             #main_container{
                 max-height: calc(100% - 50px);
                 height: 100%;

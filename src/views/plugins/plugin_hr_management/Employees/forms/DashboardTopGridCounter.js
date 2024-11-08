@@ -163,7 +163,7 @@ const Comp = forwardRef((
                                                                             countUpClass="color-white"
                                                                             background={getRandomRolor()}
                                                                             title={<b
-                                                                                className="color-white font-size-14">Sign-Off</b>}
+                                                                                className="color-white font-size-14">Time-Off</b>}
                                                                             count={leave_list_aggregate.aggregate.count}
         />}
         {/*{<Counter size={topStatsSize}*/}

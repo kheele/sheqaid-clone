@@ -2,13 +2,10 @@
 
 // 1
 import {graphql} from "react-relay";
-import uuidv4 from "uuid/v4";
 // @ts-ignore
-import updateMutationImpl from "mutations/updateMutationImpl";
-import {EntityContractor} from "mutations/types.d.ts";
-import findByIdContractor from "./findByIdContractor";
 import findOneMutationImpl from "../../findOneMutationImpl";
 import removeOTPContractor from "./removeOTPContractor";
+import {findByIdContractor} from "../../findById";
 
 // 2
 const query = graphql`
@@ -191,15 +188,15 @@ const query = graphql`
 
 // 3
 export default async ({id, code}) => {
-    if(!id || !code) {
+    if (!id || !code) {
         return;
     }
 
     const item = await findByIdContractor(id);
-    if(!item) return "NO_USER_DB";
+    if (!item) return "NO_USER_DB";
 
     const res = await findOneMutationImpl({checkLogin: false, query, variables: {id, code}});
-    if(res) {
+    if (res) {
         removeOTPContractor(id);
         return res;
     }

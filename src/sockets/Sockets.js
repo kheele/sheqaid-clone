@@ -6,16 +6,20 @@ class Socket {
         this.name = name;
 
         this.fn = this.fn.bind(this);
+        this.send = this.send.bind(this);
+
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
+        this.upsert = this.upsert.bind(this);
         this.findById = this.findById.bind(this);
+        this.list = this.list.bind(this);
     }
 
     fn(name) {
         return async (data) => {
             if (data === undefined || data === null || (Object.keys(data).length === 1 && 'limit' in data)) {
-                data = {...data, noFilter: true};
+                data = {...(data || {}), noFilter: true};
             } else {
                 if (!isNumber(data) && !isBoolean(data)) {
                     data = await convertMobx(data);
@@ -60,30 +64,49 @@ class Socket {
         };
     }
 
+    async send(name, data) {
+        if (data === undefined || data === null || (Object.keys(data).length === 1 && 'limit' in data)) {
+            data = {...(data || {}), noFilter: true};
+        } else {
+
+        }
+        const path = `${this.name}${name ? ('/' + name) : ''}`;
+        console.log(path, name, data);
+        return workers.emit('socket/emit', path, data).catch(err => {
+            console.error(err.stack);
+            throw err;
+        });
+    }
+
     async create(data) {
         data = await convertMobx(data);
-        const path = `${this.name}/create`;
-
-        return workers.emit('socket/emit', path, data);
+        return this.send('create', data);
     }
 
     async update(attrs) {
         attrs = await convertMobx(attrs);
-        const path = `${this.name}/update`;
-
-        return workers.emit('socket/emit', path, attrs);
+        return this.send('update', attrs);
     }
 
     async delete(id) {
-        const path = `${this.name}/delete`;
+        return this.send('delete', id);
+    }
 
-        return workers.emit('socket/emit', path, id);
+    async upsert(attrs) {
+        attrs = await convertMobx(attrs);
+        return this.send('upsert', attrs);
     }
 
     async findById(id) {
-        const path = `${this.name}/findById`;
+        return this.send('findById', id);
+    }
 
-        return workers.emit('socket/emit', path, id);
+    async findBy(args) {
+        return this.send('findBy', args);
+    }
+
+    async list(args) {
+        return this.send('list', args);
     }
 }
 

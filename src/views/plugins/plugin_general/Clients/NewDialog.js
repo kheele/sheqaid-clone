@@ -21,7 +21,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -39,7 +39,7 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -78,7 +78,10 @@ class Controls extends React.Component {
             address,
             profile_pic: profile_pic && profile_pic.path,
             sector_list: {
-                data: (sector_list || []).map(({id: sector_id}) => ({sector_id}))
+                data: (sector_list || []).map(({id: sector_id, name}) => ({
+                    sector_id,
+                    name,
+                }))
             }
         };
 
@@ -88,7 +91,7 @@ class Controls extends React.Component {
         progressDialog.open();
         insertClient(data).then(res => {
             console.log("res", res)
-            if(res === "DUP_CONTRACTOR_EMAIL") {
+            if (res === "DUP_CONTRACTOR_EMAIL") {
                 infoDialog.open("Another company is already using the Contractor Email Address provided.");
             } else {
                 storage.load.loadClients(true);
@@ -106,19 +109,25 @@ class Controls extends React.Component {
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
         return <FormControls onChange={this.form.onChange}>
-            <Row 
+            <Row
                 activeAlways
-                rendered 
+                rendered
                 idx={1}
                 title="Company Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}>
-                    <ProfilePic name="profile_pic" onChange={this.form.onChange}/>
-                    <ClearableInput name="name" type="text" placeholder="Company Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="business_id" type="text" placeholder="Company Business ID" desc="This is required for COVID-19 data submission purposes. You will receive Business ID when registering your business for COVID-19 data submission on https://www.nioh.ac.za/ website" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="phone" type="text" placeholder="Contact No." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="email" type="text" placeholder="Email Address" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="address" type="textarea" placeholder="Company Address" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ProfilePic name="profile_pic" onChange={this.form.onChange}/>
+                <ClearableInput name="name" type="text" placeholder="Company Name" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="business_id" type="text" placeholder="Company Business ID"
+                                desc="This is required for COVID-19 data submission purposes. You will receive Business ID when registering your business for COVID-19 data submission on https://www.nioh.ac.za/ website"
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="phone" type="text" placeholder="Contact No." required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="email" type="text" placeholder="Email Address" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="address" type="textarea" placeholder="Company Address"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
@@ -128,8 +137,8 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}>
                 <SelectSectorInput name="sector_list" type="checkbox" placeholder="Sector(s)" required vertical={3}
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.sector_list} returnValue/>
+                                   className="col-lg-12 form-control" onChange={this.form.onChange}
+                                   values={this.state.lists.sector_list} returnValue/>
             </Row>
             <Row
                 rendered

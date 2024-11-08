@@ -23,8 +23,11 @@ class OrganogramsTab extends React.Component {
     @observable
     state = {
         lists: {
-            target: [{label: 'Company', value: 'Client'}, {label: 'Project', value: 'Project'}, {label: 'Site', value: 'Site'}],
-            types: [{value: "Upload", text: "PDF / Spreadsheet", checked: false}, {value: "Type", text: "Typed", checked: false}]
+            target: [{label: 'Company', value: 'Client'}, {label: 'Project', value: 'Project'}, {
+                label: 'Site',
+                value: 'Site'
+            }],
+            types: [{value: "Upload", text: "Document", checked: false}, {value: "Type", text: "Typed", checked: false}]
         }
     };
 
@@ -34,7 +37,7 @@ class OrganogramsTab extends React.Component {
         this.onLoadList = this.onLoadList.bind(this);
 
         this.onViewByDoc = this.onViewByDoc.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
@@ -69,7 +72,7 @@ class OrganogramsTab extends React.Component {
             exact_orgs: true,
         };
 
-        if(!isNew) {
+        if (!isNew) {
             args.offset = this.refs.root.list.length;
         } else {
             args.offset = 0;
@@ -80,13 +83,14 @@ class OrganogramsTab extends React.Component {
             return res;
         });
     }
+
     //</editor-fold>
 
     onViewByDoc(e, btn) {
         const {idx} = btn.props;
         this.refs.root.onView(e, btn);
     }
-    
+
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
@@ -97,15 +101,21 @@ class OrganogramsTab extends React.Component {
 
     renderFilterNode(onChange) {
         const {hasProjects} = storage.is;
-        if(hasProjects) {
+        if (hasProjects) {
             return <div className="col-lg-12 controls flex">
-                <ClearableInput name="type" type="radio" placeholder="Source" className="fixed-flex min-w-400 form-control" onChange={onChange} values={this.state.lists.types} returnValue/>
-                <ClearableInput name="target" type="select" placeholder="Target..." className="fixed-flex min-w-270 form-control" onChange={onChange} values={this.state.lists.target} returnValue/>
-                <ClearableInput name="name" type="text" placeholder="Company/Client, Project, Site Name" className="form-control" onChange={onChange}/>
+                <ClearableInput name="type" type="radio" placeholder="Source"
+                                className="fixed-flex min-w-400 form-control" onChange={onChange}
+                                values={this.state.lists.types} returnValue/>
+                <ClearableInput name="target" type="select" placeholder="Target..."
+                                className="fixed-flex min-w-270 form-control" onChange={onChange}
+                                values={this.state.lists.target} returnValue/>
+                <ClearableInput name="name" type="text" placeholder="Company/Client, Project, Site Name"
+                                className="form-control" onChange={onChange}/>
             </div>;
         }
         return <div className="col-lg-12 controls">
-            <ClearableInput name="type" type="radio" placeholder="Source" className="col-lg-12 form-control" onChange={onChange} values={this.state.lists.types} returnValue/>
+            <ClearableInput name="type" type="radio" placeholder="Source" className="col-lg-12 form-control"
+                            onChange={onChange} values={this.state.lists.types} returnValue/>
         </div>;
     }
 
@@ -129,22 +139,23 @@ class OrganogramsTab extends React.Component {
         const {hasProjects} = storage.is;
         return <TRow key={"item-" + n}>
             <div className="td fixed-flex min-w-120">{Dates.formatDate(created_at)}</div>
-            <div className="td">{doc ? <Clickable idx={n} onClick={this.onViewByDoc}><a href="#">PDF / Spreadsheet</a></Clickable> : "Typed"}</div>
+            <div className="td">{doc ?
+                <Clickable idx={n} onClick={this.onViewByDoc}><a href="#">Document</a></Clickable> : "Typed"}</div>
             <div className="td">{target === "Client" ? "Company" : target}</div>
-            
+
             {hasProjects && RenderUtils.renderOrgTD(client, null, 'Company')}
             {hasProjects && RenderUtils.renderOrgTD(project, null, 'Project')}
             {hasProjects && RenderUtils.renderOrgTD(site, null, 'Site')}
-            
+
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
                 <RemovedListWarning idx={n} list={list}/>
             </div>
         </TRow>;
     }
 
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -159,7 +170,7 @@ class OrganogramsTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateOrganogram}/>
-            
+
             <ProfileDialog ref="profileDialog"/>
             <NewDialog ref="newDialog"/>
             <EditDialog ref="editDialog"/>
@@ -169,30 +180,30 @@ class OrganogramsTab extends React.Component {
 
 @observer
 class RemovedListWarning extends React.Component {
-    
+
     @observable state = {
         removedListCount: 0
     };
-    
+
     constructor(props) {
         super(props);
 
         this.onRemovedListShowWarningMsg = this.onRemovedListShowWarningMsg.bind(this);
     }
-    
+
     componentDidMount() {
         const {list} = this.props;
-        if(!list || list.isEmpty()) return;
-        
+        if (!list || list.isEmpty()) return;
+
         const removedList = [];
         list.forEach(({employee, employee_reported_to, employee_list, team}) => {
-            if(employee && employee.data.removed) {
+            if (employee && employee.data.removed) {
                 removedList.push(employee.id);
             }
-            if(employee_reported_to && employee_reported_to.data.removed) {
+            if (employee_reported_to && employee_reported_to.data.removed) {
                 removedList.push(employee_reported_to.id);
             }
-            if(employee_list) {
+            if (employee_list) {
                 const removedMembers = employee_list.filter(({data: {removed}}) => removed).map(({id}) => id);
                 removedList.push(...removedMembers);
             }
@@ -203,11 +214,11 @@ class RemovedListWarning extends React.Component {
     onRemovedListShowWarningMsg(evt) {
         const {idx, getPopover} = this.props;
         let elem = window.$(evt.target);
-        
+
         const offset = elem.offset();
         const style = {left: "auto", right: calculateRightPos(elem[0], false) + 10, top: offset.top, width: 290};
         popover.settings({
-            style, 
+            style,
             isDialog: false,
             contentNode: <div>
                 <p className="nav-item padding-10 margin-0">
@@ -217,9 +228,9 @@ class RemovedListWarning extends React.Component {
             </div>
         }).open();
     }
-    
+
     render() {
-        if(this.state.removedListCount === 0) return null;
+        if (this.state.removedListCount === 0) return null;
         return <i className="fa fa-warning" onClick={this.onRemovedListShowWarningMsg}/>;
     }
 }

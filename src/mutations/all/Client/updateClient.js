@@ -5,9 +5,8 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityClient} from "mutations/types.d.ts";
-import findByIdClient from "./findByIdClient";
-import findByContractorEmailClient from "./findByContractorEmailClient";
 import checkByContractorEmailClient from "./checkByContractorEmailClient";
+import {findByIdClient} from "../../findById";
 
 // 2
 const mutation = graphql`
@@ -132,7 +131,7 @@ export default async (attrs: EntityClient) => {
         sector_list
     } = attrs;
 
-    if(contractor_email) {
+    if (contractor_email) {
         const existingItem = await checkByContractorEmailClient({id, contractor_email});
         if (existingItem) {
             return "DUP_CONTRACTOR_EMAIL";
@@ -140,7 +139,7 @@ export default async (attrs: EntityClient) => {
     }
 
     const item = await findByIdClient(id);
-    if(!item) return;
+    if (!item) return;
 
     if (profile_pic && !profile_pic.dlUrls) {
         const path = `clients/${id}`;

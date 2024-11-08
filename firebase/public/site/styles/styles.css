@@ -1,4 +1,7 @@
 
+:root{
+  --text-color: rgb(2 255 210);
+}
 * {
   font-family: Roboto, sans-serif;
 }
@@ -73,15 +76,16 @@ header .title,
   justify-content: center;
   font-size: 48px;
   font-family: sans-serif;
-  color: rgb(2 220 220 / 50%);
   flex-direction: column;
   transition: all 0.9s;
   max-width: 750px;
   margin: 0 auto;
   text-align: center;
-}
-header .title {
-  padding-top: 50px;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: -webkit-linear-gradient(360deg,white 35.63%,#9ff7b3 55.43%,var(--text-color) 68.07%);
+  background-image: linear-gradient(360deg,white 35.63%,#9ff7b3 55.43%,var(--text-color) 68.07%);
 }
 .home > .title {
   color: #888;
@@ -107,16 +111,6 @@ main {
   position: relative;
 }
 
-.contacts-bar{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* height: 60px; */
-  /* padding: 20px; */
-  /* background: rgb(0 0 0 / 10%); */
-  /*border-radius: 50px;*/
-  /* margin-bottom: 40px; */
-}
 .contacts-bar > p{
-margin: 0 20px;
+  margin: 8px 0;
 }

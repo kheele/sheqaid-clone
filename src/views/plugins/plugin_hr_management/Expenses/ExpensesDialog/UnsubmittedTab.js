@@ -67,10 +67,12 @@ class UnsubmittedTab extends ActiveTab {
         const {user, user: {data: {settings_list, linked_employee_id}},} = storage.loggedUser;
 
         let isSubmitter;
-        if (storage.is.isEmployee) {
-            isSubmitter = employee.id === user.id;
-        } else {
-            isSubmitter = employee.id === linked_employee_id;
+        if (!!employee) {
+            if (storage.is.isEmployee) {
+                isSubmitter = employee.id === user.id;
+            } else {
+                isSubmitter = employee.id === linked_employee_id;
+            }
         }
 
         return <Options idx={idx} permissionModKey={permissionKey}>

@@ -54,18 +54,20 @@ class EditOptionalInfoSection extends React.Component {
             supervisor_id: supervisor && supervisor.id,
 
             living_address_list: {
-                data: (living_address_list || []).map(({
-                                                           country,
-                                                           province,
-                                                           city,
-                                                           local_address,
-                                                           street_address,
-                                                           doc
-                                                       }) => ({
+                data: (living_address_list || []).map((
+                    {
+                        country,
+                        zone,
+                        city,
+                        local_address,
+                        street_address,
+                        doc
+                    }
+                ) => ({
                     is_default: true,
                     //1
                     country_id: country.id,
-                    province_id: province.id,
+                    zone_id: zone.id,
                     city_id: city.id,
                     local_address,
                     street_address,
@@ -108,7 +110,7 @@ class EditOptionalInfoSection extends React.Component {
                 }
             } = this.props;
             if (living_address_list && living_address_list.anyMatch) {
-                if (living_address_list.anyMatch(v => v.province)) {
+                if (living_address_list.anyMatch(v => v.zone)) {
                     return;
                 }
             }

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React, {createRef} from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {execWhen, ShouldUpdate} from 'utils/Utils';
@@ -13,7 +13,8 @@ import {
     SelectClientInput,
     SelectJobCategoryInput,
     SelectJobPositionInput,
-    SelectProjectInput, SelectSectorInput,
+    SelectProjectInput,
+    SelectSectorInput,
     SelectSiteInput,
     SelectTrainingCourseInput,
     SelectUserInput
@@ -23,9 +24,9 @@ import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditTrainingMatrixDialog.lazy.css";
 import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
-import findByIdClient from "mutations/all/Client/findByIdClient";
 import updateTrainingMatrix from "mutations/all/TrainingMatrix/updateTrainingMatrix";
 import findByIdTrainingMatrix from "mutations/all/TrainingMatrix/findByIdTrainingMatrix";
+import {findByIdClient} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -94,6 +95,12 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onChangeClient">
     onChangeClient(el, val) {
         execWhen(() => this.refs.sector_list).then(async ref => {
@@ -109,11 +116,11 @@ class Controls extends React.Component {
                     }
                 };
 
-                if(data) {
+                if (data) {
                     set(data);
                 } else {
                     findByIdClient(id).then(val => {
-                        if(val) {
+                        if (val) {
                             const {id, data} = val;
                             set(data);
                         }
@@ -318,7 +325,7 @@ class Controls extends React.Component {
         btn.text("Saving...").disabled();
         updateTrainingMatrix({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            if(res) {
+            if (res) {
                 onSaved && onSaved(res.data);
                 infoDialog.open("Record successfully updated.");
                 infoDialog.close(2000);
@@ -329,12 +336,6 @@ class Controls extends React.Component {
         }).finally(() => {
             btn.text("Save").enabled();
         });
-    }
-
-    // </editor-fold>
-    
-    @computed get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -437,10 +438,12 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectJobCategoryInput name="job_category_list" type="select_multi" placeholder="Allocation / Job Category..."
+                <SelectJobCategoryInput name="job_category_list" type="select_multi"
+                                        placeholder="Allocation / Job Category..."
                                         defaultValue={job_category_listDefault} className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add={false}/>
-                <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position For Training..."
+                <SelectJobPositionInput name="job_position_list" type="select_multi"
+                                        placeholder="Job Position For Training..."
                                         defaultValue={job_position_listDefault} className="col-lg-12 form-control"
                                         onChange={this.form.onChange}/>
                 <SelectSectorInput ref="sector_list" name="sector_list" type="select_multi" placeholder="Sector(s)..."
@@ -480,7 +483,8 @@ class Controls extends React.Component {
                                 onChange={this.form.onChange}/>
                 <SelectUserInput name="trainer" placeholder="Training Conductor..." defaultValue={trainer} defaultUser
                                  showOtherPerson className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..." defaultValue={trainer_job_position}
+                <SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..."
+                                        defaultValue={trainer_job_position}
                                         desc="Job Position For Training Conductor" className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add/>
             </Row>

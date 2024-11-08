@@ -81,7 +81,7 @@ class StatsPanel extends React.Component {
             {/*<AggregateStat title="Employees" value={supervisor_employee_list_aggregate} color=""/>*/}
             <AggregateStat title="PPE" value={ppe_type_list_aggregate} color="rgb(90, 106, 116)"/>
             <AggregateStat title="Competencies" value={trainer_training_list_aggregate} color="rgb(1, 100, 93)"/>
-            <AggregateStat title="Sign-Off" value={leave_list_aggregate} color="rgb(11, 126, 145)"/>
+            <AggregateStat title="Time-Off" value={leave_list_aggregate} color="rgb(11, 126, 145)"/>
             <AggregateStat title="Medicals" value={medical_list_aggregate} color="rgb(76, 121, 129)"/>
             {/*<AggregateStat title="Warnings" value={warning_list_aggregate} color=""/>*/}
         </>;

@@ -248,7 +248,15 @@ class ATab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {NewDialog, ProfileDialog, EditDialog, onUpdate, onSignatures, titleSingular} = this.props;
+        const {
+            NewDialog,
+            ProfileDialog,
+            EditDialog,
+            onUpdate,
+            onSignatures,
+            titleSingular,
+            disableTopExpiryFilter
+        } = this.props;
         const {state, state: {expiry_date}} = this;
         return <>
             <ViewByButtonsBox
@@ -267,7 +275,7 @@ class ATab extends React.Component {
                 createBtnRendered={!this.removed && !!NewDialog}
                 noAnimation={true}
                 renderDefaultLeftButtons={this.renderDefaultLeftButtons}
-                renderLeftButtons={renderLeftButtonsForExpiryOnly.bind(this)}
+                renderLeftButtons={!disableTopExpiryFilter && renderLeftButtonsForExpiryOnly.bind(this)}
                 renderRightButtons={this.renderRightButtons}
                 renderPopoverOptions={this.renderPopoverOptions}
                 renderFilterNode={this.renderFilterNode}

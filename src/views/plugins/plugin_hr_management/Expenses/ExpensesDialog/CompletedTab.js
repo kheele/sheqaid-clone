@@ -6,11 +6,9 @@ import NavItem from 'components/navs/NavItem';
 import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 
 // import style from "./CompletedTab.lazy.css";
-
-import {extendObservable} from "mobx";
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="ActiveTab">
+// <editor-fold defaultstate="collapsed" desc="CompletedTab">
 @observer
 class CompletedTab extends ActiveTab {
 

@@ -23,14 +23,6 @@ class ViewDocumentDialog extends AProfileDialog {
         this.onPrint = this.onPrint.bind(this);
     }
 
-    title() {
-        return this.props.title;
-    }
-
-    onPrint(e, btn) {
-        this.refs.controls.onPrint(e, btn);
-    }
-    
     @computed get url() {
 //        if(!this.state.item) return null;
         return '';//base64ToUrlPDF(this.state.item.data);
@@ -50,21 +42,33 @@ class ViewDocumentDialog extends AProfileDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
+    }
+
+    title() {
+        return this.props.title;
+    }
+
+    onPrint(e, btn) {
+        this.refs.controls.onPrint(e, btn);
     }
 }
+
 // </editor-fold>
 
 @observer
 class Controls extends React.Component {
     @observable
-    state = {
-    };
+    state = {};
 
     constructor() {
         super();
-        
+
         this.onLoadSuccess = this.onLoadSuccess.bind(this);
+    }
+
+    get item() {
+        return this.props.state.item;
     }
 
     onPrint(e, btn) {
@@ -92,30 +96,27 @@ class Controls extends React.Component {
         ');
 //        console.log(iframe.contentDocument)
     }
-    
-    get item() {
-        return this.props.state.item;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
             return null;
-        
+
         const {path, previewPath} = this.item;
-        
+
         const isPDF = FileTypes.isPDF(path);
         const isWord = FileTypes.isWord(path);
         const isExcel = FileTypes.isExcel(path);
+        const isPPT = FileTypes.isPPT(path);
         const isPic = FileTypes.isPic(path);
         const isVideo = FileTypes.isVideo(path);
-        
+
         let src;
-        if(isPDF) {
+        if (isPDF) {
             src = previewPath;
-        } else if(isWord || isExcel) {
+        } else if (isWord || isExcel || isPPT) {
             src = previewPath;
-        } else if(isPic || isVideo) {
+        } else if (isPic || isVideo) {
             src = previewPath;
         }
 //        console.log('src', src)
@@ -123,20 +124,20 @@ class Controls extends React.Component {
             <div className="controls h-full padding-0">
                 <div className="row padding-0">
                     <div className="row sec-group w-full">
-                        {(isPDF || isWord || isExcel) && <Document 
-                            previewPath={src} 
+                        {(isPDF || isWord || isExcel || isPPT) && <Document
+                            previewPath={src}
                             className="fixed-center"
                         />}
-                        {isPic && <img 
-                            ref="img" 
+                        {isPic && <img
+                            ref="img"
                             src={src}
                             className="hor-center"
-                            height="100%" 
+                            height="100%"
                         />}
-                        {isVideo && <video 
-                            ref="video" 
+                        {isVideo && <video
+                            ref="video"
                             src={src}
-                            height="100%" 
+                            height="100%"
                             className="hor-center"
                             controls
                         />}
@@ -145,6 +146,7 @@ class Controls extends React.Component {
             </div>
         </div>);
     }
+
     // </editor-fold>
 }
 

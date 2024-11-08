@@ -6,7 +6,7 @@ import {computed, extendObservable, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {Dates, isWeb, Permissions} from "utils/Utils";
+import {Dates, Permissions} from "utils/Utils";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import Popover from 'components/popovers/Popover';
@@ -248,20 +248,11 @@ class ATab extends React.Component {
                     }
                 } else {
                     progressDialog.close();
-                    if (isWeb()) {
-                        infoDialog.open(<React.Fragment>
-                            <p>Reports successfully generated.</p>
-                            <p><small>The file will be automatically downloaded</small></p>
-                        </React.Fragment>);
-                        saveFileAs(res, `COVID-Report_${Dates.formatDate(new Date())}.xlsx`);
-                    } else {
-                        infoDialog.open(<React.Fragment>
-                            <p>Reports successfully generated.</p>
-                            <p>Saved in the following folder:</p>
-                            <p><small>{res.path}</small></p>
-                            <p><small>The file will open after 3 seconds</small></p>
-                        </React.Fragment>);
-                    }
+                    infoDialog.open(<React.Fragment>
+                        <p>Reports successfully generated.</p>
+                        <p><small>The file will be automatically downloaded</small></p>
+                    </React.Fragment>);
+                    saveFileAs(res, `COVID-Report_${Dates.formatDate(new Date())}.xlsx`);
                 }
             }).catch(err => {
                 console.error(err);

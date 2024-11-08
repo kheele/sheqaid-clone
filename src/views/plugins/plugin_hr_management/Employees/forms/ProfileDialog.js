@@ -9,6 +9,10 @@ import {FormControls, Row} from 'components/FormComponents';
 import OptionalInfoSection from './ViewOptionalInfoSection';
 import DocumentsSection from './ViewDocumentsSection';
 import TimeoffSection from "./ViewTimeoffSection";
+import PPESection from './ViewPPESection';
+import IncidentsSection from './ViewIncidentsSection';
+import COIDSection from './ViewCOIDSection';
+import TrainingsSection from './ViewTrainingsSection';
 import DependentsAndNextOfKinSection from './ViewDependentsAndNextOfKinSection';
 
 import DashboardSection from "./DashboardSection";
@@ -97,17 +101,10 @@ class Controls extends React.Component {
         },
         {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependentsAndNextOfKinTab"},
         // {title: 'Job Observations', comp: JobObservationsSection, ref: "jobObservationsSection"},
-        // {title: 'Trainings', comp: TrainingsSection, ref: "trainingsTab"},
-        // {
-        //     title: 'PPE Issue',
-        //     comp: ViewPPETab,
-        //     ref: "ppeTab"
-        // },
-        // {
-        //     title: 'Incidents',
-        //     comp: IncidentsTab,
-        //     ref: "incidentsTab"
-        // },
+        {title: 'Training', comp: TrainingsSection, ref: "trainingsTab"},
+        {title: 'PPE', comp: PPESection, ref: "ppeTab"},
+        {title: 'Incidents', comp: IncidentsSection, ref: "incidentsTab"},
+        {title: 'COID', comp: COIDSection, ref: "coidTab"},
         // {
         //     title: 'Attendance',
         //     comp: ViewAttendanceTab,

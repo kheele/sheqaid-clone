@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main.single-user-manual {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 50px;
+}
+
+main.single-user-manual .hide-brand {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    z-index: 2;
+    width: 205px;
+    height: 32px;
+    color: #fff;
+    background: rgb(2, 168, 168);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main.single-user-manual .section_heading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 76px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main.single-user-manual .section_heading a{
+    background: #fff;
+    border-radius: 50%;
+    margin-left: 20px;
+    overflow: hidden;
+}
+
+main.single-user-manual .section_heading a button{
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main.single-user-manual .section_heading .fa{
+    font-size: 22px;
+    color: rgb(2, 168, 168);
+}
+
+main.single-user-manual + footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+}
+
+main.single-user-manual + footer > div{
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+main.single-user-manual iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: 1;
+}
+
+.octa {
+    /*width: 200px;*/
+    /*aspect-ratio: 1;*/
+    --o:calc(50%*tan(-22.5deg));
+    clip-path: polygon(
+            var(--o) 50%,50% var(--o),
+            calc(100% - var(--o)) 50%,
+            50% calc(100% - var(--o))
+    );
+}

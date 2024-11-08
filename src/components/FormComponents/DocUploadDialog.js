@@ -28,8 +28,10 @@ class DocUploadDialog extends React.Component {
 
     get customCss() {
         return `
-            .sticky.bg-yellow-100:first-of-type{
+            .sticky.bg-yellow-100:first-of-type,
+            svg{
                 visibility: hidden !important;
+                display: none !important;
             }
         `;
     }

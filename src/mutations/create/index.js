@@ -84,4 +84,8 @@ export const insertSignableDocTemplate = create("doc-signing-settings/api/docuse
 export const insertSettings = create("settings");
 export const insertNotificationSettings = create("notification-settings");
 export const insertContractor = create("contractors");
+export const insertNCR = create("ncr");
 
+export const insertAssetDoc = create("assets/docs");
+export const insertAssetRegister = create("assets/registers");
+//

@@ -450,9 +450,9 @@ class Slider extends React.Component {
                     justifyContent: "center",
                     margin: "0",
                     zIndex: "1",
-                    top: isEmbedded ? "4px" : "132px",
-                    right: isEmbedded ? 'unset' : '0',
-                    position: isEmbedded ? "relative" : "absolute",
+                    top: isEmbedded ? "-33px" : "132px",
+                    right: isEmbedded ? '0' : '0',
+                    position: isEmbedded ? "absolute" : "absolute",
                     border: "none",
                 }}>
                 {!isEmployee && <CreateAndEditBar

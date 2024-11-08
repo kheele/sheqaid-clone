@@ -1,32 +1,32 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React, {createRef} from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {observable} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
-import {Dates, execWhen} from '../../../../../../utils/Utils';
-import TrainingPlanListByCourse from "../../../../../../components/FormListComponents/TrainingPlanListByCourse";
+import Form from 'utils/Form';
+import {Dates, execWhen} from 'utils/Utils';
+import TrainingPlanListByCourse from "components/FormListComponents/TrainingPlanListByCourse";
 
 import {
     ClearableInput,
     DateRangeInput,
     SelectClientInput,
+    SelectEmployeeInput,
     SelectJobCategoryInput,
     SelectJobPositionInput,
-    SelectSectorInput,
     SelectProjectInput,
+    SelectSectorInput,
     SelectSiteInput,
-    SelectTrainingCourseInput,
-    SelectEmployeeInput
-} from '../../../../../../components/inputs';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
-import {ANewDialog} from '../../../../../../components/dialogs';
+    SelectTrainingCourseInput
+} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
 
 import {onSelectLoadTrainingFrequencies} from '../../../../utils';
 
 import style from "./NewTrainingMatrixDialog.lazy.css";
-import insertTrainingMatrix from "../../../../../../mutations/all/TrainingMatrix/insertTrainingMatrix";
-import findByIdClient from "../../../../../../mutations/all/Client/findByIdClient";
+import insertTrainingMatrix from "mutations/all/TrainingMatrix/insertTrainingMatrix";
+import {findByIdClient} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -105,11 +105,11 @@ class Controls extends React.Component {
                     }
                 };
 
-                if(data) {
+                if (data) {
                     set(data);
                 } else {
                     findByIdClient(id).then(val => {
-                        if(val) {
+                        if (val) {
                             const {id, data} = val;
                             set(data);
                         }
@@ -437,7 +437,7 @@ class Controls extends React.Component {
                                 placeholder="Institution Conducting Training" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
                 <SelectEmployeeInput name="trainer" placeholder="Training Conductor..." showOtherPerson
-                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <SelectJobPositionInput name="trainer_job_position" placeholder="Job Position..."
                                         desc="Job Position For Training Conductor" className="col-lg-12 form-control"
                                         onChange={this.form.onChange} add/>

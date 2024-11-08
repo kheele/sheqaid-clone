@@ -81,10 +81,12 @@ class Dialog extends AEmployeeDocDialog {
             date_submitted,
             date_approved,
             date_compensated,
+            //
+            status,
         };
 
         if (status) {
-            args.status = status === "Completed" ? "Paid Out" : status;
+            // args.status = status === "Completed" ? "Paid Out" : status;
         }
         return args;
     }

@@ -2,11 +2,9 @@
 
 // 1
 import {graphql} from "react-relay";
-import uuidv4 from "uuid/v4";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
-import {EntityContractor} from "mutations/types.d.ts";
-import findByIdContractor from "./findByIdContractor";
+import {findByIdContractor} from "../../findById";
 
 // 2
 const mutation = graphql`
@@ -20,7 +18,7 @@ const mutation = graphql`
 // 3
 export default async (id: number) => {
     const item = await findByIdContractor(id);
-    if(!item) return "NO_USER_DB";
+    if (!item) return "NO_USER_DB";
 
     const password_otp = null;
     return updateMutationImpl({

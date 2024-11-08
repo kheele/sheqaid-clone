@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed, extendObservable} from 'mobx';
+import {computed, extendObservable, observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {execWhen, ShouldUpdate} from 'utils/Utils';
@@ -11,7 +11,8 @@ import {
     ClearableInput,
     SelectClientInput,
     SelectJobPositionInput,
-    SelectProjectInput, SelectSectorInput,
+    SelectProjectInput,
+    SelectSectorInput,
     SelectSiteInput
 } from 'components/inputs';
 import {Row} from 'components/FormComponents';
@@ -20,17 +21,15 @@ import {AEditDialog} from 'components/dialogs';
 import style from "./EditTrainingRegistryDialog.lazy.css";
 import TrainingCourseGridCounter from "../../dialogs/ProfileStats/TrainingCourseGridCounter";
 import TrainingCourseGridReportsLineChart from "../../dialogs/ProfileStats/TrainingCourseGridReportsLineChart";
-import findByIdClient from "mutations/all/Client/findByIdClient";
 import updateTrainingCourse from "mutations/all/TrainingCourse/updateTrainingCourse";
 import insertProxyJobPositionTrainingCourse
     from "mutations/all/ProxyJobPositionTrainingCourse/insertProxyJobPositionTrainingCourse";
 import deleteProxyJobPositionTrainingCourse
     from "mutations/all/ProxyJobPositionTrainingCourse/deleteProxyJobPositionTrainingCourse";
-import insertProxySectorTrainingCourse
-    from "mutations/all/ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
-import deleteProxySectorTrainingCourse
-    from "mutations/all/ProxySectorTrainingCourse/deleteProxySectorTrainingCourse";
+import insertProxySectorTrainingCourse from "mutations/all/ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
+import deleteProxySectorTrainingCourse from "mutations/all/ProxySectorTrainingCourse/deleteProxySectorTrainingCourse";
 import findByIdTrainingCourse from "mutations/all/TrainingCourse/findByIdTrainingCourse";
+import {findByIdClient} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -82,6 +81,12 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
         const loads = {frequency: onSelectLoadTrainingFrequencies};
@@ -96,6 +101,8 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="onUpdate">
 
     // <editor-fold defaultstate="collapsed" desc="onChangeClient">
     onChangeClient(el, val) {
@@ -128,9 +135,8 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
-    //<editor-fold desc="onUpdate">
     //<editor-fold desc="onUpdateJobPosition">
     onUpdateJobPosition(el, val, action) {//ADDED / REMOVED
         const {
@@ -149,7 +155,7 @@ class Controls extends React.Component {
                 insertProxyJobPositionTrainingCourse({job_position_id: val.id, course_id: id}).then(res => {
                     console.log("res", res)
                     if (res) {
-                        if(job_position_list) {
+                        if (job_position_list) {
                             job_position_list.push(res.data);
                         } else {
                             extendObservable(old_data, {job_position_list: [res.data]});
@@ -160,7 +166,7 @@ class Controls extends React.Component {
                     } else {
                         infoDialog.open("Record couldn't be updated. Please try again later.");
                     }
-                }).catch(err  => {
+                }).catch(err => {
                     console.error(err);
                     infoDialog.open("Record couldn't be updated. Please try again later.");
                 }).finally(() => {
@@ -177,7 +183,7 @@ class Controls extends React.Component {
                     } else {
                         infoDialog.open("Record couldn't be updated. Please try again later.");
                     }
-                }).catch(err  => {
+                }).catch(err => {
                     console.error(err);
                     infoDialog.open("Record couldn't be updated. Please try again later.");
                 }).finally(() => {
@@ -188,6 +194,8 @@ class Controls extends React.Component {
 
         }
     }
+
+    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="onUpdateSector">
@@ -208,7 +216,7 @@ class Controls extends React.Component {
                 insertProxySectorTrainingCourse({sector_id: val.id, course_id: id}).then(res => {
                     console.log("res", res)
                     if (res) {
-                        if(sector_list) {
+                        if (sector_list) {
                             sector_list.push(res.data);
                         } else {
                             extendObservable(old_data, {sector_list: [res.data]});
@@ -219,7 +227,7 @@ class Controls extends React.Component {
                     } else {
                         infoDialog.open("Record couldn't be updated. Please try again later.");
                     }
-                }).catch(err  => {
+                }).catch(err => {
                     console.error(err);
                     infoDialog.open("Record couldn't be updated. Please try again later.");
                 }).finally(() => {
@@ -236,7 +244,7 @@ class Controls extends React.Component {
                     } else {
                         infoDialog.open("Record couldn't be updated. Please try again later.");
                     }
-                }).catch(err  => {
+                }).catch(err => {
                     console.error(err);
                     infoDialog.open("Record couldn't be updated. Please try again later.");
                 }).finally(() => {
@@ -247,8 +255,8 @@ class Controls extends React.Component {
 
         }
     }
-    //</editor-fold>
-    //</editor-fold>
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -334,12 +342,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-    }
-
-    // </editor-fold>
-    
-    @computed get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

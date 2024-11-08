@@ -5,7 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import listByCountryZone from "../../mutations/all/Zone/listByCountryZone";
+import {listZones} from "mutations/list";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -17,27 +17,9 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        let {className = ''} = this.props;
-        className += ` SelectZoneInput`;
-
-        this.state.props = {
-            ref: "input",
-            key: new Date().getTime(),
-            name: "zone",
-            type: "select",
-            placeholder: "Province...",
-            add: false,
-            ...this.props,
-            isClearable: false,
-            readonly: true,
-            className,
-        };
     }
 
     set country(country) {
@@ -55,7 +37,9 @@ class SelectInput extends ASelectInput {
             className,
         };
 
-        if(!country) {
+        console.log(country);
+
+        if (!country) {
             this.state.props = {
                 isClearable: false,
                 readonly: true,
@@ -83,8 +67,8 @@ class SelectInput extends ASelectInput {
     @computed
     get selectedItem() {
         const {defaultValue} = this.props;
-        if(defaultValue) {
-            if(defaultValue.label && defaultValue.value) {
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
                 return defaultValue;
             }
             const {name, data} = defaultValue;
@@ -95,9 +79,27 @@ class SelectInput extends ASelectInput {
         return null;
     }
 
+    componentDidMount() {
+        let {className = ''} = this.props;
+        className += ` SelectZoneInput`;
+
+        this.state.props = {
+            ref: "input",
+            key: new Date().getTime(),
+            name: "zone",
+            type: "select",
+            placeholder: "Province...",
+            add: false,
+            ...this.props,
+            isClearable: false,
+            readonly: true,
+            className,
+        };
+    }
+
     render() {
         const {props} = this.state;
-        if(!props) {
+        if (!props) {
             return <ClearableInput {...props}/>;
         }
 
@@ -106,7 +108,7 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad(country) {
-    return listByCountryZone(country.data.iso2).then(res => {
+    return listZones({country_iso2: country.data.iso2}).then(res => {
         return res.map(value => {
             return {label: value.data.name, value};
         });

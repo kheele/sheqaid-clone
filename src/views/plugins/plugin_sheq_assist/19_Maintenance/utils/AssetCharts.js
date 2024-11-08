@@ -1,6 +1,5 @@
 //<editor-fold desc="imports">
 import {Dates} from 'utils/Utils';
-import {createColumnChart, createColumnChart2} from 'utils/ChartUtils';
 
 const unitsShort = {
     Time: "hrs", Distance: "km"
@@ -31,13 +30,13 @@ const createMonitoringPlanWorkingHrsOrKmStats = (
     let currM, currMStr;
     let currW, currWStr;
 
-    list = list.
-    filter(v => !!v && !!v.date).
-    map(({date, ...others}) => ({...others, date: Dates.parse(date)})).
-    filter(({date}) => date.getFullYear() === currY);
-    
+    list = list.filter(v => !!v && !!v.date).map(({date, ...others}) => ({
+        ...others,
+        date: Dates.parse(date)
+    })).filter(({date}) => date.getFullYear() === currY);
+
     console.log('m', date.getMonth())
-    
+
     const isAnnualView = view === 'Annually';
     const isMonthView = view === 'Monthly';
     const isWeekView = view === 'Weekly';
@@ -109,9 +108,10 @@ const createMonitoringPlanFuelUsageStats = (
     let currM, currMStr;
     let currW, currWStr;
 
-    list = list.filter(v => v && v.date).
-    map(({date, ...others}) => ({...others, date: Dates.parse(date)})).
-    filter(({date}) => date.getFullYear() === currY);
+    list = list.filter(v => v && v.date).map(({date, ...others}) => ({
+        ...others,
+        date: Dates.parse(date)
+    })).filter(({date}) => date.getFullYear() === currY);
     console.log('list', list.slice(), currY);
 
     const isAnnualView = view === 'Annually';
@@ -120,15 +120,16 @@ const createMonitoringPlanFuelUsageStats = (
     if (isAnnualView) {
         //refilled_fuel
         data_points_1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
-            const _list = list.filter(({date}) => date.getMonth() === month);
-            const sum = _list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getMonth() === month).map(({refilled_fuel}) => parseInt(refilled_fuel));
+
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.monthsStr.get(month);
             return {label, y: sum};
         });
         //working_hrs_or_km
         data_points_2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
-            const _list = list.filter(({date}) => date.getMonth() === month);
-            const sum = _list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getMonth() === month).map(({working_hrs_or_km}) => parseInt(working_hrs_or_km));
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.monthsStr.get(month);
             return {label, y: sum};
         });
@@ -141,15 +142,15 @@ const createMonitoringPlanFuelUsageStats = (
 
         //refilled_fuel
         data_points_1 = date.getWeeksOfMonthInMonth().map(n => {
-            const _list = list.filter(({date}) => date.getWeekNumberOfMonth() === n);
-            const sum = _list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getWeekNumberOfMonth() === n).map(({refilled_fuel}) => parseInt(refilled_fuel));
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = `Week ${n}`;
             return {label, y: sum};
         });
         //working_hrs_or_km
         data_points_2 = date.getWeeksOfMonthInMonth().map(n => {
-            const _list = list.filter(({date}) => date.getWeekNumberOfMonth() === n);
-            const sum = _list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getWeekNumberOfMonth() === n).map(({working_hrs_or_km}) => parseInt(working_hrs_or_km));
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = `Week ${n}`;
             return {label, y: sum};
         });
@@ -163,15 +164,15 @@ const createMonitoringPlanFuelUsageStats = (
 
         //refilled_fuel
         data_points_1 = Array.range(firstMonDate, lastMonDate).map(n => {
-            const _list = list.filter(({date}) => date.getDate() === n);
-            const sum = _list.map(({refilled_fuel}) => parseInt(refilled_fuel)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getDate() === n).map(({refilled_fuel}) => parseInt(refilled_fuel));
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.daysDoubleNumStr.get(n);
             return {label, y: sum};
         });
         //working_hrs_or_km
         data_points_2 = Array.range(firstMonDate, lastMonDate).map(n => {
-            const _list = list.filter(({date}) => date.getDate() === n);
-            const sum = _list.map(({working_hrs_or_km}) => parseInt(working_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);
+            const _list = list.filter(({date}) => date.getDate() === n).map(({working_hrs_or_km}) => parseInt(working_hrs_or_km));
+            const sum = _list.reduce((n1, n2) => n1 + n2, 0);
             const label = Dates.daysDoubleNumStr.get(n);
             return {label, y: sum};
         });
@@ -184,10 +185,6 @@ const createMonitoringPlanFuelUsageStats = (
             label: 'Fuel Usage',
             color: 'white',
             data: data_points_1.map(v => v.y),
-        }, {
-            label: `Working ${units ? units : 'Time/Distance'} Usage`,
-            color: 'white',
-            data: data_points_2.map(v => v.y),
         }],
     };
 };
@@ -202,10 +199,10 @@ const createMaintenancePlanStats = (__list, units) => {
     console.log('createMaintenancePlanStats', __list.slice());
 
     const currY = new Date().getFullYear();
-    let list = __list.
-    filter(v => !!v && !!v.service_date).
-    map(({service_date, ...others}) => ({...others, service_date: Dates.parse(service_date)})).
-    filter(({service_date}) => service_date.getFullYear() === currY);
+    let list = __list.filter(v => !!v && !!v.service_date).map(({service_date, ...others}) => ({
+        ...others,
+        service_date: Dates.parse(service_date)
+    })).filter(({service_date}) => service_date.getFullYear() === currY);
     let data_points = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month => {
         const _list = list.filter(({service_date}) => service_date.getMonth() === month);
         const sum = _list.map(({service_hrs_or_km}) => parseInt(service_hrs_or_km)).reduce((n1, n2) => n1 + n2, 0);

@@ -80,6 +80,10 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed get item() {
+        return this.props.state.item;
+    }
+
     componentWillMount() {
         const {execWhen} = this.props;
         execWhen(() => this.item).then(({data: {employee_list = []}}) => {
@@ -91,6 +95,8 @@ class Controls extends React.Component {
     onChangeTarget(el, val) {
         this.state.target = val;
     }
+
+    // </editor-fold>
 
     onChangeType(el, val) {
         if (val) {
@@ -269,12 +275,6 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
-
-    @computed get item() {
-		return this.props.state.item;
-	}
-
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item) {
@@ -325,13 +325,13 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
             >
                 <ClearableInput name="type" type="radio" placeholder="Organogram Source" defaultValue={type}
-                                className="col-lg-8 pull-left-2 form-control" onChange={this.form.onChange}
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.types}/>
             </Row>
             {doc &&
                 <UploadedWrapper onFormOpen={onFormOpen} onFormBack={onFormBack} state={this.state} defaultValue={doc}
                                  onChange={this.form.onChange}/>}
-            {employee_list &&
+            {employee_list && employee_list.isNotEmpty() &&
                 <TypedWrapper ref="typedWrapper" refName="editDialog" onFormOpen={onFormOpen} onFormBack={onFormBack}
                               state={this.state} list={employee_list} onChange={this.form.onChange}/>}
         </FormControls>;
@@ -412,10 +412,10 @@ class UploadedWrapper extends React.Component {
             <UploadButton
                 name="doc"
                 defaultValue={defaultValue}
-                buttonTitle="Document (PDF/Excel)"
-                type={['PDF', 'Excel']}
+                buttonTitle="Document (PDF, Word, Excel, PowerPoint, Image)"
+                type={['PDF', 'Word', 'Excel', 'PowerPoint', 'Image']}
                 showOnlyIcon
-                className="col-lg-6 col-xs-12 hor-center"
+                className="col-lg-12 hor-center"
                 onChange={onChange}
             />
         </Row>;

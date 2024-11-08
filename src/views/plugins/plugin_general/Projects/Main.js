@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen, getRandomRolor} from 'utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
@@ -13,8 +13,6 @@ import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
-import listAllClientByLoggedCompany from "mutations/all/Client/listAllClientByLoggedCompany";
-import listAllProjectByLoggedCompany from "mutations/all/Project/listAllProjectByLoggedCompany";
 import projectStore from "mutations/all/Project";
 import AggregateStat from "components/AggregateStat";
 
@@ -27,11 +25,11 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
-        
+
         this.hasCreateBtn = this.hasCreateBtn.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
@@ -49,14 +47,14 @@ class Main extends React.Component {
     onLoadList(page, isNew) {
         return projectStore.listAllByLogged();
     }
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf(val => val.id === item.id);
     }
-    
+
     hasCreateBtn() {
         const {isTrial} = storage.is;
-        if(isTrial) {
+        if (isTrial) {
             return execWhen(() => this.refs.root).then(root => {
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
@@ -71,11 +69,11 @@ class Main extends React.Component {
 
     renderLeftButtons() {
         const {isTrial, isConsultant} = storage.is;
-	return <div className="left-buttons pull-left">
+        return <div className="left-buttons pull-left">
             {isConsultant && isTrial && <label className="max-warning min-w-130">
                 Max. Of 3 Projects Allowed
             </label>}
-	</div>;
+        </div>;
     }
 
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
@@ -86,14 +84,17 @@ class Main extends React.Component {
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
-            <NavItem action="writable" onClick={defaultView.onOpenPage} faIconLeft="plus" title="Create Site" plugin={key} module="Sites" args={"New&project=" + idx} />
+            <NavItem action="writable" onClick={defaultView.onOpenPage} faIconLeft="plus" title="Create Site"
+                     plugin={key} module="Sites" args={"New&project=" + idx}/>
         </Options>;
     }
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="client" type="text" placeholder="Company Name" className="form-control" onChange={onChange}/>
-            <ClearableInput name="name" type="text" placeholder="Project Name" className="form-control" onChange={onChange}/>
+            <ClearableInput name="client" type="text" placeholder="Company Name" className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Project Name" className="form-control"
+                            onChange={onChange}/>
         </div>;
     }
 
@@ -128,13 +129,13 @@ class Main extends React.Component {
                 <StatsPanel item={item}/>
             </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }
 
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             ref="root"
             page={this}
             createBtnTitle="Create"
@@ -151,7 +152,7 @@ class Main extends React.Component {
             renderItem={this.renderItem}
             loadOnScrolled={false}>
             <ConfirmDialog ref="removeDialog"/>
-            
+
             <NewDialog ref="newDialog"/>
             <ProfileDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <EditDialog ref="editDialog" onRemoved={this.onRemoved}/>

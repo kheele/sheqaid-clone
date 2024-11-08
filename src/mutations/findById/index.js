@@ -20,4 +20,10 @@ export const findByIdProxyNCRDocument = findById("ncr/proxy/document");
 
 export const findByIdOHSDoc = findById("documents/ohs-docs");
 export const findByIdSignableDoc = findById("doc-signing-settings/api/docuseal/templates");
+
+export const findByIdCompany = findById("companies");
+export const findByIdClient = findById("clients");
+export const findByIdProject = findById("projects");
+export const findByIdSite = findById("sites");
 export const findByIdContractor = findById("contractors");
+export const findByIdContractorSite = findById("contractors/sites");

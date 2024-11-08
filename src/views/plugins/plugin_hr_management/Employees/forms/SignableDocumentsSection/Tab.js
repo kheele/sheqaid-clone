@@ -5,11 +5,11 @@ import {observable} from 'mobx';
 import APageListReadWrite from "views/APageListReadWrite";
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
 import Popover from "components/popovers/Popover";
-import {ClearableInput, SelectQuestionnaireTemplateInput} from "components/inputs";
+import {ClearableInput} from "components/inputs";
 import {THead} from "components/tables";
 import NavItem from "components/navs/NavItem";
 import TableRow from "./TableRow";
-import {DocUploadDialog} from "components/FormComponents";
+import {DocSubmissionPreviewDialog, DocUploadDialog} from "components/FormComponents";
 
 //<editor-fold desc="Tab">
 @observer
@@ -60,21 +60,14 @@ class Tab extends React.Component {
             }
         } = this.props;
 
-        // const {item: asset, fn} = this.props;
-        // const {page, lastItem, filterData, filtered, isNew} = params;
-        // const {
-        //     name,
-        //     interval,
-        //     template_id,
-        //     asset_type,
-        //     asset: asset2,
-        // } = filterData || {};
-        //
-        // const today = Dates.formatDateSQL(new Date());
-        //
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name: _name,
+        } = filterData || {};
+
         // const listByLogged = sockets.of('inspections').fn(fn);
 
-        return signable_doc_submitter_list.map(({id, ...attrs}) => (
+        const list = signable_doc_submitter_list.map(({id, ...attrs}) => (
             {id, data: attrs}
         )).filter((
             {
@@ -82,6 +75,15 @@ class Tab extends React.Component {
                 data: {status}
             }
         ) => status === _status);
+        if (_name) {
+            return list.filter((
+                {
+                    id,
+                    data: {doc_template: {name}}
+                }
+            ) => name.toLowerCase().contains(_name.toLowerCase()));
+        }
+        return list;
     }
 
     //</editor-fold>
@@ -115,32 +117,15 @@ class Tab extends React.Component {
 
         return <Options idx={idx} permissionModKey={permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
-            <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
+            {/*<NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>*/}
+            {/*<NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>*/}
         </Options>;
     }
 
     renderFilterNode(onChange) {
-        const listByLogged = sockets.of('inspections').fn('listTemplatesByLogged');
-
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-            <ClearableInput
-                name="status"
-                type="select"
-                placeholder="Interval..."
-                className="form-control"
-                onChange={onChange}
-                values={this.state.lists.interval}
-                returnValue
-            />
-            <SelectQuestionnaireTemplateInput
-                name="template"
-                placeholder="Template..."
-                className="form-control"
-                byLogged={listByLogged}
-                onChange={onChange}
-            />
+            <ClearableInput name="name" type="text" placeholder="Document Name" className="form-control"
+                            onChange={onChange}/>
         </div>;
     }
 
@@ -187,6 +172,9 @@ class Tab extends React.Component {
 
             <DocUploadDialog
                 ref="docUploadDialog"
+            />
+            <DocSubmissionPreviewDialog
+                ref="profileDialog"
             />
 
             <Popover key="popover" ref="popover"/>

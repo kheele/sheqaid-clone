@@ -21,6 +21,10 @@
     top: 6px !important;
 }
 
+.DocsDialog-dialog .PersonalDocsTab .page-title .buttons {
+    margin: 0 !important;
+}
+
 .DocsDialog-dialog .page-title > h3 {
     display: none;
 }

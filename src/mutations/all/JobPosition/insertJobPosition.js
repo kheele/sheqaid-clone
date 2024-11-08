@@ -5,7 +5,7 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityJobPosition} from "mutations/types.d.ts";
-import updateMutationImpl from "../../updateMutationImpl";
+import updateJobPosition from "./updateJobPosition";
 
 // 2
 const mutation = graphql`
@@ -101,12 +101,9 @@ export default async (input: EntityJobPosition) => {
                 console.log("gcsUri", gcsUri);
 
                 if (gcsUri) {
-                    return updateMutationImpl({
-                        mutation,
+                    return updateJobPosition({
                         id: newItem.id,
-                        attrs: {
-                            doc: gcsUri
-                        },
+                        doc: gcsUri,
                     });
                 }
             } catch (err) {

@@ -5,11 +5,12 @@ import {observable, toJS} from "mobx";
 
 import Form from 'utils/Form';
 
-import {Dates, isWeb} from 'utils/Utils';
+import {Dates} from 'utils/Utils';
 import {
     Button,
     SelectClientInput,
-    SelectDepartmentInput, SelectEmployeeInput,
+    SelectDepartmentInput,
+    SelectEmployeeInput,
     SelectJobPositionInput,
     SelectProjectInput,
     SelectSiteInput
@@ -32,13 +33,6 @@ class TransferEmployeesDialog extends ANewDialog {
 
     constructor(props) {
         super(props, style);
-    }
-
-    open(item) {
-        this.execWhen(() => this.extraProp('role')).then(() => {
-            this.refs.dialog.setTopButtons(this.topButtons);
-        });
-        return super.open(item);
     }
 
     get isTransfer() {
@@ -94,6 +88,13 @@ class TransferEmployeesDialog extends ANewDialog {
     get controls() {
         return Controls;
     }
+
+    open(item) {
+        this.execWhen(() => this.extraProp('role')).then(() => {
+            this.refs.dialog.setTopButtons(this.topButtons);
+        });
+        return super.open(item);
+    }
 }
 
 // </editor-fold>
@@ -127,6 +128,23 @@ class Controls extends React.Component {
         this.onUnSelectAll = this.onUnSelectAll.bind(this);
 
         this.form = new Form();
+    }
+
+    // </editor-fold>
+
+    get title() {
+        const {isTransfer, isExport, isBulkDelete, isPrintCards} = this.props.dialog;
+        if (isTransfer) return "Transfer";
+        if (isExport) return "Export";
+        if (isBulkDelete) return "Delete";
+        return "Print Cards";
+    }
+
+    //</editor-fold>
+
+    get titleSelected() {
+        const {isExport, isPrintCards} = this.props.dialog;
+        return isExport ? "Export" : "Print Cards";
     }
 
     // </editor-fold>
@@ -190,7 +208,7 @@ class Controls extends React.Component {
         });
     }
 
-    //</editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSearch">
     onSearch() {
@@ -329,15 +347,15 @@ class Controls extends React.Component {
             infoDialog.open('Please select at least one Employee');
             return;
         }
-        
+
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        
+
         const {
             client_from, project_from, site_from,
             department, job_position,
             supervisor
         } = form.data;
-        
+
         const client = client_from || selectedClient;
         const project = project_from || selectedProject;
         const site = site_from || selectedSite;
@@ -358,20 +376,11 @@ class Controls extends React.Component {
                     <p>An error occurred. Please try again</p>
                 </React.Fragment>);
             } else {
-                if (isWeb()) {
-                    infoDialog.open(<React.Fragment>
-                        <p>Employees successfully exported.</p>
-                        <p><small>The file will be automatically downloaded</small></p>
-                    </React.Fragment>);
-                    saveFileAs(res, `Employees-Report_${Dates.formatDate(new Date())}.xlsx`);
-                } else {
-                    infoDialog.open(<React.Fragment>
-                        <p>Employees successfully exported.</p>
-                        <p>Saved in the following folder:</p>
-                        <p><small>{res.path}</small></p>
-                        <p><small>The file will open after 3 seconds</small></p>
-                    </React.Fragment>);
-                }
+                infoDialog.open(<React.Fragment>
+                    <p>Employees successfully exported.</p>
+                    <p><small>The file will be automatically downloaded</small></p>
+                </React.Fragment>);
+                saveFileAs(res, `Employees-Report_${Dates.formatDate(new Date())}.xlsx`);
             }
         }).finally(() => {
             progressDialog.close();
@@ -412,8 +421,6 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmitPrintCards">
     onSubmitPrintCards(e, btn, onSaved) {
         const {form, state: {employeeList}, refs: {printCardsPDFReader}} = this;
@@ -426,15 +433,17 @@ class Controls extends React.Component {
         printCardsPDFReader.open(employeeList);
     }
 
-    // </editor-fold>
-
     onSelectAll(e, btn) {
 
     }
 
+    //</editor-fold>
+
     onUnSelectAll(e, btn) {
 
     }
+
+    //</editor-fold>
 
     //<editor-fold desc="renderTHeadEmployeesFrom">
     renderTHeadEmployeesFrom() {
@@ -451,8 +460,6 @@ class Controls extends React.Component {
             <div className="td fixed-flex no-padding min-w-70"></div>
         </THead>;
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="renderItemEmployeesFrom">
     renderItemEmployeesFrom(item, n) {
@@ -479,21 +486,6 @@ class Controls extends React.Component {
                 {RenderUtils.renderOrgTD(site, null, 'Site')}
             </React.Fragment>}
         </React.Fragment>;
-    }
-
-    //</editor-fold>
-
-    get title() {
-        const {isTransfer, isExport, isBulkDelete, isPrintCards} = this.props.dialog;
-        if (isTransfer) return "Transfer";
-        if (isExport) return "Export";
-        if (isBulkDelete) return "Delete";
-        return "Print Cards";
-    }
-
-    get titleSelected() {
-        const {isExport, isPrintCards} = this.props.dialog;
-        return isExport ? "Export" : "Print Cards";
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

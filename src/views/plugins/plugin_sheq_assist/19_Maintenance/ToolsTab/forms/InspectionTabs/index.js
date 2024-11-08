@@ -3,7 +3,6 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
 import {Tabs} from "components/tabs";
-import DashboardTab from "./DashboardTab";
 // import InspectionsScheduleTab from "./InspectionsScheduleTab";
 // import InspectionTemplateTab from "./InspectionTemplateTab";
 // import InspectionHistoryTab from "./InspectionHistoryTab";
@@ -33,6 +32,18 @@ class TabWrapper extends React.Component {
         this.moveToSlide = this.moveToSlide.bind(this);
     }
 
+    get index() {
+        return this.state.index;
+    }
+
+    @computed get sliderIndex() {
+        return this.state.sliderIndex;
+    }
+
+    @computed get item() {
+        return this.props.item;
+    }
+
     componentDidMount() {
         this.onChange(this.props.tabIndex || 0);
     }
@@ -45,14 +56,6 @@ class TabWrapper extends React.Component {
 
     onCarouselChange(index) {
         this.state.sliderIndex = index;
-    }
-
-    get index() {
-        return this.state.index;
-    }
-
-    @computed get sliderIndex() {
-        return this.state.sliderIndex;
     }
 
     updateDashboard() {
@@ -70,10 +73,11 @@ class TabWrapper extends React.Component {
     }
 
     render() {
+        if (!this.item) {
+            return null;
+        }
+
         const {
-            permissionKey,
-            tabsHeight,
-            isEmbedded,
             item, item: {
                 id, data: {
                     written_off,
@@ -81,6 +85,12 @@ class TabWrapper extends React.Component {
                     inspection_list = [],
                 }
             }
+        } = this;
+
+        const {
+            permissionKey,
+            tabsHeight,
+            isEmbedded,
         } = this.props;
 
         const {isEmployee} = storage.is;

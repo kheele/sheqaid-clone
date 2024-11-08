@@ -1,10 +1,10 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, isWeb, Permissions} from 'utils/Utils';
+import {Dates} from 'utils/Utils';
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {ActionsButton, Button, ClearableInput} from 'components/inputs';
+import {ActionsButton, ClearableInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import ADialogList from "views/ADialogList";
@@ -43,24 +43,15 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
 
         progressDialog.open();
         neonBinding.events.emit(this.path + "export-excel", item).then(res => {
-            if(!res) {
+            if (!res) {
                 infoDialog.open("An error occurred. Please try again");
             } else {
-                if(isWeb()) {
-                    infoDialog.open(<>
-                        <p>Toolbox Talk Attendance Register successfully exported.</p>
-                        <p><small>The file will be automatically downloaded</small></p>
-                    </>);
-                    //TODO: rename toolbox talk to training meeting / toolbox talk
-                    saveFileAs(res, `Training-Toolbox-Talks-Attendance-Register_${Dates.formatDate(new Date())}.xlsx`);
-                } else {
-                    infoDialog.open(<React.Fragment>
-                        <p>Toolbox Talk Attendance Register successfully exported.</p>
-                        <p>Saved in the following folder:</p>
-                        <p><small>{res.path}</small></p>
-                        <p><small>The file will open after 3 seconds</small></p>
-                    </React.Fragment>);
-                }
+                infoDialog.open(<>
+                    <p>Toolbox Talk Attendance Register successfully exported.</p>
+                    <p><small>The file will be automatically downloaded</small></p>
+                </>);
+                //TODO: rename toolbox talk to training meeting / toolbox talk
+                saveFileAs(res, `Training-Toolbox-Talks-Attendance-Register_${Dates.formatDate(new Date())}.xlsx`);
             }
         }).finally(() => {
             progressDialog.close();
@@ -80,7 +71,8 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="subject" type="text" placeholder="Subject" className="form-control" onChange={onChange}/>
+            <ClearableInput name="subject" type="text" placeholder="Subject" className="form-control"
+                            onChange={onChange}/>
         </div>;
     }
 
@@ -103,13 +95,13 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
             <div className="td">{Dates.formatDate(date)}</div>
             <div className="td">{employee_list.length}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }
 
     renderPage() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             ref="root"
             page={this}
             hasBackBtn={false}
@@ -124,7 +116,7 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
-            
+
             <NewDialog ref="newDialog" path={this.path}/>
             <ProfileDialog ref="profileDialog" path={this.path}/>
             <EditDialog ref="editDialog" path={this.path}/>

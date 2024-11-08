@@ -5,8 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import listByCountryCity from "../../mutations/all/City/listByCountryCity";
-import listByZoneCity from "../../mutations/all/City/listByZoneCity";
+import {listCities} from "mutations/list";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -22,6 +21,87 @@ class SelectInput extends ASelectInput {
     constructor(props) {
         super(props);
     }
+
+    //<editor-fold desc="zone">
+    set zone(zone) {
+        let {className = ''} = this.props;
+        className += ` SelectCityInput`;
+
+        const props = {
+            ref: "input",
+            key: new Date().getTime(),
+            name: "city",
+            type: "select",
+            placeholder: "City...",
+            add: false,
+            ...this.props,
+            className,
+        };
+
+        if (!zone) {
+            this.state.props = {
+                isClearable: false,
+                readonly: true,
+                ...props,
+            };
+            return;
+        }
+
+        (async () => {
+            const res = await onSelectLoadByZone(zone);
+            this.setLoad(props, res);
+        })();
+    }
+
+    //<editor-fold desc="country">
+    set country(country) {
+        let {className = ''} = this.props;
+        className += ` SelectCityInput`;
+
+        const props = {
+            ref: "input",
+            key: new Date().getTime(),
+            name: "city",
+            type: "select",
+            placeholder: "City...",
+            add: false,
+            ...this.props,
+            className,
+        };
+
+        if (!country) {
+            this.state.props = {
+                isClearable: false,
+                readonly: true,
+                ...props,
+            };
+            return;
+        }
+
+        (async () => {
+            const res = await onSelectLoadByCountry(country);
+            this.setLoad(props, res);
+        })();
+    }
+
+    //</editor-fold>
+
+    @computed
+    get selectedItem() {
+        const {defaultValue} = this.props;
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            const {name, data} = defaultValue;
+            const label = name || data.name;
+            console.log('selectedVal', label)
+            return {value: defaultValue, label};
+        }
+        return null;
+    }
+
+    //</editor-fold>
 
     componentDidMount() {
         let {className = ''} = this.props;
@@ -41,6 +121,8 @@ class SelectInput extends ASelectInput {
         };
     }
 
+    //</editor-fold>
+
     //<editor-fold desc="setLoad">
     setLoad(props, res) {
         this.state.lists.list = res.distinct();
@@ -54,86 +136,6 @@ class SelectInput extends ASelectInput {
             values: this.list,
             defaultValue: this.selectedItem,
         };
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="zone">
-    set zone(zone) {
-        let {className = ''} = this.props;
-        className += ` SelectCityInput`;
-
-        const props = {
-            ref: "input",
-            key: new Date().getTime(),
-            name: "city",
-            type: "select",
-            placeholder: "City...",
-            add: false,
-            ...this.props,
-            className,
-        };
-
-        if(!zone) {
-            this.state.props = {
-                isClearable: false,
-                readonly: true,
-                ...props,
-            };
-            return;
-        }
-
-        (async () => {
-            const res = await onSelectLoadByZone(zone);
-            this.setLoad(props, res);
-        })();
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="country">
-    set country(country) {
-        let {className = ''} = this.props;
-        className += ` SelectCityInput`;
-
-        const props = {
-            ref: "input",
-            key: new Date().getTime(),
-            name: "city",
-            type: "select",
-            placeholder: "City...",
-            add: false,
-            ...this.props,
-            className,
-        };
-
-        if(!country) {
-            this.state.props = {
-                isClearable: false,
-                readonly: true,
-                ...props,
-            };
-            return;
-        }
-
-        (async () => {
-            const res = await onSelectLoadByCountry(country);
-            this.setLoad(props, res);
-        })();
-    }
-    //</editor-fold>
-
-    @computed
-    get selectedItem() {
-        const {defaultValue} = this.props;
-        if (defaultValue) {
-            if (defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            const {name, data} = defaultValue;
-            const label = name || data.name;
-            console.log('selectedVal', label)
-            return {value: defaultValue, label};
-        }
-        return null;
     }
 
     render() {
@@ -151,11 +153,11 @@ function onSelectLoadCb(res) {
 };
 
 function onSelectLoadByZone(zone) {
-    return listByZoneCity(zone.id).then(onSelectLoadCb);
+    return listCities({zone_id: zone.id}).then(onSelectLoadCb);
 }
 
 function onSelectLoadByCountry(country) {
-    return listByCountryCity(country.data.iso2).then(onSelectLoadCb);
+    return listCities({country_iso2: country.data.iso2}).then(onSelectLoadCb);
 }
 
 export default SelectInput;

@@ -5,7 +5,6 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityPPE} from "mutations/types.d.ts";
-import updateMutationImpl from "../../updateMutationImpl";
 import crudUtils from "../CRUDUtils/CRUDUtils";
 import updatePPE from "./updatePPE";
 import findByIdPPE from "./findByIdPPE";
@@ -23,54 +22,54 @@ const mutation = graphql`
 
 // 3
 export default async (input: EntityPPE) => {
-	const {
-		name,
-		unit,
-		duration_type,
-		duration_value,
-		notes,
-		profile_pic,
+    const {
+        name,
+        unit,
+        duration_type,
+        duration_value,
+        notes,
+        profile_pic,
 
-		client_id,
-		project_id,
-		site_id,
+        client_id,
+        project_id,
+        site_id,
 
-		team_list,
-		department_list,
-		job_position_list,
-	} = input;
+        team_list,
+        department_list,
+        job_position_list,
+    } = input;
 
-	if (profile_pic) {
-		delete input.profile_pic;
-	}
+    if (profile_pic) {
+        delete input.profile_pic;
+    }
 
-	crudUtils.injectCreate(input);
+    crudUtils.injectCreate(input);
 
-	const newItem = await createMutationImpl({mutation, input});
+    const newItem = await createMutationImpl({mutation, input});
 
-	if (newItem) {
-		if (profile_pic) {
-			try {
-				const path = `ppes/${newItem.id}`;
-				const name = "ppe-doc";
-				const gcsUri = await workers.emit("files/upload", {
-					file: profile_pic,
-					path,
-					name,
-				});
-				console.log("gcsUri", gcsUri);
+    if (newItem) {
+        if (profile_pic) {
+            try {
+                const path = `ppes/${newItem.id}`;
+                const name = "ppe-doc";
+                const gcsUri = await workers.emit("files/upload", {
+                    file: profile_pic,
+                    path,
+                    name,
+                });
+                console.log("gcsUri", gcsUri);
 
-				if (gcsUri) {
-					return updatePPE({
-						id: newItem.id,
-						profile_pic: gcsUri,
-					});
-				}
-			} catch (err) {
-				console.log('insertPPE error', err)
-			}
-		}
-		return findByIdPPE(newItem.id);
-	}
-	return newItem;
+                if (gcsUri) {
+                    return updatePPE({
+                        id: newItem.id,
+                        profile_pic: gcsUri,
+                    });
+                }
+            } catch (err) {
+                console.log('insertPPE error', err)
+            }
+        }
+        return findByIdPPE(newItem.id);
+    }
+    return newItem;
 };
