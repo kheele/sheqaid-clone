@@ -1,12 +1,11 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
-import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityEmployeeCompetency} from "mutations/types.d.ts";
 import updateEmployeeDocImpl from "../Employee/updateEmployeeDocImpl";
-import findByIdEmployeeCompetency from "./findByIdEmployeeCompetency";
+import {findByIdEmployeeCompetency} from "mutations/findById";
 
 // 2
 const mutation = graphql`

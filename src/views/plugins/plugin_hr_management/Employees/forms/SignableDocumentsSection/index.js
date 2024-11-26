@@ -9,6 +9,8 @@ import Tab from "./Tab";
 @observer
 class TabWrapper extends React.Component {
 
+    // listName = 'signable_doc_submitter_list';
+
     @observable
     state = {
         index: 0,
@@ -35,7 +37,7 @@ class TabWrapper extends React.Component {
     onChange(index) {
         const {state, props: {onChange}} = this;
         state.index = index;
-        onChange && onChange(index);
+        // onChange && onChange(index, this.listName, this);
     }
 
     render() {

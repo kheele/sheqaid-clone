@@ -14,6 +14,24 @@ const create = (path, crudUtils, onProcess) => async (input) => {
     }
 };
 
+//Assets
+export const insertAsset = create("assets");
+export const insertAssetCalibrationRecord = create("assets");
+export const insertAssetCalibrationRecordListItem = create("assets");
+export const insertAssetDepreciation = create("assets");
+export const insertAssetDetails = create("assets");
+export const insertAssetDoc = create("assets/docs");
+export const insertAssetMaintenancePlan = create("assets");
+export const insertAssetMaintenancePlanListItem = create("assets");
+export const insertAssetMonitoringPlan = create("assets");
+export const insertAssetMonitoringPlanFuelUsageListItem = create("assets");
+export const insertAssetMonitoringPlanWorkingHrsOrKmListItem = create("assets");
+export const insertAssetPhoto = create("assets");
+export const insertAssetPurchaseInfo = create("assets");
+export const insertProxyAssetAsset = create("assets");
+export const insertAssetRegister = create("assets/registers");
+
+//Incidents
 export const insertIncident = create("incidents", crudUtils, input => {
     const {
         //0
@@ -86,6 +104,4 @@ export const insertNotificationSettings = create("notification-settings");
 export const insertContractor = create("contractors");
 export const insertNCR = create("ncr");
 
-export const insertAssetDoc = create("assets/docs");
-export const insertAssetRegister = create("assets/registers");
 //

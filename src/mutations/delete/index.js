@@ -9,6 +9,14 @@ const _delete = path => async (id) => {
     }
 };
 
+//Assets
+export const deleteAssetCalibrationRecordListItem = _delete("assets/calibration-record-list");
+export const deleteAssetMaintenancePlanListItem = _delete("assets/maintenance-plan-list");
+export const deleteAssetMonitoringPlanFuelUsageListItem = _delete("assets/monitoring-plan-fuel-usage-list");
+export const deleteAssetMonitoringPlanWorkingHrsOrKmListItem = _delete("assets/monitoring-plan-working-hrs-or-km-list");
+export const deleteAssets = _delete("assets");
+
+//Incidents
 export const deleteIncident = _delete("incidents");
 
 export const deleteProxyNCRAssignedPerson = _delete("ncr/proxy/assigned-person");
@@ -21,6 +29,3 @@ export const deleteProxyNCRDocument = _delete("ncr/proxy/document");
 export const deleteOHSDoc = _delete("documents/ohs-docs");
 export const deleteSettings = _delete("settings");
 export const deleteNotificationSettings = _delete("notification-settings");
-
-export const deleteAssetMonitoringPlanWorkingHrsOrKmListItem = _delete("assets/monitoring-plan-working-hrs-or-km-list");
-export const deleteAssetMonitoringPlanFuelUsageListItem = _delete("assets/monitoring-plan-fuel-usage-list");

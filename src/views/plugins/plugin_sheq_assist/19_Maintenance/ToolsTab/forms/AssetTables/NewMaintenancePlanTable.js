@@ -15,7 +15,7 @@ import {MaintenancePlanStats} from "../AssetStats";
 import {CostAndReceipt} from "../AssetComponents";
 import NewPartsUsedListDialog from "../../../PartsTab/forms/NewPartsUsedListDialog";
 import upsertAssetMaintenancePlanListItem from "mutations/all/Asset/upsertAssetMaintenancePlanListItem";
-import deleteAssetMaintenancePlanListItem from "mutations/all/Asset/deleteAssetMaintenancePlanListItem";
+import {deleteAssetMaintenancePlanListItem} from "mutations/delete";
 import insertAssetMaintenancePlan from "mutations/all/Asset/insertAssetMaintenancePlan";
 //</editor-fold>
 

@@ -9,7 +9,7 @@ import {Button, ClearableInput} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
 import upsertAssetCalibrationRecordListItem from "mutations/all/Asset/upsertAssetCalibrationRecordListItem";
-import deleteAssetCalibrationRecordListItem from "mutations/all/Asset/deleteAssetCalibrationRecordListItem";
+import {deleteAssetCalibrationRecordListItem} from "mutations/delete";
 import insertAssetCalibrationRecord from "mutations/all/Asset/insertAssetCalibrationRecord";
 //</editor-fold>
 

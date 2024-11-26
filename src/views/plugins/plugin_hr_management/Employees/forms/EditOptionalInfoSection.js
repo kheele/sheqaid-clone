@@ -1,5 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {getGeocode} from 'utils/Maps';
@@ -129,20 +130,12 @@ class EditOptionalInfoSection extends React.Component {
 
     //<editor-fold desc="onChangeEmployee">
     onChangeEmployee(el, val) {
-        execWhen(() => this.refs.supervisor_phone && this.refs.supervisor_email).then(() => {
-            const {
-                supervisor_phone: supervisor_phone_ref, supervisor_email: supervisor_email_ref
-            } = this.refs;
-            if (val) {
-                if (val.data) {
-                    const {phone, email} = val.data;
-                    phone && supervisor_phone_ref.onChange(phone);
-                    email && supervisor_email_ref.onChange(email);
-                }
-            } else {
-                supervisor_phone_ref.reset();
-                supervisor_email_ref.reset();
+        execWhen(() => this.refs.supervisorDetails).then(supervisorDetails => {
+            if (val && val.data) {
+                supervisorDetails.supervisor = val;
+                return;
             }
+            supervisorDetails.supervisor = null;
         });
     }
 
@@ -195,13 +188,7 @@ class EditOptionalInfoSection extends React.Component {
                         <SelectEmployeeInput name="supervisor" placeholder="Supervisor Name..."
                                              defaultValue={supervisor} className="col-lg-12 form-control"
                                              onChange={this.form.onChange}/>
-                        <ClearableInput ref="supervisor_phone" name="supervisor_phone" type="text"
-                                        placeholder="Supervisor Phone No." defaultValue={supervisor && supervisor.phone}
-                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="supervisor_email" name="supervisor_email" type="email"
-                                        placeholder="Supervisor Email Address"
-                                        defaultValue={supervisor && supervisor.email} className="col-lg-12 form-control"
-                                        onChange={this.form.onChange}/>
+                        <SupervisorDetails ref="supervisorDetails" onChange={this.form.onChange}/>
                     </Row>
                     {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
                         rendered
@@ -233,6 +220,29 @@ class EditOptionalInfoSection extends React.Component {
     }
 
     //</editor-fold>
+}
+
+
+@observer
+class SupervisorDetails extends React.Component {
+    @observable supervisor = null;
+
+    render() {
+        const {supervisor} = this;
+        const {onChange} = this.props;
+
+        const {phone, email} = (supervisor || {}).data || {};
+
+        return <>
+            <ClearableInput key={new Date().getTime() + 1} name="supervisor_phone" type="text"
+                            placeholder="Supervisor Phone No." defaultValue={phone}
+                            className="col-lg-12 form-control" onChange={onChange}/>
+            <ClearableInput key={new Date().getTime() + 2} name="supervisor_email" type="email"
+                            placeholder="Supervisor Email Address"
+                            defaultValue={email} className="col-lg-12 form-control"
+                            onChange={onChange}/>
+        </>;
+    }
 }
 
 export default EditOptionalInfoSection;

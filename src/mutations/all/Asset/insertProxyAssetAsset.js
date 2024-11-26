@@ -1,12 +1,11 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityAsset} from "mutations/types.d.ts";
 import crudUtils from "../CRUDUtils/CRUDUtils";
-import findByIdAsset from "./findByIdAsset";
 
 // 2
 const mutation = graphql`
@@ -20,26 +19,26 @@ const mutation = graphql`
 `;
 
 // 3
-export default async (input: EntityAsset) =>  {
-  const {
-    child_asset,
-    parent_asset,
-  } = input;
+export default async (input: EntityAsset) => {
+    const {
+        child_asset,
+        parent_asset,
+    } = input;
 
-  child_asset && crudUtils.injectCreate(child_asset);
-  parent_asset && crudUtils.injectCreate(parent_asset);
+    child_asset && crudUtils.injectCreate(child_asset);
+    parent_asset && crudUtils.injectCreate(parent_asset);
 
-  if(child_asset) {
-    input.child_asset = {data: child_asset};
-  }
+    if (child_asset) {
+        input.child_asset = {data: child_asset};
+    }
 
-  if(parent_asset) {
-    input.parent_asset = {data: parent_asset};
-  }
+    if (parent_asset) {
+        input.parent_asset = {data: parent_asset};
+    }
 
-  const res = await createMutationImpl({mutation, input});
-  // if(res) {
-  //   return findByIdAsset(res.id);
-  // }
-  return res;
+    const res = await createMutationImpl({mutation, input});
+    // if(res) {
+    //   return findByIdAsset(res.id);
+    // }
+    return res;
 };

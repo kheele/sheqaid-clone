@@ -64,6 +64,10 @@ class SelectInput extends ASelectInput {
     }
 
     async componentDidMount() {
+        this.reload();
+    }
+
+    async reload() {
         let {className = ''} = this.props;
         className += ` SelectJobCategoryInput`;
 
@@ -92,9 +96,9 @@ class SelectInput extends ASelectInput {
     }
 
     onAdd(e, btn) {
-        this.refs.newDialog.open().then(value => {
-            this.list.push(value);
-            this.refs.input.onChange({label: value.data.name, value});
+        this.refs.newDialog.open().then(value => ({label: value.data.name, value})).then(async value => {
+            await this.reload();
+            this.refs.input.onChange(value);
         });
     }
 

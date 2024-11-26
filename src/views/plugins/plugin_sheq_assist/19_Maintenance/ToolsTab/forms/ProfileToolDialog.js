@@ -18,14 +18,14 @@ import style from "./ProfileToolDialog.lazy.css";
 import {Sign} from "views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ManHourComponents";
 import {MonitoringPlanStats} from "./AssetStats";
 import {
-	NewCalibrationRecordTable,
-	NewDocumentTable,
-	NewMaintenancePlanTable,
-	NewMonitoringPlanFuelUsageTable,
-	NewMonitoringPlanWorkingHrsOrKmTable,
-	NewRegisterTable
+    NewCalibrationRecordTable,
+    NewDocumentTable,
+    NewMaintenancePlanTable,
+    NewMonitoringPlanFuelUsageTable,
+    NewMonitoringPlanWorkingHrsOrKmTable,
+    NewRegisterTable
 } from "./AssetTables";
-import findByIdAsset from "mutations/all/Asset/findByIdAsset";
+import {findByIdAsset} from "mutations/findById";
 import InspectionTabs from "./InspectionTabs";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import ImageSection from "components/FormComponents/ImageSection";

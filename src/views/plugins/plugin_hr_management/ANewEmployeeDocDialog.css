@@ -1,26 +1,29 @@
 @import '../../../css/ANewDialog.css';
 
 #dialog-overlay.ANewEmployeeDocDialog .controls-wrapper,
-#dialog-overlay.ANewEmployeeDocDialog .controls-wrapper > .controls{
+#dialog-overlay.ANewEmployeeDocDialog .controls-wrapper > .controls {
     height: 100%;
 }
 
-#dialog-overlay.ANewEmployeeDocDialog .row-profile-cover{
+#dialog-overlay.ANewEmployeeDocDialog .row-profile-cover {
     padding: 5px !important;
 }
 
-#dialog-overlay.ANewEmployeeDocDialog .row .tabs{
+#dialog-overlay.ANewEmployeeDocDialog .row .tabs {
     height: calc(100% - 64px);
     margin: -49px -10px 0;
     background: #fff;
 }
-#dialog-overlay.ANewEmployeeDocDialog .row .tabs.Embedded-Tabs{
+
+#dialog-overlay.ANewEmployeeDocDialog .row .tabs.Embedded-Tabs {
     margin: -40px 0px 0;
 }
-#dialog-overlay.ANewEmployeeDocDialog .row .tab-list{
+
+#dialog-overlay.ANewEmployeeDocDialog .row .tab-list {
     background: none;
 }
-#dialog-overlay.ANewEmployeeDocDialog .row .tabs .tab-content{
+
+#dialog-overlay.ANewEmployeeDocDialog .row .tabs .tab-content {
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -28,15 +31,17 @@
 #dialog-overlay.ANewEmployeeDocDialog .DashboardTab .GridReportsLineChart-Grid1 {
     margin-top: 0 !important;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .DashboardTab .GridReportsLineChart-Grid2 {
     height: calc(100% - 5px) !important;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .DashboardTab .ReportsLineChart-Line-Chart-Box {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
-#dialog-overlay.ANewEmployeeDocDialog .Slider{
+#dialog-overlay.ANewEmployeeDocDialog .Slider {
     height: calc(100% - 61px) !important;
     box-shadow: none !important;
     border-radius: 0 !important;
@@ -44,13 +49,16 @@
     padding: 0 30px !important;
     background: none !important;
 }
-#dialog-overlay.ANewEmployeeDocDialog .Slider{
+
+#dialog-overlay.ANewEmployeeDocDialog .Slider {
     height: calc(100% - 0px) !important;
     margin: 0 !important;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider > h1 {
     display: none;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider > .carousel {
     position: relative !important;
     background: #fff;
@@ -65,60 +73,73 @@
     margin-top: 36px;
     height: calc(100% - 10px) !important;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-indicators {
     background: none;
     margin: 2px 0px 0;
     padding: 5px 0 0;
     width: 100%;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-indicators li {
     width: 20px;
     height: 20px;
     border-width: 2px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-indicators li.active {
     background-color: rgb(2, 168, 168);
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-indicators li:not(.active) {
     border: 2px solid rgb(2, 168, 168);
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-control {
     width: 12px;
     color: rgb(2, 168, 168) !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-control.left {
     left: 0;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-control.right {
     right: 0;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-inner {
     width: calc(100% - 0px);
     height: calc(100% - 25px);
     /*margin: 25px 0px 0;*/
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-inner .row-details {
     width: calc(100% - 10px);
     padding-bottom: 10px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .Slider .carousel-inner-no-results {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 200px;
 }
+
 /*
 #dialog-overlay.ANewEmployeeDocDialog .controls > .row:last-of-type{
     position: relative;
 }*/
-#dialog-overlay.ANewEmployeeDocDialog .row.row-doc{
+#dialog-overlay.ANewEmployeeDocDialog .row.row-doc {
     /*height: 900px;*/
     margin: 0px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .ProfileField.doc > div {
     /*margin-top: 20px !important;*/
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .btn-create,
 #dialog-overlay.ANewEmployeeDocDialog .btn-edit,
 #dialog-overlay.ANewEmployeeDocDialog .btn-remove {
@@ -128,17 +149,21 @@
     height: 25px;
     padding: 0 20px !important;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-create,
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-edit,
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-remove {
-    top: 7px;
+    top: 40px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .btn-create {
     right: 10px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .btn-edit {
     right: 110px;
 }
+
 #dialog-overlay.ANewEmployeeDocDialog .btn-remove {
     right: 190px;
 }

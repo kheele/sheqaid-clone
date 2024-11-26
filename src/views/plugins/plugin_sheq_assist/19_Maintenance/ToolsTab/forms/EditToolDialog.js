@@ -22,7 +22,7 @@ import {
     NewMonitoringPlanWorkingHrsOrKmTable,
     NewRegisterTable
 } from "./AssetTables";
-import findByIdAsset from "mutations/all/Asset/findByIdAsset";
+import {findByIdAsset} from "mutations/findById";
 import InspectionTabs from "./InspectionTabs";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import {CircularProgress} from "@mui/material";
