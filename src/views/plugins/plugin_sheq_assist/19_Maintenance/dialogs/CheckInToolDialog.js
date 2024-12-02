@@ -16,6 +16,7 @@ import CheckOutToolDialog from './CheckOutToolDialog.js';
 import style from "./CheckInToolDialog.lazy.css";
 import {Dates} from "utils/Dates";
 import {insertAssetRegister} from "mutations/create";
+import {listAssets} from "mutations/listByLogged";
 
 @observer
 class CheckInToolDialog extends ANewDialog {
@@ -89,9 +90,7 @@ class Controls extends React.Component {
     }
 
     onLoadList() {
-        const listByLogged = sockets.of("assets").fn('listByLogged');
-
-        return listByLogged({
+        return listAssets({
             written_off: false,
             //
             status: "!In Storage",

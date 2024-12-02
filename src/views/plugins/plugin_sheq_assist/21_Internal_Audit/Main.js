@@ -3,14 +3,11 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
-
-import { Button } from "components/inputs";
-import { PageTitle } from "components";
+import {PageTitle} from "components";
 import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
 import APage from "views/APage";
 import DashboardTab from './DashboardTab';
 import AuditTab from './AuditTab';
-import ConstructionAuditsTab from './ConstructionAuditsTab.js';
 
 import Tabs from 'components/tabs/Tabs';
 
@@ -32,7 +29,7 @@ class Main extends APage {
         super.componentWillMount();
         style.use();
         const {isEmployee} = storage.is;
-        if(isEmployee) {
+        if (isEmployee) {
             this.state.index = 1;
         }
     }
@@ -52,14 +49,15 @@ class Main extends APage {
         const {isEmployee} = storage.is;
         return (<div key="_21_Internal_Audit-page" id="_21_Internal_Audit-page" className={this.classNames}>
             <PageTitle title="Audits" renderBackBtn={this.renderBackBtn}>
-                <Button
-                    text="OHS Documents"
-                    hoverText="OHS Act, Legal register, etc"
-                    className="btn btn-primary pull-right"
-                    onClick={this.onViewOHSDocuments}
-                />
+                {/*<Button*/}
+                {/*    text="OHS Documents"*/}
+                {/*    hoverText="OHS Act, Legal register, etc"*/}
+                {/*    className="btn btn-primary pull-right"*/}
+                {/*    onClick={this.onViewOHSDocuments}*/}
+                {/*/>*/}
             </PageTitle>
-            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
+            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
+                  onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 <DashboardTab ref="dashboard" title="Dashboard"/>
                 {!isEmployee && <AuditTab ref="audit" title="Audits" path={this.path}/>}
                 {/*{!isEmployee && <ConstructionAuditsTab ref="constructionAudits" title="Construction Audits" path={this.path}/>}*/}

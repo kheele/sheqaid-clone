@@ -18,9 +18,10 @@ import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 
 import style from "./MonitoringPlanTab.lazy.css";
 import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
-import MKBox from "../../../../../components/MK/MKBox";
-import ViewByButtons from "../../../../../components/ViewByButtons";
+import MKBox from "components/MK/MKBox";
+import ViewByButtons from "components/ViewByButtons";
 import AssetMonitoringRenderRow from "./AssetMonitoringRenderRow";
+import {listAssetMonitoringPlans} from "mutations/listByLogged";
 
 // </editor-fold>
 
@@ -68,8 +69,8 @@ class MonitoringPlanTab extends React.Component {
         return this.state.view === "Asset";
     }
 
-    @computed get isFluelUsage() {
-        return this.state.view === "Fluel Usage";
+    @computed get isFuelUsage() {
+        return this.state.view === "Fuel Usage";
     }
 
     @computed get isWorkingTimeOrDistance() {
@@ -123,9 +124,7 @@ class MonitoringPlanTab extends React.Component {
         const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
         const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 
-        const listByLogged = sockets.of('assets/monitoring-plans').fn('listByLogged');
-
-        return listByLogged({
+        return listAssetMonitoringPlans({
             view, expiry_date,
             mon, mon2, mon3,
             //
@@ -275,9 +274,7 @@ class MonitoringPlanTab extends React.Component {
         const {isConsultant, hasProjects, isContractor} = storage.is;
         const frag = <>
             <div className="td fixed-flex min-w-50">ID</div>
-            <div className="td fixed-flex min-w-80">Photo</div>
-            <div className="td fixed-flex min-w-140">Asset Type</div>
-            <div className="td">Asset</div>
+            <div className="td">Asset Name</div>
             <div className="td">Location</div>
             <div className="td fixed-flex min-w-140">Reg. No.</div>
             <div className="td fixed-flex min-w-140">Serial No.</div>
@@ -292,7 +289,7 @@ class MonitoringPlanTab extends React.Component {
                 {/*<div className="td fixed-flex min-w-240">Stats</div>*/}
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-70"></div>
             </THead>;
-        } else if (this.isFluelUsage) {
+        } else if (this.isFuelUsage) {
             return <THead>
                 {frag}
                 <div className="td fixed-flex min-w-300">Last Fuel Usage</div>
@@ -356,7 +353,7 @@ class ViewByButtonsBox extends React.Component {
 
     items = [
         "Asset",
-        "Fluel Usage",
+        "Fuel Usage",
         "Working Time/Distance",
     ];
 

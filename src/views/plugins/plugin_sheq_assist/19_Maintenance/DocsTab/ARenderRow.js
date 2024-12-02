@@ -3,10 +3,9 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import {ExpiryButtons, renderExpiryDateSpan} from 'utils/ComponentUtils';
-import {Dates} from 'utils/Utils';
-import {ActionsButton, Clickable} from 'components/inputs';
-import {THead, TRow} from 'components/tables';
-import assetProfilePic from "../../../../../assets/images/vehicle-image-loading.png";
+import {ActionsButton} from 'components/inputs';
+import {TRow} from 'components/tables';
+import AssetNameCol from "../AssetNameCol";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ARenderRow">
@@ -81,27 +80,23 @@ class RenderRowByGroup extends React.Component {
 
         const latest = list.getFirstElement();
 
-        let [profile_pic] = profile_pic_list || [];
-        if (!profile_pic) {
-            profile_pic = (photo_list || [])[0];
-        }
-
         return <TRow key={id} className="w-full tr-header">
             <div className="td fixed-flex min-w-50">
                 <h6 className="xs-shown font-size-13">ID</h6>
                 {id}
             </div>
-            <div className="td fixed-flex min-w-80">
-                <Clickable idx={idx} viewByImage onClick={onView}>
-                    {RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
-                </Clickable>
+            <div className="td">
+                <AssetNameCol
+                    idx={idx}
+                    onClick={onView}
+                    item={item}
+                />
             </div>
-            <div className="td">{asset_type}</div>
-            <div className="td">{name || 'N/A'}</div>
             <div className="td">{reg_num || 'N/A'}</div>
             <div className="td">{serial_num || 'N/A'}</div>
             <div className="td">{responsible_person && responsible_person.full_name || 'N/A'}</div>
-            <div className="td">{responsible_person && responsible_person.job_position && responsible_person.job_position.name || 'N/A'}</div>
+            <div
+                className="td">{responsible_person && responsible_person.job_position && responsible_person.job_position.name || 'N/A'}</div>
             <div className="td"></div>
             <div className="td fixed-flex min-w-105">{latest && renderExpiryDateSpan(latest.expiry)}</div>
             <div className="td fixed-flex flex grid-gap-5 min-w-240">

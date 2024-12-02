@@ -21,8 +21,7 @@ import {
 import {insertAsset} from "mutations/create";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import ImageSection from "components/FormComponents/ImageSection";
-import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
-import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
+import {upsertAssetPhoto} from "mutations/upsert";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -99,10 +98,14 @@ class Controls extends AControls {
 
         const data = {
             formData: form.data,
-            target_asset_id: assetItem.id,
             isParent,
             isChild,
         };//await onProcessFormData(form.data, company_id);
+
+        if (assetItem) {
+            data.target_asset_id = assetItem.id;
+        }
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -187,8 +190,8 @@ class Controls extends AControls {
                 <ImageSection
                     listName="photo_list"
                     item_id_key="asset_id"
-                    onInsert={insertAssetPhoto}
-                    onUpdate={updateAssetPhoto}
+                    onInsert={upsertAssetPhoto}
+                    onUpdate={upsertAssetPhoto}
                     isNewEmployee
                     isEmbedded
                     onChange={this.form.onChange}

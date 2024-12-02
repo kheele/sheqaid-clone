@@ -13,6 +13,7 @@ import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 import style from "./CheckOutToolDialog.lazy.css";
 import {Dates} from "utils/Dates";
 import {insertAssetRegister} from "mutations/create";
+import {listAssets} from "mutations/listByLogged";
 
 @observer
 class CheckOutToolDialog extends ANewDialog {
@@ -76,9 +77,7 @@ class Controls extends React.Component {
     }
 
     onLoadList() {
-        const listByLogged = sockets.of("assets").fn('listByLogged');
-
-        return listByLogged({
+        return listAssets({
             written_off: false,
             //
             status: "!Checked Out",

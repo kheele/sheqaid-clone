@@ -8,9 +8,9 @@ import {Dates} from 'utils/Utils';
 import {Button, ClearableInput} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
-import upsertAssetCalibrationRecordListItem from "mutations/all/Asset/upsertAssetCalibrationRecordListItem";
 import {deleteAssetCalibrationRecordListItem} from "mutations/delete";
-import insertAssetCalibrationRecord from "mutations/all/Asset/insertAssetCalibrationRecord";
+import {insertAssetCalibrationRecord} from "mutations/create";
+import {upsertAssetCalibrationRecordListItem} from "mutations/upsert";
 //</editor-fold>
 
 //<editor-fold desc="NewCalibrationRecordTable">

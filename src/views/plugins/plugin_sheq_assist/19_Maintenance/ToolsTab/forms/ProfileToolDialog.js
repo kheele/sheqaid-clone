@@ -29,8 +29,7 @@ import {findByIdAsset} from "mutations/findById";
 import InspectionTabs from "./InspectionTabs";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import ImageSection from "components/FormComponents/ImageSection";
-import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
-import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
+import {upsertAssetPhoto} from "mutations/upsert";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -410,8 +409,8 @@ class Controls extends React.Component {
                     <ImageSection
                         listName="photo_list"
                         item_id_key="asset_id"
-                        onInsert={insertAssetPhoto}
-                        onUpdate={updateAssetPhoto}
+                        onInsert={upsertAssetPhoto}
+                        onUpdate={upsertAssetPhoto}
                         item={item}
                         embeddedEmployee={this.item}
                         isEmbedded

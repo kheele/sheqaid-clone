@@ -2,7 +2,6 @@ import React from "react";
 import {CircularProgress} from '@material-ui/core';
 import {observer} from 'mobx-react';
 import {autorun, computed, observable} from 'mobx';
-import {StyleSheet, View} from '@react-pdf/renderer';
 
 import LazyList from '../../onsenui/LazyList.jsx';
 
@@ -11,38 +10,80 @@ import {NavigateTop} from '../';
 import {Button} from '../inputs';
 
 import * as Utils from '../../utils/Utils';
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 
 @observer
 class TBody extends React.Component {
 
     @observable
-    state = {listState: 'action', sortKey: null, showBottomLoader: false, noOlderResults: false, dataLoaded: false, dataError: false, dataStale: false};
+    state = {
+        listState: 'action',
+        sortKey: null,
+        showBottomLoader: false,
+        noOlderResults: false,
+        dataLoaded: false,
+        dataError: false,
+        dataStale: false
+    };
 
     constructor(props) {
         super(props);
 
         this.onChange = this.onChange.bind(this);
         this.onLoad = this.onLoad.bind(this);
-        
+
         this.onScrollListener = this.onScrollListener.bind(this);
         this.onLoadList = this.onLoadList.bind(this);
         this.onLoadBottom = this.onLoadBottom.bind(this);
         this.renderItem = this.renderItem.bind(this);
     }
 
+    @computed
+    get dataStale() {
+        return this.state.dataStale;
+    }
+
+    @computed
+    get dataLoaded() {
+        return this.state.dataLoaded;
+    }
+
+    @computed get list() {
+        let __list = [];
+        let {state, listName, list} = this.props;
+        if ('list' in this.props && !!list) {
+            __list = list;
+        }
+        if (state) {
+            if (listName && listName in state) {
+                __list = state[listName];
+            } else if (state.list) {
+                __list = state.list;
+            }
+        }
+
+        const {sortKey} = this.state;
+        // console.log('table list processing', sortKey)
+        if (isString(sortKey)) {
+            __list.sortBy(sortKey);
+            // console.log('table list processed', sortKey)
+        }
+
+        return __list;
+    }
+
     componentDidMount() {
         this.onScrollListener();
         this.onLoadList();
-        
+
         autorun(() => {
             let {state, sortKey} = this.props;
-            if(state) {
+            if (state) {
                 sortKey = state.sortKey || sortKey;
             }
 
             // console.log('table list will_sort', sortKey)
-            if(isString(sortKey)) {
+            if (isString(sortKey)) {
                 this.state.dataLoaded = false;
                 setTimeout(() => {
                     this.state.sortKey = sortKey;
@@ -52,7 +93,7 @@ class TBody extends React.Component {
             }
         });
     }
-    
+
     componentWillUpdate() {
         this.onScrollListener();
     }
@@ -63,10 +104,10 @@ class TBody extends React.Component {
             this.refs.tbody.removeEventListener('scroll', this.onScroll);
         }
     }
-    
+
     onScrollListener() {
         const {printPDF} = this.props;
-        if(printPDF) return;
+        if (printPDF) return;
         const propsList = this.list || [];
         if (!this.state.dataLoaded || this.state.dataStale) return;
         if (propsList.isEmpty()) {
@@ -95,10 +136,10 @@ class TBody extends React.Component {
 
     onLoadList() {
         const {onLoadList, list} = this.props;
-        
+
         this.state.dataLoaded = false;
         this.state.dataError = false;
-        
+
         if (onLoadList) {
             return onLoadList(true).then(isEmpty => {
                 this.state.listState = 'initial';
@@ -111,7 +152,7 @@ class TBody extends React.Component {
                 console.log(e)
                 throw e;
             });
-        } else if(list) {
+        } else if (list) {
             this.state.listState = 'initial';
             this.state.dataError = false;
             this.state.dataLoaded = true;
@@ -122,7 +163,7 @@ class TBody extends React.Component {
 
     onLoadBottom(onLoadComplete) {
         const {loadOnScrolled} = this.props;
-        if(!loadOnScrolled) return;
+        if (!loadOnScrolled) return;
         const lastElem = window.$(this.refs.lazyList._list).children(':last')[0];
         if (Utils.isInView(lastElem)) {
             if (this.props.onLoadList) {
@@ -147,11 +188,11 @@ class TBody extends React.Component {
     onLoad(evt) {
         const {listLoaderState, tbody} = this.refs;
         const transform = () => {
-            if(this.list.isEmpty() && listLoaderState) {
+            if (this.list.isEmpty() && listLoaderState) {
                 listLoaderState.runIfNoResultsNode(node => {
                     node.style.transform = 'translate3d(0px, 0px, 0px)';
                 });
-            } else if(tbody) {
+            } else if (tbody) {
                 tbody.style.transform = 'translate3d(0px, 0px, 0px)';
             }
         };
@@ -168,28 +209,17 @@ class TBody extends React.Component {
         this.state.listState = evt.state;
     }
 
-    @computed
-    get dataStale() {
-        return this.state.dataStale;
-    }
-
-    @computed
-    get dataLoaded() {
-        return this.state.dataLoaded;
-    }
-
     renderItem(n) {
         const {widthsState, disableRowHover, renderItem, onClick} = this.props;
-        try{
+        try {
             const item = renderItem(n, onClick);
-            if(!item) return null;
+            if (!item) return null;
             return React.cloneElement(item, {widthsState, disableRowHover});
-        } catch(err) {
+        } catch (err) {
             console.error(err);
             const onReport = (evt, btn) => {
                 btn.text("Reporting...").disabled();
-                insertErrorReporting({error: err, errorInfo: err}).
-                finally(() => {
+                insertErrorReporting({error: err, errorInfo: err}).finally(() => {
                     btn.text("Report Problem").enabled();
                 });
             };
@@ -199,45 +229,23 @@ class TBody extends React.Component {
             </div>;
         }
     }
-    
-    @computed get list(){
-        let __list = [];
-        let {state, listName, list} = this.props;
-        if('list' in this.props && !!list) {
-            __list = list;
-        }
-        if(state) {
-            if(listName && listName in state) {
-                __list = state[listName];
-            } else if(state.list) {
-                __list = state.list;
-            }
-        }
-        
-        const {sortKey} = this.state;
-        // console.log('table list processing', sortKey)
-        if(isString(sortKey)) {
-            __list.sortBy(sortKey);
-            // console.log('table list processed', sortKey)
-        }
-        
-        return __list;
-    }
 
     render() {
         const {title = "items", className, disablePullToRefresh, children, listName, printPDF} = this.props;
         if (!this.state.dataLoaded || this.list.isEmpty() || this.state.dataError) {
-            return <ListLoaderState ref="listLoaderState" onChange={this.onChange} onLoad={this.onLoad} state={this.state} list={this.list} title={title}/>;
+            return <ListLoaderState ref="listLoaderState" onChange={this.onChange} onLoad={this.onLoad}
+                                    state={this.state} list={this.list} title={title}/>;
         }
-        
+
         const _className = 'tbody page__content nice-scrollbars' + (className ? (' ' + className) : '');
         return (<tbody ref="tbody" className={_className}>
-            {!disablePullToRefresh && <PullHookState onChange={this.onChange} onLoad={this.onLoad} state={this.state} listName={listName}/>}
-            <LazyList ref="lazyList" length={this.list.length} renderRow={this.renderItem} calculateItemHeight={() => 44}/>
-            <PullHookStateBottom state={this.state} message={'No ' + title.toLowerCase() + ' to load'}/>
-            <NavigateTop ref="navigateTop" delay={1000} getTargetNode={() => this.refs.tbody}/>
-            {children}
-            {/*<p className="load-more text-center hor-center padding-15 padding-t-10 w-120">load more</p>*/}
+        {!disablePullToRefresh &&
+            <PullHookState onChange={this.onChange} onLoad={this.onLoad} state={this.state} listName={listName}/>}
+        <LazyList ref="lazyList" length={this.list.length} renderRow={this.renderItem} calculateItemHeight={() => 44}/>
+        <PullHookStateBottom state={this.state} message={'No ' + title.toLowerCase() + ' to load'}/>
+        <NavigateTop ref="navigateTop" delay={1000} getTargetNode={() => this.refs.tbody}/>
+        {children}
+        {/*<p className="load-more text-center hor-center padding-15 padding-t-10 w-120">load more</p>*/}
         </tbody>);
     }
 }
@@ -262,7 +270,7 @@ class PullHookStateBottom extends React.Component {
 
 function loadBottomData() {
     const {tbody, lazyList} = this.refs;
-    if(!tbody || !lazyList) {
+    if (!tbody || !lazyList) {
         return;
     }
     let jqTbody = window.$(tbody);
@@ -299,7 +307,6 @@ function getLastElement(parentView) {
     return parentView.children(':last')[0];
 }
 
-TBody.propTypes = {
-};
+TBody.propTypes = {};
 
 export default TBody;

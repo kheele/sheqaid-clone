@@ -3,20 +3,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {
-    Button,
-    ClearableInput, Clickable, DateRangeInput, SelectAssetTypeInput,
-    SelectClientInput, SelectEmployeeInput,
-    SelectJobPositionInput,
-    SelectProjectInput,
-    SelectSiteInput
-} from 'components/inputs';
-import {SelectTable, THead} from 'components/tables';
+import {ClearableInput, Clickable, SelectAssetTypeInput} from 'components/inputs';
+import {THead} from 'components/tables';
 import style from "./ExportAssetsDialog.lazy.css";
 import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";
 import ProfileToolDialog from "../ToolsTab/forms/ProfileToolDialog";
+import {listAssets} from "mutations/listByLogged";
+import {exportExcelAssets} from "mutations/exportExcel";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -25,17 +20,7 @@ class ExportAssetsDialog extends AExportDialog {
     className = "ExportAssetsDialog";
     titleSingular = 'Asset';
     titlePlural = 'Assets';
-    
-    componentWillMount() {
-        super.componentWillMount();
-        style.use();
-    }
-    
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        style.unuse();
-    }
-    
+
     get excludePDF() {
         return true;
     }
@@ -43,13 +28,23 @@ class ExportAssetsDialog extends AExportDialog {
     get controls() {
         return Controls;
     }
+
+    componentWillMount() {
+        super.componentWillMount();
+        style.use();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        style.unuse();
+    }
 }
 
 // </editor-fold>
 
 @observer
 class Controls extends AControls {
-    exportFn = sockets.of('assets').fn('export-excel');
+    exportFn = exportExcelAssets;
 
     @observable
     state = {
@@ -82,8 +77,68 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-        
+
         this.onView = this.onView.bind(this);
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="renderFields">
+    get renderFields() {
+        if (!this.state.loadedSelectLists) {
+            return <div className="col-lg-12 controls flex text-center">Loading...</div>;
+        }
+        const {onChange} = this.form;
+
+        return <>
+            {/*<SelectEmployeeInput ref="responsible_person_list" name="responsible_person_list"*/}
+            {/*                     placeholder="Responsible Person..." type="select_multi"*/}
+            {/*                     className="col-lg-12 form-control" onChange={onChange}/>*/}
+            <SelectAssetTypeInput ref="asset_type" name="asset_type" placeholder="Asset Type..."
+                                  className="col-lg-12 form-control"
+                                  onChange={onChange}/>
+            <ClearableInput ref="manufacturer" name="manufacturer" type="select" placeholder="Manufacturer..."
+                            className="col-lg-12 form-control"
+                            onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
+            <ClearableInput ref="location" name="location" type="select" placeholder="Location..."
+                            className="col-lg-12 form-control"
+                            onChange={onChange} values={this.state.lists.locations} returnValue/>
+            <ClearableInput ref="condition" name="condition" type="select" placeholder="Condition..."
+                            className="col-lg-12 form-control" onChange={onChange}
+                            values={this.state.lists.conditions} returnValue/>
+            <ClearableInput ref="name" name="name" type="text" placeholder="Asset Name"
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="reg_num" name="reg_num" type="text" placeholder="Registration No."
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="serial_num" name="serial_num" type="text" placeholder="Serial No."
+                            className="col-lg-12 form-control"
+                            onChange={onChange}/>
+            <ClearableInput ref="model" name="model" type="text" placeholder="Model" className="col-lg-12 form-control"
+                            onChange={onChange}/>
+
+            {/*<hr className="pull-left no-border bg-ddd h-2"/>*/}
+            {/*<DateRangeInput ref="due_date_range" name="due_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Due Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+            {/*<DateRangeInput ref="progress_date_range" name="progress_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Progress Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+            {/*<DateRangeInput ref="completed_date_range" name="completed_date_range"*/}
+            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Completed Date Range"*/}
+            {/*                onChange={onChange}>*/}
+            {/*    <label className="min-w-65">From</label>*/}
+            {/*    <label className="min-w-50">To</label>*/}
+            {/*</DateRangeInput>*/}
+            <ProfileToolDialog ref="profileDialog"/>
+        </>;
     }
 
     // </editor-fold>
@@ -103,7 +158,7 @@ class Controls extends AControls {
         });
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="onLoadList">
     onLoadList(params = {}) {
@@ -119,9 +174,7 @@ class Controls extends AControls {
             asset_type,
         } = filterData || {};
 
-        const listByLogged = sockets.of("assets").fn('listByLogged');
-        
-        return listByLogged({
+        return listAssets({
             written_off: false,
             //
             name,
@@ -144,8 +197,6 @@ class Controls extends AControls {
         });
     }
 
-    //</editor-fold>
-    
     onView(evt, el) {
         const {profileDialog} = this.refs;
         const {id} = el.props;
@@ -231,7 +282,7 @@ class Controls extends AControls {
         const statusValFinal = statusVal.get ? statusVal.get() : statusVal;
 
         let [profile_pic] = profile_pic_list || [];
-        if(!profile_pic) {
+        if (!profile_pic) {
             profile_pic = (photo_list || [])[0];
         }
 
@@ -249,64 +300,6 @@ class Controls extends AControls {
             <div className="td fixed-flex min-w-80">{condition || 'N/A'}</div>
             <div className="td fixed-flex min-w-100">{status}</div>
         </React.Fragment>;
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="renderFields">
-    get renderFields() {
-        if (!this.state.loadedSelectLists) {
-            return <div className="col-lg-12 controls flex text-center">Loading...</div>;
-        }
-        const {onChange} = this.form;
-
-        return <>
-            {/*<SelectEmployeeInput ref="responsible_person_list" name="responsible_person_list"*/}
-            {/*                     placeholder="Responsible Person..." type="select_multi"*/}
-            {/*                     className="col-lg-12 form-control" onChange={onChange}/>*/}
-            <SelectAssetTypeInput ref="asset_type" name="asset_type" placeholder="Asset Type..."
-                                  className="col-lg-12 form-control"
-                                  onChange={onChange}/>
-            <ClearableInput ref="manufacturer" name="manufacturer" type="select" placeholder="Manufacturer..."
-                            className="col-lg-12 form-control"
-                            onChange={onChange} values={this.state.lists.manufacturers} returnValue/>
-            <ClearableInput ref="location" name="location" type="select" placeholder="Location..."
-                            className="col-lg-12 form-control"
-                            onChange={onChange} values={this.state.lists.locations} returnValue/>
-            <ClearableInput ref="condition" name="condition" type="select" placeholder="Condition..."
-                            className="col-lg-12 form-control" onChange={onChange}
-                            values={this.state.lists.conditions} returnValue/>
-            <ClearableInput ref="name" name="name" type="text" placeholder="Asset Name"
-                            className="col-lg-12 form-control"
-                            onChange={onChange}/>
-            <ClearableInput ref="reg_num" name="reg_num" type="text" placeholder="Registration No."
-                            className="col-lg-12 form-control"
-                            onChange={onChange}/>
-            <ClearableInput ref="serial_num" name="serial_num" type="text" placeholder="Serial No."
-                            className="col-lg-12 form-control"
-                            onChange={onChange}/>
-            <ClearableInput ref="model" name="model" type="text" placeholder="Model" className="col-lg-12 form-control"
-                            onChange={onChange}/>
-
-            {/*<hr className="pull-left no-border bg-ddd h-2"/>*/}
-            {/*<DateRangeInput ref="due_date_range" name="due_date_range"*/}
-            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Due Date Range"*/}
-            {/*                onChange={onChange}>*/}
-            {/*    <label className="min-w-65">From</label>*/}
-            {/*    <label className="min-w-50">To</label>*/}
-            {/*</DateRangeInput>*/}
-            {/*<DateRangeInput ref="progress_date_range" name="progress_date_range"*/}
-            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Progress Date Range"*/}
-            {/*                onChange={onChange}>*/}
-            {/*    <label className="min-w-65">From</label>*/}
-            {/*    <label className="min-w-50">To</label>*/}
-            {/*</DateRangeInput>*/}
-            {/*<DateRangeInput ref="completed_date_range" name="completed_date_range"*/}
-            {/*                className="col-lg-12 h-105 grid-6 margin-0 form-control" placeholder="Completed Date Range"*/}
-            {/*                onChange={onChange}>*/}
-            {/*    <label className="min-w-65">From</label>*/}
-            {/*    <label className="min-w-50">To</label>*/}
-            {/*</DateRangeInput>*/}
-            <ProfileToolDialog ref="profileDialog"/>
-        </>;
     }
 
     // </editor-fold>

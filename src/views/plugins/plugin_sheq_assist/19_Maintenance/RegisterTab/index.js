@@ -18,7 +18,8 @@ import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 
 import style from "./RegisterTab.lazy.css";
 import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
-import MKBox from "../../../../../components/MK/MKBox";
+import MKBox from "components/MK/MKBox";
+import {listAssetRegisters} from "mutations/listByLogged";
 
 // </editor-fold>
 
@@ -93,9 +94,7 @@ class RegisterTab extends React.Component {
             asset_type,
         } = filterData || {};
 
-        const listByLogged = sockets.of("assets/registers").fn("listByLogged");
-
-        return listByLogged({
+        return listAssetRegisters({
             name,
             reg_num,
             serial_num,

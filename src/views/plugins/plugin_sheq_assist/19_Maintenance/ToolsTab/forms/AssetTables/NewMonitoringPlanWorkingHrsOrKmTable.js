@@ -8,9 +8,8 @@ import {Dates, execWhen} from 'utils/Utils';
 import {Button, ClearableInput} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
-import upsertAssetMonitoringPlanWorkingHrsOrKmListItem
-    from "mutations/all/Asset/upsertAssetMonitoringPlanWorkingHrsOrKmListItem";
-import insertAssetMonitoringPlan from "mutations/all/Asset/insertAssetMonitoringPlan";
+import {upsertAssetMonitoringPlanWorkingHrsOrKmListItem} from "mutations/upsert";
+import {insertAssetMonitoringPlan} from "mutations/create";
 import {deleteAssetMonitoringPlanWorkingHrsOrKmListItem} from "mutations/delete";
 //</editor-fold>
 

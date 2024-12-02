@@ -6,7 +6,7 @@ import {ActionsButton, Button} from 'components/inputs';
 import {TRow} from 'components/tables';
 
 import style from "./InventoryProductRenderRow.lazy.css";
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -106,7 +106,8 @@ class RenderRow extends React.Component {
                     </div>}
                 {!isExporting && <div className="td fixed-flex min-w-110 padding-r-10 md-hidden">
                     <h6 className="xs-shown font-size-13">PPE Required</h6>
-                    {(ppe_type_list && !ppe_type_list.isEmpty()) ? <span className='counter'>{ppe_type_list.length}</span> : 'N/A'}
+                    {(ppe_type_list && !ppe_type_list.isEmpty()) ?
+                        <span className='counter'>{ppe_type_list.length}</span> : 'N/A'}
                 </div>}
                 <div
                     className={"td fixed-flex min-w-100 md-hidden td-risk-level " + RisksCodes.colorClassName(risk_level)}>
@@ -130,8 +131,7 @@ class RenderRow extends React.Component {
             console.error('chemical product error', item)
             const onReport = (evt, btn) => {
                 btn.text("Reporting...").disabled();
-                insertErrorReporting({error: err, errorInfo: err}).
-                finally(() => {
+                insertErrorReporting({error: err, errorInfo: err}).finally(() => {
                     btn.text("Report Problem").enabled();
                 });
             };

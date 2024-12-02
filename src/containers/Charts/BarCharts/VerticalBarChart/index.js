@@ -116,7 +116,7 @@ function VerticalBarChart(
         <BarMemo chart={chart} height={height} width={width} data={data} options={options}/>
     </MDBox>);
 
-    return title || description ? <Card sx={{...sx, background}}>{renderChart}</Card> : renderChart;
+    return title || description ? <Card sx={{width, ...sx, background}}>{renderChart}</Card> : renderChart;
 }
 
 

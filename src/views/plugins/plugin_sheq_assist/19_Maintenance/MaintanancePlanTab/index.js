@@ -19,8 +19,9 @@ import EditToolDialog from '../ToolsTab/forms/EditToolDialog.js';
 import style from "./MaintenancePlanTab.lazy.css";
 import {CONSTANTS} from "../ToolsTab/forms/AssetComponents";
 import MKBox from "components/MK/MKBox";
-import ViewByButtons from "../../../../../components/ViewByButtons";
+import ViewByButtons from "components/ViewByButtons";
 import AssetMaintenanceRenderRow from "./AssetMaintenanceRenderRow";
+import {listAssetMaintenancePlans} from "mutations/listByLogged";
 
 // </editor-fold>
 
@@ -125,9 +126,7 @@ class MaintenancePlanTab extends React.Component {
         const mon2 = Dates.formatDateSQL(new Date().addMonths(2));
         const mon3 = Dates.formatDateSQL(new Date().addMonths(3));
 
-        const listByLogged = sockets.of('assets/maintenance-plans').fn('listByLogged');
-
-        return listByLogged({
+        return listAssetMaintenancePlans({
             view, expiry_date,
             mon, mon2, mon3,
             //
@@ -280,9 +279,7 @@ class MaintenancePlanTab extends React.Component {
         const {isConsultant, hasProjects, isContractor} = storage.is;
         const frag = <>
             <div className="td fixed-flex min-w-50">ID</div>
-            <div className="td fixed-flex min-w-80">Photo</div>
-            <div className="td fixed-flex min-w-140">Asset Type</div>
-            <div className="td">Asset</div>
+            <div className="td">Asset Name</div>
             <div className="td">Location</div>
             <div className="td fixed-flex min-w-140">Reg. No.</div>
             <div className="td fixed-flex min-w-140">Serial No.</div>

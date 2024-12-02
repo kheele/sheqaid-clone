@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {Button} from 'components/inputs';
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 
 @observer
 class AsyncTD extends React.Component {
@@ -37,7 +37,7 @@ class Val extends React.Component {
     async componentDidMount() {
         let {onSetVal, path, id, defaultValue} = this.props;
         if ('defaultValue' in this.props) {
-            if(defaultValue instanceof Promise) {
+            if (defaultValue instanceof Promise) {
                 this.state.val = await defaultValue;
             } else {
                 this.state.val = defaultValue;
@@ -61,14 +61,13 @@ class Val extends React.Component {
     render() {
         const {renderer, defaultText, defaultValue} = this.props;
         const rendererImpl = (val) => {
-            try{
+            try {
                 return renderer(val);
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
                 const onReport = (evt, btn) => {
                     btn.text("Reporting...").disabled();
-                    insertErrorReporting({error: err, errorInfo: err}).
-                    finally(() => {
+                    insertErrorReporting({error: err, errorInfo: err}).finally(() => {
                         btn.text("Report Problem").enabled();
                     });
                 };
@@ -78,7 +77,7 @@ class Val extends React.Component {
                 </div>;
             }
         };
-        
+
         const {val, loaded} = this.state;
         if (!loaded)
             return "Loading...";

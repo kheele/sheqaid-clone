@@ -9,6 +9,9 @@ const findById = path => async (id) => {
     }
 };
 
+//General
+export const findByIdManual = findById("manuals");
+
 //Assets
 export const findByIdAsset = findById("assets");
 export const findByIdAssetCalibrationRecordListItem = findById("assets/calibration-record-list");
@@ -18,7 +21,6 @@ export const findByIdAssetDoc = findById("assets/docs");
 export const findByIdAssetMaintenancePlanListItem = findById("assets/maintenance-plan-list");
 export const findByIdAssetMonitoringPlanFuelUsageListItem = findById("assets/monitoring-plan-fuel-usage-list");
 export const findByIdAssetMonitoringPlanWorkingHrsOrKmListItem = findById("assets/monitoring-plan-working-hrs-or-km-list");
-export const findByIdAssetPhoto = findById("assets/photos");
 export const findByIdAssetPurchaseInfo = findById("assets/purchase-info");
 
 //Incidents

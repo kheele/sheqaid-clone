@@ -11,8 +11,9 @@ import {FormControls, Row} from 'components/FormComponents';
 import {renderItem, renderTHead, SelectedAssets} from './SelectedAssets';
 
 import style from "./WrittenOffDialog.lazy.css";
-import {Dates} from "../../../../../utils/Dates";
+import {Dates} from "utils/Dates";
 import {deleteAssets} from "mutations/delete";
+import {listAssets} from "mutations/listByLogged";
 
 @observer
 class WrittenOffDialog extends ANewDialog {
@@ -74,9 +75,7 @@ class Controls extends React.Component {
     }
 
     onLoadList() {
-        const listByLogged = sockets.of("assets").fn('listByLogged');
-
-        return listByLogged({
+        return listAssets({
             written_off: false,
             //
             exact_orgs: true,

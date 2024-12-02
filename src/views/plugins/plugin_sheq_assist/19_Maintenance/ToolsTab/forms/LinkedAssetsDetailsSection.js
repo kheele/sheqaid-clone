@@ -1,13 +1,12 @@
 import {observer} from "mobx-react";
-import {observable} from "mobx";
+import {computed, extendObservable, observable} from "mobx";
 import React from "react";
 import {ProfileField} from "components/inputs";
 import {ASectionSection} from "components/FormComponents";
 import NewToolDialog from "./NewToolDialog";
 import EditToolDialog from "./EditToolDialog";
 import ProfileToolDialog from "./ProfileToolDialog";
-import {computed, extendObservable} from "mobx";
-import updateAsset from "mutations/all/Asset/updateAsset";
+import {updateAsset} from "mutations/update";
 import {Slider} from "components/lists";
 import listByIdLinkedParentTools from "../Query/List/listByIdLinkedParentTools";
 import listByIdLinkedChildTools from "../Query/List/listByIdLinkedChildTools";
@@ -32,32 +31,6 @@ class LinkedAssetsDetailsSection extends ASectionSection {
 
     //</editor-fold>
 
-    async componentDidMount() {
-        super.componentDidMount();
-        
-        const {readonly, isEditing} = this.props;
-        if (readonly || isEditing) {
-            const {item, itemData, listName} = this;
-
-            let promise;
-            if (listName === 'asset_parent_list') {
-                promise = listByIdLinkedParentTools({id: item.id});
-            } else if (listName === 'asset_children_list') {
-                promise = listByIdLinkedChildTools({id: item.id});
-            }
-
-            if (promise) {
-                promise.then(list => {
-                    if (list) {
-                        list = list.map(({data}) => data);
-                        this.selfState.list = list;
-                        extendObservable(itemData, {[listName]: this.selfState.list});
-                    }
-                });
-            }
-        }
-    }
-
     get listName() {
         return this.props.listName;
     }
@@ -80,8 +53,6 @@ class LinkedAssetsDetailsSection extends ASectionSection {
             photo_list, profile_pic, responsible_person, status, written_off
         }));
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="imageList">
     @computed get imageList() {
@@ -190,6 +161,34 @@ class LinkedAssetsDetailsSection extends ASectionSection {
                 className="col-lg-4"
             />,
         ];
+    }
+
+    //</editor-fold>
+
+    async componentDidMount() {
+        super.componentDidMount();
+
+        const {readonly, isEditing} = this.props;
+        if (readonly || isEditing) {
+            const {item, itemData, listName} = this;
+
+            let promise;
+            if (listName === 'asset_parent_list') {
+                promise = listByIdLinkedParentTools({id: item.id});
+            } else if (listName === 'asset_children_list') {
+                promise = listByIdLinkedChildTools({id: item.id});
+            }
+
+            if (promise) {
+                promise.then(list => {
+                    if (list) {
+                        list = list.map(({data}) => data);
+                        this.selfState.list = list;
+                        extendObservable(itemData, {[listName]: this.selfState.list});
+                    }
+                });
+            }
+        }
     }
 
 }

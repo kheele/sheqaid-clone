@@ -34,7 +34,8 @@
     "storage-cors-get": "gsutil cors get gs://sheqsolve.appspot.com",
     "storage-cors-set--prod": "gsutil cors set storage-cors-prod.json gs://sheqsolve.appspot.com",
     "storage-cors-set--dev": "gsutil cors set storage-cors-dev.json gs://sheqsolve.appspot.com",
-    "storage-cors-cache-clear": "gsutil setmeta -h \"Cache-Control:no-cache\" gs://sheqsolve.appspot.com/plugin_sheq_assist_employees/Nkll3PE55tSA6IGDwabT/optional_info/living_addr_doc.jpg"
+    "storage-cors-cache-clear": "gsutil setmeta -h \"Cache-Control:no-cache\" gs://sheqsolve.appspot.com/plugin_sheq_assist_employees/Nkll3PE55tSA6IGDwabT/optional_info/living_addr_doc.jpg",
+    "sheqaid-docker": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-app"
   },
   "relay": {
     "src": "./src",
@@ -148,8 +149,6 @@
     "docx-pdf": "0.0.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "electron-asar-hot-updater": "^0.1.3",
-    "electron-print-dialog": "0.1.0-alpha.1",
     "eslint": "^7.32.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-loader": "^4.0.2",
@@ -241,8 +240,8 @@
   },
   "devDependencies": {
     "@babel/helper-create-regexp-features-plugin": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/plugin-proposal-decorators": "^7.10.1",
-    "@babel/plugin-proposalr-class-properties": "^7.10.1",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "@wixc3/react-board": "^2.1.3",

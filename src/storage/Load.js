@@ -4,8 +4,7 @@ import {is, login} from './';
 import clientStore from "../mutations/all/Client";
 import projectStore from "../mutations/all/Project";
 import siteStore from "../mutations/all/Site";
-import listAllPermissionOtherKey from "../mutations/all/PermissionOtherKey/listAllPermissionOtherKey";
-import {listCountries} from "mutations/list";
+import {listCountries, listPermissionOtherKeys} from "mutations/list";
 
 const stores = {
     clients: clientStore,
@@ -124,7 +123,7 @@ class Load {
     }
 
     loadPermissionOtherKeys() {
-        return listAllPermissionOtherKey().then(res => {
+        return listPermissionOtherKeys().then(res => {
             // console.log('loadPermissionOtherKeys:', res)
             this.storage.attrs.set("permissionOtherKeys", res.map(({id, data}) => ({id, ...data})));
         });

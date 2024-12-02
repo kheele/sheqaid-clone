@@ -4,6 +4,8 @@ import _delete from "./delete";
 import upsert from "./upsert";
 import findById from "./findById";
 import list from "./list";
+import listByLogged from "./listByLogged";
+import exportExcel from "./exportExcel";
 
 export default {
     create,
@@ -12,4 +14,6 @@ export default {
     upsert,
     findById,
     list,
+    listByLogged,
+    exportExcel,
 };

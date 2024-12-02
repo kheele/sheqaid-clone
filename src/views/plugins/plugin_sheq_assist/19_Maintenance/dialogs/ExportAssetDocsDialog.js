@@ -1,23 +1,17 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {computed, observable} from 'mobx';
+import {observable} from 'mobx';
 
-import {
-    Button,
-    ClearableInput, Clickable, DateRangeInput, SelectAssetInput, SelectAssetTypeInput,
-    SelectClientInput, SelectEmployeeInput,
-    SelectJobPositionInput,
-    SelectProjectInput,
-    SelectSiteInput
-} from 'components/inputs';
-import {SelectTable, THead} from 'components/tables';
+import {ClearableInput, DateRangeInput, SelectAssetInput, SelectAssetTypeInput} from 'components/inputs';
+import {THead} from 'components/tables';
 import style from "./ExportAssetDocsDialog.lazy.css";
 import {AControls, AExportDialog} from "components/exports/AExportDialog";
 import {onSelectLoadAssetLocations, onSelectLoadAssetManufacturers} from "../../../utils";
-import assetProfilePic from "assets/images/vehicle-image-loading.png";
 import ProfileToolDialog from "../ToolsTab/forms/ProfileToolDialog";
 import AssetDocsRenderRow from "../DocsTab/AssetDocsRenderRow";
+import {listAssetDocs} from "mutations/listByLogged";
+import {exportExcelAssetDocs} from "mutations/exportExcel";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -26,17 +20,7 @@ class ExportAssetDocsDialog extends AExportDialog {
     className = "ExportAssetDocsDialog";
     titleSingular = 'Asset Document';
     titlePlural = 'Assets Documents';
-    
-    componentWillMount() {
-        super.componentWillMount();
-        style.use();
-    }
-    
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        style.unuse();
-    }
-    
+
     get excludePDF() {
         return true;
     }
@@ -44,13 +28,23 @@ class ExportAssetDocsDialog extends AExportDialog {
     get controls() {
         return Controls;
     }
+
+    componentWillMount() {
+        super.componentWillMount();
+        style.use();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        style.unuse();
+    }
 }
 
 // </editor-fold>
 
 @observer
 class Controls extends AControls {
-    exportFn = sockets.of('assets/docs').fn('export-excel');
+    exportFn = exportExcelAssetDocs;
 
     @observable
     state = {
@@ -105,120 +99,11 @@ class Controls extends AControls {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-        
+
         this.onView = this.onView.bind(this);
     }
 
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="componentMount">
-    componentDidMount() {
-        const loads = {
-            manufacturers: onSelectLoadAssetManufacturers,
-            locations: onSelectLoadAssetLocations,
-        };
-        Promise.all(Object.keys(loads).map(k => {
-            return loads[k]().then(res => {
-                this.state.lists[k] = res.distinct();
-            });
-        })).then(res => {
-            this.state.loadedSelectLists = true;
-        });
-    }
-
-    // </editor-fold>
-
-    //<editor-fold desc="onLoadList">
-    onLoadList(params = {}) {
-        const {page, lastItem, filterData, filtered, isNew} = params;
-        const {
-            client_id,
-            project_id,
-            site_id,
-            //
-            date,
-            expiry_date,
-            date_range,
-            //
-            // responsible_person_list,
-            //
-            type,
-            title,
-            asset_id,
-            //
-            reg_num,
-            manufacturer,
-            location,
-            asset_type,
-            condition,
-            status,
-        } = filterData || {};
-
-        const listByLogged = sockets.of('assets/docs').fn('listByLogged');
-
-        return listByLogged({
-            written_off: false,
-            view: 'EACH',
-            client_id,
-            project_id,
-            site_id,
-            //
-            date,
-            expiry_date,
-            date_range,
-            //
-            // responsible_person_list,
-            //
-            type,
-            title,
-            asset_id,
-            //
-            reg_num,
-            manufacturer,
-            location,
-            asset_type,
-            condition,
-            status,
-            //
-            exact_orgs: true,
-            data_export: true,
-            //
-            limit: 0,
-            offset: 0,
-        }).then((res) => {
-            console.log('onLoadList res', res)
-            return res;
-        });
-    }
-
-    //</editor-fold>
-    
-    onView(evt, el) {
-        const {profileDialog} = this.refs;
-        const {id} = el.props;
-        const item = this.state.searchList.find(v => v.id === id);
-        profileDialog && item && profileDialog.open(item);
-    }
-
-    renderTHeadFrom() {
-        return <THead>
-            {/*<div className="td fixed-flex min-w-50">ID</div>*/}
-            <div className="td fixed-flex min-w-80">Photo</div>
-            <div className="td">Asset Type</div>
-            <div className="td">Asset</div>
-            <div className="td">Reg. No.</div>
-            <div className="td">Serial No.</div>
-            <div className="td">Document Title</div>
-            <div className="td">Document Type</div>
-            <div className="td fixed-flex min-w-105">Date</div>
-            <div className="td fixed-flex min-w-105">Expiry Date</div>
-            <div className="td fixed-flex min-w-80 padding-0"></div>
-        </THead>;
-    }
-
-    renderItemFrom(item, n) {
-        return <AssetDocsRenderRow key={item.id} idx={n} item={item} view="Document" isExport/>;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="renderFields">
     get renderFields() {
@@ -286,6 +171,113 @@ class Controls extends AControls {
             {/*</DateRangeInput>*/}
             <ProfileToolDialog ref="profileDialog"/>
         </>;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="componentMount">
+    componentDidMount() {
+        const loads = {
+            manufacturers: onSelectLoadAssetManufacturers,
+            locations: onSelectLoadAssetLocations,
+        };
+        Promise.all(Object.keys(loads).map(k => {
+            return loads[k]().then(res => {
+                this.state.lists[k] = res.distinct();
+            });
+        })).then(res => {
+            this.state.loadedSelectLists = true;
+        });
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            client_id,
+            project_id,
+            site_id,
+            //
+            date,
+            expiry_date,
+            date_range,
+            //
+            // responsible_person_list,
+            //
+            type,
+            title,
+            asset_id,
+            //
+            reg_num,
+            manufacturer,
+            location,
+            asset_type,
+            condition,
+            status,
+        } = filterData || {};
+
+        return listAssetDocs({
+            written_off: false,
+            view: 'EACH',
+            client_id,
+            project_id,
+            site_id,
+            //
+            date,
+            expiry_date,
+            date_range,
+            //
+            // responsible_person_list,
+            //
+            type,
+            title,
+            asset_id,
+            //
+            reg_num,
+            manufacturer,
+            location,
+            asset_type,
+            condition,
+            status,
+            //
+            exact_orgs: true,
+            data_export: true,
+            //
+            limit: 0,
+            offset: 0,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    onView(evt, el) {
+        const {profileDialog} = this.refs;
+        const {id} = el.props;
+        const item = this.state.searchList.find(v => v.id === id);
+        profileDialog && item && profileDialog.open(item);
+    }
+
+    renderTHeadFrom() {
+        return <THead>
+            {/*<div className="td fixed-flex min-w-50">ID</div>*/}
+            <div className="td fixed-flex min-w-80">Photo</div>
+            <div className="td">Asset Type</div>
+            <div className="td">Asset</div>
+            <div className="td">Reg. No.</div>
+            <div className="td">Serial No.</div>
+            <div className="td">Document Title</div>
+            <div className="td">Document Type</div>
+            <div className="td fixed-flex min-w-105">Date</div>
+            <div className="td fixed-flex min-w-105">Expiry Date</div>
+            <div className="td fixed-flex min-w-80 padding-0"></div>
+        </THead>;
+    }
+
+    renderItemFrom(item, n) {
+        return <AssetDocsRenderRow key={item.id} idx={n} item={item} view="Document" isExport/>;
     }
 
     // </editor-fold>

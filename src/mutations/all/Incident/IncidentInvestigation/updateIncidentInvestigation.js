@@ -6,10 +6,6 @@ import {graphql} from "react-relay";
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityAudit} from "mutations/types.d.ts";
 import findByIdIncidentInvestigation from "./findByIdIncidentInvestigation";
-import updateAssetPhoto from "../../Asset/updateAssetPhoto";
-import insertAssetPhoto from "../../Asset/insertAssetPhoto";
-import updateAssetDoc from "../../Asset/updateAssetDoc";
-import insertAssetDoc from "../../Asset/insertAssetDoc";
 
 // 2
 const mutation = graphql`
@@ -22,16 +18,16 @@ const mutation = graphql`
 
 // 3
 export default async (attrs: EntityAudit) => {
-	const {
-		id,
-	} = attrs;
+    const {
+        id,
+    } = attrs;
 
-	const item = await findByIdIncidentInvestigation(id);
-	if (!item) return;
+    const item = await findByIdIncidentInvestigation(id);
+    if (!item) return;
 
-	return updateMutationImpl({
-		mutation,
-		id: attrs.id,
-		attrs,
-	}).then(res => res && findByIdIncidentInvestigation(id));
+    return updateMutationImpl({
+        mutation,
+        id: attrs.id,
+        attrs,
+    }).then(res => res && findByIdIncidentInvestigation(id));
 };

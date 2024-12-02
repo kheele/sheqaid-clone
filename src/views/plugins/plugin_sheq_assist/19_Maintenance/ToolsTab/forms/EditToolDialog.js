@@ -26,8 +26,7 @@ import {findByIdAsset} from "mutations/findById";
 import InspectionTabs from "./InspectionTabs";
 import LinkedAssetsDetailsSection from "./LinkedAssetsDetailsSection";
 import {CircularProgress} from "@mui/material";
-import insertAssetPhoto from "mutations/all/Asset/insertAssetPhoto";
-import updateAssetPhoto from "mutations/all/Asset/updateAssetPhoto";
+import {upsertAssetPhoto} from "mutations/upsert";
 import ImageSection from "components/FormComponents/ImageSection";
 
 import {
@@ -284,10 +283,10 @@ class Controls extends AControls {
                 const res = await Promise.all(photo_list.map(async item => {
                     if (item.id) {
                         if (item.doc.path) {
-                            return await updateAssetPhoto({id: item.id, doc: item.doc.path});
+                            return await upsertAssetPhoto({id: item.id, doc: item.doc.path});
                         }
                     } else {
-                        return await insertAssetPhoto({
+                        return await upsertAssetPhoto({
                             asset_id: this.item.id,
                             doc: item.path,
                         });
@@ -295,7 +294,7 @@ class Controls extends AControls {
                 }));
 
                 console.log("res", res)
-                // onSaved && onSaved(res);
+                // onSaved && onSaved(res);upsertAssetPhoto
                 infoDialog.open("Record successfully updated.");
                 infoDialog.close(2000);
                 // this.props.close();
@@ -660,8 +659,8 @@ class Controls extends AControls {
                 <ImageSection
                     listName="photo_list"
                     item_id_key="asset_id"
-                    onInsert={insertAssetPhoto}
-                    onUpdate={updateAssetPhoto}
+                    onInsert={upsertAssetPhoto}
+                    onUpdate={upsertAssetPhoto}
                     item={item}
                     embeddedEmployee={this.item}
                     isEmbedded

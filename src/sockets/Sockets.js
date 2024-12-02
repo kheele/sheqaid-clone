@@ -108,6 +108,14 @@ class Socket {
     async list(args) {
         return this.send('list', args);
     }
+
+    async listByLogged(args) {
+        return this.send('listByLogged', args);
+    }
+
+    async exportExcel(args) {
+        return this.send('export-excel', args);
+    }
 }
 
 window.sockets = {

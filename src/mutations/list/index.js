@@ -15,3 +15,7 @@ export const listCities = list("cities");
 
 export const listCompanyCategories = list("company-categories");
 // export const listCompanyCategories = list("company-categories");
+
+export const listManuals = list("manuals");
+export const listPlugins = list("plugins");
+export const listPermissionOtherKeys = list("permissions/other-keys");

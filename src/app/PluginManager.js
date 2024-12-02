@@ -1,7 +1,6 @@
-import React from "react";
 import {computed, observable} from 'mobx';
 import {computedFn} from "mobx-utils";
-import listAllPlugin from "../mutations/all/Plugin/listAllPlugin";
+import {listPlugins} from "mutations/list";
 
 class Manager {
 
@@ -17,6 +16,18 @@ class Manager {
         dataError: false,
         dataLoaded: false
     };
+    listAllBy = computedFn((type) => {
+        const {list} = this.dataState;
+        if (isAdminApp) {
+            if (type === 'Admin') {
+                return list.filter(val => val.data.key === 'plugin_admin');
+            }
+            return list;
+        } else if (type === 'NonAdmin' || type === 'Admin') {
+            return list.filter(val => val.data.key !== 'plugin_admin');
+        }
+//        console.log('PluginManager.listAllBy', list.slice())
+    }, true);
 
     constructor() {
         this.onLoadList = this.onLoadList.bind(this);
@@ -44,6 +55,34 @@ class Manager {
         });
     }
 
+    @computed
+    get isLoadError() {
+        return this.dataState.dataError;
+    }
+
+    @computed
+    get isLoaded() {
+        return this.dataState.dataLoaded;
+    }
+
+    @computed
+    get listAll() {
+        return this.listAllBy('NonAdmin');
+    }
+
+    @computed
+    get listInstalled() {
+        if (isAdminApp) {
+            return this.listAllBy('Admin');
+        }
+        return this.listAll.filter(val => val.data.status === 'Installed');
+    }
+
+    @computed
+    get selected() {
+        return this._selected ? this._selected : this._selected = new Selected(this);
+    }
+
     start() {
         this.onLoadList();
     }
@@ -52,7 +91,7 @@ class Manager {
         this.dataState.dataLoaded = false;
         this.dataState.dataError = false;
 
-        return listAllPlugin().then(res => {
+        return listPlugins().then(res => {
             //Dashboard decide what to enter
             // console.log('listAllPlugin', res)
             this.dataState.list = res;
@@ -72,47 +111,6 @@ class Manager {
             this.dataState.dataLoaded = true;
             return e;
         });
-    }
-
-    @computed
-    get isLoadError() {
-        return this.dataState.dataError;
-    }
-
-    @computed
-    get isLoaded() {
-        return this.dataState.dataLoaded;
-    }
-
-    listAllBy = computedFn((type) => {
-        const {list} = this.dataState;
-        if (isAdminApp) {
-            if (type === 'Admin') {
-                return list.filter(val => val.data.key === 'plugin_admin');
-            }
-            return list;
-        } else if (type === 'NonAdmin' || type === 'Admin') {
-            return list.filter(val => val.data.key !== 'plugin_admin');
-        }
-//        console.log('PluginManager.listAllBy', list.slice())
-    }, true);
-
-    @computed
-    get listAll() {
-        return this.listAllBy('NonAdmin');
-    }
-
-    @computed
-    get listInstalled() {
-        if (isAdminApp) {
-            return this.listAllBy('Admin');
-        }
-        return this.listAll.filter(val => val.data.status === 'Installed');
-    }
-
-    @computed
-    get selected() {
-        return this._selected ? this._selected : this._selected = new Selected(this);
     }
 
     getPluginsByModules(__module_list) {

@@ -14,9 +14,9 @@ import ProfilePartDialog from "../../../PartsTab/forms/ProfilePartDialog";
 import {MaintenancePlanStats} from "../AssetStats";
 import {CostAndReceipt} from "../AssetComponents";
 import NewPartsUsedListDialog from "../../../PartsTab/forms/NewPartsUsedListDialog";
-import upsertAssetMaintenancePlanListItem from "mutations/all/Asset/upsertAssetMaintenancePlanListItem";
+import {upsertAssetMaintenancePlanListItem} from "mutations/upsert";
 import {deleteAssetMaintenancePlanListItem} from "mutations/delete";
-import insertAssetMaintenancePlan from "mutations/all/Asset/insertAssetMaintenancePlan";
+import {insertAssetMaintenancePlan} from "mutations/create";
 //</editor-fold>
 
 const unitsShort = {

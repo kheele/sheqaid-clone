@@ -1,9 +1,12 @@
 //<editor-fold desc="imports">
-import updateAsset from "mutations/all/Asset/updateAsset";
-import upsertAssetDetails from "mutations/all/Asset/upsertAssetDetails";
-import upsertAssetPurchaseInfo from "mutations/all/Asset/upsertAssetPurchaseInfo";
-import upsertAssetDepreciation from "mutations/all/Asset/upsertAssetDepreciation";
-import {upsertAssetCalibrationRecord, upsertAssetMaintenancePlan,} from "mutations/upsert";
+import {updateAsset} from "mutations/update";
+import {
+    upsertAssetCalibrationRecord,
+    upsertAssetDepreciation,
+    upsertAssetDetails,
+    upsertAssetMaintenancePlan,
+    upsertAssetPurchaseInfo,
+} from "mutations/upsert";
 //</editor-fold>
 
 const onSubmit = (btn, data, onProgress) => {

@@ -27,7 +27,7 @@ import ASelectInput from './ASelectInput';
 import ErrorBoundary from '../ErrorBoundary';
 
 import style from "./ClearableInput.lazy.css";
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 
 // </editor-fold>
 
@@ -79,6 +79,78 @@ class ClearableInput extends ASelectInput {
 
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="min, max, hasValue, value, setValue, setPlaceholder">
+    @computed
+    get min() {
+        return this.state.min;
+    }
+
+    set min(value) {
+        this.state.min = value;
+    }
+
+    @computed
+    get max() {
+        return this.state.max;
+    }
+
+    // </editor-fold>
+
+    set max(value) {
+        this.state.max = value;
+    }
+
+    @computed
+    get hasValue() {
+        const {type} = this.props;
+        const {value} = this.state;
+        if (type === 'date') {
+            return value instanceof Date;
+        } else if (type === 'radio' || type === 'checkbox') {
+            return (this.values || []).filter(item => !!item.checked).isNotEmpty();
+        } else if (type === 'select_multi' || type === 'select_multiple') {
+            // console.log('hasValue', toJS(value))
+            return value.length > 0;
+        } else if (isString(value) || isArray(value) || isObservableArray(value)) {
+            return value.length > 0;
+        }
+
+        return isBoolean(value) || isNumber(value) || !!value;
+    }
+
+    // </editor-fold>
+
+    @computed
+    get value() {
+        return this.hasValue ? this.state.value : null;
+    }
+
+    // </editor-fold>
+
+    set value(value) {
+        this.onChange(value);
+        // console.log(`${this.props.name} - set value`, value)
+    }
+
+    @computed
+    get values() {
+        return this.state.values;
+    }
+
+    set values(values) {
+        this.state.values = values;
+    }
+
+    get isSelectable() {
+        const {type} = this.props;
+        return type === 'select' || this.isSelectMultiple;
+    }
+
+    get isSelectMultiple() {
+        const {type} = this.props;
+        return type === 'select_multi' || type === 'select_multiple';
+    }
+
     // <editor-fold defaultstate="collapsed" desc="mounts">
     componentWillMount() {
         style.use();
@@ -98,9 +170,9 @@ class ClearableInput extends ASelectInput {
         } = this.props;
 
         this.state.placeholder = placeholder;
-        
+
         this.values = values || [];
-        
+
         if ("min" in this.props) {
             this.state.min = min;
         }
@@ -192,8 +264,6 @@ class ClearableInput extends ASelectInput {
         style.unuse();
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="getInputNode, getDOMNode">
     getInputNode() {
         return findDOMNode(this.refs[this.refName]);
@@ -208,8 +278,6 @@ class ClearableInput extends ASelectInput {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onLoadList">
     onLoadList(promise) {
         const ref = this.refs[this.refName];
@@ -220,62 +288,6 @@ class ClearableInput extends ASelectInput {
     }
 
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="min, max, hasValue, value, setValue, setPlaceholder">
-    @computed
-    get min() {
-        return this.state.min;
-    }
-
-    set min(value) {
-        this.state.min = value;
-    }
-
-    @computed
-    get max() {
-        return this.state.max;
-    }
-
-    set max(value) {
-        this.state.max = value;
-    }
-
-    @computed
-    get hasValue() {
-        const {type} = this.props;
-        const {value} = this.state;
-        if (type === 'date') {
-            return value instanceof Date;
-        } else if (type === 'radio' || type === 'checkbox') {
-            return (this.values || []).filter(item => !!item.checked).isNotEmpty();
-        } else if (type === 'select_multi' || type === 'select_multiple') {
-            // console.log('hasValue', toJS(value))
-            return value.length > 0;
-        } else if (isString(value) || isArray(value) || isObservableArray(value)) {
-            return value.length > 0;
-        }
-
-        return isBoolean(value) || isNumber(value) || !!value;
-    }
-
-    @computed
-    get value() {
-        return this.hasValue ? this.state.value : null;
-    }
-
-    set value(value) {
-        this.onChange(value);
-        // console.log(`${this.props.name} - set value`, value)
-    }
-    
-    @computed
-    get values() {
-        return this.state.values;
-    }
-
-    set values(values) {
-        this.state.values = values;
-    }
 
     setValue(evt, groups, groupKey, idx) {
         if (this.isSelectable) {
@@ -328,8 +340,6 @@ class ClearableInput extends ASelectInput {
         return this;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="setEditable, setReadonly, setRendered, hide, show, setError, clearError">
     setEditable(bool) {
         this.state.isEditable = bool;
@@ -368,11 +378,15 @@ class ClearableInput extends ASelectInput {
         return this;
     }
 
+    // </editor-fold>
+
     setError() {
         const node = this.getDOMNode();
         node && node.classList.add('error');
         return this;
     }
+
+    // </editor-fold>
 
     clearError() {
         const node = this.getDOMNode();
@@ -380,12 +394,10 @@ class ClearableInput extends ASelectInput {
         return this;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="reset">
     reset(evt) {
         const {type} = this.props;
-        if(this.state.readonly) {
+        if (this.state.readonly) {
             return this;
         }
 
@@ -414,13 +426,13 @@ class ClearableInput extends ASelectInput {
         return this;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onUpdate, onChange, onSelectInputChange">
     onUpdate(evt, val, action) {
         const {type, onUpdate} = this.props;
         onUpdate && onUpdate(this, val, action);
     }
+
+    // </editor-fold>
 
     async onChange(value, el, isDefault) {
         if (!isDefault && !this.state.isEditable)
@@ -488,7 +500,7 @@ class ClearableInput extends ASelectInput {
             }
         } else if (type === 'checkbox') {
 //            if(isDefault) {
-//                
+//
 //            } else {
 //                console.log(value)
             if (!value || value.isEmpty()) {
@@ -620,8 +632,6 @@ class ClearableInput extends ASelectInput {
 //        console.log('onSelectInputChange', this.props.name, val)
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="setRef, onClickSelectInput, onSelectTimeSelect, onCloseTimeSelect, onSelectSignatureSelect, onCloseSignatureSelect">
     setRef(ref) {
         if (!!ref) {
@@ -697,6 +707,8 @@ class ClearableInput extends ASelectInput {
         popover.close();
     }
 
+    // </editor-fold>
+
     onSelectSignatureSelect() {
         if (this.hasValue) {
             popover.close();
@@ -709,8 +721,6 @@ class ClearableInput extends ASelectInput {
         popover.close();
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onClickCover, onAsyncSelectLoad, isSelectable">
     onClickCover() {
         this.clearError();
@@ -718,16 +728,6 @@ class ClearableInput extends ASelectInput {
 
     onAsyncSelectLoad(inputValue) {
         return this.props.onAsyncSelectLoad(inputValue);
-    }
-
-    get isSelectable() {
-        const {type} = this.props;
-        return type === 'select' || this.isSelectMultiple;
-    }
-
-    get isSelectMultiple() {
-        const {type} = this.props;
-        return type === 'select_multi' || type === 'select_multiple';
     }
 
     // </editor-fold>
@@ -749,7 +749,7 @@ class ClearableInput extends ASelectInput {
 
         const {placeholder, readonly} = this.state;
 
-        if(readonly) {
+        if (readonly) {
             this.className += " readonly";
         }
 
@@ -1005,8 +1005,7 @@ class CustomErrorBoundary extends React.Component {
     onReport(e, btn) {
         const {error, errorInfo} = this.props;
         btn.text("Reporting...").disabled();
-        insertErrorReporting({error, errorInfo}).
-        finally(() => {
+        insertErrorReporting({error, errorInfo}).finally(() => {
             btn.text("Report Problem").enabled();
         });
     }

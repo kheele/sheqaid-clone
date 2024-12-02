@@ -9,6 +9,9 @@ const update = path => async (attrs) => {
     }
 };
 
+//Assets
+export const updateAsset = update("assets");
+
 export const updateIncident = update("incidents");
 
 export const updateProxyNCRAssignedPerson = update("ncr/proxy/assigned-person");

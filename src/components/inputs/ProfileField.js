@@ -11,7 +11,7 @@ import PDFUploadButton from './PDFUploadButton.js';
 import ErrorBoundary from '../ErrorBoundary';
 
 import style from "./ProfileField.lazy.css";
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 
 @observer
 class ProfileField extends React.Component {
@@ -25,6 +25,50 @@ class ProfileField extends React.Component {
         super();
 
         this.setEditable = this.setEditable.bind(this);
+    }
+
+    get isPDFJS() {
+        const {docViewer} = this.props;
+        return docViewer && isString(docViewer) && docViewer.toLowerCase() === "pdfjs";
+    }
+
+    get isDoc() {
+        let {value, type} = this.props;
+        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
+            value = value.dlUrls[0];
+            return value.contains('.pdf') || value.contains('.docx') || value.contains('.doc');
+        }
+    }
+
+    get isPDF() {
+        let {value, type} = this.props;
+        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
+            value = value.dlUrls[0];
+            return value.contains('.pdf');
+        }
+    }
+
+    get isWord() {
+        let {value, type} = this.props;
+        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
+            value = value.dlUrls[0];
+            return value.contains('.docx') || value.contains('.doc');
+        }
+    }
+
+    @computed get hasValue() {
+        let {value, defaultValue, values, type} = this.props;
+        return value || defaultValue;
+    }
+
+    get renderSignatureCanvas() {
+        const canvasProps = {width: 'auto', height: 80, className: 'sigCanvas'};
+        return <SignatureCanvas
+            ref="signature"
+            name="signaturePicker"
+            penColor='green'
+            canvasProps={canvasProps}
+        />;
     }
 
     componentWillMount() {
@@ -73,50 +117,6 @@ class ProfileField extends React.Component {
 
     setEditable(val) {
         this.state.editing = val;
-    }
-
-    get isPDFJS() {
-        const {docViewer} = this.props;
-        return docViewer && isString(docViewer) && docViewer.toLowerCase() === "pdfjs";
-    }
-
-    get isDoc() {
-        let {value, type} = this.props;
-        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
-            value = value.dlUrls[0];
-            return value.contains('.pdf') || value.contains('.docx') || value.contains('.doc');
-        }
-    }
-
-    get isPDF() {
-        let {value, type} = this.props;
-        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
-            value = value.dlUrls[0];
-            return value.contains('.pdf');
-        }
-    }
-
-    get isWord() {
-        let {value, type} = this.props;
-        if (type === 'file' && value && value.dlUrls && value.dlUrls[0]) {
-            value = value.dlUrls[0];
-            return value.contains('.docx') || value.contains('.doc');
-        }
-    }
-
-    @computed get hasValue() {
-        let {value, defaultValue, values, type} = this.props;
-        return value || defaultValue;
-    }
-
-    get renderSignatureCanvas() {
-        const canvasProps = {width: 'auto', height: 80, className: 'sigCanvas'};
-        return <SignatureCanvas
-            ref="signature"
-            name="signaturePicker"
-            penColor='green'
-            canvasProps={canvasProps}
-        />;
     }
 
     getErrorBoundaryProps(title, className) {
@@ -248,8 +248,7 @@ class CustomErrorBoundary extends React.Component {
 
     onReport(e, btn) {
         const {error, errorInfo} = this.props;
-        insertErrorReporting({error, errorInfo}).
-        finally(() => {
+        insertErrorReporting({error, errorInfo}).finally(() => {
             btn.text("Report Problem").enabled();
         });
     }

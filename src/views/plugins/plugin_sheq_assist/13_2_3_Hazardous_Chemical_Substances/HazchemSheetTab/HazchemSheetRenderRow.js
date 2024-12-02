@@ -6,13 +6,13 @@ import {ActionsButton, Button} from 'components/inputs';
 import {TRow} from 'components/tables';
 
 import style from "./HazchemSheetRenderRow.lazy.css";
-import insertErrorReporting from "mutations/all/ErrorReporting/insertErrorReporting";
+import {insertErrorReporting} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
 @observer
 class RenderRow extends React.Component {
-    
+
     // <editor-fold defaultstate="collapsed" desc="componentMount">
     componentWillMount() {
         style.use();
@@ -21,13 +21,15 @@ class RenderRow extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
 
     render() {
         const {item, idx, onClick, renderActionsCol} = this.props;
-        try{
+        try {
             console.log('hazchemsheet', item)
-            let {id, data: {
+            let {
+                id, data: {
                     created_at, name, contacts_manufacturer_name, msds, product, physical_state, type
                 }
             } = item;
@@ -67,7 +69,8 @@ class RenderRow extends React.Component {
                     <h6 className="xs-shown font-size-13">Type</h6>
                     {type}
                 </div>
-                <div className={"td fixed-flex min-w-120 md-hidden td-risk-level " + RisksCodes.colorClassName(risk_level)}>
+                <div
+                    className={"td fixed-flex min-w-120 md-hidden td-risk-level " + RisksCodes.colorClassName(risk_level)}>
                     <h6 className="xs-shown font-size-13">Risk Level</h6>
                     <Button className="btn btn-primary pull-right min-w-40" text={risk_level || 'N/A'}/>
                 </div>
@@ -76,12 +79,11 @@ class RenderRow extends React.Component {
                     <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
                 </div>}
             </TRow>;
-        } catch(err) {
+        } catch (err) {
             console.error('hazchem error', item)
             const onReport = (evt, btn) => {
                 btn.text("Reporting...").disabled();
-                insertErrorReporting({error: err, errorInfo: err}).
-                finally(() => {
+                insertErrorReporting({error: err, errorInfo: err}).finally(() => {
                     btn.text("Report Problem").enabled();
                 });
             };
@@ -92,6 +94,7 @@ class RenderRow extends React.Component {
         }
     }
 }
+
 // </editor-fold>
 
 export default RenderRow;

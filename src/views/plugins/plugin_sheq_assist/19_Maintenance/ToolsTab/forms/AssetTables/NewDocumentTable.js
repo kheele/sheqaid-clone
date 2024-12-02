@@ -8,8 +8,7 @@ import {Dates, ShouldUpdate} from 'utils/Utils';
 import {Button, ClearableInput, UploadButton} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 
-import updateAssetDoc from "mutations/all/Asset/updateAssetDoc";
-import {insertAssetDoc} from "mutations/create";
+import {upsertAssetDoc} from "mutations/upsert";
 //</editor-fold>
 
 //<editor-fold desc="NewDocumentTable">
@@ -77,7 +76,7 @@ class NewDocumentTable extends ATableSavable {
                     ShouldUpdate.check(attrs, item, desc, 'desc');
                     ShouldUpdate.checkDate(attrs, item, expiry, 'expiry');
                     ShouldUpdate.checkFile(attrs, item, doc, 'doc');
-                    promise = updateAssetDoc({
+                    promise = upsertAssetDoc({
                         id, ...attrs,
                     }).then(savedItem => {
                         if (!savedItem) {
@@ -91,7 +90,7 @@ class NewDocumentTable extends ATableSavable {
                         infoDialog.close(2000);
                     });
                 } else {
-                    promise = insertAssetDoc({
+                    promise = upsertAssetDoc({
                         asset_id: assetItem.id, ...item, expiry: Dates.formatDateSQL(item.expiry)
                     }).then(savedItem => {
                         if (!savedItem) {
@@ -122,7 +121,7 @@ class NewDocumentTable extends ATableSavable {
                     if (!res) return;
 
                     progressDialog.open();
-                    updateAssetDoc({
+                    upsertAssetDoc({
                         id,
                         removed: true,
                     }).then(savedItem => {

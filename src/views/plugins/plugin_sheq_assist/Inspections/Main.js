@@ -3,9 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import style from "./Main.lazy.css";
-
-import { Button } from "components/inputs";
-import { PageTitle } from "components";
+import {PageTitle} from "components";
 import OHSDocListDialog from "views/plugins/plugin_sheq_assist/00_Document_and_Record_Control/OHSDocs";
 import APage from "views/APage";
 import DashboardTab from './DashboardTab';
@@ -32,11 +30,34 @@ class Main extends APage {
 
     }
 
+    get tabs() {
+        const {isEmployee} = storage.is;
+        const w = $(window).width();
+        const list = [];
+        if (w > 767) {
+            list.push(<DashboardTab ref="dashboard" title="Dashboard"/>);
+        }
+        list.push(...[
+            <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>,
+            <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>,
+            <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>,
+            <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
+        ]);
+        if (w > 767) {
+            list.push(<InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>);
+        }
+        if (!isEmployee && w > 767) {
+            list.push(<TemplatesTab ref="forms" title="Templates" path={this.path}/>);
+        }
+
+        return list;
+    }
+
     componentWillMount() {
         super.componentWillMount();
         style.use();
         const {isEmployee} = storage.is;
-        if(isEmployee) {
+        if (isEmployee) {
             this.state.index = 1;
         }
     }
@@ -50,42 +71,20 @@ class Main extends APage {
         super.componentWillUnmount();
         style.unuse();
     }
-    
-    get tabs() {
-        const {isEmployee} = storage.is;
-        const w = $(window).width();
-        const list = [];
-        if(w > 767) {
-            list.push(<DashboardTab ref="dashboard" title="Dashboard"/>);
-        }
-        list.push(...[
-            <InspectionTodayTab ref="inspectionTodayTab" title="Today's" path={this.path}/>,
-            <InspectionsActiveTab ref="inspectionsActiveTab" title="Active" path={this.path}/>,
-            <InspectionUpcomingTab ref="inspectionUpcomingTab" title="Upcoming" path={this.path}/>,
-            <InspectionsCompletedTab ref="inspectionsCompletedTab" title="Completed" path={this.path}/>
-        ]);
-        if(w > 767) {
-            list.push(<InspectionUnansweredTab ref="inspectionUnansweredTab" title="Unanswered" path={this.path}/>);
-        }
-        if(!isEmployee && w > 767) {
-            list.push(<TemplatesTab ref="forms" title="Templates" path={this.path}/>);
-        }
-        
-        return list;
-    }
 
     render() {
         const {permissionKey} = this.props;
         return (<div key="Inspections-page" id="Inspections-page" className={this.classNames}>
             <PageTitle title="Inspections" renderBackBtn={this.renderBackBtn}>
-                <Button
-                    text="OHS Documents"
-                    hoverText="OHS Act, Legal register, etc"
-                    className="btn btn-primary pull-right"
-                    onClick={this.onViewOHSDocuments}
-                />
+                {/*<Button*/}
+                {/*    text="OHS Documents"*/}
+                {/*    hoverText="OHS Act, Legal register, etc"*/}
+                {/*    className="btn btn-primary pull-right"*/}
+                {/*    onClick={this.onViewOHSDocuments}*/}
+                {/*/>*/}
             </PageTitle>
-            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index} onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
+            <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
+                  onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
                 {this.tabs}
             </Tabs>
             <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist" module="Inspections"/>

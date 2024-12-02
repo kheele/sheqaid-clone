@@ -14,20 +14,72 @@ const create = (path, crudUtils, onProcess) => async (input) => {
     }
 };
 
+//General
+export const insertErrorReporting = create("error-reporting", null, input => {
+    const {
+        error,
+        errorInfo,
+    } = input;
+
+    input.message = error.message || "";
+    input.stack = error.stack || "";
+    input.error_info = errorInfo && errorInfo.componentStack || "";
+
+    delete input.error;
+    delete input.errorInfo;
+
+    const {is: {isLoggedIn, isConsultant}} = storage;
+    if (isLoggedIn) {
+        const {loggedUser = {}, selected = {}, loggedContractor} = storage;
+        const {access_type, company = {}, user = {}} = loggedUser;
+        const {data: user_data = {}} = user;
+
+        const {client, project, site, contractor} = user_data;
+
+        const {selectedClient, selectedProject, selectedSite, selectedContractorSite} = selected;
+
+        input.access_type = access_type;
+
+        input.company_id = company.id;
+        if (isConsultant) {
+            input.client_id = client && client.id;
+            input.project_id = project && project.id;
+            input.site_id = site && site.id;
+
+            input.selected_client_id = selectedClient && selectedClient.id;
+            input.selected_project_id = selectedProject && selectedProject.id;
+            input.selected_site_id = selectedSite && selectedSite.id;
+        }
+        input.contractor_id = contractor && contractor.id;
+        input.logged_contractor_id = loggedContractor && loggedContractor.id;
+        input.selected_contractor_site_id = selectedContractorSite && selectedContractorSite.id;
+
+        input.user_id = user && user.id;
+    }
+
+    // return onCreate(data).then(res => {
+    //     infoDialog.open(<>
+    //         <p>Problem successfully reported!</p>
+    //         <p>We will fix it as soon as possible.</p>
+    //     </>);
+    //     infoDialog.close(5000);
+    // });
+});
+
 //Assets
 export const insertAsset = create("assets");
-export const insertAssetCalibrationRecord = create("assets");
-export const insertAssetCalibrationRecordListItem = create("assets");
-export const insertAssetDepreciation = create("assets");
-export const insertAssetDetails = create("assets");
+export const insertAssetCalibrationRecord = create("assets/calibration-records");
+export const insertAssetCalibrationRecordListItem = create("assets/calibration-record-list");
+export const insertAssetDepreciation = create("assets/depreciation");
+export const insertAssetDetails = create("assets/details");
 export const insertAssetDoc = create("assets/docs");
-export const insertAssetMaintenancePlan = create("assets");
-export const insertAssetMaintenancePlanListItem = create("assets");
-export const insertAssetMonitoringPlan = create("assets");
-export const insertAssetMonitoringPlanFuelUsageListItem = create("assets");
-export const insertAssetMonitoringPlanWorkingHrsOrKmListItem = create("assets");
-export const insertAssetPhoto = create("assets");
-export const insertAssetPurchaseInfo = create("assets");
+export const insertAssetMaintenancePlan = create("assets/maintenance-plans");
+export const insertAssetMaintenancePlanListItem = create("assets/maintenance-plan-list");
+export const insertAssetMonitoringPlan = create("assets/monitoring-plans");
+export const insertAssetMonitoringPlanFuelUsageListItem = create("assets/monitoring-plan-fuel-usage-list");
+export const insertAssetMonitoringPlanWorkingHrsOrKmListItem = create("assets/monitoring-plan-working-hrs-or-km-list");
+export const insertAssetPhoto = create("assets/photos");
+export const insertAssetPurchaseInfo = create("assets/purchase-info");
 export const insertProxyAssetAsset = create("assets");
 export const insertAssetRegister = create("assets/registers");
 
@@ -104,4 +156,4 @@ export const insertNotificationSettings = create("notification-settings");
 export const insertContractor = create("contractors");
 export const insertNCR = create("ncr");
 
-//
+//151

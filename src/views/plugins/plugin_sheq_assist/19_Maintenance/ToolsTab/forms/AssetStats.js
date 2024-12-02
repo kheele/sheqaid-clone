@@ -14,9 +14,9 @@ import {
     createMonitoringPlanFuelUsageStats,
     createMonitoringPlanWorkingHrsOrKmStats
 } from '../../utils/AssetCharts';
-import VerticalBarChart from "../../../../../../containers/Charts/BarCharts/VerticalBarChart";
-import MDBox from "../../../../../../components/MD/MDBox";
-import DefaultLineChart from "../../../../../../containers/Charts/LineCharts/DefaultLineChart";
+import VerticalBarChart from "containers/Charts/BarCharts/VerticalBarChart";
+import MDBox from "components/MD/MDBox";
+import DefaultLineChart from "containers/Charts/LineCharts/DefaultLineChart";
 //</editor-fold>
 
 //<editor-fold desc="MonitoringPlanStats">

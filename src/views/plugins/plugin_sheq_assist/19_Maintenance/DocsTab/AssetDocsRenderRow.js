@@ -4,10 +4,10 @@ import {observer} from 'mobx-react';
 
 import {renderExpiryDateSpan} from 'utils/ComponentUtils';
 import {Dates} from 'utils/Utils';
-import {ActionsButton, Clickable} from 'components/inputs';
+import {ActionsButton} from 'components/inputs';
 import {TRow} from 'components/tables';
 import ARenderRow from "./ARenderRow";
-import assetProfilePic from "assets/images/vehicle-image-loading.png";
+import AssetNameCol from "../AssetNameCol";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -27,7 +27,7 @@ class RenderRow extends ARenderRow {
                 title,
                 type,
                 doc,
-                asset: {
+                asset: assetData, asset: {
                     client, project, site,
                     status,
                     written_off,
@@ -54,24 +54,15 @@ class RenderRow extends ARenderRow {
             },
         } = item;
 
-        let [profile_pic] = profile_pic_list || [];
-        if (!profile_pic) {
-            profile_pic = (photo_list || [])[0];
-        }
+        const assetItem = {data: assetData};
 
         const content = <React.Fragment key={id}>
-            <div className="td fixed-flex min-w-80">
-                <Clickable idx={idx} viewByImage onClick={onView}>
-                    {RenderUtils.renderImage(profile_pic && profile_pic.doc, null, '100%', assetProfilePic)}
-                </Clickable>
-            </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Asset Type</h6>
-                {asset_type}
-            </div>
-            <div className="td">
-                <h6 className="xs-shown font-size-13">Asset</h6>
-                {name || "N/A"}
+                <AssetNameCol
+                    idx={idx}
+                    onClick={onView}
+                    item={assetItem}
+                />
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Reg. No.</h6>
@@ -99,7 +90,7 @@ class RenderRow extends ARenderRow {
             </div>
         </React.Fragment>;
 
-        if(isExport) {
+        if (isExport) {
             return content;
         }
 
@@ -117,6 +108,7 @@ class RenderRow extends ARenderRow {
     }
 
 }
+
 // </editor-fold>
 
 export default RenderRow;
