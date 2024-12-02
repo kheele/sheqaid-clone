@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {onChangeUsername} from 'utils/UsersFuns';
@@ -9,8 +9,8 @@ import {onChangeUsername} from 'utils/UsersFuns';
 import {debounce, execWhen} from 'utils/Utils';
 import {
     Button,
-    ClearableInput, ProfilePic,
-    SelectClientInput, SelectCountryCodeInput,
+    ClearableInput,
+    SelectClientInput,
     SelectProjectInput,
     SelectSiteInput,
     UsernameStatus
@@ -18,21 +18,18 @@ import {
 import {FormControls, Row} from 'components/FormComponents';
 
 import {
-    NewUserModulePermissions,
-    NewUserModulePermissionsByClaim, NewUserModulePermissionsByExtra,
+    NewUserModulePermissionsByClaim,
+    NewUserModulePermissionsByExtra,
     NewUserModulePermissionsByHR,
     NewUserModulePermissionsBySHEQ,
     NewUserOtherPermissions
 } from 'components/common-modules/ANewUserPermissions';
 
 import UserDetails from "./UserDetails.js";
-import NewClientListUpdateBlacklistTable
-    from "components/FormTableComponents/NewClientListUpdateBlacklistTable";
-import NewProjectListUpdateBlacklistTable
-    from "components/FormTableComponents/NewProjectListUpdateBlacklistTable";
-import NewSiteListUpdateBlacklistTable
-    from "components/FormTableComponents/NewSiteListUpdateBlacklistTable";
-import insertUser from "mutations/all/User/insertUser";
+import NewClientListUpdateBlacklistTable from "components/FormTableComponents/NewClientListUpdateBlacklistTable";
+import NewProjectListUpdateBlacklistTable from "components/FormTableComponents/NewProjectListUpdateBlacklistTable";
+import NewSiteListUpdateBlacklistTable from "components/FormTableComponents/NewSiteListUpdateBlacklistTable";
+import {insertUser} from "mutations/create";
 
 // </editor-fold>
 
@@ -276,8 +273,6 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     async onSubmit(e, btn, onSaved) {
         const {form} = this;
-        const path = "users/accounts/create";
-
         //2
         if (!form.isValid('username')) {
             infoDialog.open('Username / Email Address is required');
@@ -302,111 +297,11 @@ class Controls extends React.Component {
 //            return;
 //        }
 
-        const {
-            profile_pic,
-            fname,
-            lname,
-            username,
-            auth_type = 'MultiFactor',
-            //
-            receive_asset_management_notifs,
-            receive_chemicals_management_notifs,
-            receive_contractor_management_notifs,
-            receive_employees_expired_docs_medicals,
-            receive_employees_profile_notifs,
-            receive_incident_management_notifs,
-            receive_inspection_management_notifs,
-            receive_non_conformance_management_notifs,
-            receive_training_management_notifs,
-            receive_expired_docs_notifs,
-            //
-            site,
-            project,
-            client,
-            blacklisted_client_list,
-            blacklisted_project_list,
-            blacklisted_site_list,
-            permissions_modules_sheq,
-            permissions_modules_hr,
-            permissions_modules_claims,
-            permissions_modules_extra,
-            permissions_other_list
-        } = form.data;
-
-        // console.log('permissions_modules_sheq', permissions_modules_sheq);
-        // console.log('permissions_modules_hr', permissions_modules_hr);
-        // console.log('permissions_modules_claims', permissions_modules_claims);
-        // console.log('permissions_modules_extra', permissions_modules_extra);
-
-        let __permissions_modules_sheq = [];
-        let __permissions_modules_hr = [];
-        let __permissions_modules_claims = [];
-        let __permissions_modules_extra = [];
-        if (permissions_modules_sheq) {
-            __permissions_modules_sheq = permissions_modules_sheq.list || permissions_modules_sheq;
-        }
-        if (permissions_modules_hr) {
-            __permissions_modules_hr = permissions_modules_hr.list || permissions_modules_hr;
-        }
-        if (permissions_modules_claims) {
-            __permissions_modules_claims = permissions_modules_claims.list || permissions_modules_claims;
-        }
-        if (permissions_modules_extra) {
-            __permissions_modules_extra = permissions_modules_extra.list || permissions_modules_extra;
-        }
-
-        // console.log('permissions_other_list', permissions_other_list);
-        let __permissions_other_list = [];
-        if (permissions_other_list) {
-            __permissions_other_list = permissions_other_list.list || permissions_other_list;
-        }
-
-        const data = {
-            profile_pic: profile_pic && profile_pic.path,
-            fname,
-            lname,
-            username: username.toLowerCase(),
-            auth_type,
-            linked_employee_id: employee && employee.id,
-            site_id: site && site.id,
-            project_id: project && project.id,
-            client_id: client && client.id,
-            blacklisted_client_list: {data: (blacklisted_client_list || []).map(({id: client_id}) => ({client_id}))},
-            blacklisted_project_list: {data: (blacklisted_project_list || []).map(({id: project_id}) => ({project_id}))},
-            blacklisted_site_list: {data: (blacklisted_site_list || []).map(({id: site_id}) => ({site_id}))},
-            notifications_settings: {
-                data: {
-                    receive_asset_management_notifs,
-                    receive_chemicals_management_notifs,
-                    receive_contractor_management_notifs,
-                    receive_employees_expired_docs_medicals,
-                    receive_employees_profile_notifs,
-                    receive_incident_management_notifs,
-                    receive_inspection_management_notifs,
-                    receive_non_conformance_management_notifs,
-                    receive_training_management_notifs,
-                    receive_expired_docs_notifs,
-                }
-            },
-            permissions_module_list: {
-                data: [
-                    ...__permissions_modules_sheq,
-                    ...__permissions_modules_hr,
-                    ...__permissions_modules_claims,
-                    ...__permissions_modules_extra,
-                ].map(({module, actions}) => ({module_id: convertIdToBigint(module.id), actions: {data: {...actions}}}))
-            },
-            permissions_other_list: {
-                data: __permissions_other_list
-                    .map(({key, actions}) => ({key_id: convertIdToBigint(key.id), actions: {data: {...actions}}}))
-            },
-        };
-
-        console.log(data)
+        console.log(form.data)
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        insertUser(data).then(res => {
+        insertUser({...form.data, linked_employee_id: employee && employee.id}).then(res => {
             console.log("res", res)
             if (res === "EMAIL_DUP") {
                 infoDialog.open("A User with this email address already exist.");

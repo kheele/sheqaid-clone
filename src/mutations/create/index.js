@@ -65,6 +65,7 @@ export const insertErrorReporting = create("error-reporting", null, input => {
     //     infoDialog.close(5000);
     // });
 });
+export const insertUser = create("users");
 
 //Assets
 export const insertAsset = create("assets");
