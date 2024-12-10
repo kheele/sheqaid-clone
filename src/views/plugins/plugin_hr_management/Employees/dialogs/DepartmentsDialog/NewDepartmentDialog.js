@@ -9,7 +9,7 @@ import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDepartmentDialog.lazy.css";
 import {FormControls, Row} from "components/FormComponents";
-import insertDepartment from "mutations/all/Department/insertDepartment";
+import {insertDepartment} from "mutations/create";
 
 @observer
 class NewDepartmentDialog extends ANewDialog {

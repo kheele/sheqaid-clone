@@ -1,5 +1,5 @@
 import JsExcelTemplate from "js-excel-template/browser/browser";
-import updateUser from "mutations/all/User/updateUser";
+import {updateUser} from "mutations/update";
 import findByUsernameUser from "mutations/all/User/findByUsernameUser";
 import findByUsernameEmployee from "../mutations/all/Employee/findByUsernameEmployee";
 import findByUsernameContractorUser from "../mutations/all/ContractorUser/findByUsernameContractorUser";

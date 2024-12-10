@@ -11,7 +11,7 @@ import {ProfileField, ProfilePic} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
-import updateClient from "mutations/all/Client/updateClient";
+import {updateClient} from "mutations/update";
 
 @observer
 class ProfileDialog extends AProfileDialog {
@@ -22,12 +22,12 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "Company";
-    }
-
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "Company";
     }
 }
 
@@ -64,7 +64,16 @@ class Controls extends React.Component {
             item, item: {
                 id, data: {
                     created_at,
-                    name, business_id, profile_pic, projects, sites, phone, email, contractor_email, address, sector_list
+                    name,
+                    business_id,
+                    profile_pic,
+                    projects,
+                    sites,
+                    phone,
+                    email,
+                    contractor_email,
+                    address,
+                    sector_list
                 }
             }
         } = this;

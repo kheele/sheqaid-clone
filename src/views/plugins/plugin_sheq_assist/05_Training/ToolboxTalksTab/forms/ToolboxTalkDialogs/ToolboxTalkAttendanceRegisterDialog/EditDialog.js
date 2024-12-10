@@ -17,7 +17,7 @@ import {FormControls, Row} from "components/FormComponents";
 import style from "./EditDialog.lazy.css";
 import {NewEmployeeListTable} from "components/FormTableComponents";
 import updateTrainingToolboxTalkRegister
-    from "../../../../../../../../mutations/all/TrainingToolboxTalkRegister/updateTrainingToolboxTalkRegister";
+    from "mutations/all/TrainingToolboxTalkRegister/updateTrainingToolboxTalkRegister";
 
 @observer
 class EditDialog extends AEditDialog {

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -10,7 +10,7 @@ import {AProfileDialog} from 'components/dialogs';
 import {OperationOrProcedureOrTestCarriedOutAndDatesTable} from './ClaimForms';
 
 import style from "./ProfileWCL5Dialog.lazy.css";
-import findByIdWCL5 from "../../../../mutations/all/COIDA/WCL5/findByIdWCL5";
+import findByIdWCL5 from "mutations/all/COIDA/WCL5/findByIdWCL5";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -23,16 +23,16 @@ class ProfileWCL5Dialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "W.CI.5";
-    }
-
     get topButtonsHiddenDelete() {
         return true;
     }
 
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "W.CI.5";
     }
 }
 

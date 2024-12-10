@@ -7,16 +7,14 @@ import ExportDialog from '../ExportDialog.js';
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
-
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import PrDPRenderRow from "./PrDPRenderRow";
 import {THead} from "components/tables";
 
 import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import contractorStore from "../../../../../../mutations/all/Contractor";
+import {
+    findByIdOrgPrDPDateRangeDashboardStatsByLogged
+} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgPrDPDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
 
 // </editor-fold>
 
@@ -57,78 +55,15 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-
-        if (isContractorView) {
-            return contractorStore.findByIdHRPrDPDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRPrDPDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRPrDPDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRPrDPDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRPrDPDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRPrDPDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRPrDPDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRPrDPDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRPrDPDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgPrDPDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isContractorView) {
-            return contractorStore.findByIdHRPrDPDateRangeDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRPrDPDateRangeDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRPrDPDateRangeDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRPrDPDateRangeDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRPrDPDateRangeDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgPrDPDateRangeDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 

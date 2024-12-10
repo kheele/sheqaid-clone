@@ -1,10 +1,12 @@
-
 (function () {
     class Controller extends AControllerRead {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events) {
-            super(events, {singular: "Administrator / User", plural: "Administrators / Users"}, "users/", "default_users");
+            super(events, {
+                singular: "Administrator / User",
+                plural: "Administrators / Users"
+            }, "users/", "default_users");
 
             this.send_app_link = this.send_app_link.bind(this);
             this.filter = this.filter.bind(this);
@@ -21,6 +23,7 @@
                 return [['company_id', '==', company_id]];
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_app_link">
@@ -49,12 +52,14 @@
                 return "NOT_FOUND";
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="search_by_name">
         async search_by_name(evt, searchText) {
             return await this.list(evt, {searchText});
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -74,7 +79,14 @@
 
                 list = await Promise.all(list.map(UserFuns.mapResults));
 
-                const {user, user: {data: {client: my_client, project: my_project, site: my_site}}, company, client_id, project_id, site_id} = loggedUser;
+                const {
+                    user,
+                    user: {data: {client: my_client, project: my_project, site: my_site}},
+                    company,
+                    client_id,
+                    project_id,
+                    site_id
+                } = loggedUser;
 
                 if (my_client) {
                     list = list.filter(val => {
@@ -111,10 +123,11 @@
                 }
 
 //                let list = await AControllerRead.prototype.listImpl.call(this, evt, opts, UserFuns.createDbFilter(searchText));
-               list = await Promise.all(list.map(UserFuns.mapResults));
+                list = await Promise.all(list.map(UserFuns.mapResults));
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -139,6 +152,7 @@
 //                return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_by_notification_key">
@@ -156,6 +170,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         sortBy(list) {
@@ -164,4 +179,29 @@
     }
 
     new Controller(events);
+
+    socket.on('users/reauthenticateWithCredential', async data => {
+        console.log('on users data', data)
+        const {authProviderType, old_username, password_conf} = data;
+
+        let authProvider;
+        if (authProviderType === "email") {
+            authProvider = firebase.auth.EmailAuthProvider;
+        } else if (authProviderType === "phone_number") {
+            authProvider = firebase.auth.PhoneAuthProvider;
+        }
+
+        if (!authProvider) return;
+
+        const credential = authProvider.credential(old_username, password_conf)
+        try {
+            await session.auth.currentUser.reauthenticateWithCredential(credential);
+            return true;
+        } catch (err) {
+            console.error(err);
+            if (err.code === "auth/wrong-password") {
+                return 'AUTH_WRONG_PASSWORD';
+            }
+        }
+    });
 })();

@@ -1,7 +1,5 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
-import listAllActiveEmployeeByJobPosition
-    from "../../../../../../../mutations/all/EmployeeActive/listAllActiveEmployeeByJobPosition";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ValidateAndCollectCourses">

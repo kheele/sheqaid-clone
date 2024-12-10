@@ -9,7 +9,7 @@ import crudUtils from "../CRUDUtils/CRUDUtils";
 import findByContractorEmailClient from "../Client/findByContractorEmailClient";
 import findByUsernameContractor from "./findByUsernameContractor";
 import updateContractor from "./updateContractor";
-import updateClient from "../Client/updateClient";
+import {updateClient} from "mutations/update";
 import findByLinkedCompanyIdUsernameContractor from "./findByLinkedCompanyIdUsernameContractor";
 import {findByIdContractor} from "../../findById";
 

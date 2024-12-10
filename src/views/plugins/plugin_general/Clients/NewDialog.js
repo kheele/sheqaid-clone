@@ -9,7 +9,7 @@ import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {observable} from "mobx";
-import insertClient from "mutations/all/Client/insertClient";
+import {insertClient} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {

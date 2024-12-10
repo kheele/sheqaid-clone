@@ -15,7 +15,26 @@ import {FormControls} from "components/FormComponents";
 import DashboardSection from "../forms/DashboardSection";
 import html2canvas from "html2canvas";
 import DashboardTab from "../../AEmployeeDocDialog/ADashboardTab";
-import employeeStore from "mutations/all/Employee";
+import {
+    findByIdHRCompetenciesDashboardStats,
+    findByIdHRContractsDashboardStats,
+    findByIdHRCounselingsDashboardStats,
+    findByIdHRLeavesDashboardStats,
+    findByIdHRLicensesDashboardStats,
+    findByIdHRMedicalsDashboardStats,
+    findByIdHRWarningsDashboardStats,
+    findByIdHRWorkPermitsDashboardStats
+} from "mutations/employeeHRDashboard";
+import {
+    findByIdHRCompetenciesDateRangeDashboardStats,
+    findByIdHRContractsDateRangeDashboardStats,
+    findByIdHRCounselingsDateRangeDashboardStats,
+    findByIdHRLeavesDateRangeDashboardStats,
+    findByIdHRLicensesDateRangeDashboardStats,
+    findByIdHRMedicalsDateRangeDashboardStats,
+    findByIdHRWarningsDateRangeDashboardStats,
+    findByIdHRWorkPermitsDateRangeDashboardStats
+} from "mutations/employeeHRDateRangeDashboard";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -26,10 +45,6 @@ class ProfileDialog extends AProfileDialog {
 
     constructor(props) {
         super(props, style);
-    }
-
-    title() {
-        return storage.is.isEmployee ? "My Account" : ("Employee Report (" + (this.props.isRemoved ? "Removed" : "Active") + ")");
     }
 
     get topButtonsHiddenDelete() {
@@ -49,6 +64,10 @@ class ProfileDialog extends AProfileDialog {
     get controls() {
         return Controls;
     }
+
+    title() {
+        return storage.is.isEmployee ? "My Account" : ("Employee Report (" + (this.props.isRemoved ? "Removed" : "Active") + ")");
+    }
 }
 
 // </editor-fold>
@@ -58,8 +77,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
-    state = {
-    };
+    state = {};
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -70,6 +88,79 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    //<editor-fold desc="lists">
+    get lists() {
+        const {id} = this.item;
+        return [
+            {
+                key: "competency_list",
+                findByIdHRDashboardStats: findByIdHRCompetenciesDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRCompetenciesDateRangeDashboardStats,
+            },
+            {
+                key: "contract_list",
+                findByIdHRDashboardStats: findByIdHRContractsDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRContractsDateRangeDashboardStats,
+            },
+            {
+                key: "counselling_list",
+                findByIdHRDashboardStats: findByIdHRCounselingsDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRCounselingsDateRangeDashboardStats,
+            },
+            {
+                key: "leave_list",
+                findByIdHRDashboardStats: findByIdHRLeavesDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRLeavesDateRangeDashboardStats,
+            },
+            {
+                key: "license_list",
+                findByIdHRDashboardStats: findByIdHRLicensesDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRLicensesDateRangeDashboardStats,
+            },
+            {
+                key: "medical_list",
+                findByIdHRDashboardStats: findByIdHRMedicalsDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRMedicalsDateRangeDashboardStats,
+            },
+            {
+                key: "warning_list",
+                findByIdHRDashboardStats: findByIdHRWarningsDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRWarningsDateRangeDashboardStats,
+            },
+            {
+                key: "work_permit_list",
+                findByIdHRDashboardStats: findByIdHRWorkPermitsDashboardStats,
+                findByIdHRDateRangeDashboardStats: findByIdHRWorkPermitsDateRangeDashboardStats,
+            },
+        ].map(({key, findByIdHRDashboardStats, findByIdHRDateRangeDashboardStats}) => {
+            const loadDashboard = async () => {
+                const topStats = await findByIdHRDashboardStats(id);
+                const bottomStats = await findByIdHRDateRangeDashboardStats(id);
+                return {topStats, bottomStats};
+            };
+            return <DashboardTab
+                ref={ref => {
+                    this.refs[`dashboard_${key}`] = ref;
+                }}
+                title="Dashboard"
+                loadDashboard={loadDashboard}
+                topStatsSize={120}
+                hidden
+            />
+        });
+
+        // ppe_type_list = [],
+        // trainer_training_list = [],
+    }
+
+    // </editor-fold>
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
@@ -98,7 +189,7 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="onApplyTemplateValues">
     async onApplyTemplateValues(doc) {
@@ -301,79 +392,6 @@ class Controls extends React.Component {
 
         return options;
     }
-
-    //</editor-fold>
-
-    //<editor-fold desc="lists">
-    get lists() {
-        const {id} = this.item;
-        return [
-            {
-                key: "competency_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRCompetenciesDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRCompetenciesDateRangeDashboardStats,
-            },
-            {
-                key: "contract_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRContractsDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRContractsDateRangeDashboardStats,
-            },
-            {
-                key: "counselling_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRCounselingsDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRCounselingsDateRangeDashboardStats,
-            },
-            {
-                key: "leave_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRLeavesDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRLeavesDateRangeDashboardStats,
-            },
-            {
-                key: "license_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRLicensesDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRLicensesDateRangeDashboardStats,
-            },
-            {
-                key: "medical_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRMedicalsDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRMedicalsDateRangeDashboardStats,
-            },
-            {
-                key: "warning_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRWarningsDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRWarningsDateRangeDashboardStats,
-            },
-            {
-                key: "work_permit_list",
-                findByIdHRDashboardStats: employeeStore.findByIdHRWorkPermitsDashboardStats,
-                findByIdHRDateRangeDashboardStats: employeeStore.findByIdHRWorkPermitsDateRangeDashboardStats,
-            },
-        ].map(({key, findByIdHRDashboardStats, findByIdHRDateRangeDashboardStats}) => {
-            const loadDashboard = async () => {
-                const topStats = await findByIdHRDashboardStats(id);
-                const bottomStats = await findByIdHRDateRangeDashboardStats(id);
-                return {topStats, bottomStats};
-            };
-            return <DashboardTab
-                ref={ref => {
-                    this.refs[`dashboard_${key}`] = ref;
-                }}
-                title="Dashboard"
-                loadDashboard={loadDashboard}
-                topStatsSize={120}
-                hidden
-            />
-        });
-
-        // ppe_type_list = [],
-        // trainer_training_list = [],
-    }
-
-    //</editor-fold>
-
-    @computed get item() {
-		return this.props.state.item;
-	}
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {

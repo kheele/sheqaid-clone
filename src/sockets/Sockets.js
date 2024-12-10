@@ -113,6 +113,10 @@ class Socket {
         return this.send('listByLogged', args);
     }
 
+    async listByLoggedClient(args) {
+        return this.send('listByLoggedClient', args);
+    }
+
     async exportExcel(args) {
         return this.send('export-excel', args);
     }

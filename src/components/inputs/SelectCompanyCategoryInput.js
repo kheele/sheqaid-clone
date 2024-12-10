@@ -5,7 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import listAllCompanyCategory from "../../mutations/all/CompanyCategory/listAllCompanyCategory";
+import {listCompanyCategories} from "mutations/list";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -17,18 +17,32 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
     }
-    
+
+    @computed
+    get selectedItem() {
+        const {defaultValue} = this.props;
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            let {data: {name: label}} = defaultValue;
+            console.log('selectedVal', label)
+            return {value: defaultValue, label};
+        }
+        return null;
+    }
+
     async componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectCompanyCategoryInput`;
-        
+
         const res = await onSelectLoad();
         this.state.lists.list = res.distinct();
-        
+
         this.state.props = {
             ref: "input",
             key: new Date().getTime(),
@@ -44,30 +58,16 @@ class SelectInput extends ASelectInput {
         };
     }
 
-    @computed
-    get selectedItem() {
-        const {defaultValue} = this.props;
-        if(defaultValue) {
-            if(defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            let {data: {name: label}} = defaultValue;
-            console.log('selectedVal', label)
-            return {value: defaultValue, label};
-        }
-        return null;
-    }
-
     render() {
         const {props} = this.state;
-        if(!props) return null;
+        if (!props) return null;
 
         return <ClearableInput {...props}/>;
     }
 }
 
 function onSelectLoad() {
-    return listAllCompanyCategory().then(res => {
+    return listCompanyCategories().then(res => {
         return res.map(value => {
             return {label: value.data.name, value};
         });

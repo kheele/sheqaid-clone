@@ -7,16 +7,14 @@ import ExportDialog from '../ExportDialog.js';
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
-
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import IDOrPassportRenderRow from "./IDOrPassportRenderRow";
 import {THead} from "components/tables";
 
 import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import contractorStore from "../../../../../../mutations/all/Contractor";
+import {findByIdOrgIDOrPassportDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
+import {
+    findByIdOrgIDOrPassportDateRangeDashboardStatsByLogged
+} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
 
 // </editor-fold>
 
@@ -57,78 +55,15 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-
-        if (isContractorView) {
-            return contractorStore.findByIdHRIDOrPassportDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRIDOrPassportDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRIDOrPassportDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRIDOrPassportDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRIDOrPassportDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRIDOrPassportDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRIDOrPassportDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRIDOrPassportDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRIDOrPassportDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgIDOrPassportDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isContractorView) {
-            return contractorStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRIDOrPassportDateRangeDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgIDOrPassportDateRangeDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 

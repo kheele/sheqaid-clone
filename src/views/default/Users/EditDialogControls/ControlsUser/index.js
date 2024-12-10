@@ -18,7 +18,7 @@ import {
 
 import {getPhoneNumberNew} from "utils/UtilsFuns";
 import {CircularProgress} from "@mui/material";
-import updateUser from "mutations/all/User/updateUser";
+import {updateUser} from "mutations/update";
 import renderImpl from "./render";
 import onSubmitImpl from "./onSubmit";
 import onFormSaveImpl from "./onFormSave";

@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -9,7 +9,7 @@ import {Table, TBody, THead, TRow} from 'components/tables';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./ImportJobCategoriesDialog.lazy.css";
-import insertJobCategory from "mutations/all/JobCategory/insertJobCategory";
+import {insertJobCategory} from "mutations/create";
 
 @observer
 class ImportJobCategoriesDialog extends ANewDialog {
@@ -21,7 +21,7 @@ class ImportJobCategoriesDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -67,19 +67,19 @@ class Controls extends React.Component {
     mapErrors(err, n) {
         const mapErrors = (v, i) => {
             const {length} = err.value;
-            if(i === length-1) {
+            if (i === length - 1) {
                 return v;
-            } else if(i === length-2) {
+            } else if (i === length - 2) {
                 return v + ' OR ';
             } else {
                 return v + ', ';
             }
         };
         return <TRow key={"item-" + n} className="text-left font-size-15">
-            {n+1} - {err.value.map(mapErrors).join('').trim()}
+            {n + 1} - {err.value.map(mapErrors).join('').trim()}
         </TRow>;
     }
-    
+
     onUpload() {
         electronDialog.showOpenDialogSpreadsheetRaw().then(async res => {
             if (res) {
@@ -87,13 +87,14 @@ class Controls extends React.Component {
                 const filePath = await FileConverters.asDataUrl(res.path);
                 neonBinding.events.emit(this.path + "import/file", filePath).then(res => {
 //                    console.log("data", res)
-                    if(!res) {
+                    if (!res) {
                         infoDialog.open('An error occurred. Please try again');
                         return;
                     }
                     if (res.errors) {
                         infoDialog.open(<div className="info-dialog-content">
-                            <THead className="padding-10 margin-b-15">The following Spreadsheet Header Column Cells are required:</THead>
+                            <THead className="padding-10 margin-b-15">The following Spreadsheet Header Column Cells are
+                                required:</THead>
                             {res.errors.map(this.mapErrors)}
                         </div>);
                     } else {
@@ -120,7 +121,7 @@ class Controls extends React.Component {
 
         Promise.all(list.map(async (data) => await insertJobCategory(data))).then(list => {
             console.log("res", list)
-            if(list) {
+            if (list) {
                 if (onSaved) {
                     list.forEach(item => onSaved(item));
                 }
@@ -151,7 +152,8 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <Button className="btn btn-primary hor-center margin-t-5" onClick={this.onUpload}>Upload Spread Sheet</Button>
+                        <Button className="btn btn-primary hor-center margin-t-5" onClick={this.onUpload}>Upload Spread
+                            Sheet</Button>
                     </div>
                 </div>
                 <div className="row padding-0">
@@ -159,7 +161,8 @@ class Controls extends React.Component {
                         <THead>
                             <div className="td">Name</div>
                         </THead>
-                        <TBody renderItem={this.renderItem} list={this.state.list} onLoadList={this.onLoadList} onClick={this.onClick}/>
+                        <TBody renderItem={this.renderItem} list={this.state.list} onLoadList={this.onLoadList}
+                               onClick={this.onClick}/>
                     </Table>
                 </div>
             </div>

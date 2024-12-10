@@ -26,8 +26,6 @@ import findByIdContractorsQuestionnaire
     from "mutations/all/Questionnaires/ContractorsQuestionnaires/findByIdContractorsQuestionnaire";
 import updateContractorsQuestionnaire
     from "mutations/all/Questionnaires/ContractorsQuestionnaires/updateContractorsQuestionnaire";
-import updateContractorsQuestionnaireLibrary
-    from "../../../../../mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -38,58 +36,39 @@ class ProfileDialog extends AProfileDialog {
 
     constructor(props) {
         super(props, style);
-        
+
         this.onCopy = this.onCopy.bind(this);
         this.onViewResponses = this.onViewResponses.bind(this);
         this.onEdit = this.onEdit.bind(this);
-        
+
         this.onExportOptions = this.onExportOptions.bind(this);
     }
-    
-    onCopy(evt, el) {
-        this.refs.controls.onCopy(evt, el);
-    }
-    
-    onViewResponses(evt, el) {
-        this.refs.controls.onViewResponses(evt, el);
-    }
-    
-    onEdit(evt, el) {
-        this.refs.controls.onEdit(evt, el);
-    }
 
-    onExportOptions(e, btn) {
-        this.refs.controls.onExportOptions(e, btn);
-    }
-    
-    title() {
-        return "Contractor's Questionnaire";
-    }
-    
     get removeById() {
         const {item} = this.state;
         if (!item) return null;
         const {data: {status}} = item;
-        
+
         const {isContractor} = storage.is;
-        
+
         if (!isContractor && status !== "CompleteAccepted") {
             return updateContractorsQuestionnaire;
         }
     }
-    
+
     @computed get topButtons() {
         const {item} = this.state;
-        if(!item) return null;
-        const {data: {
+        if (!item) return null;
+        const {
+            data: {
                 status = "New", status_answered_by_sender, answered_by = 'Recipient',
             }
         } = item;
-        
+
         const {isContractor} = storage.is;
-        
+
         const isWritable = status !== "CompleteAccepted";
-        
+
         return <>
             {!isContractor && isWritable && <Button className="btn btn-primary" onClick={this.onDelete}>
                 <i className="fa fa-ban icon-left"/>Delete
@@ -110,61 +89,88 @@ class ProfileDialog extends AProfileDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
+    }
+
+    onCopy(evt, el) {
+        this.refs.controls.onCopy(evt, el);
+    }
+
+    onViewResponses(evt, el) {
+        this.refs.controls.onViewResponses(evt, el);
+    }
+
+    onEdit(evt, el) {
+        this.refs.controls.onEdit(evt, el);
+    }
+
+    onExportOptions(e, btn) {
+        this.refs.controls.onExportOptions(e, btn);
+    }
+
+    title() {
+        return "Contractor's Questionnaire";
     }
 }
+
 // </editor-fold>
 
 @observer
 class Controls extends React.Component {
     path = "plugin_sheq_assist/contractors/questionnaires/";
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-        
+
         this.onExportOptions = this.onExportOptions.bind(this);
         this.onExport = this.onExport.bind(this);
         this.onSaveAs = this.onSaveAs.bind(this);
-        
+
         this.getDialogDOM = this.getDialogDOM.bind(this);
     }
+
     // </editor-fold>
-    
+
+    get item() {
+        return this.props.state.item;
+    }
+
     onViewResponses(evt, el) {
         this.refs.responseDialog.open(this.item);
     }
-    
+
     onCopy(evt, elem) {
         const copy = toJS(this.item);
         this.refs.newDialog.open(this.item);
     }
-    
+
     onEdit(evt, el) {
         this.refs.editDialog.open(this.item);
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="onExportOptions, onExport, onSaveAs">
     onExportOptions(e, btn) {
 //        this.refs.pdfReader.open(this.item);
         const jqElem = $(btn.getDOMNode());
         const {left, top} = jqElem.offset();
         const style = {
-            left, 
-            top: top + jqElem.height() + 25, 
-            width: "auto", 
+            left,
+            top: top + jqElem.height() + 25,
+            width: "auto",
             minWidth: 200
         };
         popover.settings({
             style,
             isDialog: true,
             contentNode: <div>
-                <NavItem type="Questionnaire" onClick={this.onExport} faIconLeft="file-pdf-o" title="Export Questionnaire"/>
+                <NavItem type="Questionnaire" onClick={this.onExport} faIconLeft="file-pdf-o"
+                         title="Export Questionnaire"/>
                 <NavItem type="Response" onClick={this.onExport} faIconLeft="file-pdf-o" title="Export Responses"/>
             </div>
         }).open();
     }
-    
+
     onExport(e, el) {
         const {idx, type, title} = el.props;
         setTimeout(() => {
@@ -174,31 +180,29 @@ class Controls extends React.Component {
                 contentNode: <div>
                     <p className="padding-t-10 text-center">{title}</p>
                     <hr className="margin-t-0 margin-b-0"/>
-                    <NavItem idx={idx} type='PDF' refName={`profile${type}PDFReader`} onClick={this.onSaveAs} title='Save As PDF'/>
+                    <NavItem idx={idx} type='PDF' refName={`profile${type}PDFReader`} onClick={this.onSaveAs}
+                             title='Save As PDF'/>
                     <NavItem idx={idx} type='Excel' onClick={this.onSaveAs} title='Save As Spreadsheet'/>
                 </div>
             }).open();
         }, 1000);
     }
-    
+
+    // </editor-fold>
+
     async onSaveAs(e, el) {
         const {idx, type, refName} = el.props;
-        const {[refName] : dialog} = this.refs;
-        if(type === 'PDF') {
+        const {[refName]: dialog} = this.refs;
+        if (type === 'PDF') {
             dialog.open(this.item);
-        } else if(type === 'Excel') {
-            
+        } else if (type === 'Excel') {
+
         }
     }
-    // </editor-fold>
 
     getDialogDOM() {
         const {props: {dialog}} = this;
         return dialog.getDOMNode();
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -226,39 +230,40 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         return <FormControls lazyLoad>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 activeAlways
                 idx={1}
-                title="1. Contractor Details" 
-                onFormOpen={onFormOpen} 
+                title="1. Contractor Details"
+                onFormOpen={onFormOpen}
             >
                 <ProfileField name="contractor" value={contractorName} placeholder="Contractor" className="col-lg-6"/>
                 <ProfileField name="email" value={username} placeholder="Email Address" className="col-lg-6"/>
             </Row>
-            <Row 
-                rendered 
+            <Row
+                rendered
                 active
                 idx={2}
-                title="2. Who Should Answer Questionnaire" 
-                onFormOpen={onFormOpen} 
+                title="2. Who Should Answer Questionnaire"
+                onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <ProfileField name="answered_by" value={answered_by} placeholder="Needs Answers From" className="col-lg-12"/>
+                <ProfileField name="answered_by" value={answered_by} placeholder="Needs Answers From"
+                              className="col-lg-12"/>
             </Row>
-            <Row 
-                rendered 
+            <Row
+                rendered
                 idx={3}
-                title="3. Contractor Questionnaire" 
-                onFormOpen={onFormOpen} 
+                title="3. Contractor Questionnaire"
+                onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <TemplateQuestions 
-                    ref="questions" 
+                <TemplateQuestions
+                    ref="questions"
                     readonly
-                    getDialogDOM={this.getDialogDOM} 
+                    getDialogDOM={this.getDialogDOM}
                     defaultType="Questions"
                     mainTitle="Contractor Questionnaire"
                     item={this.item}
@@ -267,11 +272,12 @@ class Controls extends React.Component {
             <NewQuestionnaireDialog ref="newDialog"/>
             <EditQuestionnaireDialog ref="editDialog"/>
             <ProfileResponseDialog ref="responseDialog"/>
-            
+
             <ProfileQuestionnairePDFReader ref="profileQuestionnairePDFReader"/>
             <ProfileResponsePDFReader ref="profileResponsePDFReader"/>
         </FormControls>;
     }
+
     // </editor-fold>
 
 }
@@ -289,11 +295,11 @@ class Stats extends React.Component {
         charts: null,
         dataLoaded: false
     };
-    
+
     componentDidMount() {
         this.load();
     }
-    
+
     componentWillUpdate() {
 //        this.load();
     }
@@ -312,12 +318,12 @@ class Stats extends React.Component {
         });
 
     }
-    
+
     render() {
         const {state: {charts, dataLoaded}, props: {title}} = this;
         return <div className="Statistics padding-10 margin-r-10 margin-t-5">
             <label className="text-center w-full margin-b-10">{title}</label>
-            {!dataLoaded && <div className="fixed-center"><CircularProgress/><br />Loading...</div>}
+            {!dataLoaded && <div className="fixed-center"><CircularProgress/><br/>Loading...</div>}
             {dataLoaded && <div className="content">
                 <Chart ref="chart" options={charts}/>
                 <div className="chart-hider"/>
@@ -325,6 +331,7 @@ class Stats extends React.Component {
         </div>;
     }
 }
+
 // </editor-fold>
 
 export default ProfileDialog;

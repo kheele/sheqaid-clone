@@ -1,5 +1,4 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
-import React from "react";
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 
@@ -11,10 +10,8 @@ import {ControlsContractor, ControlsUser} from './EditDialogControls';
 import style from "./EditDialog.lazy.css";
 import findByIdUser from "mutations/all/User/findByIdUser";
 import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
-import updateContractorsQuestionnaireLibrary
-    from "mutations/all/Questionnaires/ContractorsQuestionnaireLibrary/updateContractorsQuestionnaireLibrary";
 import updateContractorUser from "mutations/all/ContractorUser/updateContractorUser";
-import updateUser from "mutations/all/User/updateUser";
+import {updateUser} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -26,52 +23,20 @@ class EditDialog extends AEditDialog {
         super(props, style);
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-        const {forShouldSetupPermissions} = this.props;
-        if (!forShouldSetupPermissions) {
-            return;
-        }
-        autorun(() => {
-            if (storage.is.isLoggedIn) {
-                const {is: {shouldSetupPermissions}} = storage;
-
-                if (shouldSetupPermissions) {
-                    execWhen(() => this.refs.dialog).then(dialog => {
-                        const {loggedUser: {user}} = storage;
-                        this.open(user);
-                        execWhen(() => dialog.refs.cancel).then(cancel => {
-                            cancel.text('Logout');
-                        });
-                    });
-                }
-            }
-        });
-    }
-
     get findById() {
         const {isContractor} = storage.is;
         return isContractor ? findByIdContractorUser : findByIdUser;
     }
-    
+
     get removeById() {
         const {isContractor} = storage.is;
         const onUpdate = isContractor ? updateContractorUser : updateUser;
-        if(!this.isOpen) return onUpdate;
-        
+        if (!this.isOpen) return onUpdate;
+
         const {item} = this.state;
         if (!item) return null;
-        
+
         return onUpdate;
-    }
-    
-    onCancel(e, btn) {
-        const {forShouldSetupPermissions} = this.props;
-        if (forShouldSetupPermissions) {
-            storage.logout.signOutAndConfirm();
-        } else {
-            super.onCancel(e, btn);
-        }
     }
 
     get title() {
@@ -115,7 +80,40 @@ class EditDialog extends AEditDialog {
         const {isContractor} = storage.is;
         return isContractor ? ControlsContractor : ControlsUser;
     }
+
+    componentDidMount() {
+        super.componentDidMount();
+        const {forShouldSetupPermissions} = this.props;
+        if (!forShouldSetupPermissions) {
+            return;
+        }
+        autorun(() => {
+            if (storage.is.isLoggedIn) {
+                const {is: {shouldSetupPermissions}} = storage;
+
+                if (shouldSetupPermissions) {
+                    execWhen(() => this.refs.dialog).then(dialog => {
+                        const {loggedUser: {user}} = storage;
+                        this.open(user);
+                        execWhen(() => dialog.refs.cancel).then(cancel => {
+                            cancel.text('Logout');
+                        });
+                    });
+                }
+            }
+        });
+    }
+
+    onCancel(e, btn) {
+        const {forShouldSetupPermissions} = this.props;
+        if (forShouldSetupPermissions) {
+            storage.logout.signOutAndConfirm();
+        } else {
+            super.onCancel(e, btn);
+        }
+    }
 }
+
 // </editor-fold>
 
 export default EditDialog;

@@ -1,8 +1,8 @@
 import {observer} from 'mobx-react';
 import ACol from "./ACol";
 import ARow from "./ARow";
-import {insertSettings} from "../../../mutations/create";
-import {deleteSettings} from "../../../mutations/delete";
+import {insertSettings} from "mutations/create";
+import {deleteSettings} from "mutations/delete";
 import {NewUserListTable} from "../../../components/FormTableComponents";
 
 @observer

@@ -4,15 +4,12 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {
-    ClearableInput,
-    SelectClientInput,
-} from 'components/inputs';
+import {ClearableInput, SelectClientInput,} from 'components/inputs';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewJobCategoryDialog.lazy.css";
 import {FormControls, Row} from "components/FormComponents";
-import insertJobCategory from "mutations/all/JobCategory/insertJobCategory";
+import {insertJobCategory} from "mutations/create";
 
 @observer
 class NewJobCategoryDialog extends ANewDialog {

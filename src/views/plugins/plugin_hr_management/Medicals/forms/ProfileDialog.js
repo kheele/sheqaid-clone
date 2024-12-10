@@ -10,36 +10,37 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeMedical";
+import {findByIdHRMedicalsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
+import {findByIdHRMedicalsDashboardStats} from "mutations/employeeHRDashboard";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-	pageKey = "ProfileMedicalFitnessCertificateDialog";
-	className = "AProfileEmployeeDocDialog";
-	findById = findByIdEmployee;
+    pageKey = "ProfileMedicalFitnessCertificateDialog";
+    className = "AProfileEmployeeDocDialog";
+    findById = findByIdEmployee;
 
-	constructor(props) {
-		super(props, style);
-	}
+    constructor(props) {
+        super(props, style);
+    }
 
-	title() {
-		return "Medical Fitness Certificates";
-	}
+    get topButtonsHiddenDelete() {
+        return true;
+    }
 
-	onSaveAsPDF(e, btn) {
-		this.refs.controls.onSaveAsPDF(e, btn);
-	}
+    get controls() {
+        return Controls;
+    }
 
-	get topButtonsHiddenDelete() {
-		return true;
-	}
+    title() {
+        return "Medical Fitness Certificates";
+    }
 
-	get controls() {
-		return Controls;
-	}
+    onSaveAsPDF(e, btn) {
+        this.refs.controls.onSaveAsPDF(e, btn);
+    }
 }
 
 //</editor-fold>
@@ -47,61 +48,62 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-	listName = "medical_list";
-	onUpdate = updateEmployeeMedical;
-	NewDialog = NewDialog;
-	EditDialog = EditDialog;
-	ProfilePDFReader = ProfilePDFReader;
+    listName = "medical_list";
+    onUpdate = updateEmployeeMedical;
+    NewDialog = NewDialog;
+    EditDialog = EditDialog;
+    ProfilePDFReader = ProfilePDFReader;
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	//<editor-fold desc="loadDashboardTopStats">
-	async loadDashboardTopStats(id) {
-		return employeeStore.findByIdHRMedicalsDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats(id) {
+        return findByIdHRMedicalsDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="loadDashboardBottomStats">
-	async loadDashboardBottomStats(id) {
-		return employeeStore.findByIdHRMedicalsDateRangeDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats(id) {
+        return findByIdHRMedicalsDateRangeDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	renderItem(item, n, onClick) {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			}
-		} = this;
-		const {created_at, annexture_3, restrictions, expiry_date, doc} = item.data || item;
+    renderItem(item, n, onClick) {
+        const {
+            props: {
+                onFormNext, onFormBack, onFormOpen
+            }
+        } = this;
+        const {created_at, annexture_3, restrictions, expiry_date, doc} = item.data || item;
 
 
-		return <div className="row item-wrapper padding-t-10 h-full">
-			<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Medical Fitness Details</label>
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date} className="col-lg-6"/>
-				<ProfileField title="Annexture 3?" name="annexture_3" value={annexture_3} className="col-lg-6"/>
-				<ProfileField title="Restrictions" name="restrictions" value={restrictions} className="col-lg-12"/>
-			</div>
-			<hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
-			<label className="w-full margin-0 text-center">Document</label>
-			<div className="row margin-l-0 margin-r-0 margin-b-15 row-doc sec-group">
-				<UploadButton
-					name="doc"
-					defaultValue={doc}
-					buttonTitle="Medical Fitness Attachment"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="w-280 hor-center"
-				/>
-			</div>
-		</div>;
-	}
+        return <div className="row item-wrapper padding-t-10 h-full">
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Medical Fitness Details</label>
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}
+                              className="col-lg-6"/>
+                <ProfileField title="Annexture 3?" name="annexture_3" value={annexture_3} className="col-lg-6"/>
+                <ProfileField title="Restrictions" name="restrictions" value={restrictions} className="col-lg-12"/>
+            </div>
+            <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
+            <label className="w-full margin-0 text-center">Document</label>
+            <div className="row margin-l-0 margin-r-0 margin-b-15 row-doc sec-group">
+                <UploadButton
+                    name="doc"
+                    defaultValue={doc}
+                    buttonTitle="Medical Fitness Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="w-280 hor-center"
+                />
+            </div>
+        </div>;
+    }
 
 }
 

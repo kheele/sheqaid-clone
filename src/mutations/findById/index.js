@@ -43,4 +43,9 @@ export const findByIdSite = findById("sites");
 export const findByIdContractor = findById("contractors");
 export const findByIdContractorSite = findById("contractors/sites");
 
+//HR
+export const findByIdDepartment = findById("departments");
+export const findByIdJobCategory = findById("job-categories");
+export const findByIdJobPosition = findById("job-positions");
+export const findByIdTeam = findById("teams");
 export const findByIdEmployeeCompetency = findById("employees/docs/competencies");

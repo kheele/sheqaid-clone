@@ -7,16 +7,8 @@ import ExportDialog from '../ExportDialog.js';
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
-
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import WorkPermitsRenderRow from "./WorkPermitsRenderRow";
 import {THead} from "components/tables";
-
-import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
-import contractorStore from "../../../../../../mutations/all/Contractor";
 
 // </editor-fold>
 
@@ -27,7 +19,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Signable Document";
     permissionKey = "SignableDocuments";
     module = "SignableDocuments";
-    onUpdate = updateEmployeeWorkPermit;
+    // onUpdate = updateEmployeeWorkPermit;
     filterNodeMarginB = 35;
 
     dialogs = {
@@ -57,78 +49,15 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-
-        if (isContractorView) {
-            return contractorStore.findByIdHRWorkPermitsDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRWorkPermitsDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRWorkPermitsDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRWorkPermitsDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRWorkPermitsDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRWorkPermitsDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRWorkPermitsDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRWorkPermitsDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRWorkPermitsDashboardStatsByLogged();
-            }
-        }
+        // return findByIdHRWorkPermitsDashboardStatsByLogged();
     };
 
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isContractorView) {
-            return contractorStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
-            }
-        }
-    };
+        // return findByIdHRWorkPermitsDateRangeDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 

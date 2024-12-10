@@ -24,7 +24,7 @@ import NewClientListUpdateBlacklistTable from "components/FormTableComponents/Ne
 import NewProjectListUpdateBlacklistTable from "components/FormTableComponents/NewProjectListUpdateBlacklistTable";
 import NewSiteListUpdateBlacklistTable from "components/FormTableComponents/NewSiteListUpdateBlacklistTable";
 import MKBox from "components/MK/MKBox";
-import updateUser from "mutations/all/User/updateUser";
+import {updateUser} from "mutations/update";
 import updateEmployee from "mutations/all/Employee/updateEmployee";
 import Divider from "@mui/material/Divider";
 import findByIdUser from "mutations/all/User/findByIdUser";

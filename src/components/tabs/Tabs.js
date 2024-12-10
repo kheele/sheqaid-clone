@@ -2,7 +2,7 @@ import React from "react";
 import {findDOMNode} from 'react-dom';
 import PropTypes from "prop-types";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {ErrorBoundary} from '../';
 
@@ -34,6 +34,10 @@ class Tabs extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    @computed get activeIndex() {
+        return this.state.activeIndex;
+    }
+
     componentWillMount() {
         style.use();
     }
@@ -47,21 +51,20 @@ class Tabs extends React.Component {
         const {onChange} = this.props;
         onChange && onChange(index);
     }
-    
-    @computed get activeIndex() {
-        return this.state.activeIndex;
-    }
 
     getTabByRef(ref) {
-        const {tabs} = this.refs.tabContent;
-        return tabs[ref];
+        try {
+            const {tabs} = this.refs.tabContent;
+            return tabs[ref];
+        } catch (e) {
+        }
     }
 
     render() {
         const {onChange, props: {className, tabsHeight, permissionKey, position, keepState, children}, state} = this;
         const pos = position || 'top';
         const style = {};
-        if(tabsHeight) {
+        if (tabsHeight) {
             style.height = tabsHeight;
         }
         return (<div className={`tabs${className ? ` ${className}` : ''}`} style={style}>

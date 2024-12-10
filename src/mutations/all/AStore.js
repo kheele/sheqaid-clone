@@ -1,6 +1,58 @@
-import {Dates} from "../../utils/Dates";
-
 class AStore {
+
+    get sess_claims() {
+        const {idTokenResult} = storage;
+        if (!idTokenResult) return null;
+        const {claims} = idTokenResult;
+        return claims;
+    }
+
+    get sess_user_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, company_id} = sess_claims;
+        if (!user_id) return null;
+        return user_id;
+    }
+
+    get sess_company_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, company_id} = sess_claims;
+        if (!company_id) return null;
+        return company_id;
+    }
+
+    get sess_my_client_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, my_client} = sess_claims;
+        if (!my_client) return null;
+        return my_client.id;
+    }
+
+    get sess_my_project_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, my_project} = sess_claims;
+        if (!my_project) return null;
+        return my_project.id;
+    }
+
+    get sess_my_site_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, my_site} = sess_claims;
+        if (!my_site) return null;
+        return my_site.id;
+    }
+
+    get sess_my_contractor_id() {
+        const {sess_claims} = this;
+        if (!sess_claims) return null;
+        const {access_type, user_id, contractor_id} = sess_claims;
+        return contractor_id;
+    }
 
     async listAllByLogged(
         {
@@ -14,15 +66,6 @@ class AStore {
     ) {
         if (!isBoolean(removed)) {
             removed = false;
-        }
-
-        if(isString(expiry_date) && expiry_date !== 'ALL') {
-            const monStart = new Date().addMonths(-4);
-            const monEnd = new Date().addMonths(12);
-
-            const dates = Dates.getMonthsStartAndEndDateRangeSQL(monStart, monEnd);
-
-            // expiry_date = ;
         }
 
         const {selectedClient, selectedProject, selectedSite} = storage.selected;
@@ -113,68 +156,6 @@ class AStore {
             return listForSelectionByLoggedCompany(sess_company_id);
         }
         return [];
-    }
-
-    async listAllByLoggedActive() {
-        return this.listAllByLogged(false);
-    }
-
-    async listAllByLoggedRemoved() {
-        return this.listAllByLogged(true);
-    }
-
-    get sess_claims() {
-        const {idTokenResult} = storage;
-        if (!idTokenResult) return null;
-        const {claims} = idTokenResult;
-        return claims;
-    }
-
-    get sess_user_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, company_id} = sess_claims;
-        if (!user_id) return null;
-        return user_id;
-    }
-
-    get sess_company_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, company_id} = sess_claims;
-        if (!company_id) return null;
-        return company_id;
-    }
-
-    get sess_my_client_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, my_client} = sess_claims;
-        if (!my_client) return null;
-        return my_client.id;
-    }
-
-    get sess_my_project_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, my_project} = sess_claims;
-        if (!my_project) return null;
-        return my_project.id;
-    }
-
-    get sess_my_site_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, my_site} = sess_claims;
-        if (!my_site) return null;
-        return my_site.id;
-    }
-
-    get sess_my_contractor_id() {
-        const {sess_claims} = this;
-        if (!sess_claims) return null;
-        const {access_type, user_id, contractor_id} = sess_claims;
-        return contractor_id;
     }
 
     async extractId(item) {

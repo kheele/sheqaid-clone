@@ -13,7 +13,7 @@ export const listCountries = list("countries");
 export const listZones = list("zones");
 export const listCities = list("cities");
 
-export const listCompanyCategories = list("company-categories");
+export const listCompanyCategories = list("companies/categories");
 // export const listCompanyCategories = list("company-categories");
 
 export const listManuals = list("manuals");

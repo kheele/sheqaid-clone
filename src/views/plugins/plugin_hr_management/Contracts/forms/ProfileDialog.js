@@ -12,10 +12,11 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import employeeStore from "mutations/all/Employee";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
 import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
+import {findByIdHRContractsDashboardStats} from "mutations/employeeHRDashboard";
+import {findByIdHRContractsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 
 //<editor-fold desc="ProfileDialog">
 @observer
@@ -62,14 +63,14 @@ class Controls extends AEmployeeDocControls {
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats(id) {
-        return employeeStore.findByIdHRContractsDashboardStats(id);
+        return findByIdHRContractsDashboardStats(id);
     }
 
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats(id) {
-        return employeeStore.findByIdHRContractsDateRangeDashboardStats(id);
+        return findByIdHRContractsDateRangeDashboardStats(id);
     }
 
     //</editor-fold>

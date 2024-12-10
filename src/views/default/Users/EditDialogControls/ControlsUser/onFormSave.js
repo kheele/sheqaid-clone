@@ -21,7 +21,12 @@ export default async function onFormSave(e, btn) {
         progressDialog.open();
         return this.updateUser({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            if (res === "EMAIL_DUP") {
+
+            if (!res) {
+                infoDialog.open("The password could not be updated. Please try again.");
+            } else if (res === "AUTH_WRONG_PASSWORD") {
+                infoDialog.open("The password is invalid.");
+            } else if (res === "EMAIL_DUP") {
                 infoDialog.open("A User with this email address already exist.");
             } else if (res === "PHONE_DUP") {
                 infoDialog.open("A User with this phone number address already exist.");
@@ -30,6 +35,17 @@ export default async function onFormSave(e, btn) {
             } else if (res === 'CANT_UPDATE_OTHER_USER_EMAIL_OR_PHONE') {
                 infoDialog.open("You are not allowed to change other user Email Address or Phone Number. This is for security reasons.");
             } else {
+                const {username, phone} = data;
+                if (username || phone) {
+                    const {loggedUser: {user}} = storage;
+                    if (username) {
+                        user.data.username = username;
+                    }
+                    if (phone) {
+                        user.data.phone = phone;
+                    }
+                }
+
                 onSaved && onSaved(res);
                 infoDialog.open("Record successfully updated.");
                 infoDialog.close(2000);
@@ -37,9 +53,6 @@ export default async function onFormSave(e, btn) {
                 return true;
             }
         }).catch(err => {
-            if (err.code === "auth/wrong-password") {
-                infoDialog.open("The password is invalid.");
-            }
             throw err;
         }).finally(() => {
             btn.text(btnText).enabled();

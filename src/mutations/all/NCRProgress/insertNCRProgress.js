@@ -1,15 +1,10 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import createMutationImpl from "mutations/createMutationImpl";
 import {EntityNCRProgress} from "mutations/types.d.ts";
-import crudUtils from "../CRUDUtils/CRUDUtils";
-import updateUser from "../User/updateUser";
-import {Dates} from "../../../utils/Dates";
-import updateEmployee from "../Employee/updateEmployee";
-import updateNCRProgress from "./updateNCRProgress";
 
 // 2
 const mutation = graphql`
@@ -27,11 +22,11 @@ const mutation = graphql`
 
 // 3
 export default async (input: EntityNCRProgress) => {
-  const {
-    outstanding,
-    notes,
-    date,
-  } = input;
+    const {
+        outstanding,
+        notes,
+        date,
+    } = input;
 
-  return createMutationImpl({mutation, input});
+    return createMutationImpl({mutation, input});
 };

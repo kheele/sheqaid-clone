@@ -6,12 +6,8 @@ import {Clickable} from 'components/inputs';
 import style from "./DashboardTab.lazy.css";
 import TopGridCounter from "./TopGridCounter";
 import GridGraphsVerticalBarChart from "./GridGraphsVerticalBarChart";
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import {CircularProgress} from "@mui/material";
-import contractorStore from "../../../../../mutations/all/Contractor";
+import {findByIdOrgDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 
 @observer
 class DashboardTab extends React.Component {
@@ -60,42 +56,8 @@ class DashboardTab extends React.Component {
     }
 
     load() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractorView} = storage.is;
-        if (isContractorView) {
-            const {is: {isContractor,}, loggedContractor} = storage;
-            let {selectedContractorSite, selectedContractorClient} = storage.selected;
-
-            return contractorStore.findByIdHRDashboardStatsByLogged(loggedContractor);
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgDashboardStatsByLogged();
+    }
 
     render() {
         const {data} = this.state;

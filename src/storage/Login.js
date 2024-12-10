@@ -6,12 +6,12 @@ import {is, load, logout, update} from './';
 class Login {
 
     get currApp() {
-        const {isLoggedInAuth, isEmployee, isUser, isContractor} = is;
+        const {isLoggedInAuth, isEmployee, isUser, isContractorAuth} = is;
         if (!isLoggedInAuth) {
             return null;
         }
 
-        if (isContractor) {
+        if (isContractorAuth) {
             return firebase_app_2;
         } else {
             return firebase_app_1;
@@ -19,12 +19,12 @@ class Login {
     }
 
     get currAuth() {
-        const {isLoggedInAuth, isEmployee, isUser, isContractor} = is;
+        const {isLoggedInAuth, isEmployee, isUser, isContractorAuth} = is;
         if (!isLoggedInAuth) {
             return null;
         }
 
-        if (isContractor) {
+        if (isContractorAuth) {
             return auth2;
         }
         if (isEmployee) {
@@ -193,7 +193,7 @@ class Login {
 
         }
 
-        if (is.isContractor) {
+        if (is.isContractorAuth) {
             let {contractor} = loggedUser.user.data;
             if (!contractor.data) {
                 contractor = {id: contractor.id, data: contractor};

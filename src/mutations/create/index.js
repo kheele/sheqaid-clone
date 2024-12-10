@@ -66,6 +66,10 @@ export const insertErrorReporting = create("error-reporting", null, input => {
     // });
 });
 export const insertUser = create("users");
+export const insertClient = create("clients");
+export const insertProject = create("projects");
+export const insertSector = create("sectors");
+export const insertSite = create("sites");
 
 //Assets
 export const insertAsset = create("assets");
@@ -156,5 +160,13 @@ export const insertSettings = create("settings");
 export const insertNotificationSettings = create("notification-settings");
 export const insertContractor = create("contractors");
 export const insertNCR = create("ncr");
+
+//HR
+export const insertDepartment = create("departments");
+export const insertJobCategory = create("job-categories");
+export const insertJobPosition = create("job-positions");
+export const insertTeam = create("teams");
+export const insertPPE = create("ppe-types");
+export const insertPPEItem = create("ppe-items");
 
 //151

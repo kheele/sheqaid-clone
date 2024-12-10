@@ -5,12 +5,6 @@ import {computed, observable} from "mobx";
 
 import {PageTitle} from "components";
 
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
-import contractorStore from "mutations/all/Contractor";
-
 import {Permissions} from 'utils/Utils';
 import {Button} from 'components/inputs';
 import AList from "views/AList";
@@ -23,6 +17,7 @@ import {PrDPDialog} from "../PrDPs";
 import {IDOrPassportDialog} from "../IDOrPassports";
 import {WorkPermitsDialog} from '../WorkPermits';
 import {LicensesDialog} from "../Licenses";
+import {findByIdOrgDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 
 // </editor-fold>
 
@@ -123,42 +118,8 @@ class Tab extends AList {
     }
 
     load() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractorView} = storage.is;
-        if (isContractorView) {
-            const {is: {isContractor,}, loggedContractor} = storage;
-            let {selectedContractorSite, selectedContractorClient} = storage.selected;
-
-            return contractorStore.findByIdHRDashboardStatsByLogged(loggedContractor);
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgDashboardStatsByLogged();
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onViewDialog, onChangeMoreOptions">
     onViewDialog(evt, el) {

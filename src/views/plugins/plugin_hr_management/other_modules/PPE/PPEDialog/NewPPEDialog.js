@@ -6,13 +6,7 @@ import {observable} from 'mobx';
 import Form from '../../../../../../utils/Form';
 
 import {ANewDialog} from '../../../../../../components/dialogs';
-import {
-    ClearableInput, ProfilePic, RowOrgs,
-    SelectClientInput, SelectGenderInput,
-    SelectProjectInput,
-    SelectSiteInput,
-    UploadButton
-} from '../../../../../../components/inputs';
+import {ClearableInput, RowOrgs, UploadButton} from '../../../../../../components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
@@ -21,7 +15,7 @@ import {
 import {FormControls, Row} from '../../../../../../components/FormComponents';
 
 import style from "./NewPPEDialog.lazy.css";
-import insertPPE from "../../../../../../mutations/all/PPE/insertPPE";
+import insertPPE from "mutations/all/PPE/insertPPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -209,7 +203,8 @@ class Controls extends React.Component {
                 >
                     <ClearableInput name="name" type="text" placeholder="PPE Type"
                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="unit" type="text" placeholder="Measurement Unit" className="col-lg-12 form-control"
+                    <ClearableInput name="unit" type="text" placeholder="Measurement Unit"
+                                    className="col-lg-12 form-control"
                                     onChange={this.form.onChange}/>
                     <ClearableInput name="duration_type" type="radio" placeholder="Duration Type" vertical
                                     className="col-lg-12 form-control" onChange={this.form.onChange}

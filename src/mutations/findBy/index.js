@@ -9,4 +9,8 @@ const findBy = path => async (id) => {
     }
 };
 
-export const findByNameZone = findById("zone");
+//HR
+export const findByDepartment = findBy("departments");
+export const findByJobCategory = findBy("job-categories");
+export const findByJobPosition = findBy("job-positions");
+export const findByTeam = findBy("teams");

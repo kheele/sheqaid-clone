@@ -1,9 +1,62 @@
 import {computed} from 'mobx';
 import {computedFn} from "mobx-utils";
 
-import {list, selected, find} from './';
+import {find, list, selected} from './';
 
 class Is {
+
+    isClientBlacklisted = computedFn((val) => {
+        if (!val) return false;
+        const {isLoggedClient} = is;
+        if (isLoggedClient) {
+            return false;
+        }
+        const {client_blacklist = []} = this.storage.loggedUser.user.data;
+        return client_blacklist.map(v => v.id || v).contains(val.id);
+    }, true);
+    isProjectBlacklisted = computedFn((val) => {
+        if (!val) return false;
+        const {isLoggedProject} = is;
+        if (isLoggedProject) {
+            return false;
+        }
+        const {project_blacklist = []} = this.storage.loggedUser.user.data;
+        return project_blacklist.map(v => v.id || v).contains(val.id);
+    }, true);
+    isSiteBlacklisted = computedFn((val) => {
+        if (!val) return false;
+        const {isLoggedSite} = is;
+        if (isLoggedSite) {
+            return false;
+        }
+        const {site_blacklist = []} = this.storage.loggedUser.user.data;
+        return site_blacklist.map(v => v.id || v).contains(val.id);
+    }, true);
+    hasModuleSignatureSettings = computedFn((plugin, module) => !!find.findModuleSignatureSettings(plugin, module), true);
+    hasModuleSignatureSettingsSHEQ = computedFn((module) => this.hasModuleSignatureSettings('plugin_sheq_assist', module), true);
+    hasModuleSignatureSettingsHR = computedFn((module) => this.hasModuleSignatureSettings('plugin_hr_management', module), true);
+    hasModuleSignatureSettingsExtra = computedFn((module) => this.hasModuleSignatureSettings('plugin_extra', module), true);
+    hasModuleSignatureSettingsClaims = computedFn((module) => this.hasModuleSignatureSettings('plugin_claim_management', module), true);
+    hasModuleSignatureSettingsEmployeeOwning = computedFn((plugin, module) => {
+        const signatureSettings = find.findModuleSignatureSettings(plugin, module);
+        if (!signatureSettings) return false;
+        const {data: {is_employee_owning}} = signatureSettings;
+        return is_employee_owning;
+    }, true);
+    hasModuleSignatureSettingsEmployeeOwningSHEQ = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_sheq_assist', module), true);
+    hasModuleSignatureSettingsEmployeeOwningHR = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_hr_management', module), true);
+    hasModuleSignatureSettingsEmployeeOwningExtra = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_extra', module), true);
+    hasModuleSignatureSettingsEmployeeOwningClaims = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_claim_management', module), true);
+    hasModuleSignatureSettingsNotEmployeeOwning = computedFn((plugin, module) => {
+        const signatureSettings = find.findModuleSignatureSettings(plugin, module);
+        if (!signatureSettings) return false;
+        const {data: {is_employee_owning}} = signatureSettings;
+        return !is_employee_owning;
+    }, true);
+    hasModuleSignatureSettingsNotEmployeeOwningSHEQ = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_sheq_assist', module), true);
+    hasModuleSignatureSettingsNotEmployeeOwningHR = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_hr_management', module), true);
+    hasModuleSignatureSettingsNotEmployeeOwningExtra = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_extra', module), true);
+    hasModuleSignatureSettingsNotEmployeeOwningClaims = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_claim_management', module), true);
 
     @computed
     get isLoadedCountries() {
@@ -47,9 +100,9 @@ class Is {
     @computed
     get isTrial() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 const {account_type} = selectedContractorSite.site.company;
                 return !account_type || account_type === 'Trial';
             }
@@ -69,9 +122,9 @@ class Is {
     @computed
     get isConsultant() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 const {consultant} = selectedContractorSite.site.company;
                 return consultant;
             }
@@ -84,9 +137,9 @@ class Is {
     @computed
     get isNoProjectsUndefined() {
         if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 const {no_projects} = selectedContractorSite.site.company;
                 return no_projects === null || no_projects === undefined;
             }
@@ -99,9 +152,9 @@ class Is {
     @computed
     get isNoProjects() {
         if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 const {no_projects} = selectedContractorSite.site.company;
                 return no_projects;
             }
@@ -114,9 +167,9 @@ class Is {
     @computed
     get hasProjects() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 const {no_projects} = selectedContractorSite.site.company;
                 return this.isConsultant || !no_projects;
             }
@@ -130,7 +183,7 @@ class Is {
     get shouldSetupPermissions() {
         if (isAdminApp || !this.isLoggedIn) return false;
         const {selectedClientModules: {list}} = selected;
-        if (this.isContractor || this.isEmployee || list.isEmpty()) {
+        if (this.isContractorAuth || this.isEmployee || list.isEmpty()) {
             return false;
         }
 
@@ -151,9 +204,9 @@ class Is {
     @computed
     get isLoggedClient() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 return !!selectedContractorSite.client;
             }
             return false;
@@ -172,9 +225,9 @@ class Is {
     @computed
     get isLoggedProject() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 return !!selectedContractorSite.project;
             }
             return false;
@@ -187,9 +240,9 @@ class Is {
     @computed
     get isLoggedSite() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
-            if(selectedContractorSite) {
+            if (selectedContractorSite) {
                 return !!selectedContractorSite.site;
             }
             return false;
@@ -210,13 +263,14 @@ class Is {
     }
 
     @computed
-    get isContractor() {
+    get isContractorAuth() {
         if (isAdminApp || !this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
         const {claims: {aud, access_type}} = this.storage.idTokenResult;
         return access_type === 'ContractorUser' || aud === "sheqassist-8e36a";
     }
+
 //
     @computed
     get isContractorView() {
@@ -227,7 +281,7 @@ class Is {
     @computed
     get isContractorViewVisited() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        return this.isContractorView && !this.isContractor;
+        return this.isContractorView && !this.isContractorAuth;
     }
 
     @computed
@@ -288,7 +342,7 @@ class Is {
     @computed
     get hasPaymentInterval() {
         if (isAdminApp || !this.isLoggedIn) return false;
-        if(this.isContractor) {
+        if (this.isContractorAuth) {
             return false;
         }
         if (this.isConsultant) {
@@ -303,36 +357,6 @@ class Is {
             return !!payment_interval;
         }
     }
-
-    isClientBlacklisted = computedFn((val) => {
-        if (!val) return false;
-        const {isLoggedClient} = is;
-        if (isLoggedClient) {
-            return false;
-        }
-        const {client_blacklist = []} = this.storage.loggedUser.user.data;
-        return client_blacklist.map(v => v.id || v).contains(val.id);
-    }, true);
-
-    isProjectBlacklisted = computedFn((val) => {
-        if (!val) return false;
-        const {isLoggedProject} = is;
-        if (isLoggedProject) {
-            return false;
-        }
-        const {project_blacklist = []} = this.storage.loggedUser.user.data;
-        return project_blacklist.map(v => v.id || v).contains(val.id);
-    }, true);
-
-    isSiteBlacklisted = computedFn((val) => {
-        if (!val) return false;
-        const {isLoggedSite} = is;
-        if (isLoggedSite) {
-            return false;
-        }
-        const {site_blacklist = []} = this.storage.loggedUser.user.data;
-        return site_blacklist.map(v => v.id || v).contains(val.id);
-    }, true);
 
     isSiteInProject(val, projectVal) {
         if (!projectVal || projectVal === 'All') {
@@ -352,46 +376,6 @@ class Is {
             }
         }
     }
-
-    hasModuleSignatureSettings = computedFn((plugin, module) => !!find.findModuleSignatureSettings(plugin, module), true);
-
-    hasModuleSignatureSettingsSHEQ = computedFn((module) => this.hasModuleSignatureSettings('plugin_sheq_assist', module), true);
-
-    hasModuleSignatureSettingsHR = computedFn((module) => this.hasModuleSignatureSettings('plugin_hr_management', module), true);
-
-    hasModuleSignatureSettingsExtra = computedFn((module) => this.hasModuleSignatureSettings('plugin_extra', module), true);
-
-    hasModuleSignatureSettingsClaims = computedFn((module) => this.hasModuleSignatureSettings('plugin_claim_management', module), true);
-
-    hasModuleSignatureSettingsEmployeeOwning = computedFn((plugin, module) => {
-        const signatureSettings = find.findModuleSignatureSettings(plugin, module);
-        if (!signatureSettings) return false;
-        const {data: {is_employee_owning}} = signatureSettings;
-        return is_employee_owning;
-    }, true);
-
-    hasModuleSignatureSettingsEmployeeOwningSHEQ = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_sheq_assist', module), true);
-
-    hasModuleSignatureSettingsEmployeeOwningHR = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_hr_management', module), true);
-
-    hasModuleSignatureSettingsEmployeeOwningExtra = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_extra', module), true);
-
-    hasModuleSignatureSettingsEmployeeOwningClaims = computedFn((module) => this.hasModuleSignatureSettingsEmployeeOwning('plugin_claim_management', module), true);
-
-    hasModuleSignatureSettingsNotEmployeeOwning = computedFn((plugin, module) => {
-        const signatureSettings = find.findModuleSignatureSettings(plugin, module);
-        if (!signatureSettings) return false;
-        const {data: {is_employee_owning}} = signatureSettings;
-        return !is_employee_owning;
-    }, true);
-
-    hasModuleSignatureSettingsNotEmployeeOwningSHEQ = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_sheq_assist', module), true);
-
-    hasModuleSignatureSettingsNotEmployeeOwningHR = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_hr_management', module), true);
-
-    hasModuleSignatureSettingsNotEmployeeOwningExtra = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_extra', module), true);
-
-    hasModuleSignatureSettingsNotEmployeeOwningClaims = computedFn((module) => this.hasModuleSignatureSettingsNotEmployeeOwning('plugin_claim_management', module), true);
 
 }
 

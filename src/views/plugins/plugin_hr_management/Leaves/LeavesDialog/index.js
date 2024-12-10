@@ -9,11 +9,6 @@ import ExportDialog from '../ExportDialog.js';
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
-
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import LeavesRenderRow from "./LeavesRenderRow";
 import {THead} from "components/tables";
 import {Button, ClearableInput} from "components/inputs";
@@ -22,8 +17,9 @@ import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave
 import ProfileUserDialog from "../../../../default/Users/ProfileDialog";
 import EditUserDialog from "../../../../default/Users/EditDialog";
 import NewEmployeeDialog from "../../Employees/forms/NewDialog";
-import contractorStore from "mutations/all/Contractor";
 import TabView from "./TabView";
+import {findByIdOrgLeavesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+import {findByIdOrgLeavesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 
 // </editor-fold>
 
@@ -116,78 +112,15 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-
-        if (isContractorView) {
-            return contractorStore.findByIdHRLeavesDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRLeavesDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRLeavesDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRLeavesDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRLeavesDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRLeavesDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRLeavesDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRLeavesDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRLeavesDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgLeavesDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isContractorView) {
-            return contractorStore.findByIdHRLeavesDateRangeDashboardStatsByLogged();
-        } else {
-            if (isConsultant) {
-                console.log('load', 'isConsultant')
-                if (selectedSite) {
-                    console.log('load', 'selectedSite')
-                    return siteStore.findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    console.log('load', 'selectedProject')
-                    return projectStore.findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedProject);
-                } else if (selectedClient) {
-                    console.log('load', 'selectedClient')
-                    return clientStore.findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedClient);
-                } else {
-                    console.log('load', 'company')
-                    return companyStore.findByIdHRLeavesDateRangeDashboardStatsByLogged();
-                }
-            } else if (!isNoProjects) {//client with projects
-                if (selectedSite) {
-                    return siteStore.findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedSite);
-                } else if (selectedProject) {
-                    return projectStore.findByIdHRLeavesDateRangeDashboardStatsByLogged(selectedProject);
-                } else {
-                    return companyStore.findByIdHRLeavesDateRangeDashboardStatsByLogged();
-                }
-            } else {//client with no projects
-                return companyStore.findByIdHRLeavesDateRangeDashboardStatsByLogged();
-            }
-        }
-    };
+        return findByIdOrgLeavesDateRangeDashboardStatsByLogged();
+    }
 
     //</editor-fold>
 

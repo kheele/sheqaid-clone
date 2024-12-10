@@ -11,37 +11,38 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import employeeStore from "mutations/all/Employee";
 import Divider from "@mui/material/Divider";
 import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
 import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
+import {findByIdHRCounselingsDashboardStats} from "mutations/employeeHRDashboard";
+import {findByIdHRCounselingsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 
 //<editor-fold desc="ProfileDialog">
 @observer
 class ProfileDialog extends AProfileDialog {
-	pageKey = "ProfileCounselingDialog";
-	className = "AProfileEmployeeDocDialog";
-	findById = findByIdEmployee;
+    pageKey = "ProfileCounselingDialog";
+    className = "AProfileEmployeeDocDialog";
+    findById = findByIdEmployee;
 
-	constructor(props) {
-		super(props, style);
-	}
+    constructor(props) {
+        super(props, style);
+    }
 
-	title() {
-		return "Counselings";
-	}
+    get topButtonsHiddenDelete() {
+        return true;
+    }
 
-	onSaveAsPDF(e, btn) {
-		this.refs.controls.onSaveAsPDF(e, btn);
-	}
+    get controls() {
+        return Controls;
+    }
 
-	get topButtonsHiddenDelete() {
-		return true;
-	}
+    title() {
+        return "Counselings";
+    }
 
-	get controls() {
-		return Controls;
-	}
+    onSaveAsPDF(e, btn) {
+        this.refs.controls.onSaveAsPDF(e, btn);
+    }
 }
 
 //</editor-fold>
@@ -49,84 +50,84 @@ class ProfileDialog extends AProfileDialog {
 @observer
 class Controls extends AEmployeeDocControls {
 
-	listName = "counselling_list";
-	onUpdate = updateEmployeeCounselling;
-	NewDialog = NewDialog;
-	EditDialog = EditDialog;
-	ProfilePDFReader = ProfilePDFReader;
+    listName = "counselling_list";
+    onUpdate = updateEmployeeCounselling;
+    NewDialog = NewDialog;
+    EditDialog = EditDialog;
+    ProfilePDFReader = ProfilePDFReader;
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	//<editor-fold desc="loadDashboardTopStats">
-	async loadDashboardTopStats(id) {
-		return employeeStore.findByIdHRCounselingsDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats(id) {
+        return findByIdHRCounselingsDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="loadDashboardBottomStats">
-	async loadDashboardBottomStats(id) {
-		return employeeStore.findByIdHRCounselingsDateRangeDashboardStats(id);
-	}
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats(id) {
+        return findByIdHRCounselingsDateRangeDashboardStats(id);
+    }
 
-	//</editor-fold>
+    //</editor-fold>
 
-	renderItem(item, n, onClick) {
-		const {
-			props: {
-				onFormNext, onFormBack, onFormOpen
-			}
-		} = this;
-		const {
-			created_at,
-			employee,
-			responsible_person,
-			//2
-			types,
-			reasons,
-			incident_desc,
-			corrective_actions,
-			counselling_hrs_to_complete,
-			expiry_date,
-			witness_list,
-			//3
-			doc
-		} = item.data || item;
+    renderItem(item, n, onClick) {
+        const {
+            props: {
+                onFormNext, onFormBack, onFormOpen
+            }
+        } = this;
+        const {
+            created_at,
+            employee,
+            responsible_person,
+            //2
+            types,
+            reasons,
+            incident_desc,
+            corrective_actions,
+            counselling_hrs_to_complete,
+            expiry_date,
+            witness_list,
+            //3
+            doc
+        } = item.data || item;
 
-		return <div className="row item-wrapper padding-t-10 h-full">
-			<div className="row margin-l-10 margin-r-10 row-details">
-				<ProfileField title="Responsible Person" name="responsible_person" value={responsible_person}
-				              renderer={v => v.lname + ' ' + v.fname}
-				              className="col-lg-12"/>
-				<ProfileField title="Counseling Types" name="types" value={types}
-				              renderer={v => v.map(v => v).join(', ')} className="col-lg-12"/>
-				<ProfileField title="Reasons For Counseling" name="reasons" value={reasons}
-				              renderer={v => v.map(v => v).join(', ')} className="col-lg-12"/>
-				<ProfileField title="Description Of Incident" name="incident_desc" value={incident_desc} type="textarea"
-				              className="col-lg-12"/>
-				<ProfileField title="Corrective Actions" name="corrective_actions" value={corrective_actions}
-				              type="textarea" className="col-lg-12"/>
-				<ProfileField title="Counseling Hours To Complete" name="counselling_hrs_to_complete"
-				              value={counselling_hrs_to_complete} className="col-lg-4"/>
-				<ProfileField title="Completion Date" name="expiry_date" type="date" value={expiry_date}
-				              className="col-lg-4"/>
-				<UploadButton
-					name="doc"
-					defaultValue={doc}
-					buttonTitle="Counseling Attachment"
-					type={['PDF', 'Word', 'Image']}
-					showOnlyIcon
-					readonly
-					className="col-lg-4"
-				/>
-				<Divider/>
-				<label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Witness List</label>
-				<NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
-			</div>
-		</div>;
-	}
+        return <div className="row item-wrapper padding-t-10 h-full">
+            <div className="row margin-l-10 margin-r-10 row-details">
+                <ProfileField title="Responsible Person" name="responsible_person" value={responsible_person}
+                              renderer={v => v.lname + ' ' + v.fname}
+                              className="col-lg-12"/>
+                <ProfileField title="Counseling Types" name="types" value={types}
+                              renderer={v => v.map(v => v).join(', ')} className="col-lg-12"/>
+                <ProfileField title="Reasons For Counseling" name="reasons" value={reasons}
+                              renderer={v => v.map(v => v).join(', ')} className="col-lg-12"/>
+                <ProfileField title="Description Of Incident" name="incident_desc" value={incident_desc} type="textarea"
+                              className="col-lg-12"/>
+                <ProfileField title="Corrective Actions" name="corrective_actions" value={corrective_actions}
+                              type="textarea" className="col-lg-12"/>
+                <ProfileField title="Counseling Hours To Complete" name="counselling_hrs_to_complete"
+                              value={counselling_hrs_to_complete} className="col-lg-4"/>
+                <ProfileField title="Completion Date" name="expiry_date" type="date" value={expiry_date}
+                              className="col-lg-4"/>
+                <UploadButton
+                    name="doc"
+                    defaultValue={doc}
+                    buttonTitle="Counseling Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-4"
+                />
+                <Divider/>
+                <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Witness List</label>
+                <NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
+            </div>
+        </div>;
+    }
 
 }
 

@@ -8,16 +8,13 @@ import Form from '../../../../../../utils/Form';
 import {Dates, execWhen} from "../../../../../../utils/Utils";
 
 import {
-    Button,
-    ClearableInput, DateRangeInput,
-    ProofUploadButton,
-    SelectClientInput, SelectEmployeeInput,
-    SelectJobCategoryInput, SelectJobPositionInput,
+    ClearableInput,
+    SelectClientInput,
+    SelectEmployeeInput,
     SelectProjectInput,
     SelectSiteInput,
-    SelectToolboxTalkCourseInput,
     SelectTrainingMatixInput,
-    SelectUserInput, UploadButton
+    UploadButton
 } from '../../../../../../components/inputs';
 import {SelectTable, THead} from '../../../../../../components/tables';
 import ANewDialog from '../../../../../../components/dialogs/ANewDialog';
@@ -25,7 +22,7 @@ import ANewDialog from '../../../../../../components/dialogs/ANewDialog';
 import style from "./NewTrainingRegisterDialog.lazy.css";
 import {FormControls, Row} from "../../../../../../components/FormComponents";
 import TrainingPlanListByCourse from "../../../../../../components/FormListComponents/TrainingPlanListByCourse";
-import insertTrainingRegister from "../../../../../../mutations/all/TrainingRegister/insertTrainingRegister";
+import insertTrainingRegister from "mutations/all/TrainingRegister/insertTrainingRegister";
 // </editor-fold>
 
 const CONST_NEGATIVE_TIME = "negativeTime";
@@ -428,8 +425,8 @@ class Controls extends React.Component {
                                 placeholder="Institution Conducting Training" className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
                 <SelectEmployeeInput ref="trainer" name="trainer" placeholder="Trainer..." showOtherPerson
-                                 required
-                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                                     required
+                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

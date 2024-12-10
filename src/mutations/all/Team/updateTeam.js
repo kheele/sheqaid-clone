@@ -5,7 +5,6 @@ import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityTeam} from "mutations/types.d.ts";
-import findByIdJobPosition from "../JobPosition/findByIdJobPosition";
 import findByIdTeam from "./findByIdTeam";
 import updateProxyTeamPPE from "../ProxyTeamPPE/updateProxyTeamPPE";
 import insertProxyTeamPPE from "../ProxyTeamPPE/insertProxyTeamPPE";
@@ -80,22 +79,22 @@ export default async (attrs: EntityTeam) => {
         return "NOT_FOUND";
     }
 
-    if(employee_list) {
+    if (employee_list) {
         await Promise.all(employee_list.map(async item => {
             return updateEmployee({...item, team_id: id});
         }));
     }
-    if(ppe_type_list) {
+    if (ppe_type_list) {
         await Promise.all(ppe_type_list.map(async item => {
-            if(item.id) {
+            if (item.id) {
                 return updateProxyTeamPPE(item);
             } else {
                 return insertProxyTeamPPE(item);
             }
         }));
     }
-    
-    if('removed' in attrs) {
+
+    if ('removed' in attrs) {
         attrs.status = removed ? 'Inactive' : 'Active';
         delete attrs.removed;
     }

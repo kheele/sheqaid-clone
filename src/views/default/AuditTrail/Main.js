@@ -7,23 +7,23 @@ import Form from 'utils/Form';
 import {Dates} from "utils/Utils";
 import APageListReadWrite from "../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
-import {ActionsButton, Button, ClearableInput, SelectUserInput} from 'components/inputs';
+import {Button, ClearableInput, SelectUserInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import style from "./Main.lazy.css";
+import {listAuditLogs} from "mutations/listByLogged";
 
 @observer
 class Main extends React.Component {
     static key = 'AuditTrail';
 
-    path = "audit-trail/";
     pageKey = "AuditTrail";
 
     @observable
     state = {
         lists: {
             times: ["Today", "Yesterday", "This Week", "Last Week", "This Month", "Last Month", "This Year"],
-            actions: ["Created", "Edited", "Removed", "Uploaded", "Printed"],
+            actions: ["Created", "Updated", "Removed", "Uploaded", "Printed"],
             tbl: [
                 {label: "Company", value: "plugin_sheq_assist_clients", checked: false},
                 {label: "Project", value: "plugin_sheq_assist_projects", checked: false},
@@ -50,6 +50,8 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
 
+        this.onLoadList = this.onLoadList.bind(this);
+
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
@@ -71,6 +73,45 @@ class Main extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
+    //<editor-fold desc="onLoadList">
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            date_from,
+            date_to,
+            //
+            action,
+            tbl,
+            //
+            user_id,
+            contractor_user_id,
+            supervisor_id,
+            employee_id,
+            // logged_user_access_type,
+        } = filterData || {};
+
+        return listAuditLogs({
+            date_from,
+            date_to,
+            //
+            action,
+            tbl,
+            //
+            user_id,
+            contractor_user_id,
+            supervisor_id,
+            employee_id,
+            // logged_user_access_type,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        }).then((res) => {
+            console.log('onLoadList res', res)
+            return res;
+        });
+    }
+
+    //</editor-fold>
 
     onViewStatus(e, elem) {
         const {idx} = elem.props;
@@ -184,32 +225,30 @@ class Main extends React.Component {
         return <THead>
             <div className="td fixed-flex min-w-140">Date Created</div>
             <div className="td fixed-flex min-w-140">Time Created</div>
-            <div className="td fixed-flex min-w-260">Administrator / User</div>
-            <div className="td fixed-flex min-w-140">Action</div>
+            <div className="td fixed-flex min-w-360">Administrator / User</div>
+            <div className="td fixed-flex min-w-300">Action</div>
             <div className="td">Log</div>
-            <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+            {/*<div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>*/}
+            <div className="td fixed-flex padding-l-0 padding-r-0 min-w-0"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
         let item = this.refs.root.list[n];
         const {id, data: {tbl, record_name, company_id, user, record, action, created_at}} = item;
-        const createLog = () => {
-            //Thamahane Kheele Created the user (User 3) on 01-03-2020
-            return <div className="td">
-                <b className="margin-r-5">{action.toTitleCase()}</b> {record_name.singular + (record.id ? (" (" + record.id + ")") : "")}
-            </div>;
-        };
-//        console.log('audit-trail', item, JSON.stringify(item))
-        return <TRow key={"item-" + n}>
+
+        return <TRow key={"item-" + n} className="w-full min-h-40">
             <div className="td fixed-flex min-w-140">{Dates.formatDate(created_at)}</div>
             <div className="td fixed-flex min-w-140">{Dates.formatTime(created_at)}</div>
-            <div className="td fixed-flex min-w-260">{user.fname + ' ' + user.lname}</div>
-            <div className="td fixed-flex min-w-140">{action.toTitleCase()}</div>
-            {createLog()}
-            <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+            <div className="td fixed-flex min-w-360">{user.full_name}</div>
+            <div className="td fixed-flex min-w-300">{action.toTitleCase()}</div>
+            <div className="td">
+                <b className="margin-r-5">{action.toTitleCase()}</b> {record_name.singular + (record.id ? (" (" + record.id + ")") : "")}
             </div>
+            {/*<div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">*/}
+            {/*    <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>*/}
+            {/*</div>*/}
+            <div className="td fixed-flex padding-l-0 padding-r-0 min-w-0"/>
         </TRow>;
     }
 
@@ -222,7 +261,7 @@ class Main extends React.Component {
             pageId={this.pageKey + "-page"}
             pageTitle="Audit Log"
             pageTitleSingular="audit log"
-            path={this.path}
+            onLoadList={this.onLoadList}
             renderLeftButtons={this.renderLeftButtons}
             renderPopoverOptions={this.renderPopoverOptions}
             renderFilterNode={this.renderFilterNode}

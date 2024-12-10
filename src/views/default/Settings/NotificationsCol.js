@@ -2,8 +2,8 @@ import {observer} from 'mobx-react';
 import ACol from "./ACol";
 import ARow from "./ARow";
 import {NewUserListTable} from "../../../components/FormTableComponents";
-import {insertNotificationSettings} from "../../../mutations/create";
-import {deleteNotificationSettings} from "../../../mutations/delete";
+import {insertNotificationSettings} from "mutations/create";
+import {deleteNotificationSettings} from "mutations/delete";
 
 @observer
 class NotificationsCol extends ACol {

@@ -9,6 +9,9 @@ const listByLogged = path => async (args) => {
     }
 };
 
+//General
+export const listAuditLogs = listByLogged("audit-logs");
+
 //Assets
 export const listAssets = listByLogged("assets");
 export const listAssetCalibrationRecords = listByLogged("assets/calibration-records");

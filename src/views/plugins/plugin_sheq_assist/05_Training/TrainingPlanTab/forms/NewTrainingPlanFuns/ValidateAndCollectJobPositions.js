@@ -1,7 +1,5 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
-import listAllActiveEmployeeByJobPosition
-    from "../../../../../../../mutations/all/EmployeeActive/listAllActiveEmployeeByJobPosition";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ValidateAndCollectJobPositions">
@@ -88,7 +86,7 @@ class ValidateAndCollectJobPositions {
                         infoDialog.open('At least 1 Course is required');
                         return;
                     }
-                    
+
                     course_list.forEach(({course}) => {
                         process({data, job_position, course, year, employee_list_exception,});
                     });

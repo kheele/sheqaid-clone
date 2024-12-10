@@ -5,21 +5,18 @@ import {observable} from "mobx";
 
 import ExportDialog from '../ExportDialog.js';
 
-import {NewDialog, EditDialog, ProfileDialog} from '../forms';
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from 'views/plugins/plugin_hr_management/AEmployeeDocDialog';
-
-import siteStore from "mutations/all/Site";
-import projectStore from "mutations/all/Project";
-import clientStore from "mutations/all/Client";
-import companyStore from "mutations/all/Company";
 import JobAppointmentsRenderRow from "./JobAppointmentsRenderRow";
 import {THead} from "components/tables";
-import {
-    ClearableInput,
-    SelectEmployeeInput,
-} from "components/inputs";
+import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
+import {
+    findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged
+} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgJobAppointmentsDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
+
 // </editor-fold>
 
 @observer
@@ -39,7 +36,10 @@ class Dialog extends AEmployeeDocDialog {
     @observable
     selfState = {
         lists: {
-            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {label: '1 month', value: 1}, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
+            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {
+                label: '1 month',
+                value: 1
+            }, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
         }
     };
     // </editor-fold>
@@ -48,6 +48,7 @@ class Dialog extends AEmployeeDocDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
@@ -63,88 +64,41 @@ class Dialog extends AEmployeeDocDialog {
             date,
         };
     }
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardTopStats">
     async loadDashboardTopStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isConsultant) {
-            console.log('load', 'isConsultant')
-            if (selectedSite) {
-                console.log('load', 'selectedSite')
-                return siteStore.findByIdHRJobAppointmentsDashboardStatsByLogged(selectedSite);
-            } else if (selectedProject) {
-                console.log('load', 'selectedProject')
-                return projectStore.findByIdHRJobAppointmentsDashboardStatsByLogged(selectedProject);
-            } else if (selectedClient) {
-                console.log('load', 'selectedClient')
-                return clientStore.findByIdHRJobAppointmentsDashboardStatsByLogged(selectedClient);
-            } else {
-                console.log('load', 'company')
-                return companyStore.findByIdHRJobAppointmentsDashboardStatsByLogged();
-            }
-        } else if (!isNoProjects) {//client with projects
-            if (selectedSite) {
-                return siteStore.findByIdHRJobAppointmentsDashboardStatsByLogged(selectedSite);
-            } else if (selectedProject) {
-                return projectStore.findByIdHRJobAppointmentsDashboardStatsByLogged(selectedProject);
-            } else {
-                return companyStore.findByIdHRJobAppointmentsDashboardStatsByLogged();
-            }
-        } else {//client with no projects
-            return companyStore.findByIdHRJobAppointmentsDashboardStatsByLogged();
-        }
+        return findByIdOrgJobAppointmentsDashboardStatsByLogged();
     };
+
     //</editor-fold>
 
     //<editor-fold desc="loadDashboardBottomStats">
     async loadDashboardBottomStats() {
-        const {selectedClient, selectedProject, selectedSite} = storage.selected;
-        const {isConsultant, isNoProjects, isContractor, isContractorView} = storage.is;
-        if (isConsultant) {
-            console.log('load', 'isConsultant')
-            if (selectedSite) {
-                console.log('load', 'selectedSite')
-                return siteStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged(selectedSite);
-            } else if (selectedProject) {
-                console.log('load', 'selectedProject')
-                return projectStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged(selectedProject);
-            } else if (selectedClient) {
-                console.log('load', 'selectedClient')
-                return clientStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged(selectedClient);
-            } else {
-                console.log('load', 'company')
-                return companyStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged();
-            }
-        } else if (!isNoProjects) {//client with projects
-            if (selectedSite) {
-                return siteStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged(selectedSite);
-            } else if (selectedProject) {
-                return projectStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged(selectedProject);
-            } else {
-                return companyStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged();
-            }
-        } else {//client with no projects
-            return companyStore.findByIdHRJobAppointmentsDateRangeDashboardStatsByLogged();
-        }
-    };
+        return findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged();
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
         return <div className="controls grid-3 grid-gap-5 -margin-b-35 padding-r-10">
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="date" type="date" placeholder="Start Date..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control" onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+                                 onChange={onChange}/>
+            <ClearableInput name="date" type="date" placeholder="Start Date..." className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control"
+                            onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
         </div>;
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
-        if(view === 'Employee') {
+        if (view === 'Employee') {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
@@ -172,6 +126,7 @@ class Dialog extends AEmployeeDocDialog {
     renderItemAll({item, idx, view, onClick}) {
         return <JobAppointmentsRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
 }

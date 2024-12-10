@@ -6,6 +6,10 @@ import findById from "./findById";
 import list from "./list";
 import listByLogged from "./listByLogged";
 import exportExcel from "./exportExcel";
+import employeeHRDashboard from "./employeeHRDashboard";
+import employeeHRDateRangeDashboard from "./employeeHRDateRangeDashboard";
+import employeeOrgDashboard from "./employeeOrgDashboard";
+import employeeOrgDateRangeDashboard from "./employeeOrgDateRangeDashboard";
 
 export default {
     create,
@@ -16,4 +20,8 @@ export default {
     list,
     listByLogged,
     exportExcel,
+    employeeHRDashboard,
+    employeeHRDateRangeDashboard,
+    employeeOrgDashboard,
+    employeeOrgDateRangeDashboard,
 };

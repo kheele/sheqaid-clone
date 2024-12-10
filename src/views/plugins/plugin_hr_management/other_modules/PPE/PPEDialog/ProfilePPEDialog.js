@@ -1,12 +1,10 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
-
-import {Dates} from '../../../../../../utils/Utils';
 import {AProfileDialog} from '../../../../../../components/dialogs';
-import {ClearableInput, ProfileField, ProfilePic, RowOrgs, SelectGenderInput, UploadButton} from '../../../../../../components/inputs';
+import {ProfileField, RowOrgs, UploadButton} from '../../../../../../components/inputs';
 import {
     NewDepartmentListTable,
     NewJobPositionListTable,
@@ -15,8 +13,8 @@ import {
 import {FormControls, Row} from '../../../../../../components/FormComponents';
 
 import style from "./ProfilePPEDialog.lazy.css";
-import findByIdPPE from "../../../../../../mutations/all/PPE/findByIdPPE";
-import updatePPE from "../../../../../../mutations/all/PPE/updatePPE";
+import findByIdPPE from "mutations/all/PPE/findByIdPPE";
+import updatePPE from "mutations/all/PPE/updatePPE";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -30,12 +28,12 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "PPE Type";
-    }
-
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "PPE Type";
     }
 }
 

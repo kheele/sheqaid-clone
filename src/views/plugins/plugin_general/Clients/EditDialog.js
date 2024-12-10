@@ -9,7 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
-import updateClient from "mutations/all/Client/updateClient";
+import {updateClient} from "mutations/update";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -48,6 +48,10 @@ class Controls extends React.Component {
         this.onUploaded = this.onUploaded.bind(this);
 
         this.form = new Form();
+    }
+
+    get item() {
+        return this.props.state.item;
     }
 
     onUploaded(path) {
@@ -93,7 +97,7 @@ class Controls extends React.Component {
         progressDialog.open();
         updateClient({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            if(res === "DUP_CONTRACTOR_EMAIL") {
+            if (res === "DUP_CONTRACTOR_EMAIL") {
                 infoDialog.open("Another company is already using the Contractor Email Address provided.");
             } else {
                 onSaved && onSaved(data);
@@ -107,10 +111,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             progressDialog.close();
         });
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     render() {
@@ -161,8 +161,8 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}>
                 <SelectSectorInput name="sector_list" type="checkbox" placeholder="Sector(s)" defaultValue={sector_list}
-                                vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.sector_list} returnValue/>
+                                   vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange}
+                                   values={this.state.lists.sector_list} returnValue/>
             </Row>
             <Row
                 active={index === 3}
@@ -172,7 +172,8 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <ClearableInput name="contractor_email" type="text" placeholder="Contractor Email Address" defaultValue={contractor_email}
+                <ClearableInput name="contractor_email" type="text" placeholder="Contractor Email Address"
+                                defaultValue={contractor_email}
                                 desc="Used to link this company as a contractor of other companies when required."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>

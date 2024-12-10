@@ -11,22 +11,14 @@ import {
 } from 'views/plugins/utils';
 
 import {Dates, execWhen, ShouldUpdate} from "utils/Utils";
-import {
-    Button,
-    ClearableInput,
-    SelectEmployeeInput,
-} from 'components/inputs';
+import {Button, ClearableInput, SelectEmployeeInput,} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {FormControls, RiskRating, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "../../RAComponents/NewRiskAssessmentItemDialog.lazy.css";
-import updateBaselineRA from "../../../../../../mutations/all/HIRA_And_Opportunities/BaselineRA/updateBaselineRA";
-import updateBaselineRAListItem
-    from "../../../../../../mutations/all/HIRA_And_Opportunities/BaselineRAListItem/updateBaselineRAListItem";
-import insertBaselineRA from "../../../../../../mutations/all/HIRA_And_Opportunities/BaselineRA/insertBaselineRA";
-import insertBaselineRAListItem
-    from "../../../../../../mutations/all/HIRA_And_Opportunities/BaselineRAListItem/insertBaselineRAListItem";
+import updateBaselineRAListItem from "mutations/all/HIRA_And_Opportunities/BaselineRAListItem/updateBaselineRAListItem";
+import insertBaselineRAListItem from "mutations/all/HIRA_And_Opportunities/BaselineRAListItem/insertBaselineRAListItem";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -111,6 +103,18 @@ class Controls extends React.Component {
         this.form.addChangeMany(["frequency_1", "frequency_2", "frequency_3"], this.onChangeFrequency.bind(this));
         this.form.addChangeMany(["likelihood_1", "likelihood_2", "likelihood_3"], this.onChangeLikelihood.bind(this));
         this.form.addChangeMany(["risk_rating_1", "risk_rating_2", "risk_rating_3"], this.onChangeRiskRating.bind(this));
+    }
+
+    // </editor-fold>
+
+    get mainItem() {
+        return this.props.dialog.props.mainItem;
+    }
+
+    // </editor-fold>
+
+    get item() {
+        return this.props.state.item;
     }
 
     // </editor-fold>
@@ -227,7 +231,7 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -402,8 +406,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, item, mainItem} = this;
@@ -540,16 +542,6 @@ class Controls extends React.Component {
 
         onSaved(data);
         this.props.close();
-    }
-
-    // </editor-fold>
-
-    get mainItem() {
-        return this.props.dialog.props.mainItem;
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -818,15 +810,16 @@ class NewRiskControlMeasureListAdditionalTable extends ATableSavable {
 
     render() {
         return (<Table className="w-full-calc-add-10 h-auto padding-0 margin-0 -margin-l-10 -margin-t-5">
-        	<THead>
-        		<div className="td">Additional Risk Control Measure</div>
-        		<div className="td">Responsible Person</div>
-        		<div className="td fixed-flex min-w-120">Cost</div>
-        		<div className="td fixed-flex min-w-175">Due Date</div>
-        		<div className="td fixed-flex text-center padding-l-0 padding-r-0 min-w-60"></div>
-        	</THead>
-        	<TBody ref="body" title="Additional Risk Control Measures" renderItem={this.renderItem} onClick={this.onClick}
-        	       state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}/>
+            <THead>
+                <div className="td">Additional Risk Control Measure</div>
+                <div className="td">Responsible Person</div>
+                <div className="td fixed-flex min-w-120">Cost</div>
+                <div className="td fixed-flex min-w-175">Due Date</div>
+                <div className="td fixed-flex text-center padding-l-0 padding-r-0 min-w-60"></div>
+            </THead>
+            <TBody ref="body" title="Additional Risk Control Measures" renderItem={this.renderItem}
+                   onClick={this.onClick}
+                   state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}/>
         </Table>);
     }
 }
