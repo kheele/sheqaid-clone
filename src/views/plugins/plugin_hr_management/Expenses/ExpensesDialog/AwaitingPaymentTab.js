@@ -7,7 +7,7 @@ import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 
 // import style from "./AwaitingPaymentTab.lazy.css";
 import LoggedUserSettings from "utils/LoggedUserSettings";
-import updateEmployeeExpense from "mutations/all/EmployeeExpense/updateEmployeeExpense";
+import {updateEmployeeExpense} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ActiveTab">

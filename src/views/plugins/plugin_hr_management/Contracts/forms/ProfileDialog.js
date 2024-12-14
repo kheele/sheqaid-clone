@@ -12,9 +12,9 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
-import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeContract} from "mutations/update";
+import DocSignButton from "components/FormComponents/DocSignButton";
 import {findByIdHRContractsDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRContractsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 

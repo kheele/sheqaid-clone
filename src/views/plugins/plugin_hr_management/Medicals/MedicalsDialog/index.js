@@ -11,7 +11,7 @@ import MedicalsRenderRow from "./MedicalsRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput,} from "components/inputs";
 
-import updateEmployeeMedical from "mutations/all/EmployeeMedical/updateEmployeeMedical";
+import {updateEmployeeMedical} from "mutations/update";
 import {findByIdOrgMedicalsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgMedicalsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 

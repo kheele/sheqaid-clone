@@ -9,7 +9,7 @@ import CustomPersonalInfoDialog from '../dialogs/CustomPersonalInfoDialog';
 import {Button, ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import findByIdUser from "mutations/all/User/findByIdUser";
+import {findByIdUser} from "mutations/findById";
 import {execWhen} from "utils/UtilsFuns";
 
 @observer

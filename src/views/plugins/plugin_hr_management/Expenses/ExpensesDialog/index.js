@@ -14,7 +14,7 @@ import ExpensesRenderRow from "./ExpensesRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput} from "components/inputs";
 
-import updateEmployeeExpense from "mutations/all/EmployeeExpense/updateEmployeeExpense";
+import {updateEmployeeExpense} from "mutations/update";
 import TabView from "./TabView";
 import {findByIdOrgExpensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgExpensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";

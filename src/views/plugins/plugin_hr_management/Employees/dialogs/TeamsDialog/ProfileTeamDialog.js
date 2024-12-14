@@ -12,7 +12,7 @@ import style from "./ProfileTeamDialog.lazy.css";
 import {CircularProgress} from "@mui/material";
 import {findByIdTeam} from "mutations/findById";
 import EmployeesDialog from "../EmployeesDialog";
-import updateTeam from "mutations/all/Team/updateTeam";
+import {updateTeam} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

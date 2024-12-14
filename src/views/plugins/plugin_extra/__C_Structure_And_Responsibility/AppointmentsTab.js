@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed, extendObservable} from 'mobx';
+import {computed, extendObservable, observable} from 'mobx';
 
 import style from "./AppointmentsTab.lazy.css";
 
@@ -15,9 +15,10 @@ import {
     ClearableInput,
     SelectDepartmentInput,
     SelectEmployeeInput,
-    SelectJobPositionInput, SelectTeamInput
+    SelectJobPositionInput,
+    SelectTeamInput
 } from 'components/inputs';
-import {THead, TRow} from 'components/tables';
+import {THead} from 'components/tables';
 
 import NewDialog from './JobAppointments/forms/NewDialog';
 import EditDialog from './JobAppointments/forms/EditDialog';
@@ -28,8 +29,8 @@ import SignatureDialog from "components/dialogs/SignatureDialog";
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "components/ViewByButtons";
 import JobAppointmentsRenderRow from "./JobAppointments/JobAppointmentsDialog/JobAppointmentsRenderRow";
-import updateEmployeeJobAppointment
-    from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
+import {updateEmployeeJobAppointment} from "mutations/update";
+
 // </editor-fold>
 
 @observer
@@ -82,6 +83,12 @@ class AppointmentsTab extends React.Component {
 
     // </editor-fold>
 
+    @computed get isEmployee() {
+        return this.state.view === "Employee";
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="componentWillMount">
     componentWillMount() {
         style.use();
@@ -92,12 +99,6 @@ class AppointmentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
     componentWillUnmount() {
         style.unuse();
-    }
-
-    // </editor-fold>
-
-    @computed get isEmployee() {
-        return this.state.view === "Employee";
     }
 
     //<editor-fold desc="onLoadList">
@@ -150,7 +151,7 @@ class AppointmentsTab extends React.Component {
     }
 
     //</editor-fold>
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
@@ -164,13 +165,13 @@ class AppointmentsTab extends React.Component {
             ref = await execWhen(() => this.refs.viewButtonsRefBox);
         }
 
-        const {view: old_view, expiry_date: old_expiry_date, } = this.state;
+        const {view: old_view, expiry_date: old_expiry_date,} = this.state;
 
         console.log('setView', this);
         console.log('setView view', old_view, view);
         console.log('setView expiry_date', old_expiry_date, expiry_date);
 
-        if(old_view !== view || old_expiry_date !== expiry_date) {
+        if (old_view !== view || old_expiry_date !== expiry_date) {
             const filterWrapper = await execWhen(() => this.refs.root.refs.filterWrapper);
             if (filterWrapper.isOpen) {
                 await filterWrapper.close();
@@ -291,6 +292,7 @@ class AppointmentsTab extends React.Component {
             </Button>
         </>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
@@ -318,11 +320,15 @@ class AppointmentsTab extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className={`controls grid-4 grid-gap-5 padding-r-10 -margin-b-`}>
-            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control" onChange={onChange} add={false}/>
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control" onChange={onChange} add={false}/>
+            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control"
+                                   onChange={onChange} add={false}/>
+            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control"
+                                    onChange={onChange} add={false}/>
             <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control" onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control"
+                                 onChange={onChange}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+                                 onChange={onChange}/>
 
             <ClearableInput name="notes" type="text" placeholder="Notes" className="form-control" onChange={onChange}/>
 

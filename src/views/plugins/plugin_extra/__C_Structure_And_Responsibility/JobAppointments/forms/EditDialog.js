@@ -11,8 +11,8 @@ import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inpu
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
-import findByIdEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/findByIdEmployeeJobAppointment";
+import {updateEmployeeJobAppointment} from "mutations/update";
+import {findByIdEmployeeJobAppointment} from "mutations/findById";
 
 
 @observer
@@ -21,8 +21,6 @@ class EditDialog extends AEditDialog {
     className = "AEditEmployeeDocDialog";
     title = "Edit Job Appointment";
     removeById = updateEmployeeJobAppointment;
-    removeById = updateEmployeeJobAppointment ;
-    
 
     constructor(props) {
         super(props, style);
@@ -46,7 +44,7 @@ class EditDialog extends AEditDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -56,8 +54,7 @@ class Controls extends React.Component {
 
     @observable
     state = {
-        lists: {
-        }
+        lists: {}
     };
 
     constructor() {
@@ -66,6 +63,18 @@ class Controls extends React.Component {
         this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    @computed
+    get item() {
+        return this.props.state.item;
     }
 
     //<editor-fold desc="onFormSave">
@@ -162,10 +171,8 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props: {embeddedEmployee}}}} = this;
 
         if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
@@ -183,16 +190,6 @@ class Controls extends React.Component {
         this.props.close();
     }
 
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
-    }
-
     render() {
         if (!this.item) {
             return <CircularProgress className="fixed-center"/>;
@@ -205,9 +202,9 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, 
-                    doc, 
-                    employee, 
+                    created_at,
+                    doc,
+                    employee,
                     date, expiry_date, notes
                 }
             }
@@ -244,9 +241,13 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <ClearableInput ref="date" name="date" type="date" placeholder="Start Date..." defaultValue={date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput ref="date" name="date" type="date" placeholder="Start Date..." defaultValue={date}
+                                required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Expiry Date..."
+                                defaultValue={expiry_date} required className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

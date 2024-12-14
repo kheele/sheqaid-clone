@@ -6,15 +6,11 @@ import {observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
-import {
-    ClearableInput,
-    SelectPPETypeInput,
-    UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectPPETypeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewPPEItemDialog.lazy.css";
-import insertPPEItem from "mutations/all/PPE/insertPPEItem";
+import {insertPPEItem} from "mutations/create";
 import {Dates} from "utils/Dates";
 // </editor-fold>
 
@@ -43,7 +39,7 @@ class Controls extends React.Component {
     state = {
         lists: {
             condition: ['Good', 'Needs Inspection', 'Damaged', 'Lost', 'Retired'].map(value => (
-              {text: value, value, checked: false}
+                {text: value, value, checked: false}
             )),
         },
     };
@@ -108,29 +104,32 @@ class Controls extends React.Component {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
         return (<FormControls>
             <Row
-              activeAlways
-              rendered
-              idx={0}
-              title="PPE Item Details"
+                activeAlways
+                rendered
+                idx={0}
+                title="PPE Item Details"
             >
                 <SelectPPETypeInput name="ppe_type"
-                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="serial_num" type="text" placeholder="Serial No." className="col-lg-12 form-control"
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="serial_num" type="text" placeholder="Serial No."
+                                className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <ClearableInput name="purchase_date" type="date" placeholder="Purchase Date..." className="col-lg-12 form-control"
+                <ClearableInput name="purchase_date" type="date" placeholder="Purchase Date..."
+                                className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="condition" type="radio" placeholder="Condition" vertical
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.condition} returnValue/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 margin-b-15 form-control"
+                <ClearableInput name="notes" type="textarea" placeholder="Notes"
+                                className="col-lg-12 margin-b-15 form-control"
                                 onChange={this.form.onChange}/>
                 <UploadButton
-                  name="profile_pic"
-                  buttonTitle="PPE Item Photo"
-                  type={['Photo']}
-                  showOnlyIcon
-                  className="col-lg-6 col-xs-12 hor-center"
-                  onChange={this.form.onChange}
+                    name="profile_pic"
+                    buttonTitle="PPE Item Photo"
+                    type={['Photo']}
+                    showOnlyIcon
+                    className="col-lg-6 col-xs-12 hor-center"
+                    onChange={this.form.onChange}
                 />
             </Row>
         </FormControls>);

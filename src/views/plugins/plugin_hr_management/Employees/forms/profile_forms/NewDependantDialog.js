@@ -9,8 +9,7 @@ import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDependantDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeDependant
-    from "mutations/all/EmployeeDependant/insertEmployeeDependant";
+import {insertEmployeeDependant} from "mutations/create";
 
 //<editor-fold desc="NewDialog">
 @observer
@@ -41,6 +40,17 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    //</editor-fold>
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee} = this;
@@ -62,7 +72,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -101,17 +111,6 @@ class Controls extends React.Component {
         });
     }
 
-    //</editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
-
     //<editor-fold desc="render">
     render() {
         let {props: {onFormNext, onFormBack, onFormOpen}} = this;
@@ -128,7 +127,7 @@ class Controls extends React.Component {
                 <ClearableInput name="lname" type="text" placeholder="Last Name" className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
                 <SelectGenderInput name="gender" className="col-lg-6 form-control"
-                                onChange={this.form.onChange}/>
+                                   onChange={this.form.onChange}/>
                 <ClearableInput name="dob" type="date" placeholder="Date of Birth" className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
             </Row>

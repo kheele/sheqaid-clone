@@ -9,8 +9,8 @@ import {ProfileField, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfilePPEItemDialog.lazy.css";
-import findByIdPPEItem from "mutations/all/PPE/findByIdPPEItem";
-import updatePPEItem from "mutations/all/PPE/updatePPEItem";
+import {findByIdPPEItem} from "mutations/findById";
+import {updatePPEItem} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -24,12 +24,12 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "PPE Item";
-    }
-
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "PPE Item";
     }
 }
 
@@ -72,13 +72,13 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         return (<FormControls>
             <Row
-              activeAlways
-              rendered
-              idx={0}
-              title="PPE Item Details"
+                activeAlways
+                rendered
+                idx={0}
+                title="PPE Item Details"
             >
                 <ProfileField title="PPE Type" value={ppe_type.name} className="col-lg-12"/>
                 <ProfileField title="Measurement Unit" value={ppe_type.unit} className="col-lg-12"/>
@@ -87,13 +87,13 @@ class Controls extends React.Component {
                 <ProfileField title="Condition" value={condition} className="col-lg-12"/>
                 <ProfileField title="Notes" value={notes} className="col-lg-12"/>
                 <UploadButton
-                  name="profile_pic"
-                  defaultValue={profile_pic}
-                  buttonTitle="PPE Item Photo"
-                  type={['Photo']}
-                  showOnlyIcon
-                  readonly
-                  className="col-lg-6 col-xs-12 hor-center"
+                    name="profile_pic"
+                    defaultValue={profile_pic}
+                    buttonTitle="PPE Item Photo"
+                    type={['Photo']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6 col-xs-12 hor-center"
                 />
             </Row>
         </FormControls>);

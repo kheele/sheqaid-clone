@@ -10,8 +10,8 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeWorkPermit} from "mutations/update";
 import {findByIdHRWorkPermitsDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRWorkPermitsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 

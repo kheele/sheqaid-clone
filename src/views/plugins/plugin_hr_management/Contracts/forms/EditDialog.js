@@ -12,10 +12,12 @@ import {Button, ClearableInput, SelectEmployeeInput, UploadButton} from 'compone
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
-import findByIdEmployeeContract from "mutations/all/EmployeeContract/findByIdEmployeeContract";
-import updateEmployeeContractDetails from "mutations/all/EmployeeContract/updateEmployeeContractDetails";
-import updateEmployeeContractSalaryInfo from "mutations/all/EmployeeContract/updateEmployeeContractSalaryInfo";
+import {
+    updateEmployeeContract,
+    updateEmployeeContractDetails,
+    updateEmployeeContractSalaryInfo
+} from "mutations/update";
+import {findByIdEmployeeContract} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {

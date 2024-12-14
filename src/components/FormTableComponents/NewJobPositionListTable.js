@@ -75,7 +75,7 @@ class ListTable extends ANewListTable {
     }
 
     onPostChange(val, name, el) {
-        if(!val) {
+        if (!val) {
             return;
         }
 
@@ -113,19 +113,21 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="w-full padding-10">
-                <div className="td flex padding-0 margin-0">
+            return <TRow key="item-new" className="w-full w-full h-100 padding-10">
+                <div className="td grid grid-1 grid-gap-10 h-auto flex-center padding-0 margin-0">
                     <SelectJobPositionInput ref={this.onSetRef} name="job_position" placeholder="Add Job Position..."
-                                            required className="no-border-radius-r form-control"
+                                            required className="no-border-radius-r w-full form-control"
                                             onChange={this.onChange}/>
                     <Button idx={n} action="save"
-                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
-                        <i className="fa fa-check"/>
+                            className="btn btn-primary hor-center w-80 margin-0 border-radius-30"
+                            onClick={onClick}>
+                        <i className="fa fa-check"/> ADD
                     </Button>
                 </div>
             </TRow>;
         }
     }
+
 //
     renderTHead() {
         const {readonly} = this.props;

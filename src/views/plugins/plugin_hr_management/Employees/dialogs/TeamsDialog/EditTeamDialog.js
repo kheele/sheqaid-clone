@@ -12,7 +12,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable, NewPPEItemListTable} from 'components/FormTableComponents';
 
 import style from "./EditTeamDialog.lazy.css";
-import updateTeam from "mutations/all/Team/updateTeam";
+import {updateTeam} from "mutations/update";
 import {CircularProgress} from "@mui/material";
 import {findByIdTeam} from "mutations/findById";
 // </editor-fold>

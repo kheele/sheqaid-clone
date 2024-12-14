@@ -4,7 +4,7 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {getGeocode} from 'utils/Maps';
-import {Dates, execWhen} from 'utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import {ClearableInput, SelectDepartmentInput, SelectEmployeeInput, SelectJobPositionInput} from 'components/inputs';
 import {Row} from 'components/FormComponents';
@@ -28,67 +28,68 @@ class EditOptionalInfoSection extends React.Component {
 
     //<editor-fold desc="formData">
     get formData() {
-        const {data} = this.form;
-        let {
-            //
-            employment_date,
-            employment_num,
-            department,
-            job_position,
-            //
-            supervisor,
-            supervisor_phone,
-            supervisor_email,
-            //
-            living_address_list,
-            //
-            banking_detail_list,
-        } = data;
-
-        return {
-            //
-            employment_date: Dates.formatDateSQL(employment_date),
-            employment_num,
-            job_position_id: job_position && job_position.id,
-            department_id: department && department.id,
-            //
-            supervisor_id: supervisor && supervisor.id,
-
-            living_address_list: {
-                data: (living_address_list || []).map((
-                    {
-                        country,
-                        zone,
-                        city,
-                        local_address,
-                        street_address,
-                        doc
-                    }
-                ) => ({
-                    is_default: true,
-                    //1
-                    country_id: country.id,
-                    zone_id: zone.id,
-                    city_id: city.id,
-                    local_address,
-                    street_address,
-                    //2
-                    doc: doc && doc.path,
-                }))
-            },
-            banking_detail_list: {
-                data: (banking_detail_list || []).map(({name, branch, code, account_num, doc}) => ({
-                    is_default: true,
-                    //1
-                    name,
-                    branch,
-                    code,
-                    account_num,
-                    //2
-                    doc: doc && doc.path,
-                }))
-            },
-        }
+        return this.form.data;
+        // const {data} = this.form;
+        // let {
+        //     //
+        //     employment_date,
+        //     employment_num,
+        //     department,
+        //     job_position,
+        //     //
+        //     supervisor,
+        //     supervisor_phone,
+        //     supervisor_email,
+        //     //
+        //     living_address_list,
+        //     //
+        //     banking_detail_list,
+        // } = data;
+        //
+        // return {
+        //     //
+        //     employment_date: Dates.formatDateSQL(employment_date),
+        //     employment_num,
+        //     job_position_id: job_position && job_position.id,
+        //     department_id: department && department.id,
+        //     //
+        //     supervisor_id: supervisor && supervisor.id,
+        //
+        //     living_address_list: {
+        //         data: (living_address_list || []).map((
+        //             {
+        //                 country,
+        //                 zone,
+        //                 city,
+        //                 local_address,
+        //                 street_address,
+        //                 doc
+        //             }
+        //         ) => ({
+        //             is_default: true,
+        //             //1
+        //             country_id: country.id,
+        //             zone_id: zone.id,
+        //             city_id: city.id,
+        //             local_address,
+        //             street_address,
+        //             //2
+        //             doc: doc && doc.path,
+        //         }))
+        //     },
+        //     banking_detail_list: {
+        //         data: (banking_detail_list || []).map(({name, branch, code, account_num, doc}) => ({
+        //             is_default: true,
+        //             //1
+        //             name,
+        //             branch,
+        //             code,
+        //             account_num,
+        //             //2
+        //             doc: doc && doc.path,
+        //         }))
+        //     },
+        // }
     }
 
     //</editor-fold>

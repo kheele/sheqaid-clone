@@ -13,7 +13,7 @@ import LeavesRenderRow from "./LeavesRenderRow";
 import {THead} from "components/tables";
 import {Button, ClearableInput} from "components/inputs";
 
-import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
+import {updateEmployeeLeave} from "mutations/update";
 import ProfileUserDialog from "../../../../default/Users/ProfileDialog";
 import EditUserDialog from "../../../../default/Users/EditDialog";
 import NewEmployeeDialog from "../../Employees/forms/NewDialog";

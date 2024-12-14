@@ -5,20 +5,14 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {
-    ClearableInput,
-    SelectEmployeeInput,
-    SelectTrainingMatixInput,
-    UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectEmployeeInput, SelectTrainingMatixInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
-import insertEmployeeCompetency from "mutations/all/EmployeeCompetency/insertEmployeeCompetency";
+import {insertEmployeeCompetency} from "mutations/create";
 import {Dates} from "utils/Dates";
-import {SignatureListRow} from "components/SignatureComponents";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -33,9 +27,10 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -46,7 +41,11 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            type: [{text: "Accredited", value: "Accredited", checked: false}, {text: "Non-Accredited", value: "Non-Accredited", checked: false}],
+            type: [{text: "Accredited", value: "Accredited", checked: false}, {
+                text: "Non-Accredited",
+                value: "Non-Accredited",
+                checked: false
+            }],
             competency_type: ['Behavioural', 'Technical / Functional', 'Leadership']
         },
         trainer: null
@@ -58,26 +57,46 @@ class Controls extends React.Component {
         super(props);
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
-        this.form.addChangeOne("training", this.onChangeTraining.bind(this));   
+        this.form.addChangeOne("training", this.onChangeTraining.bind(this));
     }
+
     // </editor-fold>
-        
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    // </editor-fold>
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    // </editor-fold>
+
+    get employeeItem() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onChangeTraining">
-    onChangeTraining(el, val){
-        if(val) {
+    onChangeTraining(el, val) {
+        if (val) {
             const {hr} = val.data;
             this.state.trainer = hr;
         }
     }
-    // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
@@ -87,16 +106,15 @@ class Controls extends React.Component {
                 return;
             }
         }
-        if(idx === 3) {
+        if (idx === 3) {
             if (!form.isValid('doc')) {
                 infoDialog.open('Please Upload Competency Certificate');
                 return;
             }
         }
-        
+
         return true;
     }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
@@ -117,7 +135,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -137,7 +155,7 @@ class Controls extends React.Component {
             doc//
         } = form.data;
 
-        const data = { 
+        const data = {
             employee_id: (embeddedEmployee || employee).id,
             issued_date: Dates.formatDateSQL(issued_date),
             expiry_date: Dates.formatDateSQL(expiry_date),
@@ -164,87 +182,84 @@ class Controls extends React.Component {
             setTimeout(() => progressDialog.close());
         });
     }
-    // </editor-fold>
-
-    get embeddedEmployee() {
-        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
-        return embeddedEmployee;
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        const {isNewEmployee, embeddedEmployee, props:{onFormNext, onFormBack, onFormOpen}} = this;
-        
+        const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
+
         return <FormControls>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 active
                 idx={1}
-                title="1. Competency Details" 
-                onFormOpen={onFormOpen} 
+                title="1. Competency Details"
+                onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="type" type="radio" placeholder="Certificate Type" required className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.type}/>
-                <ClearableInput name="competency_type" type="select" placeholder="Competency Type..." required className="col-lg-6 form-control" onChange={this.form.onChange} values={this.state.lists.competency_type} returnValue add/>
-                <ClearableInput name="accreditation_num" type="text" placeholder="Accreditation Number" required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                {!isNewEmployee && !embeddedEmployee &&
+                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="type" type="radio" placeholder="Certificate Type" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.type}/>
+                <ClearableInput name="competency_type" type="select" placeholder="Competency Type..." required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.competency_type} returnValue add/>
+                <ClearableInput name="accreditation_num" type="text" placeholder="Accreditation Number" required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
             </Row>
-            <Row 
-                rendered 
+            <Row
+                rendered
                 idx={2}
-                title="2. Training Details" 
-                onFormOpen={onFormOpen} 
-                onFormBack={onFormBack} 
+                title="2. Training Details"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingMatixInput name="training" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectTrainingMatixInput name="training" required className="col-lg-12 form-control"
+                                          onChange={this.form.onChange}/>
                 <Trainer state={this.state}/>
             </Row>
-            <Row 
-                rendered 
+            <Row
+                rendered
                 idx={3}
-                title="3. Certificate Details" 
-                onFormOpen={onFormOpen} 
+                title="3. Certificate Details"
+                onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <UploadButton 
-                    name="doc" 
-                    buttonTitle="Upload File (PDF, Word or Photo)" 
+                <UploadButton
+                    name="doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
                     type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon 
-                    className="col-lg-12" 
+                    showOnlyIcon
+                    className="col-lg-12"
                     onChange={this.form.onChange}
                 />
             </Row>
         </FormControls>;
     }
+
     // </editor-fold>
 }
 
 // <editor-fold defaultstate="collapsed" desc="Trainer">
 @observer
 class Trainer extends React.Component {
-    
-    render(){
+
+    render() {
         const {state: {trainer}} = this.props;
-        if(!trainer) return null;
+        if (!trainer) return null;
         return <div className="Trainer row">
             <label className="hor-center">Trainer</label>
             <div>{trainer.lname + ' ' + trainer.fname}</div>
         </div>;
     }
 }
+
 // </editor-fold>
 
 export default NewDialog;

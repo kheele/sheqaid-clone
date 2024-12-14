@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
@@ -12,8 +12,8 @@ import {NavButtons} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
-import findByIdEmployeeWarning from "mutations/all/EmployeeWarning/findByIdEmployeeWarning";
+import {updateEmployeeWarning} from "mutations/update";
+import {findByIdEmployeeWarning} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -28,7 +28,7 @@ class EditDialog extends AEditDialog {
 
     get findById() {
         const {props: {isNewEmployee}} = this;
-        if(isNewEmployee) return;
+        if (isNewEmployee) return;
         return findByIdEmployeeWarning;
     }
 
@@ -38,7 +38,7 @@ class EditDialog extends AEditDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -51,7 +51,7 @@ class Controls extends React.Component {
         lists: {
             warning_types: ['Verbal', 'Written', 'Final', 'Work Termination'],
             category_of_misconduct: {
-                Verbal:[
+                Verbal: [
                     "Poor work performance, poor quality of work, low output/productivity",
                     "Failure to maintain machine or vehicle for which employee is responsible",
                     "Wasteful use of Company material and resources including stationery, electricity and water",
@@ -64,7 +64,7 @@ class Controls extends React.Component {
                     "Littering",
                     "Gambling or playing cards on Company property"
                 ],
-                Written:[
+                Written: [
                     "Sleeping on duty",
                     "Careless damage to equipment or materials",
                     "Careless operation of equipment",
@@ -75,7 +75,7 @@ class Controls extends React.Component {
                     "Disrespectful behaviour or use of insulting language or signs",
                     "Failure to report in and out on commencement and ceasing of work"
                 ],
-                Final:[
+                Final: [
                     "Absence from work for 3-4 days without reason",
                     "Absence on the day/shift before or after a public holiday without permission",
                     "Wilful disregard of rules relating to Company vehicles or equipment",
@@ -126,10 +126,24 @@ class Controls extends React.Component {
         super();
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
         this.form.addChangeOne("date", this.onChangeDate.bind(this));
         this.form.addChangeOne("type", this.onChangeType.bind(this));
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    @computed get category_of_misconduct() {
+        return this.state.lists.category_of_misconduct[this.state.type] || [];
+    }
+
+    @computed
+    get item() {
+        return this.props.state.item;
     }
 
     onChangeDate(el, val) {
@@ -137,31 +151,31 @@ class Controls extends React.Component {
             const {
                 expiry_date: expiry_date_ref
             } = this.refs;
-            if(val) {
+            if (val) {
                 expiry_date_ref && expiry_date_ref.onChange(val.addYears(1));
             }
         });
     }
-    
+
     onChangeType(el, val) {
         this.state.type = val;
         execWhen(() => this.refs.category_of_misconduct).then(ref => {
-            if(val) {
+            if (val) {
                 ref.list = this.state.lists.category_of_misconduct[val];
             }
         });
     }
-    
+
     onNext(e, btn) {
-        const {form, isNewEmployee, props: {dialog: {props:{embeddedEmployee}}}} = this;
+        const {form, isNewEmployee, props: {dialog: {props: {embeddedEmployee}}}} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
         }
-        if(idx === 2) {
+        if (idx === 2) {
             if (!form.isValid('type')) {
                 infoDialog.open('Warning Type is required');
                 return;
@@ -171,12 +185,12 @@ class Controls extends React.Component {
                 return;
             }
         }
-        
+
         return true;
     }
-    
+
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props: {embeddedEmployee}}}} = this;
 
         if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
@@ -191,7 +205,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -206,10 +220,10 @@ class Controls extends React.Component {
             details, employee_comments, notes, witness_list,
             doc
         } = form.data;
-        
+
         const data = {};
 
-        if(!embeddedEmployee) {
+        if (!embeddedEmployee) {
             ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
         }
         ShouldUpdate.checkEmployee(data, old_data, issued_by, 'issued_by_id');
@@ -223,11 +237,11 @@ class Controls extends React.Component {
         ShouldUpdate.checkWitnessList(data, old_data, witness_list, 'witness_list');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
-        if(Object.keys(data).isEmpty()){
+        if (Object.keys(data).isEmpty()) {
             infoDialog.open("Nothing changed!");
             return;
         }
-        
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -257,20 +271,6 @@ class Controls extends React.Component {
         // });
     }
 
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-    
-    @computed get category_of_misconduct() {
-        return this.state.lists.category_of_misconduct[this.state.type] || [];
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
-    }
-
     render() {
         if (!this.item) {
             return <CircularProgress className="fixed-center"/>;
@@ -283,11 +283,21 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, employee, issued_by, type, date, expiry_date, details, employee_comments, notes, witness_list, doc
+                    created_at,
+                    employee,
+                    issued_by,
+                    type,
+                    date,
+                    expiry_date,
+                    details,
+                    employee_comments,
+                    notes,
+                    witness_list,
+                    doc
                 }
             }
         } = this;
-        
+
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
                 <div className="row active">
@@ -297,8 +307,11 @@ class Controls extends React.Component {
                     </label>
                     <div className="row sec-group">
                         {!isNewEmployee && !embeddedEmployee &&
-                          <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                        <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..." defaultValue={issued_by} defaultUser className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                            <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
+                                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                        <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..."
+                                             defaultValue={issued_by} defaultUser className="col-lg-12 form-control"
+                                             onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
                 </div>
@@ -308,15 +321,29 @@ class Controls extends React.Component {
                         <Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <ClearableInput name="type" type="select" placeholder="Warning Type..." defaultValue={type} className="col-lg-12 form-control" onChange={this.form.onChange} values={this.state.lists.warning_types} returnValue/>
-                        <ClearableInput name="category_of_misconduct" type="select" placeholder="Category of Misconduct..." className="col-lg-12 form-control" onChange={this.form.onChange} values={this.category_of_misconduct} returnValue/>
-                        <ClearableInput name="details" type="textarea" placeholder="Details Of Misconduct" defaultValue={details} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="employee_comments" type="textarea" placeholder="Employee's Comments" defaultValue={employee_comments} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="date" name="date" type="date" placeholder="Warning Date..." defaultValue={date || new Date()} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Warning Expiry Date..." defaultValue={expiry_date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="type" type="select" placeholder="Warning Type..." defaultValue={type}
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}
+                                        values={this.state.lists.warning_types} returnValue/>
+                        <ClearableInput name="category_of_misconduct" type="select"
+                                        placeholder="Category of Misconduct..." className="col-lg-12 form-control"
+                                        onChange={this.form.onChange} values={this.category_of_misconduct} returnValue/>
+                        <ClearableInput name="details" type="textarea" placeholder="Details Of Misconduct"
+                                        defaultValue={details} required className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                        <ClearableInput name="employee_comments" type="textarea" placeholder="Employee's Comments"
+                                        defaultValue={employee_comments} required className="col-lg-12 form-control"
+                                        onChange={this.form.onChange}/>
+                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput ref="date" name="date" type="date" placeholder="Warning Date..."
+                                        defaultValue={date || new Date()} required className="col-lg-6 form-control"
+                                        onChange={this.form.onChange}/>
+                        <ClearableInput ref="expiry_date" name="expiry_date" type="date"
+                                        placeholder="Warning Expiry Date..." defaultValue={expiry_date} required
+                                        className="col-lg-6 form-control" onChange={this.form.onChange}/>
                         <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
-                        <NewEmployeeListTable name="witness_list" defaultValue={[...(witness_list || []), null]} onChange={this.form.onChange}/>
+                        <NewEmployeeListTable name="witness_list" defaultValue={[...(witness_list || []), null]}
+                                              onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={2} onBack={onFormBack} onNext={onFormNext}/>
                 </div>
@@ -326,7 +353,8 @@ class Controls extends React.Component {
                         <Clickable idx={3} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc} onChange={this.form.onChange}/>
+                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc}
+                                           onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={3} onBack={onFormBack}/>
                 </div>

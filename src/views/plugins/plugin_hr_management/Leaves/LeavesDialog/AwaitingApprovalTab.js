@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import NavItem from 'components/navs/NavItem';
 import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 import LoggedUserSettings from "utils/LoggedUserSettings";
-import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
+import {updateEmployeeLeave} from "mutations/update";
 
 // import style from "./AwaitingApprovalTab.lazy.css";
 // </editor-fold>

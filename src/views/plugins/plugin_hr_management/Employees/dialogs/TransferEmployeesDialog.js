@@ -20,7 +20,7 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 
 import PrintCardsPDFReader from '../printers/PrintCardsPDFReader';
 import style from "./TransferEmployeesDialog.lazy.css";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
+import {updateEmployee} from "mutations/update";
 
 // </editor-fold>
 

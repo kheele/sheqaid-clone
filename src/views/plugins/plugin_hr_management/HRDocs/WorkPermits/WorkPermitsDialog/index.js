@@ -9,11 +9,9 @@ import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 import WorkPermitsRenderRow from "./WorkPermitsRenderRow";
 import {THead} from "components/tables";
-import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
-import {findByIdOrgWorkPermitsDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
-import {
-    findByIdOrgWorkPermitsDateRangeDashboardStatsByLogged
-} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
+import {updateEmployeeWorkPermit} from "mutations/update";
+import {findByIdOrgWorkPermitsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+import {findByIdOrgWorkPermitsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 
 // </editor-fold>
 

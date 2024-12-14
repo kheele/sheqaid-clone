@@ -1,23 +1,11 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityTrainingCourse} from "mutations/types.d.ts";
-import findByIdEmployeeDocLivingAddress
-    from "../EmployeeDocument/EmployeeDocLivingAddress/findByIdEmployeeDocLivingAddress";
 import findByIdTrainingCourse from "./findByIdTrainingCourse";
-import updateEmployeeDocLivingAddress
-    from "../EmployeeDocument/EmployeeDocLivingAddress/updateEmployeeDocLivingAddress";
-import insertEmployeeDocLivingAddress
-    from "../EmployeeDocument/EmployeeDocLivingAddress/insertEmployeeDocLivingAddress";
-import updateProxySectorTrainingCourse from "../ProxySectorTrainingCourse/updateProxySectorTrainingCourse";
-import insertProxySectorTrainingCourse from "../ProxySectorTrainingCourse/insertProxySectorTrainingCourse";
-import updateProxyJobPositionTrainingCourse
-    from "../ProxyJobPositionTrainingCourse/updateProxyJobPositionTrainingCourse";
-import insertProxyJobPositionTrainingCourse
-    from "../ProxyJobPositionTrainingCourse/insertProxyJobPositionTrainingCourse";
 
 // 2
 const mutation = graphql`

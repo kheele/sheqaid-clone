@@ -11,9 +11,9 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
-import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeWarning} from "mutations/update";
+import DocSignButton from "components/FormComponents/DocSignButton";
 import {findByIdHRWarningsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 import {findByIdHRWarningsDashboardStats} from "mutations/employeeHRDashboard";
 

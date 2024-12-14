@@ -9,8 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDependantDialog.lazy.css";
-import updateEmployeeDependant
-    from "mutations/all/EmployeeDependant/updateEmployeeDependant";
+import {updateEmployeeDependant} from "mutations/update";
 
 //<editor-fold desc="EditDialog">
 @observer
@@ -41,6 +40,15 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get item() {
+        return this.props.state.item;
+    }
+
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, item: {data: old_data}} = this;
 
@@ -61,7 +69,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -104,15 +112,6 @@ class Controls extends React.Component {
         });
     }
 
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get item() {
-        return this.props.state.item;
-    }
-
     render() {
         if (!this.item)
             return null;
@@ -149,7 +148,7 @@ class Controls extends React.Component {
                                 defaultValue={lname} className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
                 <SelectGenderInput name="gender" defaultValue={gender} className="col-lg-6 form-control"
-                                onChange={this.form.onChange}/>
+                                   onChange={this.form.onChange}/>
                 <ClearableInput name="dob" type="date" placeholder="Date of Birth"
                                 defaultValue={dob} className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>

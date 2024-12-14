@@ -8,19 +8,16 @@ import Form from 'utils/Form';
 import {Dates, ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog, InputDialog} from 'components/dialogs';
-import {
-    Button,
-    ClearableInput,
-    SelectEmployeeInput,
-    UploadButton
-} from 'components/inputs';
+import {Button, ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
-import findByIdEmployeeContract from "mutations/all/EmployeeContract/findByIdEmployeeContract";
-import updateEmployeeContractDetails from "mutations/all/EmployeeContract/updateEmployeeContractDetails";
-import updateEmployeeContractSalaryInfo from "mutations/all/EmployeeContract/updateEmployeeContractSalaryInfo";
+import {
+    updateEmployeeContract,
+    updateEmployeeContractDetails,
+    updateEmployeeContractSalaryInfo
+} from "mutations/update";
+import {findByIdEmployeeContract} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -68,6 +65,18 @@ class Controls extends React.Component {
 
         this.form = new Form();
     }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    @computed
+    get item() {
+        return this.props.state.item;
+    }
+
+    //</editor-fold>
 
     async onAddContractPDFPages() {
         this.refs.inputDialog.open("Starting Page Number").then(pageNum => {
@@ -140,6 +149,8 @@ class Controls extends React.Component {
             });
         });
     }
+
+    // </editor-fold>
 
     //<editor-fold desc="onFormSave">
     async onFormSave(e, btn) {
@@ -405,8 +416,6 @@ class Controls extends React.Component {
         return true;
     }
 
-    //</editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {
@@ -464,18 +473,6 @@ class Controls extends React.Component {
         infoDialog.open("Record added.");
         infoDialog.close(2000);
         this.props.close();
-    }
-
-    // </editor-fold>
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
     }
 
     render() {
@@ -748,13 +745,6 @@ class Deductibles extends React.Component {
         this.onAdd = this.onAdd.bind(this);
     }
 
-    onAdd(e, btn) {
-        this.state.list.push({
-            text: null,
-            value: null
-        });
-    }
-
     @computed
     get list() {
         return this.state.list;
@@ -768,6 +758,13 @@ class Deductibles extends React.Component {
         const total = l.reduce((n1, n2) => n1 + n2, 0);
         onChange({list: toJS(list), total}, "deductible", this);
         return total;
+    }
+
+    onAdd(e, btn) {
+        this.state.list.push({
+            text: null,
+            value: null
+        });
     }
 
     render() {

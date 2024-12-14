@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 
-const findBy = path => async (id) => {
+const findBy = path => async (data) => {
     try {
         const {findBy} = sockets.of(path);
-        return await findBy(id);
+        return await findBy(data);
     } catch (err) {
         throw err;
     }

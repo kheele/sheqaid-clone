@@ -18,7 +18,7 @@ import DependentsAndNextOfKinSection from './ViewDependentsAndNextOfKinSection';
 import DashboardSection from "./DashboardSection";
 
 import style from "./ProfileDialog.lazy.css";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
+import {findByIdEmployee} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";

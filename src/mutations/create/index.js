@@ -14,6 +14,8 @@ const create = (path, crudUtils, onProcess) => async (input) => {
     }
 };
 
+export default create;
+
 //General
 export const insertErrorReporting = create("error-reporting", null, input => {
     const {
@@ -168,5 +170,26 @@ export const insertJobPosition = create("job-positions");
 export const insertTeam = create("teams");
 export const insertPPE = create("ppe-types");
 export const insertPPEItem = create("ppe-items");
+
+export const insertEmployee = create("employees");
+export const insertEmployeeExternal = create("employees-external");
+export const insertEmployeeCompetency = create("employees/docs/competencies");
+export const insertEmployeeContract = create("employees/docs/contracts");
+export const insertEmployeeCounselling = create("employees/docs/counsellings");
+export const insertEmployeeExpense = create("employees/docs/expenses");
+export const insertEmployeeJobAppointment = create("structure-and-responsibility/job-appointments");
+export const insertEmployeeLeave = create("employees/docs/leaves");
+export const insertEmployeeMedical = create("employees/docs/medicals");
+export const insertEmployeeWarning = create("employees/docs/warnings");
+
+export const insertEmployeeLicense = create("employees/docs/licenses");
+export const insertEmployeeWorkPermit = create("employees/docs/work-permits");
+
+export const insertEmployeeDocBankingDetail = create("employees/documents/banking-details");
+export const insertEmployeeDocLivingAddress = create("employees/documents/living-address");
+export const insertEmployeeDocDocumentIDOrPassport = create("employees/documents/id-or-passports");
+export const insertEmployeeDocDocumentPrDP = create("employees/documents/prdp");
+export const insertEmployeeDependant = create("employees/dependents");
+export const insertEmployeeNextOfKin = create("employees/next-of-kins");
 
 //151

@@ -22,9 +22,9 @@ import ProfilePDFReader from './printers/ProfilePDFReader';
 import style from "./EmployeesRemovedTab.lazy.css";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
-import findByIdsInactiveEmployee from "mutations/all/EmployeeInactive/findByIdsInactiveEmployee";
+import {listByIdsInactiveEmployee} from "mutations/listByLoggedWithCustomArgs";
 import AEmployeeListTab, {StatsPanel} from "./AEmployeeListTab";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
+import {updateEmployee} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RemovedMain">
@@ -33,7 +33,7 @@ class Main extends AEmployeeListTab {
     path = "plugin_sheq_assist/employees/removed/";
     pageKey = "EmployeesRemovedTab";
     removed = true;
-    findByIdsEmployees = findByIdsInactiveEmployee;
+    findByIdsEmployees = listByIdsInactiveEmployee;
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

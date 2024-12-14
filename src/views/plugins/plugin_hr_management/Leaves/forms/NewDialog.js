@@ -10,7 +10,7 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeLeave from "mutations/all/EmployeeLeave/insertEmployeeLeave";
+import {insertEmployeeLeave} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {

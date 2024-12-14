@@ -8,10 +8,10 @@ import {Dates, execWhen, ShouldUpdate} from 'utils/Utils';
 import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {
-	NewEmployeeListTable,
-	NewJobPositionListTable,
-	NewNCRResponsiblePartyListTable,
-	NewUserListTable
+    NewEmployeeListTable,
+    NewJobPositionListTable,
+    NewNCRResponsiblePartyListTable,
+    NewUserListTable
 } from 'components/FormTableComponents';
 import {AEditDialog} from 'components/dialogs';
 
@@ -25,24 +25,24 @@ import {CircularProgress} from "@mui/material";
 import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
 import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 import findByIdInspectionsQuestionnaire
-	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
-import findByIdSite from "mutations/all/Site/findByIdSite";
+    from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
+import {findByIdSite} from "mutations/findById";
 import findByIdQuestion from "mutations/all/Questionnaires/Questions/findByIdQuestion";
 import {
-	insertProxyNCRApprovingPerson,
-	insertProxyNCRAssignedJobPosition,
-	insertProxyNCRAssignedPerson,
-	insertProxyNCRAssignedUser,
-	insertProxyNCRDocument,
-	insertProxyNCRResponsibleParty,
+    insertProxyNCRApprovingPerson,
+    insertProxyNCRAssignedJobPosition,
+    insertProxyNCRAssignedPerson,
+    insertProxyNCRAssignedUser,
+    insertProxyNCRDocument,
+    insertProxyNCRResponsibleParty,
 } from "mutations/create";
 import {
-	deleteProxyNCRApprovingPerson,
-	deleteProxyNCRAssignedJobPosition,
-	deleteProxyNCRAssignedPerson,
-	deleteProxyNCRAssignedUser,
-	deleteProxyNCRDocument,
-	deleteProxyNCRResponsibleParty
+    deleteProxyNCRApprovingPerson,
+    deleteProxyNCRAssignedJobPosition,
+    deleteProxyNCRAssignedPerson,
+    deleteProxyNCRAssignedUser,
+    deleteProxyNCRDocument,
+    deleteProxyNCRResponsibleParty
 } from "mutations/delete";
 // </editor-fold>
 

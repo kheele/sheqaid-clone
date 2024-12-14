@@ -3,11 +3,11 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {AProfileDialog} from 'components/dialogs';
-import {ProfileField, } from 'components/inputs';
+import {ProfileField,} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
-import updateSector from "mutations/all/Sector/updateSector";
+import {updateSector} from "mutations/update";
 
 @observer
 class ProfileDialog extends AProfileDialog {
@@ -18,12 +18,12 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "Sector";
-    }
-
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "Sector";
     }
 }
 

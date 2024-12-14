@@ -1,22 +1,11 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityTrainingManual} from "mutations/types.d.ts";
-import findByIdEmployee from "../Employee/findByIdEmployee";
-import {Dates} from "../../../utils/Dates";
-import updateEmployeeDocLivingAddress
-    from "../EmployeeDocument/EmployeeDocLivingAddress/updateEmployeeDocLivingAddress";
-import insertEmployeeDocLivingAddress
-    from "../EmployeeDocument/EmployeeDocLivingAddress/insertEmployeeDocLivingAddress";
-import updateEmployeeDocBankingDetail
-    from "../EmployeeDocument/EmployeeDocBankingDetail/updateEmployeeDocBankingDetail";
-import insertEmployeeDocBankingDetail
-    from "../EmployeeDocument/EmployeeDocBankingDetail/insertEmployeeDocBankingDetail";
-import updateEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import insertEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
+import {Dates} from "utils/Dates";
 import findByIdTrainingManual from "./findByIdTrainingManual";
 
 // 2
@@ -48,7 +37,7 @@ export default async (attrs: EntityTrainingManual) => {
     const has_thumb = thumb && !thumb.dlUrls;
     const has_doc = doc && !doc.dlUrls;
 
-    if(has_thumb || has_doc) {
+    if (has_thumb || has_doc) {
         const updoad = async ({key, doc, name}) => {
             const path = `training-manuals/${id}`;
             const gcsUri = await workers.emit("files/upload", {
@@ -57,7 +46,7 @@ export default async (attrs: EntityTrainingManual) => {
                 name,
             });
             console.log("gcsUri", gcsUri);
-            if(key) {
+            if (key) {
                 attrs[key] = gcsUri;
             } else {
                 return gcsUri;
@@ -65,7 +54,7 @@ export default async (attrs: EntityTrainingManual) => {
         };
 
         const promises = [];
-        if(has_thumb) {
+        if (has_thumb) {
             const name = `thumb-${Dates.formatTimestamp(new Date())}`;
             promises.push(updoad({
                 key: "thumb",
@@ -73,7 +62,7 @@ export default async (attrs: EntityTrainingManual) => {
                 name,
             }));
         }
-        if(has_doc) {
+        if (has_doc) {
             const name = `doc-${Dates.formatTimestamp(new Date())}`;
             promises.push(updoad({
                 key: "doc",

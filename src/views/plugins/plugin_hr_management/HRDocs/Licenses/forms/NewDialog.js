@@ -4,18 +4,13 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {
-    ClearableInput,
-    SelectEmployeeInput,
-    UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeLicense from "mutations/all/EmployeeLicense/insertEmployeeLicense";
-import {SignatureListRow} from "components/SignatureComponents";
+import {insertEmployeeLicense} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -28,7 +23,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -36,21 +31,34 @@ class NewDialog extends ANewDialog {
 class Controls extends React.Component {
     path = "plugin_sheq_assist/employees/licenses/";
     @observable
-    state = {
-    };
+    state = {};
 
     constructor(props) {
         super(props);
-        
+
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get employeeItem() {
+        return this.props.state.item;
     }
 
     onNext(e, btn) {
         const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
@@ -60,16 +68,16 @@ class Controls extends React.Component {
                 return;
             }
         }
-        if(idx === 2) {
+        if (idx === 2) {
             if (!form.isValid('doc')) {
                 infoDialog.open('Please Upload License');
                 return;
             }
         }
-        
+
         return true;
     }
-    
+
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, embeddedEmployee} = this;
 
@@ -86,7 +94,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -124,22 +132,8 @@ class Controls extends React.Component {
         });
     }
 
-    get embeddedEmployee() {
-        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
-        return embeddedEmployee;
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
-
     render() {
-        const {isNewEmployee, embeddedEmployee, props:{onFormNext, onFormBack, onFormOpen}} = this;
+        const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
             <Row
@@ -150,10 +144,15 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee && <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <ClearableInput name="date" type="date" placeholder="Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {!isNewEmployee && !embeddedEmployee &&
+                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <ClearableInput name="date" type="date" placeholder="Date..." required className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control"
+                                onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

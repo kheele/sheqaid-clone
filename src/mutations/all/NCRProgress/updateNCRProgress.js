@@ -1,12 +1,10 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityNCRProgress} from "mutations/types.d.ts";
-import updateEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import insertEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
 
 // 2
 const mutation = graphql`

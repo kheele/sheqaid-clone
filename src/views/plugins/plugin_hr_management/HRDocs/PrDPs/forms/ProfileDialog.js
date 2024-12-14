@@ -11,8 +11,8 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeDocDocumentPrDP} from "mutations/update";
 import {findByIdHRPrDPDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRPrDPDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 
@@ -51,7 +51,7 @@ class Controls extends AEmployeeDocControls {
 
     type = 'PrDP';
     listName = "document_list";
-    onUpdate = updateEmployeeDocDocument;
+    onUpdate = updateEmployeeDocDocumentPrDP;
     NewDialog = NewDialog;
     EditDialog = EditDialog;
     ProfilePDFReader = ProfilePDFReader;

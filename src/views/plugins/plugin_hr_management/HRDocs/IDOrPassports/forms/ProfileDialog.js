@@ -10,8 +10,8 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeDocDocumentIDOrPassport} from "mutations/update";
 import {findByIdHRIDOrPassportDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRIDOrPassportDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 
@@ -51,7 +51,7 @@ class Controls extends AEmployeeDocControls {
     type = 'ID/Passport';
     listName = "document_list";
     // listName = "id_or_passport_list";
-    onUpdate = updateEmployeeDocDocument;
+    onUpdate = updateEmployeeDocDocumentIDOrPassport;
     NewDialog = NewDialog;
     EditDialog = EditDialog;
 

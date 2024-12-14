@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-const listByLogged = path => async (args) => {
+const listByLogged = (path) => async (args) => {
     try {
         const socket = sockets.of(path);
         return await socket.listByLogged(args);
@@ -9,8 +9,15 @@ const listByLogged = path => async (args) => {
     }
 };
 
+export default listByLogged;
+
 //General
 export const listAuditLogs = listByLogged("audit-logs");
+
+//General
+export const listClients = listByLogged("clients");
+export const listProjects = listByLogged("projects");
+export const listSites = listByLogged("sites");
 
 //Assets
 export const listAssets = listByLogged("assets");

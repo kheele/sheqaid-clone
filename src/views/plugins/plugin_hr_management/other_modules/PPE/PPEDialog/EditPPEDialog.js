@@ -4,21 +4,17 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
-import Form from '../../../../../../utils/Form';
-import {ShouldUpdate} from '../../../../../../utils/Utils';
+import Form from 'utils/Form';
+import {ShouldUpdate} from 'utils/Utils';
 
-import {AEditDialog} from '../../../../../../components/dialogs';
-import {ClearableInput, RowOrgs, UploadButton} from '../../../../../../components/inputs';
-import {
-    NewDepartmentListTable,
-    NewJobPositionListTable,
-    NewTeamListTable
-} from '../../../../../../components/FormTableComponents';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
+import {AEditDialog} from 'components/dialogs';
+import {ClearableInput, RowOrgs, UploadButton} from 'components/inputs';
+import {NewDepartmentListTable, NewJobPositionListTable, NewTeamListTable} from 'components/FormTableComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditPPEDialog.lazy.css";
-import findByIdPPE from "mutations/all/PPE/findByIdPPE";
-import updatePPE from "mutations/all/PPE/updatePPE";
+import {findByIdPPE} from "mutations/findById";
+import {updatePPE} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

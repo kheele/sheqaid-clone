@@ -9,7 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDocumentDialog.lazy.css";
-import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
+import {updateEmployeeDocDocument} from "mutations/updateWithCustomArgs";
 
 //<editor-fold desc="EditDialog">
 @observer

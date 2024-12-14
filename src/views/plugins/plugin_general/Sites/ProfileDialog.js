@@ -9,39 +9,38 @@ import {ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
-import updateSite from "mutations/all/Site/updateSite";
+import {updateSite} from "mutations/update";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Sites";
     removeById = updateSite;
-  
+
     constructor(props) {
         super(props, style);
+    }
+
+    get controls() {
+        return Controls;
     }
 
     title() {
         return "Site";
     }
-
-    get controls() {
-        return  Controls;
-    }
 }
 
 @observer
 class Controls extends React.Component {
-    
+
     @observable
-    state = {
-    };
-    
+    state = {};
+
     constructor(props) {
         super(props);
 
         this.form = new Form();
     }
-    
+
     get item() {
         return this.props.state.item;
     }
@@ -58,18 +57,22 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         const {isConsultant} = storage.is;
         return <FormControls>
-            <Row 
+            <Row
                 activeAlways
-                rendered 
+                rendered
                 idx={1}
                 title="Site Details">
-                    <ProfileField name="name" type="text" placeholder="Site Name" value={name} va required className="col-lg-12"/>
-                    <ProfileField name="address" type="textarea" placeholder="Site Address" value={address} className="col-lg-12"/>
-                    <ProfileField name="project" type="select" placeholder="Project" value={project} renderer={val => val.name} className="col-lg-12"/>
-                    {isConsultant && <ProfileField name="client" type="select" placeholder="Company" value={client} renderer={val => val.name} className="col-lg-12"/>}
+                <ProfileField name="name" type="text" placeholder="Site Name" value={name} va required
+                              className="col-lg-12"/>
+                <ProfileField name="address" type="textarea" placeholder="Site Address" value={address}
+                              className="col-lg-12"/>
+                <ProfileField name="project" type="select" placeholder="Project" value={project}
+                              renderer={val => val.name} className="col-lg-12"/>
+                {isConsultant && <ProfileField name="client" type="select" placeholder="Company" value={client}
+                                               renderer={val => val.name} className="col-lg-12"/>}
             </Row>
         </FormControls>;
     }

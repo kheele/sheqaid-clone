@@ -10,8 +10,8 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "views/plugins/plugin_hr_management/AEmployeeDocControls";
-import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
+import {updateEmployeeJobAppointment} from "mutations/update";
+import {findByIdEmployee} from "mutations/findById";
 import {findByIdHRJobAppointmentsDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRJobAppointmentsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 

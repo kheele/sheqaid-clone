@@ -11,8 +11,8 @@ import {NavButtons} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/updateEmployeeWorkPermit";
-import findByIdEmployeeWorkPermit from "mutations/all/EmployeeWorkPermit/findByIdEmployeeWorkPermit";
+import {updateEmployeeWorkPermit} from "mutations/update";
+import {findByIdEmployeeWorkPermit} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -27,7 +27,7 @@ class EditDialog extends AEditDialog {
 
     get findById() {
         const {props: {isNewEmployee}} = this;
-        if(isNewEmployee) return;
+        if (isNewEmployee) return;
         return findByIdEmployeeWorkPermit;
     }
 
@@ -37,7 +37,7 @@ class EditDialog extends AEditDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -45,21 +45,30 @@ class EditDialog extends AEditDialog {
 class Controls extends React.Component {
     path = "plugin_sheq_assist/employees/workpermits/";
     @observable
-    state = {
-    };
+    state = {};
 
     constructor(props) {
         super(props);
-        
+
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
     }
-    
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    @computed
+    get item() {
+        return this.props.state.item;
+    }
+
     onNext(e, btn) {
-        const {form, isNewEmployee, props: {dialog: {props:{embeddedEmployee}}}} = this;
+        const {form, isNewEmployee, props: {dialog: {props: {embeddedEmployee}}}} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
@@ -69,18 +78,18 @@ class Controls extends React.Component {
                 return;
             }
         }
-        if(idx === 2) {
+        if (idx === 2) {
             if (!form.isValid('doc')) {
                 infoDialog.open('Please Upload Work Permit');
                 return;
             }
         }
-        
+
         return true;
     }
-    
+
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props:{embeddedEmployee}}}} = this;
+        const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props: {embeddedEmployee}}}} = this;
 
         if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
@@ -95,7 +104,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -105,10 +114,10 @@ class Controls extends React.Component {
         }
 
         const {employee, date, expiry_date, notes, doc} = form.data;
-        
+
         const data = {};
 
-        if(!embeddedEmployee) {
+        if (!embeddedEmployee) {
             ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
         }
         ShouldUpdate.checkDate(data, old_data, date, 'date');
@@ -116,11 +125,11 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, notes, 'notes');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
-        if(Object.keys(data).isEmpty()){
+        if (Object.keys(data).isEmpty()) {
             infoDialog.open("Nothing changed!");
             return;
         }
-        
+
         console.log(data)
 
         btn.text("Saving...").disabled();
@@ -135,16 +144,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
     }
 
     render() {
@@ -167,15 +166,20 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row active">
                     <label>
-                        1. Work Permit Details 
+                        1. Work Permit Details
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
                         {!isNewEmployee && !embeddedEmployee &&
-                          <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                        <ClearableInput name="date" type="date" placeholder="Date..." defaultValue={date} className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date} required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                            <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
+                                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                        <ClearableInput name="date" type="date" placeholder="Date..." defaultValue={date}
+                                        className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
+                                        defaultValue={expiry_date} required className="col-lg-6 form-control"
+                                        onChange={this.form.onChange}/>
+                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes}
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
                 </div>
@@ -185,7 +189,8 @@ class Controls extends React.Component {
                         <Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc} onChange={this.form.onChange}/>
+                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc}
+                                           onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={2} onBack={onFormBack}/>
                 </div>

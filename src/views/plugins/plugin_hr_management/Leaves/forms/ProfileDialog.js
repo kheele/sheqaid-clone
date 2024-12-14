@@ -11,8 +11,8 @@ import EditDialog from "./EditDialog";
 
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeLeave} from "mutations/update";
 import ProfileUserDialog from "../../../../default/Users/ProfileDialog";
 import EditUserDialog from "../../../../default/Users/EditDialog";
 import NewEmployeeDialog from "../../Employees/forms/NewDialog";

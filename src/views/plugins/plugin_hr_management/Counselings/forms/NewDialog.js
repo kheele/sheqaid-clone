@@ -11,7 +11,7 @@ import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeCounselling from "mutations/all/EmployeeCounselling/insertEmployeeCounselling";
+import {insertEmployeeCounselling} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {

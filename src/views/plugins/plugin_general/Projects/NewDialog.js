@@ -8,7 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
-import insertProject from "mutations/all/Project/insertProject";
+import {insertProject} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -20,7 +20,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -30,7 +30,7 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -74,14 +74,17 @@ class Controls extends React.Component {
         const {isConsultant} = storage.is;
         const {client} = this.props.extraProps;
         return <FormControls onChange={this.form.onChange}>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 activeAlways
                 idx={1}
-                title="Project Details" >
-                    <ClearableInput name="name" type="text" placeholder="Project Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="address" type="textarea" placeholder="Project Address" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    {isConsultant && <SelectClientInput name="client" placeholder="Company..." required client={client} className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                title="Project Details">
+                <ClearableInput name="name" type="text" placeholder="Project Name" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="address" type="textarea" placeholder="Project Address"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {isConsultant && <SelectClientInput name="client" placeholder="Company..." required client={client}
+                                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
             </Row>
         </FormControls>;
     }

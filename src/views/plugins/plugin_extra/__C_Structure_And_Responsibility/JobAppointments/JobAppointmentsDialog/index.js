@@ -11,11 +11,9 @@ import AEmployeeDocDialog from 'views/plugins/plugin_hr_management/AEmployeeDocD
 import JobAppointmentsRenderRow from "./JobAppointmentsRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
-import updateEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/updateEmployeeJobAppointment";
-import {
-    findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged
-} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
-import {findByIdOrgJobAppointmentsDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
+import {updateEmployeeJobAppointment} from "mutations/update";
+import {findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgJobAppointmentsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 
 // </editor-fold>
 

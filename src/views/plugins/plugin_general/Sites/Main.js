@@ -13,8 +13,8 @@ import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
-import siteStore from "mutations/all/Site";
 import AggregateStat from "components/AggregateStat";
+import {listSites} from "mutations/listByLogged";
 
 @observer
 class Main extends React.Component {
@@ -45,7 +45,7 @@ class Main extends React.Component {
     }
 
     onLoadList(page, isNew) {
-        return siteStore.listAllByLogged();
+        return listSites();
     }
 
     onRemoved(item) {

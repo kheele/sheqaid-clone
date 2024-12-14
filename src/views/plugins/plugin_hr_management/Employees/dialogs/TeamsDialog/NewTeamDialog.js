@@ -6,18 +6,12 @@ import {observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
-import {
-    ClearableInput, RowOrgs,
-    SelectClientInput,
-    SelectEmployeeInput,
-    SelectProjectInput,
-    SelectSiteInput
-} from 'components/inputs';
+import {ClearableInput, RowOrgs, SelectEmployeeInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable, NewPPEItemListTable} from 'components/FormTableComponents';
 
 import style from "./NewTeamDialog.lazy.css";
-import insertTeam from "mutations/all/Team/insertTeam";
+import {insertTeam} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -175,16 +169,14 @@ class Controls extends React.Component {
             site_id: site && site.id,
 
             supervisor_id: supervisor && supervisor.id,
-            employee_list: {
-                data: (employee_list || []).filter(v => !!v).map(({employee: {id}}) => {
-                    return {id};
-                })
-            },
+            employee_list: (employee_list || []).filter(v => !!v).map(({employee: {id}}) => {
+                return id;
+            }),
             ppe_type_list: {
                 data: (ppe_type_list || []).filter(v => !!v).map(({ppe_type: {id: ppe_type_id}}) => {
                     return {ppe_type_id};
                 })
-            }
+            },
         };
 
         console.log(data)
@@ -211,17 +203,18 @@ class Controls extends React.Component {
 
         return (<FormControls>
             <RowOrgs
-              onChange={this.form.onChange}
-              onFormOpen={onFormOpen}
-              onFormBack={onFormBack}
-              onFormNext={onFormNext}
+                onChange={this.form.onChange}
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
             >
                 <Row
-                  rendered
-                  idx={1}
-                  title="1. Team Details"
+                    rendered
+                    idx={1}
+                    title="1. Team Details"
                 >
-                    <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="col-lg-12 form-control"
+                    <SelectEmployeeInput name="supervisor" placeholder="Supervisor..."
+                                         className="col-lg-12 form-control"
                                          onChange={this.form.onChange}/>
                     <ClearableInput name="name" type="text" placeholder="Team Name" className="col-lg-12 form-control"
                                     onChange={this.form.onChange}/>

@@ -7,7 +7,7 @@ import {Dates, execWhen} from 'utils/Utils';
 import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfilePDFReport.lazy.css";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
+import {findByIdEmployee} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
 import PDFTronViewer from "components/documents/PDFTron/PDFTronViewer";
 import {FormControls} from "components/FormComponents";

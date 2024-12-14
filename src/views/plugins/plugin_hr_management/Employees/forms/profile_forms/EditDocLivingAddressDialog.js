@@ -10,8 +10,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDocLivingAddressDialog.lazy.css";
-import updateEmployeeDocLivingAddress
-    from "mutations/all/EmployeeDocument/EmployeeDocLivingAddress/updateEmployeeDocLivingAddress";
+import {updateEmployeeDocLivingAddress} from "mutations/update";
 
 //<editor-fold desc="EditDialog">
 @observer

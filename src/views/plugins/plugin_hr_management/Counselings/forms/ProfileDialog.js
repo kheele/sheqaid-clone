@@ -12,8 +12,8 @@ import EditDialog from "./EditDialog";
 import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
 import Divider from "@mui/material/Divider";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployeeCounselling} from "mutations/update";
 import {findByIdHRCounselingsDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRCounselingsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 

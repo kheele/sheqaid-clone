@@ -7,7 +7,7 @@ import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 
 // import style from "./AwaitingApprovalTab.lazy.css";
 import LoggedUserSettings from "utils/LoggedUserSettings";
-import updateEmployeeExpense from "mutations/all/EmployeeExpense/updateEmployeeExpense";
+import {updateEmployeeExpense} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ActiveTab">
@@ -65,7 +65,7 @@ class AwaitingApprovalTab extends ActiveTab {
     onReject(evt, btn) {
         this.updateStatus(evt, btn, "Rejected");
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}, evt, btn) {

@@ -12,6 +12,9 @@ const findById = path => async (id) => {
 //General
 export const findByIdManual = findById("manuals");
 
+//Users
+export const findByIdUser = findById("users");
+
 //Assets
 export const findByIdAsset = findById("assets");
 export const findByIdAssetCalibrationRecordListItem = findById("assets/calibration-record-list");
@@ -48,4 +51,26 @@ export const findByIdDepartment = findById("departments");
 export const findByIdJobCategory = findById("job-categories");
 export const findByIdJobPosition = findById("job-positions");
 export const findByIdTeam = findById("teams");
+export const findByIdPPE = findById("ppe-types");
+export const findByIdPPEItem = findById("ppe-items");
+
+export const findByIdEmployee = findById("employees");
+export const findByIdEmployeeExternal = findById("employees-external");
 export const findByIdEmployeeCompetency = findById("employees/docs/competencies");
+export const findByIdEmployeeContract = findById("employees/docs/contracts");
+export const findByIdEmployeeCounselling = findById("employees/docs/counsellings");
+export const findByIdEmployeeExpense = findById("employees/docs/expenses");
+export const findByIdEmployeeJobAppointment = findById("structure-and-responsibility/job-appointments");
+export const findByIdEmployeeLeave = findById("employees/docs/leaves");
+export const findByIdEmployeeMedical = findById("employees/docs/medicals");
+export const findByIdEmployeeWarning = findById("employees/docs/warnings");
+
+export const findByIdEmployeeLicense = findById("employees/docs/licenses");
+export const findByIdEmployeeWorkPermit = findById("employees/docs/work-permits");
+
+export const findByIdEmployeeDocBankingDetail = findById("employees/documents/banking-details");
+export const findByIdEmployeeDocLivingAddress = findById("employees/documents/living-address");
+export const findByIdEmployeeDocDocumentIDOrPassport = findById("employees/documents/id-or-passports");
+export const findByIdEmployeeDocDocumentPrDP = findById("employees/documents/prdp");
+export const findByIdEmployeeDependant = findById("employees/dependents");
+export const findByIdEmployeeNextOfKin = findById("employees/next-of-kins");

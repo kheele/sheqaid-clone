@@ -10,11 +10,9 @@ import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 import LicensesRenderRow from "./LicensesRenderRow";
 import {THead} from "components/tables";
 
-import updateEmployeeLicense from "mutations/all/EmployeeLicense/updateEmployeeLicense";
-import {
-    findByIdOrgLicensesDateRangeDashboardStatsByLogged
-} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
-import {findByIdOrgLicensesDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
+import {updateEmployeeLicense} from "mutations/update";
+import {findByIdOrgLicensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgLicensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 
 // </editor-fold>
 

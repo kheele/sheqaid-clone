@@ -13,7 +13,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeCompetency from "mutations/all/EmployeeCompetency/updateEmployeeCompetency";
+import {updateEmployeeCompetency} from "mutations/update";
 import {findByIdEmployeeCompetency} from "mutations/findById";
 // </editor-fold>
 

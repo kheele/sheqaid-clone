@@ -8,8 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDocBankingDetailsDialog.lazy.css";
-import insertEmployeeDocBankingDetail
-    from "mutations/all/EmployeeDocument/EmployeeDocBankingDetail/insertEmployeeDocBankingDetail";
+import {insertEmployeeDocBankingDetail} from "mutations/create";
 
 //<editor-fold desc="NewDialog">
 @observer

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {Dates, execWhen, getRandomRolor} from 'utils/Utils';
+import {Dates, execWhen} from 'utils/Utils';
 import APageListReadWrite from "../../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import {ConfirmDialog} from 'components/dialogs';
@@ -13,8 +13,8 @@ import ProfileDialog from './ProfileDialog';
 import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
-import clientStore from "mutations/all/Client";
 import AggregateStat from "components/AggregateStat";
+import {listClients} from "mutations/listByLogged";
 
 @observer
 class Main extends React.Component {
@@ -27,9 +27,9 @@ class Main extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
-        
+
         this.hasCreateBtn = this.hasCreateBtn.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
@@ -45,7 +45,7 @@ class Main extends React.Component {
     }
 
     onLoadList(page, isNew) {
-        return clientStore.listAllByLogged();
+        return listClients();
     }
 
     onRemoved(item) {

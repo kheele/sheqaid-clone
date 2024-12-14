@@ -27,9 +27,9 @@ import ProfilePDFReader from './printers/ProfilePDFReader';
 import style from "./EmployeesActiveTab.lazy.css";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
-import findByIdsActiveEmployee from "mutations/all/EmployeeActive/findByIdsActiveEmployee";
+import {listByIdsActiveEmployee} from "mutations/listByLoggedWithCustomArgs";
 import AEmployeeListTab, {StatsPanel} from "./AEmployeeListTab";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
+import {updateEmployee} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Main">
@@ -41,7 +41,7 @@ class Main extends AEmployeeListTab {
 
     pageKey = "EmployeesActiveTab";
     removed = false;
-    findByIdsEmployees = findByIdsActiveEmployee;
+    findByIdsEmployees = listByIdsActiveEmployee;
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {

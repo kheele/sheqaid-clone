@@ -10,11 +10,9 @@ import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 import IDOrPassportRenderRow from "./IDOrPassportRenderRow";
 import {THead} from "components/tables";
 
-import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import {findByIdOrgIDOrPassportDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
-import {
-    findByIdOrgIDOrPassportDateRangeDashboardStatsByLogged
-} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
+import {updateEmployeeDocDocumentIDOrPassport} from "mutations/update";
+import {findByIdOrgIDOrPassportDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+import {findByIdOrgIDOrPassportDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 
 // </editor-fold>
 
@@ -25,7 +23,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "ID/Passport";
     permissionKey = "IDOrPassports";
     module = "IDOrPassports";
-    onUpdate = updateEmployeeDocDocument;
+    onUpdate = updateEmployeeDocDocumentIDOrPassport;
     filterNodeMarginB = 35;
 
     dialogs = {

@@ -9,7 +9,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
-import insertSite from "mutations/all/Site/insertSite";
+import {insertSite} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -21,7 +21,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -33,22 +33,22 @@ class Controls extends React.Component {
         selectedClient: null,
         selectedProject: null
     };
-    
+
     constructor() {
         super();
-        
+
         this.onChangeClient = this.onChangeClient.bind(this);
-        
+
         this.form = new Form();
         this.form.addChangeOne("client", this.onChangeClient);
     }
 
     onChangeClient(el, val) {
         this.state.selectedClient = val;
-        if(val && this.form.isValid('project')){
+        if (val && this.form.isValid('project')) {
             const project = this.form.get('project');
             const {client} = project.data;
-            if(!client || (client.id !== val.id)) {
+            if (!client || (client.id !== val.id)) {
                 this.refs.project.reset();
             }
         }
@@ -92,20 +92,24 @@ class Controls extends React.Component {
             setTimeout(() => progressDialog.close());
         });
     }
-    
+
     render() {
         const {isConsultant} = storage.is;
         const {client, project} = this.props.extraProps;
         return <FormControls onChange={this.form.onChange}>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 activeAlways
                 idx={1}
-                title="Site Details" >
-                    <ClearableInput name="name" type="text" placeholder="Site Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    <ClearableInput name="address" type="textarea" placeholder="Site Address" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                    {isConsultant && <SelectClientInput name="client" placeholder="Company..." client={client} required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                    <SelectProjectInput name="project" placeholder="Project..." project={project} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                title="Site Details">
+                <ClearableInput name="name" type="text" placeholder="Site Name" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="address" type="textarea" placeholder="Site Address"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {isConsultant && <SelectClientInput name="client" placeholder="Company..." client={client} required
+                                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectProjectInput name="project" placeholder="Project..." project={project} required
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }

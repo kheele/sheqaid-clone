@@ -3,18 +3,14 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed} from 'mobx';
 import {CircularProgress} from "@mui/material";
-import {AProfileDialog} from '../../../../../../components/dialogs';
-import {ProfileField, RowOrgs, UploadButton} from '../../../../../../components/inputs';
-import {
-    NewDepartmentListTable,
-    NewJobPositionListTable,
-    NewTeamListTable
-} from '../../../../../../components/FormTableComponents';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
+import {AProfileDialog} from 'components/dialogs';
+import {ProfileField, RowOrgs, UploadButton} from 'components/inputs';
+import {NewDepartmentListTable, NewJobPositionListTable, NewTeamListTable} from 'components/FormTableComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfilePPEDialog.lazy.css";
-import findByIdPPE from "mutations/all/PPE/findByIdPPE";
-import updatePPE from "mutations/all/PPE/updatePPE";
+import {findByIdPPE} from "mutations/findById";
+import {updatePPE} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

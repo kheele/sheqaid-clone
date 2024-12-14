@@ -1,23 +1,19 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog} from 'components/dialogs';
-import {
-    ClearableInput,
-    SelectPPETypeInput,
-    UploadButton
-} from 'components/inputs';
+import {ClearableInput, SelectPPETypeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditPPEItemDialog.lazy.css";
-import findByIdPPEItem from "mutations/all/PPE/findByIdPPEItem";
-import updatePPEItem from "mutations/all/PPE/updatePPEItem";
+import {findByIdPPEItem} from "mutations/findById";
+import {updatePPEItem} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -33,9 +29,10 @@ class EditDialog extends AEditDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -47,7 +44,7 @@ class Controls extends React.Component {
     state = {
         lists: {
             condition: ['Good', 'Needs Inspection', 'Damaged', 'Lost', 'Retired'].map(value => (
-              {text: value, value, checked: false}
+                {text: value, value, checked: false}
             )),
         },
     };
@@ -56,9 +53,16 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
+
+    // </editor-fold>
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
@@ -79,27 +83,27 @@ class Controls extends React.Component {
             notes,
             profile_pic,
         } = form.data;
-        
+
         const data = {};
-        
+
         ShouldUpdate.checkPPEType(data, old_data, ppe_type, 'ppe_type');
         ShouldUpdate.check(data, old_data, serial_num, 'serial_num');
         ShouldUpdate.checkDate(data, old_data, purchase_date, 'purchase_date');
         ShouldUpdate.check(data, old_data, condition, 'condition');
         ShouldUpdate.check(data, old_data, notes, 'notes');
         ShouldUpdate.checkFile(data, old_data, profile_pic, 'profile_pic');
-        
-        if(Object.keys(data).isEmpty()){
+
+        if (Object.keys(data).isEmpty()) {
             infoDialog.open("Nothing changed!");
             return;
         }
-        
+
         console.log(data)
 
         btn.text("Saving...").disabled();
         updatePPEItem({id: this.item.id, ...data}).then(res => {
             console.log("res", res)
-            if(res === "ERROR") {
+            if (res === "ERROR") {
                 infoDialog.open("An error occurred. Please try again.");
             } else {
                 onSaved && onSaved(res);
@@ -111,11 +115,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
-    // </editor-fold>
-
-    @computed get item() {
-        return this.props.state.item;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
@@ -125,7 +124,7 @@ class Controls extends React.Component {
 
         let {
             props: {
-                onFormNext, onFormBack, onFormOpen, 
+                onFormNext, onFormBack, onFormOpen,
                 dialog: {renderProfileCover}
             },
             item, item: {
@@ -140,37 +139,41 @@ class Controls extends React.Component {
                 }
             }
         } = this;
-        
+
         return (<FormControls>
             <Row
-              activeAlways
-              rendered
-              idx={0}
-              title="PPE Item Details"
+                activeAlways
+                rendered
+                idx={0}
+                title="PPE Item Details"
             >
                 <SelectPPETypeInput name="ppe_type" defaultValue={ppe_type}
                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="serial_num" type="text" defaultValue={serial_num} placeholder="Serial No." className="col-lg-12 form-control"
+                <ClearableInput name="serial_num" type="text" defaultValue={serial_num} placeholder="Serial No."
+                                className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
-                <ClearableInput name="purchase_date" type="date" defaultValue={purchase_date} placeholder="Purchase Date..." className="col-lg-12 form-control"
+                <ClearableInput name="purchase_date" type="date" defaultValue={purchase_date}
+                                placeholder="Purchase Date..." className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="condition" type="radio" defaultValue={condition} placeholder="Condition" vertical
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.condition} returnValue/>
-                <ClearableInput name="notes" type="textarea" defaultValue={notes} placeholder="Notes" className="col-lg-12 margin-b-15 form-control"
+                <ClearableInput name="notes" type="textarea" defaultValue={notes} placeholder="Notes"
+                                className="col-lg-12 margin-b-15 form-control"
                                 onChange={this.form.onChange}/>
                 <UploadButton
-                  name="profile_pic"
-                  buttonTitle="PPE Item Photo"
-                  type={['Photo']}
-                  defaultValue={profile_pic}
-                  showOnlyIcon
-                  className="col-lg-6 col-xs-12 hor-center"
-                  onChange={this.form.onChange}
+                    name="profile_pic"
+                    buttonTitle="PPE Item Photo"
+                    type={['Photo']}
+                    defaultValue={profile_pic}
+                    showOnlyIcon
+                    className="col-lg-6 col-xs-12 hor-center"
+                    onChange={this.form.onChange}
                 />
             </Row>
         </FormControls>);
     }
+
     // </editor-fold>
 }
 

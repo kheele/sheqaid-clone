@@ -14,7 +14,7 @@ import ALoginControls from './ALoginControls';
 import style from './SetupEmailPasswordDialog.lazy.css';
 import storage from "../../storage/Storage";
 import {execWhen} from "../../utils/UtilsFuns";
-import updateEmployee from "../../mutations/all/Employee/updateEmployee";
+import {updateEmployee} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -62,6 +62,39 @@ class Controls extends ALoginControls {
 
     // </editor-fold>
 
+    get auth() {
+        const {type} = this.item;
+        if (type === "Contractor") {
+            return auth2;
+        } else if (type === "Staff") {
+            return auth_hr;
+        } else {
+            return auth;
+        }
+    }
+
+    get path() {
+        if (isAdminApp) {
+            return "admin/users/accounts/";
+        }
+        const {type} = this.item;
+        if (type === "Contractor") {
+            return "plugin_sheq_assist/contractors/users/";
+        } else if (type === "Staff") {
+            return "plugin_sheq_assist/employees/accounts/";
+        } else {
+            return "users/accounts/";
+        }
+    }
+
+    // </editor-fold>
+
+    get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     componentWillUnmount() {
         this.authListener && this.authListener();
     }
@@ -93,8 +126,6 @@ class Controls extends ALoginControls {
         return true;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     async onSubmit(e, btn) {
         const {form} = this;
@@ -123,7 +154,7 @@ class Controls extends ALoginControls {
                                     this.authListener();
 
                                     infoDialog.open(<p>
-                                        Password successfully set up.<br />
+                                        Password successfully set up.<br/>
                                         Please verify your email address and you will automatically be logged in.
                                     </p>);
 
@@ -137,9 +168,7 @@ class Controls extends ALoginControls {
                                                 storage.onLogin(currentUser);
                                             });
 
-                                            return execWhen(() => storage.loggedUserAuth).
-                                            then(loggedUserAuth => loggedUserAuth.getIdTokenResult().
-                                            then(idTokenResult => {
+                                            return execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
                                                 storage.idTokenResult = idTokenResult;
                                                 return res;
                                             }));
@@ -196,37 +225,6 @@ class Controls extends ALoginControls {
         }).finally(() => {
             progressDialog.close();
         });
-    }
-
-    // </editor-fold>
-
-    get auth() {
-        const {type} = this.item;
-        if (type === "Contractor") {
-            return auth2;
-        } else if (type === "Staff") {
-            return auth_hr;
-        } else {
-            return auth;
-        }
-    }
-
-    get path() {
-        if (isAdminApp) {
-            return "admin/users/accounts/";
-        }
-        const {type} = this.item;
-        if (type === "Contractor") {
-            return "plugin_sheq_assist/contractors/users/";
-        } else if (type === "Staff") {
-            return "plugin_sheq_assist/employees/accounts/";
-        } else {
-            return "users/accounts/";
-        }
-    }
-
-    get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

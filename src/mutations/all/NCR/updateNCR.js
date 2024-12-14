@@ -1,12 +1,10 @@
 /* eslint-disable camelcase */
 
 // 1
-import { graphql } from "react-relay";
+import {graphql} from "react-relay";
 // @ts-ignore
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityNCR} from "mutations/types.d.ts";
-import updateEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import insertEmployeeDocDocument from "../EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
 import updateNCRProgress from "../NCRProgress/updateNCRProgress";
 import insertNCRProgress from "../NCRProgress/insertNCRProgress";
 import findByIdNCR from "./findByIdNCR";
@@ -161,10 +159,10 @@ export default async (attrs: EntityNCR) => {
         additional_notes
     } = attrs;
 
-    if(progress_list) {
+    if (progress_list) {
         delete attrs.progress_list;
         await Promise.all(progress_list.data.map(async (v, n) => {
-            if(v.id) {
+            if (v.id) {
                 return updateNCRProgress(v);
             } else {
                 return insertNCRProgress({...v, non_conformance_id: id});

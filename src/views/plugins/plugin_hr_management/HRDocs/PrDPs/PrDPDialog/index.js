@@ -10,11 +10,9 @@ import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
 import PrDPRenderRow from "./PrDPRenderRow";
 import {THead} from "components/tables";
 
-import updateEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/updateEmployeeDocDocument";
-import {
-    findByIdOrgPrDPDateRangeDashboardStatsByLogged
-} from "../../../../../../mutations/employeeOrgDateRangeDashboard";
-import {findByIdOrgPrDPDashboardStatsByLogged} from "../../../../../../mutations/employeeOrgDashboard";
+import {updateEmployeeDocDocumentPrDP} from "mutations/update";
+import {findByIdOrgPrDPDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgPrDPDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 
 // </editor-fold>
 
@@ -25,7 +23,7 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "PrDP";
     permissionKey = "PrDP";
     module = "PrDP";
-    onUpdate = updateEmployeeDocDocument;
+    onUpdate = updateEmployeeDocDocumentPrDP;
     filterNodeMarginB = 35;
 
     dialogs = {

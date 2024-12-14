@@ -11,8 +11,8 @@ import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from 'comp
 import {NavButtons} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeLeave from "mutations/all/EmployeeLeave/updateEmployeeLeave";
-import findByIdEmployeeLeave from "mutations/all/EmployeeLeave/findByIdEmployeeLeave";
+import {updateEmployeeLeave} from "mutations/update";
+import {findByIdEmployeeLeave} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {

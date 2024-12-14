@@ -2,7 +2,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import Form from 'utils/Form';
-import {Dates} from 'utils/Utils';
 
 import {Row} from 'components/FormComponents';
 import NextOfKinSection from "./NextOfKinSection";
@@ -25,19 +24,20 @@ class EditDependentsAndNextOfKinSection extends React.Component {
 
     //<editor-fold desc="formData">
     get formData() {
-        const {data} = this.form;
-        let {
-            //
-            next_of_kin_list,
-            //
-            dependent_list,
-        } = data;
-
-        return {
-            next_of_kin_list: {data: (next_of_kin_list || []).slice().map(v => ({...v}))},
-            //
-            dependent_list: {data: (dependent_list || []).map(v => ({...v, dob: Dates.formatTimestampSQL(v.dob)}))},
-        }
+        return this.form.data;
+        // const {data} = this.form;
+        // let {
+        //     //
+        //     next_of_kin_list,
+        //     //
+        //     dependent_list,
+        // } = data;
+        //
+        // return {
+        //     next_of_kin_list: {data: (next_of_kin_list || []).slice().map(v => ({...v}))},
+        //     //
+        //     dependent_list: {data: (dependent_list || []).map(v => ({...v, dob: Dates.formatTimestampSQL(v.dob)}))},
+        // }
     }
 
     //</editor-fold>

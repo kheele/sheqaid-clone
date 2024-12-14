@@ -1,15 +1,13 @@
 import {execWhen} from '../utils/Utils';
 
 import {is, login} from './';
-import clientStore from "../mutations/all/Client";
-import projectStore from "../mutations/all/Project";
-import siteStore from "../mutations/all/Site";
 import {listCountries, listPermissionOtherKeys} from "mutations/list";
+import {listClients, listProjects, listSites} from "mutations/listByLogged";
 
-const stores = {
-    clients: clientStore,
-    projects: projectStore,
-    sites: siteStore,
+const onLists = {
+    clients: listClients,
+    projects: listProjects,
+    sites: listSites,
 };
 
 class Load {
@@ -33,8 +31,8 @@ class Load {
     }
 
     loadImpl(path, title, loginFN, reload) {
-        const store = stores[path];
-        return store.listAllByLogged().then(res => {
+        const onList = onLists[path];
+        return onList().then(res => {
             console.log(path + "/list", res)
             this.storage.attrs.set(path, res);
             if (res.isEmpty()) {

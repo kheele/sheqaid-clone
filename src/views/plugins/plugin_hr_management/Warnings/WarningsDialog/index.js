@@ -11,7 +11,7 @@ import WarningsRenderRow from "./WarningsRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 
-import updateEmployeeWarning from "mutations/all/EmployeeWarning/updateEmployeeWarning";
+import {updateEmployeeWarning} from "mutations/update";
 import {findByIdOrgWarningsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgWarningsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 

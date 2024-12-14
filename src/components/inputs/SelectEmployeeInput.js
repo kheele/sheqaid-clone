@@ -7,7 +7,7 @@ import {Button, ClearableInput} from './';
 import CustomPersonalInfoDialog from '../dialogs/CustomPersonalInfoDialog';
 
 import ASelectInput from './ASelectInput';
-import findByIdEmployee from "../../mutations/all/Employee/findByIdEmployee";
+import {findByIdEmployee} from "mutations/findById";
 import MKBox from "../MK/MKBox";
 import Chip from "@mui/material/Chip";
 import {execWhen} from "../../utils/UtilsFuns";

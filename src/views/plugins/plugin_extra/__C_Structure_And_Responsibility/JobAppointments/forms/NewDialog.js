@@ -5,13 +5,13 @@ import {observable} from 'mobx';
 import Form from 'utils/Form';
 
 import {ANewDialog} from 'components/dialogs';
-import {ClearableInput, Clickable, SelectEmployeeInput, UploadButton} from 'components/inputs';
-import {FormControls, NavButtons, Row} from 'components/FormComponents';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
 import {SignatureListRow} from "components/SignatureComponents";
 import {Dates} from "utils/Dates";
-import insertEmployeeJobAppointment from "mutations/all/EmployeeJobAppointment/insertEmployeeJobAppointment";
+import {insertEmployeeJobAppointment} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -23,7 +23,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -32,28 +32,46 @@ class Controls extends React.Component {
 
     @observable
     state = {
-        lists: {
-        }
+        lists: {}
     };
 
     constructor() {
         super();
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
+    }
+
+    get onSetSignatureSettings() {
+        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
+        return onSetSignatureSettings;
+    }
+
+    get embeddedEmployee() {
+        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
+        return embeddedEmployee;
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    get employeeItem() {
+        return this.props.state.item;
     }
 
     onNext(e, btn) {
         const {form, isNewEmployee, embeddedEmployee} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
                 infoDialog.open('Employee is required');
                 return;
             }
         }
-        
+
         return true;
     }
 
@@ -65,7 +83,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if(isNewEmployee) {
+        if (isNewEmployee) {
             console.log("res", form.data)
             onSaved && onSaved(form.data);
             infoDialog.open("Record added.");
@@ -106,27 +124,13 @@ class Controls extends React.Component {
         });
     }
 
-    get onSetSignatureSettings() {
-        const {props: {dialog: {props: {onSetSignatureSettings}}}} = this;
-        return onSetSignatureSettings;
-    }
-
-    get embeddedEmployee() {
-        const {props: {dialog: {props: {embeddedEmployee}}}} = this;
-        return embeddedEmployee;
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    get employeeItem() {
-        return this.props.state.item;
-    }
-
     render() {
-        const {isNewEmployee, embeddedEmployee, onSetSignatureSettings, props:{onFormNext, onFormBack, onFormOpen}} = this;
+        const {
+            isNewEmployee,
+            embeddedEmployee,
+            onSetSignatureSettings,
+            props: {onFormNext, onFormBack, onFormOpen}
+        } = this;
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return <FormControls>
@@ -138,7 +142,8 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem} className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
+                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>}
             <Row
                 rendered
@@ -149,9 +154,13 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
-                <ClearableInput ref="date" name="date" type="date" placeholder="JobAppointment Start Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="JobAppointment Expiry Date..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput ref="date" name="date" type="date" placeholder="JobAppointment Start Date..." required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput ref="expiry_date" name="expiry_date" type="date"
+                                placeholder="JobAppointment Expiry Date..." required className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="notes" type="textarea" placeholder="Notes" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

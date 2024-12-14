@@ -8,7 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
-import insertSector from "mutations/all/Sector/insertSector";
+import {insertSector} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -20,7 +20,7 @@ class NewDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -30,7 +30,7 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -63,12 +63,13 @@ class Controls extends React.Component {
 
     render() {
         return <FormControls onChange={this.form.onChange}>
-            <Row 
+            <Row
                 activeAlways
-                rendered 
+                rendered
                 idx={1}
                 title="Sector Details">
-                    <ClearableInput name="name" type="text" placeholder="Sector Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="name" type="text" placeholder="Sector Name" required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }

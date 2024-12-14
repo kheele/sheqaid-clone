@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 import {CircularProgress} from "@mui/material";
 
 import Form from 'utils/Form';
@@ -12,8 +12,8 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
-import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
-import findByIdEmployeeCounselling from "mutations/all/EmployeeCounselling/findByIdEmployeeCounselling";
+import {updateEmployeeCounselling} from "mutations/update";
+import {findByIdEmployeeCounselling} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -82,6 +82,16 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.form = new Form();
+    }
+
+    get isNewEmployee() {
+        const {props: {dialog: {props: {isNewEmployee}}}} = this;
+        return isNewEmployee;
+    }
+
+    @computed
+    get item() {
+        return this.props.state.item;
     }
 
     onNext(e, btn) {
@@ -167,16 +177,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-    }
-
-    get isNewEmployee() {
-        const {props: {dialog: {props: {isNewEmployee}}}} = this;
-        return isNewEmployee;
-    }
-
-    @computed
-    get item() {
-        return this.props.state.item;
     }
 
     render() {

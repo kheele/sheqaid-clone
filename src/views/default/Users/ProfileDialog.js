@@ -24,10 +24,9 @@ import NewClientListUpdateBlacklistTable from "components/FormTableComponents/Ne
 import NewProjectListUpdateBlacklistTable from "components/FormTableComponents/NewProjectListUpdateBlacklistTable";
 import NewSiteListUpdateBlacklistTable from "components/FormTableComponents/NewSiteListUpdateBlacklistTable";
 import MKBox from "components/MK/MKBox";
-import {updateUser} from "mutations/update";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
+import {updateEmployee, updateUser} from "mutations/update";
 import Divider from "@mui/material/Divider";
-import findByIdUser from "mutations/all/User/findByIdUser";
+import {findByIdUser} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
 import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
 import updateContractorUser from "mutations/all/ContractorUser/updateContractorUser";

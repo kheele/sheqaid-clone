@@ -1,18 +1,16 @@
 import JsExcelTemplate from "js-excel-template/browser/browser";
-import {updateUser} from "mutations/update";
+import {updateEmployee, updateUser} from "mutations/update";
 import findByUsernameUser from "mutations/all/User/findByUsernameUser";
 import findByUsernameEmployee from "../mutations/all/Employee/findByUsernameEmployee";
 import findByUsernameContractorUser from "../mutations/all/ContractorUser/findByUsernameContractorUser";
 import findByUsernameContractor from "../mutations/all/Contractor/findByUsernameContractor";
 import findByContractorIdContractorUser from "../mutations/all/ContractorUser/findByContractorIdContractorUser";
 import updateContractorUser from "../mutations/all/ContractorUser/updateContractorUser";
-import updateEmployee from "../mutations/all/Employee/updateEmployee";
 import findByPhoneUser from "../mutations/all/User/findByPhoneUser";
 import findByPhoneContractorUser from "../mutations/all/ContractorUser/findByPhoneContractorUser";
 import findByPhoneEmployee from "../mutations/all/Employee/findByPhoneEmployee";
-import findByIdUser from "../mutations/all/User/findByIdUser";
+import {findByIdEmployee, findByIdUser} from "mutations/findById";
 import findByIdContractorUser from "../mutations/all/ContractorUser/findByIdContractorUser";
-import findByIdEmployee from "../mutations/all/Employee/findByIdEmployee";
 
 //<editor-fold desc="WorkerEvents">
 class WorkerEvents {

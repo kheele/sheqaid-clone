@@ -19,8 +19,8 @@ import DashboardSection from "./DashboardSection";
 
 import style from "./EditDialog.lazy.css";
 import {CircularProgress} from "@mui/material";
-import findByIdEmployee from "mutations/all/Employee/findByIdEmployee";
-import updateEmployee from "mutations/all/Employee/updateEmployee";
+import {findByIdEmployee} from "mutations/findById";
+import {updateEmployee} from "mutations/update";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 // </editor-fold>
 

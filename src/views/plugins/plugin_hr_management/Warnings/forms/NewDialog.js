@@ -11,7 +11,7 @@ import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 import style from "./NewDialog.lazy.css";
-import insertEmployeeWarning from "mutations/all/EmployeeWarning/insertEmployeeWarning";
+import {insertEmployeeWarning} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {

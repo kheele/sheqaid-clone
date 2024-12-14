@@ -9,7 +9,7 @@ import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
 import {Dates} from "utils/Dates";
-import insertEmployeeContract from "mutations/all/EmployeeContract/insertEmployeeContract";
+import {insertEmployeeContract} from "mutations/create";
 
 //<editor-fold desc="Dialog">
 @observer

@@ -11,7 +11,7 @@ import CounselingsRenderRow from "./CounselingsRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 
-import updateEmployeeCounselling from "mutations/all/EmployeeCounselling/updateEmployeeCounselling";
+import {updateEmployeeCounselling} from "mutations/update";
 import {findByIdOrgCounselingsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCounselingsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 

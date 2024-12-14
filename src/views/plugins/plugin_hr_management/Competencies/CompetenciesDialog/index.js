@@ -11,7 +11,7 @@ import CompetenciesRenderRow from "./CompetenciesRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput, SelectTrainingCourseInput} from "components/inputs";
 
-import updateEmployeeCompetency from "mutations/all/EmployeeCompetency/updateEmployeeCompetency";
+import {updateEmployeeCompetency} from "mutations/update";
 import {findByIdOrgCompetenciesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCompetenciesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 

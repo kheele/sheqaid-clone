@@ -133,7 +133,7 @@ export default async (input) => {
     if (existingUser) {
         return "PHONE_DUP";
     }
-
+    
     delete input.password;
     delete input.uid;
     delete input.customToken;

@@ -11,7 +11,7 @@ import ContractsRenderRow from "./ContractsRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput,} from "components/inputs";
 
-import updateEmployeeContract from "mutations/all/EmployeeContract/updateEmployeeContract";
+import {updateEmployeeContract} from "mutations/update";
 import {findByIdOrgContractsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgContractsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 

@@ -8,7 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDocumentDialog.lazy.css";
-import insertEmployeeDocDocument from "mutations/all/EmployeeDocument/EmployeeDocDocument/insertEmployeeDocDocument";
+import {insertEmployeeDocDocument} from "mutations/createWithCustomArgs";
 import {Dates} from "utils/Dates";
 
 //<editor-fold desc="NewDialog">

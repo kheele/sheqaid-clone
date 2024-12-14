@@ -3,19 +3,15 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
-import Form from '../../../../../../utils/Form';
+import Form from 'utils/Form';
 
-import {ANewDialog} from '../../../../../../components/dialogs';
-import {ClearableInput, RowOrgs, UploadButton} from '../../../../../../components/inputs';
-import {
-    NewDepartmentListTable,
-    NewJobPositionListTable,
-    NewTeamListTable
-} from '../../../../../../components/FormTableComponents';
-import {FormControls, Row} from '../../../../../../components/FormComponents';
+import {ANewDialog} from 'components/dialogs';
+import {ClearableInput, RowOrgs, UploadButton} from 'components/inputs';
+import {NewDepartmentListTable, NewJobPositionListTable, NewTeamListTable} from 'components/FormTableComponents';
+import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewPPEDialog.lazy.css";
-import insertPPE from "mutations/all/PPE/insertPPE";
+import {insertPPE} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

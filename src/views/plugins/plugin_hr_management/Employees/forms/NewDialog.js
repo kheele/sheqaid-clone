@@ -5,7 +5,7 @@ import parsePhoneNumber from 'libphonenumber-js';
 import {observable} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen, SAIdUtils, toDataURI} from 'utils/Utils';
+import {execWhen, SAIdUtils} from 'utils/Utils';
 
 import {ClearableInput, ProfilePic, RowOrgs, SelectGenderInput,} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -17,7 +17,7 @@ import TimeoffSection from "./EditTimeoffSection";
 import DependentsAndNextOfKinSection from './EditDependentsAndNextOfKinSection';
 
 import style from "./NewDialog.lazy.css";
-import insertEmployee from "mutations/all/Employee/insertEmployee";
+import {insertEmployee} from "mutations/create";
 // import JobAppointmentsTab from "./ViewJobAppointmentsTab";
 // import ViewNotificationSettingsTab from "./ViewNotificationSettingsTab";
 // </editor-fold>
@@ -191,93 +191,14 @@ class Controls extends React.Component {
             }
         }
 
-        const {
-            profile_pic, fname, lname, id_num, passport_num, dob, sex,
-            email,
-            // receive_expired_docs_notifs,
-            client,
-            project,
-            site,
-        } = form.data;
-
         const data = {
-            profile_pic: profile_pic && {path: await toDataURI(profile_pic.path)},
-
-            //
-            fname,
-            lname,
-            id_num: id_num && String(id_num),
-            passport_num,
-            dob: Dates.formatDateSQL(dob),
-            sex,
-            email: email && email.toLowerCase(),
-            phone: phone && String(phone),
-
-            // competency_list: [{data: []}],
-            // contract_list: [{data: []}],
-            // counselling_list: [{data: []}],
-            // leave_list: [{data: []}],
-            // license_list: [{data: []}],
-            // medical_list: [{data: []}],
-            // warning_list: [{data: []}],
-            // work_permit_list: [{data: []}],
-
-            // compliance_list: {
-            //     data: (compliance_requirements || []).map(v => {
-            //         if (v.status === "Comformance") {
-            //             v.status = "C";
-            //         } else if (v.status === "Non-Comformance") {
-            //             v.status = "NCR";
-            //         }
-            //         return v;
-            //     })
-            // },
-
-            // team_id,
-
-            client_id: !isContractor ? (client && client.id) : null,
-            project_id: !isContractor ? (project && project.id) : null,
-            site_id: !isContractor ? (site && site.id) : null,
-
-            contractor_client_id: isContractor ? (client && client.id) : null,
-            contractor_site_id: isContractor ? (site && site.id) : null,
-            // contractor_user_id: contractor_user && contractor_user.id,
+            formData: {...form.data, phone},
+            optionalInfoFormData: optionalInfoSection.formData,
+            documentsFormData: documentsSection.formData,
+            dependantsAndNextOfKinFormData: dependantsAndNextOfKinSection.formData,
         };
 
-        // if(receive_expired_docs_notifs) {
-        //     data.receive_expired_docs_notifs = receive_expired_docs_notifs;
-        // } else {
-        //     data.receive_expired_docs_notifs = false;
-        // }
-
-        console.log(optionalInfoSection, documentsSection, dependantsAndNextOfKinSection, specificComplianceRequirementsSection)
-        const optionalInfoFormData = optionalInfoSection.formData;
-        if (optionalInfoFormData) {
-            Object.keys(optionalInfoFormData).forEach(key => {
-                data[key] = optionalInfoFormData[key];
-            });
-        }
-
-        const documentsFormData = documentsSection.formData;
-        if (documentsFormData) {
-            Object.keys(documentsFormData).forEach(key => {
-                data[key] = documentsFormData[key];
-            });
-        }
-
-        const dependantsAndNextOfKinFormData = dependantsAndNextOfKinSection.formData;
-        if (dependantsAndNextOfKinFormData) {
-            Object.keys(dependantsAndNextOfKinFormData).forEach(key => {
-                data[key] = dependantsAndNextOfKinFormData[key];
-            });
-        }
-
-        // const compliance_requirements = toNoneNullObject(specificComplianceRequirementsSection.form.data);
-        // if (compliance_requirements) {
-        //     data.compliance_requirements = compliance_requirements.list;
-        // }
-
-        console.log(data)
+        // console.log(data)
 
         btn.text("Saving...").disabled();
         progressDialog.open();
