@@ -3,6 +3,7 @@ import createWithCustomArgs from "./createWithCustomArgs";
 import update from "./update";
 import updateWithCustomArgs from "./updateWithCustomArgs";
 import _delete from "./delete";
+import deleteWithCustomArgs from "./deleteWithCustomArgs";
 import upsert from "./upsert";
 import findById from "./findById";
 import list from "./list";
@@ -20,6 +21,7 @@ export default {
     update,
     updateWithCustomArgs,
     delete: _delete,
+    deleteWithCustomArgs,
     upsert,
     findById,
     list,

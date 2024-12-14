@@ -4,14 +4,13 @@ import {observer} from 'mobx-react';
 import {computed} from "mobx";
 
 import {AProfileDialog} from 'components/dialogs';
-import {Button, ProfileField, RowOrgs} from 'components/inputs';
+import {ProfileField, RowOrgs} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
-import {NewPPEItemListTable} from 'components/FormTableComponents';
+import {NewEmployeeListTable, NewPPEItemListTable} from 'components/FormTableComponents';
 
 import style from "./ProfileTeamDialog.lazy.css";
 import {CircularProgress} from "@mui/material";
 import {findByIdTeam} from "mutations/findById";
-import EmployeesDialog from "../EmployeesDialog";
 import {updateTeam} from "mutations/update";
 // </editor-fold>
 
@@ -44,27 +43,12 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-
-        this.onClick = this.onClick.bind(this);
     }
 
     // </editor-fold>
 
     @computed get item() {
         return this.props.state.item;
-    }
-
-    onClick(evt, btn) {
-        const {id, data: {name}} = this.item;
-        this.refs.employeesDialog.open({
-            title: `${name} Team Employees`,
-            params: {
-                filterData: {
-                    team_id: id,
-                    isNew: true,
-                },
-            },
-        });
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -87,7 +71,8 @@ class Controls extends React.Component {
                     //
                     list,
                     //
-                    ppe_type_list
+                    ppe_type_list,
+                    employee_list,
                 }
             }
         } = this;
@@ -118,23 +103,35 @@ class Controls extends React.Component {
                 <Row
                     rendered
                     idx={2}
-                    title="2. PPE Required"
+                    title="2. Team Members"
+                    sectionClassName="-margin-l-10 -margin-t-5 w-full-calc-add-20"
+                    onFormOpen={onFormOpen}
+                    onFormNext={onFormNext}
+                    onFormBack={onFormBack}
+                >
+                    <NewEmployeeListTable
+                        name="employee_list"
+                        defaultValue={[...(employee_list || [])]}
+                        readonly
+                        className="w-full"
+                    />
+                </Row>
+                <Row
+                    rendered
+                    idx={3}
+                    title="3. PPE Required"
+                    sectionClassName="-margin-l-10 -margin-t-5 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                 >
-                    <NewPPEItemListTable name="ppe_type_list" defaultValue={[...(ppe_type_list || [])]} readonly/>
-                </Row>
-                <Row
-                    activeAlways
-                    rendered
-                    idx={3}
-                    title="Actions"
-                >
-                    <Button className="btn btn-primary hor-center margin-v-20" onClick={this.onClick}>View
-                        Employees</Button>
+                    <NewPPEItemListTable
+                        name="ppe_type_list"
+                        defaultValue={[...(ppe_type_list || [])]}
+                        readonly
+                        className="w-full"
+                    />
                 </Row>
             </FormControls>
-            <EmployeesDialog ref="employeesDialog"/>
         </>;
     }
 

@@ -2,9 +2,11 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {toJS} from 'mobx';
+import Avatar from "@mui/material/Avatar";
+import Chip from "@material-ui/core/Chip";
 
 import ANewListTable from './ANewListTable';
-import {Button, SelectEmployeeInput} from '../inputs';
+import {Button, Clickable, SelectEmployeeInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import CustomPersonalInfoDialog from '../../components/dialogs/CustomPersonalInfoDialog';
@@ -21,12 +23,17 @@ class ListTable extends ANewListTable {
 
     constructor(props) {
         super(props);
+
+        this.getPersonItem = this.getPersonItem.bind(this);
+        this.getOtherPersonItem = this.getOtherPersonItem.bind(this);
+        this.getItem = this.getItem.bind(this);
+
         this.onAddOtherPerson = this.onAddOtherPerson.bind(this);
         this.excludeIds = this.excludeIds.bind(this);
     }
 
     onClickComplete(e, el) {
-        let {savable, targetItem, insertFn, deleteFn, onAttrs, onUpdated} = this.props;
+        let {savable, targetItem, insertFn, deleteFn, onAttrs, onDeleteAttrs, onUpdated} = this.props;
 
         if (savable && targetItem) {
             let {action, idx, item} = el.props;
@@ -59,7 +66,18 @@ class ListTable extends ANewListTable {
                     if (!item.id) return;
 
                     progressDialog.open();
-                    deleteFn(item.id).then(savedItem => {
+
+                    let input;
+                    if (onDeleteAttrs) {
+                        input = {
+                            [targetItem.key]: null,
+                            ...onDeleteAttrs(item),
+                        };
+                    } else {
+                        input = item.id;
+                    }
+
+                    deleteFn(input).then(savedItem => {
                         if (!savedItem) {
                             infoDialog.open("Sorry! Record couldn't be removed.");
                         } else {
@@ -120,16 +138,28 @@ class ListTable extends ANewListTable {
         });
     }
 
-    renderItem(n, onClick) {
-        const {readonly, placeholder, renderTable, disableOtherPerson} = this.props;
+    getPersonItem(n) {
         const item = this.state.list[n];
-//        console.log('item', item)
         if (item && (
             item.id ||
             item.employee ||
             item.investigator ||
             item.person_involved ||
             item.witness ||
+            (item.id_num || item.passport_num)
+        )) {
+            const {
+                employee, investigator, person_involved, witness,
+            } = item;
+
+            return employee || investigator || person_involved || witness;
+        }
+    }
+
+    getOtherPersonItem(n) {
+        const item = this.state.list[n];
+        if (item && (
+            item.id ||
             item.other_person ||
             item.investigator_other ||
             item.person_involved_other ||
@@ -137,39 +167,34 @@ class ListTable extends ANewListTable {
             (item.id_num || item.passport_num)
         )) {
             const {
-                employee, investigator, person_involved, witness,
                 other_person, investigator_other, person_involved_other, witness_other,
             } = item;
 
-            let id, lname, fname, email;
-            if (
-                employee || investigator || person_involved || witness
-            ) {
-                let v = employee || investigator || person_involved || witness;
-                id = v.id;
-                if (v.data) {
-                    v = v.data;
-                }
-                lname = v.lname;
-                fname = v.fname;
-                email = v.email;
-            } else if (
-                other_person || investigator_other || person_involved_other || witness_other
-            ) {
-                let v = other_person || investigator_other || person_involved_other || witness_other;
-                lname = v.lname;
-                fname = v.fname;
-                email = v.email;
-            } else {
-                id = item.id;
-                let v = item;
-                if (v.data) {
-                    v = v.data;
-                }
-                lname = v.lname;
-                fname = v.fname;
-                email = v.email;
-            }
+            return other_person || investigator_other || person_involved_other || witness_other;
+        }
+    }
+
+    getItem(n) {
+        const personItem = this.getPersonItem(n);
+        if (personItem) {
+            return personItem;
+        }
+
+        const otherPersonItem = this.getOtherPersonItem(n);
+        if (otherPersonItem) {
+            return otherPersonItem;
+        }
+    }
+
+    renderItem(n, onClick) {
+        const {readonly, placeholder, renderTable, disableOtherPerson} = this.props;
+        const item = this.getItem(n);
+        console.log('item', item)
+        if (item && (
+            item.id ||
+            (item.id_num || item.passport_num)
+        )) {
+            let {id, lname, fname, email, phone, profile_pic} = item.data || item;
 
             if (!lname && !fname) {
                 return null;
@@ -177,8 +202,25 @@ class ListTable extends ANewListTable {
 
             const tr = <>
                 <div className="td fixed-flex min-w-35"><span>{n + 1}</span></div>
-                <div className="td">{lname + ' ' + fname}</div>
+                <div className="td">
+                    <Clickable
+                        idx={n}
+                    >
+                        <Chip
+                            avatar={<Avatar
+                                alt={lname + ' ' + fname}
+                                sx={{width: "40px !important", height: "40px !important"}}
+                                imgProps={{sx: {height: "100% !important"}}}
+                                src={profile_pic && profile_pic.dlUrls && profile_pic.dlUrls[0]}
+                            />}
+                            label={lname + ' ' + fname}
+                            size="medium"
+                            sx={{cursor: "pointer", height: "50px !important"}}
+                        />
+                    </Clickable>
+                </div>
                 <div className="td">{email}</div>
+                <div className="td">{phone}</div>
                 {!readonly && <div className="td fixed-flex min-w-40">
                     <Button idx={n} action="delete" className="btn btn-primary hor-center w-40" onClick={onClick}>
                         <i className="fa fa-times-circle"/>
@@ -225,6 +267,7 @@ class ListTable extends ANewListTable {
             <div className="td fixed-flex min-w-30">#</div>
             <div className="td">{employeeCol || "Employee / Other Person"}</div>
             <div className="td">Email Address</div>
+            <div className="td">Phone No.</div>
             {!readonly && <div className="td fixed-flex min-w-40 padding-0"/>}
             {readonly && <div className="td fixed-flex min-w-0 padding-0"/>}
             {!disableOtherPerson && <CustomPersonalInfoDialog ref="otherPersonDialog"/>}

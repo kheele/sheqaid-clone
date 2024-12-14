@@ -1,1 +1,5 @@
 @import "./ANewListTable.css";
+
+.NewEmployeeListTable .MuiChip-root {
+    height: 50px !important;
+}

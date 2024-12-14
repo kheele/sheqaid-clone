@@ -45,7 +45,6 @@ class Main extends APage {
     static title = 'Employees';
     static faIconLeft = 'users';
 
-    path = "plugin_sheq_assist/employees/";
     @observable
     state = {index: 0, isLoaded: false};
     compRefs = {};

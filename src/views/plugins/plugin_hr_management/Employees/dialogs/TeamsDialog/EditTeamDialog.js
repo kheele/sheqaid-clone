@@ -12,9 +12,10 @@ import {FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable, NewPPEItemListTable} from 'components/FormTableComponents';
 
 import style from "./EditTeamDialog.lazy.css";
-import {updateTeam} from "mutations/update";
+import {updateEmployee, updateTeam} from "mutations/update";
 import {CircularProgress} from "@mui/material";
 import {findByIdTeam} from "mutations/findById";
+import {deleteProxyEmployeeTeam} from "../../../../../../mutations/deleteWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -269,28 +270,62 @@ class Controls extends React.Component {
                 rendered
                 idx={2}
                 title="2. Team Members"
+                sectionClassName="-margin-l-10 -margin-t-5 w-full-calc-add-20"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
-                <NewEmployeeListTable name="employee_list" defaultValue={[...(employee_list || []), null]}
-                                      disableOtherPerson
-                                      onChange={this.form.onChange}/>
+                <NewEmployeeListTable
+                    name="employee_list"
+                    defaultValue={[...(employee_list || []), null]}
+                    disableOtherPerson
+                    onChange={this.form.onChange}
+                    className="w-full"
+                    savable
+                    targetItem={{key: "team_id", item}}
+                    insertFn={updateEmployee}
+                    deleteFn={deleteProxyEmployeeTeam}
+                    onAttrs={({id}) => ({id})}
+                    onDeleteAttrs={({id}) => ({id})}
+                />
             </Row>
             <Row
                 rendered
                 idx={3}
                 title="3. PPE Required"
+                sectionClassName="-margin-l-10 -margin-t-5 w-full-calc-add-20"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <NewPPEItemListTable name="ppe_type_list" defaultValue={[...(ppe_type_list || []), null]}
-                                     onChange={this.form.onChange}/>
+                <NewPPEItemListTable
+                    name="ppe_type_list"
+                    defaultValue={[...(ppe_type_list || []), null]}
+                    onChange={this.form.onChange}
+                    className="w-full"
+                    savable
+                    item={item}
+                />
             </Row>
         </FormControls>);
     }
 
     // </editor-fold>
+}
+
+function onEmployeeAttrs({employee, other_person}) {
+    if (other_person && !other_person.id) {
+        const {job_position} = other_person;
+        if (job_position) {
+            other_person.job_position_id = job_position.id;
+            delete other_person.job_position;
+        }
+    }
+
+    return {
+        employee_id: employee && employee.id,
+        other_person_id: other_person && other_person.id ? other_person.id : null,
+        other_person: other_person && !other_person.id ? {data: other_person} : null
+    };
 }
 
 export default EditDialog;
