@@ -173,13 +173,13 @@ class Main extends AEmployeeListTab {
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             <SelectDepartmentInput name="department" placeholder="Department..." required className="form-control"
-                                   onChange={onChange}/>
+                                   onChange={onChange} addButton={false}/>
             <SelectJobPositionInput name="job_position" placeholder="Job Position..." required className="form-control"
-                                    onChange={onChange}/>
+                                    onChange={onChange} addButton={false}/>
             <SelectTeamInput name="team" placeholder="Team..." required className="form-control"
-                             onChange={onChange}/>
+                             onChange={onChange} addButton={false}/>
             <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." required className="form-control"
-                                 onChange={onChange}/>
+                                 onChange={onChange} addButton={false}/>
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
             <ClearableInput name="id_or_pass_num" type="text" placeholder="ID/Passport No." className="form-control"
                             onChange={onChange}/>

@@ -11,10 +11,14 @@ const update = path => async (attrs) => {
 
 //General
 export const updateUser = update("users");
+export const updateContractorUser = update("contractors/users");
 export const updateClient = update("clients");
 export const updateProject = update("projects");
 export const updateSite = update("sites");
+export const updateContractor = update("contractors");
 export const updateSector = update("sectors");
+
+export const sendOTPContractor = update("contractors/otp");
 
 //Assets
 export const updateAsset = update("assets");
@@ -30,15 +34,24 @@ export const updateProxyNCRDocument = update("ncr/proxy/document");
 
 export const updateOHSDoc = update("documents/ohs-docs");
 export const updateSignableDocTemplate = update("doc-signing-settings/api/docuseal/templates");
-export const updateContractor = update("contractors");
 
 //HR
 export const updateDepartment = update("departments");
 export const updateJobCategory = update("job-categories");
 export const updateJobPosition = update("job-positions");
 export const updateTeam = update("teams");
+
+export const updatePPESupplier = update("ppe-suppliers");
 export const updatePPE = update("ppe-types");
+export const updatePPEInventory = update("ppe-inventory");
 export const updatePPEItem = update("ppe-items");
+export const updatePPEDisposal = update("ppe-disposals");
+export const updatePPEFitTest = update("ppe-fit-tests");
+export const updatePPEReturn = update("ppe-returns");
+export const updateApplicableRegulation = update("applicable-regulations");
+export const updateComplianceRequirement = update("compliance-requirements");
+export const updateJobTaskCategory = update("job-tasks/categories");
+export const updateJobTask = update("job-tasks");
 
 export const updateEmployee = update("employees");
 export const updateEmployeeExternal = update("employees-external");
@@ -62,3 +75,11 @@ export const updateEmployeeDocDocumentIDOrPassport = update("employees/documents
 export const updateEmployeeDocDocumentPrDP = update("employees/documents/prdp");
 export const updateEmployeeDependant = update("employees/dependents");
 export const updateEmployeeNextOfKin = update("employees/next-of-kins");
+
+//
+export const updateOrganogram = update("structure-and-responsibility/organograms");
+
+//Questionnaires
+export const updateQuestion = update("questionnaires/questions");
+export const updateQuestionOption = update("questionnaires/question-options");
+export const updateJobObservationsQuestionnaire = update("job-observations");

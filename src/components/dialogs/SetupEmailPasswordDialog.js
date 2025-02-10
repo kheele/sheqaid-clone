@@ -74,9 +74,6 @@ class Controls extends ALoginControls {
     }
 
     get path() {
-        if (isAdminApp) {
-            return "admin/users/accounts/";
-        }
         const {type} = this.item;
         if (type === "Contractor") {
             return "plugin_sheq_assist/contractors/users/";
@@ -250,8 +247,7 @@ class Controls extends ALoginControls {
                     onFormNext={onFormNext}
                 >
                     <ProfileField title="Email Address" name="username" value={username} className="col-lg-12"/>
-                    {!isAdminApp &&
-                        <ProfileField title="Access Type" name="access_type" value={type} className="col-lg-12"/>}
+                    <ProfileField title="Access Type" name="access_type" value={type} className="col-lg-12"/>
                 </Row>
                 <Row
                     rendered

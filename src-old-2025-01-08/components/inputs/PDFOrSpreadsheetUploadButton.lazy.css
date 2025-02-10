@@ -1,0 +1,37 @@
+.PDFOrSpreadsheetUploadButton {
+    position: relative;
+    padding: 10px 0 0;
+    margin-top: 5px;
+    border-top: 1px dotted #ddd;
+}
+
+.PDFOrSpreadsheetUploadButton button{
+    margin: 0 auto;
+    display: table;
+}
+.PDFOrSpreadsheetUploadButton i.fa-trash {
+    position: absolute;
+    top: 13px;
+    right: 0px;
+    font-size: 26px;
+    color: #777;
+    text-shadow: 0 0 3px #ccc;
+    cursor: pointer;
+}
+.PDFOrSpreadsheetUploadButton #PDFViewer{
+    width: calc(100% - 0px);
+    height: calc(100% - 0px); 
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #000;
+}
+.PDFOrSpreadsheetUploadButton .preview{
+    position: absolute;
+    left: 0;
+    top: 52px;
+    width: 100%;
+    height: calc(100% - 50px);
+    background: #000;
+}

@@ -12,6 +12,7 @@ import {NewEmployeeListTable, NewPPEItemListTable} from 'components/FormTableCom
 
 import style from "./NewTeamDialog.lazy.css";
 import {insertTeam} from "mutations/create";
+import {listTeamBySupervisorId} from "mutations/listByLoggedWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -33,7 +34,6 @@ class NewDialog extends ANewDialog {
 
 @observer
 class Controls extends React.Component {
-    path = "plugin_sheq_assist/employees/teams/";
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
@@ -65,8 +65,7 @@ class Controls extends React.Component {
         const {execWhen} = this.props;
         execWhen(() => this.refs.employee_list).then(list_ref => {
             if (val) {
-                const path = "plugin_sheq_assist/StructureAndResponsibility/organograms/list/team/by_supervisor";
-                neonBinding.events.emit(path, val.id).then(res => {
+                listTeamBySupervisorId(val.id).then(res => {
                     console.log("res", res)
                     if (res && isArray(res)) {
                         list_ref.list = [...res, null];
@@ -231,7 +230,8 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
-                <NewEmployeeListTable name="employee_list" disableOtherPerson onChange={this.form.onChange}/>
+                <NewEmployeeListTable ref="employee_list" name="employee_list" disableOtherPerson
+                                      onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered

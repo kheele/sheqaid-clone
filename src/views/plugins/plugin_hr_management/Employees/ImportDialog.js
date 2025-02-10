@@ -11,8 +11,7 @@ import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
 import {ANewDialog, InputDialog} from 'components/dialogs';
 
 import style from "./ImportDialog.lazy.css";
-import insertEmployeeImported from "mutations/all/Employee/insertEmployeeImported";
-import {insertDepartment, insertJobPosition} from "mutations/create";
+import {insertDepartment, insertEmployeeImported, insertJobPosition} from "mutations/create";
 import {findByDepartment, findByJobPosition} from "mutations/findBy";
 // </editor-fold>
 

@@ -1,0 +1,23 @@
+#ToolsWrittenOffTab-tab.page-content{
+    padding: 0;
+    height: 100%;
+}
+#ToolsWrittenOffTab-tab .page-title > .tabled-top-panel {
+    min-width: 760px !important;
+}
+#ToolsWrittenOffTab-tab .page-title > .tabled-top-panel > .buttons > .left-buttons > button{
+	width: auto;
+}
+
+#ToolsWrittenOffTab-tab .filter-wrapper + .table {
+    height: calc(100% - (10px + 128px)) !important;
+}
+#ToolsWrittenOffTab-tab .table .tbody .td img{
+    width: 60px;
+    height: 60px;
+    margin: 5px 0;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}

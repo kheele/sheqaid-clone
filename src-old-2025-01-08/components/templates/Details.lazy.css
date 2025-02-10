@@ -1,0 +1,330 @@
+.Details,
+.Details > .Question{
+    display: block;
+    padding: 0;
+}
+.Details > .Question > .Question-row > *:not(.td-max-score){
+    border-right: 1px solid #ddd;
+}
+.Details > .Question > .Question-row > .td-question button.MuiIconButton-root:not(.icon-upload){
+    position: absolute;
+    background-color: red;
+    color: #fff;
+    top: 3px;
+    right: 3px;
+}
+.Details > .Question > .Question-row > .select-response > .MuiSelect-selectMenu{
+    margin: -4px -10px;
+    padding: 18px 10px;
+}
+.Details > .Question > .Question-row > .td-max-score{
+    margin-right: -1px;
+    padding-right: 1px;
+    text-align: center;
+}
+.Details.readonly .Mui-disabled{
+    color: rgba(0, 0, 0, 0.87);
+}
+.Details.readonly .Mui-disabled .MuiSelect-icon{
+    display: none;
+}
+.Details .MuiInputBase-inputMultiline{
+    height: auto !important;
+    overflow: hidden;
+}
+.Details.readonly .counter{
+    margin-left: 10px;
+}
+.Details > .Question > .Question-row > .td-max-score .MuiFilledInput-underline{
+    margin: 0;
+}
+.Details > .Question > .Question-row > .td-max-score input{
+    text-align: center;
+    font-size: 15px;
+}
+.Details > .Question .td-question{
+    position: relative;
+}
+.Details > .Question .td-question .drag-icon svg{
+    width: 20px;
+    height: 20px;
+    color: #aaa;
+}
+.Details > .Question .td-question p.MuiTypography-root{
+    position: relative;
+}
+.Details > .Question .isMandatory {
+    position: absolute;
+    right: -3px;
+    top: 6px;
+    font-size: 14px;
+}
+.Details > .Question .td-max-score .MuiFilledInput-underline,
+.Details > .Question .MuiFormControl-root .MuiFilledInput-multiline{
+    padding: 13px 0 11px;
+    margin-bottom: -1px;
+    background: none;
+    font-size: 13px;
+    margin-left: 3px;
+}
+.Details > .Question .td-max-score .MuiFilledInput-underline{
+    padding: 0;
+}
+.Details > .Question .td-max-score .MuiFilledInput-input{
+    padding: 0px 10px 0px 20px;
+    height: 53px;
+}
+.Details > .Question .MuiFilledInput-multiline:before,
+.Details > .Question .MuiInput-underline:before,
+.Details > .Question .td-max-score .MuiFilledInput-underline:before{
+    content: none;
+    border: none;
+}
+.Details > .Question .td-question > button{
+    padding: 5px;
+    height: 40px;
+}
+.Details > .Question .td-question > button svg{
+    width: 30px;
+    height: 30px;
+}
+.Details > .Question .td-question > button .questionImage{
+    margin: -5px -6px 0 0;
+}
+.Details > .Question .td-question > button .questionImage > button{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #eee;
+    height: 16px;
+    width: 16px;
+    padding: 0;
+}
+.Details > .Question .td-question > button .questionImage > button svg{
+    width: 15px;
+    height: 16px;
+}
+.Details > .Question .select-response {
+    padding: 4px 10px;
+    font-size: 15px;
+    display: flex;
+    align-items: start;
+}
+.Details > .Question .select-response svg{
+    width: 30px;
+    height: 30px;
+    margin: -5px 0;
+}
+.Details > .Question .select-response label{
+    background: #ddd;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    font-weight: normal;
+
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.Details > .Question .select-response label.green{
+    background: rgba(19, 133, 95, 0.1);
+    color: rgb(19, 133, 95);
+}
+.Details > .Question .select-response label.red{
+    background: rgba(198, 0, 34, 0.1);
+    color: rgb(198, 0, 34);
+}
+.Details > .Question .select-response label.orange{
+    background: rgba(255, 176, 0, 0.1);
+    color: rgb(255, 176, 0);
+}
+.Details > .Question .select-response label.grey{
+    background: rgba(112, 112, 112, 0.1);
+    color: rgb(112, 112, 112);
+}
+/*.MuiAccordion-root:not(.Mui-expanded) > .Details{
+    display: none;
+}*/
+/*.Details div.Details_1 {
+    display: flex; 
+    width: 100%;
+    flex-direction: column; 
+    align-items: flex-start; 
+    margin-left: 15px; 
+    margin-top: -15px;
+}
+.Details div.Details_1 > .Details_1_questionImage .Details_1_questionImage_1_1 > button.MuiIconButton-root{
+    margin-left: -15px; 
+    margin-top: -15px; 
+    z-index: 999; 
+    background-color: lightgrey; 
+    color: grey;
+}
+.Details div.Details_1_1 {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.Details div.Details_1_2 {
+    width: 100%;
+}
+.Details div.Details_1_1 > p.MuiTypography-body1{
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-left: -20px;
+    height: calc(100% - 20px);
+    font-size: 17px;
+    position: relative;
+}
+.Details div.Details_1_1 > .MuiFormControl-root{
+    margin-bottom: 18px;
+}
+.Details div.Details_1_1 > .MuiFormControl-root .MuiFilledInput-multiline{
+    padding: 6px 5px 6px;
+    background-color: #f9f9f9;
+}
+.Details div.Details_1_1 > .MuiInput-root{
+    font-size: 16px;
+    height: 32px;
+    padding: 0;
+}
+.Details div.Details_1_1 > .MuiInput-root > .MuiSelect-root{
+    line-height: 24px;
+    padding: 3px 5px 3px 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.Details div.Details_1_1 > .MuiInput-root > svg.MuiSelect-icon{
+    width: 44px;
+    height: 44px;
+    top: calc(50% - 22px);
+}
+.Details div.Details_1 span.counter{
+    margin: -3px 4px 0 0;
+    font-size: 11px;
+    padding: 2px 0;
+}*/
+.Details div.Preview {
+    justify-items: end;
+    border-top: 1px dotted #ddd;
+}
+.Details div.Preview > .OptionList {
+    width: 379px;
+    box-shadow: 0 0 3px #ddd;
+    border: none;
+}
+.Details div.Preview > div.Preview_options_add {
+    width: 368px;
+    float: right;
+    height: 40px;
+}
+.Details div.Preview > div.Preview_options_add .MuiFormControlLabel-root{
+    margin-top: 2px;
+    margin-left: 0;
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_options_1{
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0px;
+    padding-bottom: 0;
+    /*border: 1px dotted #ddd;*/
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_options_1 span.MuiIconButton-root{
+    margin-top: 10px;
+    margin-right: 5px;
+    float: left;
+    width: 20px;
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_options_1 button.MuiIconButton-root svg{
+    width: 24px;
+    height: 24px;
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_options_1 > span.MuiIconButton-root svg.MuiSvgIcon-root{
+    width: 22px;
+    height: 22px;
+    margin-top: -10px;
+}
+.Details div.Preview .MuiInputBase-input{
+    font-size: 14px;
+    padding-bottom: 7px;
+}
+.Details div.Preview .MuiInputBase-multiline,
+.Details div.Preview .MuiFilledInput-root{
+    background: none;
+    padding-left: 0;
+    padding-top: 9px;
+    padding-bottom: 5px;
+}
+.Details div.Preview .MuiInputBase-multiline textarea{
+    padding-bottom: 5px;
+}
+.Details div.Preview .MuiFilledInput-root:not(.MuiInputBase-multiline){
+    padding-top: 6px;
+}
+.Details div.Preview .MuiFilledInput-root input{
+    padding: 0 0 2px;
+}
+.Details div.Preview > .OptionList > div.Preview_options:not(:last-of-type) {
+    border-bottom: 1px dotted #ddd;
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_OptionImage div:first-of-type{
+    max-height: 150px;
+    display: flex;
+    align-items: flex-start;
+    padding-left: 10px;
+    margin: 0px 0 10px;
+}
+.Details div.Preview > .OptionList > div.Preview_options > div.Preview_OptionImage button.MuiIconButton-root{
+    margin-left: -25px;
+    margin-top: 5px;
+    z-index: 999;
+    background-color: red;
+    color: #fff;
+}
+
+.Details div.Preview_options_add{
+    margin-left: 11px;
+}
+.Details div.Preview_options_add .add-option,
+.Details div.Preview_options_add .MuiFormControlLabel-root svg.MuiSvgIcon-root {
+    font-size: 21px;
+    margin: -2px -6px 0 0;
+    color: #bbb;
+}
+.Details div.Preview_options_add .add-option{
+    margin: -3px 2px 0 0;
+    color: #555;
+    font-style: normal;
+}
+.Details div.Preview_options_add{
+    margin-top: 5px;
+}
+.Details div.Preview_options_add button.MuiButton-text{
+    font-size: 13px;
+}/*
+.Details div.Details_1_1 > .MuiFormControl-root textarea{
+    padding: 0px 5px 0px;
+    font-size: 17px;
+    line-height: 1.2;
+}
+.Details div.Details_1_1 > button.MuiIconButton-root{
+    height: 32px;
+    width: 32px;
+    margin: 1px 5px;
+    padding: 3px 6px;
+}
+.Details div.Details_1_1 > button.MuiIconButton-root svg{
+    width: 26px;
+    height: 26px;
+}
+.Details div.Details_1_questionImage .Details_1_questionImage_1_1 {
+    width: 150px; 
+    display: flex;
+    align-items: flex-start; 
+    padding-left: 20px;
+}*/

@@ -1,0 +1,33 @@
+#dialog-overlay.AEmployeeDocDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 35px);
+}
+#dialog-overlay.AEmployeeDocDialog-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+    overflow: visible !important;
+}
+#dialog-overlay.AEmployeeDocDialog-dialog > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    border: none;
+}
+#dialog-overlay.AEmployeeDocDialog-dialog .ActiveTab-tab > .page-title > .page-back-btn.fa {
+    display: none !important;
+}
+
+#dialog-overlay.AEmployeeDocDialog-dialog .table{
+    width: 100%;
+    height: calc(100% - 0px);
+    margin: 0;
+}
+
+#dialog-overlay.AEmployeeDocDialog-dialog .tabs .active{
+    height: calc(100% - 10px);
+}
+
+#dialog-overlay.AEmployeeDocDialog-dialog .tabs .active > .page-content{
+    height: calc(100% - 47px) !important;
+}

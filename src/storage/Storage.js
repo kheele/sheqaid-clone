@@ -22,18 +22,14 @@ class Storage {
 
         autorun(() => {
             if (is.isLoggedIn) {
-                if (isAdminApp) {
-                    document.title = "SHEQ Aid - Admin";
-                } else {
-                    const {trialDaysLeft} = this;
-                    const {isConsultant, isTrial} = is;
-                    const clientType = isConsultant ? 'Consultant' : 'Client';
+                const {trialDaysLeft} = this;
+                const {isConsultant, isTrial} = is;
+                const clientType = isConsultant ? 'Consultant' : 'Client';
 
-                    if (isTrial) {
-                        document.title = "SHEQ Aid (" + clientType + ") - Trial Version [" + trialDaysLeft + " days left]";
-                    } else {
-                        document.title = "SHEQ Aid (" + clientType + ") - Premium Version";
-                    }
+                if (isTrial) {
+                    document.title = "SHEQ Aid (" + clientType + ") - Trial Version [" + trialDaysLeft + " days left]";
+                } else {
+                    document.title = "SHEQ Aid (" + clientType + ") - Premium Version";
                 }
             }
         });

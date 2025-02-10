@@ -6,12 +6,10 @@ import Popover from 'components/popovers/Popover';
 
 import {calculateRightPos, Permissions} from 'utils/Utils';
 
-import ProfileAdminUserDialog from '../admin/AdminUsers/ProfileDialog';
 import ProfileUserDialog from '../default/Users/ProfileDialog';
 import ProfileEmployeeDialog from 'views/plugins/plugin_hr_management/Employees/forms/ProfileDialog';
 import EditClientDialog from 'views/plugins/plugin_general/Clients/EditDialog';
 
-import EditAdminUserDialog from '../admin/AdminUsers/EditDialog';
 import EditUserDialog from '../default/Users/EditDialog';
 import NewEmployeeDialog from 'views/plugins/plugin_hr_management/Employees/forms/NewDialog';
 
@@ -36,11 +34,6 @@ class ProfileButton extends React.Component {
     }
 
     render() {
-        if (isAdminApp) {
-            return <ProfileAvatar onRef={() => this.refs}>
-                <ProfileAdminUserDialog ref="profileUserDialog" EditDialog={EditAdminUserDialog}/>
-            </ProfileAvatar>;
-        }
         const {isContractorViewVisited} = storage.is;
         if (isContractorViewVisited) {
             return <div className="avatar contractor" onClick={this.onLogoutContractor}>
@@ -93,15 +86,11 @@ class ProfileAvatar extends React.Component {
         if (!refs) return;
 
         const {user} = storage.loggedUser;
-        if (isAdminApp) {
+        const {isEmployee, isUser, isContractor} = storage.is;
+        if (isEmployee) {
+            refs.profileEmployeeDialog.open(user);
+        } else if (isUser || isContractor) {
             refs.profileUserDialog.open(user);
-        } else {
-            const {isEmployee, isUser, isContractor} = storage.is;
-            if (isEmployee) {
-                refs.profileEmployeeDialog.open(user);
-            } else if (isUser || isContractor) {
-                refs.profileUserDialog.open(user);
-            }
         }
     }
 
@@ -131,28 +120,20 @@ class ProfileAvatar extends React.Component {
     onPopoverProfile(e) {
         const {isEmployee, isUser, isContractor, isContractorViewVisited} = storage.is;
         let role, name, email;
-        if (isAdminApp) {
-            role = 'AdminUser';
+
+        if (isEmployee) {
+            role = 'Staff';
+        } else if (isUser) {
+            role = 'User';
+        } else if (isContractor) {
+            role = "Contractor";
         } else {
-            if (isEmployee) {
-                role = 'Staff';
-            } else if (isUser) {
-                role = 'User';
-            } else if (isContractor) {
-                role = "Contractor";
-            } else {
-                return;
-            }
+            return;
         }
 
         const {user: {id, data, data: {profile_pic}}} = storage.loggedUser;
-        if (isAdminApp) {
-            name = `${data.fname} ${data.lname}`;
-            email = data.username;
-        } else {
-            name = `${data.fname} ${data.lname}`;
-            email = data.username || data.email;
-        }
+        name = `${data.fname} ${data.lname}`;
+        email = data.username || data.email;
 
         this.refs.popover.settings({
             style: {left: "auto", right: calculateRightPos(this.refs.profile), top: 60, width: 350},

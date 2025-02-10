@@ -1,0 +1,11 @@
+@import '../../AProfileEmployeeDocDialog.css';
+
+#dialog-overlay.ProfileCounselingDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1200px;
+    max-width: 100%;
+}
+#dialog-overlay.ProfileCounselingDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

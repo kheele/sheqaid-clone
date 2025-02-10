@@ -375,9 +375,11 @@ class SelectInput extends ASelectInput {
                     </MKBox>
                     <ClearableInput className={className}/>
                 </div>;
+            } else {
+                delete props.parentClassName;
+
+                return <ClearableInput {...props}/>;
             }
-            delete props.parentClassName;
-            return <ClearableInput {...props}/>;
         }
     }
 }

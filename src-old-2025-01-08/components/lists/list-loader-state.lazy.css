@@ -1,0 +1,10 @@
+.results-loading,
+.results-none{
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: #999;
+    font-size: 17px;
+    text-align: center;
+}

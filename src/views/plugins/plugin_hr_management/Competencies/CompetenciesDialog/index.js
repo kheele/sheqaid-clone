@@ -74,26 +74,48 @@ class Dialog extends AEmployeeDocDialog {
 
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
-        const type = [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}];
-        const competency_type = [{label: 'Behavioural', value: 'Behavioural'}, {
-            label: 'Technical / Functional',
-            value: 'Technical / Functional'
-        }, {label: 'Leadership', value: 'Leadership'}];
         return <>
-            <SelectTrainingCourseInput name="course" placeholder="Course..." className="form-control"
-                                       onChange={onChange}
-                                       add={false}/>
-            <ClearableInput name="type" type="radio" className="form-control" onChange={onChange} values={type}
-                            returnValue/>
-            <ClearableInput name="competency_type" type="select" placeholder="Competency Type..."
-                            className="form-control"
-                            onChange={onChange} values={competency_type} returnValue/>
-            <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." className="form-control"
-                            onChange={onChange}/>
+            <SelectTrainingCourseInput
+                name="course"
+                placeholder="Course..."
+                className="form-control"
+                onChange={onChange}
+                add={false}
+            />
+            {createTypeInput(onChange)}
+            {createCompetencyTypeInput(onChange)}
+            <ClearableInput
+                name="issued_date"
+                type="date"
+                placeholder="Date Of Issue..."
+                className="form-control"
+                onChange={onChange}
+            />
         </>;
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <SelectTrainingCourseInput
+                name="course"
+                placeholder="Course..."
+                className="form-control"
+                onChange={onChange}
+                add={false}
+            />
+            {createTypeInput(onChange)}
+            {createCompetencyTypeInput(onChange)}
+            <ClearableInput
+                name="issued_date"
+                type="date"
+                placeholder="Date Of Issue..."
+                className="form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
@@ -134,6 +156,35 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
 }
+
+const createTypeInput = (onChange) => {
+    const type = [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}];
+    return <ClearableInput
+        name="type"
+        type="radio"
+        className="form-control"
+        onChange={onChange}
+        values={type}
+        returnValue
+    />;
+};
+
+const createCompetencyTypeInput = (onChange) => {
+    const competency_type = [
+        {label: 'Behavioural', value: 'Behavioural'},
+        {label: 'Technical / Functional', value: 'Technical / Functional'},
+        {label: 'Leadership', value: 'Leadership'},
+    ];
+    return <ClearableInput
+        name="competency_type"
+        type="select"
+        placeholder="Competency Type..."
+        className="form-control"
+        onChange={onChange}
+        values={competency_type}
+        returnValue
+    />;
+};
 
 export default Dialog;
 //206

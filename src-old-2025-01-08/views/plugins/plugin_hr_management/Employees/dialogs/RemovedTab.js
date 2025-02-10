@@ -1,0 +1,84 @@
+// <editor-fold defaultstate="collapsed" desc="imports">
+import React from "react";
+import {observer} from 'mobx-react';
+
+import NavItem from 'components/navs/NavItem';
+
+import style from "./RemovedTab.lazy.css";
+
+import ATab from "./ATab";
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="RemovedTab">
+@observer
+class RemovedTab extends ATab {
+
+    pageKey = "RemovedTab";
+
+    // <editor-fold defaultstate="collapsed" desc="constructor">
+    constructor(props) {
+        super(props);
+
+        this.onRestore = this.onRestore.bind(this);
+    }
+
+    // </editor-fold>
+
+    //<editor-fold desc="componentWillMount">
+    componentWillMount() {
+        style.use();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="componentWillUnmount">
+    componentWillUnmount() {
+        style.unuse();
+    }
+
+    //</editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onRestore">
+    onRestore(evt, btn) {
+        confirmDialog.open("Are you sure you want to restore the item?").then(res => {
+            if (res === 1) {
+                const {onUpdate} = this;
+                const {idx} = btn.props;
+                const {list} = this.refs.root;
+                const item = list[idx];
+                progressDialog.open("Restoring the item...");
+                onUpdate({id: item.id, removed: false}).then(res => {
+                    setTimeout(() => {
+                        list.removeIf((item, _idx) => _idx === idx);
+                    });
+                    infoDialog.open("Item successfully restored.");
+                    infoDialog.close(2000);
+                }).finally(() => {
+                    progressDialog.close();
+                });
+            }
+        });
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="APageListReadWrite funs">
+    // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
+    renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}, evt, btn) {
+        const {permissionKey} = this.props;
+        const {isEmployee} = this;
+        const isEditable = !isEmployee;
+        return <Options idx={idx} permissionModKey={permissionKey} permissionOtherKey={permissionKey}>
+            <NavItem action="view" isEmployee={isEmployee} onClick={onView} faIconLeft="eye" title="View"/>
+            {isEditable &&
+                <NavItem action="remove" idx={idx} onClick={this.onRestore} faIconLeft="ban" title="Restore"/>}
+        </Options>;
+    }
+
+    // </editor-fold>
+    // </editor-fold>
+}
+
+// </editor-fold>
+
+export default RemovedTab;

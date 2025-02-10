@@ -38,11 +38,14 @@ class ListTable extends ANewListTable {
         if (savable && targetItem) {
             let {action, idx, item} = el.props;
 
+            console.log('item1', item)
+            item = this.getItem(item);
+            console.log('item2', item)
+
             if (action === "save" || action === "saveEdit") {
                 progressDialog.open();
                 insertFn({
-                    [targetItem.key]: targetItem.item.id,
-                    ...onAttrs(item),
+                    [targetItem.key]: targetItem.item.id, ...onAttrs(item),
                 }).then(savedItem => {
                     if (!savedItem) {
                         infoDialog.open("Sorry! Record couldn't be added.");
@@ -70,8 +73,7 @@ class ListTable extends ANewListTable {
                     let input;
                     if (onDeleteAttrs) {
                         input = {
-                            [targetItem.key]: null,
-                            ...onDeleteAttrs(item),
+                            [targetItem.key]: null, ...onDeleteAttrs(item),
                         };
                     } else {
                         input = item.id;
@@ -138,16 +140,8 @@ class ListTable extends ANewListTable {
         });
     }
 
-    getPersonItem(n) {
-        const item = this.state.list[n];
-        if (item && (
-            item.id ||
-            item.employee ||
-            item.investigator ||
-            item.person_involved ||
-            item.witness ||
-            (item.id_num || item.passport_num)
-        )) {
+    getPersonItem(item) {
+        if (item && (item.employee || item.investigator || item.person_involved || item.witness)) {
             const {
                 employee, investigator, person_involved, witness,
             } = item;
@@ -156,16 +150,8 @@ class ListTable extends ANewListTable {
         }
     }
 
-    getOtherPersonItem(n) {
-        const item = this.state.list[n];
-        if (item && (
-            item.id ||
-            item.other_person ||
-            item.investigator_other ||
-            item.person_involved_other ||
-            item.witness_other ||
-            (item.id_num || item.passport_num)
-        )) {
+    getOtherPersonItem(item) {
+        if (item && (item.other_person || item.investigator_other || item.person_involved_other || item.witness_other)) {
             const {
                 other_person, investigator_other, person_involved_other, witness_other,
             } = item;
@@ -174,13 +160,17 @@ class ListTable extends ANewListTable {
         }
     }
 
-    getItem(n) {
-        const personItem = this.getPersonItem(n);
+    getItem(item) {
+        if (item && (item.id || (item.id_num || item.passport_num))) {
+            return item;
+        }
+
+        const personItem = this.getPersonItem(item);
         if (personItem) {
             return personItem;
         }
 
-        const otherPersonItem = this.getOtherPersonItem(n);
+        const otherPersonItem = this.getOtherPersonItem(item);
         if (otherPersonItem) {
             return otherPersonItem;
         }
@@ -188,12 +178,9 @@ class ListTable extends ANewListTable {
 
     renderItem(n, onClick) {
         const {readonly, placeholder, renderTable, disableOtherPerson} = this.props;
-        const item = this.getItem(n);
+        const item = this.getItem(this.state.list[n]);
         console.log('item', item)
-        if (item && (
-            item.id ||
-            (item.id_num || item.passport_num)
-        )) {
+        if (item) {
             let {id, lname, fname, email, phone, profile_pic} = item.data || item;
 
             if (!lname && !fname) {

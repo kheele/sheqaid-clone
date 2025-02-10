@@ -1,0 +1,41 @@
+.DocsDialog-dialog .dialog-container {
+    width: calc(100% - 30px) !important;
+    max-width: calc(100% - 30px) !important;
+    height: calc(100% - 1px) !important;
+}
+
+.DocsDialog-dialog .dialog-content {
+    overflow: visible !important;
+}
+
+.DocsDialog-dialog .page-title {
+    height: 0;
+    border: none;
+    float: right;
+    position: absolute;
+    top: -56px;
+    right: 0;
+}
+
+.DocsDialog-dialog .PersonalDocsTab .page-title {
+    top: 6px !important;
+}
+
+.DocsDialog-dialog .PersonalDocsTab .page-title .buttons {
+    margin: 0 !important;
+}
+
+.DocsDialog-dialog .page-title > h3 {
+    display: none;
+}
+
+.DocsDialog-dialog .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 270px;
+}
+
+.DocsDialog-dialog .page-title > .tabled-top-panel > .buttons > .left-buttons {
+    border-right: none !important;
+    padding-right: 0 !important;
+}

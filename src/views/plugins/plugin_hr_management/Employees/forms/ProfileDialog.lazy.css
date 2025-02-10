@@ -73,11 +73,6 @@
     box-shadow: none;
 }
 
-#dialog-overlay.Employee-profile-dialog .dialog-content .ViewCOVIDTab-tab .row.active .sec-group {
-    margin: -5px 0px -10px -10px !important;
-    width: calc(100% + 20px);
-}
-
 #dialog-overlay.Employee-profile-dialog .dialog-content .page-title > h3 {
     display: none;
 }

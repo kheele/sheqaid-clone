@@ -10,9 +10,7 @@ import {NewSiteListTable} from 'components/FormTableComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewContractorDialog.lazy.css";
-import insertContractor from "mutations/all/Contractor/insertContractor";
-
-// import {insertContractor} from "mutations/create";
+import {insertContractor} from "mutations/create";
 
 @observer
 class NewDialog extends ANewDialog {

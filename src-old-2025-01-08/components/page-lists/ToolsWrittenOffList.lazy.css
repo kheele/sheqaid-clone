@@ -1,0 +1,25 @@
+#ToolsWrittenOffList .page-title{
+    height: 0;
+    margin-top: 0px;
+	border: none;
+    float: right;
+}
+#ToolsWrittenOffList .page-title > h3{
+    display: none;
+}
+#ToolsWrittenOffList .page-title > .tabled-top-panel {
+    margin-top: -37px;
+	flex-grow: initial;
+    min-width: 270px;
+}
+#ToolsWrittenOffList .filter-wrapper{
+    margin: 10px 0 0;
+}
+#ToolsWrittenOffList .table{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+#ToolsWrittenOffList > .filter-wrapper + .table{
+    height: calc(100% - (10px + 115px)) !important;
+}

@@ -15,7 +15,8 @@ import style from "./EditTeamDialog.lazy.css";
 import {updateEmployee, updateTeam} from "mutations/update";
 import {CircularProgress} from "@mui/material";
 import {findByIdTeam} from "mutations/findById";
-import {deleteProxyEmployeeTeam} from "../../../../../../mutations/deleteWithCustomArgs";
+import {deleteProxyEmployeeTeam} from "mutations/deleteWithCustomArgs";
+import {listTeamBySupervisorId} from "mutations/listByLoggedWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -40,7 +41,6 @@ class EditDialog extends AEditDialog {
 
 @observer
 class Controls extends React.Component {
-    path = "plugin_sheq_assist/employees/teams/";
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     @observable
@@ -71,18 +71,15 @@ class Controls extends React.Component {
         return this.props.state.item;
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
     onChangeSupervisor(el, val) {
         const {execWhen} = this.props;
-        execWhen(() => this.refs.list).then(list_ref => {
+        execWhen(() => this.refs.employee_list).then(list_ref => {
             if (val) {
-                const path = "plugin_sheq_assist/StructureAndResponsibility/organograms/list/team/by_supervisor";
-                neonBinding.events.emit(path, val.id).then(res => {
+                listTeamBySupervisorId(val.id).then(res => {
                     console.log("res", res)
                     if (res && isArray(res)) {
-                        list_ref.list = [...res, null];
+                        list_ref.list.push(...[...res, null]);
                     } else {
 
                     }
@@ -215,6 +212,8 @@ class Controls extends React.Component {
         });
     }
 
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item) {
@@ -276,6 +275,7 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
             >
                 <NewEmployeeListTable
+                    ref="employee_list"
                     name="employee_list"
                     defaultValue={[...(employee_list || []), null]}
                     disableOtherPerson
@@ -310,22 +310,6 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
-}
-
-function onEmployeeAttrs({employee, other_person}) {
-    if (other_person && !other_person.id) {
-        const {job_position} = other_person;
-        if (job_position) {
-            other_person.job_position_id = job_position.id;
-            delete other_person.job_position;
-        }
-    }
-
-    return {
-        employee_id: employee && employee.id,
-        other_person_id: other_person && other_person.id ? other_person.id : null,
-        other_person: other_person && !other_person.id ? {data: other_person} : null
-    };
 }
 
 export default EditDialog;

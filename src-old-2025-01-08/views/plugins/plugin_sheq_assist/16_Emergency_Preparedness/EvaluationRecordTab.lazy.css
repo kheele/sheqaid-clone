@@ -1,0 +1,18 @@
+#EvaluationRecordTab-tab .filter-wrapper > .controls{
+	display: flex;
+}
+#EvaluationRecordTab-tab .filter-wrapper > .controls > .clearable-field-control{
+	flex: 1;
+}
+#EvaluationRecordTab-tab .filter-wrapper > .controls > .training_date{
+	min-width: 170px;
+}
+
+#EvaluationRecordTab-tab .table > .thead > .td.td-training_date,
+#EvaluationRecordTab-tab .table > .tbody .tr > .td.td-training_date,
+#EvaluationRecordTab-tab .table > .thead > .td.td-starting_time,
+#EvaluationRecordTab-tab .table > .tbody .tr > .td.td-starting_time,
+#EvaluationRecordTab-tab .table > .thead > .td.td-ending_time,
+#EvaluationRecordTab-tab .table > .tbody .tr > .td.td-ending_time{
+    min-width: 130px;
+}

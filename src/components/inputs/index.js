@@ -22,6 +22,10 @@ import SelectDocumentCategoryInput from "./SelectDocumentCategoryInput";
 import SelectJobObservationTypeInput from "./SelectJobObservationTypeInput";
 import SelectJobPositionInput from "./SelectJobPositionInput";
 import SelectJobCategoryInput from "./SelectJobCategoryInput";
+import SelectJobTasksCategoriesInput from "./SelectJobTasksCategoriesInput";
+import SelectJobTasksInput from "./SelectJobTasksInput";
+import SelectApplicableRegulationsInput from "./SelectApplicableRegulationsInput";
+import SelectComplianceRequirementsInput from "./SelectComplianceRequirementsInput";
 import SelectSectorInput from "./SelectSectorInput";
 import SelectDepartmentInput from "./SelectDepartmentInput";
 import SelectTeamInput from "./SelectTeamInput";
@@ -40,6 +44,8 @@ import SelectToolboxTalkSubjectInput from "./SelectToolboxTalkSubjectInput";
 import SelectToolboxTalkSubjectCategoryInput from "./SelectToolboxTalkSubjectCategoryInput";
 import SelectPPEItemInput from "./SelectPPEItemInput";
 import SelectPPETypeInput from "./SelectPPETypeInput";
+import SelectPPEInventoryInput from "./SelectPPEInventoryInput";
+import SelectPPESupplierInput from "./SelectPPESupplierInput";
 import SelectPartItemInput from "./SelectPartItemInput";
 import SelectIncidentInput from "./SelectIncidentInput";
 import SelectChemicalCategoryInput from './SelectChemicalCategoryInput';
@@ -104,6 +110,10 @@ export {
     SelectJobObservationTypeInput,
     SelectJobPositionInput,
     SelectJobCategoryInput,
+    SelectJobTasksCategoriesInput,
+    SelectJobTasksInput,
+    SelectApplicableRegulationsInput,
+    SelectComplianceRequirementsInput,
     SelectDepartmentInput,
     SelectTeamInput,
     SelectEmployeeInput,
@@ -121,6 +131,8 @@ export {
     SelectToolboxTalkSubjectCategoryInput,
     SelectPPEItemInput,
     SelectPPETypeInput,
+    SelectPPEInventoryInput,
+    SelectPPESupplierInput,
     SelectPartItemInput,
     SelectIncidentInput,
     SelectChemicalCategoryInput,

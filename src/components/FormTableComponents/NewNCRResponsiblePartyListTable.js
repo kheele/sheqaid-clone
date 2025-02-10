@@ -8,6 +8,7 @@ import {Button, ClearableInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewNCRResponsiblePartyListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -18,11 +19,11 @@ class ListTable extends ANewListTable {
     style = style;
 
     @observable
-	selfState2 = {
-		lists: {
-			responsible_party_list: ['Consultant', 'Client', 'External', 'Internal'],
-		},
-	};
+    selfState2 = {
+        lists: {
+            responsible_party_list: ['Consultant', 'Client', 'External', 'Internal'],
+        },
+    };
 
     constructor(props) {
         super(props);
@@ -83,7 +84,7 @@ class ListTable extends ANewListTable {
     }
 
     onPostChange(val, name, el) {
-        if(!val) {
+        if (!val) {
             return;
         }
 
@@ -96,7 +97,7 @@ class ListTable extends ANewListTable {
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
-       console.log('NewNCRResponsiblePartyListTable item', item)
+        console.log('NewNCRResponsiblePartyListTable item', item)
         if (item && (
             item.id ||
             item.value
@@ -132,23 +133,21 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="padding-10 w-full">
-                <div className="td flex padding-0 margin-0">
-                    <ClearableInput 
-                        ref={this.onSetRef}
-                        name="value" 
-                        type="select" 
-                        placeholder="Add Responsible Party..."
-                        idx={n}
-                        required
-				        className="form-control" 
-                        onChange={this.onChange}
-				        values={this.selfState2.lists.responsible_party_list} 
-                        returnValue 
-                        add
-                    />
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <ClearableInput
+                    ref={this.onSetRef}
+                    name="value"
+                    type="select"
+                    placeholder="Add Responsible Party..."
+                    idx={n}
+                    required
+                    className="form-control"
+                    onChange={this.onChange}
+                    values={this.selfState2.lists.responsible_party_list}
+                    returnValue
+                    add
+                />
+            </NewRow>;
         }
     }
 

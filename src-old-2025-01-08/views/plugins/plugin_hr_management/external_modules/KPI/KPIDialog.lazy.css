@@ -1,0 +1,43 @@
+#dialog-overlay.KPIDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: calc(100% - 30px);
+    max-width: 100%;
+}
+#dialog-overlay.KPIDialog-dialog .dialog-content,
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page{
+    padding: 0;
+    overflow: visible !important;
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page{
+    height: 100%;
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    margin-right: 0;
+    padding-right: 10px;
+    border: none;
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page > .page-title > h3 {
+    display: none;
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page > #KPITab-tab {
+    margin: 0px;
+    padding: 0;
+    height: calc(100% - 0px);
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page > #KPITab-tab .page-title{
+    margin-right: 10px !important;
+}
+#dialog-overlay.KPIDialog-dialog #_06_Communication_And_Participation-page > #KPITab-tab .page-title > .tabled-top-panel{
+    margin-top: -42px;
+}
+#dialog-overlay.KPIDialog-dialog .table{
+    width: 100%;
+    height: calc(100% - 0px) !important;
+    margin: 0;
+}
+#dialog-overlay.KPIDialog-dialog .filter-wrapper + .table{
+    height: calc(100% - (50px + 87px)) !important;
+}

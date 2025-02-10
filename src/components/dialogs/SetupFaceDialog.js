@@ -34,19 +34,20 @@ class SetupFaceDialog extends AEditDialog {
     constructor(props) {
         super(props, style);
     }
-    
+
     get title() {
         return "Setup Biometric Authentication";
     }
-    
+
     get topButtons() {
         return null;
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -57,69 +58,102 @@ class Controls extends React.Component {
         modelsLoaded: false
     };
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.onUnmount = onUnmount.bind(this);
         this.startVideo = startVideo.bind(this);
         this.onVideoPlay = onVideoPlay.bind(this);
         this.detect = detect.bind(this);
-        
+
         this.onCaptureFace = onCaptureFace.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onSetupProceed = this.onSetupProceed.bind(this);
-        
+
         this.form = new Form();
     }
+
+    // </editor-fold>
+
+    get auth() {
+        const {access_type} = this.loggedUser;
+        if (access_type === "ContractorUser") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
+    // </editor-fold>
+
+    get path() {
+        const {access_type: type} = this.loggedUser;
+        if (type === "ContractorUser") {
+            return "plugin_sheq_assist/contractors/users/";
+        } else if (type === "Staff") {
+            return "plugin_sheq_assist/employees/accounts/";
+        } else {
+            return "users/accounts/";
+        }
+    }
+
+    // </editor-fold>
+
+    get loggedUser() {
+        return this.props.state.item;
+    }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentWillMount">
     componentWillMount() {
         this.state.modelsLoaded = false;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
         loadFaceModels().then(() => {
             this.state.modelsLoaded = true;
         });
     }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
     componentWillUnmount() {
         this.onUnmount();
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             this.startVideo();
         }
-        
+
         return true;
     }
-    // </editor-fold>
-    
+
     onCancel() {
 //        this.startVideo();
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="onSetupProceed">
     onSetupProceed() {
         const {user: {id: uid}} = this.loggedUser;
         progressDialog.open();
-        
+
         const {imgSrc} = this.refs.capturedImgView;
-        
+
         neonBinding.events.emit(this.path + "setup/biometric", {uid, imgSrc}).then(res => {
             this.auth.onAuthStateChanged(currentUser => {
                 storage.onLogin(currentUser);
@@ -131,7 +165,7 @@ class Controls extends React.Component {
             }));
         }).then(res => {
             progressDialog.close();
-            
+
             console.log(this.path + "setup/biometric", res)
             if (!res) {
                 infoDialog.open("Authentication failed.");
@@ -167,7 +201,7 @@ class Controls extends React.Component {
                         </div>);
                         break;
                 }
-            } else if(isObject(res)) {
+            } else if (isObject(res)) {
                 const {loggedUserAuth: currentUser} = storage;
                 if (currentUser) {
                     storage.login.loginUser(res);
@@ -186,41 +220,11 @@ class Controls extends React.Component {
             </div>);
         });
     }
-    // </editor-fold>
 
-    get auth() {
-        const {access_type} = this.loggedUser;
-        if (access_type === "ContractorUser") {
-            return auth2;
-        }
-        if (access_type === "Staff") {
-            return auth_hr;
-        }
-        return auth;
-    }
-
-    get path() {
-        if(isAdminApp) {
-            return "admin/users/accounts/";
-        }
-        const {access_type: type} = this.loggedUser;
-        if(type === "ContractorUser") {
-            return "plugin_sheq_assist/contractors/users/";
-        } else if(type === "Staff") {
-            return "plugin_sheq_assist/employees/accounts/";
-        } else {
-            return "users/accounts/";
-        }
-    }
-    
-    get loggedUser() {
-        return this.props.state.item;
-    }
-    
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        if(!this.loggedUser) return null;
-        if(!this.state.modelsLoaded) {
+        if (!this.loggedUser) return null;
+        if (!this.state.modelsLoaded) {
             return <div className="fixed-center"><CircularProgress/></div>;
         }
         const {
@@ -241,7 +245,7 @@ class Controls extends React.Component {
                         <ProfileField title="Last Name" name="lname" value={lname} className="col-lg-6"/>
                         <ProfileField title="Email Address" name="username" value={username} className="col-lg-6"/>
                         <ProfileField title="Phone Number" name="phone" value={phone} className="col-lg-6"/>
-                        {!isAdminApp && <ProfileField title="Access Type" name="access_type" value={access_type} className="col-lg-12"/>}
+                        <ProfileField title="Access Type" name="access_type" value={access_type} className="col-lg-12"/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
                 </div>
@@ -250,8 +254,10 @@ class Controls extends React.Component {
                     <div className="row sec-group">
                         <div ref="videoContainer" id="video-container" className="flex">
                             <video ref="video" width="570" height="394" muted onPlay={this.onVideoPlay}/>
-                            <CapturedImgView ref="capturedImgView" onCancel={this.onCancel} onSubmit={this.onSetupProceed}/>
-                            <p className="flex margin-0">Please make sure you are facing the camera and your environment has good light.</p>
+                            <CapturedImgView ref="capturedImgView" onCancel={this.onCancel}
+                                             onSubmit={this.onSetupProceed}/>
+                            <p className="flex margin-0">Please make sure you are facing the camera and your environment
+                                has good light.</p>
                         </div>
                     </div>
                     <NavButtons idx={2} onBack={onFormBack} onNext={this.onCaptureFace} nextText="Capture Face"/>
@@ -259,6 +265,7 @@ class Controls extends React.Component {
             </div>
         </div>);
     }
+
     // </editor-fold>
 }
 

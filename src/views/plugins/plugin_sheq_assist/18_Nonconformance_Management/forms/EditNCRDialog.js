@@ -26,8 +26,7 @@ import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudi
 import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 import findByIdInspectionsQuestionnaire
     from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
-import {findByIdSite} from "mutations/findById";
-import findByIdQuestion from "mutations/all/Questionnaires/Questions/findByIdQuestion";
+import {findByIdQuestion, findByIdSite} from "mutations/findById";
 import {
     insertProxyNCRApprovingPerson,
     insertProxyNCRAssignedJobPosition,

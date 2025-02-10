@@ -171,7 +171,7 @@ class TemplatesTab extends React.Component {
             <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control"
                             onChange={onChange} values={this.state.lists.visibility}/>
             <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
-                                    className="form-control" onChange={onChange}/>
+                                    className="form-control" onChange={onChange} addButton={false}/>
         </div>;
     }
 

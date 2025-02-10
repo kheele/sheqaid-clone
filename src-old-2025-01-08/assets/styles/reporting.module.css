@@ -1,0 +1,22 @@
+.root {
+    float: right;
+}
+.main {
+    z-index: 1;
+}
+.navbar {
+    position: fixed !important;
+    left: 290px !important;
+    top: 10px !important;
+    right: 10px !important;
+    margin: 0 !important;
+    width: calc(100% - 300px) !important;
+}
+.drawer > div{
+    top: 0px !important;
+    height: calc(100% - 0px) !important;
+    z-index: 9999;
+    box-shadow: 0 0 5px rgb(0 0 0 / 30%);
+    padding: 0px;
+    background: #444;
+}

@@ -1,0 +1,44 @@
+@import '../../../css/ANewDialog.css';
+
+#dialog-overlay.User-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+#dialog-overlay.User-new-dialog.AccountVerificationStep1 .dialog-container{
+    max-width: 560px;
+    max-height: 336px;
+}
+#dialog-overlay.User-new-dialog.AccountVerificationStep2 .dialog-container{
+    max-width: 400px;
+    max-height: 290px;
+}
+#dialog-overlay.User-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.User-new-dialog .dialog-content .NotificationsSettings-row .form-control {
+    height: 36px;
+}
+#dialog-overlay.User-new-dialog .dialog-content .table{
+    width: calc(100% + 10px);
+    height: auto;
+    margin-left: -10px !important;
+}
+#dialog-overlay.User-new-dialog .dialog-content .table > .thead{
+    width: 100%;
+}
+#dialog-overlay.User-new-dialog .dialog-content .table > .tbody .tr > .td{
+    /*padding: 6px 0;*/
+}
+#dialog-overlay.User-new-dialog .dialog-content .table > .tbody .tr > .td.td-question > h5{
+    margin-top: 6px !important;
+    font-size: 16px;
+}
+#dialog-overlay.User-new-dialog .dialog-content .table > .tbody .tr > .td > button{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#dialog-overlay.User-new-dialog .dialog-content .table > .tbody .tr:hover > .td.td-question > h5{
+    /*color: #eee;*/
+}

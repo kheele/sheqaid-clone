@@ -1,0 +1,12 @@
+@import './ARiskAssessmentItemTable.css';
+
+.NewBaselineRiskAssessmentDialog-new-dialog .ARiskAssessmentItemTable,
+.EditBaselineRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable,
+.ProfileBaselineRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable {
+    min-width: 2500px;
+}
+.NewTaskBaseRiskAssessmentDialog-new-dialog .ARiskAssessmentItemTable,
+.EditTaskBaseRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable,
+.ProfileTaskBaseRiskAssessmentDialog-profile-dialog .ARiskAssessmentItemTable {
+    min-width: 2500px;
+}

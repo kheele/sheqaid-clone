@@ -1,0 +1,30 @@
+.download {
+    padding: 0px 0 96px !important;
+    margin-top: -130px;
+    border-radius: 0 !important;
+}
+.download > div{
+    border-radius: 0;
+    height: 540px;
+    padding-top: 120px;
+}
+.download h3{
+    font-family: "Roboto", sans-serif !important;
+    display: block;
+    width: 100%;
+}
+.download .android,
+.download .ios{
+    width: 180px !important;
+    margin: 0 10px 30px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    height: 50px;
+    background-size: 100% 100% !important;
+}
+.download .android{
+    background: url("../images/omniverse/playstore1.png");
+}
+.download .ios{
+    background: url("../images/omniverse/appstore1.jpg");
+}

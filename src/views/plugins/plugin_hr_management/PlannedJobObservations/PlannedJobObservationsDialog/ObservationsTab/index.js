@@ -139,9 +139,9 @@ class ObservationsTab extends React.Component {
                 onChange={onChange}
             />
             <SelectJobPositionInput name="job_position_list" type="select_multi" placeholder="Job Position(s)..."
-                                    className="form-control" onChange={onChange}/>
+                                    className="form-control" onChange={onChange} addButton={false}/>
             <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
-                                 onChange={onChange}/>
+                                 onChange={onChange} addButton={false}/>
         </div>;
     }
 
@@ -170,7 +170,6 @@ class ObservationsTab extends React.Component {
 
     render() {
 //        const {permissions_modules, permissions_other} = storage.loggedUser.user.data;
-//        const permissions_mod = (permissions_modules || []).find(v => v.key === "__A_COVID_Management");
 //        const permissions_other_Employees = (permissions_other || []).find(v => v.key === "Employees");
 
         const {children, onLoadList, pageId, pageTitle, pageTitleSingular, type, NewDialog} = this.props;

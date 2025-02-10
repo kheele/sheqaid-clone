@@ -1,0 +1,33 @@
+/*@import '../../../../../css/ANewTableFormDialog.css';*/
+@import '../../../../../../css/ANewDialog.css';
+
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .heading {
+    background: #fafafa;
+    display: block;
+    padding: 2px !important;
+    margin: 0 !important;
+    border-radius: 3px 3px 0 0;
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .sec-group-transfer {
+    width: calc(100% - 10px) !important;
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .table {
+    margin: 0 !important;
+    width: calc(100% - 0px) !important;
+    height: calc(100% - 162px) !important;
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .table.Table-Transfer {
+    height: calc(100% - 116px) !important;
+}
+#dialog-overlay.ExportTrainingCoursesDialog-new-dialog .table:not(.Table-Transfer) {
+    height: calc(100% - 45px) !important;
+}

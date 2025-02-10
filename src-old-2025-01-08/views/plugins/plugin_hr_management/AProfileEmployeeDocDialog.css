@@ -1,0 +1,223 @@
+@import '../../../css/AProfileDialog.css';
+
+#dialog-overlay.AProfileEmployeeDocDialog .controls-wrapper,
+#dialog-overlay.AProfileEmployeeDocDialog .controls-wrapper > .controls {
+    height: 100%;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row-profile-cover {
+    padding: 5px !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs {
+    height: calc(100% - 64px);
+    margin: -49px -10px 0;
+    background: #fff;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs {
+    margin: -40px 0px 0;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs .DashboardTab > .page-title {
+    display: none;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .SignableDocTab > .page-title {
+    margin-top: -40px;
+    height: 40px;
+    width: 120px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .SignableDocTab > .page-title > .tabled-top-panel {
+    margin-top: 5px !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .SignableDocTab > .page-title button {
+    padding: 3px 12px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .SignableDocTab button.sign-btn {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs.Embedded-Tabs .Carousel > .carousel {
+    overflow-y: auto;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tab-list {
+    background: none;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .row .tabs .tab-content {
+    /*overflow-x: hidden;*/
+    /*overflow-y: auto;*/
+    overflow: visible;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .DashboardTab .GridReportsLineChart-Grid1 {
+    margin-top: 0 !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .DashboardTab .GridReportsLineChart-Grid2 {
+    height: calc(100% - 5px) !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .DashboardTab .ReportsLineChart-Line-Chart-Box {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider {
+    height: calc(100% - 61px) !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: -10px -10px 0 !important;
+    padding: 0 30px !important;
+    background: none !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider {
+    height: calc(100% - 0px) !important;
+    margin: 0 !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider > h1 {
+    display: none;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider > .carousel {
+    position: relative !important;
+    background: #fff;
+    box-shadow: 0 0 3px #ccc;
+    border-radius: 8px;
+    margin: 30px 0;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .item-wrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 36px;
+    height: calc(100% - 10px) !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-indicators {
+    background: none;
+    margin: 2px 0px 0;
+    padding: 5px 0 0;
+    width: 100%;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-indicators li {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-indicators li.active {
+    background-color: rgb(2, 168, 168);
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-indicators li:not(.active) {
+    border: 2px solid rgb(2, 168, 168);
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-control {
+    width: 12px;
+    color: rgb(2, 168, 168) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .9);
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-control.left {
+    left: 0;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-control.right {
+    right: 0;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-inner {
+    width: calc(100% - 0px);
+    height: calc(100% - 25px);
+    /*margin: 25px 0px 0;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-inner .row-details {
+    width: calc(100% - 10px);
+    padding-bottom: 10px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .Slider .carousel-inner-no-results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+/*
+#dialog-overlay.AProfileEmployeeDocDialog .controls > .row:last-of-type{
+    position: relative;
+}*/
+#dialog-overlay.AProfileEmployeeDocDialog .row.row-doc {
+    /*height: 900px;*/
+    margin: 0px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .file {
+    border: none;
+    border-radius: 0;
+    height: 100% !important;
+    margin-top: -19px;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .ProfileField.pdf,
+#dialog-overlay.AProfileEmployeeDocDialog .ProfileField.doc,
+#dialog-overlay.AProfileEmployeeDocDialog .ProfileField.doc > div {
+    width: 100%;
+    /*height: 100%;*/
+    /*padding: 0 !important;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .ProfileField.doc > div {
+    /*margin-top: 20px !important;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .btn-create,
+#dialog-overlay.AProfileEmployeeDocDialog .btn-edit,
+#dialog-overlay.AProfileEmployeeDocDialog .btn-remove {
+    /*position: absolute;*/
+    /*top: 139px;*/
+    z-index: 16;
+    height: 25px;
+    padding: 0 20px !important;
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-create,
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-edit,
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-remove {
+    /*top: 7px;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .btn-create {
+    /*right: 10px;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .btn-edit {
+    /*right: 110px;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .btn-remove {
+    /*right: 190px;*/
+}
+
+#dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar + .Carousel {
+    height: calc(100% - 40px);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

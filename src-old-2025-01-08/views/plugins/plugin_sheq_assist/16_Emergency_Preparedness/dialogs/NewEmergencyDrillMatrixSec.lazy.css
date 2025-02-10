@@ -1,0 +1,28 @@
+#NewEmergencyDrillMatrixSec {
+    margin-right: 10px;
+}
+#NewEmergencyDrillMatrixSec > .controls-wrapper > .controls {
+    padding: 2px !important;
+}
+#NewEmergencyDrillMatrixSec .table > .thead {
+    background: rgb(234, 234, 234);
+}
+#NewEmergencyDrillMatrixSec .table > .thead > .td{
+    color: #888;
+}
+#NewEmergencyDrillMatrixSec .table > .thead > .td-tr > .td:first-of-type{
+    margin-bottom: 5px;
+}
+#NewEmergencyDrillMatrixSec .table > .tbody > * > .tr {
+    padding-right: 0px !important;
+}
+#NewEmergencyDrillMatrixSec .table > .tbody > * > .tr > .td:first-of-type,
+#NewEmergencyDrillMatrixSec .table > .thead > .td:first-of-type {
+    min-width: 110px;
+}
+#NewEmergencyDrillMatrixSec .table > .thead > .td:last-of-type {
+    padding: 4px 4px !important;
+}
+#NewEmergencyDrillMatrixSec .table > .tbody > * > .tr > .td:last-of-type {
+    padding: 4px 0px 5px !important;
+}

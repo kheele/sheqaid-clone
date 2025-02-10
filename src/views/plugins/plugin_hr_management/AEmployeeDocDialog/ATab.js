@@ -252,10 +252,14 @@ class ATab extends React.Component {
             NewDialog,
             ProfileDialog,
             EditDialog,
+            ExportDialog,
             onUpdate,
             onSignatures,
             titleSingular,
-            disableTopExpiryFilter
+            titlePlural,
+            disableTopExpiryFilter,
+            renderExportFilterNode,
+            exportFn,
         } = this.props;
         const {state, state: {expiry_date}} = this;
         return <>
@@ -287,6 +291,14 @@ class ATab extends React.Component {
                 {NewDialog && <NewDialog ref="newDialog" onSetSignatureSettings={onSignatures}/>}
                 {ProfileDialog && <ProfileDialog ref="profileDialog"/>}
                 {EditDialog && <EditDialog ref="editDialog" onSetSignatureSettings={onSignatures}/>}
+
+                {ExportDialog && <ExportDialog
+                    ref="exportDialog"
+                    titlePlural={titlePlural}
+                    renderExportFilterNode={renderExportFilterNode}
+                    exportFn={exportFn}
+                    addHRFilters
+                />}
 
                 <Popover ref="popover"/>
             </APageListReadWrite>

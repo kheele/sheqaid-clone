@@ -1,0 +1,45 @@
+#dialog-overlay.PrDPDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1000px;
+    max-width: 100%;
+}
+#dialog-overlay.PrDPDialog-dialog .dialog-content,
+#PrDPDialog-page{
+    padding: 0;
+    height: 100%;
+    overflow: visible !important;
+}
+#PrDPDialog-page > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    border: none;
+}
+
+#PrDPDialog-page > .table{
+    width: 100%;
+    height: calc(100% - 50px) !important;
+    margin: 0;
+}
+#PrDPDialog-page > .filter-wrapper + .table{
+    height: calc(100% - (50px + 122px)) !important;
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+    #PrDPDialog-page > .page-title > .tabled-top-panel {
+        justify-content: flex-end;
+    }
+    #PrDPDialog-page > .page-title > .tabled-top-panel > .buttons {
+        width: auto;
+    }
+    #PrDPDialog-page > .page-title > .tabled-top-panel > .buttons .left-buttons.expiry-btns {
+        border-right: 1px solid #aaa;
+        padding: 0 10px 0 0;
+        width: auto;
+        float: right !important;
+        position: relative;
+        left: unset;
+        top: unset;
+        transform: unset;
+    }
+}

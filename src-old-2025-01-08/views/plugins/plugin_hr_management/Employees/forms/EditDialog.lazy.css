@@ -1,0 +1,42 @@
+@import '../../../../../css/ANewTableFormDialog.css';
+@import '../../AEditEmployeeDocDialog.css';
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.Employee-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: 1150px;
+}
+#dialog-overlay.Employee-profile-dialog .dialog-header > h3 {
+    margin: 8px 15px;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+#dialog-overlay.Employee-profile-dialog .dialog-header > h3.active {
+    background: green !important;
+    color: #fff !important;
+}
+#dialog-overlay.Employee-profile-dialog .dialog-header > h3.removed {
+    background: red !important;
+    color: #fff !important;
+}
+
+#dialog-overlay.Employee-profile-dialog .row-tabs {
+    padding: 0 !important;
+}
+#dialog-overlay.Employee-profile-dialog .controls.col-lg-12,
+#dialog-overlay.Employee-profile-dialog .row.col-lg-12{
+    width: 100%;
+}
+#dialog-overlay.Employee-profile-dialog .dialog-content .NewDialogSpecificComplianceRequirementsTab-tab.active .table,
+#dialog-overlay.Employee-profile-dialog .dialog-content .NewDialogTeamMemberPermissionsTab-tab.active .table{
+    width: 100% !important;
+    margin: 0 !important;
+}
+#dialog-overlay.Employee-profile-dialog .dialog-content .NewDialogSpecificComplianceRequirementsTab-tab.active h6{
+    color: red;
+    font-style: italic;
+}
+#dialog-overlay.Employee-profile-dialog .Carousel > .carousel > .carousel-inner-no-results{
+    height: calc(100% - 50px);
+}

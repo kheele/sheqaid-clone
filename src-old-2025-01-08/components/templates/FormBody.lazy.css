@@ -1,0 +1,93 @@
+.FormBody {
+    position: relative;
+}
+.FormBody .main-actions.top {
+    position: absolute;
+}
+.FormBody.FormBody-title-page .main-actions.top {
+    top: 1px;
+    right: 0;
+}
+.FormBody.FormBody-section .main-actions.top,
+.FormBody.FormBody-main .main-actions.top {
+    top: 11px;
+    right: 10px;
+}
+.FormBody.FormBody > div.h-full > .header{
+    border: 1px solid #ddd;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    
+}
+.FormBody.FormBody > div.h-full > .header > div{
+    padding: 5px 10px;
+}
+.FormBody.FormBody > div.h-full > .header > div:not(:first-of-type){
+    border-left: 1px solid #ddd;
+}
+.FormBody > div.h-full > .main-actions.bottom {
+    /*background: rgb(2, 168, 168);*/
+    padding: 0px;
+    position: absolute;
+    right: -60px;
+    top: calc(50% + 16px);
+    width: 60px;
+    transform: translate(0, -50%);
+}
+.FormBody > div.h-full > .main-actions.bottom.main-actions-section {
+    border-radius: 0 20px 20px 0;
+    overflow: hidden;
+    right: -49px;
+}
+.FormBody > div.h-full > .main-actions.bottom.main-actions-none-section {
+    position: fixed;
+    left: 50%;
+    top: unset;
+    right: unset;
+    bottom: 10px;
+    transform: translate(-50%, 0%);
+    z-index: 99;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+.FormBody > div.h-full > .main-actions.bottom.main-actions-none-section > div:first-of-type {
+    grid-column: 1/4;
+}
+.FormBody.FormBody-title-page > .h-full > h3 {
+    font-size: 20px;
+    margin: 5px 0 11px !important;
+    padding-top: 1px;
+}
+.FormBody.FormBody-main > .h-full > h3 {
+    /*background: rgb(2, 168, 168);*/
+    margin: -5px -10px 10px !important;
+    padding: 5px 5px 10px;
+}
+.FormBody.FormBody-main > .h-full > h3 > h3.default-type {
+    margin: 5px 0 -7px 5px;
+    font-size: 20px;
+}
+.FormBody .main-actions > .btn{
+    text-align: center;
+    font-size: 12px;
+    padding: 6px 6px 2px;
+}
+.FormBody.FormBody-main > div.h-full > h3 > .main-actions > .btn,
+.FormBody.FormBody-main > div.h-full > .main-actions > .btn{
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.FormBody .form-control.select-type {
+    width: 400px;
+    margin: 10px auto 0;
+}
+.FormBody-readonly .form-control.select-type {
+    border: none;
+    padding: 0;
+    height: auto;
+}
+.FormBody-readonly .form-control.select-type input{
+    color: #f9f9f9;
+}
+.FormBody .MuiPaper-elevation1 {
+    box-shadow: none;
+}

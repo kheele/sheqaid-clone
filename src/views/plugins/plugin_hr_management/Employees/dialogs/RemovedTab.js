@@ -68,14 +68,14 @@ class RemovedTab extends ATab {
         const {permissionKey} = this.props;
         const {isEmployee} = this;
         const isEditable = !isEmployee;
-        return <Options idx={idx} permissionOtherKey={permissionKey}>
+        return <Options idx={idx} permissionModKey={permissionKey} permissionOtherKey={permissionKey}>
             <NavItem action="view" isEmployee={isEmployee} onClick={onView} faIconLeft="eye" title="View"/>
-            {isEditable && <NavItem action="remove" idx={idx} onClick={this.onRestore} faIconLeft="ban" title="Restore"/>}
+            {isEditable &&
+                <NavItem action="remove" idx={idx} onClick={this.onRestore} faIconLeft="ban" title="Restore"/>}
         </Options>;
     }
 
     // </editor-fold>
-
     // </editor-fold>
 }
 

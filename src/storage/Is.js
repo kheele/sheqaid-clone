@@ -99,7 +99,7 @@ class Is {
 
     @computed
     get isTrial() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -115,13 +115,13 @@ class Is {
 
     @computed
     get isClient() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         return !this.isConsultant;
     }
 
     @computed
     get isConsultant() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -136,7 +136,7 @@ class Is {
 
     @computed
     get isNoProjectsUndefined() {
-        if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
+        if (!this.isLoggedIn || this.isConsultant) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -151,7 +151,7 @@ class Is {
 
     @computed
     get isNoProjects() {
-        if (isAdminApp || !this.isLoggedIn || this.isConsultant) return false;
+        if (!this.isLoggedIn || this.isConsultant) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -166,7 +166,7 @@ class Is {
 
     @computed
     get hasProjects() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -181,7 +181,7 @@ class Is {
 
     @computed
     get shouldSetupPermissions() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         const {selectedClientModules: {list}} = selected;
         if (this.isContractorAuth || this.isEmployee || list.isEmpty()) {
             return false;
@@ -203,7 +203,7 @@ class Is {
 
     @computed
     get isLoggedClient() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -224,7 +224,7 @@ class Is {
 
     @computed
     get isLoggedProject() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -239,7 +239,7 @@ class Is {
 
     @computed
     get isLoggedSite() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             const {selectedContractorSite} = selected;
             if (selectedContractorSite) {
@@ -264,7 +264,7 @@ class Is {
 
     @computed
     get isContractorAuth() {
-        if (isAdminApp || !this.isLoggedInAuth) return false;
+        if (!this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
         const {claims: {aud, access_type}} = this.storage.idTokenResult;
@@ -274,13 +274,13 @@ class Is {
 //
     @computed
     get isContractorView() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         return this.storage.attrs.has("contractor");
     }
 
     @computed
     get isContractorViewVisited() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         return this.isContractorView && !this.isContractorAuth;
     }
 
@@ -313,7 +313,7 @@ class Is {
 
     @computed
     get isUser() {
-        if (isAdminApp || !this.isLoggedInAuth) return false;
+        if (!this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
         const {claims: {aud, access_type}} = this.storage.idTokenResult;
@@ -322,7 +322,7 @@ class Is {
 
     @computed
     get isSupervisor() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (!this.isEmployee)
             return false;
 
@@ -332,7 +332,7 @@ class Is {
 
     @computed
     get isEmployee() {
-        if (isAdminApp || !this.isLoggedInAuth) return false;
+        if (!this.isLoggedInAuth) return false;
         if (!this.storage.attrs.has("idTokenResult"))
             return false;
         const {claims: {aud, access_type}} = this.storage.idTokenResult;
@@ -341,7 +341,7 @@ class Is {
 
     @computed
     get hasPaymentInterval() {
-        if (isAdminApp || !this.isLoggedIn) return false;
+        if (!this.isLoggedIn) return false;
         if (this.isContractorAuth) {
             return false;
         }

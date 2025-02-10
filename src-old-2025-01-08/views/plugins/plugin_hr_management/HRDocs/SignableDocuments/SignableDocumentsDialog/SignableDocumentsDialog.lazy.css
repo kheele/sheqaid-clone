@@ -1,0 +1,50 @@
+#dialog-overlay.SignableDocumentsDialog-dialog .dialog-container {
+    height: calc(100% - 35px);
+    width: 1000px;
+    max-width: 100%;
+}
+
+#dialog-overlay.SignableDocumentsDialog-dialog .dialog-content,
+#SignableDocumentsDialog-page {
+    padding: 0;
+    height: 100%;
+    overflow: visible !important;
+}
+
+#SignableDocumentsDialog-page > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    border: none;
+}
+
+#SignableDocumentsDialog-page > .table {
+    width: 100%;
+    height: calc(100% - 50px) !important;
+    margin: 0;
+}
+
+#SignableDocumentsDialog-page > .filter-wrapper + .table {
+    height: calc(100% - (50px + 122px)) !important;
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+    #SignableDocumentsDialog-page > .page-title > .tabled-top-panel {
+        justify-content: flex-end;
+    }
+
+    #SignableDocumentsDialog-page > .page-title > .tabled-top-panel > .buttons {
+        width: auto;
+    }
+
+    #SignableDocumentsDialog-page > .page-title > .tabled-top-panel > .buttons .left-buttons.expiry-btns {
+        border-right: 1px solid #aaa;
+        padding: 0 10px 0 0;
+        width: auto;
+        float: right !important;
+        position: relative;
+        left: unset;
+        top: unset;
+        transform: unset;
+    }
+}

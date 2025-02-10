@@ -1,0 +1,23 @@
+#EmergencyRollCallTab-tab .filter-wrapper > .controls{
+	display: block;
+	height: 44px;
+}
+#EmergencyRollCallTab-tab .filter-wrapper > .controls > .clearable-field-control{
+	margin-bottom: 7px;
+}
+
+#EmergencyRollCallTab-tab .table > .thead > .td.td-date,
+#EmergencyRollCallTab-tab .table > .tbody .tr > .td.td-date{
+    min-width: 100px;
+}
+#EmergencyRollCallTab-tab .table > .thead > .td.td-floor_warden_name,
+#EmergencyRollCallTab-tab .table > .tbody .tr > .td.td-floor_warden_name{
+    min-width: 170px;
+}
+#EmergencyRollCallTab-tab .table > .thead > .td.td-attendance_register,
+#EmergencyRollCallTab-tab .table > .tbody .tr > .td.td-attendance_register{
+    min-width: 120px;
+}
+#EmergencyRollCallTab-tab .filter-wrapper + .table {
+    height: calc(100% - (10px + 128px)) !important;
+}

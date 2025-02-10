@@ -68,10 +68,12 @@ export const insertErrorReporting = create("error-reporting", null, input => {
     // });
 });
 export const insertUser = create("users");
+export const insertContractorUser = create("contractors/users");
 export const insertClient = create("clients");
 export const insertProject = create("projects");
 export const insertSector = create("sectors");
 export const insertSite = create("sites");
+export const insertContractor = create("contractors");
 
 //Assets
 export const insertAsset = create("assets");
@@ -160,7 +162,6 @@ export const insertDocument = create("documents");
 export const insertSignableDocTemplate = create("doc-signing-settings/api/docuseal/templates");
 export const insertSettings = create("settings");
 export const insertNotificationSettings = create("notification-settings");
-export const insertContractor = create("contractors");
 export const insertNCR = create("ncr");
 
 //HR
@@ -168,10 +169,21 @@ export const insertDepartment = create("departments");
 export const insertJobCategory = create("job-categories");
 export const insertJobPosition = create("job-positions");
 export const insertTeam = create("teams");
+
+export const insertPPESupplier = create("ppe-suppliers");
 export const insertPPE = create("ppe-types");
+export const insertPPEInventory = create("ppe-inventory");
 export const insertPPEItem = create("ppe-items");
+export const insertPPEDisposal = create("ppe-disposals");
+export const insertPPEFitTest = create("ppe-fit-tests");
+export const insertPPEReturn = create("ppe-returns");
+export const insertApplicableRegulation = create("applicable-regulations");
+export const insertComplianceRequirement = create("compliance-requirements");
+export const insertJobTaskCategory = create("job-tasks/categories");
+export const insertJobTask = create("job-tasks");
 
 export const insertEmployee = create("employees");
+export const insertEmployeeImported = create("employees/imported");
 export const insertEmployeeExternal = create("employees-external");
 export const insertEmployeeCompetency = create("employees/docs/competencies");
 export const insertEmployeeContract = create("employees/docs/contracts");
@@ -191,5 +203,13 @@ export const insertEmployeeDocDocumentIDOrPassport = create("employees/documents
 export const insertEmployeeDocDocumentPrDP = create("employees/documents/prdp");
 export const insertEmployeeDependant = create("employees/dependents");
 export const insertEmployeeNextOfKin = create("employees/next-of-kins");
+
+//
+export const insertOrganogram = create("structure-and-responsibility/organograms");
+
+//Questionnaires
+export const insertQuestion = create("questionnaires/questions");
+export const insertQuestionOption = create("questionnaires/question-options");
+export const insertJobObservationsQuestionnaire = create("job-observations");
 
 //151

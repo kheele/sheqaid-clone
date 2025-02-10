@@ -1,0 +1,327 @@
+#popover-overlay {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; 
+    z-index: 1401;
+    position: relative
+}
+#popover-overlay.dialog {
+    background-color: rgba(0, 0, 0, 0.7); 
+    width: 100%; 
+    top: 0px; 
+    left: 0px; 
+    opacity: 1; 
+    height: 100%; 
+    position: fixed; 
+    will-change: opacity; 
+    transform: translateZ(0px); 
+}
+#popover-overlay > .popover-container{
+    position: absolute;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+}
+#popover-overlay.dialog > .dialog-container{
+    max-width: 900px;
+    max-height: calc(100% - 30px);
+    height: auto;
+}
+#popover-overlay > .popover-container::before{
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+#popover-overlay > .popover-container.arrow-top::before{
+    left: 50%;
+    top: -10px;
+    bottom: auto;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-bottom::before{
+    left: 50%;
+    top: auto;
+    bottom: -10px;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-top: 10px solid #fff;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+#popover-overlay > .popover-container.arrow-top--top-left::before{
+    left: 10px;
+    top: -20px;
+    right: auto;
+    bottom: auto;
+    transform: translateX(0%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-top--top-right::before{
+    left: auto;
+    top: -20px;
+    right: 10px;
+    bottom: auto;
+    transform: translateX(0%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-bottom--bottom-left::before{
+    left: 10px;
+    top: auto;
+    right: auto;
+    bottom: -20px;
+    transform: translateX(0%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+}
+#popover-overlay > .popover-container.arrow-bottom--bottom-right::before{
+    left: auto;
+    top: auto;
+    right: 10px;
+    bottom: -20px;
+    transform: translateX(0%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+}
+#popover-overlay > .popover-container.arrow-right--top-right::before{
+    left: auto;
+    top: 8px;
+    right: -10px;
+    bottom: auto;
+    transform: translateX(0%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-left--top-left::before{
+    left: -10px;
+    top: 8px;
+    right: auto;
+    bottom: auto;
+    transform: translateX(0%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-right--bottom-right::before{
+    left: auto;
+    top: auto;
+    right: -10px;
+    bottom: 8px;
+    transform: translateX(0%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+}
+#popover-overlay > .popover-container.arrow-left--bottom-left::before{
+    left: auto;
+    top: auto;
+    right: -10px;
+    bottom: 8px;
+    transform: translateX(0%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+}
+#popover-overlay > .popover-container > .nice-scrollbars{
+    padding: 10px;
+    background: #fff;
+    /*overflow: hidden;*/
+    overflow: auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px;
+    border-radius: 2px;
+}
+
+#popover-overlay.ModuleInfoPopover > .popover-container {
+    position: fixed;
+    left: 50% !important;
+    top: 50% !important;
+    right: unset !important;
+    bottom: unset !important;
+    transform: translate(-50%, -50%) !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+#popover-overlay.chatbox-popover > .popover-container{
+    position: fixed;
+    left: 50% !important;
+    bottom: 30px !important;
+    transform: translate(-50%, 0%) !important;
+}
+#popover-overlay.chatbox-popover .nice-scrollbars{
+    padding: 0;
+}
+#popover-overlay.signature-popover .popover-container{
+    position: fixed;
+    left: 50% !important;
+    top: 50% !important;
+    right: unset !important;
+    bottom: unset !important;
+    transform: translate(-50%, -50%) !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 230px !important;
+    height: 160px !important;
+}
+#popover-overlay.signature-popover .popover-container canvas{
+    margin: 0 auto;
+    display: block;
+    border: 5px solid #bbb;
+}
+#popover-overlay.signature-popover .flex{
+    align-items: center;
+    justify-content: center;
+}
+#popover-overlay.signature-popover label{
+    padding: 0;
+    width: 186px;
+    color: #888;
+    font-size: 11px;
+    text-align: center;
+}
+#popover-overlay.signature-popover .btn{
+    padding: 2px 8px;
+    margin-top: 10px;
+    width: 50%;
+}
+#popover-overlay.signature-popover .btn:first-of-type{
+    border-radius: 10px 0 0 10px;
+}
+#popover-overlay.signature-popover .btn:last-of-type{
+    border-radius: 0 10px 10px 0;
+}
+
+#popover-overlay.time-popover .popover-container{
+    height: 100px !important;
+}
+#popover-overlay.time-popover .popover-container .nice-scrollbars{
+    overflow: visible !important;
+    height: 100%;
+}
+#popover-overlay.time-popover .popover-container .react-time-picker{
+    display: block;
+}
+#popover-overlay.time-popover .btn{
+    margin-top: 10px;
+}
+#popover-overlay.time-popover .btn:last-of-type{
+    margin-left: 10px;
+}
+#popover-overlay.time-popover .react-date-picker__calendar{
+    border-radius: 20px;
+    padding: 0 7px 0 10px;
+}
+#popover-overlay.time-popover .react-time-picker__wrapper{
+    border-radius: 20px;
+    padding: 3px 10px 3px 15px;
+    color: #888;
+    font-size: 18px;
+    border-color: #ccc;
+}
+#popover-overlay.center-popover > .popover-container{
+    position: fixed;
+    left: 50% !important;
+    top: 50% !important;
+    right: unset !important;
+    bottom: unset !important;
+    transform: translate(-50%, -50%) !important;
+}
+#popover-overlay.EmployeeDocsActionsPopover .nav-item-title {
+    background: #f6f6f6;
+    float: left;
+    padding: 5px 10px;
+    margin: -10px -10px 0;
+}
+#popover-overlay.EmployeeDocsActionsPopover .nav-item-title > p{
+    margin: 0;
+    font-size: 14px;
+}
+#popover-overlay.NotificationsPopover > .popover-container > .nice-scrollbars{
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    padding: 5px 10px 0;
+}
+#popover-overlay.SelectOrgPopover > .popover-container > .nice-scrollbars{
+    max-height: 100%;
+    width: 100%;
+    border-radius: 0;
+    padding: 0 10px;
+    overflow-x: hidden;
+}
+#popover-overlay.EmployeeDialogActionsPopover > .popover-container{
+    max-height: calc(100% - 107px);
+}
+#popover-overlay.EmployeeDialogActionsPopover > .popover-container > .nice-scrollbars{
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+#popover-overlay.SelectOrgPopover > .popover-container > .nice-scrollbars .nav-item .fa-bell{
+    position: absolute;
+    top: 1px;
+    right: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    color: #adadad;
+    font-size: 20px;
+    padding: 0;
+    background: none;
+}
+#popover-overlay.SelectOrgPopover > .popover-container > .nice-scrollbars .nav-item .fa-bell > small {
+    color: #fff;
+    background: red;
+    font-size: 11px;
+    font-weight: normal;
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
+    padding: 3px;
+    overflow: hidden;
+    z-index: 1;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+#popover-overlay.NotificationsPopover > .popover-container {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}
+#popover-overlay.NotificationsPopover .RenderSubGroup p:not(.is_read) {
+    color: rgb(2, 168, 168) !important;
+}
+#popover-overlay.SelectOrgPopover > .popover-container {
+    position: fixed !important;
+    bottom: 10px !important;
+}
+
+@media (max-width:767px){
+    #popover-overlay > .popover-container{
+        position: fixed;
+        left: 50% !important;
+        top: 50% !important;
+        right: unset !important;
+        bottom: unset !important;
+        transform: translate(-50%, -50%) !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
+}

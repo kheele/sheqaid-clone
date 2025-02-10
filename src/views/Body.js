@@ -22,45 +22,6 @@ class Body extends React.Component {
         this.onBack = this.onBack.bind(this);
     }
 
-    componentWillMount() {
-        window.appBody = this;
-    }
-
-    componentDidMount() {
-//        window.app.onBodyDidMount(this);
-//        console.log("Body.componentDidMount")
-    }
-
-    navigate(module, args) {
-        if (isObject(module)) {
-            module = module.key;
-        }
-
-        return new Promise((resolve, reject)=>{
-            this.routes.pushFirst({module, args, promise: {resolve, reject}});
-        });
-    }
-
-    onOpenPage(e, elem) {
-//        console.log(elem)
-        //
-        if (elem && (elem.props.module || (elem._reactInternals && elem._reactInternals.key))) {
-            const {module, args} = elem.props;
-            return this.navigate(module || elem._reactInternals.key, args);
-        } else if (e._targetInst) {
-            elem = e._targetInst._currentElement._owner._instance._reactInternals;
-            const {module, args} = elem.props;
-            return this.navigate(module || elem.key, args);
-        } else {
-            alert("An error occured while opening a page. Please report this error.");
-            return Promise.reject("An error occured while opening a page. Please report this error.");
-        }
-    }
-
-    onBack() {
-        this.routes.removeFirst();
-    }
-
     @computed
     get hasOpenPlugin() {
         return !this.routes.isEmpty();
@@ -86,15 +47,9 @@ class Body extends React.Component {
             }
 //            console.log('Body.topView', module)
 
-            let comp;
-            if (isAdminApp) {
-                comp = staticModuleManager.adminPluginModules[module];
-            } else {
-                comp = staticModuleManager.defaultPluginModules[module] || staticModuleManager.selectedPluginModules[module];
-//                console.log('Body.topView', comp, module)
-            }
+            const comp = staticModuleManager.defaultPluginModules[module] || staticModuleManager.selectedPluginModules[module];
 
-            if(comp) {
+            if (comp) {
                 if (!!args) {
                     comp.args = args;
                 }
@@ -102,13 +57,52 @@ class Body extends React.Component {
                 comp.permissionKey = module;
 //                comp.permissionGroup = module;
 //                alert(module)
-                
+
 //                const {permissions_modules} = storage.loggedUser.user.data;
 //                const permissions_mod = (permissions_modules || []).find(v => v.key === item.key);
             }
 
             return comp;
         }
+    }
+
+    componentWillMount() {
+        window.appBody = this;
+    }
+
+    componentDidMount() {
+//        window.app.onBodyDidMount(this);
+//        console.log("Body.componentDidMount")
+    }
+
+    navigate(module, args) {
+        if (isObject(module)) {
+            module = module.key;
+        }
+
+        return new Promise((resolve, reject) => {
+            this.routes.pushFirst({module, args, promise: {resolve, reject}});
+        });
+    }
+
+    onOpenPage(e, elem) {
+//        console.log(elem)
+        //
+        if (elem && (elem.props.module || (elem._reactInternals && elem._reactInternals.key))) {
+            const {module, args} = elem.props;
+            return this.navigate(module || elem._reactInternals.key, args);
+        } else if (e._targetInst) {
+            elem = e._targetInst._currentElement._owner._instance._reactInternals;
+            const {module, args} = elem.props;
+            return this.navigate(module || elem.key, args);
+        } else {
+            alert("An error occured while opening a page. Please report this error.");
+            return Promise.reject("An error occured while opening a page. Please report this error.");
+        }
+    }
+
+    onBack() {
+        this.routes.removeFirst();
     }
 
     getDOMNode() {
@@ -127,7 +121,7 @@ class Body extends React.Component {
         props.permissionKey = Comp.permissionKey;
         props.promise = Comp.promise;
         return <ErrorBoundary key={Math.random()}>
-            <Suspense fallback={<PageLoadingProgress />}>
+            <Suspense fallback={<PageLoadingProgress/>}>
                 <Comp {...props}/>
             </Suspense>
         </ErrorBoundary>;

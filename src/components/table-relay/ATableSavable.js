@@ -7,50 +7,39 @@ import {createListSetter} from '../../utils/Utils';
 
 @observer
 class ATableSavable extends React.Component {
-    static propTypes = {
-
-    };
+    static propTypes = {};
 
     @observable
     state = {
         list: [null],
         sortKey: null,
-        edits: {
-            
-        }
+        edits: {}
     };
     form = {};
     ctrl_refs = {};
 
     constructor(props) {
         super(props);
-        
+
         createListSetter.call(this);
-        
+
         this.onLoadList = this.onLoadList.bind(this);
         this.renderItem && (this.renderItem = this.renderItem.bind(this));
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.onSetRef = this.onSetRef.bind(this);  
-        
-        this.onPostChange && (this.onPostChange = this.onPostChange.bind(this)); 
-        this.onClickComplete && (this.onClickComplete = this.onClickComplete.bind(this));  
+        this.onSetRef = this.onSetRef.bind(this);
+
+        this.onPostChange && (this.onPostChange = this.onPostChange.bind(this));
+        this.onClickComplete && (this.onClickComplete = this.onClickComplete.bind(this));
 
         const {defaultValue, preventInitialChange} = this.props;
-        if(defaultValue) {
+        if (defaultValue) {
             this.state.list = defaultValue;
-            if(!preventInitialChange) {
+            if (!preventInitialChange) {
                 const {onChange, name} = this.props;
                 onChange && onChange(toJS(defaultValue.filter(v => !!v)), name, this);
             }
         }
-    }
-    
-    componentWillMount(){
-    }
-
-    onLoadList() {
-        return Promise.resolve(this.state.list);
     }
 
     @computed get list() {
@@ -67,6 +56,13 @@ class ATableSavable extends React.Component {
     set listNoChange(value) {
         this.state.list = value;
         console.log(`set listNoChange: ${value}`)
+    }
+
+    componentWillMount() {
+    }
+
+    onLoadList() {
+        return Promise.resolve(this.state.list);
     }
 
     addFirst(value) {
@@ -102,7 +98,7 @@ class ATableSavable extends React.Component {
         console.log(`removeAt list: ${idx}`)
     }
 
-    onClick(e, el) {
+    onClick(evt, el) {
         const {onClickComplete} = this;
         const {onChange, name, insertAt} = this.props;
         const {list} = this.state;
@@ -118,7 +114,7 @@ class ATableSavable extends React.Component {
                 return;
             } else {
                 this.onPreprocessForm && this.onPreprocessForm(this.form);
-                if(action === "save") {
+                if (action === "save") {
                     if (this.insertAt) {
                         this.insertAt(list, this.form, idx);
                     } else {
@@ -130,13 +126,13 @@ class ATableSavable extends React.Component {
                     const {edits} = this.state;
                     extendObservable(edits, {[idx]: false});
 //                    delete edits[idx];
-                    
+
                     list.removeAt(idx);
                     list.insertAt(idx, item);
                 }
-                
-                onClickComplete && onClickComplete(e, el);
-                
+
+                onClickComplete && onClickComplete(evt, el);
+
                 elems.forEach(node => {
                     node.reset && node.reset();
                 });
@@ -150,30 +146,30 @@ class ATableSavable extends React.Component {
 //                    delete edits[key];
                 });
                 extendObservable(edits, {[idx]: true});
-                
+
                 const item = list[idx];
                 list.removeAt(idx);
                 list.insertAt(idx, item);
-                
-                this.onClickComplete && this.onClickComplete(e, el);
+
+                this.onClickComplete && this.onClickComplete(evt, el);
             });
             return;
-        } else if(action === "cancelEdit") {
+        } else if (action === "cancelEdit") {
             setTimeout(() => {
                 const {edits} = this.state;
                 extendObservable(edits, {[idx]: false});
-                
+
 //                const item = list[idx];
 //                list.removeAt(idx);
 //                list.insertAt(idx, item);
-                
-                this.onClickComplete && this.onClickComplete(e, el);
+
+                this.onClickComplete && this.onClickComplete(evt, el);
             });
             return;
-        }else if (action === "delete") {
+        } else if (action === "delete") {
             list.removeAt(idx);
-                
-            onClickComplete && onClickComplete(e, el);
+
+            onClickComplete && onClickComplete(evt, el);
         }
 
         onChange && onChange(toJS(this.list), name, this);
@@ -198,7 +194,7 @@ class ATableSavable extends React.Component {
             this.ctrl_refs[name] = ref;
         }
     }
-    
+
 }
 
 export default ATableSavable;

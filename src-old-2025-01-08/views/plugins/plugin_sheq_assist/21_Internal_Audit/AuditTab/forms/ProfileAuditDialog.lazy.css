@@ -1,0 +1,23 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileAuditDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1100px !important;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileAuditDialog-profile-dialog .row-definitions.active .table{
+    min-height: 200px;
+}
+#dialog-overlay.ProfileAuditDialog-profile-dialog .table .list{
+    overflow: visible;
+}
+
+#dialog-overlay.ProfileAuditDialog-profile-dialog .table.DefinitionsTable {
+    width: calc(100% + 0px);
+}
+#dialog-overlay.ProfileAuditDialog-profile-dialog .table.DefinitionsTable .list > .tr.tr-readonly > .td {
+    padding: 10px 6px 0 !important;
+}
+#dialog-overlay.ProfileAuditDialog-profile-dialog .table.DefinitionsTable .list > .tr > .td {
+    border: none !important;
+}

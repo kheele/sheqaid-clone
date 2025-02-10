@@ -1,0 +1,105 @@
+@import '../../../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 760px;
+    max-width: 100%;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .dialog-content {
+    padding: 0;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper{
+    float: left;
+    border: 2px solid rgb(2, 168, 168);
+    padding: 0 10px;
+    margin: 5px 0 0 -10px;
+    width: calc(100% + 10px);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper{
+/*    margin: 0 -10px;
+    float: left;*/
+    margin: 0 -10px;
+    float: left;
+    width: calc(100% + 20px);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .ASelectWrapper{
+    margin: 0 0px 0 15px;
+    float: left;
+    width: calc(100% - 15px);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table .tr-table > .ASelectWrapper{
+    margin: 0 0 0 15px;
+    border-left: 2px solid rgb(2, 168, 168);
+    float: left;
+    width: calc(100% - 15px);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > label{
+    margin-left: 10px !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table .tr-table > .ASelectWrapper > label{
+    font-size: 14px;
+    padding: 10px !important;
+    margin: 0 !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table,
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table {
+    float: left;
+    margin-top: 5px !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table {
+    margin-left: -10px !important;
+    width: calc(100% + 20px);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table {
+    margin-left: 0 !important;
+    width: 100%;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > label,
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table .tr-table > label,
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .ASelectWrapper > label{
+    margin-left: 15px !important;
+    width: calc(100% - 25px) !important;
+    background: #ddd;
+    color: #888;
+    padding: 5px 0 5px 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > label {
+    margin-bottom: 10px !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .ASelectWrapper > label{
+    margin-left: 0 !important;
+    padding: 10px !important;
+    font-size: 14px;
+    border-left: 2px solid rgb(2, 168, 168);
+    border-radius: 0;
+    width: calc(100% - 10px) !important;
+    
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .ASelectWrapper > .table{
+    border-left: 2px solid rgb(2, 168, 168);
+    
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > label > button,
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .ASelectWrapper > label > button{
+    border-radius: 50%;
+    padding: 2px;
+    width: 25px !important;
+    height: 25px !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .table,
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table .tr-table > .table{
+    margin-left: 15px !important;
+    width: calc(100% - 25px) !important;
+    border-left: 5px solid rgb(2,168,168);
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .table .tr-table > .clearable-field-control{
+    margin: 0 15px !important;
+    width: calc(100% - 25px) !important;
+}
+#dialog-overlay.NewTrainingPlanDialog-new-dialog .sec-group > .ASelectWrapper > .ASelectWrapper > .table .tr-table > .clearable-field-control {
+    margin: 0px 10px 0 15px !important;
+    width: calc(100% - 25px) !important;
+}

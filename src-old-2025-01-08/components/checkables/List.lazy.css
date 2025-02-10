@@ -1,0 +1,226 @@
+.ListDraggable{
+    position: relative;
+    box-shadow: 0 0 3px #ddd;
+    margin: 10px 0;
+    padding: 0;
+    background: #fff;
+}
+.ListDraggable:hover{
+    margin-left: -5px;
+    margin-right: -5px;
+    border-left: 5px solid rgb(2,168,168);
+    border-right: 5px solid rgb(2,168,168);
+    border-color: rgb(2,168,168);
+    cursor: default !important;
+    transition: all 0.4s;
+}
+
+.ListDraggable-section .FormBody-section .ListDraggable {
+    padding: 0;
+}
+.ListDraggable-section .FormBody-section .ListDraggable-section {
+    padding: 5px 0;
+}
+.ListDraggable > .MuiAccordion-root.Mui-expanded{
+    /*    padding-left: 29px;
+        padding-top: 20px;*/
+    margin-top: 0;
+}
+.ListDraggable > .MuiAccordion-root{
+    overflow: hidden;
+}
+.ListDraggable .MuiCollapse-container{
+    min-height: 0px !important;
+    height: auto !important;
+    visibility: visible !important;
+}
+span.counter{
+    margin: 5px 4px 0 0;
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label{
+    background: #ddd;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    font-weight: normal;
+    font-size: 14px;
+    cursor: pointer;
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.green{
+    background: rgba(19, 133, 95, 0.1);
+    color: rgb(19, 133, 95);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.red{
+    background: rgba(198, 0, 34, 0.1);
+    color: rgb(198, 0, 34);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.orange{
+    background: rgba(255, 176, 0, 0.1);
+    color: rgb(255, 176, 0);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.grey{
+    background: rgba(112, 112, 112, 0.1);
+    color: rgb(112, 112, 112);
+}
+
+.response{
+    display: block;
+}
+.response label{
+    margin-right: 10px;
+}
+.response .mandatory,
+.response .notify,
+.response .has-expiry{
+    margin: -1px 10px 0 0;
+}
+.response .mandatory .MuiTypography-body1,
+.response .notify .MuiTypography-body1,
+.response .has-expiry .MuiTypography-body1{
+    font-size: 14px;
+    height: 21px;
+}
+div.Details_1 .isMandatory {
+    position: absolute;
+    right: -4px;
+    top: -5px;
+}
+.AnswerSummary .isMandatory {
+    position: relative;
+    top: -4px;
+    padding-right: 4px;
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.custom-options{
+    margin-top: 8px;
+}
+div.Details_1 label:not(.label-response){
+    background: #ddd;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    font-weight: normal;
+
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+}
+div.Details_1 label.green{
+    background: rgba(19, 133, 95, 0.1);
+    color: rgb(19, 133, 95);
+}
+div.Details_1 label.red{
+    background: rgba(198, 0, 34, 0.1);
+    color: rgb(198, 0, 34);
+}
+div.Details_1 label.orange{
+    background: rgba(255, 176, 0, 0.1);
+    color: rgb(255, 176, 0);
+}
+div.Details_1 label.grey{
+    background: rgba(112, 112, 112, 0.1);
+    color: rgb(112, 112, 112);
+}
+.AnswerSummary .custom-options > label{
+    cursor: default;
+}
+
+.ListDraggable-section .section-title {
+    font-size: 18px;
+    padding: 6px 8px 0;
+    margin: 5px 0 -9px 0px;
+    border-radius: 20px;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    height: 38px;
+}
+.ListDraggable-section .section-title > span.counter{
+    margin-top: -1px;
+    padding: 4px;
+    position: absolute;
+}
+.ListDraggable-section .section-title > .MuiTextField-root{
+    margin: 0px 0 0 0;
+    float: left;
+    width: 100%;
+}
+.ListDraggable-section .section-title > .btn{
+    margin-top: -1px;
+    font-size: 12px;
+    padding: 1px 6px;
+    border-radius: 20px;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root{
+    font-size: 17px;
+    background: none;
+    line-height: 1;
+    padding: 0 0 0 25px;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root.MuiFilledInput-underline:before {
+    /*border-color: #ddd;*/
+    border: none;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root input{
+    padding: 0px 0 8px;
+    color: #888;
+}
+.ListDraggable-section .FormBody-section {
+    padding: 5px 10px 20px;
+}
+.ListDraggable-section:before {
+    content: " ";
+    width: 2px;
+    position: absolute;
+    left: 15px;
+    top: 35px;
+    bottom: 0;
+    background: rgba(2, 168, 168, 0.2);
+    border-radius: 20px;
+}
+
+.ListDraggable-section > .Mui-expanded > .FormBody{
+    margin: 0 10px;
+}
+
+.ListDraggable-section > .Mui-expanded > .FormBody > .h-full > h3 > i.fa{
+    position: absolute;
+    top: -29px;
+    left: -2px;
+    font-size: 30px;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ListDraggable-section .btn.open-close-btn {
+    border-radius: 20px 20px 0 0;
+    position: absolute;
+    z-index: 1;
+    padding: 2px 8px 0px;
+    left: 8px;
+    bottom: -5px;
+    height: 28px;
+}
+.ListDraggable-section .btn.open-close-btn.fa-angle-up {
+}
+.ListDraggable-section .btn.open-close-btn.fa-angle-down {
+}
+.ListDraggable-section .btn.open-close-btn + .section-title{
+    margin-left: 40px !important;
+}
+.ListDraggable-section .btn.open-close-btn-top {
+    bottom: unset;
+    top: -34px;
+    border-radius: 0 0 20px 20px;
+    padding: 0 8px 2px;
+}

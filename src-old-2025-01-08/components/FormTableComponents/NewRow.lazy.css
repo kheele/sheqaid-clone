@@ -1,0 +1,7 @@
+.NewRow .form-control {
+    width: 100% !important;
+}
+
+.NewRow.tr:hover {
+    background: none !important;
+}

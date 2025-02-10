@@ -1,16 +1,11 @@
 import {computed} from 'mobx';
 
-import * as admin_pages from '../views/admin';
 import * as default_pages from '../views/default';
 import * as plugins_pages from '../views/plugins';
 
-const staticPlugins = {admin: admin_pages, default: default_pages, plugins: plugins_pages};
-    
+const staticPlugins = {default: default_pages, plugins: plugins_pages};
+
 class Manager {
-    
-    get adminPluginModules() {
-        return staticPlugins.admin.modules;
-    }
 
     get defaultPluginModules() {
         return staticPlugins.default.modules;

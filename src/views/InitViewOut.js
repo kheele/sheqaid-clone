@@ -60,7 +60,7 @@ class InitViewOut extends React.Component {
         const style = {left: offset.left, right: "auto", top: "auto", bottom: -offset.top + 10, width: 400};
         this.refs.popover.settings({
             className: 'ModuleInfoPopover',
-            style, 
+            style,
             contentNode: <div>{module.desc}</div>
         }).open();
     }
@@ -70,10 +70,9 @@ class InitViewOut extends React.Component {
             <div className="Features">
                 <h2>Features Available</h2>
                 <p className="margin-b-30">Take a closer look at services we provide for your business.<br/>
-                Interested? Contact us on the details above.</p>
+                    Interested? Contact us on the details above.</p>
             </div>
             <div ref="contentView" className="view-content nice-scrollbars">
-                <InitViewAdmin onInfo={this.onInfo}/>
                 <InitViewHome onInfo={this.onInfo}/>
             </div>
             <Popover key="popover" ref="popover"/>
@@ -83,40 +82,8 @@ class InitViewOut extends React.Component {
 }
 
 @observer
-class InitViewAdmin extends React.Component {
-    
-    constructor(props) {
-        super(props);
-
-        this.renderItem = this.renderItem.bind(this);
-    }
-
-    onFilterAll(modules) {
-        return onFilterImpl(modules);
-    }
-
-    renderItem(item, idx) {
-        const {color, key, svgIconLeft, faIconLeft, title} = item;
-        
-        const {onInfo, onClick} = this.props;
-        
-        return <ItemRenderer key={key} idx={idx} item={item} onInfo={onInfo}/>;
-    }
-
-    render() {
-        if(!isAdminApp) return null;
-        
-        return <PluginsView 
-            title='' 
-            onFilterAll={this.onFilterAll} 
-            renderModuleItem={this.renderItem}
-        />;
-    }
-}
-
-@observer
 class InitViewHome extends React.Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -129,18 +96,16 @@ class InitViewHome extends React.Component {
 
     renderItem(item, idx) {
         const {color, key, svgIconLeft, faIconLeft, title} = item;
-        
+
         const {onInfo, onClick} = this.props;
-        
+
         return <ItemRenderer key={key} idx={idx} item={item} onInfo={onInfo}/>;
     }
 
     render() {
-        if(isAdminApp) return null;
-        
-        return <PluginsView 
-            title='' 
-            onFilterAll={this.onFilterAll} 
+        return <PluginsView
+            title=''
+            onFilterAll={this.onFilterAll}
             renderModuleItem={this.renderItem}
             gridClassName="grid-lg-8 grid-md-6 grid-sm-5 grid-xs-3"
         />;
@@ -166,7 +131,7 @@ class ItemRenderer extends React.Component {
 
 function onFilterImpl(__modules) {
 //    if(plugin.data.key === 'plugin_hr_management') return [];
-        
+
     const {moduleListInstalledDashboard: modules} = moduleManager;
 //    console.log('permissions_modules', __modules.map(v => v.key), modules.map(v => v.key))
     return modules.filter(item => item.key !== 'Dashboard')

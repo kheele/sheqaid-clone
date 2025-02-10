@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {Clickable} from '../inputs';
-import {execWhen} from "../../utils/Utils";
+import {findByUsernameUserSetupBiometric} from "../../mutations/findBy";
 
 // </editor-fold>
 
@@ -31,8 +31,9 @@ class ALoginControls extends React.Component {
         if (!loggedUser) {
             progressDialog.open();
             const {form} = this;
-            const {username, type} = form.data;
-            const user = await neonBinding.events.emit(this.path + "find_by/username", username).then(res => {
+            const {username, type: access_type} = form.data;
+
+            const user = await findByUsernameUserSetupBiometric({username, access_type}).then(res => {
                 console.log("res", res)
                 progressDialog.close();
                 return res;
@@ -49,7 +50,7 @@ class ALoginControls extends React.Component {
             if (!user) {
                 return;
             }
-            loggedUser = {user, access_type: type === 'Contractor' ? 'ContractorUser' : type};
+            loggedUser = {user, access_type: access_type === 'Contractor' ? 'ContractorUser' : access_type};
         }
         this.refs.setupFaceDialog.open(loggedUser).then(() => {
             dialog.close();
@@ -182,51 +183,51 @@ class ALoginControls extends React.Component {
             this.onFailed(res);
         } else if (isObject(res)) {
             // setTimeout(async () => {
-                const {loggedUserAuth} = storage;
-                console.log('onComplete loggedUserAuth', loggedUserAuth)
+            const {loggedUserAuth} = storage;
+            console.log('onComplete loggedUserAuth', loggedUserAuth)
 
-                if (!loggedUserAuth && type) {
-                    const {customToken} = res;
-                    const __auth = type === "Contractor" ? auth2 : auth;
-                    await __auth.signInWithCustomToken(customToken).then(async userCredential => {
-                        if (!userCredential)
-                            return false;
-                        const {user} = userCredential;
+            if (!loggedUserAuth && type) {
+                const {customToken} = res;
+                const __auth = type === "Contractor" ? auth2 : auth;
+                await __auth.signInWithCustomToken(customToken).then(async userCredential => {
+                    if (!userCredential)
+                        return false;
+                    const {user} = userCredential;
 
-                        storage.loggedUserAuth = user;
-                    })
-                }
+                    storage.loggedUserAuth = user;
+                })
+            }
 
-                const currentUser = storage.loggedUserAuth;
+            const currentUser = storage.loggedUserAuth;
 
-                if (currentUser) {
-                    const {loggedUser} = res;
-                    const {user: {data: {auth_type = "MultiFactor", has_biometric}}} = loggedUser;
-                    if (isMultiFactor && auth_type === "Biometric") {
-                        storage.login.currAuth.signOut().then(() => {
-                            onSetupBiometric(loggedUser, !!has_biometric);
-                        });
-                    } else {
-                        const {dialog} = this.props;
-                        // if (isMultiFactor) {
-                        //     const {phoneNumber} = currentUser;
-                        //     if (!phoneNumber) {
-                        //         this.refs.setupPhoneNumDialog.open(loggedUser).then(() => {
-                        //             dialog.close();
-                        //         });
-                        //     } else {
-                        //         this.refs.verifyPhoneNumDialog.open(loggedUser).then(() => {
-                        //             dialog.close();
-                        //         });
-                        //     }
-                        // } else {
-                            storage.login.loginUser(loggedUser);
-                            dialog.close();
-                        // }
-                    }
+            if (currentUser) {
+                const {loggedUser} = res;
+                const {user: {data: {auth_type = "MultiFactor", has_biometric}}} = loggedUser;
+                if (isMultiFactor && auth_type === "Biometric") {
+                    storage.login.currAuth.signOut().then(() => {
+                        onSetupBiometric(loggedUser, !!has_biometric);
+                    });
                 } else {
-                    infoDialog.open("Authentication failed.");
+                    const {dialog} = this.props;
+                    // if (isMultiFactor) {
+                    //     const {phoneNumber} = currentUser;
+                    //     if (!phoneNumber) {
+                    //         this.refs.setupPhoneNumDialog.open(loggedUser).then(() => {
+                    //             dialog.close();
+                    //         });
+                    //     } else {
+                    //         this.refs.verifyPhoneNumDialog.open(loggedUser).then(() => {
+                    //             dialog.close();
+                    //         });
+                    //     }
+                    // } else {
+                    storage.login.loginUser(loggedUser);
+                    dialog.close();
+                    // }
                 }
+            } else {
+                infoDialog.open("Authentication failed.");
+            }
             // }, 5000);
         }
     }

@@ -1,0 +1,48 @@
+
+#profile-page{
+    height: 100%;
+}
+
+#profile-page .page-title > h3{
+    flex: 1;
+}
+
+#profile-page .page-content{
+    height: calc(100% - 20px);
+}
+
+.controls-wrapper,
+.controls-wrapper > .controls {
+    height: 100%;
+}
+.controls-wrapper > .controls {
+    padding: 10px;
+    background: #f5f5f5;
+}
+.controls-wrapper > .controls > .row{
+    margin: 0 0 10px;
+    padding: 5px 0 10px 10px;
+    box-shadow: 0 0 3px #ddd;
+    border-radius: 3px;
+    background: #fff;
+}
+.controls-wrapper > .controls > .row > label{
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+} 
+.controls-wrapper > .controls > .row > hr{
+    margin: 0px 0 10px;
+    width: 100%;
+    border-color: #e4e4e4;
+}
+.controls-wrapper > .controls > .row > .sec-group{
+    margin: 0;
+    width: calc(100% + 10px);
+}
+.controls-wrapper > .controls > .row > .sec-group > .form-control{
+    margin: 10px 10px 5px 0;
+}	
+.controls-wrapper > .controls > .row > .form-control{
+    margin: 10px 0 5px 0;
+}

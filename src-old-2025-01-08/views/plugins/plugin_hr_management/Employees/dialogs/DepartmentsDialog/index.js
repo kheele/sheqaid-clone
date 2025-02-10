@@ -1,0 +1,248 @@
+import React from "react";
+import {observer} from 'mobx-react';
+
+import {Permissions} from 'utils/Utils';
+import ADialogTab from "views/ADialogTab";
+import {ActionsButton, Button, ClearableInput} from 'components/inputs';
+import {THead, TRow} from 'components/tables';
+
+import ImportDepartmentsDialog from "./ImportDepartmentsDialog";
+import NewDepartmentDialog from "./NewDepartmentDialog";
+import ProfileDepartmentDialog from "./ProfileDepartmentDialog";
+import EditDepartmentDialog from "./EditDepartmentDialog";
+
+import style from "./DepartmentsDialog.lazy.css";
+import AggregateStat from "components/AggregateStat";
+import {updateDepartment} from "mutations/update";
+import {Tabs} from "components/tabs";
+import ActiveTab from "../ActiveTab";
+import RemovedTab from "../RemovedTab";
+
+@observer
+class DepartmentsDialog extends ADialogTab {
+    pageKey = "DepartmentsDialog";
+    title = "Departments";
+    titleSingular = "Department";
+    permissionKey = "Departments";
+    onUpdate = updateDepartment;
+
+    constructor(props) {
+        super(props);
+
+        this.onBuildQuery = this.onBuildQuery.bind(this);
+
+        this.onImport = this.onImport.bind(this);
+
+        this.renderLeftButtons = this.renderLeftButtons.bind(this);
+        this.renderFilterNode = this.renderFilterNode.bind(this);
+        this.renderItem = this.renderItem.bind(this);
+    }
+
+    componentWillMount() {
+        style.use();
+    }
+
+    componentWillUnmount() {
+        style.unuse();
+    }
+
+    //<editor-fold desc="onBuildQuery">
+    onBuildQuery(filterData = {}) {
+        const {
+            name,
+        } = filterData || {};
+
+        return {
+            path: "departments",
+            attrs: {
+                name,
+                exact_orgs_company: true,
+            },
+        };
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="onSoftDeleteProhibit">
+    onSoftDeleteProhibit(item) {
+        const {id, data: {employee_list_aggregate}} = item;
+        const prohibit = employee_list_aggregate.aggregate.count > 0;
+        if (prohibit) {
+            infoDialog.open(<p>
+                The Department can't be removed while<br/>
+                there are employees attached to it.<br/><br/>
+                Please first remove the employees or assign<br/>
+                them to other Department(s) before removing<br/>
+                this Department.
+            </p>);
+        }
+        return prohibit;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="actions">
+    onImport(e, btn) {
+        this.refs.importDialog.open().then(list => {
+            this.refs.root.list.push(...list);
+        });
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="renderFuns">
+    //<editor-fold desc="renderLeftButtons">
+    renderLeftButtons() {
+        const {isEmployee, isContractorView} = storage.is;
+        const isReadonly = isEmployee || isContractorView;
+        if (isReadonly) return null;
+        const {permissions_other} = storage.loggedUser.user.data;
+        const permissions_other_Departments = (permissions_other || []).find(v => v.key === this.permissionKey);
+
+        return <div className="left-buttons pull-left">
+            {Permissions.allow(permissions_other_Departments) &&
+                <Button className="btn btn-primary pull-right min-w-110" onClick={this.onImport}>
+                    Import Departments
+                </Button>}
+        </div>;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="renderFilterNode">
+    renderFilterNode(onChange) {
+        return <div className="col-lg-12 controls flex">
+            <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
+        </div>;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="renderTHead">
+    renderTHead() {
+        const {isConsultant} = storage.is;
+        return <THead>
+            <div className="td fixed-flex min-w-50">ID</div>
+            <div className="td">Name</div>
+            {isConsultant && <div className="td">Company</div>}
+            <div className="td fixed-flex min-w-300">Stats</div>
+            <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+        </THead>;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="renderItem">
+    renderItem(item, idx, onClick) {
+        const {
+            id,
+            data: {
+                created_at, name,
+                company, client, project, site,
+                ppe_type_list_aggregate, employee_list_aggregate, responsible_document_list_aggregate
+            }
+        } = item;
+
+        const {isConsultant} = storage.is;
+
+        return <TRow key={id}>
+            <div className="td fixed-flex min-w-50">{id}</div>
+            <div className="td">{name}</div>
+            {isConsultant && <div className="td">
+                {client ? (client.name || client.data.name) : 'All'}
+            </div>}
+            <div className="td fixed-flex min-w-300 flex td-stats">
+                <StatsPanel item={item}/>
+            </div>
+            <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
+                <ActionsButton idx={idx} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+            </div>
+        </TRow>;
+    }
+
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold desc="renderPage">
+    renderPage() {
+        const {
+            onUpdate,
+            onBuildQuery,
+            titleSingular,
+            title,
+            permissionKey,
+            renderFilterNode,
+            renderTHead,
+            renderItem
+        } = this;
+
+        return <>
+            <Tabs
+                key="tabs"
+                ref="mainTabs"
+                permissionKey={permissionKey}
+                index={this.state.index}
+                onChange={this.onChange}
+            >
+                <ActiveTab
+                    ref="activeTab"
+                    onUpdate={onUpdate}
+                    onBuildQuery={onBuildQuery}
+                    title="Active"
+                    titleSingular={titleSingular}
+                    titlePlural={title}
+                    onSoftDeleteProhibit={this.onSoftDeleteProhibit}
+                    renderLeftButtons={this.renderLeftButtons}
+                    renderFilterNode={renderFilterNode}
+                    renderTHead={renderTHead}
+                    renderItem={renderItem}
+                    NewDialog={NewDepartmentDialog}
+                    ProfileDialog={ProfileDepartmentDialog}
+                    EditDialog={EditDepartmentDialog}
+                    permissionKey={permissionKey}
+                />
+                <RemovedTab
+                    ref="removedTab"
+                    onUpdate={onUpdate}
+                    onBuildQuery={onBuildQuery}
+                    title="Removed"
+                    titleSingular={titleSingular}
+                    titlePlural={title}
+                    renderFilterNode={renderFilterNode}
+                    renderTHead={renderTHead}
+                    renderItem={renderItem}
+                    ProfileDialog={ProfileDepartmentDialog}
+                    permissionKey={permissionKey}
+                />
+            </Tabs>
+
+            <ImportDepartmentsDialog ref="importDialog"/>
+        </>;
+    }
+
+    //</editor-fold>
+
+}
+
+// <editor-fold defaultstate="collapsed" desc="StatsPanel">
+@observer
+class StatsPanel extends React.Component {
+
+    render() {
+        const {
+            data: {
+                employee_list_aggregate, ppe_type_list_aggregate, responsible_document_list_aggregate,
+            }
+        } = this.props.item;
+
+        return <>
+            <AggregateStat title="Employees" className="h-70" value={employee_list_aggregate}/>
+            <AggregateStat title="PPE" className="h-70" value={ppe_type_list_aggregate}/>
+            <AggregateStat title="Documents Responsible" className="h-70" value={responsible_document_list_aggregate}/>
+        </>;
+    }
+}
+
+// </editor-fold>
+
+export default DepartmentsDialog;

@@ -13,7 +13,7 @@ window.RenderUtils = {
                 return <img src={f.path} width={w} height={h}/>;
             }
         }
-        if(defaultPic) {
+        if (defaultPic) {
             return <img src={defaultPic} width={w} height={h}/>;
         }
         return null;
@@ -25,7 +25,8 @@ window.RenderUtils = {
                 {isString(alt) ? alt : "All"}
             </div>;
         }
-        return <AsyncTD defaultValue={v} renderer={RenderUtils.renderOrgName} defaultText={alt || "All"} title={title} className={className}/>;
+        return <AsyncTD defaultValue={v} renderer={RenderUtils.renderOrgName} defaultText={alt || "All"} title={title}
+                        className={className}/>;
     },
     renderOrgSpan: (v, alt) => {
         if (!v) {
@@ -36,17 +37,17 @@ window.RenderUtils = {
     renderAllOrgsTD: (client, project, site, alt) => {
         return <div className="td">
             <span className="block-inline">
-                <b>Company: </b><br />
+                <b>Company: </b><br/>
                 {RenderUtils.renderOrgSpan(client)}
             </span>
             <span className="block-inline">
-                <b>Project: </b><br />
+                <b>Project: </b><br/>
                 {RenderUtils.renderOrgSpan(project)}
             </span>
             <span className="block-inline">
-                <b>Site: </b><br />
+                <b>Site: </b><br/>
                 {RenderUtils.renderOrgSpan(site)}
-            </span> 
+            </span>
         </div>;
     },
     renderOrgName: v => {
@@ -185,6 +186,7 @@ window.dataUriToUrl = dataUri => {
 
         return new Blob([ia], {type: mimeString});
     }
+
 //    alert(dataUri)
     const blob = dataUritoBlob(dataUri);
     return URL.createObjectURL(blob);
@@ -192,11 +194,12 @@ window.dataUriToUrl = dataUri => {
 
 window.saveFileAs = (dataUri, name) => {
     const a = document.createElement("a");
-    const url = dataUriToUrl(dataUri);
+    const isDataUri = dataUri.startsWith('data:');
+    const url = isDataUri ? dataUriToUrl(dataUri) : dataUri;
     a.href = url;
     a.download = name;
     a.click();
-    URL.revokeObjectURL(url);
+    (isDataUri && URL.revokeObjectURL(url));
 };
 
 window.convertIdToBigint = (encodedHasuraRelayID) => {

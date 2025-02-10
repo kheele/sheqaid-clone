@@ -4,7 +4,10 @@
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //title, sec1
         constructor(events) {
-            super(events, {singular: "Organogram", plural: "Organograms"}, "plugin_sheq_assist/StructureAndResponsibility/organograms/", "plugin_sheq_assist_StructureAndResponsibility_organograms");
+            super(events, {
+                singular: "Organogram",
+                plural: "Organograms"
+            }, "plugin_sheq_assist/StructureAndResponsibility/organograms/", "plugin_sheq_assist_StructureAndResponsibility_organograms");
 
             const {addAction} = this;
 
@@ -73,6 +76,7 @@
                 }, 4000);
             });
         }
+
         // </editor-fold>
 
         getDB() {
@@ -91,6 +95,7 @@
             newItem = await mapResults.call(this, newItem);
             return newItem;
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -106,8 +111,9 @@
                 let updatedItem = {id, data: updatedData};
                 updatedItem = await mapResults.call(this, updatedItem);
                 return updatedItem.data;
+            }
         }
-        }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="remove">
@@ -116,6 +122,7 @@
                 doc && await files.remove(doc);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -124,7 +131,14 @@
                 let list = await AControllerRead.prototype.loadOnSnapshot.call(this, evt, function onChange() {
                 });
 
-                const {user, user: {data: {client: my_client, project: my_project, site: my_site}}, company, client_id, project_id, site_id} = loggedUser;
+                const {
+                    user,
+                    user: {data: {client: my_client, project: my_project, site: my_site}},
+                    company,
+                    client_id,
+                    project_id,
+                    site_id
+                } = loggedUser;
 //                console.log(this.tbl, 'list all', client_id, project_id, site_id, 'count', list.length)
                 if (my_client) {
                     list = list.filter(val => {
@@ -172,6 +186,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -190,6 +205,7 @@
                 return this.filter_impl(evt, q);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="find_by_supervisor_id">
@@ -202,13 +218,14 @@
                     for (let n2 = 0; n2 < list.length; n2++) {
                         const {employeeReportedTo, employee_list, employee} = list[n2];
                         if ((employeeReportedTo && employeeReportedTo.id === id) ||
-                                (employee && employee.id === id)) {
+                            (employee && employee.id === id)) {
                             return item;
                         }
                     }
                 }
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="team_list_by_supervisor">
@@ -216,9 +233,9 @@
             return Events.whenLoggedIn(async loggedUser => {
                 const mainList = await this.list(evt);
                 for (let n = 0; n < mainList.length; n++) {
-                    const {data: {list}} = mainList[n];
-                    for (let n2 = 0; n2 < list.length; n2++) {
-                        const {employeeReportedTo, employee_list, team} = list[n2];
+                    const {data: {list: employee_list}} = mainList[n];
+                    for (let n2 = 0; n2 < employee_list.length; n2++) {
+                        const {employeeReportedTo, employee_list, team} = employee_list[n2];
                         if (employeeReportedTo && employeeReportedTo.id === id && (employee_list || team)) {
                             return employee_list || team.data.list;
                         }
@@ -226,6 +243,7 @@
                 }
             });
         }
+
         // </editor-fold>
     }
 
@@ -281,6 +299,7 @@
             return v;
         };
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="mapResults">
@@ -296,7 +315,12 @@
         if (list) {
             const employees_ctrl = await Events.get('plugin_sheq_assist/employees/');
             const teams_ctrl = await Events.get('plugin_sheq_assist/employees/teams/');
-            item.data.list = await Promise.all(list.map(async ({team_id, employee_list, employee, employeeReportedTo}) => {
+            item.data.list = await Promise.all(list.map(async ({
+                                                                   team_id,
+                                                                   employee_list,
+                                                                   employee,
+                                                                   employeeReportedTo
+                                                               }) => {
                 const item = {};
                 if (employee) {
                     item.employee = await employees_ctrl.find_by_id.call(employees_ctrl, null, employee.id);
@@ -307,7 +331,7 @@
                     item.team = await teams_ctrl.find_by_id.call(teams_ctrl, null, team_id);
                     console.log('team', item.team)
                 } else
-                //TODO: to remove once migrated all to team_id
+                    //TODO: to remove once migrated all to team_id
                 if (employee_list) {
 //                    console.log('employee_list', employee_list)
                     item.employee_list = await Promise.all(employee_list.map(async v => {
@@ -337,6 +361,7 @@
 
         return item;
     }
+
     // </editor-fold>
 
     new Controller(events);

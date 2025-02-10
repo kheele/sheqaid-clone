@@ -1,3 +1,4 @@
+import signup from "./signup";
 import create from "./create";
 import createWithCustomArgs from "./createWithCustomArgs";
 import update from "./update";
@@ -16,6 +17,7 @@ import employeeOrgDashboard from "./employeeOrgDashboard";
 import employeeOrgDateRangeDashboard from "./employeeOrgDateRangeDashboard";
 
 export default {
+    signup,
     create,
     createWithCustomArgs,
     update,

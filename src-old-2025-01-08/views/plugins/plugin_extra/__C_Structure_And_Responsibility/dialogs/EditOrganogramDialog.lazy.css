@@ -1,0 +1,14 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.EditOrganogramDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.EditOrganogramDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.EditOrganogramDialog-profile-dialog .dialog-content .row-source .row-add-person {
+    border-top: 1px dotted #ddd;
+}

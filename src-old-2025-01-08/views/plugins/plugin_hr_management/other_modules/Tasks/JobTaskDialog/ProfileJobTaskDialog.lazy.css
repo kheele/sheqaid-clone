@@ -1,0 +1,20 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileJobTaskDialog-profile-dialog .dialog-container {
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: 100%;
+}
+
+#dialog-overlay.ProfileJobTaskDialog-profile-dialog .dialog-content {
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.ProfileJobTaskDialog-profile-dialog .dialog-content .row.col-lg-6 {
+    height: calc(100% - 111px);
+}
+
+#dialog-overlay.ProfileJobTaskDialog-profile-dialog .dialog-content .row.sec-group {
+    height: calc(100% - 35px);
+}

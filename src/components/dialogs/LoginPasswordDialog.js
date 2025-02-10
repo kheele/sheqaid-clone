@@ -23,6 +23,7 @@ import ALoginControls from './ALoginControls';
 import style from './LoginPasswordDialog.lazy.css';
 import storage from "../../storage/Storage";
 import {execWhen} from "../../utils/UtilsFuns";
+import {loginUserStep1ByUsername} from "../../mutations/findBy";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -85,6 +86,32 @@ class Controls extends ALoginControls {
 
     // </editor-fold>
 
+    get auth() {
+        const {type: access_type} = this.form.data;
+        if (access_type === "Contractor") {
+            return auth2;
+        }
+        if (access_type === "Staff") {
+            return auth_hr;
+        }
+        return auth;
+    }
+
+    // </editor-fold>
+
+    get path() {
+        const {type} = this.form.data;
+        if (type === "Contractor") {
+            return "plugin_sheq_assist/contractors/users/";
+        } else if (type === "Staff") {
+            return "plugin_sheq_assist/employees/accounts/";
+        } else {
+            return "users/accounts/";
+        }
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
 
@@ -113,22 +140,23 @@ class Controls extends ALoginControls {
                     return;
                 }
             }
-            if (!isAdminApp && !form.isValid('type')) {
+            if (!form.isValid('type')) {
                 infoDialog.open('Please select Login As [User, Contractor or Staff]');
                 return false;
             }
 
             progressDialog.open();
 
-            const {type} = form.data;
+            const {type: access_type} = form.data;
 
             try {
-                const res = await neonBinding.events.emit(this.path + "login/username", username);
+                const res = await loginUserStep1ByUsername({username, access_type});
                 progressDialog.close();
                 if (!res) {
                     infoDialog.open(<div>
                         Sorry, we couldn't verify you at the moment.<br/>
-                        The {type} with this {username.isEmailAddress() ? 'Email Address' : 'Phone Number'} was not
+                        The {access_type} with this {username.isEmailAddress() ? 'Email Address' : 'Phone Number'} was
+                        not
                         found
                     </div>);
                     return false;
@@ -142,21 +170,21 @@ class Controls extends ALoginControls {
                     uid, id,
                     contractor, message//is contractor
                 } = res;
-                if (type === "Staff") {
+                if (access_type === "Staff") {
                     if (!uid) {
                         const {dialog} = this.props;
                         if (username.isEmailAddress()) {
-                            this.refs.setupEmailPasswordDialog.open({id, username, type}).then(() => {
+                            this.refs.setupEmailPasswordDialog.open({id, username, type: access_type}).then(() => {
                                 dialog.close();
                             });
                         } else {
-                            this.refs.setupPhonePasswordDialog.open({id, username, type}).then(() => {
+                            this.refs.setupPhonePasswordDialog.open({id, username, type: access_type}).then(() => {
                                 dialog.close();
                             });
                         }
                         return false;
                     }
-                } else if (type === "Contractor") {
+                } else if (access_type === "Contractor") {
                     if (contractor) {
                         if (message === "CONTRACTOR_EMAIL_RESTRICTION") {
                             infoDialog.open(<div className="text-left">
@@ -217,8 +245,6 @@ class Controls extends ALoginControls {
         });
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn) {
         const {form} = this;
@@ -249,7 +275,7 @@ class Controls extends ALoginControls {
         }).then(res => {
             console.log("res", res)
 
-            if (res && !isAdminApp && isObject(res) && res.contractor) {
+            if (res && isObject(res) && res.contractor) {
                 const {contractor, message} = res;
                 if (message === "CONTRACTOR_EMAIL_RESTRICTION") {
                     infoDialog.open(<div className="text-left">
@@ -277,33 +303,6 @@ class Controls extends ALoginControls {
         });
     }
 
-    // </editor-fold>
-
-    get auth() {
-        const {type: access_type} = this.form.data;
-        if (access_type === "Contractor") {
-            return auth2;
-        }
-        if (access_type === "Staff") {
-            return auth_hr;
-        }
-        return auth;
-    }
-
-    get path() {
-        if (isAdminApp) {
-            return "admin/users/accounts/";
-        }
-        const {type} = this.form.data;
-        if (type === "Contractor") {
-            return "plugin_sheq_assist/contractors/users/";
-        } else if (type === "Staff") {
-            return "plugin_sheq_assist/employees/accounts/";
-        } else {
-            return "users/accounts/";
-        }
-    }
-
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
@@ -320,9 +319,9 @@ class Controls extends ALoginControls {
                 >
                     <ClearableInput name="username" type="text" placeholder="Email Address / Phone Number"
                                     className="form-control" onChange={this.form.onChange}/>
-                    {!isAdminApp && <ClearableInput name="type" type="radio" placeholder="Login As" vertical
-                                                    className="form-control" onChange={this.form.onChange}
-                                                    values={this.state.lists.type}/>}
+                    <ClearableInput name="type" type="radio" placeholder="Login As" vertical
+                                    className="form-control" onChange={this.form.onChange}
+                                    values={this.state.lists.type}/>
                 </Row>
                 <Row
                     rendered
@@ -338,7 +337,7 @@ class Controls extends ALoginControls {
                     <a href="#" className="forgot-pass fixed-flex min-w-120 hor-center" onClick={this.onForgotPassword}>Forgot
                         Password?</a>
                 </Row>
-                {!isAdminApp && <Row
+                <Row
                     rendered
                     activeAlways
                     idx={5}
@@ -347,7 +346,7 @@ class Controls extends ALoginControls {
                 >
                     <Button ref="create" text="Create Account"
                             className="btn btn-primary min-w-260 hor-center margin-t-5" onClick={this.onSignUp}/>
-                </Row>}
+                </Row>
             </div>
             <LoginFaceDialog ref="loginFaceDialog"/>
             <SetupFaceDialog ref="setupFaceDialog"/>
@@ -356,7 +355,7 @@ class Controls extends ALoginControls {
             <SetupEmailPasswordDialog ref="setupEmailPasswordDialog"/>
             <SetupPhonePasswordDialog ref="setupPhonePasswordDialog"/>
 
-            {!isAdminApp && <NewContractorUserDialog ref="newContractorUserDialog" isNewContractorUser/>}
+            <NewContractorUserDialog ref="newContractorUserDialog" isNewContractorUser/>
         </div>);
     }
 

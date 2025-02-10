@@ -16,6 +16,7 @@ class Selected {
         }
         return name;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="selectedClient">
@@ -57,6 +58,7 @@ class Selected {
         const id = sess_my_project_id || this.storage.attrs.get("loggedProject");
         return list.projectsFiltered.find(val => val.id === id);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="selectedSite">
@@ -72,6 +74,7 @@ class Selected {
         const id = sess_my_site_id || this.storage.attrs.get("loggedSite");
         return list.sitesFiltered.find(val => val.id === id);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="selectedContractorClient">
@@ -84,6 +87,7 @@ class Selected {
             return null;
         return this.storage.loggedContractorClient;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="selectedContractorSite">
@@ -96,6 +100,7 @@ class Selected {
             return null;
         return this.storage.loggedContractorSite;
     }
+
     //</editor-fold>
 
     @computed
@@ -180,9 +185,6 @@ class ModuleList {
     @computed
     get listOther() {
         const {moduleListInstalledAll} = moduleManager;
-        if (isAdminApp) {
-            return moduleListInstalledAll;
-        }
         if (is.isContractorView) {
             return moduleListInstalledAll;
         }
@@ -200,9 +202,6 @@ class ModuleList {
     @computed
     get list() {
         const {moduleListInstalledAll} = moduleManager;
-        if (isAdminApp) {
-            return moduleListInstalledAll;
-        }
         if (is.isContractorView) {
             return moduleListInstalledAll;
         }
@@ -222,9 +221,6 @@ class ModuleList {
     @computed
     get listDashboard() {
         const {moduleListInstalledDashboard} = moduleManager;
-        if (isAdminApp) {
-            return moduleListInstalledDashboard;
-        }
         if (is.isContractorView) {
             return moduleListInstalledDashboard;
         }
@@ -233,9 +229,7 @@ class ModuleList {
         if (!id)
             return [];
         const module_list = selectedClient.module_list || selectedClient.data.module_list;
-        return module_list.
-        filter(({module}) => module.status === 'Installed').
-        filter(({module}) => module.plugin.key !== 'plugin_hr_management');
+        return module_list.filter(({module}) => module.status === 'Installed').filter(({module}) => module.plugin.key !== 'plugin_hr_management');
         // return moduleListInstalledDashboard.filter(({company_list = []}) => company_list.anyMatch(v => v.id === id));
     }
 
@@ -265,7 +259,7 @@ class ModuleList {
     get navs() {
         return this.listDashboard.filter(({module: {key}}) => key !== 'Dashboard')/*.sort((mod1, mod2) => {
          return mod1.title < mod2.title;
-         })*/.map(({module, module:{key, faIconLeft, faIconRight, title}}) => {
+         })*/.map(({module, module: {key, faIconLeft, faIconRight, title}}) => {
             return {key, module, faIconLeft, faIconRight, title};
         });
     }

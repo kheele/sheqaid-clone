@@ -15,20 +15,9 @@
             if (!path) return null;
             if (!data) return null;
 
-            return new Promise((resolve, reject) => {
-                socket.emit('emit', {
-                    path,
-                    data,
-                }, (res, err) => {
-                    if (err) {
-                        err = JSON.parse(err);
-                        console.log('emit err', err)
-                        return reject(err);
-                    }
-
-                    // console.log('emit res', res)
-                    resolve(res);
-                });
+            return socket.emit('emit', {
+                path,
+                data,
             });
         }
 

@@ -12,8 +12,8 @@ import {Row} from 'components/FormComponents';
 
 import UserDetails from "./UserDetails.js";
 import {NewSiteListTable} from "components/FormTableComponents";
-import insertContractorUser from "mutations/all/ContractorUser/insertContractorUser";
-import signUpContractorUser from "mutations/all/ContractorUser/signUpContractorUser";
+import {insertContractorUser} from "mutations/create";
+import {signUpContractorUser} from "mutations/signup";
 import storage from "../../../../storage/Storage";
 
 // </editor-fold>

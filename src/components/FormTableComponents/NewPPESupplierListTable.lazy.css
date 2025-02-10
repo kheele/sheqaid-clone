@@ -1,0 +1,5 @@
+@import "./ANewListTable.css";
+
+.NewPPESupplierListTable .MuiChip-root {
+    height: 50px !important;
+}

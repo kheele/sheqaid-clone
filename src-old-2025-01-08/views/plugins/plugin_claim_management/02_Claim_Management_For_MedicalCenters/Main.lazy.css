@@ -1,0 +1,13 @@
+
+#COIDA_Management-page{
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+#COIDA_Management-page > .tabs {
+    margin: 0 10px 0 0px;
+    height: calc(100% - 50px);
+}
+#COIDA_Management-page > .tabs .tab-content.top{
+    height: calc(100% - 40px);
+}

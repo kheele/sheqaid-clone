@@ -1,0 +1,121 @@
+// <editor-fold defaultstate="collapsed" desc="imports">
+import React from "react";
+import {observer} from 'mobx-react';
+import {computed, observable} from 'mobx';
+import {Page, Text, View} from '@react-pdf/renderer';
+
+import {execWhen} from 'utils/Utils';
+
+import {APageDocuments, Panel, styles} from 'pdf-components';
+
+const PageWrapper2 = ({size, orientation, style, children}) => (
+  <Page wrap size={size} orientation={orientation} style={style}>
+    {children}
+  </Page>
+);
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="ListMSDSs">
+@observer
+class ListMSDSs extends APageDocuments {
+    @observable state = {renderer: false};
+    
+    componentDidMount() {
+        const {standalone, counter} = this.props;
+        execWhen(() => (standalone && counter.pos === "Page2")).then(() => {
+            this.state.renderer = true;
+            setTimeout(() => {
+                this.props.counter.pos = "ListMSDSs";
+            }, 100);
+        });
+    }
+    
+    renderItem(item, n) {
+        const {
+            data: {
+                created_at,
+                name, category, manufacturer, risk_level, emergency_phone, 
+                date_identified,
+                doc
+            }
+        } = item;
+        
+        return <View style={[styles.flexColumn]}>
+            <View style={[styles.flexRow]}>
+                <Panel title={`#${n+1}: ${risk_level} Contract`} noValue colStyle={{width: '100%', borderBottom: '4px solid #fafafa', backgroundColor: ''}}/>
+            </View>
+            <View style={[styles.flexRow]}>
+                <Panel title="Product Name" value={name} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
+                <Panel title="Category" value={category} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
+                <Panel title="Manufacturer" value={manufacturer} colStyle={{width: '33.3333%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexRow]}>
+                <Panel title="Date Identified" type="date" value={date_identified} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
+                <Panel title="Emergency Phone No." value={emergency_phone} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
+                <Panel title="Risk Level" value={risk_level} colStyle={{width: '33.3333%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexColumn, {width: '100%'}]}>
+                <Panel 
+                    title="Safety Data Sheet Document" 
+                    value={doc} 
+                    type="file" 
+                    titleStyle={{marginBottom: '10px'}} 
+                    colStyle={{width: '100%', height: 'auto'}}
+                    pdfPageRenderer={this.pdfPageRenderer}
+                />
+            </View>
+        </View>;
+    }
+    
+    isLast(n) {
+        const {standalone} = this.props;
+        return this.list.length - 1 === n;
+    }
+    
+    @computed get list() {
+        const {list, values} = this.props.item;
+        return list;
+    }
+    
+    render() {
+        return null;
+        if(!this.state.renderer) return null;
+        const {standalone} = this.props;
+        let {list} = this;        
+        return <PageWrapper2 size="A4" style={styles.page}>
+            <View style={styles.content}>
+                <View style={[styles.contentPanel, {textAlign: "left"}]}>
+                    <Text style={styles.headingPoint}>Safety Data Sheet DETAILS</Text>
+                    {createStats(list)}
+                    {list.map(this.renderItem)}
+                </View>
+            </View>
+        </PageWrapper2>;
+    }
+}
+// </editor-fold>
+
+function createStats(list) {
+    const colStyle = {
+        display: 'flex', flexShrink: '1', flexDirection: 'column', 
+        justifyContent: "center", alignItems: "center", 
+        borderRadius: '50%', 
+        width: '20%', height: '50px'
+    };
+    
+    const count = v => {
+        return list.filter(v => v.data.risk_level === v).length + '';
+    };
+    
+    return <View style={[styles.flexRow, {justifyContent: "space-between", alignItems: "center"}]}>
+        <Panel title="Total" value={list.length + ''} colStyle={colStyle}/>
+        <Panel title="Risk Level: Low" value={count('Low')} colStyle={colStyle}/>
+        <Panel title="Risk Level: Medium" value={count('Medium')} colStyle={colStyle}/>
+        <Panel title="Risk Level: High" value={count('High')} colStyle={colStyle}/>
+        <Panel title="Risk Level: Very High" value={count('Very High')} colStyle={colStyle}/>
+    </View>;
+}
+
+export default ListMSDSs;
+//573

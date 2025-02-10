@@ -1,0 +1,17 @@
+@import '../../../../../css/ANewDialog.css';
+@import './IncidentComponents.css';
+
+#dialog-overlay.NewIncidentInvestigationDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 900px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.NewIncidentInvestigationDialog-new-dialog .dialog-content {
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.NewIncidentInvestigationDialog-new-dialog .controls ons-radio,
+#dialog-overlay.NewIncidentInvestigationDialog-new-dialog .controls ons-checkbox {
+    font-size: 15px;
+}

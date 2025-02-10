@@ -1,0 +1,233 @@
+.ListDraggable{
+    position: relative;
+    box-shadow: 0 0 3px #ddd;
+    margin: 10px 0;
+    padding: 0;
+    background: #fff;
+}
+.ListDraggable:hover{
+    margin-left: -5px;
+    margin-right: -5px;
+    border-left: 5px solid rgb(2,168,168);
+    border-right: 5px solid rgb(2,168,168);
+    border-color: rgb(2,168,168);
+    /*cursor: default !important;*/
+    transition: all 0.4s;
+}
+
+.ListDraggable-section .FormBody-section .ListDraggable {
+    padding: 0;
+}
+.ListDraggable-section .FormBody-section .ListDraggable-section {
+    padding: 5px 0;
+}
+
+.MuiAccordionActions-root {
+    border-top: 1px dotted #ddd;
+    padding: 4px 8px;
+}
+.MuiAccordionActions-root > .MuiIconButton-root{
+    padding: 5px;
+}
+.ListDraggable .MuiCollapse-container{
+    min-height: 0px !important;
+    height: auto !important;
+    visibility: visible !important;
+}
+span.counter{
+    margin: 5px 4px 0 0;
+}
+.ListDraggable-question span.counter{
+    background: #fff;
+    border: 2px solid rgb(234, 234, 234);
+}
+.ListDraggable-question span.counter{
+    padding: 2px 5px !important;
+}
+.Summary span.counter{
+    padding: 0px 5px !important;
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label{
+    background: #ddd;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    font-weight: normal;
+    font-size: 14px;
+    cursor: pointer;
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.green{
+    background: rgba(19, 133, 95, 0.1);
+    color: rgb(19, 133, 95);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.red{
+    background: rgba(198, 0, 34, 0.1);
+    color: rgb(198, 0, 34);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.orange{
+    background: rgba(255, 176, 0, 0.1);
+    color: rgb(255, 176, 0);
+}
+ul.MuiList-root.MuiMenu-list > li.MuiMenuItem-root > label.grey{
+    background: rgba(112, 112, 112, 0.1);
+    color: rgb(112, 112, 112);
+}
+
+.response{
+    display: block;
+}
+.response label{
+    margin-right: 10px;
+}
+.response .mandatory,
+.response .notify,
+.response .has-expiry{
+    margin: -1px 10px 0 0;
+}
+.response .mandatory .MuiTypography-body1,
+.response .notify .MuiTypography-body1,
+.response .has-expiry .MuiTypography-body1{
+    font-size: 14px;
+    height: 21px;
+}
+div.Details_1 .isMandatory {
+    position: absolute;
+    right: -4px;
+    top: -5px;
+}
+.Summary .isMandatory {
+    position: relative;
+    top: -4px;
+    padding-right: 4px;
+}
+
+.custom-options{
+    margin-top: 8px;
+}
+.Summary label:not(.label-response),
+div.Details_1 label:not(.label-response){
+    background: #ddd;
+    padding: 1px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    font-weight: normal;
+
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.Summary label.green,
+div.Details_1 label.green{
+    background: rgba(19, 133, 95, 0.1);
+    color: rgb(19, 133, 95);
+}
+.Summary label.red,
+div.Details_1 label.red{
+    background: rgba(198, 0, 34, 0.1);
+    color: rgb(198, 0, 34);
+}
+.Summary label.orange,
+div.Details_1 label.orange{
+    background: rgba(255, 176, 0, 0.1);
+    color: rgb(255, 176, 0);
+}
+.Summary label.grey,
+div.Details_1 label.grey{
+    background: rgba(112, 112, 112, 0.1);
+    color: rgb(112, 112, 112);
+}
+.Summary .custom-options > label{
+    cursor: default;
+}
+
+.ListDraggable-section .section-title {
+    font-size: 18px;
+    padding: 6px 8px 0;
+    margin: 5px 0 -3px 0px;
+    border-radius: 20px;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    height: 38px;
+}
+.ListDraggable-section .section-title > span.counter{
+    margin-top: -1px;
+    padding: 4px;
+    position: absolute;
+}
+.ListDraggable-section .section-title > .MuiTextField-root{
+    margin: 0px 0 0 5px;
+    float: left;
+    width: calc(100% - 230px);
+}
+.ListDraggable-section .section-title > .btn{
+    margin-top: 1px;
+    font-size: 12px;
+    padding: 1px 6px;
+    border-radius: 20px;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root{
+    font-size: 17px;
+    background: none;
+    line-height: 1;
+    padding: 0 0 0 25px;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root.MuiFilledInput-underline:before {
+    /*border-color: #ddd;*/
+    border: none;
+}
+.ListDraggable-section .section-title > .MuiTextField-root .MuiInputBase-root input{
+    padding: 0px 0 8px;
+    color: #888;
+}
+.ListDraggable-section .FormBody-section {
+    padding: 5px 10px 20px;
+}
+.ListDraggable-section:before {
+    content: " ";
+    width: 2px;
+    position: absolute;
+    left: 15px;
+    top: 35px;
+    bottom: 0;
+    background: rgba(2, 168, 168, 0.2);
+    border-radius: 20px;
+}
+.ListDraggable-readonly:before{
+    left: 17px;
+    top: 40px;
+    bottom: 12px;
+}
+
+.ListDraggable-section .btn.open-close-btn {
+    border-radius: 20px 20px 0 0;
+    position: absolute;
+    z-index: 1;
+    padding: 2px 8px 0px;
+    left: 8px;
+    bottom: 0px;
+    height: 28px;
+}
+.ListDraggable-section .btn.open-close-btn.fa-angle-up {
+}
+.ListDraggable-section .btn.open-close-btn.fa-angle-down {
+}
+.ListDraggable-section .btn.open-close-btn + .section-title{
+    margin-left: 40px !important;
+}
+.ListDraggable-section .btn.open-close-btn-top {
+    bottom: unset;
+    top: 0;
+    border-radius: 0 0 20px 20px;
+    padding: 0 8px 0;
+    height: 30px;
+}
+/*.ListDraggable-section .btn.open-close-btn .fa-angle-left{
+    transform: rotate(45deg) !important;
+}
+.ListDraggable-section .btn.open-close-btn.open .fa-angle-left{
+    transform: rotate(125deg);
+}*/

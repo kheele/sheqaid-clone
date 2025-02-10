@@ -1,0 +1,9 @@
+#NewMaintanancePlanDialogSec .table > .thead {
+    background: rgb(234, 234, 234);
+}
+#NewMaintanancePlanDialogSec .table > .thead > .td{
+    color: #888;
+}
+#NewMaintanancePlanDialogSec .table > .thead > .td-tr > .td:first-of-type{
+    margin-bottom: 5px;
+}

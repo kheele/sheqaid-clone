@@ -8,6 +8,7 @@ import Dialog from './Dialog';
 
 import AFormDialog from './AFormDialog';
 import MKBox from "../MK/MKBox";
+import {ShouldUpdate} from "../../utils/Utils";
 
 @observer
 class AEditDialog extends AFormDialog {
@@ -20,6 +21,9 @@ class AEditDialog extends AFormDialog {
         this.onView && (this.onView = this.onView.bind(this));
         this.onDelete = this.onDelete.bind(this);
         this.onRemoved = this.onRemoved.bind(this);
+
+        this.onUpdateSave = this.onUpdateSave.bind(this);
+        this.onProcessUpdateOrgs = this.onProcessUpdateOrgs.bind(this);
     }
 
     get parentListPage() {
@@ -143,6 +147,61 @@ class AEditDialog extends AFormDialog {
                 }
             }
         });
+    }
+
+    onUpdateSave(data, btn, onSaved) {
+        if (Object.keys(data).isEmpty()) {
+            infoDialog.open("Nothing changed!");
+            return;
+        }
+
+        console.log(data)
+
+        btn.text("Saving...").disabled();
+        progressDialog.open();
+        this.onUpdate({id: this.item.id, ...data}).then(res => {
+            console.log("res", res)
+            if (!res || res === "ERROR") {
+                infoDialog.open("An error occurred. Please try again.");
+            } else {
+                onSaved && onSaved(res);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }
+        }).finally(() => {
+            btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
+        });
+    }
+
+    onProcessUpdateOrgs(btn, onSaved) {
+        const {
+            refs: {controls: {form}},
+            item: {id, data: old_data},
+        } = this;
+
+        const {isConsultant, isContractor} = storage.is;
+        // if (isConsultant && !form.isValid('client')) {
+        //     infoDialog.open('Company is required');
+        //     return;
+        // }
+
+        const {
+            site, project, client,
+        } = form.data;
+
+        const data = {};
+
+        if (isContractor) {
+            ShouldUpdate.checkSite(data, old_data, site, 'contractor_site_id');
+        } else {
+            ShouldUpdate.checkClient(data, old_data, client);
+            ShouldUpdate.checkProject(data, old_data, project);
+            ShouldUpdate.checkSite(data, old_data, site);
+        }
+
+        this.onUpdateSave(data, btn, onSaved);
     }
 
     renderProfileCover(val) {

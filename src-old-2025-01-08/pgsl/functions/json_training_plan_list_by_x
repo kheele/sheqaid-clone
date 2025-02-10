@@ -1,0 +1,53 @@
+CREATE OR REPLACE FUNCTION public.json_training_plan_list_by_year(_year integer)
+ RETURNS json
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT json_agg(row_to_json(o.*)) AS json_agg
+    FROM sheq_training_plans o
+    WHERE o.year = _year
+$function$
+
+CREATE OR REPLACE FUNCTION public.json_training_plan_list_by_course(_course_id bigint)
+ RETURNS json
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT json_agg(row_to_json(p.*)) AS json_agg
+    FROM sheq_training_courses o
+    JOIN sheq_training_plans p ON o.id = p.course_id
+    WHERE o.id = _course_id
+$function$
+
+CREATE OR REPLACE FUNCTION public.json_training_plan_list_by_training(_training_id bigint)
+ RETURNS json
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT json_agg(row_to_json(p.*)) AS json_agg
+    FROM sheq_training_matrixes o
+    JOIN sheq_training_plans p ON o.id = p.training_id
+    WHERE o.id = _training_id
+$function$
+
+CREATE OR REPLACE FUNCTION public.json_training_plan_list_by_job_position(_job_position_id bigint)
+ RETURNS json
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT json_agg(row_to_json(p.*)) AS json_agg
+    FROM defaut_job_positions o
+    JOIN sheq_training_plans p ON o.id = p.job_position_id
+    WHERE o.id = _job_position_id
+$function$
+
+CREATE OR REPLACE FUNCTION public.json_training_plan_list_by_employee(_employee_id bigint)
+ RETURNS json
+ LANGUAGE sql
+ STABLE
+AS $function$
+    SELECT json_agg(row_to_json(p.*)) AS json_agg
+    FROM hr_employees o
+    JOIN sheq_training_plans p ON o.id = p.employee_id
+    WHERE o.id = _employee_id
+$function$

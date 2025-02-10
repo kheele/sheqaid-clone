@@ -1,0 +1,47 @@
+@import '../../../../css/ANewDialog.css';
+
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-search {
+    position: fixed;
+    left: 10px;
+    top: 60px;
+    bottom: 0px;
+    background: #fbfbfb !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-details{
+    height: calc(200% - 200px + 10px) !important;
+    margin-left: 337px !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-notes{
+    height: calc(100% - 200px) !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-notes .sec-group{
+    height: calc(100% - 30px) !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-notes .tox-tinymce{
+    width: calc(100% - 10px) !important;
+    height: calc(100% - 5px) !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-doc .sec-group{
+    width: 100%;
+    height: calc(100% - 30px);
+    position: relative;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .dialog-content .row-doc .sec-group .PDFUploadButton{
+    height: calc(100% - 7px);
+    width: calc(100% - 10px) !important;
+}
+#dialog-overlay.NewMeetingDialog-new-dialog .table {
+    margin: 0 !important;
+    width: calc(100% - 0px) !important;
+    min-height: 240px !important;
+    height: auto !important;
+}

@@ -1,0 +1,56 @@
+
+#dashboard-page{
+    height: 100%;
+}
+#dashboard-page .page-content{
+    height: calc(100% - 20px);
+    width: 100%;
+    padding: 10px 0 0;
+}
+
+#dashboard-page .page-title > h3{
+    flex: 1
+}
+#dashboard-page .stats{
+    height: 100%;
+    margin: -20px -5px 0 -10px;
+}
+#dashboard-page .stats > .stats-count{
+    height: 100%;
+    display: flex;
+    margin: 10px 15px 10px 10px;
+}
+#dashboard-page .stats > .stats-count > div {
+    position: relative;
+    flex: 1;
+    /*cursor: pointer;*/
+}
+#dashboard-page .stats > .stats-count > div > *{
+    z-index: 1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    cursor: pointer;
+}
+#dashboard-page .stats > .stats-count > div > .counter{
+    font-size: 22px;
+    width: 60px;
+    height: 60px;
+    cursor: default;
+    margin-top: -20px;
+    background: rgba(0,0,0,0.2);
+    border: none;
+}
+#dashboard-page .stats > .stats-count > div > h4{
+    margin: 40px 0 0;
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
+}
+#dashboard-page .stats > .stats-count > div > div{
+    margin: -16px 0 0;
+    font-size: 34px;
+    font-weight: 500;
+}

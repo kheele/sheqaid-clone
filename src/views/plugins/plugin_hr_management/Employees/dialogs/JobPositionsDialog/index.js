@@ -144,7 +144,7 @@ class JobPositionsDialog extends ADialogTab {
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-            <SelectJobCategoryInput name="job_category" className="form-control" onChange={onChange}/>
+            <SelectJobCategoryInput name="job_category" className="form-control" onChange={onChange} addButton={false}/>
         </div>;
     }
 

@@ -1,0 +1,11 @@
+@import '../../../../../css/ANewDialog.css';
+
+#dialog-overlay.Matrix-new-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1040px;
+	max-width: 100%;
+}
+#dialog-overlay.Matrix-new-dialog .dialog-content{
+    padding: 0;
+	height: calc(100% - 50px);
+}

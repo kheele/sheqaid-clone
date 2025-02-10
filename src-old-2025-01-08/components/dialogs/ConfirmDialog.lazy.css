@@ -1,0 +1,29 @@
+#dialog-overlay.ConfirmDialog > .dialog-container{
+    width: auto;
+    height: auto;
+}
+#dialog-overlay.ConfirmDialog > .dialog-container > .dialog-header{
+    display: none;
+}
+#dialog-overlay.ConfirmDialog > .dialog-container > .dialog-content {
+    padding: 15px !important;
+}
+#dialog-overlay.ConfirmDialog > .dialog-container > .dialog-content > h4{
+    margin: 10px auto 20px;
+    text-align: center;
+}
+#dialog-overlay.ConfirmDialog > .dialog-container > .dialog-content > .controls > .btn:not(:last-of-type){
+    margin-left: 5px;
+}
+@media (max-width:767px){
+    #dialog-overlay.ConfirmDialog > .dialog-container{
+        width: auto !important;
+        height: auto !important;
+    }
+}
+@media (max-width:559px){
+    #dialog-overlay.ConfirmDialog > .dialog-container{
+        width: calc(100% - 20px) !important;
+        /*height: 100% !important;*/
+    }
+}

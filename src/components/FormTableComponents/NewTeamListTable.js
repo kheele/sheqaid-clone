@@ -7,6 +7,7 @@ import {Button, SelectTeamInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewTeamListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -46,18 +47,16 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="w-full w-full h-100 padding-10">
-                <div className="td grid grid-1 grid-gap-10 h-auto flex-center padding-0 margin-0">
-                    <SelectTeamInput ref={this.onSetRef} name="team" placeholder="Add Team..."
-                                     className="no-border-radius-r w-full form-control" onChange={this.onChange}
-                                     add={false}/>
-                    <Button idx={n} action="save"
-                            className="btn btn-primary hor-center w-80 margin-0 border-radius-30"
-                            onClick={onClick}>
-                        <i className="fa fa-check"/> ADD
-                    </Button>
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectTeamInput
+                    ref={this.onSetRef}
+                    name="team"
+                    placeholder="Add Team..."
+                    className="no-border-radius-r w-full form-control"
+                    onChange={this.onChange}
+                    add={false}
+                />
+            </NewRow>;
         }
     }
 

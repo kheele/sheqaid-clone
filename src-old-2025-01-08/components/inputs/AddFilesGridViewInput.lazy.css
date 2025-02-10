@@ -1,0 +1,63 @@
+.AddFilesGridViewInput{
+    border: 2px dotted #ddd;
+    padding: 25px 10px 10px;
+    margin-right: 10px;
+    margin-top: -45px;
+    position: relative;
+}
+.AddFilesGridViewInput .row.photo-grid{
+    margin: 0px 0px 0px 0;
+}
+.AddFilesGridViewInput .row.photo-grid button{
+    margin: auto;
+    display: table;
+}
+.AddFilesGridViewInput .grid-view {
+    margin: 0;
+    /*    display: flex !important;*/
+    width: 100%;
+}
+.AddFilesGridViewInput .grid-view::before {
+    content: none;
+    display: none;
+}
+.AddFilesGridViewInput .grid-view > div {
+    flex: 1;
+}
+.AddFilesGridViewInput .grid-view > div > div{
+    height: 160px;
+    position: relative;
+}
+.AddFilesGridViewInput .grid-view > div > div:hover > h3 {
+    background: none;
+}
+.AddFilesGridViewInput .grid-view > div > div:hover > i.fa-times {
+    color: #fff;
+    background: rgb(2, 168, 168);
+}
+.AddFilesGridViewInput .grid-view > div > div > h3{
+    font-size: 12px;
+    margin: -10px 0 25px;
+    padding: 7px 6px 6px;
+    background: #eee;
+    border-radius: 3px;
+}
+.AddFilesGridViewInput .grid-view > div > div > i.fa-times{
+    color: #fff;
+    background: rgb(2, 168, 168);
+    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+.AddFilesGridViewInput .grid-view > div > div > img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}

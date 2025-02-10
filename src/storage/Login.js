@@ -178,11 +178,6 @@ class Login {
 
         const {loggedUser} = this.storage;
 
-        if (isAdminApp) {
-            update.updateDBUser(user);
-            return Promise.resolve();
-        }
-
         try {
             await Promise.all([
                 // load.loadSignatureSettings(),

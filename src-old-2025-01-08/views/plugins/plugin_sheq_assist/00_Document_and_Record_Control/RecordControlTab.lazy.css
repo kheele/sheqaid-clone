@@ -1,0 +1,11 @@
+
+#RecordControlTab-page{
+    height: 100%;
+}
+#RecordControlTab-page .page-title > .page-back-btn{
+    display: none;
+}
+
+#RecordControlTab-page .filter-wrapper + .table{
+    height: calc(100% - (20px + 122px)) !important;
+}

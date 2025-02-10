@@ -146,16 +146,6 @@ class MultipleBtnActions extends React.Component {
         if (loggedInApp.isUserManualView)
             return null;
 
-        if (isAdminApp) {
-            if (isWeb()) {
-                return null;
-            } else {
-                return <div className="right-actions multiple-btn-actions">
-                    <Button ref="restart" className="fa fa-refresh btn" hoverText="Restart Application"
-                            onClick={this.onRestart}/>
-                </div>;
-            }
-        }
         return <div className="right-actions multiple-btn-actions">
             <SelectShortcutsBtn/>
             <PluginsBtn/>

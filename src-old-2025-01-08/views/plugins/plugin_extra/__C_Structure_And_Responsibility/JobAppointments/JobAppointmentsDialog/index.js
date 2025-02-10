@@ -1,0 +1,132 @@
+// <editor-fold defaultstate="collapsed" desc="imports">
+import React from "react";
+import {observer} from 'mobx-react';
+import {observable} from "mobx";
+
+import ExportDialog from '../ExportDialog.js';
+
+import {EditDialog, NewDialog, ProfileDialog} from '../forms';
+
+import AEmployeeDocDialog from 'views/plugins/plugin_hr_management/AEmployeeDocDialog';
+import JobAppointmentsRenderRow from "./JobAppointmentsRenderRow";
+import {THead} from "components/tables";
+import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
+import {updateEmployeeJobAppointment} from "mutations/update";
+import {findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {findByIdOrgJobAppointmentsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+
+// </editor-fold>
+
+@observer
+class Dialog extends AEmployeeDocDialog {
+    pageKey = "JobAppointmentsDialog";
+    title = "Job Appointments";
+    titleSingular = "Job Appointment";
+    permissionKey = "Job Appointments";
+    module = "JobAppointments";
+    onUpdate = updateEmployeeJobAppointment;
+
+    dialogs = {
+        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+    };
+
+    // <editor-fold defaultstate="collapsed" desc="selfState">
+    @observable
+    selfState = {
+        lists: {
+            expiry_date: [{label: 'No Expiry', value: 'null'}, {label: 'Expired', value: -1}, {
+                label: '1 month',
+                value: 1
+            }, {label: '2 months', value: 2}, {label: '3 months', value: 3}, {label: '4 months +', value: 4}],
+        }
+    };
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="constructor">
+    constructor(props) {
+        super(props);
+    }
+
+    // </editor-fold>
+
+    //<editor-fold desc="onBuildQuery">
+    onBuildQuery() {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            notes,
+            date,
+        } = filterData || {};
+        return {
+            path: 'structure-and-responsibility/job-appointments',
+            notes,
+            date,
+        };
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="loadDashboardTopStats">
+    async loadDashboardTopStats() {
+        return findByIdOrgJobAppointmentsDashboardStatsByLogged();
+    };
+
+    //</editor-fold>
+
+    //<editor-fold desc="loadDashboardBottomStats">
+    async loadDashboardBottomStats() {
+        return findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="renderFilterNodeAll">
+    renderFilterNodeAll(onChange) {
+        return <div className="controls grid-3 grid-gap-5 -margin-b-35 padding-r-10">
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+                                 onChange={onChange}/>
+            <ClearableInput name="date" type="date" placeholder="Start Date..." className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="expiry_date" type="select" placeholder="Expiry..." className="form-control"
+                            onChange={onChange} values={this.selfState.lists.expiry_date} returnValue/>
+        </div>;
+    }
+
+    //</editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
+    renderTHeadAll({view}) {
+        const {isConsultant, hasProjects, isContractor} = storage.is;
+        if (view === 'Employee') {
+            return <THead>
+                <div className="td fixed-flex min-w-50">ID</div>
+                <div className="td">Employee</div>
+                <div className="td">Department</div>
+                <div className="td">Job Position</div>
+                {hasProjects && <div className="td sm-hidden">Location</div>}
+                <div className="td fixed-flex min-w-105">Latest On</div>
+                <div className="td fixed-flex min-w-240">Stats</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+            </THead>;
+        } else {
+            return <THead>
+                <div className="td fixed-flex min-w-50">ID</div>
+                <div className="td">Employee</div>
+                <div className="td fixed-flex min-w-105">Start Date</div>
+                <div className="td fixed-flex min-w-105">Expiry Date</div>
+                <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
+            </THead>;
+        }
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="renderItemAll">
+    renderItemAll({item, idx, view, onClick}) {
+        return <JobAppointmentsRenderRow key={item.id} idx={idx} item={item} view={view} onClick={onClick}/>;
+    }
+
+    // </editor-fold>
+
+}
+
+export default Dialog;

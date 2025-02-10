@@ -7,6 +7,7 @@ import ANewListTable from './ANewListTable';
 import {THead, TRow} from '../tables';
 
 import style from "./NewCourseListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -46,18 +47,16 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="w-full padding-10">
-                <div className="td flex padding-0 margin-0">
-                    <SelectTrainingCourseInput ref={this.onSetRef} name="course_or_module"
-                                               placeholder="Add Course..."
-                                               className="no-border-radius-r form-control" onChange={this.onChange}
-                                               add={false}/>
-                    <Button idx={n} action="save"
-                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
-                        <i className="fa fa-check"/>
-                    </Button>
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectTrainingCourseInput
+                    ref={this.onSetRef}
+                    name="course_or_module"
+                    placeholder="Add Course..."
+                    className="no-border-radius-r form-control"
+                    onChange={this.onChange}
+                    add={false}
+                />
+            </NewRow>;
         }
     }
 

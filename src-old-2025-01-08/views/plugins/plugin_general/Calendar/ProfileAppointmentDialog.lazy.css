@@ -1,0 +1,34 @@
+@import '../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-container{
+    height: 100%;
+    width: 700px;
+    max-width: calc(100% - 30px);
+}
+
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-content .row-doc .ProfileField,
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-content .row-doc .ProfileField > div{
+    height: 100%;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .dialog-content .row-doc .ProfileField > div .file{
+    height: calc(100% - 30px);
+    border: none;
+    border-radius: 0 !important;
+    margin: -30px -20px -20px;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .table{
+    margin: 0;
+    width: calc(100% + 0px);
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .table .thead{
+    padding-right: 10px;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .table .thead .td{
+    font-size: 14px;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .table .thead .td:last-of-type{
+    padding: 8px 0 4px;
+}
+#dialog-overlay.ProfileAppointmentDialog-profile-dialog .table .tbody .tr .td:last-of-type{
+    padding: 11px 0;
+}

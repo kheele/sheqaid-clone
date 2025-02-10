@@ -1,0 +1,5 @@
+@import "./ANewListTable.css";
+
+.NewApplicableRegulationListTable .MuiChip-root {
+    height: 50px !important;
+}

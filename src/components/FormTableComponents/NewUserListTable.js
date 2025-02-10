@@ -7,6 +7,7 @@ import {Button, SelectUserInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewUserListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -165,20 +166,18 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="padding-10 w-full">
-                <div className="td flex padding-0 margin-0">
-                    <SelectUserInput
-                        ref={this.onSetRef}
-                        name="user"
-                        placeholder={placeholder || `Add Existing System User...`}
-                        idx={n}
-                        required
-                        excludeIds={this.excludeIds}
-                        className="form-control"
-                        onChange={this.onChange}
-                    />
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectUserInput
+                    ref={this.onSetRef}
+                    name="user"
+                    placeholder={placeholder || `Add Existing System User...`}
+                    idx={n}
+                    required
+                    excludeIds={this.excludeIds}
+                    className="form-control"
+                    onChange={this.onChange}
+                />
+            </NewRow>;
         }
     }
 

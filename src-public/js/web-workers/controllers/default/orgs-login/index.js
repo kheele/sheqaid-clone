@@ -1,51 +1,40 @@
-
 (function () {
-	class Controller extends AControllerRead {
-		constructor(events) {
-			super(events, {}, "orgs/");
+    class Controller extends AControllerRead {
+        constructor(events) {
+            super(events, {}, "orgs/");
 
-			const {addAction} = this;
-			addAction('login', this.login.bind(this));
-		}
+            const {addAction} = this;
+            addAction('login', this.login.bind(this));
+        }
 
-		// <editor-fold defaultstate="collapsed" desc="login">
-		// eslint-disable-next-line class-methods-use-this
-		async login(evt, data) {
-			// return Events.whenLoggedIn(async (loggedUser) => {
-			// console.log("relay/send", data);
-			if (!data) return null;
-			const {query, variables} = data;
+        // <editor-fold defaultstate="collapsed" desc="login">
+        // eslint-disable-next-line class-methods-use-this
+        async login(evt, data) {
+            // return Events.whenLoggedIn(async (loggedUser) => {
+            // console.log("relay/send", data);
+            if (!data) return null;
+            const {query, variables} = data;
 
-			if(!socket.connected){
+            if (!socket.connected) {
 
-			}
+            }
 
-			let token;
-			try {
-				token = await self.session.getIdToken();
-			} catch (e) {
-			}
+            let token;
+            try {
+                token = await self.session.getIdToken();
+            } catch (e) {
+            }
 
-			return new Promise((resolve, reject) => {
-				socket.emit('emit', {
-					path: 'orgs/login',
-					data,
-				}, (res, err) => {
-					if(err) {
-						err = JSON.parse(err);
-						console.log('relay emit err', err)
-						return reject(err);
-					}
+            return socket.emit('emit', {
+                path: 'orgs/login',
+                data,
+            });
+        }
 
-					// console.log('relay emit res', res)
-					resolve(res);
-				});
-			});
-		}
-		// </editor-fold>
+        // </editor-fold>
 
-	}
+    }
 
-	// eslint-disable-next-line no-new
-	new Controller(events);
+    // eslint-disable-next-line no-new
+    new Controller(events);
 })();

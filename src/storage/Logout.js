@@ -105,16 +105,12 @@ class Logout {
     async signOut() {
         const {isEmployee, isUser, isContractorAuth} = is;
         let path;
-        if (isAdminApp) {
-            path = "admin/users/accounts/";
-        } else {
-            if (isContractorAuth) {
-                path = "plugin_sheq_assist/contractors/users/";
-            } else if (isEmployee) {
-                path = "plugin_sheq_assist/employees/accounts/";
-            } else if (isUser) {
-                path = "users/accounts/";
-            }
+        if (isContractorAuth) {
+            path = "plugin_sheq_assist/contractors/users/";
+        } else if (isEmployee) {
+            path = "plugin_sheq_assist/employees/accounts/";
+        } else if (isUser) {
+            path = "users/accounts/";
         }
 
         return this.signOutOnlyAuth().then(() => {

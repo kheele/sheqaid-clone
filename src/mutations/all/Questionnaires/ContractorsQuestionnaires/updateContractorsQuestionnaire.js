@@ -6,8 +6,8 @@ import {graphql} from "react-relay";
 import updateMutationImpl from "mutations/updateMutationImpl";
 import {EntityContractorsQuestionnaire} from "mutations/types.d.ts";
 import findByIdContractorsQuestionnaire from "./findByIdContractorsQuestionnaire";
-import updateQuestion from "../Questions/updateQuestion";
-import insertQuestion from "../Questions/insertQuestion";
+import {updateQuestion} from "mutations/update";
+import {insertQuestion} from "mutations/create";
 
 // 2
 const mutation = graphql`
@@ -20,23 +20,23 @@ const mutation = graphql`
 
 // 3
 export default async (attrs: EntityContractorsQuestionnaire) => {
-	const {id, question_list} = attrs;
-	
-	if(question_list) {
-		delete attrs.question_list;
-		
-		await Promise.all(question_list.map(async q => {
-			if(q.id) {
-				return updateQuestion(q);
-			} else {
-				return insertQuestion({questionnaire_id: id, ...q});
-			}
-		}));
-	}
+    const {id, question_list} = attrs;
 
-	return updateMutationImpl({
-		mutation,
-		id: attrs.id,
-		attrs,
-	}).then(res => res && findByIdContractorsQuestionnaire(res.id));
+    if (question_list) {
+        delete attrs.question_list;
+
+        await Promise.all(question_list.map(async q => {
+            if (q.id) {
+                return updateQuestion(q);
+            } else {
+                return insertQuestion({questionnaire_id: id, ...q});
+            }
+        }));
+    }
+
+    return updateMutationImpl({
+        mutation,
+        id: attrs.id,
+        attrs,
+    }).then(res => res && findByIdContractorsQuestionnaire(res.id));
 };

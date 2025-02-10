@@ -1,0 +1,41 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 800px;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-content {
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls label.label-docs{
+    background: #fafafa;
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls ons-radio,
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls ons-checkbox {
+    font-size: 15px;
+}
+
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls .table {
+    min-height: 140px;
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls .results-none {
+    margin-top: 0px !important;
+    /*    position: relative;
+        transform: translate(-50%, -50%) !important;*/
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls .results-none ons-pull-hook{
+    margin-top: 0 !important;
+    /*min-height: 200px;*/
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .AddFilesGridViewInput {
+    float: left;
+    min-height: 600px;
+    width: calc(100% - 10px);
+    padding-top: 45px;
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .controls > .row.active svg {
+    height: 500px;
+}

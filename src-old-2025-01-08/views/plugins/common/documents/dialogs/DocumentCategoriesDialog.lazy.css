@@ -1,0 +1,26 @@
+#dialog-overlay.DocumentCategoriesDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 900px;
+    max-width: 100%;
+}
+#dialog-overlay.DocumentCategoriesDialog-dialog .dialog-content,
+#DocumentCategoriesDialog-page{
+    padding: 0;
+    height: 100%;
+    overflow: visible !important;
+}
+#DocumentCategoriesDialog-page > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    border: none;
+}
+
+#DocumentCategoriesDialog-page > .table{
+    width: 100%;
+    height: calc(100% - 50px) !important;
+    margin: 0;
+}
+#DocumentCategoriesDialog-page > .filter-wrapper + .table{
+    height: calc(100% - (50px + 122px)) !important;
+}

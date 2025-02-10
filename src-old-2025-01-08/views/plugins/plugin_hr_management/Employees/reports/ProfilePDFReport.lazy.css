@@ -1,0 +1,24 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfilePDFReport-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 100%;
+    max-width: calc(100% - 20px);
+}
+#dialog-overlay.ProfilePDFReport-profile-dialog .controls-wrapper,
+#dialog-overlay.ProfilePDFReport-profile-dialog .controls{
+    height: 100%;
+    position: relative;
+}
+#dialog-overlay.ProfilePDFReport-profile-dialog .dialog-header > h3 {
+    margin: 8px 15px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: #fff !important;
+}
+#dialog-overlay.ProfilePDFReport-profile-dialog .dialog-header > h3.active {
+    background: green;
+}
+#dialog-overlay.ProfilePDFReport-profile-dialog .dialog-header > h3:not(.active) {
+    background: red;
+}

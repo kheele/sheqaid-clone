@@ -1,0 +1,5 @@
+@import "./ANewListTable.css";
+
+.NewPPEItemListTable .MuiChip-root {
+    height: 50px !important;
+}

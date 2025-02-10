@@ -14,7 +14,7 @@ import {THead, TRow} from 'components/tables';
 import {EditDialog, NewDialog, ProfileDialog} from './forms';
 
 import byLogged from "./Query/List/listAllOrganogramByLogged";
-import updateOrganogram from "mutations/all/StructureAndResponsibility/Organogram/updateOrganogram";
+import {updateOrganogram} from "mutations/update";
 
 @observer
 class OrganogramsTab extends React.Component {

@@ -12,7 +12,7 @@ import {AEditDialog} from 'components/dialogs';
 
 import TypedWrapper from "./TypedWrapper";
 
-import updateOrganogram from "mutations/all/StructureAndResponsibility/Organogram/updateOrganogram"
+import {updateOrganogram} from "mutations/update"
 
 import style from "./EditOrganogramDialog.lazy.css";
 import findByIdOrganogram from "../Query/List/findByIdOrganogram";

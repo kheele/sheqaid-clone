@@ -5,11 +5,12 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@material-ui/core/Chip";
 
 import ANewListTable from './ANewListTable';
-import {Button, Clickable, SelectPPETypeInput} from '../inputs';
+import {Button, Clickable, SelectPPEItemInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewPPEItemListTable.lazy.css";
 import assetProfilePic from "assets/images/vehicle-image-loading.png";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -81,12 +82,12 @@ class ListTable extends ANewListTable {
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
-        if (item && isString(item.ppe_type)) {
+        if (item && isString(item.ppe_item)) {
             return null;
         }
 
-        if (item && (item.ppe_type || item.id)) {
-            const _item = item.ppe_type || item;
+        if (item && (item.ppe_item || item.id)) {
+            const _item = item.ppe_item || item;
             const {
                 id, created_at, name, profile_pic, client, project, site,
             } = _item.data || _item;
@@ -123,18 +124,16 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="w-full padding-10">
-                <div className="td flex padding-0 margin-0">
-                    <SelectPPETypeInput ref={this.onSetRef} name="ppe_type" placeholder="Add PPE Type..."
-                                        className="no-border-radius-r form-control" onChange={this.onChange}
-                                        add={false}/>
-                    <Button idx={n} action="save"
-                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l"
-                            onClick={onClick}>
-                        <i className="fa fa-check"/>
-                    </Button>
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectPPEItemInput
+                    ref={this.onSetRef}
+                    name="ppe_item"
+                    placeholder="Add PPE Item..."
+                    className="no-border-radius-r form-control"
+                    onChange={this.onChange}
+                    add={false}
+                />
+            </NewRow>;
         }
     }
 

@@ -1,0 +1,93 @@
+.UsernameStatus {
+    position: relative;
+    width: calc(100% - 42px);
+    padding: 2px 8px 1px;
+    margin: -5px 17px 10px;
+    display: flex;
+    align-items: center;
+    float: left;
+    border-radius: 0 0 12px 12px;
+    color: #fff;
+    font-size: 11px;
+    z-index: 2;
+}
+.LoggedOutApp .UsernameStatus {
+    margin-top: -16px;
+}
+.UsernameStatus-layer {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.9);
+}
+.LoggedOutApp .UsernameStatus-layer{
+    display: none !important;
+}
+/*.UsernameStatus.red + .UsernameStatus-layer{
+    background: rgba(255, 255, 255, 0.9);
+}*/
+.UsernameStatus.loading {
+    color: rgb(2, 168, 168);
+}
+.UsernameStatus.red {
+    background: red;
+}
+.UsernameStatus.green {
+    background: green;
+}
+.UsernameStatus .fa{
+    margin-top: -2px;
+    float: left;
+    flex-grow: initial !important;
+    z-index: 2;
+}
+.UsernameStatus.exist {
+    /*max-width: 360px;*/
+    width: calc(100% - 42px);
+    margin: -5px 16px 0;
+    padding: 10px 0;
+    text-align: center;
+    background: rgb(2, 168, 168);
+}
+.LoggedOutApp .UsernameStatus.exist {
+    margin-top: -15px;
+    max-width: 360px;
+    width: 100%;
+    background: none;
+}
+.UsernameStatus.exist.sent{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.UsernameStatus.exist,
+.UsernameStatus.exist p{
+    font-size: 15px;
+}
+.UsernameStatus hr{
+    border-color: rgba(220, 220, 220, 0.3333);
+}
+.LoggedOutApp .UsernameStatus hr{
+    border-color: rgba(2, 168, 168, 0.3333);
+}
+.UsernameStatus span{
+    z-index: 2;
+    font-size: 13px;
+}
+.UsernameStatus.exist .fa{
+    float: none;
+}
+.UsernameStatus.exist.sent .form-control{
+    margin-bottom: 15px;
+}
+.UsernameStatus .MuiCircularProgress-root{
+    /*color: #fff !important;*/
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px;
+    min-height: 40px;
+    /*float: left;*/
+    margin: 20px auto 0;
+}

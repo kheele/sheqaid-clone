@@ -80,9 +80,9 @@ class TeamsDialog extends ADialogTab {
             <ClearableInput name="name" type="text" placeholder="Team Name" className="form-control"
                             onChange={onChange}/>
             <SelectEmployeeInput name="supervisor" placeholder="Supervisor..." className="form-control"
-                                 onChange={onChange}/>
+                                 onChange={onChange} addButton={false}/>
             <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
-                                 onChange={onChange}/>
+                                 onChange={onChange} addButton={false}/>
         </div>;
     }
 

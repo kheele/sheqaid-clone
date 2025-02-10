@@ -7,6 +7,7 @@ import {Button, ClearableInput, SelectPartItemInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewPartItemListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -58,19 +59,26 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="w-full tr-item-new padding-10">
-                <div className="td grid-1 gap-10 margin-0">
-                    <SelectPartItemInput ref={this.onSetRef} name="part" placeholder="Add Part Item..."
-                                         required className="form-control" onChange={this.onChange}
-                                         add={false}/>
-                    <ClearableInput ref={this.onSetRef} name="qty" type="number" placeholder="Quantity"
-                                    required className="form-control" onChange={this.onChange}/>
-                    <Button idx={n} action="save"
-                            className="btn btn-primary fixed-flex hor-center min-w-160 margin-0 border-radius-20 margin-0" onClick={onClick}>
-                        <i className="fa fa-check"/> Add
-                    </Button>
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectPartItemInput
+                    ref={this.onSetRef}
+                    name="part"
+                    placeholder="Add Part Item..."
+                    required
+                    className="form-control"
+                    onChange={this.onChange}
+                    add={false}
+                />
+                <ClearableInput
+                    ref={this.onSetRef}
+                    name="qty"
+                    type="number"
+                    placeholder="Quantity"
+                    required
+                    className="form-control"
+                    onChange={this.onChange}
+                />
+            </NewRow>;
         }
     }
 

@@ -11,7 +11,7 @@ import ProfilePDFReader from '../../printers/ProfileOrganogramPDFReader';
 import style from "./ProfileOrganogramDialog.lazy.css";
 import findByIdOrganogram from "../Query/List/findByIdOrganogram";
 import {CircularProgress} from "@mui/material";
-import updateOrganogram from "mutations/all/StructureAndResponsibility/Organogram/updateOrganogram";
+import {updateOrganogram} from "mutations/update"
 
 // </editor-fold>
 

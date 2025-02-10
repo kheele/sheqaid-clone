@@ -1,0 +1,15 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-container{
+    height: 100%;
+    width: 100%;
+    max-width: calc(100% - 30px);
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-content .row-doc .ProfileField,
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-content .row-doc .ProfileField > div{
+    height: 100%;
+}
+#dialog-overlay.ProfileIncidentDialog-profile-dialog .dialog-content .row-doc .ProfileField > div .file{
+    height: calc(100% - 30px);
+    border: none;
+}

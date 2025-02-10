@@ -1,0 +1,50 @@
+#dialog-overlay.ExpensesDialog-dialog .dialog-container{
+    /*height: calc(100% - 35px);*/
+    /*width: 1200px;*/
+    /*max-width: 100%;*/
+}
+#dialog-overlay.ExpensesDialog-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+    overflow: visible !important;
+}
+#dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -149px;
+    border: none;
+}
+/*Fleet Card, */
+#dialog-overlay.ExpensesDialog-dialog .DashboardTab{
+    overflow: auto;
+}
+#dialog-overlay.ExpensesDialog-dialog .DashboardTab canvas{
+    width: 100% !important;
+}
+#dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .table{
+    width: 100%;
+    height: calc(100% - 0px) !important;
+    margin: 0;
+}
+#dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .filter-wrapper + .table{
+    height: calc(100% - (9px + 122px)) !important;
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+    #dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .page-title > .tabled-top-panel {
+        justify-content: flex-end;
+    }
+    #dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .page-title > .tabled-top-panel > .buttons {
+        width: auto;
+    }
+    #dialog-overlay.ExpensesDialog-dialog .tabs .page-content > .page-title > .tabled-top-panel > .buttons .left-buttons.expiry-btns {
+        border-right: 1px solid #aaa;
+        padding: 0 10px 0 0;
+        width: auto;
+        float: right !important;
+        position: relative;
+        left: unset;
+        top: unset;
+        transform: unset;
+    }
+}

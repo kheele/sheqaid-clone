@@ -35,6 +35,11 @@ import JobCategoriesDialog from "./dialogs/JobCategoriesDialog";
 import {JobAppointmentsDialog} from "../../plugin_extra/__C_Structure_And_Responsibility/JobAppointments";
 import {HRDocsDialog} from "../HRDocs";
 import {PlannedJobObservationsDialog} from "../PlannedJobObservations";
+import JobTaskCategoriesDialog from "./dialogs/JobTaskCategoriesDialog";
+import ComplianceRequirementsDialog from "./dialogs/ComplianceRequirementsDialog";
+import {AttendanceDialog} from "../other_modules/Attendances";
+import ApplicableRegulationsDialog from "./dialogs/ApplicableRegulationsDialog";
+import JobTaskDialog from "../other_modules/Tasks/JobTaskDialog";
 
 // </editor-fold>
 
@@ -67,6 +72,9 @@ class Main extends APage {
         this.onViewJobCategories = this.onViewJobCategories.bind(this);
         this.onViewJobPositions = this.onViewJobPositions.bind(this);
         this.onViewDepartments = this.onViewDepartments.bind(this);
+        this.onViewJobTaskCategories = this.onViewJobTaskCategories.bind(this);
+        this.onViewComplianceRequirements = this.onViewComplianceRequirements.bind(this);
+        this.onViewApplicableRegulations = this.onViewApplicableRegulations.bind(this);
 
         this.onImport = this.onImport.bind(this);
         this.onExport = this.onExport.bind(this);
@@ -139,12 +147,12 @@ class Main extends APage {
             {key: 'Expenses', listName: 'expense_list', text: 'Expenses', Comp: ExpensesDialog},
             {key: 'HRDocs', text: 'Documents', Comp: HRDocsDialog, noExpiry: true, override: true},
 
-            // {key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
+            {key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
             // {key: 'Contacts', listName: '', text: 'Contacts', Comp: ContactsDialog, noExpiry: true},
             // {key: 'KPI', listName: '', text: 'KPI', Comp: KPIDialog, noExpiry: true},
             // {key: 'Meetings', listName: '', text: 'Meetings', Comp: MeetingsDialog, noExpiry: true},
             {key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true},
-            // {key: 'Tasks', listName: '', text: 'Tasks', Comp: TasksDialog, noExpiry: true},
+            {key: 'Tasks', listName: '', text: 'Job Tasks', Comp: JobTaskDialog, noExpiry: true},
             // {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true}
         ].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, override}) => {
             const c = Permissions.allowMod(key) || override ? "allowed" : "disallowed";
@@ -252,6 +260,18 @@ class Main extends APage {
         this.refs.departmentsDialog.open();
     }
 
+    onViewJobTaskCategories() {
+        this.refs.jobTaskCategoriesDialog.open();
+    }
+
+    onViewComplianceRequirements() {
+        this.refs.complianceRequirementsDialog.open();
+    }
+
+    onViewApplicableRegulations() {
+        this.refs.applicableRegulationsDialog.open();
+    }
+
     onImport(e, btn) {
         this.refs.importDialog.open();
     }
@@ -327,6 +347,13 @@ class Main extends APage {
                 {Permissions.allowOther("Departments") &&
                     <NavItem onClick={this.onViewDepartments} title="Departments"/>}
                 <hr className="margin-t-0 margin-b-0"/>
+                {Permissions.allowMod("Tasks") &&
+                    <NavItem onClick={this.onViewJobTaskCategories} title="Job Task Categories"/>}
+                {Permissions.allowMod("Tasks") &&
+                    <NavItem onClick={this.onViewComplianceRequirements} title="Compliance Requirements"/>}
+                {Permissions.allowMod("Tasks") &&
+                    <NavItem onClick={this.onViewApplicableRegulations} title="Applicable Regulations"/>}
+                <hr className="margin-t-0 margin-b-0"/>
                 {/*{Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}*/}
                 <NavItem onClick={this.onExport} title="Export"/>
                 {/*<NavItem onClick={this.onPrintCards} title="Print Cards"/>*/}
@@ -374,6 +401,8 @@ class Main extends APage {
                 onViewDepartments={this.onViewDepartments}
                 onViewJobCategories={this.onViewJobCategories}
                 onViewJobPositions={this.onViewJobPositions}
+                onViewJobTaskCategories={this.onViewJobTaskCategories}
+                onViewComplianceRequirements={this.onViewComplianceRequirements}
                 onViewDialog={this.onViewDialog}
                 elements={this.elements}
             />);
@@ -415,6 +444,9 @@ class Main extends APage {
             <JobCategoriesDialog ref="jobCategoriesDialog"/>
             <JobPositionsDialog ref="jobPositionsDialog"/>
             <DepartmentsDialog ref="departmentsDialog"/>
+            <JobTaskCategoriesDialog ref="jobTaskCategoriesDialog"/>
+            <ComplianceRequirementsDialog ref="complianceRequirementsDialog"/>
+            <ApplicableRegulationsDialog ref="applicableRegulationsDialog"/>
 
             <TransferEmployeesDialog ref="transferEmployeesDialog"/>
 

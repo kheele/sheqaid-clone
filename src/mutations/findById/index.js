@@ -14,6 +14,7 @@ export const findByIdManual = findById("manuals");
 
 //Users
 export const findByIdUser = findById("users");
+export const findByIdContractorUser = findById("contractors/users");
 
 //Assets
 export const findByIdAsset = findById("assets");
@@ -51,8 +52,18 @@ export const findByIdDepartment = findById("departments");
 export const findByIdJobCategory = findById("job-categories");
 export const findByIdJobPosition = findById("job-positions");
 export const findByIdTeam = findById("teams");
+
+export const findByIdPPESupplier = findById("ppe-suppliers");
 export const findByIdPPE = findById("ppe-types");
+export const findByIdPPEInventory = findById("ppe-inventory");
 export const findByIdPPEItem = findById("ppe-items");
+export const findByIdPPEDisposal = findById("ppe-disposals");
+export const findByIdPPEFitTest = findById("ppe-fit-tests");
+export const findByIdPPEReturn = findById("ppe-returns");
+export const findByIdApplicableRegulation = findById("applicable-regulations");
+export const findByIdComplianceRequirement = findById("compliance-requirements");
+export const findByIdJobTaskCategory = findById("job-tasks/categories");
+export const findByIdJobTask = findById("job-tasks");
 
 export const findByIdEmployee = findById("employees");
 export const findByIdEmployeeExternal = findById("employees-external");
@@ -74,3 +85,6 @@ export const findByIdEmployeeDocDocumentIDOrPassport = findById("employees/docum
 export const findByIdEmployeeDocDocumentPrDP = findById("employees/documents/prdp");
 export const findByIdEmployeeDependant = findById("employees/dependents");
 export const findByIdEmployeeNextOfKin = findById("employees/next-of-kins");
+
+//Questionnaires
+export const findByIdQuestion = findById("questionnaires/questions");

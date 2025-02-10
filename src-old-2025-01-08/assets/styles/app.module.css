@@ -1,0 +1,49 @@
+@media (min-width:767px){
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    * {
+        scrollbar-color: rgba(175, 179, 179, 0.8) transparent;
+        scrollbar-width: thin;
+    }
+}
+::-webkit-scrollbar-track {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(175, 179, 179, 0.8);
+    background-clip: padding-box;
+    margin-left: -8px;
+    transform: translate(-50%, -50%);
+}
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.footer {
+    float: right;
+    margin-top: 0 !important;
+}
+.footer.stores{
+    width: calc(100% - 280px);
+    float: right;
+}
+.footer.stores .sponsors{
+    margin-left: 24px;
+    margin-right: 24px;
+    width: calc(100% - 48px);
+}
+.footer.stores .testimonials {
+    margin-left: 24px;
+    margin-right: 24px;
+    width: calc(100% - 48px);
+}

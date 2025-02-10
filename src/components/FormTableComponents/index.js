@@ -6,6 +6,8 @@ import NewSiteListTable from './NewSiteListTable';
 import NewTrainingCourseListTable from './NewTrainingCourseListTable';
 import NewDepartmentListTable from './NewDepartmentListTable';
 import NewJobPositionListTable from './NewJobPositionListTable';
+import NewJobTaskCategoryListTable from './NewJobTaskCategoryListTable';
+import NewJobTaskListTable from './NewJobTaskListTable';
 import NewTrainingYearListTable from './NewTrainingYearListTable';
 import NewTeamListTable from './NewTeamListTable';
 import NewPartItemListTable from './NewPartItemListTable';
@@ -13,7 +15,12 @@ import NewPartItemOrderReceivedListTable from './NewPartItemOrderReceivedListTab
 import NewPartItemOrderRequestsListTable from './NewPartItemOrderRequestsListTable';
 import NewPartItemOrderOrderedListTable from './NewPartItemOrderOrderedListTable';
 import NewPartItemOrderApprovedListTable from './NewPartItemOrderApprovedListTable';
+import NewPPETypeListTable from './NewPPETypeListTable';
 import NewPPEItemListTable from './NewPPEItemListTable';
+import NewPPEInventoryListTable from './NewPPEInventoryListTable';
+import NewPPESupplierListTable from './NewPPESupplierListTable';
+import NewComplianceRequirementListTable from './NewComplianceRequirementListTable';
+import NewApplicableRegulationListTable from './NewApplicableRegulationListTable';
 import NewChemicalStockItemListTable from './NewChemicalStockItemListTable';
 import NewIssuePPEListTable from './NewIssuePPEListTable';
 import NewModuleListTable from './NewModuleListTable';
@@ -25,25 +32,32 @@ import NewBillableCompanyListTable from './NewBillableCompanyListTable';
 export {
     ANewListTable,
     NewSignatureSettingsListTable,
-    NewEmployeeListTable, 
+    NewEmployeeListTable,
     NewClientListTable,
-    NewSiteListTable, 
-    NewTrainingCourseListTable, 
-    NewDepartmentListTable, 
-    NewJobPositionListTable, 
-    NewTrainingYearListTable, 
+    NewSiteListTable,
+    NewTrainingCourseListTable,
+    NewDepartmentListTable,
+    NewJobPositionListTable,
+    NewJobTaskCategoryListTable,
+    NewJobTaskListTable,
+    NewTrainingYearListTable,
     NewTeamListTable,
     NewPartItemListTable,
     NewPartItemOrderReceivedListTable,
     NewPartItemOrderRequestsListTable,
     NewPartItemOrderOrderedListTable,
     NewPartItemOrderApprovedListTable,
+    NewPPETypeListTable,
     NewPPEItemListTable,
+    NewPPEInventoryListTable,
+    NewPPESupplierListTable,
+    NewComplianceRequirementListTable,
+    NewApplicableRegulationListTable,
     NewChemicalStockItemListTable,
     NewIssuePPEListTable,
     NewModuleListTable,
     NewUserListTable,
     NewNCRResponsiblePartyListTable,
-    
+
     NewBillableCompanyListTable
 };

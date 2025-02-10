@@ -14,7 +14,6 @@ import NewAttendanceSelfDialog
     from 'views/plugins/plugin_hr_management/other_modules/Attendances/NewAttendanceSelfDialog.js';
 
 // import NewPPERegisterDialog from 'views/plugins/plugin_hr_management/other_modules/PPE/NewPPERegisterDialog.js';
-import NewScreeningDialog from 'views/plugins/plugin_extra/__A_COVID_Management/dialogs/NewScreeningDialog.js';
 import NewIncidentQuickDialog
     from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentQuickDialog.js';
 import NewIncidentDialog from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/NewIncidentDialog.js';
@@ -214,7 +213,6 @@ class SelectShortcutsBtn extends React.Component {
 
     @computed
     get shouldRender() {
-        // return Permissions.allowMod("__A_COVID_Management") ||
         return (Permissions.hasModule('_17_Incident_Investigation') && Permissions.allowOther("Quick Incident")) ||
             Permissions.allowMod("_21_Internal_Audit") ||
             Permissions.allowMod("Attendance") ||
@@ -264,9 +262,6 @@ class SelectShortcutsBtn extends React.Component {
                     this.refs.newLeaveDialog.open({id: linked_employee_id});
                 }
                 break;
-            case 'Screening':
-                this.refs.newScreeningDialog.open();
-                break;
             case 'QuickIncident':
                 this.refs.newQuickIncidentDialog.open();
                 break;
@@ -307,8 +302,6 @@ class SelectShortcutsBtn extends React.Component {
         this.refs.popover.settings({
             style: {left: "auto", right: calculateRightPos(this.refs.shortcuts.getDOMNode()), top: 60, width: 260},
             contentNode: <div key="shortcuts">
-                {/*{Permissions.allowMod("__A_COVID_Management") &&*/}
-                {/*    <NavItem action="Screening" onClick={this.onClick} title="+ COVID Screening"/>}*/}
                 {Permissions.allowOther("Quick Incident") &&
                     <NavItem action="QuickIncident" onClick={this.onClick} title="+ Quick Incident"/>}
                 {Permissions.allowMod("_21_Internal_Audit") &&
@@ -338,7 +331,6 @@ class SelectShortcutsBtn extends React.Component {
             {/*<NewPlannedJobObservationDialog ref="newPlannedJobObservationDialog"/>*/}
             {/*<NewPPERegisterDialog ref="newPPERegisterDialog"/>*/}
             <NewLeaveDialog ref="newLeaveDialog" isSelfRequest/>
-            <NewScreeningDialog ref="newScreeningDialog"/>
             <NewIncidentQuickDialog ref="newQuickIncidentDialog"/>
             <NewIncidentDialog ref="newIncidentDialog"/>
             <NewCheckableDialog ref="newInspectionDialog" title="Inspection" type="Inspection"
@@ -361,19 +353,6 @@ class SelectShortcutsBtn extends React.Component {
 class UsersBtn extends React.Component {
 
     render() {
-        if (isAdminApp) {
-            if (Permissions.disallowOther("Users"))
-                return null;
-
-            return <Button
-                className="btn w-auto h-35 flex flex-center"
-                module="Users"
-                hoverText="Users" hoverTextLeft
-                onClick={defaultView.onOpenPage}
-            >
-                <i className="fa fa-users font-size-20 margin-r-5"/> Users
-            </Button>;
-        }
         const {isContractorViewVisited, isContractor, isEmployee} = storage.is;
         if (isContractorViewVisited || !loggedInApp.defaultView || isEmployee)
             return null;
@@ -417,9 +396,6 @@ class QuestionsBtn extends React.Component {
 class EmployeesBtn extends React.Component {
 
     render() {
-        if (isAdminApp) {
-            return null;
-        }
         const {isEmployee, isContractorView, isContractorViewIncContractorPack} = storage.is;
         if (!loggedInApp.defaultView || isEmployee)
             return null;

@@ -1,0 +1,90 @@
+#dialog-overlay.OHSDocListDialog-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1500px;
+    max-width: 100%;
+}
+#dialog-overlay.OHSDocListDialog-dialog .dialog-content,
+#OHSDocListDialog-page{
+    padding: 0;
+    height: 100%;
+    overflow: visible !important;
+}
+#dialog-overlay.OHSDocListDialog-dialog .page-content {
+    height: 100%;
+    padding: 0;
+    background: white;
+}
+#OHSDocListDialog-page > .page-title {
+    width: auto;
+    float: right;
+    margin-top: -50px;
+    border: none;
+}
+
+#dialog-overlay.OHSDocListDialog-dialog .TitlePanel{
+    position: absolute;
+    left: 0;
+    top: 50px;
+    right: 0;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    /*background: #fff;*/
+    font-size: 16px;
+    color: #fff;
+    box-shadow: 0 0 8px #555;
+    border-radius: 8px;
+}
+#dialog-overlay.OHSDocListDialog-dialog .TitlePanel-message {
+    position: absolute;
+    top: 110px;
+    left: 0;
+    right: 0;
+}
+
+#dialog-overlay.OHSDocListDialog-dialog .DateRangeInput > label:first-of-type {
+    grid-column-start: 1;
+    grid-column-end: 7;
+    border-radius: 20px 20px 0 0;
+    border-right: 0;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+#dialog-overlay.OHSDocListDialog-dialog .DateRangeInput > label {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    border-right: 1px solid #ccc;
+}
+#dialog-overlay.OHSDocListDialog-dialog .DateRangeInput > .form-control {
+    grid-column-start: 2;
+    grid-column-end: 7;
+}
+#dialog-overlay.OHSDocListDialog-dialog .DateRangeInput > hr {
+    grid-column-start: 1;
+    grid-column-end: 7;
+    margin: 0;
+}
+#dialog-overlay.OHSDocListDialog-dialog .DateRangeInput > label:last-of-type:not(:first-of-type) {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    margin: 0;
+    border-left: 0;
+    border-radius: 0 0 0 20px;
+}
+
+#OHSDocListDialog-page > .table{
+    width: 100%;
+    height: calc(100% - 50px) !important;
+}
+#OHSDocListDialog-page > .filter-wrapper{
+    position: absolute;
+    z-index: 1;    
+    left: 0;
+    top: 50px;
+    right: 0;
+    margin: 0px 10px;
+}
+#OHSDocListDialog-page > .filter-wrapper + .table{
+    height: calc(100% - (50px + 299px)) !important;
+    margin: 298px 0 0;
+}

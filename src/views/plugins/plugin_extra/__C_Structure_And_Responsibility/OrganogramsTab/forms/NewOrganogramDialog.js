@@ -11,7 +11,7 @@ import {ANewDialog} from 'components/dialogs';
 
 import TypedWrapper from "./TypedWrapper";
 
-import insertOrganogram from "mutations/all/StructureAndResponsibility/Organogram/insertOrganogram"
+import {insertOrganogram} from "mutations/create"
 
 import style from "./NewOrganogramDialog.lazy.css";
 // </editor-fold>
@@ -177,36 +177,11 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            client, project, site, target, type, doc, employee_list
-        } = form.data;
-        const data = {
-            //0
-            client_id: client && client.id,
-            project_id: project && project.id,
-            site_id: site && site.id,
-            target,
-            type,
-            employee_list: {
-                data: (employee_list || []).map(({employee_list, team, employee, employee_reported_to}) => {
-                    return {
-                        employee_reported_to_id: employee_reported_to && employee_reported_to.id,
-                        employee_id: employee && employee.id,
-                        team_id: team && team.id,
-                        employee_list: {
-                            data: (employee_list || []).map(({id: employee_id}) => ({employee_id}))
-                        }
-                    };
-                })
-            },
-            doc: doc && doc.path,
-        };
-
-        console.log(data)
+        console.log(form.data)
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        insertOrganogram(data).then(res => {
+        insertOrganogram(form.data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");

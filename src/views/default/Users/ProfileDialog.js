@@ -24,12 +24,10 @@ import NewClientListUpdateBlacklistTable from "components/FormTableComponents/Ne
 import NewProjectListUpdateBlacklistTable from "components/FormTableComponents/NewProjectListUpdateBlacklistTable";
 import NewSiteListUpdateBlacklistTable from "components/FormTableComponents/NewSiteListUpdateBlacklistTable";
 import MKBox from "components/MK/MKBox";
-import {updateEmployee, updateUser} from "mutations/update";
+import {updateContractorUser, updateEmployee, updateUser} from "mutations/update";
 import Divider from "@mui/material/Divider";
-import {findByIdUser} from "mutations/findById";
+import {findByIdContractorUser, findByIdUser} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
-import findByIdContractorUser from "mutations/all/ContractorUser/findByIdContractorUser";
-import updateContractorUser from "mutations/all/ContractorUser/updateContractorUser";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

@@ -1,0 +1,11 @@
+@import '../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileNCRDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    max-width: calc(100% - 30px);
+    width: 1000px !important;
+}
+#dialog-overlay.ProfileNCRDialog-profile-dialog .AddFilesGridViewInput {
+    min-height: 110px;
+    margin-top: 0;
+}

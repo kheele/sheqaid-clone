@@ -1,0 +1,40 @@
+
+#ADocuments-page{
+    height: 100%;
+}
+
+#ADocuments-page .table .td-filetype .fa {
+    position: absolute;
+    left: -8px;
+    top: 8px;
+    bottom: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgb(200 200 200 / 80%);
+    color: rgb(2,168,168);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+#ADocuments-page .page-title {
+    margin-top: -90px !important;
+}
+
+#ADocuments-page .page-title > .tabled-top-panel{
+    min-width: 955px !important;
+}
+
+#ADocuments-page .page-title > h3{
+    display: none !important;
+}
+
+#ADocuments-page .filter-wrapper + .table{
+    height: calc(100% - (20px + 125px)) !important;
+}
+
+#ADocuments-page .table{
+    margin-top: 45px;
+}

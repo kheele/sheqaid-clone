@@ -16,17 +16,9 @@ class Manager {
         dataError: false,
         dataLoaded: false
     };
-    listAllBy = computedFn((type) => {
+    listAllBy = computedFn(() => {
         const {list} = this.dataState;
-        if (isAdminApp) {
-            if (type === 'Admin') {
-                return list.filter(val => val.data.key === 'plugin_admin');
-            }
-            return list;
-        } else if (type === 'NonAdmin' || type === 'Admin') {
-            return list.filter(val => val.data.key !== 'plugin_admin');
-        }
-//        console.log('PluginManager.listAllBy', list.slice())
+        return list.filter(val => val.data.key !== 'plugin_admin');
     }, true);
 
     constructor() {
@@ -67,14 +59,11 @@ class Manager {
 
     @computed
     get listAll() {
-        return this.listAllBy('NonAdmin');
+        return this.listAllBy();
     }
 
     @computed
     get listInstalled() {
-        if (isAdminApp) {
-            return this.listAllBy('Admin');
-        }
         return this.listAll.filter(val => val.data.status === 'Installed');
     }
 

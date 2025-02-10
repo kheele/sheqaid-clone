@@ -1,0 +1,389 @@
+
+//<editor-fold desc="inspection_question_list_fragment">
+export const inspection_question_list_fragment = (deep = 3) => {
+	if(deep === 0) {
+		return `id`;
+	}
+	return `
+    id
+    answer
+    responseAttachment
+    hasResponseAttachment
+    responseAttachmentRequired
+    expiry
+    hasExpiry
+    isEditableDoc
+    isMandatory
+    isMultiAnswer
+    open
+    linkDoc {
+        id
+        created_at
+        name
+        desc
+        category
+    }
+    maxScore
+    notify
+    notifyAction
+    questionImage
+    questionText
+    questionType
+    score
+    questionnaire{
+        id
+    }
+    idx
+    is_page_title
+    question_list:question_list{
+        ${inspection_question_list_fragment(deep - 1)}
+    }
+    options{
+      optionImage
+      optionText
+      optionType
+      answer
+    }
+    message_list{
+        ques{
+            id
+        }
+        msg
+        read
+        date
+        sender{
+            id
+            fname
+            lname
+            username
+            phone
+        }
+        recipient{
+            id
+            fname
+            lname
+            username
+            phone
+        }
+        contractor_sender{
+            id
+            fname
+            lname
+            username
+            phone
+        }
+        contractor_recipient{
+            id
+            fname
+            lname
+            username
+            phone
+        }
+        logged_user{
+            id
+            fname
+            lname
+            username
+            phone
+        }
+    }
+    notified_list{
+        employee{
+            id
+            fname
+            lname
+            email
+            phone
+        }
+        ques{
+            id
+        }
+    }
+    #ques_path_list{
+    #    id
+    #    path
+    #    ques{
+    #        id
+    #    }
+    #}
+`;
+};
+//</editor-fold>
+
+//<editor-fold desc="inspection_fragment">
+export const inspection_fragment = () => {
+	return `
+    	id
+		status
+		status_answered_by_sender
+		answered_by
+		name
+		desc
+		is_template
+		visibility
+		group
+		removed
+		asset_type
+		asset_id
+		job_position_id
+		employee_id
+		responsible_person_id
+		responsible_department_id
+		template_id
+		interval
+		start_date
+		time
+		page_title_list:question_list(where: {is_page_title: {_eq: true}}){
+		  ${inspection_question_list_fragment(3)}
+	  }
+	  question_list:question_list(where: {is_page_title: {_eq: false}}){
+		  ${inspection_question_list_fragment(3)}
+	  }
+	  schedule_list{
+		  questionnaire{
+		  	id
+	      }
+		  date
+		  time
+		  interval
+		  completed
+		  ate_completed
+		  time_completed
+	  }
+`;
+};
+//</editor-fold>
+
+//<editor-fold desc="asset_basic_details_fragment">
+export const asset_basic_details_fragment = `
+    id
+    created_at
+    status
+    written_off
+    profile_pic:photo_list(where: {removed: {_eq: false}, is_default: {_eq: true}}){
+        id
+        doc    
+        is_default
+        removed
+    }
+    photo_list(where: {removed: {_eq: false}}){
+        id
+        doc    
+        is_default
+        removed
+    }
+    responsible_person{
+        id
+        fname
+        lname
+        full_name
+        email
+        phone
+        job_position{
+            id
+            name
+        }
+    }
+    asset_detail{
+    	id
+        owning_company
+        name
+        asset_type
+        desc
+        manufacturer
+        model
+        reg_num
+        serial_num
+        location
+        toolkit
+        condition
+        barcode
+        qr_code
+        notes
+    }
+`;
+//</editor-fold>
+
+//<editor-fold desc="asset_export_details_fragment">
+export const asset_export_details_fragment = `
+    ${asset_basic_details_fragment}
+    purchase_info{
+        id
+        created_at
+        acquisition_date
+        acquisition_value
+        vendor
+        warranty_expiry
+        reference_num
+        warranty_certificate
+    }
+    doc_list{
+        id
+        created_at
+        doc    
+        expiry    
+        title    
+        desc    
+        type
+    }
+    depreciation{
+        id
+        depreciation_method
+        asset_cost
+        salvage_value
+        depreciation_years
+        depreciation_factor
+        partial_year_depreciation
+    }
+    job_card_list{
+        id
+    }
+    part_list{
+        id
+    }
+    calibration_record_list{
+        id
+        next_calibration_interval
+		next_calibration_date
+        calibration_list{
+          id
+          calibrating_company
+		  reference_standard
+		  certificate_num
+		  calibration_date
+        }
+    }
+    maintenance_plan_list{
+        id
+        next_service_hrs_or_km
+        plan_list{
+        	id
+          	reason_for_service
+			service_date
+			service_hrs_or_km
+        }
+    }
+    monitoring_plan_list{
+        id
+        fuel_usage_list{
+        	id
+	        refilled_fuel
+			current_hrs_or_km
+			working_hrs_or_km
+			date
+			receipt
+			cost
+        }
+        working_distance_or_time_list{
+        	id
+	        working_hrs_or_km_opening
+			working_hrs_or_km_closing
+			working_hrs_or_km
+			date
+        }
+    }
+`;
+//</editor-fold>
+
+//<editor-fold desc="asset_details_fragment">
+export const asset_details_fragment = `
+    ${asset_basic_details_fragment}
+    purchase_info{
+        id
+        created_at
+        acquisition_date
+        acquisition_value
+        vendor
+        warranty_expiry
+        reference_num
+        warranty_certificate
+    }
+    doc_list(where: {removed: {_eq: false}}){
+        id
+        created_at
+        doc
+        expiry
+        title
+        desc
+        type
+    }
+    asset_children_list_aggregate{
+      aggregate{
+        count
+      }
+    }
+    asset_parent_list_aggregate{
+      aggregate{
+        count
+      }
+    }
+    #inspection_template_list: inspection_and_template_list(where: {is_template: {_eq: true}}){
+      #\${/*inspection_fragment()*/}
+    #}
+    #inspection_list: inspection_and_template_list(where: {is_template: {_eq: false}}){
+      #\${/*inspection_fragment()*/}
+    #}
+    #inspection_scheduled_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: false}}}){
+      #\${/*inspection_fragment()*/}
+    #}
+    #inspection_history_list: inspection_and_template_list(where: {is_template: {_eq: false}, schedule_list: {completed: {_eq: true}}}){
+      #\${/*inspection_fragment()*/}
+    #}
+    depreciation{
+        id
+        depreciation_method
+        asset_cost
+        salvage_value
+        depreciation_years
+        depreciation_factor
+        partial_year_depreciation
+    }
+    job_card_list{
+        id
+    }
+    part_list{
+        id
+    }
+    calibration_record_list{
+        id
+        next_calibration_interval
+		next_calibration_date
+        calibration_list{
+        	id
+          	calibrating_company
+			reference_standard
+			certificate_num
+			calibration_date
+        }
+    }
+    maintenance_plan_list{
+        id
+        next_service_hrs_or_km
+        plan_list{
+        	id
+          	reason_for_service
+			service_date
+			service_hrs_or_km
+        }
+    }
+    monitoring_plan_list{
+        id
+        fuel_usage_list{
+        	id
+	        refilled_fuel
+			current_hrs_or_km
+			working_hrs_or_km
+			date
+			receipt
+			cost
+        }
+        working_distance_or_time_list{
+        	id
+	        working_hrs_or_km_opening
+			working_hrs_or_km_closing
+			working_hrs_or_km
+			date
+        }
+    }
+`;
+//</editor-fold>

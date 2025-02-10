@@ -7,6 +7,7 @@ import {Button, SelectSiteInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewSiteListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -49,16 +50,16 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="padding-10 w-full">
-                <div className="td flex padding-0 margin-0">
-                    <SelectSiteInput ref={this.onSetRef} name="site" placeholder="Add Site..." required
-                                     className="no-border-radius-r form-control" onChange={this.onChange}/>
-                    <Button idx={n} action="save"
-                            className="btn btn-primary fixed-flex w-40 margin-0 no-border-radius-l" onClick={onClick}>
-                        <i className="fa fa-check"/>
-                    </Button>
-                </div>
-            </TRow>;
+            return <NewRow idx={n} onClick={onClick}>
+                <SelectSiteInput
+                    ref={this.onSetRef}
+                    name="site"
+                    placeholder="Add Site..."
+                    required
+                    className="no-border-radius-r form-control"
+                    onChange={this.onChange}
+                />
+            </NewRow>;
         }
     }
 

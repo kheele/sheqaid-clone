@@ -1,0 +1,39 @@
+@import '../../../../../css/ANewDialog.css';
+
+:root{
+    --CheckOutToolDialog-dialog-width: 700px;
+}
+
+#dialog-overlay.CheckOutToolDialog-new-dialog .dialog-container {
+    height: calc(100% - 35px);
+    width: var(--CheckOutToolDialog-dialog-width);
+    max-width: 100%;
+}
+#dialog-overlay.CheckOutToolDialog-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.CheckOutToolDialog-new-dialog .ProfileField{
+}
+#dialog-overlay.CheckOutToolDialog-new-dialog .ProfileField .file{
+    height: 200px;
+    border: none;
+    margin: 0 -10px -10px;
+    border-radius: 0;
+}
+
+.SelectAssetTable.table .tbody .td img,
+#dialog-overlay.CheckOutToolDialog-new-dialog .SelectTable.table .tbody .td img{
+    width: 60px;
+    height: 60px;
+    margin: 5px 0;
+    border-radius: 50%;
+    border: 3px solid #bbb;
+}
+
+#dialog-overlay.CheckOutToolDialog-new-dialog .SelectTable.table .thead > .td:last-of-type {
+    display: none;
+}
+#dialog-overlay.CheckOutToolDialog-new-dialog .SelectTable.table .tbody .tr > .td:last-of-type {
+    padding-left: 0 !important;
+}

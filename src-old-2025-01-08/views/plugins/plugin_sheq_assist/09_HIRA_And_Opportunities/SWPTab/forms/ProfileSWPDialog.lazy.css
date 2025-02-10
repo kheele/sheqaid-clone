@@ -1,0 +1,43 @@
+@import '../../../../../../css/AProfileDialog.css';
+
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-container{
+    height: calc(100% - 35px);
+    width: 1000px;
+    max-width: 100%;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .ProfileField > div {
+    height: calc(100% - 10px);
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .ProfileField .file {
+    height: calc(100% - 17px);
+    margin: 0 -10px;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .table > .results-none {
+    margin-top: -20px;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .table > .tbody .tr > .td {
+    font-size: 16px;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .table > .tbody .tr > .td:last-of-type {
+    padding: 11px 0;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .table > .tbody .tr > .td > span{
+    background: rgb(2, 168, 168);
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+    display: table;
+    text-align: center;
+    font-size: 12px;
+    margin-left: -5px;
+    padding: 3px;
+    color: #fff;
+}
+#dialog-overlay.ProfileSWPDialog-profile-dialog .dialog-content .table > .tbody .tr:hover > .td > span{
+    background: #eee;
+    color: rgb(2, 168, 168);
+}

@@ -36,17 +36,9 @@ socket.on('connect', () => {
         const {uid} = currentUser;
         console.log('auth currentUser', currentUser)
         currentUser.getIdToken(true).then(token => {
-            socket.emit('emit', {
+            return socket.emit('emit', {
                 path: 'auth',
                 data: {token, uid},
-            }, (res, err) => {
-                if (err) {
-                    err = JSON.parse(err);
-                    console.log('auth emit err', err)
-                    return;
-                }
-
-                console.log('auth emit res', res)
             });
         });
     }
@@ -56,3 +48,24 @@ socket.on('disconnect', () => {
     console.log('Disconnected from server', socket.id);
     Events.emit('connection', "DISCONNECTED");
 });
+
+(() => {
+    const emit = socket.emit;
+    socket.emit = (...args) => {
+        return new Promise((resolve, reject) => {
+            emit.apply(socket, [...args, (res, err) => {
+                if (err) {
+                    console.error('emit err', err)
+                    return reject(err);
+                }
+
+                console.log('emit res', res)
+                if (res) {
+                    resolve(res);
+                } else {
+                    resolve();
+                }
+            }]);
+        });
+    };
+})();

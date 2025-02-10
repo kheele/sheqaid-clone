@@ -1,0 +1,11 @@
+@import '../../../../css/AProfileDialog.css';
+
+#dialog-overlay.Sector-profile-dialog .dialog-container{
+    height: 300px;
+    width: 620px;
+    max-width: 100%;
+}
+#dialog-overlay.Sector-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

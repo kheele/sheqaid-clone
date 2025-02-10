@@ -19,7 +19,7 @@ class MainView extends React.Component {
     @observable
     isOpen = false;
     bodyData;
-    
+
     constructor() {
         super();
 
@@ -36,7 +36,7 @@ class MainView extends React.Component {
                 try {
                     this.self = ReactDOM.findDOMNode(this);
                     return this.self;
-                } catch(ex) {
+                } catch (ex) {
                     return false;
                 }
             }).then(self => {
@@ -51,13 +51,13 @@ class MainView extends React.Component {
 
                 if (document.querySelector('.header-wide')) {
                     this.self.classList.add('MainView-wide');
-                } 
+                }
             });
         });
     }
 
     componentWillUnmount() {
-        if(this.self) {
+        if (this.self) {
             this.self.querySelector(".main-content").removeEventListener("scroll", this.onScroll);
         }
     }
@@ -70,7 +70,7 @@ class MainView extends React.Component {
             });
         });
     }
-    
+
     onCloseMobileMenu() {
         mainDrawer.isOpen = false;
     }
@@ -89,7 +89,7 @@ class MainView extends React.Component {
     }
 
     render() {
-        if(!this.isOpen) return null;
+        if (!this.isOpen) return null;
         return <div ref="rootView" key="MainView" className="MainView">
             <Drawer ref="drawer" onCloseMobileMenu={this.onCloseMobileMenu} onOpenPage={this.onOpenPage}/>
             <div className="drawer-container-layer" onClick={this.onCloseMobileMenu}/>
@@ -108,17 +108,17 @@ class Drawer extends React.Component {
 
     @observable
     isOpen = false;
-    
+
     constructor(props) {
         super(props);
-        
+
         window.mainDrawer = this;
     }
 
     componentWillMount() {
         drawerStyle.use();
     }
-    
+
     componentWillUnmount() {
         drawerStyle.unuse();
     }
@@ -134,8 +134,9 @@ class Drawer extends React.Component {
     }
 
     render() {
-        if(!this.isOpen) return null;
-        return <MUIDrawer ref="drawer" className="drawer-container scale-up-center open" variant="permanent" anchor="left" open={true}>
+        if (!this.isOpen) return null;
+        return <MUIDrawer ref="drawer" className="drawer-container scale-up-center open" variant="permanent"
+                          anchor="left" open={true}>
             <div className="drawer-title">
                 <Button onClick={this.props.onCloseMobileMenu}>
                     <i className="fa fa-times"/>
@@ -176,7 +177,7 @@ class DrawerNav extends React.Component {
     componentWillUnmount() {
         window.$(ReactDOM.findDOMNode(this)).removeScrollbars();
     }
-    
+
     selectItemByKey(key) {
         execWhen(() => this.refs.nav).then(nav => {
             nav.selectItemByKey(key);
@@ -185,31 +186,23 @@ class DrawerNav extends React.Component {
 
     onFilterAll(modules) {
         const {is: {isContractorViewIncContractorPack, isEmployee}} = storage;
-        if(isAdminApp) {
-            return onFilterImpl(modules).filter(({module: {key}}) => {
-                const {permissions_module_list} = storage.loggedUser.user.data;
-                const permissions_mod = (permissions_module_list || []).find(({module: {key: __key}}) => __key === key);
-                const allow = Permissions.allow(permissions_mod);
-                return allow;
-            });
-        }
-        if(isContractorViewIncContractorPack) {
+        if (isContractorViewIncContractorPack) {
             const {contractorAllowedModules} = moduleManager;
             return onFilterImpl(modules).filter(({module: {key}}) => {
-                if(item.key === "__B_Contractors") return false;
+                if (item.key === "__B_Contractors") return false;
 
                 const allow = contractorAllowedModules.contains(key);
                 return allow;
             });
         }
-        if(isEmployee) {
+        if (isEmployee) {
             const {employeeDisallowedModules} = moduleManager;
             return onFilterImpl(modules).filter(({module: {key}}) => {
                 const allow = !employeeDisallowedModules.contains(key);
                 return allow;
             });
         }
-        
+
         return onFilterImpl(modules).filter(({module: {key}}) => {
             const {permissions_module_list} = storage.loggedUser.user.data;
             const permissions_mod = (permissions_module_list || []).find(({module: {key: __key}}) => __key === key);
@@ -217,28 +210,28 @@ class DrawerNav extends React.Component {
             return allow;
         });
     }
-    
+
     renderNavItem(item) {
         const {module: {key, color}} = item;
         if (key === "_06_Communication_And_Participation" || key === "_16_Emergency_Preparedness"
-          || key === "_01_Project_Plan" || key === "_02_IMS_Policies") return null;
+            || key === "_01_Project_Plan" || key === "_02_IMS_Policies") return null;
 
         let disallow;
-        if(storage.is.isEmployee) {
+        if (storage.is.isEmployee) {
             const {employeeDisallowedModules} = moduleManager;
             disallow = employeeDisallowedModules.contains(key);
         } else {
             const {isContractorView} = storage.is;
             const {contractorAllowedModules} = moduleManager;
-            if((storage.is.isContractor || isContractorView) && key === "__B_Contractors") return null;
+            if ((storage.is.isContractor || isContractorView) && key === "__B_Contractors") return null;
 
             const {permissions_module_list} = storage.loggedUser.user.data;
             const permissions_mod = (permissions_module_list || []).find(v => v.module.key === key);
             disallow = Permissions.disallow(permissions_mod) || (isContractorView && !contractorAllowedModules.contains(key));
         }
-        
-        if(disallow) return null;
-        
+
+        if (disallow) return null;
+
         return <NavItem onClick={this.props.onOpenPage} {...item} color={color && (`${color} !important`)}/>;
     }
 

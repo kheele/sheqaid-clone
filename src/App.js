@@ -38,16 +38,16 @@ import ChatBox from './components/popovers/ChatBox';
 import ChatBoxClaims from './components/popovers/ChatBoxClaims';
 import Popover from './components/popovers/Popover';
 import {
-	AccountPaymentDueDialog,
-	AutoUpdateDialog,
-	ConfirmDialog,
-	CookieNoticePanelDialog,
-	DateDialog,
-	InfoDialog,
-	InputDialog,
-	NoProjectsDialog,
-	ProgressDialog,
-	TrailExiredDialog,
+    AccountPaymentDueDialog,
+    AutoUpdateDialog,
+    ConfirmDialog,
+    CookieNoticePanelDialog,
+    DateDialog,
+    InfoDialog,
+    InputDialog,
+    NoProjectsDialog,
+    ProgressDialog,
+    TrailExiredDialog,
 } from './components/dialogs';
 import {ErrorBoundary, PageLoadingProgress} from './components';
 
@@ -78,7 +78,6 @@ class App extends React.Component {
         window.moduleManager = moduleManager;
         window.staticModuleManager = staticModuleManager;
         window.isFormsApp = this.isFormsApp;
-        window.isAdminApp = this.isAdminApp;
 
         this.onConnection = this.onConnection.bind(this);
     }
@@ -99,20 +98,6 @@ class App extends React.Component {
             loc = loc.replace(document.location.hash, "").replace("#", "");
         }
         return loc.contains('~forms/') || loc.contains('~forms');
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="isAdminApp">
-    get isAdminApp() {
-        if (document.location.hostname === 'admin.sheqaid.com') {
-            return true;
-        }
-        let loc = document.location.toString().replace("index.html", "");
-        if (loc.contains('#')) {
-            loc = loc.replace(document.location.hash, "").replace("#", "");
-        }
-        return loc.contains('~admin/') || loc.contains('~admin');
     }
 
     // </editor-fold>
@@ -251,7 +236,6 @@ class App extends React.Component {
                 <NetworkStatus/>
 
                 <AppMain/>
-                <AppAdmin/>
             </div>
         </ThemeProvider>);
     }
@@ -263,27 +247,11 @@ class App extends React.Component {
 @observer
 class AppMain extends React.Component {
     render() {
-        if (isAdminApp) return null;
         return <React.Fragment>
             <AccountPaymentDueDialog ref="accountPaymentDueDialog"/>
             <TrailExiredDialog ref="trailExiredDialog"/>
             <ErrorBoundary>
                 <AppMainContent/>
-            </ErrorBoundary>
-        </React.Fragment>;
-    }
-}
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="AppAdmin">
-@observer
-class AppAdmin extends React.Component {
-    render() {
-        if (!isAdminApp) return null;
-        return <React.Fragment>
-            <ErrorBoundary>
-                <AppAdminContent/>
             </ErrorBoundary>
         </React.Fragment>;
     }

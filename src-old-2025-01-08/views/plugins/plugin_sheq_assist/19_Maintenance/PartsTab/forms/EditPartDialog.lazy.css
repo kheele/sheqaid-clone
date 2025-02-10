@@ -1,0 +1,12 @@
+@import '../../../../../../css/ANewDialog.css';
+/*@import './AssetComponents.css';*/
+
+#dialog-overlay.EditPartDialog-profile-dialog .dialog-container {
+    height: calc(100% - 35px);
+    width: 1060px;
+    max-width: 100%;
+}
+#dialog-overlay.EditPartDialog-profile-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}

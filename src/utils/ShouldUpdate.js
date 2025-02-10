@@ -556,6 +556,31 @@ class ShouldUpdate {
         }
     }
 
+    static checkPPEItem(data, old_data, ppe_item_id, key) {
+        key = key || 'ppe_item';
+        const key_id = key.endsWith('_id') ? key : `${key}_id`;
+        if (ppe_item_id) {
+            if (!isNumber(ppe_item_id) && ppe_item_id.id) {
+                ppe_item_id = ppe_item_id.id;
+            }
+            if (!old_data) {
+                data[key_id] = ppe_item_id;
+            } else {
+                if (old_data[key_id]) {
+                    if (old_data[key_id] !== ppe_item_id) {
+                        data[key_id] = ppe_item_id;
+                    }
+                } else if (old_data[key]) {
+                    if (old_data[key].id !== ppe_item_id) {
+                        data[key_id] = ppe_item_id;
+                    }
+                } else {
+                    data[key_id] = ppe_item_id;
+                }
+            }
+        }
+    }
+
     static checkAsset(data, old_data, asset_id, key) {
         key = key || 'asset';
         const key_id = key.endsWith('_id') ? key : `${key}_id`;

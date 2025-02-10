@@ -1,0 +1,64 @@
+@import '../../../../css/ANewDialog.css';
+
+#dialog-overlay.ADocumentNew-new-dialog .dialog-container{
+    height: calc(100% - 0px);
+    max-height: 100%;
+    width: 1200px;
+    max-width: calc(100% - 30px);
+    border-radius: 0;
+}
+#dialog-overlay.ADocumentNew-new-dialog .dialog-content{
+    padding: 0;
+    height: calc(100% - 50px);
+}
+
+#dialog-overlay.ADocumentNew-new-dialog .GDocEditor {
+    height: 1210px;
+}
+
+#dialog-overlay.ADocumentNew-new-dialog .clearable-field-control > .radio--input > label {
+    font-size: 15px;
+}
+@media (max-width:539px){
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio {
+        height: auto;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input {
+        margin: -6px 0 0 -12px;
+        display: block;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > label{
+        display: block;
+        margin: 0;
+        border-radius: 20px 20px 0 0;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .fa-close{
+        top: 8px;
+        bottom: unset;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > .MuiFormGroup-root {
+        display: flex;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > label:not(.MuiFormControlLabel-root){
+        display: block;
+        text-align: center;
+        border-radius: 20px 20px 0 0;
+        margin-right: -13px;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > ons-radio{
+        display: block;
+        margin-right: 0;
+        padding: 10px 0;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > ons-radio:not(:last-of-type){
+        border-bottom: 1px solid #eee;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .radio--input > ons-radio > .radio-button__checkmark{
+        float: left;
+        margin-right: 10px;
+    }
+    #dialog-overlay.ADocumentNew-new-dialog .clearable-field-control.select_radio > .fa {
+        bottom: auto;
+        top: 8px;
+    }
+}

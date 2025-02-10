@@ -1,0 +1,11 @@
+#ProcedureDocsTab .page-title > .page-back-btn {
+    display: none;
+}
+
+#ProcedureDocsTab.tab-content > .active > .page-content {
+    height: calc(100% - 59px) !important;
+}
+
+#ProcedureDocsTab.tab-content > .active > .page-content .table {
+    height: 100% !important;
+}

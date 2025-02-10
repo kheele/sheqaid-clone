@@ -14,11 +14,11 @@ import {Tabs} from "components/tabs";
 import {execWhen, Permissions} from "utils/Utils";
 import SignatureDialog from "components/dialogs/SignatureDialog";
 import {
-	ClearableInput,
-	SelectDepartmentInput,
-	SelectEmployeeInput,
-	SelectJobPositionInput,
-	SelectTeamInput
+    ClearableInput,
+    SelectDepartmentInput,
+    SelectEmployeeInput,
+    SelectJobPositionInput,
+    SelectTeamInput
 } from "components/inputs";
 
 // </editor-fold>
@@ -48,6 +48,7 @@ class Dialog extends ADialogTab {
         this.onBuildQuery && (this.onBuildQuery = this.onBuildQuery.bind(this));
         this.loadDashboard && (this.loadDashboard = this.loadDashboard.bind(this));
 
+        this.renderExportFilterNode && (this.renderExportFilterNode = this.renderExportFilterNode.bind(this));
         this.renderFilterNodeActive && (this.renderFilterNodeActive = this.renderFilterNodeActive.bind(this));
         this.renderFilterNodeRemoved && (this.renderFilterNodeRemoved = this.renderFilterNodeRemoved.bind(this));
         this.renderTHeadActive && (this.renderTHeadActive = this.renderTHeadActive.bind(this));
@@ -229,6 +230,7 @@ class Dialog extends ADialogTab {
                 onBuildQuery={this.onBuildQuery}
                 renderFilterNodeActive={this.renderFilterNodeActive}
                 renderFilterNodeRemoved={this.renderFilterNodeRemoved}
+                renderExportFilterNode={this.renderExportFilterNode}
                 renderTHeadActive={this.renderTHeadActive}
                 renderTHeadRemoved={this.renderTHeadRemoved}
                 renderItemActive={this.renderItemActive}
@@ -387,7 +389,7 @@ class TabView extends React.Component {
             hasSignatures,
             onBuildQuery,
             onChangeViewExpiryDate,
-            renderFilterNodeActive, renderFilterNodeRemoved,
+            renderFilterNodeActive, renderFilterNodeRemoved, renderExportFilterNode,
             renderTHeadActive, renderTHeadRemoved,
             renderItemActive, renderItemRemoved,
             onViewDialog,
@@ -432,6 +434,7 @@ class TabView extends React.Component {
                     titleSingular={titleSingular}
                     titlePlural={title}
                     renderFilterNode={renderFilterNodeActive}
+                    renderExportFilterNode={renderExportFilterNode}
                     renderTHead={renderTHeadActive}
                     renderItem={renderItemActive}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
@@ -441,6 +444,7 @@ class TabView extends React.Component {
                     NewDialog={NewDialog}
                     ProfileDialog={ProfileDialog}
                     EditDialog={EditDialog}
+                    ExportDialog={ExportDialog}
                     permissionKey={permissionKey}
                     module={module}
                     renderTopActions={renderTopActions}
@@ -453,6 +457,7 @@ class TabView extends React.Component {
                     titleSingular={titleSingular}
                     titlePlural={title}
                     renderFilterNode={renderFilterNodeRemoved}
+                    renderExportFilterNode={renderExportFilterNode}
                     renderTHead={renderTHeadRemoved}
                     renderItem={renderItemRemoved}
                     onChangeViewExpiryDate={onChangeViewExpiryDate}
@@ -460,6 +465,7 @@ class TabView extends React.Component {
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
                     ProfileDialog={ProfileDialog}
+                    ExportDialog={ExportDialog}
                     permissionKey={permissionKey}
                     module={module}
                     renderTopActions={renderTopActions}
@@ -469,7 +475,7 @@ class TabView extends React.Component {
 
             {NewDialog && <NewDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>}
             {hasSignatures && <SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module={module}/>}
-            {ExportDialog && <ExportDialog ref="exportDialog"/>}
+            {/*{ExportDialog && <ExportDialog ref="exportDialog"/>}*/}
         </>);
     }
 

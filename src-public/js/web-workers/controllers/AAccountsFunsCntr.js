@@ -48,6 +48,7 @@ class AAccountsFunsCntr extends AControllerRead {
     async logoutImpl(evt) {
         return true;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="forgot_passImpl">
@@ -72,8 +73,8 @@ class AAccountsFunsCntr extends AControllerRead {
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="loginUsernameImpl">
-    async loginUsernameImpl(evt, username) {
+    // <editor-fold defaultstate="collapsed" desc="getUserUidByUsername">
+    async getUserUidByUsername(evt, username) {
         const getUserUidByUsername = this.functions.httpsCallable('callables-getUserUidByUsername');
         const res = await getUserUidByUsername(username);
         return res && res.data;

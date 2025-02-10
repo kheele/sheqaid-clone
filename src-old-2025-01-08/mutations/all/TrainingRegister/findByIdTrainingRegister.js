@@ -1,0 +1,6 @@
+/* eslint-disable camelcase */
+
+export default async (input: number) => {
+  const findById = sockets.of('trainings/register').fn('findById');
+  return findById(input);
+}

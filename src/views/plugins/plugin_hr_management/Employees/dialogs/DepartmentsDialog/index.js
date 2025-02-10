@@ -20,7 +20,6 @@ import RemovedTab from "../RemovedTab";
 
 @observer
 class DepartmentsDialog extends ADialogTab {
-    path;
     pageKey = "DepartmentsDialog";
     title = "Departments";
     titleSingular = "Department";
@@ -29,8 +28,6 @@ class DepartmentsDialog extends ADialogTab {
 
     constructor(props) {
         super(props);
-
-        this.path = props.path + 'departments/';
 
         this.onBuildQuery = this.onBuildQuery.bind(this);
 
@@ -219,7 +216,7 @@ class DepartmentsDialog extends ADialogTab {
                 />
             </Tabs>
 
-            <ImportDepartmentsDialog ref="importDialog" path={this.path}/>
+            <ImportDepartmentsDialog ref="importDialog"/>
         </>;
     }
 

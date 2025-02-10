@@ -1,0 +1,33 @@
+
+#_19_Maintenance-page{
+    height: 100%;
+}
+#_19_Maintenance-page > .tabs {
+    margin: 0 10px 0 0px;
+    height: calc(100% - 30px);
+}
+#_19_Maintenance-page .tab-content .page-title{
+    height: 0;
+    margin: -45px 0px 0 0;
+    border: none;
+    float: right;
+}
+#_19_Maintenance-page .tab-content .page-title > h3{
+    display: none;
+}
+#_19_Maintenance-page .tab-content .page-title > .tabled-top-panel {
+    margin-top: -37px;
+    flex-grow: initial;
+    min-width: 334px;
+}
+#_19_Maintenance-page .tab-content .filter-wrapper{
+    margin: 10px 0 0;
+}
+#_19_Maintenance-page .tab-content .table{
+    width: 100%;
+    height: calc(100% - 1px);
+    margin: 0;
+}
+#_19_Maintenance-page .tab-content .filter-wrapper + .table{
+    height: calc(100% - (10px + 137px));
+}

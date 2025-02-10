@@ -10,6 +10,7 @@ import {Button, ClearableInput} from '../inputs';
 import {THead, TRow} from '../tables';
 
 import style from "./NewChemicalStockItemListTable.lazy.css";
+import NewRow from "./NewRow";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ListTable">
@@ -48,7 +49,8 @@ class ListTable extends ANewListTable {
 
             const tr = <React.Fragment>
                 <div className="td fixed-flex min-w-30"><span>{n + 1}</span></div>
-                <div className="td fixed-flex min-w-120">{isBoolean(is_clearly_labeled) ? is_clearly_labeled ? 'Yes' : 'No' : 'N/A'}</div>
+                <div
+                    className="td fixed-flex min-w-120">{isBoolean(is_clearly_labeled) ? is_clearly_labeled ? 'Yes' : 'No' : 'N/A'}</div>
                 <div className="td">{storage_location}</div>
                 <div className="td fixed-flex min-w-50">{unit}</div>
                 <div className="td fixed-flex min-w-70">{qty}</div>
@@ -67,7 +69,7 @@ class ListTable extends ANewListTable {
                 {renderTable && renderTable(item, n)}
             </TRow>;
         } else {
-            return <TRow key="item-new" className="grid-1 grid-gap-10 w-full min-h-130 padding-10">
+            return <NewRow idx={n} onClick={onClick}>
                 <div className="td grid-2 grid-gap-10 padding-0 margin-0 h-auto min-h-130">
                     <ClearableInput ref={this.onSetRef} name="is_clearly_labeled" type="radio"
                                     placeholder="Clearly Labeled?" className="form-control" onChange={this.onChange}
@@ -86,10 +88,7 @@ class ListTable extends ANewListTable {
                     <ClearableInput ref={this.onSetRef} name="expiry_date" type="date" placeholder="Expiry Date..."
                                     className="form-control" onChange={this.onChange}/>
                 </div>
-                <Button idx={n} action="save" className="btn btn-primary hor-center w-80 margin-0" onClick={onClick}>
-                    <i className="fa fa-check"/>
-                </Button>
-            </TRow>;
+            </NewRow>;
         }
     }
 
