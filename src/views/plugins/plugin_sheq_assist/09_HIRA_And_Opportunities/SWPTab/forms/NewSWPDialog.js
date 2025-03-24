@@ -7,30 +7,30 @@ import Form from 'utils/Form';
 import {onSelectLoadSWPCategories, onSelectLoadSWPLocations} from 'views/plugins/utils';
 
 import {
-	ClearableInput,
-	SelectClientInput,
-	SelectDepartmentInput,
-	SelectEmployeeInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton,
+    ClearableInput,
+    SelectClientInput,
+    SelectDepartmentInput,
+    SelectEmployeeInput,
+    SelectProjectInput,
+    SelectSiteInput,
+    UploadButton,
 } from 'components/inputs';
 
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import {
-	NewPotentialHazardAndPossibleCauseListTable,
-	NewPPERequiredListTable,
-	NewSignSheetListTable,
-	NewStepsToPerformTaskListTable,
-	NewTrainingRequirementListTable,
-	SelectWrapper,
+    NewPotentialHazardAndPossibleCauseListTable,
+    NewPPERequiredListTable,
+    NewSignSheetListTable,
+    NewStepsToPerformTaskListTable,
+    NewTrainingRequirementListTable,
+    SelectWrapper,
 } from './SWPComponents';
 
 import style from "./NewSWPDialog.lazy.css";
 import {FormControls, Row} from "components/FormComponents";
 import {Dates} from "utils/Dates";
-import insertSWP from "mutations/all/HIRA_And_Opportunities/SWP/insertSWP";
+import {insertSWP} from "mutations/create";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">

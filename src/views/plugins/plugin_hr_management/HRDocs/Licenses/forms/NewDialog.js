@@ -9,7 +9,6 @@ import {FormControls, Row} from 'components/FormComponents';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeLicense} from "mutations/create";
 
 @observer
@@ -103,17 +102,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            employee,//
-            date, expiry_date, notes, doc
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            date: Dates.formatTimestampSQL(date),
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            notes,
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -151,7 +141,8 @@ class Controls extends React.Component {
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="notes" type="textarea" placeholder="Notes" className="col-lg-12 form-control"
+                <ClearableInput name="notes" type="textarea" placeholder="License Description"
+                                className="col-lg-12 form-control"
                                 onChange={this.form.onChange}/>
             </Row>
             <Row

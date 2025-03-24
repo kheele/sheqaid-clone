@@ -1,19 +1,19 @@
-
 (function () {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events) {
             super(events,
-                    {singular: "COID ClaimsClient", plural: "COID Claims"},
-                    "plugin_sheq_assist/COIDA_Management/claims/medical-center/",
-                    "plugin_sheq_assist_coida_claims"
-                    );
+                {singular: "COID ClaimsClient", plural: "COID Claims"},
+                "plugin_sheq_assist/COIDA_Management/claims/medical-center/",
+                "plugin_sheq_assist_coida_claims"
+            );
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
             addAction("email", this.send_email.bind(this));
         }
+
         // </editor-fold>
 
         getDB() {
@@ -137,7 +137,7 @@
                         upload: async ({savedItem, secName, listName, idx, file, key}) => {
                             const gcsUri = await files.upload.call(this, file, async function (bucketFile) {
                                 const name = fileUtils.getFileName(file).replaceAll(' ', '_');
-                                if(listName) {
+                                if (listName) {
                                     listName = `${listName}/${idx}/`;
                                 } else {
                                     listName = '';
@@ -176,7 +176,14 @@
                 let savedItem = await AControllerAid.prototype.create.call(this, evt, data);
                 if (savedItem) {
                     const updateAttrs = {};
-                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({secName, listName, file, key, idx, upload}) => {
+                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({
+                                                                                     secName,
+                                                                                     listName,
+                                                                                     file,
+                                                                                     key,
+                                                                                     idx,
+                                                                                     upload
+                                                                                 }) => {
                         const gcsUri = await upload({savedItem, file, secName, listName, key, idx});
                         if (listName) {
                             savedItem.data[listName][idx] = {
@@ -211,10 +218,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-                            dynamicLinkDomain: 'sheqaid.page.link'
+                            dynamicLinkDomain: 'sheqintel.page.link'
                         };
                         await auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -231,6 +238,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -410,10 +418,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-                            dynamicLinkDomain: 'sheqaid.page.link'
+                            dynamicLinkDomain: 'sheqintel.page.link'
                         };
                         auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -430,6 +438,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_email">
@@ -462,6 +471,7 @@
 //                await Utils.sendEmail(opts);
             });
         }
+
         // </editor-fold>
 
         async export_excel(evt, date_range) {
@@ -469,7 +479,7 @@
                 let {list, date_from, date_to, type, business_id} = date_range;
                 if (!list) {
                     list = await this.list(evt);
-                    
+
                     const d_from = new Date(date_from);
                     d_from.setHours(0);
                     d_from.setMinutes(0);
@@ -519,9 +529,21 @@
 
                 if (type === "Internal") {
                     cols.pushAll([
-                        {header: 'Have you been in contact with someone with COVID-19?', key: 'Have you been in contact with someone with COVID-19?', width: 35},
-                        {header: 'Have you been traveling or been at the following locations: Doctor; High risk area or event in the last 14 days?', key: 'Have you been traveling or been at the following locations: Doctor; High risk area or event in the last 14 days?', width: 35},
-                        {header: "Do you deem yourself medically fit and to the best of your knowledge you don't have COVID-19?", key: "Do you deem yourself medically fit and to the best of your knowledge you don't have COVID-19?", width: 35},
+                        {
+                            header: 'Have you been in contact with someone with COVID-19?',
+                            key: 'Have you been in contact with someone with COVID-19?',
+                            width: 35
+                        },
+                        {
+                            header: 'Have you been traveling or been at the following locations: Doctor; High risk area or event in the last 14 days?',
+                            key: 'Have you been traveling or been at the following locations: Doctor; High risk area or event in the last 14 days?',
+                            width: 35
+                        },
+                        {
+                            header: "Do you deem yourself medically fit and to the best of your knowledge you don't have COVID-19?",
+                            key: "Do you deem yourself medically fit and to the best of your knowledge you don't have COVID-19?",
+                            width: 35
+                        },
                         {header: 'Are you wearing a mask', key: 'Are you wearing a mask', width: 35},
                     ]);
                 }
@@ -537,9 +559,23 @@
 //                    data.checklist = checklist;
 //                }
 
-                const rows = list.map(({id, data: {
-                employee, employee_id, consent, business_id: __business_id, date, sex, age, province, district, job_category, outcome, symptoms_status, checklist
-                }}) => {
+                const rows = list.map(({
+                                           id, data: {
+                        employee,
+                        employee_id,
+                        consent,
+                        business_id: __business_id,
+                        date,
+                        sex,
+                        age,
+                        province,
+                        district,
+                        job_category,
+                        outcome,
+                        symptoms_status,
+                        checklist
+                    }
+                                       }) => {
                     const employee_uid = employee.id;
                     const findChecklist = key => {
                         if (checklist && Array.isArray(checklist)) {
@@ -658,6 +694,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -666,6 +703,7 @@
 
             });
         }
+
         // </editor-fold>
 
     }
@@ -730,6 +768,7 @@
 //                    console.log(this.tbl, item)
         return item;
     }
+
     // </editor-fold>
 
     new Controller(events);

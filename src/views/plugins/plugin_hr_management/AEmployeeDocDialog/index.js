@@ -20,6 +20,7 @@ import {
     SelectJobPositionInput,
     SelectTeamInput
 } from "components/inputs";
+import ExportDialog from "components/exports/ExportDialog";
 
 // </editor-fold>
 
@@ -202,9 +203,9 @@ class Dialog extends ADialogTab {
 
     // <editor-fold defaultstate="collapsed" desc="renderPage">
     renderPage() {
-        const {hasSignatures, permissionKey, module, renderTopActions} = this;
+        const {hasSignatures, permissionKey, module, renderTopActions, exportExcel} = this;
         const {isRemoved} = this.props;
-        const {NewDialog, ProfileDialog, EditDialog, ExportDialog, TabView: TabViewOverride} = this.dialogs;
+        const {NewDialog, ProfileDialog, EditDialog, TabView: TabViewOverride} = this.dialogs;
 
         const TabViewComp = TabViewOverride || TabView;
 
@@ -216,11 +217,11 @@ class Dialog extends ADialogTab {
                 title={this.title}
                 titleSingular={this.titleSingular}
                 permissionKey={permissionKey}
+                exportExcel={exportExcel}
                 isRemoved={isRemoved}
                 NewDialog={NewDialog}
                 ProfileDialog={ProfileDialog}
                 EditDialog={EditDialog}
-                ExportDialog={ExportDialog}
                 module={module}
 
                 renderTopActions={renderTopActions}
@@ -384,7 +385,8 @@ class TabView extends React.Component {
             titleSingular,
             permissionKey,
             isRemoved,
-            NewDialog, ProfileDialog, EditDialog, ExportDialog, module,
+            NewDialog, ProfileDialog, EditDialog, module,
+            exportExcel,
             loadDashboard,
             hasSignatures,
             onBuildQuery,
@@ -444,7 +446,6 @@ class TabView extends React.Component {
                     NewDialog={NewDialog}
                     ProfileDialog={ProfileDialog}
                     EditDialog={EditDialog}
-                    ExportDialog={ExportDialog}
                     permissionKey={permissionKey}
                     module={module}
                     renderTopActions={renderTopActions}
@@ -465,7 +466,6 @@ class TabView extends React.Component {
                     onSignatures={this.onSignatures}
                     onExport={this.onExport}
                     ProfileDialog={ProfileDialog}
-                    ExportDialog={ExportDialog}
                     permissionKey={permissionKey}
                     module={module}
                     renderTopActions={renderTopActions}
@@ -475,7 +475,15 @@ class TabView extends React.Component {
 
             {NewDialog && <NewDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>}
             {hasSignatures && <SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module={module}/>}
-            {/*{ExportDialog && <ExportDialog ref="exportDialog"/>}*/}
+
+            {exportExcel && <ExportDialog
+                ref="exportDialog"
+                titlePlural={title}
+                renderExportFilterNode={renderExportFilterNode}
+                exportFn={exportExcel}
+                addHRFilters
+            />}
+
         </>);
     }
 

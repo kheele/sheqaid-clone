@@ -2,7 +2,6 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import Form from 'utils/Form';
-import {Dates, toDataURI} from 'utils/Utils';
 
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
@@ -23,41 +22,42 @@ class EditTimeoffSection extends React.Component {
 
     //<editor-fold desc="formData">
     get formData() {
-        const {form, form: {data}} = this;
-        let {
-            leave_list,
-        } = data;
+        return this.form.data;
+        // const {form, form: {data}} = this;
+        // let {
+        //     leave_list,
+        // } = data;
+        // //
         //
-
-        return new Promise(async (resolve, reject) => {
-            resolve({
-                leave_list: {
-                    data: await Promise.all((leave_list || []).map(async (
-                        {
-                            doc,
-                            date,
-                            days_booked,
-                            due_to,
-                            employee_comments,
-                            expiry_date,
-                            notes,
-                            reason,
-                            type,
-                        }
-                    ) => ({
-                        doc: doc && {path: await toDataURI(doc.path)},
-                        date: Dates.formatTimestampSQL(date),
-                        days_booked,
-                        due_to: !form.isValid('due_to') ? 'Occurred Incident' : due_to,
-                        employee_comments,
-                        expiry_date: Dates.formatTimestampSQL(expiry_date),
-                        notes,
-                        reason,
-                        type,
-                    })))
-                },
-            });
-        });
+        // return new Promise(async (resolve, reject) => {
+        //     resolve({
+        //         leave_list: {
+        //             data: await Promise.all((leave_list || []).map(async (
+        //                 {
+        //                     doc,
+        //                     date,
+        //                     days_booked,
+        //                     due_to,
+        //                     employee_comments,
+        //                     expiry_date,
+        //                     notes,
+        //                     reason,
+        //                     type,
+        //                 }
+        //             ) => ({
+        //                 doc: doc && {path: await toDataURI(doc.path)},
+        //                 date: Dates.formatTimestampSQL(date),
+        //                 days_booked,
+        //                 due_to: !form.isValid('due_to') ? 'Occurred Incident' : due_to,
+        //                 employee_comments,
+        //                 expiry_date: Dates.formatTimestampSQL(expiry_date),
+        //                 notes,
+        //                 reason,
+        //                 type,
+        //             })))
+        //         },
+        //     });
+        // });
     }
 
     //</editor-fold>

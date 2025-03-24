@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {autorun, observable, toJS, computed} from 'mobx';
+import {autorun, computed, observable, toJS} from 'mobx';
 
 import Form from 'utils/Form';
 
@@ -41,9 +41,8 @@ import {
 import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onChangeSDS} from '../dialogs/Utils';
 
 import style from "./EditHazchemSheetDialog.lazy.css";
-import updateChemicalHazchemsheet
-    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
-import findByIdChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
+import {updateChemicalHazchemsheet} from "mutations/update";
+import {findByIdChemicalHazchemsheet} from "mutations/findById";
 
 // </editor-fold>
 
@@ -52,7 +51,7 @@ import findByIdChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazche
 class EditHazchemSheetDialog extends AEditDialog {
     pageKey = "EditHazchemSheetDialog";
     findById = findByIdChemicalHazchemsheet;
-    removeById = updateChemicalHazchemsheet ;
+    removeById = updateChemicalHazchemsheet;
 
     constructor(props) {
         super(props, style);
@@ -80,7 +79,7 @@ class Controls extends React.Component {
             emergency_phone_nums: [],
             has_product: ['Yes', 'No'].map(text => {
                 return {text, value: text};
-            }), 
+            }),
             has_sds: ['Yes', 'No'].map(text => {
                 return {text, value: text};
             })
@@ -95,7 +94,7 @@ class Controls extends React.Component {
         super();
 
         this.onNext = this.onNext.bind(this);
-        
+
         this.onAddPhotograph = this.onAddPhotograph.bind(this);
         this.onRemovePhotograph = this.onRemovePhotograph.bind(this);
         this.renderPhotographItem = this.renderPhotographItem.bind(this);
@@ -106,6 +105,26 @@ class Controls extends React.Component {
         this.form.addChangeOne("has_sds", onChangeHasSDS.bind(this));
         this.form.addChangeOne("product", onChangeProduct.bind(this));
         this.form.addChangeOne("sds", onChangeSDS.bind(this));
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="precaution_photo_concentrate_list, precaution_photo_application_list">
+    get precaution_photo_concentrate_list() {
+        return this.refs.precaution_photo_concentrateGridView.list.filter(val => !!val);
+    }
+
+    // </editor-fold>
+
+    get precaution_photo_application_list() {
+        return this.refs.precaution_photo_applicationGridView.list.filter(val => !!val);
+    }
+
+    // </editor-fold>
+
+    @computed
+    get item() {
+        return this.props.state.item;
     }
 
     // </editor-fold>
@@ -128,45 +147,59 @@ class Controls extends React.Component {
     onChangeProduct(el, val) {
         this.state.selectedProduct = val;
         const {props: {dialog, execWhen}} = this;
-                if(isObject(val)) {
-                    const {
-                        id, 
-                        data: {
-                            //1
-                            name, common_names, chemical_name, empirical_formula, un_num, cas_num, concentration,
-                            category, physical_state, type,
-                            application_or_use,
-                            manufacturer, manufacturer_addr, manufacturer_phone_num, manufacturer_email, manufacturer_fax, manufacturer_website,
-                            emergency_phone_nums,
-                            //4
-                            risk_level,
-                        }
-                    } = val;
-                    
-                    execWhen(() => this.refs.name).then(ref => {
-                        ref.value = name;
-                    });
-                    execWhen(() => this.refs.physical_state).then(ref => {
-                        ref.value = physical_state;
-                    });
-                    execWhen(() => this.refs.type).then(ref => {
-                        ref.value = type;
-                    });
-                    //
+        if (isObject(val)) {
+            const {
+                id,
+                data: {
+                    //1
+                    name,
+                    common_names,
+                    chemical_name,
+                    empirical_formula,
+                    un_num,
+                    cas_num,
+                    concentration,
+                    category,
+                    physical_state,
+                    type,
+                    application_or_use,
+                    manufacturer,
+                    manufacturer_addr,
+                    manufacturer_phone_num,
+                    manufacturer_email,
+                    manufacturer_fax,
+                    manufacturer_website,
+                    emergency_phone_nums,
+                    //4
+                    risk_level,
+                }
+            } = val;
+
+            execWhen(() => this.refs.name).then(ref => {
+                ref.value = name;
+            });
+            execWhen(() => this.refs.physical_state).then(ref => {
+                ref.value = physical_state;
+            });
+            execWhen(() => this.refs.type).then(ref => {
+                ref.value = type;
+            });
+            //
 //                    execWhen(() => this.refs.contacts_emergency_name).then(ref => {
 //                        ref.value = ;
 //                    });
-                    execWhen(() => this.refs.contacts_emergency_num).then(ref => {
-                        ref.value = emergency_phone_nums;
-                    });
-                    execWhen(() => this.refs.contacts_manufacturer_name).then(ref => {
-                        ref.value = manufacturer;
-                    });
-                    execWhen(() => this.refs.contacts_manufacturer_num).then(ref => {
-                        ref.value = manufacturer_phone_num;
-                    });
-                }
+            execWhen(() => this.refs.contacts_emergency_num).then(ref => {
+                ref.value = emergency_phone_nums;
+            });
+            execWhen(() => this.refs.contacts_manufacturer_name).then(ref => {
+                ref.value = manufacturer;
+            });
+            execWhen(() => this.refs.contacts_manufacturer_num).then(ref => {
+                ref.value = manufacturer_phone_num;
+            });
+        }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onAddPhotograph">
@@ -205,8 +238,6 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onLoadPhotographPlaceholderList">
     onLoadPhotographPlaceholderList(list) {
         return () => Promise.resolve(list);
@@ -236,43 +267,32 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="precaution_photo_concentrate_list, precaution_photo_application_list">
-    get precaution_photo_concentrate_list() {
-        return this.refs.precaution_photo_concentrateGridView.list.filter(val => !!val);
-    }
-
-    get precaution_photo_application_list() {
-        return this.refs.precaution_photo_applicationGridView.list.filter(val => !!val);
-    }
-
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 0) {
+        if (idx === 0) {
             const {isConsultant} = storage.is;
             if (isConsultant && !form.isValid('client')) {
                 infoDialog.open('Company is required');
                 return;
             }
         }
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('has_product')) {
                 infoDialog.open('Please select "Has Chemical Product?" option');
                 return;
-            } else if(form.get('has_product') === 'Yes' && !form.isValid('product')){
+            } else if (form.get('has_product') === 'Yes' && !form.isValid('product')) {
                 infoDialog.open('Product is required');
                 return;
-            } 
+            }
             if (!form.isValid('has_sds')) {
                 infoDialog.open('Please select "Has SDS?" option');
                 return;
-            } else if(form.get('has_sds') === 'Yes' && !form.isValid('sds')){
+            } else if (form.get('has_sds') === 'Yes' && !form.isValid('sds')) {
                 infoDialog.open('Safety Data Sheet (SDS) is required');
                 return;
-            } 
+            }
             if (!form.isValid('physical_state')) {
                 infoDialog.open('Physical State is required');
                 return;
@@ -282,11 +302,12 @@ class Controls extends React.Component {
                 return;
             }
         }
-        
+
         return true;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {
@@ -295,9 +316,9 @@ class Controls extends React.Component {
             precaution_photo_concentrate_list,
             precaution_photo_application_list
         } = this;
-        
+
         const {isConsultant, isNoProjects} = storage.is;
-        
+
         //0
         if (isConsultant && !form.isValid('client')) {
             infoDialog.open('Company is required');
@@ -307,18 +328,18 @@ class Controls extends React.Component {
         if (!form.isValid('has_product')) {
             infoDialog.open('Please select "Has Chemical Product?" option');
             return;
-        } else if(form.get('has_product') === 'Yes' && !form.isValid('product')){
+        } else if (form.get('has_product') === 'Yes' && !form.isValid('product')) {
             infoDialog.open('Product is required');
             return;
-        } 
+        }
         if (!form.isValid('has_sds')) {
             infoDialog.open('Please select "Has SDS?" option');
             return;
-        } else if(form.get('has_sds') === 'Yes' && !form.isValid('sds')){
+        } else if (form.get('has_sds') === 'Yes' && !form.isValid('sds')) {
             infoDialog.open('Safety Data Sheet (SDS) is required');
             return;
-        } 
-            
+        }
+
         if (!form.isValid('physical_state')) {
             infoDialog.open('Physical State is required');
             return;
@@ -354,21 +375,20 @@ class Controls extends React.Component {
 
             doc
         } = form.data;
-        const data = {
-        };
+        const data = {};
         //
         ShouldUpdate.checkClient(data, old_data, client);
         ShouldUpdate.checkProject(data, old_data, project);
         ShouldUpdate.checkSite(data, old_data, site);
-        
+
         //1
         ShouldUpdate.check(data, old_data, name, 'name');
-        
-        if(product && old_data.product) {
-            if(product.id !== old_data.product.id) {
+
+        if (product && old_data.product) {
+            if (product.id !== old_data.product.id) {
                 data.product_id = product.id;
             }
-        } else if(product) {
+        } else if (product) {
             data.product_id = product.id;
         }
         //[path]
@@ -454,13 +474,6 @@ class Controls extends React.Component {
         });
     }
 
-    // </editor-fold>
-
-    @computed
-    get item() {
-        return this.props.state.item;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         if (!this.item)
@@ -506,17 +519,22 @@ class Controls extends React.Component {
         const {isConsultant, isNoProjects} = storage.is;
 
         return <FormControls>
-            {!isNoProjects && <Row 
-                rendered  
+            {!isNoProjects && <Row
+                rendered
                 active
                 idx={0}
-                title="Company / Project / Site" 
-                onFormOpen={onFormOpen} 
+                title="Company / Project / Site"
+                onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {isConsultant && <SelectClientInput name="client" placeholder="Company..." defaultValue={RenderUtils.selectedClient.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                <SelectProjectInput name="project" placeholder="Project..." defaultValue={RenderUtils.selectedProject.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)} required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                {isConsultant && <SelectClientInput name="client" placeholder="Company..."
+                                                    defaultValue={RenderUtils.selectedClient.call(this)} required
+                                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectProjectInput name="project" placeholder="Project..."
+                                    defaultValue={RenderUtils.selectedProject.call(this)} required
+                                    className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectSiteInput name="site" placeholder="Site..." defaultValue={RenderUtils.selectedSite.call(this)}
+                                 required className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>}
             <Row
                 rendered
@@ -527,28 +545,39 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="has_product" type="radio" placeholder="Has Chemical Product?" vertical className="col-lg-6 hor-center form-control" onChange={this.form.onChange} values={this.state.lists.has_product} returnValue/>
+                <ClearableInput name="has_product" type="radio" placeholder="Has Chemical Product?" vertical
+                                className="col-lg-6 hor-center form-control" onChange={this.form.onChange}
+                                values={this.state.lists.has_product} returnValue/>
                 <Fragment ref="product_details_sec" rendered={false}>
-                    <label className="col-lg-6 hor-center text-center padding-0">Link With Chemical Product If Available</label>
-                    <SelectChemicalProductInput name="product" placeholder="Chemical Product..." defaultValue={product} className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
+                    <label className="col-lg-6 hor-center text-center padding-0">Link With Chemical Product If
+                        Available</label>
+                    <SelectChemicalProductInput name="product" placeholder="Chemical Product..." defaultValue={product}
+                                                className="col-lg-6 hor-center form-control"
+                                                onChange={this.form.onChange}/>
                     <SelectedProduct state={this.state}/>
                 </Fragment>
-                
+
                 <hr className="col-lg-12 margin-t-5 margin-b-20 margin-r-5"/>
-                
-                <ClearableInput name="has_sds" type="radio" placeholder="Has SDS?" vertical className="col-lg-6 hor-center margin-t-15 form-control" onChange={this.form.onChange} values={this.state.lists.has_sds} returnValue/>
+
+                <ClearableInput name="has_sds" type="radio" placeholder="Has SDS?" vertical
+                                className="col-lg-6 hor-center margin-t-15 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.has_sds} returnValue/>
                 <Fragment ref="sds_details_sec" rendered={false}>
                     <label className="col-lg-6 hor-center text-center padding-0">Link With SDS If Available</label>
-                    <SelectSDSProductInput name="sds" type="select" placeholder="Safety Data Sheet (SDS)..." defaultValue={sds} className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
+                    <SelectSDSProductInput name="sds" type="select" placeholder="Safety Data Sheet (SDS)..."
+                                           defaultValue={sds} className="col-lg-6 hor-center form-control"
+                                           onChange={this.form.onChange}/>
                 </Fragment>
-                
+
                 <hr className="col-lg-12 margin-t-5 margin-b-20 margin-r-5"/>
-                
+
                 <label className="col-lg-6 hor-center text-center padding-0">Other Basic Info</label>
-                <ClearableInput ref="name" name="name" type="text" placeholder="Chemical Name" className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
-                
+                <ClearableInput ref="name" name="name" type="text" placeholder="Chemical Name"
+                                className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
+
                 <SelectChemicalPhysicalStateInput name="physical_state" placeholder="Physical State..."
-                                                  defaultValue={physical_state} className="col-lg-6 hor-center form-control"
+                                                  defaultValue={physical_state}
+                                                  className="col-lg-6 hor-center form-control"
                                                   onChange={this.form.onChange}/>
                 <SelectChemicalTypesInput name="type" placeholder="Type..." defaultValue={type}
                                           className="col-lg-6 hor-center form-control" onChange={this.form.onChange}/>
@@ -802,19 +831,21 @@ class Controls extends React.Component {
                         <ClearableInput name="contacts_emergency_name" type="text" placeholder="Emergency Contact Name"
                                         defaultValue={contacts_emergency_name}
                                         className="w-full margin-b-10 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="contacts_emergency_num" 
-                                        name="contacts_emergency_num" type="select_multi" 
+                        <ClearableInput ref="contacts_emergency_num"
+                                        name="contacts_emergency_num" type="select_multi"
                                         placeholder="Emergency Contact No. ..." className="w-full form-control"
                                         defaultValue={contacts_emergency_num}
-                                        onChange={this.form.onChange} 
+                                        onChange={this.form.onChange}
                                         values={this.state.lists.emergency_phone_nums} add returnValue/>
                     </div>
                     <div className="grid-1 grid-gap-5 padding-10 padding-t-5 bg-f8f8f8">
                         <label className="margin-0 margin-b-5">Manufacturer</label>
-                        <ClearableInput name="contacts_manufacturer_name" type="text" placeholder="Manufacturer Contact Name"
+                        <ClearableInput name="contacts_manufacturer_name" type="text"
+                                        placeholder="Manufacturer Contact Name"
                                         defaultValue={contacts_manufacturer_name}
                                         className="w-full margin-b-10 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="contacts_manufacturer_num" type="text" placeholder="Manufacturer Contact No."
+                        <ClearableInput name="contacts_manufacturer_num" type="text"
+                                        placeholder="Manufacturer Contact No."
                                         defaultValue={contacts_manufacturer_num} className="w-full form-control"
                                         onChange={this.form.onChange}/>
                     </div>
@@ -839,6 +870,7 @@ class Controls extends React.Component {
             </Row>
         </FormControls>;
     }
+
     // </editor-fold>
 }
 

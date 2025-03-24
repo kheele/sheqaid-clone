@@ -6,20 +6,15 @@ import {computed, observable, toJS} from 'mobx';
 import Form from 'utils/Form';
 
 import {ShouldUpdate} from "utils/Utils";
-import {
-    ClearableInput,
-    SelectClientInput,
-    SelectProjectInput,
-    SelectSiteInput
-} from 'components/inputs';
+import {ClearableInput, SelectClientInput, SelectProjectInput, SelectSiteInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import RiskAssessmentItemBaselineTable from './RiskAssessmentItemBaselineTable';
 
 import style from "./EditBaselineRiskAssessmentDialog.lazy.css";
-import findByIdBaselineRA from "mutations/all/HIRA_And_Opportunities/BaselineRA/findByIdBaselineRA";
-import updateBaselineRA from "mutations/all/HIRA_And_Opportunities/BaselineRA/updateBaselineRA";
+import {findByIdBaselineRA} from "mutations/findById";
+import {updateBaselineRA} from "mutations/update";
 import {CircularProgress} from "@mui/material";
 //</editor-fold>
 
@@ -44,9 +39,10 @@ class EditBaselineRiskAssessmentDialog extends AEditDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 //</editor-fold>
 
 @observer
@@ -61,23 +57,31 @@ class Controls extends React.Component {
             })
         },
     };
+
     //</editor-fold>
 
     constructor() {
         super();
-        
+
         this.onFormChange = this.onFormChange.bind(this);
 
         this.form = new Form();
     }
-    
+
+    @computed get item() {
+        return this.props.state.item;
+    }
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onFormChange">
     onFormChange(idx) {
         const {dialog} = this.props;
         dialog.cssWidth = idx === 3 ? '100%' : '800px';
         return true;
     }
-    // </editor-fold>
+
+    //</editor-fold>
 
     //<editor-fold desc="onFormSave">
     onFormSave(e, btn) {
@@ -123,7 +127,7 @@ class Controls extends React.Component {
 
             const data = {};
 
-            if(isContractor) {
+            if (isContractor) {
                 ShouldUpdate.checkSite(data, old_data, site, 'contractor_site_id');
             } else {
                 ShouldUpdate.checkClient(data, old_data, client);
@@ -169,36 +173,43 @@ class Controls extends React.Component {
             } = form.data;
             const data = {};
 
-            if(list) {
+            if (list) {
                 data.list = toJS(list.map(oldVal => {
-                    const {responsible_person, target_date, due_date, risk_type, control_measure_list, control_measure_list_additional} = oldVal;
+                    const {
+                        responsible_person,
+                        target_date,
+                        due_date,
+                        risk_type,
+                        control_measure_list,
+                        control_measure_list_additional
+                    } = oldVal;
                     const val = {};
-                    if(responsible_person && responsible_person.data) {
+                    if (responsible_person && responsible_person.data) {
                         const {id, data: {fname, lname}} = responsible_person;
                         val.responsible_person = {id, fname, lname};
                     }
-                    if(target_date && isDate(target_date)) {
+                    if (target_date && isDate(target_date)) {
                         val.target_date = target_date.getTime();
                     }
-                    if(due_date && isDate(due_date)) {
+                    if (due_date && isDate(due_date)) {
                         val.due_date = due_date.getTime();
                     }
 
-                    if(risk_type) {
+                    if (risk_type) {
                         val.risk_type = toJS(risk_type);
                     }
-                    if(control_measure_list) {
+                    if (control_measure_list) {
                         val.control_measure_list = toJS(control_measure_list.map(v => toJS(v)));
                     }
-                    if(control_measure_list_additional) {
+                    if (control_measure_list_additional) {
                         val.control_measure_list_additional = toJS(control_measure_list_additional.map(oldVal => {
                             const {text, responsible_person, cost, date_completed} = oldVal;
                             const val = {};
-                            if(responsible_person && responsible_person.data) {
+                            if (responsible_person && responsible_person.data) {
                                 const {id, data: {fname, lname}} = responsible_person;
                                 val.responsible_person = {id, fname, lname};
                             }
-                            if(date_completed && isDate(date_completed)) {
+                            if (date_completed && isDate(date_completed)) {
                                 val.date_completed = date_completed.getTime();
                             }
                             return {...oldVal, ...val};
@@ -214,12 +225,6 @@ class Controls extends React.Component {
 
         return true;
     }
-
-    //</editor-fold>
-
-    @computed get item() {
-		return this.props.state.item;
-	}
 
     //<editor-fold desc="render">
     render() {
@@ -252,74 +257,78 @@ class Controls extends React.Component {
 
         return <FormControls>
             {!isNoProjects && <Row
-              rendered
-              active
-              idx={0}
-              title="Company / Project / Site"
-              onFormOpen={onFormOpen}
-              onFormNext={onFormNext}
-              onFormChange={onFormChange}
-              onFormSave={this.onFormSave}
+                rendered
+                active
+                idx={0}
+                title="Company / Project / Site"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormChange={onFormChange}
+                onFormSave={this.onFormSave}
             >
                 {isConsultant && <SelectClientInput
-                  name="client"
-                  placeholder="Company..."
-                  defaultValue={RenderUtils.selectedClient.call(this)}
-                  showAll
-                  className="col-lg-12 form-control"
-                  onChange={this.form.onChange}
+                    name="client"
+                    placeholder="Company..."
+                    defaultValue={RenderUtils.selectedClient.call(this)}
+                    showAll
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
                 />}
                 <SelectProjectInput
-                  name="project"
-                  placeholder="Project..."
-                  defaultValue={RenderUtils.selectedProject.call(this)}
-                  showAll
-                  className="col-lg-12 form-control"
-                  onChange={this.form.onChange}
+                    name="project"
+                    placeholder="Project..."
+                    defaultValue={RenderUtils.selectedProject.call(this)}
+                    showAll
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
                 />
                 <SelectSiteInput
-                  name="site"
-                  placeholder="Site..."
-                  defaultValue={RenderUtils.selectedSite.call(this)}
-                  showAll
-                  className="col-lg-12 form-control"
-                  onChange={this.form.onChange}
+                    name="site"
+                    placeholder="Site..."
+                    defaultValue={RenderUtils.selectedSite.call(this)}
+                    showAll
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
                 />
             </Row>}
             <Row
-              rendered
-              active={isNoProjects}
-              idx={1}
-              title="1. Basic Details"
-              sectionClassName="-margin-r-10"
-              onFormOpen={onFormOpen}
-              onFormNext={onFormNext}
-              onFormBack={onFormBack}
-              onFormChange={onFormChange}
-              onFormSave={this.onFormSave}
+                rendered
+                active={isNoProjects}
+                idx={1}
+                title="1. Basic Details"
+                sectionClassName="-margin-r-10"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormBack={onFormBack}
+                onFormChange={onFormChange}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="activity" type="text" placeholder="Activity" defaultValue={activity} required
                                 className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
-                <ClearableInput name="expiry_date" type="date" placeholder="Revision Date..." defaultValue={expiry_date} required
+                <ClearableInput name="expiry_date" type="date" placeholder="Revision Date..." defaultValue={expiry_date}
+                                required
                                 className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}/>
-                <ClearableInput name="risk_tolerance" type="select" placeholder="Risk Tolerance" defaultValue={risk_tolerance} required
+                <ClearableInput name="risk_tolerance" type="select" placeholder="Risk Tolerance"
+                                defaultValue={risk_tolerance} required
                                 className="col-lg-12 form-control margin-b-15" onChange={this.form.onChange}
                                 values={this.state.lists.risk_tolerance} add returnValue/>
             </Row>
             <Row
-              rendered
-              idx={2}
-              title="2. Assessed Items"
-              sectionClassName="overflow-auto"
-              onFormOpen={onFormOpen}
-              onFormBack={onFormBack}
-              onFormChange={onFormChange}
-              onFormSave={this.onFormSave}
+                rendered
+                idx={2}
+                title="2. Assessed Items"
+                sectionClassName="overflow-auto"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormChange={onFormChange}
+                onFormSave={this.onFormSave}
             >
-                <RiskAssessmentItemBaselineTable name="list" item={item} defaultValue={list} onChange={this.form.onChange}/>
+                <RiskAssessmentItemBaselineTable name="list" item={item} defaultValue={list}
+                                                 onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }
+
     //</editor-fold>
 }
 

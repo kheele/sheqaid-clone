@@ -15,25 +15,25 @@ import insertIncidentSeverity from "mutations/all/Incident/IncidentSeverity/inse
 import updateIncidentDocument from "mutations/all/Incident/IncidentDocument/updateIncidentDocument";
 import insertIncidentDocument from "mutations/all/Incident/IncidentDocument/insertIncidentDocument";
 import {
-	insertProxyIncidentActivity,
-	insertProxyIncidentCategory,
-	insertProxyIncidentDistribution,
-	insertProxyIncidentInjuryList,
-	insertProxyIncidentPersonInvolved,
-	insertProxyIncidentSector,
-	insertProxyIncidentSubCategory,
-	insertProxyIncidentWitness,
-} from "mutations/all/Proxy/insertProxy";
+    insertProxyIncidentActivity,
+    insertProxyIncidentCategory,
+    insertProxyIncidentDistribution,
+    insertProxyIncidentInjuryList,
+    insertProxyIncidentPersonInvolved,
+    insertProxyIncidentSector,
+    insertProxyIncidentSubCategory,
+    insertProxyIncidentWitness,
+} from "mutations/create";
 import {
-	updateProxyIncidentActivity,
-	updateProxyIncidentCategory,
-	updateProxyIncidentDistribution,
-	updateProxyIncidentInjuryList,
-	updateProxyIncidentPersonInvolved,
-	updateProxyIncidentSector,
-	updateProxyIncidentSubCategory,
-	updateProxyIncidentWitness,
-} from "mutations/all/Proxy/updateProxy";
+    updateProxyIncidentActivity,
+    updateProxyIncidentCategory,
+    updateProxyIncidentDistribution,
+    updateProxyIncidentInjuryList,
+    updateProxyIncidentPersonInvolved,
+    updateProxyIncidentSector,
+    updateProxyIncidentSubCategory,
+    updateProxyIncidentWitness,
+} from "mutations/update";
 import updateIncidentTestType from "mutations/all/Incident/IncidentTestType/updateIncidentTestType";
 import insertIncidentTestType from "mutations/all/Incident/IncidentTestType/insertIncidentTestType";
 import AIncidentWritableForm from "./IncidentForms/AIncidentWritableForm";

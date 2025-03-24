@@ -1,18 +1,14 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {toJS, extendObservable} from 'mobx';
+import {extendObservable, toJS} from 'mobx';
 
 import {Button, ClearableInput, UploadButton} from 'components/inputs';
 import {ATableSavable, Table, TBody, THead, TRow} from 'components/tables';
-import insertInvestigationDocument
-    from "mutations/all/Incident/InvestigationDocument/insertInvestigationDocument";
-import updateInvestigationDocument
-    from "mutations/all/Incident/InvestigationDocument/updateInvestigationDocument";
-import updateInvestigationFinding
-    from "mutations/all/Incident/InvestigationFinding/updateInvestigationFinding";
-import insertInvestigationFinding
-    from "mutations/all/Incident/InvestigationFinding/insertInvestigationFinding";
+import insertInvestigationDocument from "mutations/all/Incident/InvestigationDocument/insertInvestigationDocument";
+import updateInvestigationDocument from "mutations/all/Incident/InvestigationDocument/updateInvestigationDocument";
+import updateInvestigationFinding from "mutations/all/Incident/InvestigationFinding/updateInvestigationFinding";
+import insertInvestigationFinding from "mutations/all/Incident/InvestigationFinding/insertInvestigationFinding";
 // </editor-fold>
 
 const calcCosts = (...args) => {
@@ -404,7 +400,7 @@ class NewDocumentTable extends ATableSavable {
 
             const {id, doc} = item;
 
-            alert(action)
+            // alert(action)
 
             if (action === "save" || action === "saveEdit") {
                 progressDialog.open();

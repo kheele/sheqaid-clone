@@ -7,12 +7,7 @@ import style from "./MSDSTab.lazy.css";
 import APageListReadWrite from "views/APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {
-    Button,
-    ClearableInput,
-    SelectChemicalCategoryInput,
-    SelectChemicalManufacturerInput
-} from 'components/inputs';
+import {Button, ClearableInput, SelectChemicalCategoryInput, SelectChemicalManufacturerInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
 import NewMSDSDialog from '../forms/NewMSDSDialog';
@@ -24,7 +19,8 @@ import ExportMSDSsDialog from '../dialogs/ExportMSDSsDialog.js';
 import MSDSRenderRow from "./MSDSRenderRow";
 import ProfilePDFReader from '../printers/ProfileMSDSPDFReader';
 
-import updateChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/updateChemicalSDS";
+import {updateChemicalSDS} from "mutations/update";
+
 // </editor-fold>
 
 @observer
@@ -46,15 +42,15 @@ class MSDSTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
-        this.onExportAll=this.onExportAll.bind(this);
-        
+
+        this.onExportAll = this.onExportAll.bind(this);
+
         this.onRemoved = this.onRemoved.bind(this);
-        
+
         this.onExport = this.onExport.bind(this);
-        
+
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
-        
+
         this.onAttachProduct = this.onAttachProduct.bind(this);
 
         this.renderItem = this.renderItem.bind(this);
@@ -62,6 +58,7 @@ class MSDSTab extends React.Component {
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentMount">
@@ -72,6 +69,7 @@ class MSDSTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
@@ -85,7 +83,7 @@ class MSDSTab extends React.Component {
         } = filterData || {};
 
         const listByLogged = sockets.of('chemicals/sds').fn('listByLogged');
-        
+
         return listByLogged({
             name,
             category,
@@ -100,15 +98,16 @@ class MSDSTab extends React.Component {
             return res;
         });
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="onExportAll">
     onExportAll(e, btn) {
         const {getDialogByRef} = this.refs.root;
         const exportDialog = getDialogByRef('exportDialog');
         exportDialog.open();
     }
+
     //</editor-fold>
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
@@ -117,20 +116,21 @@ class MSDSTab extends React.Component {
     onExport(e, btn) {
         this.refs.exportDialog.open();
     }
-    
+
     async onSaveAsPDF(e, btn) {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
-    
+
     onAttachProduct(evt, elem) {
         const {idx} = elem.props;
         const item = this.refs.root.list[idx];
         this.refs.editDialog.open(item).then(res => {
-            
+
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
@@ -143,8 +143,9 @@ class MSDSTab extends React.Component {
             </Button>
         </div>;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const item = this.refs.root.list[idx];
@@ -154,22 +155,31 @@ class MSDSTab extends React.Component {
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onAttachProduct} faIconLeft="plus" title={`${product ? 'Change' : 'Attach'} Chemical Product`}/>
+            <NavItem action="writable" idx={idx} onClick={this.onAttachProduct} faIconLeft="plus"
+                     title={`${product ? 'Change' : 'Attach'} Chemical Product`}/>
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
+                     title="Save As PDF"/>
         </Options>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control" onChange={onChange}/>
-            <SelectChemicalCategoryInput name="category" placeholder="Category..." className="form-control" onChange={onChange}/>
-            <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..." className="fixed-flex min-w-200 form-control" onChange={onChange} values={this.state.lists.risk_level} returnValue/>
+            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control"
+                            onChange={onChange}/>
+            <SelectChemicalCategoryInput name="category" placeholder="Category..." className="form-control"
+                                         onChange={onChange}/>
+            <SelectChemicalManufacturerInput name="manufacturer" placeholder="Manufacturer..." className="form-control"
+                                             onChange={onChange}/>
+            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..."
+                            className="fixed-flex min-w-200 form-control" onChange={onChange}
+                            values={this.state.lists.risk_level} returnValue/>
         </div>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
@@ -186,6 +196,7 @@ class MSDSTab extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
@@ -193,11 +204,12 @@ class MSDSTab extends React.Component {
         const item = this.refs.root.list[n];
         return <MSDSRenderRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -213,15 +225,16 @@ class MSDSTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateChemicalSDS}/>
-            
+
             <ProfileMSDSDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <NewMSDSDialog ref="newDialog"/>
             <EditMSDSDialog ref="editDialog" onRemoved={this.onRemoved}/>
-            
+
             <ProfilePDFReader ref="pdfReader"/>
             <ExportMSDSsDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
+
     // </editor-fold>
 }
 

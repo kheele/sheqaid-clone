@@ -7,41 +7,41 @@ import Form from 'utils/Form';
 
 import {execWhen} from "utils/Utils";
 import {
-	Button,
-	ClearableInput,
-	Clickable,
-	SelectChemicalPhysicalStateInput,
-	SelectChemicalProductInput,
-	SelectChemicalTypesInput,
-	SelectClientInput,
-	SelectProjectInput,
-	SelectSDSProductInput,
-	SelectSiteInput,
-	UploadButton
+    Button,
+    ClearableInput,
+    Clickable,
+    SelectChemicalPhysicalStateInput,
+    SelectChemicalProductInput,
+    SelectChemicalTypesInput,
+    SelectClientInput,
+    SelectProjectInput,
+    SelectSDSProductInput,
+    SelectSiteInput,
+    UploadButton
 } from 'components/inputs';
 import {FormControls, Fragment, Row} from 'components/FormComponents';
 import GridView from 'components/lists/GridView';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import {
-	NewActiveIngredientListTable,
-	NewBiologicalHazardListTable,
-	NewContactWithSkinListTable,
-	NewFumesBreathedInListTable,
-	NewLargeSpillsListTable,
-	NewMouthContactOrEatenListTable,
-	NewPhysicalHazardListTable,
-	NewReproductiveHazardListTable,
-	NewSmallSpillsListTable,
-	NewSplashesInEyesListTable,
-	NewUnusedProductListTable,
-	NewUsedContainersInListTable,
-	SelectedProduct
+    NewActiveIngredientListTable,
+    NewBiologicalHazardListTable,
+    NewContactWithSkinListTable,
+    NewFumesBreathedInListTable,
+    NewLargeSpillsListTable,
+    NewMouthContactOrEatenListTable,
+    NewPhysicalHazardListTable,
+    NewReproductiveHazardListTable,
+    NewSmallSpillsListTable,
+    NewSplashesInEyesListTable,
+    NewUnusedProductListTable,
+    NewUsedContainersInListTable,
+    SelectedProduct
 } from '../dialogs/Components';
 import {changeColors, onChangeHasProduct, onChangeHasSDS, onChangeProduct, onChangeSDS} from '../dialogs/Utils';
 
 import style from "./NewHazchemSheetDialog.lazy.css";
-import insertChemicalHazchemsheet from "mutations/all/Chemicals/ChemicalHazchemsheet/insertChemicalHazchemsheet";
+import {insertChemicalHazchemsheet} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

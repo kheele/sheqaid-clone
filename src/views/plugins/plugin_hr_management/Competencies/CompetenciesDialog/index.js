@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -11,6 +9,7 @@ import CompetenciesRenderRow from "./CompetenciesRenderRow";
 import {THead} from "components/tables";
 import {ClearableInput, SelectTrainingCourseInput} from "components/inputs";
 
+import {exportExcelEmployeeCompetencies} from "mutations/exportExcel";
 import {updateEmployeeCompetency} from "mutations/update";
 import {findByIdOrgCompetenciesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCompetenciesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
@@ -25,10 +24,21 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Competencies";
     module = "Competencies";
     onUpdate = updateEmployeeCompetency;
+    exportExcel = exportExcelEmployeeCompetencies;
     filterNodeGrid = 5;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
+    };
+
+    selfState2 = {
+        lists: {
+            type: [{text: "Accredited", value: "Accredited"}, {text: "Non-Accredited", value: "Non-Accredited"}],
+            competency_type: [{label: 'Behavioural', value: 'Behavioural'}, {
+                label: 'Technical / Functional',
+                value: 'Technical / Functional'
+            }, {label: 'Leadership', value: 'Leadership'}],
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -98,20 +108,37 @@ class Dialog extends AEmployeeDocDialog {
 
     renderExportFilterNode(onChange) {
         return <>
+            <ClearableInput
+                name="type"
+                type="radio"
+                placeholder="Certificate Type"
+                vertical
+                className="col-lg-12 h-110 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.type}
+                returnValue
+            />
+            <ClearableInput
+                name="competency_type"
+                type="select" placeholder="Competency Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.competency_type}
+                returnValue
+            />
             <SelectTrainingCourseInput
                 name="course"
                 placeholder="Course..."
-                className="form-control"
+                className="col-lg-12 margin-0 form-control"
                 onChange={onChange}
                 add={false}
             />
-            {createTypeInput(onChange)}
-            {createCompetencyTypeInput(onChange)}
+            <hr className="pull-left no-border bg-ddd h-2"/>
             <ClearableInput
                 name="issued_date"
                 type="date"
                 placeholder="Date Of Issue..."
-                className="form-control"
+                className="col-lg-12 margin-0 form-control"
                 onChange={onChange}
             />
         </>;
@@ -136,6 +163,7 @@ class Dialog extends AEmployeeDocDialog {
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
                 <div className="td fixed-flex min-w-140">Accreditation No.</div>
+                <div className="td fixed-flex min-w-140">Certificate No.</div>
                 <div className="td fixed-flex min-w-120">Certificate Type</div>
                 <div className="td fixed-flex min-w-160">Competency Type</div>
                 <div className="td">Course</div>

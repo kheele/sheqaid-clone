@@ -10,11 +10,14 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 import {updateProject} from "mutations/update";
+import {NewSiteListTable} from "components/FormTableComponents";
+import {findByIdProject} from "mutations/findById";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Projects";
     removeById = updateProject;
+    findById = findByIdProject;
 
     constructor(props) {
         super(props, style);
@@ -53,7 +56,7 @@ class Controls extends React.Component {
             item: {
                 id, data: {
                     created_at,
-                    name, address, client, sites
+                    name, address, client, site_list
                 }
             }
         } = this;
@@ -64,7 +67,8 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={1}
-                title="Project Details">
+                title="Project Details"
+            >
                 <ProfileField name="name" type="text" placeholder="Project Name" value={name} required
                               className="col-lg-12"/>
                 <ProfileField name="address" type="textarea" placeholder="Project Address" value={address}
@@ -77,8 +81,14 @@ class Controls extends React.Component {
                 rendered
                 idx={2}
                 rowClassName="flex row-more"
-                title="Sites">
-                <p>Sites<h4 className="hor-center">{sites ? sites.length : 0}</h4></p>
+                title="Sites"
+            >
+                <NewSiteListTable
+                    title="Sites"
+                    name="site_list"
+                    defaultValue={site_list}
+                    readonly
+                />
             </Row>
         </FormControls>;
     }

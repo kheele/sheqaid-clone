@@ -1,8 +1,0 @@
-
-#_09_HIRA_And_Opportunities-page{
-    height: 100%;
-}
-#_09_HIRA_And_Opportunities-page > .tabs {
-    margin: 0 10px 0 0px;
-    height: calc(100% - 20px);
-}

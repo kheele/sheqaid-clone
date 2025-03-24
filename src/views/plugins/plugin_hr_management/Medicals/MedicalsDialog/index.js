@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -14,6 +12,7 @@ import {ClearableInput,} from "components/inputs";
 import {updateEmployeeMedical} from "mutations/update";
 import {findByIdOrgMedicalsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgMedicalsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeMedicals} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -25,10 +24,22 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Medicals";
     module = "Medicals";
     onUpdate = updateEmployeeMedical;
+    exportExcel = exportExcelEmployeeMedicals;
     filterNodeMarginB = 35;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
+    };
+
+    selfState2 = {
+        lists: {
+            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}],
+            fitness_option: [{text: "Fit", value: "Fit", checked: false}, {
+                text: "Fit with Restrictions",
+                value: "Fit with Restrictions",
+                checked: false
+            }],
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -43,10 +54,12 @@ class Dialog extends AEmployeeDocDialog {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             annexture_3,
+            fitness_option,
         } = filterData || {};
         return {
             path: 'employees/docs/medicals',
             annexture_3,
+            fitness_option,
         };
     }
 
@@ -69,13 +82,45 @@ class Dialog extends AEmployeeDocDialog {
     //<editor-fold desc="renderFilterNodeAll">
     renderFilterNodeAll(onChange) {
         const annexture_3 = [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}];
+        const fitness_option = [{text: "Fit", value: "Fit", checked: false}, {
+            text: "Fit with Restrictions",
+            value: "Fit with Restrictions",
+            checked: false
+        }];
         return <>
             <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" className="form-control"
                             onChange={onChange} values={annexture_3} returnValue/>
+            <ClearableInput name="fitness_option" type="radio" placeholder="Fitness" className="form-control"
+                            onChange={onChange} values={fitness_option} returnValue/>
         </>;
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput
+                name="annexture_3"
+                type="radio"
+                placeholder="Annexture 3?"
+                vertical
+                className="col-lg-12 h-110 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.annexture_3}
+                returnValue
+            />
+            <ClearableInput
+                name="fitness_option"
+                type="radio"
+                placeholder="Fitness"
+                vertical
+                className="col-lg-12 h-110 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.fitness_option}
+                returnValue
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
@@ -96,6 +141,7 @@ class Dialog extends AEmployeeDocDialog {
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
                 <div className="td">Restrictions</div>
+                <div className="td fixed-flex min-w-120">Fitness</div>
                 <div className="td fixed-flex min-w-120">Annexture 3?</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

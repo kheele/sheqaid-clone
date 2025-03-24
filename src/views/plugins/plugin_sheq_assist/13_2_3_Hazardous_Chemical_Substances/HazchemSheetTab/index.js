@@ -26,8 +26,8 @@ import ExportHazchemSheetsDialog from '../dialogs/ExportHazchemSheetsDialog.js';
 import HazchemSheetRenderRow from "./HazchemSheetRenderRow";
 import ProfilePDFReader from '../printers/ProfileHazchemSheetPDFReader';
 
-import updateChemicalHazchemsheet
-    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
+import {updateChemicalHazchemsheet} from "mutations/update";
+
 // </editor-fold>
 
 @observer
@@ -49,18 +49,19 @@ class HazchemSheetTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
 
         this.onExport = this.onExport.bind(this);
-        
+
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="componentMount">
@@ -71,6 +72,7 @@ class HazchemSheetTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onLoadList">
@@ -86,7 +88,7 @@ class HazchemSheetTab extends React.Component {
         } = filterData || {};
 
         const listByLogged = sockets.of('chemicals/hazchem-sheets').fn('listByLogged');
-        
+
         return listByLogged({
             name,
             category,
@@ -103,7 +105,7 @@ class HazchemSheetTab extends React.Component {
             return res;
         });
     }
-    
+
     //</editor-fold>
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
@@ -113,12 +115,13 @@ class HazchemSheetTab extends React.Component {
     onExport(e, btn) {
         this.refs.exportDialog.open();
     }
-    
+
     async onSaveAsPDF(e, btn) {
         const {idx} = btn.props;
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
@@ -131,8 +134,9 @@ class HazchemSheetTab extends React.Component {
             </Button>
         </div>;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
@@ -140,23 +144,32 @@ class HazchemSheetTab extends React.Component {
             <NavItem action="edit" onClick={onEdit} faIconLeft="edit" title="Edit"/>
             <NavItem action="remove" onClick={onRemove} faIconLeft="ban" title="Remove"/>
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
+                     title="Save As PDF"/>
         </Options>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls grid-3 grid-gap-10 padding-r-10">
-            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control" onChange={onChange}/>
-            <SelectChemicalCategoryInput ref="category" name="category" placeholder="Category..." className="form-control" onChange={onChange}/>
-            <SelectChemicalManufacturerInput ref="manufacturer" name="manufacturer" placeholder="Manufacturer..." className="form-control" onChange={onChange}/>
-            
-            <SelectChemicalPhysicalStateInput name="physical_state" placeholder="Physical State..." className="form-control" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Product Name" className="form-control"
+                            onChange={onChange}/>
+            <SelectChemicalCategoryInput ref="category" name="category" placeholder="Category..."
+                                         className="form-control" onChange={onChange}/>
+            <SelectChemicalManufacturerInput ref="manufacturer" name="manufacturer" placeholder="Manufacturer..."
+                                             className="form-control" onChange={onChange}/>
+
+            <SelectChemicalPhysicalStateInput name="physical_state" placeholder="Physical State..."
+                                              className="form-control" onChange={onChange}/>
             <SelectChemicalTypesInput name="type" placeholder="Type..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..." className="fixed-flex min-w-200 form-control" onChange={onChange} values={this.state.lists.risk_level} returnValue/>
+            <ClearableInput name="risk_level" type="select" placeholder="Risk Level..."
+                            className="fixed-flex min-w-200 form-control" onChange={onChange}
+                            values={this.state.lists.risk_level} returnValue/>
         </div>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
@@ -173,6 +186,7 @@ class HazchemSheetTab extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
@@ -180,11 +194,12 @@ class HazchemSheetTab extends React.Component {
         const item = this.refs.root.list[n];
         return <HazchemSheetRenderRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -199,19 +214,20 @@ class HazchemSheetTab extends React.Component {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog"  onSoftDelete={updateChemicalHazchemsheet}/>
-            
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updateChemicalHazchemsheet}/>
+
             <ProfileHazchemSheetDialog ref="profileDialog" onRemoved={this.onRemoved}/>
             <NewHazchemSheetDialog ref="newDialog"/>
             <EditHazchemSheetDialog ref="editDialog" onRemoved={this.onRemoved}/>
-            
+
             <ProfilePDFReader ref="pdfReader"/>
             <ExportHazchemSheetsDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
+
     // </editor-fold>
-    
-   
+
+
 }
 
 export default HazchemSheetTab;

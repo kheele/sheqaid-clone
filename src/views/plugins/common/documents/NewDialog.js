@@ -7,20 +7,20 @@ import Form from 'utils/Form';
 import {GDocEditor} from 'components/documents';
 
 import {
-	ClearableInput,
-	SelectClientInput,
-	SelectDepartmentInput,
-	SelectDocumentCategoryInput,
-	SelectEmployeeInput,
-	SelectProjectInput,
-	SelectSiteInput
+    ClearableInput,
+    SelectClientInput,
+    SelectDepartmentInput,
+    SelectDocumentCategoryInput,
+    SelectEmployeeInput,
+    SelectProjectInput,
+    SelectSiteInput
 } from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "../../../../utils/Dates";
-import insertDocument from "mutations/all/Document/insertDocument";
+import {Dates} from "utils/Dates";
+import {insertDocument} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

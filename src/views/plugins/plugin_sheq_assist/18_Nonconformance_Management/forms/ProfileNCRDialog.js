@@ -8,25 +8,25 @@ import {TRow} from 'components/tables';
 import {ActionsButton, Button, ClearableInput, ProfileField} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {
-	NewEmployeeListTable,
-	NewJobPositionListTable,
-	NewNCRResponsiblePartyListTable,
-	NewUserListTable
+    NewEmployeeListTable,
+    NewJobPositionListTable,
+    NewNCRResponsiblePartyListTable,
+    NewUserListTable
 } from 'components/FormTableComponents';
 
 import InspectionTableRow from 'views/plugins/plugin_sheq_assist/Inspections/InspectionTab/InspectionTableRow';
 
 import AuditTableRow from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/AuditTableRow';
 import {
-	IncidentTableRow
+    IncidentTableRow
 } from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/IncidentComponentRows';
 import {NewDocumentTable} from '../dialogs/NCRComponents';
 
 import ProfileSiteDialog from 'views/plugins/plugin_general/Sites/ProfileDialog.js';
 import ProfileAuditDialog
-	from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
+    from 'views/plugins/plugin_sheq_assist/21_Internal_Audit/AuditTab/forms/ProfileAuditDialog.js';
 import ProfileIncidentDialog
-	from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
+    from 'views/plugins/plugin_sheq_assist/17_Incident_Investigation/dialogs/ProfileIncidentDialog.js';
 
 import style from "./ProfileNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
@@ -34,13 +34,11 @@ import {Dates, execWhen, ShouldUpdate} from "utils/Utils";
 import Form from "utils/Form";
 import EditNCRDialog from "./EditNCRDialog";
 import {CircularProgress} from "@mui/material";
-import findByIdNCR from "mutations/all/NCR/findByIdNCR";
-import updateNCR from "mutations/all/NCR/updateNCR";
-import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
+import {findByIdAudit, findByIdNCR, findByIdSite} from "mutations/findById";
+import {updateNCR} from "mutations/update";
 import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 import findByIdInspectionsQuestionnaire
-	from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
-import {findByIdSite} from "mutations/findById";
+    from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog, DialogTitle, DialogTopButtons">

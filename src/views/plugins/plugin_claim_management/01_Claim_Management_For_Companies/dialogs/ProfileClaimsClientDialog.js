@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import {ProfileField, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -30,7 +30,7 @@ import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
 import findByIdWCL4 from "mutations/all/COIDA/WCL4/findByIdWCL4";
 import findByIdWCL5 from "mutations/all/COIDA/WCL5/findByIdWCL5";
 import findByIdWCL6 from "mutations/all/COIDA/WCL6/findByIdWCL6";
-import findByIdAnnexture1 from "mutations/all/COIDA/Annexture1/findByIdAnnexture1";
+import {findByIdAnnexture1} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -43,16 +43,16 @@ class ProfileDialog extends AProfileDialog {
         super(props, style);
     }
 
-    title() {
-        return "Claims";
-    }
-
     get topButtonsHiddenDelete() {
         return true;
     }
 
     get controls() {
         return Controls;
+    }
+
+    title() {
+        return "Claims";
     }
 }
 
@@ -80,6 +80,10 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    @computed get item() {
+        return this.props.state.item;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="buttons funs">
     onViewDialog(evt, btn) {
         const {name, title, dialogName} = btn.props;
@@ -104,6 +108,8 @@ class Controls extends React.Component {
 
         dialog && dialog.extraProp('employee', employee).extraProp('claim_number', claim_number).extraProp('accident_date', accident_date).open(value);
     }
+
+    // </editor-fold>
 
     onPrintDialog(evt, btn) {
         let {name, title, dialogName, value, findById} = btn.props;
@@ -144,6 +150,7 @@ class Controls extends React.Component {
             setTimeout(() => progressDialog.close());
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onClickChat">
@@ -155,12 +162,6 @@ class Controls extends React.Component {
                 console.log("claim chat res", res)
             });
         });
-    }
-
-    // </editor-fold>
-
-    @computed get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

@@ -78,20 +78,37 @@ class Controls extends AEmployeeDocControls {
                 onFormNext, onFormBack, onFormOpen
             }
         } = this;
-        const {created_at, annexture_3, restrictions, expiry_date, doc} = item.data || item;
-
+        const {
+            created_at,
+            annexture_3,
+            fitness_option,
+            restrictions,
+            expiry_date,
+            annexture3_doc,
+            doc
+        } = item.data || item;
 
         return <div className="row item-wrapper padding-t-10 h-full">
             <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Medical Fitness Details</label>
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}
-                              className="col-lg-6"/>
-                <ProfileField title="Annexture 3?" name="annexture_3" value={annexture_3} className="col-lg-6"/>
+                              className="col-lg-12"/>
+                <ProfileField title="Annexture 3?" name="annexture_3" value={annexture_3} className="col-lg-12"/>
+                <ProfileField title="Fitness" name="fitness_option" value={fitness_option} className="col-lg-12"/>
                 <ProfileField title="Restrictions" name="restrictions" value={restrictions} className="col-lg-12"/>
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
-            <label className="w-full margin-0 text-center">Document</label>
+            <label className="w-full margin-0 text-center">Documents</label>
             <div className="row margin-l-0 margin-r-0 margin-b-15 row-doc sec-group">
+                <UploadButton
+                    name="annexture3_doc"
+                    defaultValue={annexture3_doc}
+                    buttonTitle="Annexture 3 Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="w-280 hor-center"
+                />
                 <UploadButton
                     name="doc"
                     defaultValue={doc}

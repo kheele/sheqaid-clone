@@ -27,9 +27,9 @@ class Storage {
                 const clientType = isConsultant ? 'Consultant' : 'Client';
 
                 if (isTrial) {
-                    document.title = "SHEQ Aid (" + clientType + ") - Trial Version [" + trialDaysLeft + " days left]";
+                    document.title = "SHEQ Intel (" + clientType + ") - Trial Version [" + trialDaysLeft + " days left]";
                 } else {
-                    document.title = "SHEQ Aid (" + clientType + ") - Premium Version";
+                    document.title = "SHEQ Intel (" + clientType + ") - Premium Version";
                 }
             }
         });
@@ -192,6 +192,7 @@ class Storage {
 
         return currentUser.getIdToken(true).then(idToken => {
             const onUpdateSession = async (idToken) => {
+                // alert(`onUpdateSession ${idToken}`)
                 const updateSession = sockets.of('orgs').fn('updateSession');
                 return updateSession({idToken}).then(res => {
                     if (res === "RETRY") {

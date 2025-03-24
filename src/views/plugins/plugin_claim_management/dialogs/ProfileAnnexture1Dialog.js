@@ -8,7 +8,7 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AProfileDialog} from 'components/dialogs';
 
 import style from "./ProfileAnnexture1Dialog.lazy.css";
-import findByIdAnnexture1 from "mutations/all/COIDA/Annexture1/findByIdAnnexture1";
+import {findByIdAnnexture1} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

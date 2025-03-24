@@ -69,7 +69,7 @@ class PageFirst extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Cover Page</Text>
             </View>
         </Page>;
@@ -96,7 +96,7 @@ class PageLast extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Last Page</Text>
             </View>
         </Page>;
@@ -125,7 +125,7 @@ class Page2 extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -163,7 +163,7 @@ class PageAssetPics extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -307,7 +307,7 @@ class PagePurchaseDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -359,7 +359,7 @@ class PageDepreciationDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQIntel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -398,7 +398,7 @@ class PageWorkManualDocDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -437,7 +437,7 @@ class PageWorkProcedureDocDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -476,7 +476,7 @@ class PageClearanceCertificateDocDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -519,7 +519,7 @@ class PageOtherDocDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -536,6 +536,25 @@ class PageMonitoringPlanDetails extends React.Component {
         chartImgSrc_working_distance_or_time: null,
         chartImgSrc_fuel_usage: null
     };
+
+    @computed get working_distance_or_time_list() {
+        const {data: {monitoring_plan_working_distance_or_time_list}} = this.item;
+        return (monitoring_plan_working_distance_or_time_list || []).filter(v => !!v);
+    }
+
+    @computed get fuel_usage_list() {
+        const {data: {monitoring_plan_fuel_usage_list}} = this.item;
+        return (monitoring_plan_fuel_usage_list || []).filter(v => !!v);
+    }
+
+    get units() {
+        const {data: {asset_type}} = this.item;
+        return asset_type === 'Plant' ? 'Time' : 'Distance';
+    }
+
+    get item() {
+        return this.props.item;
+    }
 
     componentDidMount() {
         const {units, working_distance_or_time_list, fuel_usage_list} = this;
@@ -565,25 +584,6 @@ class PageMonitoringPlanDetails extends React.Component {
 
         createChart('working_distance_or_time', options_working_distance_or_time);
         createChart('fuel_usage', options_fuel_usage);
-    }
-
-    @computed get working_distance_or_time_list() {
-        const {data: {monitoring_plan_working_distance_or_time_list}} = this.item;
-        return (monitoring_plan_working_distance_or_time_list || []).filter(v => !!v);
-    }
-
-    @computed get fuel_usage_list() {
-        const {data: {monitoring_plan_fuel_usage_list}} = this.item;
-        return (monitoring_plan_fuel_usage_list || []).filter(v => !!v);
-    }
-
-    get units() {
-        const {data: {asset_type}} = this.item;
-        return asset_type === 'Plant' ? 'Time' : 'Distance';
-    }
-
-    get item() {
-        return this.props.item;
     }
 
     render() {
@@ -642,26 +642,40 @@ class PageMonitoringPlanDetails extends React.Component {
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
                     <Text style={styles.headingPoint}>MONITORING PLAN</Text>
                     <View style={[styles.flexColumn]}>
-                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>{units || 'Time/Distance'} Usage Statistics</Text>
+                        <Text style={{
+                            marginVertical: '5px',
+                            fontSize: '11px',
+                            fontWeight: 'bold'
+                        }}>{units || 'Time/Distance'} Usage Statistics</Text>
                         {chartImgSrc_working_distance_or_time &&
                             <Image style={[styles.copyPic, {marginTop: 0, maxWidth: '800px', maxHeight: '450px'}]}
                                    src={chartImgSrc_working_distance_or_time}/>}
                     </View>
                     <View style={[styles.flexColumn]}>
-                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>{units || 'Time/Distance'} Usage History</Text>
-                        {!this.working_distance_or_time_list.isEmpty() && <Table th col={['50%', '50%']} list={this.working_distance_or_time_list}/>}
-                        {this.working_distance_or_time_list.isEmpty() && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
+                        <Text style={{
+                            marginVertical: '5px',
+                            fontSize: '11px',
+                            fontWeight: 'bold'
+                        }}>{units || 'Time/Distance'} Usage History</Text>
+                        {!this.working_distance_or_time_list.isEmpty() &&
+                            <Table th col={['50%', '50%']} list={this.working_distance_or_time_list}/>}
+                        {this.working_distance_or_time_list.isEmpty() &&
+                            <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                     </View>
                     <View style={[styles.flexColumn]}>
-                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>Fuel Usage Statistics</Text>
+                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>Fuel Usage
+                            Statistics</Text>
                         {chartImgSrc_fuel_usage &&
                             <Image style={[styles.copyPic, {marginTop: 0, maxWidth: '800px', maxHeight: '450px'}]}
                                    src={chartImgSrc_fuel_usage}/>}
                     </View>
                     <View style={[styles.flexColumn]}>
-                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>Fuel Usage History</Text>
-                        {!this.fuel_usage_list.isEmpty() && <Table th col={['50%', '50%']} list={this.fuel_usage_list}/>}
-                        {this.fuel_usage_list.isEmpty() && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
+                        <Text style={{marginVertical: '5px', fontSize: '11px', fontWeight: 'bold'}}>Fuel Usage
+                            History</Text>
+                        {!this.fuel_usage_list.isEmpty() &&
+                            <Table th col={['50%', '50%']} list={this.fuel_usage_list}/>}
+                        {this.fuel_usage_list.isEmpty() &&
+                            <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                     </View>
                 </View>
             </View>
@@ -676,7 +690,7 @@ class PageMonitoringPlanDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -692,6 +706,20 @@ class PageMaintenancePlanDetails extends React.Component {
     @observable state = {
         chartImgSrc: null
     };
+
+    get maintenance_plan_list() {
+        const {data: {maintenance_plan}} = this.item;
+        return (maintenance_plan && maintenance_plan.list) || [];
+    }
+
+    get units() {
+        const {data: {asset_type}} = this.item;
+        return asset_type === 'Plant' ? 'Time' : 'Distance';
+    }
+
+    get item() {
+        return this.props.item;
+    }
 
     componentDidMount() {
         const {units, maintenance_plan_list: list} = this;
@@ -716,20 +744,6 @@ class PageMaintenancePlanDetails extends React.Component {
             this.state.chartImgSrc = src;
             body.removeChild(container);
         }, 500);
-    }
-
-    get maintenance_plan_list() {
-        const {data: {maintenance_plan}} = this.item;
-        return (maintenance_plan && maintenance_plan.list) || [];
-    }
-
-    get units() {
-        const {data: {asset_type}} = this.item;
-        return asset_type === 'Plant' ? 'Time' : 'Distance';
-    }
-
-    get item() {
-        return this.props.item;
     }
 
     render() {
@@ -815,7 +829,7 @@ class PageMaintenancePlanDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
@@ -903,7 +917,7 @@ class PageCalibrationRecordDetails extends React.Component {
                 right: 0,
                 bottom: 0
             }]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;

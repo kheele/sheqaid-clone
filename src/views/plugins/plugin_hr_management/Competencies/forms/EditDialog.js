@@ -159,6 +159,7 @@ class Controls extends React.Component {
             issued_date, expiry_date,
             type, competency_type,
             accreditation_num,
+            certificate_num,
             training,
             doc
         } = form.data;
@@ -173,6 +174,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, type, 'type');
         ShouldUpdate.check(data, old_data, competency_type, 'competency_type');
         ShouldUpdate.check(data, old_data, accreditation_num, 'accreditation_num');
+        ShouldUpdate.check(data, old_data, certificate_num, 'certificate_num');
         ShouldUpdate.checkTrainingMatrix(data, old_data, training, 'training_id');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
@@ -221,6 +223,7 @@ class Controls extends React.Component {
                     issued_date,
                     expiry_date,
                     accreditation_num,
+                    certificate_num,
                     doc
                 }
             },
@@ -249,6 +252,9 @@ class Controls extends React.Component {
                                 onChange={this.form.onChange} values={this.state.lists.competency_type} returnValue
                                 add/>
                 <ClearableInput name="accreditation_num" type="text" placeholder="Accreditation Number"
+                                defaultValue={accreditation_num} required className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="certificate_num" type="text" placeholder="Certificate Number"
                                 defaultValue={accreditation_num} required className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
             </Row>

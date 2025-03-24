@@ -1,22 +1,24 @@
 @import '../../../../css/AProfileDialog.css';
 
-#dialog-overlay.Projects-profile-dialog .dialog-container{
+#dialog-overlay.Projects-profile-dialog .dialog-container {
     height: 630px;
-    width: 620px;
+    width: 800px;
     max-width: 100%;
 }
-#dialog-overlay.Projects-profile-dialog .dialog-content{
+
+#dialog-overlay.Projects-profile-dialog .dialog-content {
     padding: 0;
     height: calc(100% - 50px);
 }
 
-.row-more p{
+.row-more p {
     text-align: center;
     margin: 0;
     font-size: 20px;
     color: #888;
 }
-.row-more p h4{
+
+.row-more p h4 {
     background: rgb(2, 168, 168);
     color: #eee;
     width: 50px;

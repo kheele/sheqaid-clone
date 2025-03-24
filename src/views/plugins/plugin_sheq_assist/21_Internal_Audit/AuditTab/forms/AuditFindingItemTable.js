@@ -10,21 +10,21 @@ import NewAuditItemDialog from './NewAuditItemDialog';
 import AuditItemTHead from './AuditItemTHead';
 import AuditItemTBody from './AuditItemTBody';
 
-import deleteAuditItem from "mutations/all/AuditsAndInspections/AuditItem/deleteAuditItem";
+import {deleteAuditItem} from "mutations/delete";
 
 import style from "./AuditFindingItemTable.lazy.css";
 
 @observer
 class AuditFindingItemTable extends React.Component {
-    
+
     @observable
     state = {
         list: []
     };
-    
+
     constructor(props) {
         super(props);
-        
+
         this.onEditItem = this.onEditItem.bind(this);
         this.onSelect = this.onSelect.bind(this);
         this.onNew = this.onNew.bind(this);
@@ -33,10 +33,16 @@ class AuditFindingItemTable extends React.Component {
         this.close = this.close.bind(this);
     }
 
+    @computed get topButtons() {
+        return <>
+            <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
+        </>;
+    }
+
     componentWillMount() {
         style.use();
         const {isDialog, defaultValue} = this.props;
-        if(!isDialog) {
+        if (!isDialog) {
             this.state.list = defaultValue;
         }
     }
@@ -44,7 +50,7 @@ class AuditFindingItemTable extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
-    
+
     setOnCancel(onCancel) {
         this._onCancel = onCancel;
         return this;
@@ -70,77 +76,82 @@ class AuditFindingItemTable extends React.Component {
         this._onCancel && this._onCancel();
         this.close();
     }
-    
+
     onEditItem(item) {
         return this.refs.newDialog.open(item);
     }
-    
+
     onSelect(item) {
         const {onChange, name} = this.props;
         onChange && onChange(item, name, this);
         this.close();
     }
-    
+
     onNew(element, sub_element) {
         const {onChange, name} = this.props;
         const {tbody, newDialog} = this.refs;
         let d;
-        if(isString(element)) {
+        if (isString(element)) {
             d = newDialog.extraProp('element', element);
         }
-        if(isString(sub_element)) {
+        if (isString(sub_element)) {
             d = newDialog.extraProp('sub_element', sub_element);
         }
-        
+
         (d || newDialog).open().then(item => {
             tbody.state.list.push(item);
-            
+
             onChange && onChange(toJS(tbody.state.list), name, this);
         });
     }
-    
+
     refresh() {
         this.refs.tbody.refresh();
     }
-    
-    @computed get topButtons() {
-        return <>
-            <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
-        </>;
-    }
 
     render() {
-        const {isDialog, isSingleSelect, name, savable, auditItem, onAttrs, readonly, isNew, onChange, onSelect} = this.props;
+        const {
+            isDialog,
+            isSingleSelect,
+            name,
+            savable,
+            auditItem,
+            onAttrs,
+            readonly,
+            isNew,
+            onChange,
+            onSelect
+        } = this.props;
         const tbl = <Table className="AAuditItemTable AuditFindingItemTable w-full min-h-380 padding-0 margin-0">
             {!readonly && !isDialog && <NewAuditItemDialog ref="newDialog" savable={savable} auditItem={auditItem}/>}
-            <AuditItemTHead/>  
+            <AuditItemTHead/>
             <AuditItemTBody
-              ref="tbody"
-              name={name}
-              readonly={readonly}
-              savable={savable}
-              targetItem={auditItem ? {key: 'audit_id', item: auditItem} : null}
-              deleteFn={deleteAuditItem}
-              onAttrs={onAttrs}
-              isSingleSelect={isSingleSelect}
-              isNew={isNew}
-              onNew={this.onNew}
-              onEditItem={this.onEditItem}
-              onSelect={this.onSelect}
-              state={this.state}
-              onChange={onChange}
+                ref="tbody"
+                name={name}
+                readonly={readonly}
+                savable={savable}
+                targetItem={auditItem ? {key: 'audit_id', item: auditItem} : null}
+                deleteFn={deleteAuditItem}
+                onAttrs={onAttrs}
+                isSingleSelect={isSingleSelect}
+                isNew={isNew}
+                onNew={this.onNew}
+                onEditItem={this.onEditItem}
+                onSelect={this.onSelect}
+                state={this.state}
+                onChange={onChange}
             />
-            
+
             {!readonly && !isDialog && <Button className="btn btn-primary add-item-b" onClick={this.onNew}>
                 <i className="fa fa-plus"/> Add Item
             </Button>}
         </Table>;
-        if(isDialog) {
-            return <Dialog 
-                key={'AuditFindingItemTable'} 
-                ref="dialog" 
-                className={'ANewTableFormDialog AuditFindingItemTable-dialog'} 
-                topButtons={this.topButtons} 
+        if (isDialog) {
+            return <Dialog
+                key={'AuditFindingItemTable'}
+                ref="dialog"
+                className={'ANewTableFormDialog AuditFindingItemTable-dialog'}
+                topButtons={this.topButtons}
                 onCancel={this.onCancel}
                 dialog={this}
             >

@@ -7,30 +7,30 @@ import Form from 'utils/Form';
 import {onSelectLoadSOPLocations} from 'views/plugins/utils';
 
 import {
-	ClearableInput,
-	SelectClientInput,
-	SelectEmployeeInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton,
+    ClearableInput,
+    SelectClientInput,
+    SelectEmployeeInput,
+    SelectProjectInput,
+    SelectSiteInput,
+    UploadButton,
 } from 'components/inputs';
 
 import {ANewDialog} from 'components/dialogs';
 
 import {
-	NewCloseDownListTable,
-	NewCustomSafetyPreRequesiteListTable,
-	NewKeyPointListTable,
-	NewOperationListTable,
-	NewProcedureListTable,
-	NewRiskListTable,
-	NewSafetyPreRequesiteListTable,
-	SelectWrapper,
+    NewCloseDownListTable,
+    NewCustomSafetyPreRequesiteListTable,
+    NewKeyPointListTable,
+    NewOperationListTable,
+    NewProcedureListTable,
+    NewRiskListTable,
+    NewSafetyPreRequesiteListTable,
+    SelectWrapper,
 } from './SOPComponents';
 
 import {FormControls, Row} from "components/FormComponents";
 import {Dates} from "utils/Dates";
-import insertSOP from "mutations/all/HIRA_And_Opportunities/SOP/insertSOP";
+import {insertSOP} from "mutations/create";
 
 import style from "./NewSOPDialog.lazy.css";
 //</editor-fold>

@@ -9,13 +9,13 @@ import {Dates, execWhen} from 'utils/Utils';
 import {TinyMCE} from 'components/documents';
 import {ANewDialog} from 'components/dialogs';
 import {
-	ClearableInput,
-	SelectChemicalCategoryInput,
-	SelectChemicalProductInput,
-	SelectClientInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton
+    ClearableInput,
+    SelectChemicalCategoryInput,
+    SelectChemicalProductInput,
+    SelectClientInput,
+    SelectProjectInput,
+    SelectSiteInput,
+    UploadButton
 } from 'components/inputs';
 import {FormControls, Fragment, Row} from 'components/FormComponents';
 
@@ -23,8 +23,8 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewMSDSDialog.lazy.css";
-import insertChemicalSDS from "mutations/all/Chemicals/ChemicalSDS/insertChemicalSDS";
-import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
+import {insertChemicalSDS} from "mutations/create";
+import NewChemicalSupplierListTable from "components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

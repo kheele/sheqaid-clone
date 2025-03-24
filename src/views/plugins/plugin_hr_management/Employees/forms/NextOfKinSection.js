@@ -10,6 +10,7 @@ import {updateEmployeeNextOfKin} from "mutations/update";
 class NextOfKinSection extends ASectionSection {
 
     listName = 'next_of_kin_list';
+    maxList = 3;
     onUpdate = updateEmployeeNextOfKin;
     NewDialog = NewNextOfKinDialog;
     EditDialog = EditNextOfKinDialog;

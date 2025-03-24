@@ -40,7 +40,7 @@ class RenderRow extends ARenderRow {
                 {lname + ' ' + fname}
             </div>
             <div className="td">
-                <h6 className="xs-shown font-size-13">Notes</h6>
+                <h6 className="xs-shown font-size-13">License Description</h6>
                 {notes}
             </div>
             <div className="td fixed-flex min-w-105">
@@ -59,6 +59,7 @@ class RenderRow extends ARenderRow {
     }
 
 }
+
 // </editor-fold>
 
 export default RenderRow;

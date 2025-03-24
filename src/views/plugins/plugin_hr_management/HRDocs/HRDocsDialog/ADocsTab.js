@@ -14,7 +14,7 @@ import NewDialog from "./NewDialog";
 import ProfileDialog from "./ProfileDialog";
 import EditDialog from "./EditDialog";
 import ConfirmDialog from "components/dialogs/ConfirmDialog";
-import updateDocument from "mutations/all/Document/updateDocument";
+import {updateDocument} from "mutations/update";
 import {execWhen} from "utils/UtilsFuns";
 import MKBox from "components/MK/MKBox";
 import ViewByButtons from "components/ViewByButtons";

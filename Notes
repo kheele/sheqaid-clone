@@ -3,7 +3,7 @@ docker:
     a. docker ps
     b. docker stop container_name
     c. docker rm container_name
-    d. docker pull rhespo/sheqaid-server
+    d. docker pull rhespo/sheqintel-server
     e. docker run -d -p 5000:5000 rhespo/sheqaid-server
     f. docker ps
     g. docker logs container_name
@@ -128,8 +128,8 @@ CREATE OR REPLACE VIEW "public"."sheq_training_plans_per_employee" AS
   insertTrainingMatrix uncomment line 227, 234
   insertContractorsQuestionnaireTemplate uncomment line 64-66, 72
 
-/etc/letsencrypt/live/cloud.sheqaid.com/fullchain.pem
-/etc/letsencrypt/live/cloud.sheqaid.com/privkey.pem
+/etc/letsencrypt/live/cloud.sheqintel.com/fullchain.pem
+/etc/letsencrypt/live/cloud.sheqintel.com/privkey.pem
 
     /*
     * job_observed: [] add

@@ -75,6 +75,13 @@ export const insertSector = create("sectors");
 export const insertSite = create("sites");
 export const insertContractor = create("contractors");
 
+//Audits
+export const insertAudit = create("audits");
+export const insertAuditDefinition = create("audits/definitions");
+export const insertAuditItem = create("audits/items");
+export const insertProxyEmployeeAuditor = create("ProxyEmployeeAuditor");
+export const insertProxyEmployeeAuditRepresentative = create("ProxyEmployeeAuditRepresentative");
+
 //Assets
 export const insertAsset = create("assets");
 export const insertAssetCalibrationRecord = create("assets/calibration-records");
@@ -148,7 +155,30 @@ export const insertIncident = create("incidents", crudUtils, input => {
         crudUtils.injectCreate(person_injured_other.data);
     }
 });
+export const insertIncidentCauseAnalysis = create("IncidentCauseAnalysis");
+export const insertIncidentCauseAnalysisCause = create("IncidentCauseAnalysisCause");
+export const insertIncidentCauseAnalysisImmediate = create("IncidentCauseAnalysisImmediate");
+export const insertIncidentCauseAnalysisRoot = create("IncidentCauseAnalysisRoot");
+export const insertIncidentCorrectiveAction = create("IncidentCorrectiveAction");
+export const insertIncidentDocument = create("IncidentDocument");
+export const insertIncidentInvestigation = create("IncidentInvestigation");
+export const insertIncidentSeverity = create("IncidentSeverity");
+export const insertIncidentTestType = create("IncidentTestType");
+export const insertIncidentVehicle = create("IncidentVehicle");
+export const insertInvestigationDocument = create("InvestigationDocument");
+export const insertInvestigationFinding = create("InvestigationFinding");
+export const insertProxyEmployeeIncidentInvestigator = create("ProxyEmployeeIncidentInvestigator");
+export const insertProxyIncidentActivity = create("incidents/proxy/activities");
+export const insertProxyIncidentCategory = create("incidents/proxy/categories");
+export const insertProxyIncidentDistribution = create("incidents/proxy/distributions");
+export const insertProxyIncidentInjuryList = create("incidents/proxy/injuries");
+export const insertProxyIncidentPersonInvolved = create("incidents/proxy/persons-involved");
+export const insertProxyIncidentSector = create("incidents/proxy/sectors");
+export const insertProxyIncidentSubCategory = create("incidents/proxy/sub-categories");
+export const insertProxyIncidentWitness = create("incidents/proxy/witnesses");
 
+//NCR
+export const insertNCRProgress = create("ncr/progress");
 export const insertProxyNCRAssignedPerson = create("ncr/proxy/assigned-person");
 export const insertProxyNCRAssignedJobPosition = create("ncr/proxy/assigned-job-position");
 export const insertProxyNCRAssignedUser = create("ncr/proxy/assigned-user");
@@ -157,6 +187,13 @@ export const insertProxyNCRResponsibleParty = create("ncr/proxy/responsible-part
 export const insertProxyNCRDocument = create("ncr/proxy/document");
 // export const insertProxyJobPositionNCRAssignedPerson = create("ncr/proxy/job-position_assigned-person", crudUtils);
 
+//Chemicals
+export const insertChemicalProduct = create("chemicals/products");
+export const insertChemicalHazchemsheet = create("chemicals/hazchem-sheets");
+export const insertChemicalSDS = create("chemicals/sds");
+export const insertChemicalSupplier = create("chemicals/suppliers");
+
+//Documents
 export const insertOHSDoc = create("documents/ohs-docs");
 export const insertDocument = create("documents");
 export const insertSignableDocTemplate = create("doc-signing-settings/api/docuseal/templates");
@@ -177,6 +214,7 @@ export const insertPPEItem = create("ppe-items");
 export const insertPPEDisposal = create("ppe-disposals");
 export const insertPPEFitTest = create("ppe-fit-tests");
 export const insertPPEReturn = create("ppe-returns");
+export const insertPPERequisition = create("ppe-requisitions");
 export const insertApplicableRegulation = create("applicable-regulations");
 export const insertComplianceRequirement = create("compliance-requirements");
 export const insertJobTaskCategory = create("job-tasks/categories");
@@ -207,9 +245,42 @@ export const insertEmployeeNextOfKin = create("employees/next-of-kins");
 //
 export const insertOrganogram = create("structure-and-responsibility/organograms");
 
+// Contractors
+export const insertContractorsQuestionnaireLibrary = create("ContractorsQuestionnaireLibrary");
+export const insertContractorsQuestionnaire = create("ContractorsQuestionnaire");
+export const insertJobObservationsQuestionnaire = create("job-observations");
+export const insertInspectionsQuestionnaire = create("InspectionsQuestionnaire");
+export const insertInspectionsQuestionnaireTemplate = create("InspectionsQuestionnaireTemplate");
+export const insertJobObservationsQuestionnaireTemplate = create("JobObservationsQuestionnaireTemplate");
+export const insertQuestionNotifiedList = create("QuestionNotifiedList");
+export const insertSafetyFilesQuestionnaire = create("SafetyFilesQuestionnaire");
+export const insertSafetyFilesQuestionnaireTemplate = create("SafetyFilesQuestionnaireTemplate");
+
 //Questionnaires
 export const insertQuestion = create("questionnaires/questions");
 export const insertQuestionOption = create("questionnaires/question-options");
-export const insertJobObservationsQuestionnaire = create("job-observations");
+export const insertQuestionMessage = create("questionnaires/messages");
 
-//151
+//HIRA
+export const insertBaselineRA = create("hira-and-opportunities/baseline-ra");
+export const insertTaskbasedRA = create("hira-and-opportunities/task-based-ra");
+export const insertBaselineRAListItem = create("hira-and-opportunities/baseline-ra-list");
+export const insertTaskbasedRAListItem = create("hira-and-opportunities/task-based-ra-list");
+export const insertSOP = create("hira-and-opportunities/sop");
+export const insertSWP = create("hira-and-opportunities/swp");
+
+// Claims
+export const insertClaimsClient = create("claims/clients");
+export const insertClaimsEmployerDetails = create("claims/clients/employer-details");
+export const insertWCL2 = create("claims/clients/wcl2");
+export const insertWCL4 = create("claims/clients/wcl4");
+export const insertWCL5 = create("claims/clients/wcl5");
+export const insertWCL5Proxy = create("claims/clients/wcl5-proxy");
+export const insertWCL6 = create("claims/clients/wcl6");
+export const insertAnnexture1 = create("claims/clients/annexture1");
+
+// Trainings
+export const insertTrainingToolboxTalk = create("TrainingToolboxTalk");
+export const insertProxyJobCategoryTrainingMatrix = create("ProxyJobCategoryTrainingMatrix");
+export const insertProxyJobPositionTrainingMatrix = create("ProxyJobPositionTrainingMatrix");
+export const insertProxySectorTrainingMatrix = create("ProxySectorTrainingMatrix");

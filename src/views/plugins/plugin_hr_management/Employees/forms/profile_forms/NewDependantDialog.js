@@ -8,7 +8,6 @@ import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDependantDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeDependant} from "mutations/create";
 
 //<editor-fold desc="NewDialog">
@@ -81,18 +80,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            fname,
-            lname,
-            gender,
-            dob,
-        } = form.data;
         const data = {
-            employee_id: this.employeeItem.id,
-            fname,
-            lname,
-            gender,
-            dob: Dates.formatDateSQL(dob),
+            formData: {...form.data, employee_id: this.employeeItem.id},
         };
 
         console.log(data)

@@ -84,6 +84,7 @@ class Controls extends AEmployeeDocControls {
             issued_date,
             expiry_date,
             accreditation_num,
+            certificate_num,
             doc
         } = item.data || item;
 
@@ -91,21 +92,23 @@ class Controls extends AEmployeeDocControls {
 
         return <div className="row item-wrapper padding-t-10 h-full">
             <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Certificate Type" name="type" className="col-lg-4" value={type}/>
-                <ProfileField title="Competency Type" name="competency_type" className="col-lg-4"
+                <ProfileField title="Certificate Type" name="type" className="col-lg-12" value={type}/>
+                <ProfileField title="Competency Type" name="competency_type" className="col-lg-12"
                               value={competency_type}/>
-                <ProfileField title="Accreditation Number" name="accreditation_num" className="col-lg-4"
+                <ProfileField title="Accreditation Number" name="accreditation_num" className="col-lg-12"
                               value={accreditation_num}/>
-                <ProfileField title="Date Of Issue" name="issued_date" type="date" className="col-lg-6"
+                <ProfileField title="Certificate Number" name="certificate_num" className="col-lg-12"
+                              value={certificate_num}/>
+                <ProfileField title="Date Of Issue" name="issued_date" type="date" className="col-lg-12"
                               value={issued_date}/>
-                <ProfileField title="Expiry Date" name="expiry_date" type="date" className="col-lg-6"
+                <ProfileField title="Expiry Date" name="expiry_date" type="date" className="col-lg-12"
                               value={expiry_date}/>
             </div>
             <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Training" name="training" className="col-lg-6"
+                <ProfileField title="Training" name="training" className="col-lg-12"
                               value={_training && _training.course}
                               renderer={v => v.name}/>
-                <ProfileField title="Trainer" className="col-lg-6" value={trainer}
+                <ProfileField title="Trainer" className="col-lg-12" value={trainer}
                               renderer={v => v.lname + " " + v.fname}/>
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>

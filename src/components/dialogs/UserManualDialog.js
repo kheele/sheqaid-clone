@@ -52,27 +52,20 @@ class Controls extends React.Component {
         const {
             id,
             data: {
-                // site_url
+                site_url
             }
         } = item;
 
         console.log('item', item)
 
-        //TODO: this hack must be removed once "site_url" loading on database is fixed
-        const {
-            [id]: site_url,
-        } = {
-            1: "https://hr-management-ajfqwq2.gamma.site"
-        };
-
         return (<div className="controls-wrapper">
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <div class="hide-brand">USER MANUAL</div>
+                        <div className="hide-brand">USER MANUAL</div>
                         <iframe
                             src={site_url}
-                            border="0"
+                            frameBorder="0"
                             width="100%"
                             height="100%"
                         />

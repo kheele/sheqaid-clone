@@ -8,12 +8,9 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import OptionalInfoSection from './ViewOptionalInfoSection';
 import DocumentsSection from './ViewDocumentsSection';
-import TimeoffSection from "./ViewTimeoffSection";
-import PPESection from './ViewPPESection';
-import IncidentsSection from './ViewIncidentsSection';
-import COIDSection from './ViewCOIDSection';
-import TrainingsSection from './ViewTrainingsSection';
-import DependentsAndNextOfKinSection from './ViewDependentsAndNextOfKinSection';
+import CounselingSection from "./ViewCounselingSection";
+import WarningSection from "./ViewWarningSection";
+import TimeOffSection from "./ViewTimeoffSection";
 
 import DashboardSection from "./DashboardSection";
 
@@ -21,7 +18,8 @@ import style from "./ProfileDialog.lazy.css";
 import {findByIdEmployee} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
 import ProfilePDFReport from "../reports/ProfilePDFReport";
-import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
+import {updateEmployee} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -30,6 +28,7 @@ class ProfileDialog extends AProfileDialog {
     pageKey = "Employee";
     className = "AProfileEmployeeDocDialog";
     findById = findByIdEmployee;
+    removeById = updateEmployee;
 
     constructor(props) {
         super(props, style);
@@ -87,24 +86,34 @@ class ProfileDialog extends AProfileDialog {
 
 @observer
 class Controls extends React.Component {
-    path = 'plugin_sheq_assist/employees/';
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     components = [
-        {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoTab"},
-        {title: 'Documents', comp: DocumentsSection, ref: "documentsTab"},
+        {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoSection"},
+        {title: 'Documents', comp: DocumentsSection, ref: "documentsSection"},
+        {
+            title: 'Counseling',
+            comp: CounselingSection,
+            ref: "counselingSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        },
+        {
+            title: 'Warnings',
+            comp: WarningSection,
+            ref: "warningSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        },
         {
             title: 'Time-off',
-            comp: TimeoffSection,
-            ref: "timeOffTab",
-            sectionClassName: "-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+            comp: TimeOffSection,
+            ref: "timeOffSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
         },
-        {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependentsAndNextOfKinTab"},
         // {title: 'Job Observations', comp: JobObservationsSection, ref: "jobObservationsSection"},
-        {title: 'Training', comp: TrainingsSection, ref: "trainingsTab"},
-        {title: 'PPE', comp: PPESection, ref: "ppeTab"},
-        {title: 'Incidents', comp: IncidentsSection, ref: "incidentsTab"},
-        {title: 'COID', comp: COIDSection, ref: "coidTab"},
+        // {title: 'Training', comp: TrainingsSection, ref: "trainingsTab"},
+        // {title: 'PPE', comp: PPESection, ref: "ppeTab"},
+        // {title: 'Incidents', comp: IncidentsSection, ref: "incidentsTab"},
+        // {title: 'COID', comp: COIDSection, ref: "coidTab"},
         // {
         //     title: 'Attendance',
         //     comp: ViewAttendanceTab,
@@ -124,6 +133,7 @@ class Controls extends React.Component {
             title: 'Dashboard',
             comp: DashboardSection,
             ref: "dashboardSection",
+            props: {onClick: this.onOpenSections.bind(this)},
             activeAlways: true,
             isLast: true
         }
@@ -170,6 +180,112 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    onOpenSections(id) {
+        const {dialog} = this.props;
+        const {
+            optionalInfoSection,
+            documentsSection,
+            counselingSection,
+            warningSection,
+            timeOffSection,
+        } = this.refs;
+        // alert(id)
+
+        const show = ({mainSection, childLevel1Ref, childLevel2Ref}) => {
+            mainSection.onFormGoto();
+            childLevel1Ref && dialog.execWhen(() => mainSection.refs[childLevel1Ref]).then(ref => {
+                ref.onFormGoto();
+                childLevel2Ref && dialog.execWhen(() => ref.refs[childLevel2Ref]).then(ref => {
+                    ref.onFormGoto();
+                });
+            });
+        };
+
+        switch (id) {
+            //Employment Info: 3
+            case "living_address":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'residentialAddress'});
+                break;
+            case "banking_detail":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'bankingDetails'});
+                break;
+            case "next_of_kin":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'next_of_kins'});
+                break;
+            case "dependent":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'dependants'});
+                break;
+            //Documents: 4
+            //Personal Documents: 4.1
+            case "document_id_passport":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'document_id_passport',
+                });
+                break;
+            case "work_permit":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'work_permit',
+                });
+                break;
+            case "license":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'license',
+                });
+                break;
+            case "document_prdp":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'document_prdp',
+                });
+                break;
+
+            case "competency":
+                show({mainSection: documentsSection, childLevel1Ref: 'competency'});
+                break;
+            case "contract":
+                show({mainSection: documentsSection, childLevel1Ref: 'contract'});
+                break;
+            case "job_appointment":
+                show({mainSection: documentsSection, childLevel1Ref: 'job_appointment'});
+                break;
+            case "medical":
+                show({mainSection: documentsSection, childLevel1Ref: 'medical'});
+                break;
+
+            //5
+            case "counselling":
+                show({mainSection: counselingSection});
+                break;
+            //6
+            case "warning":
+                show({mainSection: warningSection});
+                break;
+            //7
+            case "leave":
+                show({mainSection: timeOffSection});
+                break;
+            //8
+            // case "trainer_training":
+            //
+            //     break;
+            //9
+            // case "ppe_type":
+            //
+            //     break;
+            //10
+            // case "supervisor_employee":
+            //
+            //     break;
+        }
+    }
+
     onUploaded(path) {
         this.item.data.profile_pic = path;
     }
@@ -188,33 +304,36 @@ class Controls extends React.Component {
     }
 
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
-    renderComponent({title, comp: Comp, sectionClassName, ref, activeAlways = false, isLast}, n) {
-        const {props: {onFormNext, onFormBack, onFormOpen}} = this;
-        n += 3;
+    renderComponent(refs) {
+        return ({title, comp: Comp, sectionClassName, ref: refName, props, activeAlways = false, isLast}, n) => {
+            const {props: {onFormNext, onFormBack, onFormOpen}} = this;
+            n += 3;
 
-        const row = <Row
-            activeAlways={activeAlways}
-            rendered
-            idx={n}
-            title={n + '. ' + title}
-            sectionClassName={sectionClassName}
-            onFormOpen={onFormOpen}
-            onFormBack={onFormBack}
-            onFormNext={!isLast && onFormNext}
-        >
-            <Comp
-                ref={ref}
+            const row = <Row
+                ref={(ref) => refs[refName] = ref}
+                activeAlways={activeAlways}
+                rendered
                 idx={n}
-                title={title}
-                item={this.item}
+                title={n + '. ' + title}
+                sectionClassName={sectionClassName}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}
-            />
-        </Row>;
+                onFormNext={!isLast && onFormNext}
+            >
+                <Comp
+                    idx={n}
+                    title={title}
+                    item={this.item}
+                    {...(props || {})}
+                    onFormOpen={onFormOpen}
+                    onFormBack={onFormBack}
+                    onFormNext={onFormNext}
+                />
+            </Row>;
 
-        if (!Comp.isValid || Comp.isValid(this.item)) return row;
-        return null;
+            if (!Comp.isValid || Comp.isValid(this.item)) return row;
+            return null;
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -278,7 +397,7 @@ class Controls extends React.Component {
                 <ProfileField name="phone" title="Phone No." value={phone} className="col-lg-6"/>
                 <ProfileField name="email" title="Email Address" value={email} className="col-lg-6"/>
             </Row>}
-            {this.components.map(this.renderComponent)}
+            {this.components.map(this.renderComponent(this))}
             <ProfilePDFReport ref="profilePDFReport"/>
         </FormControls>;
     }

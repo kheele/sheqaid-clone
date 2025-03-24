@@ -25,8 +25,8 @@
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch",
     "graphql": "graphql get-schema --project prod",
-    "hasura-get-schema": "gq https://hasura.cloud.sheqaid.com/v1beta1/relay --introspect > schema.relay.graphql",
-    "get-graphql-schema-relay": "get-graphql-schema https://hasura.cloud.sheqaid.com/v1beta1/relay > ./schema.relay.graphql",
+    "hasura-get-schema": "gq https://hasura.cloud.sheqintel.com/v1beta1/relay --introspect > schema.relay.graphql",
+    "get-graphql-schema-relay": "get-graphql-schema https://hasura.cloud.sheqintel.com/v1beta1/relay > ./schema.relay.graphql",
     "install-modules": "npm i @docuseal/react --save",
     "uninstall-modules": "npm uninstall copy-webpack-plugin",
     "install": "npm i eslint-loader@^4.0.2",
@@ -35,7 +35,7 @@
     "storage-cors-set--prod": "gsutil cors set storage-cors-prod.json gs://sheqsolve.appspot.com",
     "storage-cors-set--dev": "gsutil cors set storage-cors-dev.json gs://sheqsolve.appspot.com",
     "storage-cors-cache-clear": "gsutil setmeta -h \"Cache-Control:no-cache\" gs://sheqsolve.appspot.com/plugin_sheq_assist_employees/Nkll3PE55tSA6IGDwabT/optional_info/living_addr_doc.jpg",
-    "sheqaid-docker": "docker build --no-cache --progress=plain . -t rhespo/sheqaid-app"
+    "sheqintel-docker": "docker build --no-cache --progress=plain . -t rhespo/sheqintel-app"
   },
   "relay": {
     "src": "./src",

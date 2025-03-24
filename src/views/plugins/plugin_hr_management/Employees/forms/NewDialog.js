@@ -13,8 +13,9 @@ import {ANewDialog} from 'components/dialogs';
 
 import OptionalInfoSection from './EditOptionalInfoSection';
 import DocumentsSection from './EditDocumentsSection';
-import TimeoffSection from "./EditTimeoffSection";
-import DependentsAndNextOfKinSection from './EditDependentsAndNextOfKinSection';
+import CounselingSection from "./EditCounselingSection";
+import WarningSection from "./EditWarningSection";
+import TimeOffSection from "./EditTimeoffSection";
 
 import style from "./NewDialog.lazy.css";
 import {insertEmployee} from "mutations/create";
@@ -60,12 +61,24 @@ class Controls extends React.Component {
         {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoSection"},
         {title: 'Documents', comp: DocumentsSection, ref: "documentsSection"},
         {
-            title: 'Time-off',
-            comp: TimeoffSection,
-            ref: "timeOffTab",
-            sectionClassName: "-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+            title: 'Counseling',
+            comp: CounselingSection,
+            ref: "counselingSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
         },
-        {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependantsAndNextOfKinSection"},
+        {
+            title: 'Warnings',
+            comp: WarningSection,
+            ref: "warningSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        },
+        {
+            title: 'Time-off',
+            comp: TimeOffSection,
+            ref: "timeOffSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20",
+            isLast: true
+        },
         // {title: 'Job Appointment', comp: JobAppointmentsTab, ref: "jobAppointmentsSection"},
         // {
         //     title: 'Trainings',
@@ -149,7 +162,9 @@ class Controls extends React.Component {
             refs: {
                 optionalInfoSection,
                 documentsSection,
-                dependantsAndNextOfKinSection,
+                counselingSection,
+                warningSection,
+                timeOffSection,
                 specificComplianceRequirementsSection
             }
         } = this;
@@ -195,7 +210,9 @@ class Controls extends React.Component {
             formData: {...form.data, phone},
             optionalInfoFormData: optionalInfoSection.formData,
             documentsFormData: documentsSection.formData,
-            dependantsAndNextOfKinFormData: dependantsAndNextOfKinSection.formData,
+            counselingFormData: counselingSection.formData,
+            warningFormData: warningSection.formData,
+            timeOffFormData: timeOffSection.formData,
         };
 
         // console.log(data)
@@ -223,13 +240,14 @@ class Controls extends React.Component {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
-    renderComponent({title, comp: Comp, ref, isLast}, n) {
+    renderComponent({title, comp: Comp, ref, sectionClassName, isLast}, n) {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
         n += 3;
         return <Row
             rendered
             idx={n}
             title={n + '. ' + title}
+            sectionClassName={sectionClassName}
             onFormOpen={onFormOpen}
             onFormBack={onFormBack}
             onFormNext={!isLast && onFormNext}

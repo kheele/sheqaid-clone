@@ -9,8 +9,6 @@ import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inpu
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
-import {SignatureListRow} from "components/SignatureComponents";
-import {Dates} from "utils/Dates";
 import {insertEmployeeJobAppointment} from "mutations/create";
 
 @observer
@@ -92,20 +90,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            doc, //
-            employee,//
-            date, //
-            expiry_date, //
-            notes//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            date: Dates.formatTimestampSQL(date),
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            notes,
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -168,7 +154,6 @@ class Controls extends React.Component {
                 title={`${++idx}. Document`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}
             >
                 <UploadButton
                     name="doc"
@@ -179,16 +164,16 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
             </Row>
-            <SignatureListRow
-                idx={!isNewEmployee && !embeddedEmployee ? 4 : 3}
-                pluginKey="HR"
-                module="JobAppointments"
-                onSetSignatureSettings={onSetSignatureSettings}
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-            >
+            {/*<SignatureListRow*/}
+            {/*    idx={!isNewEmployee && !embeddedEmployee ? 4 : 3}*/}
+            {/*    pluginKey="HR"*/}
+            {/*    module="JobAppointments"*/}
+            {/*    onSetSignatureSettings={onSetSignatureSettings}*/}
+            {/*    onFormOpen={onFormOpen}*/}
+            {/*    onFormBack={onFormBack}*/}
+            {/*>*/}
 
-            </SignatureListRow>
+            {/*</SignatureListRow>*/}
         </FormControls>;
     }
 }

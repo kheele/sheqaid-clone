@@ -17,7 +17,7 @@ import ProfilePDFReader from './printers/ProfilePDFReader';
 
 import style from "./AuditTab.lazy.css";
 
-import updateAudit from "mutations/all/AuditsAndInspections/Audit/updateAudit";
+import {updateAudit} from "mutations/update";
 import ExportAuditDialog from "./forms/ExportAuditDialog";
 
 @observer
@@ -30,19 +30,20 @@ class AuditTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onExport = this.onExport.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
 
         this.onSaveAsPDF = this.onSaveAsPDF.bind(this);
         this.onDownload = this.onDownload.bind(this);
-        
+
         this.onCopy = this.onCopy.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
     }
+
     //</editor-fold>
 
     componentWillMount() {
@@ -63,9 +64,9 @@ class AuditTab extends React.Component {
             scope,
             date_range,
         } = filterData || {};
-        
+
         const listByLogged = sockets.of('audits').fn('listByLogged');
-        
+
         return listByLogged({
             representative_list,
             auditor,
@@ -81,8 +82,9 @@ class AuditTab extends React.Component {
             return res;
         });
     }
+
     //</editor-fold>
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
@@ -98,22 +100,23 @@ class AuditTab extends React.Component {
         const item = this.refs.root.list[idx];
         this.refs.pdfReader.open(item);
     }
-    
+
     onCopy(evt, elem) {
         const {idx, action} = elem.props;
         const {list, onNew} = this.refs.root;
         const copy = toJS(list[idx]);
         onNew(evt, elem, copy);
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="onExport">
     onExport(e, btn) {
         const {getDialogByRef} = this.refs.root;
         const exportDialog = getDialogByRef('exportDialog');
         exportDialog.open();
     }
+
     // </editor-fold>
-    
+
     renderLeftButtons() {
         const {isEmployee, isContractorView} = storage.is;
         const isReadonly = isEmployee;// || isContractorView;
@@ -123,7 +126,7 @@ class AuditTab extends React.Component {
             </Button>}
         </div>;
     }
-    
+
     // </editor-fold>
 
     //<editor-fold desc="renderPopoverOptions">
@@ -136,22 +139,30 @@ class AuditTab extends React.Component {
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onDownload} faIconLeft="download" title="Download"/>
-            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o" title="Save As PDF"/>
+            <NavItem action="writable" idx={idx} onClick={this.onSaveAsPDF} faIconLeft="file-pdf-o"
+                     title="Save As PDF"/>
         </Options>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls grid-3 grid-gap-10 -margin-b-35">
-            <SelectEmployeeInput name="representative_list" type="select_multi" placeholder="Company Representative(s)..." className="form-control" onChange={onChange}/>
-            <ClearableInput name="auditor" type="text" placeholder="Auditor" className="form-control" onChange={onChange}/>
-            <ClearableInput name="type" type="text" placeholder="Audit Type" className="form-control" onChange={onChange}/>
-            <ClearableInput name="scope" type="text" placeholder="Scope Of Audit" className="form-control" onChange={onChange}/>
+            <SelectEmployeeInput name="representative_list" type="select_multi"
+                                 placeholder="Company Representative(s)..." className="form-control"
+                                 onChange={onChange}/>
+            <ClearableInput name="auditor" type="text" placeholder="Auditor" className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="type" type="text" placeholder="Audit Type" className="form-control"
+                            onChange={onChange}/>
+            <ClearableInput name="scope" type="text" placeholder="Scope Of Audit" className="form-control"
+                            onChange={onChange}/>
             <DateRangeInput name="date_range" className="form-control"
                             placeholder="Audit Date" placeholderWidthClass="min-w-135" onChange={onChange}/>
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderTHead">
@@ -167,6 +178,7 @@ class AuditTab extends React.Component {
             <div className="td fixed-flex min-w-70"></div>
         </THead>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderItem">
@@ -174,11 +186,12 @@ class AuditTab extends React.Component {
         const item = this.refs.root.list[n];
         return <AuditTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -194,18 +207,19 @@ class AuditTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateAudit}/>
-            
+
             <NewAuditDialog ref="newDialog" onRemoved={this.onRemoved}/>
             <EditAuditDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileAuditDialog ref="profileDialog" onRemoved={this.onRemoved}/>
-            
+
             <ProfilePDFReader ref="pdfReader"/>
-            
+
             <ExportAuditDialog ref="exportDialog"/>
         </APageListReadWrite>;
     }
+
     //</editor-fold>
-    
+
 }
 
 export default AuditTab;

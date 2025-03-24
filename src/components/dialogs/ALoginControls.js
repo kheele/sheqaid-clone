@@ -2,7 +2,7 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {Clickable} from '../inputs';
-import {findByUsernameUserSetupBiometric} from "../../mutations/findBy";
+import {findByUsernameUserSetupBiometric} from "mutations/send";
 
 // </editor-fold>
 

@@ -10,6 +10,7 @@ import {updateEmployeeDependant} from "mutations/update";
 class DependantSection extends ASectionSection {
 
     listName = 'dependent_list';
+    maxList = 12;
     onUpdate = updateEmployeeDependant;
     NewDialog = NewDependantDialog;
     EditDialog = EditDependantDialog;

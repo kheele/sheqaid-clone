@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="import">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, toJS} from 'mobx';
+import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {Dates, execWhen} from 'utils/Utils';
@@ -37,7 +37,7 @@ import WCl5Table from "../../dialogs/WCl5Table";
 import style from "./NewClaimsClientDialog.lazy.css";
 import findByClientIdClaimsEmployerDetails
     from "mutations/all/COIDA/ClaimsEmployerDetails/findByClientIdClaimsEmployerDetails";
-import insertClaimsClient from "mutations/all/COIDA/ClaimsClient/insertClaimsClient";
+import {insertClaimsClient} from "mutations/create";
 // </editor-fold>
 //
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -184,12 +184,7 @@ class Controls extends React.Component {
             return;
         }
 
-        dialog && dialog.
-        extraProp('employer_details', employer_details).
-        extraProp('employee', employee).
-        extraProp('claim_number', claim_number).
-        extraProp('accident_date', accident_date).
-        open(value).then(value => {
+        dialog && dialog.extraProp('employer_details', employer_details).extraProp('employee', employee).extraProp('claim_number', claim_number).extraProp('accident_date', accident_date).open(value).then(value => {
             if (onComplete) {
                 onComplete(value, btn);
             } else {
@@ -212,12 +207,7 @@ class Controls extends React.Component {
             infoDialog.open(`${title} is not available`);
             return;
         }
-        dialog && dialog.
-        extraProp('employer_details', employer_details).
-        extraProp('employee', employee).
-        extraProp('claim_number', claim_number).
-        extraProp('accident_date', accident_date).
-        open(this.item);
+        dialog && dialog.extraProp('employer_details', employer_details).extraProp('employee', employee).extraProp('claim_number', claim_number).extraProp('accident_date', accident_date).open(this.item);
     }
 
     // </editor-fold>

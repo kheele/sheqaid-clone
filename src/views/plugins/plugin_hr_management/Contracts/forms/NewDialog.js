@@ -8,7 +8,6 @@ import {Button, ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeContract} from "mutations/create";
 
 //<editor-fold desc="Dialog">
@@ -164,6 +163,7 @@ class Controls extends React.Component {
                 return;
             }
         }
+
         const salary_info = toNoneNullObject(salaryInfoTab.form.data);
         if (salary_info) {//payment_type,
             if (!salaryInfoTab.form.isValid('payment_type')) {
@@ -207,60 +207,13 @@ class Controls extends React.Component {
             return;
         }
 
-        let data = {};
-
-        if (contract_details) {
-            const {
-                contract_type,
-                start_date,
-                expiry_date,
-                end_of_trial_period,
-                start_time,
-                end_time,
-                daily_working_hours,
-                notes,
-            } = contract_details;
-            data.contract_details_list = {
-                data: [{
-                    contract_type,
-                    start_date: Dates.formatTimestampSQL(start_date),
-                    expiry_date: Dates.formatTimestampSQL(expiry_date),
-                    end_of_trial_period: Dates.formatTimestampSQL(end_of_trial_period),
-                    start_time,
-                    end_time,
-                    daily_working_hours,
-                    notes,
-                }]
-            };
-        }
-
-        if (salary_info) {
-            const {
-                payment_type,
-                salary_interval,
-                salary,
-                wage,
-                deductible,//[{text, value}]
-            } = salary_info;
-
-            const deductible_list = deductible ? deductible.list.filter(v => !!v && !!v.text && !!v.value) : [];
-
-            data.salary_info_list = {
-                data: [{
-                    payment_type,
-                    salary_interval,
-                    salary,
-                    wage,
-                    deductible_list: {data: deductible_list},//[{text, value}]
-                }]
-            };
-        }
-
         data = {
-            ...data,
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-            job_profile_doc: job_profile_doc && job_profile_doc.path,
+            formData: {
+                ...form.data,
+                embeddedEmployee,
+                contractDetailsFormData: contractDetailsTab.form.data,
+                salaryInfoFormData: salaryInfoTab.form.data,
+            },
         };
 
         console.log(data)

@@ -1,3 +1,4 @@
+import send from "./send";
 import signup from "./signup";
 import create from "./create";
 import createWithCustomArgs from "./createWithCustomArgs";
@@ -17,6 +18,7 @@ import employeeOrgDashboard from "./employeeOrgDashboard";
 import employeeOrgDateRangeDashboard from "./employeeOrgDateRangeDashboard";
 
 export default {
+    send,
     signup,
     create,
     createWithCustomArgs,

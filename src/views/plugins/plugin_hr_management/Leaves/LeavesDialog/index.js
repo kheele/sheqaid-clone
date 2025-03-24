@@ -4,8 +4,6 @@ import {observer} from 'mobx-react';
 
 import style from "./LeavesDialog.lazy.css";
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -20,6 +18,7 @@ import NewEmployeeDialog from "../../Employees/forms/NewDialog";
 import TabView from "./TabView";
 import {findByIdOrgLeavesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgLeavesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeLeaves} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -31,12 +30,20 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Leaves";
     module = "Leaves";
     onUpdate = updateEmployeeLeave;
+    exportExcel = exportExcelEmployeeLeaves;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
     style = style;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog, TabView,
+        NewDialog, EditDialog, ProfileDialog, TabView,
+    };
+
+    selfState2 = {
+        lists: {
+            types: ['Annual', 'Sick', 'Unpaid', 'Maternity', 'Family Responsibility'],
+            due_to: [{label: 'Occurred Incident', value: 'Occurred Incident'}, {label: 'Other', value: 'Other'}],
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -139,6 +146,37 @@ class Dialog extends AEmployeeDocDialog {
     }
 
     // </editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput
+                name="type"
+                type="select"
+                placeholder="Leave Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.types}
+                returnValue
+            />
+            <ClearableInput
+                name="due_to"
+                type="select"
+                placeholder="Leave Due To..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.due_to}
+                returnValue
+            />
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput
+                name="date"
+                type="date"
+                placeholder="Start Date..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {

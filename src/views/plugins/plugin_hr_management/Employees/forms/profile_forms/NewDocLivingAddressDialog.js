@@ -14,7 +14,7 @@ import {insertEmployeeDocLivingAddress} from "mutations/create";
 @observer
 class NewDialog extends ANewDialog {
     pageKey = "NewDocLivingAddressDialog";
-    title = "Create Living Address";
+    title = "Create Residential Address";
 
     constructor(props) {
         super(props, style);
@@ -126,7 +126,7 @@ class Controls extends React.Component {
 
         //2
         // if (!form.isValid('doc')) {
-        //     infoDialog.open("Proof of Living Address is required");
+        //     infoDialog.open("Proof of Residential Address is required");
         //     return;
         // }
 
@@ -139,27 +139,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            //1
-            country,
-            zone,
-            city,
-            local_address,
-            street_address,
-            //2
-            doc,
-        } = form.data;
         const data = {
-            employee_id: this.employeeItem.id,
-            is_default: true,
-            //1
-            country_id: country.id,
-            zone_id: zone && zone.id,
-            city_id: city && city.id,
-            local_address,
-            street_address,
-            //2
-            doc: doc && doc.path,
+            formData: {...form.data, employee_id: this.employeeItem.id},
         };
 
         console.log(data)
@@ -187,7 +168,7 @@ class Controls extends React.Component {
                 rendered
                 active
                 idx={1}
-                title="1. Living Address Details"
+                title="1. Residential Address Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
@@ -208,7 +189,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={2}
-                title="2. Proof of Living Address"
+                title="2. Proof of Residential Address"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >

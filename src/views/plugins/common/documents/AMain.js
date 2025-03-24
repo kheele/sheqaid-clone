@@ -18,7 +18,7 @@ import EditDialog from './EditDialog';
 import DocumentCategoriesDialog from './dialogs/DocumentCategoriesDialog';
 
 import style from "./AMain.lazy.css";
-import updateDocument from "mutations/all/Document/updateDocument";
+import {updateDocument} from "mutations/update";
 
 // </editor-fold>
 

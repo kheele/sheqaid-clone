@@ -2,6 +2,8 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
+import Avatar from "@mui/material/Avatar";
+import Chip from "@material-ui/core/Chip";
 import {ActionsButton, Clickable} from 'components/inputs';
 import {TRow} from 'components/tables';
 import default_ppe_type from "assets/images/default_ppe_type.jpeg";
@@ -29,12 +31,21 @@ class RenderRow extends React.Component {
         } = item;
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-60">{id}</div>
-            <div className="td fixed-flex min-w-80">
-                <Clickable idx={idx} onClick={onView}>
-                    {RenderUtils.renderImage(profile_pic, null, '100%', default_ppe_type)}
+            <div className="td">
+                <Clickable
+                    idx={idx}
+                    onClick={onView}
+                >
+                    <Chip
+                        avatar={<Avatar
+                            alt={name}
+                            src={profile_pic && profile_pic.dlUrls && profile_pic.dlUrls[0] || default_ppe_type}
+                        />}
+                        label={name}
+                        sx={{cursor: "pointer"}}
+                    />
                 </Clickable>
             </div>
-            <div className="td">{name}</div>
             <div className="td fixed-flex min-w-160">{unit}</div>
             <div className="td fixed-flex min-w-80">{team_list_aggregate.aggregate.count}</div>
             <div className="td fixed-flex min-w-110">{department_list_aggregate.aggregate.count}</div>

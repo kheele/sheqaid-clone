@@ -14,6 +14,8 @@ class ProfileDialog extends AProfileDialog {
     pageKey = "Sector";
     removeById = updateSector;
 
+    // findById = findByIdSector;
+
     constructor(props) {
         super(props, style);
     }

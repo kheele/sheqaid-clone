@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -14,6 +12,7 @@ import {ClearableInput,} from "components/inputs";
 import {updateEmployeeContract} from "mutations/update";
 import {findByIdOrgContractsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgContractsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeContracts} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -25,12 +24,27 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Contracts";
     module = "Contracts";
     onUpdate = updateEmployeeContract;
-    hasSignatures = true;
+    exportExcel = exportExcelEmployeeContracts;
+    // hasSignatures = true;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
+    };
+
+    selfState2 = {
+        lists: {
+            contract_type: ['Fixed Term', 'Permanent'].map(label => {
+                return {label, value: label};
+            }),
+            payment_types: [{label: 'Salary (Fixed Payment)', value: 'Salary'}, {label: 'Hourly Wage', value: 'Wage'}],
+            salary_intervals: [
+                {label: 'Weekly', value: 'Weekly'},
+                {label: 'Bi-Weekly', value: 'Bi-Weekly'},
+                {label: 'Monthly', value: 'Monthly'}
+            ],
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -100,6 +114,38 @@ class Dialog extends AEmployeeDocDialog {
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput
+                name="contract_type"
+                type="select"
+                placeholder="Contract Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.contract_type}
+                returnValue
+            />
+            <ClearableInput
+                name="payment_type"
+                type="select"
+                placeholder="Payment Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.payment_types}
+                returnValue
+            />
+            <ClearableInput
+                name="salary_interval"
+                type="select"
+                placeholder="Salary Interval..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.salary_intervals}
+                returnValue
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {

@@ -13,6 +13,8 @@ import {THead} from "components/tables";
 import {updateEmployeeLicense} from "mutations/update";
 import {findByIdOrgLicensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {findByIdOrgLicensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+import {exportExcelEmployeeLicenses} from "mutations/exportExcel";
+import {ClearableInput, SelectTrainingCourseInput} from "../../../../../../components/inputs";
 
 // </editor-fold>
 
@@ -24,6 +26,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Licenses";
     module = "Licenses";
     onUpdate = updateEmployeeLicense;
+    exportExcel = exportExcelEmployeeLicenses;
     filterNodeMarginB = 35;
 
     dialogs = {
@@ -65,6 +68,44 @@ class Dialog extends AEmployeeDocDialog {
 
     //</editor-fold>
 
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput
+                name="type"
+                type="radio"
+                placeholder="Certificate Type"
+                vertical
+                className="col-lg-12 h-110 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.type}
+                returnValue
+            />
+            <ClearableInput
+                name="competency_type"
+                type="select" placeholder="Competency Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.competency_type}
+                returnValue
+            />
+            <SelectTrainingCourseInput
+                name="course"
+                placeholder="Course..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                add={false}
+            />
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput
+                name="issued_date"
+                type="date"
+                placeholder="Date Of Issue..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {
         const {isConsultant, hasProjects, isContractor} = storage.is;
@@ -83,7 +124,7 @@ class Dialog extends AEmployeeDocDialog {
             return <THead>
                 <div className="td fixed-flex min-w-50">ID</div>
                 <div className="td">Employee</div>
-                <div className="td">Notes</div>
+                <div className="td">License Description</div>
                 <div className="td fixed-flex min-w-105">Date</div>
                 <div className="td fixed-flex min-w-105">Expiry Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>

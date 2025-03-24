@@ -1,8 +1,0 @@
-
-#Contractors-page{
-    height: calc(100% - 1px);
-}
-#Contractors-page > .tabs {
-    margin: 0 10px 0 0px;
-    height: calc(100% - 20px);
-}

@@ -56,8 +56,6 @@ class TabView extends React.Component {
         return this.status === "Rejected";
     }
 
-    // </editor-fold>
-
     @computed get status() {
         const {mainTabs} = this.refs;
         switch (mainTabs.activeIndex) {
@@ -69,8 +67,6 @@ class TabView extends React.Component {
                 return 'Rejected';
         }
     }
-
-    // </editor-fold>
 
     onChange(index) {
         const {state} = this;
@@ -166,6 +162,8 @@ class TabView extends React.Component {
             ref.setView({expiry_date: 4});
         });
     }
+
+    // </editor-fold>
 
     //<editor-fold desc="render">
     render() {

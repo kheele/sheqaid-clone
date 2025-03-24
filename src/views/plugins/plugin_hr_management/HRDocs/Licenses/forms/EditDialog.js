@@ -190,7 +190,8 @@ class Controls extends React.Component {
                         <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
                                         defaultValue={expiry_date}
                                         required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes}
+                        <ClearableInput name="notes" type="textarea" placeholder="License Description"
+                                        defaultValue={notes}
                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>

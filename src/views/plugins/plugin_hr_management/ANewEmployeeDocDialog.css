@@ -153,7 +153,8 @@
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-create,
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-edit,
 #dialog-overlay.ANewEmployeeDocDialog .EmbeddedBtnBar .btn-remove {
-    top: 40px;
+    top: 8px;
+    /*margin-top: 4px;*/
 }
 
 #dialog-overlay.ANewEmployeeDocDialog .btn-create {

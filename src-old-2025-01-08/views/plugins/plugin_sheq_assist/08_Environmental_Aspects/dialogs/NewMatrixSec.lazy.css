@@ -1,9 +1,0 @@
-#NewEnviroRASec .table > .thead {
-    background: rgb(234, 234, 234);
-}
-#NewEnviroRASec .table > .thead > .td{
-    color: #888;
-}
-#NewEnviroRASec .table > .thead > .td-tr > .td:first-of-type{
-    margin-bottom: 5px;
-}

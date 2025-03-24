@@ -9,69 +9,83 @@ import {execWhen} from 'utils/Utils';
 import {Panel, styles} from 'pdf-components';
 
 const PageWrapper = ({size, orientation, style, children}) => (
-  <Page wrap size={size} orientation={orientation} style={style}>
-    {children}
-  </Page>
+    <Page wrap size={size} orientation={orientation} style={style}>
+        {children}
+    </Page>
 );
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="APage">
 @observer
 class APage extends React.Component {
-    
+
     @computed get item() {
         return this.props.item;
     }
-    
+
     get client() {
         return getValue.call(this, 'client_id');
     }
-    
+
     get project() {
         return getValue.call(this, 'project_id');
     }
-    
+
     get site() {
         return getValue.call(this, 'site_id');
     }
-    
+
     get date_range() {
         return getValue.call(this, 'date_range');
     }
-    
+
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageFirst">
 @observer
 class PageFirst extends APage {
-    
+
     componentDidMount() {
         setTimeout(() => {
             this.props.counter.pos = "PageFirst";
         }, 100);
     }
-    
+
     render() {
         let {
             client, project, site,
-            props: {title}, 
+            props: {title},
             item
         } = this;
-        if(!item) return null;
+        if (!item) return null;
         const {list, values} = item;
-        
+
         const {hasProjects, isConsultant} = storage.is;
         const {selectedClient} = storage.selected;
-        
-        const rowStyle = {margin: '30px auto 0px', display: 'flex', flexDirection: 'column', placeItems: "center", justifyContent: 'center'};
-        
+
+        const rowStyle = {
+            margin: '30px auto 0px',
+            display: 'flex',
+            flexDirection: 'column',
+            placeItems: "center",
+            justifyContent: 'center'
+        };
+
         return <PageWrapper size="A4" style={styles.page}>
             <View style={styles.content}>
-                <View style={{height: '100%', display: 'flex', flexDirection: 'column', placeItems: "center", justifyContent: 'center', fontSize: 26}}>
+                <View style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    placeItems: "center",
+                    justifyContent: 'center',
+                    fontSize: 26
+                }}>
                     <Text style={{margin: '20px auto 0'}}>{title.toUpperCase()} REPORT</Text>
                     <Text style={{margin: '0px auto 20px', fontSize: '15px'}}>OF</Text>
-                    
+
                     {hasProjects && <React.Fragment>
                         {isConsultant && client && <View style={rowStyle}>
                             <Text>COMPANY</Text>
@@ -92,9 +106,15 @@ class PageFirst extends APage {
                         <Text>COMPANY</Text>
                         <Text style={{marginTop: '10px', fontSize: '15px'}}>{selectedClient.data.name}</Text>
                     </View>}
-                        
+
                     <View style={[rowStyle, {flexDirection: 'row'}]}>
-                        <View style={[rowStyle, {margin: '0px auto', backgroundColor: '#fafafa', borderRadius: '50%', width: '140px', height: '140px'}]}>
+                        <View style={[rowStyle, {
+                            margin: '0px auto',
+                            backgroundColor: '#fafafa',
+                            borderRadius: '50%',
+                            width: '140px',
+                            height: '140px'
+                        }]}>
                             <Text style={{fontSize: '25px'}}>{list.length}</Text>
                             <Text style={{marginTop: '10px', fontSize: '10px'}}>{title.toUpperCase()}</Text>
                         </View>
@@ -104,29 +124,41 @@ class PageFirst extends APage {
         </PageWrapper>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageLast">
 @observer
 class PageLast extends React.Component {
-    
+
     render() {
-        
+
         return <PageWrapper size="A4" style={styles.page}>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '4px solid #fafafa', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '4px solid #fafafa',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '4px solid #ddd', paddingLeft: 10, width: '60px'}}>Last Page</Text>
             </View>
         </PageWrapper>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Page2">
 @observer
 class Page2 extends APage {
     @observable state = {renderer: false};
-    
+
     componentDidMount() {
         execWhen(() => this.props.counter.pos === "PageFirst").then(() => {
             this.state.renderer = true;
@@ -135,29 +167,31 @@ class Page2 extends APage {
             }, 100);
         });
     }
-    
+
     render() {
-        if(!this.state.renderer) return null;
+        if (!this.state.renderer) return null;
         let {
             client, project, site,
-            date_range, 
+            date_range,
             props: {renderExtraDateDetails, title},
             item
         } = this;
-        if(!item) return null;
+        if (!item) return null;
         const {list, values} = item;
-        
+
         const {isConsultant} = storage.is;
-        
+
         return <PageWrapper size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
                     <Text style={styles.headingPoint}>1. COMPANY DETAILS</Text>
                     {isConsultant && <View style={[styles.flexRow]}>
-                        <Panel title="Company" value={client} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
+                        <Panel title="Company" value={client}
+                               colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
                     </View>}
                     <View style={[styles.flexRow]}>
-                        <Panel title="Project" value={project} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
+                        <Panel title="Project" value={project}
+                               colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
                     </View>
                     <View style={[styles.flexRow]}>
                         <Panel title="Site" value={site} colStyle={{width: '100%'}}/>
@@ -167,13 +201,15 @@ class Page2 extends APage {
                     <Text style={styles.headingPoint}>2. DATE DETAILS</Text>
                     {renderExtraDateDetails && renderExtraDateDetails()}
                     <View style={[styles.flexRow]}>
-                        <Panel title="Expiry Date Range" value={date_range} renderer={val => val.name || val.data.name} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
+                        <Panel title="Expiry Date Range" value={date_range} renderer={val => val.name || val.data.name}
+                               colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
                     </View>
                 </View>
             </View>
         </PageWrapper>;
     }
 }
+
 // </editor-fold>
 
 function getValue(_key) {

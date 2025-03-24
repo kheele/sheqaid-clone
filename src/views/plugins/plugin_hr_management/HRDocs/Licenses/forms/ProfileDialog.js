@@ -86,7 +86,7 @@ class Controls extends AEmployeeDocControls {
                 <ProfileField title="Date" name="date" type="date" value={date} className="col-lg-6"/>
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}
                               className="col-lg-6"/>
-                <ProfileField title="Notes" name="notes" value={notes} className="col-lg-12"/>
+                <ProfileField title="License Description" name="notes" value={notes} className="col-lg-12"/>
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
             <label className="w-full margin-0 text-center">Document</label>

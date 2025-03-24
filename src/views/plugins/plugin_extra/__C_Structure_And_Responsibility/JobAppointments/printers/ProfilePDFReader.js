@@ -12,10 +12,6 @@ import PageJobAppointments from './PageJobAppointments';
 // <editor-fold defaultstate="collapsed" desc="PDFReader">
 @observer
 class PDFReader extends APDFReader {
-    
-    title() {
-        return "Employee JobAppointments";
-    }
 
     get pages() {
         const {item, counter} = this;
@@ -23,11 +19,16 @@ class PDFReader extends APDFReader {
             <PageFirst item={this.item} counter={counter} title="LEAVES REPORT"/>
             <Page2 item={this.item} counter={counter}/>
             <PageJobAppointments item={this.item} counter={counter} standalone/>
-            
+
             <PageLast item={this.item} counter={counter}/>
         </React.Fragment>;
     }
+
+    title() {
+        return "Employee Job Appointments";
+    }
 }
+
 // </editor-fold>
 
 export default PDFReader;

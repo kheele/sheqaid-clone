@@ -332,6 +332,7 @@ class AEmployeeDocControls extends React.Component {
                 onRemove={this.onRemove}
                 onEdit={this.onEdit}
                 onCreate={this.onCreate}
+                onChange={this.onChange}
                 loadDashboard={this.loadDashboard}
                 renderBarActions={this.renderBarActions}
                 renderItem={this.renderItem}
@@ -450,9 +451,9 @@ class Slider extends React.Component {
                     justifyContent: "center",
                     margin: "0",
                     zIndex: "1",
-                    top: isEmbedded ? "-33px" : "132px",
-                    right: isEmbedded ? '0' : '0',
-                    position: isEmbedded ? "relative" : "absolute",
+                    top: isEmbedded ? "-40px" : "132px",
+                    right: '0',
+                    position: "absolute",
                     border: "none",
                 }}>
                 {!isEmployee && <CreateAndEditBar

@@ -1,7 +1,8 @@
 import React from "react";
 import {execWhen} from './Utils';
 import {sendOTPContractor} from "mutations/update";
-import {checkExistByUsername, findByOTPContractor} from "mutations/findBy";
+import {findByOTPContractor} from "mutations/findBy";
+import {checkExistByUsername} from "mutations/send";
 
 //done
 function onChangeUsername(access_type, onBtnRef) {
@@ -24,7 +25,7 @@ function onChangeUsername(access_type, onBtnRef) {
                     checkExistByUsername({username, access_type}).then(res => {
                         if (!res) {
                             usernameStatus.loading = false;
-                            return;
+                            return;//
                         }
 
                         if ("uid" in res) {

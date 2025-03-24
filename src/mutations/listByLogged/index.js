@@ -38,6 +38,7 @@ export const listPPETypes = listByLogged("ppe-types");
 export const listPPEDisposals = listByLogged("ppe-disposals");
 export const listPPEFitTests = listByLogged("ppe-fit-tests");
 export const listPPEReturns = listByLogged("ppe-returns");
+export const listPPERequisitions = listByLogged("ppe-requisitions");
 export const listApplicableRegulations = listByLogged("applicable-regulations");
 export const listComplianceRequirements = listByLogged("compliance-requirements");
 export const listJobTaskCategories = listByLogged("job-tasks/categories");

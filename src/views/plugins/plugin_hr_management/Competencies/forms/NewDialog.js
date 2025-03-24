@@ -12,7 +12,6 @@ import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {insertEmployeeCompetency} from "mutations/create";
-import {Dates} from "utils/Dates";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -144,26 +143,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            employee,//
-            issued_date, //
-            expiry_date, //
-            type, //
-            competency_type, //
-            accreditation_num, //
-            training, //
-            doc//
-        } = form.data;
-
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            issued_date: Dates.formatDateSQL(issued_date),
-            expiry_date: Dates.formatDateSQL(expiry_date),
-            type,
-            competency_type,
-            accreditation_num,
-            training_id: training && training.id,
-            doc: doc.path
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -210,6 +191,8 @@ class Controls extends React.Component {
                                 className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.competency_type} returnValue add/>
                 <ClearableInput name="accreditation_num" type="text" placeholder="Accreditation Number" required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="certificate_num" type="text" placeholder="Certificate Number" required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row

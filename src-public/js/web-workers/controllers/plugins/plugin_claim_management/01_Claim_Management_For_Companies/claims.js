@@ -1,14 +1,13 @@
-
 (function () {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events) {
             super(events,
-                    {singular: "COID ClaimsClient", plural: "COID Claims"},
-                    "plugin_sheq_assist/COIDA_Management/claims/client/",
-                    "plugin_sheq_assist_coida_claims"
-                    );
+                {singular: "COID ClaimsClient", plural: "COID Claims"},
+                "plugin_sheq_assist/COIDA_Management/claims/client/",
+                "plugin_sheq_assist_coida_claims"
+            );
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -21,6 +20,7 @@
 
             addAction("select/filter", this.filter_select.bind(this));
         }
+
         // </editor-fold>
 
         getDB() {
@@ -180,7 +180,14 @@
                 let savedItem = await AControllerAid.prototype.create.call(this, evt, data);
                 if (savedItem) {
                     const updateAttrs = {};
-                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({secName, listName, file, key, idx, upload}) => {
+                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({
+                                                                                     secName,
+                                                                                     listName,
+                                                                                     file,
+                                                                                     key,
+                                                                                     idx,
+                                                                                     upload
+                                                                                 }) => {
                         const gcsUri = await upload({savedItem, file, secName, listName, key, idx});
                         if (listName) {
                             savedItem.data[listName][idx] = {
@@ -189,7 +196,7 @@
                             updateAttrs[listName] = savedItem.data[listName];
                         } else {
                             updateAttrs[secName] = {[key]: gcsUri};
-                    }
+                        }
                     }));
 
                     if (!Object.keys(updateAttrs).isEmpty()) {
@@ -215,10 +222,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-                            dynamicLinkDomain: 'sheqaid.page.link'
+                            dynamicLinkDomain: 'sheqintel.page.link'
                         };
                         await auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -235,6 +242,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -421,10 +429,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-//                            dynamicLinkDomain: 'forms.sheqaid.com'
+//                            dynamicLinkDomain: 'forms.sheqintel.com'
                         };
                         auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -443,26 +451,28 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="chat">
         async chat(evt, id, message_list_provider) {
             return this.update(evt, id, {message_list_provider});
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_chat_email">
         async send_chat_email(evt, item, list, email) {
             return Events.whenLoggedIn(async loggedUser => {
                 const {id: loggedUserId} = loggedUser.user;
-                
+
                 const {
                     id, data: {
                         ref_num, claim_number,
                         employee
                     }
                 } = item;
-                
+
                 const createEmployee = (employee) => {
                     const {fname, lname} = employee.data;
                     return `${fname} ${lname}`;
@@ -472,11 +482,11 @@
                     dates.sort();
                     return `${Dates.formatDate(dates[0])} - ${Dates.formatDate(dates.getLastElement())}`;
                 };
-                
+
                 const listGroup = list.groupBy(({sender, read, msg, date}) => {
                     return Dates.formatDate(date);
                 });
-                
+
                 const style = 'padding: 5px 10px 5px 10px; border-radius: 10px; box-shadow: 0 0 3px #ddd; line-height: 1.4; min-width: 46px; max-width: 270px';
                 const timeStyle = 'width: 100%;display: block;';
                 const timeSpanStyle = 'font-size: 11px; font-weight: bold; float: left;margin: 3px 0 0; padding: 1px 5px 0; background: #eee; border-radius: 10px;';
@@ -504,35 +514,35 @@
                         </div>
                         <div style="display:grid;margin: 5px 0 10px 0;background: rgb(2,168,168);padding: 10px; border-radius: 12px;">
                         ${Object.keys(listGroup).map(key => {
-                            const list = listGroup[key];
-                            let div = `<div style="display:block;width:100%;">`;
-                            div += `<h4 style="margin: 5px 0 5px 0;text-align: center;color: #eee;font-size: 11px;">${key}</h4>`;
-                            div += list.map(({sender, read, msg, date}, n) => {
-                                date = Dates.formatTime(date).split(':');//.reverse();
-                                date.pop();
-                                date = date.join(':');
-                                let div = `<div style="display:block;width:100%;margin: ${n>0?10:0}px 0 0;">`;
-                                if(sender.uid === loggedUserId) {//right
-                                    div += `<div style="float: right; ${style}; margin: 0 0 0 30px; background: #94d9bc;">
+                        const list = listGroup[key];
+                        let div = `<div style="display:block;width:100%;">`;
+                        div += `<h4 style="margin: 5px 0 5px 0;text-align: center;color: #eee;font-size: 11px;">${key}</h4>`;
+                        div += list.map(({sender, read, msg, date}, n) => {
+                            date = Dates.formatTime(date).split(':');//.reverse();
+                            date.pop();
+                            date = date.join(':');
+                            let div = `<div style="display:block;width:100%;margin: ${n > 0 ? 10 : 0}px 0 0;">`;
+                            if (sender.uid === loggedUserId) {//right
+                                div += `<div style="float: right; ${style}; margin: 0 0 0 30px; background: #94d9bc;">
                                         ${msg}
                                         <div style="${timeStyle}">
                                             <span style="${timeSpanStyle}">${date}</span>
                                         </div>
                                     </div>`;
-                                } else {//left
-                                    div += `<div style="float: left; ${style}; margin: 0 30px 0 0; background: #e9c7c7;">
+                            } else {//left
+                                div += `<div style="float: left; ${style}; margin: 0 30px 0 0; background: #e9c7c7;">
                                         ${msg}
                                         <div style="${timeStyle}">
                                             <span style="${timeSpanStyle}">${date}</span>
                                         </div>
                                     </div>`;
-                                }
-                                div += '</div>';
-                                return div;
-                            }).join('\n');
+                            }
                             div += '</div>';
                             return div;
-                        }).join('\n')}
+                        }).join('\n');
+                        div += '</div>';
+                        return div;
+                    }).join('\n')}
                         </div>
                         <p style="line-height:1.2;margin: 10px 0 0;">Powered By:<br/>SHEQ Aid</p>
                     </div>`
@@ -541,6 +551,7 @@
                 return true;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="add_claim_number">
@@ -563,15 +574,16 @@
                     const {receipient_coid_provider, employee} = res.data;
                     if (receipient_coid_provider) {
                         await sendEmail(
-                                receipient_coid_provider,
-                                'ClaimsClient Management (ClaimsClient Number Added/Updated)',
-                                `<p>${sender_name} has added/updated the claim number (${claim_number}).</p>\n`
-                                );
+                            receipient_coid_provider,
+                            'ClaimsClient Management (ClaimsClient Number Added/Updated)',
+                            `<p>${sender_name} has added/updated the claim number (${claim_number}).</p>\n`
+                        );
                     }
                 }
                 return !!res;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_email_to_medical_center">
@@ -581,6 +593,7 @@
                 return !!res;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="approve_claim_provider">
@@ -644,11 +657,11 @@
                         };
 
                         await sendEmail(
-                                receipient_coid_provider,
-                                'New ClaimsClient Approved',
-                                `<p>${sender_name} has approved the claim for <b>${lname} ${fname}</b>.</p>\n
+                            receipient_coid_provider,
+                            'New ClaimsClient Approved',
+                            `<p>${sender_name} has approved the claim for <b>${lname} ${fname}</b>.</p>\n
                                 <p>Location: ${location(client, project, site)}</p>\n`
-                                );
+                        );
 
                         return {receipient_coid_provider_id, receipient_coid_provider};
                     }
@@ -657,6 +670,7 @@
                 return null;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
@@ -688,7 +702,11 @@
                     {header: 'Fit for Duty', key: 'Fit for Duty', width: 35},
                     {header: 'Days Off', key: 'Days Off', width: 35},
                     {header: 'Place of Accident', key: 'Place of Accident', width: 35},
-                    {header: 'Accident Detais as per WCI.2 - Employers Report', key: 'Accident Detais as per WCI.2 - Employers Report', width: 35},
+                    {
+                        header: 'Accident Detais as per WCI.2 - Employers Report',
+                        key: 'Accident Detais as per WCI.2 - Employers Report',
+                        width: 35
+                    },
                     {header: 'Injury Type', key: 'Injury Type', width: 35},
                     {header: 'Employer WCI.2', key: 'Employer WCI.2', width: 35},
                     {header: 'Certified ID', key: 'Certified ID', width: 35},
@@ -840,7 +858,7 @@
                         employer_signature_name,
                         employer_signature_date
                     } = wcl_2;
-                    
+
                     const {
                         employee_left_my_service_date,
                         periods_employee_light_duty
@@ -871,9 +889,9 @@
                         }
                         return 'No';
                     };
-                    
+
                     const calcLightDutyFromAndTo = (periods_employee_light_duty) => {
-                        if(!isArray(periods_employee_light_duty)) {
+                        if (!isArray(periods_employee_light_duty)) {
                             return null;
                         }
                         periods_employee_light_duty.map(v => v.date_from).sort();
@@ -881,32 +899,32 @@
                         const to = periods_employee_light_duty.getLastElement();
                         return {from: formatDate(from), to: formatDate(to)};
                     };
-                    
+
                     const {
                         from: periods_employee_light_duty_from,
                         to: periods_employee_light_duty_to
                     } = calcLightDutyFromAndTo(periods_employee_light_duty) || {};
-                    
+
                     const calcBeenFitForNormalDuty = (wcl_5_list) => {
-                        if(wcl_5_list.isEmpty()) {
+                        if (wcl_5_list.isEmpty()) {
                             return '';
                         }
                         const wcl_5 = wcl_5_list.find(v => !!v.employee_been_fit_normal_work_date);
-                        if(!wcl_5) {
+                        if (!wcl_5) {
                             return '';
                         }
                         const {employee_been_fit_normal_work_date} = wcl_5;
                         return formatDate(employee_been_fit_normal_work_date);
                     };
                     const calcHasProgressReport = (wcl_5_list) => {
-                        if(wcl_5_list.isEmpty()) {
+                        if (wcl_5_list.isEmpty()) {
                             return 'No';
                         }
                         const wcl_5 = wcl_5_list.find(v => !v.employee_been_fit_normal_work_date && !!v.employee_likely_to_be_fit_normal_work_date);
                         return !wcl_5 ? 'No' : 'Yes';
                     };
                     const calcHasFinalReport = (wcl_5_list) => {
-                        if(wcl_5_list.isEmpty()) {
+                        if (wcl_5_list.isEmpty()) {
                             return 'No';
                         }
                         const wcl_5 = wcl_5_list.find(v => !!v.employee_been_fit_normal_work_date);
@@ -950,6 +968,7 @@
                 return await this.export_excel_impl(loggedUser, "ClaimsClient-Management-Docs", "ClaimsClient-Management-Company", "ClaimsClient-Management Data", cols, rows);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_select">
@@ -957,7 +976,11 @@
             return Events.whenLoggedIn(async loggedUser => {
                 const {user: {data: {client: my_client, project: my_project, site: my_site}}} = loggedUser;
                 const {date_range, client_id, project_id, site_id, isNew} = filterData;
-                let list = await AControllerRead.prototype.listImpl.call(this, evt, {isNew, limit: -1, direction: 'desc'}, q => {
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, {
+                    isNew,
+                    limit: -1,
+                    direction: 'desc'
+                }, q => {
                     if (my_client) {
                         q = q.where('client_id', '==', my_client.id);
                     } else if (client_id) {
@@ -973,12 +996,12 @@
                     } else if (site_id) {
                         q = q.where('site_id', '==', site_id);
                     }
-                    if(date_range) {
+                    if (date_range) {
                         const {start, end} = date_range;
-                        if(start) {
+                        if (start) {
                             q = q.where('accident_date', '>=', start);
                         }
-                        if(end) {
+                        if (end) {
                             q = q.where('accident_date', '<=', end);
                         }
                     }
@@ -988,6 +1011,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -998,6 +1022,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -1006,6 +1031,7 @@
 
             });
         }
+
         // </editor-fold>
 
         sortBy() {
@@ -1083,6 +1109,7 @@
 //                    console.log(this.tbl, item)
         return item;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="sendEmail">
@@ -1137,6 +1164,7 @@
 
         await Utils.sendEmail(opts);
     }
+
     // </editor-fold>
 
     new Controller(events);

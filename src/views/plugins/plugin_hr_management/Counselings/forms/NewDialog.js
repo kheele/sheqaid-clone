@@ -10,7 +10,6 @@ import {NewEmployeeListTable} from 'components/FormTableComponents';
 import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeCounselling} from "mutations/create";
 
 @observer
@@ -118,47 +117,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            //1
-            employee, //
-            responsible_person,//
-            //2
-            types,//
-            reasons,//
-            incident_desc,//
-            corrective_actions,//
-            counselling_hrs_to_complete,//
-            expiry_date,//
-            witness_list,//
-            //3
-            doc//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            responsible_person_id: responsible_person && responsible_person.id,
-
-            corrective_actions,
-            counselling_hrs_to_complete,
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            incident_desc,
-            reasons,
-            types,
-            witness_list: {
-                data: witness_list ? witness_list.map(({employee, other_person}) => {
-                    console.log('witness_list', employee, other_person)
-                    if (employee) {
-                        return {witness_id: employee.id};
-                    }
-                    const {job_position} = other_person;
-                    if (job_position) {
-                        delete other_person.job_position;
-                        other_person.job_position_id = job_position.id;
-                    }
-                    return {witness_other: {data: other_person}};
-                }) : []
-            },
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)

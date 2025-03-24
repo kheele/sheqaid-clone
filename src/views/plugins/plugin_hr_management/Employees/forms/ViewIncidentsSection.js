@@ -58,35 +58,35 @@ class ViewIncidentsSection extends React.Component {
             distribution_list = []
         } = incident_list;
 
-        const path = "plugin_sheq_assist/17_Incident_Investigation/";
-
-        neonBinding.events.emit(path + "find_by_ids", person_injured).then(res => {
-            this.state.person_injured = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", driver).then(res => {
-            this.state.driver = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", person_involved_list).then(res => {
-            this.state.person_involved_list = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", witness_list).then(res => {
-            this.state.witness_list = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", person_reporting).then(res => {
-            this.state.person_reporting = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", person_reported_to).then(res => {
-            this.state.person_reported_to = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", investigation_team_list).then(res => {
-            this.state.investigation_team_list = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", corrective_action_list).then(res => {
-            this.state.corrective_action_list = res;
-        });
-        neonBinding.events.emit(path + "find_by_ids", distribution_list).then(res => {
-            this.state.distribution_list = res;
-        });
+        // const path = "plugin_sheq_assist/17_Incident_Investigation/";
+        //
+        // neonBinding.events.emit(path + "find_by_ids", person_injured).then(res => {
+        //     this.state.person_injured = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", driver).then(res => {
+        //     this.state.driver = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", person_involved_list).then(res => {
+        //     this.state.person_involved_list = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", witness_list).then(res => {
+        //     this.state.witness_list = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", person_reporting).then(res => {
+        //     this.state.person_reporting = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", person_reported_to).then(res => {
+        //     this.state.person_reported_to = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", investigation_team_list).then(res => {
+        //     this.state.investigation_team_list = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", corrective_action_list).then(res => {
+        //     this.state.corrective_action_list = res;
+        // });
+        // neonBinding.events.emit(path + "find_by_ids", distribution_list).then(res => {
+        //     this.state.distribution_list = res;
+        // });
     }
 
     // </editor-fold>
@@ -178,9 +178,10 @@ class ViewIncidentsSection extends React.Component {
         const {
             onFormNext, onFormBack, onFormOpen,
             item, item: {
-                id, data: {}
+                id,
+                data: {},
             },
-            idx
+            idx,
         } = this.props;
 
         const {

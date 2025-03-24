@@ -23,6 +23,61 @@ class ListTable extends ANewListTable {
         super(props);
     }
 
+    onClickComplete(e, el) {
+        let {savable, targetItem, insertFn, updateFn, deleteFn, onAttrs, onUpdated} = this.props;
+
+        if (savable && targetItem) {
+            let {action, idx, item} = el.props;
+
+            if (action === "save" || action === "saveEdit") {
+                const fn = item.id ? updateFn : insertFn;
+                progressDialog.open();
+                fn({
+                    [targetItem.key]: targetItem.item.id,
+                    ...onAttrs({...item}),
+                }).then(savedItem => {
+                    if (!savedItem) {
+                        infoDialog.open("Sorry! Record couldn't be added.");
+                    } else {
+                        infoDialog.open("Record successfully added.");
+                    }
+
+                    infoDialog.close(2000);
+                }).catch(err => {
+                    infoDialog.open("An error occurred. Please try again later.");
+                    infoDialog.close(2000);
+                    console.error(err);
+                }).finally(() => {
+                    setTimeout(() => progressDialog.close());
+                });
+            } else if (action === "delete") {
+                confirmDialog.open("Are you sure you want to remove the item?").then(res => {
+                    if (!res) return;
+
+                    if (!item.id) return;
+
+                    progressDialog.open();
+                    deleteFn(item.id).then(savedItem => {
+                        if (!savedItem) {
+                            infoDialog.open("Sorry! Record couldn't be removed.");
+                        } else {
+                            infoDialog.open("Record successfully removed.");
+                        }
+
+                        infoDialog.close(2000);
+                    }).catch(err => {
+                        infoDialog.open("An error occurred. Please try again later.");
+                        infoDialog.close(2000);
+                        console.error(err);
+                    }).finally(() => {
+                        setTimeout(() => progressDialog.close());
+                    });
+                });
+            }
+            // onUpdate && onUpdate(e, el);
+        }
+    }
+
     renderItem(n, onClick) {
         const {readonly, renderTable} = this.props;
         const item = this.state.list[n];
@@ -63,8 +118,9 @@ class ListTable extends ANewListTable {
                                     placeholder="Progress Date..."
                                     required className="col-lg-12 form-control" onChange={this.onChange}/>
                 </div>
-                <Divider />
-                <Button idx={n} action="save" className="btn btn-primary hor-center w-120 border-radius-20 margin-0" onClick={onClick}>
+                <Divider/>
+                <Button idx={n} action="save" className="btn btn-primary hor-center w-120 border-radius-20 margin-0"
+                        onClick={onClick}>
                     <i className="fa fa-check"/> Submit
                 </Button>
             </TRow>;

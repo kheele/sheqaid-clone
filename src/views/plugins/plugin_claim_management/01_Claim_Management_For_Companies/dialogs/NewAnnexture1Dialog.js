@@ -14,8 +14,7 @@ import style from "./NewAnnexture1Dialog.lazy.css";
 import updateAnnexture1 from "mutations/all/COIDA/Annexture1/updateAnnexture1";
 import updateClaimsClient from "mutations/all/COIDA/ClaimsClient/updateClaimsClient";
 import insertAnnexture1 from "mutations/all/COIDA/Annexture1/insertAnnexture1";
-import findByIdWCL2 from "mutations/all/COIDA/WCL2/findByIdWCL2";
-import findByIdAnnexture1 from "mutations/all/COIDA/Annexture1/findByIdAnnexture1";
+import {findByIdAnnexture1} from "mutations/findById";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -27,6 +26,12 @@ class NewAnnexture1Dialog extends ANewDialog {
     constructor(props) {
         super(props, style);
     }
+
+    get controls() {
+        return Controls;
+    }
+
+    //</editor-fold>
 
     //<editor-fold desc="convert_data">
     convert_data(_formData) {
@@ -115,12 +120,6 @@ class NewAnnexture1Dialog extends ANewDialog {
             chairperson_of_health_and_safety_committee_signature_date: Dates.formatDateSQL(chairperson_of_health_and_safety_committee_signature_date),
         };
     }
-
-    //</editor-fold>
-
-    get controls() {
-        return Controls;
-    }
 }
 
 // </editor-fold>
@@ -163,6 +162,46 @@ class Controls extends React.Component {
         this.form = new Form();
         this.form.addChangeOne("affected_person", this.onChangeAffectedPerson.bind(this));
         this.form.addChangeOne("investigator", this.onChangeInvestigator.bind(this));
+    }
+
+    // </editor-fold>
+
+    get totalFieldCount() {
+        const {state: {countFields}} = this;
+        const totalCount = Object.values(countFields).map(({count, max}) => count).reduce((n1, n2) => n1 + n2, 0);
+        return totalCount;
+    }
+
+    // </editor-fold>
+
+    get totalFieldMax() {
+        const {state: {countFields}} = this;
+        const totalMax = Object.values(countFields).map(({count, max}) => max).reduce((n1, n2) => n1 + n2, 0);
+        return totalMax;
+    }
+
+    get convert_data() {
+        const {dialog} = this.props;
+        return dialog.convert_data;
+    }
+
+    get claim() {
+        const {dialog} = this.props;
+        return dialog.extraProp('item');
+    }
+
+    // </editor-fold>
+
+    get isNew() {
+        const {item} = this;
+        if (!item) return true;
+        return !item.id;
+    }
+
+    // </editor-fold>
+
+    get item() {
+        return this.props.state.item;
     }
 
     // </editor-fold>
@@ -229,8 +268,6 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
     onCountFields({count, max}, idx) {
         const {state: {countFields}} = this;
@@ -260,8 +297,6 @@ class Controls extends React.Component {
             }
         });
     }
-
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -298,8 +333,6 @@ class Controls extends React.Component {
 
         return true;
     }
-
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
@@ -352,14 +385,12 @@ class Controls extends React.Component {
                 btn.text("Saving...").disabled();
                 progressDialog.open();
                 insertAnnexture1(convert_data(data)).then(res => {
-                    if(res) {
+                    if (res) {
                         return updateClaimsClient({id: claim.id, annexture_1_id: res.id}).then(_ => res)
                     }
-                }).
-                then(res => res && findByIdAnnexture1(res.id)).
-                then(res => {
+                }).then(res => res && findByIdAnnexture1(res.id)).then(res => {
                     console.log("res", res)
-                    if(!res) {
+                    if (!res) {
                         return infoDialog.open("Record couldn't be updated. Please try again.");
                     }
 
@@ -440,40 +471,6 @@ class Controls extends React.Component {
         }
     }
 
-    // </editor-fold>
-
-    get totalFieldCount() {
-        const {state: {countFields}} = this;
-        const totalCount = Object.values(countFields).map(({count, max}) => count).reduce((n1, n2) => n1 + n2, 0);
-        return totalCount;
-    }
-
-    get totalFieldMax() {
-        const {state: {countFields}} = this;
-        const totalMax = Object.values(countFields).map(({count, max}) => max).reduce((n1, n2) => n1 + n2, 0);
-        return totalMax;
-    }
-
-    get convert_data() {
-        const {dialog} = this.props;
-        return dialog.convert_data;
-    }
-
-    get claim() {
-        const {dialog} = this.props;
-        return dialog.extraProp('item');
-    }
-
-    get isNew() {
-        const {item} = this;
-        if(!item) return true;
-        return !item.id;
-    }
-
-    get item() {
-        return this.props.state.item;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
@@ -533,7 +530,8 @@ class Controls extends React.Component {
                                 placeholder="b) the police?*" vertical className="col-lg-12 form-control"
                                 onChange={this.form.onChange} values={this.state.lists.incident_reported_police}
                                 returnValue/>
-                <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and reference</label>
+                <label className="col-lg-12 margin-0 margin-t-10 padding-5 bg-f5f5f5 font-size-13">SAPS office and
+                    reference</label>
                 <ClearableInput ref="saps_office" name="saps_office" type="text" placeholder="SAPS office"
                                 className="col-lg-6 col-xs-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput ref="saps_reference" name="saps_reference" type="text" placeholder="Reference"

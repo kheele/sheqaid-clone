@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
-import {Dates, execWhen} from 'utils/Utils';
+import {execWhen} from 'utils/Utils';
 
 import {ANewDialog} from 'components/dialogs';
 import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
@@ -214,48 +214,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            employee, //
-            issued_by,//
-            type,//
-            category_of_misconduct,
-            date,//
-            expiry_date, //
-            details,//
-            employee_comments,//
-            notes,//
-            witness_list,//
-            doc//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            date: Dates.formatTimestampSQL(date),
-            details,
-            employee_comments,
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            issued_by_id: issued_by && issued_by.id,
-            notes,
-            type,
-            category_of_misconduct,
-            witness_list: {
-                data: (witness_list || []).filter(v => !!v).map(({other_person, employee}) => {
-                    if (other_person) {
-                        delete other_person.id;
-                        if (other_person.job_position) {
-                            other_person.job_position_id = other_person.job_position.id;
-                            delete other_person.job_position;
-                        }
-                    }
-                    return {
-                        witness_id: employee && employee.id,
-                        witness_external: other_person && {
-                            data: other_person
-                        } || null,
-                    };
-                }),
-            },
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)

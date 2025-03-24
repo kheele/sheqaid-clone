@@ -109,7 +109,7 @@ class AEditDialog extends AFormDialog {
     onDelete(e, btn) {
 //        this.refs.controls.onDelete(e, btn);
         confirmDialog.open("Are you sure you want to remove the record?").then(async res => {
-            if (res === 1) {
+            if (res) {
                 const {item} = this.state;
                 const {onSoftDeleteProhibit} = this.parentListPage;
                 let {removeById, softDeleteAttrs, props: {onSoftDelete}} = this;

@@ -1,16 +1,19 @@
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {getGeocode} from 'utils/Maps';
-import {execWhen} from 'utils/Utils';
+import {execWhen, ShouldUpdate} from 'utils/Utils';
 
 import {ClearableInput, SelectDepartmentInput, SelectEmployeeInput, SelectJobPositionInput} from 'components/inputs';
 import {Row} from 'components/FormComponents';
 import LivingAddressSection from "./LivingAddressSection";
 import BankingDetailsSection from "./BankingDetailsSection";
-import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
+import {updateEmployee} from "mutations/update";
+import NextOfKinSection from "./NextOfKinSection";
+import DependantSection from "./DependantSection";
 
 @observer
 class EditOptionalInfoSection extends React.Component {
@@ -92,7 +95,75 @@ class EditOptionalInfoSection extends React.Component {
         // }
     }
 
+    @computed get itemData() {
+        const {item} = this.props;
+        return item && item.data || {};
+    }
+
     //</editor-fold>
+
+    onSubmit(btn) {
+        const {
+            formData,
+            // itemData,
+            props: {item: {id, data: old_data}},
+        } = this;
+
+        const {
+            employment_date,
+            employment_num,
+            job_position,
+            department,
+            //
+            supervisor,
+        } = formData;
+
+        const data = {};
+
+        console.log('old_data', old_data);
+
+        ShouldUpdate.checkDate(data, old_data, employment_date, 'employment_date');
+        ShouldUpdate.check(data, old_data, employment_num, 'employment_num');
+        ShouldUpdate.checkDepartment(data, old_data, department, 'department_id');
+        ShouldUpdate.checkJobPosition(data, old_data, job_position, 'job_position_id');
+        //
+        ShouldUpdate.checkEmployee(data, old_data, supervisor, 'supervisor_id');
+        if (supervisor) {
+            // const {data: {phone, email}} = supervisor;
+            // if (phone) {
+            //     ShouldUpdate.check(data, old_data, supervisor_phone, 'supervisor_phone');
+            // }
+            // if (email) {
+            //     ShouldUpdate.check(data, old_data, supervisor_email, 'supervisor_email');
+            // }
+        }
+
+        if (Object.keys(data).isEmpty()) {
+            infoDialog.open("Nothing changed!");
+            return;
+        }
+
+        console.log(data)
+
+        btn.text("Saving...").disabled();
+        progressDialog.open();
+        updateEmployee({id, ...data}).then(res => {
+            console.log("res", res)
+            if (!res) {
+                infoDialog.open("An error occurred. Please try again.");
+            } else {
+                const res_data = res;
+                // onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }
+        }).finally(() => {
+            btn.text("Save").enabled();
+            setTimeout(() => progressDialog.close());
+        });
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="componentDidMount">
@@ -127,8 +198,6 @@ class EditOptionalInfoSection extends React.Component {
         });
     }
 
-    //</editor-fold>
-
     //<editor-fold desc="onChangeEmployee">
     onChangeEmployee(el, val) {
         execWhen(() => this.refs.supervisorDetails).then(supervisorDetails => {
@@ -157,6 +226,7 @@ class EditOptionalInfoSection extends React.Component {
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls">
                     <Row
+                        ref="employmentDetails"
                         active
                         rendered
                         idx={parseFloat(idx + ".1").toFixed(1)}
@@ -178,6 +248,7 @@ class EditOptionalInfoSection extends React.Component {
                                                 onChange={this.form.onChange}/>
                     </Row>
                     <Row
+                        ref="supervisorDetails"
                         rendered
                         idx={parseFloat(idx + ".2").toFixed(1)}
                         title={idx + ".2 Supervisor Details"}
@@ -192,28 +263,55 @@ class EditOptionalInfoSection extends React.Component {
                         <SupervisorDetails ref="supervisorDetails" onChange={this.form.onChange}/>
                     </Row>
                     {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
+                        ref="residentialAddress"
                         rendered
                         idx={parseFloat(idx + ".3").toFixed(1)}
-                        title={idx + ".3 Living Address"}
+                        title={idx + ".3 Residential Address"}
                         sectionClassName="h-440 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                         onFormBack={onFormBack}
-                        onFormSave={onFormSave}
                     >
                         <LivingAddressSection item={item} isNewEmployee={isNewEmployee} isEmbedded
                                               onChange={this.form.onChange}/>
                     </Row>}
                     {EmployeeProfileSettings.isEmployeeBankingDetailsViewers(item) && <Row
+                        ref="bankingDetails"
                         rendered
                         idx={parseFloat(idx + ".4").toFixed(1)}
                         title={idx + ".4 Banking Details"}
                         sectionClassName="h-370 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                         onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
                         onFormBack={onFormBack}
                     >
                         <BankingDetailsSection item={item} isNewEmployee={isNewEmployee} isEmbedded
                                                onChange={this.form.onChange}/>
+                    </Row>}
+                    {EmployeeProfileSettings.isValidEmployeeNextOfKinViewers(item) && <Row
+                        ref="next_of_kins"
+                        rendered
+                        idx={parseFloat(idx + ".5").toFixed(1)}
+                        title={idx + ".5 Next Of Kin"}
+                        sectionClassName="h-380 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                        onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
+                        onFormBack={onFormBack}
+                    >
+                        <NextOfKinSection item={item} isNewEmployee={isNewEmployee} isEmbedded
+                                          onChange={this.form.onChange}/>
+                    </Row>}
+                    {EmployeeProfileSettings.isValidEmployeeDependantsViewers(item) && <Row
+                        ref="dependants"
+                        rendered
+                        idx={parseFloat(idx + ".6").toFixed(1)}
+                        title={idx + ".6 Dependant(s)"}
+                        sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                    >
+                        <DependantSection item={item} isNewEmployee={isNewEmployee} isEmbedded
+                                          onChange={this.form.onChange}/>
                     </Row>}
                 </div>
             </div>

@@ -1,7 +1,7 @@
 const createLocationRoot = () => {
     let loc;
     const {location, location: {hostname}} = document;
-    if (hostname.contains('sheqaid.com')) {
+    if (hostname.contains('sheqintel.com')) {
         loc = `https://${hostname}/`;
     } else {
         loc = location.toString().replace("index.html", "");
@@ -189,7 +189,7 @@ class WebWorkerInner {
 
         return this;
     }
-    
+
     off(evt, callback) {
         if (this.ww.events[evt]) {
             this.ww.events[evt].remove(callback);

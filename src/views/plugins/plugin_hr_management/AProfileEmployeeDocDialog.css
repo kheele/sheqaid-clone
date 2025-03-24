@@ -199,7 +199,8 @@
 #dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-create,
 #dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-edit,
 #dialog-overlay.AProfileEmployeeDocDialog .EmbeddedBtnBar .btn-remove {
-    /*top: 7px;*/
+    /*top: 8px;*/
+    margin-top: 4px;
 }
 
 #dialog-overlay.AProfileEmployeeDocDialog .btn-create {

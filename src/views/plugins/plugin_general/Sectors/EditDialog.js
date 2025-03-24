@@ -16,6 +16,8 @@ class EditDialog extends AEditDialog {
     className = 'ANewTableFormDialog';
     removeById = updateSector;
 
+    // findById = findByIdSector;
+
     constructor(props) {
         super(props, style);
     }

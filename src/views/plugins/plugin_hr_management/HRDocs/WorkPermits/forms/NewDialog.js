@@ -10,8 +10,6 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
 import {insertEmployeeWorkPermit} from "mutations/create";
-import {Dates} from "utils/Dates";
-import {SignatureListRow} from "components/SignatureComponents";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -109,20 +107,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            employee,//
-            date,//
-            expiry_date, //
-            notes,//
-            doc//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            date: Dates.formatDateSQL(date),
-            expiry_date: Dates.formatDateSQL(expiry_date),
-            notes,
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -174,7 +160,6 @@ class Controls extends React.Component {
                 title="2. Document"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}
             >
                 <UploadButton
                     name="doc"
@@ -185,16 +170,16 @@ class Controls extends React.Component {
                     onChange={this.form.onChange}
                 />
             </Row>
-            <SignatureListRow
-                idx={3}
-                pluginKey="HR"
-                module="WorkPermits"
-                onSetSignatureSettings={onSetSignatureSettings}
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-            >
+            {/*<SignatureListRow*/}
+            {/*    idx={3}*/}
+            {/*    pluginKey="HR"*/}
+            {/*    module="WorkPermits"*/}
+            {/*    onSetSignatureSettings={onSetSignatureSettings}*/}
+            {/*    onFormOpen={onFormOpen}*/}
+            {/*    onFormBack={onFormBack}*/}
+            {/*>*/}
 
-            </SignatureListRow>
+            {/*</SignatureListRow>*/}
         </FormControls>;
     }
 }

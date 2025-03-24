@@ -1,11 +1,11 @@
 importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 
-if (location.hostname.contains('sheqaid.com')) {
-    self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
+if (location.hostname.contains('sheqintel.com')) {
+    self.SERVER_HOST = "https://bun-server.cloud.sheqintel.com";
 } else {
-    self.SERVER_HOST = "http://localhost:5000";
-    // self.SERVER_HOST = "https://bun-server.cloud.sheqaid.com";
-// self.SERVER_HOST = "https://server.cloud.sheqaid.com";
+    // self.SERVER_HOST = "http://localhost:5000";
+    self.SERVER_HOST = "https://bun-server.cloud.sheqintel.com";
+// self.SERVER_HOST = "https://server.cloud.sheqintel.com";
 }
 
 self.socket = io(SERVER_HOST, {
@@ -16,7 +16,7 @@ self.socket = io(SERVER_HOST, {
         if (session.isLoggedIn) {
             const {currentUser} = session.auth;
             const {uid} = currentUser;
-            // console.log('currentUser', currentUser)
+            console.log('currentUser', currentUser)
             currentUser.getIdToken(true).then(token => {
                 cb({token, uid});
             });
@@ -42,7 +42,7 @@ socket.on('connect', () => {
             });
         });
     }
-});
+});//
 
 socket.on('disconnect', () => {
     console.log('Disconnected from server', socket.id);

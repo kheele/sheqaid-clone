@@ -22,9 +22,11 @@ class RenderRow extends ARenderRow {
                 created_at,
                 date,
                 annexture_3,
+                fitness_option,
                 restrictions,
                 expiry_date,
                 expiry_updated,
+                annexture3_doc,
                 doc,
                 employee: {lname, fname},
             },
@@ -44,6 +46,10 @@ class RenderRow extends ARenderRow {
                 {restrictions || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-120">
+                <h6 className="xs-shown font-size-13">Fitness</h6>
+                {fitness_option || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Annexture 3?</h6>
                 {annexture_3 || 'N/A'}
             </div>
@@ -59,6 +65,7 @@ class RenderRow extends ARenderRow {
     }
 
 }
+
 // </editor-fold>
 
 export default RenderRow;

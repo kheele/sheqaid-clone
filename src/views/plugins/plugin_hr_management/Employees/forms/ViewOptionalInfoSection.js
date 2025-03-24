@@ -6,7 +6,9 @@ import {Row} from 'components/FormComponents';
 import {ProfileField,} from 'components/inputs';
 import LivingAddressSection from "./LivingAddressSection";
 import BankingDetailsSection from "./BankingDetailsSection";
-import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import NextOfKinSection from "./NextOfKinSection";
+import DependantSection from "./DependantSection";
+import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
 
 @observer
 class ViewOptionalInfoSection extends React.Component {
@@ -38,6 +40,7 @@ class ViewOptionalInfoSection extends React.Component {
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls pos-relative">
                     <Row
+                        ref="employmentDetails"
                         rendered
                         idx={parseFloat(idx + ".1").toFixed(1)}
                         title={idx + ".1 Employment Details"}
@@ -54,6 +57,7 @@ class ViewOptionalInfoSection extends React.Component {
                                       renderer={val => val.name} className="col-lg-6"/>
                     </Row>
                     <Row
+                        ref="supervisorDetails"
                         rendered
                         idx={parseFloat(idx + ".2").toFixed(1)}
                         title={idx + ".2 Supervisor Details"}
@@ -69,9 +73,10 @@ class ViewOptionalInfoSection extends React.Component {
                                       value={supervisor && supervisor.email} className="col-lg-6"/>
                     </Row>
                     {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
+                        ref="residentialAddress"
                         rendered
                         idx={parseFloat(idx + ".3").toFixed(1)}
-                        title={idx + ".3 Living Address"}
+                        title={idx + ".3 Residential Address"}
                         sectionClassName="h-440 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                         onFormOpen={onFormOpen}
                         onFormBack={onFormBack}
@@ -80,14 +85,39 @@ class ViewOptionalInfoSection extends React.Component {
                         <LivingAddressSection item={item} isEmbedded/>
                     </Row>}
                     {EmployeeProfileSettings.isEmployeeBankingDetailsViewers(item) && <Row
+                        ref="bankingDetails"
                         rendered
                         idx={parseFloat(idx + ".4").toFixed(1)}
                         title={idx + ".4 Banking Details"}
                         sectionClassName="h-370 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
                         onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
                         onFormBack={onFormBack}
                     >
                         <BankingDetailsSection item={item} isEmbedded/>
+                    </Row>}
+                    {EmployeeProfileSettings.isValidEmployeeNextOfKinViewers(item) && <Row
+                        ref="next_of_kins"
+                        rendered
+                        idx={parseFloat(idx + ".5").toFixed(1)}
+                        title={idx + ".5 Next Of Kin"}
+                        sectionClassName="h-380 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                        onFormOpen={onFormOpen}
+                        onFormNext={onFormNext}
+                        onFormBack={onFormBack}
+                    >
+                        <NextOfKinSection item={item} isEmbedded/>
+                    </Row>}
+                    {EmployeeProfileSettings.isValidEmployeeDependantsViewers(item) && <Row
+                        ref="dependants"
+                        rendered
+                        idx={parseFloat(idx + ".6").toFixed(1)}
+                        title={idx + ".6 Dependant(s)"}
+                        sectionClassName="h-300 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                        onFormOpen={onFormOpen}
+                        onFormBack={onFormBack}
+                    >
+                        <DependantSection item={item} isEmbedded/>
                     </Row>}
                 </div>
             </div>

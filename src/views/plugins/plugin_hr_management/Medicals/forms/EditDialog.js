@@ -6,8 +6,8 @@ import {CircularProgress} from "@mui/material";
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, Clickable, ProofUploadButton, SelectEmployeeInput} from 'components/inputs';
-import {NavButtons} from 'components/FormComponents';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
+import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
@@ -47,7 +47,12 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}]
+            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}],
+            fitness_option: [{text: "Fit", value: "Fit", checked: false}, {
+                text: "Fit with Restrictions",
+                value: "Fit with Restrictions",
+                checked: false
+            }]
         }
     };
 
@@ -81,10 +86,6 @@ class Controls extends React.Component {
                 infoDialog.open('Expiry Date is required');
                 return;
             }
-            if (!form.isValid('annexture_3')) {
-                infoDialog.open('Annexture 3 is required');
-                return;
-            }
         }
         if (idx === 2) {
             if (!form.isValid('doc')) {
@@ -107,10 +108,6 @@ class Controls extends React.Component {
             infoDialog.open('Expiry Date is required');
             return;
         }
-        if (!form.isValid('annexture_3')) {
-            infoDialog.open('Annexture 3 is required');
-            return;
-        }
         if (!form.isValid('doc')) {
             infoDialog.open('Please Upload Medical Fitness Certificate');
             return;
@@ -125,7 +122,7 @@ class Controls extends React.Component {
             return;
         }
 
-        const {employee, expiry_date, annexture_3, restrictions, doc} = form.data;
+        const {employee, expiry_date, annexture_3, fitness_option, restrictions, annexture3_doc, doc} = form.data;
 
         const data = {};
 
@@ -134,7 +131,9 @@ class Controls extends React.Component {
         }
         ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.check(data, old_data, annexture_3, 'annexture_3');
+        ShouldUpdate.check(data, old_data, fitness_option, 'fitness_option');
         ShouldUpdate.check(data, old_data, restrictions, 'restrictions');
+        ShouldUpdate.checkFile(data, old_data, annexture3_doc, 'annexture3_doc');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
         if (Object.keys(data).isEmpty()) {
@@ -156,19 +155,6 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
-        //     console.log("res", res)
-        //     if(res === "ERROR") {
-        //         infoDialog.open("An error occurred. Please try again.");
-        //     } else {
-        //         onSaved && onSaved(res);
-        //         infoDialog.open("Record successfully updated.");
-        //         this.props.close();
-        //     }
-        //     infoDialog.close(2000);
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
     }
 
     render() {
@@ -183,47 +169,65 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, expiry_date, annexture_3, restrictions, doc, employee
+                    created_at, expiry_date, annexture_3, fitness_option, restrictions, annexture3_doc, doc, employee
                 }
             }
         } = this;
-        return (<div className="controls-wrapper controls-sectioned">
-            <div className="controls">
-                <div className="row active">
-                    <label>
-                        1. Medical Fitness Details
-                        <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-                    </label>
-                    <div className="row sec-group">
-                        {!isNewEmployee && !embeddedEmployee &&
-                            <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
-                                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                        <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
-                                        defaultValue={expiry_date}
-                                        required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?"
-                                        defaultValue={annexture_3}
-                                        required className="col-lg-6 form-control" onChange={this.form.onChange}
-                                        values={this.state.lists.annexture_3}/>
-                        <ClearableInput name="restrictions" type="textarea" placeholder="Restrictions (if any)"
-                                        defaultValue={restrictions} className="col-lg-12 form-control"
-                                        onChange={this.form.onChange}/>
-                    </div>
-                    <NavButtons idx={1} onNext={onFormNext}/>
-                </div>
-                <div className="row row-doc">
-                    <label>
-                        2. Document
-                        <Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-                    </label>
-                    <div className="row sec-group">
-                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc}
-                                           onChange={this.form.onChange}/>
-                    </div>
-                    <NavButtons idx={2} onBack={onFormBack}/>
-                </div>
-            </div>
-        </div>);
+
+        return <FormControls>
+            <Row
+                rendered
+                active
+                idx={1}
+                title="1. Medical Fitness Details"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                {!isNewEmployee && !embeddedEmployee &&
+                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
+                                defaultValue={expiry_date}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?"
+                                defaultValue={annexture_3}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.annexture_3}/>
+                <ClearableInput name="fitness_option" type="radio" placeholder="Fitness"
+                                defaultValue={fitness_option}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.fitness_option}/>
+                <ClearableInput name="restrictions" type="textarea" placeholder="Restrictions (if any)"
+                                defaultValue={restrictions} className="col-lg-12 form-control"
+                                onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={2}
+                title="2. Document"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+            >
+                <UploadButton
+                    name="annexture3_doc"
+                    buttonTitle="Upload Annexture 3 (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    defaultValue={annexture3_doc}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
+                <UploadButton
+                    name="doc"
+                    buttonTitle="Upload File (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    defaultValue={doc}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
+            </Row>
+        </FormControls>;
     }
 }
 

@@ -5,7 +5,7 @@ import {computed, extendObservable, isObservable, isObservableArray, toJS} from 
 
 import Form from 'utils/Form';
 import {updateQuestion} from "mutations/update";
-import insertMessage from "../../mutations/all/Questionnaires/Messages/insertMessage";
+import {insertQuestionMessage} from "mutations/create";
 
 // </editor-fold>
 
@@ -145,7 +145,7 @@ class AControls extends React.Component {
                 console.log('question send', parentId, ques, quesPath, newMsg, ques.message_list)
 
                 if (newMsg) {
-                    insertMessage(newMsg).then(res => {
+                    insertQuestionMessage(newMsg).then(res => {
                         resolve(res);
                     }).catch(reject);
                     return;

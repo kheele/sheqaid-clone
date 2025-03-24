@@ -79,13 +79,16 @@ class Controls extends React.Component {
 
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
-        const {form, isNewEmployee, item: {data: old_data}} = this;
+        const {
+            form, isNewEmployee, item: {data: old_data},
+            props: {dialog},
+        } = this;
 
         //1
-        if (!form.isValid('type')) {
-            infoDialog.open("Document Type is required");
-            return;
-        }
+        // if (!form.isValid('type')) {
+        //     infoDialog.open("Document Type is required");
+        //     return;
+        // }
         // if (!form.isValid('expiry_date')) {
         //     infoDialog.open("Expiry Date is required");
         //     return;
@@ -97,9 +100,13 @@ class Controls extends React.Component {
             return;
         }
 
+        const type = dialog.extraProp('type');
+
         if (isNewEmployee) {
-            console.log("res", form.data)
-            onSaved && onSaved(form.data);
+            const data = {...form.data, type};
+
+            console.log("res", data)
+            onSaved && onSaved(data);
             infoDialog.open("Record added.");
             infoDialog.close(2000);
             this.props.close();
@@ -108,14 +115,13 @@ class Controls extends React.Component {
 
         const {
             //1
-            type,
             expiry_date,
             //2
             doc,
         } = form.data;
+
         const data = {};
 
-        ShouldUpdate.check(data, old_data, type, 'type');
         ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
@@ -168,26 +174,20 @@ class Controls extends React.Component {
         return <FormControls>
             <Row
                 rendered
-                active
+                activeAlways
                 idx={1}
                 title="1. Document Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <ClearableInput name="type" type="select" placeholder="Document Type..."
-                                defaultValue={type || type__} className="col-lg-6 form-control"
-                                onChange={this.form.onChange} values={this.state.lists.type} returnValue/>
+                {/*<ClearableInput name="type" type="select" placeholder="Document Type..."*/}
+                {/*                defaultValue={type || type__} className="col-lg-6 form-control"*/}
+                {/*                readonly*/}
+                {/*                isEditable={false}*/}
+                {/*                onChange={this.form.onChange} values={this.state.lists.type} returnValue/>*/}
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
                                 defaultValue={expiry_date} className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
-            </Row>
-            <Row
-                rendered
-                idx={2}
-                title="2. Document"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-            >
                 <UploadButton
                     name="doc"
                     type={['PDF', 'Word', 'Image']}

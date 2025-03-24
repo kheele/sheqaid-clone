@@ -1,6 +1,6 @@
 @import '../../../../css/ANewDialog.css';
 
-#dialog-overlay.Client-profile-dialog .dialog-container{
+#dialog-overlay.Client-profile-dialog .dialog-container {
     height: 800px;
-    width: 620px;
+    width: 800px;
 }

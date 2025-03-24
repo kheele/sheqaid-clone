@@ -7,13 +7,13 @@ import Form from 'utils/Form';
 import {debounce, execWhen} from 'utils/Utils';
 import {onChangeUsername} from 'utils/UsersFuns';
 import {
-	Button,
-	ClearableInput,
-	SelectCityInput,
-	SelectCompanyCategoryInput,
-	SelectCountryInput,
-	SelectZoneInput,
-	UsernameStatus
+    Button,
+    ClearableInput,
+    SelectCityInput,
+    SelectCompanyCategoryInput,
+    SelectCountryInput,
+    SelectZoneInput,
+    UsernameStatus
 } from 'components/inputs';
 import {signUp} from "mutations/signup";
 import storage from "../../storage/Storage";
@@ -405,7 +405,7 @@ class Signup extends React.Component {
                 const {name, consultant} = loggedUser.company.data;
                 infoDialog.open(<React.Fragment>
                     <p>Account successfully created!</p>
-                    <p>Welcome to {name}, partner with SHEQ Aid.</p>
+                    <p>Welcome to {name}, partner with SHEQ Intel.</p>
                     <hr/>
                     <p>You can start creating {consultant ? 'clients, ' : ''}projects and sites.</p>
                 </React.Fragment>);

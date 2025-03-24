@@ -16,7 +16,7 @@ import {updateEmployeeDocLivingAddress} from "mutations/update";
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "EditDocLivingAddressDialog";
-    title = "Edit Living Address";
+    title = "Edit Residential Address";
 
     constructor(props) {
         super(props, style);
@@ -132,7 +132,7 @@ class Controls extends React.Component {
 
         //2
         // if (!form.isValid('doc')) {
-        //     infoDialog.open("Proof of Living Address is required");
+        //     infoDialog.open("Proof of Residential Address is required");
         //     return;
         // }
 
@@ -219,7 +219,7 @@ class Controls extends React.Component {
                 rendered
                 active
                 idx={1}
-                title="1. Living Address Details"
+                title="1. Residential Address Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
@@ -242,7 +242,7 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={2}
-                title="2. Proof of Living Address"
+                title="2. Proof of Residential Address"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >

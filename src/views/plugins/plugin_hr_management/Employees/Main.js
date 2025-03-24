@@ -155,12 +155,15 @@ class Main extends APage {
             {key: 'Tasks', listName: '', text: 'Job Tasks', Comp: JobTaskDialog, noExpiry: true},
             // {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true}
         ].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, override}) => {
+            const id = key.toLowerCase().replaceAll(" ", "-");
             const c = Permissions.allowMod(key) || override ? "allowed" : "disallowed";
-            const className = fontSizeClass + c + " btn btn-primary pull-right _888";
+            const btnClassName = `${c} ${id} ${fontSizeClass} btn btn-primary pull-right _888`;
+            const navItemClassName = `${c} ${id}`;
             const compRef = `ref${key.replaceAll(" ", "")}Dialog`;
             return {
-                btn: <Button compRef={compRef} text={text} className={className} onClick={this.onViewDialog}/>,
-                navItem: <NavItem compRef={compRef} className={c} onClick={this.onViewDialog} title={text}/>,
+                btn: <Button compRef={compRef} text={text} className={btnClassName} onClick={this.onViewDialog}/>,
+                navItem: <NavItem key={id} compRef={compRef} className={navItemClassName} onClick={this.onViewDialog}
+                                  title={text}/>,
                 key, c, compRef, titleBG, text, Comp, noExpiry,
                 listName, onFilter
             };
@@ -332,10 +335,10 @@ class Main extends APage {
             className: "EmployeeDialogActionsPopover",
             contentNode: <div>
                 <p className="padding-t-10 text-center">--- Select ---</p>
-                {/*<div className="main-actions">*/}
-                {/*    <hr className="margin-t-0 margin-b-0"/>*/}
-                {/*    {this.navItems}*/}
-                {/*</div>*/}
+                <div className="main-actions">
+                    <hr className="margin-t-0 margin-b-0"/>
+                    {this.navItems}
+                </div>
                 {/* <hr className="margin-t-0 margin-b-0" /> */}
                 {/* {Permissions.allowOther("Teams") && <NavItem onClick={this.onViewTeams} title="Teams" />} */}
                 <hr className="margin-t-0 margin-b-0"/>

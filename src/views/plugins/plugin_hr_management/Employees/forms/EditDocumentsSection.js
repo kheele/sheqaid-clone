@@ -6,19 +6,16 @@ import Form from 'utils/Form';
 import {FormControls, Row} from 'components/FormComponents';
 import {CompetencyControls} from "../../Competencies/forms/ProfileDialog";
 import {ContractControls} from "../../Contracts/forms/ProfileDialog";
-import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import {
     JobAppointmentControls
 } from "views/plugins/plugin_extra/__C_Structure_And_Responsibility/JobAppointments/forms/ProfileDialog";
 
 import {MedicalControls} from "../../Medicals/forms/ProfileDialog";
-import {WarningControls} from "../../Warnings/forms/ProfileDialog";
 
 import {LicenseControls} from "../../HRDocs/Licenses/forms/ProfileDialog";
 import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 import PrDPSection from "./PrDPSection";
 import IDOrPassportSection from "./IDOrPassportSection";
-import SignableDocumentsSection from "./SignableDocumentsSection";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
 
 @observer
@@ -327,10 +324,8 @@ class EditDocumentsSection extends React.Component {
 
             competency_list,
             contract_list,
-            counselling_list,
             license_list,
             medical_list,
-            warning_list,
             work_permit_list,
             job_appointment_list,
 
@@ -351,26 +346,27 @@ class EditDocumentsSection extends React.Component {
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
             <FormControls lazyLoad>
-                {EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Signable Documents`}
-                    sectionClassName="h-500 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                    onFormOpen={onFormOpen}
-                    onFormNext={onFormNext}
-                >
-                    <SignableDocumentsSection {...props} defaultValue={signable_doc_submitter_list} tabsHeight="530px"/>
-                </Row>}
+                {/*{!isNewEmployee && EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row*/}
+                {/*    rendered*/}
+                {/*    idx={idx + `.${__idx++}`}*/}
+                {/*    title={idx + `.${__idx} Signable Documents`}*/}
+                {/*    sectionClassName="h-500 -margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"*/}
+                {/*    onFormOpen={onFormOpen}*/}
+                {/*    onFormNext={onFormNext}*/}
+                {/*>*/}
+                {/*    <SignableDocumentsSection {...props} defaultValue={signable_doc_submitter_list} tabsHeight="530px"/>*/}
+                {/*</Row>}*/}
                 {EmployeeProfileSettings.isValidEmployeePersonalDocumentsViewers(item) && <Row
+                    ref="personalDocuments"
                     rendered
-                    idx={idx + `.${__idx++}`}
+                    idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Personal Documents`}
                     onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
                     <FormControls lazyLoad>
                         <Row
+                            ref="document_id_passport"
                             rendered
                             idx={idx + `.${__idx}.1`}
                             title={idx + `.${__idx}.1 ID / Passport`}
@@ -382,10 +378,11 @@ class EditDocumentsSection extends React.Component {
                             <IDOrPassportSection {...props} defaultValue={document_list__id_or_passport}/>
                         </Row>
                         <Row
+                            ref="work_permit"
                             rendered
                             idx={idx + `.${__idx}.2`}
                             title={idx + `.${__idx}.2 Work Permit`}
-                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                             onFormBack={onFormBack}
@@ -393,10 +390,11 @@ class EditDocumentsSection extends React.Component {
                             <WorkPermitControls {...props} defaultValue={work_permit_list} tabsHeight="530px"/>
                         </Row>
                         <Row
+                            ref="license"
                             rendered
                             idx={idx + `.${__idx}.3`}
                             title={idx + `.${__idx}.3 Licenses`}
-                            sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                            sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}
                             onFormBack={onFormBack}
@@ -404,6 +402,7 @@ class EditDocumentsSection extends React.Component {
                             <LicenseControls {...props} defaultValue={license_list} tabsHeight="530px"/>
                         </Row>
                         <Row
+                            ref="document_prdp"
                             rendered
                             idx={idx + `.${__idx}.4`}
                             title={idx + `.${__idx}.4 PrDP`}
@@ -416,10 +415,11 @@ class EditDocumentsSection extends React.Component {
                     </FormControls>
                 </Row>}
                 {EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Row
+                    ref="competency"
                     rendered
-                    idx={idx + `.${__idx++}`}
+                    idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Competencies`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -427,10 +427,11 @@ class EditDocumentsSection extends React.Component {
                     <CompetencyControls {...props} defaultValue={competency_list} tabsHeight="530px"/>
                 </Row>}
                 {EmployeeProfileSettings.isEmployeeContractsViewers(item) && <Row
+                    ref="contract"
                     rendered
-                    idx={idx + `.${__idx++}`}
+                    idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Contracts`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
@@ -438,49 +439,28 @@ class EditDocumentsSection extends React.Component {
                     <ContractControls {...props} defaultValue={contract_list} tabsHeight="530px"/>
                 </Row>}
                 {EmployeeProfileSettings.isEmployeeJobAppointmentsViewers(item) && <Row
+                    ref="job_appointment"
                     rendered
-                    idx={idx + `.${__idx++}`}
+                    idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Job Appointments`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
                     <JobAppointmentControls {...props} defaultValue={job_appointment_list} tabsHeight="530px"/>
                 </Row>}
-                {EmployeeProfileSettings.isEmployeeCounselingViewers(item) && <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Counseling`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                    onFormNext={onFormNext}
-                >
-                    <CounselingControls {...props} defaultValue={counselling_list} tabsHeight="530px"/>
-                </Row>}
                 {EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Row
+                    ref="medical"
                     rendered
-                    idx={idx + `.${__idx++}`}
+                    idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Medical Fitness`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+                    sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
-                    onFormNext={onFormNext}
                 >
                     <MedicalControls {...props} defaultValue={medical_list}
                                      tabsHeight="530px"/>
-                </Row>}
-                {EmployeeProfileSettings.isEmployeeWarningViewers(item) && <Row
-                    rendered
-                    idx={idx + `.${__idx++}`}
-                    title={idx + `.${__idx} Warnings`}
-                    sectionClassName="-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                    onFormNext={onFormNext}
-                >
-                    <WarningControls {...props} defaultValue={warning_list} tabsHeight="530px"/>
                 </Row>}
             </FormControls>
         </div>

@@ -1,7 +1,7 @@
 // <editor-fold defaultstate="collapsed" desc="imports">
 import React from "react";
 import {observer} from 'mobx-react';
-import {observable, computed} from 'mobx';
+import {computed} from 'mobx';
 import {AProfileDialog} from 'components/dialogs';
 import {ProfileField, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
@@ -27,10 +27,8 @@ import {
 import {changeColors} from '../dialogs/Utils';
 
 import style from "./ProfileHazchemSheetDialog.lazy.css";
-import findByIdChemicalHazchemsheet
-    from "mutations/all/Chemicals/ChemicalHazchemsheet/findByIdChemicalHazchemsheet";
-import updateChemicalHazchemsheet
-    from "mutations/all/Chemicals/ChemicalHazchemsheet/updateChemicalHazchemsheet";
+import {findByIdChemicalHazchemsheet} from "mutations/findById";
+import {updateChemicalHazchemsheet} from "mutations/update";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -38,11 +36,15 @@ import updateChemicalHazchemsheet
 class ProfileDialog extends AProfileDialog {
     pageKey = "ProfileHazchemSheetDialog";
     findById = findByIdChemicalHazchemsheet;
-    
-    removeById = updateChemicalHazchemsheet ;
+
+    removeById = updateChemicalHazchemsheet;
 
     constructor(props) {
         super(props, style);
+    }
+
+    get controls() {
+        return Controls;
     }
 
     title() {
@@ -51,10 +53,6 @@ class ProfileDialog extends AProfileDialog {
 
     onSaveAsPDF(e, btn) {
         this.refs.controls.onSaveAsPDF(e, btn);
-    }
-
-    get controls() {
-        return Controls;
     }
 }
 
@@ -68,6 +66,13 @@ class Controls extends React.Component {
         super(props);
 
         this.renderPhotographItem = this.renderPhotographItem.bind(this);
+    }
+
+    // </editor-fold>
+
+    @computed
+    get item() {
+        return this.props.state.item;
     }
 
     // </editor-fold>
@@ -98,13 +103,6 @@ class Controls extends React.Component {
                 {RenderUtils.renderImage(item.doc)}
             </div>
         </div>;
-    }
-
-    // </editor-fold>
-
-    @computed
-    get item() {
-        return this.props.state.item;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -186,11 +184,11 @@ class Controls extends React.Component {
                 <ProfileField name="product" placeholder="Product" value={product} renderer={v => v.name}
                               className="col-lg-12"/>
                 <SelectedProduct product={product}/>
-                
+
                 <label className="col-lg-12 padding-0 pull-left">Link With SDS If Available</label>
                 <ProfileField name="sds" placeholder="Safety Data Sheet (SDS)" value={sds} renderer={v => v.name}
                               className="col-lg-12"/>
-                              
+
                 <label className="col-lg-12 padding-0 pull-left">Other Basic Info</label>
                 <ProfileField name="physical_state" placeholder="Physical State" value={physical_state}
                               className="col-lg-6"/>
@@ -215,7 +213,8 @@ class Controls extends React.Component {
                         onFormNext={onFormNext}
                     >
                         <GridView title="Picture(s)" renderItem={this.renderPhotographItem}
-                                  list={precaution_photo_concentrate_list} className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
+                                  list={precaution_photo_concentrate_list}
+                                  className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
                     </Row>
                     <Row
                         rendered
@@ -226,7 +225,8 @@ class Controls extends React.Component {
                         onFormBack={onFormBack}
                     >
                         <GridView title="Picture(s)" renderItem={this.renderPhotographItem}
-                                  list={precaution_photo_application_list} className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
+                                  list={precaution_photo_application_list}
+                                  className="grid-3 grid-gap-10 padding-10 -margin-t-5 -margin-b-10"/>
                     </Row>
                 </FormControls>
             </Row>
@@ -430,7 +430,8 @@ class Controls extends React.Component {
                         <ProfileField name="contacts_emergency_name" type="text" placeholder="Contact Name"
                                       value={contacts_emergency_name} className="w-full margin-t-0 margin-r-0"/>
                         <ProfileField name="contacts_emergency_num" type="text" placeholder="Contact No."
-                                      value={contacts_emergency_num} renderer={v=> v.join(', ')} className="w-full margin-t-0 margin-r-0"/>
+                                      value={contacts_emergency_num} renderer={v => v.join(', ')}
+                                      className="w-full margin-t-0 margin-r-0"/>
                     </div>
                     <div className="grid-1 grid-gap-5 padding-10 padding-t-5 bg-f8f8f8">
                         <label className="margin-0">Manufacturer</label>

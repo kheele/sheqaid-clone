@@ -1,8 +1,8 @@
 @import '../../../../css/ANewDialog.css';
 
-#dialog-overlay.Site-profile-dialog .dialog-container{
+#dialog-overlay.Site-profile-dialog .dialog-container {
     height: calc(100% - 35px);
     max-height: 500px;
-    width: 600px;
+    width: 800px;
     max-width: 100%;
 }

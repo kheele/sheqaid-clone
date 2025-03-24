@@ -117,25 +117,9 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            //1
-            name,
-            branch,
-            code,
-            account_num,
-            //2
-            doc,
-        } = form.data;
+        const {} = form.data;
         const data = {
-            employee_id: this.employeeItem.id,
-            is_default: true,
-            //1
-            name,
-            branch,
-            code,
-            account_num,
-            //2
-            doc: doc && doc.path,
+            formData: {...form.data, employee_id: this.employeeItem.id},
         };
 
         console.log(data)

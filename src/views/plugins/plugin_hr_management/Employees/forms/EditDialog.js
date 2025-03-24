@@ -13,8 +13,9 @@ import {AEditDialog} from 'components/dialogs';
 
 import OptionalInfoSection from './EditOptionalInfoSection';
 import DocumentsSection from './EditDocumentsSection';
-import TimeoffSection from "./EditTimeoffSection";
-import DependentsAndNextOfKinSection from './EditDependentsAndNextOfKinSection';
+import CounselingSection from "./EditCounselingSection";
+import WarningSection from "./EditWarningSection";
+import TimeOffSection from "./EditTimeoffSection";
 import DashboardSection from "./DashboardSection";
 
 import style from "./EditDialog.lazy.css";
@@ -31,6 +32,7 @@ class EditDialog extends AEditDialog {
     // className = 'ANewTableFormDialog';
     className = "AEditEmployeeDocDialog";
     findById = findByIdEmployee;
+    removeById = updateEmployee;
 
     constructor(props) {
         super(props, style);
@@ -53,7 +55,6 @@ class EditDialog extends AEditDialog {
 
 @observer
 class Controls extends React.Component {
-    path = 'plugin_sheq_assist/employees/';
 
     // <editor-fold defaultstate="collapsed" desc="state">
     @observable
@@ -67,15 +68,27 @@ class Controls extends React.Component {
         },
     };
     components = [
-        {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoTab"},
-        {title: 'Documents', comp: DocumentsSection, ref: "documentsTab"},
+        {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoSection"},
+        {title: 'Documents', comp: DocumentsSection, ref: "documentsSection"},
+        {
+            title: 'Counseling',
+            comp: CounselingSection,
+            ref: "counselingSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        },
+        {
+            title: 'Warnings',
+            comp: WarningSection,
+            ref: "warningSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        },
         {
             title: 'Time-off',
-            comp: TimeoffSection,
-            ref: "timeOffTab",
-            sectionClassName: "-margin-l-10 -margin-t-5 -margin-b-10 w-full-calc-add-20"
+            comp: TimeOffSection,
+            ref: "timeOffSection",
+            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
         },
-        {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependentsAndNextOfKinTab"},
+        // {title: 'Dependents & Next Of Kin', comp: DependentsAndNextOfKinSection, ref: "dependentsAndNextOfKinTab"},
         // {title: 'Trainings', comp: TrainingsSection, ref: "trainingsSection"},
         // {
         //     title: 'PPE Issue',
@@ -106,6 +119,7 @@ class Controls extends React.Component {
             title: 'Dashboard',
             comp: DashboardSection,
             ref: "dashboardSection",
+            props: {onClick: this.onOpenSections.bind(this)},
             activeAlways: true,
             isLast: true
         }
@@ -178,12 +192,119 @@ class Controls extends React.Component {
 
     // </editor-fold>
 
+    onOpenSections(id) {
+        const {dialog} = this.props;
+
+        const {
+            optionalInfoSection,
+            documentsSection,
+            counselingSection,
+            warningSection,
+            timeOffSection,
+        } = this.refs;
+        // alert(id)
+
+        const show = ({mainSection, childLevel1Ref, childLevel2Ref}) => {
+            mainSection.onFormGoto();
+            childLevel1Ref && dialog.execWhen(() => mainSection.refs[childLevel1Ref]).then(ref => {
+                ref.onFormGoto();
+                childLevel2Ref && dialog.execWhen(() => ref.refs[childLevel2Ref]).then(ref => {
+                    ref.onFormGoto();
+                });
+            });
+        };
+
+        switch (id) {
+            //Employment Info: 3
+            case "living_address":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'residentialAddress'});
+                break;
+            case "banking_detail":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'bankingDetails'});
+                break;
+            case "next_of_kin":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'next_of_kins'});
+                break;
+            case "dependent":
+                show({mainSection: optionalInfoSection, childLevel1Ref: 'dependants'});
+                break;
+            //Documents: 4
+            //Personal Documents: 4.1
+            case "document_id_passport":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'document_id_passport',
+                });
+                break;
+            case "work_permit":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'work_permit',
+                });
+                break;
+            case "license":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'license',
+                });
+                break;
+            case "document_prdp":
+                show({
+                    mainSection: documentsSection,
+                    childLevel1Ref: 'personalDocuments',
+                    childLevel2Ref: 'document_prdp',
+                });
+                break;
+
+            case "competency":
+                show({mainSection: documentsSection, childLevel1Ref: 'competency'});
+                break;
+            case "contract":
+                show({mainSection: documentsSection, childLevel1Ref: 'contract'});
+                break;
+            case "job_appointment":
+                show({mainSection: documentsSection, childLevel1Ref: 'job_appointment'});
+                break;
+            case "medical":
+                show({mainSection: documentsSection, childLevel1Ref: 'medical'});
+                break;
+
+            //5
+            case "counselling":
+                show({mainSection: counselingSection});
+                break;
+            //6
+            case "warning":
+                show({mainSection: warningSection});
+                break;
+            //7
+            case "leave":
+                show({mainSection: timeOffSection});
+                break;
+            //8
+            // case "trainer_training":
+            //
+            //     break;
+            //9
+            // case "ppe_type":
+            //
+            //     break;
+            //10
+            // case "supervisor_employee":
+            //
+            //     break;
+        }
+    }
+
     //<editor-fold desc="onFormSave">
     async onFormSave(e, btn) {
         const {
             form,
             item: {id, data: old_data},
-            refs: {optionalInfoTab, documentsTab, dependantsAndNextOfKinTab, specificComplianceRequirementsTab}
+            refs: {optionalInfoSection, documentsSection, specificComplianceRequirementsTab}
         } = this;
         const {is: {isContractor}, loggedContractor} = storage;
 
@@ -314,52 +435,54 @@ class Controls extends React.Component {
         console.log('idx', idx)
 
         if (idx == '3.1') {
-            console.log(optionalInfoTab)
-            const optionalInfoFormData = optionalInfoTab.formData;
-            if (optionalInfoFormData) {
-                const {
-                    employment_date,
-                    employment_num,
-                    job_position_id,
-                    department_id,
-                } = optionalInfoFormData;
+            console.log(optionalInfoSection)
+            // const optionalInfoFormData = optionalInfoSection.formData;
+            // if (optionalInfoFormData) {
+            // const {
+            //     employment_date,
+            //     employment_num,
+            //     job_position_id,
+            //     department_id,
+            // } = optionalInfoFormData;
+            //
+            // const data = {};
+            //
+            // ShouldUpdate.checkDate(data, old_data, employment_date, 'employment_date');
+            // ShouldUpdate.check(data, old_data, employment_num, 'employment_num');
+            // ShouldUpdate.checkDepartment(data, old_data, department_id, 'department');
+            // ShouldUpdate.checkJobPosition(data, old_data, job_position_id, 'job_position');
 
-                const data = {};
-
-                ShouldUpdate.checkDate(data, old_data, employment_date, 'employment_date');
-                ShouldUpdate.check(data, old_data, employment_num, 'employment_num');
-                ShouldUpdate.checkDepartment(data, old_data, department_id, 'department');
-                ShouldUpdate.checkJobPosition(data, old_data, job_position_id, 'job_position');
-
-                onSubmit(data);
-                return;
-            }
+            // onSubmit(data);
+            // return;
+            // }
+            optionalInfoSection.onSubmit(btn);
             return;
         }
 
         if (idx == '3.2') {
-            console.log(optionalInfoTab)
-            const optionalInfoFormData = optionalInfoTab.formData;
-            if (optionalInfoFormData) {
-                const {
-                    supervisor_id,
-                } = optionalInfoFormData;
-
-                const data = {};
-
-                ShouldUpdate.checkEmployee(data, old_data, supervisor_id, 'supervisor_id');
-                // ShouldUpdate.check(data, old_data, supervisor_phone, 'supervisor_phone');
-                // ShouldUpdate.check(data, old_data, supervisor_email, 'supervisor_email');
-
-                onSubmit(data);
-                return;
-            }
+            console.log(optionalInfoSection)
+            // const optionalInfoFormData = optionalInfoSection.formData;
+            // if (optionalInfoFormData) {
+            //     const {
+            //         supervisor_id,
+            //     } = optionalInfoFormData;
+            //
+            //     const data = {};
+            //
+            //     ShouldUpdate.checkEmployee(data, old_data, supervisor_id, 'supervisor_id');
+            //     // ShouldUpdate.check(data, old_data, supervisor_phone, 'supervisor_phone');
+            //     // ShouldUpdate.check(data, old_data, supervisor_email, 'supervisor_email');
+            //
+            //     onSubmit(data);
+            //     return;
+            // }
+            optionalInfoSection.onSubmit(btn);
             return;
         }
 
         if (idx == '3.3') {
-            console.log(optionalInfoTab)
-            const optionalInfoFormData = optionalInfoTab.formData;
+            console.log(optionalInfoSection)
+            const optionalInfoFormData = optionalInfoSection.formData;
             if (optionalInfoFormData) {
                 const {
                     living_address_list,
@@ -381,8 +504,8 @@ class Controls extends React.Component {
         }
 
         if (idx == '3.4') {
-            console.log(optionalInfoTab)
-            const optionalInfoFormData = optionalInfoTab.formData;
+            console.log(optionalInfoSection)
+            const optionalInfoFormData = optionalInfoSection.formData;
             if (optionalInfoFormData) {
                 const {
                     banking_detail_list,
@@ -404,8 +527,8 @@ class Controls extends React.Component {
         }
 
         if (idx == '4.1') {
-            console.log(documentsTab)
-            const documentsFormData = documentsTab.formData;
+            console.log(documentsSection)
+            const documentsFormData = documentsSection.formData;
             if (documentsFormData) {
                 const {
                     document_list,
@@ -464,49 +587,11 @@ class Controls extends React.Component {
             return;
         }
 
-        if (idx == '5.1') {
-            console.log(dependantsAndNextOfKinTab)
-            const dependantsAndNextOfKinFormData = dependantsAndNextOfKinTab.formData;
-            if (dependantsAndNextOfKinFormData) {
-                const {
-                    next_of_kin_list,
-                    dependent_list,
-                } = dependantsAndNextOfKinFormData;
-
-                const data = {};
-
-                ShouldUpdate.checkListToJS(data, old_data, next_of_kin_list, 'next_of_kin_list');
-
-                onSubmit(data);
-                return;
-            }
-            return;
-        }
-
-        if (idx == '5.2') {
-            console.log(dependantsAndNextOfKinTab)
-            const dependantsAndNextOfKinFormData = dependantsAndNextOfKinTab.formData;
-            if (dependantsAndNextOfKinFormData) {
-                const {
-                    next_of_kin_list,
-                    dependent_list,
-                } = dependantsAndNextOfKinFormData;
-
-                const data = {};
-
-                ShouldUpdate.checkListToJS(data, old_data, dependent_list, 'dependent_list');
-
-                onSubmit(data);
-                return;
-            }
-            return;
-        }
-
         return true;
     }
 
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
-    renderComponent({title, comp: Comp, ref, activeAlways = false, isLast}, n) {
+    renderComponent({title, comp: Comp, ref, props, sectionClassName, activeAlways = false, isLast}, n) {
         const {props: {onFormNext, onFormBack, onFormOpen}, onFormSave,} = this;
         n += 3;
 
@@ -515,6 +600,7 @@ class Controls extends React.Component {
             rendered
             idx={n}
             title={n + '. ' + title}
+            sectionClassName={sectionClassName}
             onFormOpen={onFormOpen}
             onFormBack={onFormBack}
             onFormNext={!isLast && onFormNext}
@@ -524,6 +610,7 @@ class Controls extends React.Component {
                 idx={n}
                 title={title}
                 item={this.item}
+                {...(props || {})}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}

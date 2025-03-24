@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -14,6 +12,7 @@ import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 import {updateEmployeeWarning} from "mutations/update";
 import {findByIdOrgWarningsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgWarningsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeWarnings} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -24,12 +23,19 @@ class Dialog extends AEmployeeDocDialog {
     titleSingular = "Warning";
     permissionKey = "Warnings";
     module = "Warnings";
-    hasSignatures = true;
+    // hasSignatures = true;
     onUpdate = updateEmployeeWarning;
+    exportExcel = exportExcelEmployeeWarnings;
     filterNodeGrid = 5;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
+    };
+
+    selfState2 = {
+        lists: {
+            warning_types: ['Verbal', 'Written', 'Final'],
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -89,6 +95,40 @@ class Dialog extends AEmployeeDocDialog {
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <SelectEmployeeInput
+                name="issued_by"
+                placeholder="Issued By..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                name="witness"
+                placeholder="Witness..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+            <ClearableInput
+                name="type"
+                type="select"
+                placeholder="Warning Type..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.warning_types}
+                returnValue
+            />
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput
+                name="date"
+                type="date"
+                placeholder="Warning Date..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {

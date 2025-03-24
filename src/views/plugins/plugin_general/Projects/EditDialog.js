@@ -10,12 +10,15 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 import {updateProject} from "mutations/update";
+import {NewSiteListTable} from "../../../../components/FormTableComponents";
+import {findByIdProject} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "Project";
     className = 'ANewTableFormDialog';
     removeById = updateProject;
+    findById = findByIdProject;
 
     constructor(props) {
         super(props, style);
@@ -90,7 +93,7 @@ class Controls extends React.Component {
             props: {dialog: {renderProfileCover}},
             item, item: {
                 id, data: {
-                    created_at, name, address, client, sites
+                    created_at, name, address, client, site_list
                 }
             }
         } = this;
@@ -103,7 +106,8 @@ class Controls extends React.Component {
                 rendered
                 activeAlways
                 idx={1}
-                title="Project Details">
+                title="Project Details"
+            >
                 <ClearableInput name="name" type="text" placeholder="Project Name" defaultValue={name} required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="address" type="textarea" placeholder="Project Address" defaultValue={address}
@@ -111,6 +115,20 @@ class Controls extends React.Component {
                 {isConsultant && <SelectClientInput name="client" placeholder="Company..." required
                                                     defaultValue={RenderUtils.selectedClient.call(this)}
                                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+            </Row>
+            <Row
+                activeAlways
+                rendered
+                idx={2}
+                rowClassName="flex row-more"
+                title="Sites"
+            >
+                <NewSiteListTable
+                    title="Sites"
+                    name="site_list"
+                    defaultValue={site_list}
+                    readonly
+                />
             </Row>
         </FormControls>;
     }

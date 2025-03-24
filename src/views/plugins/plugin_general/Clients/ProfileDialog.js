@@ -12,11 +12,14 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 import {updateClient} from "mutations/update";
+import {NewProjectListTable, NewSiteListTable} from "components/FormTableComponents";
+import {findByIdClient} from "mutations/findById";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Clients";
     removeById = updateClient;
+    findById = findByIdClient;
 
     constructor(props) {
         super(props, style);
@@ -40,6 +43,7 @@ class Controls extends React.Component {
     constructor(props) {
         super(props);
 
+        // this.onNext = this.onNext.bind(this);
         this.onUploaded = this.onUploaded.bind(this);
 
         this.form = new Form();
@@ -56,6 +60,7 @@ class Controls extends React.Component {
     render() {
         if (!this.item)
             return null;
+
         const {
             props: {
                 onFormNext, onFormBack, onFormOpen,
@@ -67,8 +72,8 @@ class Controls extends React.Component {
                     name,
                     business_id,
                     profile_pic,
-                    projects,
-                    sites,
+                    project_list,
+                    site_list,
                     phone,
                     email,
                     contractor_email,
@@ -84,8 +89,7 @@ class Controls extends React.Component {
                 rendered
                 idx={1}
                 title="Company Details"
-                onFormOpen={onFormOpen}
-                onFormNext={onFormNext}>
+            >
                 <ProfilePic name="profile_pic" path="plugin_sheq_assist/clients/upload/profile-pic" id={item.id}
                             profilePic={profile_pic} onUploaded={this.onUploaded}/>
 
@@ -105,15 +109,13 @@ class Controls extends React.Component {
                 rendered
                 idx={2}
                 title="Sector(s)"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}
-                onFormNext={onFormNext}>
+            >
                 <ProfileField
                     name="sector_list"
                     title="Sector(s)"
                     value={sector_list}
                     renderer={v => (<Grid container spacing={1} columns={4}>{
-                        v.map(({data: {name}}) => <Grid item><Chip label={name} size="small"/></Grid>)}
+                        v.map(({name}) => <Grid item><Chip label={name} size="small"/></Grid>)}
                     </Grid>)
                     }
                     className="col-lg-12"/>
@@ -123,8 +125,7 @@ class Controls extends React.Component {
                 rendered
                 idx={3}
                 title="Register As Contractor"
-                onFormOpen={onFormOpen}
-                onFormBack={onFormBack}>
+            >
                 <ProfileField
                     name="contractor_email"
                     title="Contractor Email Address"
@@ -136,16 +137,28 @@ class Controls extends React.Component {
                 rendered
                 idx={4}
                 rowClassName="flex row-more"
-                title="Projects">
-                <p>Projects<h4 className="hor-center">{projects ? projects.length : 0}</h4></p>
+                title="Projects"
+            >
+                <NewProjectListTable
+                    title="Projects"
+                    name="project_list"
+                    defaultValue={project_list}
+                    readonly
+                />
             </Row>
             <Row
                 activeAlways
                 rendered
                 idx={5}
                 rowClassName="flex row-more"
-                title="Sites">
-                <p>Sites<h4 className="hor-center">{sites ? sites.length : 0}</h4></p>
+                title="Sites"
+            >
+                <NewSiteListTable
+                    title="Sites"
+                    name="site_list"
+                    defaultValue={site_list}
+                    readonly
+                />
             </Row>
         </FormControls>;
     }

@@ -29,7 +29,7 @@ import SetupFaceDialog from './SetupFaceDialog';
 import style from './LoginFaceDialog.lazy.css';
 import storage from "../../storage/Storage";
 import {execWhen} from "../../utils/UtilsFuns";
-import {loginUserStep1ByUsername} from "mutations/findBy";
+import {loginUserStep1ByUsername} from "mutations/send";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

@@ -8,12 +8,17 @@ class Socket {
         this.fn = this.fn.bind(this);
         this.send = this.send.bind(this);
 
+        this.signup = this.signup.bind(this);
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
         this.upsert = this.upsert.bind(this);
         this.findById = this.findById.bind(this);
+        this.findBy = this.findBy.bind(this);
         this.list = this.list.bind(this);
+        this.listByLogged = this.listByLogged.bind(this);
+        this.listByLoggedClient = this.listByLoggedClient.bind(this);
+        this.exportExcel = this.exportExcel.bind(this);
     }
 
     fn(name) {
@@ -76,6 +81,11 @@ class Socket {
             console.error(err.stack);
             throw err;
         });
+    }
+
+    async signup(data) {
+        data = await convertMobx(data);
+        return this.send('signup', data);
     }
 
     async create(data) {

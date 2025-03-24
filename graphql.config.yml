@@ -4,7 +4,7 @@
      extensions:
        endpoints:
          Default GraphQL Endpoint:
-           url: https://hasura.cloud.sheqaid.com/v1beta1/relay
+           url: https://hasura.cloud.sheqintel.com/v1beta1/relay
            headers:
              user-agent: JS GraphQL
              x-hasura-access-key: rhespo-g
@@ -14,7 +14,7 @@
      extensions:
        endpoints:
          Default GraphQL Endpoint:
-           url: https://hasura.cloud.sheqaid.com/v1/graphql
+           url: https://hasura.cloud.sheqintel.com/v1/graphql
            headers:
              user-agent: JS GraphQL
              x-hasura-access-key: rhespo-g

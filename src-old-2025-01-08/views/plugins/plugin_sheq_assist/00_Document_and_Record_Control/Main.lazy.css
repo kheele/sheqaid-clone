@@ -1,9 +1,0 @@
-
-#Documents-page{
-    height: calc(100% - 1px);
-    overflow: hidden;
-}
-
-#Documents-page .filter-wrapper + .table{
-    height: calc(100% - (20px + 125px)) !important;
-}

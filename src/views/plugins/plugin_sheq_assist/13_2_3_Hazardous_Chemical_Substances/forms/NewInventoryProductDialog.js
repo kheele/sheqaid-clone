@@ -8,16 +8,16 @@ import Form from 'utils/Form';
 import {Dates, execWhen} from "utils/Utils";
 import {TinyMCE} from 'components/documents';
 import {
-	ClearableInput,
-	SelectChemicalCategoryInput,
-	SelectChemicalPhysicalStateInput,
-	SelectChemicalTypesInput,
-	SelectClientInput,
-	SelectHazchemSheetInput,
-	SelectProjectInput,
-	SelectSDSProductInput,
-	SelectSiteInput,
-	UploadButton
+    ClearableInput,
+    SelectChemicalCategoryInput,
+    SelectChemicalPhysicalStateInput,
+    SelectChemicalTypesInput,
+    SelectClientInput,
+    SelectHazchemSheetInput,
+    SelectProjectInput,
+    SelectSDSProductInput,
+    SelectSiteInput,
+    UploadButton
 } from 'components/inputs';
 import {FormControls, Fragment, Row} from 'components/FormComponents';
 import {NewChemicalStockItemListTable, NewPPEItemListTable} from 'components/FormTableComponents';
@@ -27,8 +27,8 @@ import {changeColors} from '../dialogs/Utils';
 
 import riskLevelImg from 'img/risk-assessment.png';
 import style from "./NewInventoryProductDialog.lazy.css";
-import insertChemicalProduct from "mutations/all/Chemicals/ChemicalProduct/insertChemicalProduct";
-import NewChemicalSupplierListTable from "../../../../../components/FormTableComponents/NewChemicalSupplierListTable";
+import {insertChemicalProduct} from "mutations/create";
+import NewChemicalSupplierListTable from "components/FormTableComponents/NewChemicalSupplierListTable";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

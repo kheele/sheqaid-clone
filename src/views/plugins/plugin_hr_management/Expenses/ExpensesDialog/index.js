@@ -12,12 +12,14 @@ import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
 import ExpensesRenderRow from "./ExpensesRenderRow";
 import {THead} from "components/tables";
-import {ClearableInput} from "components/inputs";
+import {ClearableInput, DateRangeInput} from "components/inputs";
 
 import {updateEmployeeExpense} from "mutations/update";
 import TabView from "./TabView";
 import {findByIdOrgExpensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgExpensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeExpenses} from "mutations/exportExcel";
+import SelectPPETypeInput from "../../../../../components/inputs/SelectPPETypeInput";
 
 // </editor-fold>
 
@@ -29,6 +31,7 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Expenses";
     module = "Expenses";
     onUpdate = updateEmployeeExpense;
+    exportExcel = exportExcelEmployeeExpenses;
     // hasSignatures = true;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
@@ -120,6 +123,29 @@ class Dialog extends AEmployeeDocDialog {
         }).finally(() => {
             progressDialog.close();
         });
+    }
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput name="auto_reorder_trigger" type="radio" placeholder="Reorder Type"
+                            className="col-lg-12 margin-0 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.auto_reorder_trigger}
+            />
+            <ClearableInput name="approval_status" type="select" placeholder="Approval Status..."
+                            className="col-lg-12 margin-0 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.approval_status}
+            />
+            <SelectPPETypeInput name="ppe_type" className="col-lg-12 form-control"
+                                parentClassName="margin-0"
+                                onChange={onChange} addButton={false}/>
+            <DateRangeInput name="created_at_range" className="col-lg-12 margin-0 form-control" placeholder=""
+                            onChange={onChange}>
+                <label className="min-w-100">Reorder Start Date</label>
+                <label className="min-w-100">Reorder End Date</label>
+            </DateRangeInput>
+        </>;
     }
 
     //<editor-fold desc="renderFilterNodeAll">

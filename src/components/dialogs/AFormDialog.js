@@ -164,7 +164,11 @@ class AFormDialog extends React.Component {
     }
 
     onCancel(e, btn) {
-        this.close();
+        confirmDialog.open("Do you wish to cancel the form?").then(res => {
+            if (res === 1) {
+                this.close();
+            }
+        });
     }
 
     onSubmit(e, btn) {

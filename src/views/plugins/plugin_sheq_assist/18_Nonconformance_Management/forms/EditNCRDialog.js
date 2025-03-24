@@ -19,15 +19,14 @@ import {NewDocumentTable, SelectSourceItemTable, SelectSourceTable, SourceBtnWra
 
 import style from "./EditNCRDialog.lazy.css";
 import NewNCRProgressListTable from "components/FormTableComponents/NewNCRProgressListTable";
-import updateNCR from "mutations/all/NCR/updateNCR";
-import findByIdNCR from "mutations/all/NCR/findByIdNCR";
+import {updateNCR, updateNCRProgress} from "mutations/update";
+import {findByIdAudit, findByIdNCR, findByIdQuestion, findByIdSite} from "mutations/findById";
 import {CircularProgress} from "@mui/material";
-import findByIdAudit from "mutations/all/AuditsAndInspections/Audit/findByIdAudit";
 import findByIdIncident from "mutations/all/Incident/findByIdIncident";
 import findByIdInspectionsQuestionnaire
     from "mutations/all/Questionnaires/InspectionsQuestionnaires/findByIdInspectionsQuestionnaire";
-import {findByIdQuestion, findByIdSite} from "mutations/findById";
 import {
+    insertNCRProgress,
     insertProxyNCRApprovingPerson,
     insertProxyNCRAssignedJobPosition,
     insertProxyNCRAssignedPerson,
@@ -36,6 +35,7 @@ import {
     insertProxyNCRResponsibleParty,
 } from "mutations/create";
 import {
+    deleteNCRProgress,
     deleteProxyNCRApprovingPerson,
     deleteProxyNCRAssignedJobPosition,
     deleteProxyNCRAssignedPerson,
@@ -778,8 +778,17 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormSave={this.onFormSave}
             >
-                <NewNCRProgressListTable ref="progress_list" name="progress_list"
-                                         defaultValue={[...(progress_list || []), null]} onChange={this.form.onChange}/>
+                <NewNCRProgressListTable
+                    ref="progress_list"
+                    name="progress_list"
+                    defaultValue={[...(progress_list || []), null]}
+                    savable
+                    targetItem={{key: "non_conformance_id", item}}
+                    insertFn={insertNCRProgress}
+                    updateFn={updateNCRProgress}
+                    deleteFn={deleteNCRProgress}
+                    onAttrs={onNCRProgressAttrs}
+                />
             </Row>
             <Row
                 rendered
@@ -861,6 +870,12 @@ function onAssignedEmployeeAttrs({employee, employee_other}) {
 function onApprovingEmployeeAttrs({employee}) {
     return {
         employee_id: employee && employee.id,
+    };
+}
+
+function onNCRProgressAttrs({outstanding, notes, date}) {
+    return {
+        outstanding, notes, date: Dates.formatDateSQL(date),
     };
 }
 

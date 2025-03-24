@@ -90,7 +90,7 @@ class App extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="isFormsApp">
     get isFormsApp() {
-        if (document.location.hostname === 'forms.sheqaid.com') {
+        if (document.location.hostname === 'forms.sheqintel.com') {
             return true;
         }
         let loc = document.location.toString().replace("index.html", "");

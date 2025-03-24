@@ -22,6 +22,7 @@ class RenderRow extends ARenderRow {
             data: {
                 created_at,
                 accreditation_num,
+                certificate_num,
                 competency_type,
                 type,
                 doc,
@@ -47,6 +48,10 @@ class RenderRow extends ARenderRow {
             <div className="td fixed-flex min-w-140">
                 <h6 className="xs-shown font-size-13">Accreditation No.</h6>
                 {accreditation_num || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-140">
+                <h6 className="xs-shown font-size-13">Certificate No.</h6>
+                {certificate_num || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Certificate Type</h6>

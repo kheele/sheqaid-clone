@@ -8,18 +8,18 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {ClearableInput, SelectAssetTypeInput} from 'components/inputs';
 import {THead} from 'components/tables';
 
-import {NewTemplateDialog, EditTemplateDialog, ProfileTemplateDialog,} from './forms';
-import {NewScheduleDialog, NewQuestionnaireDialog} from '../InspectionTab/forms';
+import {EditTemplateDialog, NewTemplateDialog, ProfileTemplateDialog,} from './forms';
+import {NewQuestionnaireDialog} from '../InspectionTab/forms';
 
 import style from "./TemplatesTab.lazy.css";
 import TemplateTableRow from "./TemplateTableRow";
-import updateQuestionnaire from "mutations/all/Questionnaires/Questionnaires/updateQuestionnaire";
+import {updateQuestionnaire} from "mutations/update";
 
 
 @observer
 class TemplatesTab extends React.Component {
     pageKey = "TemplatesTab";
-    
+
     @observable
     state = {
         lists: {
@@ -36,18 +36,19 @@ class TemplatesTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
-        
+
         this.onRemoved = this.onRemoved.bind(this);
 
         this.onCopy = this.onCopy.bind(this);
         this.onCreateQuestionnaire = this.onCreateQuestionnaire.bind(this);
         // this.onSchedule = this.onSchedule.bind(this);
         // this.onStart = this.onStart.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
         this.renderPopoverOptions = this.renderPopoverOptions.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="componentWillMount, componentWillUnmount">
@@ -58,6 +59,7 @@ class TemplatesTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     //</editor-fold>
 
     //<editor-fold desc="onLoadList">
@@ -91,7 +93,7 @@ class TemplatesTab extends React.Component {
     }
 
     //</editor-fold>
-    
+
     onRemoved(item) {
         this.refs.root.list.removeIf((v, n) => v.id === item.id);
     }
@@ -104,9 +106,7 @@ class TemplatesTab extends React.Component {
         const copy = toJS(list[idx]);
 
         const newDialog = this.refs.root.getDialogByRef("newDialog");
-        newDialog.
-        extraProp('asset', asset).
-        open(copy);
+        newDialog.extraProp('asset', asset).open(copy);
     }
 
     onCreateQuestionnaire(evt, elem) {
@@ -115,10 +115,7 @@ class TemplatesTab extends React.Component {
         const item = this.refs.root.list[idx];
 
         const newQuestionnaireDialog = this.refs.root.getDialogByRef("newQuestionnaireDialog");
-        newQuestionnaireDialog.
-        extraProp('template', item).
-        extraProp('asset', asset).
-        open(item);
+        newQuestionnaireDialog.extraProp('template', item).extraProp('asset', asset).open(item);
     }
 
     // onSchedule(evt, elem) {
@@ -162,22 +159,28 @@ class TemplatesTab extends React.Component {
             <hr action="writable"/>
             <NavItem action="writable" idx={idx} onClick={this.onCopy} faIconLeft="copy" title="Copy"/>
             <hr action="writable"/>
-            <NavItem action="writable" idx={idx} onClick={this.onCreateQuestionnaire} faIconLeft="plus" title={"Create Inspection"}/>
+            <NavItem action="writable" idx={idx} onClick={this.onCreateQuestionnaire} faIconLeft="plus"
+                     title={"Create Inspection"}/>
             {/*<NavItem action="writable" idx={idx} onClick={this.onSchedule} faIconLeft="plus" title={"Schedule Inspection"}/>*/}
             {/*<NavItem action="writable" idx={idx} onClick={this.onStart} faIconLeft="plus" title={"Start Inspection"}/>*/}
         </Options>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderFilterNode">
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
-            <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control" onChange={onChange} values={this.state.lists.scheduled}/>
-            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control" onChange={onChange} values={this.state.lists.visibility}/>
-            <SelectAssetTypeInput name="asset_type" type="select_multi" placeholder="Asset Type(s)..." className="form-control" onChange={onChange}/>
+            <ClearableInput name="scheduled" type="radio" placeholder="Scheduled" className="form-control"
+                            onChange={onChange} values={this.state.lists.scheduled}/>
+            <ClearableInput name="visibility" type="radio" placeholder="Visibility" className="form-control"
+                            onChange={onChange} values={this.state.lists.visibility}/>
+            <SelectAssetTypeInput name="asset_type" type="select_multi" placeholder="Asset Type(s)..."
+                                  className="form-control" onChange={onChange}/>
         </div>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderTHead">
@@ -194,6 +197,7 @@ class TemplatesTab extends React.Component {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="renderItem">
@@ -201,6 +205,7 @@ class TemplatesTab extends React.Component {
         const item = this.refs.root.list[n];
         return <TemplateTableRow key={item.id} idx={n} item={item} onClick={onClick}/>;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="render">
@@ -208,7 +213,7 @@ class TemplatesTab extends React.Component {
         const {asset} = this.props;
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        const permissions_other_ContractorForms = (permissions_other || []).find(v => v.key === "Contractor Forms");
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -223,14 +228,15 @@ class TemplatesTab extends React.Component {
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog" onSoftDelete={updateQuestionnaire}/>
-            
+
             <NewTemplateDialog ref="newDialog" asset={asset}/>
             <EditTemplateDialog ref="editDialog" onRemoved={this.onRemoved}/>
             <ProfileTemplateDialog ref="profileDialog" onRemoved={this.onRemoved}/>
-            
+
             <NewQuestionnaireDialog ref="newQuestionnaireDialog" asset={asset}/>
         </APageListReadWrite>;
     }
+
     //</editor-fold>
 }
 

@@ -18,30 +18,31 @@ class PDFReader extends APDFReader {
         super(props);
         this.renderExtraDateDetails = this.renderExtraDateDetails.bind(this);
     }
-    
-    title() {
-        return "Employees JobAppointments";
+
+    get pages() {
+        const {item, counter} = this;
+        if (!item) return null;
+        return <React.Fragment>
+            <PageFirst item={item} counter={counter} title="LEAVES"/>
+            <Page2 item={item} counter={counter} renderExtraDateDetails={this.renderExtraDateDetails}/>
+            <ListJobAppointments item={item} counter={counter} standalone/>
+
+            <PageLast item={item} counter={counter}/>
+        </React.Fragment>;
     }
-    
+
+    title() {
+        return "Employees Job Appointments";
+    }
+
     renderExtraDateDetails() {
         const date = getValue.call(this, 'date');
         return <View style={[styles.flexRow]}>
             <Panel title="Start Date" value={date} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
         </View>
     }
-
-    get pages() {
-        const {item, counter} = this;
-        if(!item) return null;
-        return <React.Fragment>
-            <PageFirst item={item} counter={counter} title="LEAVES"/>
-            <Page2 item={item} counter={counter} renderExtraDateDetails={this.renderExtraDateDetails}/>
-            <ListJobAppointments item={item} counter={counter} standalone/>
-            
-            <PageLast item={item} counter={counter}/>
-        </React.Fragment>;
-    }
 }
+
 // </editor-fold>
 
 export default PDFReader;

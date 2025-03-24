@@ -10,12 +10,15 @@ import {FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 import {updateClient} from "mutations/update";
+import {NewProjectListTable, NewSiteListTable} from "components/FormTableComponents";
+import {findByIdClient} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "Client";
     className = 'ANewTableFormDialog';
     removeById = updateClient;
+    findById = findByIdClient;
 
     constructor(props) {
         super(props, style);
@@ -37,7 +40,7 @@ class Controls extends React.Component {
     state = {
         lists: {
             sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, text: value, checked: false};
+                return {value, label: value};
             }),
         },
     };
@@ -45,6 +48,8 @@ class Controls extends React.Component {
     constructor(props) {
         super(props);
 
+        this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
         this.onUploaded = this.onUploaded.bind(this);
 
         this.form = new Form();
@@ -56,6 +61,107 @@ class Controls extends React.Component {
 
     onUploaded(path) {
         this.item.data.profile_pic = path;
+    }
+
+//<editor-fold desc="onNext">
+    onNext(e, btn) {
+        const {form} = this;
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!form.isValid('name')) {
+                infoDialog.open('Company Name is required');
+                return;
+            }
+            if (form.isValid('email') && !form.get('email').isEmailAddress()) {
+                infoDialog.open('Please enter a valid Email Address');
+                return;
+            }
+        }
+
+        return true;
+    }
+
+    async onFormSave(e, btn) {
+        const {
+            form,
+            item: {id, data: old_data},
+        } = this;
+        // const {is: {isContractor}, loggedContractor} = storage;
+
+        const onSubmit = (data, onSaved) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateClient({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                if (!res) {
+                    infoDialog.open("An error occurred. Please try again.");
+                } else {
+                    const res_data = res;
+                    onSaved && onSaved(res_data);
+                    infoDialog.open("Record successfully updated.");
+                    infoDialog.close(2000);
+                    // this.props.close();
+                }
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        const {idx} = btn.props;
+        if (idx === 1) {
+            if (!form.isValid('name')) {
+                infoDialog.open('Company Name is required');
+                return;
+            }
+            if (form.isValid('email') && !form.get('email').isEmailAddress()) {
+                infoDialog.open('Please enter a valid Email Address');
+                return;
+            }
+
+            const {
+                profile_pic, name, business_id, phone, email, contractor_email, address,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, name, 'name');
+            ShouldUpdate.check(data, old_data, business_id, 'business_id');
+            ShouldUpdate.check(data, old_data, phone, 'phone');
+            ShouldUpdate.check(data, old_data, email, 'email');
+            ShouldUpdate.check(data, old_data, address, 'address');
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 3) {
+            if (form.isValid('contractor_email') && !form.get('contractor_email').isEmailAddress()) {
+                infoDialog.open('Please enter a valid Contractor Email Address');
+                return;
+            }
+
+            const {
+                contractor_email,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, contractor_email, 'contractor_email');
+
+            onSubmit(data);
+            return;
+        }
+
+        return true;
     }
 
     onSubmit(e, btn, onSaved) {
@@ -123,7 +229,17 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, profile_pic, name, business_id, phone, email, contractor_email, address, sector_list
+                    created_at,
+                    profile_pic,
+                    name,
+                    business_id,
+                    phone,
+                    email,
+                    contractor_email,
+                    address,
+                    project_list,
+                    site_list,
+                    sector_list
                 }
             }
         } = this;
@@ -137,7 +253,9 @@ class Controls extends React.Component {
                 idx={1}
                 title="Company Details"
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}>
+                onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
+            >
                 <ProfilePic name="profile_pic" path={this.path + "upload/profile-pic"} id={item.id}
                             profilePic={profile_pic} onUploaded={this.onUploaded}/>
                 <ClearableInput name="name" type="text" placeholder="Company Name" defaultValue={name} required
@@ -159,9 +277,11 @@ class Controls extends React.Component {
                 title="Sector(s)"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={onFormNext}>
-                <SelectSectorInput name="sector_list" type="checkbox" placeholder="Sector(s)" defaultValue={sector_list}
-                                   vertical={3} className="col-lg-12 form-control" onChange={this.form.onChange}
+                onFormNext={onFormNext}
+                onFormSave={this.onFormSave}
+            >
+                <SelectSectorInput name="sector_list" placeholder="Sector(s)" defaultValue={sector_list}
+                                   className="col-lg-12 form-control" onChange={this.form.onChange}
                                    values={this.state.lists.sector_list} returnValue/>
             </Row>
             <Row
@@ -171,11 +291,40 @@ class Controls extends React.Component {
                 title="Register As Contractor"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
+                onFormSave={this.onFormSave}
             >
                 <ClearableInput name="contractor_email" type="text" placeholder="Contractor Email Address"
                                 defaultValue={contractor_email}
                                 desc="Used to link this company as a contractor of other companies when required."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                activeAlways
+                rendered
+                idx={4}
+                rowClassName="flex row-more"
+                title="Projects"
+            >
+                <NewProjectListTable
+                    title="Projects"
+                    name="project_list"
+                    defaultValue={project_list}
+                    readonly
+                />
+            </Row>
+            <Row
+                activeAlways
+                rendered
+                idx={5}
+                rowClassName="flex row-more"
+                title="Sites"
+            >
+                <NewSiteListTable
+                    title="Sites"
+                    name="site_list"
+                    defaultValue={site_list}
+                    readonly
+                />
             </Row>
         </FormControls>;
     }

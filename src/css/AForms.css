@@ -63,11 +63,11 @@
 }
 
 #dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover {
-    /*background: rgb(2,168,168);*/
+    background: rgb(2, 168, 168);
 }
 
 #dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover > label {
-    /*color: #fff;*/
+    color: #fff;
 }
 
 #dialog-overlay .dialog-content .controls-wrapper > .controls > .row > label,

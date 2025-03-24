@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
@@ -12,6 +10,9 @@ import {THead} from "components/tables";
 import {updateEmployeeWorkPermit} from "mutations/update";
 import {findByIdOrgWorkPermitsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgWorkPermitsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeWorkPermits} from "mutations/exportExcel";
+import {ClearableInput} from "components/inputs";
+import {Dates} from "utils/Dates";
 
 // </editor-fold>
 
@@ -23,10 +24,11 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "WorkPermits";
     module = "WorkPermits";
     onUpdate = updateEmployeeWorkPermit;
+    exportExcel = exportExcelEmployeeWorkPermits;
     filterNodeMarginB = 35;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -40,10 +42,12 @@ class Dialog extends AEmployeeDocDialog {
     onBuildQuery(params) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
+            date,
             notes,
         } = filterData || {};
         return {
             path: 'employees/docs/work-permits',
+            date: Dates.formatDateSQL(date),
             notes,
         };
     }
@@ -63,6 +67,26 @@ class Dialog extends AEmployeeDocDialog {
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput
+                name="notes"
+                type="text"
+                placeholder="Notes"
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput
+                name="date"
+                type="date"
+                placeholder="Date..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {

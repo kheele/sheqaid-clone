@@ -11,12 +11,14 @@ import style from "./EditDialog.lazy.css";
 
 import {ShouldUpdate} from "utils/Utils";
 import {updateSite} from "mutations/update";
+import {findByIdSite} from "mutations/findById";
 
 @observer
 class EditDialog extends AEditDialog {
     pageKey = "Site";
     className = 'ANewTableFormDialog';
     removeById = updateSite;
+    findById = findByIdSite;
 
     constructor(props) {
         super(props, style);

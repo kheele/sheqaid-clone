@@ -156,7 +156,6 @@ class PPETypeDialog extends ADialogList {
     renderTHead() {
         return <THead>
             <div className="td fixed-flex min-w-60">ID</div>
-            <div className="td fixed-flex min-w-80">Photo</div>
             <div className="td">PPE Type</div>
             <div className="td fixed-flex min-w-160">Measurement Unit</div>
             <div className="td fixed-flex min-w-80">Teams</div>

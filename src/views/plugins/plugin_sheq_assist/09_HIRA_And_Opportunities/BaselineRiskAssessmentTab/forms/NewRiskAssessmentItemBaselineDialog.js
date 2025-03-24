@@ -17,8 +17,8 @@ import {FormControls, RiskRating, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "../../RAComponents/NewRiskAssessmentItemDialog.lazy.css";
-import updateBaselineRAListItem from "mutations/all/HIRA_And_Opportunities/BaselineRAListItem/updateBaselineRAListItem";
-import insertBaselineRAListItem from "mutations/all/HIRA_And_Opportunities/BaselineRAListItem/insertBaselineRAListItem";
+import {updateBaselineRAListItem} from "mutations/update";
+import {insertBaselineRAListItem} from "mutations/create";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

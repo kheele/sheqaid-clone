@@ -1,12 +1,13 @@
 @import '../../../../css/ANewDialog.css';
 
-#dialog-overlay.Site-new-dialog .dialog-container{
+#dialog-overlay.Site-new-dialog .dialog-container {
     height: calc(100% - 35px);
     max-height: 500px;
-    width: 600px;
+    width: 800px;
     max-width: 100%;
 }
-#dialog-overlay.Site-new-dialog .dialog-content{
+
+#dialog-overlay.Site-new-dialog .dialog-content {
     padding: 0;
     height: calc(100% - 50px);
 }

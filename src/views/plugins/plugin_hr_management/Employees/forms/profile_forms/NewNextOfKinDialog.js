@@ -80,20 +80,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            fname,
-            lname,
-            phone1,
-            phone2,
-            relationship,
-        } = form.data;
         const data = {
-            employee_id: this.employeeItem.id,
-            fname,
-            lname,
-            phone1,
-            phone2,
-            relationship,
+            formData: {...form.data, employee_id: this.employeeItem.id},
         };
 
         console.log(data)

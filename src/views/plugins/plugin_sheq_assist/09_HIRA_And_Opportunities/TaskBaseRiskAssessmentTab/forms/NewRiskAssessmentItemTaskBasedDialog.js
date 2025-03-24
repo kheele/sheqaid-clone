@@ -13,10 +13,8 @@ import {FormControls, RiskRating, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "../../RAComponents/NewRiskAssessmentItemDialog.lazy.css";
-import updateTaskbasedRAListItem
-	from "mutations/all/HIRA_And_Opportunities/TaskbasedRAListItem/updateTaskbasedRAListItem";
-import insertTaskbasedRAListItem
-	from "mutations/all/HIRA_And_Opportunities/TaskbasedRAListItem/insertTaskbasedRAListItem";
+import {updateTaskbasedRAListItem} from "mutations/update";
+import {insertTaskbasedRAListItem} from "mutations/create";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">

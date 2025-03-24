@@ -28,18 +28,21 @@ class Login extends React.Component {
 
         this.form = new Form();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="show">
     show() {
         this.state.display = true;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="hide">
     hide() {
         this.state.display = false;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
@@ -49,7 +52,7 @@ class Login extends React.Component {
         if (!form.isValid('username')) {
             infoDialog.open('Email Address is required');
             return;
-        } else if (!form.get('username').isEmailAddress()){
+        } else if (!form.get('username').isEmailAddress()) {
             infoDialog.open('Email Address is not valid');
             return;
         }
@@ -82,21 +85,24 @@ class Login extends React.Component {
             progressDialog.close();
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         return this.state.display && (<React.Fragment>
             <div className="controls scale-up-center login">
-                <label>SHEQ Aid Forms - Login</label>
+                <label>SHEQ Intel Forms - Login</label>
                 <div className="row row-login flex flex-column flex-center">
-                    <ClearableInput name="username" type="text" placeholder="Email Address" className="form-control fixed-flex" onChange={this.form.onChange}/>
-        
+                    <ClearableInput name="username" type="text" placeholder="Email Address"
+                                    className="form-control fixed-flex" onChange={this.form.onChange}/>
+
                     <Button className="btn btn-primary w-200 border-radius-20" text="Login" onClick={this.onSubmit}/>
                 </div>
             </div>
         </React.Fragment>);
     }
+
     // </editor-fold>
 }
 

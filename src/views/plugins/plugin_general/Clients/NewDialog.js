@@ -32,7 +32,7 @@ class Controls extends React.Component {
     state = {
         lists: {
             sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, text: value, checked: false};
+                return {value, label: value};
             }),
         },
     };
@@ -40,7 +40,28 @@ class Controls extends React.Component {
     constructor() {
         super();
 
+        this.onNext = this.onNext.bind(this);
+
         this.form = new Form();
+    }
+
+//<editor-fold desc="onNext">
+    onNext(e, btn) {
+        const {form} = this;
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!form.isValid('name')) {
+                infoDialog.open('Company Name is required');
+                return;
+            }
+            if (form.isValid('email') && !form.get('email').isEmailAddress()) {
+                infoDialog.open('Please enter a valid Email Address');
+                return;
+            }
+        }
+
+        return true;
     }
 
     onSubmit(e, btn, onSaved) {
@@ -69,6 +90,7 @@ class Controls extends React.Component {
             profile_pic,
             sector_list,
         } = form.data;
+        console.log('sector_list', sector_list)
         const data = {
             name,
             business_id,
@@ -78,7 +100,7 @@ class Controls extends React.Component {
             address,
             profile_pic: profile_pic && profile_pic.path,
             sector_list: {
-                data: (sector_list || []).map(({id: sector_id, name}) => ({
+                data: (sector_list || []).map(({id: sector_id, value}) => ({
                     sector_id,
                     name,
                 }))
@@ -110,12 +132,13 @@ class Controls extends React.Component {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
         return <FormControls onChange={this.form.onChange}>
             <Row
-                activeAlways
+                active
                 rendered
                 idx={1}
                 title="Company Details"
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}>
+                onFormNext={onFormNext}
+            >
                 <ProfilePic name="profile_pic" onChange={this.form.onChange}/>
                 <ClearableInput name="name" type="text" placeholder="Company Name" required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
@@ -136,7 +159,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}>
-                <SelectSectorInput name="sector_list" type="checkbox" placeholder="Sector(s)" required vertical={3}
+                <SelectSectorInput name="sector_list" placeholder="Sector(s)"
                                    className="col-lg-12 form-control" onChange={this.form.onChange}
                                    values={this.state.lists.sector_list} returnValue/>
             </Row>

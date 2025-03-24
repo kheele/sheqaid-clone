@@ -1,7 +1,0 @@
-@import '../../../../../css/AProfileDialog.css';
-
-#dialog-overlay.ProfileNCRDialog-profile-dialog .dialog-container{
-    height: 100%;
-    width: 100%;
-    max-width: calc(100% - 30px);
-}

@@ -1,9 +1,7 @@
-import React from "react";
 import {findDOMNode} from "react-dom";
 import {isObservable, isObservableArray, isObservableMap, isObservableObject, toJS} from "mobx";
 import WebWorker from "../web-worker/WebWorker";
 import {Dates} from "./Dates";
-import mime from "mime";
 
 function findReactComponent(el) {
     for (const key in el) {
@@ -26,15 +24,15 @@ async function toDataURI(filePath) {
 }
 
 async function convertMobx(arg) {
-    if(arg === null || arg === undefined) return arg;
+    if (arg === null || arg === undefined) return arg;
 
-    if(arg && (isFile(arg) || isFile(arg.path))) {
+    if (arg && (isFile(arg) || isFile(arg.path))) {
         const file = isFile(arg) ? arg : arg.path;
         const {type: contentType} = file;
         return {contentType, buffer: file};
         // return {contentType, datauri: await toDataURI(file)};
     }
-    if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
+    if (arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);
     }
     if (isObservableArray(arg) || isArray(arg)) {
@@ -57,12 +55,12 @@ async function convertMobx(arg) {
 }
 
 function convertMobxForFilter(arg) {
-    if(arg === null || arg === undefined) return arg;
+    if (arg === null || arg === undefined) return arg;
 
     // if(arg && (isFile(arg) || isFile(arg.path))) {
     //     return await toDataURI(arg);
     // }
-    if(arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
+    if (arg && ((isString(arg) && arg.isDate()) || isDate(arg))) {
         return Dates.formatDateSQL(arg);
     }
     if (isObservableArray(arg) || isArray(arg)) {
@@ -162,13 +160,13 @@ const execWhen = (test) => {
 };
 
 const whenFileReady = async (res, findById, key = 'doc') => {
-    if(!res) return;
+    if (!res) return;
 
     return execWhen(async () => {
         const item = await findById(res.id);
-        if(item) {
+        if (item) {
             const {id, data: {[key]: doc}} = item;
-            if(doc && doc.dlUrls) {
+            if (doc && doc.dlUrls) {
                 return item;
             }
         }
@@ -321,7 +319,7 @@ function getDashboardCounter(v) {
 
 function creatQRCodeLink(type, id) {
     return new Promise((resolve, reject) => {
-        const loc = `https://sheqaid/qrcode?type=${type}&id=${id}`;
+        const loc = `https://sheqintel/qrcode?type=${type}&id=${id}`;
 
         const qrCodeElem = document.createElement('div');
         const qrcode = new QRCode(qrCodeElem, {

@@ -1,11 +1,12 @@
 @import '../../../../css/AProfileDialog.css';
 
-#dialog-overlay.Sites-profile-dialog .dialog-container{
+#dialog-overlay.Sites-profile-dialog .dialog-container {
     height: calc(100% - 35px);
-    width: 620px;
+    width: 800px;
     max-width: 100%;
 }
-#dialog-overlay.Sites-profile-dialog .dialog-content{
+
+#dialog-overlay.Sites-profile-dialog .dialog-content {
     padding: 0;
     height: calc(100% - 50px);
 }

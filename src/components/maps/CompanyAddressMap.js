@@ -8,9 +8,7 @@ import style from "./CompanyAddressMap.lazy.css";
 
 @observer
 class CompanyAddressMap extends React.Component {
-    static propTypes = {
-
-    };
+    static propTypes = {};
 
     @observable
     state = {
@@ -40,7 +38,7 @@ class CompanyAddressMap extends React.Component {
                 new google.maps.Marker({
                     position: location,
                     map: this.map,
-                    title: "SHEQ Aid Offices",
+                    title: "SHEQ Intel Offices",
                 });
             }, 0);
         } else {

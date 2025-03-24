@@ -9,14 +9,14 @@ import {AProfileDialog} from 'components/dialogs';
 import {ProfileField, ProfilePic, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
-import findByIdDocument from "mutations/all/Document/findByIdDocument";
+import {findByIdDocument} from "mutations/findById";
 // import ProfilePDFReader from './printers/ProfilePDFReader';
 import style from "./ProfileDialog.lazy.css";
 import {computed, observable} from "mobx";
 import {CircularProgress} from "@mui/material";
 
-import updateDocument from "mutations/all/Document/updateDocument";
-import DocSignButton from "../../../../../components/FormComponents/DocSignButton";
+import {updateDocument} from "mutations/update";
+import DocSignButton from "components/FormComponents/DocSignButton";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">

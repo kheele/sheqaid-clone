@@ -110,9 +110,9 @@ class Controls extends AEmployeeDocControls {
                 <ProfileField title="Corrective Actions" name="corrective_actions" value={corrective_actions}
                               type="textarea" className="col-lg-12"/>
                 <ProfileField title="Counseling Hours To Complete" name="counselling_hrs_to_complete"
-                              value={counselling_hrs_to_complete} className="col-lg-4"/>
+                              value={counselling_hrs_to_complete} className="col-lg-6"/>
                 <ProfileField title="Completion Date" name="expiry_date" type="date" value={expiry_date}
-                              className="col-lg-4"/>
+                              className="col-lg-6"/>
                 <UploadButton
                     name="doc"
                     defaultValue={doc}
@@ -120,9 +120,9 @@ class Controls extends AEmployeeDocControls {
                     type={['PDF', 'Word', 'Image']}
                     showOnlyIcon
                     readonly
-                    className="col-lg-4"
+                    className="col-lg-12 margin-b-15 h-80 padding-b-10 padding-h-5"
                 />
-                <Divider/>
+                <Divider sx={{opacity: '1'}} className="wfull margin-b-10"/>
                 <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Witness List</label>
                 <NewEmployeeListTable name="witness_list" defaultValue={witness_list || []} readonly/>
             </div>

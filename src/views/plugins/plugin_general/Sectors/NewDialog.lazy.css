@@ -1,10 +1,11 @@
 @import '../../../../css/ANewDialog.css';
 
-#dialog-overlay.Sector-new-dialog .dialog-container{
+#dialog-overlay.Sector-new-dialog .dialog-container {
     height: 300px;
-    width: 620px;
+    width: 800px;
 }
-#dialog-overlay.Sector-new-dialog .dialog-content{
+
+#dialog-overlay.Sector-new-dialog .dialog-content {
     padding: 0;
     height: calc(100% - 50px);
 }

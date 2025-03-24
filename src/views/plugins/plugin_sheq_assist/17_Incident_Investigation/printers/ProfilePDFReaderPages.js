@@ -15,14 +15,14 @@ import styles from './ProfilePDFReader.style';
 // <editor-fold defaultstate="collapsed" desc="PageFirst">
 @observer
 class PageFirst extends React.Component {
-    
+
     render() {
         let {
             data: {
                 sec9_data, sec11_data
             }
         } = this.props.item;
-        
+
         let incident_date, incident_time, exact_location;
         if (sec9_data && sec9_data.incident_date) {
             incident_date = Dates.formatDate(sec9_data.incident_date);
@@ -40,7 +40,14 @@ class PageFirst extends React.Component {
         }
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
-                <View style={{height: '100%', display: 'flex', flexDirection: 'column', placeItems: "center", justifyContent: 'center', fontSize: 26}}>
+                <View style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    placeItems: "center",
+                    justifyContent: 'center',
+                    fontSize: 26
+                }}>
                     <Text style={{margin: '35px auto 0'}}>INCIDENT INVESTIGATION</Text>
                     {person_injured && <Text style={{margin: '35px auto 0'}}>OF</Text>}
                     {person_injured && <Text style={{margin: '35px auto 0'}}>{person_injured}</Text>}
@@ -50,29 +57,51 @@ class PageFirst extends React.Component {
                     {exact_location && <Text style={{margin: '35px auto 0'}}>{exact_location}</Text>}
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Cover Page</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageLast">
 @observer
 class PageLast extends React.Component {
-    
+
     render() {
-        
+
         return <Page size="A4" style={styles.page}>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Last Page</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Page2">
@@ -85,13 +114,24 @@ class Page2 extends React.Component {
                 <IncidentDetailsPanel item={item}/>
                 <WitnessesPanel item={item}/>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageParticipants">
@@ -104,7 +144,7 @@ class PageParticipants extends React.Component {
                 investigation
             }
         } = this.props.item;
-        
+
         let investigation_team_list;
         if (investigation && investigation.sec1_data && investigation.sec1_data.investigation_team_list) {
             investigation_team_list = investigation.sec1_data.investigation_team_list;
@@ -114,14 +154,14 @@ class PageParticipants extends React.Component {
         const Table = ({th, col, list}) => {
             return <View style={[styles.table]}>
                 {list.map((val, ind) =>
-                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm: {}]}>
+                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm : {}]}>
                         <Text>{val.lname + ' ' + val.fname}</Text>
                         {val.job_position && <Text>{val.job_position}</Text>}
                     </View>
                 )}
             </View>;
         };
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -130,13 +170,24 @@ class PageParticipants extends React.Component {
                     {!investigation_team_list && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="IncidentDetailsPanel">
@@ -150,14 +201,14 @@ class IncidentDetailsPanel extends React.Component {
                 sec9_data, sec10_data
             }
         } = this.props.item;
-        
+
         if (classification) {
             sec1_data = classification.sec1_data || sec1_data;
             sec2_data = classification.sec2_data || sec2_data;
             sec3_data = classification.sec3_data || sec3_data;
             sec4_data = classification.sec4_data || sec4_data;
         }
-                
+
         let incident_date, incident_time, exact_location;
         if (sec9_data && sec9_data.incident_date) {
             incident_date = Dates.formatDate(sec9_data.incident_date);
@@ -184,7 +235,7 @@ class IncidentDetailsPanel extends React.Component {
             const {fname, lname} = sec6_data.person_reporting;
             person_reporting = lname + ' ' + fname;
         }
-        
+
         let person_involved_list;
         if (sec5_data && sec5_data.person_involved_list) {
             person_involved_list = sec5_data.person_involved_list;
@@ -193,25 +244,25 @@ class IncidentDetailsPanel extends React.Component {
         const Table = ({th, col, list}) => {
             return <View style={[styles.table]}>
                 {list.map((val, ind) =>
-                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm: {}]}>
+                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm : {}]}>
                         <Text>{val.lname + ' ' + val.fname}</Text>
                     </View>
                 )}
             </View>;
         };
-        
+
         let {category_list, sector_list, group, short_desc} = sec1_data;
-        if(category_list) {
+        if (category_list) {
             category_list = category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
-        if(sector_list) {
+        if (sector_list) {
             sector_list = sector_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
         let {sub_category_list, activity_list} = sec2_data;
-        if(sub_category_list) {
+        if (sub_category_list) {
             sub_category_list = sub_category_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
-        if(activity_list) {
+        if (activity_list) {
             activity_list = activity_list.filter(v => !!v).map(v => isString(v) ? v : v.value).join(', ');
         }
 
@@ -240,18 +291,23 @@ class IncidentDetailsPanel extends React.Component {
             <View style={[styles.flexColumn, {marginTop: 10}]}>
                 <Text style={styles.headingPoint2}>2.6 Location & Time Of Incident</Text>
                 <View style={[styles.flexRow]}>
-                    <Panel title="Date Occurred" value={incident_date} colStyle={{width: '50%', borderBottom: '1px dotted #eee', borderRight: '1px dotted #eee'}}/>
-                    <Panel title="Time Occurred" value={incident_time} colStyle={{width: '50%', borderBottom: '1px dotted #eee'}}/>
+                    <Panel title="Date Occurred" value={incident_date}
+                           colStyle={{width: '50%', borderBottom: '1px dotted #eee', borderRight: '1px dotted #eee'}}/>
+                    <Panel title="Time Occurred" value={incident_time}
+                           colStyle={{width: '50%', borderBottom: '1px dotted #eee'}}/>
                 </View>
                 <Panel title="Exact Location" value={exact_location}/>
             </View>
             <View style={[styles.flexColumn, {marginTop: 10}]}>
                 <Text style={styles.headingPoint2}>2.7 Incident Reporting</Text>
                 <View style={[styles.flexRow]}>
-                    <Panel title="Date Reported" value={date_reported} colStyle={{width: '50%', borderBottom: '1px dotted #eee', borderRight: '1px dotted #eee'}}/>
-                    <Panel title="Time Reported" value={time_reported} colStyle={{width: '50%', borderBottom: '1px dotted #eee'}}/>
+                    <Panel title="Date Reported" value={date_reported}
+                           colStyle={{width: '50%', borderBottom: '1px dotted #eee', borderRight: '1px dotted #eee'}}/>
+                    <Panel title="Time Reported" value={time_reported}
+                           colStyle={{width: '50%', borderBottom: '1px dotted #eee'}}/>
                 </View>
-                <Panel title="Person Reported To" value={person_reported_to} colStyle={{borderBottom: '1px dotted #eee'}}/>
+                <Panel title="Person Reported To" value={person_reported_to}
+                       colStyle={{borderBottom: '1px dotted #eee'}}/>
                 <Panel title="Person Reporting" value={person_reporting}/>
             </View>
             <View style={[styles.flexColumn, {marginTop: 10}]}>
@@ -266,6 +322,7 @@ class IncidentDetailsPanel extends React.Component {
         </View>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="WitnessesPanel">
@@ -277,12 +334,12 @@ class WitnessesPanel extends React.Component {
                 sec8_data
             }
         } = this.props.item;
-        
+
         let witness_list;
         if (sec8_data && sec8_data.witness_list) {
             witness_list = sec8_data.witness_list;
         }
-        
+
         const renderer = v => {
             return v.map(({lname, fname}) => (lname + ' ' + fname)).join(', ');
         };
@@ -293,6 +350,7 @@ class WitnessesPanel extends React.Component {
         </View>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageIncidentInjuryDetails">
@@ -304,7 +362,7 @@ class PageIncidentInjuryDetails extends React.Component {
                 sec11_data
             }
         } = this.props.item;
-        
+
         let person_injured, injured_person_dob, injured_person_gender;
         if (sec11_data && sec11_data.person_injured) {
             const {fname, lname} = sec11_data.person_injured;
@@ -316,7 +374,7 @@ class PageIncidentInjuryDetails extends React.Component {
         if (sec11_data && sec11_data.injured_person_gender) {
             injured_person_gender = sec11_data.injured_person_gender;
         }
-        
+
         let nature_of_injury_list, bodily_injury_location_list, injury_mechanism_list, injury_desc;
         if (sec11_data && sec11_data.nature_of_injury_list) {
             nature_of_injury_list = sec11_data.nature_of_injury_list.map(v => isString(v) ? v : v.value).join(', ');
@@ -330,7 +388,7 @@ class PageIncidentInjuryDetails extends React.Component {
         if (sec11_data && sec11_data.injury_desc) {
             injury_desc = sec11_data.injury_desc;
         }
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -338,8 +396,10 @@ class PageIncidentInjuryDetails extends React.Component {
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={{paddingBottom: '5px'}}>4.1 Person Injured</Text>
                         <View style={[styles.flexRow]}>
-                            <Panel title="Name" value={person_injured} colStyle={{width: '33.3333%', borderRight: '1px dotted #eee'}}/>
-                            <Panel title="Date Of Birth" value={injured_person_dob} colStyle={{width: '33.3333%', borderRight: '1px dotted #eee'}}/>
+                            <Panel title="Name" value={person_injured}
+                                   colStyle={{width: '33.3333%', borderRight: '1px dotted #eee'}}/>
+                            <Panel title="Date Of Birth" value={injured_person_dob}
+                                   colStyle={{width: '33.3333%', borderRight: '1px dotted #eee'}}/>
                             <Panel title="Gender" value={injured_person_gender} colStyle={{width: '33.3333%'}}/>
                         </View>
                     </View>
@@ -361,13 +421,24 @@ class PageIncidentInjuryDetails extends React.Component {
                     </View>
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageCauseAnalysis">
@@ -379,17 +450,17 @@ class PageCauseAnalysis extends React.Component {
                 investigation
             }
         } = this.props.item;
-        
+
         const Table = ({th, col, list}) => {
             return <View style={[styles.table]}>
                 {list.map(({text, corrective_actions}, ind) =>
-                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm: {}]}>
+                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm : {}]}>
                         <Text>{text}</Text>
                     </View>
                 )}
             </View>;
         };
-        
+
         let cause_analysis = {};
         if (investigation && investigation.sec4_data && investigation.sec4_data.cause_analysis) {
             cause_analysis = investigation.sec4_data.cause_analysis;
@@ -397,7 +468,7 @@ class PageCauseAnalysis extends React.Component {
             cause_analysis.root_analysis = cause_analysis.root_analysis || {};
         }
         const {
-            immediate_analysis = {}, 
+            immediate_analysis = {},
             root_analysis = {}
         } = cause_analysis;
         const {
@@ -412,12 +483,12 @@ class PageCauseAnalysis extends React.Component {
             job_factors = [],
             custom_job_factors = []
         } = root_analysis;
-        
+
         const all_sub_standard_practices_or_unsafe_acts = [...sub_standard_practices_or_unsafe_acts, ...custom_sub_standard_practices_or_unsafe_acts];
         const all_sub_standard_practices_or_unsafe_conditions = [...sub_standard_practices_or_unsafe_conditions, ...custom_sub_standard_practices_or_unsafe_conditions];
         const all_personal_factors = [...personal_factors, ...custom_personal_factors];
         const all_job_factors = [...job_factors, ...custom_job_factors];
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -425,49 +496,63 @@ class PageCauseAnalysis extends React.Component {
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={[styles.headingPoint2, {fontWeight: 'bold'}]}>5.1 Direct/Immediate Cause(s)</Text>
 
-                        <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.1.1 Sub-Standard Practices / Unsafe Acts</Text>
-                        {!all_sub_standard_practices_or_unsafe_acts.isEmpty() && 
+                        <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.1.1 Sub-Standard Practices / Unsafe
+                            Acts</Text>
+                        {!all_sub_standard_practices_or_unsafe_acts.isEmpty() &&
                             <Table th col={['50%', '50%']} list={all_sub_standard_practices_or_unsafe_acts}/>
                         }
-                        {all_sub_standard_practices_or_unsafe_acts.isEmpty() && 
+                        {all_sub_standard_practices_or_unsafe_acts.isEmpty() &&
                             <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>
                         }
 
-                        <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.1.2 Sub-Standard Conditions / Unsafe Conditions</Text>
-                        {!all_sub_standard_practices_or_unsafe_conditions.isEmpty() && 
+                        <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.1.2 Sub-Standard Conditions / Unsafe
+                            Conditions</Text>
+                        {!all_sub_standard_practices_or_unsafe_conditions.isEmpty() &&
                             <Table th col={['50%', '50%']} list={all_sub_standard_practices_or_unsafe_conditions}/>
                         }
-                        {all_sub_standard_practices_or_unsafe_conditions.isEmpty() && 
+                        {all_sub_standard_practices_or_unsafe_conditions.isEmpty() &&
                             <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>
                         }
                     </View>
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
-                        <Text style={[styles.headingPoint2, {fontWeight: 'bold'}]}>5.2 Indirect/Basic/Root Cause(s)</Text>
+                        <Text style={[styles.headingPoint2, {fontWeight: 'bold'}]}>5.2 Indirect/Basic/Root
+                            Cause(s)</Text>
 
                         <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.2.1 Personal Factors</Text>
-                        {!all_personal_factors.isEmpty() && 
+                        {!all_personal_factors.isEmpty() &&
                             <Table th col={['50%', '50%']} list={all_personal_factors}/>
                         }
-                        {all_personal_factors.isEmpty() && 
+                        {all_personal_factors.isEmpty() &&
                             <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>
                         }
                         <Text style={[styles.headingPoint2, {marginTop: 7}]}>5.2.2 Job Factors</Text>
-                        {!all_job_factors.isEmpty() && 
+                        {!all_job_factors.isEmpty() &&
                             <Table th col={['50%', '50%']} list={all_job_factors}/>
                         }
-                        {all_job_factors.isEmpty() && 
+                        {all_job_factors.isEmpty() &&
                             <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>
                         }
                     </View>
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageSeverity">
@@ -480,49 +565,49 @@ class PageSeverity extends React.Component {
                 sec14_data
             }
         } = this.props.item;
-        
+
         console.log('PageSeverity', investigation, sec14_data)
-        
+
         let risk_rating = null;
-        if(investigation && investigation.sec3_data) {
+        if (investigation && investigation.sec3_data) {
             let {risk_rating: _rr, consequence, likelihood} = investigation.sec3_data;
             risk_rating = _rr || {consequence, likelihood};
-        } else if(sec14_data) {
+        } else if (sec14_data) {
             let {risk_rating: _rr, consequence, likelihood} = sec14_data;
             risk_rating = _rr || {consequence, likelihood};
         }
-        
+
         const consequenceOpts = getRiskRatingConsequenceList();
         const likelihoodOpts = getRiskRatingLikelihoodList();
-        
+
         let {consequence, likelihood} = risk_rating;
         consequence = isNumber(consequence) ? consequence : parseInt(consequence.charAt(0));
         likelihood = isNumber(likelihood) ? likelihood : likelihood.charAt(0);
-        if(!isNumber(likelihood)) {
+        if (!isNumber(likelihood)) {
             likelihood = 'ABCDE'.indexOf(likelihood) + 1;
         }
-        
+
         let risk_rank;
-        if(isNumber(consequence) && isNumber(likelihood)) {
+        if (isNumber(consequence) && isNumber(likelihood)) {
             risk_rating = consequence * likelihood;
-            if(risk_rating > 15) {
+            if (risk_rating > 15) {
                 risk_rank = "Extreme";
-            } else if(risk_rating >= 9 && risk_rating <= 15) {
+            } else if (risk_rating >= 9 && risk_rating <= 15) {
                 risk_rank = "High";
-            } else if(risk_rating >= 5 && risk_rating <= 8) {
+            } else if (risk_rating >= 5 && risk_rating <= 8) {
                 risk_rank = "Moderate";
-            } else if(risk_rating < 5) {
-                risk_rank= "Low";
+            } else if (risk_rating < 5) {
+                risk_rank = "Low";
             }
         }
-        
-        if(isNumber(consequence)) {
+
+        if (isNumber(consequence)) {
             consequence = consequenceOpts[consequence - 1];
         }
-        if(isNumber(likelihood)) {
+        if (isNumber(likelihood)) {
             likelihood = likelihoodOpts[likelihood - 1];
         }
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -546,13 +631,24 @@ class PageSeverity extends React.Component {
                     </View>
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageInvestigation">
@@ -563,15 +659,15 @@ class PageInvestigation extends React.Component {
             data: {
                 classification,
                 investigation,
-                sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data, 
+                sec1_data, sec2_data, sec3_data, sec4_data, sec5_data, sec6_data, sec7_data, sec8_data,
                 sec9_data, sec10_data, sec11_data, sec12_data, sec13_data, sec14_data, sec15_data
             }
         } = this.props.item;
-        
+
         const TeamTable = ({th, col, index, list}) => {
             return <View style={[styles.table]}>
                 {list.map((val, ind) =>
-                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm: {}]}>
+                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm : {}]}>
                         <Text>{index}.{ind + 1} {val.lname + ' ' + val.fname}</Text>
                         {val.job_position && <Text>{val.job_position}</Text>}
                     </View>
@@ -581,60 +677,60 @@ class PageInvestigation extends React.Component {
         const FindingsTable = ({th, col, index, list}) => {
             return <View style={[styles.table]}>
                 {list.map((v, ind) =>
-                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm: {}]}>
+                    <View key={ind} style={[styles.tableRow, th && ind === 0 ? styles.tableEm : {}]}>
                         <Text>{index}.{ind + 1} {isString(v) ? v : v.text}</Text>
                     </View>
                 )}
             </View>;
         };
-        
+
         let investigation_team_list = null;
-        if(investigation && investigation.sec1_data && investigation.sec1_data.investigation_team_list) {
+        if (investigation && investigation.sec1_data && investigation.sec1_data.investigation_team_list) {
             investigation_team_list = investigation.sec1_data.investigation_team_list;
-        } else if(classification && classification.sec5_data && classification.sec5_data.investigation_team_list) {
+        } else if (classification && classification.sec5_data && classification.sec5_data.investigation_team_list) {
             investigation_team_list = classification.sec5_data.investigation_team_list;
         }
-        
+
         const investigation_details = (investigation && investigation.sec2_data) ? investigation.sec2_data.investigation_details : null;
-        const investigation_findings_list = (investigation && investigation.sec2_data && investigation.sec2_data.investigation_findings_list) ? 
+        const investigation_findings_list = (investigation && investigation.sec2_data && investigation.sec2_data.investigation_findings_list) ?
             investigation.sec2_data.investigation_findings_list : null;
         const investigation_findings_further_desc = (investigation && investigation.sec2_data) ? investigation.sec2_data.investigation_findings_further_desc : null;
-        const document_list = (investigation && investigation.sec2_data && investigation.sec2_data.document_list) ? 
+        const document_list = (investigation && investigation.sec2_data && investigation.sec2_data.document_list) ?
             investigation.sec2_data.document_list : null;
-            
+
         let {
-            weather_condition_list, 
+            weather_condition_list,
             protective_equipment_worn_list,
             class_list,
             environment_list,
             //
-            estimated_costs_damages = 0, 
-            estimated_costs_medical = 0, 
-            estimated_costs_salaries_wages = 0, 
-            estimated_costs_investigations = 0, 
+            estimated_costs_damages = 0,
+            estimated_costs_medical = 0,
+            estimated_costs_salaries_wages = 0,
+            estimated_costs_investigations = 0,
             estimated_costs_others = 0
         } = investigation || {};
-        if(weather_condition_list) {
+        if (weather_condition_list) {
             weather_condition_list = weather_condition_list.join(', ');
-        }    
-        if(protective_equipment_worn_list) {
+        }
+        if (protective_equipment_worn_list) {
             protective_equipment_worn_list = protective_equipment_worn_list.join(', ');
-        }    
-        if(class_list) {
+        }
+        if (class_list) {
             class_list = class_list.join(', ');
-        }   
-        if(environment_list) {
+        }
+        if (environment_list) {
             environment_list = environment_list.join(', ');
         }
-        
+
         const calcTotalCosts = () => {
-            return estimated_costs_damages + 
-                    estimated_costs_medical + 
-                    estimated_costs_salaries_wages + 
-                    estimated_costs_investigations + 
-                    estimated_costs_others;
+            return estimated_costs_damages +
+                estimated_costs_medical +
+                estimated_costs_salaries_wages +
+                estimated_costs_investigations +
+                estimated_costs_others;
         };
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -646,13 +742,16 @@ class PageInvestigation extends React.Component {
                     </View>
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={styles.headingPoint2}>7.2 Investigation Team</Text>
-                        {investigation_team_list && <TeamTable th col={['50%', '50%']} index="7.2" list={investigation_team_list}/>}
+                        {investigation_team_list &&
+                            <TeamTable th col={['50%', '50%']} index="7.2" list={investigation_team_list}/>}
                         {!investigation_team_list && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                     </View>
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={styles.headingPoint2}>7.3 Investigation Findings</Text>
-                        {investigation_findings_list && <FindingsTable th col={['50%', '50%']} index="7.3" list={investigation_findings_list}/>}
-                        {!investigation_findings_list && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
+                        {investigation_findings_list &&
+                            <FindingsTable th col={['50%', '50%']} index="7.3" list={investigation_findings_list}/>}
+                        {!investigation_findings_list &&
+                            <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                     </View>
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={styles.headingPoint2}>7.4 Further Investigation Findings</Text>
@@ -677,60 +776,76 @@ class PageInvestigation extends React.Component {
                     <View style={[styles.flexColumn, {marginTop: 10}]}>
                         <Text style={styles.headingPoint2}>7.9 Estimated Costs</Text>
                         <View style={[styles.flexRow]}>
-                            <Panel title="Damages" value={estimated_costs_damages.toCurrency('R')} colStyle={{borderBottom: '1px dotted #eee'}}/>
-                            <Panel title="Medical" value={estimated_costs_medical.toCurrency('R')} colStyle={{borderBottom: '1px dotted #eee'}}/>
-                            <Panel title="Salaries / Wages" value={estimated_costs_salaries_wages.toCurrency('R')} colStyle={{borderBottom: '1px dotted #eee'}}/>
-                            <Panel title="Investigations" value={estimated_costs_investigations.toCurrency('R')} colStyle={{borderBottom: '1px dotted #eee'}}/>
-                            <Panel title="Others" value={estimated_costs_others.toCurrency('R')} colStyle={{borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="Damages" value={estimated_costs_damages.toCurrency('R')}
+                                   colStyle={{borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="Medical" value={estimated_costs_medical.toCurrency('R')}
+                                   colStyle={{borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="Salaries / Wages" value={estimated_costs_salaries_wages.toCurrency('R')}
+                                   colStyle={{borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="Investigations" value={estimated_costs_investigations.toCurrency('R')}
+                                   colStyle={{borderBottom: '1px dotted #eee'}}/>
+                            <Panel title="Others" value={estimated_costs_others.toCurrency('R')}
+                                   colStyle={{borderBottom: '1px dotted #eee'}}/>
                             <Panel title="Total" value={calcTotalCosts().toCurrency('R')}/>
                         </View>
                     </View>
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="PageEvidence">
 @observer
 class PageEvidence extends React.Component {
-    
+
     constructor() {
         super();
         this.renderItemGroup = this.renderItemGroup.bind(this);
         this.renderItem = this.renderItem.bind(this);
     }
-    
+
     renderItemGroup(group, n) {
         return <View style={[styles.evidencePanelGroup, {borderTopWidth: n === 0 ? 0 : 1}]}>
             {group.map(this.renderItem)}
         </View>;
     }
-    
+
     renderItem(item, n) {
         const {dlUrls} = item;
-        return <View key={n} >
+        return <View key={n}>
             {dlUrls && dlUrls[0]}
         </View>;
     }
-    
+
     render() {
         const {
             data: {
                 investigation
             }
         } = this.props.item;
-                
-        const document_list = (investigation && investigation.sec2_data && investigation.sec2_data.document_list) ? 
+
+        const document_list = (investigation && investigation.sec2_data && investigation.sec2_data.document_list) ?
             investigation.sec2_data.document_list : [];
-        
+
         const groupedList = document_list.splitAt(3);
-        
+
         return <Page size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -739,14 +854,35 @@ class PageEvidence extends React.Component {
                     {groupedList.isEmpty() && <Text style={{padding: 10, backgroundColor: '#fff'}}>N/A</Text>}
                 </View>
             </View>
-            <View fixed style={[styles.flexRow, {fontSize: 9, justifyContent: 'center', placeItems: "center", padding: '7px', borderTop: '1px solid #eee', position: 'absolute', left: 0, right: 0, bottom: 0}]}>
-                <Text style={{flexGrow: 1}}>Powered by SHEQ Aid</Text>
+            <View fixed style={[styles.flexRow, {
+                fontSize: 9,
+                justifyContent: 'center',
+                placeItems: "center",
+                padding: '7px',
+                borderTop: '1px solid #eee',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0
+            }]}>
+                <Text style={{flexGrow: 1}}>Powered by SHEQ Intel</Text>
                 <Text style={{borderLeft: '1px solid #ddd', paddingLeft: 10, width: '60px'}}>Page 1 of 1</Text>
             </View>
         </Page>;
     }
 }
+
 // </editor-fold>
 
-export {PageFirst, PageParticipants, Page2, PageIncidentInjuryDetails, PageCauseAnalysis, PageSeverity, PageInvestigation, PageEvidence, PageLast};
+export {
+    PageFirst,
+    PageParticipants,
+    Page2,
+    PageIncidentInjuryDetails,
+    PageCauseAnalysis,
+    PageSeverity,
+    PageInvestigation,
+    PageEvidence,
+    PageLast
+};
 //573

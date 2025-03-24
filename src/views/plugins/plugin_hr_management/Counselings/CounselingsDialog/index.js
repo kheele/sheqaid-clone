@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
@@ -14,6 +12,7 @@ import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 import {updateEmployeeCounselling} from "mutations/update";
 import {findByIdOrgCounselingsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCounselingsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {exportExcelEmployeeCounselling} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -25,12 +24,42 @@ class Dialog extends AEmployeeDocDialog {
     permissionKey = "Counseling";
     module = "Counseling";
     onUpdate = updateEmployeeCounselling;
-    hasSignatures = true;
+    exportExcel = exportExcelEmployeeCounselling;
+    // hasSignatures = true;
     filterNodeGrid = 5;
     filterNodeMarginB = 35;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
+    };
+
+    selfState2 = {
+        lists: {
+            types: [
+                'Directive Counseling',
+                'Nondirective Counseling',
+                'Cooperative Counseling',
+                'Participative Counseling',
+                'Desensitization',
+                'Catharsis',
+                'Insight',
+                'Developing the new patterns'
+            ].map(label => {
+                return {label, value: label};
+            }),
+            reasons: [
+                'Attendance',
+                'Behaviour / Teamwork',
+                'Inappropriate Conduct',
+                'Inappropriate Dress',
+                'Safety Violation',
+                'Sleeping On The Job',
+                'Substandard Work',
+                'Violence'
+            ].map(label => {
+                return {label, value: label};
+            }),
+        },
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -110,6 +139,36 @@ class Dialog extends AEmployeeDocDialog {
     }
 
     //</editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <SelectEmployeeInput
+                name="responsible_person"
+                placeholder="Responsible Person..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+            />
+            <ClearableInput
+                name="types"
+                type="select_multi"
+                placeholder="Counseling Types..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.types}
+                returnValue
+                add
+            />
+            <ClearableInput
+                name="reasons"
+                type="select_multi"
+                placeholder="Reasons For Counseling..."
+                className="col-lg-12 margin-0 form-control"
+                onChange={onChange}
+                values={this.selfState2.lists.reasons}
+                returnValue
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderTHeadAll">
     renderTHeadAll({view}) {

@@ -9,7 +9,6 @@ import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inpu
 import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeLeave} from "mutations/create";
 
 @observer
@@ -155,32 +154,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            doc, //
-            doc_fitness_certificate, //
-            employee,//
-            type,//
-            due_to,//
-            date, //
-            expiry_date, //
-            days_booked,//
-            reason,//
-            employee_comments,//
-            notes//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-            doc_fitness_certificate: doc_fitness_certificate && doc_fitness_certificate.path,
-
-            date: Dates.formatTimestampSQL(date),
-            days_booked,
-            due_to: !form.isValid('due_to') ? 'Occurred Incident' : due_to,
-            employee_comments,
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            notes,
-            reason,
-            type,
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -268,7 +243,6 @@ class Controls extends React.Component {
                         activeAways
                         idx={4.1}
                         title={`${idx}.1. Proof Of Sick Note Attachment`}
-                        onFormOpen={onFormOpen}
                     >
                         <UploadButton
                             name="doc"
@@ -284,7 +258,6 @@ class Controls extends React.Component {
                         activeAways
                         idx={4.2}
                         title={`${idx}.2. Certificate Of Fitness Attachment`}
-                        onFormOpen={onFormOpen}
                     >
                         <UploadButton
                             name="doc_fitness_certificate"

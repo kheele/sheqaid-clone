@@ -9,7 +9,6 @@ import {FormControls, Row} from 'components/FormComponents';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewDialog.lazy.css";
-import {Dates} from "utils/Dates";
 import {insertEmployeeMedical} from "mutations/create";
 
 @observer
@@ -33,7 +32,12 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}]
+            annexture_3: [{text: "Yes", value: "Yes", checked: false}, {text: "No", value: "No", checked: false}],
+            fitness_option: [{text: "Fit", value: "Fit", checked: false}, {
+                text: "Fit with Restrictions",
+                value: "Fit with Restrictions",
+                checked: false
+            }]
         }
     };
 
@@ -71,10 +75,6 @@ class Controls extends React.Component {
                 infoDialog.open('Expiry Date is required');
                 return;
             }
-            if (!form.isValid('annexture_3')) {
-                infoDialog.open('Annexture 3 is required');
-                return;
-            }
         }
         if (idx === 2) {
             if (!form.isValid('doc')) {
@@ -97,10 +97,6 @@ class Controls extends React.Component {
             infoDialog.open('Expiry Date is required');
             return;
         }
-        if (!form.isValid('annexture_3')) {
-            infoDialog.open('Annexture 3 is required');
-            return;
-        }
         if (!form.isValid('doc')) {
             infoDialog.open('Please Upload Medical Certificate');
             return;
@@ -115,20 +111,8 @@ class Controls extends React.Component {
             return;
         }
 
-        const {
-            employee,//
-            expiry_date, //
-            annexture_3,//
-            restrictions,//
-            doc//
-        } = form.data;
         const data = {
-            employee_id: (embeddedEmployee || employee).id,
-            doc: doc && doc.path,
-
-            expiry_date: Dates.formatTimestampSQL(expiry_date),
-            restrictions,
-            annexture_3,
+            formData: {...form.data, embeddedEmployee},
         };
 
         console.log(data)
@@ -163,20 +147,31 @@ class Controls extends React.Component {
                     <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
                                          className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
-                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" required
-                                className="col-lg-6 form-control" onChange={this.form.onChange}
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.annexture_3}/>
+                <ClearableInput name="fitness_option" type="radio" placeholder="Fitness"
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.fitness_option}/>
                 <ClearableInput name="restrictions" type="textarea" placeholder="Restrictions (if any)"
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
                 idx={2}
-                title="2. Document"
+                title="2. Documents"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
+                <UploadButton
+                    name="annexture3_doc"
+                    buttonTitle="Upload Annexture 3 (PDF, Word or Photo)"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
                 <UploadButton
                     name="doc"
                     buttonTitle="Upload File (PDF, Word or Photo)"

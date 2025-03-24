@@ -10,12 +10,12 @@ import {execWhen} from "utils/UtilsFuns";
 @observer
 class DashboardSection extends React.Component {
     pageKey = "DashboardSection";
-    
+
     @observable
     state = {
         hidden: false,
     };
-    
+
     constructor(props) {
         super(props);
     }
@@ -33,14 +33,15 @@ class DashboardSection extends React.Component {
     }
 
     render() {
-        if(this.state.hidden) {
+        if (this.state.hidden) {
             return null;
         }
 
-        const {item, hidden, active} = this.props;
+        const {item, hidden, active, onClick} = this.props;
         const className = this.pageKey + "-tab" + (active ? ' active' : '');
-        return <MKBox id={this.pageKey + "-tab"} className={className} sx={hidden ? {position: "absolute", zIndex: "-1", top: "-4000px"} : {}}>
-            <DashboardTopGridCounter item={item} topStatsSize={150}/>
+        return <MKBox id={this.pageKey + "-tab"} className={className}
+                      sx={hidden ? {position: "absolute", zIndex: "-1", top: "-4000px"} : {}}>
+            <DashboardTopGridCounter item={item} topStatsSize={150} onClick={onClick}/>
         </MKBox>;
     }
 }

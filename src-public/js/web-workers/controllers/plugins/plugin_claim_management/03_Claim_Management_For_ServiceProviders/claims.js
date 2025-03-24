@@ -1,14 +1,13 @@
-
 (function () {
     class Controller extends AControllerAid {
         // <editor-fold defaultstate="collapsed" desc="constructor">
         //name, desc, approvers_manager, approvers_others, minimum_approval, options
         constructor(events) {
             super(events,
-                    {singular: "COID ClaimsClient", plural: "COID Claims"},
-                    "plugin_sheq_assist/COIDA_Management/claims/coid-provider/",
-                    "plugin_sheq_assist_coida_claims"
-                    );
+                {singular: "COID ClaimsClient", plural: "COID Claims"},
+                "plugin_sheq_assist/COIDA_Management/claims/coid-provider/",
+                "plugin_sheq_assist_coida_claims"
+            );
 
             const {addAction} = this;
             addAction("list/filter", this.filter.bind(this));
@@ -23,6 +22,7 @@
                 return ['ALL'];
             });
         }
+
         // </editor-fold>
 
         getDB() {
@@ -185,7 +185,14 @@
                 let savedItem = await AControllerAid.prototype.create.call(this, evt, data);
                 if (savedItem) {
                     const updateAttrs = {};
-                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({secName, listName, file, key, idx, upload}) => {
+                    await Promise.all(uploadPromises.filter(v => !!v).map(async ({
+                                                                                     secName,
+                                                                                     listName,
+                                                                                     file,
+                                                                                     key,
+                                                                                     idx,
+                                                                                     upload
+                                                                                 }) => {
                         const gcsUri = await upload({savedItem, file, secName, listName, key, idx});
                         if (listName) {
                             savedItem.data[listName][idx] = {
@@ -194,7 +201,7 @@
                             updateAttrs[listName] = savedItem.data[listName];
                         } else {
                             updateAttrs[secName] = {[key]: gcsUri};
-                    }
+                        }
                     }));
 
                     if (!Object.keys(updateAttrs).isEmpty()) {
@@ -220,10 +227,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-                            dynamicLinkDomain: 'sheqaid.page.link'
+                            dynamicLinkDomain: 'sheqintel.page.link'
                         };
                         await auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -240,6 +247,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update">
@@ -419,10 +427,10 @@
                         const actionCodeSettings = {
                             // URL you want to redirect back to. The domain (www.example.com) for this
                             // URL must be in the authorized domains list in the Firebase Console.
-                            url: `https://forms.sheqaid.com/cm/mcsp/?id=${savedItem.id}`,
+                            url: `https://forms.sheqintel.com/cm/mcsp/?id=${savedItem.id}`,
                             // This must be true.
                             handleCodeInApp: true,
-                            dynamicLinkDomain: 'sheqaid.page.link'
+                            dynamicLinkDomain: 'sheqintel.page.link'
                         };
                         auth.sendSignInLinkToEmail(doctor_email, actionCodeSettings).then(() => {
                             // The link was successfully sent. Inform the user.
@@ -439,6 +447,7 @@
                 return savedItem;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update_claim_status">
@@ -468,6 +477,7 @@
                 return !!res;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="update_status">
@@ -497,6 +507,7 @@
                 return !!res;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="send_email">
@@ -529,6 +540,7 @@
 //                await Utils.sendEmail(opts);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="export_excel">
@@ -560,7 +572,11 @@
                     {header: 'Fit for Duty', key: 'Fit for Duty', width: 35},
                     {header: 'Days Off', key: 'Days Off', width: 35},
                     {header: 'Place of Accident', key: 'Place of Accident', width: 35},
-                    {header: 'Accident Detais as per WCI.2 - Employers Report', key: 'Accident Detais as per WCI.2 - Employers Report', width: 35},
+                    {
+                        header: 'Accident Detais as per WCI.2 - Employers Report',
+                        key: 'Accident Detais as per WCI.2 - Employers Report',
+                        width: 35
+                    },
                     {header: 'Injury Type', key: 'Injury Type', width: 35},
                     {header: 'Employer WCI.2', key: 'Employer WCI.2', width: 35},
                     {header: 'Certified ID', key: 'Certified ID', width: 35},
@@ -822,6 +838,7 @@
                 return await this.export_excel_impl(loggedUser, "ClaimsClient-Management-Docs", "ClaimsClient-Management-ServiceProvider", "ClaimsClient-Management Data", cols, rows);
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter_select">
@@ -836,7 +853,11 @@
 
                 const {date_range, client_id: from_client_id, isNew} = filterData;
 
-                let list = await AControllerRead.prototype.listImpl.call(this, evt, {isNew, limit: -1, direction: 'desc'}, q => {
+                let list = await AControllerRead.prototype.listImpl.call(this, evt, {
+                    isNew,
+                    limit: -1,
+                    direction: 'desc'
+                }, q => {
                     q = q.where('receipient_coid_provider_id', '==', receipient_coid_provider_id);
                     if (from_client_id) {
                         q = q.where('client_id', '==', from_client_id);
@@ -856,6 +877,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="list">
@@ -878,6 +900,7 @@
                 return list;
             });
         }
+
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="filter">
@@ -886,6 +909,7 @@
 
             });
         }
+
         // </editor-fold>
 
         sortBy() {
@@ -963,6 +987,7 @@
 //                    console.log(this.tbl, item)
         return item;
     }
+
     // </editor-fold>
 
     new Controller(events);

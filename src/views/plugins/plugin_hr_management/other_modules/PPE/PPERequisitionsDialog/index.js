@@ -9,6 +9,7 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     Button,
     ClearableInput,
+    DateRangeInput,
     SelectDepartmentInput,
     SelectEmployeeInput,
     SelectJobPositionInput,
@@ -16,23 +17,36 @@ import {
 } from 'components/inputs';
 import {THead} from 'components/tables';
 
-import NewPPEInventoryDialog from './NewPPEInventoryDialog';
-import EditPPEInventoryDialog from './EditPPEInventoryDialog';
-import ProfilePPEInventoryDialog from './ProfilePPEInventoryDialog';
+import NewPPERequisitionDialog from './NewPPERequisitionDialog';
+import EditPPERequisitionDialog from './EditPPERequisitionDialog';
+import ProfilePPERequisitionDialog from './ProfilePPERequisitionDialog';
 
-import style from "./PPEInventoryDialog.lazy.css";
+import style from "./PPERequisitionDialog.lazy.css";
 import SignatureDialog from "components/dialogs/SignatureDialog";
-import PPEInventoryRenderRow from "./PPEInventoryRenderRow";
-import {updatePPEInventory} from "mutations/update";
-import {listPPEInventory} from "mutations/listByLogged";
+import PPERequisitionRenderRow from "./PPERequisitionRenderRow";
+import {updatePPERequisition} from "mutations/update";
+import {listPPERequisitions} from "mutations/listByLogged";
+import SelectPPETypeInput from "components/inputs/SelectPPETypeInput";
+import {exportExcelPPERequisitions} from "mutations/exportExcel";
+import ExportDialog from "components/exports/ExportDialog";
 
 // </editor-fold>
 
 @observer
-class PPEInventoryDialog extends ADialogList {
+class PPERequisitionDialog extends ADialogList {
     // <editor-fold defaultstate="collapsed" desc="fields">
-    pageKey = "PPEInventoryDialog";
+    pageKey = "PPERequisitionDialog";
     title = "PPE";
+    selfState = {
+        lists: {
+            auto_reorder_trigger: ['Automatic', 'Manual'].map(value => ({
+                label: value, value,
+            })),
+            approval_status: ['Pending', 'Declined', 'Approved'].map(value => ({
+                label: value, value,
+            })),
+        },
+    };
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -49,6 +63,7 @@ class PPEInventoryDialog extends ADialogList {
 
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
+        this.renderExportFilterNode = this.renderExportFilterNode.bind(this);
     }
 
     // </editor-fold>
@@ -68,17 +83,23 @@ class PPEInventoryDialog extends ADialogList {
     onLoadList(params = {}) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
-            name,
-            unit,
+            created_at_range,
+            auto_reorder_trigger,
+            approval_status,
+            ppe_type_id,
+            //
             team_id,
             department_id,
             job_position_id,
             employee_id,
         } = filterData || {};
 
-        return listPPEInventory({
-            name,
-            unit,
+        return listPPERequisitions({
+            created_at_range,
+            auto_reorder_trigger,
+            approval_status,
+            ppe_type_id,
+            //
             team_id,
             department_id,
             job_position_id,
@@ -136,42 +157,81 @@ class PPEInventoryDialog extends ADialogList {
         </Options>;
     }
 
+    renderExportFilterNode(onChange) {
+        return <>
+            <ClearableInput name="auto_reorder_trigger" type="radio" placeholder="Reorder Type"
+                            className="col-lg-12 margin-0 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.auto_reorder_trigger}
+            />
+            <ClearableInput name="approval_status" type="select" placeholder="Approval Status..."
+                            className="col-lg-12 margin-0 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.approval_status}
+            />
+            <SelectPPETypeInput name="ppe_type" className="col-lg-12 form-control"
+                                parentClassName="margin-0"
+                                onChange={onChange} addButton={false}/>
+            <DateRangeInput name="created_at_range" className="col-lg-12 margin-0 form-control" placeholder=""
+                            onChange={onChange}>
+                <label className="min-w-100">Reorder Start Date</label>
+                <label className="min-w-100">Reorder End Date</label>
+            </DateRangeInput>
+        </>;
+    }
+
     renderFilterNode(onChange) {
-        return <div className="col-lg-12 controls grid-3 grid-gap-10">
-            <ClearableInput name="name" type="text" placeholder="Item Description" className="form-control"
-                            onChange={onChange}/>
-            <ClearableInput name="unit" type="text" placeholder="Item Unit" className="form-control"
-                            onChange={onChange}/>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." className="form-control"
+        return <div className="col-lg-12 controls -margin-b-30">
+            <ClearableInput name="auto_reorder_trigger" type="select" placeholder="Reorder Type"
+                            className="col-lg-2 margin-b-10 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.auto_reorder_trigger}
+            />
+            <ClearableInput name="approval_status" type="select" placeholder="Approval Status..."
+                            className="col-lg-2 margin-b-10 form-control"
+                            onChange={onChange}
+                            values={this.selfState.lists.approval_status}
+            />
+            <SelectPPETypeInput name="ppe_type" placeholder="PPE Type..." className="col-lg-4 margin-b-10 form-control"
+                                onChange={onChange} addButton={false}/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." className="col-lg-4 margin-b-10 form-control"
                                  onChange={onChange} addButton={false}/>
-            <SelectTeamInput name="team" placeholder="Team..." className="form-control" onChange={onChange}
+            <SelectTeamInput name="team" placeholder="Team..." className="col-lg-4 margin-b-10 form-control"
+                             onChange={onChange}
                              addButton={false}/>
-            <SelectDepartmentInput name="department" placeholder="Department..." className="form-control"
+            <SelectDepartmentInput name="department" placeholder="Department..."
+                                   className="col-lg-4 margin-b-10 form-control"
                                    onChange={onChange} addButton={false}/>
-            <SelectJobPositionInput name="job_position" placeholder="Job Position..." className="form-control"
+            <SelectJobPositionInput name="job_position" placeholder="Job Position..."
+                                    className="col-lg-4 margin-b-10 form-control"
                                     onChange={onChange} addButton={false}/>
+            <DateRangeInput name="created_at_range" className="col-lg-6 form-control" placeholder=""
+                            onChange={onChange}>
+                <label className="min-w-160">Reorder Start Date</label>
+                <label className="min-w-160">Reorder End Date</label>
+            </DateRangeInput>
         </div>;
     }
 
     renderTHead() {
         return <THead>
             <div className="td fixed-flex min-w-60">ID</div>
-            <div className="td fixed-flex min-w-80">Photo</div>
-            <div className="td">PPE Inventory</div>
+            <div className="td">PPE Type</div>
             <div className="td fixed-flex min-w-160">Measurement Unit</div>
-            <div className="td fixed-flex min-w-80">Teams</div>
-            <div className="td fixed-flex min-w-110">Departments</div>
-            <div className="td fixed-flex min-w-110">Job Positions</div>
-            <div className="td fixed-flex min-w-110">Employees</div>
-            <div className="td fixed-flex min-w-110">PPE Items</div>
+            <div className="td fixed-flex min-w-120">Quantity</div>
+            <div className="td">Employee</div>
+            <div className="td">Reason</div>
+            <div className="td fixed-flex min-w-110">Reorder Type</div>
+            <div className="td fixed-flex min-w-120">Date</div>
+            <div className="td fixed-flex min-w-120">Approval Status</div>
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
 
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
-        return <PPEInventoryRenderRow key={item.id} idx={n} item={item} onView={this.refs.root.onView}
-                                      onClick={onClick}/>;
+        return <PPERequisitionRenderRow key={item.id} idx={n} item={item} onView={this.refs.root.onView}
+                                        onClick={onClick}/>;
     }
 
     //<editor-fold desc="renderPage">
@@ -180,10 +240,10 @@ class PPEInventoryDialog extends ADialogList {
             ref="root"
             page={this}
             hasBackBtn={false}
-            createBtnTitle="Create PPE Inventory"
+            createBtnTitle="Create"
             pageId={this.pageKey + '-page'}
-            listCountTopTitle="ppe type"
-            pageTitleSingular="ppe type"
+            listCountTopTitle="ppe requisition"
+            pageTitleSingular="ppe requisition"
             onLoadList={this.onLoadList}
             noAnimation={true}
             renderLeftButtons={this.renderLeftButtons}
@@ -191,12 +251,19 @@ class PPEInventoryDialog extends ADialogList {
             renderFilterNode={this.renderFilterNode}
             renderTHead={this.renderTHead}
             renderItem={this.renderItem}>
-            <ConfirmDialog ref="removeDialog" onSoftDelete={updatePPEInventory}/>
+            <ConfirmDialog ref="removeDialog" onSoftDelete={updatePPERequisition}/>
 
-            <NewPPEInventoryDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>
-            <ProfilePPEInventoryDialog ref="profileDialog"/>
-            <EditPPEInventoryDialog ref="editDialog"/>
+            <NewPPERequisitionDialog ref="newDialog" onSetSignatureSettings={this.onSignatures}/>
+            <ProfilePPERequisitionDialog ref="profileDialog"/>
+            <EditPPERequisitionDialog ref="editDialog"/>
 
+            <ExportDialog
+                ref="exportDialog"
+                titlePlural={this.title}
+                renderExportFilterNode={this.renderExportFilterNode}
+                exportFn={exportExcelPPERequisitions}
+                addHRFilters
+            />
             <SignatureDialog ref="signaturesDialog" plugin="plugin_hr_management" module="PPE"/>
         </APageListReadWrite>;
     }
@@ -205,4 +272,4 @@ class PPEInventoryDialog extends ADialogList {
 
 }
 
-export default PPEInventoryDialog;
+export default PPERequisitionDialog;

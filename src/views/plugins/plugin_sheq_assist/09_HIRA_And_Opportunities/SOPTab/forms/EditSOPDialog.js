@@ -9,32 +9,32 @@ import Form from 'utils/Form';
 import {onSelectLoadSOPLocations} from 'views/plugins/utils';
 
 import {
-	ClearableInput,
-	SelectClientInput,
-	SelectEmployeeInput,
-	SelectProjectInput,
-	SelectSiteInput,
-	UploadButton,
+    ClearableInput,
+    SelectClientInput,
+    SelectEmployeeInput,
+    SelectProjectInput,
+    SelectSiteInput,
+    UploadButton,
 } from 'components/inputs';
 
 import {AEditDialog} from 'components/dialogs';
 
 import {
-	NewCloseDownListTable,
-	NewCustomSafetyPreRequesiteListTable,
-	NewKeyPointListTable,
-	NewOperationListTable,
-	NewProcedureListTable,
-	NewRiskListTable,
-	NewSafetyPreRequesiteListTable,
-	SelectWrapper,
+    NewCloseDownListTable,
+    NewCustomSafetyPreRequesiteListTable,
+    NewKeyPointListTable,
+    NewOperationListTable,
+    NewProcedureListTable,
+    NewRiskListTable,
+    NewSafetyPreRequesiteListTable,
+    SelectWrapper,
 } from './SOPComponents';
 
 import {FormControls, Row} from "components/FormComponents";
 import {ShouldUpdate} from "utils/Utils";
 
-import updateSOP from "mutations/all/HIRA_And_Opportunities/SOP/updateSOP";
-import findByIdSOP from "mutations/all/HIRA_And_Opportunities/SOP/findByIdSOP";
+import {updateSOP} from "mutations/update";
+import {findByIdSOP} from "mutations/findById";
 
 import style from "./EditSOPDialog.lazy.css";
 //</editor-fold>

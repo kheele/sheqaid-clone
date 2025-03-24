@@ -557,20 +557,20 @@ class Controls extends React.Component {
                                     break;
                             }
                         } else if (isObject(res)) {
-                            alert(0)
+                            // alert(0)
                             auth2.onAuthStateChanged(currentUser => {
-                                alert(1)
+                                // alert(1)
                                 storage.onLogin(currentUser);
                             });
 
-                            alert(2)
+                            // alert(2)
 
                             execWhen(() => storage.loggedUserAuth).then(loggedUserAuth => loggedUserAuth.getIdTokenResult().then(idTokenResult => {
-                                alert(3)
+                                // alert(3)
                                 storage.idTokenResult = idTokenResult;
                                 return res;
                             })).then(() => {
-                                alert(4)
+                                // alert(4)
                                 const {loggedUserAuth: currentUser} = storage;
                                 if (currentUser) {
                                     infoDialog.open(<div>

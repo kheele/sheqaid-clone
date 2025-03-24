@@ -20,8 +20,8 @@ import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 import {AEditDialog} from 'components/dialogs';
 
 import style from "./EditDialog.lazy.css";
-import findByIdDocument from "mutations/all/Document/findByIdDocument";
-import updateDocument from "mutations/all/Document/updateDocument";
+import {findByIdDocument} from "mutations/findById";
+import {updateDocument} from "mutations/update";
 import {CircularProgress} from "@mui/material";
 // </editor-fold>
 

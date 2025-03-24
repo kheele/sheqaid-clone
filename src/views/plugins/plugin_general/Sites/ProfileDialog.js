@@ -10,11 +10,13 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 import {updateSite} from "mutations/update";
+import {findByIdSite} from "mutations/findById";
 
 @observer
 class ProfileDialog extends AProfileDialog {
     pageKey = "Sites";
     removeById = updateSite;
+    findById = findByIdSite;
 
     constructor(props) {
         super(props, style);
