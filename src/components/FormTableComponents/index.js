@@ -1,6 +1,7 @@
 import ANewListTable from './ANewListTable';
 import NewSignatureSettingsListTable from './NewSignatureSettingsListTable';
 import NewEmployeeListTable from './NewEmployeeListTable';
+import NewSectorListTable from './NewSectorListTable';
 import NewClientListTable from './NewClientListTable';
 import NewProjectListTable from './NewProjectListTable';
 import NewSiteListTable from './NewSiteListTable';
@@ -34,6 +35,7 @@ export {
     ANewListTable,
     NewSignatureSettingsListTable,
     NewEmployeeListTable,
+    NewSectorListTable,
     NewClientListTable,
     NewProjectListTable,
     NewSiteListTable,

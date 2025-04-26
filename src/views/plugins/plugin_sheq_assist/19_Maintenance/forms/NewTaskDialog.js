@@ -19,7 +19,7 @@ class NewTaskDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -28,12 +28,11 @@ class Controls extends React.Component {
     path = "plugin_sheq_assist/19_Maintenance/tasks/";
 
     @observable
-    state = {
-    };
-    
+    state = {};
+
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -59,13 +58,13 @@ class Controls extends React.Component {
         const data = {
             title, start: start.getTime(), end: end.getTime()
         };
-        if(desc) {
+        if (desc) {
             data.desc = desc;
         }
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -81,19 +80,24 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <ClearableInput name="start" type="date" placeholder="Starts On..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="end" type="date" placeholder="Ends On..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="start" type="date" placeholder="Starts On..." required
+                                        className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="end" type="date" placeholder="Ends On..." required
+                                        className="col-lg-6 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="row sec-group">
-                        <ClearableInput name="title" type="text" placeholder="Task" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="desc" type="textarea" placeholder="Description" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="title" type="text" placeholder="Task" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="desc" type="textarea" placeholder="Description" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="row sec-group">
-                        <ClearableInput name="responsible_person" type="text" placeholder="Responsible Person..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="responsible_person" type="text" placeholder="Responsible Person..."
+                                        required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
             </div>

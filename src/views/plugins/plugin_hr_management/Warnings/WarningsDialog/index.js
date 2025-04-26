@@ -13,6 +13,7 @@ import {updateEmployeeWarning} from "mutations/update";
 import {findByIdOrgWarningsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgWarningsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeWarnings} from "mutations/exportExcel";
+import {listEmployeeWarning} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -55,7 +56,7 @@ class Dialog extends AEmployeeDocDialog {
             date,
         } = filterData || {};
         return {
-            path: 'employees/docs/warnings',
+            listByLogged: listEmployeeWarning,
             issued_by_id,
             witness_id,
             type,

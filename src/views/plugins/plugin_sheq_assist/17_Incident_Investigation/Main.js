@@ -9,7 +9,6 @@ import DashboardTab from './DashboardTab';
 import IncidentsTab from './IncidentsTab';
 import InvestigationsTab from './InvestigationsTab';
 import CorrectiveActionsTab from './CorrectiveActionsTab';
-import ManHoursTab from './ManHoursTab';
 
 import Tabs from 'components/tabs/Tabs';
 
@@ -29,6 +28,7 @@ class Main extends APage {
     constructor(props) {
         super(props);
 
+        this.onDashboardClick = this.onDashboardClick.bind(this);
     }
 
     componentWillMount() {
@@ -50,6 +50,28 @@ class Main extends APage {
         style.unuse();
     }
 
+    onDashboardClick(id) {
+        const {isEmployee} = storage.is;
+
+        const startIdx = isEmployee ? -1 : 0;
+
+        const {mainTabs} = this.refs;
+        switch (id) {
+            case 'quick-incidents':
+                mainTabs.onChange(startIdx + 1);
+                break;
+            case 'incidents':
+                mainTabs.onChange(startIdx + 2);
+                break;
+            case 'investigations':
+                mainTabs.onChange(startIdx + 3);
+                break;
+            case 'ncr':
+                loggedInApp.refs.mainView.navigate('_18_Nonconformance_Management');
+                break;
+        }
+    }
+
     render() {
         const {permissionKey} = this.props;
         const {isEmployee} = storage.is;
@@ -65,13 +87,14 @@ class Main extends APage {
                 </PageTitle>
                 <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
                       onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
-                    {!isEmployee && <DashboardTab ref="dashboard" title="Dashboard" path={this.path}/>}
+                    {!isEmployee && <DashboardTab ref="dashboard" title="Dashboard" path={this.path}
+                                                  onClick={this.onDashboardClick}/>}
                     <QuickIncidentsTab ref="quickIncidents" title="Quick Incidents" path={this.path}/>
                     <IncidentsTab ref="incidents" title="Incidents" path={this.path}/>
                     <InvestigationsTab ref="investigations" title="Investigations" path={this.path}/>
                     {!isEmployee &&
                         <CorrectiveActionsTab ref="correctiveActions" title="Corrective Actions" path={this.path}/>}
-                    <ManHoursTab ref="manHoursTab" title="Man Hours" path={this.path}/>
+                    {/*<ManHoursTab ref="manHoursTab" title="Man Hours" path={this.path}/>*/}
                 </Tabs>
                 <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist"
                                   module="_17_Incident_Investigation"/>

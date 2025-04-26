@@ -180,7 +180,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 14).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalIncidentsPerTimeDay: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -195,7 +195,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalInjuriesAndVehiclesInvolved: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -210,7 +210,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalNatureOfInjury: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -225,7 +225,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalPartsOfBodyInjured: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -240,7 +240,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalDirectCauseOfInjury: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -255,7 +255,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalDrugTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -280,7 +280,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalAlcoholTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -305,7 +305,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         totalMobileDeviceTestsUndertaken: Promise.resolve({
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
@@ -330,7 +330,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 9).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
+        }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, view}),//
         // totalIncidentsPerWeeklyDay: Promise.resolve({
         //     labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         //     datasets: [
@@ -340,7 +340,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
         //             data: Array.range(1, 7).map(n => (Math.random() * 15).toFixed(0))
         //         },
         //     ],
-        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
+        // }),//workers.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
         // totalIncidentsPerTimeDay: Promise.resolve({
         //     labels: ['Morning', 'After Noon'],
         //     datasets: [
@@ -350,7 +350,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
         //             data: Array.range(1, 7).map(n => (Math.random() * 15).toFixed(0))
         //         },
         //     ],
-        // }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
+        // }),//workers.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
         overallRiskRatingPerWeeklyDay: Promise.resolve({
             labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             datasets: [
@@ -375,7 +375,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 7).map(n => (Math.random() * 14).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
+        }),//workers.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, view}),
 
         resultsPerJobPosition: Promise.resolve({
             labels: Array.range(1, 10).map(n => `Job Position #${n + 1}`),
@@ -396,7 +396,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
                     data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
                 },
             ],
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, view}),//
+        }),//workers.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, view}),//
     };
 
     const {

@@ -74,6 +74,7 @@ export const insertProject = create("projects");
 export const insertSector = create("sectors");
 export const insertSite = create("sites");
 export const insertContractor = create("contractors");
+export const insertProxySectorClient = create("sectors/proxy/clients");
 
 //Audits
 export const insertAudit = create("audits");
@@ -220,8 +221,27 @@ export const insertComplianceRequirement = create("compliance-requirements");
 export const insertJobTaskCategory = create("job-tasks/categories");
 export const insertJobTask = create("job-tasks");
 
-export const insertEmployee = create("employees");
-export const insertEmployeeImported = create("employees/imported");
+export const insertEmployee = async (data) => {
+    const {
+        formData,
+        optionalInfoFormData,
+        documentsFormData,
+        counselingFormData,
+        warningFormData,
+        timeOffFormData,
+    } = data;
+
+    const insert = create("employees");
+
+    await insert("START");
+
+    await insert({formData, optionalInfoFormData});
+    await insert({counselingFormData, warningFormData, timeOffFormData});
+    await insert({documentsFormData});
+
+    return await insert("END");
+};
+export const insertEmployeeImported = create("employees/imported/create");
 export const insertEmployeeExternal = create("employees-external");
 export const insertEmployeeCompetency = create("employees/docs/competencies");
 export const insertEmployeeContract = create("employees/docs/contracts");

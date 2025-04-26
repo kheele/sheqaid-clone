@@ -42,7 +42,7 @@ class ToolboxTalkAttendanceRegisterDialog extends ADialogList {
         const item = this.refs.root.list[idx];
 
         progressDialog.open();
-        neonBinding.events.emit(this.path + "export-excel", item).then(res => {
+        workers.emit(this.path + "export-excel", item).then(res => {
             if (!res) {
                 infoDialog.open("An error occurred. Please try again");
             } else {

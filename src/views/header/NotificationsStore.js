@@ -14,11 +14,11 @@ class Store {
     load() {
 //        TODO: load from graphql
 
-//         neonBinding.events.emit("notifications/list/unread").then(list => {
+//         workers.emit("notifications/list/unread").then(list => {
 // //            console.log("emit = notifications/list/unread", list)
 //             this.state.list = list;
 //         });
-        neonBinding.events.on("notifications/onCreated", item => {
+        workers.on("notifications/onCreated", item => {
             const {data: {_group, name}} = item;
             let itemGroup = this.list.find(v => v._group === _group);
             if (itemGroup) {
@@ -33,7 +33,7 @@ class Store {
                 this.list.push(itemGroup);
             }
         });
-        neonBinding.events.on("notifications/onRemoved", item => {
+        workers.on("notifications/onRemoved", item => {
             const {data: {_group, name}} = item;
             const itemGroup = this.list.find(v => v._group === _group);
             if (itemGroup) {

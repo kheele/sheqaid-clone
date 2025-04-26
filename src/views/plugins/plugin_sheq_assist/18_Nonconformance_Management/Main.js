@@ -11,6 +11,7 @@ import DashboardTab from './DashboardTab';
 import NCRTab from './NCRTab';
 
 import Tabs from 'components/tabs/Tabs';
+import NCRItemListDialog from "./dialogs/NCRItemListDialog";
 
 @observer
 class Main extends APage {
@@ -25,6 +26,7 @@ class Main extends APage {
     constructor(props) {
         super(props);
 
+        this.onDashboardClick = this.onDashboardClick.bind(this);
     }
 
     componentWillMount() {
@@ -46,6 +48,29 @@ class Main extends APage {
         style.unuse();
     }
 
+    onDashboardClick(id) {
+        const {ncrItemListDialog} = this.refs;
+
+        switch (id) {
+            case 'ncr':
+                const {mainTabs} = this.refs;
+                mainTabs.onChange(1);
+                break;
+            case 'site-audits':
+                ncrItemListDialog.extraProp('source', "Site Audit").open();
+                break;
+            case 'audits':
+                ncrItemListDialog.extraProp('source', "Compliance Audit").open();
+                break;
+            case 'inspections':
+                ncrItemListDialog.extraProp('source', "Inspection").open();
+                break;
+            case 'incidents':
+                ncrItemListDialog.extraProp('source', "Incident Investigation").open();
+                break;
+        }
+    }
+
     render() {
         const {permissionKey} = this.props;
         const {isEmployee} = storage.is;
@@ -60,11 +85,12 @@ class Main extends APage {
             </PageTitle>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}
                   onPreChange={this.onPreChange} onPostChange={this.onPostChange}>
-                <DashboardTab ref="dashboard" title="Dashboard" path={this.path}/>
+                <DashboardTab ref="dashboard" title="Dashboard" path={this.path} onClick={this.onDashboardClick}/>
                 <NCRTab ref="ncr" title="Non-Conformances" path={this.path}/>
             </Tabs>
             <OHSDocListDialog ref="ohsDocListDialog" plugin="plugin_sheq_assist"
                               module="_18_Nonconformance_Management"/>
+            <NCRItemListDialog ref="ncrItemListDialog" permissionKey={permissionKey}/>
         </div>);
     }
 }

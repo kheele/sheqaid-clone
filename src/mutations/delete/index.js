@@ -9,6 +9,9 @@ const _delete = path => async (id) => {
     }
 };
 
+//General
+export const deleteProxySectorClient = _delete("sectors/proxy/clients");
+
 //Assets
 export const deleteAssetCalibrationRecordListItem = _delete("assets/calibration-record-list");
 export const deleteAssetMaintenancePlanListItem = _delete("assets/maintenance-plan-list");

@@ -14,7 +14,7 @@ class CertificateAccredited extends React.Component {
     componentDidMount() {
         execWhen(() => this.refs.logo).then(async logo_ref => {
             const {data: {company: {id}}} = this.props.item;
-            const res = await window.neonBinding.events.emit('plugin_sheq_assist/clients/profile-pic', id);
+            const res = await workers.emit('plugin_sheq_assist/clients/profile-pic', id);
             if(res && res.dlUrls) {
                 logo_ref.src = res.dlUrls[0];
             }
@@ -96,7 +96,7 @@ class CertificateNonAccredited extends React.Component {
     componentDidMount() {
         execWhen(() => this.refs.logo).then(async logo_ref => {
             const {data: {company: {id}}} = this.props.item;
-            const res = await window.neonBinding.events.emit('plugin_sheq_assist/clients/profile-pic', id);
+            const res = await workers.emit('plugin_sheq_assist/clients/profile-pic', id);
             if(res && res.dlUrls) {
                 logo_ref.src = res.dlUrls[0];
             }

@@ -26,15 +26,15 @@ const onFailure = (state) => {
 };
 
 const management = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(mainPath + "management-meeting/list/calendar", selectedDate, selectedView).
+    workers.emit(mainPath + "management-meeting/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Management")).catch(onFailure(state));
 };
 const safety = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(mainPath + "safety-meeting/list/calendar", selectedDate, selectedView).
+    workers.emit(mainPath + "safety-meeting/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Safety")).catch(onFailure(state));
 };
 const general = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit("plugin_sheq_assist/calendar/meetings/list/calendar", selectedDate, selectedView).
+    workers.emit("plugin_sheq_assist/calendar/meetings/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "General")).catch(onFailure(state));
 };
 

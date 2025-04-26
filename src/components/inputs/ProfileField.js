@@ -93,7 +93,7 @@ class ProfileField extends React.Component {
             execWhen(() => this.refs.iframe).then(iframe_ref => {
                 let {value} = this.props;
                 const remotePath = value.gcsUri;
-                neonBinding.events.emit("default/docs/doc/view", remotePath).then(res => {
+                workers.emit("default/docs/doc/view", remotePath).then(res => {
                     //              iframe_ref.src = `https://docs.google.com/document/d/${res.data.id}/edit?usp=drivesdk`;
                     iframe_ref.src = `https://docs.google.com/document/d/${res.data.id}/preview`;
                 });

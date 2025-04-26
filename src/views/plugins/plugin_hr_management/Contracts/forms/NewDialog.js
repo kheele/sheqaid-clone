@@ -207,7 +207,7 @@ class Controls extends React.Component {
             return;
         }
 
-        data = {
+        const data = {
             formData: {
                 ...form.data,
                 embeddedEmployee,
@@ -240,7 +240,7 @@ class Controls extends React.Component {
             isNewEmployee,
             embeddedEmployee,
             onSetSignatureSettings,
-            props: {onFormNext, onFormBack, onFormOpen}
+            props: {onFormNext, onFormBack, onFormOpen, dialog: {props: {onRefs}}}
         } = this;
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
@@ -274,7 +274,12 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
-                <ContractDetails key='ContractDetails' ref="contractDetailsTab"/>
+                <ContractDetails
+                    key='ContractDetails'
+                    ref="contractDetailsTab"
+                    embeddedEmployee={embeddedEmployee}
+                    onRefs={onRefs}
+                />
             </Row>
             <Row
                 rendered
@@ -359,13 +364,34 @@ class ContractDetails extends React.Component {
         this.form = new Form();
     }
 
+    get defaultStartDate() {
+        const {embeddedEmployee, onRefs} = this.props;
+        let start_date;
+        if (embeddedEmployee) {
+            const {employment_date} = embeddedEmployee.data || embeddedEmployee;
+            start_date = employment_date;
+        }
+        if (!start_date && onRefs) {
+            const {optionalInfoSection} = onRefs();
+            if (optionalInfoSection) {
+                start_date = optionalInfoSection.formData.employment_date;
+            }
+        }
+        return start_date;
+    }
+
     render() {
+        const {embeddedEmployee, onRefs} = this.props;
+        const {defaultStartDate} = this;
+
         return <>
             <label className="margin-b-0 w-full">Contract Terms</label>
             <ClearableInput name="contract_type" type="radio" placeholder="Contract Type" vertical
                             className="col-lg-12 form-control" onChange={this.form.onChange}
                             values={this.state.lists.contract_type} returnValue/>
-            <ClearableInput name="start_date" type="date" placeholder="Start Date..." className="col-lg-6 form-control"
+            <ClearableInput name="start_date" type="date" placeholder="Start Date..."
+                            defaultValue={defaultStartDate}
+                            className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="expiry_date" type="date" placeholder="End Date..." className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>

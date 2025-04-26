@@ -1,7 +1,7 @@
 const employeesPath = 'plugin_sheq_assist/StructureAndResponsibility/';
 
 const appointments = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(employeesPath + "appointments/list/calendar", selectedDate, selectedView).then(res => {
+    workers.emit(employeesPath + "appointments/list/calendar", selectedDate, selectedView).then(res => {
         state.list.push(...res.map(item => {
             const {id, data: {created_at, start_date, expiry_date, title, participants}} = item;
             return {

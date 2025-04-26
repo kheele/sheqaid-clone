@@ -3,9 +3,10 @@ import {observer} from 'mobx-react';
 
 import {WarningControls} from "../../Warnings/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class ViewWarningSection extends React.Component {
+class ViewWarningSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeWarningViewers;
     pageKey = "WarningSection";
 

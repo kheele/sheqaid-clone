@@ -25,13 +25,14 @@ class AttendanceByTeamDialog extends AAttendanceByDialog {
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="mounts">
     componentWillMount() {
         style.use();
     }
-    
+
     componentDidMount() {
         execWhen(() => this.state.item).then(item => {
             this.state.teamList = item.data.list;
@@ -43,12 +44,13 @@ class AttendanceByTeamDialog extends AAttendanceByDialog {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
-    
+
     onLoadAttendanceList() {
         const {item, selectedDate, selectedYear, selectedMonth} = this.state;
         progressDialog.open("Loading attendance...");
-        neonBinding.events.emit('plugin_sheq_assist/employees/attendance/list/by_team', [item.id, selectedYear, selectedMonth]).then(res => {
+        workers.emit('plugin_sheq_assist/employees/attendance/list/by_team', [item.id, selectedYear, selectedMonth]).then(res => {
             this.state.attendanceList = res;
         }).finally(() => {
             setTimeout(() => progressDialog.close());
@@ -62,7 +64,7 @@ class AttendanceByTeamDialog extends AAttendanceByDialog {
 //        console.log('renderer', team, dateItem); 
         return <LostimeAndOvertimeIcon dateItem={dateItem} state={this.state}/>;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderPage">
     renderPage() {
 //        const {item, selectedDate, selectedYear, selectedMonth} = this.state;
@@ -71,13 +73,13 @@ class AttendanceByTeamDialog extends AAttendanceByDialog {
 
 //        const path = {path: 'plugin_sheq_assist/employees/attendance/list/by_team', data: [item.id, selectedYear, selectedMonth]};
         return <React.Fragment>
-            <ViewByPanel 
-                title="Team" 
-                state={this.state} 
+            <ViewByPanel
+                title="Team"
+                state={this.state}
                 onChange={this.onChangeByDate}
             />
-            <CalendarWrapper 
-                state={this.state} 
+            <CalendarWrapper
+                state={this.state}
                 onSelectDay={this.onSelectDay}
                 renderer={this.renderDay}
             />
@@ -86,6 +88,7 @@ class AttendanceByTeamDialog extends AAttendanceByDialog {
             <EditAttendanceDialog ref="editDialog"/>
         </React.Fragment>;
     }
+
 // </editor-fold>
 
 }

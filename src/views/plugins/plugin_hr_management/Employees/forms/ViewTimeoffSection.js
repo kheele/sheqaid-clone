@@ -3,9 +3,10 @@ import {observer} from 'mobx-react';
 
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class ViewTimeoffSection extends React.Component {
+class ViewTimeoffSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeTimeOffViewers;
     pageKey = "TimeoffSection";
 

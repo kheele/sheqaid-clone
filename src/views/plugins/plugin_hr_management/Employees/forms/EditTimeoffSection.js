@@ -5,9 +5,10 @@ import Form from 'utils/Form';
 
 import {LeaveControls} from "../../Leaves/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class EditTimeoffSection extends React.Component {
+class EditTimeoffSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeTimeOffViewers;
     pageKey = "EditTimeoffSection";
 

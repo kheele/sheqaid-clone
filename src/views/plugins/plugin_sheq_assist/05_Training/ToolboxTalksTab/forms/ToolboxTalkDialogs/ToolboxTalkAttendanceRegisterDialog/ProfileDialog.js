@@ -48,7 +48,7 @@ class Controls extends React.Component {
 
     onDownload(evt, btn) {
         progressDialog.open();
-        neonBinding.events.emit("plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/export-excel", this.item).then(res => {
+        workers.emit("plugin_sheq_assist/05_Trainings/toolbox-talks/attendance-registers/export-excel", this.item).then(res => {
             if (!res) {
                 infoDialog.open("An error occurred. Please try again");
             } else {

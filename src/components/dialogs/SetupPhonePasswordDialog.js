@@ -155,7 +155,7 @@ class Controls extends React.Component {
         const credential = firebase.auth.PhoneAuthProvider.credential(this.verificationId, code);
         currentUser.updatePhoneNumber(credential).then(() => {
             const data = {id, phone: username, password};
-            neonBinding.events.emit(this.path + "setup/password", data).then(res => {
+            workers.emit(this.path + "setup/password", data).then(res => {
                 this.auth.onAuthStateChanged(currentUser => {
                     storage.onLogin(currentUser);
                 });

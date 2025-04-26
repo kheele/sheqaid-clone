@@ -5,9 +5,10 @@ import Form from 'utils/Form';
 
 import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class EditCounselingSection extends React.Component {
+class EditCounselingSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeCounselingViewers;
     pageKey = "EditCounselingSection";
 

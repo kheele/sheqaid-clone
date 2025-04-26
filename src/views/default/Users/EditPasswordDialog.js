@@ -71,7 +71,7 @@ class Controls extends React.Component {
         console.log(password)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "change-pass", password).then(newPassword => {
+        workers.emit(this.path + "change-pass", password).then(newPassword => {
             console.log("res", newPassword)
             if(newPassword === password) {
                 onSaved && onSaved(password);

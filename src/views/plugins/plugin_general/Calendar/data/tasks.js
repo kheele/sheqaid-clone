@@ -25,7 +25,7 @@ const onFailure = (state) => {
 };
 
 const tasks = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit("plugin_sheq_assist/calendar/tasks/list/calendar", selectedDate, selectedView).
+    workers.emit("plugin_sheq_assist/calendar/tasks/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Employee_Task")).catch(onFailure(state));
 };
 

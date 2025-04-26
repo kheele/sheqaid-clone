@@ -22,23 +22,24 @@ class Dialog extends ANewDialog {
     constructor(props) {
         super(props, style);
     }
-    
+
     get topButtonsHiddenCancel() {
         return true;
     }
-    
+
     get noBackAction() {
         return true;
     }
-    
+
     get preventEsc() {
         return true;
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
@@ -55,7 +56,7 @@ class Controls extends React.Component {
         }
     };
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
@@ -64,26 +65,27 @@ class Controls extends React.Component {
 
         this.form = new Form();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form} = this;
-        
+
         if (!form.isValid('no_projects')) {
             infoDialog.open('Please specify if you have projects to manage');
             return;
         }
-        
+
         const {no_projects} = form.data;
         const data = {no_projects};
-        
+
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path, data).then(res => {
+        workers.emit(this.path, data).then(res => {
             console.log("res", res)
             const {company} = storage.loggedUser;
             company.data.no_projects = res;
-            
+
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");
             infoDialog.close(2000);
@@ -92,22 +94,25 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
+
     // </editor-fold>
-        
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {props: {onFormNext, onFormBack, onFormOpen}} = this;
         return <FormControls onChange={this.form.onChange}>
-            <Row 
-                rendered  
+            <Row
+                rendered
                 active
                 idx={1}
                 title="Projects To Manage"
             >
-                <ClearableInput name="no_projects" type="radio" placeholder="Do You Have Projects?" vertical className="col-lg-12 form-control" values={this.state.lists.no_projects}/>
+                <ClearableInput name="no_projects" type="radio" placeholder="Do You Have Projects?" vertical
+                                className="col-lg-12 form-control" values={this.state.lists.no_projects}/>
             </Row>
         </FormControls>;
     }
+
     // </editor-fold>
 }
 

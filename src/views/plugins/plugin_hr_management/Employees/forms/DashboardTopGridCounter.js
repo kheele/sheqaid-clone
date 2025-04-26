@@ -106,7 +106,7 @@ const Comp = forwardRef((
             color="white"
             countUpClass="color-white"
             background={getRandomRolor()}
-            title={<b className="color-white font-size-14">Work Permits</b>}
+            title={<b className="color-white font-size-14">Work Permits (Foreigners)</b>}
             count={work_permit_list_aggregate.aggregate.count}
             onClick={onClick}
         />}

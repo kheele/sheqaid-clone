@@ -18,6 +18,7 @@ import {updateJobCategory} from "mutations/update";
 import {Tabs} from "components/tabs";
 import ActiveTab from "../ActiveTab";
 import RemovedTab from "../RemovedTab";
+import {listJobCategory} from "../../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -68,7 +69,7 @@ class JobCategoriesDialog extends ADialogTab {
         } = filterData || {};
 
         return {
-            path: "job-categories",
+            listByLogged: listJobCategory,
             attrs: {
                 name,
                 exact_orgs_company: true,

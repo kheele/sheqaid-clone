@@ -5,7 +5,7 @@ import {computed, observable} from 'mobx';
 import {ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
-import trainingCourseStore from "mutations/all/TrainingCourse";
+import {listTrainingCourses} from "../../mutations/listByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -17,20 +17,43 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
-        
+
         this.onLoadList = this.onLoadList.bind(this);
     }
-    
+
+    @computed
+    get selectedItem() {
+        let {defaultValue: _defaultValue} = this.props;
+        if (_defaultValue) {
+            if (_defaultValue.label && _defaultValue.value) {
+                return _defaultValue;
+            }
+            const defaultValue = this.list.find(v => v.value.id === _defaultValue.id);
+            // console.log('defaultValue', defaultValue, _defaultValue, this.list.map(v => v.value.id).slice())
+            if (!defaultValue) {
+                return null;
+            }
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            let {data: {name: label}} = defaultValue;
+            // const label = data ? data.name : name;
+            console.log('selectedVal', label, defaultValue)
+            return {value: defaultValue, label};
+        }
+        return null;
+    }
+
     async componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectTrainingCourseInput`;
-        
+
         const res = await onSelectLoad();
         this.state.lists.list = res.distinct();
-        
+
         this.state.props = {
             ref: "input",
             key: new Date().getTime(),
@@ -46,49 +69,27 @@ class SelectInput extends ASelectInput {
         };
     }
 
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onLoadList">
     onLoadList(promise) {
         const {input} = this.refs;
-        if(input) {
+        if (input) {
             return input.onLoadList(promise);
         }
         return Promise.reject('onLoadList not defined');
     }
-    // </editor-fold>
-    
-    @computed
-    get selectedItem() {
-        let {defaultValue: _defaultValue} = this.props;
-        if(_defaultValue) {
-            if(_defaultValue.label && _defaultValue.value) {
-                return _defaultValue;
-            }
-            const defaultValue = this.list.find(v => v.value.id === _defaultValue.id);
-            // console.log('defaultValue', defaultValue, _defaultValue, this.list.map(v => v.value.id).slice())
-            if(!defaultValue) {
-                return null;
-            }
-            if(defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            let {data: {name: label}} = defaultValue;
-            // const label = data ? data.name : name;
-            console.log('selectedVal', label, defaultValue)
-            return {value: defaultValue, label};
-        }
-        return null;
-    }
-    
+
     render() {
         const {props} = this.state;
-        if(!props) return null;
+        if (!props) return null;
 
         return <ClearableInput {...props}/>;
     }
 }
 
 function onSelectLoad() {
-    return trainingCourseStore.listForSelectionByLogged().then(res => {
+    return listTrainingCourses().then(res => {
         return res.map(value => {
             const {name, unit_standard} = value.data;
             return {label: name + (unit_standard ? ` (${unit_standard})` : ''), value};

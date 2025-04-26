@@ -26,6 +26,7 @@ import style from "./NewContractorsAuditDialog.lazy.css";
 class NewContractorsAuditDialog extends ANewDialog {
     pageKey = "NewContractorsAuditDialog";
     title = "Create Contractors Audit";
+
 //    className = 'ANewTableFormDialog';
 
     constructor(props) {
@@ -36,12 +37,13 @@ class NewContractorsAuditDialog extends ANewDialog {
         return Controls;
     }
 }
+
 // </editor-fold>
 
 @observer
 class Controls extends React.Component {
     path = "plugin_sheq_assist/21_Internal_Audit/construction-audits/";
-    
+
     @observable state = {
         list_admin: [...NewAdminTableData()],
         list_registers: [...NewRegistersTableData()],
@@ -52,14 +54,15 @@ class Controls extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor() {
         super();
-        
+
         this.onFormChange = this.onFormChange.bind(this);
         this.onNext = this.onNext.bind(this);
-        
+
         this.form = new Form();
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onFormChange">
     onFormChange(idx) {
         const {execWhen} = this.props;
@@ -67,11 +70,11 @@ class Controls extends React.Component {
             administration_sec, registers_sec, appointment_letters_sec, site_conditions_sec,
             list_site_conditions: list_site_conditions_ref
         } = this.refs;
-        
+
         const {list_admin, list_registers, list_appointment_letters, list_site_conditions} = this.state;
         const {data} = this.form;
-        
-        if(idx === 2) {
+
+        if (idx === 2) {
             execWhen(() => this.refs.list_admin).then(list_admin_ref => {
                 list_admin_ref.setList(data.list_admin || list_admin);
             });
@@ -80,7 +83,7 @@ class Controls extends React.Component {
             appointment_letters_sec.hide();
             site_conditions_sec.hide();
         }
-        if(idx === 3) {
+        if (idx === 3) {
             execWhen(() => this.refs.list_registers).then(list_registers_ref => {
                 list_registers_ref.setList(data.list_registers || list_registers);
             });
@@ -89,7 +92,7 @@ class Controls extends React.Component {
             appointment_letters_sec.hide();
             site_conditions_sec.hide();
         }
-        if(idx === 4) {
+        if (idx === 4) {
             execWhen(() => this.refs.list_appointment_letters).then(list_appointment_letters_ref => {
                 list_appointment_letters_ref.setList(data.list_appointment_letters || list_appointment_letters);
             });
@@ -98,7 +101,7 @@ class Controls extends React.Component {
             registers_sec.hide();
             site_conditions_sec.hide();
         }
-        if(idx === 5) {
+        if (idx === 5) {
             execWhen(() => this.refs.list_site_conditions).then(list_site_conditions_ref => {
                 list_site_conditions_ref.setList(data.list_site_conditions || list_site_conditions);
             });
@@ -108,13 +111,14 @@ class Controls extends React.Component {
             appointment_letters_sec.hide();
         }
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
         const {form} = this;
         const {idx} = btn.props;
-        if(idx === 1) {
+        if (idx === 1) {
             if (!form.isValid('date')) {
                 infoDialog.open('Audit Date is required');
                 return;
@@ -160,11 +164,12 @@ class Controls extends React.Component {
 //                return;
 //            }
 //        }
-        
+
         return true;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form} = this;
@@ -201,7 +206,7 @@ class Controls extends React.Component {
             infoDialog.open('Contact Email Address is required');
             return;
         }
-         
+
 //        if (!form.isValid('list_admin') || form.get('list_admin').isEmpty()) {
 //            infoDialog.open('Non-Conformance And Corrective Actions are required');
 //            return;
@@ -214,7 +219,7 @@ class Controls extends React.Component {
 //                return;
 //            }
 //        } 
-        
+
 //        if (!form.isValid('list_registers') || form.get('list_registers').isEmpty()) {
 //            infoDialog.open('Non-Conformance And Corrective Actions are required');
 //            return;
@@ -227,7 +232,7 @@ class Controls extends React.Component {
 //                return;
 //            }
 //        } 
-        
+
 //        if (!form.isValid('list_appointment_letters') || form.get('list_appointment_letters').isEmpty()) {
 //            infoDialog.open('Non-Conformance And Corrective Actions are required');
 //            return;
@@ -240,7 +245,7 @@ class Controls extends React.Component {
 //                return;
 //            }
 //        } 
-        
+
 //        if (!form.isValid('list_site_conditions') || form.get('list_site_conditions').isEmpty()) {
 //            infoDialog.open('Non-Conformance And Corrective Actions are required');
 //            return;
@@ -255,15 +260,15 @@ class Controls extends React.Component {
 //        } 
 
         const {
-            date, auditor, 
+            date, auditor,
             contractor, contract_num, site_name, contact_person, contact_phone, contact_email,
             list_admin = [], list_registers = [], list_appointment_letters = [], list_site_conditions = []
         } = form.data;
         const data = {
-            date: date.getTime(), auditor, 
+            date: date.getTime(), auditor,
             contractor, contract_num, site_name, contact_person, contact_phone, contact_email
-        }; 
-        
+        };
+
         const mapItems = (item, n) => {
             item = toJS(item);
             let {photos = []} = item;
@@ -274,13 +279,13 @@ class Controls extends React.Component {
         data.list_registers = list_registers.map(mapItems);
         data.list_appointment_letters = list_appointment_letters.map(mapItems);
         data.list_site_conditions = list_site_conditions.map(mapItems);
-        
+
         console.log(data)
-        
+
         return;
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -290,13 +295,14 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {onFormNext, onFormBack, onFormOpen} = this.props;
 //        const [NewAdminTableData1, NewAdminTableData2] = NewAdminTableData();
-        
+
         return (<div className="controls-wrapper controls-sectioned">
             <div className="controls">
                 <div className="row active">
@@ -305,19 +311,28 @@ class Controls extends React.Component {
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">
-                        <ClearableInput name="date" type="date" placeholder="Audit Date..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="auditor" type="text" placeholder="Auditor" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="site_name" type="text" placeholder="Site Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <hr />
+                        <ClearableInput name="date" type="date" placeholder="Audit Date..." required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="auditor" type="text" placeholder="Auditor" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="site_name" type="text" placeholder="Site Name" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <hr/>
                         <label>Contractor</label>
-                        <ClearableInput name="contractor" type="text" placeholder="Contractor Name" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="contract_num" type="text" placeholder="Contract Number" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="num_of_employees" type="text" placeholder="No. Of Employees" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <hr />
+                        <ClearableInput name="contractor" type="text" placeholder="Contractor Name" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="contract_num" type="text" placeholder="Contract Number" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="num_of_employees" type="text" placeholder="No. Of Employees" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <hr/>
                         <label>Contacts</label>
-                        <ClearableInput name="contact_person" type="text" placeholder="Contact Person" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="contact_phone" type="text" placeholder="Contact Phone No." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="contact_email" type="email" placeholder="Contact Email Address" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="contact_person" type="text" placeholder="Contact Person" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="contact_phone" type="text" placeholder="Contact Phone No." required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="contact_email" type="email" placeholder="Contact Email Address" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <NavButtons idx={1} onNext={onFormNext}/>
                 </div>
@@ -347,7 +362,8 @@ class Controls extends React.Component {
                         <Clickable idx={4} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <RowSecGroup ref="appointment_letters_sec" rendered={false}>
-                        <NewTable ref="list_appointment_letters" showHead name="list_appointment_letters" onChange={this.form.onChange}/>
+                        <NewTable ref="list_appointment_letters" showHead name="list_appointment_letters"
+                                  onChange={this.form.onChange}/>
                     </RowSecGroup>
                     <NavButtons idx={4} onBack={onFormBack} onNext={onFormNext}/>
                 </div>
@@ -357,13 +373,15 @@ class Controls extends React.Component {
                         <Clickable idx={5} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <RowSecGroup ref="site_conditions_sec" rendered={false}>
-                        <NewSiteConditionsTable ref="list_site_conditions" showHead name="list_site_conditions" onChange={this.form.onChange}/>
+                        <NewSiteConditionsTable ref="list_site_conditions" showHead name="list_site_conditions"
+                                                onChange={this.form.onChange}/>
                     </RowSecGroup>
                     <NavButtons idx={5} onBack={onFormBack}/>
                 </div>
             </div>
         </div>);
     }
+
     // </editor-fold>
 }
 
@@ -372,28 +390,21 @@ class Controls extends React.Component {
 class NewTable extends ATableSavable {
 
     selfRefs = {};
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
-        
+
         this.onSetRef = this.onSetRef.bind(this);
-        
+
         this.closeAll = this.closeAll.bind(this);
         this.onPostChange = this.onPostChange.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        
+
 //        console.log(this.list.length)
     }
+
     // </editor-fold>
-    
-    onSetRef(regulationIdx, ref) {
-        this.selfRefs[regulationIdx] = ref;
-    }
-    
-    setList(val) {
-        this.state.list = val;
-    }
 
     @computed get listGroup() {
         const groups = this.list.groupBy('regulation');
@@ -402,53 +413,65 @@ class NewTable extends ATableSavable {
             return {regulation: k, list};
         });
     }
-    
+
+    onSetRef(regulationIdx, ref) {
+        this.selfRefs[regulationIdx] = ref;
+    }
+
+    setList(val) {
+        this.state.list = val;
+    }
+
     closeAll(regulationIdx) {
         Object.keys(this.selfRefs).filter((k, n) => regulationIdx !== k).forEach((k, n) => {
             this.selfRefs[k].close();
         });
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="onPostChange">
-    onPostChange(item, requirementIdx, subjectIdx, regulationIdx){
+    onPostChange(item, requirementIdx, subjectIdx, regulationIdx) {
         const {onChange} = this.props;
         console.log('onPostChange', item, requirementIdx, subjectIdx, regulationIdx, toJS(this.list))
         onChange && onChange(toJS(this.list), this.props.name, this);
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
         const item = this.listGroup[n];
-        return <QuestionRegulationGroupRow 
-            key={"item-new-" + n} 
-            idx={n} 
+        return <QuestionRegulationGroupRow
+            key={"item-new-" + n}
+            idx={n}
             item={item}
             onChange={this.onPostChange}
             closeAll={this.closeAll}
             onSetRef={this.onSetRef}
         />;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         return (<div className="ANewTable flex">
             <Table className="padding-0 margin-l-0 margin-t-5 margin-r-10">
-                <TBody 
-                    ref="body" 
-                    title="" 
-                    renderItem={this.renderItem} 
-                    onClick={this.onClick} 
-                    state={this.state} 
-                    list={this.listGroup} 
+                <TBody
+                    ref="body"
+                    title=""
+                    renderItem={this.renderItem}
+                    onClick={this.onClick}
+                    state={this.state}
+                    list={this.listGroup}
                     disablePullToRefresh={true}
                 />
             </Table>
         </div>);
     }
+
     // </editor-fold>
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="NewSiteConditionsTable">
@@ -458,7 +481,7 @@ class NewSiteConditionsTable extends NewTable {
     constructor(props) {
         super(props);
     }
-    
+
     /*
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
@@ -498,7 +521,7 @@ class NewSiteConditionsTable extends NewTable {
     }
     // </editor-fold>
     */
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         return null;
@@ -513,11 +536,14 @@ class NewSiteConditionsTable extends NewTable {
                 <div className="td fixed-flex min-w-110 td-compliance">Compliance</div>
                 <div className="td fixed-flex min-w-60 padding-0"></div>
             </THead>
-            <TBody ref="body" title="" renderItem={this.renderItem} onClick={this.onClick} state={this.state} onLoadList={this.onLoadList} disablePullToRefresh={true}/>
+            <TBody ref="body" title="" renderItem={this.renderItem} onClick={this.onClick} state={this.state}
+                   onLoadList={this.onLoadList} disablePullToRefresh={true}/>
         </Table>;
     }
+
     // </editor-fold>
 }
+
 // </editor-fold>
 
 export default NewContractorsAuditDialog;

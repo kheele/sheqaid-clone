@@ -86,7 +86,7 @@ class Controls extends React.Component {
                 const {id} = val;
                 const path = "plugin_sheq_assist/05_Trainings/training-registry/list/filter";
                 const filterData = {job_position_list: [{id}]};
-                const promise = neonBinding.events.emit(path, filterData).then(res => {
+                const promise = workers.emit(path, filterData).then(res => {
                     return res.map(value => {
                         const {name, unit_standard} = value.data;
                         return {label: name + (unit_standard ? (' (' + unit_standard + ')') : ''), value};
@@ -179,7 +179,7 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create/employee", data).then(res => {
+        workers.emit(this.path + "create/employee", data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");

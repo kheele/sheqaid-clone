@@ -9,11 +9,11 @@ import ADialogList from "views/ADialogList";
 import style from "./DocsDialog.lazy.css";
 import Tabs from "components/tabs/Tabs";
 import PersonalDocsTab from "./PersonalDocsTab";
-import SignableDocsTab from "./SignableDocsTab";
 import PolicyDocsTab from "./PolicyDocsTab";
 import ProcedureDocsTab from "./ProcedureDocsTab";
 import OtherDocsTab from "./OtherDocsTab";
 import Dialog from 'components/dialogs/Dialog';
+import SignableDocsTab from "./SignableDocsTab";
 
 // </editor-fold>
 

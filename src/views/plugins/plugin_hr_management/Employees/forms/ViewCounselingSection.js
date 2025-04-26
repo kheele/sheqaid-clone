@@ -3,9 +3,10 @@ import {observer} from 'mobx-react';
 
 import {CounselingControls} from "../../Counselings/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class ViewCounselingSection extends React.Component {
+class ViewCounselingSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeCounselingViewers;
     pageKey = "CounselingSection";
 

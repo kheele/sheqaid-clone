@@ -111,7 +111,7 @@ class Controls extends React.Component {
 			const submit = this.refs.submit;
 			submit.innerText = "Saving...";
 			submit.setAttribute("disabled", true);
-			neonBinding.events.emit(this.props.path + "create", data).then(res => {
+			workers.emit(this.props.path + "create", data).then(res => {
 				submit.innerText = "Save";
 				submit.setAttribute("disabled", false);
 				console.log("res", res)

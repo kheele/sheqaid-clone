@@ -18,7 +18,7 @@ import {findByIdEmployeeWorkPermit} from "mutations/findById";
 class EditDialog extends AEditDialog {
     pageKey = "EditWorkPermitDialog";
     className = "AEditEmployeeDocDialog";
-    title = "Edit Work Permit";
+    title = "Edit Work Permit (Foreigners)";
     removeById = updateEmployeeWorkPermit;
 
     constructor(props) {
@@ -166,7 +166,7 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row active">
                     <label>
-                        1. Work Permit Details
+                        1. Work Permit Details (Foreigners)
                         <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
                     </label>
                     <div className="row sec-group">

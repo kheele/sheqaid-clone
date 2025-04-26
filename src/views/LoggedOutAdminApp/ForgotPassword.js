@@ -7,14 +7,14 @@ import {Button, ClearableInput} from 'components/inputs';
 
 @observer
 class ForgotPassword extends React.Component {
-    
+
     @observable
     state = {
         display: false,
         lists: {
             type: [
-                {text: 'User', value: 'User'}, 
-                {text: 'Contractor', value: 'Contractor'}, 
+                {text: 'User', value: 'User'},
+                {text: 'Contractor', value: 'Contractor'},
                 {text: 'Staff', value: 'Staff'}
             ]
         }
@@ -59,26 +59,27 @@ class ForgotPassword extends React.Component {
             infoDialog.open('User Type is required');
             return;
         }
-        
+
         const {username, type} = form.data;
         const data = {username, type};
-        
+
         let path;
-        if(type === "Contractor") {
+        if (type === "Contractor") {
             path = "plugin_sheq_assist/contractors/users/";
-        } else if(type === "Staff") {
+        } else if (type === "Staff") {
             path = "plugin_sheq_assist/employees/accounts/";
         } else {
             path = "users/accounts/";
         }
-        
+
         console.log(data)
 
         btn.text("Wait...").disabled();
-        neonBinding.events.emit(path + "forgot-pass", data).then(res => {
+        workers.emit(path + "forgot-pass", data).then(res => {
             console.log("res", res)
-            if(res) {
-                infoDialog.open(<p>Email has been sent to you to recover your password.<br /><br />Please login to your email account to reset your password.</p>);
+            if (res) {
+                infoDialog.open(<p>Email has been sent to you to recover your password.<br/><br/>Please login to your
+                    email account to reset your password.</p>);
             } else {
                 infoDialog.open('An error occurred. Please try again.');
             }
@@ -95,11 +96,14 @@ class ForgotPassword extends React.Component {
                 <p className="text-center">Don't worry, happens to the best of us.</p>
             </div>
             <div className="row">
-                <ClearableInput name="username" type="email" placeholder="Username / Email Address" required className="form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="type" type="radio" placeholder="User Type" vertical className="form-control" onChange={this.form.onChange} values={this.state.lists.type}/>
+                <ClearableInput name="username" type="email" placeholder="Username / Email Address" required
+                                className="form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="type" type="radio" placeholder="User Type" vertical className="form-control"
+                                onChange={this.form.onChange} values={this.state.lists.type}/>
             </div>
             <div className="row margin-t-10 margin-b-5">
-                <Button ref="login" text="Email me recovery details" className="btn btn-primary save hor-center" onClick={this.onSubmit}/>
+                <Button ref="login" text="Email me recovery details" className="btn btn-primary save hor-center"
+                        onClick={this.onSubmit}/>
             </div>
         </div>);
     }

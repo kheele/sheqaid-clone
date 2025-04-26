@@ -378,7 +378,7 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", toJS(data)).then(res => {
+        workers.emit(this.path + "create", toJS(data)).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");

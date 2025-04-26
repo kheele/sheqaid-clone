@@ -13,6 +13,7 @@ import {updateEmployeeContract} from "mutations/update";
 import {findByIdOrgContractsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgContractsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeContracts} from "mutations/exportExcel";
+import {listEmployeeContract} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -63,7 +64,7 @@ class Dialog extends AEmployeeDocDialog {
             salary_interval,
         } = filterData || {};
         return {
-            path: 'employees/docs/contracts',
+            listByLogged: listEmployeeContract,
             contract_type,
             payment_type,
             salary_interval,

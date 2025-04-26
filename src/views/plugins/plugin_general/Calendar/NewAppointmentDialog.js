@@ -55,7 +55,7 @@ class Controls extends React.Component {
     }
     
     onLoadListParticipants() {
-        return neonBinding.events.emit('plugin_sheq_assist/employees/select/filter', this.filterData);
+        return workers.emit('plugin_sheq_assist/employees/select/filter', this.filterData);
     }
     
     onSearch(){
@@ -140,7 +140,7 @@ class Controls extends React.Component {
         }
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             res.start = new Date(res.data.start);
             res.end = new Date(res.data.end);
             res.title = res.data.title;

@@ -160,7 +160,7 @@ class RenderLeftButtonsForExpiryOnly_firebase extends React.Component {
             path += "list";
         }
         console.log(path + "/filter", {expiry_date})
-        window.neonBinding.events.emit(path + "/filter", {expiry_date, ...(data || {})}).then(res => {
+        workers.emit(path + "/filter", {expiry_date, ...(data || {})}).then(res => {
             console.log(path + "/filter res", res)
             console.log("dataStale", body.dataStale)
             if (body.dataStale)

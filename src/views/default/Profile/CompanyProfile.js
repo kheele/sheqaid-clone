@@ -100,7 +100,7 @@ class CompanyProfile extends React.Component {
 		console.log(data)
 
 		btn.text("Saving...").disabled();
-		neonBinding.events.emit("users/update/profile/company", data).then(res => {
+		workers.emit("users/update/profile/company", data).then(res => {
 			btn.text("Edit Profile").enabled();
 			Object.values(this.refs).forEach(input => {
 				input.setEditable(false);

@@ -29,6 +29,10 @@ class FilterWrapper extends React.Component {
         this.form = new Form();
     }
 
+    get page() {
+        return this.props.page;
+    }
+
     componentWillMount() {
         style.use();
     }
@@ -48,17 +52,17 @@ class FilterWrapper extends React.Component {
 
             let promise;
             let data;
-            if(path) {
+            if (path) {
                 data = path.data;
                 if (isObject(path)) {
                     path = path.path;
                 } else {
                     path += "list";
                 }
-                
+
                 console.log(path + "/filter", filterData, data)
-                promise = window.neonBinding.events.emit(path + "/filter", filterData, data);
-            } else if(onLoadList) {
+                promise = workers.emit(path + "/filter", filterData, data);
+            } else if (onLoadList) {
                 console.log("onLoadList/filter", filterData, data)
                 promise = onLoadList(page).then(res => onLoadListFilter(res, filterData, data));
             }
@@ -90,10 +94,6 @@ class FilterWrapper extends React.Component {
         }
     }
 
-    get page() {
-        return this.props.page;
-    }
-
     toggle() {
         if (this.state.open) {
             this.close();
@@ -121,14 +121,15 @@ class FilterWrapper extends React.Component {
 
     render() {
         const {filterNodeFloat, renderFilterNode} = this.props;
-        if(!renderFilterNode) return null;
-        return this.state.open && <div className={"row filter-wrapper" + (!!filterNodeFloat ? ' filter-wrapper-float' : '')}>
-            <label className="label">Filter By:</label>
-            <i className="fa fa-close" onClick={this.close}/>
-            {renderFilterNode(this.form.onChange)}
-            <Button className="btn btn-primary pull-right search-btn" onClick={this.onSearch}>Search</Button>
-            <Button className="btn btn-primary pull-right close-btn" onClick={this.close}>Close</Button>
-        </div>;
+        if (!renderFilterNode) return null;
+        return this.state.open &&
+            <div className={"row filter-wrapper" + (!!filterNodeFloat ? ' filter-wrapper-float' : '')}>
+                <label className="label">Filter By:</label>
+                <i className="fa fa-close" onClick={this.close}/>
+                {renderFilterNode(this.form.onChange)}
+                <Button className="btn btn-primary pull-right search-btn" onClick={this.onSearch}>Search</Button>
+                <Button className="btn btn-primary pull-right close-btn" onClick={this.close}>Close</Button>
+            </div>;
     }
 }
 

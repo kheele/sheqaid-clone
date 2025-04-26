@@ -158,7 +158,7 @@ class Controls extends React.Component {
         const {onChange} = this.props;
         chatBoxClaims.setActiveItem(this.item, btn, newMsg => {
             const {id, data: {message_list_provider}} = this.item;
-            neonBinding.events.emit(this.path + "chat", id, message_list_provider).then(res => {
+            workers.emit(this.path + "chat", id, message_list_provider).then(res => {
                 console.log("claim chat res", res)
             });
         });

@@ -16,7 +16,6 @@ import {ClearableInput, UploadButton,} from "../../inputs";
 import pluginManager from "app/PluginManager";
 import DocusealBuilderWrapper from "./DocusealBuilderWrapper";
 import CreateTemplateBtnWrapper from "./CreateTemplateBtnWrapper";
-import SelectModule from "./SelectModule";
 //</editor-fold>
 
 //<editor-fold desc="Dialog">
@@ -51,6 +50,7 @@ class Controls extends React.Component {
             ],
         },
         plugin: null,
+        module: null,
         template: null,
         token: null,
     };
@@ -82,23 +82,51 @@ class Controls extends React.Component {
             }
         }
 
+        return value;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="defaultPluginTitle">
+    @computed
+    get defaultPluginTitle() {
+        const {defaultPluginValue: value} = this;
+        if (value) {
+            return value.data.title;
+        }
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="defaultModuleValue">
+    @computed
+    get defaultModuleValue() {
+        let value;
+        if (this.state.module) {
+            value = this.state.module;
+        } else {
+            const {plugin, module} = this.props.dialog.props;
+            const p = this.state.lists.plugin.find(({value: {data: {key}}}) => key === plugin);
+            if (p) {
+                value = p.value;
+            }
+        }
+
         if (value) {
             return {label: value.data.title, value};
         }
     }
 
+    //</editor-fold>
+
     get template() {
         return this.state.template;
     }
-
-    //</editor-fold>
 
     get doc_type() {
         const {doc_type} = this.props.dialog.props;
         return doc_type;
     }
-
-    // </editor-fold>
 
     @computed get itemEmployee() {
         const {item} = this;
@@ -142,21 +170,15 @@ class Controls extends React.Component {
         return doc;
     }
 
-    // </editor-fold>
-
     @computed get item() {
         return this.props.dialog.item;
     }
-
-    //</editor-fold>
 
     componentWillMount() {
         this.state.lists.plugin = pluginManager.listAll.filter(({data: {status}}) => status === "Installed").map((value) => ({
             label: value.data.title, value,
         }));
     }
-
-    //</editor-fold>
 
     //<editor-fold desc="onChanges">
     onChangePlugin(el, val) {
@@ -165,7 +187,6 @@ class Controls extends React.Component {
 
     //</editor-fold>
 
-    //<editor-fold desc="render">
 
     // <editor-fold defaultstate="collapsed" desc="onFormChange">
     onFormChange(idx) {
@@ -180,6 +201,8 @@ class Controls extends React.Component {
         }
         return true;
     }
+
+    //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
     onNext(e, btn) {
@@ -213,9 +236,12 @@ class Controls extends React.Component {
         return true;
     }
 
+    //</editor-fold>
+
     //<editor-fold desc="onSubmit">
     onSubmit(e, btn, onSaved) {
         const {form} = this;
+        const {module} = this.props.dialog.props;
 
         const {template} = this.state;
 
@@ -236,6 +262,9 @@ class Controls extends React.Component {
         this.props.close();
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="render">
     render() {
         if (this.state.lists.plugin.isEmpty()) {
             return <CircularProgress className="fixed-center"/>;
@@ -257,11 +286,14 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormChange={onFormChange}
             >
-                <ClearableInput name="plugin" type="select" placeholder="Plugin" defaultValue={this.defaultPluginValue}
-                                vertical readonly
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.state.lists.plugin} returnValue/>
-                <SelectModule state={this.state} defaultValue={module} readonly onChange={this.form.onChange}/>
+                <ClearableInput name="plugin" type="text" placeholder="Plugin" defaultValue={this.defaultPluginTitle}
+                                vertical readonly isEditable={false}
+                                className="col-lg-12 form-control"/>
+                <ClearableInput name="module" type="text" placeholder="Module" defaultValue={module}
+                                vertical readonly isEditable={false}
+                                className="col-lg-12 form-control"/>
+                {/*<SelectModule state={this.state} defaultValue={module} isEditable={false} readonly*/}
+                {/*              onChange={this.form.onChange}/>*/}
             </Row>
             <Row
                 rendered
@@ -288,22 +320,32 @@ class Controls extends React.Component {
                     <Row
                         rendered
                         idx={2.1}
-                        title="2.1. Specific Employee(s) To Sign"
+                        title="2.1. Management To Sign"
                         onFormOpen={onFormOpen}
                         onFormNext={onFormNext}
                         onFormChange={onFormChange}
                     >
-                        <NewEmployeeListTable name="signing_employee_list" onChange={this.form.onChange}/>
+                        <NewJobPositionListTable name="signing_job_position_list" onChange={this.form.onChange}/>
                     </Row>
+                    {/*<Row*/}
+                    {/*    rendered*/}
+                    {/*    idx={2.1}*/}
+                    {/*    title="2.1. Specific Job Position(s) To Sign"*/}
+                    {/*    onFormOpen={onFormOpen}*/}
+                    {/*    onFormNext={onFormNext}*/}
+                    {/*    onFormChange={onFormChange}*/}
+                    {/*>*/}
+                    {/*    <NewJobPositionListTable name="signing_job_position_list" onChange={this.form.onChange}/>*/}
+                    {/*</Row>*/}
                     <Row
                         rendered
                         idx={2.2}
-                        title="2.2. Specific Job Position(s) To Sign"
+                        title="2.2. Specific Employee(s) To Sign"
                         onFormOpen={onFormOpen}
                         onFormBack={onFormBack}
                         onFormChange={onFormChange}
                     >
-                        <NewJobPositionListTable name="signing_job_position_list" onChange={this.form.onChange}/>
+                        <NewEmployeeListTable name="signing_employee_list" onChange={this.form.onChange}/>
                     </Row>
                 </FormControls>
             </Row>

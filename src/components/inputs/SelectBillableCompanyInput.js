@@ -16,18 +16,33 @@ class SelectInput extends ASelectInput {
         },
         props: null
     };
-    
+
     constructor(props) {
         super(props);
     }
-    
+
+    @computed
+    get selectedItem() {
+        const {defaultValue} = this.props;
+        if (defaultValue) {
+            if (defaultValue.label && defaultValue.value) {
+                return defaultValue;
+            }
+            let {name, data} = defaultValue;
+            const label = data ? data.name : name;
+//            console.log('selectedVal', label, data)
+            return {value: defaultValue, label};
+        }
+        return null;
+    }
+
     async componentDidMount() {
         let {className = ''} = this.props;
         className += ` SelectBillableCompanyInput`;
-        
+
         const res = await onSelectLoad();
         this.state.lists.list = res.distinct();
-        
+
         this.state.props = {
             ref: "input",
             key: new Date().getTime(),
@@ -42,41 +57,27 @@ class SelectInput extends ASelectInput {
             className
         };
     }
-    
-    @computed
-    get selectedItem() {
-        const {defaultValue} = this.props;
-        if(defaultValue) {
-            if(defaultValue.label && defaultValue.value) {
-                return defaultValue;
-            }
-            let {name, data} = defaultValue;
-            const label = data ? data.name : name;
-//            console.log('selectedVal', label, data)
-            return {value: defaultValue, label};
-        }
-        return null;
-    }
 
     render() {
         const {props} = this.state;
-        if(!props) return null;
+        if (!props) return null;
 
         return <ClearableInput {...props}/>;
     }
 }
 
 function onSelectLoad() {
-    return neonBinding.events.emit("admin/companies/billable/list").then(res => {
+    return workers.emit("admin/companies/billable/list").then(res => {
         res.sortBy('data.name');
         return res.map(value => {
             const {name, consultant} = value.data;
             const className = "pull-left margin-0 font-size-12 border-radius-20 padding-5 bg-ddd color-888";
-            return {label: <span className="flex grid-gap-5 flex-center">
-                    {name} - 
+            return {
+                label: <span className="flex grid-gap-5 flex-center">
+                    {name} -
                     {!consultant && <h5 className={className}>Standalone</h5>}
                     {consultant && <h5 className={className}>Consultant</h5>}
-                </span>, 
+                </span>,
                 value
             };
         });

@@ -256,7 +256,7 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
             setTimeout(() => progressDialog.close());
         });
-        // neonBinding.events.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
+        // workers.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
         //     console.log("res", res)
         //     if(res === "ERROR") {
         //         infoDialog.open("An error occurred. Please try again.");

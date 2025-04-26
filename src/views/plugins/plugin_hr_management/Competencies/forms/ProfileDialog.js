@@ -77,6 +77,7 @@ class Controls extends AEmployeeDocControls {
         const {
             created_at,
             title,
+            course,
             training,
             trainer,
             type,
@@ -105,11 +106,14 @@ class Controls extends AEmployeeDocControls {
                               value={expiry_date}/>
             </div>
             <div className="row margin-l-10 margin-r-10 row-details">
-                <ProfileField title="Training" name="training" className="col-lg-12"
-                              value={_training && _training.course}
+                <ProfileField title="Training Course" name="course" className="col-lg-12"
+                              value={course}
                               renderer={v => v.name}/>
-                <ProfileField title="Trainer" className="col-lg-12" value={trainer}
-                              renderer={v => v.lname + " " + v.fname}/>
+                {/*<ProfileField title="Training" name="training" className="col-lg-12"*/}
+                {/*              value={_training && _training.course}*/}
+                {/*              renderer={v => v.name}/>*/}
+                {/*<ProfileField title="Trainer" className="col-lg-12" value={trainer}*/}
+                {/*              renderer={v => v.lname + " " + v.fname}/>*/}
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
             <div className="row margin-l-0 margin-r-0 margin-b-15 row-doc sec-group">

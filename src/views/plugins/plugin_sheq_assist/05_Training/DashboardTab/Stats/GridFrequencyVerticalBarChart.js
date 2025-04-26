@@ -77,7 +77,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
     //             color: 'light',
     //             data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
     //         }],
-    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost", {interval, employee_view}),//
+    //     }),//workers.emit(path_training_matrix + "dashboard/freq/cost", {interval, employee_view}),//
     //     costPerCourse: Promise.resolve({
     //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     //         datasets: [
@@ -117,7 +117,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
     //                 data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
     //             }
     //         ],
-    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/cost/course", {interval, employee_view}),
+    //     }),//workers.emit(path_training_matrix + "dashboard/freq/cost/course", {interval, employee_view}),
     //     costPerJobPosition: Promise.resolve({
     //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     //         datasets: [
@@ -157,7 +157,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
     //                 data: Array.range(1, 12).map(n => (Math.random() * 5).toFixed(0))
     //             }
     //         ],
-    //     }),//neonBinding.events.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
+    //     }),//workers.emit(path_training_plan + "dashboard/freq/cost/job-position", {interval, employee_view}),
     //
     //     resultsPerCourse: Promise.resolve({
     //         labels: Array.range(1, 10).map(n => `Course #${n + 1}`),
@@ -178,7 +178,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
     //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
     //             },
     //         ],
-    //     }),//neonBinding.events.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
+    //     }),//workers.emit(path_training_course + "dashboard/freq/results/course", {interval, employee_view}),//
     //     resultsPerJobPosition: Promise.resolve({
     //         labels: Array.range(1, 10).map(n => `Job Position #${n + 1}`),
     //         datasets: [
@@ -198,7 +198,7 @@ const Comp = forwardRef(({data: __data}, ref) => {
     //                 data: Array.range(1, 12).map(n => (Math.random() * 100).toFixed(0))
     //             },
     //         ],
-    //     }),//neonBinding.events.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, employee_view}),//
+    //     }),//workers.emit(path_training_matrix + "dashboard/freq/results/job-position", {interval, employee_view}),//
     // };
     //
     // const {overallCost, costPerCourse, costPerJobPosition, resultsPerCourse, resultsPerJobPosition} = totals;

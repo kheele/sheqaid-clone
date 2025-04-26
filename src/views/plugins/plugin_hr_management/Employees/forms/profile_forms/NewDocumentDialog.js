@@ -96,7 +96,7 @@ class Controls extends React.Component {
             return;
         }
 
-        const type = dialog.extraProp('type');
+        const {type} = dialog.props;
 
         if (isNewEmployee) {
             const data = {...form.data, type};
@@ -132,7 +132,7 @@ class Controls extends React.Component {
     //<editor-fold desc="render">
     render() {
         let {props: {onFormNext, onFormBack, onFormOpen, dialog}} = this;
-        const type__ = dialog.extraProp('type');
+        // const type__ = dialog.extraProp('type');
 
         return <FormControls>
             <Row

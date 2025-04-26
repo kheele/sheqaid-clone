@@ -19,6 +19,7 @@ import TabView from "./TabView";
 import {findByIdOrgLeavesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgLeavesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeLeaves} from "mutations/exportExcel";
+import {listEmployeeLeave} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -103,7 +104,7 @@ class Dialog extends AEmployeeDocDialog {
         } = filterData || {};
 
         const args = {
-            path: 'employees/docs/leaves',
+            listByLogged: listEmployeeLeave,
             type,
             due_to,
             date,
@@ -201,7 +202,7 @@ class Dialog extends AEmployeeDocDialog {
                 <div className="td">Reason Of Leave</div>
                 <div className="td fixed-flex min-w-120 font-size-12">Days Booked</div>
                 <div className="td fixed-flex min-w-105">Start Date</div>
-                <div className="td fixed-flex min-w-105">Expiry Date</div>
+                <div className="td fixed-flex min-w-105">End Date</div>
                 <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
             </THead>;
         }

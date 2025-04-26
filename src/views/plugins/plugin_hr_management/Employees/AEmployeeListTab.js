@@ -2,6 +2,7 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import AggregateStat from "components/AggregateStat";
+import {listEmployee} from "mutations/listByLogged";
 
 @observer
 class AListTab extends React.Component {
@@ -38,9 +39,7 @@ class AListTab extends React.Component {
             id_or_pass_num,
         } = filterData || {};
 
-        const listByLogged = sockets.of('employees').fn('listByLogged');
-
-        return listByLogged({
+        return listEmployee({
             removed: this.removed,
             //
             department_id,

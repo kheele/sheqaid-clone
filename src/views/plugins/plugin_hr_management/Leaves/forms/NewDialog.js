@@ -217,7 +217,7 @@ class Controls extends React.Component {
                                 onChange={this.form.onChange} values={this.state.lists.types} returnValue/>
                 <ClearableInput ref="date" name="date" type="date" placeholder="Leave Start Date..." required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Leave Expiry Date..."
+                <ClearableInput ref="expiry_date" name="expiry_date" type="date" placeholder="Leave End Date..."
                                 required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="days_booked" type="number" placeholder="No. Of Days Booked"

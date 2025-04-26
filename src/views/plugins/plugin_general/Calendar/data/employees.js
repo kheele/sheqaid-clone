@@ -34,7 +34,7 @@ const onFailure = (state) => {
 };
 
 const contracts = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(employeesPath + "contracts/list/calendar", selectedDate, selectedView).then(onSuccess(state, "Contract", "Contract Expiry", {
+    workers.emit(employeesPath + "contracts/list/calendar", selectedDate, selectedView).then(onSuccess(state, "Contract", "Contract Expiry", {
         onProcessDate: ({contract_details}) => {
             let expiry_date, isTrial;
             if (contract_details) {
@@ -52,17 +52,17 @@ const contracts = (state, selectedDate, selectedView) => {
 };
 
 const competencies = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(employeesPath + "competencies/list/calendar", selectedDate, selectedView).
+    workers.emit(employeesPath + "competencies/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Competency", "Competency Expiry", {titleKey: 'competency_type'})).catch(onFailure(state));
 };
 
 const medicals = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(employeesPath + "medicals/list/calendar", selectedDate, selectedView).
+    workers.emit(employeesPath + "medicals/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Medical", "Medical Certificate Expiry")).catch(onFailure(state));
 };
 
 const warnings = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit(employeesPath + "warnings/list/calendar", selectedDate, selectedView).
+    workers.emit(employeesPath + "warnings/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "Warning", "Warning Expiry", {titleKey: 'type'})).catch(onFailure(state));
 };
 

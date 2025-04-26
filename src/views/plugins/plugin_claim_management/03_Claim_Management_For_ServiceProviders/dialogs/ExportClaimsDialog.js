@@ -85,7 +85,7 @@ class Controls extends React.Component {
     // </editor-fold>
 
     onLoadListClaims(isNew) {
-        return neonBinding.events.emit(this.path + 'select/filter', {isNew, ...this.filterData});
+        return workers.emit(this.path + 'select/filter', {isNew, ...this.filterData});
     }
 
     // </editor-fold>
@@ -137,7 +137,7 @@ class Controls extends React.Component {
         }
 
         btn.text("Exporting...").disabled();
-        neonBinding.events.emit(this.path + "export-excel", claimList.slice()).then(res => {
+        workers.emit(this.path + "export-excel", claimList.slice()).then(res => {
             if (!res) {
                 infoDialog.open(<React.Fragment>
                     <p>An error occurred. Please try again</p>

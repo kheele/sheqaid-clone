@@ -264,7 +264,7 @@ class RenderSubGroup extends React.Component {
 
 		if (_group === 'Employees') {
 			progressDialog.open();
-			window.neonBinding.events.emit("plugin_sheq_assist/employees/find_by_id", employee_id).then(item => {
+			workers.emit("plugin_sheq_assist/employees/find_by_id", employee_id).then(item => {
 				let d;
 				switch (name_group) {
 					case "Competency Certificates":
@@ -283,7 +283,7 @@ class RenderSubGroup extends React.Component {
 						d = onGetRef('warningsDialog');
 						break;
 				}
-				return neonBinding.events.emit("notifications/update", id, {is_read: true}).then(res => {
+				return workers.emit("notifications/update", id, {is_read: true}).then(res => {
 					console.log("emit = notifications/update", id, res)
 					item.data.is_read = true;
 					d && d/*.extraProp('activeId', id)*/.open(item);

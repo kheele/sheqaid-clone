@@ -9,9 +9,8 @@ import {Button, ClearableInput} from './';
 import ASelectInput from './ASelectInput';
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
-import GQLClient from "graphql/GQLClient";
-import {orgsFilter} from "../../graphql/Filters";
-import NewSectorDialog from "../../views/plugins/plugin_general/Sectors/NewDialog";
+import NewSectorDialog from "views/plugins/plugin_general/Sectors/NewDialog";
+import {listSectors} from "mutations/listByLogged";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -176,50 +175,13 @@ class SelectInput extends ASelectInput {
 }
 
 function onSelectLoad(type) {
-    return byLogged().then(res => {
+    return listSectors({
+        exact_orgs_company: true,
+    }).then(res => {
         return res.map(value => {
             return {[type === 'checkbox' ? 'text' : 'label']: value.data.name, value};
         });
     });
-}
-
-async function byLogged() {
-    let filter = orgsFilter({exact_orgs_company: true});
-    filter = filter.join(',');
-
-    return GQLClient
-        .query({
-            query: `
-      query listAllSectorsByLoggedQuery {
-        default_sectors(
-          where: {
-            ${filter}
-          },
-          order_by: {name: asc},
-        ) {
-            id
-            name
-            incident_list_aggregate{
-                aggregate{
-                    count
-                }
-            }
-            activity_list{
-                id
-                name
-                sector{
-                    name
-                }
-                incident_list_aggregate{
-                    aggregate{
-                        count
-                    }
-                }
-            }
-        }
-      }
-    `,
-        });
 }
 
 export default SelectInput;

@@ -140,10 +140,10 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormNext={onFormNext}
             >
-                <ClearableInput ref="date" name="date" type="date" placeholder="JobAppointment Start Date..." required
+                <ClearableInput ref="date" name="date" type="date" placeholder="Job Appointment Start Date..." required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput ref="expiry_date" name="expiry_date" type="date"
-                                placeholder="JobAppointment Expiry Date..." required className="col-lg-6 form-control"
+                                placeholder="Job Appointment Expiry Date..." required className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="notes" type="textarea" placeholder="Notes" required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>

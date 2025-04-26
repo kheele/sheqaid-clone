@@ -2,8 +2,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../../AEmployeeDocDialog';
@@ -14,7 +12,9 @@ import {updateEmployeeLicense} from "mutations/update";
 import {findByIdOrgLicensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {findByIdOrgLicensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {exportExcelEmployeeLicenses} from "mutations/exportExcel";
-import {ClearableInput, SelectTrainingCourseInput} from "../../../../../../components/inputs";
+import {ClearableInput} from "../../../../../../components/inputs";
+import {listEmployeeLicense} from "../../../../../../mutations/listByLogged";
+import {Dates} from "../../../../../../utils/Dates";
 
 // </editor-fold>
 
@@ -30,7 +30,7 @@ class Dialog extends AEmployeeDocDialog {
     filterNodeMarginB = 35;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog,
+        NewDialog, EditDialog, ProfileDialog,
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -45,10 +45,12 @@ class Dialog extends AEmployeeDocDialog {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             notes,
+            date,
         } = filterData || {};
         return {
-            path: 'employees/docs/licenses',
+            listByLogged: listEmployeeLicense,
             notes,
+            date: Dates.formatDateSQL(date),
         };
     }
 
@@ -70,39 +72,11 @@ class Dialog extends AEmployeeDocDialog {
 
     renderExportFilterNode(onChange) {
         return <>
-            <ClearableInput
-                name="type"
-                type="radio"
-                placeholder="Certificate Type"
-                vertical
-                className="col-lg-12 h-110 margin-0 form-control"
-                onChange={onChange}
-                values={this.selfState2.lists.type}
-                returnValue
-            />
-            <ClearableInput
-                name="competency_type"
-                type="select" placeholder="Competency Type..."
-                className="col-lg-12 margin-0 form-control"
-                onChange={onChange}
-                values={this.selfState2.lists.competency_type}
-                returnValue
-            />
-            <SelectTrainingCourseInput
-                name="course"
-                placeholder="Course..."
-                className="col-lg-12 margin-0 form-control"
-                onChange={onChange}
-                add={false}
-            />
+            <ClearableInput ref="notes" name="notes" type="text" placeholder="License Description"
+                            className="col-lg-12 margin-0 form-control" onChange={onChange}/>
             <hr className="pull-left no-border bg-ddd h-2"/>
-            <ClearableInput
-                name="issued_date"
-                type="date"
-                placeholder="Date Of Issue..."
-                className="col-lg-12 margin-0 form-control"
-                onChange={onChange}
-            />
+            <ClearableInput ref="date" name="date" type="date" placeholder="Date..."
+                            className="col-lg-12 margin-0 form-control" onChange={onChange}/>
         </>;
     }
 

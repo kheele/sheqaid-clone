@@ -65,7 +65,7 @@ class RenderRow extends ARenderRow {
                 {Dates.formatDate(date) || 'N/A'}
             </div>
             <div className="td fixed-flex min-w-105">
-                <h6 className="xs-shown font-size-13">Expiry Date</h6>
+                <h6 className="xs-shown font-size-13">End Date</h6>
                 {renderExpiryDateSpan(expiry_date)}
             </div>
             {renderActionsCol && renderActionsCol(item, idx, onClick)}
@@ -75,6 +75,7 @@ class RenderRow extends ARenderRow {
         </TRow>;
     }
 }
+
 // </editor-fold>
 
 export default RenderRow;

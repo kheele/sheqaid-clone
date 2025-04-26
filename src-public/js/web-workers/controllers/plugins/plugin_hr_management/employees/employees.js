@@ -1,130 +1,132 @@
 (() => {
-	self.TBL_EMPLOYEES = "employees";
+    self.TBL_EMPLOYEES = "employees";
 
-	class Controller extends AControllerAid {
-		// <editor-fold defaultstate="collapsed" desc="constructor">
-		constructor(events) {
-			super(events, {
-					singular: "Employee",
-					plural: "Employees"
-				}, "plugin_sheq_assist/employees/",
-			);
+    class Controller extends AControllerRead {
+        // <editor-fold defaultstate="collapsed" desc="constructor">
+        constructor(events) {
+            super(events, {
+                    singular: "Employee",
+                    plural: "Employees"
+                }, "plugin_sheq_assist/employees/",
+            );
 
-			const {addAction} = this;
+            const {addAction} = this;
 
-			addAction("import/file", this.importFile.bind(this));
-			addAction("import/create", this.createImported.bind(this));
-			addAction("send-app-link", this.send_app_link.bind(this));
+            addAction("import/file", this.importFile.bind(this));
+            addAction("import/create", this.createImported.bind(this));
+            addAction("send-app-link", this.send_app_link.bind(this));
 
-			addAction("transfer", this.transfer.bind(this));
+            addAction("transfer", this.transfer.bind(this));
 
-			addAction("remove/bulk", this.bulk_remove.bind(this));
-			addAction("removed/re-instead", this.re_instead.bind(this));
-		}
+            addAction("remove/bulk", this.bulk_remove.bind(this));
+            addAction("removed/re-instead", this.re_instead.bind(this));
+        }
 
-		// </editor-fold>
+        // </editor-fold>
 
-		getDB() {
-			return db_hr;
-		}
+        getDB() {
+            return db_hr;
+        }
 
-		// <editor-fold defaultstate="collapsed" desc="importFile">
-		async importFile(evt, path) {
-			const validHeaderNames = [
-				{key: 'fname', value: ['First Name', 'Name'], required: true},
-				{key: 'lname', value: ['Last Name', 'Surname'], required: true},
-				{
-					key: 'id_num',
-					value: [
-						'Identity Number', 'Identity No', 'Identity No.', 'Identity #',
-						'ID', 'ID Number', 'ID No', 'ID No.', 'ID #'
-					]
-				},
-				{
-					key: 'passport_num',
-					value: [
-						'Passport Number', 'Passport', 'Passport No', 'Passport No.', 'Passport #'
-					]
-				},
-				{
-					key: 'id_or_pass_num',
-					value: [
-						'Identity/Passport Number', 'Identity/Passport No', 'Identity/Passport No.', 'Identity/Passport #',
-						'Passport/Identity Number', 'Passport/Identity No', 'Passport/Identity No.', 'Passport/Identity #',
-						'ID/Passport Number', 'ID/Passport No', 'ID/Passport No.', 'ID/Passport #',
-						'Passport/ID Number', 'Passport/ID No', 'Passport/ID No.', 'Passport/ID #'
-					]
-				},
-				{key: 'sex', value: ['Gender', 'Sex']},
-				{key: 'dob', value: ['Date Of Birth', 'Birth Date', 'DOB', 'D.O.B', 'D.O.B.']},
-				{
-					key: 'phone',
-					value: [
-						'Phone', 'Phone Number', 'Phone No', 'Phone No.', 'Phone #',
-						'Contact Number', 'Contact No', 'Contact No.', 'Contact #',
-						'Cell', 'Cell Number', 'Cell No', 'Cell No.', 'Cell #'
-					]
-				},
-				{key: 'email', value: ['Email Address', 'Email']},
-				{
-					key: 'employee_num',
-					value: [
-						'Employee Number', 'Employee No', 'Employee No.', 'Employee #',
-						'Company Number', 'Company No', 'Company No.', 'Company #'
-					]
-				},
-				{
-					key: 'employment_date',
-					value: [
-						'Date Engaged', 'Date Employed',
-						'Date of Employment', 'Date of Engagement',
-						'Engagement Date', 'Employment Date'
-					]
-				},
-				{key: 'job_position', value: ['Job Position', 'Job Title']},
-				{key: 'job_category', value: ['Job Category', 'Occupational Level']},
-				{key: 'department', value: ['Department', 'Department Title', 'Department Name']}
-			];
-			const res = await excelUtils.read(path, validHeaderNames);
-			if (res.errors) {
-				return res;
-			}
+        // <editor-fold defaultstate="collapsed" desc="importFile">
+        async importFile(evt, path) {
+            const validHeaderNames = [
+                {key: 'fname', value: ['First Name', 'Name'], required: true},
+                {key: 'lname', value: ['Last Name', 'Surname'], required: true},
+                {
+                    key: 'id_num',
+                    value: [
+                        'Identity Number', 'Identity No', 'Identity No.', 'Identity #',
+                        'ID', 'ID Number', 'ID No', 'ID No.', 'ID #'
+                    ]
+                },
+                {
+                    key: 'passport_num',
+                    value: [
+                        'Passport Number', 'Passport', 'Passport No', 'Passport No.', 'Passport #'
+                    ]
+                },
+                {
+                    key: 'id_or_pass_num',
+                    value: [
+                        'Identity/Passport Number', 'Identity/Passport No', 'Identity/Passport No.', 'Identity/Passport #',
+                        'Passport/Identity Number', 'Passport/Identity No', 'Passport/Identity No.', 'Passport/Identity #',
+                        'ID/Passport Number', 'ID/Passport No', 'ID/Passport No.', 'ID/Passport #',
+                        'Passport/ID Number', 'Passport/ID No', 'Passport/ID No.', 'Passport/ID #'
+                    ]
+                },
+                {key: 'sex', value: ['Gender', 'Sex']},
+                {key: 'dob', value: ['Date Of Birth', 'Birth Date', 'DOB', 'D.O.B', 'D.O.B.']},
+                {
+                    key: 'phone',
+                    value: [
+                        'Phone', 'Phone Number', 'Phone No', 'Phone No.', 'Phone #',
+                        'Contact Number', 'Contact No', 'Contact No.', 'Contact #',
+                        'Cell', 'Cell Number', 'Cell No', 'Cell No.', 'Cell #'
+                    ]
+                },
+                {key: 'email', value: ['Email Address', 'Email']},
+                {
+                    key: 'employee_num',
+                    value: [
+                        'Employee Number', 'Employee No', 'Employee No.', 'Employee #',
+                        'Company Number', 'Company No', 'Company No.', 'Company #'
+                    ]
+                },
+                {
+                    key: 'employment_date',
+                    value: [
+                        'Date Engaged', 'Date Employed',
+                        'Date of Employment', 'Date of Engagement',
+                        'Engagement Date', 'Employment Date'
+                    ]
+                },
+                {key: 'job_position', value: ['Job Position', 'Job Title']},
+                {key: 'job_category', value: ['Job Category', 'Occupational Level']},
+                {key: 'department', value: ['Department', 'Department Title', 'Department Name']}
+            ];
+            const res = await excelUtils.read(path, validHeaderNames);
+            if (res.errors) {
+                return res;
+            }
 
-			res.sortBy('lname');
-			return res.distinct();
-		}
-		// </editor-fold>
+            res.sortBy('lname');
+            return res.distinct();
+        }
 
-		//<editor-fold desc="createImported">
-		async createImported(evt, list) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const emails = list.filter(({email}) => !!email).map(({email}) => email.toLowerCase());
-				if (!emails.isEmpty()) {
-					let snapshot = await this.getDB().collection(this.tbl).where('email', 'in', emails).get();
-					if (!snapshot.empty) {
-						let dups = [];
-						snapshot.forEach((doc) => {
-							dups.push(doc.data().email);
-						});
-						dups = dups.map(email => list.find(v => v.email === email));
-						return {dups};
-					}
-				}
+        // </editor-fold>
 
-				return await Promise.all(list.map(async data => {
-					return await this.create(evt, data);
-				}));
-			});
-		}
-		//</editor-fold>
+        //<editor-fold desc="createImported">
+        async createImported(evt, list) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const emails = list.filter(({email}) => !!email).map(({email}) => email.toLowerCase());
+                if (!emails.isEmpty()) {
+                    let snapshot = await this.getDB().collection(this.tbl).where('email', 'in', emails).get();
+                    if (!snapshot.empty) {
+                        let dups = [];
+                        snapshot.forEach((doc) => {
+                            dups.push(doc.data().email);
+                        });
+                        dups = dups.map(email => list.find(v => v.email === email));
+                        return {dups};
+                    }
+                }
 
-		// <editor-fold defaultstate="collapsed" desc="send_app_link">
-		async send_app_link(evt, id) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const item = await this.find_by_id(null, id);
-				if (item) {
-					let {id, data: {password, email, fname, lname}} = item;
-					if (email) {
+                return await Promise.all(list.map(async data => {
+                    return await this.create(evt, data);
+                }));
+            });
+        }
+
+        //</editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="send_app_link">
+        async send_app_link(evt, id) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const item = await this.find_by_id(null, id);
+                if (item) {
+                    let {id, data: {password, email, fname, lname}} = item;
+                    if (email) {
 //                        if (!password) {
 //                            password = uuidv4();
 //                            password = password.substring(0, password.indexOf('-'));
@@ -148,182 +150,182 @@
 //                        };
 //                        await Utils.sendEmail(opts);
 
-						return true;
-					}
-					return "NO_EMAIL";
-				}
+                        return true;
+                    }
+                    return "NO_EMAIL";
+                }
 
-				return "NOT_FOUND";
-			});
-		}
+                return "NOT_FOUND";
+            });
+        }
 
-		// </editor-fold>
+        // </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="transfer">
-		async transfer(evt, employeeListData) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const res = await Promise.all(employeeListData.map(async ({id, data}) => {
-					this.injectSavable(evt, loggedUser, data, true);
-					const res = await this.update(evt, id, data);
-					return res;
-				}));
+        // <editor-fold defaultstate="collapsed" desc="transfer">
+        async transfer(evt, employeeListData) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const res = await Promise.all(employeeListData.map(async ({id, data}) => {
+                    this.injectSavable(evt, loggedUser, data, true);
+                    const res = await this.update(evt, id, data);
+                    return res;
+                }));
 
-				console.log('transfer', res);
+                console.log('transfer', res);
 
-				return true;
-			});
-		}
+                return true;
+            });
+        }
 
-		// </editor-fold>
+        // </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="bulk_remove">
-		async bulk_remove(evt, ids) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const resList = await Promise.all(ids.map(async id => {
-					const doc_ref = await this.getDB().collection(this.tbl).doc(id);
-					const snapshot = await doc_ref.get();
-					if (!snapshot.exists) {
-						return null;
-					}
+        // <editor-fold defaultstate="collapsed" desc="bulk_remove">
+        async bulk_remove(evt, ids) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const resList = await Promise.all(ids.map(async id => {
+                    const doc_ref = await this.getDB().collection(this.tbl).doc(id);
+                    const snapshot = await doc_ref.get();
+                    if (!snapshot.exists) {
+                        return null;
+                    }
 
-					const data = snapshot.data();
-					const {created_at} = data;
-					if (created_at && created_at.toDate) {
-						data.created_at = created_at.toDate();
-					}
+                    const data = snapshot.data();
+                    const {created_at} = data;
+                    if (created_at && created_at.toDate) {
+                        data.created_at = created_at.toDate();
+                    }
 
-					const auditData = {id: snapshot.id, data};
+                    const auditData = {id: snapshot.id, data};
 
-					const updated = await doc_ref.set({removed: true}, {merge: true});//Promise < void >
+                    const updated = await doc_ref.set({removed: true}, {merge: true});//Promise < void >
 
-					this.removeAudit(loggedUser, new Date().getTime(), auditData);
+                    this.removeAudit(loggedUser, new Date().getTime(), auditData);
 
-					//console.log(this.tbl, 'remove', res)
-					return true;
-				}));
-				return resList;
-			});
-		}
+                    //console.log(this.tbl, 'remove', res)
+                    return true;
+                }));
+                return resList;
+            });
+        }
 
-		// </editor-fold>
+        // </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="re_instead">
-		async re_instead(evt, id) {
-			return Events.whenLoggedIn(async loggedUser => {
-				const doc_ref = await this.getDB().collection(this.tbl).doc(id);
-				const snapshot = await doc_ref.get();
-				if (!snapshot.exists) {
-					return null;
-				}
+        // <editor-fold defaultstate="collapsed" desc="re_instead">
+        async re_instead(evt, id) {
+            return Events.whenLoggedIn(async loggedUser => {
+                const doc_ref = await this.getDB().collection(this.tbl).doc(id);
+                const snapshot = await doc_ref.get();
+                if (!snapshot.exists) {
+                    return null;
+                }
 
-				const data = snapshot.data();
-				const {created_at} = data;
-				if (created_at && created_at.toDate) {
-					data.created_at = created_at.toDate();
-				}
+                const data = snapshot.data();
+                const {created_at} = data;
+                if (created_at && created_at.toDate) {
+                    data.created_at = created_at.toDate();
+                }
 
-				const auditData = {id: snapshot.id, data};
+                const auditData = {id: snapshot.id, data};
 
-				const updated = await doc_ref.set({removed: false, notifications_removed: false}, {merge: true});//Promise < void >
+                const updated = await doc_ref.set({removed: false, notifications_removed: false}, {merge: true});//Promise < void >
 
-				this.editAudit(loggedUser, new Date().getTime(), auditData);
-				return true;
-			});
-		}
+                this.editAudit(loggedUser, new Date().getTime(), auditData);
+                return true;
+            });
+        }
 
-		// </editor-fold>
+        // </editor-fold>
 
-		// <editor-fold defaultstate="collapsed" desc="export_excel">
-		async export_excel(evt,{
-			client: _client, project: _project, site: _site,
-				department: _department, job_position: _job_position, supervisor: _supervisor,
-				list,
-		}) {
-			return Events.whenLoggedIn(async loggedUser => {
-				if (isArray(list)) {
-					const rows = list.map((
-						{
-							id,
-							data: {
-								created_at,
-								company, client, project, site,
+        // <editor-fold defaultstate="collapsed" desc="export_excel">
+        async export_excel(evt, {
+            client: _client, project: _project, site: _site,
+            department: _department, job_position: _job_position, supervisor: _supervisor,
+            list,
+        }) {
+            return Events.whenLoggedIn(async loggedUser => {
+                if (isArray(list)) {
+                    const rows = list.map((
+                        {
+                            id,
+                            data: {
+                                created_at,
+                                company, client, project, site,
 
-								profile_pic,
-								fname,
-								lname,
-								id_num,
-								passport_num,
-								dob,
-								sex,
-								phone,
-								email,
+                                profile_pic,
+                                fname,
+                                lname,
+                                id_num,
+                                passport_num,
+                                dob,
+                                sex,
+                                phone,
+                                email,
 
-								job_position,
-								department,
-								supervisor,
+                                job_position,
+                                department,
+                                supervisor,
 
-								employee_num,
-								employment_date,
+                                employee_num,
+                                employment_date,
 
-								removed,
-							}
-						},
-						idx
-					) => {
-						
-						client = client || company;
-						
-						return {
-							idx: idx + 1,
+                                removed,
+                            }
+                        },
+                        idx
+                    ) => {
 
-							project: project && project.name,
-							site: site && site.name,
-							
-							job_position: job_position && job_position.name,
-							department: department && department.name,
-							supervisor: supervisor && supervisor.full_name,
+                        client = client || company;
 
-							id,
-							fname,
-							lname,
-							id_or_passport: id_num || passport_num,
-							dob: Dates.formatDateSQL(dob),
-							sex,
-							phone,
-							email,
+                        return {
+                            idx: idx + 1,
 
-							employee_num,
-							employment_date: Dates.formatDateSQL(employment_date),
+                            project: project && project.name,
+                            site: site && site.name,
 
-							status: removed ? "Inactive" : "Active",
-						};
-					});
+                            job_position: job_position && job_position.name,
+                            department: department && department.name,
+                            supervisor: supervisor && supervisor.full_name,
 
-					const response = await fetch(
-						`${self.locationRoot}/templates/xlsx/employees/Template-List-Employee.xlsx`.replace('//', '/')
-					);
-					const arrayBuffer = await response.arrayBuffer();
-					const data = new Map();
-					
-					data.set('date', new Date().formatDate());
-					
-					data.set('company', _client ? _client.name || _client.data.name : "ANY");
-					data.set('project', _project ? _project.name || _project.data.name : "ANY");
-					data.set('site', _site ? _site.name || _site.data.name : "ANY");
-					
-					data.set('department', _department ? _department.name || _department.data.name : "ANY");
-					data.set('job_position', _job_position ? _job_position.name || _job_position.data.name : "ANY");
-					data.set('supervisor', _supervisor ? _supervisor.full_name || _supervisor.data.full_name : "ANY");
+                            id,
+                            fname,
+                            lname,
+                            id_or_passport: id_num || passport_num,
+                            dob: Dates.formatDateSQL(dob),
+                            sex,
+                            phone,
+                            email,
 
-					data.set("rows", rows);
-					return await Events.emit("excelTemplate", {arrayBuffer, data});
-					// return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
-				}
-				return list;
-			});
-		}
+                            employee_num,
+                            employment_date: Dates.formatDateSQL(employment_date),
 
-		//
+                            status: removed ? "Inactive" : "Active",
+                        };
+                    });
+
+                    const response = await fetch(
+                        `${self.locationRoot}/templates/xlsx/employees/Template-List-Employee.xlsx`.replace('//', '/')
+                    );
+                    const arrayBuffer = await response.arrayBuffer();
+                    const data = new Map();
+
+                    data.set('date', new Date().formatDate());
+
+                    data.set('company', _client ? _client.name || _client.data.name : "ANY");
+                    data.set('project', _project ? _project.name || _project.data.name : "ANY");
+                    data.set('site', _site ? _site.name || _site.data.name : "ANY");
+
+                    data.set('department', _department ? _department.name || _department.data.name : "ANY");
+                    data.set('job_position', _job_position ? _job_position.name || _job_position.data.name : "ANY");
+                    data.set('supervisor', _supervisor ? _supervisor.full_name || _supervisor.data.full_name : "ANY");
+
+                    data.set("rows", rows);
+                    return await Events.emit("excelTemplate", {arrayBuffer, data});
+                    // return await this.export_excel_impl(loggedUser, "Training-Toolbox-Talks-Docs", "Attendance-Register", "Attendance-Register List", cols, rows);
+                }
+                return list;
+            });
+        }
+
+        //
 //         async export_excel(evt, list) {
 //             return Events.whenLoggedIn(async loggedUser => {
 //                 const cols = [
@@ -834,9 +836,9 @@
 //             });
 //         }
 
-		// </editor-fold>
+        // </editor-fold>
 
-	}
+    }
 
-	self.employeesCntr = new Controller(events);
+    self.employeesCntr = new Controller(events);
 })();

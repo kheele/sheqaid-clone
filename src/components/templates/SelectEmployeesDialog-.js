@@ -21,6 +21,7 @@ import style from "./SelectEmployeesDialog.lazy.css";
 class SelectEmployeesDialog extends ANewDialog {
     pageKey = "SelectEmployeesDialog";
     title = "Select Employee(s)";
+
 //    className = 'ANewTableFormDialog';
 
     constructor(props) {
@@ -31,10 +32,6 @@ class SelectEmployeesDialog extends ANewDialog {
         return Controls;
     }
 
-    onReset(e, btn) {
-        this.props.control.selectedList.refs.selectedEmployeeTable.onReset(e, btn);
-    }
-    
     get topButtons() {
         return <React.Fragment>
             <Button className="btn btn-primary cancel" onClick={this.onCancel}>Cancel</Button>
@@ -43,6 +40,10 @@ class SelectEmployeesDialog extends ANewDialog {
                 <i className="fa fa-check icon-left"/>Done
             </Button>
         </React.Fragment>;
+    }
+
+    onReset(e, btn) {
+        this.props.control.selectedList.refs.selectedEmployeeTable.onReset(e, btn);
     }
 }
 
@@ -58,18 +59,18 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.onSearch = this.onSearch.bind(this);
         this.onLoadListEmployees = this.onLoadListEmployees.bind(this);
-        
+
         this.form = new Form();
     }
-    
+
     onLoadListEmployees() {
-        return neonBinding.events.emit(this.path + 'select/filter', this.filterData);
+        return workers.emit(this.path + 'select/filter', this.filterData);
     }
-    
-    onSearch(){
+
+    onSearch() {
         const {form} = this;
         if (!form.isValid('client_from')) {
             infoDialog.open('Company is required');
@@ -79,22 +80,22 @@ class Controls extends React.Component {
             client_from, project_from, site_from, department, job_position
         } = form.data;
         this.filterData = {client_id: client_from.id};
-        if(project_from) {
+        if (project_from) {
             this.filterData.project_id = project_from.id;
         }
-        if(site_from) {
+        if (site_from) {
             this.filterData.site_id = site_from.id;
         }
-        if(department) {
+        if (department) {
             this.filterData.department_id = department.id;
         }
-        if(job_position) {
+        if (job_position) {
             this.filterData.job_position_id = job_position.id;
         }
-        
+
         const {employeeList} = this.state;
         this.refs.selectEmployeeTable.setSelectedList(employeeList).open().then(list => {
-            this.state.employeeList.clear(); 
+            this.state.employeeList.clear();
             this.state.employeeList.push(...list);
             this.filterData = null;
         });
@@ -102,7 +103,7 @@ class Controls extends React.Component {
 
     onSubmit(e, btn, onSaved) {
         const {form, state: {employeeList}} = this;
-        if(employeeList.isEmpty()) {
+        if (employeeList.isEmpty()) {
             infoDialog.open('Please select at least one Employee');
             return;
         } else {
@@ -110,7 +111,7 @@ class Controls extends React.Component {
             this.props.close();
         }
     }
-    
+
     renderTHeadEmployeesFrom() {
         return <THead>
             <div className="td">Name</div>
@@ -123,13 +124,18 @@ class Controls extends React.Component {
         </THead>;
     }
 
-    renderItemEmployeesFrom(item, n){
-        const {id, data: {created_at, fname, lname, optional_info, client, project, site, client_id, project_id, site_id}} = item;
+    renderItemEmployeesFrom(item, n) {
+        const {
+            id,
+            data: {created_at, fname, lname, optional_info, client, project, site, client_id, project_id, site_id}
+        } = item;
         return <React.Fragment key={id}>
             <div className="td">{fname + ' ' + lname}</div>
-            <AsyncTD title="Department" defaultValue={optional_info && optional_info.department} renderer={v => v.name || v.data.name}/>
-            <AsyncTD title="Job Position" defaultValue={optional_info && optional_info.job_position} renderer={v => v.name || v.data.name}/>
-            
+            <AsyncTD title="Department" defaultValue={optional_info && optional_info.department}
+                     renderer={v => v.name || v.data.name}/>
+            <AsyncTD title="Job Position" defaultValue={optional_info && optional_info.job_position}
+                     renderer={v => v.name || v.data.name}/>
+
             {RenderUtils.renderOrgTD(client, null, 'Company Name')}
             {RenderUtils.renderOrgTD(project, null, 'Project Name')}
             {RenderUtils.renderOrgTD(site, null, 'Site Name')}
@@ -141,41 +147,47 @@ class Controls extends React.Component {
             <div className="controls padding-0 h-full">
                 <div className="row">
                     <label className="text-center margin-b-20"><h4>Find Employee(s):</h4></label>
-                    <div className="row sec-group">    
-                        <SelectClientInput name="client_from" placeholder="Company..." required className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <SelectProjectInput name="project_from" placeholder="Project..." required className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <SelectSiteInput name="site_from" placeholder="Site..." required className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <SelectDepartmentInput name="department" placeholder="Department..." required className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <SelectJobPositionInput name="job_position" placeholder="Job Position..." required className="col-lg-6 form-control margin-b-20" onChange={this.form.onChange}/>
+                    <div className="row sec-group">
+                        <SelectClientInput name="client_from" placeholder="Company..." required
+                                           className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <SelectProjectInput name="project_from" placeholder="Project..." required
+                                            className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <SelectSiteInput name="site_from" placeholder="Site..." required
+                                         className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <SelectDepartmentInput name="department" placeholder="Department..." required
+                                               className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                        <SelectJobPositionInput name="job_position" placeholder="Job Position..." required
+                                                className="col-lg-6 form-control margin-b-20"
+                                                onChange={this.form.onChange}/>
                         <Button className="btn btn-primary hor-center" onClick={this.onSearch}>
                             Find Employee(s)
                         </Button>
                     </div>
-                    <SelectTable ref="selectEmployeeTable" 
-                        isDialog 
-                        replaceCols 
-                        name="employee" 
-                        desc="Employees" 
-                        title="Select Employee(s)" 
-                        className="col-lg-12 no-padding SelectEmployeeTable" 
-                        renderTHead={this.renderTHeadEmployeesFrom} 
-                        renderItem={this.renderItemEmployeesFrom} 
-                        onLoadList={this.onLoadListEmployees}
-                        isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
+                    <SelectTable ref="selectEmployeeTable"
+                                 isDialog
+                                 replaceCols
+                                 name="employee"
+                                 desc="Employees"
+                                 title="Select Employee(s)"
+                                 className="col-lg-12 no-padding SelectEmployeeTable"
+                                 renderTHead={this.renderTHeadEmployeesFrom}
+                                 renderItem={this.renderItemEmployeesFrom}
+                                 onLoadList={this.onLoadListEmployees}
+                                 isChecked={(item, selectedList) => selectedList.map(v => v.id).contains(item.id)}/>
                 </div>
                 <div className="row min-h-200">
                     <label className="text-center padding-b-0 margin-b-0"><h4>Employee(s) Selected:</h4></label>
-                    <SelectTable ref="selectedEmployeeTable" 
-                        replaceCols
-                        readonly
-                        name="employee" 
-                        desc="Employees" 
-                        title="Selected Employee(s)" 
-                        className="col-lg-12 min-h-160 no-padding SelectedEmployeeTable" 
-                        renderTHead={this.renderTHeadEmployeesFrom} 
-                        renderItem={this.renderItemEmployeesFrom} 
-                        list={this.state.employeeList}
-                        isChecked={(item, selectedList) => true}/>
+                    <SelectTable ref="selectedEmployeeTable"
+                                 replaceCols
+                                 readonly
+                                 name="employee"
+                                 desc="Employees"
+                                 title="Selected Employee(s)"
+                                 className="col-lg-12 min-h-160 no-padding SelectedEmployeeTable"
+                                 renderTHead={this.renderTHeadEmployeesFrom}
+                                 renderItem={this.renderItemEmployeesFrom}
+                                 list={this.state.employeeList}
+                                 isChecked={(item, selectedList) => true}/>
                 </div>
             </div>
         </div>);

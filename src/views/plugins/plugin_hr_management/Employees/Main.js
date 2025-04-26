@@ -6,17 +6,17 @@ import {computed, observable} from 'mobx';
 import style from "./Main.lazy.css";
 
 import {calculateRightPos, Permissions} from 'utils/Utils';
-import {Button} from 'components/inputs';
+import {Button, ClearableInput, SelectEmployeeInput} from 'components/inputs';
 import NavItem from 'components/navs/NavItem';
 import Popover from 'components/popovers/Popover';
 import {PageTitle} from "components";
+import ExportDialog from "components/exports/ExportDialog";
 
 import APage from "views/APage";
 import EmployeesActiveTab from './EmployeesActiveTab.js';
 import EmployeesRemovedTab from './EmployeesRemovedTab.js';
 
 import {DepartmentsDialog, JobPositionsDialog, TeamsDialog, TransferEmployeesDialog} from "./dialogs";
-import {PPEDialog} from '../other_modules/PPE';
 
 import {CompetenciesDialog} from '../Competencies';
 import {ContractsDialog} from '../Contracts';
@@ -34,12 +34,11 @@ import DashboardTab from "./DashboardTab";
 import JobCategoriesDialog from "./dialogs/JobCategoriesDialog";
 import {JobAppointmentsDialog} from "../../plugin_extra/__C_Structure_And_Responsibility/JobAppointments";
 import {HRDocsDialog} from "../HRDocs";
-import {PlannedJobObservationsDialog} from "../PlannedJobObservations";
 import JobTaskCategoriesDialog from "./dialogs/JobTaskCategoriesDialog";
 import ComplianceRequirementsDialog from "./dialogs/ComplianceRequirementsDialog";
-import {AttendanceDialog} from "../other_modules/Attendances";
 import ApplicableRegulationsDialog from "./dialogs/ApplicableRegulationsDialog";
 import JobTaskDialog from "../other_modules/Tasks/JobTaskDialog";
+import {exportExcelEmployees} from "mutations/exportExcel";
 
 // </editor-fold>
 
@@ -62,6 +61,8 @@ class Main extends APage {
         this.onChange = this.onChange.bind(this);
         this.onNew = this.onNew.bind(this);
         this.onFilter = this.onFilter.bind(this);
+
+        this.renderExportFilterNode = this.renderExportFilterNode.bind(this);
 
         this.onViewActiveTab = this.onViewActiveTab.bind(this);
         this.onViewRemovedTab = this.onViewRemovedTab.bind(this);
@@ -135,23 +136,23 @@ class Main extends APage {
                 text: 'Job Appointments',
                 Comp: JobAppointmentsDialog,
             },
-            {
-                key: 'PlannedJobObservations',
-                listName: 'job_observation_list',
-                text: 'Job Observations',
-                Comp: PlannedJobObservationsDialog,
-            },
+            // --{
+            //     key: 'PlannedJobObservations',
+            //     listName: 'job_observation_list',
+            //     text: 'Job Observations',
+            //     Comp: PlannedJobObservationsDialog,
+            // },
             {key: 'Leaves', listName: 'leave_list', text: 'Time-off', Comp: LeavesDialog},
             {key: 'Medicals', listName: 'medical_list', text: 'Medical Fitness', Comp: MedicalsDialog},
             {key: 'Warnings', listName: 'warning_list', text: 'Warnings', Comp: WarningsDialog},
             {key: 'Expenses', listName: 'expense_list', text: 'Expenses', Comp: ExpensesDialog},
             {key: 'HRDocs', text: 'Documents', Comp: HRDocsDialog, noExpiry: true, override: true},
 
-            {key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
+            // --{key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
             // {key: 'Contacts', listName: '', text: 'Contacts', Comp: ContactsDialog, noExpiry: true},
             // {key: 'KPI', listName: '', text: 'KPI', Comp: KPIDialog, noExpiry: true},
             // {key: 'Meetings', listName: '', text: 'Meetings', Comp: MeetingsDialog, noExpiry: true},
-            {key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true},
+            // --{key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true},
             {key: 'Tasks', listName: '', text: 'Job Tasks', Comp: JobTaskDialog, noExpiry: true},
             // {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true}
         ].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, override}) => {
@@ -282,7 +283,7 @@ class Main extends APage {
     // </editor-fold>
 
     onExport(e, btn) {
-        this.refs.transferEmployeesDialog.extraProp('role', 'export').open();
+        this.refs.exportDialog.extraProp('role', 'export').open();
     }
 
     onPrintCards(e, btn) {
@@ -357,7 +358,7 @@ class Main extends APage {
                 {Permissions.allowMod("Tasks") &&
                     <NavItem onClick={this.onViewApplicableRegulations} title="Applicable Regulations"/>}
                 <hr className="margin-t-0 margin-b-0"/>
-                {/*{Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}*/}
+                {Permissions.allowCreateMod("Employees") && <NavItem onClick={this.onImport} title="Import"/>}
                 <NavItem onClick={this.onExport} title="Export"/>
                 {/*<NavItem onClick={this.onPrintCards} title="Print Cards"/>*/}
                 {isContractor && !isContractor && hasProjects && <NavItem onClick={this.onTransfer} title="Transfer"/>}
@@ -368,6 +369,32 @@ class Main extends APage {
     }
 
     // </editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <SelectEmployeeInput
+                name="supervisor"
+                placeholder="Supervisor..."
+                className="col-lg-12 form-control"
+                onChange={onChange}
+                addButton={false}
+            />
+            <ClearableInput
+                name="name"
+                type="text"
+                placeholder="Name"
+                className="col-lg-12 form-control"
+                onChange={onChange}
+            />
+            <ClearableInput
+                name="id_or_pass_num"
+                type="text"
+                placeholder="ID/Passport No."
+                className="col-lg-12 form-control"
+                onChange={onChange}
+            />
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
     renderLeftButtons() {
@@ -451,6 +478,14 @@ class Main extends APage {
             <ComplianceRequirementsDialog ref="complianceRequirementsDialog"/>
             <ApplicableRegulationsDialog ref="applicableRegulationsDialog"/>
 
+            <ExportDialog
+                ref="exportDialog"
+                titlePlural="Employees"
+                renderExportFilterNode={this.renderExportFilterNode}
+                exportFn={exportExcelEmployees}
+                addHRFilters
+                excludeEmployee
+            />
             <TransferEmployeesDialog ref="transferEmployeesDialog"/>
 
             <Popover ref="popover"/>

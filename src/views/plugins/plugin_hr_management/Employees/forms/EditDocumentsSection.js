@@ -17,9 +17,10 @@ import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 import PrDPSection from "./PrDPSection";
 import IDOrPassportSection from "./IDOrPassportSection";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class EditDocumentsSection extends React.Component {
+class EditDocumentsSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isValidEmployeeAllDocumentsViewers;
     pageKey = "NewDocumentsTab";
 
@@ -298,7 +299,7 @@ class EditDocumentsSection extends React.Component {
 
     //<editor-fold desc="render">
     render() {
-        const {onFormNext, onFormBack, onFormOpen, onFormSave, item, idx} = this.props;
+        const {onFormNext, onFormBack, onFormOpen, onFormSave, onRefs, item, idx} = this.props;
 
         let {
             id,
@@ -338,6 +339,7 @@ class EditDocumentsSection extends React.Component {
             item,
             formData: data,
             isNewEmployee,
+            onRefs: onRefs,
             isEmbedded: true,
             onChange: this.form.onChange,
         };
@@ -381,7 +383,7 @@ class EditDocumentsSection extends React.Component {
                             ref="work_permit"
                             rendered
                             idx={idx + `.${__idx}.2`}
-                            title={idx + `.${__idx}.2 Work Permit`}
+                            title={idx + `.${__idx}.2 Work Permit (Foreigners)`}
                             sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}

@@ -51,7 +51,7 @@ class TrainingManualsTab extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
-        neonBinding.events.emit(this.path + "list").then(res => {
+        workers.emit(this.path + "list").then(res => {
             this.state.docList = res.doc_list;
             this.state.videoList = res.video_list;
             this.state.dataLoaded = true;

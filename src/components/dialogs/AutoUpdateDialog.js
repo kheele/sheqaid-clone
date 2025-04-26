@@ -8,9 +8,7 @@ import Dialog from './Dialog';
 
 @observer
 class AutoUpdateDialog extends React.Component {
-    static propTypes = {
-
-    };
+    static propTypes = {};
 
     @observable
     state = {msg: "Please wait...", percentage: 0};
@@ -27,10 +25,10 @@ class AutoUpdateDialog extends React.Component {
     }
 
     componentDidMount() {
-        neonBinding.events.on('auto-update_checking-for-update', async () => {
+        workers.on('auto-update_checking-for-update', async () => {
             console.log('auto-update_checking-for-update')
         });
-        neonBinding.events.on('auto-update_available', async info => {
+        workers.on('auto-update_available', async info => {
             if (this.state.percentage === 0) {
                 this.state.msg = 'The latest version of the application is available. The new version will automatically download and install itself.';
                 this.open();
@@ -39,20 +37,20 @@ class AutoUpdateDialog extends React.Component {
                 }.bind(this), 7000);
             }
         });
-        neonBinding.events.on('auto-update_not-available', async info => {
+        workers.on('auto-update_not-available', async info => {
             console.log('auto-update_not-available', info)
         });
-        neonBinding.events.on('auto-update_error', async err => {
+        workers.on('auto-update_error', async err => {
 //            if (this.state.percentage === 0) {
-                this.state.msg = 'An error occurred while updating the Application. The process of updating will be restarted.';
-                this.open();
-                console.log('auto-update_error', err)
-                setTimeout(function () {
-                    this.close();
-                }.bind(this), 7000);
+            this.state.msg = 'An error occurred while updating the Application. The process of updating will be restarted.';
+            this.open();
+            console.log('auto-update_error', err)
+            setTimeout(function () {
+                this.close();
+            }.bind(this), 7000);
 //            }
         });
-        neonBinding.events.on('auto-update_download-progress', async progressObj => {
+        workers.on('auto-update_download-progress', async progressObj => {
 //            let log_message = "Download speed: " + progressObj.bytesPerSecond;
 //            log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
 //            log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
@@ -61,7 +59,7 @@ class AutoUpdateDialog extends React.Component {
             this.state.percentage = parseFloat(progressObj.percent);
             this.open();
         });
-        neonBinding.events.on('auto-update_downloaded', async info => {
+        workers.on('auto-update_downloaded', async info => {
             this.state.msg = 'The new update was downloaded. Installation will start in few seconds.';
             console.log('auto-update_downloaded', info)
             this.open();

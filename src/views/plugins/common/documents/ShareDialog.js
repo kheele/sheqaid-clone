@@ -117,7 +117,7 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Sharing...").disabled();
-        neonBinding.events.emit(this.props.path + "share", this.item.id, data).then(res => {
+        workers.emit(this.props.path + "share", this.item.id, data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Document successfully shared.");

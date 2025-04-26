@@ -1,11 +1,14 @@
 import {observer} from "mobx-react";
-import React from "react";
+import React, {createContext} from "react";
 import {findDOMNode} from "react-dom";
 import {execWhen, scrollTo} from "utils/UtilsFuns";
 import {autorun, computed, observable} from "mobx";
 import MKBox from "../MK/MKBox";
 import {Button, Clickable} from "../inputs";
 import {ErrorBoundary} from "../index";
+
+const FormControlsContext = createContext();
+const RowContext = createContext();
 
 // <editor-fold defaultstate="collapsed" desc="FormControls">
 @observer
@@ -31,15 +34,28 @@ class FormControls extends React.Component {
         return React.Children.map(children, (child, index) => {
             if (!child) return null;
 
-            if (child.type && child.type.name === "Row") {
-                return React.cloneElement(child, {
-                    ref: 'ref_row_' + index,
+            if (child.type) {
+                const {type} = child;
+                const props = {
                     onChange,
                     form,
                     lazyLoad,
                     onCountFields,
-                    getFormChildren: this.getFormChildren
-                });
+                    getFormChildren: this.getFormChildren,
+                    // ...(child.props || {}),
+                };
+
+                if (type.name === "Row") {
+                    return React.cloneElement(child, {
+                        ref: child.ref || ('ref_row_' + index),
+                        ...props,
+                    });
+                } else if (type.name === "FormControls") {
+                    return React.cloneElement(child, {
+                        ref: child.ref || ('ref_form_controls_' + index),
+                        ...props,
+                    });
+                }
             }
 
             return child;
@@ -54,11 +70,14 @@ class FormControls extends React.Component {
         const {children} = this;
         let {className = ""} = this.props;
         className += " controls";
-        return <div className="controls-wrapper controls-sectioned">
-            <div className={className}>
-                {children}
+
+        return <FormControlsContext.Provider value={this}>
+            <div className="controls-wrapper controls-sectioned">
+                <div className={className}>
+                    {children}
+                </div>
             </div>
-        </div>;
+        </FormControlsContext.Provider>;
     }
 }
 
@@ -67,6 +86,7 @@ class FormControls extends React.Component {
 // <editor-fold defaultstate="collapsed" desc="Row">
 @observer
 class Row extends React.Component {
+    static contextType = FormControlsContext;
     key = 'Row';
 
     @observable
@@ -79,6 +99,7 @@ class Row extends React.Component {
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.onRendered = this.onRendered.bind(this);
+        this.onFormGoto = this.onFormGoto.bind(this);
     }
 
     // </editor-fold>
@@ -92,10 +113,17 @@ class Row extends React.Component {
     @computed get children() {
         const {onChange, children} = this.props;
         if (!children) return null;
-        if (!onChange || !isFunction(onChange)) return React.Children.map(children, (child, index) => child);
+        if (!onChange || !isFunction(onChange)) return React.Children.map(children, (child, index) => {
+            if (!child) return null;
+            // console.log('child', child)
+            return child;
+        });
         return React.Children.map(children, (child, index) => {
             if (!child) return null;
-            return React.cloneElement(child, {onChange});
+            return React.cloneElement(child, {
+                // ...(child.props || {}),
+                onChange,
+            });
         }).filter(child => !!child);
     }
 
@@ -137,7 +165,7 @@ class Row extends React.Component {
         }
     }
 
-    onFormGoto() {
+    onFormGoto(container) {
         const currRow = this.getDOMNodeJQuery();
         // this.onFormGotoImpl(currRow);
 
@@ -150,7 +178,7 @@ class Row extends React.Component {
             currComp.show();
         }
 
-        scrollTo(curr).then(() => {
+        scrollTo.call(this, curr, container).then(() => {
             // this.onFormChange(curr.index());
         });
     }
@@ -161,6 +189,10 @@ class Row extends React.Component {
 
     getDOMNodeJQuery() {
         return $(this.getDOMNode());
+    }
+
+    getRowChildren() {
+        return Object.values(this.refs);
     }
 
     render() {
@@ -187,7 +219,7 @@ class Row extends React.Component {
             },
             children
         } = this;
-        className = (className ? (className + " ") : "") + ("row" + (active ? " active" : "") + (activeAlways ? " active-always" : ""));
+        className = `${className || ""} row-component row ${active ? " active" : ""} ${activeAlways ? " active-always" : ""}`;
 
         let sx = {};
         if (onFormNext && onFormSave) {
@@ -202,36 +234,39 @@ class Row extends React.Component {
             lazyLoad,
         };
 
-        return <MKBox id={`Row-${idx}`} dataIdx={idx} className={className} sx={sx}>
-            <Clickable>
-                <label>
-                    {countFields && <RowTitle ref="rowTitle" idx={idx} title={title} onCountFields={onCountFields}/>}
-                    {!countFields && title}
-                    <Clickable {...actionProps} onClick={onFormOpen}><i
-                        className="fa fa-angle-down margin-l-10 icon-right pull-right"/></Clickable>
-                    {onFormNext && <Clickable {...actionProps} onClick={onFormNext}>
-                        <i className="fa fa-angle-right margin-l-10 icon-right pull-right"/>
-                    </Clickable>}
-                    {onFormBack && <Clickable {...actionProps} onClick={onFormBack}>
-                        <i className="fa fa-angle-left margin-l-10 icon-right pull-right"/>
-                    </Clickable>}
-                </label>
-            </Clickable>
-            <RowSecGroup
-                ref='rowSecGroup'
-                rendered={this.state.rendered}
-                lazyLoad={lazyLoad}
-                {...actionProps}
-                form={form}
-                onRendered={this.onRendered}
-                className={sectionClassName}
-            >
-                {children}
-            </RowSecGroup>
-            <NavButtons {...actionProps} onBack={onFormBack} onNext={onFormNext} onSave={onFormSave}
-                        backText={backText}
-                        nextText={nextText} saveText={saveText}/>
-        </MKBox>;
+        return <RowContext.Provider value={this}>
+            <MKBox row={this} id={`Row-${idx}`} dataIdx={idx} className={className} sx={sx}>
+                <Clickable>
+                    <label>
+                        {countFields &&
+                            <RowTitle ref="rowTitle" idx={idx} title={title} onCountFields={onCountFields}/>}
+                        {!countFields && title}
+                        <Clickable {...actionProps} onClick={onFormOpen}><i
+                            className="fa fa-angle-down margin-l-10 icon-right pull-right"/></Clickable>
+                        {onFormNext && <Clickable {...actionProps} onClick={onFormNext}>
+                            <i className="fa fa-angle-right margin-l-10 icon-right pull-right"/>
+                        </Clickable>}
+                        {onFormBack && <Clickable {...actionProps} onClick={onFormBack}>
+                            <i className="fa fa-angle-left margin-l-10 icon-right pull-right"/>
+                        </Clickable>}
+                    </label>
+                </Clickable>
+                <RowSecGroup
+                    ref='rowSecGroup'
+                    rendered={this.state.rendered}
+                    lazyLoad={lazyLoad}
+                    {...actionProps}
+                    form={form}
+                    onRendered={this.onRendered}
+                    className={sectionClassName}
+                >
+                    {children}
+                </RowSecGroup>
+                <NavButtons {...actionProps} onBack={onFormBack} onNext={onFormNext} onSave={onFormSave}
+                            backText={backText}
+                            nextText={nextText} saveText={saveText}/>
+            </MKBox>
+        </RowContext.Provider>;
     }
 }
 
@@ -296,6 +331,7 @@ class RowTitleCount extends React.Component {
 // <editor-fold defaultstate="collapsed" desc="RowSecGroup">
 @observer
 class RowSecGroup extends React.Component {
+    static contextType = RowContext;
 
     @observable
     state = {rendered: false};
@@ -367,7 +403,7 @@ class RowSecGroup extends React.Component {
     render() {
         let {children, props: {className}} = this;
         if (!this.state.rendered) return null;
-        className = (className ? (className + " ") : "") + "row sec-group";
+        className = `${className || ""} row sec-group sec-group-component`;
         return <div key={new Date().getTime()} className={className}>
             {children && <ErrorBoundary>
                 {children}

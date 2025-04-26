@@ -53,7 +53,7 @@ class Controls extends React.Component {
     
     onApprove(e, btn) {
         btn.text("Approving document...").disabled();
-        neonBinding.events.emit(this.path + "approve", this.item.id).then(res => {
+        workers.emit(this.path + "approve", this.item.id).then(res => {
             console.log("res", res)
 //            onSaved && onSaved(res);
             infoDialog.open("Record successfully approved.");

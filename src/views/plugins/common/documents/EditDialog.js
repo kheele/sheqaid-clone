@@ -93,7 +93,7 @@ class Controls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     componentDidMount() {
-//        neonBinding.events.emit(this.props.path + "get_last_doc_num").then(res => {
+//        workers.emit(this.props.path + "get_last_doc_num").then(res => {
 //            console.log('t:', res)
 //            this.state.last_doc_num = (res || 0) + 1;
 //            execWhen(() => this.refs.doc_num).then(doc_num => {

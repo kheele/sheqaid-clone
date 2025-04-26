@@ -74,7 +74,7 @@ class Controls extends React.Component {
     }
 
     printImpl() {
-        return neonBinding.events.emit(this.path + "create/pdf", this.item.id);
+        return workers.emit(this.path + "create/pdf", this.item.id);
     }
 
     onSaveAsPDF(e, btn) {

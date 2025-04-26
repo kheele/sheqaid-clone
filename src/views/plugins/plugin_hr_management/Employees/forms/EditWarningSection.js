@@ -5,9 +5,10 @@ import Form from 'utils/Form';
 
 import {WarningControls} from "../../Warnings/forms/ProfileDialog";
 import EmployeeProfileSettings from "../../../../../utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class EditWarningSection extends React.Component {
+class EditWarningSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isEmployeeWarningViewers;
     pageKey = "EditWarningSection";
 

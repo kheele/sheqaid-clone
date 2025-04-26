@@ -14,9 +14,10 @@ import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
 import {updateEmployee} from "mutations/update";
 import NextOfKinSection from "./NextOfKinSection";
 import DependantSection from "./DependantSection";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class EditOptionalInfoSection extends React.Component {
+class EditOptionalInfoSection extends AEmployeeSection {
     pageKey = "EditOptionalInfoSection";
 
     //<editor-fold desc="constructor">
@@ -200,12 +201,12 @@ class EditOptionalInfoSection extends React.Component {
 
     //<editor-fold desc="onChangeEmployee">
     onChangeEmployee(el, val) {
-        execWhen(() => this.refs.supervisorDetails).then(supervisorDetails => {
+        execWhen(() => this.refs.supervisorDetailsContacts).then(supervisorDetailsContacts => {
             if (val && val.data) {
-                supervisorDetails.supervisor = val;
+                supervisorDetailsContacts.supervisor = val;
                 return;
             }
-            supervisorDetails.supervisor = null;
+            supervisorDetailsContacts.supervisor = null;
         });
     }
 
@@ -260,7 +261,7 @@ class EditOptionalInfoSection extends React.Component {
                         <SelectEmployeeInput name="supervisor" placeholder="Supervisor Name..."
                                              defaultValue={supervisor} className="col-lg-12 form-control"
                                              onChange={this.form.onChange}/>
-                        <SupervisorDetails ref="supervisorDetails" onChange={this.form.onChange}/>
+                        <SupervisorDetails ref="supervisorDetailsContacts" onChange={this.form.onChange}/>
                     </Row>
                     {EmployeeProfileSettings.isEmployeeLivingAddressViewers(item) && <Row
                         ref="residentialAddress"

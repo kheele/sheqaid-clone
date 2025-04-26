@@ -178,7 +178,7 @@ class Controls extends AControls {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "update", this.item.id, toJS(data)).then(res => {
+        workers.emit(this.path + "update", this.item.id, toJS(data)).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");

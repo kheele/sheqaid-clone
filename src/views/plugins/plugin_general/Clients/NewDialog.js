@@ -3,13 +3,14 @@ import {observer} from 'mobx-react';
 
 import Form from 'utils/Form';
 
-import {ClearableInput, ProfilePic, SelectSectorInput} from 'components/inputs';
+import {ClearableInput, ProfilePic} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {observable} from "mobx";
 import {insertClient} from "mutations/create";
+import NewSectorListTable from "../../../../components/FormTableComponents/NewSectorListTable";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -31,9 +32,9 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, label: value};
-            }),
+            // sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
+            //     return {value, label: value};
+            // }),
         },
     };
 
@@ -159,9 +160,11 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}>
-                <SelectSectorInput name="sector_list" placeholder="Sector(s)"
-                                   className="col-lg-12 form-control" onChange={this.form.onChange}
-                                   values={this.state.lists.sector_list} returnValue/>
+                <NewSectorListTable
+                    name="sector_list"
+                    className="col-lg-12"
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 rendered

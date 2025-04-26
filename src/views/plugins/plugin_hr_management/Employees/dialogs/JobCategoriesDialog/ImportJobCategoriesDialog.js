@@ -85,7 +85,7 @@ class Controls extends React.Component {
             if (res) {
                 progressDialog.open();
                 const filePath = await FileConverters.asDataUrl(res.path);
-                neonBinding.events.emit(this.path + "import/file", filePath).then(res => {
+                workers.emit(this.path + "import/file", filePath).then(res => {
 //                    console.log("data", res)
                     if (!res) {
                         infoDialog.open('An error occurred. Please try again');
@@ -136,7 +136,7 @@ class Controls extends React.Component {
             setTimeout(() => progressDialog.close());
         });
 
-        // neonBinding.events.emit(this.path + "import/create", toJS(list)).then(res => {
+        // workers.emit(this.path + "import/create", toJS(list)).then(res => {
         //     console.log("res", res)
         //     onSaved && onSaved(res);
         //     infoDialog.open(res.length +  " record(s) successfully saved.");

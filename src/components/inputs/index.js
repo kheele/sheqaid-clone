@@ -27,6 +27,7 @@ import SelectJobTasksInput from "./SelectJobTasksInput";
 import SelectApplicableRegulationsInput from "./SelectApplicableRegulationsInput";
 import SelectComplianceRequirementsInput from "./SelectComplianceRequirementsInput";
 import SelectSectorInput from "./SelectSectorInput";
+import SelectSectorPublicInput from "./SelectSectorPublicInput";
 import SelectDepartmentInput from "./SelectDepartmentInput";
 import SelectTeamInput from "./SelectTeamInput";
 import SelectEmployeeInput from "./SelectEmployeeInput";
@@ -107,6 +108,7 @@ export {
     SelectSiteInput,
     SelectDocumentCategoryInput,
     SelectSectorInput,
+    SelectSectorPublicInput,
     SelectJobObservationTypeInput,
     SelectJobPositionInput,
     SelectJobCategoryInput,

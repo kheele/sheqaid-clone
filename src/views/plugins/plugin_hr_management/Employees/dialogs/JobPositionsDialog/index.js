@@ -18,6 +18,7 @@ import ADialogTab from "views/ADialogTab";
 import {Tabs} from "components/tabs";
 import ActiveTab from "../ActiveTab";
 import RemovedTab from "../RemovedTab";
+import {listJobPosition} from "../../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -70,7 +71,7 @@ class JobPositionsDialog extends ADialogTab {
         } = filterData || {};
 
         return {
-            path: "job-positions",
+            listByLogged: listJobPosition,
             attrs: {
                 name,
                 job_category_id,

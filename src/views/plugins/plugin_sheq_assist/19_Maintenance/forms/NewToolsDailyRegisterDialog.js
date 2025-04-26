@@ -21,7 +21,7 @@ class NewToolsDailyRegisterDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -33,41 +33,45 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.onScanBarcode = this.onScanBarcode.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
         this.renderFilterNode = this.renderFilterNode.bind(this);
-        
+
         this.onClick = this.onClick.bind(this);
-        
+
         this.form = new Form();
     }
-    
-    onScanBarcode(){
-        
+
+    get action() {
+        return <React.Fragment><i className="fa fa-check"/>Select</React.Fragment>;
     }
 
-    onClick(e, btn){
+    onScanBarcode() {
+
+    }
+
+    onClick(e, btn) {
         const {list} = this;
         let idx = btn.props.idx;
         const id = this.refs.toolList.list[idx].id;
-        if(list.contains(id)){
+        if (list.contains(id)) {
             list.remove(id);
             btn.text("Select");
         } else {
             list.push(id);
             btn.text("Unselect");
         }
-        
+
         const node = btn.getDOMNode();
         const tr = node.parentNode.parentNode;
         tr.classList.toggle('selected');
-        if(tr.classList.contains('selected')){
+        if (tr.classList.contains('selected')) {
             tr.style.background = 'rgba(2, 168, 168, 0.2)';
         } else {
             tr.style.background = 'none';
         }
-        
+
     }
 
     onSubmit(e, btn, onSaved) {
@@ -85,7 +89,7 @@ class Controls extends React.Component {
             infoDialog.open('Team Supervisor Signature is required');
             return;
         }
-        
+
         let tool_list = this.list;
         if (tool_list.isEmpty()) {
             infoDialog.open('At least one tool is required');
@@ -97,9 +101,9 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             console.log("res", res)
-            if(onSaved) {
+            if (onSaved) {
                 res.forEach(onSaved);
             }
             infoDialog.open("Record successfully saved.");
@@ -109,7 +113,7 @@ class Controls extends React.Component {
             btn.text("Save").enabled();
         });
     }
-    
+
     renderLeftButtons() {
         return <div className="left-buttons pull-left">
             <Button key="buttonScanBarcode" className="btn btn-primary pull-right" onClick={this.onScanBarcode}>
@@ -120,16 +124,13 @@ class Controls extends React.Component {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="category" type="select" placeholder="Category..." className="fixed-flex min-w-300 form-control" onChange={onChange}/>
+            <ClearableInput name="category" type="select" placeholder="Category..."
+                            className="fixed-flex min-w-300 form-control" onChange={onChange}/>
             <ClearableInput name="name" type="text" placeholder="Name" className="form-control" onChange={onChange}/>
             <Button className="form-control btn btn-primary fixed-flex min-w-195" onClick={this.onScanBarcode}>
                 <i className="fa fa-barcode icon-left"/>Scan Barcode
             </Button>
         </div>;
-    }
-
-    get action() {
-        return <React.Fragment><i className="fa fa-check"/>Select</React.Fragment>;
     }
 
     render() {
@@ -138,19 +139,24 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <SelectTeamInput name="team" placeholder="Team..." required className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="store_keeper_signature" type="signature" placeholder="Store Keeper Signature" required className="col-lg-4 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="team_supervisor_signature" type="signature" placeholder="Team Supervisor Signature" required className="col-lg-4 form-control" onChange={this.form.onChange}/>
+                        <SelectTeamInput name="team" placeholder="Team..." required className="col-lg-4 form-control"
+                                         onChange={this.form.onChange}/>
+                        <ClearableInput name="store_keeper_signature" type="signature"
+                                        placeholder="Store Keeper Signature" required className="col-lg-4 form-control"
+                                        onChange={this.form.onChange}/>
+                        <ClearableInput name="team_supervisor_signature" type="signature"
+                                        placeholder="Team Supervisor Signature" required
+                                        className="col-lg-4 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="row sec-group warning-row">
-                        <p>Please Ensure That You <b>Scan</b> A Tool <b>Barcode</b> Using A <b>Mobile App</b>.</p> 
+                        <p>Please Ensure That You <b>Scan</b> A Tool <b>Barcode</b> Using A <b>Mobile App</b>.</p>
                     </div>
                 </div>
                 <div className="row">
                     <label>{Dates.getWeekday(date)} ({Dates.formatDateTime(date)})</label>
-                    <ToolList 
+                    <ToolList
                         ref="toolList"
                         pageTitle="Tools"
                         path={this.path}

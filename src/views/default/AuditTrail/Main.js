@@ -126,7 +126,7 @@ class Main extends React.Component {
         if (onCreateReportsOptions && printReportsType) {
             date_range.type = printReportsType;
         }
-        window.neonBinding.events.emit(this.props.path + 'export-excel', date_range).then(res => {
+        workers.emit(this.props.path + 'export-excel', date_range).then(res => {
             if (res === "EMPTY") {
                 infoDialog.open(<React.Fragment>
                     <p>There are no reports to generate from the date range you selected</p>

@@ -14,6 +14,7 @@ import {ClearableInput, SelectEmployeeInput,} from "components/inputs";
 import {updateEmployeeJobAppointment} from "mutations/update";
 import {findByIdOrgJobAppointmentsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {findByIdOrgJobAppointmentsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
+import {listEmployeeJobAppointment} from "../../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -57,7 +58,7 @@ class Dialog extends AEmployeeDocDialog {
             date,
         } = filterData || {};
         return {
-            path: 'structure-and-responsibility/job-appointments',
+            listByLogged: listEmployeeJobAppointment,
             notes,
             date,
         };

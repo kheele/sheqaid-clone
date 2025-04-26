@@ -108,7 +108,7 @@ class Controls extends React.Component {
                     const mainPdfDocBytes = await fetch(doc.dlUrls[0]).then(res => res.arrayBuffer());
                     const mainPdfDoc = await PDFDocument.load(mainPdfDocBytes);
 
-                    const newPdfDocBytes = await neonBinding.events.emit("file-utils", "toArrayBuffer", path);
+                    const newPdfDocBytes = await workers.emit("file-utils", "toArrayBuffer", path);
                     const newPdfDoc = await PDFDocument.load(newPdfDocBytes);
 
                     const pageLength = mainPdfDoc.getPages().length;
@@ -125,7 +125,7 @@ class Controls extends React.Component {
 //                    const newSrc = dataUriToUrl(newBase64Src);
 //                    console.log('newSrc', newSrc)
 
-                    neonBinding.events.emit(this.path + "update/merge-doc", employee.id, this.item.id, {
+                    workers.emit(this.path + "update/merge-doc", employee.id, this.item.id, {
                         doc,
                         base64: newBase64Src
                     }).then(res => {
@@ -527,7 +527,8 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <ContractDetails ref="contractDetailsTab" defaultValue={contract_details}/>
+                <ContractDetails ref="contractDetailsTab" defaultValue={contract_details}
+                                 embeddedEmployee={embeddedEmployee}/>
             </Row>
             <Row
                 rendered
@@ -604,8 +605,28 @@ class ContractDetails extends React.Component {
         this.form = new Form();
     }
 
+    get defaultStartDate() {
+        const {defaultValue, embeddedEmployee, onRefs} = this.props;
+        let start_date;
+        if (embeddedEmployee) {
+            const {employment_date} = embeddedEmployee.data || embeddedEmployee;
+            start_date = defaultValue && defaultValue.start_date || employment_date;
+        } else {
+            start_date = defaultValue && defaultValue.start_date;
+        }
+        if (!start_date && onRefs) {
+            const {optionalInfoSection} = onRefs();
+            if (optionalInfoSection) {
+                start_date = optionalInfoSection.formData.employment_date;
+            }
+        }
+        return start_date;
+    }
+
     render() {
-        const {defaultValue} = this.props;
+        const {defaultValue, embeddedEmployee} = this.props;
+        const {defaultStartDate} = this;
+
         return <>
             <label className="margin-b-0 w-full">Contract Terms</label>
             <ClearableInput name="contract_type" type="radio" placeholder="Contract Type"
@@ -613,7 +634,8 @@ class ContractDetails extends React.Component {
                             className="col-lg-12 form-control" onChange={this.form.onChange}
                             values={this.state.lists.contract_type} returnValue/>
             <ClearableInput name="start_date" type="date" placeholder="Start Date..."
-                            defaultValue={defaultValue && defaultValue.start_date} className="col-lg-6 form-control"
+                            defaultValue={defaultStartDate}
+                            className="col-lg-6 form-control"
                             onChange={this.form.onChange}/>
             <ClearableInput name="expiry_date" type="date" placeholder="End Date..."
                             defaultValue={defaultValue && defaultValue.expiry_date} className="col-lg-6 form-control"

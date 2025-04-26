@@ -15,7 +15,7 @@ import {insertEmployeeWorkPermit} from "mutations/create";
 class NewDialog extends ANewDialog {
     pageKey = "NewWorkPermitDialog";
     className = "ANewEmployeeDocDialog";
-    title = "Create Work Permit";
+    title = "Create Work Permit (Foreigners)";
 
     constructor(props) {
         super(props, style);
@@ -140,7 +140,7 @@ class Controls extends React.Component {
                 rendered
                 active
                 idx={1}
-                title="1. Work Permit Details"
+                title="1. Work Permit Details (Foreigners)"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >

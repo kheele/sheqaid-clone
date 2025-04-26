@@ -108,7 +108,7 @@ class Controls extends React.Component {
                     const mainPdfDocBytes = await fetch(doc.dlUrls[0]).then(res => res.arrayBuffer());
                     const mainPdfDoc = await PDFDocument.load(mainPdfDocBytes);
 
-                    const newPdfDocBytes = await neonBinding.events.emit("file-utils", "toArrayBuffer", path);
+                    const newPdfDocBytes = await workers.emit("file-utils", "toArrayBuffer", path);
                     const newPdfDoc = await PDFDocument.load(newPdfDocBytes);
 
                     const pageLength = mainPdfDoc.getPages().length;
@@ -125,7 +125,7 @@ class Controls extends React.Component {
 //                    const newSrc = dataUriToUrl(newBase64Src);
 //                    console.log('newSrc', newSrc)
 
-                    neonBinding.events.emit(this.path + "update/merge-doc", employee.id, this.item.id, {
+                    workers.emit(this.path + "update/merge-doc", employee.id, this.item.id, {
                         doc,
                         base64: newBase64Src
                     }).then(res => {

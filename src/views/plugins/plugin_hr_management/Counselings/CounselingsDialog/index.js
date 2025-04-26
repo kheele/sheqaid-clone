@@ -13,6 +13,7 @@ import {updateEmployeeCounselling} from "mutations/update";
 import {findByIdOrgCounselingsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCounselingsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeCounselling} from "mutations/exportExcel";
+import {listEmployeeCounselling} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -78,7 +79,7 @@ class Dialog extends AEmployeeDocDialog {
             reasons,
         } = filterData || {};
         return {
-            path: 'employees/docs/counsellings',
+            listByLogged: listEmployeeCounselling,
             responsible_person_id,
             types,
             reasons,

@@ -109,14 +109,7 @@ class ASectionSection extends React.Component {
         let item = list[sliderIndex];
         console.log('onView', sliderIndex, item)
 
-        let dialog;
-        if (type) {
-            dialog = this.refs.profileDialog.extraProp('type', type);
-        } else {
-            dialog = this.refs.profileDialog;
-        }
-
-        dialog.open(item);
+        this.refs.profileDialog.open(item);
     }
 
     //</editor-fold>
@@ -129,12 +122,7 @@ class ASectionSection extends React.Component {
             return infoDialog.open(`Maximum of ${this.maxList} items are allowed.`);
         }
 
-        let dialog;
-        if (type) {
-            dialog = this.refs.newDialog.extraProp('type', type);
-        } else {
-            dialog = this.refs.newDialog;
-        }
+        let dialog = this.refs.newDialog;
 
         if (this.isNewEmployee) {
             dialog.open().then(newItem => {
@@ -166,15 +154,8 @@ class ASectionSection extends React.Component {
             const {sliderIndex = 0} = this.refs.slider;
             let updateItem = newList[sliderIndex];
             console.log('onEdit', sliderIndex, updateItem)
-//
-            let dialog;
-            if (type) {
-                dialog = this.refs.editDialog.extraProp('type', type);
-            } else {
-                dialog = this.refs.editDialog;
-            }
 
-            dialog.open({data: updateItem}).then(editedItem => {
+            this.refs.editDialog.open({data: updateItem}).then(editedItem => {
                 if (editedItem) {
                     extendObservable(updateItem, editedItem);
                 }
@@ -185,14 +166,7 @@ class ASectionSection extends React.Component {
             console.log('onEdit', sliderIndex, updateItem)
             updateItem = {id: updateItem.id, data: updateItem};
 
-            let dialog;
-            if (type) {
-                dialog = this.refs.editDialog.extraProp('type', type);
-            } else {
-                dialog = this.refs.editDialog;
-            }
-
-            dialog.open(updateItem).then(editedItem => {
+            this.refs.editDialog.open(updateItem).then(editedItem => {
                 if (editedItem && editedItem.data) {
                     extendObservable(updateItem, editedItem.data);
                 }
@@ -305,13 +279,15 @@ class ASectionSection extends React.Component {
             </SliderWithChildren>
 
             {!this.isRemovedItem && <>
-                <NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
+                <NewDialog ref="newDialog" type={type} isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
                            onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
-                <EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
+                <EditDialog ref="editDialog" type={type} isNewEmployee={isNewEmployee}
+                            embeddedEmployee={embeddedEmployee}
                             onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>
             </>}
             {ProfileDialog && !isNewEmployee &&
-                <ProfileDialog ref="profileDialog" isNewEmployee={isNewEmployee} embeddedEmployee={embeddedEmployee}
+                <ProfileDialog ref="profileDialog" type={type} isNewEmployee={isNewEmployee}
+                               embeddedEmployee={embeddedEmployee}
                                onInsert={onInsert} onUpdate={onUpdate} listName={listName} item_id_key={item_id_key}/>}
         </>;
     }

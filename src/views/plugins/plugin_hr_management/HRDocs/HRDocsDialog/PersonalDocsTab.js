@@ -67,7 +67,12 @@ class Tab extends AList {
                 text: 'ID/Passports',
                 Comp: IDOrPassportDialog
             },
-            {key: 'WorkPermits', listName: 'work_permit_list', text: 'Work Permits', Comp: WorkPermitsDialog},
+            {
+                key: 'WorkPermits',
+                listName: 'work_permit_list',
+                text: 'Work Permits (Foreigners)',
+                Comp: WorkPermitsDialog
+            },
         ].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, override}) => {
             const c = Permissions.allowMod(key) || override ? "allowed" : "disallowed";
             const className = fontSizeClass + c + " btn btn-primary pull-right _888";

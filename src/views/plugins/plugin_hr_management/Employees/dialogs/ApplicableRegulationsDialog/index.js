@@ -83,7 +83,7 @@ class ApplicableRegulationDialog extends ADialogList {
         } = filterData || {};
 
         return {
-            onList: listApplicableRegulations,
+            listByLogged: listApplicableRegulations,
             attrs: {
                 code,
                 desc,

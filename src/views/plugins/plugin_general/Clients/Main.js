@@ -44,8 +44,17 @@ class Main extends React.Component {
         style.unuse();
     }
 
-    onLoadList(page, isNew) {
-        return listClients();
+    onLoadList(params = {}) {
+        const {page, lastItem, filterData, filtered, isNew} = params;
+        const {
+            name,
+        } = filterData || {};
+
+        return listClients({
+            name,
+            //
+            offset: isNew ? 0 : this.refs.root.list.length,
+        });
     }
 
     onRemoved(item) {

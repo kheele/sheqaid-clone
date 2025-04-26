@@ -145,7 +145,7 @@ class Controls extends React.Component {
     render() {
         const {isConsultant, hasProjects, isContractor} = storage.is;
         const {
-            props: {dialog: {props: {titlePlural, renderExportFilterNode, addHRFilters}}},
+            props: {dialog: {props: {titlePlural, renderExportFilterNode, addHRFilters, excludeEmployee}}},
             title,
             state: {excelUrl, loadStatus}
         } = this;
@@ -173,22 +173,37 @@ class Controls extends React.Component {
                         </React.Fragment>}
                         <Fields ref="fields">
                             {addHRFilters && <>
-                                <SelectDepartmentInput name="department" placeholder="Department..."
-                                                       className="col-lg-12 form-control" parentClassName="margin-0"
-                                                       onChange={this.form.onChange}
-                                                       addButton={false}/>
-                                <SelectJobPositionInput name="job_position" placeholder="Employee Job Position..."
-                                                        className="col-lg-12 form-control" parentClassName="margin-0"
-                                                        onChange={this.form.onChange}
-                                                        addButton={false}/>
-                                <SelectTeamInput name="team" placeholder="Team..." className="col-lg-12 form-control"
-                                                 parentClassName="margin-0"
-                                                 onChange={this.form.onChange}
-                                                 addButton={false}/>
-                                <SelectEmployeeInput name="employee" placeholder="Employee..."
-                                                     className="col-lg-12 margin-0 form-control"
-                                                     onChange={this.form.onChange}
-                                                     addButton={false}/>
+                                <SelectDepartmentInput
+                                    name="department"
+                                    placeholder="Department..."
+                                    className="col-lg-12 form-control"
+                                    parentClassName="margin-0"
+                                    onChange={this.form.onChange}
+                                    addButton={false}
+                                />
+                                <SelectJobPositionInput
+                                    name="job_position"
+                                    placeholder="Employee Job Position..."
+                                    className="col-lg-12 form-control"
+                                    parentClassName="margin-0"
+                                    onChange={this.form.onChange}
+                                    addButton={false}
+                                />
+                                <SelectTeamInput
+                                    name="team"
+                                    placeholder="Team..."
+                                    className="col-lg-12 form-control"
+                                    parentClassName="margin-0"
+                                    onChange={this.form.onChange}
+                                    addButton={false}
+                                />
+                                {!excludeEmployee && <SelectEmployeeInput
+                                    name="employee"
+                                    placeholder="Employee..."
+                                    className="col-lg-12 margin-0 form-control"
+                                    onChange={this.form.onChange}
+                                    addButton={false}
+                                />}
                                 <hr className="pull-left no-border bg-ddd h-2"/>
                             </>}
                             {renderExportFilterNode && renderExportFilterNode.call(this, this.form.onChange)}

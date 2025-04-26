@@ -114,7 +114,7 @@ class Logout {
         }
 
         return this.signOutOnlyAuth().then(() => {
-            neonBinding.events.emit(path + "logout").then(res => {
+            workers.emit(path + "logout").then(res => {
                 console.log("res", res)
                 if (res) {
                     infoDialog.open("You have successfully logged out.");

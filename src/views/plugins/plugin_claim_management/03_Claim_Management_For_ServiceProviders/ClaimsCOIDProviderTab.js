@@ -8,13 +8,7 @@ import APageListReadWrite from "../../../APageListReadWrite";
 import NavItem from 'components/navs/NavItem';
 import Popover from 'components/popovers/Popover';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
-import {
-    ActionsButton,
-    Button,
-    ClearableInput,
-    SelectEmployeeInput,
-    SelectJobPositionInput
-} from 'components/inputs';
+import {ActionsButton, Button, ClearableInput, SelectEmployeeInput, SelectJobPositionInput} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import {getDocsStatus, getWClStatus} from '../ClaimFuns';
@@ -64,9 +58,9 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
         super(props, style);
 
         this.path = props.path + 'claims/coid-provider/';
-        
+
         this.onExport = this.onExport.bind(this);
-        
+
         this.onClickChat = this.onClickChat.bind(this);
         this.onAddClaimNum = this.onAddClaimNum.bind(this);
         this.onChangeClaimStatus = this.onChangeClaimStatus.bind(this);
@@ -77,62 +71,65 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
         this.onSelectStatus = this.onSelectStatus.bind(this);
         this.renderLeftButtons = this.renderLeftButtons.bind(this);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onExport">
     onExport(e, btn) {
         this.refs.exportClaimsDialog.open();
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onClickChat">
     onClickChat(btn) {
         const {idx} = btn.props;
         const {list} = this.refs.root;
         const item = list[idx];
-        
+
         chatBoxClaims.setActiveItem(item, btn, newMsg => {
             const {id, data: {message_list_provider}} = item;
             const path = "plugin_sheq_assist/COIDA_Management/claims/client/chat";
-            neonBinding.events.emit(path, id, message_list_provider).then(res => {
+            workers.emit(path, id, message_list_provider).then(res => {
                 console.log("claim chat res", res)
             });
         });
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onAddClaimNum">
     onAddClaimNum(e, el) {
         const {idx} = el.props;
         const {list} = this.refs.root;
         const item = list[idx];
         const {id, data: {wcl_2, wcl_4}} = item;
-        if(!wcl_2 || Object.keys(wcl_2).isEmpty()) {
+        if (!wcl_2 || Object.keys(wcl_2).isEmpty()) {
             infoDialog.open('W.Cl.2 is missing');
             return;
         }
-        if(!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
+        if (!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
             infoDialog.open('W.Cl.4 is missing');
             return;
         }
-        
+
         inputDialog.open("Add Claim Number").then(text => {
-            if(!text) return;
-            if(text.replaceAll(' ', '').isEmpty()) {
+            if (!text) return;
+            if (text.replaceAll(' ', '').isEmpty()) {
                 infoDialog.open('Claim Number is required');
                 return;
             }
-            
+
             progressDialog.open();
-            neonBinding.events.emit(`${this.path}add-claim-number`, id, text).then(res => {
+            workers.emit(`${this.path}add-claim-number`, id, text).then(res => {
                 console.log("res", res)
-                if(res === 'NOT_FOUND') {
+                if (res === 'NOT_FOUND') {
                     infoDialog.open("The claim no longer exist.");
-                } else if(res === 'ALREADY_REMOVED') {
+                } else if (res === 'ALREADY_REMOVED') {
                     infoDialog.open("The company has already been removed.");
-                } else if(res === 'UPDATE_ERROR') {
+                } else if (res === 'UPDATE_ERROR') {
                     infoDialog.open("An error occurred. Please try again.");
-                } else if(res === true) {
+                } else if (res === true) {
                     item.data.claim_number = text;
                     setTimeout(() => {
                         list.removeIf(v => v.id === item.id);
@@ -147,25 +144,26 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             });
         });
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onChangeClaimStatus, renderClaimStatusItem, onSelectClaimStatus">
     onChangeClaimStatus(e, el) {
         const {idx} = el.props;
         this.selectedClaimIdx = idx;
         const item = this.refs.root.list[idx];
         const {id, data: {wcl_2, wcl_4}} = item;
-        if(!wcl_2 || Object.keys(wcl_2).isEmpty()) {
+        if (!wcl_2 || Object.keys(wcl_2).isEmpty()) {
             infoDialog.open('W.Cl.2 is missing');
             return;
         }
-        if(!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
+        if (!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
             infoDialog.open('W.Cl.4 is missing');
             return;
         }
-        
+
         const {lists: {claim_status: list}} = this.selfState;
-        
+
         this.refs.popover.settings({
             style: {width: 'auto', minWidth: 200},
             isDialog: true,
@@ -177,27 +175,27 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             </div>
         }).open();
     }
-    
+
     renderClaimStatusItem(item, n) {
         return <NavItem key={n} idx={n} onClick={this.onSelectClaimStatus} title={item}/>;
     }
-    
+
     onSelectClaimStatus(e, elem) {
         const {title} = elem.props;
         const {list} = this.refs.root;
         const item = list[this.selectedClaimIdx];
         const {id, data: {wcl_2, wcl_4}} = item;
-        
+
         progressDialog.open();
-        neonBinding.events.emit(`${this.path}claim-status`, id, title).then(res => {
+        workers.emit(`${this.path}claim-status`, id, title).then(res => {
             console.log("res", res)
-            if(res === 'NOT_FOUND') {
+            if (res === 'NOT_FOUND') {
                 infoDialog.open("The claim no longer exist.");
-            } else if(res === 'ALREADY_REMOVED') {
+            } else if (res === 'ALREADY_REMOVED') {
                 infoDialog.open("The company has already been removed.");
-            } else if(res === 'UPDATE_ERROR') {
+            } else if (res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
-            } else if(res === true) {
+            } else if (res === true) {
                 item.data.claim_status = title;
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
@@ -212,25 +210,26 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             progressDialog.close();
         });
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="onChangeStatus, renderStatusItem, onSelectStatus">
     onChangeStatus(e, el) {
         const {idx} = el.props;
         this.selectedClaimIdx = idx;
         const item = this.refs.root.list[idx];
         const {id, data: {wcl_2, wcl_4}} = item;
-        if(!wcl_2 || Object.keys(wcl_2).isEmpty()) {
+        if (!wcl_2 || Object.keys(wcl_2).isEmpty()) {
             infoDialog.open('W.Cl.2 is missing');
             return;
         }
-        if(!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
+        if (!wcl_4 || (Object.keys(wcl_4).isEmpty() && !wcl_4.external_doc)) {
             infoDialog.open('W.Cl.4 is missing');
             return;
         }
-        
+
         const {lists: {status: list}} = this.selfState;
-        
+
         this.refs.popover.settings({
             style: {width: 'auto', minWidth: 200},
             isDialog: true,
@@ -242,27 +241,27 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             </div>
         }).open();
     }
-    
+
     renderStatusItem(item, n) {
         return <NavItem key={n} idx={n} onClick={this.onSelectStatus} title={item}/>;
     }
-    
+
     onSelectStatus(e, elem) {
         const {title} = elem.props;
         const {list} = this.refs.root;
         const item = list[this.selectedClaimIdx];
         const {id, data: {wcl_2, wcl_4}} = item;
-        
+
         progressDialog.open();
-        neonBinding.events.emit(`${this.path}status`, id, title).then(res => {
+        workers.emit(`${this.path}status`, id, title).then(res => {
             console.log("res", res)
-            if(res === 'NOT_FOUND') {
+            if (res === 'NOT_FOUND') {
                 infoDialog.open("The claim no longer exist.");
-            } else if(res === 'ALREADY_REMOVED') {
+            } else if (res === 'ALREADY_REMOVED') {
                 infoDialog.open("The company has already been removed.");
-            } else if(res === 'UPDATE_ERROR') {
+            } else if (res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
-            } else if(res === true) {
+            } else if (res === true) {
                 item.data.status = title;
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
@@ -277,26 +276,28 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             progressDialog.close();
         });
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderLeftButtons">
     renderLeftButtons() {
         const {isContractorView} = storage.is;
-        
+
 //        const {permissions_other} = storage.loggedUser.user.data;
 //        //
 //        const permissions_other_Medicals = (permissions_other || []).find(v => v.key === "Medicals");
 //        const c_Medicals = Permissions.allow(permissions_other_Medicals) ? "allowed" : "disallowed";
-        
+
 //        const writable = storage.is.isContractor || !isContractorView;
-	return <div className="left-buttons pull-left">
+        return <div className="left-buttons pull-left">
             <Button className="btn btn-primary pull-right" onClick={this.onExport}>
                 Export
             </Button>
-	</div>;
+        </div>;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderPopoverOptions">
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const item = this.refs.root.list[idx];
@@ -307,26 +308,36 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
         } = item;
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            <hr />
-            <NavItem idx={idx} onClick={this.onAddClaimNum} faIconLeft="plus" title={`${claim_number ? 'Edit' : 'Add'} Claim Number`}/>
-            <hr />
+            <hr/>
+            <NavItem idx={idx} onClick={this.onAddClaimNum} faIconLeft="plus"
+                     title={`${claim_number ? 'Edit' : 'Add'} Claim Number`}/>
+            <hr/>
             <NavItem idx={idx} onClick={this.onChangeClaimStatus} faIconLeft="plus" title="Change Claim Status"/>
             <NavItem idx={idx} onClick={this.onChangeStatus} faIconLeft="plus" title="Change Status"/>
         </Options>;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderFilterNodeFirst">
     renderFilterNodeFirst(onChange) {
         return <React.Fragment>
-            <SelectEmployeeInput name="employee" placeholder="Employee..." required className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            <SelectJobPositionInput name="occupation" placeholder="Occupation..." required className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
-            <ClearableInput name="status" type="select" placeholder="Status..." className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange} values={this.state.lists.status} returnValue/>
-            <ClearableInput name="claim_status" type="select" placeholder="Claim Status..." className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange} values={this.state.lists.claim_status} returnValue/>
+            <SelectEmployeeInput name="employee" placeholder="Employee..." required
+                                 className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}/>
+            <SelectJobPositionInput name="occupation" placeholder="Occupation..." required
+                                    className="col-lg-4 col-sm-6 col-xs-12 form-control margin-b-10"
+                                    onChange={onChange}/>
+            <ClearableInput name="status" type="select" placeholder="Status..."
+                            className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
+                            values={this.state.lists.status} returnValue/>
+            <ClearableInput name="claim_status" type="select" placeholder="Claim Status..."
+                            className="col-lg-2 col-sm-6 col-xs-12 form-control margin-b-10" onChange={onChange}
+                            values={this.state.lists.claim_status} returnValue/>
         </React.Fragment>;
     }
+
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderTHead">
     renderTHead() {
         return <THead>
@@ -346,25 +357,26 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             <div className="td fixed-flex padding-l-0 padding-r-0 min-w-60"></div>
         </THead>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="renderItem">
     renderItem(n, onClick) {
         const item = this.refs.root.list[n];
         const {
-            id, 
+            id,
             data: {
-                created_at, 
+                created_at,
                 client, project, site,
                 //
-                employee, employee_id, 
+                employee, employee_id,
                 claim_number,
                 accident_date,
                 //
-                wcl_2 = {}, 
-                wcl_4 = {}, 
-                wcl_5_list = [], 
-                wcl_6 = {}, 
+                wcl_2 = {},
+                wcl_4 = {},
+                wcl_5_list = [],
+                wcl_6 = {},
                 annexture_1 = {},
                 //
                 ref_num,
@@ -373,10 +385,10 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
                 message_list_provider = []
             }
         } = item;
-        
+
         const {date_resumed_work} = wcl_2;
         console.log('ClaimsCOIDProvider', toJS(item))
-        
+
         return <TRow key={"item-" + n} className="w-full">
             <div className="td fixed-flex min-w-30 padding-0">
                 <ChatBtn idx={n} item={item} onClick={this.onClickChat}/>
@@ -391,9 +403,9 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             <div className="td fixed-flex min-w-110">{status || 'N/A'}</div>
             <div className="td fixed-flex min-w-140">{claim_status || 'N/A'}</div>
             <div className="td w-auto">{client ? (client.name || client.data.name) : 'N/A'}</div>
-            <AsyncTD 
-                title="Employee Name" 
-                defaultValue={employee} 
+            <AsyncTD
+                title="Employee Name"
+                defaultValue={employee}
                 renderer={v => `${v.lname || v.data.lname} ${v.fname || v.data.fname}`}
                 className="w-auto"
             />
@@ -401,15 +413,16 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             <div className="td fixed-flex grid-1 min-w-150 padding-t-3">{getDocsStatus(item)}</div>
             <div className="td fixed-flex grid-2 min-w-160 padding-t-3">{getWClStatus(item)}</div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}
@@ -426,12 +439,13 @@ class ClaimsCOIDProviderTab extends AClaimsTab {
             renderItem={this.renderItem}>
             <ConfirmDialog ref="removeDialog"/>
             <Popover key="popover" ref="popover"/>
-            
+
             <ProfileClaimsCOIDProviderDialog ref="profileDialog"/>
-            
+
             <ExportClaimsDialog ref="exportClaimsDialog"/>
         </APageListReadWrite>;
     }
+
     // </editor-fold>
 }
 

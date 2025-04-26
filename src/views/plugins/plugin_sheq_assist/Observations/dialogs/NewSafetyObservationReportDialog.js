@@ -4,12 +4,7 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {
-    ClearableInput,
-    PhotoUploadButton,
-    SelectEmployeeInput,
-    SelectSiteInput
-} from 'components/inputs';
+import {ClearableInput, PhotoUploadButton, SelectEmployeeInput, SelectSiteInput} from 'components/inputs';
 import ANewDialog from 'components/dialogs/ANewDialog';
 
 import style from "./NewSafetyObservationReportDialog.lazy.css";
@@ -24,7 +19,7 @@ class NewSafetyObservationReportDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -33,13 +28,11 @@ class Controls extends React.Component {
     path = "plugin_sheq_assist/21_Internal_Audit/safety-observations-report/";
 
     @observable
-    state = {
-        
-    };
+    state = {};
 
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -91,21 +84,25 @@ class Controls extends React.Component {
             site, observation_type, location, desc, causes, corrective_action, observed_team_member, signature, photo
         } = form.data;
         const data = {
-            site: {id: site.id, name: site.data.name}, observation_type, 
-            location, desc, causes, corrective_action, 
-            observed_team_member: {id: observed_team_member.id, fname: observed_team_member.data.fname, lname: observed_team_member.data.lname},
+            site: {id: site.id, name: site.data.name}, observation_type,
+            location, desc, causes, corrective_action,
+            observed_team_member: {
+                id: observed_team_member.id,
+                fname: observed_team_member.data.fname,
+                lname: observed_team_member.data.lname
+            },
             signature: JSON.stringify(signature),
             photo: photo.path
         };
-        
-        if(site) {
+
+        if (site) {
             const {id, data: {name}} = site;
             data.site = {id, name};
         }
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully saved.");
@@ -122,26 +119,36 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row row-details col-lg-4">
                     <div className="row sec-group">
-                        {hasProjects && <SelectSiteInput name="site" placeholder="Site..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                        <ClearableInput name="observation_type" type="text" placeholder="Observation Type" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="location" type="text" placeholder="Location Of Observation *" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        {hasProjects && <SelectSiteInput name="site" placeholder="Site..." required
+                                                         className="col-lg-12 form-control"
+                                                         onChange={this.form.onChange}/>}
+                        <ClearableInput name="observation_type" type="text" placeholder="Observation Type" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="location" type="text" placeholder="Location Of Observation *" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <div className="row sec-group">
-                        <ClearableInput name="desc" type="textarea" placeholder="Observation Description" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="desc" type="textarea" placeholder="Observation Description" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <div className="row sec-group">
-                        <ClearableInput name="causes" type="text" placeholder="Causes" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="corrective_action" type="text" placeholder="Corrective Action" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <SelectEmployeeInput name="observed_team_member" placeholder="Observed Team Member..." required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="causes" type="text" placeholder="Causes" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="corrective_action" type="text" placeholder="Corrective Action" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <SelectEmployeeInput name="observed_team_member" placeholder="Observed Team Member..." required
+                                             className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                     <div className="row sec-group">
-                        <ClearableInput name="signature" type="signature" placeholder="Signature" required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="signature" type="signature" placeholder="Signature" required
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
                 <div className="row row-photo col-lg-8 pull-right h-full">
                     <label>Photo Of The Observation</label>
                     <div className="row sec-group">
-                        <PhotoUploadButton name="photo" buttonTitle="Upload Photo" className="col-lg-12" onChange={this.form.onChange}/>
+                        <PhotoUploadButton name="photo" buttonTitle="Upload Photo" className="col-lg-12"
+                                           onChange={this.form.onChange}/>
                     </div>
                 </div>
             </div>

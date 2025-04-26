@@ -425,7 +425,7 @@ const indexedStorage = window.indexedStorage = new StorageCreator({name: "sheqai
     indexedStorage.orphanedUploadedDocs.findAll().then(list => {
         return execWhen(() => storage.is.isLoggedIn).then(() => {
             return Promise.all(list.map(async id => {
-                return await neonBinding.events.emit("default/docs/doc/remove", id);
+                return await workers.emit("default/docs/doc/remove", id);
             })).then(list => {
                 return indexedStorage.orphanedUploadedDocs.clear();
             });

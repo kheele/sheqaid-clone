@@ -56,7 +56,7 @@ const workers = {
                     //                        infoDialog.open('The request took too long.');
                 });
                 // reject(new Error('(' + evt + ')' + ' The request took too long'));
-            }, 60000);
+            }, 300000);
 
             // eslint-disable-next-line no-shadow
             const send = (evt, args) => {
@@ -157,7 +157,3 @@ const workers = {
 // </editor-fold>
 
 window.workers = workers;
-window.firebaseBinding = {
-    events: workers
-};
-window.neonBinding = window.firebaseBinding;

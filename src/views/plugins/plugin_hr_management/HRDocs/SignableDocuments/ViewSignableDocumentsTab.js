@@ -25,7 +25,8 @@ class WorkPermitsTab extends React.Component {
         const {data: {created_at, date, expiry_date, notes, doc}} = item;
 
         return <div className="row item-wrapper padding-t-10 h-full">
-            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Work Permit Details</label>
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Work Permit Details
+                (Foreigners)</label>
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Date" name="date" type="date" value={date} className="col-lg-6"/>
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}
@@ -69,10 +70,10 @@ class WorkPermitsTab extends React.Component {
             <div className="controls-wrapper">
                 <div className="controls pos-relative padding-0">
                     {!storage.is.isEmployee && <Button className="btn btn-primary btn-create" onClick={this.onCreate}>
-                        Create Work Permit
+                        Create Work Permit (Foreigners)
                     </Button>}
                     {list.isEmpty() &&
-                        <p className="no-results fixed-center font-size-20">No Work Permits Available</p>}
+                        <p className="no-results fixed-center font-size-20">No Work Permits (Foreigners) Available</p>}
                     {!list.isEmpty() && <Slider
                         name="work-permit-carousel"
                         renderer={this.renderItem}

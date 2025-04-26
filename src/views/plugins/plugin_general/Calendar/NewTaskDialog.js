@@ -160,7 +160,7 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             res.start = new Date(res.data.start);
             res.end = new Date(res.data.end);
 

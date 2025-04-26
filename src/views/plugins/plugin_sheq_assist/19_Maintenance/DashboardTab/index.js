@@ -119,7 +119,7 @@ class ADashboard extends React.Component {
 
     update() {
         this.state.loadStatus = "LOADING";
-        neonBinding.events.emit(`${this.props.path}${this.path}/list`).then(list => {
+        workers.emit(`${this.props.path}${this.path}/list`).then(list => {
             this.state.list = list;
             this.state.loadStatus = "SUCCESS";
         }).catch(err => {

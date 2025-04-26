@@ -48,7 +48,7 @@ class LeavesTab extends React.Component {
                 <ProfileField title="Leave Due To" name="due_to" value={due_to} className="col-lg-6"/>
                 <ProfileField title="Leave Type" name="type" value={type} type="select" className="col-lg-6"/>
                 <ProfileField title="Leave Start Date" name="date" type="date" value={date} className="col-lg-6"/>
-                <ProfileField title="Leave Expiry Date" name="expiry_date" type="date" value={expiry_date}
+                <ProfileField title="Leave End Date" name="expiry_date" type="date" value={expiry_date}
                               className="col-lg-6"/>
                 <ProfileField title="No. Of Days Booked" name="days_booked" value={days_booked} className="col-lg-12"/>
                 <ProfileField title="Reason Of Leave" name="reason" value={reason} type="textarea"

@@ -19,7 +19,7 @@ class SupportDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -27,12 +27,11 @@ class SupportDialog extends ANewDialog {
 class Controls extends React.Component {
     path = "support/";
 
-    @observable state = {
-    };
-    
+    @observable state = {};
+
     constructor() {
         super();
-        
+
         this.form = new Form();
     }
 
@@ -61,30 +60,34 @@ class Controls extends React.Component {
         console.log(data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "create", data).then(res => {
+        workers.emit(this.path + "create", data).then(res => {
             infoDialog.open(<React.Fragment>
-                        <p>Message successfully sent!</p> 
-                        <p>We will get back to you as soon as possible.</p>    
-                    </React.Fragment>);
-                infoDialog.close(5000);
+                <p>Message successfully sent!</p>
+                <p>We will get back to you as soon as possible.</p>
+            </React.Fragment>);
+            infoDialog.close(5000);
         }).finally(() => {
             btn.text("Save").enabled();
         });
     }
-   
+
     render() {
         return (<div className="controls-wrapper">
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <ClearableInput name="fname" type="text" placeholder="First Name" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="lname" type="text" placeholder="Last Name" className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput name="email" type="email" placeholder="Email Address" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="fname" type="text" placeholder="First Name"
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="lname" type="text" placeholder="Last Name"
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="email" type="email" placeholder="Email Address"
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="row sec-group">
-                        <ClearableInput name="message" type="textarea" placeholder="Message" className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                        <ClearableInput name="message" type="textarea" placeholder="Message"
+                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
                     </div>
                 </div>
             </div>

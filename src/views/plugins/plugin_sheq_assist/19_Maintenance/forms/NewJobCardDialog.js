@@ -2,18 +2,12 @@
 import React from "react";
 import {observer} from 'mobx-react';
 
-import {ClearableInput, SelectAssetInput, SelectAssetTypeInput, UploadButton} from 'components/inputs';
+import {ClearableInput, SelectAssetInput, SelectAssetTypeInput} from 'components/inputs';
 import {AControls, FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewJobCardDialog.lazy.css";
-import {
-    NewPartItemListTable,
-    NewPartItemOrderApprovedListTable,
-    NewPartItemOrderOrderedListTable,
-    NewPartItemOrderReceivedListTable,
-    NewPartItemOrderRequestsListTable
-} from "components/FormTableComponents";
+import {NewPartItemListTable, NewPartItemOrderRequestsListTable} from "components/FormTableComponents";
 import {execWhen} from "utils/Utils";
 // </editor-fold>
 
@@ -54,6 +48,7 @@ class Controls extends AControls {
     get title() {
         return 'Create Job Card';
     }
+
     // </editor-fold>
 
     //<editor-fold desc="onChanges">
@@ -81,6 +76,7 @@ class Controls extends AControls {
     onChangeOrderReceivedList(el, val) {
 
     }
+
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onNext">
@@ -110,13 +106,13 @@ class Controls extends AControls {
 
         console.log(data)
 
-        if(this.props.dialog.props.saveLater) {
+        if (this.props.dialog.props.saveLater) {
             onSaved(data);
             this.props.close();
         } else {
             btn.text("Saving...").disabled();
 
-            neonBinding.events.emit(this.path + "create", data).then(res => {
+            workers.emit(this.path + "create", data).then(res => {
                 console.log("res", res)
                 onSaved && onSaved(res);
                 infoDialog.open("Record successfully saved.");
@@ -127,6 +123,7 @@ class Controls extends AControls {
             });
         }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -160,9 +157,11 @@ class Controls extends AControls {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <ClearableInput ref="job_instructions" name="job_instructions" type="textarea" placeholder="Job Instructions"
+                <ClearableInput ref="job_instructions" name="job_instructions" type="textarea"
+                                placeholder="Job Instructions"
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput ref="additional_work_done" name="additional_work_done" type="textarea" placeholder="Additional Work Done"
+                <ClearableInput ref="additional_work_done" name="additional_work_done" type="textarea"
+                                placeholder="Additional Work Done"
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
@@ -182,10 +181,12 @@ class Controls extends AControls {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <NewPartItemOrderRequestsListTable ref='time_management_list' name='time_management_list' onChange={this.form.onChange}/>
+                <NewPartItemOrderRequestsListTable ref='time_management_list' name='time_management_list'
+                                                   onChange={this.form.onChange}/>
             </Row>
         </FormControls>;
     }
+
     // </editor-fold>
 }
 

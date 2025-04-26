@@ -19,3 +19,5 @@ export const listCompanyCategories = list("companies/categories");
 export const listManuals = list("manuals");
 export const listPlugins = list("plugins");
 export const listPermissionOtherKeys = list("permissions/other-keys");
+
+export const listSectorsPublic = list("sectors/public");

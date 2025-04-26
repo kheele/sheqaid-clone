@@ -1,8 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import Chip from "@material-ui/core/Chip";
-import {Grid} from "@material-ui/core";
 
 import Form from 'utils/Form';
 
@@ -12,7 +10,7 @@ import {FormControls, Row} from 'components/FormComponents';
 
 import style from "./ProfileDialog.lazy.css";
 import {updateClient} from "mutations/update";
-import {NewProjectListTable, NewSiteListTable} from "components/FormTableComponents";
+import {NewProjectListTable, NewSectorListTable, NewSiteListTable} from "components/FormTableComponents";
 import {findByIdClient} from "mutations/findById";
 
 @observer
@@ -110,15 +108,12 @@ class Controls extends React.Component {
                 idx={2}
                 title="Sector(s)"
             >
-                <ProfileField
+                <NewSectorListTable
+                    title="Sectors"
                     name="sector_list"
-                    title="Sector(s)"
-                    value={sector_list}
-                    renderer={v => (<Grid container spacing={1} columns={4}>{
-                        v.map(({name}) => <Grid item><Chip label={name} size="small"/></Grid>)}
-                    </Grid>)
-                    }
-                    className="col-lg-12"/>
+                    defaultValue={sector_list}
+                    readonly
+                />
             </Row>
             <Row
                 activeAlways

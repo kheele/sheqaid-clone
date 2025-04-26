@@ -260,7 +260,7 @@ class Controls extends ALoginControls {
 
         progressDialog.open();
 
-        neonBinding.events.emit(this.path + "login", data).then(res => {
+        workers.emit(this.path + "login", data).then(res => {
             console.log(this.path + "login res", res);
             if (!res) return res;
 

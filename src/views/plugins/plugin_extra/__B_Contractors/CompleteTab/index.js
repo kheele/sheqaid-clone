@@ -72,7 +72,7 @@ class CompleteTab extends React.Component {
         //     const {list} = this.refs.root;
         // questionnairesOnUpdate(list, {updateVal, data});
         // })*/;
-//         this.onPromise = neonBinding.events.on(`${this.props.path}questionnaires/onUpdate`, ({updateVal, data}) => {
+//         this.onPromise = workers.on(`${this.props.path}questionnaires/onUpdate`, ({updateVal, data}) => {
 // //            console.log(`${this.props.path}questionnaires/onUpdate`, updateVal, data)
 //             const {list} = this.refs.root;
 //             questionnairesOnUpdate(list, {updateVal, data});
@@ -81,7 +81,7 @@ class CompleteTab extends React.Component {
 
     componentWillUnmount() {
         style.unuse();
-        // neonBinding.events.off(`${this.props.path}questionnaires/onUpdate`, this.onPromise);
+        // workers.off(`${this.props.path}questionnaires/onUpdate`, this.onPromise);
     }
 
     //</editor-fold>

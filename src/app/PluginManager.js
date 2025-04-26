@@ -26,21 +26,21 @@ class Manager {
         this.getPluginsByModules = this.getPluginsByModules.bind(this);
         this.updateModules = this.updateModules.bind(this);
 
-        neonBinding.events.on("plugin_manager/onCreated", item => {
+        workers.on("plugin_manager/onCreated", item => {
             let {modules = []} = item.data;
             modules.sort(onSortModule);
             const {list} = this.dataState;
             list.push(item);
             console.log('plugin_manager/onCreated', item)
         });
-        neonBinding.events.on("plugin_manager/onUpdated", item => {
+        workers.on("plugin_manager/onUpdated", item => {
             const {modules = []} = item.data;
             modules.sort(onSortModule);
             const {list} = this.dataState;
             list.replaceIf(item, v => v.id === item.id);
             console.log('plugin_manager/onUpdated', item)
         });
-        neonBinding.events.on("plugin_manager/onRemoved", item => {
+        workers.on("plugin_manager/onRemoved", item => {
             const {list} = this.dataState;
             list.removeIf(v => v.id === item.id);
             console.log('plugin_manager/onRemoved', item)

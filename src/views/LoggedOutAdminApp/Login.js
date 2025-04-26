@@ -61,7 +61,7 @@ class Login extends React.Component {
     // <editor-fold defaultstate="collapsed" desc="onAutoLogging">
     onAutoLogging() {
         progressDialog.open("Logging you in. Please wait...");
-        neonBinding.events.emit("admin/users/accounts/login-auto").then(user => {
+        workers.emit("admin/users/accounts/login-auto").then(user => {
             if (!user || isString(user)) {
                 this.show();
                 infoDialog.open("An error occurred while trying to automatically login you in.");

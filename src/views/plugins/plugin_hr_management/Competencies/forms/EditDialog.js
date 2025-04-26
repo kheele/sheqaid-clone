@@ -7,7 +7,7 @@ import {CircularProgress} from "@mui/material";
 import Form from 'utils/Form';
 import {ShouldUpdate} from 'utils/Utils';
 
-import {ClearableInput, SelectEmployeeInput, SelectTrainingMatixInput, UploadButton} from 'components/inputs';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import {AEditDialog} from 'components/dialogs';
@@ -15,6 +15,7 @@ import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 import {updateEmployeeCompetency} from "mutations/update";
 import {findByIdEmployeeCompetency} from "mutations/findById";
+import SelectTrainingCourseInput from "../../../../../components/inputs/SelectTrainingCourseInput";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -73,6 +74,7 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.form = new Form();
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
         this.form.addChangeOne("training", this.onChangeTraining.bind(this));
     }
 
@@ -91,6 +93,13 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
+    onChangeCourse(el, val) {
+        if (val) {
+
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onChangeTraining">
     onChangeTraining(el, val) {
@@ -160,6 +169,7 @@ class Controls extends React.Component {
             type, competency_type,
             accreditation_num,
             certificate_num,
+            course,
             training,
             doc
         } = form.data;
@@ -175,6 +185,7 @@ class Controls extends React.Component {
         ShouldUpdate.check(data, old_data, competency_type, 'competency_type');
         ShouldUpdate.check(data, old_data, accreditation_num, 'accreditation_num');
         ShouldUpdate.check(data, old_data, certificate_num, 'certificate_num');
+        ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course_id');
         ShouldUpdate.checkTrainingMatrix(data, old_data, training, 'training_id');
         ShouldUpdate.checkFile(data, old_data, doc, 'doc');
 
@@ -216,6 +227,7 @@ class Controls extends React.Component {
                     created_at,
                     employee,
                     title,
+                    course,
                     training,
                     trainer,
                     type,
@@ -245,9 +257,11 @@ class Controls extends React.Component {
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date}
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="type" type="radio" placeholder="Certificate Type" defaultValue={type} required
+                                desc="Accredited: (officially recognized and meets industry standards) or Non-Accredited: (informal or internal certification without official recognition)."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.type}/>
                 <ClearableInput name="competency_type" type="select" placeholder="Competency Type..."
+                                desc="Behavioural: (soft skills and personal attributes), Technical / Functional: (job-specific skills and knowledge), or Leadership: (skills for managing and guiding teams or organizations)."
                                 defaultValue={competency_type} required className="col-lg-6 form-control"
                                 onChange={this.form.onChange} values={this.state.lists.competency_type} returnValue
                                 add/>
@@ -255,7 +269,7 @@ class Controls extends React.Component {
                                 defaultValue={accreditation_num} required className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="certificate_num" type="text" placeholder="Certificate Number"
-                                defaultValue={accreditation_num} required className="col-lg-6 form-control"
+                                defaultValue={certificate_num} required className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
             </Row>
             <Row
@@ -266,9 +280,12 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingMatixInput name="training" defaultValue={training} required
-                                          className="col-lg-12 form-control"
-                                          onChange={this.form.onChange}/>
+                <SelectTrainingCourseInput name="course" defaultValue={course} required
+                                           className="col-lg-12 form-control"
+                                           onChange={this.form.onChange}/>
+                {/*<SelectTrainingMatixInput name="training" defaultValue={training} required*/}
+                {/*                          className="col-lg-12 form-control"*/}
+                {/*                          onChange={this.form.onChange}/>*/}
                 <Trainer state={this.state}/>
             </Row>
             <Row

@@ -14,6 +14,7 @@ export const exportExcelAssets = exportExcel("assets");
 export const exportExcelAssetDocs = exportExcel("assets/docs");
 
 // HR
+export const exportExcelEmployees = exportExcel("employees");
 export const exportExcelPPESuppliers = exportExcel("ppe-suppliers");
 export const exportExcelApplicableRegulations = exportExcel("applicable-regulations");
 export const exportExcelComplianceRequirements = exportExcel("compliance-requirements");
@@ -33,4 +34,9 @@ export const exportExcelEmployeeLicenses = exportExcel("employees/docs/licenses"
 export const exportExcelEmployeeWorkPermits = exportExcel("employees/docs/work-permits");
 export const exportExcelEmployeeDocDocumentIDOrPassports = exportExcel("employees/documents/id-or-passports");
 export const exportExcelEmployeeDocDocumentPrDPs = exportExcel("employees/documents/prdp");
+
+//Incidents
+export const exportExcelIncidents = exportExcel("incidents");
+export const exportExcelIncidentInvestigations = exportExcel("incidents/investigations");
+export const exportExcelQuickIncidents = exportExcel("incidents-quick");
 

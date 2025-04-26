@@ -8,21 +8,28 @@ import * as Grids from "./Stats";
 //<editor-fold desc="DashboardAll">
 @observer
 class DashboardAll extends React.Component {
-	key = 'DashboardAll';
+    key = 'DashboardAll';
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	update() {
-		execWhen(() => this.refs.dashboard).then(ref => {
-			ref.update();
-		});
-	}
+    update() {
+        execWhen(() => this.refs.dashboard).then(ref => {
+            ref.update();
+        });
+    }
 
-	render() {
-		return <Dashboard ref="dashboard" path="ncr" {...Grids} noEmployees/>;
-	}
+    render() {
+        const {onClick} = this.props;
+        return <Dashboard
+            ref="dashboard"
+            path="ncr"
+            onClick={onClick}
+            {...Grids}
+            noEmployees
+        />;
+    }
 
 }
 

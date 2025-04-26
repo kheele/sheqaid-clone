@@ -17,13 +17,31 @@ import {WorkPermitControls} from "../../HRDocs/WorkPermits/forms/ProfileDialog";
 import IDOrPassportSection from "./IDOrPassportSection";
 import PrDPSection from "./PrDPSection";
 import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class ViewDocumentsSection extends React.Component {
+class ViewDocumentsSection extends AEmployeeSection {
     static isValid = EmployeeProfileSettings.isValidEmployeeAllDocumentsViewers;
     pageKey = "ViewDocumentsSection";
     @observable
     state = {};
+
+    // innerRefs = {
+    //     //
+    //     personalDocuments: createRef(),
+    //     document_id_passport: createRef(),
+    //     work_permit: createRef(),
+    //     license: createRef(),
+    //     document_prdp: createRef(),
+    //     //
+    //     competency: createRef(),
+    //     //
+    //     contract: createRef(),
+    //     //
+    //     job_appointment: createRef(),
+    //     //
+    //     medical: createRef(),
+    // };
 
     constructor(props) {
         super(props);
@@ -55,7 +73,7 @@ class ViewDocumentsSection extends React.Component {
         let __idx = 0;
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
         return <div id={this.pageKey + "-tab"} className={className}>
-            <FormControls lazyLoad>
+            <FormControls ref="formControls" lazyLoad>
                 {/*{EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row*/}
                 {/*    rendered*/}
                 {/*    idx={idx + `.${__idx++}`}*/}
@@ -75,7 +93,7 @@ class ViewDocumentsSection extends React.Component {
                     onFormBack={onFormBack}
                     onFormNext={onFormNext}
                 >
-                    <FormControls lazyLoad>
+                    <FormControls ref="personalDocumentsFormControls" lazyLoad>
                         <Row
                             ref="document_id_passport"
                             rendered
@@ -91,7 +109,7 @@ class ViewDocumentsSection extends React.Component {
                             ref="work_permit"
                             rendered
                             idx={idx + `.${__idx}.2`}
-                            title={idx + `.${__idx}.2 Work Permit`}
+                            title={idx + `.${__idx}.2 Work Permit (Foreigners)`}
                             sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                             onFormOpen={onFormOpen}
                             onFormNext={onFormNext}

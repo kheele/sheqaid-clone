@@ -1,8 +1,8 @@
 @import '../../../../css/AProfileDialog.css';
 
 #dialog-overlay.Sector-profile-dialog .dialog-container {
-    height: 300px;
-    width: 800px;
+    height: 320px;
+    width: 600px;
     max-width: 100%;
 }
 

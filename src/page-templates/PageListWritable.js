@@ -21,37 +21,37 @@ class APageListReadWrite extends APageList {
     componentDidMount() {
         super.componentDidMount();
         const {isContractorView, isContractor} = storage.is;
-        if(isContractorView) {
+        if (isContractorView) {
             const {forceCreate} = this.props;
-            if(!isContractor && !forceCreate) {
+            if (!isContractor && !forceCreate) {
                 return;
             }
         }
 
         execWhen(() => this.getDialogByRef("newDialog")).then(async newDialog => {
             let hasCreateBtn = this.hasCreateBtn();
-            if(hasCreateBtn instanceof Promise) {
+            if (hasCreateBtn instanceof Promise) {
                 hasCreateBtn = await hasCreateBtn.then(res => res);
             }
             if (!hasCreateBtn)
-                return;            
+                return;
 
             this.refs.pageTitle.refs.buttonCreate.show();
         });
-        
+
         const {args} = this.props.page.props;
-        if(!!args) {
-            setTimeout(() =>{
+        if (!!args) {
+            setTimeout(() => {
                 let parts = args.split('&');
                 const action = parts.removeFirst();
-                if(action === 'New') {
-                    if(!parts.isEmpty()) {
+                if (action === 'New') {
+                    if (!parts.isEmpty()) {
                         const newDialog = this.getDialogByRef("newDialog");
-                        if(!!newDialog){
+                        if (!!newDialog) {
                             const {extraProps} = newDialog;
                             let keyVal = parts[0];
                             parts = keyVal.split('=');
-                            if(!parts.isEmpty()) {
+                            if (!parts.isEmpty()) {
                                 extraProps[parts[0]] = parts[1];
                             }
                         }
@@ -73,7 +73,7 @@ class APageListReadWrite extends APageList {
     hasCreateBtn() {
         const {isContractorViewVisited, isEmployee} = storage.is;
         const {forceCreate} = this.props;
-        if(!forceCreate && (isEmployee || isContractorViewVisited)) return false;
+        if (!forceCreate && (isEmployee || isContractorViewVisited)) return false;
         if (this.props.hasCreateBtn) {
             return this.props.hasCreateBtn();
         } else {
@@ -82,7 +82,12 @@ class APageListReadWrite extends APageList {
     }
 
     renderPopoverOptions(idx, e, btn, onView, Options) {
-        return this.props.renderPopoverOptions(idx, {onView, onEdit: this.onEdit, onRemove: this.onRemove, Options}, e, btn);
+        return this.props.renderPopoverOptions(idx, {
+            onView,
+            onEdit: this.onEdit,
+            onRemove: this.onRemove,
+            Options
+        }, e, btn);
     }
 
     onNew(evt, elem, item) {
@@ -90,7 +95,7 @@ class APageListReadWrite extends APageList {
         if (newDialog) {
             const {props: {promise}, onNewItem} = this.props.page;
             newDialog.open(item).then(item => {
-                if(!onNewItem) {
+                if (!onNewItem) {
                     this.state.list.pushFirst(item);
                 } else {
                     onNewItem(item);
@@ -109,7 +114,7 @@ class APageListReadWrite extends APageList {
         const editDialog = this.getDialogByRef("editDialog");
         if (editDialog) {
             editDialog.open(item).then(updateAttrs => {
-                if(updateAttrs) {
+                if (updateAttrs) {
                     setTimeout(() => {
                         extendObservable(item, updateAttrs);
                     });
@@ -126,7 +131,7 @@ class APageListReadWrite extends APageList {
             removeDialog.open("Are you sure you want to remove the " + this.props.pageTitleSingular + "?").then(res => {
                 if (res === 1) {
                     progressDialog.open("Removing the " + this.props.pageTitleSingular);
-                    window.neonBinding.events.emit(this.props.path + "remove", item.id).then(res => {
+                    workers.emit(this.props.path + "remove", item.id).then(res => {
                         setTimeout(function () {
                             this.list.removeIf((_item) => _item.id === item.id);
                         }.bind(this), 0);

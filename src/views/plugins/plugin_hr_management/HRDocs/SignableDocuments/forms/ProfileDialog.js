@@ -35,7 +35,7 @@ class ProfileDialog extends AProfileDialog {
     }
 
     title() {
-        return "Work Permits";
+        return "Work Permits (Foreigners)";
     }
 
     onSaveAsPDF(e, btn) {
@@ -81,7 +81,8 @@ class Controls extends AEmployeeDocControls {
         const {created_at, date, expiry_date, notes, doc} = item.data || item;
 
         return <div className="row item-wrapper margin-l-20 margin-r-20 padding-t-10 h-full">
-            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Work Permit Details</label>
+            <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Work Permit Details
+                (Foreigners)</label>
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Date" name="date" type="date" value={date} className="col-lg-6"/>
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}

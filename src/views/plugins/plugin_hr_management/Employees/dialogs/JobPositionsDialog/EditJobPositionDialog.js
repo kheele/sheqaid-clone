@@ -53,7 +53,7 @@ class Controls extends React.Component {
         const {form, item: {data: old_data}} = this;
 
         if (!form.isValid('name')) {
-            infoDialog.open('Job Title is required');
+            infoDialog.open('Job Position is required');
             return;
         }
 
@@ -138,7 +138,7 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormBack={onFormBack}
             >
-                <ClearableInput name="name" type="text" placeholder="Job Title" defaultValue={name} required
+                <ClearableInput name="name" type="text" placeholder="Job Position" defaultValue={name} required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <SelectJobCategoryInput name="job_category" defaultValue={job_category}
                                         className="col-lg-12 form-control"

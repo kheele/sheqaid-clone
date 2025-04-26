@@ -20,29 +20,30 @@ class AttendanceByDepartmentDialog extends AAttendanceByDialog {
     // <editor-fold defaultstate="collapsed" desc="fields">
     pageKey = "AttendanceByDepartmentDialog";
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="mounts">
     componentWillMount() {
         style.use();
     }
-    
+
     componentDidMount() {
         execWhen(() => this.state.item).then(async item => {
             const {selectedDate, selectedYear, selectedMonth} = this.state;
             progressDialog.open("Loading employees...");
-            await neonBinding.events.emit('plugin_sheq_assist/employees/list/filter', {department: item.id}).then(res => {
+            await workers.emit('plugin_sheq_assist/employees/list/filter', {department: item.id}).then(res => {
                 console.log("data", res)
                 this.state.teamList = res;
             }).finally(() => {
                 progressDialog.close();
             });
-            
+
             this.onLoadAttendanceList();
         });
     }
@@ -50,18 +51,19 @@ class AttendanceByDepartmentDialog extends AAttendanceByDialog {
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
-    
+
     onLoadAttendanceList() {
         const {item, selectedDate, selectedYear, selectedMonth} = this.state;
         progressDialog.open("Loading attendance...");
-        neonBinding.events.emit('plugin_sheq_assist/employees/attendance/list/by_department', [item.id, selectedYear, selectedMonth]).then(res => {
-                this.state.attendanceList = res;
+        workers.emit('plugin_sheq_assist/employees/attendance/list/by_department', [item.id, selectedYear, selectedMonth]).then(res => {
+            this.state.attendanceList = res;
         }).finally(() => {
             setTimeout(() => progressDialog.close());
         });
     }
-    
+
     renderDay(dateItem) {
 //        const {
 //            item: department, teamList, attendanceList, 
@@ -70,21 +72,21 @@ class AttendanceByDepartmentDialog extends AAttendanceByDialog {
 //        console.log('renderer', department, dateItem); 
         return <LostimeAndOvertimeIcon dateItem={dateItem} state={this.state}/>;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="renderPage">
     renderPage() {
 //        const {item, selectedDate, selectedYear, selectedMonth} = this.state;
 //        if(!item) return null;
-        
+
 //        const path = {path: 'plugin_sheq_assist/employees/attendance/list/by_department', data: [item.id, selectedYear, selectedMonth]};
         return <React.Fragment>
-            <ViewByPanel 
-                title="Department" 
-                state={this.state} 
+            <ViewByPanel
+                title="Department"
+                state={this.state}
                 onChange={this.onChangeByDate}
             />
-            <CalendarWrapper 
-                state={this.state} 
+            <CalendarWrapper
+                state={this.state}
                 onSelectDay={this.onSelectDay}
                 renderer={this.renderDay}
             />
@@ -93,6 +95,7 @@ class AttendanceByDepartmentDialog extends AAttendanceByDialog {
             <EditAttendanceDialog ref="editDialog"/>
         </React.Fragment>;
     }
+
     // </editor-fold>
 
 }

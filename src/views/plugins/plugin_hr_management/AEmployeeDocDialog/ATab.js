@@ -90,7 +90,9 @@ class ATab extends React.Component {
             expiry_date,
         } = filterData || {};
 
-        const listByLogged = sockets.of(attrs.path).fn('listByLogged');
+        let {listByLogged, path} = attrs;
+        listByLogged = listByLogged || sockets.of(path).fn('listByLogged');
+        delete attrs.listByLogged;
         delete attrs.path;
 
         return listByLogged({

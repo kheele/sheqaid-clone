@@ -9,13 +9,9 @@ import FilterWrapper from "./FilterWrapper";
 import {calculateRightPos, execWhen, Permissions} from 'utils/Utils';
 
 import {Button} from 'components/inputs';
-import {Table, TabledTopPanel, TBody} from 'components/tables';
+import {TabledTopPanel} from 'components/tables';
 
 import Popover from 'components/popovers/Popover';
-import OmniTable from "../components/Omni/OmniTable";
-import {QueryRenderer} from "react-relay";
-import environment from "../EnvironmentReadable";
-import {CircularProgress} from "@mui/material";
 import TableRenderer from "./TableRenderer";
 
 // </editor-fold>
@@ -48,6 +44,30 @@ class APageList extends APage {
         this.onLoadList = this.onLoadList.bind(this);
 
         this.renderQueryRenderer = this.renderQueryRenderer.bind(this);
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="listGroup, list">
+    @computed
+    get listGroup() {
+        const {onListByGroup} = this.props;
+        if (onListByGroup) {
+            return onListByGroup(this.list);
+        }
+    }
+
+    // </editor-fold>
+
+    @computed
+    get list() {
+        return this.state.list;
+    }
+
+    // </editor-fold>
+
+    set list(list) {
+        this.state.list = list;
     }
 
     // </editor-fold>
@@ -103,7 +123,7 @@ class APageList extends APage {
             left: "auto",
             right: calculateRightPos(elem[0], false) + 10,
             top: 'auto',
-            bottom: `clamp(${-offset.top - elem.outerHeight()}px, ${-offset.top - elem.outerHeight()}px, 0px)`,//-offset.top - elem.outerHeight(), 
+            bottom: `clamp(${-offset.top - elem.outerHeight()}px, ${-offset.top - elem.outerHeight()}px, 0px)`,//-offset.top - elem.outerHeight(),
             width: "auto"
         };
         const {location} = contentNode.props;
@@ -123,8 +143,6 @@ class APageList extends APage {
         }).open();
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onView">
     onView(item) {
         const profileDialog = this.getDialogByRef("profileDialog");
@@ -141,8 +159,6 @@ class APageList extends APage {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="getDialogByRef">
     getDialogByRef(ref) {
         if (!ref) return null;
@@ -157,26 +173,6 @@ class APageList extends APage {
             d = listPage.refs[ref];
         }
         return d;
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="listGroup, list">
-    @computed
-    get listGroup() {
-        const {onListByGroup} = this.props;
-        if (onListByGroup) {
-            return onListByGroup(this.list);
-        }
-    }
-
-    @computed
-    get list() {
-        return this.state.list;
-    }
-
-    set list(list) {
-        this.state.list = list;
     }
 
     // </editor-fold>
@@ -203,7 +199,7 @@ class APageList extends APage {
                 path += "list";
             }
             console.log(path, ...args)
-            promise = window.neonBinding.events.emit(path, ...args);
+            promise = workers.emit(path, ...args);
         } else {
             promise = Promise.resolve();
         }

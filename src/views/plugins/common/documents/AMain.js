@@ -53,13 +53,13 @@ class AMain extends React.Component {
         this.renderFilterNode = this.renderFilterNode.bind(this);
         this.onViewDocumentCategory = this.onViewDocumentCategory.bind(this);
 
-        neonBinding.events.on("mock/docs/doc/new", item => {
+        workers.on("mock/docs/doc/new", item => {
             const {id, data: {doc_old, doc, title}} = item;
             console.log("mock/docs/doc/new", id, doc_old, doc);
             if (doc_old && doc_old.dlUrls) {
 //                document.location = doc_old.dlUrls[0];
             }
-            return neonBinding.events.emit("default/docs/doc/new", title).then(res => {
+            return workers.emit("default/docs/doc/new", title).then(res => {
                 item.data.doc = res.data.id;
                 return item;
             });
@@ -216,7 +216,7 @@ class AMain extends React.Component {
 
         let filePath = this.getFileSrc(item);
         if (filePath.contains('.docx') || filePath.contains('.doc')) {
-            filePath = await neonBinding.events.emit('wordToPDFOnline', filePath);
+            filePath = await workers.emit('wordToPDFOnline', filePath);
             saveFileAs(filePath, `${title.replaceAll(' ', '')}_${Dates.formatDate(new Date())}.docx`);
         } else {
             setTimeout(() => {

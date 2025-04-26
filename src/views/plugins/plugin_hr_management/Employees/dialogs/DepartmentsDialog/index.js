@@ -17,6 +17,7 @@ import {updateDepartment} from "mutations/update";
 import {Tabs} from "components/tabs";
 import ActiveTab from "../ActiveTab";
 import RemovedTab from "../RemovedTab";
+import {listDepartment} from "../../../../../../mutations/listByLogged";
 
 @observer
 class DepartmentsDialog extends ADialogTab {
@@ -53,7 +54,7 @@ class DepartmentsDialog extends ADialogTab {
         } = filterData || {};
 
         return {
-            path: "departments",
+            listByLogged: listDepartment,
             attrs: {
                 name,
                 exact_orgs_company: true,

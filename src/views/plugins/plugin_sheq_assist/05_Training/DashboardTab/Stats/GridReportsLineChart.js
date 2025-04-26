@@ -93,7 +93,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
                     data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
                 },
             }
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/line-chart/trainings", {interval, employee_view}),//
+        }),//workers.emit(path_training_matrix + "dashboard/line-chart/trainings", {interval, employee_view}),//
         participants: Promise.resolve({
             count: "281",
             percAmount: "+16%",
@@ -105,7 +105,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
                     data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
                 },
             }
-        }),//neonBinding.events.emit(path_training_matrix + "dashboard/line-chart/participants", {interval, employee_view}),
+        }),//workers.emit(path_training_matrix + "dashboard/line-chart/participants", {interval, employee_view}),
         attendanceRate: Promise.resolve({
             count: "95%",
             percAmount: "+8%",
@@ -117,7 +117,7 @@ const Comp = forwardRef(({interval: __interval, employee_view: __employee_view},
                     data: Array.range(1, 12).map(n => (Math.random() * 15).toFixed(0))
                 },
             }
-        }),//neonBinding.events.emit(path_training_plan + "dashboard/line-chart/attendance-rate", {interval, employee_view})
+        }),//workers.emit(path_training_plan + "dashboard/line-chart/attendance-rate", {interval, employee_view})
     };
 
     const {trainings, participants, attendanceRate} = totals;

@@ -151,7 +151,7 @@ window.electronDialog = {
                 } else {
                     const filePathDest = filePath.replace(mime.getExtension(filePath), "pdf");
                     const fn = isWord ? 'wordToPDF' : 'excelToPDF';
-                    await neonBinding.events.emit(fn, filePath, filePathDest);
+                    await workers.emit(fn, filePath, filePathDest);
                     previewPath = await createPreviewPath(filePathDest);
                     previewPath = createReactPDFPreviewUrl(previewPath);
                 }
@@ -189,7 +189,7 @@ window.createPDFPreviewUrl = async filePath => {
         return null;
 
     if (FileTypes.isWord(filePath)) {
-        filePath = await neonBinding.events.emit('wordToPDFOnline', filePath);
+        filePath = await workers.emit('wordToPDFOnline', filePath);
         return createPDFPreviewUrlFromRemote(filePath);
     } else {
         return createPDFPreviewUrlFromRemote(filePath);

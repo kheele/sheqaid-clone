@@ -25,12 +25,6 @@ class ModuleSetupDialog extends ANewDialog {
         super(props, style);
     }
 
-    onCancel() {
-        storage.logout.signOutAndConfirm().then(() => {
-            super.onCancel();
-        });
-    }
-
     get noBackAction() {
         return true;
     }
@@ -41,6 +35,12 @@ class ModuleSetupDialog extends ANewDialog {
 
     get controls() {
         return Controls;
+    }
+
+    onCancel() {
+        storage.logout.signOutAndConfirm().then(() => {
+            super.onCancel();
+        });
     }
 }
 
@@ -135,7 +135,7 @@ class Controls extends React.Component {
         console.log("data", data)
 
         btn.text("Saving...").disabled();
-        neonBinding.events.emit("plugin_manager/update-list", data).then(res => {
+        workers.emit("plugin_manager/update-list", data).then(res => {
             console.log("res", res)
 
             pluginManager.updateModules(res);

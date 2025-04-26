@@ -30,9 +30,9 @@ module.exports = function (webpackEnv) {
     return [
         isEnvDevelopment && new CopyPlugin({
             patterns: [
-                { from: "./node_modules/@pdftron/webviewer/public", to: "./public/webviewer/lib" },
+                {from: "./node_modules/@pdftron/webviewer/public", to: "./public/webviewer/lib"},
             ],
-        }),,
+        }),
 //        new WatchExternalFilesPlugin({
 //            files: [
 //                './worker-contr/**/*.js',
@@ -49,13 +49,13 @@ module.exports = function (webpackEnv) {
                 merge('worker-defaults', controllersPath),
                 merge('worker-funs', controllersPath),
 
-                merge('worker-plugins_claim_management', controllersPath),
+                // merge('worker-plugins_claim_management', controllersPath),
                 merge('worker-plugins_extra', controllersPath),
                 merge('worker-plugins_general', controllersPath),
                 merge('worker-plugins_hr_management', controllersPath),
-                merge('worker-plugins_sheq_assist', controllersPath),
+                // merge('worker-plugins_sheq_assist', controllersPath),
 
-                merge('worker-utils', workersPath),
+                // merge('worker-utils', workersPath),
 
                 merge('firebase_client_app', workersPath)
             ]
@@ -82,6 +82,7 @@ module.exports = function (webpackEnv) {
 //        })
     ];
 };
+
 //267
 
 function merge(file, path) {

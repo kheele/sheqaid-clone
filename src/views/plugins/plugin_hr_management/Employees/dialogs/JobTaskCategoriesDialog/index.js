@@ -79,7 +79,7 @@ class JobTaskCategoryDialog extends ADialogTab {
         } = filterData || {};
 
         return {
-            onList: listJobTaskCategories,
+            listByLogged: listJobTaskCategories,
             attrs: {
                 name,
                 ppe_item_id,

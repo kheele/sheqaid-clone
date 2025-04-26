@@ -36,11 +36,19 @@ class ProfileDialog extends AProfileDialog {
 
     @computed
     get title() {
-        if (!this.item) {
-            return storage.is.isEmployee ? "My Account" : "Employee";
+        const {item} = this;
+        const {isEmployee} = storage.is;
+        let text;
+        if (!item) {
+            text = isEmployee ? "My Account" : "Employee";
+        } else {
+            const {removed} = item.data;
+            text = isEmployee ? "My Account" : `Employee (${removed ? "Removed" : "Active"})`;
         }
-        const {removed} = this.item.data;
-        return storage.is.isEmployee ? "My Account" : `Employee (${removed ? "Removed" : "Active"})`;
+
+        return <>{text}{item && item.id &&
+            <strong className="bg-eee75 font-size-14 margin-l-10 padding-h-10 padding-v-5 border-radius-20"> ID
+                #: {item.id}</strong>}</>;
     }
 
     // onSaveAsPDF(e, btn) {
@@ -189,16 +197,19 @@ class Controls extends React.Component {
             warningSection,
             timeOffSection,
         } = this.refs;
-        // alert(id)
+        alert(id)
 
         const show = ({mainSection, childLevel1Ref, childLevel2Ref}) => {
             mainSection.onFormGoto();
-            childLevel1Ref && dialog.execWhen(() => mainSection.refs[childLevel1Ref]).then(ref => {
-                ref.onFormGoto();
-                childLevel2Ref && dialog.execWhen(() => ref.refs[childLevel2Ref]).then(ref => {
-                    ref.onFormGoto();
-                });
-            });
+            // console.log('mainSection.refs', mainSection.refs);
+            // childLevel1Ref && dialog.execWhen(() => mainSection.refs[childLevel1Ref]).then(ref => {
+            //     ref.onFormGoto();
+            //     childLevel2Ref && dialog.execWhen(() => ref.refs[childLevel2Ref]).then(ref => {
+            //         ref.onFormGoto();
+            //     });
+            // });
+            mainSection.onFormGotoChild(childLevel1Ref);
+            mainSection.onFormGotoChild(childLevel2Ref);
         };
 
         switch (id) {
@@ -304,36 +315,34 @@ class Controls extends React.Component {
     }
 
     // <editor-fold defaultstate="collapsed" desc="renderComponent">
-    renderComponent(refs) {
-        return ({title, comp: Comp, sectionClassName, ref: refName, props, activeAlways = false, isLast}, n) => {
-            const {props: {onFormNext, onFormBack, onFormOpen}} = this;
-            n += 3;
+    renderComponent({title, comp: Comp, sectionClassName, ref: refName, props, activeAlways = false, isLast}, n) {
+        const {props: {onFormNext, onFormBack, onFormOpen}} = this;
+        n += 3;
 
-            const row = <Row
-                ref={(ref) => refs[refName] = ref}
-                activeAlways={activeAlways}
-                rendered
+        const row = <Row
+            activeAlways={activeAlways}
+            rendered
+            idx={n}
+            title={n + '. ' + title}
+            sectionClassName={sectionClassName}
+            onFormOpen={onFormOpen}
+            onFormBack={onFormBack}
+            onFormNext={!isLast && onFormNext}
+        >
+            <Comp
+                ref={refName}
                 idx={n}
-                title={n + '. ' + title}
-                sectionClassName={sectionClassName}
+                title={title}
+                item={this.item}
+                {...(props || {})}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormNext={!isLast && onFormNext}
-            >
-                <Comp
-                    idx={n}
-                    title={title}
-                    item={this.item}
-                    {...(props || {})}
-                    onFormOpen={onFormOpen}
-                    onFormBack={onFormBack}
-                    onFormNext={onFormNext}
-                />
-            </Row>;
+                onFormNext={onFormNext}
+            />
+        </Row>;
 
-            if (!Comp.isValid || Comp.isValid(this.item)) return row;
-            return null;
-        }
+        if (!Comp.isValid || Comp.isValid(this.item)) return row;
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -360,7 +369,7 @@ class Controls extends React.Component {
 
         console.log('employee', this.item)
 
-        return <FormControls>
+        return <FormControls ref="formControls">
             <RowOrgs
                 active={false}
                 onFormOpen={onFormOpen}
@@ -397,7 +406,7 @@ class Controls extends React.Component {
                 <ProfileField name="phone" title="Phone No." value={phone} className="col-lg-6"/>
                 <ProfileField name="email" title="Email Address" value={email} className="col-lg-6"/>
             </Row>}
-            {this.components.map(this.renderComponent(this))}
+            {this.components.map(this.renderComponent)}
             <ProfilePDFReport ref="profilePDFReport"/>
         </FormControls>;
     }

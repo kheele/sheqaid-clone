@@ -14,7 +14,7 @@ import EditDialog from './EditDialog';
 
 import style from "./Main.lazy.css";
 import AggregateStat from "components/AggregateStat";
-import byLogged from "./Query/List/listAllSectorByLogged";
+import {listSectors} from "mutations/listByLogged";
 
 @observer
 class Main extends React.Component {
@@ -47,23 +47,10 @@ class Main extends React.Component {
             name,
         } = filterData || {};
 
-        const limit = 50;
-
-        const args = {
+        return listSectors({
             name,
             //
-            limit,
-        };
-
-        if (!isNew) {
-            args.offset = this.refs.root.list.length;
-        } else {
-            args.offset = 0;
-        }
-
-        return byLogged(args).then((res) => {
-            console.log('onLoadList res', res)
-            return res;
+            offset: isNew ? 0 : this.refs.root.list.length,
         });
     }
 
@@ -81,7 +68,8 @@ class Main extends React.Component {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls flex">
-            <ClearableInput name="name" type="text" placeholder="Sector Name" className="form-control" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Sector Name" className="form-control"
+                            onChange={onChange}/>
         </div>;
     }
 
@@ -122,13 +110,13 @@ class Main extends React.Component {
                 <StatsPanel item={item}/>
             </div>
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }
 
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             ref="root"
             page={this}
             createBtnTitle="Create"
@@ -142,7 +130,7 @@ class Main extends React.Component {
             renderItem={this.renderItem}
             loadOnScrolled={false}>
             <ConfirmDialog ref="removeDialog"/>
-            
+
             <NewDialog ref="newDialog"/>
             <ProfileDialog ref="profileDialog"/>
             <EditDialog ref="editDialog"/>

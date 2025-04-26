@@ -2,13 +2,13 @@ import React from "react";
 import {observer} from 'mobx-react';
 
 import Form from 'utils/Form';
-
-import {ClearableInput} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {insertSector} from "mutations/create";
+import SelectSectorPublicInput from "../../../../components/inputs/SelectSectorPublicInput";
+import {ClearableInput} from "../../../../components/inputs";
 
 @observer
 class NewDialog extends ANewDialog {
@@ -37,13 +37,23 @@ class Controls extends React.Component {
     onSubmit(e, btn, onSaved) {
         const {form} = this;
 
-        if (!form.isValid('name')) {
-            infoDialog.open('Sector Name is required');
+        if (!form.isValid('sector') && !form.isValid('name')) {
+            infoDialog.open('Please select existing Sector Name or Add new Sector Name');
             return;
         }
 
-        const {name} = form.data;
-        const data = {name};
+        if (form.isValid('sector') && form.isValid('name')) {
+            infoDialog.open('Please select either existing Sector Name or Add new Sector Name');
+            return;
+        }
+
+        const {sector, name} = form.data;
+        let data = {};
+        if (name && !sector) {
+            data = {name};
+        } else if (!name && sector) {
+            data = {...sector.data};
+        }
 
         console.log(data)
 
@@ -67,8 +77,20 @@ class Controls extends React.Component {
                 activeAlways
                 rendered
                 idx={1}
-                title="Sector Details">
-                <ClearableInput name="name" type="text" placeholder="Sector Name" required
+                title="Sector Details"
+            >
+                <SelectSectorPublicInput
+                    name="sector"
+                    type="select"
+                    placeholder="Select Existing Sector Name"
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                    addButton={false}
+                />
+
+                <h3 className="col-lg-12 text-center padding-10 margin-v-10">OR</h3>
+
+                <ClearableInput name="name" placeholder="Add New Sector Name"
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
         </FormControls>;

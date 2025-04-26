@@ -21,6 +21,7 @@ import ANewDialog from 'components/dialogs/ANewDialog';
 import PrintCardsPDFReader from '../printers/PrintCardsPDFReader';
 import style from "./TransferEmployeesDialog.lazy.css";
 import {updateEmployee} from "mutations/update";
+import {listEmployee} from "mutations/listByLogged";
 
 // </editor-fold>
 
@@ -186,9 +187,7 @@ class Controls extends React.Component {
             supervisor_id, team_id
         } = this.filterData;
 
-        const listByLogged = sockets.of('employees').fn('listByLogged');
-
-        return listByLogged({
+        return listEmployee({
             removed: false,
             //
             department_id,
@@ -362,7 +361,7 @@ class Controls extends React.Component {
 
         progressDialog.open();
         btn.text("Exporting...").disabled();
-        neonBinding.events.emit(this.path + "export-excel", {
+        workers.emit(this.path + "export-excel", {
             client,
             project,
             site,

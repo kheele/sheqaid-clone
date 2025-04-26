@@ -146,7 +146,7 @@ class Controls extends React.Component {
 //        let filePath = this.src;
 //        if (filePath.contains('.docx') || filePath.contains('.doc')) {
 //            if(isPackagedElectron) {
-//                filePath = await neonBinding.events.emit('wordToPDFOnline', filePath);
+//                filePath = await workers.emit('wordToPDFOnline', filePath);
 //                filePath = dataUriToUrl(filePath);
 //            } else {
 //                console.log('onSaveAsPDF', filePath)

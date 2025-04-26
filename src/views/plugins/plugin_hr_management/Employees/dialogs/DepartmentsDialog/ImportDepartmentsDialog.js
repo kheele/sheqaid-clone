@@ -20,7 +20,7 @@ class ImportDepartmentsDialog extends ANewDialog {
     }
 
     get controls() {
-        return  Controls;
+        return Controls;
     }
 }
 
@@ -34,12 +34,12 @@ class Controls extends React.Component {
 
     constructor() {
         super();
-        
+
         this.onUpload = this.onUpload.bind(this);
-        
+
         this.onClick = this.onClick.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        
+
         this.form = new Form();
     }
 
@@ -50,11 +50,11 @@ class Controls extends React.Component {
     onLoadList() {
         return Promise.resolve();
     }
-        
+
     onClick(e, btn) {
-        
+
     }
-    
+
     renderItem(n, onClick) {
         const item = this.state.list[n];
         const {name} = item;
@@ -66,33 +66,34 @@ class Controls extends React.Component {
     mapErrors(err, n) {
         const mapErrors = (v, i) => {
             const {length} = err.value;
-            if(i === length-1) {
+            if (i === length - 1) {
                 return v;
-            } else if(i === length-2) {
+            } else if (i === length - 2) {
                 return v + ' OR ';
             } else {
                 return v + ', ';
             }
         };
         return <TRow key={"item-" + n} className="text-left font-size-15">
-            {n+1} - {err.value.map(mapErrors).join('').trim()}
+            {n + 1} - {err.value.map(mapErrors).join('').trim()}
         </TRow>;
     }
-    
+
     onUpload() {
         electronDialog.showOpenDialogSpreadsheetRaw().then(async res => {
             if (res) {
                 progressDialog.open();
                 const filePath = await FileConverters.asDataUrl(res.path);
-                neonBinding.events.emit(this.path + "import/file", filePath).then(res => {
+                workers.emit(this.path + "import/file", filePath).then(res => {
 //                    console.log("data", res)
-                    if(!res) {
+                    if (!res) {
                         infoDialog.open('An error occured. Please try again');
                         return;
                     }
-                    if(res.errors) {
+                    if (res.errors) {
                         infoDialog.open(<div className="info-dialog-content">
-                            <THead className="padding-10 margin-b-15">The following Spreadsheet Header Column Cells are required:</THead>
+                            <THead className="padding-10 margin-b-15">The following Spreadsheet Header Column Cells are
+                                required:</THead>
                             {res.errors.map(this.mapErrors)}
                         </div>);
                     } else {
@@ -114,10 +115,10 @@ class Controls extends React.Component {
         let {list} = this.state;
         console.log('list', list)
         btn.text("Saving...").disabled();
-        neonBinding.events.emit(this.path + "import/create", toJS(list)).then(res => {
+        workers.emit(this.path + "import/create", toJS(list)).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
-            infoDialog.open(res.length +  " record(s) successfully saved.");
+            infoDialog.open(res.length + " record(s) successfully saved.");
             infoDialog.close(2000);
             this.props.close();
         }).finally(() => {
@@ -130,15 +131,17 @@ class Controls extends React.Component {
             <div className="controls">
                 <div className="row">
                     <div className="row sec-group">
-                        <Button className="btn btn-primary hor-center margin-t-5" onClick={this.onUpload}>Upload Spread Sheet</Button>
+                        <Button className="btn btn-primary hor-center margin-t-5" onClick={this.onUpload}>Upload Spread
+                            Sheet</Button>
                     </div>
                 </div>
                 <div className="row padding-0">
                     <Table className="w-full min-h-200 margin-0">
                         <THead>
-                            <div className="td padding-l-0 padding-r-0 margin-r-10">Department Name</div>   
+                            <div className="td padding-l-0 padding-r-0 margin-r-10">Department Name</div>
                         </THead>
-                        <TBody renderItem={this.renderItem} list={this.state.list} onLoadList={this.onLoadList} onClick={this.onClick}/>
+                        <TBody renderItem={this.renderItem} list={this.state.list} onLoadList={this.onLoadList}
+                               onClick={this.onClick}/>
                     </Table>
                 </div>
             </div>

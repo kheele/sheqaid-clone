@@ -13,9 +13,9 @@ import {Panel} from 'pdf-components';
 import APageDocuments from 'views/plugins/plugin_hr_management/printers/APageDocuments';
 
 const PageWrapper2 = ({size, orientation, style, children}) => (
-  <Page wrap size={size} orientation={orientation} style={style}>
-    {children}
-  </Page>
+    <Page wrap size={size} orientation={orientation} style={style}>
+        {children}
+    </Page>
 );
 
 // </editor-fold>
@@ -24,58 +24,7 @@ const PageWrapper2 = ({size, orientation, style, children}) => (
 @observer
 class PageJobAppointments extends APageDocuments {
     @observable state = {renderer: false};
-    
-    componentDidMount() {
-        const {standalone, counter} = this.props;
-        execWhen(() => (standalone && counter.pos === "Page2") || counter.pos === "PageMedicals").then(() => {
-            this.state.renderer = true;
-            setTimeout(() => {
-                this.props.counter.pos = "PageJobAppointments";
-            }, 100);
-        });
-    }
-    
-    renderItem(item, n) {
-        const {data: {created_at, doc, employee, type, due_to, date, expiry_date, days_booked, reason, employee_comments, notes}} = item;
-        
-        return <View style={[styles.flexColumn]}>
-            <View style={[styles.flexRow]}>
-                <Panel title={`#${n+1}: ${type} JobAppointment of ${Dates.formatDate(date)} to ${Dates.formatDate(expiry_date)}`} noValue colStyle={{width: '100%', borderBottom: '4px solid #fafafa', backgroundColor: ''}}/>
-            </View>
-            <View style={[styles.flexRow]}>
-                <Panel title="JobAppointment Type" value={type} colStyle={{width: '50%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
-                <Panel title="JobAppointment Due To" value={due_to} colStyle={{width: '50%', borderBottom: '4px solid #fafafa'}}/>
-            </View>
-            <View style={[styles.flexRow]}>
-                <Panel title="No. Of Days Booked" value={days_booked} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
-                <Panel title="JobAppointment Start Date" type="date" value={date} colStyle={{width: '33.3333%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
-                <Panel title="JobAppointment Expiry Date" type="date" value={expiry_date} colStyle={{width: '33.3333%', borderBottom: '4px solid #fafafa'}}/>
-            </View>
-            <View style={[styles.flexColumn]}>
-                <Panel title="Reason Of JobAppointment" value={reason} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
-            </View>
-            <View style={[styles.flexColumn]}>
-                <Panel title="Employee's Comments" value={employee_comments} colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
-            </View>
-            <View style={[styles.flexColumn]}>
-                <Panel title="Notes" value={notes} colStyle={[styles.col1, {marginBottom: this.isLast(n) ? 0 : '5px'}]}/>
-            </View>
-            <Panel 
-                title="JobAppointment Document"
-                value={doc} 
-                type="file" 
-                titleStyle={{marginBottom: '10px'}} 
-                colStyle={{width: '100%', height: 'auto'}}
-                pdfPageRenderer={this.pdfPageRenderer}
-            />
-        </View>;
-    }
-    
-    isLast(n) {
-        const {standalone} = this.props;
-        return this.list.length - 1 === n;
-    }
-    
+
     @computed get list() {
         const {data: {employee_job_appointment_list = {}}} = this.props.item;
         let list = Object.keys(employee_job_appointment_list).map(id => {
@@ -87,11 +36,92 @@ class PageJobAppointments extends APageDocuments {
         });
         return list;
     }
-    
-    render() {
-        if(!this.state.renderer) return null;
+
+    componentDidMount() {
+        const {standalone, counter} = this.props;
+        execWhen(() => (standalone && counter.pos === "Page2") || counter.pos === "PageMedicals").then(() => {
+            this.state.renderer = true;
+            setTimeout(() => {
+                this.props.counter.pos = "PageJobAppointments";
+            }, 100);
+        });
+    }
+
+    renderItem(item, n) {
+        const {
+            data: {
+                created_at,
+                doc,
+                employee,
+                type,
+                due_to,
+                date,
+                expiry_date,
+                days_booked,
+                reason,
+                employee_comments,
+                notes
+            }
+        } = item;
+
+        return <View style={[styles.flexColumn]}>
+            <View style={[styles.flexRow]}>
+                <Panel
+                    title={`#${n + 1}: ${type} Job Appointment of ${Dates.formatDate(date)} to ${Dates.formatDate(expiry_date)}`}
+                    noValue colStyle={{width: '100%', borderBottom: '4px solid #fafafa', backgroundColor: ''}}/>
+            </View>
+            <View style={[styles.flexRow]}>
+                <Panel title="Job Appointment Type" value={type}
+                       colStyle={{width: '50%', borderRight: '4px solid #fafafa', borderBottom: '4px solid #fafafa'}}/>
+                <Panel title="Job Appointment Due To" value={due_to}
+                       colStyle={{width: '50%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexRow]}>
+                <Panel title="No. Of Days Booked" value={days_booked} colStyle={{
+                    width: '33.3333%',
+                    borderRight: '4px solid #fafafa',
+                    borderBottom: '4px solid #fafafa'
+                }}/>
+                <Panel title="Job Appointment Start Date" type="date" value={date} colStyle={{
+                    width: '33.3333%',
+                    borderRight: '4px solid #fafafa',
+                    borderBottom: '4px solid #fafafa'
+                }}/>
+                <Panel title="Job Appointment Expiry Date" type="date" value={expiry_date}
+                       colStyle={{width: '33.3333%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexColumn]}>
+                <Panel title="Reason Of Job Appointment" value={reason}
+                       colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexColumn]}>
+                <Panel title="Employee's Comments" value={employee_comments}
+                       colStyle={{width: '100%', borderBottom: '4px solid #fafafa'}}/>
+            </View>
+            <View style={[styles.flexColumn]}>
+                <Panel title="Notes" value={notes}
+                       colStyle={[styles.col1, {marginBottom: this.isLast(n) ? 0 : '5px'}]}/>
+            </View>
+            <Panel
+                title="Job Appointment Document"
+                value={doc}
+                type="file"
+                titleStyle={{marginBottom: '10px'}}
+                colStyle={{width: '100%', height: 'auto'}}
+                pdfPageRenderer={this.pdfPageRenderer}
+            />
+        </View>;
+    }
+
+    isLast(n) {
         const {standalone} = this.props;
-        let {list} = this;        
+        return this.list.length - 1 === n;
+    }
+
+    render() {
+        if (!this.state.renderer) return null;
+        const {standalone} = this.props;
+        let {list} = this;
         return <PageWrapper2 size="A4" style={styles.page}>
             <View style={styles.content}>
                 <View style={[styles.contentPanel, {textAlign: "left"}]}>
@@ -103,20 +133,21 @@ class PageJobAppointments extends APageDocuments {
         </PageWrapper2>;
     }
 }
+
 // </editor-fold>
 
 function createStats(list) {
     const colStyle = {
-        display: 'flex', flexShrink: '1', flexDirection: 'column', 
-        justifyContent: "center", alignItems: "center", 
-        borderRadius: '50%', 
+        display: 'flex', flexShrink: '1', flexDirection: 'column',
+        justifyContent: "center", alignItems: "center",
+        borderRadius: '50%',
         width: '16.6666%', height: '50px'
     };
-    
+
     const count = type => {
         return list.filter(v => v.data.type === type).length + '';
     };
-    
+
     return <View style={[styles.flexRow, {justifyContent: "space-between", alignItems: "center"}]}>
         <Panel title="Total" value={list.length + ''} colStyle={colStyle}/>
         <Panel title="Annual" value={count('Annual')} colStyle={colStyle}/>

@@ -10,32 +10,6 @@
 
             const {addAction} = this;
             addAction("relogin", this.relogin.bind(this));
-
-            this.setQueryWhere(company_id => {
-                const loggedUser = self.session.getLoggedUser();
-                let {
-                    user: {
-                        data: {
-                            client: my_client, project: my_project, site: my_site,
-                            contractor_id
-                        }
-                    },
-                    client_id, project_id, site_id,
-                    contractor_id: logged_contractor_id
-                } = loggedUser;
-                contractor_id = logged_contractor_id || contractor_id;
-
-                const list = [
-                    ['company_id', '==', company_id],
-                    ['contractor_id', '==', contractor_id]
-                ];
-                if (my_client) {
-                    list.push(['client_id', '==', my_client.id]);
-                } else if (client_id) {
-                    list.push(['client_id', '==', client_id]);
-                }
-                return list;
-            });
         }
 
         // </editor-fold>
@@ -52,17 +26,6 @@
             return auth2;
         }
 
-        get functions() {
-            return functions2;
-        }
-
-        getDB() {
-            return db2;
-        }
-
-        sortBy(list) {
-            list.sortBy("data.lname");
-        }
     }
 
     const userCntr = new Controller(events);

@@ -122,7 +122,7 @@ class StatsGraph extends React.Component {
             year = this.state.year;
         }
         this.state.dataLoaded = false;
-        neonBinding.events.emit(this.path, year).then(async res => {
+        workers.emit(this.path, year).then(async res => {
             const worker = new WebWorker(() => {
                 self.on("process", async (db, charts) => {
                     const mapper = k => {

@@ -55,6 +55,11 @@ class VerifyFaceDialog extends React.Component {
 
     // </editor-fold>
 
+    @computed
+    get bottomButtons() {
+        return <Button className="btn btn-primary" text="Capture Face" onClick={this.onCaptureFace}/>;
+    }
+
     componentWillMount() {
         style.use();
     }
@@ -63,6 +68,8 @@ class VerifyFaceDialog extends React.Component {
         this.onUnmount();
         style.unuse();
     }
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onLoginProceed">
     onLoginProceed() {
@@ -90,7 +97,7 @@ class VerifyFaceDialog extends React.Component {
                 path = "users/accounts/";
             }
 
-            neonBinding.events.emit(path + "login/biometric", {username, match, displaySize}).then(res => {
+            workers.emit(path + "login/biometric", {username, match, displaySize}).then(res => {
                 progressDialog.close();
 
                 if (!res) {
@@ -200,8 +207,6 @@ class VerifyFaceDialog extends React.Component {
         });
     }
 
-    // </editor-fold>
-
     close() {
         this.onUnmount();
         this.refs.dialog.close();
@@ -209,11 +214,6 @@ class VerifyFaceDialog extends React.Component {
 
     onCancel(e, btn) {
         this.close();
-    }
-
-    @computed
-    get bottomButtons() {
-        return <Button className="btn btn-primary" text="Capture Face" onClick={this.onCaptureFace}/>;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

@@ -186,7 +186,7 @@ class Controls extends React.Component {
         progressDialog.open();
 
         const data = {verificationId: this.verificationId, code};
-        neonBinding.events.emit(this.path + "setup-phone", data).then(async res => {
+        workers.emit(this.path + "setup-phone", data).then(async res => {
             if (!res) return;
 
             try {

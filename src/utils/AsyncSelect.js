@@ -3,7 +3,7 @@ function onAsyncSelectLoadImpl(path, value, mapResults) {
     if (value.isEmpty()) {
         return Promise.resolve([]);
     } else {
-        return neonBinding.events.emit(path, value).then(res => {
+        return workers.emit(path, value).then(res => {
             if (res.isEmpty()) {
                 return res;
             } else {

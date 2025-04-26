@@ -60,9 +60,30 @@ class TimeActiveSessionExpiredDialog extends React.Component {
 
     // </editor-fold>
 
+    @computed
+    get verifyPhoneNum() {
+        return this.state.verifyPhoneNum;
+    }
+
+    set verifyPhoneNum(val) {
+        this.state.verifyPhoneNum = val;
+    }
+
+    @computed
+    get bottomButtons() {
+        const _isMultiFactor = isMultiFactor();
+        const title = _isMultiFactor ? "Login" : "Capture Face";
+        const onClick = _isMultiFactor ? this.onSubmit : this.onCaptureFace;
+        return <Button className="btn btn-primary" text={title} onClick={onClick}/>;
+    }
+
+    // </editor-fold>
+
     componentWillMount() {
         style.use();
     }
+
+    // </editor-fold>
 
     componentWillUnmount() {
         const {dialog} = this.refs;
@@ -70,6 +91,8 @@ class TimeActiveSessionExpiredDialog extends React.Component {
         !isMultiFactor() && this.onUnmount();
         style.unuse();
     }
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onLoginProceed">
     onLoginProceed() {
@@ -101,7 +124,7 @@ class TimeActiveSessionExpiredDialog extends React.Component {
                 path = "users/accounts/";
             }
 
-            neonBinding.events.emit(path + "login/biometric", {username, match, displaySize}).then(res => {
+            workers.emit(path + "login/biometric", {username, match, displaySize}).then(res => {
                 progressDialog.close();
 
                 if (!res) {
@@ -201,8 +224,6 @@ class TimeActiveSessionExpiredDialog extends React.Component {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="onSubmit">
     onSubmit(e, btn) {
         const {form} = this;
@@ -240,7 +261,7 @@ class TimeActiveSessionExpiredDialog extends React.Component {
                 data.username = username;
             }
 
-            neonBinding.events.emit(path + "login", data).then(res => {
+            workers.emit(path + "login", data).then(res => {
                 progressDialog.close();
                 btn.text("Login").enabled();
                 if (!res) {
@@ -297,8 +318,6 @@ class TimeActiveSessionExpiredDialog extends React.Component {
         }
     }
 
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="open">
     open(title = "Your Session Has Expired") {
         const _isMultiFactor = isMultiFactor();
@@ -315,28 +334,9 @@ class TimeActiveSessionExpiredDialog extends React.Component {
         });
     }
 
-    // </editor-fold>
-
     close() {
         !isMultiFactor() && this.onUnmount();
         this.refs.dialog.close();
-    }
-
-    @computed
-    get verifyPhoneNum() {
-        return this.state.verifyPhoneNum;
-    }
-
-    set verifyPhoneNum(val) {
-        this.state.verifyPhoneNum = val;
-    }
-
-    @computed
-    get bottomButtons() {
-        const _isMultiFactor = isMultiFactor();
-        const title = _isMultiFactor ? "Login" : "Capture Face";
-        const onClick = _isMultiFactor ? this.onSubmit : this.onCaptureFace;
-        return <Button className="btn btn-primary" text={title} onClick={onClick}/>;
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">

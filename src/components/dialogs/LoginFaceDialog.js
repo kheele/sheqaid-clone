@@ -237,7 +237,7 @@ class Controls extends ALoginControls {
         const faceMatcher = new faceapi.FaceMatcher(faceDescriptor, 0.5);
         const match = faceMatcher.toJSON();
 
-        neonBinding.events.emit(this.path + "login/biometric", {username, match, displaySize}).then(res => {
+        workers.emit(this.path + "login/biometric", {username, match, displaySize}).then(res => {
             this.auth.onAuthStateChanged(currentUser => {
                 storage.onLogin(currentUser);
             });

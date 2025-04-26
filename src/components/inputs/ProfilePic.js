@@ -121,7 +121,7 @@ class Val extends React.Component {
         } else if (!!id) {
             setTimeout(async () => {
                 const path = `plugin_sheq_assist}/${profilePic}/profile-pic`;
-                this.state.val = await window.neonBinding.events.emit(path, id);
+                this.state.val = await workers.emit(path, id);
                 this.state.loaded = true;
             }, 0);
         }

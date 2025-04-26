@@ -3,7 +3,7 @@ import {orgsFilter} from "graphql/Filters";
 
 // <editor-fold defaultstate="collapsed" desc="SelectLoad. Click on the + sign on the left to edit the code.">
 function onSelectLoadAssetActionCategories() {
-	return neonBinding.events.emit("plugin_sheq_assist/19_Maintenance/actions/categories/list").then(res => {
+	return workers.emit("plugin_sheq_assist/19_Maintenance/actions/categories/list").then(res => {
 		return res.map(value => {
 			return {label: value, value};
 		});

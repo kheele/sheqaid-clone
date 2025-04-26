@@ -1,4 +1,3 @@
-
 class AControllerWrite {
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -34,10 +33,22 @@ class AControllerWrite {
         this.tbl = tbl;
         this.queryWhereList = [];
 
-        const {addAction, create, find_by_id, find_by_ids, update, remove, count, list, search_by, get_profile_pic, upload_profile} = this;
+        const {
+            addAction,
+            create,
+            find_by_id,
+            find_by_ids,
+            update,
+            remove,
+            count,
+            list,
+            search_by,
+            get_profile_pic,
+            upload_profile
+        } = this;
         addAction("create", create);
         addAction("create/pdf", this.createPDF.bind(this));
-        addAction("edit/file", this.editFile.bind(this));
+        // addAction("edit/file", this.editFile.bind(this));
         addAction("find_by_id", find_by_id);
         addAction("find_by_ids", find_by_ids);
         addAction("update", update);
@@ -54,6 +65,7 @@ class AControllerWrite {
         }
 //        !!tbl && onAddChanges(evt, fn).bind(this);
     }
+
     // </editor-fold>
 
     getDB() {
@@ -68,6 +80,7 @@ class AControllerWrite {
         const {events, root} = this;
         Events.on(root + name, fn);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="setQueryWhere, addQueryWhere">
@@ -80,6 +93,7 @@ class AControllerWrite {
         this.queryWhereList.push([key, comp, val]);
         return this;
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="generateKeywords">
@@ -104,22 +118,23 @@ class AControllerWrite {
             ])
         ];
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onCreateNotification">
-    async onCreateNotification( {
-    newId,
-            doc_snapshot,
-            ccListByCompany,
-            ccListByContractor,
-            contractorUsername,
-            module,
-            _group = '',
-            name,
-            details = {}
-    }) {
+    async onCreateNotification({
+                                   newId,
+                                   doc_snapshot,
+                                   ccListByCompany,
+                                   ccListByContractor,
+                                   contractorUsername,
+                                   module,
+                                   _group = '',
+                                   name,
+                                   details = {}
+                               }) {
         const loggedUser = self.session.getLoggedUser();
-        
+
         const {id, ref, ref: {parent: collectionRef}} = doc_snapshot;
         const notifData = {
             status: 'New', //[New, Updated, Closed]
@@ -140,21 +155,22 @@ class AControllerWrite {
             contractorUsername,
             loggedUsername: loggedUser.user.data.username
         };
-        
+
         this.injectSavable(null, loggedUser, notifData);
-        
+
         const collectionGroupRef = collectionRef.doc(id).collection('notifications_pre').doc(newId);
 //        console.log('notifData', notifData)
         try {
             await collectionGroupRef.set(notifData, {merge: true});//Promise < void >
-        } catch(err) {
+        } catch (err) {
             console.error(err);
         }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onUpdateNotification">
-    async onUpdateNotification( {currId, doc_ref, details = {}}) {
+    async onUpdateNotification({currId, doc_ref, details = {}}) {
         const collectionGroupRef = doc_ref.collection('notifications_pre').doc(currId);
         let doc_snapshot_notif = await collectionGroupRef.get();
         if (doc_snapshot_notif.exists) {
@@ -170,6 +186,7 @@ class AControllerWrite {
             await collectionGroupRef.set(notifData, {merge: true});//Promise < void >
         }
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onCreateAuditRecord, auditImpl">
@@ -192,6 +209,7 @@ class AControllerWrite {
         const db_data = await db2.collection("default_audit_trail").add(audit);
         const snapshot = await db_data.get();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="createAudit, editAudit, removeAudit, printAudit, uploadAudit, downloadAudit, shareAudit">
@@ -222,6 +240,7 @@ class AControllerWrite {
     async shareAudit(loggedUser, created_at, data, props) {
         return this.auditImpl(loggedUser, created_at, 'shared', data, props);
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="create">
@@ -295,6 +314,7 @@ class AControllerWrite {
             return auditData;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="update">
@@ -354,6 +374,7 @@ class AControllerWrite {
             return data;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="createAndUploadIfFile">
@@ -456,6 +477,7 @@ class AControllerWrite {
             return auditData;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="remove">
@@ -480,6 +502,7 @@ class AControllerWrite {
             return true;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="removeWithFile">
@@ -509,6 +532,7 @@ class AControllerWrite {
             return true;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="upload_profile">
@@ -546,6 +570,7 @@ class AControllerWrite {
             return profile_pic;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="createPDF">
@@ -558,49 +583,50 @@ class AControllerWrite {
             return res;
         });
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="editFile">
-    async editFile(evt, ...args) {
-        return Events.whenLoggedIn(async loggedUser => {
-            const execFun = functions.httpsCallable('execFun');
-            const param = {path: evt, data: args};
-            console.log('editFile', param)
-            const res = await execFun(param);
-            return res;
-        });
-    }
+    // async editFile(evt, ...args) {
+    //     return Events.whenLoggedIn(async loggedUser => {
+    //         const execFun = functions.httpsCallable('execFun');
+    //         const param = {path: evt, data: args};
+    //         console.log('editFile', param)
+    //         const res = await execFun(param);
+    //         return res;
+    //     });
+    // }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="export_excel_impl">
-    async export_excel_impl(loggedUser, folder, fileName, title, cols, rows) {
-        const date = new Date();
-
-        const isWebWorker = !!self.require && isFunction(self.require);
-        if (isWebWorker) {
-            const os = self.require('os');
-            const path = self.require('path');
-
-            const dir = path.join(os.homedir(), "Documents", "SHEQAid", folder, fileName, Dates.formatDate(date));
-            const file = await excelUtils.create(dir, (fileName + "-" + Dates.formatTime(date).replaceAll(":", "")) + ".xlsx", title, cols, rows);
-
-            const exec = self.require('child_process').exec;
-            setTimeout(() => {
-                exec(file, (error, stdout, stderr) => {
-                    //        sys.puts(stdout)
-                });
-            }, 3000);
-
-            const auditData = {info: {cols, rows}, local: {file, path: dir}};
-            this.printAudit(loggedUser, date.getTime(), auditData);
-            return auditData.local;
-        } else {
-            const dataUri = await excelUtils.create(folder, (fileName + "-" + Dates.formatTime(date).replaceAll(":", "")) + ".xlsx", title, cols, rows);
-
-            const auditData = {info: {cols, rows}};
-            this.printAudit(loggedUser, date.getTime(), auditData);
-            return dataUri;
-        }
-    }
+    // async export_excel_impl(loggedUser, folder, fileName, title, cols, rows) {
+    //     const date = new Date();
+    //
+    //     const isWebWorker = !!self.require && isFunction(self.require);
+    //     if (isWebWorker) {
+    //         const os = self.require('os');
+    //         const path = self.require('path');
+    //
+    //         const dir = path.join(os.homedir(), "Documents", "SHEQAid", folder, fileName, Dates.formatDate(date));
+    //         const file = await excelUtils.create(dir, (fileName + "-" + Dates.formatTime(date).replaceAll(":", "")) + ".xlsx", title, cols, rows);
+    //
+    //         const exec = self.require('child_process').exec;
+    //         setTimeout(() => {
+    //             exec(file, (error, stdout, stderr) => {
+    //                 //        sys.puts(stdout)
+    //             });
+    //         }, 3000);
+    //
+    //         const auditData = {info: {cols, rows}, local: {file, path: dir}};
+    //         this.printAudit(loggedUser, date.getTime(), auditData);
+    //         return auditData.local;
+    //     } else {
+    //         const dataUri = await excelUtils.create(folder, (fileName + "-" + Dates.formatTime(date).replaceAll(":", "")) + ".xlsx", title, cols, rows);
+    //
+    //         const auditData = {info: {cols, rows}};
+    //         this.printAudit(loggedUser, date.getTime(), auditData);
+    //         return dataUri;
+    //     }
+    // }
     // </editor-fold>
 }

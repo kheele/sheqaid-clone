@@ -78,7 +78,7 @@ class Main extends APage {
     }
 
     onLoadList() {
-        neonBinding.events.emit(this.path + "list").then(res => {
+        workers.emit(this.path + "list").then(res => {
             this.state.list.pushAll(res.map(v => {
                 v.start = new Date(v.start);
                 v.end = new Date(v.end);
@@ -91,7 +91,7 @@ class Main extends APage {
             this.state.dataError = true;
             this.state.dataLoaded = true;
         });
-        neonBinding.events.emit("plugin_common_modules/calendar/meetings/list").then(res => {
+        workers.emit("plugin_common_modules/calendar/meetings/list").then(res => {
             this.state.list.pushAll(res.map(v => {
                 v.start = new Date(v.data.start);
                 v.end = new Date(v.data.end);

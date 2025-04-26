@@ -252,8 +252,14 @@ class Controls extends React.Component {
             onFormBack={onFormBack}
             onFormNext={!isLast && onFormNext}
         >
-            <Comp ref={ref} idx={n} title={title} onFormOpen={onFormOpen} onFormBack={onFormBack}
-                  onFormNext={onFormNext}/>
+            <Comp
+                ref={ref}
+                onRefs={() => this.refs}
+                idx={n} title={title}
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+            />
         </Row>;
     }
 

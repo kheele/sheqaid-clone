@@ -13,6 +13,7 @@ import {updateEmployeeMedical} from "mutations/update";
 import {findByIdOrgMedicalsDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgMedicalsDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeMedicals} from "mutations/exportExcel";
+import {listEmployeeMedical} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -57,7 +58,7 @@ class Dialog extends AEmployeeDocDialog {
             fitness_option,
         } = filterData || {};
         return {
-            path: 'employees/docs/medicals',
+            listByLogged: listEmployeeMedical,
             annexture_3,
             fitness_option,
         };

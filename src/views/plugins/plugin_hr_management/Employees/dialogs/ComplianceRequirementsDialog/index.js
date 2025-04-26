@@ -79,7 +79,7 @@ class ComplianceRequirementDialog extends ADialogList {
         } = filterData || {};
 
         return {
-            onList: listComplianceRequirements,
+            listByLogged: listComplianceRequirements,
             attrs: {
                 name,
                 regulation_id,

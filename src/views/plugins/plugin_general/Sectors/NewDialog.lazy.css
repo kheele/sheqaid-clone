@@ -1,8 +1,8 @@
 @import '../../../../css/ANewDialog.css';
 
 #dialog-overlay.Sector-new-dialog .dialog-container {
-    height: 300px;
-    width: 800px;
+    height: 320px;
+    width: 600px;
 }
 
 #dialog-overlay.Sector-new-dialog .dialog-content {

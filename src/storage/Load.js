@@ -101,7 +101,7 @@ class Load {
         const key = 'isLoadingEmergencyContacts' + type;
         if (!this[key]) {
             this[key] = true;
-            return neonBinding.events.emit("plugin_sheq_assist/16_Emergency_Preparedness/emergency-numbers/" + type + "/list").then(res => {
+            return workers.emit("plugin_sheq_assist/16_Emergency_Preparedness/emergency-numbers/" + type + "/list").then(res => {
                 this.storage.attrs.set("emergency-numbers-" + type, res);
                 setTimeout(() => {
                     this[key] = false;
@@ -114,7 +114,7 @@ class Load {
 
     loadSignatureSettings() {
         // signatureSettingStore
-        return neonBinding.events.emit("plugin_sheq_assist/signature-settings/list").then(res => {
+        return workers.emit("plugin_sheq_assist/signature-settings/list").then(res => {
             this.storage.attrs.set("signature-settings", res);
             console.log("signature-settings", res)
         });

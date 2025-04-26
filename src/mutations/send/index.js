@@ -43,3 +43,6 @@ export const loginUserStep1ByUsername = async (data) => {
     const loginUserStep1 = send('loginUserStep1ByUsername', path);
     return loginUserStep1(username);
 };
+
+//HR
+export const processEmployeeFileImport = send('processFileImport', "employees");

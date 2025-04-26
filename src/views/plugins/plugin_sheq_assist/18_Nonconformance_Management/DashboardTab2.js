@@ -76,7 +76,7 @@ class AContent extends React.Component {
 
     update() {
         this.state.loadStatus = "LOADING";
-        neonBinding.events.emit(`${this.props.path}list`).then(list => {
+        workers.emit(`${this.props.path}list`).then(list => {
             this.state.list = list;
             this.state.loadStatus = "SUCCESS";
         }).catch(err => {

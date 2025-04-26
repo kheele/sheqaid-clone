@@ -4,14 +4,16 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 import {ShouldUpdate} from "utils/Utils";
-import {ClearableInput, ProfilePic, SelectSectorInput} from 'components/inputs';
+import {ClearableInput, ProfilePic} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import {AEditDialog} from 'components/dialogs';
 import style from "./EditDialog.lazy.css";
 import {updateClient} from "mutations/update";
-import {NewProjectListTable, NewSiteListTable} from "components/FormTableComponents";
 import {findByIdClient} from "mutations/findById";
+import NewSectorListTable from "../../../../components/FormTableComponents/NewSectorListTable";
+import {insertProxySectorClient} from "../../../../mutations/create";
+import {deleteProxySectorClient} from "../../../../mutations/delete";
 
 @observer
 class EditDialog extends AEditDialog {
@@ -39,9 +41,9 @@ class Controls extends React.Component {
     @observable
     state = {
         lists: {
-            sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
-                return {value, label: value};
-            }),
+            // sector_list: ['Chemicals', 'Construction', 'Fire Management', 'Harvesting', 'Manufacturing', 'Mining', 'Silviculture', 'Transport', 'Other'].map(value => {
+            //     return {value, label: value};
+            // }),
         },
     };
 
@@ -280,9 +282,19 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormSave={this.onFormSave}
             >
-                <SelectSectorInput name="sector_list" placeholder="Sector(s)" defaultValue={sector_list}
-                                   className="col-lg-12 form-control" onChange={this.form.onChange}
-                                   values={this.state.lists.sector_list} returnValue/>
+                <NewSectorListTable
+                    name="sector_list"
+                    defaultValue={[...(sector_list || []), null]}
+                    className="w-full"
+                    savable
+                    targetItem={{key: "client_id", item}}
+                    insertFn={insertProxySectorClient}
+                    deleteFn={deleteProxySectorClient}
+                    onAttrs={({sector}) => ({
+                        sector_id: sector.id,
+                    })}
+                    onChange={this.form.onChange}
+                />
             </Row>
             <Row
                 active={index === 3}
@@ -297,34 +309,6 @@ class Controls extends React.Component {
                                 defaultValue={contractor_email}
                                 desc="Used to link this company as a contractor of other companies when required."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-            </Row>
-            <Row
-                activeAlways
-                rendered
-                idx={4}
-                rowClassName="flex row-more"
-                title="Projects"
-            >
-                <NewProjectListTable
-                    title="Projects"
-                    name="project_list"
-                    defaultValue={project_list}
-                    readonly
-                />
-            </Row>
-            <Row
-                activeAlways
-                rendered
-                idx={5}
-                rowClassName="flex row-more"
-                title="Sites"
-            >
-                <NewSiteListTable
-                    title="Sites"
-                    name="site_list"
-                    defaultValue={site_list}
-                    readonly
-                />
             </Row>
         </FormControls>;
     }

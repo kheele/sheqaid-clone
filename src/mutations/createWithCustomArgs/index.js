@@ -3,7 +3,7 @@
 import {insertEmployeeDocDocumentIDOrPassport, insertEmployeeDocDocumentPrDP} from "../create";
 
 export const insertEmployeeDocDocument = async (data) => {
-    const {type} = data;
+    const {formData: {type}} = data;
     const type_funs = {
         'PrDP': insertEmployeeDocDocumentPrDP,
         'ID/Passport': insertEmployeeDocDocumentIDOrPassport,

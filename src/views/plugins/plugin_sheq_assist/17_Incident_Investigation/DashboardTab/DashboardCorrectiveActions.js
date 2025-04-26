@@ -66,7 +66,7 @@ class DashboardCorrectiveActions extends React.Component {
     async load() {
         //{year, month, date, day, am_pm}
 //        this.state.dataLoaded = false;
-        await neonBinding.events.emit(this.props.path, this.currY).then(res => {
+        await workers.emit(this.props.path, this.currY).then(res => {
             // this.state.list = res;
            console.log('stats', res)
             this.state.dataLoaded = true;

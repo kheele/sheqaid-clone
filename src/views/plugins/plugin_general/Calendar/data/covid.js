@@ -26,7 +26,7 @@ const onFailure = (state) => {
 };
 
 const COVID_Management_documents = (state, selectedDate, selectedView) => {
-    neonBinding.events.emit("plugin_sheq_assist/COVID_Management/documents/list/calendar", selectedDate, selectedView).
+    workers.emit("plugin_sheq_assist/COVID_Management/documents/list/calendar", selectedDate, selectedView).
             then(onSuccess(state, "COVID_Management_Document", "COVID Management Document")).catch(onFailure(state));
 };
 

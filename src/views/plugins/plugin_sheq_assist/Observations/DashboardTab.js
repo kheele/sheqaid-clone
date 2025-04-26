@@ -13,7 +13,7 @@ import style from "./DashboardTab.lazy.css";
 @observer
 class DashboardTab extends React.Component {
     static key = 'Dashboard';
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor, componentWillMount, componentWillUnmount">
     constructor(props) {
         super(props);
@@ -22,17 +22,18 @@ class DashboardTab extends React.Component {
     componentWillMount() {
         style.use();
     }
-    
+
     componentWillUnmount() {
         style.unuse();
     }
+
     // </editor-fold>
-    
+
     update() {
         this.refs.inspections.update();
         this.refs.ncr.update();
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="render">
     render() {
         const {path} = this.props;
@@ -43,177 +44,180 @@ class DashboardTab extends React.Component {
             </div>
         </div>;
     }
+
     // </editor-fold>
 }
 
 // <editor-fold defaultstate="collapsed" desc="AContent">
 @observer
-class AContent extends React.Component { 
-    
+class AContent extends React.Component {
+
     @observable state = {
         list: [],
         loadStatus: null
     };
-    
+
     // <editor-fold defaultstate="collapsed" desc="constructor, componentDidMount">
     constructor(props) {
         super(props);
-        
+
         this.update = this.update.bind(this);
     }
+
+    @computed get list() {
+        return this.state.list;
+    }
+
+    // </editor-fold>
 
     componentDidMount() {
         this.update();
     }
-    // </editor-fold>
-    
-    @computed get list() {
-        return this.state.list;
-    }
-    
+
     update() {
         this.state.loadStatus = "LOADING";
-        neonBinding.events.emit(`${this.props.path}${this.key}/list`).then(list => {
+        workers.emit(`${this.props.path}${this.key}/list`).then(list => {
             this.state.list = list;
             this.state.loadStatus = "SUCCESS";
         }).catch(err => {
             this.state.loadStatus = "ERROR";
         });
     }
-    
+
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ContentInspection">
 @observer
-class ContentInspection extends AContent { 
+class ContentInspection extends AContent {
     key = "inspection";
-    
+
     //physical_state
     @computed get physicalStateGasList() {
         const {list} = this;
         return list.filter(({data}) => data.physical_state === "Gas");
     }
-    
+
     @computed get physicalStateLiquidList() {
         const {list} = this;
         return list.filter(({data}) => data.physical_state === "Liquid");
     }
-    
+
     @computed get physicalStateSolidList() {
         const {list} = this;
         return list.filter(({data}) => data.physical_state === "Solid");
     }
-    
+
     @computed get physicalStateLiquidCrystalList() {
         const {list} = this;
         return list.filter(({data}) => data.physical_state === "Liquid Crystal");
     }
-        
+
     //risk_level
     @computed get riskLevelLowList() {
         const {list} = this;
         return list.filter(({data}) => data.risk_level === "Low");
     }
-    
+
     @computed get riskLevelMediumList() {
         const {list} = this;
         return list.filter(({data}) => data.risk_level === "Medium");
     }
-    
+
     @computed get riskLevelHighList() {
         const {list} = this;
         return list.filter(({data}) => data.risk_level === "High");
     }
-    
+
     @computed get riskLevelVeryHighList() {
         const {list} = this;
         return list.filter(({data}) => data.risk_level === "Very High");
     }
-    
+
     //is_stable
     @computed get isStableYesList() {
         const {list} = this;
         return list.filter(({data}) => data.is_stable === "Yes");
     }
-    
+
     @computed get isStableNoList() {
         const {list} = this;
         return list.filter(({data}) => data.is_stable === "No");
     }
-        
+
     //is_hazardous
     @computed get isHazardousYesList() {
         const {list} = this;
         return list.filter(({data}) => data.is_hazardous === "Yes");
     }
-    
+
     @computed get isHazardousNoList() {
         const {list} = this;
         return list.filter(({data}) => data.is_hazardous === "No");
     }
-        
+
     //is_combustible
     @computed get isCombustibleYesList() {
         const {list} = this;
         return list.filter(({data}) => data.is_combustible === "Yes");
     }
-    
+
     @computed get isCombustibleNoList() {
         const {list} = this;
         return list.filter(({data}) => data.is_combustible === "No");
     }
-        
+
     //is_flammable
     @computed get isFlammableYesList() {
         const {list} = this;
         return list.filter(({data}) => data.is_flammable === "Yes");
     }
-    
+
     @computed get isFlammableNoList() {
         const {list} = this;
         return list.filter(({data}) => data.is_flammable === "No");
     }
-        
+
     //has_sds
     @computed get hasSDSYesList() {
         const {list} = this;
         return list.filter(({data}) => data.has_sds === "Yes" || !!data.sds || !!data.sds_doc);
     }
-    
+
     @computed get hasSDSNoList() {
         const {list} = this;
         return list.filter(({data}) => data.has_sds === "No" || (!data.sds && !data.sds_doc));
     }
-        
+
     //has_hazchem_sheet
     @computed get hasHazchemSheetYesList() {
         const {list} = this;
         return list.filter(({data}) => data.has_hazchem_sheet === "Yes" || !!data.hazchem_sheet || !!data.hazchem_sheet_doc);
     }
-    
+
     @computed get hasHazchemSheetNoList() {
         const {list} = this;
         return list.filter(({data}) => data.has_hazchem_sheet === "No" || (!data.hazchem_sheet && !data.hazchem_sheet_doc));
     }
-        
+
     //has_risk_assessment
     @computed get hasRAYesList() {
         const {list} = this;
         return list.filter(({data}) => data.has_risk_assessment === "Yes" || !!data.risk_assessment || !!data.risk_assessment_doc);
     }
-    
+
     @computed get hasRANoList() {
         const {list} = this;
         return list.filter(({data}) => data.has_risk_assessment === "No" || (!data.risk_assessment && !data.risk_assessment_doc));
     }
-    
+
     render() {
         const {list, state: {loadStatus}} = this;
-        if(!loadStatus || loadStatus === "LOADING") {
+        if (!loadStatus || loadStatus === "LOADING") {
             return null;
-        } else if(loadStatus === "ERROR") {
-            
+        } else if (loadStatus === "ERROR") {
+
         }
         return <React.Fragment>
             <div className="margin-0 margin-r-10 grid-1 grid-gap-10 align-content-top">
@@ -291,134 +295,135 @@ class ContentInspection extends AContent {
         </React.Fragment>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ContentNCR">
 @observer
 class ContentNCR extends AContent {
     key = "ncr";
-    
+
     //type
     @computed get typeCorrectiveActionList() {
         const {list} = this;
         return list.filter(({data}) => data.type === "Corrective Action");
     }
-    
+
     @computed get typePreventativeActionList() {
         const {list} = this;
         return list.filter(({data}) => data.type === "Preventative Action");
     }
-    
+
     @computed get typeOpportunityForImproverList() {
         const {list} = this;
         return list.filter(({data}) => data.type === "Opportunity For Improver");
     }
-    
+
     @computed get typeUnclassifiedList() {
         const {list} = this;
         return list.filter(({data}) => !data.type);
     }
-        
+
     //priority
     @computed get priorityLowList() {
         const {list} = this;
         return list.filter(({data}) => data.priority === "Low");
     }
-    
+
     @computed get priorityMediumList() {
         const {list} = this;
         return list.filter(({data}) => data.priority === "Medium");
     }
-    
+
     @computed get priorityHighList() {
         const {list} = this;
         return list.filter(({data}) => data.priority === "High");
     }
-    
+
     @computed get priorityCriticalList() {
         const {list} = this;
         return list.filter(({data}) => data.priority === "Critical");
     }
-    
+
     @computed get priorityUnclassifiedList() {
         const {list} = this;
         return list.filter(({data}) => !data.priority);
     }
-        
+
     //status
     @computed get statusPendingList() {
         const {list} = this;
         return list.filter(({data}) => data.status === 'Pending');
     }
-    
+
     @computed get statusProgressList() {
         const {list} = this;
         return list.filter(({data}) => data.status === 'Progress');
     }
-    
+
     @computed get statusApprovedList() {
         const {list} = this;
         return list.filter(({data}) => data.status === 'Approved');
     }
-    
+
     @computed get statusRejectedList() {
         const {list} = this;
         return list.filter(({data}) => data.status === 'Rejected');
     }
-    
+
     @computed get statusCompletedList() {
         const {list} = this;
         return list.filter(({data}) => data.status === 'Completed');
     }
-    
+
     @computed get statusUnclassifiedList() {
         const {list} = this;
         return list.filter(({data}) => !data.status);
     }
-        
+
     //result
     @computed get resultPassList() {
         const {list} = this;
         return list.filter(({data}) => data.result === 'Pass');
     }
-    
+
     @computed get resultFailList() {
         const {list} = this;
         return list.filter(({data}) => data.result === 'Fail');
     }
-    
+
     @computed get resultUnclassifiedList() {
         const {list} = this;
         return list.filter(({data}) => !data.result);
     }
-        
+
     //source
     @computed get sourceSiteAuditList() {
         const {list} = this;
         return list.filter(({data}) => data.source === 'Site Audit');
     }
-    
+
     @computed get sourceComplianceAuditList() {
         const {list} = this;
         return list.filter(({data}) => data.source === 'Compliance Audit');
     }
-    
+
     @computed get sourceInspectionList() {
         const {list} = this;
         return list.filter(({data}) => data.source === 'Inspection');
     }
-    
+
     @computed get sourceIncidentInvestigationList() {
         const {list} = this;
         return list.filter(({data}) => data.source === 'Incident Investigation');
     }
-    
+
     render() {
         const {list, state: {loadStatus}} = this;
-        if(!loadStatus || loadStatus === "LOADING") {
+        if (!loadStatus || loadStatus === "LOADING") {
             return null;
-        } else if(loadStatus === "ERROR") {
-            
+        } else if (loadStatus === "ERROR") {
+
         }
         return <React.Fragment>
             <div className="margin-0 margin-r-10 grid-1 grid-gap-10 align-content-top">
@@ -476,12 +481,13 @@ class ContentNCR extends AContent {
         </React.Fragment>;
     }
 }
+
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Stats">
 @observer
 class Stats extends React.Component {
-    
+
     @observable state = {
         value: null,
         loading: true
@@ -490,14 +496,14 @@ class Stats extends React.Component {
     async componentDidMount() {
         const {props: {value}} = this;
         this.state.loading = true;
-        if(value instanceof Promise) {
+        if (value instanceof Promise) {
             this.state.value = await value;
         } else {
             this.state.value = value;
         }
         this.state.loading = false;
     }
-    
+
     render() {
         const {props: {title, className = ""}} = this;
         const {value, loading} = this.state;
@@ -512,6 +518,7 @@ class Stats extends React.Component {
         </div>;
     }
 }
+
 // </editor-fold>
 
 export default DashboardTab;

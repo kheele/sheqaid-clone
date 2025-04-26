@@ -53,7 +53,7 @@ class StatsCount extends React.Component {
     };
 
     componentDidMount() {
-        neonBinding.events.emit(this.props.path + "stats").then(res => {
+        workers.emit(this.props.path + "stats").then(res => {
             this.state.counts = res.stats_count;
         }).catch(e => {
             console.log(e)

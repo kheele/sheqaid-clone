@@ -100,7 +100,7 @@ class Controls extends React.Component {
             return;
         }
 
-        const type = dialog.extraProp('type');
+        const {type} = dialog.props;
 
         if (isNewEmployee) {
             const data = {...form.data, type};
@@ -134,7 +134,7 @@ class Controls extends React.Component {
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        updateEmployeeDocDocument({id: this.item.id, ...data}).then(res => {
+        updateEmployeeDocDocument({id: this.item.id, ...data, type}).then(res => {
             console.log("res", res)
             onSaved && onSaved(res);
             infoDialog.open("Record successfully updated.");

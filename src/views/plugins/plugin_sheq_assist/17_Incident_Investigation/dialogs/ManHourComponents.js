@@ -11,7 +11,6 @@ import {ClearableInput, ProfileField} from "components/inputs";
 
 @observer
 class AControls extends React.Component {
-    path = "plugin_sheq_assist/17_Incident_Investigation/man-hours/";
 
     //<editor-fold desc="fields">
     @observable state = {
@@ -52,7 +51,7 @@ class AControls extends React.Component {
 
     //<editor-fold desc="onChangeImpl">
     onChangeImpl(group, el, name, val) {
-        if(name.contains("_num_of_days_per_month")) {
+        if (name.contains("_num_of_days_per_month")) {
             val = parseFloat(val, 10);
         }
         execWhen(() => {
@@ -133,9 +132,9 @@ class AControls extends React.Component {
             group_transport_hrs.setEditable(false);
 
             let {value: days_per_month} = group_num_of_days_per_month;
-            if(isString(days_per_month)) {
+            if (isString(days_per_month)) {
                 days_per_month = parseFloat(days_per_month);
-            } else if(isObject(days_per_month)) {
+            } else if (isObject(days_per_month)) {
                 days_per_month = parseFloat(days_per_month.value);
             } else {
                 days_per_month = 0;

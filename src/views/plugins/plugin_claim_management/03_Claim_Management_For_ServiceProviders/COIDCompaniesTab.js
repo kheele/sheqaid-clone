@@ -37,7 +37,7 @@ class COIDCompaniesTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
-    
+
     onRemove(evt, btn) {
         const {idx} = btn.props;
         const {list} = this.refs.root;
@@ -45,17 +45,17 @@ class COIDCompaniesTab extends React.Component {
         const {id: sender_company_id, data: {created_at, name, request = {}}} = item;
         const {data = {}} = request;
         const {status = 'N/A'} = data;
-        
+
         progressDialog.open();
-        neonBinding.events.emit(`${this.path}requests/remove`, sender_company_id).then(res => {
+        workers.emit(`${this.path}requests/remove`, sender_company_id).then(res => {
             console.log("res", res)
-            if(res === 'NOT_FOUND') {
+            if (res === 'NOT_FOUND') {
                 infoDialog.open("The company was not found.");
-            } else if(res === 'ALREADY_REMOVED') {
+            } else if (res === 'ALREADY_REMOVED') {
                 infoDialog.open("The company has already been removed.");
-            } else if(res === 'UPDATE_ERROR') {
+            } else if (res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
-            } else if(res === true) {
+            } else if (res === true) {
                 request.data.status = 'RecipientRemoved';
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
@@ -69,7 +69,7 @@ class COIDCompaniesTab extends React.Component {
             progressDialog.close();
         });
     }
-    
+
     onAcceptRequest(evt, btn) {
         const {idx} = btn.props;
         const {list} = this.refs.root;
@@ -77,17 +77,17 @@ class COIDCompaniesTab extends React.Component {
         const {id: sender_company_id, data: {created_at, name, request = {}}} = item;
         const {data = {}} = request;
         const {status = 'N/A'} = data;
-        
+
         progressDialog.open();
-        neonBinding.events.emit(`${this.path}requests/accept`, sender_company_id).then(res => {
+        workers.emit(`${this.path}requests/accept`, sender_company_id).then(res => {
             console.log("res", res)
-            if(res === 'NOT_FOUND') {
+            if (res === 'NOT_FOUND') {
                 infoDialog.open("The company was not found.");
-            } else if(res === 'ALREADY_SENT') {
+            } else if (res === 'ALREADY_SENT') {
                 infoDialog.open("The request has already been sent.");
-            } else if(res === 'UPDATE_ERROR') {
+            } else if (res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
-            } else if(res === true) {
+            } else if (res === true) {
                 request.data.status = 'Accepted';
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
@@ -101,7 +101,7 @@ class COIDCompaniesTab extends React.Component {
             progressDialog.close();
         });
     }
-    
+
     onDeclineRequest(evt, btn) {
         const {idx} = btn.props;
         const {list} = this.refs.root;
@@ -110,15 +110,15 @@ class COIDCompaniesTab extends React.Component {
         const {data = {}} = request;
         const {status = 'N/A'} = data;
         progressDialog.open();
-        neonBinding.events.emit(`${this.path}requests/decline`, sender_company_id).then(res => {
+        workers.emit(`${this.path}requests/decline`, sender_company_id).then(res => {
             console.log("res", res)
-            if(res === 'NOT_FOUND') {
+            if (res === 'NOT_FOUND') {
                 infoDialog.open("The company was not found.");
-            } else if(res === 'NOT_FOUND_REQUEST') {
+            } else if (res === 'NOT_FOUND_REQUEST') {
                 infoDialog.open("The request no longer exist.");
-            } else if(res === 'UPDATE_ERROR') {
+            } else if (res === 'UPDATE_ERROR') {
                 infoDialog.open("An error occurred. Please try again.");
-            } else if(res === true) {
+            } else if (res === true) {
                 request.data.status = 'Declined';
                 setTimeout(() => {
                     list.removeIf(v => v.id === item.id);
@@ -132,20 +132,20 @@ class COIDCompaniesTab extends React.Component {
             progressDialog.close();
         });
     }
-    
+
     renderPopoverOptions(idx, {onView, onEdit, onRemove, Options}) {
         const item = this.refs.root.list[idx];
         const {id: sender_company_id, data: {created_at, name, request = {}}} = item;
         const {data = {}} = request;
         const {status = 'N/A'} = data;
-        
+
         const remove = status === 'Accepted';
         const acceptRequest = status === 'New';
         const declineRequest = status === 'New';
-        
+
         return <Options idx={idx} permissionModKey={this.props.permissionKey}>
             <NavItem action="view" onClick={onView} faIconLeft="eye" title="View"/>
-            {(remove || acceptRequest || declineRequest) && <hr />}
+            {(remove || acceptRequest || declineRequest) && <hr/>}
             {remove && <NavItem onClick={this.onRemove} faIconLeft="check" title="Remove"/>}
             {acceptRequest && <NavItem onClick={this.onAcceptRequest} faIconLeft="check" title="Accept Request"/>}
             {declineRequest && <NavItem onClick={this.onDeclineRequest} faIconLeft="ban" title="Decline Request"/>}
@@ -154,7 +154,8 @@ class COIDCompaniesTab extends React.Component {
 
     renderFilterNode(onChange) {
         return <div className="col-lg-12 controls">
-            <ClearableInput name="name" type="text" placeholder="Name" className="col-lg-12 form-control margin-b-10" onChange={onChange}/>
+            <ClearableInput name="name" type="text" placeholder="Name" className="col-lg-12 form-control margin-b-10"
+                            onChange={onChange}/>
         </div>;
     }
 
@@ -175,15 +176,15 @@ class COIDCompaniesTab extends React.Component {
         return <TRow key={"item-" + n}>
             <div className="td">{name}</div>
             <div className="td fixed-flex min-w-120">{status}</div>
-            
+
             <div className="td fixed-flex padding-l-10 padding-r-0 min-w-50">
-            	<ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
+                <ActionsButton idx={n} className="btn btn-primary pull-right min-w-40" onClick={onClick}/>
             </div>
         </TRow>;
     }
 
     render() {
-        return <APageListReadWrite 
+        return <APageListReadWrite
             hasBackBtn={false}
             ref="root"
             page={this}

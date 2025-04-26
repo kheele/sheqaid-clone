@@ -41,7 +41,7 @@ class Controls extends React.Component {
     componentDidMount() {
         this.props.execWhen(() => this.refs.logo).then(async logo_ref => {
             const {data: {company: {id}}} = this.item;
-            const res = await window.neonBinding.events.emit('plugin_sheq_assist/clients/profile-pic', id);
+            const res = await workers.emit('plugin_sheq_assist/clients/profile-pic', id);
             if(res && res.dlUrls) {
                 logo_ref.src = res.dlUrls[0];
             }

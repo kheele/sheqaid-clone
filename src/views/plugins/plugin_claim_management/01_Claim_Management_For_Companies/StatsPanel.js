@@ -12,7 +12,7 @@ import style from "./StatsPanel.lazy.css";
 
 @observer
 class StatsPanel extends React.Component {
-    
+
     @observable
     state = {
         dataLoaded: false,
@@ -22,16 +22,16 @@ class StatsPanel extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.load = this.load.bind(this);
-        
+
         this.renderItem = this.renderItem.bind(this);
     }
 
     componentWillMount() {
         style.use();
     }
-    
+
     componentDidMount() {
         this.load();
     }
@@ -44,7 +44,7 @@ class StatsPanel extends React.Component {
         this.state.dataLoaded = false;
         this.state.dataError = false;
         this.state.list = [];
-        neonBinding.events.emit(this.props.path + "stats").then(res => {
+        workers.emit(this.props.path + "stats").then(res => {
             this.state.list = res;
             this.state.dataLoaded = true;
             this.state.dataError = false;
@@ -52,17 +52,17 @@ class StatsPanel extends React.Component {
             console.log(e)
             this.state.dataLoaded = true;
             this.state.dataError = true;
-        });        
+        });
     }
-    
+
     update() {
         this.load();
     }
-    
-    renderItem({title, count}, n){
+
+    renderItem({title, count}, n) {
         return <Stat title={title} value={count} getDialogRef={this.getDialogRef}/>;
     }
-    
+
     render() {
         const {
             dataLoaded, dataError, list
@@ -85,18 +85,18 @@ class StatsPanel extends React.Component {
 
 @observer
 class Stat extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
     }
-    
-    onClick(e){
+
+    onClick(e) {
 //        const {filter: {key, value}, getDialogRef} = this.props;
 //        const dialog = getDialogRef();
 //        dialog.open(key, value);
     }
-    
+
     render() {
         const {title, value} = this.props;
         const className = "panel col-lg-3";
@@ -123,21 +123,26 @@ class StatsGraph extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.path = props.path + "/graphs";
-        
+
         const start = this.state.year;
         const end = start - 2020;
         for (var value = start; value >= 2020; value--) {
             this.state.lists.years.push({label: value, value});
         }
-        
+
         this.form = new Form();
-        
+
         this.onChangeYear = this.onChangeYear.bind(this);
         this.form.addChangeOne("year", this.onChangeYear);
     }
-    
+
+    get year() {
+        const value = this.state.year;
+        return {label: value, value};
+    }
+
     onChangeYear(el, val) {
         let year;
         if (val) {
@@ -146,24 +151,24 @@ class StatsGraph extends React.Component {
             year = this.state.year;
         }
         this.state.dataLoaded = false;
-        neonBinding.events.emit(this.path, year).then(async charts => {
-            const mapper = function(k) {
-                return function(v) {
-                    v.dataPoints = v.dataPoints.map(function(v) {
-                                    let d = new Date(v.x);
-                                    if (k === "indexLabel") {
-                                        let s = d.toString();
-                                        s = s.substring(3, s.indexOf('01') - 1);
-                                        v[k] = s + '-' + Math.round(v.y);
-                                    } else if (k === "label") {
-                                        let s = d.toString();
-                                        s = s.substring(3, s.indexOf('01') - 1);
-                                        v[k] = s;// + '-' + Math.round(v.y);
-                                        delete v.x;
-                                    } else {
-                                        v[k] = d;
-                                    }
-                                    return v;
+        workers.emit(this.path, year).then(async charts => {
+            const mapper = function (k) {
+                return function (v) {
+                    v.dataPoints = v.dataPoints.map(function (v) {
+                        let d = new Date(v.x);
+                        if (k === "indexLabel") {
+                            let s = d.toString();
+                            s = s.substring(3, s.indexOf('01') - 1);
+                            v[k] = s + '-' + Math.round(v.y);
+                        } else if (k === "label") {
+                            let s = d.toString();
+                            s = s.substring(3, s.indexOf('01') - 1);
+                            v[k] = s;// + '-' + Math.round(v.y);
+                            delete v.x;
+                        } else {
+                            v[k] = d;
+                        }
+                        return v;
                     });
                     return v;
                 };
@@ -175,7 +180,7 @@ class StatsGraph extends React.Component {
             console.error(e)
         });
     }
-    
+
     update(charts) {
         this.state.column_charts = charts;
         this.state.dataLoaded = true;
@@ -186,17 +191,15 @@ class StatsGraph extends React.Component {
             }
         });
     }
-    
-    get year() {
-        const value = this.state.year;
-        return {label: value, value};
-    }
 
     render() {
         const {column_charts} = this.state;
         return <div className="stats-graphs">
-            <ClearableInput name="year" type="select" placeholder="Year..." className="min-w-140 form-control" onChange={this.form.onChange} defaultValue={this.year} values={this.state.lists.years} returnValue/>
-            {!this.state.dataLoaded && <div className="fixed-center"><CircularProgress/><br />Loading Statistics...</div>}
+            <ClearableInput name="year" type="select" placeholder="Year..." className="min-w-140 form-control"
+                            onChange={this.form.onChange} defaultValue={this.year} values={this.state.lists.years}
+                            returnValue/>
+            {!this.state.dataLoaded &&
+                <div className="fixed-center"><CircularProgress/><br/>Loading Statistics...</div>}
             {this.state.dataLoaded && <div className="stats-graph">
                 <div className="red">
                     <div className="flex">

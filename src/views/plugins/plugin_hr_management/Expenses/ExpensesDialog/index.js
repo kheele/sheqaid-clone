@@ -4,22 +4,20 @@ import {observer} from 'mobx-react';
 
 import style from "./ExpensesDialog.lazy.css";
 
-import ExportDialog from '../ExportDialog.js';
-
 import {EditDialog, NewDialog, ProfileDialog} from '../forms';
 
 import AEmployeeDocDialog from '../../AEmployeeDocDialog';
 
 import ExpensesRenderRow from "./ExpensesRenderRow";
 import {THead} from "components/tables";
-import {ClearableInput, DateRangeInput} from "components/inputs";
+import {ClearableInput} from "components/inputs";
 
 import {updateEmployeeExpense} from "mutations/update";
 import TabView from "./TabView";
 import {findByIdOrgExpensesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgExpensesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeExpenses} from "mutations/exportExcel";
-import SelectPPETypeInput from "../../../../../components/inputs/SelectPPETypeInput";
+import {listEmployeeExpense} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -38,7 +36,7 @@ class Dialog extends AEmployeeDocDialog {
     style = style;
 
     dialogs = {
-        NewDialog, EditDialog, ProfileDialog, ExportDialog, TabView,
+        NewDialog, EditDialog, ProfileDialog, TabView,
     };
 
     // <editor-fold defaultstate="collapsed" desc="constructor">
@@ -71,7 +69,7 @@ class Dialog extends AEmployeeDocDialog {
         } = filterData || {};
 
         const args = {
-            path: 'employees/docs/expenses',
+            listByLogged: listEmployeeExpense,
             employee_id,
             category,
             currency_country_id,
@@ -127,24 +125,15 @@ class Dialog extends AEmployeeDocDialog {
 
     renderExportFilterNode(onChange) {
         return <>
-            <ClearableInput name="auto_reorder_trigger" type="radio" placeholder="Reorder Type"
-                            className="col-lg-12 margin-0 form-control"
-                            onChange={onChange}
-                            values={this.selfState.lists.auto_reorder_trigger}
-            />
-            <ClearableInput name="approval_status" type="select" placeholder="Approval Status..."
-                            className="col-lg-12 margin-0 form-control"
-                            onChange={onChange}
-                            values={this.selfState.lists.approval_status}
-            />
-            <SelectPPETypeInput name="ppe_type" className="col-lg-12 form-control"
-                                parentClassName="margin-0"
-                                onChange={onChange} addButton={false}/>
-            <DateRangeInput name="created_at_range" className="col-lg-12 margin-0 form-control" placeholder=""
-                            onChange={onChange}>
-                <label className="min-w-100">Reorder Start Date</label>
-                <label className="min-w-100">Reorder End Date</label>
-            </DateRangeInput>
+            <ClearableInput ref="type" name="type" type="select" placeholder="Expense Type..."
+                            className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
+                            values={this.selfState.lists.types} returnValue/>
+            <ClearableInput ref="due_to" name="due_to" type="select" placeholder="Expense Due To..."
+                            className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}
+                            values={this.selfState.lists.due_to} returnValue/>
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput ref="date" name="date" type="date" placeholder="Start Date..."
+                            className="col-lg-12 margin-0 form-control" onChange={this.form.onChange}/>
         </>;
     }
 

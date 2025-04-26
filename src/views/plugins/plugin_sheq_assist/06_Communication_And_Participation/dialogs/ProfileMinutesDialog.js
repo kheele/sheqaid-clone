@@ -44,7 +44,7 @@ class Controls extends React.Component {
         if(!isString(meeting)) {
             let path = 'plugin_sheq_assist/06_Communication_And_Participation/';
             path += meetingType === 'Safety' ? 'safety-meeting/' : 'management-meeting/';
-            neonBinding.events.emit(path + "find_by_id", meeting.id).then(res => {
+            workers.emit(path + "find_by_id", meeting.id).then(res => {
                 (res && !res.isEmpty()) && (this.state.selectedMeeting = res[0]);
             }).catch(e => {
                 console.log(e)

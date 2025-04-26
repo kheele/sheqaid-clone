@@ -512,7 +512,7 @@ class Controls extends React.Component {
             } else {
                 if (isNewContractorUser) {
                     const {user: {data: {auth_id}}} = res.loggedUser;
-                    return neonBinding.events.emit('plugin_sheq_assist/contractors/users/relogin', auth_id).then(res => {
+                    return workers.emit('plugin_sheq_assist/contractors/users/relogin', auth_id).then(res => {
                         if (!res) {
                             infoDialog.open("Authentication failed.");
                         } else if (isString(res)) {

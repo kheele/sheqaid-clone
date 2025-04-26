@@ -5,13 +5,14 @@ import {observable} from 'mobx';
 
 import Form from 'utils/Form';
 
-import {ClearableInput, SelectEmployeeInput, SelectTrainingMatixInput, UploadButton} from 'components/inputs';
+import {ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
 import {FormControls, Row} from 'components/FormComponents';
 
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewDialog.lazy.css";
 import {insertEmployeeCompetency} from "mutations/create";
+import SelectTrainingCourseInput from "../../../../../components/inputs/SelectTrainingCourseInput";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Dialog">
@@ -58,6 +59,7 @@ class Controls extends React.Component {
         this.onNext = this.onNext.bind(this);
 
         this.form = new Form();
+        this.form.addChangeOne("course", this.onChangeCourse.bind(this));
         this.form.addChangeOne("training", this.onChangeTraining.bind(this));
     }
 
@@ -82,6 +84,13 @@ class Controls extends React.Component {
     }
 
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="onChangeCourse">
+    onChangeCourse(el, val) {
+        if (val) {
+
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="onChangeTraining">
     onChangeTraining(el, val) {
@@ -184,10 +193,12 @@ class Controls extends React.Component {
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="type" type="radio" placeholder="Certificate Type" required
+                <ClearableInput name="type" type="radio" placeholder="Certificate Type"
+                                desc="Accredited: (officially recognized and meets industry standards) or Non-Accredited: (informal or internal certification without official recognition)."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.type}/>
                 <ClearableInput name="competency_type" type="select" placeholder="Competency Type..." required
+                                desc="Behavioural: (soft skills and personal attributes), Technical / Functional: (job-specific skills and knowledge), or Leadership: (skills for managing and guiding teams or organizations)."
                                 className="col-lg-6 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.competency_type} returnValue add/>
                 <ClearableInput name="accreditation_num" type="text" placeholder="Accreditation Number" required
@@ -203,9 +214,11 @@ class Controls extends React.Component {
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
             >
-                <SelectTrainingMatixInput name="training" required className="col-lg-12 form-control"
-                                          onChange={this.form.onChange}/>
-                <Trainer state={this.state}/>
+                <SelectTrainingCourseInput name="course" required className="col-lg-12 form-control"
+                                           onChange={this.form.onChange}/>
+                {/*<SelectTrainingMatixInput name="training" required className="col-lg-12 form-control"*/}
+                {/*                          onChange={this.form.onChange}/>*/}
+                {/*<Trainer state={this.state}/>*/}
             </Row>
             <Row
                 rendered

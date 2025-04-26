@@ -28,6 +28,14 @@ function onChangeUsername(access_type, onBtnRef) {
                             return;//
                         }
 
+                        if (res === "DB_USER_DUP") {
+                            usernameStatus.loading = false;
+                            usernameStatus.duplicate = true;
+                            // password && password.hide();
+                            // conf_password && conf_password.hide();
+                            return;
+                        }
+
                         if ("uid" in res) {
                             usernameStatus.exist = !!res.uid;
                             usernameStatus.loading = false;
@@ -39,14 +47,6 @@ function onChangeUsername(access_type, onBtnRef) {
                                 // password && password.show();
                                 // conf_password && conf_password.show();
                             }
-                            return;
-                        }
-
-                        if (res === "DB_USER_DUP") {
-                            usernameStatus.loading = false;
-                            usernameStatus.duplicate = true;
-                            // password && password.hide();
-                            // conf_password && conf_password.hide();
                             return;
                         }
 
@@ -70,7 +70,7 @@ function onChangeUsername(access_type, onBtnRef) {
 function onSendUserOTP(username) {
     progressDialog.open();
 
-    return neonBinding.events.emit(`users/accounts/email/otp`, username).then(res => {
+    return workers.emit(`users/accounts/email/otp`, username).then(res => {
         console.log("onSendOTPUser res", res)
         if (!res) {
             infoDialog.open(<div>
@@ -134,7 +134,7 @@ function onSendOTPContractor(id) {
 function onConfirmUserOTP(data) {
     progressDialog.open();
 
-    return neonBinding.events.emit(`users/accounts/confirm/otp`, data).then(res => {
+    return workers.emit(`users/accounts/confirm/otp`, data).then(res => {
         console.log("onSendOTPUser res", res)
         if (isString(res)) {
             switch (res) {

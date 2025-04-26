@@ -9,9 +9,10 @@ import BankingDetailsSection from "./BankingDetailsSection";
 import NextOfKinSection from "./NextOfKinSection";
 import DependantSection from "./DependantSection";
 import EmployeeProfileSettings from "utils/EmployeeProfileSettings";
+import AEmployeeSection from "./profile_forms/AEmployeeSection";
 
 @observer
-class ViewOptionalInfoSection extends React.Component {
+class ViewOptionalInfoSection extends AEmployeeSection {
     pageKey = "ViewOptionalInfoSection";
 
     @observable

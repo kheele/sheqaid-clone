@@ -166,7 +166,7 @@ class CorrectiveActionsTab extends React.Component {
 			confirmDialog.open("Are you sure you want to close the corrective action?").then(res => {
 				if (res === 1) {
 					//                progressDialog.open("Closing the corrective action...");
-					//                neonBinding.events.emit(this.path + "add-status", item.id, "ClosedCorrectiveAction").then(res => {
+					//                workers.emit(this.path + "add-status", item.id, "ClosedCorrectiveAction").then(res => {
 					//                    progressDialog.close();
 					//                    console.log("res", res)
 					//                    if(!investigation.status) {
@@ -187,7 +187,7 @@ class CorrectiveActionsTab extends React.Component {
 			confirmDialog.open("Are you sure you want to re-open the corrective action?").then(res => {
 				if (res === 1) {
 					//                progressDialog.open("Re-opening the corrective action...");
-					//                neonBinding.events.emit(this.path + "remove-status", item.id, "ClosedCorrectiveAction").then(res => {
+					//                workers.emit(this.path + "remove-status", item.id, "ClosedCorrectiveAction").then(res => {
 					//                    progressDialog.close();
 					//                    console.log("res", res)
 					//                    setTimeout(() => {

@@ -6,10 +6,6 @@ import {Button} from 'components/inputs';
 
 import style from "./DashboardTab.lazy.css";
 import DashboardAll from "./DashboardAll";
-import DashboardIncidents from "./DashboardIncidents";
-import DashboardInvestigations from "./DashboardInvestigations";
-import DashboardCorrectiveActions from "./DashboardCorrectiveActions";
-import DashboardManHours from "./DashboardManHours";
 
 //<editor-fold desc="DashboardTab">
 @observer
@@ -35,6 +31,7 @@ class DashboardTab extends React.Component {
     componentWillUnmount() {
         style.unuse();
     }
+
     //</editor-fold>
 
     toggleFilter(evt, btn) {
@@ -43,7 +40,13 @@ class DashboardTab extends React.Component {
     }
 
     update() {
-        const {dashboardAll, dashboardIncidents, dashboardInvestigations, dashboardCorrectiveActions, dashboardManHours} = this.refs;
+        const {
+            dashboardAll,
+            dashboardIncidents,
+            dashboardInvestigations,
+            dashboardCorrectiveActions,
+            dashboardManHours
+        } = this.refs;
         dashboardAll.update();
         // dashboardIncidents.update();
         // dashboardInvestigations.update();
@@ -52,14 +55,14 @@ class DashboardTab extends React.Component {
     }
 
     render() {
-        const {path, onFilter} = this.props;
+        const {path, onFilter, onClick} = this.props;
         const {state} = this;
         return <div id="DashboardTab" className={"DashboardTab-page"}>
             <div className="page-content grid-1 grid-gap-10 nice-scrollbars">
                 <div className="flex w-1000 h-35 hor-center margin-t-10 margin-r-10">
                     <ButtonList state={state} onClick={this.toggleFilter}/>
                 </div>
-                <DashboardAll ref="dashboardAll" state={state}/>
+                <DashboardAll ref="dashboardAll" state={state} onClick={onClick}/>
                 {/*<DashboardIncidents ref="dashboardIncidents" state={state}/>*/}
                 {/*<DashboardInvestigations ref="dashboardInvestigations" state={state} path={path + "investigations/stats"}/>*/}
                 {/*<DashboardCorrectiveActions ref="dashboardCorrectiveActions" state={state} path={path + "corrective-actions/stats"}/>*/}
@@ -68,6 +71,7 @@ class DashboardTab extends React.Component {
         </div>;
     }
 }
+
 //</editor-fold>
 
 //<editor-fold desc="ButtonList">
@@ -77,14 +81,25 @@ class ButtonList extends React.Component {
     render() {
         const {state: {value}, onClick} = this.props;
         return <React.Fragment>
-            <Button className={`btn btn-primary no-border border-radius-0 border-radius-l-20${value !== 'DashboardAll' ? ' bg-grey' : ''}`} view='DashboardAll' text="All Dashboard" onClick={onClick}/>
-            <Button className={`btn btn-primary no-border border-radius-0${value !== 'DashboardIncidents' ? ' bg-grey' : ''}`} view='DashboardIncidents' text="Incidents Dashboard" onClick={onClick}/>
-            <Button className={`btn btn-primary no-border border-radius-0${value !== 'DashboardInvestigations' ? ' bg-grey' : ''}`} view='DashboardInvestigations' text="Investigations Dashboard" onClick={onClick}/>
-            <Button className={`btn btn-primary no-border border-radius-0${value !== 'DashboardCorrectiveActions' ? ' bg-grey' : ''}`} view='DashboardCorrectiveActions' text="Corrective Actions Dashboard" onClick={onClick}/>
-            <Button className={`btn btn-primary no-border border-radius-0 border-radius-r-20${value !== 'DashboardManHours' ? ' bg-grey' : ''}`} view='DashboardManHours' text="Man Hours Dashboard" onClick={onClick}/>
+            <Button
+                className={`btn btn-primary no-border border-radius-0 border-radius-l-20${value !== 'DashboardAll' ? ' bg-grey' : ''}`}
+                view='DashboardAll' text="All Dashboard" onClick={onClick}/>
+            <Button
+                className={`btn btn-primary no-border border-radius-0${value !== 'DashboardIncidents' ? ' bg-grey' : ''}`}
+                view='DashboardIncidents' text="Incidents Dashboard" onClick={onClick}/>
+            <Button
+                className={`btn btn-primary no-border border-radius-0${value !== 'DashboardInvestigations' ? ' bg-grey' : ''}`}
+                view='DashboardInvestigations' text="Investigations Dashboard" onClick={onClick}/>
+            <Button
+                className={`btn btn-primary no-border border-radius-0${value !== 'DashboardCorrectiveActions' ? ' bg-grey' : ''}`}
+                view='DashboardCorrectiveActions' text="Corrective Actions Dashboard" onClick={onClick}/>
+            <Button
+                className={`btn btn-primary no-border border-radius-0 border-radius-r-20${value !== 'DashboardManHours' ? ' bg-grey' : ''}`}
+                view='DashboardManHours' text="Man Hours Dashboard" onClick={onClick}/>
         </React.Fragment>;
     }
 }
+
 //</editor-fold>
 
 export default DashboardTab;

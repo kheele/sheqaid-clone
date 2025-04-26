@@ -62,7 +62,7 @@
         margin-right: -5px;*/
 }
 
-#dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover {
+#dialog-overlay .dialog-content .controls-wrapper > .controls > .row:not(.active):not(.active-always):hover > label {
     background: rgb(2, 168, 168);
 }
 

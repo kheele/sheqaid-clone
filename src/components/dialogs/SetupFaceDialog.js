@@ -154,7 +154,7 @@ class Controls extends React.Component {
 
         const {imgSrc} = this.refs.capturedImgView;
 
-        neonBinding.events.emit(this.path + "setup/biometric", {uid, imgSrc}).then(res => {
+        workers.emit(this.path + "setup/biometric", {uid, imgSrc}).then(res => {
             this.auth.onAuthStateChanged(currentUser => {
                 storage.onLogin(currentUser);
             });

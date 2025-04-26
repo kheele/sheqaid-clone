@@ -52,7 +52,7 @@ class Val extends React.Component {
             if (path !== 'users') {
                 path = 'plugin_sheq_assist/' + path;
             }
-            this.state.val = await window.neonBinding.events.emit(path + '/find_by_id', id);
+            this.state.val = await workers.emit(path + '/find_by_id', id);
             onSetVal && onSetVal(this.state.val);
             this.state.loaded = true;
         }

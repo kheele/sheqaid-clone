@@ -40,9 +40,9 @@ class ATab extends React.Component {
         const {removed, props: {onBuildQuery}} = this;
         const {page, lastItem, filterData, filtered, isNew} = params;
 
-        const {path, onList, attrs} = onBuildQuery(filterData);
+        let {listByLogged, path, attrs} = onBuildQuery(filterData);
 
-        const listByLogged = onList ? onList : sockets.of(path).fn('listByLogged');
+        listByLogged = listByLogged || sockets.of(path).fn('listByLogged');
 
         return listByLogged({
             removed,

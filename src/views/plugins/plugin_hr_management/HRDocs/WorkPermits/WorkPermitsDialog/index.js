@@ -13,14 +13,15 @@ import {findByIdOrgWorkPermitsDateRangeDashboardStatsByLogged} from "mutations/e
 import {exportExcelEmployeeWorkPermits} from "mutations/exportExcel";
 import {ClearableInput} from "components/inputs";
 import {Dates} from "utils/Dates";
+import {listEmployeeWorkPermit} from "../../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
 @observer
 class Dialog extends AEmployeeDocDialog {
     pageKey = "WorkPermitsDialog";
-    title = "Work Permits";
-    titleSingular = "Work Permit";
+    title = "Work Permits (Foreigners)";
+    titleSingular = "Work Permit (Foreigners)";
     permissionKey = "WorkPermits";
     module = "WorkPermits";
     onUpdate = updateEmployeeWorkPermit;
@@ -46,7 +47,7 @@ class Dialog extends AEmployeeDocDialog {
             notes,
         } = filterData || {};
         return {
-            path: 'employees/docs/work-permits',
+            listByLogged: listEmployeeWorkPermit,
             date: Dates.formatDateSQL(date),
             notes,
         };

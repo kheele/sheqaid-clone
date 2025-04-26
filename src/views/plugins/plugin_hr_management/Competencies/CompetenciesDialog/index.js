@@ -13,6 +13,7 @@ import {exportExcelEmployeeCompetencies} from "mutations/exportExcel";
 import {updateEmployeeCompetency} from "mutations/update";
 import {findByIdOrgCompetenciesDashboardStatsByLogged} from "mutations/employeeOrgDashboard";
 import {findByIdOrgCompetenciesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
+import {listEmployeeCompetency} from "../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -58,7 +59,7 @@ class Dialog extends AEmployeeDocDialog {
             issued_date,
         } = filterData || {};
         return {
-            path: 'employees/docs/competencies',
+            listByLogged: listEmployeeCompetency,
             type,
             competency_type,
             course_id,

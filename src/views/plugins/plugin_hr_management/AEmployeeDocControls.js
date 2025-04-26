@@ -308,7 +308,7 @@ class AEmployeeDocControls extends React.Component {
             NewDialog,
             EditDialog,
             listName,
-            props: {tabsHeight, isNewEmployee},
+            props: {tabsHeight, isNewEmployee, onRefs},
             isEmbedded,
         } = this;
 
@@ -320,6 +320,7 @@ class AEmployeeDocControls extends React.Component {
             const {props: {activeId}, list} = this;
             return <Slider
                 ref="slider"
+                onRefs={onRefs}
                 isEmbedded
                 activeId={activeId}
                 list={list}
@@ -414,6 +415,7 @@ class Slider extends React.Component {
 
     render() {
         const {
+            onRefs,
             activeId,
             isEmbedded,
             list,
@@ -435,6 +437,7 @@ class Slider extends React.Component {
         console.log('Slider.render', list.slice());
         const sliderIndex = activeId ? list.indexOfWithPredicate(item => item.id === activeId) : 0;
         const tabIndex = activeId ? 1 : 0;
+        console.log('Slider.render tabIndex, activeId', tabIndex, activeId);
 
         const {isEmployee} = storage.is;
 
@@ -481,9 +484,10 @@ class Slider extends React.Component {
                 tabsHeight={tabsHeight}
                 isEmbedded={isEmbedded}
             />
-            {NewDialog && <NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={item}/>}
+            {NewDialog &&
+                <NewDialog ref="newDialog" isNewEmployee={isNewEmployee} embeddedEmployee={item} onRefs={onRefs}/>}
             {EditDialog &&
-                <EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={item}/>}
+                <EditDialog ref="editDialog" isNewEmployee={isNewEmployee} embeddedEmployee={item} onRefs={onRefs}/>}
         </>;
     }
 }
@@ -521,8 +525,18 @@ class TabWrapper extends React.Component {
         return this.refs.mainTabs;
     }
 
+    componentWillMount() {
+        const {props: {tabIndex, onChange}} = this;
+        this.state.index = tabIndex;
+        onChange && onChange(tabIndex);
+    }
+
     componentDidMount() {
-        this.onChange(this.props.tabIndex || 0);
+        const {props: {sliderIndex}} = this;
+        if (sliderIndex) {
+            this.state.sliderIndex = sliderIndex;
+            this.moveToSlide(sliderIndex);
+        }
     }
 
     onChange(index) {

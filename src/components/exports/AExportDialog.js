@@ -265,7 +265,7 @@ class AControls extends React.Component {
         };
 
         console.log('this.exportFn', isFunction(this.exportFn), this.exportFn);
-        let promise = isOnline ? exportFn ? exportFn(data) : this.exportFn(data) : neonBinding.events.emit(this.path + "export-excel", data);
+        let promise = isOnline ? exportFn ? exportFn(data) : this.exportFn(data) : workers.emit(this.path + "export-excel", data);
         console.log('this.exportFn 2', promise);
         promise.then(res => {
             console.log('this.exportFn res', res);

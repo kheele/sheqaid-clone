@@ -16,6 +16,7 @@ import {Tabs} from "components/tabs";
 import ActiveTab from "../ActiveTab";
 import RemovedTab from "../RemovedTab";
 import ADialogTab from "views/ADialogTab";
+import {listTeam} from "../../../../../../mutations/listByLogged";
 
 // </editor-fold>
 
@@ -62,7 +63,7 @@ class TeamsDialog extends ADialogTab {
         } = filterData || {};
 
         return {
-            path: "teams",
+            listByLogged: listTeam,
             attrs: {
                 name,
                 supervisor_id,

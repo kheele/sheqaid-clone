@@ -8,7 +8,8 @@ import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import {
     Button,
     ClearableInput,
-    DateRangeInput, SelectEmployeeInput,
+    DateRangeInput,
+    SelectEmployeeInput,
     SelectIncidentCategoryList,
 } from 'components/inputs';
 import {THead} from 'components/tables';
@@ -17,8 +18,9 @@ import {IncidentQuickTableRow} from '../dialogs/IncidentComponentRows';
 
 import style from "./QuickIncidentsTab.lazy.css";
 import {execWhen} from "utils/UtilsFuns";
-import {Dates} from "utils/Dates";
-import ExportQuickIncidentsDialog from "./ExportQuickIncidentsDialog";
+import ExportDialog from "components/exports/ExportDialog";
+import {exportExcelQuickIncidents} from "mutations/exportExcel";
+import {listQuickIncidents} from "mutations/listByLogged";
 
 // </editor-fold>
 
@@ -40,6 +42,7 @@ class QuickIncidentsTab extends React.Component {
         }
     }
     // </editor-fold>
+
     innerRefs = {};
 
     // <editor-fold defaultstate="collapsed" desc="constructor, componentMount">
@@ -47,6 +50,8 @@ class QuickIncidentsTab extends React.Component {
         super(props);
 
         this.onLoadList = this.onLoadList.bind(this);
+
+        this.renderExportFilterNode = this.renderExportFilterNode.bind(this);
 
         this.onExport = this.onExport.bind(this);
 
@@ -71,8 +76,6 @@ class QuickIncidentsTab extends React.Component {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             id,
-            incident_date_range,
-            date_reported_range,
             category_list,
             time_shift,
             person_reporting_id,
@@ -86,14 +89,13 @@ class QuickIncidentsTab extends React.Component {
             is_vehicle_incident,
             vehicle_make,
             vehicle_reg_num,
+            //
+            incident_date_range,
+            date_reported_range,
         } = filterData || {};
 
-        const listByLogged = sockets.of('incidents-quick').fn('listByLogged');
-
-        return listByLogged({
+        return listQuickIncidents({
             id,
-            incident_date_range,
-            date_reported_range,
             category_list,
             time_shift,
             person_reporting_id,
@@ -107,6 +109,9 @@ class QuickIncidentsTab extends React.Component {
             is_vehicle_incident,
             vehicle_make,
             vehicle_reg_num,
+            //
+            incident_date_range,
+            date_reported_range,
             //
             exact_orgs: true,
             //
@@ -123,6 +128,7 @@ class QuickIncidentsTab extends React.Component {
     onExport(e, btn) {
         this.refs.exportDialog.open();
     }
+
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onChange funs">
@@ -214,6 +220,94 @@ class QuickIncidentsTab extends React.Component {
     }
 
     // </editor-fold>
+
+    renderExportFilterNode(onChange) {
+        return <>
+            <SelectEmployeeInput
+                ref="person_reporting"
+                name="person_reporting"
+                placeholder="Reported By..."
+                className="form-control col-lg-12"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                ref="person_injured"
+                name="person_injured"
+                placeholder="Person Injured..."
+                className="form-control col-lg-12"
+                onChange={onChange}
+            />
+            <SelectEmployeeInput
+                ref="driver"
+                name="driver"
+                placeholder="Driver..."
+                className="form-control col-lg-12"
+                onChange={onChange}
+            />
+
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <SelectIncidentCategoryList
+                ref="category_list"
+                name="category_list"
+                type="select_multi"
+                className="form-control col-lg-12"
+                onChange={onChange}
+            />
+            <ClearableInput
+                ref="severity"
+                name="severity"
+                type="radio"
+                placeholder="Severity"
+                vertical
+                className="form-control col-lg-12 h-110"
+                onChange={onChange}
+                values={this.state.lists.severity}
+                returnValue
+            />
+            <ClearableInput
+                ref="exact_location"
+                name="exact_location"
+                type="text"
+                placeholder="Exact Location"
+                className="form-control col-lg-12"
+                onChange={onChange}
+            />
+
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <ClearableInput
+                ref="is_vehicle_incident"
+                name="is_vehicle_incident"
+                type="radio"
+                placeholder="Vehicle Incident"
+                className="form-control col-lg-12"
+                onChange={onChange}
+                values={this.state.lists.is_vehicle_incident}
+                returnValue
+            />
+            <ClearableInput ref="vehicle_make" name="vehicle_make" type="text" placeholder="Vehicle Make"
+                            className="form-control col-lg-12" onChange={onChange}/>
+            <ClearableInput ref="vehicle_reg_num" name="vehicle_reg_num" type="text" placeholder="Reg/Serial No."
+                            className="form-control col-lg-12" onChange={onChange}/>
+
+            <ClearableInput ref="time_shift" name="time_shift" type="radio" placeholder="Time Shift"
+                            className="form-control col-lg-12" onChange={onChange}
+                            values={this.state.lists.time_shift} returnValue/>
+
+            <hr className="pull-left no-border bg-ddd h-2"/>
+            <DateRangeInput ref="incident_date_range" name="incident_date_range" vertical
+                            className="col-lg-12 h-75 margin-0 form-control" placeholder="Incident Date Range"
+                            onChange={onChange}>
+                <label className="min-w-65">From</label>
+                <label className="min-w-50">To</label>
+            </DateRangeInput>
+            <DateRangeInput ref="date_reported_range" name="date_reported_range" vertical
+                            className="col-lg-12 h-75 margin-0 form-control" placeholder="Reported Date Range"
+                            onChange={onChange}>
+                <label className="min-w-65">From</label>
+                <label className="min-w-50">To</label>
+            </DateRangeInput>
+        </>;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="renderFilterNode">
     renderFilterNode(onChange) {
@@ -336,7 +430,12 @@ class QuickIncidentsTab extends React.Component {
             {/*<NewIncidentAssignInvestigatorsDialog ref="newIncidentAssignInvestigatorsDialog"/>*/}
             {/*<NewIncidentInvestigationDialog ref="newInvestigationDialog"/>*/}
             {/*<ProfilePDFReader ref="pdfReader"/>*/}
-            <ExportQuickIncidentsDialog ref="exportDialog"/>
+            <ExportDialog
+                ref="exportDialog"
+                titlePlural="Quick Incidents"
+                renderExportFilterNode={this.renderExportFilterNode}
+                exportFn={exportExcelQuickIncidents}
+            />
         </APageListReadWrite>;
     }
 
