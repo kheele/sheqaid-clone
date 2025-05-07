@@ -128,8 +128,13 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={this.employeeItem}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
             </Row>}
             <Row
                 rendered

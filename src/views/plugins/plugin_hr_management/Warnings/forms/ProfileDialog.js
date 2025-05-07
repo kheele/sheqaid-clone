@@ -107,7 +107,8 @@ class Controls extends AEmployeeDocControls {
                 <ProfileField title="Warning Expiry Date" name="expiry_date" type="date" value={expiry_date}
                               className="col-lg-6"/>
                 <ProfileField title="Warning Issued By" name="issued_by" value={issued_by}
-                              renderer={v => v.lname + ' ' + v.fname} type="select" className="col-lg-6"/>
+                              renderer={v => v.full_name || (v.data && v.data.full_name)} type="select"
+                              className="col-lg-6"/>
                 <UploadButton
                     name="doc"
                     defaultValue={doc}

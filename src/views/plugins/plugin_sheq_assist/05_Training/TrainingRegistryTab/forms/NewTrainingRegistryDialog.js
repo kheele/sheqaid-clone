@@ -18,7 +18,7 @@ import {Row} from 'components/FormComponents';
 import {ANewDialog} from 'components/dialogs';
 
 import style from "./NewTrainingRegistryDialog.lazy.css";
-import insertTrainingCourse from "mutations/all/TrainingCourse/insertTrainingCourse";
+import {insertTrainingCourse} from "mutations/create";
 import {execWhen} from "utils/UtilsFuns";
 import {findByIdClient} from "mutations/findById";
 // </editor-fold>

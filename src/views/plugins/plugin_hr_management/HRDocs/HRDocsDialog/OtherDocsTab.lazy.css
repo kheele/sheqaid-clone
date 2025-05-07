@@ -1,3 +1,14 @@
+#Documents-page #OtherDocsTab-tab .page-title {
+    height: 0;
+    border: none;
+}
+
+#Documents-page #OtherDocsTab-tab .page-title > .tabled-top-panel {
+    margin-top: -139px;
+    height: 0;
+}
+
+#Documents-page #OtherDocsTab-tab .page-title > h3,
 #OtherDocsTab .page-title > .page-back-btn {
     display: none;
 }
@@ -6,6 +17,18 @@
     height: calc(100% - 59px) !important;
 }
 
-#OtherDocsTab.tab-content > .active > .page-content .table {
-    height: 100% !important;
+#Documents-page #OtherDocsTab-tab .table {
+    height: calc(100% - 76px) !important;
+}
+
+#OtherDocsTab-tab .table {
+    height: calc(100% - 59px) !important;
+}
+
+#Documents-page #OtherDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (76px + 125px)) !important;
+}
+
+#OtherDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (59px + 125px)) !important;
 }

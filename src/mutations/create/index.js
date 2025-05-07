@@ -233,13 +233,33 @@ export const insertEmployee = async (data) => {
 
     const insert = create("employees");
 
-    await insert("START");
-
-    await insert({formData, optionalInfoFormData});
-    await insert({counselingFormData, warningFormData, timeOffFormData});
-    await insert({documentsFormData});
-
-    return await insert("END");
+    // await insert("START");
+    //
+    // await insert({formData, optionalInfoFormData});
+    // await insert({counselingFormData, warningFormData, timeOffFormData});
+    //
+    // // if (documentsFormData) {
+    // //     let {
+    // //         'document_list__ID/Passport': document_list__id_or_passport,//
+    // //         'document_list__PrDP': document_list__prdp,//
+    // //         license_list,//
+    // //
+    // //         competency_list,//
+    // //         contract_list,//
+    // //         medical_list,//
+    // //         work_permit_list,//
+    // //         job_appointment_list,//
+    // //     } = documentsFormData;
+    // //
+    // //     await Promise.all(Object.keys(documentsFormData).map(async key => {
+    // //         return await insert({[key]: documentsFormData[key]});
+    // //     }));
+    // // }
+    //
+    // await insert({documentsFormData});
+    //
+    // return await insert("END");
+    return await insert(data);
 };
 export const insertEmployeeImported = create("employees/imported/create");
 export const insertEmployeeExternal = create("employees-external");
@@ -300,6 +320,7 @@ export const insertWCL6 = create("claims/clients/wcl6");
 export const insertAnnexture1 = create("claims/clients/annexture1");
 
 // Trainings
+export const insertTrainingCourse = create("trainings/courses");
 export const insertTrainingToolboxTalk = create("TrainingToolboxTalk");
 export const insertProxyJobCategoryTrainingMatrix = create("ProxyJobCategoryTrainingMatrix");
 export const insertProxyJobPositionTrainingMatrix = create("ProxyJobPositionTrainingMatrix");

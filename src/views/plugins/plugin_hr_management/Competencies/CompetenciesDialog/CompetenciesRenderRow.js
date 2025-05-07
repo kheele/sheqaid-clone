@@ -30,11 +30,12 @@ class RenderRow extends ARenderRow {
                 expiry_date,
                 expiry_updated,
                 employee: {lname, fname},
-                training = {},
+                course,
+                training,
             },
         } = item;
 
-        const {course} = training || {};
+        const courseName = course ? course.name : training && training.course && training.course.name || null;
 
         return <TRow key={id} className="w-full">
             <div className="td fixed-flex min-w-50">
@@ -63,7 +64,7 @@ class RenderRow extends ARenderRow {
             </div>
             <div className="td">
                 <h6 className="xs-shown font-size-13">Course</h6>
-                {course && course.name || "N/A"}
+                {courseName || "N/A"}
             </div>
             <div className="td fixed-flex min-w-105">
                 <h6 className="xs-shown font-size-13">Issued Date</h6>

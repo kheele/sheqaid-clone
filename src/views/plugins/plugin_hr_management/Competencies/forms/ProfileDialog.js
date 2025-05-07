@@ -89,7 +89,7 @@ class Controls extends AEmployeeDocControls {
             doc
         } = item.data || item;
 
-        const _training = training ? training.data || training : null;
+        const courseName = course ? course.name : training && training.course && training.course.name || null;
 
         return <div className="row item-wrapper padding-t-10 h-full">
             <div className="row margin-l-10 margin-r-10 row-details">
@@ -107,8 +107,7 @@ class Controls extends AEmployeeDocControls {
             </div>
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Training Course" name="course" className="col-lg-12"
-                              value={course}
-                              renderer={v => v.name}/>
+                              value={courseName}/>
                 {/*<ProfileField title="Training" name="training" className="col-lg-12"*/}
                 {/*              value={_training && _training.course}*/}
                 {/*              renderer={v => v.name}/>*/}

@@ -21,11 +21,13 @@ import MKBox from "components/MK/MKBox";
 import ViewByButtons from "components/ViewByButtons";
 import ProfileSignableDocDialog from "./ProfileSignableDocDialog";
 
+import style from "./SignableDocsTab.lazy.css";
+
 // </editor-fold>
 
 @observer
 class Dialog extends React.Component {
-    pageKey = "HRDocsDialog";
+    pageKey = "SignableDocsTab";
     title = "Signable Documents";
 
     // <editor-fold defaultstate="collapsed" desc="state">
@@ -51,15 +53,22 @@ class Dialog extends React.Component {
 
     // </editor-fold>
 
-    // // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
-    // componentWillUnmount() {
-    //     style.unuse();
-    // }
-    //
-    // // </editor-fold>
-
     @computed get isDocuments() {
         return this.state.view === "Documents";
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="componentWillMount">
+    componentWillMount() {
+        style.use();
+    }
+
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="componentWillUnmount">
+    componentWillUnmount() {
+        style.unuse();
     }
 
     //<editor-fold desc="onLoadList">

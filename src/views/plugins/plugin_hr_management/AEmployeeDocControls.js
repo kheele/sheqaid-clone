@@ -63,43 +63,42 @@ class AEmployeeDocControls extends React.Component {
 
     // <editor-fold defaultstate="collapsed" desc="componentDidMount">
     async componentDidMount() {
-        const {dialog} = this.props;
+        const {dialog, formData, defaultValue, isNewEmployee} = this.props;
+        console.log('AEmployeeDocControls', formData);
 
-        if (dialog) {
-            try {
-                const node = await execWhen(() => dialog.getDOMNode());
-                const jqEl = $(node.querySelector('.dialog-header h3'));
-
-                if (this.item.data.removed) {
-                    jqEl.removeClass('active');
-                } else {
-                    jqEl.addClass('active');
-                }
-            } catch (e) {
-            }
-
-            const {formData, defaultValue, isNewEmployee} = this.props;
-            console.log('AEmployeeDocControls', formData);
-            if (isNewEmployee) {
-                if (defaultValue || (formData && formData[this.listName])) {
-                    this.state.list = defaultValue || formData[this.listName];
-                }
-
-                execWhen(() => this.slider && this.slider.tabWrapper).then(tabWrapper => {
-                    tabWrapper.updateDashboard();
-                });
+        if (isNewEmployee) {
+            if (defaultValue || (formData && formData[this.listName])) {
+                this.state.list = defaultValue || formData[this.listName];
             }
         }
+
+        try {
+            const node = await execWhen(() => dialog && dialog.getDOMNode());
+            const jqEl = $(node.querySelector('.dialog-header h3'));
+
+            if (this.item.data.removed) {
+                jqEl.removeClass('active');
+            } else {
+                jqEl.addClass('active');
+            }
+        } catch (e) {
+        }
+
     }
 
     //</editor-fold>
 
     //<editor-fold desc="onChange">
     onChange(index) {
-        const {state} = this;
+        const {state, props: {isNewEmployee}} = this;
         state.index = index;
 
         execWhen(() => this.slider && this.slider.createAndEditBar).then(ref => {
+            if (isNewEmployee) {
+                ref.showEditableButtons();
+                return;
+            }
+
             if (index === 0) {
                 ref.hideEditableButtons();
             } else {
@@ -220,9 +219,6 @@ class AEmployeeDocControls extends React.Component {
     onEdit() {
         const {isNewEmployee, onChange} = this.props;
         const {tabWrapper, tabWrapper: {index}, editDialog} = this.slider;
-        if (index === 0) {
-            return;
-        }
 
         if (isNewEmployee) {
             const {list} = this;
@@ -242,6 +238,10 @@ class AEmployeeDocControls extends React.Component {
                 }
             });
         } else {
+            if (index === 0) {
+                return;
+            }
+
             const {[this.listName]: list = []} = this.item.data;
 
             const sliderIndex = tabWrapper.sliderIndex || 0;
@@ -269,7 +269,7 @@ class AEmployeeDocControls extends React.Component {
         const {onUpdate} = this;
         const {isNewEmployee, onChange} = this.props;
         const {tabWrapper, tabWrapper: {index}} = this.slider;
-        if (index === 0) {
+        if (!isNewEmployee && index === 0) {
             return;
         }
 
@@ -473,6 +473,7 @@ class Slider extends React.Component {
             </MKBox>
             <TabWrapper
                 ref="tabWrapper"
+                isNewEmployee={isNewEmployee}
                 onChange={onChange}
                 loadDashboard={loadDashboard}
                 renderItem={renderItem}
@@ -564,6 +565,7 @@ class TabWrapper extends React.Component {
     render() {
         const {
             permissionKey,
+            isNewEmployee,
             loadDashboard,
             listName,
             renderItem,
@@ -574,16 +576,35 @@ class TabWrapper extends React.Component {
             isEmbedded,
         } = this.props;
 
+        if (!isNewEmployee) {
+            return (
+                <Tabs key="tabs" ref="mainTabs" tabsHeight={tabsHeight} permissionKey={permissionKey}
+                      index={this.state.index} className={isEmbedded ? "Embedded-Tabs" : ""}
+                      onChange={this.onChange}>
+                    <DashboardTab
+                        ref="dashboard"
+                        title="Dashboard"
+                        loadDashboard={loadDashboard}
+                        topStatsSize={120}
+                    />
+                    <Carousel
+                        ref="slider"
+                        title="Details"
+                        sliderIndex={sliderIndex}
+                        renderer={renderItem}
+                        list={list}
+                        splitBy={1}
+                        colSize="col-lg-12"
+                        onClick={onSliderClick}
+                        onChange={this.onCarouselChange}
+                    />
+                </Tabs>);
+        }
+
         return (
             <Tabs key="tabs" ref="mainTabs" tabsHeight={tabsHeight} permissionKey={permissionKey}
                   index={this.state.index} className={isEmbedded ? "Embedded-Tabs" : ""}
                   onChange={this.onChange}>
-                <DashboardTab
-                    ref="dashboard"
-                    title="Dashboard"
-                    loadDashboard={loadDashboard}
-                    topStatsSize={120}
-                />
                 <Carousel
                     ref="slider"
                     title="Details"

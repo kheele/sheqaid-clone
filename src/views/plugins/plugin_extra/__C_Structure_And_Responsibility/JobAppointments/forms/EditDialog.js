@@ -60,6 +60,7 @@ class Controls extends React.Component {
     constructor() {
         super();
 
+        this.onNext = this.onNext.bind(this);
         this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
@@ -75,6 +76,19 @@ class Controls extends React.Component {
     @computed
     get item() {
         return this.props.state.item;
+    }
+
+    onNext(e, btn) {
+        const {form, isNewEmployee, embeddedEmployee} = this;
+        const {idx} = btn.props;
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+        }
+
+        return true;
     }
 
     //<editor-fold desc="onFormSave">
@@ -134,11 +148,6 @@ class Controls extends React.Component {
         }
 
         if (idx === 2) {
-            if (!form.isValid('date')) {
-                infoDialog.open('Start Date is required');
-                return;
-            }
-
             const {
                 date,
                 expiry_date,
@@ -178,10 +187,6 @@ class Controls extends React.Component {
             infoDialog.open('Employee is required');
             return;
         }
-        if (!form.isValid('date')) {
-            infoDialog.open('Start Date is required');
-            return;
-        }
 
         console.log("res", form.data)
         onSaved && onSaved(form.data);
@@ -213,14 +218,13 @@ class Controls extends React.Component {
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return (<FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
-                active={!isNewEmployee && !embeddedEmployee}
+                active
                 idx={1}
-                title="1. Employee"
+                title={`${++idx}. Employee`}
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
-                onFormBack={onFormBack}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SelectEmployeeInput
@@ -230,7 +234,7 @@ class Controls extends React.Component {
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
                 />
-            </Row>
+            </Row>}
             <Row
                 rendered
                 active={isNewEmployee || embeddedEmployee}

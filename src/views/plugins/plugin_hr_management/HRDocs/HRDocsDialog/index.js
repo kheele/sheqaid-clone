@@ -14,6 +14,7 @@ import ProcedureDocsTab from "./ProcedureDocsTab";
 import OtherDocsTab from "./OtherDocsTab";
 import Dialog from 'components/dialogs/Dialog';
 import SignableDocsTab from "./SignableDocsTab";
+import ProjectPlanDocsTab from "./ProjectPlanDocsTab";
 
 // </editor-fold>
 
@@ -86,7 +87,8 @@ class DocsDialog extends ADialogList {
                 >
                     <SignableDocsTab ref="signableDocsTab" title="Signable Documents"/>
                     <PersonalDocsTab ref="personalDocsTab" title="Personal Documents"/>
-                    <PolicyDocsTab ref="policyDocsTab" title="Policies"/>
+                    <PolicyDocsTab ref="policyDocsTab" title="IMS Policies"/>
+                    <ProjectPlanDocsTab ref="projectPlanDocsTab" title="Project Plans"/>
                     <ProcedureDocsTab ref="procedureDocsTab" title="Procedures"/>
                     <OtherDocsTab ref="otherDocsTab" title="Other Documents"/>
                 </Tabs>

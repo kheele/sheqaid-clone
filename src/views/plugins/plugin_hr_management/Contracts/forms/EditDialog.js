@@ -8,8 +8,8 @@ import Form from 'utils/Form';
 import {Dates, ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog, InputDialog} from 'components/dialogs';
-import {Button, ClearableInput, SelectEmployeeInput, UploadButton} from 'components/inputs';
-import {FormControls, Row} from 'components/FormComponents';
+import {Button, ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 
 import style from "./EditDialog.lazy.css";
 import {
@@ -59,6 +59,7 @@ class Controls extends React.Component {
     constructor() {
         super();
 
+        this.onNext = this.onNext.bind(this);
         this.onFormSave = this.onFormSave.bind(this);
 
         this.onAddContractPDFPages = this.onAddContractPDFPages.bind(this);
@@ -148,6 +149,67 @@ class Controls extends React.Component {
                 }
             });
         });
+    }
+
+    // </editor-fold>
+
+    //<editor-fold desc="onNext">
+    onNext(e, btn) {
+        const {
+            form,
+            isNewEmployee,
+            embeddedEmployee,
+            refs: {contractDetailsTab, salaryInfoTab}
+        } = this;
+        const {idx} = btn.props;
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee) {
+                if (!form.isValid('employee')) {
+                    infoDialog.open('Employee is required');
+                    return;
+                }
+            }
+        }
+        if (idx === 2) {
+            const contract_details = toNoneNullObject(contractDetailsTab.form.data);
+            if (contract_details) {
+                if (contractDetailsTab.form.isValid('expiry_date') && !contractDetailsTab.form.isValid('start_date')) {
+                    infoDialog.open('Start Date is required');
+                    return;
+                }
+
+                if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
+                    infoDialog.open('Working End Time is required');
+                    return;
+                }
+                if (contractDetailsTab.form.isValid('end_time') && !contractDetailsTab.form.isValid('start_time')) {
+                    infoDialog.open('Working Start Time is required');
+                    return;
+                }
+            }
+        }
+        if (idx === 3) {
+            const salary_info = toNoneNullObject(salaryInfoTab.form.data);
+            if (salary_info) {//payment_type,
+                if (!salaryInfoTab.form.isValid('payment_type')) {
+                    infoDialog.open('Payment Type is required');
+                    return;
+                }
+                if (salaryInfoTab.form.get('payment_type') === 'Salary') {
+                    if (!salaryInfoTab.form.isValid('salary_interval')) {
+                        infoDialog.open('Salary Interval is required');
+                        return;
+                    }
+                } else {//Wage
+                    //                if (!salaryInfoTab.form.isValid('wage')) {
+                    //                    infoDialog.open('Wage Type is required');
+                    //                    return;
+                    //                }
+                }
+            }
+        }
+
+        return true;
     }
 
     // </editor-fold>
@@ -387,7 +449,7 @@ class Controls extends React.Component {
             }
         }
 
-        if (idx === 4) {
+        if (idx === 4.1) {
             const {
                 doc,
             } = form.data;
@@ -400,7 +462,7 @@ class Controls extends React.Component {
             return;
         }
 
-        if (idx === 5) {
+        if (idx === 4.2) {
             const {
                 job_profile_doc,
             } = form.data;
@@ -426,50 +488,59 @@ class Controls extends React.Component {
             refs: {contractDetailsTab, salaryInfoTab},
         } = this;
 
-        {
-            const {form} = contractDetailsTab;
-            const contract_details = toNoneNullObject(form.data);
-            if (contract_details) {
-                if (form.isValid('expiry_date') && !form.isValid('start_date')) {
-                    infoDialog.open('Start Date is required');
-                    return;
-                }
+        const contract_details = toNoneNullObject(contractDetailsTab.form.data);
+        if (contract_details) {
+            if (contractDetailsTab.form.isValid('expiry_date') && !contractDetailsTab.form.isValid('start_date')) {
+                infoDialog.open('Start Date is required');
+                return;
+            }
 
-                if (form.isValid('start_time') && !form.isValid('end_time')) {
-                    infoDialog.open('Working End Time is required');
-                    return;
-                }
-                if (form.isValid('end_time') && !form.isValid('start_time')) {
-                    infoDialog.open('Working Start Time is required');
-                    return;
-                }
+            if (contractDetailsTab.form.isValid('start_time') && !contractDetailsTab.form.isValid('end_time')) {
+                infoDialog.open('Working End Time is required');
+                return;
+            }
+            if (contractDetailsTab.form.isValid('end_time') && !contractDetailsTab.form.isValid('start_time')) {
+                infoDialog.open('Working Start Time is required');
+                return;
             }
         }
 
-        {
-            const {form} = salaryInfoTab;
-            const salary_info = toNoneNullObject(form.data);
-            if (salary_info) {//payment_type,
-                if (!form.isValid('payment_type')) {
-                    infoDialog.open('Payment Type is required');
+        const salary_info = toNoneNullObject(salaryInfoTab.form.data);
+        if (salary_info) {//payment_type,
+            if (!contractDetailsTab.form.isValid('payment_type')) {
+                infoDialog.open('Payment Type is required');
+                return;
+            }
+            if (contractDetailsTab.form.get('payment_type') === 'Salary') {
+                if (!contractDetailsTab.form.isValid('salary_interval')) {
+                    infoDialog.open('Salary Interval is required');
                     return;
                 }
-                if (form.get('payment_type') === 'Salary') {
-                    if (!form.isValid('salary_interval')) {
-                        infoDialog.open('Salary Interval is required');
-                        return;
-                    }
-                } else {//Wage
-                    //                if (!form.isValid('wage')) {
-                    //                    infoDialog.open('Wage Type is required');
-                    //                    return;
-                    //                }
-                }
+            } else {//Wage
+                //                if (!contractDetailsTab.form.isValid('wage')) {
+                //                    infoDialog.open('Wage Type is required');
+                //                    return;
+                //                }
             }
         }
 
-        console.log("res", form.data)
-        onSaved && onSaved(form.data);
+        console.log(form)
+        const {
+            employee,//
+            doc,//
+            job_profile_doc//
+        } = form.data;
+
+        const data = {
+            contractDetailsFormData: contract_details,
+            salaryInfoFormData: salary_info,
+            employee,
+            doc,
+            job_profile_doc,
+        };
+
+        console.log("res", data)
+        onSaved && onSaved(data);
         infoDialog.open("Record added.");
         infoDialog.close(2000);
         this.props.close();
@@ -499,14 +570,13 @@ class Controls extends React.Component {
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return (<FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
-                active={!isNewEmployee && !embeddedEmployee}
+                active
                 idx={1}
                 title="1. Employee"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
-                onFormBack={onFormBack}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SelectEmployeeInput
@@ -516,7 +586,7 @@ class Controls extends React.Component {
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
                 />
-            </Row>
+            </Row>}
             <Row
                 rendered
                 active={isNewEmployee || embeddedEmployee}
@@ -535,8 +605,8 @@ class Controls extends React.Component {
                 idx={3}
                 title={`${++idx}. Salary Information`}
                 onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
                 onFormBack={onFormBack}
+                onFormNext={onFormNext}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SalaryInfo ref="salaryInfoTab" defaultValue={salary_info}/>
@@ -544,44 +614,47 @@ class Controls extends React.Component {
             <Row
                 rendered
                 idx={4}
-                title={`${++idx}. Contract Document Attachment`}
-                className="row-doc"
-                onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
-                onFormBack={onFormBack}
-                onFormSave={!isNewEmployee && this.onFormSave}
-            >
-                {/*{doc && <Button className="btn btn-primary btn-add-pages" onClick={this.onAddContractPDFPages}>*/}
-                {/*    Add Page(s)*/}
-                {/*</Button>}*/}
-                <UploadButton
-                    name="doc"
-                    buttonTitle="Upload File (PDF, Word or Photo)"
-                    type={['PDF', 'Word', 'Image']}
-                    defaultValue={doc}
-                    showOnlyIcon
-                    className="col-lg-12"
-                    onChange={this.form.onChange}
-                />
-            </Row>
-            <Row
-                rendered
-                idx={5}
-                title={`${++idx}. Job Profile Document Attachment`}
-                className="row-doc"
+                title={`${++idx}. Contract Documents`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
-                onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <UploadButton
-                    name="job_profile_doc"
-                    buttonTitle="Upload File (PDF, Word or Photo)"
-                    type={['PDF', 'Word', 'Image']}
-                    defaultValue={job_profile_doc}
-                    showOnlyIcon
-                    className="col-lg-12"
-                    onChange={this.form.onChange}
-                />
+                <FormControls>
+                    <Row
+                        rendered
+                        activeAlways
+                        idx={4.1}
+                        title={`${idx}.1. Contract Document Attachment`}
+                        onFormSave={!isNewEmployee && this.onFormSave}
+                    >
+                        <DocUploadOption
+                            name="doc"
+                            plugin="plugin_hr_management"
+                            module="Contracts"
+                            type={['PDF', 'Word', 'Image']}
+                            defaultValue={doc}
+                            onChange={this.form.onChange}
+                            addChangeOne={this.form.addChangeOne}
+                        />
+                    </Row>
+                    <Row
+                        rendered
+                        activeAlways
+                        idx={4.2}
+                        title={`${idx}.2. Job Profile Document Attachment`}
+                        onFormSave={!isNewEmployee && this.onFormSave}
+                    >
+                        <DocUploadOption
+                            name="job_profile_doc"
+                            plugin="plugin_hr_management"
+                            module="Contracts"
+                            doc_type="Job Profile"
+                            type={['PDF', 'Word', 'Image']}
+                            defaultValue={job_profile_doc}
+                            onChange={this.form.onChange}
+                            addChangeOne={this.form.addChangeOne}
+                        />
+                    </Row>
+                </FormControls>
             </Row>
             <InputDialog ref="inputDialog"/>
         </FormControls>);

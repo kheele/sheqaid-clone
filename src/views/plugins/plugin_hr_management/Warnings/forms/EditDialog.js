@@ -7,8 +7,8 @@ import Form from 'utils/Form';
 import {execWhen, ShouldUpdate} from 'utils/Utils';
 
 import {AEditDialog} from 'components/dialogs';
-import {ClearableInput, Clickable, ProofUploadButton, SelectEmployeeInput} from 'components/inputs';
-import {NavButtons} from 'components/FormComponents';
+import {ClearableInput, SelectEmployeeInput} from 'components/inputs';
+import {DocUploadOption, FormControls, Row} from 'components/FormComponents';
 import {NewEmployeeListTable} from 'components/FormTableComponents';
 
 import style from "./EditDialog.lazy.css";
@@ -126,6 +126,7 @@ class Controls extends React.Component {
         super();
 
         this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
         this.form.addChangeOne("date", this.onChangeDate.bind(this));
@@ -135,10 +136,6 @@ class Controls extends React.Component {
     get isNewEmployee() {
         const {props: {dialog: {props: {isNewEmployee}}}} = this;
         return isNewEmployee;
-    }
-
-    @computed get category_of_misconduct() {
-        return this.state.lists.category_of_misconduct[this.state.type] || [];
     }
 
     @computed
@@ -189,6 +186,116 @@ class Controls extends React.Component {
         return true;
     }
 
+    //<editor-fold desc="onFormSave">
+    async onFormSave(e, btn) {
+        const {
+            form,
+            isNewEmployee,
+            item: {id, data: old_data},
+            props: {dialog: {props: {embeddedEmployee}}},
+        } = this;
+
+        const {is: {isContractor}, loggedContractor} = storage;
+
+        const onSubmit = (data, onSaved) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateEmployeeWarning({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                const res_data = res;
+                onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+
+            const {
+                employee,
+                issued_by,
+            } = form.data;
+
+            const data = {};
+
+            if (!embeddedEmployee) {
+                ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+            }
+            ShouldUpdate.checkEmployee(data, old_data, issued_by, 'issued_by_id');
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 2) {
+            if (!form.isValid('type')) {
+                infoDialog.open('Warning Type is required');
+                return;
+            }
+            if (!form.isValid('date')) {
+                infoDialog.open('Warning Date is required');
+                return;
+            }
+
+            const {
+                type,
+                category_of_misconduct,
+                date,
+                expiry_date,
+                details,
+                employee_comments,
+                notes,
+                witness_list,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, type, 'type');
+            ShouldUpdate.check(data, old_data, category_of_misconduct, 'category_of_misconduct');
+            ShouldUpdate.checkDate(data, old_data, date, 'date');
+            ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
+            ShouldUpdate.check(data, old_data, details, 'details');
+            ShouldUpdate.check(data, old_data, employee_comments, 'employee_comments');
+            ShouldUpdate.check(data, old_data, notes, 'notes');
+            ShouldUpdate.checkWitnessList(data, old_data, witness_list, 'witness_list');
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 3) {
+            const {
+                doc,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+
+            onSubmit(data);
+            return;
+        }
+
+        return true;
+    }
+
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props: {embeddedEmployee}}}} = this;
 
@@ -196,6 +303,7 @@ class Controls extends React.Component {
             infoDialog.open('Employee is required');
             return;
         }
+        //
         if (!form.isValid('type')) {
             infoDialog.open('Warning Type is required');
             return;
@@ -205,70 +313,11 @@ class Controls extends React.Component {
             return;
         }
 
-        if (isNewEmployee) {
-            console.log("res", form.data)
-            onSaved && onSaved(form.data);
-            infoDialog.open("Record added.");
-            infoDialog.close(2000);
-            this.props.close();
-            return;
-        }
-
-        const {
-            employee, issued_by,
-            type, category_of_misconduct, date, expiry_date,
-            details, employee_comments, notes, witness_list,
-            doc
-        } = form.data;
-
-        const data = {};
-
-        if (!embeddedEmployee) {
-            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
-        }
-        ShouldUpdate.checkEmployee(data, old_data, issued_by, 'issued_by_id');
-        ShouldUpdate.check(data, old_data, type, 'type');
-        ShouldUpdate.check(data, old_data, category_of_misconduct, 'category_of_misconduct');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
-        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
-        ShouldUpdate.check(data, old_data, details, 'details');
-        ShouldUpdate.check(data, old_data, employee_comments, 'employee_comments');
-        ShouldUpdate.check(data, old_data, notes, 'notes');
-        ShouldUpdate.checkWitnessList(data, old_data, witness_list, 'witness_list');
-        ShouldUpdate.checkFile(data, old_data, doc, 'doc');
-
-        if (Object.keys(data).isEmpty()) {
-            infoDialog.open("Nothing changed!");
-            return;
-        }
-
-        console.log(data)
-
-        btn.text("Saving...").disabled();
-        progressDialog.open();
-        updateEmployeeWarning({id: this.item.id, ...data}).then(res => {
-            console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
-        }).finally(() => {
-            btn.text("Save").enabled();
-            setTimeout(() => progressDialog.close());
-        });
-        // workers.emit(this.path + "update", employee.id, this.item.id, data).then(res => {
-        //     console.log("res", res)
-        //     if(res === "ERROR") {
-        //         infoDialog.open("An error occurred. Please try again.");
-        //     } else {
-        //         onSaved && onSaved(res);
-        //         infoDialog.open("Record successfully updated.");
-        //         this.props.close();
-        //     }
-        //     infoDialog.close(2000);
-        // }).finally(() => {
-        //     btn.text("Save").enabled();
-        // });
+        console.log("res", form.data)
+        onSaved && onSaved(form.data);
+        infoDialog.open("Record added.");
+        infoDialog.close(2000);
+        this.props.close();
     }
 
     render() {
@@ -287,6 +336,7 @@ class Controls extends React.Component {
                     employee,
                     issued_by,
                     type,
+                    category_of_misconduct,
                     date,
                     expiry_date,
                     details,
@@ -298,68 +348,100 @@ class Controls extends React.Component {
             }
         } = this;
 
-        return (<div className="controls-wrapper controls-sectioned">
-            <div className="controls">
-                <div className="row active">
-                    <label>
-                        1. Employee & Person Issuing Warning
-                        <Clickable idx={1} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-                    </label>
-                    <div className="row sec-group">
-                        {!isNewEmployee && !embeddedEmployee &&
-                            <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
-                                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>}
-                        <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..."
-                                             defaultValue={issued_by} defaultUser className="col-lg-12 form-control"
+        return <FormControls>
+            <Row
+                rendered
+                active
+                idx={1}
+                title="1. Employee & Person Issuing Warning"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
+            >
+                {!isNewEmployee && !embeddedEmployee &&
+                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
+                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectEmployeeInput name="issued_by" placeholder="Warning Issued By..."
+                                     defaultValue={issued_by} defaultUser className="col-lg-12 form-control"
+                                     onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={2}
+                title="2. Warning Details"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
+            >
+                <ClearableInput name="type" type="select" placeholder="Warning Type..." defaultValue={type}
+                                className="col-lg-12 form-control" onChange={this.form.onChange}
+                                values={this.state.lists.warning_types} returnValue/>
+                <CategoryOfMisconductWrapper defaultValue={category_of_misconduct} state={this.state}
                                              onChange={this.form.onChange}/>
-                    </div>
-                    <NavButtons idx={1} onNext={onFormNext}/>
-                </div>
-                <div className="row">
-                    <label>
-                        2. Warning Details
-                        <Clickable idx={2} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-                    </label>
-                    <div className="row sec-group">
-                        <ClearableInput name="type" type="select" placeholder="Warning Type..." defaultValue={type}
-                                        className="col-lg-12 form-control" onChange={this.form.onChange}
-                                        values={this.state.lists.warning_types} returnValue/>
-                        <ClearableInput name="category_of_misconduct" type="select"
-                                        placeholder="Category of Misconduct..." className="col-lg-12 form-control"
-                                        onChange={this.form.onChange} values={this.category_of_misconduct} returnValue/>
-                        <ClearableInput name="details" type="textarea" placeholder="Details Of Misconduct"
-                                        defaultValue={details} required className="col-lg-12 form-control"
-                                        onChange={this.form.onChange}/>
-                        <ClearableInput name="employee_comments" type="textarea" placeholder="Employee's Comments"
-                                        defaultValue={employee_comments} required className="col-lg-12 form-control"
-                                        onChange={this.form.onChange}/>
-                        <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required
-                                        className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                        <ClearableInput ref="date" name="date" type="date" placeholder="Warning Date..."
-                                        defaultValue={date || new Date()} required className="col-lg-6 form-control"
-                                        onChange={this.form.onChange}/>
-                        <ClearableInput ref="expiry_date" name="expiry_date" type="date"
-                                        placeholder="Warning Expiry Date..." defaultValue={expiry_date} required
-                                        className="col-lg-6 form-control" onChange={this.form.onChange}/>
-                        <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
-                        <NewEmployeeListTable name="witness_list" defaultValue={[...(witness_list || []), null]}
-                                              onChange={this.form.onChange}/>
-                    </div>
-                    <NavButtons idx={2} onBack={onFormBack} onNext={onFormNext}/>
-                </div>
-                <div className="row row-doc">
-                    <label>
-                        3. Document
-                        <Clickable idx={3} onClick={onFormOpen}><i className="fa fa-angle-down icon-right pull-right"/></Clickable>
-                    </label>
-                    <div className="row sec-group">
-                        <ProofUploadButton name="doc" className="col-lg-12" defaultValue={doc}
-                                           onChange={this.form.onChange}/>
-                    </div>
-                    <NavButtons idx={3} onBack={onFormBack}/>
-                </div>
-            </div>
-        </div>);
+                <ClearableInput name="details" type="textarea" placeholder="Details Of Misconduct"
+                                defaultValue={details} required className="col-lg-12 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="employee_comments" type="textarea" placeholder="Employee's Comments"
+                                defaultValue={employee_comments} required className="col-lg-12 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput name="notes" type="textarea" placeholder="Notes" defaultValue={notes} required
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput ref="date" name="date" type="date" placeholder="Warning Date..."
+                                defaultValue={date || new Date()} required className="col-lg-6 form-control"
+                                onChange={this.form.onChange}/>
+                <ClearableInput ref="expiry_date" name="expiry_date" type="date"
+                                placeholder="Warning Expiry Date..." defaultValue={expiry_date} required
+                                className="col-lg-6 form-control" onChange={this.form.onChange}/>
+                <label className="col-lg-12 margin-0 margin-t-10 padding-0 padding-b-0">Witness List</label>
+                <NewEmployeeListTable name="witness_list" defaultValue={[...(witness_list || []), null]}
+                                      onChange={this.form.onChange}/>
+            </Row>
+            <Row
+                rendered
+                idx={3}
+                title="3. Document"
+                onFormOpen={onFormOpen}
+                onFormBack={onFormBack}
+                onFormSave={!isNewEmployee && this.onFormSave}
+            >
+                <DocUploadOption
+                    name="doc"
+                    plugin="plugin_hr_management"
+                    module="Warnings"
+                    type={['PDF', 'Word', 'Image']}
+                    defaultValue={doc}
+                    onChange={this.form.onChange}
+                    addChangeOne={this.form.addChangeOne}
+                />
+            </Row>
+        </FormControls>;
+    }
+}
+
+@observer
+class CategoryOfMisconductWrapper extends React.Component {
+    @computed get category_of_misconduct() {
+        const {state} = this.props;
+        return state.lists.category_of_misconduct[state.type] || [];
+    }
+
+    render() {
+        const {defaultValue, onChange} = this.props;
+
+        return (
+            <ClearableInput
+                key={new Date().getTime()}
+                name="category_of_misconduct"
+                type="select"
+                placeholder="Category of Misconduct..."
+                defaultValue={defaultValue}
+                className="col-lg-12 form-control"
+                onChange={onChange}
+                values={this.category_of_misconduct}
+                returnValue
+            />
+        )
     }
 }
 

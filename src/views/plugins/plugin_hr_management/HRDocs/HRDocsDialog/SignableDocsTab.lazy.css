@@ -1,0 +1,16 @@
+
+#Documents-page #SignableDocsTab-tab .table {
+    height: calc(100% - 76px) !important;
+}
+
+#SignableDocsTab-tab .table {
+    height: calc(100% - 59px) !important;
+}
+
+#Documents-page #SignableDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (76px + 125px)) !important;
+}
+
+#SignableDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (59px + 125px)) !important;
+}

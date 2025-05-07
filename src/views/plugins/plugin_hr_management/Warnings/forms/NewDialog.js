@@ -115,8 +115,8 @@ class Controls extends React.Component {
         this.onAddSignatures = this.onAddSignatures.bind(this);
 
         this.form = new Form();
-        this.form.addChangeOne("date", this.onChangeDate.bind(this));
         this.form.addChangeOne("type", this.onChangeType.bind(this));
+        this.form.addChangeOne("date", this.onChangeDate.bind(this));
     }
 
     get onSetSignatureSettings() {
@@ -138,8 +138,13 @@ class Controls extends React.Component {
         return this.props.state.item;
     }
 
-    @computed get category_of_misconduct() {
-        return this.state.lists.category_of_misconduct[this.state.type] || [];
+    onChangeType(el, val) {
+        this.state.type = val;
+        execWhen(() => this.refs.category_of_misconduct).then(ref => {
+            if (val) {
+                ref.list = this.state.lists.category_of_misconduct[val];
+            }
+        });
     }
 
     onChangeDate(el, val) {
@@ -149,15 +154,6 @@ class Controls extends React.Component {
             } = this.refs;
             if (val) {
                 expiry_date_ref && expiry_date_ref.onChange(val.addYears(1));
-            }
-        });
-    }
-
-    onChangeType(el, val) {
-        this.state.type = val;
-        execWhen(() => this.refs.category_of_misconduct).then(ref => {
-            if (val) {
-                ref.list = this.state.lists.category_of_misconduct[val];
             }
         });
     }
@@ -268,9 +264,7 @@ class Controls extends React.Component {
                 <ClearableInput name="type" type="select" placeholder="Warning Type..."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.warning_types} returnValue/>
-                <ClearableInput name="category_of_misconduct" type="select" placeholder="Category of Misconduct..."
-                                className="col-lg-12 form-control" onChange={this.form.onChange}
-                                values={this.category_of_misconduct} returnValue/>
+                <CategoryOfMisconductWrapper state={this.state} onChange={this.form.onChange}/>
                 <ClearableInput name="details" type="textarea" placeholder="Details Of Misconduct" required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="employee_comments" type="textarea" placeholder="Employee's Comments" required
@@ -301,6 +295,30 @@ class Controls extends React.Component {
                 />
             </Row>
         </FormControls>;
+    }
+}
+
+@observer
+class CategoryOfMisconductWrapper extends React.Component {
+    @computed get category_of_misconduct() {
+        const {state} = this.props;
+        return state.lists.category_of_misconduct[state.type] || [];
+    }
+
+    render() {
+        const {onChange} = this.props;
+
+        return (
+            <ClearableInput
+                key={new Date().getTime()}
+                name="category_of_misconduct"
+                type="select" placeholder="Category of Misconduct..."
+                className="col-lg-12 form-control"
+                onChange={onChange}
+                values={this.category_of_misconduct}
+                returnValue
+            />
+        )
     }
 }
 

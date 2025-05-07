@@ -37,7 +37,7 @@ class ViewOptionalInfoSection extends AEmployeeSection {
         } = item;
 
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
-        return <div id={this.pageKey + "-tab"} className={className}>
+        return <div id={this.pageKey + "-tab"} className={`${className} -margin-l-10 -margin-t-5 -margin-b-10`}>
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls pos-relative">
                     <Row

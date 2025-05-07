@@ -71,14 +71,10 @@ class Controls extends React.Component {
                 infoDialog.open('Employee is required');
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open('Expiry Date is required');
-                return;
-            }
         }
         if (idx === 2) {
-            if (!form.isValid('doc')) {
-                infoDialog.open('Please Upload Medical Fitness Certificate');
+            if (!form.isValid('expiry_date')) {
+                infoDialog.open('Expiry Date is required');
                 return;
             }
         }
@@ -134,18 +130,33 @@ class Controls extends React.Component {
     render() {
         const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return <FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
                 active
                 idx={1}
-                title="1. Medical Fitness Details"
+                title='1. Employee'
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee &&
-                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={this.employeeItem}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
+            </Row>}
+            <Row
+                rendered
+                active={isNewEmployee || embeddedEmployee}
+                idx={2}
+                title={`${++idx}. Medical Fitness Details`}
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
+            >
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" required
@@ -159,27 +170,43 @@ class Controls extends React.Component {
             </Row>
             <Row
                 rendered
-                idx={2}
-                title="2. Documents"
+                idx={3}
+                title={`${++idx}. Documents`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >
-                <UploadButton
-                    name="annexture3_doc"
-                    buttonTitle="Upload Annexture 3 (PDF, Word or Photo)"
-                    type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon
-                    className="col-lg-12"
-                    onChange={this.form.onChange}
-                />
-                <UploadButton
-                    name="doc"
-                    buttonTitle="Upload File (PDF, Word or Photo)"
-                    type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon
-                    className="col-lg-12"
-                    onChange={this.form.onChange}
-                />
+                <FormControls>
+                    <Row
+                        rendered
+                        activeAlways
+                        idx={4.1}
+                        title={`${idx}.1. Medical Attachment`}
+                    >
+                        <UploadButton
+                            name="doc"
+                            buttonTitle="Upload File (PDF, Word or Photo)"
+                            type={['PDF', 'Word', 'Image']}
+                            showOnlyIcon
+                            className="col-lg-12"
+                            onChange={this.form.onChange}
+                        />
+                    </Row>
+                    <Row
+                        rendered
+                        activeAlways
+                        idx={4.2}
+                        title={`${idx}.2. Annexture 3 Attachment`}
+                    >
+                        <UploadButton
+                            name="annexture3_doc"
+                            buttonTitle="Upload File (PDF, Word or Photo)"
+                            type={['PDF', 'Word', 'Image']}
+                            showOnlyIcon
+                            className="col-lg-12"
+                            onChange={this.form.onChange}
+                        />
+                    </Row>
+                </FormControls>
             </Row>
         </FormControls>;
     }

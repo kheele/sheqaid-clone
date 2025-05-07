@@ -197,7 +197,7 @@ class Controls extends React.Component {
             warningSection,
             timeOffSection,
         } = this.refs;
-        alert(id)
+        // alert(id)
 
         const show = ({mainSection, childLevel1Ref, childLevel2Ref}) => {
             mainSection.onFormGoto();

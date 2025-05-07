@@ -6,12 +6,14 @@ import {PageTitle} from "components";
 import OHSDocListDialog from "./OHSDocs";
 import Tabs from "components/tabs/Tabs";
 import DashboardTab from "./DashboardTab";
-import ProjectPlanTab from "./ProjectPlanTab";
-import IMSPolicyTab from "./IMSPolicyTab";
-import DocumentsTab from "./DocumentsTab";
-import RecordControlTab from "./RecordControlTab";
 import APage from "views/APage";
 import style from "./Main.lazy.css";
+
+import OtherDocsTab from "../../plugin_hr_management/HRDocs/HRDocsDialog/OtherDocsTab";
+import ProcedureDocsTab from "../../plugin_hr_management/HRDocs/HRDocsDialog/ProcedureDocsTab";
+import PolicyDocsTab from "../../plugin_hr_management/HRDocs/HRDocsDialog/PolicyDocsTab";
+import ProjectPlanDocsTab from "../../plugin_hr_management/HRDocs/HRDocsDialog/ProjectPlanDocsTab";
+import RecordControlTab from "./RecordControlTab";
 
 @observer
 class Main extends APage {
@@ -56,9 +58,10 @@ class Main extends APage {
             </PageTitle>
             <Tabs key="tabs" ref="mainTabs" permissionKey={permissionKey} index={this.state.index}>
                 <DashboardTab ref="dashboardTab" title="Dashboard"/>
-                <ProjectPlanTab ref="projectPlanTab" title="Project Plans"/>
-                <IMSPolicyTab ref="imsPolicyTab" title="IMS Policies"/>
-                <DocumentsTab ref="documentsTab" title="Company Documents"/>
+                <PolicyDocsTab ref="policyDocsTab" title="IMS Policies"/>
+                <ProjectPlanDocsTab ref="projectPlanTab" title="Project Plans"/>
+                <ProcedureDocsTab ref="procedureDocsTab" title="Procedures"/>
+                <OtherDocsTab ref="otherDocsTab" title="Other Documents"/>
                 <RecordControlTab ref="recordControlTab" title="Record & Document Control"/>
             </Tabs>
             <OHSDocListDialog ref="ohsDocListDialog"/>

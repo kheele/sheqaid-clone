@@ -86,6 +86,7 @@ class Controls extends React.Component {
         super();
 
         this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
     }
@@ -135,6 +136,122 @@ class Controls extends React.Component {
         return true;
     }
 
+    //<editor-fold desc="onFormSave">
+    async onFormSave(e, btn) {
+        const {
+            form,
+            isNewEmployee,
+            item: {id, data: old_data},
+            props: {dialog: {props: {embeddedEmployee}}},
+        } = this;
+
+        const {is: {isContractor}, loggedContractor} = storage;
+
+        const onSubmit = (data, onSaved) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateEmployeeExpense({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                const res_data = res;
+                onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+
+            const {
+                employee,
+            } = form.data;
+
+            const data = {};
+
+            if (!embeddedEmployee) {
+                ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 2) {
+            if (!form.isValid('category')) {
+                infoDialog.open('Category is required');
+                return;
+            }
+            if (!form.isValid('currency_country')) {
+                infoDialog.open('Currency is required');
+                return;
+            }
+            if (!form.isValid('paid_with')) {
+                infoDialog.open('Paid With is required');
+                return;
+            }
+            if (!form.isValid('date')) {
+                infoDialog.open('Date is required');
+                return;
+            }
+            if (!form.isValid('amount')) {
+                infoDialog.open('Amount is required');
+                return;
+            }
+
+            const {
+                category,
+                currency_country,
+                paid_with,
+                date,
+                amount,
+                comments,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.check(data, old_data, category, 'category');
+            ShouldUpdate.check(data, old_data, currency_country, 'currency_country');
+            ShouldUpdate.check(data, old_data, paid_with, 'paid_with');
+            ShouldUpdate.checkDate(data, old_data, date, 'date');
+            ShouldUpdate.check(data, old_data, amount, 'amount');
+            ShouldUpdate.check(data, old_data, comments, 'comments');
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 3) {
+            const {
+                doc,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+
+            onSubmit(data);
+            return;
+        }
+
+        return true;
+    }
+
     onSubmit(e, btn, onSaved) {
         const {form, isNewEmployee, item: {data: old_data}, props: {dialog: {props: {embeddedEmployee}}}} = this;
 
@@ -164,58 +281,11 @@ class Controls extends React.Component {
             return;
         }
 
-        if (isNewEmployee) {
-            console.log("res", form.data)
-            onSaved && onSaved(form.data);
-            infoDialog.open("Record added.");
-            infoDialog.close(2000);
-            this.props.close();
-            return;
-        }
-
-        const {
-            doc, //
-            employee,//
-            category,
-            currency_country,
-            paid_with,
-            date,
-            amount,
-            comments,
-        } = form.data;
-
-        const data = {};
-
-        if (!embeddedEmployee) {
-            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
-        }
-        ShouldUpdate.check(data, old_data, category, 'category');
-        ShouldUpdate.check(data, old_data, currency_country, 'currency_country');
-        ShouldUpdate.check(data, old_data, paid_with, 'paid_with');
-        ShouldUpdate.checkDate(data, old_data, date, 'date');
-        ShouldUpdate.check(data, old_data, amount, 'amount');
-        ShouldUpdate.check(data, old_data, comments, 'comments');
-        ShouldUpdate.checkFile(data, old_data, doc, 'doc');
-
-        if (Object.keys(data).isEmpty()) {
-            infoDialog.open("Nothing changed!");
-            return;
-        }
-
-        console.log(data)
-
-        btn.text("Saving...").disabled();
-        progressDialog.open();
-        updateEmployeeExpense({id: this.item.id, ...data}).then(res => {
-            console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
-        }).finally(() => {
-            btn.text("Save").enabled();
-            setTimeout(() => progressDialog.close());
-        });
+        console.log("res", form.data)
+        onSaved && onSaved(form.data);
+        infoDialog.open("Record added.");
+        infoDialog.close(2000);
+        this.props.close();
     }
 
     render() {
@@ -254,12 +324,18 @@ class Controls extends React.Component {
                 rendered
                 active
                 idx={1}
-                title='1. Employee'
+                title="1. Employee"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
-                                     className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={employee}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
             </Row>}
             <Row
                 rendered
@@ -269,6 +345,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <ClearableInput
                     name="category"
@@ -332,6 +409,7 @@ class Controls extends React.Component {
                 title={`${++idx}. Document`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <UploadButton
                     name="doc"

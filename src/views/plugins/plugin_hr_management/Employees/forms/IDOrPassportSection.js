@@ -12,6 +12,7 @@ class IDOrPassportSection extends ASectionSection {
 
     type = 'ID/Passport';
     listName = 'document_list';
+    listNameAlt = 'document_list__ID/Passport';
     onUpdate = updateEmployeeDocDocumentIDOrPassport;
     NewDialog = NewDocumentDialog;
     EditDialog = EditDocumentDialog;

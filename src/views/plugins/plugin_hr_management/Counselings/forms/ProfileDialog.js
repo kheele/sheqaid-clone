@@ -99,7 +99,7 @@ class Controls extends AEmployeeDocControls {
         return <div className="row item-wrapper padding-t-10 h-full">
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Responsible Person" name="responsible_person" value={responsible_person}
-                              renderer={v => v.lname + ' ' + v.fname}
+                              renderer={v => v.full_name || (v.data && v.data.full_name)}
                               className="col-lg-12"/>
                 <ProfileField title="Counseling Types" name="types" value={types}
                               renderer={v => v.map(v => v).join(', ')} className="col-lg-12"/>

@@ -62,14 +62,10 @@ class Controls extends React.Component {
                 infoDialog.open('Employee is required');
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open('Expiry Date is required');
-                return;
-            }
         }
         if (idx === 2) {
-            if (!form.isValid('doc')) {
-                infoDialog.open('Please Upload License');
+            if (!form.isValid('expiry_date')) {
+                infoDialog.open('Expiry Date is required');
                 return;
             }
         }
@@ -125,7 +121,24 @@ class Controls extends React.Component {
     render() {
         const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return <FormControls>
+            {!isNewEmployee && !embeddedEmployee && <Row
+                rendered
+                active
+                idx={1}
+                title='1. Employee'
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={this.employeeItem}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
+            </Row>}
             <Row
                 rendered
                 active
@@ -134,9 +147,6 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee &&
-                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="date" type="date" placeholder="Date..." required className="col-lg-6 form-control"
                                 onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required

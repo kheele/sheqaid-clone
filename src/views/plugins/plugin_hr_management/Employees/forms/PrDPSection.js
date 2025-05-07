@@ -12,6 +12,7 @@ class PrDPSection extends ASectionSection {
 
     type = 'PrDP';
     listName = 'document_list';
+    listNameAlt = 'document_list__PrDP';
     onUpdate = updateEmployeeDocDocumentPrDP;
     NewDialog = NewDocumentDialog;
     EditDialog = EditDocumentDialog;

@@ -99,16 +99,7 @@ class Controls extends AEmployeeDocControls {
             </div>
             <hr className="margin-t-5 margin-l-10 margin-r-10 margin-b-10"/>
             <label className="w-full margin-0 text-center">Documents</label>
-            <div className="row margin-l-0 margin-r-0 margin-b-15 row-doc sec-group">
-                <UploadButton
-                    name="annexture3_doc"
-                    defaultValue={annexture3_doc}
-                    buttonTitle="Annexture 3 Attachment"
-                    type={['PDF', 'Word', 'Image']}
-                    showOnlyIcon
-                    readonly
-                    className="w-280 hor-center"
-                />
+            <div className="row row-doc sec-group margin-l-0 margin-r-0 padding-b-10 margin-b-15">
                 <UploadButton
                     name="doc"
                     defaultValue={doc}
@@ -116,7 +107,16 @@ class Controls extends AEmployeeDocControls {
                     type={['PDF', 'Word', 'Image']}
                     showOnlyIcon
                     readonly
-                    className="w-280 hor-center"
+                    className="col-lg-6"
+                />
+                <UploadButton
+                    name="annexture3_doc"
+                    defaultValue={annexture3_doc}
+                    buttonTitle="Annexture 3 Attachment"
+                    type={['PDF', 'Word', 'Image']}
+                    showOnlyIcon
+                    readonly
+                    className="col-lg-6"
                 />
             </div>
         </div>;

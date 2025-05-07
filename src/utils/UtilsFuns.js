@@ -48,7 +48,11 @@ async function convertMobx(arg) {
     if (isObject(arg)) {
         await Promise.all(Object.keys(arg).map(async key => {
             const val = arg[key];
-            arg[key] = await convertMobx(val);
+            try {
+                arg[key] = await convertMobx(val);
+            } catch (e) {
+                console.error('convertMobx:', e);
+            }
         }));
     }
     return arg;

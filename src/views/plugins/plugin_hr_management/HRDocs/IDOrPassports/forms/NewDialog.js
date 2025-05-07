@@ -62,16 +62,6 @@ class Controls extends React.Component {
                 infoDialog.open('Employee is required');
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open('Expiry Date is required');
-                return;
-            }
-        }
-        if (idx === 2) {
-            if (!form.isValid('doc')) {
-                infoDialog.open('Please Upload ID/Passport');
-                return;
-            }
         }
 
         return true;
@@ -82,10 +72,6 @@ class Controls extends React.Component {
 
         if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
             infoDialog.open('Employee is required');
-            return;
-        }
-        if (!form.isValid('expiry_date')) {
-            infoDialog.open('Expiry Date is required');
             return;
         }
         if (!form.isValid('doc')) {
@@ -132,25 +118,40 @@ class Controls extends React.Component {
     render() {
         const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
+        let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return <FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
                 active
                 idx={1}
-                title="1. ID/Passport Details "
+                title='1. Employee'
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee &&
-                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={this.employeeItem}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
+            </Row>}
+            <Row
+                rendered
+                active={isNewEmployee || embeddedEmployee}
+                idx={2}
+                title={`${++idx}. ID/Passport Details`}
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
+            >
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
             </Row>
             <Row
                 rendered
-                idx={2}
-                title="2. Document"
+                idx={3}
+                title={`${++idx}. Document`}
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
             >

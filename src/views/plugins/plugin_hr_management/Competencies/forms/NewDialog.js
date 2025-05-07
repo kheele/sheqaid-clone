@@ -178,6 +178,22 @@ class Controls extends React.Component {
         const {isNewEmployee, embeddedEmployee, props: {onFormNext, onFormBack, onFormOpen}} = this;
 
         return <FormControls>
+            {!isNewEmployee && !embeddedEmployee && <Row
+                rendered
+                active
+                idx={1}
+                title='1. Employee'
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+            >
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={this.employeeItem}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
+            </Row>}
             <Row
                 rendered
                 active
@@ -186,9 +202,6 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
             >
-                {!isNewEmployee && !embeddedEmployee &&
-                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={this.employeeItem}
-                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." required
                                 className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."

@@ -346,7 +346,7 @@ class EditDocumentsSection extends AEmployeeSection {
 
         let __idx = 0;
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
-        return <div id={this.pageKey + "-tab"} className={className}>
+        return <div id={this.pageKey + "-tab"} className={`${className} -margin-l-10 -margin-t-5 -margin-b-10`}>
             <FormControls lazyLoad>
                 {/*{!isNewEmployee && EmployeeProfileSettings.isValidEmployeeSignableDocumentsViewers(item) && <Row*/}
                 {/*    rendered*/}
@@ -363,6 +363,7 @@ class EditDocumentsSection extends AEmployeeSection {
                     rendered
                     idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
                     title={idx + `.${__idx} Personal Documents`}
+                    sectionClassName="-margin-t-5 -margin-b-10"
                     onFormOpen={onFormOpen}
                     onFormNext={onFormNext}
                 >

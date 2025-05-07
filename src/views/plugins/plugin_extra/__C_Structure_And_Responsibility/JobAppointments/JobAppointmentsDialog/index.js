@@ -51,7 +51,7 @@ class Dialog extends AEmployeeDocDialog {
     // </editor-fold>
 
     //<editor-fold desc="onBuildQuery">
-    onBuildQuery() {
+    onBuildQuery(params) {
         const {page, lastItem, filterData, filtered, isNew} = params;
         const {
             notes,

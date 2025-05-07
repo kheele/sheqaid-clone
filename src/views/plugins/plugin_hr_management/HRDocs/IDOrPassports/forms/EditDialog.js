@@ -50,6 +50,7 @@ class Controls extends React.Component {
         super(props);
 
         this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
     }
@@ -72,16 +73,96 @@ class Controls extends React.Component {
                 infoDialog.open('Employee is required');
                 return;
             }
-            if (!form.isValid('expiry_date')) {
-                infoDialog.open('Expiry Date is required');
+        }
+
+        return true;
+    }
+
+    //<editor-fold desc="onFormSave">
+    async onFormSave(e, btn) {
+        const {
+            form,
+            isNewEmployee,
+            item: {id, data: old_data},
+            props: {dialog: {props: {embeddedEmployee}}},
+        } = this;
+
+        const {is: {isContractor}, loggedContractor} = storage;
+
+        const onSubmit = (data, onSaved) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
                 return;
             }
+
+            console.log(data)
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateEmployeeDocDocumentIDOrPassport({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                const res_data = res;
+                onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+
+            const {
+                employee,
+            } = form.data;
+
+            const data = {};
+
+            if (!embeddedEmployee) {
+                ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+            }
+
+            onSubmit(data);
+            return;
         }
+
         if (idx === 2) {
+            const {
+                expiry_date,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 3) {
             if (!form.isValid('doc')) {
                 infoDialog.open('Please Upload ID/Passport');
                 return;
             }
+
+            const {
+                doc,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+
+            onSubmit(data);
+            return;
         }
 
         return true;
@@ -94,52 +175,16 @@ class Controls extends React.Component {
             infoDialog.open('Employee is required');
             return;
         }
-        if (!form.isValid('expiry_date')) {
-            infoDialog.open('Expiry Date is required');
-            return;
-        }
         if (!form.isValid('doc')) {
             infoDialog.open('Please Upload ID/Passport');
             return;
         }
 
-        if (isNewEmployee) {
-            console.log("res", form.data)
-            onSaved && onSaved(form.data);
-            infoDialog.open("Record added.");
-            infoDialog.close(2000);
-            this.props.close();
-            return;
-        }
-
-        const {employee, expiry_date, doc} = form.data;
-
-        const data = {};
-
-        if (!embeddedEmployee) {
-            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
-        }
-        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
-        ShouldUpdate.checkFile(data, old_data, doc, 'doc');
-
-        if (Object.keys(data).isEmpty()) {
-            infoDialog.open("Nothing changed!");
-            return;
-        }
-
-        console.log(data)
-
-        btn.text("Saving...").disabled();
-        updateEmployeeDocDocumentIDOrPassport({id: this.item.id, ...data}).then(res => {
-            console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
-        }).finally(() => {
-            btn.text("Save").enabled();
-            setTimeout(() => progressDialog.close());
-        });
+        console.log("res", form.data)
+        onSaved && onSaved(form.data);
+        infoDialog.open("Record added.");
+        infoDialog.close(2000);
+        this.props.close();
     }
 
     render() {
@@ -162,14 +207,14 @@ class Controls extends React.Component {
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return (<FormControls>
-            <Row
+            {!isNewEmployee && !embeddedEmployee && <Row
                 rendered
-                active={!isNewEmployee && !embeddedEmployee}
+                active
                 idx={1}
                 title="1. Employee"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
-                onFormBack={onFormBack}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SelectEmployeeInput
                     name="employee"
@@ -178,7 +223,7 @@ class Controls extends React.Component {
                     className="col-lg-12 form-control"
                     onChange={this.form.onChange}
                 />
-            </Row>
+            </Row>}
             <Row
                 rendered
                 active={isNewEmployee || embeddedEmployee}

@@ -192,8 +192,8 @@ class Controls extends React.Component {
 
         if (isNewEmployee) {
             const data = {
-                contractDetailsTab,
-                salaryInfoTab,
+                contractDetailsFormData: contract_details,
+                salaryInfoFormData: salary_info,
                 employee,
                 doc,
                 job_profile_doc,
@@ -205,7 +205,7 @@ class Controls extends React.Component {
             infoDialog.close(2000);
             this.props.close();
             return;
-        }
+        }//
 
         const data = {
             formData: {
@@ -301,11 +301,9 @@ class Controls extends React.Component {
                 <FormControls>
                     <Row
                         rendered
-                        activeAways
+                        activeAlways
                         idx={4.1}
                         title={`${idx}.1. Contract Document Attachment`}
-                        onFormOpen={onFormOpen}
-                        onFormNext={onFormNext}
                     >
                         <DocUploadOption
                             name="doc"
@@ -318,11 +316,9 @@ class Controls extends React.Component {
                     </Row>
                     <Row
                         rendered
-                        activeAways
+                        activeAlways
                         idx={4.2}
                         title={`${idx}.2. Job Profile Document Attachment`}
-                        onFormOpen={onFormOpen}
-                        onFormBack={onFormBack}
                     >
                         <DocUploadOption
                             name="job_profile_doc"

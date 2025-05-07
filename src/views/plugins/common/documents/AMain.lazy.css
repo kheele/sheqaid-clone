@@ -1,5 +1,5 @@
 
-#ADocuments-page{
+#ADocuments-page {
     height: 100%;
 }
 
@@ -12,7 +12,7 @@
     height: 24px;
     border-radius: 50%;
     background: rgb(200 200 200 / 80%);
-    color: rgb(2,168,168);
+    color: rgb(2, 168, 168);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,18 +23,19 @@
     margin-top: -90px !important;
 }
 
-#ADocuments-page .page-title > .tabled-top-panel{
+#ADocuments-page .page-title > .tabled-top-panel {
     min-width: 955px !important;
 }
 
-#ADocuments-page .page-title > h3{
+#ADocuments-page .page-title > h3 {
     display: none !important;
 }
 
-#ADocuments-page .filter-wrapper + .table{
-    height: calc(100% - (20px + 125px)) !important;
+#ADocuments-page .filter-wrapper + .table {
+    height: calc(100% - (25px + 125px)) !important;
 }
 
-#ADocuments-page .table{
+#ADocuments-page .table {
     margin-top: 45px;
+    height: calc(100% - 25px) !important;
 }

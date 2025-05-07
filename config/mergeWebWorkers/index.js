@@ -51,7 +51,7 @@ module.exports = function (webpackEnv) {
 
                 // merge('worker-plugins_claim_management', controllersPath),
                 merge('worker-plugins_extra', controllersPath),
-                merge('worker-plugins_general', controllersPath),
+                // merge('worker-plugins_general', controllersPath),
                 merge('worker-plugins_hr_management', controllersPath),
                 // merge('worker-plugins_sheq_assist', controllersPath),
 

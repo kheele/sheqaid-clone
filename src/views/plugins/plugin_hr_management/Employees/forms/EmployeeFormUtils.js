@@ -22,7 +22,7 @@ export function onOpenSections(id) {
 
     console.log(this)
 
-    alert(id)
+    // alert(id)
 
     switch (id) {
         //Employment Info: 3

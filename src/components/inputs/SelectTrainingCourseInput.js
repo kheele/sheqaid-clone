@@ -2,10 +2,12 @@ import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
 
-import {ClearableInput} from './';
+import {Button, ClearableInput} from './';
 
 import ASelectInput from './ASelectInput';
 import {listTrainingCourses} from "../../mutations/listByLogged";
+import NewTrainingRegistryDialog
+    from "../../views/plugins/plugin_sheq_assist/05_Training/TrainingRegistryTab/forms/NewTrainingRegistryDialog";
 
 @observer
 class SelectInput extends ASelectInput {
@@ -20,6 +22,8 @@ class SelectInput extends ASelectInput {
 
     constructor(props) {
         super(props);
+
+        this.onAdd = this.onAdd.bind(this);
 
         this.onLoadList = this.onLoadList.bind(this);
     }
@@ -48,6 +52,10 @@ class SelectInput extends ASelectInput {
     }
 
     async componentDidMount() {
+        this.reload();
+    }
+
+    async reload() {
         let {className = ''} = this.props;
         className += ` SelectTrainingCourseInput`;
 
@@ -67,6 +75,15 @@ class SelectInput extends ASelectInput {
             defaultValue: this.selectedItem,
             className
         };
+
+        this.state.loaded = true;
+    }
+
+    onAdd(e, btn) {
+        this.refs.newDialog.open().then(value => ({label: value.data.name, value})).then(async value => {
+            await this.reload();
+            this.refs.input.onChange(value);
+        });
     }
 
     // </editor-fold>
@@ -84,7 +101,22 @@ class SelectInput extends ASelectInput {
         const {props} = this.state;
         if (!props) return null;
 
-        return <ClearableInput {...props}/>;
+        const {parentClassName, addButton = true} = this.props;
+
+        let className = 'col-lg-12 clearable-field-control form-control select_multiple h-auto padding-0 no-border pull-left flex' + (parentClassName ? ` ${parentClassName}` : '');
+        if (addButton) {
+            className += ' form-control-add-btn';
+        }
+
+        return <div className={className}>
+            <ClearableInput {...props}/>
+            {addButton && <>
+                <NewTrainingRegistryDialog ref="newDialog"/>
+                <Button className="btn btn-primary fixed-flex" onClick={this.onAdd}>
+                    <i className="fa fa-plus"/> Add New
+                </Button>
+            </>}
+        </div>;
     }
 }
 

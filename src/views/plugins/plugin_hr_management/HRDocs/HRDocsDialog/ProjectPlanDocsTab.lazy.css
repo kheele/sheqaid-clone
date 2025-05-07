@@ -1,0 +1,34 @@
+#Documents-page #ProjectPlanDocsTab-tab .page-title {
+    height: 0;
+    border: none;
+}
+
+#Documents-page #ProjectPlanDocsTab-tab .page-title > .tabled-top-panel {
+    margin-top: -139px;
+    height: 0;
+}
+
+#Documents-page #ProjectPlanDocsTab-tab .page-title > h3,
+#ProjectPlanDocsTab .page-title > .page-back-btn {
+    display: none;
+}
+
+#ProjectPlanDocsTab.tab-content > .active > .page-content {
+    height: calc(100% - 59px) !important;
+}
+
+#Documents-page #ProjectPlanDocsTab-tab .table {
+    height: calc(100% - 76px) !important;
+}
+
+#ProjectPlanDocsTab-tab .table {
+    height: calc(100% - 59px) !important;
+}
+
+#Documents-page #ProjectPlanDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (76px + 125px)) !important;
+}
+
+#ProjectPlanDocsTab-tab .filter-wrapper + .table {
+    height: calc(100% - (59px + 125px)) !important;
+}

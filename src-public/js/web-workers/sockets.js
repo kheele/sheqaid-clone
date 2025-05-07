@@ -3,7 +3,7 @@ importScripts("https://cdn.socket.io/4.6.0/socket.io.min.js");
 if (location.hostname.contains('sheqintel.com')) {
     self.SERVER_HOST = "https://bun-server.cloud.sheqintel.com";
 } else {
-    self.SERVER_HOST = "http://localhost:5000";
+    self.SERVER_HOST = "http://localhost:5000";//
     // self.SERVER_HOST = "https://bun-server.cloud.sheqintel.com";
 // self.SERVER_HOST = "https://server.cloud.sheqintel.com";
 }

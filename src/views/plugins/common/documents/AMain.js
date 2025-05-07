@@ -11,9 +11,9 @@ import {ActionsButton, Button} from 'components/inputs';
 import {THead, TRow} from 'components/tables';
 
 import ShareDialog from './ShareDialog';
-import NewDialog from './NewDialog';
-import ProfileDialog from './ProfileDialog';
-import EditDialog from './EditDialog';
+import NewDialog from '../../../plugins/plugin_hr_management/HRDocs/HRDocsDialog/NewDialog';
+import ProfileDialog from '../../../plugins/plugin_hr_management/HRDocs/HRDocsDialog/ProfileDialog';
+import EditDialog from '../../../plugins/plugin_hr_management/HRDocs/HRDocsDialog/EditDialog';
 
 import DocumentCategoriesDialog from './dialogs/DocumentCategoriesDialog';
 

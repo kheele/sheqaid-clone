@@ -223,7 +223,7 @@ class EditOptionalInfoSection extends AEmployeeSection {
         const isNewEmployee = !id;
 
         const className = this.pageKey + "-tab" + (this.props.active ? ' active' : '');
-        return <div id={this.pageKey + "-tab"} className={className}>
+        return <div id={this.pageKey + "-tab"} className={`${className} -margin-l-10 -margin-t-5 -margin-b-10`}>
             <div className="controls-wrapper controls-sectioned">
                 <div className="controls">
                     <Row
@@ -321,7 +321,6 @@ class EditOptionalInfoSection extends AEmployeeSection {
 
     //</editor-fold>
 }
-
 
 @observer
 class SupervisorDetails extends React.Component {

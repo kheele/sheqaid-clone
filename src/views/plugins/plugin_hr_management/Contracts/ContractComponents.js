@@ -93,10 +93,11 @@ class SalaryInfo extends React.Component {
             salary_interval,
             salary,
             wage,
-            deductible,
+            deductible, deductible_list,
         } = defaultValue || {};
 
         salary = salary ? salary.toCurrency('R') : "N/A";
+        deductible_list = deductible_list || deductible && deductible.list;
 
         return <>
             <div className="row sec-group margin-0">
@@ -109,7 +110,7 @@ class SalaryInfo extends React.Component {
                     <ProfileField title="Salary" name="salary" value={salary} className="col-lg-6"/>}
                 {payment_type === "Wage" && <ProfileField title="Wage" name="wage" value={wage} className="col-lg-6"/>}
             </div>
-            <Deductibles defaultValue={deductible && deductible.list}/>
+            <Deductibles defaultValue={deductible_list}/>
         </>;
     }
 }

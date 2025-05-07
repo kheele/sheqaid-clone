@@ -14,7 +14,6 @@ import style from "./ProfileDialog.lazy.css";
 import AEmployeeDocControls from "../../AEmployeeDocControls";
 import {findByIdEmployee} from "mutations/findById";
 import {updateEmployeeContract} from "mutations/update";
-import DocSignButton from "components/FormComponents/DocSignButton";
 import {findByIdHRContractsDashboardStats} from "mutations/employeeHRDashboard";
 import {findByIdHRContractsDateRangeDashboardStats} from "mutations/employeeHRDateRangeDashboard";
 
@@ -41,9 +40,9 @@ class ProfileDialog extends AProfileDialog {
         return "Contracts";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 }
 
 //</editor-fold>
@@ -81,21 +80,21 @@ class Controls extends AEmployeeDocControls {
 
         let {
             created_at,
-            salary_info, salaryInfoTab,
-            contract_details, contractDetailsTab,
+            contract_details, contractDetailsFormData,
+            salary_info, salaryInfoFormData,
             doc,
             job_profile_doc,
             signable_doc_template_list,
         } = item.data || item;
 
-        if (salaryInfoTab) {
-            salary_info = salaryInfoTab.form.data;
+        if (salaryInfoFormData) {
+            salary_info = salaryInfoFormData;
         } else if (salary_info) {
             salary_info = salary_info[0];
         }
 
-        if (contractDetailsTab) {
-            contract_details = contractDetailsTab.form.data;
+        if (contractDetailsFormData) {
+            contract_details = contractDetailsFormData;
         } else if (contract_details) {
             contract_details = contract_details[0];
         }
@@ -115,7 +114,7 @@ class Controls extends AEmployeeDocControls {
             </div>
             <hr className="margin-t-15 margin-l-10 margin-r-10 margin-b-10"/>
             <label className="w-full margin-l-10 margin-r-10 bg-white padding-10">Documents</label>
-            <div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">
+            <div className="row row-doc sec-group margin-l-0 margin-r-0 padding-b-10 margin-b-15">
                 <UploadButton
                     name="doc"
                     defaultValue={doc}
@@ -135,16 +134,16 @@ class Controls extends AEmployeeDocControls {
                     className="col-lg-6"
                 />
             </div>
-            <label className="w-full margin-l-10 margin-r-10 bg-white padding-10">Signable Document</label>
-            <div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">
-                {signable_doc_template && <img
-                    src={signable_doc_template.preview_image_url}
-                />}
-                {signable_doc_template && <DocSignButton
-                    doc={signable_doc_template}
-                />}
-                {!signable_doc_template && "N/A"}
-            </div>
+            {/*<label className="w-full margin-l-10 margin-r-10 bg-white padding-10">Signable Document</label>*/}
+            {/*<div className="row margin-l-0 margin-r-0 row-doc sec-group padding-b-10">*/}
+            {/*    {signable_doc_template && <img*/}
+            {/*        src={signable_doc_template.preview_image_url}*/}
+            {/*    />}*/}
+            {/*    {signable_doc_template && <DocSignButton*/}
+            {/*        doc={signable_doc_template}*/}
+            {/*    />}*/}
+            {/*    {!signable_doc_template && "N/A"}*/}
+            {/*</div>*/}
         </div>;
     }
 

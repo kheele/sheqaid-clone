@@ -417,10 +417,10 @@ class EmployeesBtn extends React.Component {
         return <Button
             className="btn w-auto h-35 flex flex-center"
             module="Employees"
-            hoverText="Employees" hoverTextLeft
+            hoverText="HR Management" hoverTextLeft
             onClick={defaultView.onOpenPage}
         >
-            <i className="fa fa-user-tie font-size-20 margin-r-5"/> Employees
+            <i className="fa fa-user-tie font-size-20 margin-r-5"/> HR Management
         </Button>;
     }
 }

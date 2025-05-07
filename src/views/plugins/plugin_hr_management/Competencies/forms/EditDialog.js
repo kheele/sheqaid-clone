@@ -72,6 +72,7 @@ class Controls extends React.Component {
         super(props);
 
         this.onNext = this.onNext.bind(this);
+        this.onFormSave = this.onFormSave.bind(this);
 
         this.form = new Form();
         this.form.addChangeOne("course", this.onChangeCourse.bind(this));
@@ -120,16 +121,121 @@ class Controls extends React.Component {
                 infoDialog.open('Employee is required');
                 return;
             }
+        }
+        if (idx === 2) {
             if (!form.isValid('competency_type')) {
                 infoDialog.open('Competency Type is required');
                 return;
             }
         }
+
+        return true;
+    }
+
+    //<editor-fold desc="onFormSave">
+    async onFormSave(e, btn) {
+        const {
+            form,
+            isNewEmployee,
+            item: {id, data: old_data},
+            props: {dialog: {props: {embeddedEmployee}}},
+        } = this;
+
+        const {is: {isContractor}, loggedContractor} = storage;
+
+        const onSubmit = (data, onSaved) => {
+            if (Object.keys(data).isEmpty()) {
+                infoDialog.open("Nothing changed!");
+                return;
+            }
+
+            console.log(data)
+
+            btn.text("Saving...").disabled();
+            progressDialog.open();
+            updateEmployeeCompetency({id: this.item.id, ...data}).then(res => {
+                console.log("res", res)
+                const res_data = res;
+                onSaved && onSaved(res_data);
+                infoDialog.open("Record successfully updated.");
+                infoDialog.close(2000);
+                // this.props.close();
+            }).finally(() => {
+                btn.text("Save").enabled();
+                setTimeout(() => progressDialog.close());
+            });
+        };
+
+        const {idx} = btn.props;
+
+        if (idx === 1) {
+            if (!isNewEmployee && !embeddedEmployee && !form.isValid('employee')) {
+                infoDialog.open('Employee is required');
+                return;
+            }
+
+            const {
+                employee,
+            } = form.data;
+
+            const data = {};
+
+            if (!embeddedEmployee) {
+                ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
+            }
+
+            onSubmit(data);
+            return;
+        }
+
+        if (idx === 2) {
+            if (!form.isValid('competency_type')) {
+                infoDialog.open('Competency Type is required');
+                return;
+            }
+
+            const {
+                //2
+                issued_date, expiry_date,
+                type, competency_type,
+                accreditation_num,
+                certificate_num,
+                course,
+                training,
+            } = form.data;
+
+            let data = {};
+
+            ShouldUpdate.checkDate(data, old_data, issued_date, 'issued_date');
+            ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
+            ShouldUpdate.check(data, old_data, type, 'type');
+            ShouldUpdate.check(data, old_data, competency_type, 'competency_type');
+            ShouldUpdate.check(data, old_data, accreditation_num, 'accreditation_num');
+            ShouldUpdate.check(data, old_data, certificate_num, 'certificate_num');
+            ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course_id');
+            ShouldUpdate.checkTrainingMatrix(data, old_data, training, 'training_id');
+
+            onSubmit(data);
+            return;
+
+        }
+
         if (idx === 3) {
             if (!form.isValid('doc')) {
                 infoDialog.open('Please Upload Competency Certificate');
                 return;
             }
+
+            const {
+                doc,
+            } = form.data;
+
+            const data = {};
+
+            ShouldUpdate.checkFile(data, old_data, doc, 'doc');
+
+            onSubmit(data);
+            return;
         }
 
         return true;
@@ -144,6 +250,7 @@ class Controls extends React.Component {
             infoDialog.open('Employee is required');
             return;
         }
+        // 2
         if (!form.isValid('competency_type')) {
             infoDialog.open('Competency Type is required');
             return;
@@ -154,60 +261,11 @@ class Controls extends React.Component {
             return;
         }
 
-        if (isNewEmployee) {
-            console.log("res", form.data)
-            onSaved && onSaved(form.data);
-            infoDialog.open("Record added.");
-            infoDialog.close(2000);
-            this.props.close();
-            return;
-        }
-
-        const {
-            employee,
-            issued_date, expiry_date,
-            type, competency_type,
-            accreditation_num,
-            certificate_num,
-            course,
-            training,
-            doc
-        } = form.data;
-
-        const data = {};
-
-        if (!embeddedEmployee) {
-            ShouldUpdate.checkEmployee(data, old_data, employee, 'employee_id');
-        }
-        ShouldUpdate.checkDate(data, old_data, issued_date, 'issued_date');
-        ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
-        ShouldUpdate.check(data, old_data, type, 'type');
-        ShouldUpdate.check(data, old_data, competency_type, 'competency_type');
-        ShouldUpdate.check(data, old_data, accreditation_num, 'accreditation_num');
-        ShouldUpdate.check(data, old_data, certificate_num, 'certificate_num');
-        ShouldUpdate.checkCourseOrModule(data, old_data, course, 'course_id');
-        ShouldUpdate.checkTrainingMatrix(data, old_data, training, 'training_id');
-        ShouldUpdate.checkFile(data, old_data, doc, 'doc');
-
-        if (Object.keys(data).isEmpty()) {
-            infoDialog.open("Nothing changed!");
-            return;
-        }
-
-        console.log(data)
-
-        btn.text("Saving...").disabled();
-        progressDialog.open();
-        updateEmployeeCompetency({id: this.item.id, ...data}).then(res => {
-            console.log("res", res)
-            onSaved && onSaved(res);
-            infoDialog.open("Record successfully updated.");
-            infoDialog.close(2000);
-            this.props.close();
-        }).finally(() => {
-            btn.text("Save").enabled();
-            setTimeout(() => progressDialog.close());
-        });
+        console.log("res", form.data)
+        onSaved && onSaved(form.data);
+        infoDialog.open("Record added.");
+        infoDialog.close(2000);
+        this.props.close();
     }
 
     // <editor-fold defaultstate="collapsed" desc="render">
@@ -241,6 +299,23 @@ class Controls extends React.Component {
             },
         } = this;
         return <FormControls>
+            {!isNewEmployee && !embeddedEmployee && <Row
+                rendered
+                active
+                idx={1}
+                title="1. Employee"
+                onFormOpen={onFormOpen}
+                onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
+            >
+                <SelectEmployeeInput
+                    name="employee"
+                    placeholder="Employee..."
+                    defaultValue={employee}
+                    className="col-lg-12 form-control"
+                    onChange={this.form.onChange}
+                />
+            </Row>}
             <Row
                 rendered
                 active
@@ -248,10 +323,8 @@ class Controls extends React.Component {
                 title="1. Competency Details"
                 onFormOpen={onFormOpen}
                 onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
-                {!isNewEmployee && !embeddedEmployee &&
-                    <SelectEmployeeInput name="employee" placeholder="Employee..." defaultValue={employee}
-                                         className="col-lg-12 form-control" onChange={this.form.onChange}/>}
                 <ClearableInput name="issued_date" type="date" placeholder="Date Of Issue..." defaultValue={issued_date}
                                 required className="col-lg-6 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." defaultValue={expiry_date}
@@ -279,6 +352,7 @@ class Controls extends React.Component {
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
                 onFormNext={onFormNext}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <SelectTrainingCourseInput name="course" defaultValue={course} required
                                            className="col-lg-12 form-control"
@@ -294,6 +368,7 @@ class Controls extends React.Component {
                 title="3. Certificate Details"
                 onFormOpen={onFormOpen}
                 onFormBack={onFormBack}
+                onFormSave={!isNewEmployee && this.onFormSave}
             >
                 <UploadButton
                     name="doc"

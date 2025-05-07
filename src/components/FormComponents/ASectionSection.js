@@ -59,14 +59,21 @@ class ASectionSection extends React.Component {
 
     //</editor-fold>
 
+    //<editor-fold desc="listKey">
+    @computed get listKey() {
+        return this.listName || this.listNameAlt;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="list">
     @computed get list() {
         if (this.isNewEmployee) {
             return this.state.newList;
         }
 
-        const {itemData, listName} = this;
-        const {[listName]: list} = itemData || {};
+        const {itemData, listKey} = this;
+        const {[listKey]: list} = itemData || {};
         return list || [];
     }
 
@@ -91,8 +98,8 @@ class ASectionSection extends React.Component {
         const {formData, defaultValue} = this.props;
         console.log('ASectionSection', formData);
         if (this.isNewEmployee) {
-            if (defaultValue || (formData && formData[this.listName])) {
-                this.state.newList = defaultValue || formData[this.listName];
+            if (defaultValue || (formData && formData[this.listKey])) {
+                this.state.newList = defaultValue || formData[this.listKey];
             }
         }
     }

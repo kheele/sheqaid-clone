@@ -240,31 +240,31 @@ class Controls extends React.Component {
                 <FormControls>
                     <Row
                         rendered
-                        activeAways
-                        idx={4.1}
+                        activeAlways
+                        idx={3.1}
                         title={`${idx}.1. Proof Of Sick Note Attachment`}
                     >
                         <UploadButton
                             name="doc"
-                            buttonTitle='Upload File (PDF, Word, Photo)'
-                            type={['PDF', 'Word', 'Image']}
+                            buttonTitle="Upload File (PDF, Image)"
+                            type={['PDF', 'Image']}
                             showOnlyIcon
-                            className="margin-t-0 margin-b-10 col-lg-12"
+                            className="col-lg-12"
                             onChange={this.form.onChange}
                         />
                     </Row>
                     <Row
                         rendered
-                        activeAways
-                        idx={4.2}
+                        activeAlways
+                        idx={3.2}
                         title={`${idx}.2. Certificate Of Fitness Attachment`}
                     >
                         <UploadButton
                             name="doc_fitness_certificate"
-                            buttonTitle='Upload File (PDF, Word, Photo)'
-                            type={['PDF', 'Word', 'Image']}
+                            buttonTitle="Upload File (PDF, Image)"
+                            type={['PDF', 'Image']}
                             showOnlyIcon
-                            className="margin-t-0 margin-b-10 col-lg-12"
+                            className="col-lg-12"
                             onChange={this.form.onChange}
                         />
                     </Row>

@@ -177,8 +177,6 @@ class Controls extends React.Component {
                 activeAlways
                 idx={1}
                 title="1. Document Details"
-                onFormOpen={onFormOpen}
-                onFormNext={onFormNext}
             >
                 {/*<ClearableInput name="type" type="select" placeholder="Document Type..."*/}
                 {/*                defaultValue={type || type__} className="col-lg-6 form-control"*/}
