@@ -20,6 +20,8 @@ class AwaitingPaymentTab extends ActiveTab {
     constructor(props) {
         super(props);
 
+        this.state.view = "Expense";
+
         this.updateStatus = this.updateStatus.bind(this);
         this.onPayOut = this.onPayOut.bind(this);
         this.onReject = this.onReject.bind(this);

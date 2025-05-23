@@ -39,9 +39,9 @@ class ProfileDialog extends AProfileDialog {
         return "Competency Certificates";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 }
 
 //</editor-fold>
@@ -89,7 +89,9 @@ class Controls extends AEmployeeDocControls {
             doc
         } = item.data || item;
 
-        const courseName = course ? course.name : training && training.course && training.course.name || null;
+        const courseName = course ?
+            course.name || course.data.name :
+            training && training.course && training.course.name || null;
 
         return <div className="row item-wrapper padding-t-10 h-full">
             <div className="row margin-l-10 margin-r-10 row-details">

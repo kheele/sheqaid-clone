@@ -39,9 +39,9 @@ class ProfileDialog extends AProfileDialog {
         return "PrDPs";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 }
 
 //</editor-fold>

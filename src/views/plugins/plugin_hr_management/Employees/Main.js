@@ -39,6 +39,8 @@ import ComplianceRequirementsDialog from "./dialogs/ComplianceRequirementsDialog
 import ApplicableRegulationsDialog from "./dialogs/ApplicableRegulationsDialog";
 import JobTaskDialog from "../other_modules/Tasks/JobTaskDialog";
 import {exportExcelEmployees} from "mutations/exportExcel";
+import {AttendanceDialog} from "../other_modules/Attendances";
+import {PPEDialog} from "../other_modules/PPE";
 
 // </editor-fold>
 
@@ -129,32 +131,32 @@ class Main extends APage {
         return [
             {key: 'Competencies', listName: 'competency_list', text: 'Competencies', Comp: CompetenciesDialog},
             {key: 'Contracts', listName: 'contract_list', text: 'Contracts', Comp: ContractsDialog},
-            {key: 'Counseling', listName: 'counselling_list', text: 'Counseling', Comp: CounselingsDialog},
             {
                 key: 'Job Appointments',
                 listName: 'job_appointment_list',
                 text: 'Job Appointments',
                 Comp: JobAppointmentsDialog,
             },
+            {key: 'Counseling', listName: 'counselling_list', text: 'Counseling', Comp: CounselingsDialog},
+            {key: 'Warnings', listName: 'warning_list', text: 'Warnings', Comp: WarningsDialog},
             // --{
             //     key: 'PlannedJobObservations',
             //     listName: 'job_observation_list',
             //     text: 'Job Observations',
             //     Comp: PlannedJobObservationsDialog,
             // },
-            {key: 'Leaves', listName: 'leave_list', text: 'Time-off', Comp: LeavesDialog},
             {key: 'Medicals', listName: 'medical_list', text: 'Medical Fitness', Comp: MedicalsDialog},
-            {key: 'Warnings', listName: 'warning_list', text: 'Warnings', Comp: WarningsDialog},
+            {key: 'Leaves', listName: 'leave_list', text: 'Time-off', Comp: LeavesDialog},
             {key: 'Expenses', listName: 'expense_list', text: 'Expenses', Comp: ExpensesDialog},
-            {key: 'HRDocs', text: 'Documents', Comp: HRDocsDialog, noExpiry: true, override: true},
 
-            // --{key: 'Attendances', listName: '', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
+            {key: 'Attendances', text: 'Attendance', Comp: AttendanceDialog, noExpiry: true},
             // {key: 'Contacts', listName: '', text: 'Contacts', Comp: ContactsDialog, noExpiry: true},
             // {key: 'KPI', listName: '', text: 'KPI', Comp: KPIDialog, noExpiry: true},
             // {key: 'Meetings', listName: '', text: 'Meetings', Comp: MeetingsDialog, noExpiry: true},
-            // --{key: 'PPE', listName: '', text: 'PPE', Comp: PPEDialog, noExpiry: true},
+            {key: 'PPE', text: 'PPE', Comp: PPEDialog, noExpiry: true},
             {key: 'Tasks', listName: '', text: 'Job Tasks', Comp: JobTaskDialog, noExpiry: true},
-            // {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true}
+            // {key: 'Trainings', listName: '', text: 'Training', Comp: TrainingDialog, noExpiry: true},
+            {key: 'HRDocs', text: 'Documents', Comp: HRDocsDialog, noExpiry: true, override: true},
         ].map(({key, text, listName, onFilter, Comp, titleBG, noExpiry, override}) => {
             const id = key.toLowerCase().replaceAll(" ", "-");
             const c = Permissions.allowMod(key) || override ? "allowed" : "disallowed";

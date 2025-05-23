@@ -12,7 +12,7 @@ import {Button} from '../inputs';
 import ErrorBoundary from '../ErrorBoundary';
 
 import * as Utils from 'utils/Utils';
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 // Create styles
 const styles = StyleSheet.create({

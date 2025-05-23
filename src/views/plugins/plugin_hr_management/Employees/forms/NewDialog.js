@@ -13,12 +13,9 @@ import {ANewDialog} from 'components/dialogs';
 
 import OptionalInfoSection from './EditOptionalInfoSection';
 import DocumentsSection from './EditDocumentsSection';
-import CounselingSection from "./EditCounselingSection";
-import WarningSection from "./EditWarningSection";
-import TimeOffSection from "./EditTimeoffSection";
 
 import style from "./NewDialog.lazy.css";
-import {insertEmployee} from "mutations/create";
+import {insertEmployee} from "mutations/createWithCustomArgs";
 // import JobAppointmentsTab from "./ViewJobAppointmentsTab";
 // import ViewNotificationSettingsTab from "./ViewNotificationSettingsTab";
 // </editor-fold>
@@ -59,26 +56,29 @@ class Controls extends React.Component {
     };
     components = [
         {title: 'Employment Info', comp: OptionalInfoSection, ref: "optionalInfoSection"},
-        {title: 'Documents', comp: DocumentsSection, ref: "documentsSection"},
-        {
-            title: 'Counseling',
-            comp: CounselingSection,
-            ref: "counselingSection",
-            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
-        },
-        {
-            title: 'Warnings',
-            comp: WarningSection,
-            ref: "warningSection",
-            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
-        },
-        {
-            title: 'Time-off',
-            comp: TimeOffSection,
-            ref: "timeOffSection",
-            sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20",
-            isLast: true
-        },
+        {title: 'Documents', comp: DocumentsSection, ref: "documentsSection", isLast: true},
+        //NB: Saved separately
+        // {
+        //     title: 'Counseling',
+        //     comp: CounselingSection,
+        //     ref: "counselingSection",
+        //     sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        // },
+        //NB: Saved separately
+        // {
+        //     title: 'Warnings',
+        //     comp: WarningSection,
+        //     ref: "warningSection",
+        //     sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
+        // },
+        //NB: Saved separately
+        // {
+        //     title: 'Time-off',
+        //     comp: TimeOffSection,
+        //     ref: "timeOffSection",
+        //     sectionClassName: "-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20",
+        //     isLast: true
+        // },
         // {title: 'Job Appointment', comp: JobAppointmentsTab, ref: "jobAppointmentsSection"},
         // {
         //     title: 'Trainings',
@@ -162,10 +162,6 @@ class Controls extends React.Component {
             refs: {
                 optionalInfoSection,
                 documentsSection,
-                counselingSection,
-                warningSection,
-                timeOffSection,
-                specificComplianceRequirementsSection
             }
         } = this;
 
@@ -210,9 +206,6 @@ class Controls extends React.Component {
             formData: {...form.data, phone},
             optionalInfoFormData: optionalInfoSection.formData,
             documentsFormData: documentsSection.formData,
-            counselingFormData: counselingSection.formData,
-            warningFormData: warningSection.formData,
-            timeOffFormData: timeOffSection.formData,
         };
 
         // console.log(data)

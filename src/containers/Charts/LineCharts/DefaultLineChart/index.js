@@ -20,7 +20,7 @@ import configs from "containers/Charts/LineCharts/DefaultLineChart/configs";
 // Material Dashboard 2 React base styles
 import colors from "assets/theme/base/colors";
 
-function DefaultLineChart({color, description, chart, height, sx, icon, title}) {
+function DefaultLineChart({color, background, description, chart, height, sx, icon, title}) {
     const chartDatasets = chart.datasets
         ? chart.datasets.map((dataset) => ({
             ...dataset,
@@ -42,7 +42,9 @@ function DefaultLineChart({color, description, chart, height, sx, icon, title}) 
     const {data, options} = configs(chart.labels || [], chartDatasets);
 
     return (
-        <Card sx={{...(sx || {}), height}}>
+        <Card
+            sx={{...(sx || {}), height, background, padding: color ? 0 : '16px'}}
+        >
             <MDBox
                 sx={{
                     pr: "0px !important",
@@ -52,24 +54,26 @@ function DefaultLineChart({color, description, chart, height, sx, icon, title}) 
             >
                 <MDBox className="flex w-full h-full">
                     <MDBox className="grid-1 gap-20 h-full">
-                        {useMemo(
-                            () => (
-                                <MDBox
-                                    className="ReportsLineChart-Line-Chart-Box"
-                                    variant="gradient"
-                                    bgColor={color}
-                                    borderRadius="lg"
-                                    coloredShadow={color}
-                                    pt='10px'
-                                    pb='50px'
-                                    pr={0.5}
-                                    height="100%"
-                                >
-                                    <Line data={data} options={options}/>
-                                </MDBox>
-                            ),
-                            [chart, color]
-                        )}
+                        {title && title.isNotEmpty() && <MDBox
+                            display="flex"
+                            justifyContent="center"
+                        >
+                            <MDBox sx={{
+                                m: '0px 20px 10px',
+                                pb: '10px',
+                                width: '100%',
+                                borderBottom: '2px dotted rgba(238, 238, 238, 0.2)',
+                                display: "flex",
+                                justifyContent: "center",
+                            }}>
+                                <MDTypography variant="h5" color="white" sx={{
+                                    fontSize: '2rem',
+                                    fontWeight: '300',
+                                    lineHeight: '1.5',
+                                }}>{title}</MDTypography>
+                            </MDBox>
+                        </MDBox>}
+                        <BarMemo chart={chart} color={color} data={data} options={options}/>
                         {description && <MDBox pt="10px" sx={{
                             m: '-50px 20px 0',
                             borderTop: '2px dotted rgba(238, 238, 238, 0.2)',
@@ -86,6 +90,34 @@ function DefaultLineChart({color, description, chart, height, sx, icon, title}) 
             </MDBox>
         </Card>
     );
+}
+
+function BarMemo({chart, color, data, options}) {
+    const props = {};
+    if (color) {
+        props.bgColor = color;
+        props.coloredShadow = color;
+        props.variant = "gradient";
+    }
+    return <>
+        {useMemo(
+            () => (
+                <MDBox
+                    className="ReportsLineChart-Line-Chart-Box"
+                    borderRadius="lg"
+                    {...props}
+                    pt='10px'
+                    pb='50px'
+                    pr={0.5}
+                    height="100%"
+                    sx={{minHeight: "100%"}}
+                >
+                    <Line data={data} options={options}/>
+                </MDBox>
+            ),
+            [chart, props]
+        )}
+    </>;
 }
 
 // Setting default values for the props of DefaultLineChart

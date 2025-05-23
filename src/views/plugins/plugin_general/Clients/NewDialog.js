@@ -92,27 +92,12 @@ class Controls extends React.Component {
             sector_list,
         } = form.data;
         console.log('sector_list', sector_list)
-        const data = {
-            name,
-            business_id,
-            phone,
-            email,
-            contractor_email,
-            address,
-            profile_pic: profile_pic && profile_pic.path,
-            sector_list: {
-                data: (sector_list || []).map(({id: sector_id, value}) => ({
-                    sector_id,
-                    name,
-                }))
-            }
-        };
 
-        console.log(data)
+        console.log(form.data)
 
         btn.text("Saving...").disabled();
         progressDialog.open();
-        insertClient(data).then(res => {
+        insertClient(form.data).then(res => {
             console.log("res", res)
             if (res === "DUP_CONTRACTOR_EMAIL") {
                 infoDialog.open("Another company is already using the Contractor Email Address provided.");

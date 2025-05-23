@@ -57,9 +57,13 @@ export const listEmployeeContract = listByLogged("employees/docs/contracts");
 export const listEmployeeCounselling = listByLogged("employees/docs/counsellings");
 export const listEmployeeExpense = listByLogged("employees/docs/expenses");
 export const listEmployeeJobAppointment = listByLogged("structure-and-responsibility/job-appointments");
-export const listEmployeeLeave = listByLogged("employees/docs/leaves");
 export const listEmployeeMedical = listByLogged("employees/docs/medicals");
 export const listEmployeeWarning = listByLogged("employees/docs/warnings");
+
+export const listEmployeeLeave = listByLogged("employees/docs/leaves");
+export const listEmployeeLeaveTypes = listByLogged("employees/docs/leaves/types");
+export const listEmployeeLeavePolicies = listByLogged("employees/docs/leaves/policies");
+export const listEmployeeLeaveAllocations = listByLogged("employees/docs/leaves/allocations");
 
 export const listEmployeeLicense = listByLogged("employees/docs/licenses");
 export const listEmployeePrDP = listByLogged("employees/documents/prdp");

@@ -27,7 +27,7 @@ import ASelectInput from './ASelectInput';
 import ErrorBoundary from '../ErrorBoundary';
 
 import style from "./ClearableInput.lazy.css";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 // </editor-fold>
 

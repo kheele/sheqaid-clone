@@ -10,7 +10,7 @@ import {NavigateTop} from '../';
 import {Button} from '../inputs';
 
 import * as Utils from '../../utils/Utils';
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 @observer
 class TBody extends React.Component {

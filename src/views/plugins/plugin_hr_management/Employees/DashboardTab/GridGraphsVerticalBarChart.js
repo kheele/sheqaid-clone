@@ -193,6 +193,7 @@ const Comp = forwardRef((
 
     const keys = Object.keys(data);
     list = list.filter(({listName, onFilter}) => {
+        if (!listName || listName.startsWith("leave_list")) return false;
         // if(onFilter) return keys.anyMatch(onFilter);
         return keys.anyMatch(k => k.startsWith(listName));
     });

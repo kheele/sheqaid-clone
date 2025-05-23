@@ -18,6 +18,9 @@ class UnsubmittedTab extends ActiveTab {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+
+        this.state.view = "Expense";
+
         this.onSubmit = this.onSubmit.bind(this);
     }
 

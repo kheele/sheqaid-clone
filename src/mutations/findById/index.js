@@ -86,9 +86,12 @@ export const findByIdEmployeeContract = findById("employees/docs/contracts");
 export const findByIdEmployeeCounselling = findById("employees/docs/counsellings");
 export const findByIdEmployeeExpense = findById("employees/docs/expenses");
 export const findByIdEmployeeJobAppointment = findById("structure-and-responsibility/job-appointments");
-export const findByIdEmployeeLeave = findById("employees/docs/leaves");
 export const findByIdEmployeeMedical = findById("employees/docs/medicals");
 export const findByIdEmployeeWarning = findById("employees/docs/warnings");
+export const findByIdEmployeeLeave = findById("employees/docs/leaves");
+export const findByIdEmployeeLeaveType = findById("employees/docs/leaves/types");
+export const findByIdEmployeeLeavePolicy = findById("employees/docs/leaves/policies");
+export const findByIdEmployeeLeaveAllocation = findById("employees/docs/leaves/allocations");
 
 export const findByIdEmployeeLicense = findById("employees/docs/licenses");
 export const findByIdEmployeeWorkPermit = findById("employees/docs/work-permits");

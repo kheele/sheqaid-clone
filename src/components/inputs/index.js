@@ -38,6 +38,7 @@ import SelectSDSProductInput from "./SelectSDSProductInput";
 import SelectHazchemSheetInput from "./SelectHazchemSheetInput";
 import SelectPartInput from "./SelectPartInput";
 import SelectAssetInput from "./SelectAssetInput";
+import SelectLeaveTypeInput from "./SelectLeaveTypeInput";
 import SelectAssetTypeInput from "./SelectAssetTypeInput";
 import SelectTrainingCourseInput from "./SelectTrainingCourseInput";
 import SelectTrainingMatixInput from "./SelectTrainingMatixInput";
@@ -124,6 +125,7 @@ export {
     SelectPartInput,
     SelectAssetTypeInput,
     SelectAssetInput,
+    SelectLeaveTypeInput,
     SelectChemicalProductInput,
     SelectSDSProductInput,
     SelectHazchemSheetInput,

@@ -157,6 +157,7 @@ class Controls extends React.Component {
             }
 
             const {
+                follow_up_date,
                 expiry_date,
                 annexture_3,
                 fitness_option,
@@ -166,6 +167,7 @@ class Controls extends React.Component {
 
             const data = {};
 
+            ShouldUpdate.checkDate(data, old_data, follow_up_date, 'follow_up_date');
             ShouldUpdate.checkDate(data, old_data, expiry_date, 'expiry_date');
             ShouldUpdate.check(data, old_data, annexture_3, 'annexture_3');
             ShouldUpdate.check(data, old_data, fitness_option, 'fitness_option');
@@ -239,7 +241,15 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, expiry_date, annexture_3, fitness_option, restrictions, annexture3_doc, doc, employee
+                    created_at,
+                    expiry_date,
+                    follow_up_date,
+                    annexture_3,
+                    fitness_option,
+                    restrictions,
+                    annexture3_doc,
+                    doc,
+                    employee
                 }
             }
         } = this;
@@ -275,6 +285,9 @@ class Controls extends React.Component {
             >
                 <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
                                 defaultValue={expiry_date}
+                                required className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="follow_up_date" type="date" placeholder="Follow-up Date..."
+                                defaultValue={follow_up_date}
                                 required className="col-lg-12 form-control" onChange={this.form.onChange}/>
                 <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?"
                                 defaultValue={annexture_3}

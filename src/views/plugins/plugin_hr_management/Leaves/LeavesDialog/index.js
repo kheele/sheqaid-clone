@@ -20,6 +20,9 @@ import {findByIdOrgLeavesDashboardStatsByLogged} from "mutations/employeeOrgDash
 import {findByIdOrgLeavesDateRangeDashboardStatsByLogged} from "mutations/employeeOrgDateRangeDashboard";
 import {exportExcelEmployeeLeaves} from "mutations/exportExcel";
 import {listEmployeeLeave} from "../../../../../mutations/listByLogged";
+import LeaveAllocationsDialog from "../LeaveAllocationsDialog";
+import LeavePoliciesDialog from "../LeavePoliciesDialog";
+import LeaveTypesDialog from "../LeaveTypesDialog";
 
 // </editor-fold>
 
@@ -52,6 +55,10 @@ class Dialog extends AEmployeeDocDialog {
         super(props);
 
         this.onRequestTimeOff = this.onRequestTimeOff.bind(this);
+
+        this.onViewLeaveTypes = this.onViewLeaveTypes.bind(this);
+        this.onViewLeavePolicies = this.onViewLeavePolicies.bind(this);
+        this.onViewLeaveAllocations = this.onViewLeaveAllocations.bind(this);
     }
 
     // </editor-fold>
@@ -64,6 +71,29 @@ class Dialog extends AEmployeeDocDialog {
             >
                 Request Time-off
             </Button>
+            <Button
+                className="btn btn-primary pull-right btn-remove padding-h-15 margin-r-5"
+                onClick={this.onViewLeaveTypes}
+            >
+                Leave Types
+            </Button>
+            <Button
+                className="btn btn-primary pull-right btn-remove padding-h-15 margin-r-5"
+                onClick={this.onViewLeavePolicies}
+            >
+                Leave Policies
+            </Button>
+            <Button
+                className="btn btn-primary pull-right btn-remove padding-h-15 margin-r-5"
+                onClick={this.onViewLeaveAllocations}
+            >
+                Leave Allocations
+            </Button>
+
+            <LeaveTypesDialog ref="leaveTypesDialog"/>
+            <LeavePoliciesDialog ref="leavePoliciesDialog"/>
+            <LeaveAllocationsDialog ref="leaveAllocationsDialog"/>
+
             <NewDialog ref="newDialog" isSelfRequest/>
             <ProfileUserDialog ref="profileUserDialog" EditDialog={EditUserDialog}
                                NewEmployeeDialog={NewEmployeeDialog}/>
@@ -89,6 +119,18 @@ class Dialog extends AEmployeeDocDialog {
             }
             this.refs.newDialog.open({id: linked_employee_id});
         }
+    }
+
+    onViewLeaveTypes(evt, btn) {
+        this.refs.leaveTypesDialog.open();
+    }
+
+    onViewLeavePolicies(evt, btn) {
+        this.refs.leavePoliciesDialog.open();
+    }
+
+    onViewLeaveAllocations(evt, btn) {
+        this.refs.leaveAllocationsDialog.open();
     }
 
     //</editor-fold>

@@ -18,6 +18,12 @@
     border: none;
 }
 
+#dialog-overlay.LeavesDialog-dialog .tabs #DashboardTab > .page-title {
+    position: absolute;
+    top: -91px;
+    right: 5px;
+}
+
 #LeavesDialog-page > .table {
     width: 100%;
     height: calc(100% - 50px) !important;

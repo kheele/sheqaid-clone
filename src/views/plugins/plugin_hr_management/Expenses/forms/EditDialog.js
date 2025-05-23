@@ -226,7 +226,7 @@ class Controls extends React.Component {
             const data = {};
 
             ShouldUpdate.check(data, old_data, category, 'category');
-            ShouldUpdate.check(data, old_data, currency_country, 'currency_country');
+            ShouldUpdate.checkCountry(data, old_data, currency_country, 'currency_country_id');
             ShouldUpdate.check(data, old_data, paid_with, 'paid_with');
             ShouldUpdate.checkDate(data, old_data, date, 'date');
             ShouldUpdate.check(data, old_data, amount, 'amount');

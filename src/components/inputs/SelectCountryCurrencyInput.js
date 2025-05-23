@@ -1,5 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
+import Chip from "@material-ui/core/Chip";
 import {computed, observable} from 'mobx';
 
 import {ClearableInput} from './';
@@ -40,9 +41,13 @@ class SelectInput extends ASelectInput {
                 defaultValue = defCountry.value;
             }
             let {name, phone_code, iso2, currency, currency_name, currency_symbol,} = defaultValue.data || defaultValue;
-            const label = <div className="SelectCountryCodeInput-label flex flex-left">
-                <span className="flex flex-left font-size-16">({currency_name})</span>
+            const label = <div className="SelectCountryCodeInput-label flex flex-left w-full">
                 <img src={getFlag(iso2)} className="fixed-flex min-w-30 margin-r-10"/>
+                <Chip
+                    label={currency}
+                    size="small"
+                    className="flex flex-left fixed-flex margin-r-10"
+                />
                 <span className="flex flex-left font-size-16">{name}</span>
             </div>;
             return {value: {...defaultValue}, label};
@@ -87,9 +92,13 @@ class SelectInput extends ASelectInput {
         const {label, value} = option;
         let {data: {name, phone_code, iso2, currency, currency_name, currency_symbol,}} = value;
         return {
-            label: <div className="SelectCountryCodeInput-label flex flex-left max-w-300">
-                <span className="flex flex-left font-size-16">({currency_name})</span>
+            label: <div className="SelectCountryCodeInput-label flex flex-left w-full">
                 <img src={getFlag(iso2)} className="fixed-flex min-w-30 margin-r-10"/>
+                <Chip
+                    label={currency}
+                    size="small"
+                    className="flex flex-left fixed-flex margin-r-10"
+                />
                 <span className="flex flex-left font-size-16">{name}</span>
             </div>,
             value
@@ -99,9 +108,13 @@ class SelectInput extends ASelectInput {
     renderer(option) {
         const {label, value} = option;
         const {data: {name, phone_code, iso2, currency, currency_name, currency_symbol,}} = value;
-        return <div className="SelectCountryCodeInput-label flex flex-left max-w-300">
-            <span className="flex flex-left font-size-16">({currency_name})</span>
+        return <div className="SelectCountryCodeInput-label flex flex-left w-full">
             <img src={getFlag(iso2)} className="fixed-flex min-w-30 margin-r-10"/>
+            <Chip
+                label={currency}
+                size="small"
+                className="flex flex-left fixed-flex margin-r-10"
+            />
             <span className="flex flex-left font-size-16">{name}</span>
         </div>;
     }

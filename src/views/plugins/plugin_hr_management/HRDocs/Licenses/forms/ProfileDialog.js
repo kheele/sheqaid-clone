@@ -37,9 +37,9 @@ class ProfileDialog extends AProfileDialog {
         return "Licenses";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 }
 
 //</editor-fold>

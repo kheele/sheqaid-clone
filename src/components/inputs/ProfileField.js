@@ -11,7 +11,7 @@ import PDFUploadButton from './PDFUploadButton.js';
 import ErrorBoundary from '../ErrorBoundary';
 
 import style from "./ProfileField.lazy.css";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 @observer
 class ProfileField extends React.Component {

@@ -356,7 +356,7 @@ class Controls extends React.Component {
 
                 let data = {};
 
-                const {contract_details_list} = old_data;
+                const {contract_details: contract_details_list} = old_data;
                 const [old_contract_details] = contract_details_list || [];
 
                 if (old_contract_details) {
@@ -416,7 +416,7 @@ class Controls extends React.Component {
 
                 let data = {};
 
-                const {salary_info_list} = old_data;
+                const {salary_info: salary_info_list} = old_data;
                 let [old_salary_info] = salary_info_list || [];
 
                 if (old_salary_info) {
@@ -425,7 +425,7 @@ class Controls extends React.Component {
                     ShouldUpdate.check(data, old_salary_info, salary, 'salary');
                     ShouldUpdate.check(data, old_salary_info, wage, 'wage');
 //            {list: toJS(list), total}
-                    const old_deductible_list = old_salary_info.salary_info_list || [];
+                    const old_deductible_list = old_salary_info.deductible_list || [];
                     old_deductible_list.sort();
                     const deductible_list = deductible ? deductible.list.filter(v => !!v && !!v.text && !!v.value) : [];
                     deductible_list.sort();
@@ -507,17 +507,17 @@ class Controls extends React.Component {
 
         const salary_info = toNoneNullObject(salaryInfoTab.form.data);
         if (salary_info) {//payment_type,
-            if (!contractDetailsTab.form.isValid('payment_type')) {
+            if (!salaryInfoTab.form.isValid('payment_type')) {
                 infoDialog.open('Payment Type is required');
                 return;
             }
-            if (contractDetailsTab.form.get('payment_type') === 'Salary') {
-                if (!contractDetailsTab.form.isValid('salary_interval')) {
+            if (salaryInfoTab.form.get('payment_type') === 'Salary') {
+                if (!salaryInfoTab.form.isValid('salary_interval')) {
                     infoDialog.open('Salary Interval is required');
                     return;
                 }
             } else {//Wage
-                //                if (!contractDetailsTab.form.isValid('wage')) {
+                //                if (!salaryInfoTab.form.isValid('wage')) {
                 //                    infoDialog.open('Wage Type is required');
                 //                    return;
                 //                }
@@ -558,15 +558,20 @@ class Controls extends React.Component {
             },
             item, item: {
                 id, data: {
-                    created_at, employee, contract_details_list, salary_info_list, doc, job_profile_doc
+                    created_at,
+                    employee,
+                    contract_details: contract_details_list = [], contractDetailsFormData,
+                    salary_info: salary_info_list = [], salaryInfoFormData,
+                    doc,
+                    job_profile_doc,
                 }
             }
         } = this;
 
         console.log('Contract', item);
 
-        const [contract_details] = contract_details_list || [];
-        const [salary_info] = salary_info_list || [];
+        const contract_details = contractDetailsFormData || (contract_details_list && contract_details_list[0]);
+        const salary_info = salaryInfoFormData || (salary_info_list && salary_info_list[0]);
 
         let idx = !isNewEmployee && !embeddedEmployee ? 1 : 0;
         return (<FormControls>
@@ -597,8 +602,11 @@ class Controls extends React.Component {
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
                 onFormSave={!isNewEmployee && this.onFormSave}
             >
-                <ContractDetails ref="contractDetailsTab" defaultValue={contract_details}
-                                 embeddedEmployee={embeddedEmployee}/>
+                <ContractDetails
+                    ref="contractDetailsTab"
+                    defaultValue={contract_details}
+                    embeddedEmployee={embeddedEmployee}
+                />
             </Row>
             <Row
                 rendered

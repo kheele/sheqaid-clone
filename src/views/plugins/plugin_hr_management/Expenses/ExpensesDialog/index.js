@@ -177,7 +177,7 @@ class Dialog extends AEmployeeDocDialog {
                 <div className="td fixed-flex min-w-120">Date</div>
                 {isCompleted && <div className="td fixed-flex min-w-120">Date Paid</div>}
                 <div className="td fixed-flex min-w-140">Amount</div>
-                <div className="td fixed-flex min-w-200">Currency</div>
+                <div className="td fixed-flex min-w-160">Currency</div>
                 <div className="td fixed-flex min-w-160">Paid With</div>
                 <div className="td">Category</div>
                 <div className="td fixed-flex min-w-260">Attachment</div>

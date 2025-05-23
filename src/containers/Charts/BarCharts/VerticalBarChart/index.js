@@ -72,53 +72,60 @@ function VerticalBarChart(
     const {data, options} = configs(chart.labels || [], chartDatasets, chart.displayLegend, tickColor);
 
     const renderChart = (<MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
-        {title || description ? (
-            <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0} justifyContent="center">
-                {icon.component && (<MDBox
-                    width="4rem"
-                    height="4rem"
-                    bgColor={icon.color || "info"}
-                    variant="gradient"
-                    coloredShadow={icon.color || "info"}
-                    borderRadius="xl"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    color="white"
-                    mt={-5}
-                    mr={2}
-                >
-                    <Icon fontSize="medium">{icon.component}</Icon>
-                </MDBox>)}
-                <MDBox sx={{
-                    m: '0px 20px 10px',
-                    pb: '10px',
-                    width: '100%',
-                    borderBottom: '2px dotted rgba(238, 238, 238, 0.2)',
-                    display: "flex",
-                    justifyContent: "center",
-                }}>
-                    {title && title.isNotEmpty() &&
-                        <MDTypography variant="h5" sx={{
-                            color,
-                            fontSize: '2rem',
-                            fontWeight: '300',
-                            lineHeight: '1.5',
-                        }}>{title}</MDTypography>}
-                    {description && <MDBox mb={2}>
-                        <MDTypography component="div" variant="button" color="text">
-                            {description}
-                        </MDTypography>
-                    </MDBox>}
-                </MDBox>
-            </MDBox>) : null
-        }
+        {title && title.isNotEmpty() && <MDBox display="flex" justifyContent="center">
+            {icon.component && (<MDBox
+                width="4rem"
+                height="4rem"
+                bgColor={icon.color || "info"}
+                variant="gradient"
+                coloredShadow={icon.color || "info"}
+                borderRadius="xl"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                color="white"
+                mt={-5}
+                mr={2}
+            >
+                <Icon fontSize="medium">{icon.component}</Icon>
+            </MDBox>)}
+            <MDBox sx={{
+                m: '0px 20px 10px',
+                pb: '10px',
+                width: '100%',
+                borderBottom: '2px dotted rgba(238, 238, 238, 0.2)',
+                display: "flex",
+                justifyContent: "center",
+            }}>
+                <MDTypography variant="h5" sx={{
+                    color,
+                    fontSize: '2rem',
+                    fontWeight: '300',
+                    lineHeight: '1.5',
+                }}>{title}</MDTypography>
+            </MDBox>
+        </MDBox>}
         <BarMemo chart={chart} height={height} width={width} data={data} options={options}/>
+        {description && <MDBox display="flex" px={1} pt={1} justifyContent="center">
+            <MDBox sx={{
+                m: '0px 20px 10px',
+                pb: '10px',
+                width: '100%',
+                borderBottom: '2px dotted rgba(238, 238, 238, 0.2)',
+                display: "flex",
+                justifyContent: "center",
+            }}>
+                <MDBox mb={2}>
+                    <MDTypography component="div" variant="button" color="text">
+                        {description}
+                    </MDTypography>
+                </MDBox>
+            </MDBox>
+        </MDBox>}
     </MDBox>);
 
     return title || description ? <Card sx={{width, ...sx, background}}>{renderChart}</Card> : renderChart;
 }
-
 
 function BarMemo({chart, width, height, data, options}) {
     return <>

@@ -157,9 +157,11 @@ class Controls extends React.Component {
                 onFormNext={onFormNext}
                 onFormBack={!isNewEmployee && !embeddedEmployee && onFormBack}
             >
-                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..." required
+                <ClearableInput name="expiry_date" type="date" placeholder="Expiry Date..."
                                 className="col-lg-12 form-control" onChange={this.form.onChange}/>
-                <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?" required
+                <ClearableInput name="follow_up_date" type="date" placeholder="Follow-up Date..."
+                                className="col-lg-12 form-control" onChange={this.form.onChange}/>
+                <ClearableInput name="annexture_3" type="radio" placeholder="Annexture 3?"
                                 className="col-lg-12 form-control" onChange={this.form.onChange}
                                 values={this.state.lists.annexture_3}/>
                 <ClearableInput name="fitness_option" type="radio" placeholder="Fitness"

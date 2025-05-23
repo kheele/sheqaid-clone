@@ -38,9 +38,10 @@ class ProfileDialog extends AProfileDialog {
         return "Medical Fitness Certificates";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    //
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }//
 }
 
 //</editor-fold>
@@ -80,6 +81,7 @@ class Controls extends AEmployeeDocControls {
         } = this;
         const {
             created_at,
+            follow_up_date,
             annexture_3,
             fitness_option,
             restrictions,
@@ -92,6 +94,8 @@ class Controls extends AEmployeeDocControls {
             <label className="w-full margin-l-10 margin-r-10 margin-b-0 text-center">Medical Fitness Details</label>
             <div className="row margin-l-10 margin-r-10 row-details">
                 <ProfileField title="Expiry Date" name="expiry_date" type="date" value={expiry_date}
+                              className="col-lg-12"/>
+                <ProfileField title="Follow-up Date" name="follow_up_date" type="date" value={follow_up_date}
                               className="col-lg-12"/>
                 <ProfileField title="Annexture 3?" name="annexture_3" value={annexture_3} className="col-lg-12"/>
                 <ProfileField title="Fitness" name="fitness_option" value={fitness_option} className="col-lg-12"/>

@@ -531,6 +531,31 @@ class ShouldUpdate {
         }
     }
 
+    static checkLeaveType(data, old_data, leave_type_id, key) {
+        key = key || 'leave_type';
+        const key_id = key.endsWith('_id') ? key : `${key}_id`;
+        if (leave_type_id) {
+            if (!isNumber(leave_type_id) && leave_type_id.id) {
+                leave_type_id = leave_type_id.id;
+            }
+            if (!old_data) {
+                data[key_id] = leave_type_id;
+            } else {
+                if (old_data[key_id]) {
+                    if (old_data[key_id] !== leave_type_id) {
+                        data[key_id] = leave_type_id;
+                    }
+                } else if (old_data[key]) {
+                    if (old_data[key].id !== leave_type_id) {
+                        data[key_id] = leave_type_id;
+                    }
+                } else {
+                    data[key_id] = leave_type_id;
+                }
+            }
+        }
+    }
+
     static checkPPEType(data, old_data, ppe_type_id, key) {
         key = key || 'ppe_type';
         const key_id = key.endsWith('_id') ? key : `${key}_id`;

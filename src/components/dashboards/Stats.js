@@ -170,27 +170,29 @@ class Comp extends React.Component {
         return <>
             <Grid xl={12} lg={12} md={12} container>
                 <Grid xl={9} lg={9} md={9} sm={12} item className="padding-r-20">
-                    <ErrorBoundary>
+                    {GridCounter && <ErrorBoundary>
                         <GridCounter ref={this.gridCounterRef} onClick={onClick}/>
-                    </ErrorBoundary>
-                    <ErrorBoundary>
+                    </ErrorBoundary>}
+                    {GridDoughnutChart && <ErrorBoundary>
                         <GridDoughnutChart ref={this.gridDoughnutChartRef}/>
-                    </ErrorBoundary>
+                    </ErrorBoundary>}
                 </Grid>
-                <Grid xl={3} lg={3} md={3} sm={12} item>
+                {GridCounterSide && <Grid xl={3} lg={3} md={3} sm={12} item>
                     <Card sx={{background: "#344767"}}>
                         <ErrorBoundary>
                             <GridCounterSide ref={this.gridCounterSideRef}/>
                         </ErrorBoundary>
                     </Card>
-                </Grid>
+                </Grid>}
             </Grid>
-            <ErrorBoundary>
+            {GridReportsLineChart && <ErrorBoundary>
                 <GridReportsLineChart ref={this.gridReportsLineChartRef}/>
-            </ErrorBoundary>
-            <ErrorBoundary>
-                <GridFrequencyVerticalBarChart ref={this.gridFrequencyVerticalBarChart}/>
-            </ErrorBoundary>
+            </ErrorBoundary>}
+            {GridFrequencyVerticalBarChart && <ErrorBoundary>
+                <GridFrequencyVerticalBarChart
+                    ref={this.gridFrequencyVerticalBarChart}
+                />
+            </ErrorBoundary>}
         </>;
     }
 

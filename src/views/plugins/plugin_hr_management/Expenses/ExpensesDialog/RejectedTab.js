@@ -6,8 +6,6 @@ import NavItem from 'components/navs/NavItem';
 import ActiveTab from "../../AEmployeeDocDialog/ActiveTab";
 
 // import style from "./RejectedTab.lazy.css";
-
-import {extendObservable} from "mobx";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="ActiveTab">
@@ -19,6 +17,8 @@ class RejectedTab extends ActiveTab {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+
+        this.state.view = "Expense";
     }
 
     // </editor-fold>

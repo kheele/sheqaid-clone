@@ -6,7 +6,7 @@ import {execWhen} from "utils/UtilsFuns";
 import {Permissions} from "utils/Utils";
 import {Tabs} from "components/tabs";
 
-import DashboardTab from "../../AEmployeeDocDialog/ADashboardTab";
+import DashboardTab from "./DashboardTab";
 import RemovedTab from "../../AEmployeeDocDialog/RemovedTab";
 
 import AwaitingApprovalTab from "./AwaitingApprovalTab";
@@ -96,10 +96,14 @@ class TabView extends React.Component {
         this.refs.signaturesDialog.open();
     }
 
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="onExport">
     onExport(e, btn) {
         this.refs.exportDialog.open();
     }
+
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="onViewActiveTab, onViewRemovedTab">
     onViewActiveTab() {
@@ -237,6 +241,7 @@ class TabView extends React.Component {
                     permissionKey={permissionKey}
                     module={module}
                     onBuildQuery={onBuildQuery}
+                    renderTopActions={renderTopActions}
                 />
                 <ApprovedTab
                     ref="approvedTab"
@@ -258,6 +263,7 @@ class TabView extends React.Component {
                     permissionKey={permissionKey}
                     module={module}
                     onBuildQuery={onBuildQuery}
+                    renderTopActions={renderTopActions}
                 />
                 <RejectedTab
                     ref="rejectedTab"
@@ -279,6 +285,7 @@ class TabView extends React.Component {
                     permissionKey={permissionKey}
                     module={module}
                     onBuildQuery={onBuildQuery}
+                    renderTopActions={renderTopActions}
                 />
                 <RemovedTab
                     ref="removedTab"
@@ -298,6 +305,7 @@ class TabView extends React.Component {
                     permissionKey={permissionKey}
                     module={module}
                     onBuildQuery={onBuildQuery}
+                    renderTopActions={renderTopActions}
                 />
             </Tabs>
 

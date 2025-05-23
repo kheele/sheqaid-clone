@@ -38,9 +38,9 @@ class ProfileDialog extends AProfileDialog {
         return "ID/Passports";
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 }
 
 //</editor-fold>

@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import {observable} from 'mobx';
 
 import {Button} from 'components/inputs';
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 @observer
 class AsyncTD extends React.Component {

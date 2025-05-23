@@ -6,7 +6,7 @@ import {ActionsButton, Button} from 'components/inputs';
 import {TRow} from 'components/tables';
 
 import style from "./MSDSRenderRow.lazy.css";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">
@@ -28,7 +28,8 @@ class RenderRow extends React.Component {
         const {item, idx, onClick, renderActionsCol} = this.props;
         try {
             console.log('sds', item)
-            const {id,
+            const {
+                id,
                 data: {
                     created_at,
                     name,

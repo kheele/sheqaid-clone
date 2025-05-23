@@ -21,6 +21,7 @@ class RenderRow extends ARenderRow {
             data: {
                 created_at,
                 date,
+                follow_up_date,
                 annexture_3,
                 fitness_option,
                 restrictions,
@@ -52,6 +53,10 @@ class RenderRow extends ARenderRow {
             <div className="td fixed-flex min-w-120">
                 <h6 className="xs-shown font-size-13">Annexture 3?</h6>
                 {annexture_3 || 'N/A'}
+            </div>
+            <div className="td fixed-flex min-w-105">
+                <h6 className="xs-shown font-size-13">Follow-up Date</h6>
+                {renderExpiryDateSpan(follow_up_date)}
             </div>
             <div className="td fixed-flex min-w-105">
                 <h6 className="xs-shown font-size-13">Expiry Date</h6>

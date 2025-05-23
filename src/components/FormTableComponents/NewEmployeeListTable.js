@@ -181,7 +181,12 @@ class ListTable extends ANewListTable {
         const item = this.getItem(this.state.list[n]);
         console.log('item', item)
         if (item) {
-            let {id, lname, fname, email, phone, profile_pic} = item.data || item;
+            const {witness} = item.data || item;
+            const v = witness || item.data || item;
+
+            let {
+                id, lname, full_name, fname, email, phone, profile_pic,
+            } = v;
 
             if (!lname && !fname) {
                 return null;

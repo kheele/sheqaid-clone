@@ -10,7 +10,7 @@ import {TRow} from 'components/tables';
 import style from "./NCRRenderRow.lazy.css";
 import {Grid} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">

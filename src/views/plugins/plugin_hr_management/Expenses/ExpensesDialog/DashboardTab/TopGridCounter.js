@@ -1,141 +1,101 @@
 //<editor-fold desc="imports">
 import * as React from "react";
+import {forwardRef} from "react";
 import Grid from "@mui/material/Grid";
 import Counter from "containers/Cards/CounterCards/DefaultCounterCard";
-import {forwardRef} from "react";
 import {getRandomRolor} from "utils/UtilsFuns";
 import PropTypes from "prop-types";
 //</editor-fold>
 
 //<editor-fold desc="GridCounter">
 const Comp = forwardRef((
-	{
-		titlePlural,
-		topStatsSize,
-		data,
+    {
+        titlePlural,
+        topStatsSize,
+        data,
 
-		onViewActiveTab,
-		onViewRemovedTab,
-		onViewNoExpiry,
-		onViewExpired,
-		onViewMonExpiry,
-		onView2MonExpiry,
-		onView3MonExpiry,
-		onView4MonExpiry,
-	}, ref) => {
+        onViewRemovedTab,
+        onViewUnsubmitted,
+        onViewAwaitingApproval,
+        onViewAwaitingPayment,
+        onViewCompleted,
+        onViewRejected,
+    }, ref) => {
 
-	const {
-		list_active_aggregate,
-		list_unsubmitted_aggregate,
-		list_awaiting_approval_aggregate,
-		list_awaiting_payment_aggregate,
-		list_completed_aggregate,
-		list_rejected_aggregate,
-		
-		list_removed_aggregate,
-		list_pending_aggregate,
-		list_approved_aggregate,
-		// list_2mon_expiry_aggregate,
-		// list_3mon_expiry_aggregate,
-		// list_4mon_expiry_aggregate,
-	} = data || {};
+    const {
+        list_unsubmitted_aggregate,
+        list_awaiting_approval_aggregate,
+        list_awaiting_payment_aggregate,
+        list_completed_aggregate,
+        list_rejected_aggregate,
 
-	return <Grid
-		container
-		columns={1}
-		className="grid-5 w-full grid-gap-10"
-		sx={{m: 0, mt: '15px', mb: "0px", p: "20px", background: "white", justifyItems: 'center',}}
-	>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Active</b>}
-		         count={list_active_aggregate && list_active_aggregate.aggregate.count || 0}
-		         onClick={onViewActiveTab}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Unsubmitted</b>}
-		         count={list_unsubmitted_aggregate && list_unsubmitted_aggregate.aggregate.count || 0}
-		         onClick={onViewNoExpiry}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Awaiting Approval</b>}
-		         count={list_awaiting_approval_aggregate && list_awaiting_approval_aggregate.aggregate.count || 0}
-		         onClick={onViewExpired}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Awaiting Payment</b>}
-		         count={list_awaiting_payment_aggregate && list_awaiting_payment_aggregate.aggregate.count || 0}
-		         onClick={onViewMonExpiry}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Completed</b>}
-		         count={list_completed_aggregate && list_completed_aggregate.aggregate.count || 0}
-		         onClick={onViewMonExpiry}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Rejected</b>}
-		         count={list_rejected_aggregate && list_rejected_aggregate.aggregate.count || 0}
-		         onClick={onViewMonExpiry}
-		/>
-		<Counter size={topStatsSize}
-		         color="white"
-		         countUpClass="color-white"
-		         background={getRandomRolor()}
-		         title={<b className="color-white font-size-14">Removed</b>}
-		         count={list_removed_aggregate && list_removed_aggregate.aggregate.count || 0}
-		         onClick={onViewRemovedTab}
-		/>
-		{/*<Counter size={topStatsSize}*/}
-		{/*         color="white"*/}
-		{/*         countUpClass="color-white"*/}
-		{/*         background={getRandomRolor()}*/}
-		{/*         title={<b className="color-white font-size-14">2 Month Expiry</b>}*/}
-		{/*         count={list_2mon_expiry_aggregate && list_2mon_expiry_aggregate.aggregate.count || 0}*/}
-		{/*         onClick={onView2MonExpiry}*/}
-		{/*/>*/}
-		{/*<Counter size={topStatsSize}*/}
-		{/*         color="white"*/}
-		{/*         countUpClass="color-white"*/}
-		{/*         background={getRandomRolor()}*/}
-		{/*         title={<b className="color-white font-size-14">3 Month Expiry</b>}*/}
-		{/*         count={list_3mon_expiry_aggregate && list_3mon_expiry_aggregate.aggregate.count || 0}*/}
-		{/*         onClick={onView3MonExpiry}*/}
-		{/*/>*/}
-		{/*<Counter size={topStatsSize}*/}
-		{/*         color="white"*/}
-		{/*         countUpClass="color-white"*/}
-		{/*         background={getRandomRolor()}*/}
-		{/*         title={<b className="color-white font-size-14">+4 Month Expiry</b>}*/}
-		{/*         count={list_4mon_expiry_aggregate && list_4mon_expiry_aggregate.aggregate.count || 0}*/}
-		{/*         onClick={onView4MonExpiry}*/}
-		{/*/>*/}
-	</Grid>;
+        list_removed_aggregate,
+    } = data || {};
+
+    return <Grid
+        container
+        columns={1}
+        className="grid-6 w-full grid-gap-10"
+        sx={{m: 0, mt: '15px', mb: "15px", p: "20px", background: "white", justifyItems: 'center',}}
+    >
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Unsubmitted</b>}
+                 count={list_unsubmitted_aggregate && list_unsubmitted_aggregate.aggregate.count || 0}
+                 onClick={onViewUnsubmitted}
+        />
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Awaiting Approval</b>}
+                 count={list_awaiting_approval_aggregate && list_awaiting_approval_aggregate.aggregate.count || 0}
+                 onClick={onViewAwaitingApproval}
+        />
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Awaiting Payment</b>}
+                 count={list_awaiting_payment_aggregate && list_awaiting_payment_aggregate.aggregate.count || 0}
+                 onClick={onViewAwaitingPayment}
+        />
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Completed</b>}
+                 count={list_completed_aggregate && list_completed_aggregate.aggregate.count || 0}
+                 onClick={onViewCompleted}
+        />
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Rejected</b>}
+                 count={list_rejected_aggregate && list_rejected_aggregate.aggregate.count || 0}
+                 onClick={onViewRejected}
+        />
+        <Counter size={topStatsSize}
+                 color="white"
+                 countUpClass="color-white"
+                 background={getRandomRolor()}
+                 title={<b className="color-white font-size-14">Removed</b>}
+                 count={list_removed_aggregate && list_removed_aggregate.aggregate.count || 0}
+                 onClick={onViewRemovedTab}
+        />
+    </Grid>;
 });
 //</editor-fold>
 
 Comp.defaultProps = {
-	topStatsSize: 150,
+    topStatsSize: 150,
 };
 
 Comp.propTypes = {
-	topStatsSize: PropTypes.number,
+    topStatsSize: PropTypes.number,
 };
 
 export default Comp;

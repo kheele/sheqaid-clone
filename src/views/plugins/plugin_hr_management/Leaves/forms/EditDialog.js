@@ -36,6 +36,10 @@ class EditDialog extends AEditDialog {
         if (isNewEmployee) return true;
     }
 
+    get topButtonsHiddenSave() {
+        return true;
+    }
+
     get controls() {
         return Controls;
     }

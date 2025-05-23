@@ -74,10 +74,10 @@ class RenderRow extends ARenderRow {
             {isCompleted &&
                 <div className="td fixed-flex min-w-120">{Dates.formatDate(date_compensated) || 'N/A'}</div>}
             <div className="td fixed-flex min-w-140">{amount && amount.replace("$", "R")}</div>
-            <div className="td fixed-flex min-w-200">{currency_country && currency_country.currency_name}</div>
+            <div className="td fixed-flex min-w-160">{currency_country && currency_country.currency}</div>
             <div className="td fixed-flex min-w-160">{paid_with}</div>
             <div className="td">{category}</div>
-            <div className="td fixed-flex min-w-260">
+            <div className="td fixed-flex min-w-240 margin-r-20">
                 {doc && <UploadButton
                     name="doc"
                     defaultValue={doc}

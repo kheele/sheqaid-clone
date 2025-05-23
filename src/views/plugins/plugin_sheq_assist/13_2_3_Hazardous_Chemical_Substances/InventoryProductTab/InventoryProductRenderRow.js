@@ -6,7 +6,7 @@ import {ActionsButton, Button} from 'components/inputs';
 import {TRow} from 'components/tables';
 
 import style from "./InventoryProductRenderRow.lazy.css";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="RenderRow">

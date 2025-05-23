@@ -43,9 +43,9 @@ class ProfileDialog extends AProfileDialog {
         return this._title || this.props.title;
     }
 
-    onSaveAsPDF(e, btn) {
-        this.refs.controls.onSaveAsPDF(e, btn);
-    }
+    // onSaveAsPDF(e, btn) {
+    //     this.refs.controls.onSaveAsPDF(e, btn);
+    // }
 
     onDownload(e, btn) {
         this.refs.controls.onDownload(e, btn);

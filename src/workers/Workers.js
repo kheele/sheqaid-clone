@@ -4,7 +4,7 @@ import {isObservable, isObservableArray, isObservableMap, isObservableObject, to
 import WebWorker from "web-worker/WebWorker";
 
 import {execWhen} from "utils/Utils";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 const worker = new WebWorker();
 

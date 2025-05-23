@@ -1,8 +1,6 @@
 import React from "react";
 import {observer} from 'mobx-react';
 import {computed, observable} from 'mobx';
-
-import {execWhen} from "utils/UtilsFuns";
 import {Permissions} from "utils/Utils";
 import {Tabs} from "components/tabs";
 import DashboardTab from "./DashboardTab";
@@ -31,14 +29,12 @@ class TabView extends React.Component {
         this.onSignatures = this.onSignatures.bind(this);
         this.onExport = this.onExport.bind(this);
 
-        this.onViewActiveTab = this.onViewActiveTab.bind(this);
         this.onViewRemovedTab = this.onViewRemovedTab.bind(this);
-        this.onViewNoExpiry = this.onViewNoExpiry.bind(this);
-        this.onViewExpired = this.onViewExpired.bind(this);
-        this.onViewMonExpiry = this.onViewMonExpiry.bind(this);
-        this.onView2MonExpiry = this.onView2MonExpiry.bind(this);
-        this.onView3MonExpiry = this.onView3MonExpiry.bind(this);
-        this.onView4MonExpiry = this.onView4MonExpiry.bind(this);
+        this.onViewUnsubmitted = this.onViewUnsubmitted.bind(this);
+        this.onViewAwaitingApproval = this.onViewAwaitingApproval.bind(this);
+        this.onViewAwaitingPayment = this.onViewAwaitingPayment.bind(this);
+        this.onViewCompleted = this.onViewCompleted.bind(this);
+        this.onViewRejected = this.onViewRejected.bind(this);
     }
 
     //</editor-fold>
@@ -116,66 +112,38 @@ class TabView extends React.Component {
         this.refs.exportDialog.open();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="onViewActiveTab, onViewRemovedTab">
-    onViewActiveTab() {
-        const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="onViewRemovedTab">
     onViewRemovedTab() {
         const {refs: {mainTabs}} = this;
-        mainTabs.onChange(2);
+        mainTabs.onChange(6);
     }
 
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="onViewNoExpiry, onViewExpired, onViewMonExpiry, onView2MonExpiry, onView3MonExpiry, onView4MonExpiry">
-    onViewNoExpiry() {
+    // <editor-fold defaultstate="collapsed" desc="onViewUnsubmitted, onViewAwaitingApproval, onViewAwaitingPayment, onViewCompleted, onViewRejected">
+    onViewUnsubmitted() {
         const {refs: {mainTabs}} = this;
         mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: null});
-        });
     }
 
-    onViewExpired() {
+    onViewAwaitingApproval() {
         const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: -1});
-        });
+        mainTabs.onChange(2);
     }
 
-    onViewMonExpiry() {
+    onViewAwaitingPayment() {
         const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: 1});
-        });
+        mainTabs.onChange(3);
     }
 
-    onView2MonExpiry() {
+    onViewCompleted() {
         const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: 2});
-        });
+        mainTabs.onChange(4);
     }
 
-    onView3MonExpiry() {
+    onViewRejected() {
         const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: 3});
-        });
-    }
-
-    onView4MonExpiry() {
-        const {refs: {mainTabs}} = this;
-        mainTabs.onChange(1);
-        execWhen(() => mainTabs.getTabByRef('employeesActiveTab')).then(ref => {
-            ref.setView({expiry_date: 4});
-        });
+        mainTabs.onChange(5);
     }
 
     //<editor-fold desc="render">
@@ -212,15 +180,13 @@ class TabView extends React.Component {
                     loadDashboard={loadDashboard}
                     hasSignatures={hasSignatures}
 
-                    onViewActiveTab={this.onViewActiveTab}
                     onViewRemovedTab={this.onViewRemovedTab}
 
-                    onViewNoExpiry={this.onViewNoExpiry}
-                    onViewExpired={this.onViewExpired}
-                    onViewMonExpiry={this.onViewMonExpiry}
-                    onView2MonExpiry={this.onView2MonExpiry}
-                    onView3MonExpiry={this.onView3MonExpiry}
-                    onView4MonExpiry={this.onView4MonExpiry}
+                    onViewUnsubmitted={this.onViewUnsubmitted}
+                    onViewAwaitingApproval={this.onViewAwaitingApproval}
+                    onViewAwaitingPayment={this.onViewAwaitingPayment}
+                    onViewCompleted={this.onViewCompleted}
+                    onViewRejected={this.onViewRejected}
 
                     onViewDialog={onViewDialog}
                     onNewDialog={this.onNewDialog}

@@ -4,7 +4,7 @@ import {computed, observable} from 'mobx';
 
 import {Button} from '../components/inputs';
 import ErrorBoundaryNoInternetImage from "./ErrorBoundaryNoInternetImage";
-import {insertErrorReporting} from "mutations/create";
+import {insertErrorReporting} from "mutations/createWithCustomArgs";
 
 @observer
 class ErrorBoundary extends React.Component {

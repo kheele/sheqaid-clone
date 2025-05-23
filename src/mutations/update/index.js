@@ -104,9 +104,13 @@ export const updateEmployeeContractSalaryInfo = update("employees/docs/contracts
 export const updateEmployeeCounselling = update("employees/docs/counsellings");
 export const updateEmployeeExpense = update("employees/docs/expenses");
 export const updateEmployeeJobAppointment = update("structure-and-responsibility/job-appointments");
-export const updateEmployeeLeave = update("employees/docs/leaves");
 export const updateEmployeeMedical = update("employees/docs/medicals");
 export const updateEmployeeWarning = update("employees/docs/warnings");
+
+export const updateEmployeeLeave = update("employees/docs/leaves");
+export const updateEmployeeLeaveType = update("employees/docs/leaves/types");
+export const updateEmployeeLeavePolicy = update("employees/docs/leaves/policies");
+export const updateEmployeeLeaveAllocation = update("employees/docs/leaves/allocations");
 
 export const updateEmployeeLicense = update("employees/docs/licenses");
 export const updateEmployeeWorkPermit = update("employees/docs/work-permits");

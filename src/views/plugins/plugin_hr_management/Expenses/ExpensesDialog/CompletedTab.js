@@ -17,6 +17,8 @@ class CompletedTab extends ActiveTab {
     // <editor-fold defaultstate="collapsed" desc="constructor">
     constructor(props) {
         super(props);
+
+        this.state.view = "Expense";
     }
 
     // </editor-fold>

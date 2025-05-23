@@ -1,6 +1,6 @@
 import {Dates} from "utils/Utils";
 import {isObservableArray} from "mobx";
-import {insertIncident} from "mutations/create";
+import {insertIncident} from "mutations/createWithCustomArgs";
 
 export default async function onSubmitCreate(e, btn, onSaved) {
     const {form} = this;
