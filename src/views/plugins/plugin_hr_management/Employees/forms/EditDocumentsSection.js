@@ -313,7 +313,6 @@ class EditDocumentsSection extends AEmployeeSection {
             // warning_list,
             // work_permit_list,
             // job_appointment_list,
-
             // ppe_type_list,
             // trainer_training_list,
         } = (item && item.data) || {};
@@ -417,7 +416,7 @@ class EditDocumentsSection extends AEmployeeSection {
                         </Row>
                     </FormControls>
                 </Row>}
-                {EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Row
+                {!isNewEmployee && EmployeeProfileSettings.isEmployeeCompetencyViewers(item) && <Row
                     ref="competency"
                     rendered
                     idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}
@@ -449,11 +448,11 @@ class EditDocumentsSection extends AEmployeeSection {
                     sectionClassName="-margin-l-10 margin-t-35 -margin-b-10 w-full-calc-add-20"
                     onFormOpen={onFormOpen}
                     onFormBack={onFormBack}
-                    onFormNext={onFormNext}
+                    onFormNext={!isNewEmployee && onFormNext}
                 >
                     <JobAppointmentControls {...props} defaultValue={job_appointment_list} tabsHeight="530px"/>
                 </Row>}
-                {EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Row
+                {!isNewEmployee && EmployeeProfileSettings.isEmployeeMedicalFitnessViewers(item) && <Row
                     ref="medical"
                     rendered
                     idx={parseFloat(idx + `.${__idx++}`).toFixed(1)}

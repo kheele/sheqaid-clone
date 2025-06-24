@@ -70,9 +70,9 @@ export const insertEmployee = async (data) => {
         formData,
         optionalInfoFormData,
         documentsFormData,
-        counselingFormData,
-        warningFormData,
-        timeOffFormData,
+        // counselingFormData,
+        // warningFormData,
+        // timeOffFormData,
     } = data;
 
     const insert = create("employees");
@@ -80,9 +80,9 @@ export const insertEmployee = async (data) => {
     await insert("START");
     //
     await insert({formData, optionalInfoFormData});
-    await insert({counselingFormData});
-    await insert({warningFormData});
-    await insert({timeOffFormData});
+    // await insert({counselingFormData});
+    // await insert({warningFormData});
+    // await insert({timeOffFormData});
     //
     if (documentsFormData) {
         let {

@@ -181,7 +181,9 @@ window.createPDFPreviewUrlFromRemote = filePath => {
     if (loc.contains('#')) {
         loc = loc.replace(document.location.hash, "").replace("#", "");
     }
-    return `${loc}js/lib/pdfjs-2.3.200-dist/web/viewer.html?file=${encodeURIComponent(filePath)}`;
+    const u = filePath.contains('https') ? 'url' : 'file';
+    // return `${loc}js/lib/pdfjs-2.3.200-dist/web/viewer.html?file=${encodeURIComponent(filePath)}`;
+    return `${loc}js/lib/pdfjs-2.3.200-dist/web/viewer.html?${u}=${encodeURIComponent(filePath)}`;
 };
 window.createReactPDFPreviewUrl = createPDFPreviewUrlFromRemote;
 window.createPDFPreviewUrl = async filePath => {
